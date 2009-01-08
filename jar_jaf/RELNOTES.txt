@@ -1,0 +1,67 @@
+	 JavaBeans(tm)Activation Framework 1.0.2 Release Notes
+
+Welcome to the JavaBeans(tm) Activation Framework! A great deal of time
+and effort was put into making this package functional and
+usable.  We are however, realistic in anticipating that there exist
+scenarios and applications where this implementation could be improved
+upon.  We welcome your feedback in this area to the email address
+listed below.
+
+System Requirements:
+--------------------
+
+The JavaBeans(tm) Activation Framework (JAF) was developed and tested
+against Sun's JDK 1.1.6 on the Solaris SPARC platform, and Windows 32
+(both Windows 95, and Windows NT 4.0). This version of the JAF is
+written in Java (with no native code). It will run on any JDK(tm) 1.1
+(or newer) compatible virtual machine so don't hesitate to try it and
+please report failures.
+
+Installation:
+-------------
+
+There is effectively *no* installation of the JAF. The classes that
+make up the JAF are contained in the included Java(tm) Archive (JAR) file,
+"activation.jar". This file can be placed anywhere accessible to the
+Java virtual machine running on your system. The only requirement is
+that the activation.jar be included in your system's class path so
+Java can find the JAF classes.
+
+Related Web Sites:
+------------------
+
+There are a number of web sites you might find useful if you haven't
+already run across them:
+
+http://java.sun.com  -- This is Sun's Java Software External Web Site.
+
+http://java.sun.com/beans -- This is the JavaBeans web site which is
+                             full of the latest beans information. The
+                             JAF spec is available in the 'Glasgow' area.
+
+http://java.sun.com/products/javamail -- The JavaMail(tm) API provides a set
+                             of abstract classes that model a mail system.
+                             It's implementation is dependent on the JAF.
+
+Bugs fixed in this Release:
+---------------------------
+
+4367571	Installing JAF as extension breaks mailcap and MIME type resolution
+4410032	JAF DataHandler.getTransferData() incorrect behavior when no
+	DataContentHandler
+4505282	URLDataSource should call setDoOutput(true) before returning
+	OutputStream
+4373837	activation.jar manifest should contain specification/implementation
+	fields
+4243713	JAF should find META-INF/mailcap files everywhere in CLASSPATH on
+	JDK 1.2
+<no id>	tolerate trailing semicolon in MIME type
+
+How to contact us:
+------------------
+
+We have created an email alias that will send all your questions and
+comments to the JAF 'team'. We cannot guarantee that we will respond
+to all of your email, but we do promise to read them. 
+
+activation-comments@sun.com
