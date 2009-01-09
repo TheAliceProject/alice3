@@ -178,7 +178,7 @@ public abstract class Program extends javax.swing.JApplet {
 	//		return m_preferredSize;
 	//	}
 
-	class StartProgramComponentAdapter implements java.awt.event.ComponentListener {
+	public class StartProgramComponentAdapter implements java.awt.event.ComponentListener {
 		private boolean m_isAlreadyStarted = false;
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 			if( m_isAlreadyStarted ) {
@@ -196,7 +196,7 @@ public abstract class Program extends javax.swing.JApplet {
 		}
 	}
 
-	private void showInWindow( final java.awt.Window window, final boolean isExitDesiredOnClose ) {
+	protected void showInWindow( final java.awt.Window window, final boolean isExitDesiredOnClose ) {
 		int x = toInt( getParameter( "LOCATION_X" ), 0 );
 		int y = toInt( getParameter( "LOCATION_Y" ), 0 );
 		window.setLocation( x, y );
