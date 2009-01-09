@@ -29,18 +29,35 @@ public class MailUtilities {
 	public static void sendMail( String protocol, String host, String from, String to, String subject, String text, Attachment... attachments ) throws javax.mail.MessagingException {
 		java.util.Properties props = new java.util.Properties();
 		props.put( "mail." + protocol + ".host", host );
+		if( "smtp".equals( protocol ) ) {
+			props.put( "mail." + protocol + ".starttls.enable", "true" );
+			props.put( "mail." + protocol + ".auth", "true" );
+		}
+		final String anonymousFrom = "anonymous.alice.bugs.3.beta.xxxx@gmail.com";
 		javax.mail.Authenticator authenticator = new javax.mail.Authenticator() {
 			@Override
+			// protected javax.mail.PasswordAuthentication
+			// getPasswordAuthentication() {
+			// return super.getPasswordAuthentication();
+			// }
 			protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-				return super.getPasswordAuthentication();
+				String anonymousPassword = "pleaseDoNotStealThisAccount";
+				return new javax.mail.PasswordAuthentication( anonymousFrom, anonymousPassword );
 			}
 		};
 		javax.mail.Session session = javax.mail.Session.getDefaultInstance( props, authenticator );
 		javax.mail.internet.MimeMessage message = new javax.mail.internet.MimeMessage( session );
 		message.setSubject( subject );
-		javax.mail.Address fromAddress = new javax.mail.internet.InternetAddress( from );
-		javax.mail.Address toAddress = new javax.mail.internet.InternetAddress( to );
+
+		javax.mail.Address fromAddress = new javax.mail.internet.InternetAddress( anonymousFrom );
 		message.setFrom( fromAddress );
+		if( from != null ) {
+			javax.mail.Address replyToAddress = new javax.mail.internet.InternetAddress( from );
+			message.setReplyTo( new javax.mail.Address[] { replyToAddress } );
+		}
+		
+		
+		javax.mail.Address toAddress = new javax.mail.internet.InternetAddress( to );
 		message.addRecipient( javax.mail.Message.RecipientType.TO, toAddress );
 
 		javax.mail.BodyPart messagePart = new javax.mail.internet.MimeBodyPart();
@@ -58,6 +75,7 @@ public class MailUtilities {
 		message.setContent( multipart );
 		javax.mail.Transport.send( message );
 	}
+
 	public static void sendMail( String protocol, String host, String from, String to, String subject, String text, java.util.ArrayList< Attachment > attachments ) throws javax.mail.MessagingException {
 		Attachment[] array = new Attachment[ attachments.size() ];
 		attachments.toArray( array );

@@ -47,6 +47,7 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 		potentialPaths.add( "/Program Files" + subPath );
 		potentialPaths.add( "/Applications" + subPath );
 		potentialPaths.add( "/Applications/Programming" + subPath );
+		potentialPaths.add( "c:/Program Files" + subPath );
 		for( String path : potentialPaths ) {
 			java.io.File directory = new java.io.File( path );
 			if( directory.exists() && directory.isDirectory() ) {

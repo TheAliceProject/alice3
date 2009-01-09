@@ -44,11 +44,12 @@ public class CaughtExceptionBugReportPane extends edu.cmu.cs.dennisc.ui.bugrepor
 	}
 	@Override
 	protected String getHost() {
-		return "smtp.srv.cs.cmu.edu";
+		//return "smtp.srv.cs.cmu.edu";
+		return "smtp.gmail.com";
 	}
 	@Override
 	protected String getAnonymousFrom() {
-		return "alice.bugs.3.beta.xxxx.anonymous@gmail.com";
+		return null;
 	}
 	@Override
 	protected String getTo() {
