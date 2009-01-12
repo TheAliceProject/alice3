@@ -29,8 +29,17 @@ public class FileUtilities {
 	public static final String PROJECT_EXTENSION = "a3p"; 
 	public static final String TYPE_EXTENSION = "a3c"; 
 	
+	private static String subPath = "Alice3";
+	public static String getSubPath() {
+		return FileUtilities.subPath;
+	}
+	public static void setSubPath(String subPath) {
+		FileUtilities.subPath = subPath;
+	}
+	
+	
 	public static java.io.File getMyAliceDirectory() {
-		java.io.File rv = new java.io.File( edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory(), "Alice3" );
+		java.io.File rv = new java.io.File( edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory(), FileUtilities.getSubPath() );
 		rv.mkdirs();
 		return rv;
 	}
