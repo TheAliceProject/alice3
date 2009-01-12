@@ -127,34 +127,93 @@ class UbiquitousTemplatesPane( ecc.dennisc.alice.ide.IDEListenerPane ):
 		self._commentPane = CommentTemplatePane()
 		self._mathFunctionsPane = MathFunctionsTemplatePane()
 
-		self.setLayout( javax.swing.BoxLayout( self, javax.swing.BoxLayout.LINE_AXIS ) )
+		panes = [
+			self._doInOrderPane,
+			self._countLoopPane,
+			self._whileLoopPane,
+			self._forEachInArrayLoopPane,
+			self._conditionalStatementPane,
+			self._doTogetherPane,
+			self._forEachInArrayTogetherPane,
+			self._declareVariablePane,
+			self._setVariableTemplatesOwnerPane,
+			self._returnStatementOwnerPane,
+			self._commentPane,
+			self._mathFunctionsPane,
+			javax.swing.JLabel()
+		]
 
-		SMALL_FILLER = 2
-		LARGE_FILLER = 6
-		self._addWithFiller( self._doInOrderPane, LARGE_FILLER )
-		self._addWithFiller( self._countLoopPane, SMALL_FILLER )
-		self._addWithFiller( self._whileLoopPane, SMALL_FILLER )
-		self._addWithFiller( self._forEachInArrayLoopPane, LARGE_FILLER )
-		self._addWithFiller( self._conditionalStatementPane, LARGE_FILLER )
-		self._addWithFiller( self._doTogetherPane, SMALL_FILLER )
-		self._addWithFiller( self._forEachInArrayTogetherPane, LARGE_FILLER )
-		self._addWithFiller( self._declareVariablePane, SMALL_FILLER )
-		self._addWithFiller( self._setVariableTemplatesOwnerPane, LARGE_FILLER )
+		boxLayout = javax.swing.BoxLayout( self, javax.swing.BoxLayout.LINE_AXIS )
+		self.setLayout( boxLayout )
+		for component in panes:
+			#component.setMinimumSize( java.awt.Dimension( 0, 0 ) )
+			self.add( component )
+#		self.setLayout( java.awt.GridBagLayout() )
 
-		self._addWithFiller( self._returnStatementOwnerPane, LARGE_FILLER )
+#		springLayout = javax.swing.SpringLayout()
+#		self.setLayout( springLayout )
+#		prev = None
+#		springLayout.putConstraint( javax.swing.SpringLayout.WEST, panes[ 0 ], 0, javax.swing.SpringLayout.WEST, self );
+#		for next in panes:
+#			#next.setMinimumSize( java.awt.Dimension( 0, 0 ) )
+#			#next.setPreferredSize( java.awt.Dimension( 0, 0 ) )
+#			self.add( next )
+#			if prev:
+#				#springLayout.putConstraint( javax.swing.SpringLayout.NORTH, next, 10, javax.swing.SpringLayout.NORTH, prev );
+#				springLayout.putConstraint( javax.swing.SpringLayout.WEST, next, 4, javax.swing.SpringLayout.EAST, prev )
+#			prev = next
+#		springLayout.putConstraint( javax.swing.SpringLayout.EAST, panes[ -1 ], 0, javax.swing.SpringLayout.EAST, self );
 		
-		self._addWithFiller( self._commentPane, LARGE_FILLER )
+		
+#		row = java.util.ArrayList()
+#		for component in _row:
+#			row.add( component )
+#		import jarray
+#		rows = java.util.ArrayList()
+#		rows.add( jarray.array( panes, java.awt.Component ) )
+#		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( self, rows, 0, 0 )
+		#self.setLayout( javax.swing.BoxLayout( self, javax.swing.BoxLayout.LINE_AXIS ) )
 
-		self._addWithFiller( self._mathFunctionsPane, LARGE_FILLER )
-		#self.add( javax.swing.Box.createHorizontalGlue() )
+#		self.setLayout( java.awt.GridBagLayout() )
+#		self._gbc = java.awt.GridBagConstraints()
+#		self._gbc.anchor = java.awt.GridBagConstraints.WEST
+#		self._gbc.fill = java.awt.GridBagConstraints.BOTH
+#		self._gbc.gridwidth = 1
+#		self._gbc.weightx = 1.0
+#		self._gbc.weighty = 1.0
+#
+#		SMALL_FILLER = 2
+#		LARGE_FILLER = 6
+#		self._addWithFiller( self._doInOrderPane, LARGE_FILLER )
+#		self._addWithFiller( self._countLoopPane, SMALL_FILLER )
+#		self._addWithFiller( self._whileLoopPane, SMALL_FILLER )
+#		self._addWithFiller( self._forEachInArrayLoopPane, LARGE_FILLER )
+#		self._addWithFiller( self._conditionalStatementPane, LARGE_FILLER )
+#		self._addWithFiller( self._doTogetherPane, SMALL_FILLER )
+#		self._addWithFiller( self._forEachInArrayTogetherPane, LARGE_FILLER )
+#		self._addWithFiller( self._declareVariablePane, SMALL_FILLER )
+#		self._addWithFiller( self._setVariableTemplatesOwnerPane, LARGE_FILLER )
+#
+#		self._addWithFiller( self._returnStatementOwnerPane, LARGE_FILLER )
+#		
+#		self._addWithFiller( self._commentPane, LARGE_FILLER )
+#
+#		self._addWithFiller( self._mathFunctionsPane, LARGE_FILLER )
+#		#self.add( javax.swing.Box.createHorizontalGlue() )
+#
+#		self._gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER
+#		self._gbc.weightx = 10.0
+#		self.add( javax.swing.JLabel(), self._gbc )
+#		del self._gbc
 	
 
 	def _addWithFiller( self, component, filler ):
-		self.add( component )
-		self.add( javax.swing.Box.createHorizontalStrut( filler ) )
+		self.add( component, self._gbc )
+		self.add( javax.swing.Box.createHorizontalStrut( filler ), self._gbc )
 
-	def getMinimumSize( self ):
-		return self.getPreferredSize()
+#	def getMinimumSize( self ):
+#		return java.awt.Dimension( 0, 32 )
+#		#return self.getPreferredSize()
 
 	def refreshVariableTemplates( self ):
 		self._setVariableTemplatesOwnerPane.refreshTemplates()

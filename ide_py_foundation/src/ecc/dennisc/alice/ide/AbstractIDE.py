@@ -67,31 +67,63 @@ class SceneRunContainer( IDEListenerPane ):
 		self.add( MySceneRunMethodPane( field, method ) )
 		self.revalidate()
 		self.repaint()
-#		self.setBackground(java.awt.Color.CYAN)
-#		self.setOpaque( True )
+	def getMaximumSize(self):
+		return self.getPreferredSize()
 
 class RunPane( zoot.ZLineAxisPane ):
 	def __init__( self, runOperation ):
 		zoot.ZLineAxisPane.__init__( self )
-		self.add( alice.ide.editors.common.Label( "invoke" ) )
+		self.add( zoot.ZLabel( "invoke" ) )
 		self.add( SceneRunContainer() )
-		self.add( alice.ide.editors.common.Label( "when the program is" ) )
+		self.add( zoot.ZLabel( "when the program is" ) )
 		strutWidth = 4
 		self.add( javax.swing.Box.createHorizontalStrut( strutWidth ) )
 		self.add( alice.ide.Button( runOperation ) )
-#		self.setBackground(java.awt.Color.MAGENTA)
-#		self.setOpaque( True )
+		self.add( javax.swing.Box.createHorizontalGlue() )
+		self._minWidth = 0
+	def getPreferredSize(self):
+		rv = zoot.ZLineAxisPane.getPreferredSize( self )
+		rv.width = max( rv.width, self._minWidth )
+		return rv
 
 class ToolBar( javax.swing.JPanel, java.awt.event.ComponentListener ):
 	def __init__( self, runPane, ubiquitousTemplatesPane ):
 		javax.swing.JPanel.__init__( self )
 		self._runPane = runPane
 		self._ubiquitousTemplatesPane = ubiquitousTemplatesPane
-		import jarray
-		rows = java.util.ArrayList()
-		rows.add( jarray.array( ( self._runPane, self._ubiquitousTemplatesPane ), java.awt.Component ) )
-		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( self, rows, 0, 0 )
-#		self.setBackground(java.awt.Color.RED)
+		
+		self.setLayout( java.awt.GridLayout( 1, 2 ) )
+		self.setLayout( java.awt.BorderLayout() )
+		
+		self.add( self._runPane, java.awt.BorderLayout.WEST )
+		self.add( self._ubiquitousTemplatesPane, java.awt.BorderLayout.CENTER )
+#		springLayout = javax.swing.SpringLayout()
+#		self.setLayout( springLayout )
+#				
+#		import jarray
+#		rows = java.util.ArrayList()
+#		rows.add( jarray.array( ( self._runPane, self._ubiquitousTemplatesPane ), java.awt.Component ) )
+#		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( self, rows, 0, 0 )
+#		#self.add( self._runPane )
+##		
+##		
+#		#springLayout.putConstraint( javax.swing.SpringLayout.NORTH, self._runPane, 0, javax.swing.SpringLayout.NORTH, self );
+#		springLayout.putConstraint( javax.swing.SpringLayout.WEST, self._runPane, 0, javax.swing.SpringLayout.WEST, self );
+#		springLayout.putConstraint( javax.swing.SpringLayout.EAST, self._runPane, 0, javax.swing.SpringLayout.WEST, self._ubiquitousTemplatesPane );
+#		springLayout.putConstraint( javax.swing.SpringLayout.EAST, self._ubiquitousTemplatesPane, 0, javax.swing.SpringLayout.EAST, self );
+#
+##		constraints = springLayout.getConstraints( self._runPane )
+##		constraints.setHeight( javax.swing.Spring.constant( 100 ) )
+##		constraints = springLayout.getConstraints( self._ubiquitousTemplatesPane )
+##		constraints.setHeight( javax.swing.Spring.constant( 100 ) )
+##		
+##		self.setMinimumSize( java.awt.Dimension( 100, 100 ) )
+##		for pane in [self._runPane, self._ubiquitousTemplatesPane]:
+##			springLayout.putConstraint( javax.swing.SpringLayout.NORTH, pane, 0, javax.swing.SpringLayout.NORTH, self );
+##			springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, pane, 0, javax.swing.SpringLayout.SOUTH, self );
+#			
+#		
+##		self.setBackground(java.awt.Color.RED)
 
 	def componentShown( self, e ):
 		pass
@@ -100,11 +132,11 @@ class ToolBar( javax.swing.JPanel, java.awt.event.ComponentListener ):
 	def componentMoved( self, e ):
 		pass
 	def componentResized( self, e ):
-		constraints = self.getLayout().getConstraints( self._ubiquitousTemplatesPane );
-		constraints.setX( javax.swing.Spring.constant( e.getSource().getWidth() + 16 ) )
-		if self:
-			self.revalidate()
-			self.repaint()
+		self._runPane._minWidth = e.getSource().getWidth() + 16
+		#constraints = self.getLayout().getConstraints( self._ubiquitousTemplatesPane );
+		#constraints.setX( javax.swing.Spring.constant( e.getSource().getWidth() + 16 ) )
+		self.revalidate()
+		self.repaint()
 
 class AbstractIDE( alice.ide.IDE ):
 	def __init__( self ):

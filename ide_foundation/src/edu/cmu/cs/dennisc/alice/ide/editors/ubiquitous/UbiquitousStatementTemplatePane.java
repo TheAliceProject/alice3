@@ -79,6 +79,13 @@ public abstract class UbiquitousStatementTemplatePane extends edu.cmu.cs.dennisc
 		//this.label.setPreferredSize( new java.awt.Dimension( 128, 128 ) );
 	}
 	
+	@Override
+	public java.awt.Dimension getMinimumSize() {
+		java.awt.Dimension rv = super.getMinimumSize();
+		rv.width = 24;
+		return rv;
+	}
+	
 	protected javax.swing.JComponent createComponent() {
 		String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( this.cls, "edu.cmu.cs.dennisc.alice.ast.UbiquitousTemplates" );
 		return new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( text );
