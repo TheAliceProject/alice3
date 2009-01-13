@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ide_foundation"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ide_i18n"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ide_launcher"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ide_moveandturn"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch_gallery_generated"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_foundation"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn_generated"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_generated_depended_upon"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
