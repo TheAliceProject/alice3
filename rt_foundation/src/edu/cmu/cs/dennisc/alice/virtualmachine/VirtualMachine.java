@@ -78,7 +78,13 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object createArrayInstanceFromTypeDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice type, int[] lengths, Object[] arguments ) {
-		throw new RuntimeException( "todo" );
+		//todo
+		//Object rv = java.lang.reflect.Array.newInstance( type.getLeafType().getFirstClassEncounteredDeclaredInJava(), lengths );
+		Object rv = java.lang.reflect.Array.newInstance( Object.class, lengths );
+		for( int i=0; i<arguments.length; i++ ) {
+			java.lang.reflect.Array.set( rv, i, arguments[ i ] );
+		}
+		return rv;
 	}
 	protected Object createArrayInstanceFromTypeDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type, int[] lengths, Object[] arguments ) {
 		Class<?> cls = type.getCls();

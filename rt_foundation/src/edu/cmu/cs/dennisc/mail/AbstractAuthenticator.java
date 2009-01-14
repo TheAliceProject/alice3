@@ -20,13 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice;
+package edu.cmu.cs.dennisc.mail;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Version {
-	public static String getCurrentVersionText() {
-		return "3.beta.0006";
-	}
+public abstract class AbstractAuthenticator extends javax.mail.Authenticator {
+	public abstract String getAnonymousFrom();
 }

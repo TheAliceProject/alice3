@@ -308,8 +308,8 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	private static ArrayTypeDeclaredInAlice decodeArrayTypeDeclaredInAlice( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "leafType" );
 		org.w3c.dom.Element xmlDimensionCount = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "dimensionCount" );
-		
-		TypeDeclaredInAlice leafType = (TypeDeclaredInAlice)decode( xmlLeafType, map );
+		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "node" );
+		TypeDeclaredInAlice leafType = (TypeDeclaredInAlice)decode( xmlLeafTypeNode, map );
 		int dimensionCount = Integer.parseInt( xmlDimensionCount.getTextContent() );
 		return ArrayTypeDeclaredInAlice.get( leafType, dimensionCount );
 	}
