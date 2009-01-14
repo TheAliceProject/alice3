@@ -23,23 +23,36 @@
 
 package sceneeditor;
 
+import java.awt.Point;
+
 /**
  * @author David Culyba
  */
-public abstract class DragManipulator {
+public  class CameraOrbitDragManipulator extends DragManipulator {
+
+	private edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedCameraTransformable = null;
 	
-	protected edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable = null;
-	
-	protected void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
+	protected void setCameraTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable cameraTransformable)
 	{
-		this.manipulatedTransformable = manipulatedTransformable;
+		this.manipulatedCameraTransformable = cameraTransformable;
 	}
 	
-	protected abstract void startManipulator( java.awt.Point current );
-	
-	protected abstract void updateManipulator( java.awt.Point current, int xDeltaSincePrevious, int yDeltaSincePrevious );
-	
-	protected abstract void endManipulator( java.awt.Point current );
-	
+	@Override
+	protected void updateManipulator( Point current, int xDeltaSincePrevious, int yDeltaSincePrevious) {
+		
+
+	}
+
+	@Override
+	protected void startManipulator( Point current ) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void endManipulator( Point current ) {
+		// TODO Auto-generated method stub
+
+	}
 
 }

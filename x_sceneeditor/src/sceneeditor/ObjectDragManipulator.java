@@ -20,7 +20,6 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
 package sceneeditor;
 
 import java.awt.Point;
@@ -28,31 +27,22 @@ import java.awt.Point;
 /**
  * @author David Culyba
  */
-public class CameraDragManipulator extends DragManipulator {
+public class ObjectDragManipulator extends DragManipulator {
 
-	/* (non-Javadoc)
-	 * @see DragManipulator#handleMouseDragUpdate(java.awt.Point, int, int)
-	 */
 	@Override
-	protected void handleMouseDragUpdate( Point current, int deltaSincePrevious, int deltaSincePrevious2 ) {
+	protected void updateManipulator( Point current, int xDeltaSincePrevious, int yDeltaSincePrevious) {
 		// TODO Auto-generated method stub
 
 	}
 
-	/* (non-Javadoc)
-	 * @see DragManipulator#handleMousePress(java.awt.Point)
-	 */
 	@Override
-	protected void handleMousePress( Point current ) {
+	protected void startManipulator( Point current ) {
 		// TODO Auto-generated method stub
 
 	}
 
-	/* (non-Javadoc)
-	 * @see DragManipulator#handleMouseRelease(java.awt.Point)
-	 */
 	@Override
-	protected void handleMouseRelease( Point current ) {
+	protected void endManipulator( Point current ) {
 		// TODO Auto-generated method stub
 
 	}
