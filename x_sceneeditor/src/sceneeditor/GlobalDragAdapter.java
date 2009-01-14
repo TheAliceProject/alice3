@@ -34,6 +34,8 @@ public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter {
 
 	private edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedObject = null;
 	
+	private sceneeditor.CameraTranslateManipulator cameraTranslator = new sceneeditor.CameraTranslateManipulator();
+	
 	
 	private int cameraIndex = 0;
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
@@ -59,9 +61,10 @@ public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter {
 	
 	@Override
 	protected void handleMouseDrag(Point current, int deltaSince0,
-			int deltaSince02, int deltaSincePrevious, int deltaSincePrevious2,
+			int deltaSince02, int xDeltaSincePrevious, int yDeltaSincePrevious,
 			DragStyle dragStyle) {
-		// TODO Auto-generated method stub
+
+		this.cameraTranslator.updateManipulator( current, xDeltaSincePrevious, yDeltaSincePrevious );
 
 	}
 
@@ -69,14 +72,14 @@ public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter {
 	protected void handleMousePress(Point current, DragStyle dragStyle,
 			boolean isOriginalAsOpposedToStyleChange) {
 		
-		
-
+		this.cameraTranslator.setManipulatedTransformable( this.getSGCameraTransformable() );
+		this.cameraTranslator.startManipulator( current );
 	}
 
 	@Override
 	protected Point handleMouseRelease(Point rvCurrent, DragStyle dragStyle,
 			boolean isOriginalAsOpposedToStyleChange) {
-		// TODO Auto-generated method stub
+		this.cameraTranslator.endManipulator( rvCurrent );
 		return null;
 	}
 
