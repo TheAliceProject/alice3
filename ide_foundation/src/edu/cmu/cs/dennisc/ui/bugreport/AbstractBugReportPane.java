@@ -165,8 +165,6 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 		}
 		
 	}
-	
-
 
 	private static final String SYNOPSIS_TEXT = "please fill in a one line synopsis of the bug";
 	private static final String DESCRIPTION_TEXT = "please fill in a detailed description of the bug";
@@ -271,29 +269,33 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 		return rv;
 	}
 	
-	private java.lang.String getFrom() {
+	private java.lang.String getReplyTo() {
 		String address = this.vcReporterEMailAddress.getText();
-		if( address.contains( "@" ) ) {
-			return address;
-		} else {
-			return getAnonymousFrom();
-		}
+		return address;
+	}
+	private java.lang.String getReplyToPersonal() {
+		String address = this.vcReporterName.getText();
+		return address;
 	}
 
 	protected abstract String getProtocol();
 	protected abstract String getHost();
 	protected abstract String getTo();
-	protected abstract String getAnonymousFrom();
-//	protected abstract String getSubject();
-//	protected abstract String getBody();
-	protected java.lang.String getSubject() {
-		return this.vcSynopsis.getText();
+	
+	protected StringBuffer updateSubject( StringBuffer rv ) {
+		rv.append( this.vcSynopsis.getText() );
+		return rv;
+	}
+	private String getSubject() {
+		StringBuffer sb = new StringBuffer();
+		updateSubject( sb );
+		return sb.toString();
 	}
 	protected java.lang.String getBody() {
 		return "detailed decription:\n" + this.vcDecription.getText() + "\n\nsteps to reproduce:\n" + this.vcStepsToReproduce.getText();
 	}
 
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > addAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
+	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
 		rv.add( new edu.cmu.cs.dennisc.mail.Attachment() {
 			public javax.activation.DataSource getDataSource() {
 				return new javax.mail.util.ByteArrayDataSource( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLByteArray(), "application/xml" );
@@ -304,9 +306,23 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 		} );
 		return rv;
 	}
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > createAttachments() {
-		return addAttachments( new java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment >() );
+	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > updateBonusAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
+		return rv;
 	}
+	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > createAttachments() {
+		java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv = new java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment >();
+		updateCriticalAttachments( rv );
+		try {
+			java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > bonus = updateBonusAttachments( new java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment >() );
+			rv.addAll( bonus );
+		} catch( Throwable t ) {
+			//todo:
+			t.printStackTrace();
+		}
+		return rv;
+	}
+	
+	protected abstract edu.cmu.cs.dennisc.mail.AbstractAuthenticator getAuthenticator();
 	
 	private boolean isSubmitAttempted = false;
 	private boolean isSubmitSuccessful = false;
@@ -320,7 +336,7 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 		this.isSubmitAttempted = true;
 		this.isSubmitSuccessful = false;
 		try {
-			edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( getProtocol(), getHost(), getFrom(), getTo(), getSubject(), getBody(), createAttachments() );
+			edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( getProtocol(), getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
 			this.isSubmitSuccessful = true;
 		} catch( javax.mail.MessagingException me ) {
 			me.printStackTrace();

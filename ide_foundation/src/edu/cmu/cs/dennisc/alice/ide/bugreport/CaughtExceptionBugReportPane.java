@@ -39,20 +39,41 @@ public class CaughtExceptionBugReportPane extends edu.cmu.cs.dennisc.ui.bugrepor
 	}
 	
 	@Override
+	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > updateBonusAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
+		rv = super.updateBonusAttachments( rv );
+//		rv.add( new edu.cmu.cs.dennisc.mail.Attachment() {
+//			public javax.activation.DataSource getDataSource() {
+//				//todo
+//			}
+//			public String getFileName() {
+//				//todo
+//			}
+//		} );
+		return rv;
+	}
+	
+
+	@Override
+	protected StringBuffer updateSubject( StringBuffer rv ) {
+		rv.append( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
+		rv.append( " " );
+		return super.updateSubject( rv );
+	}
+	
+	@Override
 	protected String getProtocol() {
 		return "smtp";
 	}
 	@Override
 	protected String getHost() {
-		//return "smtp.srv.cs.cmu.edu";
 		return "smtp.gmail.com";
-	}
-	@Override
-	protected String getAnonymousFrom() {
-		return null;
 	}
 	@Override
 	protected String getTo() {
 		return "alice.bugs.3.beta.xxxx@gmail.com";
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.mail.AbstractAuthenticator getAuthenticator() {
+		return new Authenticator();
 	}
 }

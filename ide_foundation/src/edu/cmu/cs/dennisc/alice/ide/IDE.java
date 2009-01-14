@@ -32,11 +32,11 @@ public abstract class IDE extends javax.swing.JFrame {
 			public void uncaughtException( Thread thread, Throwable throwable ) {
 				throwable.printStackTrace();
 				if( IDE.isBugReportSubmissionPaneDesired ) {
-					edu.cmu.cs.dennisc.alice.ide.bugreport.CaughtExceptionBugReportPane bugReportPane = new edu.cmu.cs.dennisc.alice.ide.bugreport.CaughtExceptionBugReportPane();
-					bugReportPane.setThreadAndThrowable( thread, throwable );
 					try {
+						edu.cmu.cs.dennisc.alice.ide.bugreport.CaughtExceptionBugReportPane bugReportPane = new edu.cmu.cs.dennisc.alice.ide.bugreport.CaughtExceptionBugReportPane();
+						bugReportPane.setThreadAndThrowable( thread, throwable );
 						while( true ) {
-							javax.swing.JDialog window = new javax.swing.JDialog( IDE.getSingleton(), "Please Submit Bug Report", true );
+							javax.swing.JDialog window = new javax.swing.JDialog( IDE.getSingleton(), IDE.getSingleton().getBugReportSubmissionTitle(), true );
 							bugReportPane.setWindow( window ); 
 							//javax.swing.JFrame window = new javax.swing.JFrame( "Please Submit Bug Report" );
 							window.getContentPane().add( bugReportPane );
@@ -74,6 +74,16 @@ public abstract class IDE extends javax.swing.JFrame {
 		} );
 	}
 
+	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
+		rv.append( "Please Submit Bug Report: " );
+		this.updateTitlePrefix( rv );
+		return rv;
+	}
+	private String getBugReportSubmissionTitle() {
+		StringBuffer sb = new StringBuffer();
+		updateBugReportSubmissionTitle( sb );
+		return sb.toString();
+	}
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
 		rv.append( "Alice " );
 		rv.append( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );

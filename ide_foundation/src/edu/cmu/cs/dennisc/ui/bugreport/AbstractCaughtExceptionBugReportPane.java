@@ -76,8 +76,8 @@ public abstract class AbstractCaughtExceptionBugReportPane extends AbstractBugRe
 	private ExceptionPane vcExceptionPane;
 
 	@Override
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > addAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
-		rv = super.addAttachments( rv );
+	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
+		rv = super.updateCriticalAttachments( rv );
 		rv.add( new edu.cmu.cs.dennisc.mail.Attachment() {
 			public javax.activation.DataSource getDataSource() {
 				Throwable throwable = AbstractCaughtExceptionBugReportPane.this.vcExceptionPane.getThrowable();
@@ -94,6 +94,40 @@ public abstract class AbstractCaughtExceptionBugReportPane extends AbstractBugRe
 		this.vcExceptionPane.setThreadAndThrowable( thread, throwable );
 		this.revalidate();
 	}
+	@Override
+	protected StringBuffer updateSubject( StringBuffer rv ) {
+		Throwable throwable = this.vcExceptionPane.getThrowable();
+		if( throwable != null ) {
+			rv.append( "exception: " );
+			rv.append( throwable.getClass().getName() );
+			rv.append( "; " );
+			String message = throwable.getMessage();
+			if( message != null ) {
+				rv.append( "message: " );
+				rv.append( throwable.getMessage() );
+				rv.append( "; " );
+			}
+			//todo: handle PyException
+//			if( throwable instanceof org.python.core.PyException ) {
+//				org.python.core.PyException pyException = new org.python.core.PyException();
+//				rv.append( "frame: " );
+//				rv.append( pyException.traceback.tb_frame );
+//				rv.append( "; line: " );
+//				rv.append( pyException.traceback.tb_lineno );
+//				rv.append( "; " );
+//			} else {
+				StackTraceElement[] stackTraceElements = throwable.getStackTrace();
+				if( stackTraceElements != null && stackTraceElements.length > 0 && stackTraceElements[ 0 ] != null ) {
+					rv.append( "stack[0]: " );
+					rv.append( stackTraceElements[ 0 ].toString() );
+					rv.append( "; " );
+				}
+//			}
+		}
+		super.updateSubject( rv );
+		return rv;
+	}
+	
 	@Override
 	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
 		rv = super.addBugPaneRows( rv );

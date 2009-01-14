@@ -36,6 +36,7 @@ public class ThisPane extends AccessiblePane {
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 		return type;
 	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ide.editors.common.DropAndDropEvent e ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
 	}

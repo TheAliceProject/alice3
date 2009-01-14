@@ -37,6 +37,7 @@ public class ConstantPane extends AccessiblePane {
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 		return this.constant.valueType.getValue();
 	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ide.editors.common.DropAndDropEvent e ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
 	}
