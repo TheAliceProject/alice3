@@ -9,7 +9,10 @@ class UndoOperation( alice.ide.AbstractOperation ):
 		self.putValue( javax.swing.Action.NAME, "Undo" )
 		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK ) )
 	def prepare( self, e, observer ):
-		raise self
+		title = "Undo coming soon"
+		message = "Undo is not yet implemented.  Apologies."
+		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ) 
+		return alice.ide.Operation.PreparationResult.CANCEL
 	def perform( self ):
 		raise self
 
@@ -19,7 +22,10 @@ class RedoOperation( alice.ide.AbstractOperation ):
 		self.putValue( javax.swing.Action.NAME, "Redo" )
 		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK ) )
 	def prepare( self, e, observer ):
-		raise self
+		title = "Redo coming soon"
+		message = "Redo is not yet implemented.  Apologies."
+		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ) 
+		return alice.ide.Operation.PreparationResult.CANCEL
 	def perform( self ):
 		raise self
 
@@ -29,7 +35,10 @@ class CutOperation( alice.ide.AbstractUndoableOperation ):
 		self.putValue( javax.swing.Action.NAME, "Cut" )
 		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK ) )
 	def prepare( self, e, observer ):
-		raise self
+		title = "Cut coming soon"
+		message = "Cut is not yet implemented.  Apologies."
+		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ) 
+		return alice.ide.Operation.PreparationResult.CANCEL
 	def perform( self ):
 		raise self
 	def undo( self ):
@@ -43,7 +52,10 @@ class CopyOperation( alice.ide.AbstractUndoableOperation ):
 		self.putValue( javax.swing.Action.NAME, "Copy" )
 		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK ) )
 	def prepare( self, e, observer ):
-		raise self
+		title = "Copy coming soon"
+		message = "Copy is not yet implemented.  Apologies."
+		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ) 
+		return alice.ide.Operation.PreparationResult.CANCEL
 	def perform( self ):
 		raise self
 	def undo( self ):
@@ -57,7 +69,10 @@ class PasteOperation( alice.ide.AbstractUndoableOperation ):
 		self.putValue( javax.swing.Action.NAME, "Paste" )
 		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK ) )
 	def prepare( self, e, observer ):
-		raise self
+		title = "Paste coming soon"
+		message = "Paste is not yet implemented.  Apologies."
+		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ) 
+		return alice.ide.Operation.PreparationResult.CANCEL
 	def perform( self ):
 		raise self
 	def undo( self ):

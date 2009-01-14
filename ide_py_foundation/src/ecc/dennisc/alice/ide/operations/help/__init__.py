@@ -10,9 +10,12 @@ class HelpOperation(alice.ide.AbstractOperation):
 		self.putValue( javax.swing.Action.NAME, "Help..." )
 		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) )
 	def prepare(self, e, observer):
-		return alice.ide.Operation.PreparationResult.PERFORM
+		title = "Help coming soon"
+		message = "Help is not yet implemented.  Apologies."
+		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ) 
+		return alice.ide.Operation.PreparationResult.CANCEL
 	def perform(self):
-		javax.swing.JOptionPane.showMessageDialog( self._ide, "www.alice.org", "Help", javax.swing.JOptionPane.PLAIN_MESSAGE )
+		pass
 
 class AboutOperation(alice.ide.AbstractOperation):
 	def __init__(self):
@@ -22,5 +25,5 @@ class AboutOperation(alice.ide.AbstractOperation):
 	def prepare(self, e, observer):
 		return alice.ide.Operation.PreparationResult.PERFORM
 	def perform(self):
-		s = "Current Version: %s\n\nIDE and Generic API designed and implemented by Dennis Cosgrove http://www.cs.cmu.edu/~dennisc/\nStorytelling API designed and implemented by Caitlin Kelleher http://www.cse.wustl.edu/~ckelleher/" % edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText()
-		javax.swing.JOptionPane.showMessageDialog( self._ide, s, "About", javax.swing.JOptionPane.PLAIN_MESSAGE )
+		s = "Current Version: %s\n\nAlice and the Move and Turn API designed and implemented by Dennis Cosgrove http://www.cs.cmu.edu/~dennisc/\nLooking Glass and the Walk and Touch API designed and implemented by Caitlin Kelleher http://www.cse.wustl.edu/~ckelleher/" % edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText()
+		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), s, "About", javax.swing.JOptionPane.PLAIN_MESSAGE )
