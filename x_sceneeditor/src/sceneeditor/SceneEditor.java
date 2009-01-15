@@ -46,6 +46,8 @@ public class SceneEditor extends Program {
 	Chicken chicken = new Chicken();
 
 	sceneeditor.GlobalDragAdapter globalDragAdapter = new sceneeditor.GlobalDragAdapter();
+	CameraNavigationDragAdapter cameraNavigationDragAdapter = new CameraNavigationDragAdapter();
+
 
 	@Override
 	protected void initialize() {
@@ -73,6 +75,8 @@ public class SceneEditor extends Program {
 		sunLight.turn(TurnDirection.FORWARD, 0.25);
 		globalDragAdapter.setOnscreenLookingGlass(this
 				.getOnscreenLookingGlass());
+//		cameraNavigationDragAdapter.setOnscreenLookingGlass(this
+//				.getOnscreenLookingGlass());
 	}
 
 	@Override
