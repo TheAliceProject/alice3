@@ -43,16 +43,16 @@ class SnapshotPane extends javax.swing.JComponent {
 			prepareImage( this.bufferedImage, this );
 			g.drawImage( this.bufferedImage, 0, 0, this );
 		}
-		//		String text = "live rendering removed for performance considerations";
-		//		int x = getWidth() / 8;
-		//		int y = getHeight() / 2;
-		//		
-		//		((java.awt.Graphics2D)g).setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-		//		
-		//		g.setColor( java.awt.Color.BLACK );
-		//		g.drawString( text, x+1, y+1 );
-		//		g.setColor( java.awt.Color.YELLOW );
-		//		g.drawString( text, x, y );
+		String text = "live rendering removed for performance considerations";
+		int x = getWidth() / 8;
+		int y = getHeight() / 2;
+
+		((java.awt.Graphics2D)g).setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+
+		g.setColor( java.awt.Color.BLACK );
+		g.drawString( text, x + 1, y + 1 );
+		g.setColor( java.awt.Color.YELLOW );
+		g.drawString( text, x, y );
 	}
 }
 
@@ -89,21 +89,28 @@ public class CardPane extends javax.swing.JPanel {
 	public void showSnapshot() {
 		if( isLive() ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "showSnapshot" );
+			int desiredImageWidth = this.onscreenLookingGlass.getWidth();
+			int desiredImageHeight = this.onscreenLookingGlass.getHeight();
 			if( this.bufferedImage != null ) {
-				if( this.bufferedImage.getWidth() != getWidth() || this.bufferedImage.getHeight() != getHeight() ) {
+				if( this.bufferedImage.getWidth() != desiredImageWidth || this.bufferedImage.getHeight() != desiredImageHeight ) {
 					this.bufferedImage = null;
 				}
 			}
 			if( this.bufferedImage != null ) {
 				//pass
 			} else {
-				this.bufferedImage = this.onscreenLookingGlass.createBufferedImageForUseAsColorBuffer();
+				if( desiredImageWidth > 0 && desiredImageHeight > 0 ) {
+					this.bufferedImage = this.onscreenLookingGlass.createBufferedImageForUseAsColorBuffer();
+				}
 			}
-			this.onscreenLookingGlass.getColorBuffer( this.bufferedImage );
+			if( this.bufferedImage != null ) {
+				this.onscreenLookingGlass.getColorBuffer( this.bufferedImage );
+			}
 			this.snapshotPane.setSnapshotImage( this.bufferedImage );
 			//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			//				public void run() {
 			showCard( CardPane.SNAPSHOT_KEY );
+			this.onscreenLookingGlass.setRenderingEnabled( false );
 			//				}
 			//			} );
 		} else {
@@ -116,6 +123,7 @@ public class CardPane extends javax.swing.JPanel {
 		} else {
 			//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			//				public void run() {
+			this.onscreenLookingGlass.setRenderingEnabled( true );
 			showCard( CardPane.LIVE_KEY );
 			//				}
 			//			} );

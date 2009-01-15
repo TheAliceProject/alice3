@@ -115,7 +115,6 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 		self._program.setDragInProgress( isDragInProgress ) 
 
 	def _updateLookingGlassSize(self):
-		#print "_updateLookingGlassSize", self.getWidth(), self.getHeight()
 		onscreenLookingGlass = self._program.getOnscreenLookingGlass()
 		onscreenLookingGlass.getAWTComponent().setSize( self.getWidth(), self.getHeight() )
 	
@@ -163,7 +162,8 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 #		javax.swing.SwingUtilities.invokeLater( ecc.dennisc.lang.ApplyRunnable( self._showSnapshotIfAppropriateFromRunnable ) )
 
 	def setDragInProgress(self, isDragInProgress):
-		if edu.cmu.cs.dennisc.lang.SystemUtilities.isMac():
+		#if edu.cmu.cs.dennisc.lang.SystemUtilities.isMac():
+		if True:
 			if isDragInProgress:
 				self._cardPane.showSnapshot()
 			else:
