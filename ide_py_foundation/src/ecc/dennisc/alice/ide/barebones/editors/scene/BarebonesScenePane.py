@@ -24,3 +24,6 @@ class BarebonesScenePane( alice.ide.editors.scene.AbstractSceneEditor ):
 	
 	def generateCodeForSceneSetUp( self, setUpMethodGenerator ):
 		pass
+
+	def setDragInProgress(self, isDragInProgress):
+		pass

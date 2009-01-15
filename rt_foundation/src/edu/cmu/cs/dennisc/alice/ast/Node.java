@@ -344,7 +344,9 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		Class< ? > declaringCls = decodeDeclaringClass( xmlMethod );
 		String name = xmlMethod.getAttribute( "name" );
 		Class< ? >[] parameterTypes = decodeParameters( xmlMethod );
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterTypes );
+		java.lang.reflect.Method rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterTypes );
+		assert rv != null;
+		return rv;
 	}
 
 	private static Node decode( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
@@ -387,7 +389,8 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
 				rv = methodDeclaredInJava.getParameters().get( index );
 			} else {
-				rv = (Node)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( xmlElement.getAttribute( TYPE_ATTRIBUTE ) );
+				String typeName = xmlElement.getAttribute( TYPE_ATTRIBUTE );
+				rv = (Node)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( typeName );
 				assert rv != null;
 			}
 			if( rv instanceof AbstractDeclaration ) {

@@ -175,6 +175,9 @@ class AbstractIDE( alice.ide.IDE ):
 		classInfoDirectory = java.io.File( applicationDirectory, "classinfos" )
 		alice.reflect.ClassInfoManager.setDirectory( classInfoDirectory )
 	
+	def setDragInProgress(self, isDragInProgress):
+		alice.ide.IDE.setDragInProgress(self, isDragInProgress)
+		self._scenePane.setDragInProgress( isDragInProgress )
 	def handleDelete(self, node):
 		self._scenePane.handleDelete( node )	
 	def markChanged(self, description):

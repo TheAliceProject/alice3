@@ -93,6 +93,7 @@ class ProgramAdapter( apis.moveandturn.Program, ecc.dennisc.alice.ide.ProgramWit
 	def run( self ):
 		pass
 	
+
 	def isDragInProgress(self):
 		return self._modelManipulationDragAdapter.isDragInProgress() or self._cameraNavigationDragAdapter.isDragInProgress()
 	

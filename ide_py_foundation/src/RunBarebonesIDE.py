@@ -7,7 +7,6 @@ def createAndShowIDE():
 	ide.setSize( 1280, 1024 )
 	import sys
 	ide.handleArgs( sys.argv[1:] )
-	ide.loadProjectFrom( file )
 	ide.setVisible( True )
 	
 import javax
