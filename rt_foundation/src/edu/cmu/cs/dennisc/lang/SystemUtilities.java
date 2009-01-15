@@ -44,4 +44,16 @@ public class SystemUtilities {
 	public static String getPropertiesAsXMLString() {
 		return getPropertiesAsXMLByteArrayOutputStream().toString();
 	}
+	
+	private static boolean isWindows;
+	static {
+		SystemUtilities.isWindows = System.getProperty( "os.name" ).contains( "indows" );
+	}
+	public static boolean isMac() {
+		//todo
+		return isWindows() == false;
+	}
+	public static boolean isWindows() {
+		return SystemUtilities.isWindows;
+	}
 }

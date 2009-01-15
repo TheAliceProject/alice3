@@ -65,20 +65,16 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 		return m_sgDragAcceptor;
 	}
 	
-	private edu.cmu.cs.dennisc.math.Point3 getPointInAbsolutePlane( int xPixel, int yPixel ) {
+	private edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, int xPixel, int yPixel ) {
 		edu.cmu.cs.dennisc.math.Ray ray = getOnscreenLookingGlass().getRayAtPixel( xPixel, yPixel, m_sgCamera );
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = m_sgCamera.getAbsoluteTransformation();
 		ray.transform( m );
-		double t = m_planeInAbsolute.intersect( ray );
+		double t = plane.intersect( ray );
 		return ray.getPointAlong( t );
 	}
+	
 
-	protected edu.cmu.cs.dennisc.math.Plane setPlaneInAbsolute( edu.cmu.cs.dennisc.math.Plane rv, edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute ) {
-		rv.set( xyzInAbsolute, edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis() );
-		return rv;
-	}
-	
-	
+	private double yDelta = 0.0;
 	@Override
 	protected void handleMousePress( java.awt.Point current, edu.cmu.cs.dennisc.ui.DragStyle dragStyle, boolean isOriginalAsOpposedToStyleChange ) {
 		if( isOriginalAsOpposedToStyleChange ) {
@@ -86,39 +82,39 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 			m_sgCamera = (edu.cmu.cs.dennisc.scenegraph.AbstractCamera)pickResult.getSource();
 			edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = pickResult.getVisual();
 			if( sgVisual != null ) {
-				m_xyzInAbsoluteAtPress = edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformToAbsolute_New( pickResult.getPositionInSource(), m_sgCamera );
-				setPlaneInAbsolute( m_planeInAbsolute, m_xyzInAbsoluteAtPress );
 				m_sgDragAcceptor = lookupDragAcceptor( sgVisual );
-			} else {
-				m_sgDragAcceptor = null;
-				m_planeInAbsolute.setNaN();
-				m_xyzInAbsoluteAtPress = new edu.cmu.cs.dennisc.math.Point3();
-				m_xyzInAbsoluteAtPress.setNaN();
+				if( m_sgDragAcceptor != null ) {
+					m_undoPOV = m_sgDragAcceptor.getTransformation( edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
+					m_xyzInAbsoluteAtPress = edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities.transformToAbsolute_New( pickResult.getPositionInSource(), m_sgCamera );
+				}
 			}
-			if( m_sgDragAcceptor != null ) {
-				m_undoPOV = m_sgDragAcceptor.getTransformation( edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
-			}
+			this.yDelta = 0.0;
 		} else {
 			if( m_sgDragAcceptor != null ) {
 				edu.cmu.cs.dennisc.math.Ray ray = getOnscreenLookingGlass().getRayAtPixel( current.x, current.y, m_sgCamera );
 				ray.transform( m_sgCamera.getAbsoluteTransformation() );
 				double t = m_planeInAbsolute.intersect( ray );
 				m_xyzInAbsoluteAtPress = ray.getPointAlong( t );
+				//m_xyzInAbsoluteAtPress.y += this.yDelta;
 			}
 		}
+		
 		if( m_sgDragAcceptor != null ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = m_sgDragAcceptor.getAbsoluteTransformation();
-			//m_offset = new edu.cmu.cs.dennisc.math.VectorD3( m_xyzInAbsoluteAtPress.x-m.translation.x, m_xyzInAbsoluteAtPress.y-m.translation.y, m_xyzInAbsoluteAtPress.z-m.translation.z );
 			m_offset = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( m_xyzInAbsoluteAtPress, m.translation );
-			
 			m_xyzInDragAcceptorAtPress = m_sgDragAcceptor.transformTo_New( m_xyzInAbsoluteAtPress, m_sgDragAcceptor.getRoot()/*todo: edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE*/ );
-//			java.awt.Point p = m_sgDragAcceptor.transformToAWT_New( m_xyzInDragAcceptorAtPress, getOnscreenLookingGlass(), m_sgCamera );
-//			if( dragStyle.isControlDown() ) {
-//				hideCursor();
-//			}
+			if( dragStyle.isShiftDown() ) {
+				edu.cmu.cs.dennisc.math.AffineMatrix4x4 cameraAbsolute = m_sgCamera.getAbsoluteTransformation();
+				edu.cmu.cs.dennisc.math.Vector3 axis = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( cameraAbsolute.translation, m_xyzInAbsoluteAtPress );
+				axis.normalize();
+				m_planeInAbsolute.set( m_xyzInAbsoluteAtPress, axis );
+			} else {
+				m_planeInAbsolute.set( m_xyzInAbsoluteAtPress, edu.cmu.cs.dennisc.math.Vector3.accessPositiveYAxis() );
+			}
 		} else {
+			m_planeInAbsolute.setNaN();
+			m_xyzInAbsoluteAtPress = edu.cmu.cs.dennisc.math.Point3.createNaN();
 			m_xyzInDragAcceptorAtPress = null;
-			//edu.cmu.cs.dennisc.math.LinearAlgebra.setNaN( m_xyzInDragAcceptorAtPress );
 		}
 	}
 	@Override
@@ -126,7 +122,6 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 		if( m_sgDragAcceptor == null || m_planeInAbsolute.isNaN() || m_xyzInDragAcceptorAtPress.isNaN() ) {
 			//pass
 		} else {
-			final edu.cmu.cs.dennisc.math.Point3 xyzInAbsolutePlane = getPointInAbsolutePlane( current.x, current.y );
 			if( dragStyle.isControlDown() ) {
 //				if( false ) {
 //					final int THRESHOLD = 25;
@@ -143,12 +138,33 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 					m_sgDragAcceptor.applyRotationAboutYAxis( new edu.cmu.cs.dennisc.math.AngleInRadians( xDeltaSincePrevious * 0.01 ) );
 //				}
 			} else {
-				xyzInAbsolutePlane.subtract( m_offset );
-				getOnscreenLookingGlass().getLookingGlassFactory().invokeLater( new Runnable() {
-					public void run() {
-						updateTranslation( m_sgDragAcceptor, xyzInAbsolutePlane, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
+				if( dragStyle.isShiftDown() ) {
+					if( m_sgDragAcceptor != null ) {
+						edu.cmu.cs.dennisc.math.Point3 t = m_sgDragAcceptor.getAbsoluteTransformation().translation;
+						final edu.cmu.cs.dennisc.math.Point3 xyzInAbsolutePlane = getPointInPlane( m_planeInAbsolute, current.x, current.y );
+						
+						this.yDelta += xyzInAbsolutePlane.y - t.y;
+
+						xyzInAbsolutePlane.subtract( m_offset );
+						xyzInAbsolutePlane.x = t.x;
+						xyzInAbsolutePlane.z = t.z;
+						
+						
+						getOnscreenLookingGlass().getLookingGlassFactory().invokeLater( new Runnable() {
+							public void run() {
+								updateTranslation( m_sgDragAcceptor, xyzInAbsolutePlane, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
+							}
+						} );
 					}
-				} );
+				} else {
+					final edu.cmu.cs.dennisc.math.Point3 xyzInAbsolutePlane = getPointInPlane( m_planeInAbsolute, current.x, current.y );
+					xyzInAbsolutePlane.subtract( m_offset );
+					getOnscreenLookingGlass().getLookingGlassFactory().invokeLater( new Runnable() {
+						public void run() {
+							updateTranslation( m_sgDragAcceptor, xyzInAbsolutePlane, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
+						}
+					} );
+				}
 			}
 		}
 	}

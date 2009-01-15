@@ -56,9 +56,9 @@ public class RedirectingEventQueue extends java.awt.EventQueue {
 			int id = me.getID();
 			if( curr == this.src ) {
 				if( id == java.awt.event.MouseEvent.MOUSE_ENTERED || id == java.awt.event.MouseEvent.MOUSE_EXITED ) {
-					e = javax.swing.SwingUtilities.convertMouseEvent( this.src, me, this.dst );
+					e = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this.src, me, this.dst );
 				} else if( id == java.awt.event.MouseEvent.MOUSE_MOVED ) {
-					me = javax.swing.SwingUtilities.convertMouseEvent( this.src, me, dst );
+					me = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this.src, me, dst );
 					java.awt.Component descendant = javax.swing.SwingUtilities.getDeepestComponentAt( this.dst, me.getX(), me.getY() );
 					descendant = RedirectingEventQueue.getDeepestMouseListener( dst, descendant );
 					if( this.last != descendant ) {
@@ -69,12 +69,12 @@ public class RedirectingEventQueue extends java.awt.EventQueue {
 							exitComponent = this.src;
 						}
 						java.awt.event.MouseEvent exitEvent = new java.awt.event.MouseEvent( exitComponent, java.awt.event.MouseEvent.MOUSE_EXITED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton() );
-						exitEvent = javax.swing.SwingUtilities.convertMouseEvent( this.src, exitEvent, exitComponent );
+						exitEvent = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this.src, exitEvent, exitComponent );
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( exitEvent );
 						super.dispatchEvent( exitEvent );
 					}
 					if( descendant != null ) {
-						e = javax.swing.SwingUtilities.convertMouseEvent( dst, me, descendant );
+						e = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( dst, me, descendant );
 					}
 					if( this.last != descendant ) {
 						java.awt.Component enterComponent;
@@ -84,14 +84,14 @@ public class RedirectingEventQueue extends java.awt.EventQueue {
 							enterComponent = this.src;
 						}
 						java.awt.event.MouseEvent enterEvent = new java.awt.event.MouseEvent( enterComponent, java.awt.event.MouseEvent.MOUSE_ENTERED, me.getWhen(), me.getModifiers(), me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), me.getButton() );
-						enterEvent = javax.swing.SwingUtilities.convertMouseEvent( this.src, enterEvent, enterComponent );
+						enterEvent = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this.src, enterEvent, enterComponent );
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( enterEvent );
 						super.dispatchEvent( enterEvent );
 						this.last = descendant;
 					}
 				} else if( id == java.awt.event.MouseEvent.MOUSE_PRESSED || id == java.awt.event.MouseEvent.MOUSE_CLICKED || id == java.awt.event.MouseEvent.MOUSE_RELEASED || id == java.awt.event.MouseEvent.MOUSE_DRAGGED ) {
 					if( this.last != null ) {
-						e = javax.swing.SwingUtilities.convertMouseEvent( this.src, me, this.last );
+						e = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this.src, me, this.last );
 					}
 				}
 			}

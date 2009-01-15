@@ -189,7 +189,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 			m_isActive = isModifierMaskTestPassed( modifiers );
 		}
 		if( m_isActive ) {
-			if( edu.cmu.cs.dennisc.swing.SwingUtilities.isControlDown( e ) ) {
+			if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
 				if( e.isShiftDown() ) {
 					m_dragStyleCurrent = DragStyle.CONTROL_SHIFT;
 				} else {
@@ -262,10 +262,16 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 //		}
 //	}
 	
+	private int getQuoteControlUnquoteKey() {
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			return java.awt.event.KeyEvent.VK_ALT;
+		} else {
+			return java.awt.event.KeyEvent.VK_CONTROL;
+		}
+	}
 	private void addToDragStyleIfNecessary( int keyCode ) {
 		if( m_dragStyleCurrent != null ) {
-			switch( keyCode ) {
-			case java.awt.event.KeyEvent.VK_CONTROL:
+			if( keyCode == getQuoteControlUnquoteKey() ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					//note: this should happen plenty, as key press events keep coming
 					//pass
@@ -276,8 +282,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 						handleDragStyleChange( m_dragStyleCurrent, DragStyle.CONTROL );
 					}
 				}
-				break;
-			case java.awt.event.KeyEvent.VK_SHIFT:
+			} else if( keyCode == java.awt.event.KeyEvent.VK_SHIFT ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					handleDragStyleChange( m_dragStyleCurrent, DragStyle.CONTROL_SHIFT );
 				} else {
@@ -294,8 +299,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 
 	private void removeFromDragStyleIfNecessary( int keyCode ) {
 		if( m_dragStyleCurrent != null ) {
-			switch( keyCode ) {
-			case java.awt.event.KeyEvent.VK_CONTROL:
+			if( keyCode == getQuoteControlUnquoteKey() ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					if( m_dragStyleCurrent.isShiftDown() ) {
 						handleDragStyleChange( m_dragStyleCurrent, DragStyle.SHIFT );
@@ -306,8 +310,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 					//note: this should not happen, as one only gets one key release event
 					//pass
 				}
-				break;
-			case java.awt.event.KeyEvent.VK_SHIFT:
+			} else if( keyCode == java.awt.event.KeyEvent.VK_SHIFT ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					handleDragStyleChange( m_dragStyleCurrent, DragStyle.CONTROL );
 				} else {

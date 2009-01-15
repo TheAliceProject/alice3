@@ -51,7 +51,7 @@ public class FontMouseWheelAdapter implements java.awt.event.MouseWheelListener 
 		this.isLookAndFeelUpdated = true;
 	}
 	public void mouseWheelMoved( final java.awt.event.MouseWheelEvent e ) {
-		if( edu.cmu.cs.dennisc.swing.SwingUtilities.isControlDown( e ) ) {
+		if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
 			this.adjustableFontSizeOceanTheme.adjustSizeDelta( e.getWheelRotation() * scaleFactor );
 			if( this.isLookAndFeelUpdated ) {
 				//pass

@@ -118,13 +118,8 @@ public class SwingUtilities {
 		}
 	}
 
-	private static boolean s_isWindows;
-	static {
-		s_isWindows = System.getProperty( "os.name" ).contains( "indows" );
-	}
-
-	public static boolean isControlDown( java.awt.event.InputEvent e ) {
-		if( s_isWindows ) {
+	public static boolean isQuoteControlUnquoteDown( java.awt.event.InputEvent e ) {
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
 			return e.isControlDown();
 		} else {
 			return e.isAltDown();
@@ -158,5 +153,21 @@ public class SwingUtilities {
 	}
 	public static void showMessageDialogInScrollableUneditableTextArea( java.awt.Component owner, String text, String title, int messageType ) {
 		showMessageDialogInScrollableUneditableTextArea( owner, text, title, messageType, 640, 480 );
+	}
+	
+	public static java.awt.event.MouseEvent convertMouseEvent(java.awt.Component source, java.awt.event.MouseEvent sourceEvent, java.awt.Component destination) {
+		int modifiers = sourceEvent.getModifiers();
+		int modifiersEx = sourceEvent.getModifiersEx();
+		int modifiersComplete = modifiers | modifiersEx;
+		java.awt.event.MouseEvent me = javax.swing.SwingUtilities.convertMouseEvent( source, sourceEvent, destination );
+		if( me instanceof java.awt.event.MouseWheelEvent ) {
+			java.awt.event.MouseWheelEvent mwe = (java.awt.event.MouseWheelEvent)me;
+			return new java.awt.event.MouseWheelEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mwe.getScrollType(), mwe.getScrollAmount(), mwe.getWheelRotation() );
+		} else if( me instanceof javax.swing.event.MenuDragMouseEvent ){
+			javax.swing.event.MenuDragMouseEvent mdme = (javax.swing.event.MenuDragMouseEvent)me;
+			return new javax.swing.event.MenuDragMouseEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger(), mdme.getPath(), mdme.getMenuSelectionManager() );
+		} else {
+			return new java.awt.event.MouseEvent( me.getComponent(), me.getID(), me.getWhen(), modifiersComplete, me.getX(), me.getY(), me.getClickCount(), me.isPopupTrigger() );
+		}
 	}
 }

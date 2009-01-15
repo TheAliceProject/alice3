@@ -299,13 +299,13 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 	}
 	public void dragUpdated( PotentiallyDraggablePane source, java.awt.event.MouseEvent eSource ) {
 
-		java.awt.event.MouseEvent eThis = javax.swing.SwingUtilities.convertMouseEvent( source, eSource, this );
+		java.awt.event.MouseEvent eThis = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( source, eSource, this );
 		StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eThis );
 		this.currentUnder = nextUnder;
 
 		if( this.currentUnder != null ) {
 			boolean isDropProxyAlreadyUpdated = false;
-			if( edu.cmu.cs.dennisc.swing.SwingUtilities.isControlDown( eSource ) ) {
+			if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 				//pass
 			} else {
 				if( source instanceof AbstractStatementPane ) {
@@ -328,7 +328,7 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 			if( isDropProxyAlreadyUpdated ) {
 				//pass
 			} else {
-				java.awt.event.MouseEvent eUnder = javax.swing.SwingUtilities.convertMouseEvent( this, eThis, this.currentUnder );
+				java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this, eThis, this.currentUnder );
 				Integer height = 0;
 				java.awt.Point p = new java.awt.Point( 0, 0 );
 				if( this.currentUnder.isFigurativelyEmpty() ) {
@@ -422,7 +422,7 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 				int prevIndex = prevOwner.indexOf( statement );
 				int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, e.getPoint(), this.currentUnder ) );
 
-				if( edu.cmu.cs.dennisc.swing.SwingUtilities.isControlDown( e ) ) {
+				if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
 					nextOwner.add( nextIndex, (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement ) );
 				} else {
 					if( prevOwner == nextOwner ) {

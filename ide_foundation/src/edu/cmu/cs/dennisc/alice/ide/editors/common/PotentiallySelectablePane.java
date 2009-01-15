@@ -101,7 +101,7 @@ public abstract class PotentiallySelectablePane extends PotentiallyActivePane {
 				if( getIDE().isDragInProgress() ) {
 					//
 				} else {
-					if( edu.cmu.cs.dennisc.swing.SwingUtilities.isControlDown( e ) ) {
+					if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
 						this.handleControlClick( e );
 					} else {
 						this.setSelected( !PotentiallySelectablePane.this.isSelected() );

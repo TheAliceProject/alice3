@@ -250,7 +250,7 @@ public abstract class PotentiallyDraggablePane extends PotentiallySelectablePane
 			dx -= mousePressedEvent.getX();
 			dy -= mousePressedEvent.getY();
 	
-			boolean isCopyDesired = edu.cmu.cs.dennisc.swing.SwingUtilities.isControlDown( e );
+			boolean isCopyDesired = edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e );
 			int x = e.getX() + dx;
 			int y = e.getY() + dy;
 			dragProxy.setCopyDesired( isCopyDesired );

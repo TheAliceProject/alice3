@@ -74,7 +74,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 				public void mousePressed( java.awt.event.MouseEvent e ) {
 				}
 				public void mouseReleased( java.awt.event.MouseEvent e ) {
-					if( edu.cmu.cs.dennisc.swing.SwingUtilities.isControlDown( e ) ) {
+					if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
 						//pass
 					} else {
 						m_speed.setValue( 1 );

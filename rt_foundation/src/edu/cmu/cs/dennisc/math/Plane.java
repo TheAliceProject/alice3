@@ -69,12 +69,18 @@ public class Plane implements Cloneable {
 		set( xNormal, yNormal, zNormal, -(xNormal*xPosition + yNormal*yPosition + zNormal*zPosition) );
 	}
 	public void set( edu.cmu.cs.dennisc.math.Point3 position, edu.cmu.cs.dennisc.math.Vector3 normal ) {
+		assert position.isNaN() == false;
+		assert normal.isNaN() == false;
 		set( position.x, position.y, position.z, normal.x, normal.y, normal.z );
 	}
 	public void set( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+		assert m.isNaN() == false;
 		set( m.translation.x, m.translation.y, m.translation.z, -m.orientation.backward.x, -m.orientation.backward.y, -m.orientation.backward.z );
 	}
 	public void set( edu.cmu.cs.dennisc.math.Point3 a, edu.cmu.cs.dennisc.math.Point3 b, edu.cmu.cs.dennisc.math.Point3 c ) {
+		assert a.isNaN() == false;
+		assert b.isNaN() == false;
+		assert c.isNaN() == false;
 		edu.cmu.cs.dennisc.math.Vector3 ac = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( c, a );
 		edu.cmu.cs.dennisc.math.Vector3 ab = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( b, a );
 		ac.normalize();
