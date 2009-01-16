@@ -417,7 +417,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		
 		String extensions = gl.glGetString( GL.GL_EXTENSIONS );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "supported opengl extensions:", extensions );
-		this.isABGRExtensionSupported = extensions.contains( "GL_ABGR_EXT" );
+		this.isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
 		
 		m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
 	}
