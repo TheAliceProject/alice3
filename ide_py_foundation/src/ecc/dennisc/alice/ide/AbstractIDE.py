@@ -231,7 +231,7 @@ class AbstractIDE( alice.ide.IDE ):
 		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations )
 		map = alice.ast.Node.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations )
 		xmlDocument = original.encode( abstractDeclarations )
-		dst = alice.ast.Node.decode( xmlDocument, map )
+		dst = alice.ast.Node.decode( xmlDocument, alice.Version.getCurrentVersionText(), map )
 		if original == dst:
 			return dst
 		else:

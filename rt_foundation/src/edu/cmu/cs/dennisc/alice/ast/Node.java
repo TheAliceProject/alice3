@@ -34,6 +34,9 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	public java.util.UUID getUUID() {
 		return m_uuid;
 	}
+	/*package-private*/ void setUUID( java.util.UUID uuid ) {
+		m_uuid = uuid;
+	}
 	
 	@Override
 	public boolean isComposedOfGetterAndSetterProperties() {
@@ -85,9 +88,8 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	//		crawl( types, visitor );
 	//	}
 
-	private static final String KEY_ATTRIBUTE = "key";
-	private static final String TYPE_ATTRIBUTE = "type";
-	private static final String UUID_ATTRIBUTE = "uuid";
+
+	private static final double VERSION = 3.0;
 
 	private static org.w3c.dom.Element encodeValue( Object value, org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Element rv;
@@ -96,7 +98,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 			rv = node.encode( xmlDocument, set );
 		} else if( value instanceof java.util.Collection ) {
 			rv = xmlDocument.createElement( "collection" );
-			rv.setAttribute( TYPE_ATTRIBUTE, value.getClass().getName() );
+			rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
 			java.util.Collection< ? > collection = (java.util.Collection< ? >)value;
 			for( Object item : collection ) {
 				rv.appendChild( encodeValue( item, xmlDocument, set ) );
@@ -104,7 +106,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		} else {
 			rv = xmlDocument.createElement( "value" );
 			if( value != null ) {
-				rv.setAttribute( TYPE_ATTRIBUTE, value.getClass().getName() );
+				rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
 				rv.appendChild( xmlDocument.createTextNode( value.toString() ) );
 			} else {
 				rv.setAttribute( "isNull", "true" );
@@ -164,15 +166,15 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
 		if( this instanceof AbstractDeclaration ) {
 			AbstractDeclaration abstractDeclaration = (AbstractDeclaration)this;
-			rv.setAttribute( KEY_ATTRIBUTE, Integer.toHexString( abstractDeclaration.hashCode() ) );
+			rv.setAttribute( CodecConstants.KEY_ATTRIBUTE, Integer.toHexString( abstractDeclaration.hashCode() ) );
 			if( set.contains( this ) ) {
 				return rv;
 			} else {
 				set.add( abstractDeclaration );
 			}
 		}
-		rv.setAttribute( UUID_ATTRIBUTE, m_uuid.toString() );
-		rv.setAttribute( TYPE_ATTRIBUTE, getClass().getName() );
+		rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, m_uuid.toString() );
+		rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, getClass().getName() );
 		if( this instanceof TypeDeclaredInJava ) {
 			TypeDeclaredInJava typeDeclaredInJava = (TypeDeclaredInJava)this;
 			Class< ? > cls = typeDeclaredInJava.getCls();
@@ -228,9 +230,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		}
 		return rv;
 	}
-
-	private static final double VERSION = 3.0;
-
+	
 	public final org.w3c.dom.Document encode( java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Document rv = edu.cmu.cs.dennisc.xml.XMLUtilities.createDocument();
 		org.w3c.dom.Element xmlElement = encode( rv, set );
@@ -242,172 +242,6 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		return encode( new java.util.HashSet< AbstractDeclaration >() );
 	}
 
-	private static Object decodeValue( org.w3c.dom.Element xmlValue, java.util.Map< Integer, AbstractDeclaration > map ) {
-		Object rv;
-		if( xmlValue.hasAttribute( "isNull" ) ) {
-			rv = null;
-		} else {
-			String tagName = xmlValue.getTagName();
-			if( tagName.equals( "node" ) ) {
-				rv = Node.decode( xmlValue, map );
-			} else if( tagName.equals( "collection" ) ) {
-				java.util.Collection collection = (java.util.Collection)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( xmlValue.getAttribute( TYPE_ATTRIBUTE ) );
-				org.w3c.dom.NodeList nodeList = xmlValue.getChildNodes();
-				for( int i = 0; i < nodeList.getLength(); i++ ) {
-					org.w3c.dom.Element xmlItem = (org.w3c.dom.Element)nodeList.item( i );
-					collection.add( decodeValue( xmlItem, map ) );
-				}
-				rv = collection;
-			} else if( tagName.equals( "value" ) ) {
-				Class< ? > cls = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( xmlValue.getAttribute( TYPE_ATTRIBUTE ) );
-				String textContent = xmlValue.getTextContent();
-				if( cls.equals( String.class ) ) {
-					rv = textContent;
-				} else {
-					try {
-						rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.valueOf( cls, textContent );
-					} catch( RuntimeException re ) {
-						if( "DIVIDE".equals( textContent ) ) {
-							rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.valueOf( cls, "REAL_DIVIDE" );
-						} else if( "REMAINDER".equals( textContent ) ) {
-							rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.valueOf( cls, "REAL_REMAINDER" );
-						} else {
-							throw re;
-						}
-					}
-				}
-			} else {
-				throw new RuntimeException();
-			}
-		}
-		return rv;
-	}
-
-	protected void postDecode() {
-	}
-	protected final void decodeNode( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
-		org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
-		for( int i = 0; i < nodeList.getLength(); i++ ) {
-			org.w3c.dom.Node xmlNode = nodeList.item( i );
-			assert xmlNode instanceof org.w3c.dom.Element : xmlNode;
-			org.w3c.dom.Element xmlProperty = (org.w3c.dom.Element)xmlNode;
-			if( xmlProperty.getTagName().equals( "property" ) ) {
-				edu.cmu.cs.dennisc.property.Property property = this.getPropertyNamed( xmlProperty.getAttribute( "name" ) );
-				Object value = decodeValue( (org.w3c.dom.Element)xmlProperty.getFirstChild(), map );
-				property.setValue( this, value );
-			}
-		}
-		postDecode();
-	}
-	private static Class< ? > decodeType( org.w3c.dom.Element xmlElement, String nodeName ) {
-		org.w3c.dom.Element xmlClass = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, nodeName );
-		String clsName = xmlClass.getAttribute( "name" );
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-	}
-
-	private static ArrayTypeDeclaredInAlice decodeArrayTypeDeclaredInAlice( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
-		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "leafType" );
-		org.w3c.dom.Element xmlDimensionCount = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "dimensionCount" );
-		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "node" );
-		TypeDeclaredInAlice leafType = (TypeDeclaredInAlice)decode( xmlLeafTypeNode, map );
-		int dimensionCount = Integer.parseInt( xmlDimensionCount.getTextContent() );
-		return ArrayTypeDeclaredInAlice.get( leafType, dimensionCount );
-	}
-
-	
-	private static Class< ? > decodeDeclaringClass( org.w3c.dom.Element xmlElement ) {
-		return decodeType( xmlElement, "declaringClass" );
-	}
-	private static Class< ? >[] decodeParameters( org.w3c.dom.Element xmlElement ) {
-		org.w3c.dom.Element xmlParameters = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "parameters" );
-		org.w3c.dom.Element[] xmlTypes = edu.cmu.cs.dennisc.xml.XMLUtilities.getElementsByTagNameAsArray( xmlParameters, "type" );
-		Class< ? >[] rv = new Class< ? >[ xmlTypes.length ];
-		for( int i = 0; i < xmlTypes.length; i++ ) {
-			rv[ i ] = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( xmlTypes[ i ].getAttribute( "name" ) );
-		}
-		return rv;
-	}
-	private static java.lang.reflect.Field decodeField( org.w3c.dom.Element xmlParent, String nodeName ) {
-		org.w3c.dom.Element xmlField = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlParent, nodeName );
-		Class< ? > declaringCls = decodeDeclaringClass( xmlField );
-		String name = xmlField.getAttribute( "name" );
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredField( declaringCls, name );
-	}
-	private static java.lang.reflect.Constructor decodeConstructor( org.w3c.dom.Element xmlParent, String nodeName ) {
-		org.w3c.dom.Element xmlConstructor = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlParent, nodeName );
-		Class< ? > declaringCls = decodeDeclaringClass( xmlConstructor );
-		Class< ? >[] parameterTypes = decodeParameters( xmlConstructor );
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredConstructor( declaringCls, parameterTypes );
-	}
-	private static java.lang.reflect.Method decodeMethod( org.w3c.dom.Element xmlParent, String nodeName ) {
-		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlParent, nodeName );
-		Class< ? > declaringCls = decodeDeclaringClass( xmlMethod );
-		String name = xmlMethod.getAttribute( "name" );
-		Class< ? >[] parameterTypes = decodeParameters( xmlMethod );
-		java.lang.reflect.Method rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterTypes );
-		assert rv != null;
-		return rv;
-	}
-
-	private static Node decode( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
-		Node rv;
-		if( xmlElement.hasAttribute( TYPE_ATTRIBUTE ) ) {
-			String clsName = xmlElement.getAttribute( TYPE_ATTRIBUTE );
-			if( clsName.equals( TypeDeclaredInJava.class.getName() ) ) {
-				Class< ? > cls = decodeType( xmlElement, "type" );
-				rv = TypeDeclaredInJava.get( cls );
-				
-			} else if( clsName.equals( ArrayTypeDeclaredInAlice.class.getName() ) ) {
-				rv = decodeArrayTypeDeclaredInAlice( xmlElement, map );
-			} else if( clsName.equals( ConstructorDeclaredInJava.class.getName() ) ) {
-				java.lang.reflect.Constructor< ? > cnstrctr = decodeConstructor( xmlElement, "constructor" );
-				rv = TypeDeclaredInJava.getConstructor( cnstrctr );
-			} else if( clsName.equals( MethodDeclaredInJava.class.getName() ) ) {
-				java.lang.reflect.Method mthd = decodeMethod( xmlElement, "method" );
-				rv = TypeDeclaredInJava.getMethod( mthd );
-			} else if( clsName.equals( FieldDeclaredInJavaWithField.class.getName() ) ) {
-				java.lang.reflect.Field fld = decodeField( xmlElement, "field" );
-				rv = TypeDeclaredInJava.getField( fld );
-			} else if( clsName.equals( FieldDeclaredInJavaWithGetterAndSetter.class.getName() ) ) {
-				java.lang.reflect.Method gttr = decodeMethod( xmlElement, "getter" );
-				java.lang.reflect.Method sttr = decodeMethod( xmlElement, "setter" );
-				rv = TypeDeclaredInJava.getField( gttr, sttr );
-			} else if( clsName.equals( ParameterDeclaredInJavaConstructor.class.getName() ) ) {
-				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
-				assert nodeList.getLength() == 2;
-				org.w3c.dom.Element xmlConstructor = (org.w3c.dom.Element)nodeList.item( 0 );
-				ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)decodeValue( xmlConstructor, map );
-				org.w3c.dom.Element xmlIndex = (org.w3c.dom.Element)nodeList.item( 1 );
-				int index = Integer.parseInt( xmlIndex.getTextContent() );
-				rv = constructorDeclaredInJava.getParameters().get( index );
-			} else if( clsName.equals( ParameterDeclaredInJavaMethod.class.getName() ) ) {
-				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
-				assert nodeList.getLength() == 2;
-				org.w3c.dom.Element xmlMethod = (org.w3c.dom.Element)nodeList.item( 0 );
-				MethodDeclaredInJava methodDeclaredInJava = (MethodDeclaredInJava)decodeValue( xmlMethod, map );
-				org.w3c.dom.Element xmlIndex = (org.w3c.dom.Element)nodeList.item( 1 );
-				int index = Integer.parseInt( xmlIndex.getTextContent() );
-				rv = methodDeclaredInJava.getParameters().get( index );
-			} else {
-				String typeName = xmlElement.getAttribute( TYPE_ATTRIBUTE );
-				rv = (Node)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( typeName );
-				assert rv != null;
-			}
-			if( rv instanceof AbstractDeclaration ) {
-				int key = Integer.parseInt( xmlElement.getAttribute( KEY_ATTRIBUTE ), 16 );
-				map.put( key, (AbstractDeclaration)rv );
-			}
-			rv.decodeNode( xmlElement, map );
-			if( xmlElement.hasAttribute( UUID_ATTRIBUTE ) ) {
-				rv.m_uuid = java.util.UUID.fromString( xmlElement.getAttribute( UUID_ATTRIBUTE ) );
-			}
-		} else {
-			int key = Integer.parseInt( xmlElement.getAttribute( KEY_ATTRIBUTE ), 16 );
-			rv = map.get( key );
-			assert rv != null;
-		}
-		return rv;
-	}
 
 	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
 		nodes.add( this );
@@ -481,14 +315,34 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		return rv;
 	}
 
-	public static Node decode( org.w3c.dom.Document xmlDocument, java.util.Map< Integer, AbstractDeclaration > map ) {
-		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
-		double version = Double.parseDouble( xmlElement.getAttribute( "version" ) );
-		assert version == VERSION;
-		return decode( xmlElement, map );
+	protected final void decodeNode( Decoder decoder, org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+		org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
+		for( int i = 0; i < nodeList.getLength(); i++ ) {
+			org.w3c.dom.Node xmlNode = nodeList.item( i );
+			assert xmlNode instanceof org.w3c.dom.Element : xmlNode;
+			org.w3c.dom.Element xmlProperty = (org.w3c.dom.Element)xmlNode;
+			if( xmlProperty.getTagName().equals( "property" ) ) {
+				edu.cmu.cs.dennisc.property.Property property = this.getPropertyNamed( xmlProperty.getAttribute( "name" ) );
+				Object value = decoder.decodeValue( (org.w3c.dom.Element)xmlProperty.getFirstChild(), map );
+				property.setValue( this, value );
+			}
+		}
+		postDecode();
 	}
-	public static Node decode( org.w3c.dom.Document xmlDocument ) {
-		return decode( xmlDocument, new java.util.HashMap< Integer, AbstractDeclaration >() );
+
+	protected void postDecode() {
+	}
+
+	public static Node decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map ) {
+		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
+		double xmlVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
+		assert xmlVersion == VERSION;
+		
+		Decoder decoder = new Decoder( projectVersion, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
+		return decoder.decode( xmlElement, map );
+	}
+	public static Node decode( org.w3c.dom.Document xmlDocument, String projectVersion ) {
+		return decode( xmlDocument, projectVersion, new java.util.HashMap< Integer, AbstractDeclaration >() );
 	}
 
 	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {
