@@ -131,10 +131,42 @@ public class RenderContext extends Context {
 				rvDepth.rewind();
 
 			} else {
+				//java.nio.IntBuffer buffer = java.nio.IntBuffer.wrap( ((java.awt.image.DataBufferInt)dataBuffer).getData() );
 				java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( ((java.awt.image.DataBufferByte)dataBuffer).getData() );
-				//todo
-				//gl.glReadPixels( 0, 0, width, height, GL.GL_BGR, GL.GL_UNSIGNED_BYTE, buffer );
-				gl.glReadPixels( 0, 0, width, height, GL.GL_ABGR_EXT, GL.GL_UNSIGNED_BYTE, buffer );
+
+				
+				//clear error buffer if necessary
+				while( gl.glGetError() != GL.GL_NO_ERROR ) {
+				}
+				
+				//int format = GL.GL_RGB;
+				//int format = GL.GL_RGBA;
+				int format = GL.GL_ABGR_EXT;
+				//int format = GL.GL_BGRA;
+				
+				//int type = GL.GL_UNSIGNED_INT;
+				int type = GL.GL_UNSIGNED_BYTE;
+				
+				gl.glReadPixels( 0, 0, width, height, format, type, buffer );
+				
+				java.util.List< Integer > errors = null;
+				while( true ) {
+					int error = gl.glGetError();
+					if( error == GL.GL_NO_ERROR ) {
+						break;
+					} else {
+						if( errors != null ) {
+							//pass
+						} else {
+							errors = new java.util.LinkedList< Integer >();
+						}
+						errors.add( error );
+					}
+				}
+				if( errors != null ) {
+					String description = glu.gluErrorString( errors.get( 0 ) );
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "unable to capture back buffer:", description );
+				}
 			}
 			com.sun.opengl.util.ImageUtil.flipImageVertically( rvColor );
 		} else {

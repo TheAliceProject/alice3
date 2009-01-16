@@ -29,9 +29,26 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class Decoder {
 	private String srcVersion;
 	private String dstVersion;
+
 	public Decoder( String srcVersion, String dstVersion ) {
 		this.srcVersion = srcVersion;
 		this.dstVersion = dstVersion;
+	}
+
+	private String getClassName( org.w3c.dom.Element xmlElement ) {
+		String rv = xmlElement.getAttribute( CodecConstants.TYPE_ATTRIBUTE );
+		if( this.srcVersion.contains( "alpha" ) ) {
+			if( this.dstVersion.contains( "beta" ) ) {
+				//todo
+			}
+		}
+		return rv;
+	}
+	private Class< ? > getCls( org.w3c.dom.Element xmlElement ) {
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( getClassName( xmlElement ) );
+	}
+	private Object newInstance( org.w3c.dom.Element xmlElement ) {
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( getClassName( xmlElement ) );
 	}
 
 	public Object decodeValue( org.w3c.dom.Element xmlValue, java.util.Map< Integer, AbstractDeclaration > map ) {
@@ -43,7 +60,7 @@ public class Decoder {
 			if( tagName.equals( "node" ) ) {
 				rv = decode( xmlValue, map );
 			} else if( tagName.equals( "collection" ) ) {
-				java.util.Collection collection = (java.util.Collection)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( xmlValue.getAttribute( CodecConstants.TYPE_ATTRIBUTE ) );
+				java.util.Collection collection = (java.util.Collection)newInstance( xmlValue );
 				org.w3c.dom.NodeList nodeList = xmlValue.getChildNodes();
 				for( int i = 0; i < nodeList.getLength(); i++ ) {
 					org.w3c.dom.Element xmlItem = (org.w3c.dom.Element)nodeList.item( i );
@@ -51,7 +68,7 @@ public class Decoder {
 				}
 				rv = collection;
 			} else if( tagName.equals( "value" ) ) {
-				Class< ? > cls = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( xmlValue.getAttribute( CodecConstants.TYPE_ATTRIBUTE ) );
+				Class< ? > cls = getCls( xmlValue );
 				String textContent = xmlValue.getTextContent();
 				if( cls.equals( String.class ) ) {
 					rv = textContent;
@@ -90,7 +107,6 @@ public class Decoder {
 		return ArrayTypeDeclaredInAlice.get( leafType, dimensionCount );
 	}
 
-	
 	private Class< ? > decodeDeclaringClass( org.w3c.dom.Element xmlElement ) {
 		return decodeType( xmlElement, "declaringClass" );
 	}
@@ -109,7 +125,7 @@ public class Decoder {
 		String name = xmlField.getAttribute( "name" );
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredField( declaringCls, name );
 	}
-	private java.lang.reflect.Constructor decodeConstructor( org.w3c.dom.Element xmlParent, String nodeName ) {
+	private java.lang.reflect.Constructor< ? > decodeConstructor( org.w3c.dom.Element xmlParent, String nodeName ) {
 		org.w3c.dom.Element xmlConstructor = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlParent, nodeName );
 		Class< ? > declaringCls = decodeDeclaringClass( xmlConstructor );
 		Class< ? >[] parameterTypes = decodeParameters( xmlConstructor );
@@ -128,11 +144,10 @@ public class Decoder {
 	public Node decode( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		Node rv;
 		if( xmlElement.hasAttribute( CodecConstants.TYPE_ATTRIBUTE ) ) {
-			String clsName = xmlElement.getAttribute( CodecConstants.TYPE_ATTRIBUTE );
+			String clsName = getClassName( xmlElement );
 			if( clsName.equals( TypeDeclaredInJava.class.getName() ) ) {
 				Class< ? > cls = decodeType( xmlElement, "type" );
 				rv = TypeDeclaredInJava.get( cls );
-				
 			} else if( clsName.equals( ArrayTypeDeclaredInAlice.class.getName() ) ) {
 				rv = decodeArrayTypeDeclaredInAlice( xmlElement, map );
 			} else if( clsName.equals( ConstructorDeclaredInJava.class.getName() ) ) {
@@ -165,8 +180,7 @@ public class Decoder {
 				int index = Integer.parseInt( xmlIndex.getTextContent() );
 				rv = methodDeclaredInJava.getParameters().get( index );
 			} else {
-				String typeName = xmlElement.getAttribute( CodecConstants.TYPE_ATTRIBUTE );
-				rv = (Node)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( typeName );
+				rv = (Node)newInstance( xmlElement );
 				assert rv != null;
 			}
 			if( rv instanceof AbstractDeclaration ) {

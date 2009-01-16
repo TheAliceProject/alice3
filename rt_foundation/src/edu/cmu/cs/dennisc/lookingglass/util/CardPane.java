@@ -22,6 +22,11 @@
  */
 package edu.cmu.cs.dennisc.lookingglass.util;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -105,14 +110,14 @@ public class CardPane extends javax.swing.JPanel {
 			}
 			if( this.bufferedImage != null ) {
 				this.onscreenLookingGlass.getColorBuffer( this.bufferedImage );
+				this.snapshotPane.setSnapshotImage( this.bufferedImage );
+				//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				//				public void run() {
+				showCard( CardPane.SNAPSHOT_KEY );
+				this.onscreenLookingGlass.setRenderingEnabled( false );
+				//				}
+				//			} );
 			}
-			this.snapshotPane.setSnapshotImage( this.bufferedImage );
-			//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			//				public void run() {
-			showCard( CardPane.SNAPSHOT_KEY );
-			this.onscreenLookingGlass.setRenderingEnabled( false );
-			//				}
-			//			} );
 		} else {
 			//pass
 		}

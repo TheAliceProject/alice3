@@ -111,6 +111,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	private static final int SELECTION_CAPACITY = 256;
 	private java.nio.IntBuffer m_selectionAsIntBuffer = null;
 
+	private boolean isABGRExtensionSupported;
 
 	private boolean m_isDisplayIgnoredDueToPreviousException = true;
 
@@ -343,18 +344,25 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		return new java.awt.image.BufferedImage( m_width, m_height, type );
 	}
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
-		//todo: 
-		//return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_3BYTE_BGR );
-		return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
+		if( this.isABGRExtensionSupported ) {
+			//todo: 
+			//return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_3BYTE_BGR );
+			return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
+			//return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_INT_ARGB );
+		} else {
+			return null;
+		}
 	}
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
-		m_rvColorBuffer = rv;
-		m_drawable.setAutoSwapBufferMode( false );
-		try {
-			m_drawable.display();
-		} finally {
-			m_rvColorBuffer = null;
-			m_drawable.setAutoSwapBufferMode( true );
+		if( rv != null ) {
+			m_rvColorBuffer = rv;
+			m_drawable.setAutoSwapBufferMode( false );
+			try {
+				m_drawable.display();
+			} finally {
+				m_rvColorBuffer = null;
+				m_drawable.setAutoSwapBufferMode( true );
+			}
 		}
 		return rv;
 	}
@@ -406,6 +414,11 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 		m_renderContext.setGL( gl );
 		m_pickContext.setGL( gl );
+		
+		String extensions = gl.glGetString( GL.GL_EXTENSIONS );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "supported opengl extensions:", extensions );
+		this.isABGRExtensionSupported = extensions.contains( "GL_ABGR_EXT" );
+		
 		m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
 	}
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
