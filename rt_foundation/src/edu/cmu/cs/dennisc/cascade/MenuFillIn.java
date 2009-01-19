@@ -31,18 +31,21 @@ public abstract class MenuFillIn< E > extends FillIn< E > {
 		this.label.setText( title );
 	}
 	protected abstract void addChildrenToBlank( Blank blank );
+	private Blank createBlank() {
+		return new Blank() {
+			@Override
+			protected void addChildren() {
+				MenuFillIn.this.addChildrenToBlank( this );
+			}	
+		};
+	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
 		return this.label;
 	}
 	@Override
 	final protected void addChildren() {
-		this.addChild( new Blank() {
-			@Override
-			protected void addChildren() {
-				MenuFillIn.this.addChildrenToBlank( this );
-			}	
-		} );
+		this.addChild( createBlank() );
 	}
 	@Override
 	final public E getValue() {

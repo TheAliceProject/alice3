@@ -155,9 +155,11 @@ public abstract class Composite extends Element implements ReferenceFrame {
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void addComponent( Transformable component ) {
 		synchronized( m_components ) {
-			assert component.getVehicle() == null;
-			m_components.add( component );
-			component.handleVehicleChange( this );
+			if( component.getVehicle() != this ) {
+				assert component.getVehicle() == null;
+				m_components.add( component );
+				component.handleVehicleChange( this );
+			}
 		}
 	}
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
