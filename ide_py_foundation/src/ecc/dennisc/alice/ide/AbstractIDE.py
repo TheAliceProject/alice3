@@ -242,6 +242,11 @@ class AbstractIDE( alice.ide.IDE ):
 	def regiesterFillerInner( self, fillerInner ):
 		self._fillerInners.append( fillerInner )
 	
+	def promptUserForMore( self, parameter, me, taskObserver ):
+		self._prevExpresssion = None
+		fillIn = ecc.dennisc.alice.ide.cascade.ExpressionReceptorBlank( parameter.getValueType() )
+		fillIn.showPopupMenu( me.getSource(), me.getX(), me.getY(), taskObserver )	
+
 	def promptUserForExpression( self, type, prevExpresssion, me, taskObserver ):
 		if prevExpresssion:
 			self._prevExpresssion = prevExpresssion

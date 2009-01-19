@@ -37,14 +37,14 @@ public abstract class IDE extends javax.swing.JFrame {
 						bugReportPane.setThreadAndThrowable( thread, throwable );
 						while( true ) {
 							javax.swing.JDialog window = new javax.swing.JDialog( IDE.getSingleton(), IDE.getSingleton().getBugReportSubmissionTitle(), true );
-							bugReportPane.setWindow( window ); 
+							bugReportPane.setWindow( window );
 							//javax.swing.JFrame window = new javax.swing.JFrame( "Please Submit Bug Report" );
 							window.getContentPane().add( bugReportPane );
 							window.pack();
 							window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
 							window.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
 							window.setVisible( true );
-							
+
 							if( bugReportPane.isSubmitAttempted() ) {
 								if( bugReportPane.isSubmitSuccessful() ) {
 									javax.swing.JOptionPane.showMessageDialog( IDE.getSingleton(), "Your bug report has been successfully submitted.  Thank you." );
@@ -53,7 +53,9 @@ public abstract class IDE extends javax.swing.JFrame {
 								}
 								break;
 							} else {
-								int result = javax.swing.JOptionPane.showConfirmDialog( IDE.getSingleton(), "NOTE: You do not actually have to fill in any of the fields to submit a bug report.\n\nWould you like to submit this bug?\n\n(If you wish to not see this dialog again during this session, press cancel.  NOTE: Alice may silently fail under these conditions.)", "Bug report NOT submitted", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION  );
+								int result = javax.swing.JOptionPane.showConfirmDialog( IDE.getSingleton(),
+										"NOTE: You do not actually have to fill in any of the fields to submit a bug report.\n\nWould you like to submit this bug?\n\n(If you wish to not see this dialog again during this session, press cancel.  NOTE: Alice may silently fail under these conditions.)",
+										"Bug report NOT submitted", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
 								if( result == javax.swing.JOptionPane.YES_OPTION ) {
 									//pass
 								} else {
@@ -184,7 +186,7 @@ public abstract class IDE extends javax.swing.JFrame {
 	}
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
-	
+
 	public void showStencilOver( edu.cmu.cs.dennisc.alice.ide.editors.common.PotentiallyDraggablePane potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		edu.cmu.cs.dennisc.alice.ide.editors.code.CodeEditor codeEditor = getCodeEditorInFocus();
 		this.holes = codeEditor.findAllPotentialAcceptors( type );
@@ -348,8 +350,8 @@ public abstract class IDE extends javax.swing.JFrame {
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
-	public abstract void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpresssion, java.awt.event.MouseEvent e,
-			edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver );
+	public abstract void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpresssion, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver );
+	public abstract void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver );
 	public abstract void unsetPreviousExpression();
 
 	public edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {
@@ -415,15 +417,11 @@ public abstract class IDE extends javax.swing.JFrame {
 			edu.cmu.cs.dennisc.alice.ide.event.LocaleEvent e = new edu.cmu.cs.dennisc.alice.ide.event.LocaleEvent( this, prevLocale, locale );
 			fireLocaleChanging( e );
 			super.setLocale( locale );
-			
-			
-			
+
 			//todo: remove
 			javax.swing.JComponent.setDefaultLocale( locale );
 			//
-			
-			
-			
+
 			fireLocaleChanged( e );
 		} else {
 			super.setLocale( locale );
@@ -655,31 +653,31 @@ public abstract class IDE extends javax.swing.JFrame {
 		saveProjectTo( new java.io.File( path ) );
 	}
 
-//	private static java.util.ResourceBundle getResourceBundleForASTColors( java.util.Locale locale ) {
-//		String baseName = "edu.cmu.cs.dennisc.alice.ast.Colors";
-//		return java.util.ResourceBundle.getBundle( baseName, locale );
-//	}
+	//	private static java.util.ResourceBundle getResourceBundleForASTColors( java.util.Locale locale ) {
+	//		String baseName = "edu.cmu.cs.dennisc.alice.ast.Colors";
+	//		return java.util.ResourceBundle.getBundle( baseName, locale );
+	//	}
 
 	public static java.awt.Color getColorForASTClass( Class< ? > cls ) {
-//		java.util.ResourceBundle resourceBundle = getResourceBundleForASTColors( javax.swing.JComponent.getDefaultLocale() );
-//		String key;
-//
-//		Class< ? > originalCls = cls;
-//		do {
-//			if( cls != null ) {
-//				key = cls.getSimpleName();
-//				cls = cls.getSuperclass();
-//			} else {
-//				throw new RuntimeException( "cannot find resource for " + originalCls );
-//			}
-//			try {
-//				String s = resourceBundle.getString( key );
-//				break;
-//			} catch( RuntimeException re ) {
-//				//pass;
-//			}
-//		} while( true );
-//		
+		//		java.util.ResourceBundle resourceBundle = getResourceBundleForASTColors( javax.swing.JComponent.getDefaultLocale() );
+		//		String key;
+		//
+		//		Class< ? > originalCls = cls;
+		//		do {
+		//			if( cls != null ) {
+		//				key = cls.getSimpleName();
+		//				cls = cls.getSuperclass();
+		//			} else {
+		//				throw new RuntimeException( "cannot find resource for " + originalCls );
+		//			}
+		//			try {
+		//				String s = resourceBundle.getString( key );
+		//				break;
+		//			} catch( RuntimeException re ) {
+		//				//pass;
+		//			}
+		//		} while( true );
+		//		
 		java.awt.Color rv;
 		String s = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Colors", javax.swing.JComponent.getDefaultLocale() );
 		//String s = resourceBundle.getString( key );
@@ -775,8 +773,7 @@ public abstract class IDE extends javax.swing.JFrame {
 	public boolean isFieldInScope( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return createInstanceExpression( field ) != null;
 	}
-	public abstract edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice promptUserForParameterDeclaredInAlice(
-			edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty );
+	public abstract edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice promptUserForParameterDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty );
 	//	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ide.operations.FieldSelectionOperation > mapFieldToSelectionOperation = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ide.operations.FieldSelectionOperation >();
 	//	public edu.cmu.cs.dennisc.alice.ide.operations.FieldSelectionOperation getFieldSelectionOperationForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 	//		edu.cmu.cs.dennisc.alice.ide.operations.FieldSelectionOperation rv = mapFieldToSelectionOperation.get( field );
