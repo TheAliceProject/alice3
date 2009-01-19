@@ -6,6 +6,7 @@ import edu
 import org
 
 from edu.cmu.cs.dennisc import alice
+from edu.cmu.cs.dennisc import cascade
 from edu.cmu.cs.dennisc import zoot
 
 import ecc
@@ -249,23 +250,42 @@ class AbstractIDE(alice.ide.IDE):
 	
 	def promptUserForMore(self, parameter, me, taskObserver):
 		class MoreMenuFillIn(cascade.MenuFillIn):
-			def __init__(self, ide, paramater):
+			def __init__(self, ide, parameter):
 				self._ide = ide
-				self._paramater = paramater
-				title = self._paramater.getName()
+				self._parameter = parameter
+				title = self._parameter.getName()
 				if title:
 					pass
 				else:
 					title = "unknown parameter name"
-				cascade.MenuFillIn.__init__(title)
-			def addChildrenToBlank(self):
-				class MyFillIn( cascase.FillIn):
-					def addChildren(self):
-						self.addChild( self._ide._createExpressionReceptorBlank(parameter.getValueType(), None) )
-				self.addChild( MyFillIn() )
+				cascade.MenuFillIn.__init__(self, title)
+			def addChildrenToBlank(self, blank):
+#				class MyFillIn(cascade.FillIn):
+#					def __init__(self, ide, parameter):
+#						self._ide = ide
+#						self._parameter = parameter
+#						print "__init__", self
+#						cascade.FillIn.__init__( self )
+#					def createMenuProxy(self):
+#						return javax.swing.JLabel( "hello" )
+#					def addChildren(self):
+#						print "add", self
+#						self.addChild(self._ide._createExpressionReceptorBlank(self._parameter.getValueType(), None))
+#				blank.addChild(MyFillIn(self._ide, self._parameter))
+				bogusBlank = self._ide._createExpressionReceptorBlank(self._parameter.getValueType(), None)
+				for child in bogusBlank.getChildren():
+					blank.addChild(child)
 		#self.unsetPreviousExpression()
-		menuFillIn = MoreMenuFillIn(self, parameter)
-		menuFillIn.showPopupMenu(me.getSource(), me.getX(), me.getY(), taskObserver)	
+		
+		class MoreBlank( cascade.Blank ):
+			def __init__(self, ide, parameter):
+				self._ide = ide
+				self._parameter = parameter
+			def addChildren( self ):
+				self.addChild( MoreMenuFillIn(self._ide, self._parameter))
+		node = MoreBlank( self, parameter )
+		#node = MoreMenuFillIn(self, parameter)
+		node.showPopupMenu(me.getSource(), me.getX(), me.getY(), taskObserver)	
 
 	def promptUserForExpression(self, type, prevExpression, me, taskObserver):
 		blank = self._createExpressionReceptorBlank(type, prevExpression)
@@ -487,12 +507,12 @@ class AbstractIDE(alice.ide.IDE):
 				#ecc.dennisc.alice.ide.operations.window.SetLocaleExceptionOperation( java.util.Locale( "tr" ) ),
 				#ecc.dennisc.alice.ide.operations.window.SetLocaleExceptionOperation( java.util.Locale( "ar" ) ),
 			])
-																																																																																																																																																																																																																																																																)
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																)
 		windowMenu.add(
 			alice.ide.MenuUtilities.createJMenu("Test", [
 				ecc.dennisc.alice.ide.operations.window.RaiseExceptionOperation(),
 			])
-																																																																																																																																																																																																																																																																)
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																)
 		helpMenu = alice.ide.MenuUtilities.createJMenu("Help", [
 			ecc.dennisc.alice.ide.operations.help.HelpOperation(),
 			ecc.dennisc.alice.ide.operations.help.AboutOperation(),

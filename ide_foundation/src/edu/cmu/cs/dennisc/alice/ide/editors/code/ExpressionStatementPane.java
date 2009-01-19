@@ -73,7 +73,7 @@ class ExpressionStatementPane extends AbstractStatementPane {
 						protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
 							java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
 							edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-							getIDE().promptUserForExpression( lastParameter.getValueType(), null, e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+							getIDE().promptUserForMore( lastParameter, e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
 								public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
 									expressionStatement.expression.setValue( ExpressionStatementPane.createNextMethodInvocation( nextLongerMethod, e, methodInvocation ) );
 									ExpressionStatementPane.this.refresh();
