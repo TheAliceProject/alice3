@@ -207,6 +207,9 @@ class AbstractIDE(alice.ide.IDE):
 	def generateCodeForSceneSetUp(self):
 		self._scenePane.generateCodeForSceneSetUp(self._setUpMethodGenerator)
 		
+	def preserveProjectProperties( self ):
+		self._scenePane.preserveProjectProperties()
+
 	def getProgramType(self):
 		project = self.getProject()
 		if project:

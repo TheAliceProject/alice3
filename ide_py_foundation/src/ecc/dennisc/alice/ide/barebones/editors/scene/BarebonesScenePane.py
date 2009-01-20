@@ -27,3 +27,6 @@ class BarebonesScenePane( alice.ide.editors.scene.AbstractSceneEditor ):
 
 	def setDragInProgress(self, isDragInProgress):
 		pass
+
+	def preserveProjectProperties( self, projectProperties ):
+		pass

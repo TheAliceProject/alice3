@@ -642,9 +642,12 @@ public abstract class IDE extends javax.swing.JFrame {
 		loadProjectFrom( new java.io.File( path ) );
 	}
 	protected abstract void generateCodeForSceneSetUp();
+	protected abstract void preserveProjectProperties();
 	public void saveProjectTo( java.io.File file ) {
+		edu.cmu.cs.dennisc.alice.Project project = getProject();
 		this.generateCodeForSceneSetUp();
-		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( getProject(), file );
+		this.preserveProjectProperties();
+		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( project, file );
 		this.file = file;
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
 		this.updateHistoryLengthAtLastFileOperation();

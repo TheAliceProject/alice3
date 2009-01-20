@@ -86,13 +86,12 @@ class ProgramAdapter( apis.moveandturn.Program, ecc.dennisc.alice.ide.ProgramWit
 		self._modelManipulationDragAdapter.setAnimator( self.getAnimator() )
 		self._modelManipulationDragAdapter.setOnscreenLookingGlass( self.getOnscreenLookingGlass() )
 		
-		self._cameraNavigationDragAdapter.requestDistance( 16 )
+		#self._cameraNavigationDragAdapter.requestDistance( 16 )
 		self._cameraNavigationDragAdapter.setAnimator( self.getAnimator() )
 		self._cameraNavigationDragAdapter.setOnscreenLookingGlass( self.getOnscreenLookingGlass() )
 
 	def run( self ):
 		pass
-	
 
 	def isDragInProgress(self):
 		return self._modelManipulationDragAdapter.isDragInProgress() or self._cameraNavigationDragAdapter.isDragInProgress()

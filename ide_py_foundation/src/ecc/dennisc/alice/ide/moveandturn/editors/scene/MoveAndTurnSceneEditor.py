@@ -181,6 +181,8 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 	def setProgramType( self, programType ):
 		alice.ide.editors.scene.AbstractSceneEditor.setProgramType( self, programType )
 		self._program.setProgramType( programType )
+		print "setProgramType", programType
+		self.restoreProjectProperties()
 		
 	def setSceneField( self, sceneField ):
 		alice.ide.editors.scene.AbstractSceneEditor.setSceneField( self, sceneField )
@@ -195,8 +197,6 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 
 	def createInstance( self, type ):
 		return self._program.createInstance( type )
-
-			
 
 	def _handleCreateInstance( self, type ):
 		#todo
@@ -228,3 +228,7 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 	def getRunMethod( self ):
 		return self.getSceneType().getDeclaredMethod( "run", [] )
 
+	def preserveProjectProperties( self ):
+		self.preserveCameraNavigationProperties( self._program._cameraNavigationDragAdapter )
+	def restoreProjectProperties( self ):
+		self.restoreCameraNavigationProperties( self._program._cameraNavigationDragAdapter )

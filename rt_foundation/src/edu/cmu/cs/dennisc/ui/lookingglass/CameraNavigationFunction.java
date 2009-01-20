@@ -41,7 +41,7 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 	private edu.cmu.cs.dennisc.math.Vector3 m_velocityRequested = new edu.cmu.cs.dennisc.math.Vector3();
 
 	//private double m_distance = Double.NaN;
-	private double m_distanceRequested = 10.0;
+	private double m_distanceRequested = 16.0;
 
 	//private double m_yaw = Double.NaN;
 	private double m_yawRequested = Math.PI;

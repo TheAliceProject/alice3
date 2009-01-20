@@ -38,15 +38,15 @@ public class Project {
 		bis.read( stringArray );
 		return new String( stringArray );
 	}
-	private static void writeInt( java.io.OutputStream os, int i ) throws java.io.IOException {
+	private static void writeInt( java.io.BufferedOutputStream bos, int i ) throws java.io.IOException {
 		byte[] array = new byte[ 4 ];
 		java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( array );
 		buffer.putInt( i );
-		os.write( array );
+		bos.write( array );
 	}
-	private static void writeString( java.io.OutputStream os, String s ) throws java.io.IOException {
-		writeInt( os, s.length() );
-		os.write( s.getBytes() );
+	private static void writeString( java.io.BufferedOutputStream bos, String s ) throws java.io.IOException {
+		writeInt( bos, s.length() );
+		bos.write( s.getBytes() );
 	}
 
 	public class Properties {
@@ -67,17 +67,18 @@ public class Project {
 				}
 			}
 		}
-		public void write( java.io.OutputStream os ) throws java.io.IOException {
+		public void write( java.io.BufferedOutputStream bos ) throws java.io.IOException {
 			String version = Version.getCurrentVersionText();
-			writeString( os, version );
+			writeString( bos, version );
 			synchronized( this.map ) {
-				writeInt( os, this.map.size() );
+				writeInt( bos, this.map.size() );
 				for( String key : this.map.keySet() ) {
 					String value = this.map.get( key );
-					writeString( os, key );
-					writeString( os, value );
+					writeString( bos, key );
+					writeString( bos, value );
 				}
 			}
+			bos.flush();
 		}
 		
 		public String getString( String key, String def ) {
@@ -174,7 +175,7 @@ public class Project {
 	}
 	
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType programType = null;
-	private Properties properties;
+	private Properties properties = new Properties();
 	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
 		setProgramType( programType );
 	}
