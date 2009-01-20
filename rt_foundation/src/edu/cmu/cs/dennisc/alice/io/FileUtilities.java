@@ -28,7 +28,8 @@ package edu.cmu.cs.dennisc.alice.io;
 public class FileUtilities {
 	public static final String PROJECT_EXTENSION = "a3p";
 	public static final String TYPE_EXTENSION = "a3c";
-	private static String PROGRAM_TYPE_EXTRY_NAME = "programType.xml";
+	private static String PROPERTIES_ENTRY_NAME = "properties.bin";
+	private static String PROGRAM_TYPE_ENTRY_NAME = "programType.xml";
 	private static String VERSION_ENTRY_NAME = "version.txt";
 	private static String TYPE_ENTRY_NAME = "type.xml";
 
@@ -89,14 +90,29 @@ public class FileUtilities {
 		return edu.cmu.cs.dennisc.xml.XMLUtilities.read( zipFile.getInputStream( entry ) );
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.AbstractType readType( java.io.File file, String entryName ) throws java.io.IOException {
-		assert file != null;
-		assert file.exists();
-		java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file );
+	private static edu.cmu.cs.dennisc.alice.ast.AbstractType readType( java.util.zip.ZipFile zipFile, String entryName ) throws java.io.IOException {
 		String version = readVersion( zipFile );
 		org.w3c.dom.Document xmlDocument = readXML( zipFile, entryName );
 		return (edu.cmu.cs.dennisc.alice.ast.AbstractType)edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, version );
 	}
+	
+	private static edu.cmu.cs.dennisc.alice.Project.Properties readProperties( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+		return null;
+	}
+	public static edu.cmu.cs.dennisc.alice.Project readProject( java.io.File file ) {
+		assert file != null;
+		assert file.exists();
+		try {
+			java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file );
+			return new edu.cmu.cs.dennisc.alice.Project( readType( zipFile, PROGRAM_TYPE_ENTRY_NAME ), readProperties( zipFile ) );
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
+	}
+	public static edu.cmu.cs.dennisc.alice.Project readProject( String path ) {
+		return readProject( new java.io.File( path ) );
+	}
+
 	private static void writeXML( org.w3c.dom.Document xmlDocument, java.io.File file, String entryName ) {
 		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		try {
@@ -120,20 +136,8 @@ public class FileUtilities {
 	private static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.io.File file, String entryName ) {
 		writeXML( type.encode(), file, entryName );
 	}
-
-	public static edu.cmu.cs.dennisc.alice.Project readProject( java.io.File file ) {
-		try {
-			return new edu.cmu.cs.dennisc.alice.Project( readType( file, PROGRAM_TYPE_EXTRY_NAME ) );
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
-		}
-	}
-	public static edu.cmu.cs.dennisc.alice.Project readProject( String path ) {
-		return readProject( new java.io.File( path ) );
-	}
-
 	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file ) {
-		writeType( project.getProgramType(), file, PROGRAM_TYPE_EXTRY_NAME );
+		writeType( project.getProgramType(), file, PROGRAM_TYPE_ENTRY_NAME );
 	}
 	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, String path ) {
 		writeProject( project, new java.io.File( path ) );
@@ -143,8 +147,11 @@ public class FileUtilities {
 	}
 
 	public static edu.cmu.cs.dennisc.alice.ast.AbstractType readType( java.io.File file ) {
+		assert file != null;
+		assert file.exists();
 		try {
-			return readType( file, TYPE_ENTRY_NAME );
+			java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file );
+			return readType( zipFile, TYPE_ENTRY_NAME );
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}

@@ -26,16 +26,122 @@ package edu.cmu.cs.dennisc.alice;
  * @author Dennis Cosgrove
  */
 public class Project {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType m_programType = null;
-	//public Project() {
-	//}
-	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+	public class Properties {
+		private java.util.Map< String, String > map = new java.util.HashMap< String, String >();
+		public String getString( String key, String def ) {
+			String rv;
+			String value = this.map.get( key );
+			if( value != null ) {
+				rv = value;
+			} else {
+				rv = def; 
+			}
+			return rv;
+		}
+		public boolean getBoolean( String key, boolean def ) {
+			boolean rv;
+			String value = this.map.get( key );
+			if( value != null ) {
+				rv = Boolean.valueOf( value );
+			} else {
+				rv = def; 
+			}
+			return rv;
+		}
+		public int getInteger( String key, int def ) {
+			int rv;
+			String value = this.map.get( key );
+			if( value != null ) {
+				rv = Integer.valueOf( value );
+			} else {
+				rv = def; 
+			}
+			return rv;
+		}
+		public long getLong( String key, long def ) {
+			long rv;
+			String value = this.map.get( key );
+			if( value != null ) {
+				rv = Long.valueOf( value );
+			} else {
+				rv = def; 
+			}
+			return rv;
+		}
+		public float getFloat( String key, float def ) {
+			float rv;
+			String value = this.map.get( key );
+			if( value != null ) {
+				rv = Float.valueOf( value );
+			} else {
+				rv = def; 
+			}
+			return rv;
+		}
+		public double getDouble( String key, double def ) {
+			double rv;
+			String value = this.map.get( key );
+			if( value != null ) {
+				rv = Double.valueOf( value );
+			} else {
+				rv = def; 
+			}
+			return rv;
+		}
+		public byte[] getByteArray( String key, byte[] def ) {
+			byte[] rv;
+			String value = this.map.get( key );
+			if( value != null ) {
+				rv = value.getBytes();
+			} else {
+				rv = def; 
+			}
+			return rv;
+		}
+		public void putString( String key, String value ) {
+			this.map.put( key, value );
+		}
+		public void putBoolean( String key, boolean value ) {
+			this.map.put( key, Boolean.toString( value ) );
+		}
+		public void putInteger( String key, int value ) {
+			this.map.put( key, Integer.toString( value ) );
+		}
+		public void putLong( String key, long value ) {
+			this.map.put( key, Long.toString( value ) );
+		}
+		public void putFloat( String key, float value ) {
+			this.map.put( key, Float.toString( value ) );
+		}
+		public void putDouble( String key, double value ) {
+			this.map.put( key, Double.toString( value ) );
+		}
+		public void putByteArray( String key, byte[] value ) {
+			this.map.put( key, new String( value ) );
+		}
+	}
+	
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType programType = null;
+	private Properties properties;
+	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType, Properties properties ) {
 		setProgramType( programType );
+		setProperties( properties );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getProgramType() {
-		return m_programType;
+		return this.programType;
 	}
 	/*public*/private void setProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
-		m_programType = programType;
+		this.programType = programType;
+	}
+	public Properties getProperties() {
+		return this.properties;
+	}
+	/*public*/private void setProperties( Properties properties ) {
+		if( properties != null ) {
+			//pass
+		} else {
+			properties = new Properties();
+		}
+		this.properties = properties;
 	}
 }
