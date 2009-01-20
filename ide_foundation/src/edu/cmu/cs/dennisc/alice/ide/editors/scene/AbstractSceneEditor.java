@@ -28,15 +28,17 @@ package edu.cmu.cs.dennisc.alice.ide.editors.scene;
 public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.alice.ide.IDEListenerPane implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
 	
+	private static final String CAMERA_NAVIGATION_DISTANCE_KEY = AbstractSceneEditor.class.getName() + ".CAMERA_NAVIGATION_DISTANCE";
 	protected void restoreCameraNavigation( edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter ) {
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
+		double distance = project.getProperties().getDouble( CAMERA_NAVIGATION_DISTANCE_KEY, 10.0 );
+		cameraNavigationDragAdapter.requestDistance( distance );
 	}
 	protected void preserveCameraNavigation( edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter ) {
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
 		if( project != null ) {
-			//project.
+			project.getProperties().putDouble( CAMERA_NAVIGATION_DISTANCE_KEY, cameraNavigationDragAdapter.getDistanceRequested() );
 		}
-		
 	}
 	
 	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {

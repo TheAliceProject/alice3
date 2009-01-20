@@ -26,8 +26,60 @@ package edu.cmu.cs.dennisc.alice;
  * @author Dennis Cosgrove
  */
 public class Project {
+	private static int readInt( java.io.BufferedInputStream bis ) throws java.io.IOException {
+		byte[] lengthArray = new byte[ 4 ];
+		bis.read( lengthArray );
+		java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( lengthArray );
+		return buffer.getInt();
+	}
+	private static String readString( java.io.BufferedInputStream bis ) throws java.io.IOException {
+		int length = readInt( bis );
+		byte[] stringArray = new byte[ length ];
+		bis.read( stringArray );
+		return new String( stringArray );
+	}
+	private static void writeInt( java.io.OutputStream os, int i ) throws java.io.IOException {
+		byte[] array = new byte[ 4 ];
+		java.nio.ByteBuffer buffer = java.nio.ByteBuffer.wrap( array );
+		buffer.putInt( i );
+		os.write( array );
+	}
+	private static void writeString( java.io.OutputStream os, String s ) throws java.io.IOException {
+		writeInt( os, s.length() );
+		os.write( s.getBytes() );
+	}
+
 	public class Properties {
 		private java.util.Map< String, String > map = new java.util.HashMap< String, String >();
+		public void read( java.io.BufferedInputStream bis ) {
+			if( bis != null ) {
+				try {
+					String version = readString( bis );
+					int count = readInt( bis );
+					for( int i=0; i<count; i++ ) {
+						String key = readString( bis );
+						String value = readString( bis );
+						this.map.put( key, value );
+					}
+				} catch( Throwable t ) {
+					this.map.clear();
+					t.printStackTrace();
+				}
+			}
+		}
+		public void write( java.io.OutputStream os ) throws java.io.IOException {
+			String version = Version.getCurrentVersionText();
+			writeString( os, version );
+			synchronized( this.map ) {
+				writeInt( os, this.map.size() );
+				for( String key : this.map.keySet() ) {
+					String value = this.map.get( key );
+					writeString( os, key );
+					writeString( os, value );
+				}
+			}
+		}
+		
 		public String getString( String key, String def ) {
 			String rv;
 			String value = this.map.get( key );
@@ -123,9 +175,8 @@ public class Project {
 	
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType programType = null;
 	private Properties properties;
-	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType, Properties properties ) {
+	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
 		setProgramType( programType );
-		setProperties( properties );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getProgramType() {
 		return this.programType;
@@ -136,12 +187,12 @@ public class Project {
 	public Properties getProperties() {
 		return this.properties;
 	}
-	/*public*/private void setProperties( Properties properties ) {
-		if( properties != null ) {
-			//pass
-		} else {
-			properties = new Properties();
-		}
-		this.properties = properties;
-	}
+//	/*public*/private void setProperties( Properties properties ) {
+//		if( properties != null ) {
+//			//pass
+//		} else {
+//			properties = new Properties();
+//		}
+//		this.properties = properties;
+//	}
 }

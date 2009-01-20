@@ -33,11 +33,5 @@ class MoveAndTurnRuntimeProgram( apis.moveandturn.Program, RuntimeProgramMixin )
 		self.setUp()
 		self.setScene( self._scene.getInstanceInJava() )
 
-class RunOperation( ecc.dennisc.alice.ide.operations.run.AbstractRunOperation ):
-	def perform(self):
-		ide = self.getIDE()
-		ide.generateCodeForSceneSetUp()
-		program = MoveAndTurnRuntimeProgram( ide.createVirtualMachineForRuntimeProgram(), ide.getSceneType() )
-		program.showInJDialog( ide, True, [] )
 
 #print "<--", __name__

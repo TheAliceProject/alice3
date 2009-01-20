@@ -96,15 +96,24 @@ public class FileUtilities {
 		return (edu.cmu.cs.dennisc.alice.ast.AbstractType)edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, version );
 	}
 	
-	private static edu.cmu.cs.dennisc.alice.Project.Properties readProperties( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
-		return null;
+	private static edu.cmu.cs.dennisc.alice.Project.Properties readProperties( edu.cmu.cs.dennisc.alice.Project.Properties rv, java.util.zip.ZipFile zipFile ) throws java.io.IOException {
+		assert zipFile != null;
+		java.util.zip.ZipEntry entry = zipFile.getEntry( PROPERTIES_ENTRY_NAME );
+		if( entry != null ) {
+			java.io.BufferedInputStream  bis = new java.io.BufferedInputStream( zipFile.getInputStream( entry ) );
+			rv.read( bis );
+		}
+		return rv;
 	}
 	public static edu.cmu.cs.dennisc.alice.Project readProject( java.io.File file ) {
 		assert file != null;
 		assert file.exists();
 		try {
 			java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file );
-			return new edu.cmu.cs.dennisc.alice.Project( readType( zipFile, PROGRAM_TYPE_ENTRY_NAME ), readProperties( zipFile ) );
+			edu.cmu.cs.dennisc.alice.ast.AbstractType type = readType( zipFile, PROGRAM_TYPE_ENTRY_NAME );
+			edu.cmu.cs.dennisc.alice.Project rv = new edu.cmu.cs.dennisc.alice.Project( type );
+			readProperties( rv.getProperties(), zipFile );
+			return rv;
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( ioe );
 		}

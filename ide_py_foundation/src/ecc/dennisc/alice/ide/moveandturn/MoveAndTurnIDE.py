@@ -11,6 +11,13 @@ import ecc
 
 from MoveAndTurnSceneAutomaticSetUpMethodFillerInner import MoveAndTurnSceneAutomaticSetUpMethodFillerInner
 
+class RunOperation( ecc.dennisc.alice.ide.operations.run.AbstractRunOperation ):
+	def perform(self):
+		ide = self.getIDE()
+		ide.generateCodeForSceneSetUp()
+		program = ide.createRuntimeProgram()
+		program.showInJDialog( ide, True, [] )
+
 class MoveAndTurnIDE( ecc.dennisc.alice.ide.barebones.BarebonesIDE ):
 	def __init__( self ):
 		ecc.dennisc.alice.ide.barebones.BarebonesIDE.__init__( self )
@@ -47,7 +54,12 @@ class MoveAndTurnIDE( ecc.dennisc.alice.ide.barebones.BarebonesIDE ):
 	def createVirtualMachineForRuntimeProgram( self ):
 		return edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine()
 
+	def _createRuntimeProgram(self, vm, sceneType ):
+		return ecc.dennisc.alice.ide.moveandturn.runtime.MoveAndTurnRuntimeProgram( vm, sceneType )
+	def createRuntimeProgram(self):
+		return self._createRuntimeProgram( self.createVirtualMachineForRuntimeProgram(), self.getSceneType() )
+
 	def createRunOperation( self ):
-		return ecc.dennisc.alice.ide.moveandturn.runtime.RunOperation()
+		return RunOperation()
 
 #print "<--", __name__
