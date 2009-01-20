@@ -34,8 +34,8 @@ class Icon extends javax.swing.ImageIcon {
 		super.paintIcon( c, g, x, y );
 		int w = this.getIconWidth();
 		int h = this.getIconHeight();
-		g.setColor( java.awt.Color.BLACK );
-		g.drawString( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), x + w/10, y + h*9/10 );
+		g.setColor( new java.awt.Color( 0x379bd5 ) );
+		g.drawString( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), x + w*4/5, y + h*4/5 );
 	}
 }
 

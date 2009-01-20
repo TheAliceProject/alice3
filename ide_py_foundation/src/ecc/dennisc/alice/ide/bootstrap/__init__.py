@@ -65,7 +65,7 @@ def _createProgramType( typeName, package, javaSuperCls, sceneType ):
 	sceneRunMethod.isDeletionAllowed.setValueAsInteger( False )
 	
 	initializeMethod = alice.ast.MethodDeclaredInAlice( "initialize", alice.ast.TypeDeclaredInJava.VOID_TYPE, [], alice.ast.BlockStatement( [
-		ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), sceneField ), sceneSetUpMethod, [] ),																																							
+		#ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), sceneField ), sceneSetUpMethod, [] ),																																							
 		ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.ThisExpression(), setSceneMethod, [alice.ast.FieldAccess( alice.ast.ThisExpression(), sceneField )] )																																							
 	] ) )
 	initializeMethod.access.setValue( alice.ast.Access.PROTECTED )
