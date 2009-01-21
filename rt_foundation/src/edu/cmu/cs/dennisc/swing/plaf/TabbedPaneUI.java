@@ -216,12 +216,14 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		g2.translate( x, y );
 		g2.fill( path );
 		g2.translate( -x, -y );
-		if( this.getRolloverTab() == tabIndex ) {
-			this.closeIcon.setFilled( true );
-		} else {
-			this.closeIcon.setFilled( false );
+		if( isCloseButtonDesiredAt( tabIndex ) ) {
+			if( this.getRolloverTab() == tabIndex ) {
+				this.closeIcon.setFilled( true );
+			} else {
+				this.closeIcon.setFilled( false );
+			}
+			this.closeIcon.paintIcon( this.tabPane, g2, x + width - EAST_TAB_PAD/2, y + height/2 - 4 );
 		}
-		this.closeIcon.paintIcon( this.tabPane, g2, x + width - EAST_TAB_PAD/2, y + height/2 - 4 );
 	}
 	@Override
 	protected void paintTabArea( java.awt.Graphics g, int tabPlacement, int selectedIndex ) {
@@ -255,14 +257,15 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 			if( TabbedPaneUI.this.tabPane.isEnabled() ) {
 				int index = getTabIndex( e );
 				TabbedPaneUI.this.setRolloverTab( index );
-				
 				if( index >= 0 ) {
-					TabbedPaneUI.this.getTabBounds( index, buffer );
-					int xMin = buffer.x + buffer.width - EAST_TAB_PAD/2;
-					int xMax = xMin + closeIcon.getIconWidth();
-					int yMin = buffer.y + buffer.height/2 - 4;
-					int yMax = yMin + closeIcon.getIconHeight();
-					return ( xMin < e.getX() && e.getX() < xMax ) && ( yMin < e.getY() && e.getY() < yMax );
+					if( TabbedPaneUI.this.isCloseButtonDesiredAt( index ) ) {
+						TabbedPaneUI.this.getTabBounds( index, buffer );
+						int xMin = buffer.x + buffer.width - EAST_TAB_PAD/2;
+						int xMax = xMin + closeIcon.getIconWidth();
+						int yMin = buffer.y + buffer.height/2 - 4;
+						int yMax = yMin + closeIcon.getIconHeight();
+						return ( xMin < e.getX() && e.getX() < xMax ) && ( yMin < e.getY() && e.getY() < yMax );
+					}
 				}
 			}
 			return false;
@@ -281,27 +284,14 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			closeIcon.setPressed( isWithinCloseIcon( e ) );
 			tabPane.repaint();
-
-//			if( TabbedPaneUI.this.tabPane.isEnabled() ) {
-//				int nextTabIndex = getTabIndex( e );
-//				if( nextTabIndex >= 0 ) {
-//					if( TabbedPaneUI.this.tabPane.isEnabledAt( nextTabIndex ) ) {
-//						if( nextTabIndex != TabbedPaneUI.this.tabPane.getSelectedIndex() ) {
-//							TabbedPaneUI.this.tabPane.setSelectedIndex( nextTabIndex );
-//						} else if( TabbedPaneUI.this.tabPane.isRequestFocusEnabled() ) {
-//							TabbedPaneUI.this.tabPane.requestFocus();
-//						}
-//					}
-//				}
-//			}
 		}
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 			closeIcon.setPressed( false );
 			if( isWithinCloseIcon( e ) ) {
-				int index = getTabIndex( e );
-				tabPane.remove( index );
+				closeTab( getTabIndex( e ), e );
+			} else {
+				tabPane.repaint();
 			}
-			tabPane.repaint();
 		}
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
@@ -310,6 +300,13 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		}
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 		}
+	}
+
+	protected boolean isCloseButtonDesiredAt( int index ) {
+		return true;
+	}
+	protected void closeTab( int index, java.awt.event.MouseEvent e ) {
+		tabPane.remove( index );
 	}
 
 	private CloseIconMouseAdapter closeIconMouseAdapter = new CloseIconMouseAdapter();

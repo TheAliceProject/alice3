@@ -22,17 +22,22 @@
  */
 package edu.cmu.cs.dennisc.zoot;
 
-
-
 /**
  * @author Dennis Cosgrove
  */
 class ZTabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
-	private SingleSelectionOperation tabSelectionOperation;
-	private ActionOperation tabCloseOperation;
-	public ZTabbedPaneUI( SingleSelectionOperation tabSelectionOperation, ActionOperation tabCloseOperation ) {
-		this.tabSelectionOperation = tabSelectionOperation;
-		this.tabCloseOperation = tabCloseOperation;
+	private ZTabbedPane tabbedPane;
+
+	public ZTabbedPaneUI( ZTabbedPane tabbedPane ) {
+		this.tabbedPane = tabbedPane;
+	}
+	@Override
+	protected boolean isCloseButtonDesiredAt( int index ) {
+		return this.tabbedPane.isCloseButtonDesiredAt( index );
+	}
+	@Override
+	protected void closeTab( int index, java.awt.event.MouseEvent e ) {
+		this.tabbedPane.closeTab( index, e );
 	}
 }
 
@@ -40,9 +45,19 @@ class ZTabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
  * @author Dennis Cosgrove
  */
 public class ZTabbedPane extends javax.swing.JTabbedPane {
-	public ZTabbedPane( SingleSelectionOperation tabSelectionOperation, ActionOperation tabCloseOperation ) {
+	private ActionOperation tabCloseOperation;
+
+	public ZTabbedPane( ActionOperation tabCloseOperation ) {
+		this.tabCloseOperation = tabCloseOperation;
 		this.setTabLayoutPolicy( javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT );
-		this.setUI( new edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI() );
+		this.setUI( new ZTabbedPaneUI( this ) );
+	}
+	public boolean isCloseButtonDesiredAt( int index ) {
+		return this.tabCloseOperation != null;
+	}
+	public void closeTab( int index, java.awt.event.MouseEvent mouseEvent ) {
+		edu.cmu.cs.dennisc.zoot.event.TabEvent tabEvent = new edu.cmu.cs.dennisc.zoot.event.TabEvent( this, index, mouseEvent );
+		ZManager.performIfAppropriate( this.tabCloseOperation, tabEvent );
 	}
 
 	public static void main( String[] args ) {
@@ -60,11 +75,28 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 				this.setFontToScaledFont( 10.0f );
 			}
 		}
-		
-		SingleSelectionOperation tabSelectionOperation = null;
-		ActionOperation tabCloseOperation = null;
+
+		//SingleSelectionOperation tabSelectionOperation = null;
+		ActionOperation tabCloseOperation = new ActionOperation() {
+			private edu.cmu.cs.dennisc.zoot.event.TabEvent e;
+			public javax.swing.Action getActionForConfiguringSwingComponents() {
+				return null;
+			}
+			public Operation.PreparationResult prepare( java.util.EventObject e, Operation.PreparationObserver observer ) {
+				this.e = (edu.cmu.cs.dennisc.zoot.event.TabEvent)e;
+				return Operation.PreparationResult.PERFORM;
+			}
+			public void perform() {
+				this.e.getTypedSource().remove( this.e.getIndex() );
+			}
+		};
 		javax.swing.JFrame frame = new javax.swing.JFrame();
-		ZTabbedPane tabbedPane = new ZTabbedPane( tabSelectionOperation, tabCloseOperation );
+		ZTabbedPane tabbedPane = new ZTabbedPane( tabCloseOperation ) {
+			@Override
+			public boolean isCloseButtonDesiredAt(int index) {
+				return index % 2 == 1;
+			}
+		};
 		String[] tabTitles = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 		for( String tabTitle : tabTitles ) {
 			tabbedPane.addTab( tabTitle, new MonthPane( tabTitle ) );
