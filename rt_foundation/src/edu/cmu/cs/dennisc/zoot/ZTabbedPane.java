@@ -22,6 +22,20 @@
  */
 package edu.cmu.cs.dennisc.zoot;
 
+
+
+/**
+ * @author Dennis Cosgrove
+ */
+class ZTabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
+	private SingleSelectionOperation tabSelectionOperation;
+	private ActionOperation tabCloseOperation;
+	public ZTabbedPaneUI( SingleSelectionOperation tabSelectionOperation, ActionOperation tabCloseOperation ) {
+		this.tabSelectionOperation = tabSelectionOperation;
+		this.tabCloseOperation = tabCloseOperation;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -32,7 +46,6 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 	}
 
 	public static void main( String[] args ) {
-		
 		class MonthPane extends ZLabel {
 			MonthPane( String text ) {
 				this.setText( text );
@@ -54,7 +67,7 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		ZTabbedPane tabbedPane = new ZTabbedPane( tabSelectionOperation, tabCloseOperation );
 		String[] tabTitles = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 		for( String tabTitle : tabTitles ) {
-			tabbedPane.add( tabTitle, new MonthPane( tabTitle ) );
+			tabbedPane.addTab( tabTitle, new MonthPane( tabTitle ) );
 		}
 		frame.getContentPane().add( tabbedPane );
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );

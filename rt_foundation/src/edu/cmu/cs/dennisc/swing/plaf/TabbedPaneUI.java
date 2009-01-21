@@ -135,21 +135,15 @@ class CloseIcon implements javax.swing.Icon {
 public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	private static final int NORTH_AREA_PAD = 4;
 	private static final int EAST_TAB_PAD = 48;
-	private java.awt.Font selectedFont;
 	private java.awt.Stroke selectedStroke = new java.awt.BasicStroke( 3.0f );
 	private java.awt.Stroke normalStroke = new java.awt.BasicStroke( 1.0f );
 
 	private CloseIcon closeIcon = new CloseIcon();
-	
-	//private java.awt.FontMetrics selectedFontMetrics;
 	@Override
 	protected void installDefaults() {
 		super.installDefaults();
 		java.awt.Font normalFont = this.tabPane.getFont();
 		this.tabPane.setFont( normalFont.deriveFont( java.awt.Font.ITALIC ) );
-		//this.selectedFont = normalFont.deriveFont( normalFont.getSize() * 1.1f );
-		//this.selectedFontMetrics = this.tabPane.getFontMetrics( this.selectedFont );
-		this.selectedFont = normalFont;
 		
 		this.tabAreaInsets.set( 2, 0, 0, 0 );
 		this.tabInsets.set( 2, 2, 2, 2 );
@@ -252,63 +246,6 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		}
 	}
 
-//	class MouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
-//		private java.awt.Rectangle buffer = new java.awt.Rectangle(); 
-//		private int getTabIndex( java.awt.event.MouseEvent e ) {
-//			return TabbedPaneUI.this.tabForCoordinate( TabbedPaneUI.this.tabPane, e.getX(), e.getY() );
-//		}
-//		private void updateRollover( java.awt.event.MouseEvent e ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-//			if( TabbedPaneUI.this.tabPane.isEnabled() ) {
-//				int index = getTabIndex( e );
-//				TabbedPaneUI.this.setRolloverTab( index );
-//				
-//				if( index >= 0 ) {
-//					TabbedPaneUI.this.getTabBounds( index, buffer );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getX(), buffer.getX() );
-//					if( e.getX() > buffer.x + buffer.width/2 ) {
-//						closeIcon.setHighlighted( true );
-//					} else {
-//						closeIcon.setHighlighted( false );
-//					}
-//				} else {
-//					closeIcon.setHighlighted( false );
-//				}
-//				
-//			}
-//		}
-//
-//		public void mouseEntered( java.awt.event.MouseEvent e ) {
-//			updateRollover( e );
-//		}
-//		public void mouseExited( java.awt.event.MouseEvent e ) {
-//			TabbedPaneUI.this.setRolloverTab( -1 );
-//		}
-//		public void mousePressed( java.awt.event.MouseEvent e ) {
-//			if( TabbedPaneUI.this.tabPane.isEnabled() ) {
-//				int nextTabIndex = getTabIndex( e );
-//				if( nextTabIndex >= 0 ) {
-//					if( TabbedPaneUI.this.tabPane.isEnabledAt( nextTabIndex ) ) {
-//						if( nextTabIndex != TabbedPaneUI.this.tabPane.getSelectedIndex() ) {
-//							TabbedPaneUI.this.tabPane.setSelectedIndex( nextTabIndex );
-//						} else if( TabbedPaneUI.this.tabPane.isRequestFocusEnabled() ) {
-//							TabbedPaneUI.this.tabPane.requestFocus();
-//						}
-//					}
-//				}
-//			}
-//		}
-//		public void mouseReleased( java.awt.event.MouseEvent e ) {
-//		}
-//		public void mouseClicked( java.awt.event.MouseEvent e ) {
-//		}
-//		public void mouseMoved( java.awt.event.MouseEvent e ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "mouseMoved", e );
-//			updateRollover( e );
-//		}
-//		public void mouseDragged( java.awt.event.MouseEvent e ) {
-//		}
-//	}
 	class CloseIconMouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 		private java.awt.Rectangle buffer = new java.awt.Rectangle(); 
 		private int getTabIndex( java.awt.event.MouseEvent e ) {
@@ -321,9 +258,11 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 				
 				if( index >= 0 ) {
 					TabbedPaneUI.this.getTabBounds( index, buffer );
-					int xMin = buffer.x + buffer.width / 2;
-					int xMax = buffer.x + buffer.width;
-					return xMin < e.getX() && e.getX() < xMax;
+					int xMin = buffer.x + buffer.width - EAST_TAB_PAD/2;
+					int xMax = xMin + closeIcon.getIconWidth();
+					int yMin = buffer.y + buffer.height/2 - 4;
+					int yMax = yMin + closeIcon.getIconHeight();
+					return ( xMin < e.getX() && e.getX() < xMax ) && ( yMin < e.getY() && e.getY() < yMax );
 				}
 			}
 			return false;
@@ -425,7 +364,8 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 
 	@Override
 	protected int calculateTabHeight( int tabPlacement, int tabIndex, int fontHeight ) {
-		return fontHeight + NORTH_AREA_PAD + 6;
+		int rv = super.calculateTabHeight( tabPlacement, tabIndex, fontHeight );
+		return rv + NORTH_AREA_PAD;
 	}
 	@Override
 	protected int calculateTabWidth( int tabPlacement, int tabIndex, java.awt.FontMetrics metrics ) {
@@ -436,15 +376,23 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	}
 	@Override
 	protected void paintText( java.awt.Graphics g, int tabPlacement, java.awt.Font font, java.awt.FontMetrics metrics, int tabIndex, String title, java.awt.Rectangle textRect, boolean isSelected ) {
-		if( isSelected ) {
-			g.setFont( this.selectedFont );
-		} else {
-			g.setFont( font );
-		}
 		g.setColor( java.awt.Color.BLACK );
 		int x = textRect.x;
 		x -= EAST_TAB_PAD / 4;
 		g.drawString( title, x, textRect.y + textRect.height );
 		//super.paintText( g, tabPlacement, font, metrics, tabIndex, title, textRect, isSelected );
+	}
+	
+	@Override
+	protected void paintIcon( java.awt.Graphics g, int tabPlacement, int tabIndex, javax.swing.Icon icon, java.awt.Rectangle iconRect, boolean isSelected ) {
+		if( icon != null ) {
+			int x = iconRect.x;
+			x -= EAST_TAB_PAD / 4;
+			int y = iconRect.y;
+			y += NORTH_AREA_PAD;
+			icon.paintIcon( this.tabPane, g, x, y );
+		} else {
+			super.paintIcon( g, tabPlacement, tabIndex, icon, iconRect, isSelected );
+		}
 	}
 }
