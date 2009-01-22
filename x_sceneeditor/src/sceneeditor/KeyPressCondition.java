@@ -22,29 +22,37 @@
  */
 package sceneeditor;
 
-import java.awt.Point;
+import java.awt.event.KeyEvent;
 
 /**
  * @author David Culyba
  */
-public class ObjectDragManipulator extends DragManipulator {
+public class KeyPressCondition extends ModifierSensitiveCondition {
 
-	@Override
-	protected void updateManipulator( Point current, int xDeltaSincePrevious, int yDeltaSincePrevious) {
-		// TODO Auto-generated method stub
-
+	protected int keyValue = 0;
+	
+	
+	public KeyPressCondition( int keyValue )
+	{
+		this( keyValue, null );
 	}
-
-	@Override
-	protected void startManipulator( Point current ) {
-		// TODO Auto-generated method stub
-
+	
+	public KeyPressCondition( int keyValue, ModifierMask modifierMask )
+	{
+		super(modifierMask);
+		this.keyValue = keyValue;
 	}
-
+	
 	@Override
-	protected void endManipulator( Point current ) {
-		// TODO Auto-generated method stub
-
+	protected boolean testState( InputState state )
+	{
+		return (super.testState( state ) && state.isKeyDown( this.keyValue));
+	}
+	
+	@Override
+	public String toString()
+	{
+		return KeyEvent.getKeyText( this.keyValue );
 	}
 
 }

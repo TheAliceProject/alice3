@@ -20,34 +20,31 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
 package sceneeditor;
+
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
-public abstract class DragManipulator {
+public class TranslateTransformable {
+	protected static double MOVEMENT_RATE = 5.0d;
+	protected static double CLICK_TIME = .1d;
+	protected static double CLICK_MOVE_AMOUNT = .2d;
 	
-	protected edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable = null;
-	protected boolean hasStarted = false;
+	protected Transformable transformable = null;
 	
-	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
+	protected Point3 initialPoint = new Point3();
+	
+	public TranslateTransformable( Transformable transformable )
 	{
-		this.manipulatedTransformable = manipulatedTransformable;
+		this.transformable = transformable;
 	}
 	
-	public boolean hasStarted()
+	public void setInitialPoint( Point3 point )
 	{
-		return this.hasStarted;
+		this.initialPoint.set( point );
 	}
 	
-	public abstract void startManipulator( InputState startInput );
-	
-	public abstract void dataUpdateManipulator( InputState currentInput, InputState previousInput );
-	
-	public abstract void timeUpdateManipulator( double dTime, InputState currentInput );
-	
-	public abstract void endManipulator( InputState endInput, InputState previousInput  );
-	
-
 }

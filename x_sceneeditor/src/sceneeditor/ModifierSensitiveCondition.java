@@ -20,34 +20,35 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
 package sceneeditor;
 
 /**
  * @author David Culyba
  */
-public abstract class DragManipulator {
+public class ModifierSensitiveCondition extends InputCondition {
+
+	protected ModifierMask modifierMask = null;
 	
-	protected edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable = null;
-	protected boolean hasStarted = false;
-	
-	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
+	public ModifierSensitiveCondition()
 	{
-		this.manipulatedTransformable = manipulatedTransformable;
+		this.modifierMask = null;
 	}
 	
-	public boolean hasStarted()
+	public ModifierSensitiveCondition( ModifierMask modifierMask )
 	{
-		return this.hasStarted;
+		this.modifierMask = modifierMask;
 	}
 	
-	public abstract void startManipulator( InputState startInput );
-	
-	public abstract void dataUpdateManipulator( InputState currentInput, InputState previousInput );
-	
-	public abstract void timeUpdateManipulator( double dTime, InputState currentInput );
-	
-	public abstract void endManipulator( InputState endInput, InputState previousInput  );
-	
+	@Override
+	protected boolean testState( InputState state ) {
+		if (this.modifierMask != null)
+		{
+			return this.modifierMask.test( state );
+		}
+		else
+		{
+			return true;
+		}
+	}
 
 }

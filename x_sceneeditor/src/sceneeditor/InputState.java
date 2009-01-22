@@ -22,48 +22,85 @@
  */
 package sceneeditor;
 
+import edu.cmu.cs.dennisc.scenegraph.Composite;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author David Culyba
  */
 public class InputState {
 
-	static final int MAX_KEY_INDEX = 256;
-	static final int MAX_MOUSE_INDEX = 6;
+	enum InputEventType
+	{
+		MOUSE_WHEEL,
+		MOUSE_DOWN,
+		MOUSE_UP,
+		MOUSE_DRAGGED,
+		KEY_DOWN,
+		KEY_UP,
+		NULL_EVENT,
+	}
+	
 	
 	private java.awt.Point currentMouseLocation = new java.awt.Point();
-	private boolean[] currentKeyStates = new boolean[MAX_KEY_INDEX];
-	private boolean[] currentMouseButtonStates = new boolean[MAX_MOUSE_INDEX];
+	private java.util.HashMap< Integer, Boolean > currentKeysToStatesMap = new java.util.HashMap< Integer, Boolean >();
+	private java.util.HashMap< Integer, Boolean > currentMouseButtonsToStatesMap = new java.util.HashMap< Integer, Boolean >();
 	private int currentMouseWheelState = 0;
+	private InputEventType currentInputEventType = InputEventType.NULL_EVENT;
+	private edu.cmu.cs.dennisc.lookingglass.PickResult currentPickResult = null;
+	private Transformable currentlySelectedObject = null;
 	
+	/**
+	 * @return the currentlySelectedObject
+	 */
+	public Transformable getCurrentlySelectedObject() {
+		return currentlySelectedObject;
+	}
+
+	/**
+	 * @param currentlySelectedObject the currentlySelectedObject to set
+	 */
+	public void setCurrentlySelectedObject( Transformable currentlySelectedObject ) {
+		this.currentlySelectedObject = currentlySelectedObject;
+	}
+
 	public InputState()
 	{
-		java.util.Arrays.fill(this.currentKeyStates, false);
-		java.util.Arrays.fill(this.currentMouseButtonStates, false);
 	}
 	
 	public boolean isKeyDown( int keyIndex )
 	{
-		return this.currentKeyStates[keyIndex];
+		if (currentKeysToStatesMap.containsKey( keyIndex ))
+		{
+			return currentKeysToStatesMap.get( keyIndex ).booleanValue();
+		}
+		return false;
 	}
 	
 	public void setKeyState( int keyIndex, boolean isDown )
 	{
-		this.currentKeyStates[keyIndex] = isDown;
+		currentKeysToStatesMap.put( keyIndex, new Boolean(isDown) );
 	}
 	
 	public void setMouseState( int mouseButton, boolean isDown )
 	{
-		this.currentMouseButtonStates[mouseButton] = isDown;
+		Integer mouseInt = new Integer(mouseButton);
+		currentMouseButtonsToStatesMap.put( mouseInt, new Boolean(isDown) );
 	}
 	
-	public boolean getMouseState( int mouseButton )
+	public boolean isMouseDown( int mouseButton )
 	{
-		return this.currentMouseButtonStates[mouseButton];
+		if (currentMouseButtonsToStatesMap.containsKey( mouseButton ))
+		{
+			return currentMouseButtonsToStatesMap.get( mouseButton ).booleanValue();
+		}
+		return false;
 	}
 	
-	public void setMouseWheelState( int mouseWheelClicks )
+	public void setMouseWheelState( int mouseWheelMovement )
 	{
-		this.currentMouseWheelState = mouseWheelClicks;
+		this.currentMouseWheelState = mouseWheelMovement;
 	}
 	
 	public int getMouseWheelState()
@@ -81,18 +118,50 @@ public class InputState {
 		return this.currentMouseLocation;
 	}
 	
+	public void setInputEventType( InputEventType eventType )
+	{
+		this.currentInputEventType = eventType;
+	}
+	
+	public InputEventType getInputEventType()
+	{
+		return this.currentInputEventType;
+	}
+	
+	public void setPickResult( edu.cmu.cs.dennisc.lookingglass.PickResult pickResult )
+	{
+		this.currentPickResult = pickResult;
+	}
+	
+	public edu.cmu.cs.dennisc.lookingglass.PickResult getPickResult()
+	{
+		return this.currentPickResult;
+	}
+	
+	public Transformable getPickedTransformable()
+	{
+		if (this.currentPickResult != null)
+		{
+			Visual sgVisual = this.currentPickResult.getVisual();
+			if( sgVisual != null ) {
+				Composite sgParent = sgVisual.getParent();
+				if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
+					return (edu.cmu.cs.dennisc.scenegraph.Transformable)sgParent;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public void copyState( InputState sourceState )
 	{
-		for (int i=0; i<this.currentKeyStates.length; i++)
-		{
-			this.currentKeyStates[i] = sourceState.currentKeyStates[i];
-		}
-		for (int i=0; i<this.currentMouseButtonStates.length; i++)
-		{
-			this.currentMouseButtonStates[i] = sourceState.currentMouseButtonStates[i];
-		}
+		this.currentKeysToStatesMap = (java.util.HashMap< Integer, Boolean >)sourceState.currentKeysToStatesMap.clone();
+		this.currentMouseButtonsToStatesMap = (java.util.HashMap< Integer, Boolean >)sourceState.currentMouseButtonsToStatesMap.clone();
 		this.currentMouseLocation.setLocation( sourceState.currentMouseLocation );
 		this.currentMouseWheelState = sourceState.currentMouseWheelState;
+		this.currentInputEventType = sourceState.currentInputEventType;
+		this.currentPickResult = sourceState.currentPickResult;
+		this.currentlySelectedObject = sourceState.currentlySelectedObject;
 	}
 	
 	@Override
@@ -102,9 +171,10 @@ public class InputState {
 		String keyState = "";
 		
 		boolean isFirst = true;
-		for (int i=0; i<this.currentKeyStates.length; i++)
+		Object[] keyKeys = this.currentKeysToStatesMap.keySet().toArray();
+		for (int i=0; i<keyKeys.length; i++)
 		{
-			if (this.currentKeyStates[i])
+			if (this.currentKeysToStatesMap.get( keyKeys[i] ).booleanValue())
 			{
 				if (isFirst)
 				{
@@ -114,13 +184,14 @@ public class InputState {
 				{
 					keyState += ", ";
 				}
-				keyState += java.awt.event.KeyEvent.getKeyText( i );
+				keyState += java.awt.event.KeyEvent.getKeyText( (Integer)keyKeys[i] );
 			}
 		}
 		isFirst = true;
-		for (int i=0; i<this.currentMouseButtonStates.length; i++)
+		Object[] mouseKeys = this.currentMouseButtonsToStatesMap.keySet().toArray();
+		for (int i=0; i<mouseKeys.length; i++)
 		{
-			if (this.currentMouseButtonStates[i])
+			if (this.currentMouseButtonsToStatesMap.get( mouseKeys[i] ).booleanValue())
 			{
 				if (isFirst)
 				{
@@ -130,11 +201,10 @@ public class InputState {
 				{
 					mouseButtonState += ", ";
 				}
-				mouseButtonState += "button "+i;
+				mouseButtonState += "button "+mouseKeys[i] ;
 			}
 		}
-		
-		return "Keys: "+keyState+"\nMouse Buttons: "+mouseButtonState+"\nMouse Wheel: "+this.currentMouseWheelState+"\nMouse Location: "+this.currentMouseLocation;
+		return "Event Type: "+this.currentInputEventType+"\nKeys: "+keyState+"\nMouse Buttons: "+mouseButtonState+"\nMouse Wheel: "+this.currentMouseWheelState+"\nMouse Location: "+this.currentMouseLocation;
 		
 	}
 	

@@ -20,34 +20,31 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
 package sceneeditor;
+
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba
  */
-public abstract class DragManipulator {
-	
-	protected edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable = null;
-	protected boolean hasStarted = false;
-	
-	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
-	{
-		this.manipulatedTransformable = manipulatedTransformable;
-	}
-	
-	public boolean hasStarted()
-	{
-		return this.hasStarted;
-	}
-	
-	public abstract void startManipulator( InputState startInput );
-	
-	public abstract void dataUpdateManipulator( InputState currentInput, InputState previousInput );
-	
-	public abstract void timeUpdateManipulator( double dTime, InputState currentInput );
-	
-	public abstract void endManipulator( InputState endInput, InputState previousInput  );
-	
+public abstract class CameraManipulator extends DragManipulator implements CameraInformedManipulator {
 
+	protected AbstractCamera camera = null;
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	
+	public void setCamera( AbstractCamera camera ) {
+		this.camera = camera;
+		if (this.camera != null)
+		{
+			this.manipulatedTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)camera.getParent();
+		}
+	}
+
+	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
+		this.onscreenLookingGlass = onscreenLookingGlass;
+	}
+	
+	
+	
 }

@@ -22,31 +22,12 @@
  */
 package sceneeditor;
 
-import java.awt.Point;
-
 /**
  * @author David Culyba
  */
-public class CameraTranslateManipulator extends DragManipulator {
-
-	@Override
-	protected void endManipulator( Point current ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void startManipulator( Point current ) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void updateManipulator( Point current, int xDeltaSincePrevious, int yDeltaSincePrevious  ) {
-		
-		edu.cmu.cs.dennisc.math.AffineMatrix4x4 transform = this.manipulatedTransformable.localTransformation.getValue();
-		transform.applyTranslation( xDeltaSincePrevious*.05d, yDeltaSincePrevious*-.05d, 0.0d);
-		this.manipulatedTransformable.setLocalTransformation( transform );
-	}
-
+public interface CameraInformedManipulator {
+	
+	public void setCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera);
+	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass );
+	
 }

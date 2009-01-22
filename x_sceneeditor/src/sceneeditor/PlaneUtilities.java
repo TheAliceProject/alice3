@@ -20,34 +20,31 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
 package sceneeditor;
+
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba
  */
-public abstract class DragManipulator {
+public class PlaneUtilities {
 	
-	protected edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable = null;
-	protected boolean hasStarted = false;
-	
-	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
-	{
-		this.manipulatedTransformable = manipulatedTransformable;
+	public static edu.cmu.cs.dennisc.math.Point3 getPointInPlane( edu.cmu.cs.dennisc.math.Plane plane, edu.cmu.cs.dennisc.math.Ray ray ) {
+		double t = plane.intersect( ray );
+		if ( Double.isNaN( t ) )
+		{
+			return null;
+		}
+		return ray.getPointAlong( t );
 	}
 	
-	public boolean hasStarted()
+	public static edu.cmu.cs.dennisc.math.Ray getRayFromPixel( OnscreenLookingGlass onscreenLookingGlass, AbstractCamera camera, int xPixel, int yPixel)
 	{
-		return this.hasStarted;
+		edu.cmu.cs.dennisc.math.Ray ray = onscreenLookingGlass.getRayAtPixel( xPixel, yPixel, camera );
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = camera.getAbsoluteTransformation();
+		ray.transform( m );
+		return ray;
 	}
-	
-	public abstract void startManipulator( InputState startInput );
-	
-	public abstract void dataUpdateManipulator( InputState currentInput, InputState previousInput );
-	
-	public abstract void timeUpdateManipulator( double dTime, InputState currentInput );
-	
-	public abstract void endManipulator( InputState endInput, InputState previousInput  );
-	
 
 }
