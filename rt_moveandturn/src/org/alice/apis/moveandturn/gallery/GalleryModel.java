@@ -65,6 +65,8 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 	public static java.io.File getGalleryRootDirectory() {
 		return s_galleryRootDirectory;
 	}
+	protected GalleryModel() {
+	}
 	public GalleryModel( String path ) {
 		java.io.File file = new java.io.File( s_galleryRootDirectory, "assets/org.alice.apis.moveandturn.gallery/" + path + ".zip" );
 		assert file.exists();

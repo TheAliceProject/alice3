@@ -233,7 +233,10 @@ class CreateInstancePane( edu.cmu.cs.dennisc.swing.InputPane ):
 		if type:
 			superType = type.getFirstTypeEncounteredDeclaredInJava()
 		else:
-			superType = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( java.lang.Class.forName( self._getSuperClassName() ) )
+			superClsName = self._getSuperClassName()
+			#superClsName = "org.alice.apis.moveandturn.gallery.sports.BowlingPin"
+			cls = java.lang.Class.forName( superClsName )
+			superType = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls )
 		
 		
 		_type, isAlreadyReferenced = _getTypeForTypeDeclaredInJava( superType )
