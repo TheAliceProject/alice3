@@ -33,14 +33,37 @@ public class MailUtilities {
 			uee.printStackTrace();
 		}
 	}
-	public static void sendMail( String protocol, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, Attachment... attachments ) throws javax.mail.MessagingException {
+	public static void sendMail( 
+			String protocol,
+			boolean isSecureDesired,
+			String host, 
+			AbstractAuthenticator authenticator, 
+			String replyTo, 
+			String replyToPresonal, 
+			String to, 
+			String subject, 
+			String text, 
+			Attachment... attachments 
+		) throws javax.mail.MessagingException {
 		java.util.Properties props = new java.util.Properties();
 		props.put( "mail." + protocol + ".host", host );
 		if( "smtp".equals( protocol ) ) {
 			props.put( "mail." + protocol + ".starttls.enable", "true" );
 			props.put( "mail." + protocol + ".auth", "true" );
+			if( isSecureDesired ) {
+				props.put( "mail.smtp.port", "465" );
+				props.put( "mail.ssmtp.auth", "true" );
+				props.put( "mail.ssmtp.port", "465" );
+				props.put("mail.smtp.socketFactory.port", "465" );
+				props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+				props.put("mail.smtp.socketFactory.fallback", "false");
+			} else {
+				props.put( "mail.ssmtp.port", "25" );
+			}
 		}
-		javax.mail.Session session = javax.mail.Session.getDefaultInstance( props, authenticator );
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( props );
+		javax.mail.Session session = javax.mail.Session.getInstance( props, authenticator );
 		javax.mail.internet.MimeMessage message = new javax.mail.internet.MimeMessage( session );
 		message.setSubject( subject );
 
@@ -80,10 +103,20 @@ public class MailUtilities {
 		javax.mail.Transport.send( message );
 	}
 
-	public static void sendMail( String protocol, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, java.util.ArrayList< Attachment > attachments )
-			throws javax.mail.MessagingException {
+	public static void sendMail( 
+			String protocol, 
+			boolean isSecureDesired,
+			String host, 
+			AbstractAuthenticator authenticator, 
+			String replyTo, 
+			String replyToPresonal, 
+			String to, 
+			String subject, 
+			String text, 
+			java.util.ArrayList< Attachment > attachments 
+		) throws javax.mail.MessagingException {
 		Attachment[] array = new Attachment[ attachments.size() ];
 		attachments.toArray( array );
-		sendMail( protocol, host, authenticator, replyTo, replyToPresonal, to, subject, text, array );
+		sendMail( protocol, isSecureDesired, host, authenticator, replyTo, replyToPresonal, to, subject, text, array );
 	}
 }

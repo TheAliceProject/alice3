@@ -334,12 +334,16 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 	}
 	private void submit() {
 		this.isSubmitAttempted = true;
-		this.isSubmitSuccessful = false;
-		try {
-			edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( getProtocol(), getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
-			this.isSubmitSuccessful = true;
-		} catch( javax.mail.MessagingException me ) {
-			me.printStackTrace();
+		for( boolean isSecureDesired : new boolean[] { false, true } ) {
+		//boolean isSecureDesired = false;
+		//for( int port : new int[] { 25, 465 } ) {
+			try {
+				edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( getProtocol(), isSecureDesired, getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
+				this.isSubmitSuccessful = true;
+				break;
+			} catch( javax.mail.MessagingException me ) {
+				me.printStackTrace();
+			}
 		}
 	}
 }
