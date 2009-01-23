@@ -50,9 +50,6 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 		//todo: add scenegraph hint
 		final int N = 32;
 		final int M = 16;
-
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( m_minorRadius );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( m_majorRadius );
 		double dTheta = 2 * Math.PI / (N - 1);
 		double dPhi = 2 * Math.PI / (M - 1);
 
