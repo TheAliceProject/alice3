@@ -51,6 +51,8 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 		final int N = 32;
 		final int M = 16;
 
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( m_minorRadius );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( m_majorRadius );
 		double dTheta = 2 * Math.PI / (N - 1);
 		double dPhi = 2 * Math.PI / (M - 1);
 
@@ -90,7 +92,7 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 			m_majorRadius = m_element.majorRadius.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.minorRadius ) {
-			m_majorRadius = m_element.minorRadius.getValue();
+			m_minorRadius = m_element.minorRadius.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

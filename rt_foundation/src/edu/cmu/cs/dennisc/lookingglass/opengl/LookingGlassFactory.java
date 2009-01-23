@@ -112,7 +112,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 //				//sb.append( pathOriginal );
 //				//sb.append( System.getProperty( "path.separator" ) );
 //			}
-			sb.append( "-ea -Xmx1024m -Djava.library.path=/dev/tools/jogl/lib/native" );
+			sb.append( "-ea -Xmx1024m -Djava.library.path=\"/Program Files/Alice/3.beta.0000/tools/jogl/lib/windows-i586\"" );
 			
 			String javaLibraryPath = sb.toString();
 			
