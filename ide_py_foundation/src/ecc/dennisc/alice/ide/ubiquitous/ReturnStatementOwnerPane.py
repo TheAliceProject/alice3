@@ -22,12 +22,13 @@ class ReturnStatementOwnerPane( alice.ide.editors.common.Pane ):
 		self.setLayout( java.awt.GridLayout( 1, 1 ) )
 		self._returnStatementPane = ReturnStatementTemplatePane()
 	def handleMethodChange( self, code ):
-		if isinstance( code, alice.ast.ConstructorDeclaredInAlice ) or code.isProcedure():
-			self.removeAll()
-		else:
-			returnType = code.getReturnType()
-			self._returnStatementPane.setReturnType( returnType )
-			if self._returnStatementPane.getParent() == self:
-				pass
+		if code:
+			if isinstance( code, alice.ast.ConstructorDeclaredInAlice ) or code.isProcedure():
+				self.removeAll()
 			else:
-				self.add( self._returnStatementPane )
+				returnType = code.getReturnType()
+				self._returnStatementPane.setReturnType( returnType )
+				if self._returnStatementPane.getParent() == self:
+					pass
+				else:
+					self.add( self._returnStatementPane )

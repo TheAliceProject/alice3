@@ -65,15 +65,16 @@ class CodeTabbedPane( zoot.ZTabbedPane ):
 		return self._getCodeEditorForScrollPane( scrollPane )
 
 	def _edit( self, code ):
-		if self._mapCodeToScrollPane.has_key( code ):
-			scrollPane = self._mapCodeToScrollPane[ code ]
-			self.setSelectedComponent( scrollPane )
-		else:
-			from CodePane import CodePane
-			codePane = CodePane( code )
-			titlePane = alice.ide.editors.code.CodeTitlePane( code )
-			scrollPane = self.addScrollableTab( titlePane, codePane, isSelectionDesired=True )
-			self._mapCodeToScrollPane[ code ] = scrollPane
+		if code:
+			if self._mapCodeToScrollPane.has_key( code ):
+				scrollPane = self._mapCodeToScrollPane[ code ]
+				self.setSelectedComponent( scrollPane )
+			else:
+				from CodePane import CodePane
+				codePane = CodePane( code )
+				titlePane = alice.ide.editors.code.CodeTitlePane( code )
+				scrollPane = self.addScrollableTab( titlePane, codePane, isSelectionDesired=True )
+				self._mapCodeToScrollPane[ code ] = scrollPane
 		self.revalidate()
 
 	def handleRemove(self, scrollPane):
