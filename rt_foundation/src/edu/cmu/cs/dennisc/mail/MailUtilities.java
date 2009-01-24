@@ -57,8 +57,8 @@ public class MailUtilities {
 				props.put("mail.smtp.socketFactory.port", "465" );
 				props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 				props.put("mail.smtp.socketFactory.fallback", "false");
-			} else {
-				props.put( "mail.smtp.port", "25" );
+//			} else {
+//				props.put( "mail.smtp.port", "25" );
 			}
 		}
 		
