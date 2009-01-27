@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentiallyActivePane extends BoxPane {
+public abstract class PotentiallyActivePane extends edu.cmu.cs.dennisc.zoot.ZBoxPane {
 	private boolean isActive = false;
 
 	public PotentiallyActivePane( int axis ) {
@@ -115,31 +115,8 @@ public abstract class PotentiallyActivePane extends BoxPane {
 		super.paintComponent( g );
 	}
 
-//	private static final java.awt.Color TOP_HIGHLIGHTED_COLOR = new java.awt.Color( 255, 255, 0, 43 );
-//	private static final java.awt.Color BOTTOM_HIGHLIGHTED_COLOR = new java.awt.Color( 127, 127, 0, 43 );
-
-	//	private static final edu.cmu.cs.dennisc.awt.BeveledShape EMPTY_BEVELED_SHAPE = new edu.cmu.cs.dennisc.awt.BeveledShape() {
-	//		@Override
-	//		public void fill( java.awt.Graphics2D g2 ) {
-	//		}
-	//		@Override
-	//		public void draw( java.awt.Graphics2D g2, edu.cmu.cs.dennisc.awt.BevelState bevelState, float raisedStrokeWidth, float flushStrokeWidth, float sunkenStrokeWidth ) {
-	//		}
-	//	};
-	//	@Override
-	//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
-	//		return EMPTY_BEVELED_SHAPE;
-	//	}
 	protected abstract edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape();
 	protected void paintActiveBorder( java.awt.Graphics2D g2 ) {
-//		java.awt.Paint paint = new java.awt.GradientPaint( 0, 0, TOP_HIGHLIGHTED_COLOR, 0, (float)getHeight(), BOTTOM_HIGHLIGHTED_COLOR );
-//		g2.setPaint( paint );
-//		this.createBoundsShape().fill( g2 );
-		
-//		g2.setStroke( new java.awt.BasicStroke( 3 ) );
-//		g2.setPaint( java.awt.Color.BLUE );
-//		g2.draw( this.createBoundsShape().getBaseShape() );
-
 		final float STROKE_WIDTH = 3.0f;
 		this.createBoundsShape().draw( g2, edu.cmu.cs.dennisc.awt.BevelState.RAISED, STROKE_WIDTH, STROKE_WIDTH, STROKE_WIDTH );
 	}

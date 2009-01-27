@@ -20,11 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.ast;
+package edu.cmu.cs.dennisc.zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface BorderFactory {
-	public javax.swing.border.Border createBorder( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > nodeCls ); 
+public interface Renderer<E> {
+	public void paint( E context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isSelected, boolean isPressed );
 }

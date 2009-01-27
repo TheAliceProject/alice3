@@ -45,10 +45,10 @@ class KnurlBorder implements javax.swing.border.Border {
 /**
  * @author Dennis Cosgrove
  */
-public class KnurlBorderFactory implements BorderFactory {
+public class KnurlBorderFactory implements StatementClassBorderFactory {
 	private KnurlBorder sharedInstance = new KnurlBorder();
-	public javax.swing.border.Border createBorder( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > nodeCls ) {
-		assert nodeCls != null;
+	public javax.swing.border.Border createBorder( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
+		assert statementCls != null;
 		return this.sharedInstance;
 	}
 }

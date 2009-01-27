@@ -20,14 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.editors.common;
+package edu.cmu.cs.dennisc.alice.ide.ast;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class BoxPane extends Pane {
-	public BoxPane( int axis ) {
-		javax.swing.BoxLayout boxLayout = new javax.swing.BoxLayout( this, axis );
-		setLayout( boxLayout );
-	}
+public interface StatementRenderer extends edu.cmu.cs.dennisc.zoot.Renderer<edu.cmu.cs.dennisc.alice.ast.Statement> {
 }

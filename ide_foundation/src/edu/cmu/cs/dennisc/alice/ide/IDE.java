@@ -314,8 +314,11 @@ public abstract class IDE extends javax.swing.JFrame {
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
 	}
 
-	protected edu.cmu.cs.dennisc.alice.ide.ast.BorderFactory createStatementBorderFactory() {
+	protected edu.cmu.cs.dennisc.alice.ide.ast.StatementClassBorderFactory createStatementBorderFactory() {
 		return new edu.cmu.cs.dennisc.alice.ide.ast.KnurlBorderFactory();
+	}
+	protected edu.cmu.cs.dennisc.alice.ide.ast.StatementRenderer createStatementRendererFactory() {
+		return new edu.cmu.cs.dennisc.alice.ide.ast.RoundedRectangleStatementRenderer();
 	}
 
 	protected abstract void handleWindowClosing();

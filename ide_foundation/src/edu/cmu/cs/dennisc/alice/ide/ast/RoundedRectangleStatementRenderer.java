@@ -20,19 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.editors.common;
+package edu.cmu.cs.dennisc.alice.ide.ast;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class Pane extends javax.swing.JPanel {
-	public Pane() {
-		this.setOpaque( false );
-		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-	}
-	@Override
-	public java.awt.Dimension getMaximumSize() {
-		return this.getPreferredSize();
+public class RoundedRectangleStatementRenderer implements StatementRenderer {
+	public void paint( edu.cmu.cs.dennisc.alice.ast.Statement context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isSelected, boolean isPressed ) {
 	}
 }

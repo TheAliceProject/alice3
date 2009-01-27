@@ -26,10 +26,13 @@ package edu.cmu.cs.dennisc.alice.ide.editors.common;
  * @author Dennis Cosgrove
  */
 public abstract class StatementLikeSubstance extends PotentiallyDraggablePane {
-//	private static final int KNURL_WIDTH = 12;
-	private static edu.cmu.cs.dennisc.alice.ide.ast.BorderFactory borderFactory = null;
-	public static void setBorderFactory( edu.cmu.cs.dennisc.alice.ide.ast.BorderFactory borderFactory ) {
+	private static edu.cmu.cs.dennisc.alice.ide.ast.StatementClassBorderFactory borderFactory = null;
+	private static edu.cmu.cs.dennisc.alice.ide.ast.StatementRenderer renderer = null;
+	public static void setBorderFactory( edu.cmu.cs.dennisc.alice.ide.ast.StatementClassBorderFactory borderFactory ) {
 		StatementLikeSubstance.borderFactory = borderFactory;
+	}
+	public static void setRenderer( edu.cmu.cs.dennisc.alice.ide.ast.StatementRenderer renderer ) {
+		StatementLikeSubstance.renderer = renderer;
 	}
 	public StatementLikeSubstance() {
 		super( javax.swing.BoxLayout.LINE_AXIS );
@@ -38,27 +41,9 @@ public abstract class StatementLikeSubstance extends PotentiallyDraggablePane {
 		} else {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		}
-//		this.setBorder( javax.swing.BorderFactory.createMatteBorder( getBorderTop(), getBorderLeft(), getBorderBottom(), getBorderRight(), edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR ) );
 	}
 	
 	protected abstract Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass();
-//	protected int getBorderTop() {
-//		return 4;
-//	}
-//	protected int getBorderLeft() {
-//		int rv = 4;
-//		if( isKnurlDesired() ) {
-//			rv += KNURL_WIDTH;
-//		}
-//		return rv;
-//	}
-//	protected int getBorderBottom() {
-//		return 4;
-//	}
-//	protected int getBorderRight() {
-//		return 4;
-//	}
-
 	@Override
 	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
 		return new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( new java.awt.geom.RoundRectangle2D.Float( 1.5f, 1.5f, (float)getWidth()-3, (float)getHeight()-3, 8.0f, 8.0f ) );
