@@ -579,14 +579,14 @@ class AbstractIDE(alice.ide.IDE):
 	def maximize(self):
 		self.setExtendedState(self.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH)
 
-	def promptUserForParameterDeclaredInAlice(self, parametersProperty):
-		owner = self
-
-		model = parametersProperty.getOwner()
-		invocations = self.getInvocations(model)
-		
-		inputPane = ecc.dennisc.alice.ide.inputpanes.CreateParameterPane(parametersProperty.getValue(), invocations)
-		return inputPane.showInJDialog(owner, "Create Parameter", True)
+#	def promptUserForParameterDeclaredInAlice(self, parametersProperty):
+#		owner = self
+#
+#		model = parametersProperty.getOwner()
+#		invocations = self.getInvocations(model)
+#		
+#		inputPane = ecc.dennisc.alice.ide.inputpanes.CreateParameterPane(parametersProperty.getValue(), invocations)
+#		return inputPane.showInJDialog(owner, "Create Parameter", True)
 		
 	def getInvocations(self, method):
 		class Crawler(edu.cmu.cs.dennisc.pattern.Crawler):

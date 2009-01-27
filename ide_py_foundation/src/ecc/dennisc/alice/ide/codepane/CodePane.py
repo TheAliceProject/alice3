@@ -17,7 +17,7 @@ class AddParameterOperation( alice.ide.AbstractUndoableOperation ):
 	def prepare( self, e, observer ):
 		ide = self.getIDE()
 		invocations = ide.getInvocations( self._code )
-		inputPane = ecc.dennisc.alice.ide.inputpanes.CreateParameterPane( self._code.getParameters(), invocations )
+		inputPane = ecc.dennisc.alice.ide.inputpanes.CreateParameterPane( self._code, invocations )
 		self._param = inputPane.showInJDialog( ide, "Create Parameter", True )
 		if self._param:
 			return alice.ide.Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY
@@ -48,7 +48,12 @@ class DeleteParameterOperation( alice.ide.AbstractUndoableOperation ):
 	def prepare( self, e, observer ):
 		invocations = self.getIDE().getInvocations( self._code )
 		if len( invocations ):
-			result = javax.swing.JOptionPane.showConfirmDialog(self.getIDE(), "There are invocations to this method.\nDeleting this parameter will also delete the arguments from those invocations.\nWould you like to continue with the deletion?", "Delete Parameter", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION )
+			if self._code.isProcedure():
+				methodText = "procedure"
+			else:
+				methodText = "function"
+			message = "There are invocations to this %s.\nDeleting this parameter will also delete the arguments from those invocations.\nWould you like to continue with the deletion?" % methodText
+			result = javax.swing.JOptionPane.showConfirmDialog(self.getIDE(), message, "Delete Parameter", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION )
 			if result == javax.swing.JOptionPane.YES_OPTION:
 				pass
 			else:

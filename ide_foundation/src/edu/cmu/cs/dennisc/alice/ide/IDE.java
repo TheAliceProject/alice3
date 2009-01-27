@@ -22,6 +22,8 @@
  */
 package edu.cmu.cs.dennisc.alice.ide;
 
+import edu.cmu.cs.dennisc.alice.ast.Node;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -625,6 +627,7 @@ public abstract class IDE extends javax.swing.JFrame {
 		this.updateTitle();
 	}
 	public void loadProjectFrom( java.io.File file ) {
+		this.mapUUIDToNode.clear();
 		this.updateHistoryLengthAtLastFileOperation();
 		setFile( file );
 		//todo: find a better solution to concurrent modification exception
@@ -776,7 +779,7 @@ public abstract class IDE extends javax.swing.JFrame {
 	public boolean isFieldInScope( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return createInstanceExpression( field ) != null;
 	}
-	public abstract edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice promptUserForParameterDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty );
+//	public abstract edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice promptUserForParameterDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > parametersProperty );
 	//	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ide.operations.FieldSelectionOperation > mapFieldToSelectionOperation = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, edu.cmu.cs.dennisc.alice.ide.operations.FieldSelectionOperation >();
 	//	public edu.cmu.cs.dennisc.alice.ide.operations.FieldSelectionOperation getFieldSelectionOperationForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 	//		edu.cmu.cs.dennisc.alice.ide.operations.FieldSelectionOperation rv = mapFieldToSelectionOperation.get( field );
@@ -794,5 +797,57 @@ public abstract class IDE extends javax.swing.JFrame {
 	public void setDragInProgress( boolean isDragInProgress ) {
 		this.isDragInProgress = isDragInProgress;
 		this.currentDropReceptorComponent = null;
+	}
+	
+	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
+
+
+	private static <E extends Node> E getAncestor( Node node, Class<E> cls ) {
+		Node ancestor = node.getParent();
+		while( ancestor != null ) {
+			if( cls.isAssignableFrom( ancestor.getClass() ) ) {
+				break;
+			} else {
+				ancestor = ancestor.getParent();
+			}
+		}
+		return (E)ancestor;
+	}
+	
+	protected void ensureNodeVisible( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode = getAncestor( node, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+		if( nextFocusedCode != null ) {
+			this.setFocusedCode( nextFocusedCode );
+		}
+	}
+	private edu.cmu.cs.dennisc.alice.ast.Node getNodeForUUID( java.util.UUID uuid ) {
+		edu.cmu.cs.dennisc.alice.ast.Node rv = mapUUIDToNode.get( uuid );
+		if( rv != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getProgramType();
+			type.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+					if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+						edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)crawlable;
+						mapUUIDToNode.put( node.getUUID(), node );
+					}
+				}
+			} );
+			rv = mapUUIDToNode.get( uuid );
+		}
+		return rv;
+	}
+	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
+			edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
+			ensureNodeVisible( node );
+			return edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane.lookup( statement );
+		} else {
+			return null;
+		}
+	}
+	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
+		return getComponentForNode( getNodeForUUID( uuid ) );
 	}
 }

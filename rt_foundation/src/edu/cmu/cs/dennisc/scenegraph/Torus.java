@@ -27,6 +27,50 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Torus extends Shape {
+	//todo: rename
+	private enum E {
+		YES( true ), NO( true );
+		private boolean is;
+		E( boolean is ) {
+			this.is = is;
+		}
+		public double get( double yesRadius, double noRadius ) {
+			if( this.is ) {
+				return yesRadius;
+			} else {
+				return noRadius;
+			}
+		}
+	};
+	public enum CoordinatePlane {
+		XY( E.YES, E.YES, E.NO ),
+		XZ( E.YES, E.NO,  E.YES ),
+		YZ( E.NO,  E.YES, E.YES );
+		private E x;
+		private E y;
+		private E z;
+		CoordinatePlane( E x, E y, E z ) {
+			this.x = x;
+			this.y = y;
+			this.z = z;
+		}
+		public void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox, double yesRadius, double noRadius ) {
+			double x = this.x.get( yesRadius, noRadius );
+			double y = this.y.get( yesRadius, noRadius );
+			double z = this.z.get( yesRadius, noRadius );
+			boundingBox.setMinimum( -x, -y, -z );
+			boundingBox.setMaximum( +x, +y, +z );
+		}
+	}
+
+	public final edu.cmu.cs.dennisc.property.InstanceProperty< CoordinatePlane > coordinatePlane = new edu.cmu.cs.dennisc.property.InstanceProperty< CoordinatePlane >( this, CoordinatePlane.XZ ) {
+		@Override
+		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, CoordinatePlane value ) {
+			//todo: check isEqual
+			super.setValue( owner, value );
+			Torus.this.fireBoundChange();
+		};
+	};
 	public final BoundDoubleProperty minorRadius = new BoundDoubleProperty( this, 0.1 ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
@@ -42,13 +86,11 @@ public class Torus extends Shape {
 		}
 	};
 
-	//todo: specifiy which plane (XZ|XY|YZ)
-
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		double outerRadius = majorRadius.getValue() + minorRadius.getValue();
-		boundingBox.setMinimum( -outerRadius, -minorRadius.getValue(), -outerRadius );
-		boundingBox.setMaximum( +outerRadius, +minorRadius.getValue(), +outerRadius );
+		double yesRadius = majorRadius.getValue() + minorRadius.getValue();
+		double noRadius = minorRadius.getValue();
+		this.coordinatePlane.getValue().updateBoundingBox( boundingBox, yesRadius, noRadius );
 	}
 
 	@Override

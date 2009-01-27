@@ -208,13 +208,20 @@ public class FileUtilities {
 	public static java.io.File[] listDescendants( String rootPath, java.io.FileFilter fileFilter ) {
 		return listDescendants( new java.io.File( rootPath ), fileFilter );
 	}
-	public static java.io.File[] listDescendants( java.io.File root, String extension ) {
+	public static java.io.File[] listDescendants( java.io.File root, final String extension ) {
 		assert root.exists() : root;
 		assert extension.charAt( 0 ) != '.';
-		final String ext = extension;
 		return listDescendants( root, new java.io.FileFilter() {
 			public boolean accept( java.io.File file ) {
-				return file.isFile() && ext.equalsIgnoreCase( getExtension( file ) );
+				if( file.isFile() ) {
+					if( extension != null ) {
+						return extension.equalsIgnoreCase( getExtension( file ) );
+					} else {
+						return true;
+					}
+				} else {
+					return false;
+				}
 			}
 		} );
 	}

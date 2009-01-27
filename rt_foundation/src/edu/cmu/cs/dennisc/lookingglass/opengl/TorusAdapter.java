@@ -27,26 +27,41 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Torus > {
-	private double m_majorRadius;
-	private double m_minorRadius;
-
-	private void glVertex( Context context, double theta, double phi, boolean isLightingEnabled ) {
+	private void glVertex( Context context, edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane, double majorRadius, double minorRadius, double theta, double phi, boolean isLightingEnabled ) {
 		double sinTheta = Math.sin( theta );
 		double cosTheta = Math.cos( theta );
 		double sinPhi = Math.sin( phi );
 		double cosPhi = Math.cos( phi );
 
-		double y = m_minorRadius * sinPhi;
-		double r = m_majorRadius + m_minorRadius * cosPhi;
+		double y = minorRadius * sinPhi;
+		double r = majorRadius + ( minorRadius * cosPhi );
 		double x = sinTheta * r;
 		double z = cosTheta * r;
 		if( isLightingEnabled ) {
-			context.gl.glNormal3d( sinTheta * cosPhi, sinPhi, cosTheta * cosPhi );
+			double i = sinTheta * cosPhi;
+			double j = sinPhi;
+			double k = cosTheta * cosPhi;
+			if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.XY ) {
+				//todo
+			} else if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.YZ ) {
+				//todo
+			}
+			context.gl.glNormal3d( i, j, k );
+		}
+		if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.XY ) {
+			//todo
+		} else if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.YZ ) {
+			//todo
 		}
 		context.gl.glVertex3d( x, y, z );
 	}
 
 	private void glTorus( Context context, boolean isLightingEnabled ) {
+
+		edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane = this.m_element.coordinatePlane.getValue();
+		double majorRadius = this.m_element.majorRadius.getValue();
+		double minorRadius = this.m_element.minorRadius.getValue();
+
 		//todo: add scenegraph hint
 		final int N = 32;
 		final int M = 16;
@@ -58,8 +73,8 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 			double phi = 0;
 			context.gl.glBegin( javax.media.opengl.GL.GL_QUAD_STRIP );
 			for( int j = 0; j < M; j++ ) {
-				glVertex( context, theta, phi, isLightingEnabled );
-				glVertex( context, theta + dTheta, phi, isLightingEnabled );
+				glVertex( context, coordinatePlane, majorRadius, minorRadius, theta, phi, isLightingEnabled );
+				glVertex( context, coordinatePlane, majorRadius, minorRadius, theta + dTheta, phi, isLightingEnabled );
 				phi += dPhi;
 			}
 			context.gl.glEnd();
@@ -86,10 +101,10 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.majorRadius ) {
-			m_majorRadius = m_element.majorRadius.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.minorRadius ) {
-			m_minorRadius = m_element.minorRadius.getValue();
+			setIsGeometryChanged( true );
+		} else if( property == m_element.coordinatePlane ) {
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

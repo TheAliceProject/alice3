@@ -27,15 +27,137 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner/* implements java.io.Serializable*/implements edu.cmu.cs.dennisc.pattern.Crawlable {
 	private java.util.UUID m_uuid = java.util.UUID.randomUUID();
-	//public edu.cmu.cs.dennisc.property.InstanceProperty< java.util.UUID > uuid = new edu.cmu.cs.dennisc.property.InstanceProperty< java.util.UUID >( this, java.util.UUID.randomUUID() );
-	//public edu.cmu.cs.dennisc.property.ListProperty< java.util.UUID > uuidHistory = new edu.cmu.cs.dennisc.property.ListProperty< java.util.UUID >( this );
-
+	private Node parent;
 	
 	public java.util.UUID getUUID() {
 		return m_uuid;
 	}
 	/*package-private*/ void setUUID( java.util.UUID uuid ) {
 		m_uuid = uuid;
+	}
+	
+	public Node getParent() {
+		return this.parent;
+	}
+	
+	private void setParent( Node parent ) {
+		if( this.parent != parent ) {
+			if( this.parent != null ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: setOwner previous not null", this );
+//				Thread.dumpStack();
+			}
+			this.parent = parent;
+		}
+	}
+	
+	@Override
+	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		super.firePropertyChanging( e );
+		edu.cmu.cs.dennisc.property.Property< ? > property = e.getTypedSource();
+		if( property instanceof NodeProperty< ? > ) {
+			NodeProperty< ? > nodeProperty = (NodeProperty< ? >)property;
+			boolean isReference;
+			if( nodeProperty instanceof DeclarationProperty< ? > ) {
+				isReference = ((DeclarationProperty< ? >)nodeProperty).isReference();
+			} else {
+				isReference = false;
+			}
+			if( isReference ) {
+				//pass
+			} else {
+				Node node = nodeProperty.getValue();
+				if( node != null ) {
+					node.setParent( null );
+				}
+			}
+		}
+	}
+	@Override
+	public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		super.firePropertyChanged( e );
+		edu.cmu.cs.dennisc.property.Property< ? > property = e.getTypedSource();
+		if( property instanceof NodeProperty< ? > ) {
+			NodeProperty< ? > nodeProperty = (NodeProperty< ? >)property;
+			boolean isReference;
+			if( nodeProperty instanceof DeclarationProperty< ? > ) {
+				isReference = ((DeclarationProperty< ? >)nodeProperty).isReference();
+			} else {
+				isReference = false;
+			}
+			if( isReference ) {
+				//pass
+			} else {
+				Node node = nodeProperty.getValue();
+				if( node != null ) {
+					node.setParent( this );
+				}
+			}
+		}
+	}
+	@Override
+	public void fireClearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
+		super.fireClearing( e );
+		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		if( listProperty instanceof NodeListProperty< ? > ) {
+			NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
+			for( Node node : nodeListProperty ) {
+				if( node != null ) {
+					node.setParent( null );
+				}
+			}
+		}
+	}
+	@Override
+	public void fireRemoving( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
+		super.fireRemoving( e );
+		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		if( listProperty instanceof NodeListProperty< ? > ) {
+			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
+			for( Object o : e.getElements() ) {
+				if( o instanceof Node ) {
+					((Node)o).setParent( null );
+				}
+			}
+		}
+	}
+	@Override
+	public void fireSetting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
+		super.fireSetting( e );
+		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		if( listProperty instanceof NodeListProperty< ? > ) {
+			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
+			for( Object o : e.getElements() ) {
+				if( o instanceof Node ) {
+					((Node)o).setParent( null );
+				}
+			}
+		}
+	}
+	@Override
+	public void fireSet( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
+		super.fireSet( e );
+		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		if( listProperty instanceof NodeListProperty< ? > ) {
+			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
+			for( Object o : e.getElements() ) {
+				if( o instanceof Node ) {
+					((Node)o).setParent( this );
+				}
+			}
+		}
+	}
+	@Override
+	public void fireAdded( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
+		super.fireAdded( e );
+		edu.cmu.cs.dennisc.property.ListProperty listProperty = (edu.cmu.cs.dennisc.property.ListProperty)e.getSource();
+		if( listProperty instanceof NodeListProperty< ? > ) {
+			//NodeListProperty< ? > nodeListProperty = (NodeListProperty< ? >)listProperty;
+			for( Object o : e.getElements() ) {
+				if( o instanceof Node ) {
+					((Node)o).setParent( this );
+				}
+			}
+		}
 	}
 	
 	@Override

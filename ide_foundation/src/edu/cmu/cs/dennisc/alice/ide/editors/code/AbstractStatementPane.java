@@ -26,6 +26,11 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStatementPane extends edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance {
+	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Statement, AbstractStatementPane > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.Statement, AbstractStatementPane >();
+	public static AbstractStatementPane lookup( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		return AbstractStatementPane.map.get( statement );
+	}
+	
 	public static AbstractStatementPane createPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		AbstractStatementPane rv;
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
@@ -42,6 +47,9 @@ public abstract class AbstractStatementPane extends edu.cmu.cs.dennisc.alice.ide
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
 	public AbstractStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		this.statement = statement;
+		
+		AbstractStatementPane.map.put( this.statement, this );
+		
 		this.owner = owner;
 		this.statement.isEnabled.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {

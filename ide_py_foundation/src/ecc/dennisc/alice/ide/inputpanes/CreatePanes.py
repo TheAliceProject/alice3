@@ -35,9 +35,13 @@ class CreateFunctionPane( CreateTypedDeclarationPane ):
 		return alice.ast.MethodDeclaredInAlice( self._getName(), self._getType(), [], body )
 
 class WarningPane( zoot.ZPageAxisPane ):
-	def __init__( self, invocationReferences ):
+	def __init__( self, invocationReferences, isProcedure ):
 		zoot.ZPageAxisPane.__init__( self )
-		self.add( javax.swing.JLabel( "There are invocations to this method in your program." ) )
+		if isProcedure:
+			methodText = "procedure"
+		else:
+			methodText = "function"
+		self.add( javax.swing.JLabel( "There are invocations to this %s in your program." % methodText ) )
 		self.add( javax.swing.JLabel( "You will need to fill in argument values for this new parameter." ) )
 		pane = zoot.ZLineAxisPane()
 		pane.add( javax.swing.JLabel( "Look for:" ) )
@@ -45,14 +49,19 @@ class WarningPane( zoot.ZPageAxisPane ):
 		self.add( pane )
 
 class MethodInvocationsNotificationPane( PaneWithValidation ):
-	def __init__( self, invocationReferences ):
+	def __init__( self, invocationReferences, isProcedure ):
 		PaneWithValidation.__init__( self )
 
 		self.setBorder( javax.swing.border.EtchedBorder() )
 
-		self._component = WarningPane( invocationReferences )
+		self._component = WarningPane( invocationReferences, isProcedure )
 
-		self._checkbox = javax.swing.JCheckBox( "I understand that I need to update the invocations to this method." )
+		if isProcedure:
+			methodText = "procedure"
+		else:
+			methodText = "function"
+
+		self._checkbox = javax.swing.JCheckBox( "I understand that I need to update the invocations to this %s." % methodText )
 		self._checkbox.addItemListener( ecc.dennisc.swing.event.ItemAdapter( self._handleCheckBoxChange ) )
 
 		self.setLayout( java.awt.BorderLayout() )
@@ -66,14 +75,15 @@ class MethodInvocationsNotificationPane( PaneWithValidation ):
 		return self._checkbox.isSelected()
 
 class CreateParameterPane( CreateTypedDeclarationPane ):
-	def __init__( self, siblings, invocationReferences ):
+	def __init__( self, code, invocationReferences ):
+		self._code = code
 		self._invocationReferences = invocationReferences
-		CreateTypedDeclarationPane.__init__( self, siblings, "type:" )
+		CreateTypedDeclarationPane.__init__( self, self._code.getParameters(), "type:" )
 
 	def _createComponentRows( self ):
 		rv = CreateTypedDeclarationPane._createComponentRows( self )
 		if len( self._invocationReferences ):
-			pane = MethodInvocationsNotificationPane( self._invocationReferences )
+			pane = MethodInvocationsNotificationPane( self._invocationReferences, self._code.isProcedure() )
 			pane.setInputPane( self )
 			self.addOKButtonValidator( pane )
 			rv.append( ( javax.swing.JLabel( "WARNING:", javax.swing.JLabel.TRAILING ), pane ) )

@@ -168,6 +168,7 @@ class ProgramAdapter( apis.moveandturn.Program, ecc.dennisc.alice.ide.ProgramWit
 		type = instance.getType()
 		astField = alice.ast.FieldDeclaredInAlice( name, type, alice.ast.InstanceCreation( type.getDeclaredConstructor( [] ), [] ) )
 		astField.finalVolatileOrNeither.setValue( alice.ast.FieldModifierFinalVolatileOrNeither.FINAL )
+		astField.access.setValue( alice.ast.Access.PRIVATE )
 		self.getSceneType().fields.add( [ astField ] )
 		self.addASTField( astField, instance )
 		self._registerType( type )
