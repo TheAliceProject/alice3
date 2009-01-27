@@ -26,8 +26,8 @@ package edu.cmu.cs.dennisc.alice.ide.editors.ubiquitous;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionRequiringUbiquitousStatementTemplatePane extends UbiquitousStatementTemplatePane {
-	public ExpressionRequiringUbiquitousStatementTemplatePane( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement emptyStatement ) {
-		super( cls, emptyStatement );
+	public ExpressionRequiringUbiquitousStatementTemplatePane( /*Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls,*/ edu.cmu.cs.dennisc.alice.ast.Statement emptyStatement ) {
+		super( /*cls, */emptyStatement );
 	}
 	protected abstract void promptUserForExpression( edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver, edu.cmu.cs.dennisc.alice.ide.editors.common.DropAndDropEvent e );
 	

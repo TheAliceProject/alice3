@@ -59,22 +59,23 @@ class UbiquitousStatementToolTip extends javax.swing.JToolTip {
  * @author Dennis Cosgrove
  */
 public abstract class UbiquitousStatementTemplatePane extends edu.cmu.cs.dennisc.alice.ide.editors.type.StatementTemplatePane {
-	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
+	//private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
 	private edu.cmu.cs.dennisc.alice.ast.Statement emptyStatement;
 	private AbstractStatementPane emptyStatementPane;
 	private UbiquitousStatementToolTip toolTip;
 	private javax.swing.JComponent component;
 
-	public UbiquitousStatementTemplatePane( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement emptyStatement ) {
+	public UbiquitousStatementTemplatePane( /*Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls,*/ edu.cmu.cs.dennisc.alice.ast.Statement emptyStatement ) {
 		this.setLayout( new java.awt.FlowLayout() );
-		this.cls = cls;
+		//assert this.cls != null;
+		//this.cls = cls;
 		this.emptyStatement = emptyStatement;
 		this.emptyStatementPane = AbstractStatementPane.createPane( this.emptyStatement, null );
 		this.toolTip = new UbiquitousStatementToolTip( this.emptyStatementPane );
 		this.component = this.createComponent();
 		this.add( this.component );
 		this.add( this.emptyStatementPane );
-		this.setBackground( getIDE().getColorForASTClass( this.cls ) );
+		this.setBackground( getIDE().getColorForASTClass( this.getStatementClass() ) );
 		this.setToolTipText( "" );
 		//this.label.setPreferredSize( new java.awt.Dimension( 128, 128 ) );
 	}
@@ -87,13 +88,14 @@ public abstract class UbiquitousStatementTemplatePane extends edu.cmu.cs.dennisc
 	}
 	
 	protected javax.swing.JComponent createComponent() {
-		String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( this.cls, "edu.cmu.cs.dennisc.alice.ast.UbiquitousTemplates" );
+		String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( this.getStatementClass(), "edu.cmu.cs.dennisc.alice.ast.UbiquitousTemplates" );
 		return new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( text );
 	}
 	
-	public Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getCls() {
-		return this.cls;
-	}
+//	@Override
+//	public Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass() {
+//		return this.cls;
+//	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = this.component.getPreferredSize();

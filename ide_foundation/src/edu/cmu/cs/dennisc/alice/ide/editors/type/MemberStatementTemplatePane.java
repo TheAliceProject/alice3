@@ -54,7 +54,10 @@ public abstract class MemberStatementTemplatePane extends StatementTemplatePane 
 	public edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel getNameLabel() {
 		return this.nameLabel;
 	}
-
+	@Override
+	protected java.lang.Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass() {
+		return edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class;
+	}
 	@Override
 	protected boolean isActuallyPotentiallyActive() {
 		return getIDE().isSelectedFieldInScope();

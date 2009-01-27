@@ -61,6 +61,14 @@ public abstract class AbstractStatementPane extends edu.cmu.cs.dennisc.alice.ide
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTInstance( this.statement ) );
 	}
 	
+	@Override
+	protected java.lang.Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass() {
+		if( this.statement != null ) {
+			return this.statement.getClass();
+		} else {
+			return edu.cmu.cs.dennisc.alice.ast.Statement.class;
+		}
+	}
 	protected edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
 		return this.statement;
 	}

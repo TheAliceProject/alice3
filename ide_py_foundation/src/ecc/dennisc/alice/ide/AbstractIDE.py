@@ -46,6 +46,8 @@ class MySceneRunMethodPane(alice.ide.editors.common.StatementLikeSubstance):
 		self.setBackground(alice.ide.IDE.getColorForASTClass(alice.ast.ExpressionStatement))
 #		self.setBackground(java.awt.Color.BLUE)
 #		self.setOpaque( True )
+	def getStatementClass(self):
+		return alice.ast.ExpressionStatement
 	def isActuallyPotentiallyActive(self):
 		return False
 	def isActuallyPotentiallySelectable(self):

@@ -279,6 +279,9 @@ public abstract class IDE extends javax.swing.JFrame {
 	public IDE() {
 		assert s_singleton == null;
 		s_singleton = this;
+		
+		edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.setBorderFactory( this.createStatementBorderFactory() );
+		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
 		this.vmForSceneEditor = createVirtualMachineForSceneEditor();
@@ -309,6 +312,10 @@ public abstract class IDE extends javax.swing.JFrame {
 
 		//this.setLocale( new java.util.Locale( "en", "US", "java" ) );
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
+	}
+
+	protected edu.cmu.cs.dennisc.alice.ide.ast.BorderFactory createStatementBorderFactory() {
+		return new edu.cmu.cs.dennisc.alice.ide.ast.KnurlBorderFactory();
 	}
 
 	protected abstract void handleWindowClosing();
@@ -850,4 +857,5 @@ public abstract class IDE extends javax.swing.JFrame {
 	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
 		return getComponentForNode( getNodeForUUID( uuid ) );
 	}
+	
 }

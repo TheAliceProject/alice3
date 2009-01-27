@@ -35,6 +35,10 @@ class EmptyAfforance extends edu.cmu.cs.dennisc.alice.ide.editors.common.Stateme
 		this.setBackground( new java.awt.Color( 63, 63, 63, 63 ) );
 	}
 	@Override
+	protected java.lang.Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass() {
+		return edu.cmu.cs.dennisc.alice.ast.Statement.class;
+	}
+	@Override
 	protected boolean isActuallyPotentiallyActive() {
 		return false;
 	}

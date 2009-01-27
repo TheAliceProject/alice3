@@ -20,19 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.editors.type;
+package edu.cmu.cs.dennisc.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementTemplatePane extends edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance {
-	@Override
-	protected boolean isActuallyPotentiallyDraggable() {
-		return true;
-	}
-	@Override
-	protected boolean isActuallyPotentiallySelectable() {
-		return false;
-	}
-	public abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ide.editors.common.DropAndDropEvent e );
+public interface BorderFactory {
+	public javax.swing.border.Border createBorder( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > nodeCls ); 
 }
