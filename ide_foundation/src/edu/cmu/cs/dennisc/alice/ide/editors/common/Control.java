@@ -39,4 +39,12 @@ public abstract class Control<E> extends edu.cmu.cs.dennisc.zoot.ZRenderedContro
 			renderer.fillBounds( this.getContext(), this, g2, 0, 0, getWidth(), getHeight() );
 		}
 	}
+	@Override
+	protected boolean isActuallyPotentiallyActive() {
+		return super.isActuallyPotentiallyActive() && getIDE().isDragInProgress()==false;
+	}
+//	@Override
+//	protected boolean isActuallyPotentiallySelectable() {
+//		return super.isActuallyPotentiallySelectable() && getIDE().isDragInProgress()==false;
+//	}
 }
