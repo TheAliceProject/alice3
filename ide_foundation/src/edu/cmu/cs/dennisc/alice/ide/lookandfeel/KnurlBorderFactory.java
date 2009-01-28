@@ -22,6 +22,9 @@
  */
 package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
 
+/**
+ * @author Dennis Cosgrove
+ */
 class KnurlBorder implements javax.swing.border.Border {
 	private static final int KNURL_WIDTH = 8;
 	private static final int INSET = 4;
