@@ -29,10 +29,14 @@ public class ArrowDropDownRenderer implements DropDownRenderer {
 	public void paintPrologue( Object context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
 		java.awt.Color prev = g2.getColor();
 		try {
+			
+			g2.setColor( c.getBackground() );
+			g2.fillRect( x, y, width, height );
+			
 			final int INSET = 4;
-			int size = EmptyDropDownBorderFactory.AFFORDANCE_SIZE;
+			int size = ArrowDropDownBorderFactory.AFFORDANCE_SIZE;
 
-			int x0 = width - INSET / 2 - EmptyDropDownBorderFactory.AFFORDANCE_SIZE;
+			int x0 = width - INSET / 2 - ArrowDropDownBorderFactory.AFFORDANCE_SIZE;
 			int x1 = x0 + size;
 			int xC = (x0 + x1) / 2;
 
@@ -68,6 +72,9 @@ public class ArrowDropDownRenderer implements DropDownRenderer {
 			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
 			g2.setColor( java.awt.Color.BLUE );
 			g2.draw( new java.awt.geom.Rectangle2D.Float( 1.5f, 1.5f, width-3.0f, height-3.0f ) );
+		} else {
+			g2.setColor( java.awt.Color.GRAY );
+			g2.drawRect( x, y, width-1, height-1 );
 		}
 	}
 }

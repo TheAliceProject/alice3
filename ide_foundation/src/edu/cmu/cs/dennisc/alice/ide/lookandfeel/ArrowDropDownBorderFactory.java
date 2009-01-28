@@ -20,27 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.editors.code;
+package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAccessPane extends edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance {
-	private edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess;
-
-	public FieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
-		this.fieldAccess = fieldAccess;
-		this.add( new ExpressionPropertyPane( this.fieldAccess.expression, false ) );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( ".") );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( this.fieldAccess.field.getValue() ) );
-		this.setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		if( this.fieldAccess != null ) {
-			return this.fieldAccess.field.getValue().getValueType();
-		} else {
-			return null;
-		}
+public class ArrowDropDownBorderFactory implements DropDownBorderFactory {
+	public static final int AFFORDANCE_SIZE = 9; 
+	private static final int INSET = 2; 
+	private static final int LEFT = INSET; 
+	private static final int TOP = INSET; 
+	private static final int RIGHT = INSET + AFFORDANCE_SIZE; 
+	private static final int BOTTOM = INSET;
+	public javax.swing.border.Border createBorder( java.lang.Object context ) {
+		return javax.swing.BorderFactory.createEmptyBorder( TOP, LEFT, BOTTOM, RIGHT );
 	}
 }

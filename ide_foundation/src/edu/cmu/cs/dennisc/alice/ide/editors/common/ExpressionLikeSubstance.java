@@ -39,12 +39,14 @@ public abstract class ExpressionLikeSubstance extends PotentiallyDraggablePane {
 	private static final int DOCKING_BAY_INSET_LEFT = 8;
 	public ExpressionLikeSubstance() {
 		super( javax.swing.BoxLayout.LINE_AXIS );
-//		if( ExpressionLikeSubstance.borderFactory != null ) {
-//			this.setBorder( ExpressionLikeSubstance.borderFactory.createBorder( getExpressionType() ) );
-//		} else {
-//			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-//		}
-		this.setBorder( javax.swing.BorderFactory.createMatteBorder( INSET+4, INSET+DOCKING_BAY_INSET_LEFT+4, INSET+4, INSET+4, edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR ) );
+		if( ExpressionLikeSubstance.borderFactory != null ) {
+			//todo
+			//this.setBorder( ExpressionLikeSubstance.borderFactory.createBorder( getExpressionType() ) );
+			this.setBorder( ExpressionLikeSubstance.borderFactory.createBorder( null ) );
+		} else {
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		}
+		//this.setBorder( javax.swing.BorderFactory.createMatteBorder( INSET+4, INSET+DOCKING_BAY_INSET_LEFT+4, INSET+4, INSET+4, edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR ) );
 	}
 
 	@Override

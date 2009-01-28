@@ -25,14 +25,15 @@ package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyDropDownBorderFactory implements DropDownBorderFactory {
-	public static final int AFFORDANCE_SIZE = 9; 
-	private static final int INSET = 2; 
-	private static final int LEFT = INSET; 
-	private static final int TOP = INSET; 
-	private static final int RIGHT = INSET + AFFORDANCE_SIZE; 
-	private static final int BOTTOM = INSET;
-	public javax.swing.border.Border createBorder( java.lang.Object context ) {
-		return javax.swing.BorderFactory.createEmptyBorder( TOP, LEFT, RIGHT, BOTTOM );
+public class BallAndSocketBorderFactory implements ExpressionTypeBorderFactory {
+	public static final int DOCKING_BAY_INSET_LEFT = 8; 
+	public static final int INSET = 2; 
+	private static final int ACTUAL_INSET = INSET + 4; 
+	private static final int LEFT = ACTUAL_INSET + DOCKING_BAY_INSET_LEFT; 
+	private static final int TOP = ACTUAL_INSET; 
+	private static final int RIGHT = ACTUAL_INSET; 
+	private static final int BOTTOM = ACTUAL_INSET;
+	public javax.swing.border.Border createBorder( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return javax.swing.BorderFactory.createEmptyBorder( TOP, LEFT, BOTTOM, RIGHT );
 	}
 }

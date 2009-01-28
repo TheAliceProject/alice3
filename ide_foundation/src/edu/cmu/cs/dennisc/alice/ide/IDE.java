@@ -191,28 +191,32 @@ public abstract class IDE extends javax.swing.JFrame {
 
 	public void showStencilOver( edu.cmu.cs.dennisc.alice.ide.editors.common.PotentiallyDraggablePane potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		edu.cmu.cs.dennisc.alice.ide.editors.code.CodeEditor codeEditor = getCodeEditorInFocus();
-		this.holes = codeEditor.findAllPotentialAcceptors( type );
-		this.potentialDragSource = potentialDragSource;
-		javax.swing.JLayeredPane layeredPane = this.getLayeredPane();
-		if( this.stencil != null ) {
-			//pass
-		} else {
-			this.stencil = new ComponentStencil();
+		if( codeEditor != null ) {
+			this.holes = codeEditor.findAllPotentialAcceptors( type );
+			this.potentialDragSource = potentialDragSource;
+			//java.awt.Rectangle bounds = codeEditor.getBounds();
+			//bounds = javax.swing.SwingUtilities.convertRectangle( codeEditor, bounds, layeredPane );
+			//this.stencil.setBounds( bounds );
+			javax.swing.JLayeredPane layeredPane = this.getLayeredPane();
+			if( this.stencil != null ) {
+				//pass
+			} else {
+				this.stencil = new ComponentStencil();
+			}
+			this.stencil.setBounds( layeredPane.getBounds() );
+			layeredPane.add( this.stencil, null );
+			layeredPane.setLayer( this.stencil, javax.swing.JLayeredPane.POPUP_LAYER - 1 );
+			this.stencil.repaint();
 		}
-		//java.awt.Rectangle bounds = codeEditor.getBounds();
-		//bounds = javax.swing.SwingUtilities.convertRectangle( codeEditor, bounds, layeredPane );
-		//this.stencil.setBounds( bounds );
-		this.stencil.setBounds( layeredPane.getBounds() );
-		layeredPane.add( this.stencil, null );
-		layeredPane.setLayer( this.stencil, javax.swing.JLayeredPane.POPUP_LAYER - 1 );
-		this.stencil.repaint();
 	}
 	public void hideStencil() {
 		javax.swing.JLayeredPane layeredPane = this.getLayeredPane();
-		layeredPane.remove( this.stencil );
-		layeredPane.repaint();
-		this.holes = null;
-		this.potentialDragSource = null;
+		if( this.stencil != null && this.stencil.getParent() == layeredPane ) {
+			layeredPane.remove( this.stencil );
+			layeredPane.repaint();
+			this.holes = null;
+			this.potentialDragSource = null;
+		}
 	}
 
 	public void handleDragStarted( edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor dropReceptor ) {
@@ -280,8 +284,11 @@ public abstract class IDE extends javax.swing.JFrame {
 		assert s_singleton == null;
 		s_singleton = this;
 		
+		edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance.setBorderFactory( this.createExpressionBorderFactory() );
+		edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance.setRenderer( this.createExpressionRenderer() );
+
 		edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.setBorderFactory( this.createStatementBorderFactory() );
-		edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.setRenderer( this.createStatementClassRenderer() );
+		edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.setRenderer( this.createStatementRenderer() );
 		
 		edu.cmu.cs.dennisc.alice.ide.editors.code.DropDownPane.setBorderFactory( this.createDropDownBorderFactory() );
 		edu.cmu.cs.dennisc.alice.ide.editors.code.DropDownPane.setRenderer( this.createDropDownRenderer() );
@@ -322,11 +329,17 @@ public abstract class IDE extends javax.swing.JFrame {
 	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassBorderFactory createStatementBorderFactory() {
 		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.KnurlBorderFactory();
 	}
-	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassRenderer createStatementClassRenderer() {
+	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassRenderer createStatementRenderer() {
 		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.RoundedRectangleStatementClassRenderer();
 	}
+	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.ExpressionTypeBorderFactory createExpressionBorderFactory() {
+		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.BallAndSocketBorderFactory();
+	}
+	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.ExpressionTypeRenderer createExpressionRenderer() {
+		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.BallAndSocketExpressionTypeRenderer();
+	}
 	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.DropDownBorderFactory createDropDownBorderFactory() {
-		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.EmptyDropDownBorderFactory();
+		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.ArrowDropDownBorderFactory();
 	}
 	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.DropDownRenderer createDropDownRenderer() {
 		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.ArrowDropDownRenderer();
@@ -482,9 +495,17 @@ public abstract class IDE extends javax.swing.JFrame {
 		return this.file;
 	}
 	public void setFile( java.io.File file ) {
-		this.file = file;
-		this.setProject( edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( this.file ) );
-		this.updateTitle();
+		if( file.exists() ) {
+			this.file = file;
+			this.setProject( edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( this.file ) );
+			this.updateTitle();
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( "Cannot read project from file:\n\t" );
+			sb.append( file.getAbsolutePath() );
+			sb.append( "\nIt does not exist." );
+			javax.swing.JOptionPane.showMessageDialog( this, sb.toString(), "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE );
+		}
 	}
 
 	protected void fireMethodFocusChanging( edu.cmu.cs.dennisc.alice.ide.event.FocusedCodeChangeEvent e ) {
@@ -654,11 +675,14 @@ public abstract class IDE extends javax.swing.JFrame {
 		//todo: find a better solution to concurrent modification exception
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getProject().getProgramType().getDeclaredFields().get( 0 );
-				edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
-				IDE.this.setFocusedCode( runMethod );
-				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
-				IDE.this.setFieldSelection( fields.get( fields.size() - 1 ) );
+				//edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getProject().getProgramType().getDeclaredFields().get( 0 );
+				edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getSceneField();
+				if( sceneField != null ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
+					IDE.this.setFocusedCode( runMethod );
+					java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
+					IDE.this.setFieldSelection( fields.get( fields.size() - 1 ) );
+				}
 			}
 		} );
 	}
