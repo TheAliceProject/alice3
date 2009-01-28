@@ -278,7 +278,6 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 		return address;
 	}
 
-	protected abstract String getProtocol();
 	protected abstract String getHost();
 	protected abstract String getTo();
 	
@@ -334,11 +333,11 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 	}
 	private void submit() {
 		this.isSubmitAttempted = true;
-		for( boolean isSecureDesired : new boolean[] { false, true } ) {
-		//boolean isSecureDesired = false;
-		//for( int port : new int[] { 25, 465 } ) {
+		//for( boolean isSecureDesired : new boolean[] { false, true } ) {
+		boolean isSecureDesired = false;
+		for( int port : new int[] { 25, 567, 465, 80 } ) {
 			try {
-				edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( getProtocol(), isSecureDesired, getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
+				edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isSecureDesired, port, getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
 				this.isSubmitSuccessful = true;
 				break;
 			} catch( javax.mail.MessagingException me ) {
