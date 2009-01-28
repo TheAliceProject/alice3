@@ -46,6 +46,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	@Override
 	protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleLeftMousePress:", e );
+		super.handleLeftMousePress( e );
 		getIDE().promptUserForExpression( this.getDesiredType(), this.expressionProperty.getValue(), e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
 				ExpressionPropertyDropDownPane.this.expressionProperty.setValue( e );

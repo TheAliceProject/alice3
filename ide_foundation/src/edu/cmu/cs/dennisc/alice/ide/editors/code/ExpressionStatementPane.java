@@ -71,6 +71,7 @@ class ExpressionStatementPane extends AbstractStatementPane {
 					this.add( new DropDownPane( null, new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "more" ), null ) {
 						@Override
 						protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
+							super.handleLeftMousePress( e );
 							java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
 							edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
 							getIDE().promptUserForMore( lastParameter, e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {

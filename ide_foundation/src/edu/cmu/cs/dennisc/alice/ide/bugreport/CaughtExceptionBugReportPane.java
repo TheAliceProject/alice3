@@ -61,12 +61,9 @@ public class CaughtExceptionBugReportPane extends edu.cmu.cs.dennisc.ui.bugrepor
 	}
 	
 	@Override
-	protected String getProtocol() {
-		return "smtp";
-	}
-	@Override
 	protected String getHost() {
-		return "smtp.gmail.com";
+		//return "smtp.gmail.com";
+		return "haru.pc.cc.cmu.edu";
 	}
 	@Override
 	protected String getTo() {

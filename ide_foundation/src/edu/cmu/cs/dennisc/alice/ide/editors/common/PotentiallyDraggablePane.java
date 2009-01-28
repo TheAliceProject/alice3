@@ -188,7 +188,7 @@ class DropReceptorInfo {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentiallyDraggablePane extends PotentiallySelectablePane {
+public abstract class PotentiallyDraggablePane<E> extends Control<E> {
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
 	private DropReceptorInfo[] potentialDropReceptorInfos = null;
@@ -209,7 +209,7 @@ public abstract class PotentiallyDraggablePane extends PotentiallySelectablePane
 		} );
 		this.updateProxySizes();
 	}
-
+	
 	@Override
 	protected boolean isSelectionMouseListeningDesired() {
 		return super.isSelectionMouseListeningDesired() || isActuallyPotentiallyDraggable();
@@ -376,7 +376,6 @@ public abstract class PotentiallyDraggablePane extends PotentiallySelectablePane
 	}
 	@Override
 	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
-		super.handleMouseReleased( e );
 		if( isActuallyPotentiallyDraggable() ) {
 			if( getIDE().isDragInProgress() ) {
 				getIDE().setDragInProgress( false );
@@ -456,7 +455,7 @@ public abstract class PotentiallyDraggablePane extends PotentiallySelectablePane
 		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
 		this.createBoundsShape().fill( g2 );
 	}
-	
+
 	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, java.awt.Component asSeenBy, Integer heightToAlignLeftCenterOn ) {
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
 		p = javax.swing.SwingUtilities.convertPoint( asSeenBy, p, layeredPane );

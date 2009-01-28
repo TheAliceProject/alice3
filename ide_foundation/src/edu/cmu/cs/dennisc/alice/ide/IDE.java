@@ -281,6 +281,11 @@ public abstract class IDE extends javax.swing.JFrame {
 		s_singleton = this;
 		
 		edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.setBorderFactory( this.createStatementBorderFactory() );
+		edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.setRenderer( this.createStatementClassRenderer() );
+		
+		edu.cmu.cs.dennisc.alice.ide.editors.code.DropDownPane.setBorderFactory( this.createDropDownBorderFactory() );
+		edu.cmu.cs.dennisc.alice.ide.editors.code.DropDownPane.setRenderer( this.createDropDownRenderer() );
+
 		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
@@ -314,11 +319,17 @@ public abstract class IDE extends javax.swing.JFrame {
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
 	}
 
-	protected edu.cmu.cs.dennisc.alice.ide.ast.StatementClassBorderFactory createStatementBorderFactory() {
-		return new edu.cmu.cs.dennisc.alice.ide.ast.KnurlBorderFactory();
+	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassBorderFactory createStatementBorderFactory() {
+		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.KnurlBorderFactory();
 	}
-	protected edu.cmu.cs.dennisc.alice.ide.ast.StatementRenderer createStatementRendererFactory() {
-		return new edu.cmu.cs.dennisc.alice.ide.ast.RoundedRectangleStatementRenderer();
+	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassRenderer createStatementClassRenderer() {
+		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.RoundedRectangleStatementClassRenderer();
+	}
+	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.DropDownBorderFactory createDropDownBorderFactory() {
+		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.EmptyDropDownBorderFactory();
+	}
+	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.DropDownRenderer createDropDownRenderer() {
+		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.ArrowDropDownRenderer();
 	}
 
 	protected abstract void handleWindowClosing();

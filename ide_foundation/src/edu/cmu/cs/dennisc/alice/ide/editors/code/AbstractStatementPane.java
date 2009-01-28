@@ -90,7 +90,7 @@ public abstract class AbstractStatementPane extends edu.cmu.cs.dennisc.alice.ide
 	}
 	@Override
 	protected void handleRightMousePress( java.awt.event.MouseEvent e ) {
-		super.handleMousePressed( e );
+		super.handleRightMousePress( e );
 		java.util.List< edu.cmu.cs.dennisc.alice.ide.Operation > operations = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ide.Operation >();
 		this.updateOperationsListForAltMenu( operations );
 		if( operations.size() > 0 ) {
