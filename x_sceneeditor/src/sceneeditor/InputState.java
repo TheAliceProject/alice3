@@ -48,9 +48,9 @@ public class InputState {
 	private java.util.HashMap< Integer, Boolean > currentMouseButtonsToStatesMap = new java.util.HashMap< Integer, Boolean >();
 	private int currentMouseWheelState = 0;
 	private InputEventType currentInputEventType = InputEventType.NULL_EVENT;
-	private edu.cmu.cs.dennisc.lookingglass.PickResult currentPickResult = null;
+	private edu.cmu.cs.dennisc.lookingglass.PickResult clickPickResult = null;
 	private Transformable currentlySelectedObject = null;
-	
+
 	/**
 	 * @return the currentlySelectedObject
 	 */
@@ -128,21 +128,21 @@ public class InputState {
 		return this.currentInputEventType;
 	}
 	
-	public void setPickResult( edu.cmu.cs.dennisc.lookingglass.PickResult pickResult )
+	public void setClickPickResult( edu.cmu.cs.dennisc.lookingglass.PickResult pickResult )
 	{
-		this.currentPickResult = pickResult;
+		this.clickPickResult = pickResult;
 	}
 	
-	public edu.cmu.cs.dennisc.lookingglass.PickResult getPickResult()
+	public edu.cmu.cs.dennisc.lookingglass.PickResult getClickPickResult()
 	{
-		return this.currentPickResult;
+		return this.clickPickResult;
 	}
 	
-	public Transformable getPickedTransformable()
+	public Transformable getClickPickedTransformable()
 	{
-		if (this.currentPickResult != null)
+		if (this.clickPickResult != null)
 		{
-			Visual sgVisual = this.currentPickResult.getVisual();
+			Visual sgVisual = this.clickPickResult.getVisual();
 			if( sgVisual != null ) {
 				Composite sgParent = sgVisual.getParent();
 				if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
@@ -160,7 +160,7 @@ public class InputState {
 		this.currentMouseLocation.setLocation( sourceState.currentMouseLocation );
 		this.currentMouseWheelState = sourceState.currentMouseWheelState;
 		this.currentInputEventType = sourceState.currentInputEventType;
-		this.currentPickResult = sourceState.currentPickResult;
+		this.clickPickResult = sourceState.clickPickResult;
 		this.currentlySelectedObject = sourceState.currentlySelectedObject;
 	}
 	

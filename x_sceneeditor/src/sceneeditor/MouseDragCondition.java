@@ -73,7 +73,7 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 	
 	protected boolean testPick(InputState state)
 	{
-		return pickCondition.evalutateChain( state.getPickResult() );
+		return pickCondition.evalutateChain( state.getClickPickResult() );
 	}
 	
 	protected boolean testMouse( InputState state )

@@ -31,53 +31,20 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public class PickCondition {
 	
-	enum PickType
-	{
-		NOTHING,
-		MOVEABLE_OBJECT,
-		ANYTHING,
-		GROUND;
-		
-		public boolean accepts( PickType toCheck )
-		{
-			switch (this)
-			{
-				case NOTHING : 
-				{
-					return toCheck == NOTHING;
-				}
-				case ANYTHING : 
-				{
-					return true;
-				}
-				case MOVEABLE_OBJECT : 
-				{
-					return toCheck == MOVEABLE_OBJECT;
-				}
-				case GROUND : 
-				{
-					return toCheck == GROUND;
-				}
-				default :
-				{
-					return false;
-				}
-			}
-		}
-	}
+	
 	
 	protected boolean isNot = false;
-	protected PickType pickType; 
+	protected PickHint pickHint; 
 	protected PickCondition nextCondition = null;
 	
-	public PickCondition( PickType pickType )
+	public PickCondition( PickHint pickHint )
 	{
-		this.pickType = pickType;
+		this.pickHint = pickHint;
 	}
 	
-	public PickCondition( PickType pickType, PickCondition previousCondition )
+	public PickCondition( PickHint pickHint, PickCondition previousCondition )
 	{
-		this( pickType );
+		this( pickHint );
 		previousCondition.setNextCondition( this );
 	}
 	
@@ -86,32 +53,12 @@ public class PickCondition {
 		this.nextCondition = nextCondition;
 	}
 	
-	public static PickType getPickType( Element pickedObject )
-	{
-		boolean isNull = pickedObject == null;
-		if (isNull)
-		{
-			return PickType.NOTHING;
-		}
-		else
-		{
-			if (!org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround.class.isAssignableFrom(pickedObject.getClass()))
-			{
-				return PickType.MOVEABLE_OBJECT;
-			}
-			else
-			{
-				return PickType.GROUND;
-			}
-		}
-	}
-	
-	public static PickType getPickType( edu.cmu.cs.dennisc.lookingglass.PickResult pickObject )
+	public static PickHint getPickType( edu.cmu.cs.dennisc.lookingglass.PickResult pickObject )
 	{
 		boolean isNull = pickObject == null || pickObject.getGeometry() == null || pickObject.getVisual() == null;
 		if (isNull)
 		{
-			return PickType.NOTHING;
+			return PickHint.NOTHING;
 		}
 		else
 		{
@@ -119,23 +66,29 @@ public class PickCondition {
 		}
 	}
 	
-	public static PickType getPickType( edu.cmu.cs.dennisc.scenegraph.Element pickedObject )
+	public static PickHint getPickType( edu.cmu.cs.dennisc.scenegraph.Component pickedObject )
 	{
-		boolean isNull = pickedObject == null;
-		if (isNull)
+		if (pickedObject == null)
 		{
-			return PickType.NOTHING;
+			return PickHint.NOTHING;
 		}
 		else
 		{
-			Element element = Element.getElement( pickedObject );
-			return getPickType(element);
+			Object bonusData = pickedObject.getBonusDataFor( PickHint.PICK_HINT_KEY );
+			if (bonusData instanceof PickHint)
+			{
+				return (PickHint)bonusData;
+			}
+			else
+			{
+				return getPickType(pickedObject.getParent());
+			}
 		}
 	}
 	
 	public boolean evaluateObject(edu.cmu.cs.dennisc.lookingglass.PickResult pickObject)
 	{
-		boolean result = this.pickType.accepts( getPickType( pickObject ) );
+		boolean result = this.pickHint.intersects( getPickType( pickObject ) );
 		if (isNot)
 		{
 			result = !result;

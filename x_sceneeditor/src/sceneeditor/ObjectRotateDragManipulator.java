@@ -34,6 +34,7 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -46,10 +47,11 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 	protected Point3 initialClickPoint = new Point3();
 	protected Point3 objectOriginInPlane;
 	protected Plane rotationPlane;
-	protected Vector3 rotationAxis;
 	protected Vector3 originalMouseDirection;
 	protected Vector3 originalMouseRightDirection;
-	protected MovementType rotationType;
+	protected Vector3 absoluteRotationAxis;
+	
+	protected RotationRingHandle rotationHandle;
 	
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
@@ -59,28 +61,29 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
-	public  ObjectRotateDragManipulator( Vector3 rotationAxis, MovementType rotationType )
+	public  ObjectRotateDragManipulator()
 	{
-		this.rotationAxis = rotationAxis;
-		this.rotationType = rotationType;
 	}
 	
 
 	@Override
 	public void startManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
-		if (this.manipulatedTransformable != null)
+		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable() );
+		if (clickedHandle instanceof RotationRingHandle)
 		{
+			this.rotationHandle = (RotationRingHandle)clickedHandle;
+			this.manipulatedTransformable = this.rotationHandle.getManipulatedObject();
+			this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.rotationHandle.getRotationAxis() );
 			//PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );
-			startInput.getPickResult().getPositionInSource(this.initialClickPoint);
-			startInput.getPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getPickResult().getSource().getRoot() );
-			
-			this.rotationPlane = new Plane(this.initialClickPoint, this.rotationAxis);
-			Ray originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, this.rotationAxis );
+			startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
+			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
+			Vector3 rotationAxis = this.absoluteRotationAxis;
+			this.rotationPlane = new Plane(this.initialClickPoint, rotationAxis);
+			Ray originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, rotationAxis );
 			double intersection = this.rotationPlane.intersect( originRay );
 			if ( Double.isNaN( intersection ))
 			{
-				originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation,  Vector3.createMultiplication( this.rotationAxis, -1.0d ) );
+				originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation,  Vector3.createMultiplication( rotationAxis, -1.0d ) );
 				intersection = this.rotationPlane.intersect( originRay );
 			}
 			if ( !Double.isNaN( intersection ))
@@ -90,7 +93,7 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 				Vector3 toMouse = Vector3.createSubtraction( this.initialClickPoint, this.objectOriginInPlane );
 				toMouse.normalize();
 				this.originalMouseDirection = new Vector3(toMouse);
-				this.originalMouseRightDirection = Vector3.createCrossProduct( this.originalMouseDirection, this.rotationAxis );			
+				this.originalMouseRightDirection = Vector3.createCrossProduct( this.originalMouseDirection, rotationAxis );			
 			}
 		}
 
@@ -102,28 +105,31 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 		if (pickRay != null)
 		{
 			Point3 pointInPlane = PlaneUtilities.getPointInPlane( this.rotationPlane, pickRay );
-			Vector3 toMouse = Vector3.createSubtraction( pointInPlane, this.objectOriginInPlane );
-			
-			double toMouseDotOriginalRight = Vector3.calculateDotProduct( toMouse, this.originalMouseRightDirection );
-			boolean isToTheRight = toMouseDotOriginalRight > 0.0d;
-			
-			toMouse.normalize();
-			Vector3 toMouseDirection = new Vector3(toMouse);
-			double cosOfAngleBetween = Vector3.calculateDotProduct(this.originalMouseDirection, toMouseDirection );
-			if (cosOfAngleBetween > 1.0d)
+			if (pointInPlane != null)
 			{
-				cosOfAngleBetween = 1.0d;
+				Vector3 toMouse = Vector3.createSubtraction( pointInPlane, this.objectOriginInPlane );
+				
+				double toMouseDotOriginalRight = Vector3.calculateDotProduct( toMouse, this.originalMouseRightDirection );
+				boolean isToTheRight = toMouseDotOriginalRight > 0.0d;
+				
+				toMouse.normalize();
+				Vector3 toMouseDirection = new Vector3(toMouse);
+				double cosOfAngleBetween = Vector3.calculateDotProduct(this.originalMouseDirection, toMouseDirection );
+				if (cosOfAngleBetween > 1.0d)
+				{
+					cosOfAngleBetween = 1.0d;
+				}
+				else if (cosOfAngleBetween < -1.0d)
+				{
+					cosOfAngleBetween = -1.0d;
+				}
+				double angleInRadians = Math.acos( cosOfAngleBetween );
+				if (isToTheRight)
+				{
+					angleInRadians = (Math.PI*2.0d) - angleInRadians;
+				}
+				return new AngleInRadians( angleInRadians );
 			}
-			else if (cosOfAngleBetween < -1.0d)
-			{
-				cosOfAngleBetween = -1.0d;
-			}
-			double angleInRadians = Math.acos( cosOfAngleBetween );
-			if (isToTheRight)
-			{
-				angleInRadians = (Math.PI*2.0d) - angleInRadians;
-			}
-			return new AngleInRadians( angleInRadians );
 		}
 		return null;
 	}
@@ -137,7 +143,7 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 			
 			Angle angleDif = AngleUtilities.createSubtraction( currentAngle, previousAngle );
 			
-			this.rotationType.applyRotation( this.manipulatedTransformable, this.rotationAxis, angleDif );
+			this.manipulatedTransformable.applyRotationAboutArbitraryAxis( this.rotationHandle.getRotationAxis(), angleDif, this.rotationHandle.getReferenceFrame() );
 		}
 
 	}

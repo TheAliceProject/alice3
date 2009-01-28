@@ -35,17 +35,17 @@ public class SelectedObjectCondition extends InputCondition {
 		IGNORE_SWITCH,
 	}
 	
-	PickCondition.PickType acceptableType = PickCondition.PickType.ANYTHING;
+	PickHint acceptableType = PickHint.EVERYTHING;
 	
 	protected boolean isNot = false;
 	private ObjectSwitchBehavior switchBehavior = ObjectSwitchBehavior.END_ON_SWITCH;
 	
-	public SelectedObjectCondition( PickCondition.PickType acceptableType )
+	public SelectedObjectCondition( PickHint acceptableType )
 	{
 		this(acceptableType, ObjectSwitchBehavior.END_ON_SWITCH);
 	}
 	
-	public SelectedObjectCondition( PickCondition.PickType acceptableType, ObjectSwitchBehavior switchBehavior )
+	public SelectedObjectCondition( PickHint acceptableType, ObjectSwitchBehavior switchBehavior )
 	{
 		this.acceptableType = acceptableType;
 		this.switchBehavior = switchBehavior;
@@ -54,7 +54,7 @@ public class SelectedObjectCondition extends InputCondition {
 	@Override
 	protected boolean testState( InputState state )
 	{
-		boolean isValid = this.acceptableType.accepts( PickCondition.getPickType( state.getCurrentlySelectedObject() ) );
+		boolean isValid = this.acceptableType.intersects( PickCondition.getPickType( state.getCurrentlySelectedObject() ) );
 		if (isNot)
 		{
 			return !isValid;

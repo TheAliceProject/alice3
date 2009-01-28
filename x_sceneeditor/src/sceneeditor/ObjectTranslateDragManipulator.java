@@ -79,10 +79,10 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
 		if (this.manipulatedTransformable != null)
 		{
-			Transformable t = startInput.getPickedTransformable();
+			Transformable t = startInput.getClickPickedTransformable();
 			
-			startInput.getPickResult().getPositionInSource(this.initialClickPoint);
-			startInput.getPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getPickResult().getSource().getRoot() );
+			startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
+			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
 			this.movementPlane = new Plane(this.initialClickPoint, Vector3.createPositiveYAxis());
 			
 			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.camera, startInput.getMouseLocation().x, startInput.getMouseLocation().y );

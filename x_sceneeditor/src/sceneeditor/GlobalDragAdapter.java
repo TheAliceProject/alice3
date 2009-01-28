@@ -31,6 +31,7 @@ import sceneeditor.SelectedObjectCondition.ObjectSwitchBehavior;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.ui.DragStyle;
 import edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter;
 
@@ -40,12 +41,6 @@ import edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter;
 public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter implements java.awt.event.MouseWheelListener, java.awt.event.KeyListener {
 	
 	private java.util.Vector< ManipulatorConditionSet > manipulators = new java.util.Vector< ManipulatorConditionSet >();
-	
-	/*
-	 * Manipulators that manipulate the camera must have their transformable set to be the scene graph camera.
-	 * Unfortunately, the camera doesn't exist until the scene is displayed. To overcome this, we store the
-	 * cameras in a vector and set their cameras when the scene is 
-	 */
 
 	
 	private InputState currentInputState = new InputState();
@@ -109,12 +104,12 @@ public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter implement
 		ManipulatorConditionSet cameraTranslate = new ManipulatorConditionSet( cameraTranslateManip );
 		for (int i=0; i<movementKeys.length; i++)
 		{
-			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( movementKeys[i].keyValue ), new InvertedSelectedObjectCondition( PickCondition.PickType.MOVEABLE_OBJECT, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
+			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( movementKeys[i].keyValue ), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH ) );
 			cameraTranslate.addCondition( keyAndNotSelected );
 		}
 		for (int i=0; i<zoomKeys.length; i++)
 		{
-			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( zoomKeys[i].keyValue, noModifiers), new InvertedSelectedObjectCondition( PickCondition.PickType.MOVEABLE_OBJECT, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH  ) );
+			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( zoomKeys[i].keyValue, noModifiers), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH  ) );
 			cameraTranslate.addCondition( keyAndNotSelected );
 		}
 		this.manipulators.add( cameraTranslate );
@@ -122,7 +117,7 @@ public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter implement
 		ManipulatorConditionSet objectTranslate = new ManipulatorConditionSet( new ObjectTranslateKeyManipulator( movementKeys ) );
 		for (int i=0; i<movementKeys.length; i++)
 		{
-			AndInputCondition keyAndSelected = new AndInputCondition( new KeyPressCondition( movementKeys[i].keyValue ), new SelectedObjectCondition( PickCondition.PickType.MOVEABLE_OBJECT ) );
+			AndInputCondition keyAndSelected = new AndInputCondition( new KeyPressCondition( movementKeys[i].keyValue ), new SelectedObjectCondition( PickHint.MOVEABLE_OBJECTS ) );
 			objectTranslate.addCondition( keyAndSelected );
 		}
 		this.manipulators.add( objectTranslate );
@@ -130,28 +125,46 @@ public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter implement
 		ManipulatorConditionSet cameraRotate = new ManipulatorConditionSet( new CameraRotateKeyManipulator( turnKeys ) );
 		for (int i=0; i<turnKeys.length; i++)
 		{
-			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( turnKeys[i].keyValue), new InvertedSelectedObjectCondition( PickCondition.PickType.MOVEABLE_OBJECT, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH  ) );
+			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( turnKeys[i].keyValue), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH  ) );
 			cameraRotate.addCondition( keyAndNotSelected );
 		}
 		this.manipulators.add( cameraRotate );
 		
 		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
-		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new InvertedPickCondition( PickCondition.PickType.MOVEABLE_OBJECT ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		//cameraOrbit.addCondition( new MousePressCondition( java.awt.event.MouseEvent.BUTTON1 , new NotPickCondition( PickCondition.PickType.MOVEABLE_OBJECT ) ) );
 		cameraOrbit.addCondition(leftAndNoModifiers);
-		cameraOrbit.addCondition( new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickCondition.PickType.ANYTHING ) ) );
+		cameraOrbit.addCondition( new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.EVERYTHING ) ) );
 		this.manipulators.add(cameraOrbit);
 		
 		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
-		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickCondition.PickType.MOVEABLE_OBJECT), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
+		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseTranslateObject.addCondition( moveableObject );
 		this.manipulators.add( mouseTranslateObject );
 		
-		ManipulatorConditionSet mouseRotateObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator(Vector3.accessPositiveYAxis(), MovementType.STOOD_UP) );
-		MouseDragCondition rotatableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickCondition.PickType.MOVEABLE_OBJECT), new ModifierMask( ModifierMask.ModifierKey.CONTROL ));
+		ManipulatorConditionSet mouseRotateObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
+		MouseDragCondition rotatableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.HANDLES));
 		mouseRotateObject.addCondition( rotatableObject );
 		this.manipulators.add( mouseRotateObject );
 		
+		RotationRingHandle rotateAboutYAxis = new StoodUpRotationRingHandle(Vector3.accessPositiveYAxis());
+		manipulationHandles.add( rotateAboutYAxis );
+		RotationRingHandle rotateAboutXAxis = new RotationRingHandle(Vector3.accessPositiveXAxis());
+		manipulationHandles.add( rotateAboutXAxis );
+		RotationRingHandle rotateAboutZAxis = new RotationRingHandle(Vector3.accessPositiveZAxis());
+		manipulationHandles.add( rotateAboutZAxis );
+		
+	}
+	
+	private java.util.Vector< RotationRingHandle > manipulationHandles = new java.util.Vector< RotationRingHandle >();
+	
+	protected void setSelectedObject(Transformable selected)
+	{
+		for (int i=0; i<manipulationHandles.size(); i++)
+		{
+			RotationRingHandle handle = manipulationHandles.get( i );
+			handle.setManipulatedObject( selected );
+		}
 	}
 	
 	protected void handleStateChange()
@@ -291,17 +304,26 @@ public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter implement
 		this.currentInputState.setMouseState( e.getButton(), true );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DOWN );
-		this.currentInputState.setPickResult( pickIntoScene( e.getPoint() ) );
+		this.currentInputState.setClickPickResult( pickIntoScene( e.getPoint() ) );
 		
-		PickCondition.PickType clickedObjectType = PickCondition.getPickType( this.currentInputState.getPickResult() );
-		if (clickedObjectType == PickCondition.PickType.MOVEABLE_OBJECT)
+		PickHint clickedObjectType = PickCondition.getPickType( this.currentInputState.getClickPickResult() );
+		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
 		{
-			this.currentInputState.setCurrentlySelectedObject( this.currentInputState.getPickedTransformable() );
+			this.currentInputState.setCurrentlySelectedObject( this.currentInputState.getClickPickedTransformable() );
+		}
+		else if (clickedObjectType.intersects( PickHint.HANDLES) )
+		{
+			Transformable pickedHandle = this.currentInputState.getClickPickedTransformable();
+			if (pickedHandle instanceof RotationRingHandle)
+			{
+				this.currentInputState.setCurrentlySelectedObject( ((RotationRingHandle)pickedHandle).getManipulatedObject() ); 
+			}
 		}
 		else
 		{
 			this.currentInputState.setCurrentlySelectedObject( null );
 		}
+		this.setSelectedObject( this.currentInputState.getCurrentlySelectedObject() );
 		
 		System.out.println(" SELECTED OBJECT: " + this.currentInputState.getCurrentlySelectedObject());
 		

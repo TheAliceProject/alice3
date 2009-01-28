@@ -27,7 +27,7 @@ package sceneeditor;
  */
 public class InvertedPickCondition extends PickCondition {
 
-	public InvertedPickCondition( PickType pickType )
+	public InvertedPickCondition( PickHint pickType )
 	{
 		super(pickType);
 		isNot = true;
