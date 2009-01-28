@@ -300,31 +300,65 @@ public class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orientatio
 		setToNormalizedColumns( this );
 	}
 	
+//	public static OrthogonalMatrix3x3 setReturnValueToStandUp( OrthogonalMatrix3x3 rv, OrthogonalMatrix3x3 m ) {
+//		Vector3 zAxis = new Vector3( m.backward );
+//		if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.y, 0 ) ) {
+//			rv.setValue( m );
+//			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "do nothing" );
+//		} else {
+//			if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.x, 0 ) && EpsilonUtilities.isWithinReasonableEpsilon( zAxis.z, 0 ) ) {
+//				rv.setValue( m );
+//				rv.applyRotationAboutXAxis( new AngleInRevolutions( 0.25 ) );
+//				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "rotate about x" );
+//			} else {
+//				zAxis.y = 0;
+//				zAxis.normalize();
+//
+//				Vector3 yAxis = Vector3.accessPositiveYAxis();
+//				Vector3 xAxis = Vector3.createCrossProduct( yAxis, zAxis );
+//				//xAxis.normalize();
+//
+//				rv.right.set( xAxis );
+//				rv.up.set( yAxis );
+//				rv.backward.set( zAxis );
+//			}
+//		}
+//		return rv;
+//	}
 	public static OrthogonalMatrix3x3 setReturnValueToStandUp( OrthogonalMatrix3x3 rv, OrthogonalMatrix3x3 m ) {
-		Vector3 zAxis = new Vector3( m.backward );
-		if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.y, 0 ) ) {
-			rv.setValue( m );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "do nothing" );
-		} else {
-			if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.x, 0 ) && EpsilonUtilities.isWithinReasonableEpsilon( zAxis.z, 0 ) ) {
-				rv.setValue( m );
-				rv.applyRotationAboutXAxis( new AngleInRevolutions( 0.25 ) );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "rotate about x" );
-			} else {
-				zAxis.y = 0;
-				zAxis.normalize();
+        Vector3 zAxis = new Vector3( m.backward );
+        if( EpsilonUtilities.isWithinReasonableEpsilon( m.up.y, 1.0 ) ) {
+            rv.setValue( m );
+        } else {
+            if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.x, 0 ) && EpsilonUtilities.isWithinReasonableEpsilon( zAxis.z, 0 ) ) {
+                rv.setValue( m );
+                double theta;
+                if( zAxis.y < 0.0 ) {
+                    theta = -0.25;
+                } else {
+                    theta = +0.25;
+                }
+                rv.applyRotationAboutXAxis( new AngleInRevolutions( theta ) );
+                edu.cmu.cs.dennisc.print.PrintUtilities.println( "rotate about x" );
+            } else {
+                if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.y, 0.0 ) ) {
+                    //pass
+                } else {
+                    zAxis.y = 0;
+                    zAxis.normalize();
+                }
 
-				Vector3 yAxis = Vector3.accessPositiveYAxis();
-				Vector3 xAxis = Vector3.createCrossProduct( yAxis, zAxis );
-				//xAxis.normalize();
+                Vector3 yAxis = Vector3.accessPositiveYAxis();
+                Vector3 xAxis = Vector3.createCrossProduct( yAxis, zAxis );
+                //xAxis.normalize();
 
-				rv.right.set( xAxis );
-				rv.up.set( yAxis );
-				rv.backward.set( zAxis );
-			}
-		}
-		return rv;
-	}
+                rv.right.set( xAxis );
+                rv.up.set( yAxis );
+                rv.backward.set( zAxis );
+            }
+        }
+        return rv;
+    }
 	public static OrthogonalMatrix3x3 createFromStandUp( OrthogonalMatrix3x3 m ) {
 		return setReturnValueToStandUp( new OrthogonalMatrix3x3(), m );
 	}

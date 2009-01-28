@@ -34,8 +34,8 @@ public class MailUtilities {
 		}
 	}
 	public static void sendMail( 
-			String protocol,
-			boolean isSecureDesired,
+			boolean isTransportLayerSecurityDesired,
+			int port,
 			String host, 
 			AbstractAuthenticator authenticator, 
 			String replyTo, 
@@ -46,28 +46,45 @@ public class MailUtilities {
 			Attachment... attachments 
 		) throws javax.mail.MessagingException {
 		java.util.Properties props = new java.util.Properties();
-		props.put( "mail." + protocol + ".host", host );
-		if( "smtp".equals( protocol ) ) {
-			props.put( "mail." + protocol + ".starttls.enable", "true" );
-			props.put( "mail." + protocol + ".auth", "true" );
-			if( isSecureDesired ) {
-				props.put( "mail.smtp.port", "465" );
-				props.put( "mail.ssmtp.auth", "true" );
-				props.put( "mail.ssmtp.port", "465" );
-				props.put("mail.smtp.socketFactory.port", "465" );
-				props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-				props.put("mail.smtp.socketFactory.fallback", "false");
-//			} else {
-//				props.put( "mail.smtp.port", "25" );
-			}
+		props.put( "mail.transport.protocol", "smtp" );
+		props.put( "mail.smtp.host", host );
+		String tlsValue;
+		if( isTransportLayerSecurityDesired ) {
+			tlsValue = "true";
+		} else {
+			tlsValue = "false";
+		}
+		props.put( "mail.smtp.starttls.enable", tlsValue );
+
+		
+		String authValue;
+		if( authenticator != null ) {
+			authValue = "true";
+		} else {
+			authValue = "false";
+		}
+		props.put( "mail.smtp.auth", authValue );
+		
+		props.put( "mail.smtp.port", Integer.toString( port ) );
+		if( port == 465 ) {
+			props.put( "mail.ssmtp.auth", "true" );
+			props.put( "mail.ssmtp.port", Integer.toString( port ) );
+			props.put( "mail.smtp.socketFactory.port", Integer.toString( port ) );
+			props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
+			props.put( "mail.smtp.socketFactory.fallback", "false" );
 		}
 		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( props );
 		javax.mail.Session session = javax.mail.Session.getInstance( props, authenticator );
+		
 		javax.mail.internet.MimeMessage message = new javax.mail.internet.MimeMessage( session );
 		message.setSubject( subject );
 
-		javax.mail.internet.InternetAddress fromAddress = new javax.mail.internet.InternetAddress( authenticator.getAnonymousFrom() );
+		javax.mail.internet.InternetAddress fromAddress;
+		if( authenticator != null ) {
+			fromAddress = new javax.mail.internet.InternetAddress( authenticator.getAnonymousFrom() );
+		} else {
+			fromAddress = new javax.mail.internet.InternetAddress( replyTo );
+		}
 		if( replyToPresonal != null && replyToPresonal.length() > 0 ) {
 			setPersonal( fromAddress, replyToPresonal );
 		} else {
@@ -104,8 +121,8 @@ public class MailUtilities {
 	}
 
 	public static void sendMail( 
-			String protocol, 
-			boolean isSecureDesired,
+			boolean isTransportLayerSecurityDesired,
+			int port,
 			String host, 
 			AbstractAuthenticator authenticator, 
 			String replyTo, 
@@ -117,6 +134,6 @@ public class MailUtilities {
 		) throws javax.mail.MessagingException {
 		Attachment[] array = new Attachment[ attachments.size() ];
 		attachments.toArray( array );
-		sendMail( protocol, isSecureDesired, host, authenticator, replyTo, replyToPresonal, to, subject, text, array );
+		sendMail( isTransportLayerSecurityDesired, port, host, authenticator, replyTo, replyToPresonal, to, subject, text, array );
 	}
 }

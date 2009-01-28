@@ -25,7 +25,34 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface Renderer<E> {
-	public void paintPrologue( E context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected );
-	public void paintEpilogue( E context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected );
+public abstract class ZRenderedControl<E> extends ZControl {
+	public ZRenderedControl( int axis ) {
+		super( axis );
+	}
+	protected abstract Renderer< E > getRenderer();
+	protected abstract E getContext();
+	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
+		if( isActive() ) {
+			if( isPressed() ) {
+				return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+			} else {
+				return edu.cmu.cs.dennisc.awt.BevelState.RAISED;
+			}
+		} else {
+			return edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
+		}
+	}
+	
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		Renderer< E > renderer = this.getRenderer();
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		if( renderer != null ) {
+			renderer.paintPrologue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), getBevelState(), isActive(), isPressed(), isSelected() );
+		}
+		super.paint( g );
+		if( renderer != null ) {
+			renderer.paintEpilogue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), getBevelState(), isActive(), isPressed(), isSelected() );
+		}
+	}
 }
