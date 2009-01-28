@@ -29,8 +29,7 @@ public class ArrowDropDownRenderer implements DropDownRenderer {
 	public void paintPrologue( Object context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
 		java.awt.Color prev = g2.getColor();
 		try {
-			
-			g2.setColor( c.getBackground() );
+			g2.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
 			g2.fillRect( x, y, width, height );
 			
 			final int INSET = 4;

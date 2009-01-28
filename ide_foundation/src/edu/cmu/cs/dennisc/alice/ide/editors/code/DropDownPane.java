@@ -48,7 +48,7 @@ public abstract class DropDownPane extends edu.cmu.cs.dennisc.alice.ide.editors.
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		}
 		//this.setBorder( javax.swing.BorderFactory.createMatteBorder( TOP, LEFT, BOTTOM, RIGHT, edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR ) );
-		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
+		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
 		//this.setOpaque( true );
 		if( prefixPane != null ) {
 			this.add( prefixPane );
