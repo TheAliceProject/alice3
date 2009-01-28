@@ -39,6 +39,10 @@ public class BallAndSocketExpressionTypeRenderer implements ExpressionTypeRender
 		return rv;
 	}
 
+	public void fillBounds( edu.cmu.cs.dennisc.alice.ast.AbstractType context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( context, x, y, width, height );
+		beveledShape.fill( g2 );
+	}
 	public void paintPrologue( edu.cmu.cs.dennisc.alice.ast.AbstractType context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
 		g2.setPaint( c.getBackground() );
 		edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( context, x, y, width, height );

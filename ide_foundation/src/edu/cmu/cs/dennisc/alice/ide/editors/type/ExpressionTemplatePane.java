@@ -38,7 +38,7 @@ public abstract class ExpressionTemplatePane extends edu.cmu.cs.dennisc.alice.id
 		} else {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
-			this.createBoundsShape().fill( g2 );
+			this.fillBounds( g2 );
 		}
 	}
 }

@@ -204,7 +204,7 @@ public class FieldTile extends edu.cmu.cs.dennisc.alice.ide.editors.common.Expre
 		} else {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			g2.setPaint( PaintUtilities.getDisabledTexturePaint() );
-			this.createBoundsShape().fill( g2 );
+			this.fillBounds( g2 );
 		}
 	}
 }

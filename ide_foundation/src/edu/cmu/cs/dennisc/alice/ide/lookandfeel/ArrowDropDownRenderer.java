@@ -26,11 +26,15 @@ package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
  * @author Dennis Cosgrove
  */
 public class ArrowDropDownRenderer implements DropDownRenderer {
+	public void fillBounds( Object context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.fillRect( x, y, width, height );
+	}
 	public void paintPrologue( Object context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
 		java.awt.Color prev = g2.getColor();
 		try {
-			g2.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
-			g2.fillRect( x, y, width, height );
+			//g2.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
+			g2.setColor( java.awt.Color.WHITE );
+			fillBounds( context, c, g2, x, y, width, height );
 			
 			final int INSET = 4;
 			int size = ArrowDropDownBorderFactory.AFFORDANCE_SIZE;
@@ -72,7 +76,7 @@ public class ArrowDropDownRenderer implements DropDownRenderer {
 			g2.setColor( java.awt.Color.BLUE );
 			g2.draw( new java.awt.geom.Rectangle2D.Float( 1.5f, 1.5f, width-3.0f, height-3.0f ) );
 		} else {
-			g2.setColor( java.awt.Color.GRAY );
+			g2.setColor( java.awt.Color.LIGHT_GRAY );
 			g2.drawRect( x, y, width-1, height-1 );
 		}
 	}

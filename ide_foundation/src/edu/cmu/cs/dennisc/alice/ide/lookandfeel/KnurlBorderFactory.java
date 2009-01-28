@@ -23,12 +23,13 @@
 package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
 
 class KnurlBorder implements javax.swing.border.Border {
-	private static final int TOP = 4;
-	private static final int LEFT = 4;
-	private static final int BOTTOM = 4;
-	private static final int RIGHT = 4;
-	private static final int KNURL_WIDTH = 12;
-	private java.awt.Insets insets = new java.awt.Insets( TOP, LEFT+KNURL_WIDTH, BOTTOM, RIGHT );
+	private static final int KNURL_WIDTH = 8;
+	private static final int INSET = 4;
+	private static final int TOP = INSET;
+	private static final int LEFT = INSET + KNURL_WIDTH + 2;
+	private static final int BOTTOM = INSET;
+	private static final int RIGHT = INSET;
+	private java.awt.Insets insets = new java.awt.Insets( TOP, LEFT, BOTTOM, RIGHT );
 	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
 		return this.insets;
 	}
@@ -38,7 +39,7 @@ class KnurlBorder implements javax.swing.border.Border {
 	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g.setColor( java.awt.Color.BLACK );
-		edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, x+3, y+2, 8, height-2 );
+		edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, x+2, y+2, KNURL_WIDTH, height-2 );
 	}
 }
 

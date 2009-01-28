@@ -35,8 +35,8 @@ public abstract class ExpressionLikeSubstance extends PotentiallyDraggablePane {
 		ExpressionLikeSubstance.renderer = renderer;
 	}
 
-	private static final int INSET = 2;
-	private static final int DOCKING_BAY_INSET_LEFT = 8;
+//	private static final int INSET = 2;
+//	private static final int DOCKING_BAY_INSET_LEFT = 8;
 	public ExpressionLikeSubstance() {
 		super( javax.swing.BoxLayout.LINE_AXIS );
 		if( ExpressionLikeSubstance.borderFactory != null ) {
@@ -59,18 +59,18 @@ public abstract class ExpressionLikeSubstance extends PotentiallyDraggablePane {
 	}
 	
 	public abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType();
-	@Override
-	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
-		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET+DOCKING_BAY_INSET_LEFT, INSET, (float)getWidth()-2*INSET-DOCKING_BAY_INSET_LEFT, (float)getHeight()-2*INSET, 8, 8 );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = getExpressionType();
-		if( type != null ) {
-			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
-		} else {
-			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
-		}
-		edu.cmu.cs.dennisc.awt.BeveledShape rv = edu.cmu.cs.dennisc.alice.ui.BeveledShapeForType.createBeveledShapeFor( type, shape, DOCKING_BAY_INSET_LEFT, Math.min( getHeight()*0.5f, 16.0f ) );
-		return rv;
-	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
+//		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET+DOCKING_BAY_INSET_LEFT, INSET, (float)getWidth()-2*INSET-DOCKING_BAY_INSET_LEFT, (float)getHeight()-2*INSET, 8, 8 );
+//		edu.cmu.cs.dennisc.alice.ast.AbstractType type = getExpressionType();
+//		if( type != null ) {
+//			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
+//		} else {
+//			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
+//		}
+//		edu.cmu.cs.dennisc.awt.BeveledShape rv = edu.cmu.cs.dennisc.alice.ui.BeveledShapeForType.createBeveledShapeFor( type, shape, DOCKING_BAY_INSET_LEFT, Math.min( getHeight()*0.5f, 16.0f ) );
+//		return rv;
+//	}
 
 	//todo
 	@Override

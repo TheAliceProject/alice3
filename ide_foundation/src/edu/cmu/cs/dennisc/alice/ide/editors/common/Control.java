@@ -29,17 +29,14 @@ public abstract class Control<E> extends edu.cmu.cs.dennisc.zoot.ZRenderedContro
 	public Control( int axis ) {
 		super( axis );
 	}
-
 	protected edu.cmu.cs.dennisc.alice.ide.IDE getIDE() {
 		return edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton();
 	}
-	protected abstract edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape();
-//	@Override
-//	protected E getContext() {
-//		return null;
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.zoot.Renderer< E > getRenderer() {
-//		return null;
-//	}
+	//protected abstract edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape();
+	protected void fillBounds( java.awt.Graphics2D g2 ) {
+		edu.cmu.cs.dennisc.zoot.Renderer renderer = this.getRenderer();
+		if( renderer!=null ) {
+			renderer.fillBounds( this.getContext(), this, g2, 0, 0, getWidth(), getHeight() );
+		}
+	}
 }

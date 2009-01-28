@@ -430,12 +430,13 @@ public abstract class PotentiallyDraggablePane<E> extends Control<E> {
 	public int getDropHeight() {
 		return this.getHeight();
 	}
+	
 	public void paintDrag( java.awt.Graphics2D g2, boolean isOverDragAccepter, boolean isCopyDesired ) {
 		java.awt.Paint prevPaint = g2.getPaint();
 		
 		g2.setPaint( new java.awt.Color( 0,0,0,64 ) );
 		g2.translate( DROP_SHADOW_SIZE, DROP_SHADOW_SIZE );
-		this.createBoundsShape().fill( g2 );
+		this.fillBounds( g2 );
 		g2.translate( -DROP_SHADOW_SIZE, -DROP_SHADOW_SIZE );
 		g2.setPaint( prevPaint );
 		print( g2 );
@@ -447,13 +448,13 @@ public abstract class PotentiallyDraggablePane<E> extends Control<E> {
 //		}
 		if( isCopyDesired ) {
 			g2.setPaint( PotentiallyDraggablePane.getCopyTexturePaint() );
-			this.createBoundsShape().fill( g2 );
+			this.fillBounds( g2 );
 		}
 	}
 	public void paintDrop( java.awt.Graphics2D g2, boolean isOverDragAccepter, boolean isCopyDesired ) {
 		print( g2 );
 		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
-		this.createBoundsShape().fill( g2 );
+		this.fillBounds( g2 );
 	}
 
 	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, java.awt.Component asSeenBy, Integer heightToAlignLeftCenterOn ) {

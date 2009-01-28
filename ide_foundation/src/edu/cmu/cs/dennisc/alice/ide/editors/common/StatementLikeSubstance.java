@@ -50,10 +50,10 @@ public abstract class StatementLikeSubstance extends PotentiallyDraggablePane< C
 	
 	protected abstract Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass();
 	
-	@Override
-	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
-		return new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( new java.awt.geom.RoundRectangle2D.Float( 1.5f, 1.5f, (float)getWidth()-3, (float)getHeight()-3, 8.0f, 8.0f ) );
-	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
+//		return new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( new java.awt.geom.RoundRectangle2D.Float( 1.5f, 1.5f, (float)getWidth()-3, (float)getHeight()-3, 8.0f, 8.0f ) );
+//	}
 
 	//todo: remove
 	@Deprecated

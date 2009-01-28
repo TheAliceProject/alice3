@@ -128,7 +128,7 @@ public abstract class AbstractStatementPane extends edu.cmu.cs.dennisc.alice.ide
 			//pass
 		} else {
 			g2.setPaint( AbstractStatementPane.getDisabledTexturePaint() );
-			this.createBoundsShape().fill( g2 );
+			this.fillBounds( g2 );
 		}
 	}
 	
