@@ -27,12 +27,20 @@ package edu.cmu.cs.dennisc.alice.ide.bugreport;
  */
 public class Authenticator extends edu.cmu.cs.dennisc.mail.AbstractAuthenticator {
 	@Override
-	public String getAnonymousFrom() {
-		return "anonymous.alice.bugs.3.beta.xxxx@gmail.com";
+	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+		return new javax.mail.PasswordAuthentication( "anonymous-alice-user", "silkySmooth123" );
 	}
 	@Override
-	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-		String anonymousPassword = "pleaseDoNotStealThisAccount";
-		return new javax.mail.PasswordAuthentication( getAnonymousFrom(), anonymousPassword );
+	public java.lang.String getAnonymousFrom() {
+		return "anonymous-alice-user@haru.pc.cc.cmu.edu";
 	}
+//	@Override
+//	public String getAnonymousFrom() {
+//		return "anonymous.alice.bugs.3.beta.xxxx@gmail.com";
+//	}
+//	@Override
+//	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+//		String anonymousPassword = "pleaseDoNotStealThisAccount";
+//		return new javax.mail.PasswordAuthentication( getAnonymousFrom(), anonymousPassword );
+//	}
 }
