@@ -28,7 +28,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.type;
 public abstract class ExpressionTemplatePane extends edu.cmu.cs.dennisc.alice.ide.editors.code.AccessiblePane {
 	@Override
 	protected boolean isActuallyPotentiallyActive() {
-		return getIDE().isSelectedFieldInScope();
+		return super.isActuallyPotentiallyActive() && getIDE().isSelectedFieldInScope();
 	}
 	@Override
 	public void paint( java.awt.Graphics g ) {

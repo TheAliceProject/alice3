@@ -28,7 +28,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 public abstract class AccessiblePane extends edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance {
 	@Override
 	protected boolean isActuallyPotentiallyActive() {
-		return true;
+		return getIDE().isDragInProgress() == false;
 	}
 	@Override
 	protected boolean isActuallyPotentiallySelectable() {

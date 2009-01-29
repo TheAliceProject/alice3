@@ -56,11 +56,12 @@ class ModelManipulationDragAdapter( edu.cmu.cs.dennisc.ui.lookingglass.ModelMani
 		return rv
 
 class ProgramAdapter( apis.moveandturn.Program, ecc.dennisc.alice.ide.ProgramWithSceneMixin, javax.swing.event.ListSelectionListener ):
-	def __init__( self, vm, runOperation, awtComponentToAddListenersTo ):
+	def __init__( self, vm, runOperation, awtComponentToAddListenersTo, isLightweightDesired ):
 		apis.moveandturn.Program.__init__( self )
 		ecc.dennisc.alice.ide.ProgramWithSceneMixin.__init__( self )
 		self._awtComponentToAddListenersTo = awtComponentToAddListenersTo
 
+		self._isLightweightDesired = isLightweightDesired
 		self._vm = vm
 
 		self._mapFieldToInstance = {}
@@ -75,6 +76,9 @@ class ProgramAdapter( apis.moveandturn.Program, ecc.dennisc.alice.ide.ProgramWit
 		self._typeMap = {}
 		
 		self._currScene = None
+
+	def isLightweightOnscreenLookingGlassDesired( self ):
+		return self._isLightweightDesired
 
 	def generateCodeForSceneSetUp( self, setUpMethodGenerator ):
 		self.getFilledInSceneAutomaticSetUpMethod( setUpMethodGenerator )

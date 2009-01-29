@@ -27,32 +27,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass{
-	private javax.media.opengl.GLJPanel m_glPanel = new javax.media.opengl.GLJPanel() {
-		@Override
-		public void paintComponent( java.awt.Graphics g ) {
-			super.paintComponent( g );
-//			try {
-//				super.paintComponent( g );
-//			} catch( Exception e ) {
-//				e.printStackTrace();
-//				System.exit( 0 );
-//			}
-			
-			
-			//todo:
-			
-			
-//			try {
-//				LightweightLookingGlass.this.firePainted( (java.awt.Graphics2D)g );
-//			} catch( Exception e ) {
-//				e.printStackTrace();
-//			}
-			
-			
-			
-		}
-	};
-	
+	private javax.media.opengl.GLJPanel m_glPanel = new javax.media.opengl.GLJPanel();
 	/*package-private*/ LightweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
 	}

@@ -25,8 +25,11 @@ class MoveAndTurnIDE( ecc.dennisc.alice.ide.barebones.BarebonesIDE ):
 	def _createSceneSetUpCodeGenerator( self ):
 		return MoveAndTurnSceneAutomaticSetUpMethodFillerInner()
 
+	def isLightweightSceneEditorDesired(self):
+		return True
+	
 	def _createScenePane( self ):
-		return ecc.dennisc.alice.ide.moveandturn.editors.scene.MoveAndTurnSceneEditor()
+		return ecc.dennisc.alice.ide.moveandturn.editors.scene.MoveAndTurnSceneEditor( self.isLightweightSceneEditorDesired() )
 
 	def _getResourcesRootDirectory( self ):
 		if self.__dict__.has_key( "_resourcesRootDirectory" ):

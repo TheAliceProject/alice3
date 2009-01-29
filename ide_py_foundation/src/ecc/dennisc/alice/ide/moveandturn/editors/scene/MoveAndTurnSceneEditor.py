@@ -54,13 +54,13 @@ class ComponentAdapter( java.awt.event.ComponentListener ):
 		self._editor._updateLookingGlassSize()
 
 class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
-	def __init__( self ):
+	def __init__( self, isLightweightDesired ):
 		alice.ide.editors.scene.AbstractSceneEditor.__init__( self )
 		ide = self.getIDE()
 
 		self._controlsForOverlayPane = ecc.dennisc.alice.ide.barebones.editors.scene.ControlsForOverlayPane()
 		
-		self._program = ProgramAdapter( ide.getVirtualMachineForSceneEditor(), ide.getRunOperation(), self._controlsForOverlayPane )
+		self._program = ProgramAdapter( ide.getVirtualMachineForSceneEditor(), ide.getRunOperation(), self._controlsForOverlayPane, isLightweightDesired )
 
 		#todo: replace with showInAWTContainer()
 		self._program.setArgs( [] )
@@ -72,45 +72,33 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 		onscreenLookingGlass = self._program.getOnscreenLookingGlass()
 		#onscreenLookingGlass.getAWTComponent().setSize( 640, 480 )
 
-		pane = javax.swing.JPanel()
-		#pane.setBackground( java.awt.Color.RED )
-		pane.setOpaque( False )
-		pane.setLayout( java.awt.BorderLayout() )
-		pane.add( onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER )
-		pane.add( self._controlsForOverlayPane, java.awt.BorderLayout.CENTER )
-		
-		#edu.cmu.cs.dennisc.swing.SpringUtilities.expandToBounds( self._controlsForOverlayPane )
-		#edu.cmu.cs.dennisc.swing.SpringUtilities.expandToBounds( onscreenLookingGlass.getAWTComponent() )
-
-		self._cardPane = edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass, pane )
-
-		self.setLayout( java.awt.BorderLayout() )
-		self.add( self._cardPane, java.awt.BorderLayout.CENTER )
-		
-		
-		#edu.cmu.cs.dennisc.swing.SpringUtilities.expandToBounds( self._controlsForOverlayPane )
-		#edu.cmu.cs.dennisc.swing.SpringUtilities.expandToBounds( self._cardPane )
-		
-		#self.add( self._cardPane, java.awt.BorderLayout.CENTER )
-		#self.add( onscreenLookingGlass.getAWTComponent() )
-		
-		redirectingEventQueue = edu.cmu.cs.dennisc.awt.RedirectingEventQueue( onscreenLookingGlass.getAWTComponent(), self._controlsForOverlayPane )
-		java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().push( redirectingEventQueue )
-		
-		self._awtContainerProxy = edu.cmu.cs.dennisc.lookingglass.overlay.AWTContainerProxy( self._controlsForOverlayPane )
-		onscreenLookingGlass.addLookingGlassListener( LookingGlassAdapter( self ) )
-		
-#		mouseAdapter = MouseAdapter( self )
-#		self._controlsForOverlayPane.addMouseListener( mouseAdapter )
-#		self._cardPane.addMouseListener( mouseAdapter )
-		componentAdapter = ComponentAdapter( self )
-		self._controlsForOverlayPane.addComponentListener( componentAdapter )
-		
-		#todo?
-		# 
-		#Toolkit.getDefaultToolkit().addAWTEventListener(adapter, AWTEvent.MOUSE_EVENT_MASK);
-		#
-		 
+		if self._program.isLightweightOnscreenLookingGlassDesired():
+			self.setLayout( edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() )
+			self.add( onscreenLookingGlass.getAWTComponent() )
+			self._controlsForOverlayPane.setOpaque( False )
+			onscreenLookingGlass.getAWTComponent().setLayout( edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() )
+			onscreenLookingGlass.getAWTComponent().add( self._controlsForOverlayPane )
+		else:
+			pane = javax.swing.JPanel()
+			#pane.setBackground( java.awt.Color.RED )
+			pane.setOpaque( False )
+			pane.setLayout( java.awt.BorderLayout() )
+			pane.add( onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER )
+			pane.add( self._controlsForOverlayPane, java.awt.BorderLayout.CENTER )
+			
+			self._cardPane = edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass, pane )
+	
+			self.setLayout( java.awt.BorderLayout() )
+			self.add( self._cardPane, java.awt.BorderLayout.CENTER )
+			
+			componentAdapter = ComponentAdapter( self )
+			self._controlsForOverlayPane.addComponentListener( componentAdapter )
+			
+			redirectingEventQueue = edu.cmu.cs.dennisc.awt.RedirectingEventQueue( onscreenLookingGlass.getAWTComponent(), self._controlsForOverlayPane )
+			java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().push( redirectingEventQueue )
+			self._awtContainerProxy = edu.cmu.cs.dennisc.lookingglass.overlay.AWTContainerProxy( self._controlsForOverlayPane )
+			onscreenLookingGlass.addLookingGlassListener( LookingGlassAdapter( self ) )
+				 
 	def setDragInProgress(self, isDragInProgress):
 		self._program.setDragInProgress( isDragInProgress ) 
 
@@ -120,13 +108,13 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 	
 	def handleDelete(self, node):
 		self._program.handleDelete( node )
-	def handleMouseEntered( self, e ):
-		if self.getIDE().isDragInProgress():
-			pass
-		else:
-			self._cardPane.showLive()
-	def handleMouseExited( self, e ):
-		self._showSnapshotIfAppropriateFromEvent( e )
+#	def handleMouseEntered( self, e ):
+#		if self.getIDE().isDragInProgress():
+#			pass
+#		else:
+#			self._cardPane.showLive()
+#	def handleMouseExited( self, e ):
+#		self._showSnapshotIfAppropriateFromEvent( e )
 
 #	def isSwappingOutLookingGlassDesired(self):
 #		return False
@@ -163,7 +151,9 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 
 	def setDragInProgress(self, isDragInProgress):
 		#if edu.cmu.cs.dennisc.lang.SystemUtilities.isMac():
-		if True:
+		if self._program.isLightweightOnscreenLookingGlassDesired():
+			pass
+		else:
 			if isDragInProgress:
 				self._cardPane.showSnapshot()
 			else:

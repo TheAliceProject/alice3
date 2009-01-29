@@ -59,7 +59,10 @@ public class CaughtExceptionBugReportPane extends edu.cmu.cs.dennisc.ui.bugrepor
 		rv.append( " " );
 		return super.updateSubject( rv );
 	}
-	
+	@Override
+	protected boolean isTransportLayerSecurityDesired() {
+		return false;
+	}
 	@Override
 	protected String getHost() {
 		//return "smtp.gmail.com";

@@ -25,23 +25,6 @@ package edu.cmu.cs.dennisc.swing.plaf;
 /**
  * @author Dennis Cosgrove
  */
-
-//public class TabbedPaneUI extends javax.swing.plaf.TabbedPaneUI {
-//	@Override
-//	public java.awt.Rectangle getTabBounds( javax.swing.JTabbedPane pane, int index ) {
-//		return null;
-//	}
-//	@Override
-//	public int getTabRunCount( javax.swing.JTabbedPane pane ) {
-//		return 0;
-//	}
-//	@Override
-//	public int tabForCoordinate( javax.swing.JTabbedPane pane, int x, int y ) {
-//		return 0;
-//	}
-//}
-
-
 class CloseIcon implements javax.swing.Icon {
 	private static final java.awt.Color BASE_COLOR = new java.awt.Color( 127, 63, 63 );
 	private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.color.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
@@ -152,6 +135,13 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		//this.lightHighlight = java.awt.Color.YELLOW;
 	}
 
+	@Override
+	protected java.awt.LayoutManager createLayoutManager() {
+		class MyLayoutManager extends TabbedPaneLayout {
+			
+		}
+		return super.createLayoutManager();
+	}
 	private java.awt.geom.GeneralPath createPath( int width, int height ) {
 		float x0 = width - EAST_TAB_PAD / 2;
 		float x1 = width + EAST_TAB_PAD;

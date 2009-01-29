@@ -331,13 +331,13 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 	public boolean isSubmitSuccessful() { 
 		return this.isSubmitSuccessful;
 	}
+	protected abstract boolean isTransportLayerSecurityDesired();
 	private void submit() {
 		this.isSubmitAttempted = true;
 		//for( boolean isSecureDesired : new boolean[] { false, true } ) {
-		boolean isSecureDesired = false;
 		for( int port : new int[] { 25, /*567, 465,*/ 80 } ) {
 			try {
-				edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isSecureDesired, port, getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
+				edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( this.isTransportLayerSecurityDesired(), port, getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
 				this.isSubmitSuccessful = true;
 				break;
 			} catch( javax.mail.MessagingException me ) {
