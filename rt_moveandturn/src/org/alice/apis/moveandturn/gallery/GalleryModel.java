@@ -38,37 +38,78 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 	
 	private static java.io.File s_galleryRootDirectory;
 	static {
-		java.util.List< String > potentialPaths = new java.util.LinkedList< String >();
-		String rootPath = System.getProperty( GalleryModel.class.getName() + ".rootPath" );
-		if( rootPath != null ) {
-			potentialPaths.add( rootPath );
-		}
-		String subPath = "/Alice/3.beta.0000/gallery";
-		potentialPaths.add( "/Program Files" + subPath );
-		potentialPaths.add( "/Applications" + subPath );
-		potentialPaths.add( "/Applications/Programming" + subPath );
-		potentialPaths.add( "c:/Program Files" + subPath );
-		for( String path : potentialPaths ) {
-			java.io.File directory = new java.io.File( path );
-			if( directory.exists() && directory.isDirectory() ) {
-				s_galleryRootDirectory = directory;
-				break;
+		do {
+			java.util.List< String > potentialPaths = new java.util.LinkedList< String >();
+			String rootPath = System.getProperty( GalleryModel.class.getName() + ".rootPath" );
+			if( rootPath != null ) {
+				potentialPaths.add( rootPath );
 			}
-		}
-		if( s_galleryRootDirectory != null ) {
-			
-		} else {
-//			javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
-//			fileChooser.setFileSelectionMode( javax.swing.JFileChooser.DIRECTORIES_ONLY );
-		}
+			String subPath = "/Alice/3.beta.0000/gallery";
+			potentialPaths.add( "/Program Files" + subPath );
+			potentialPaths.add( "/Applications" + subPath );
+			potentialPaths.add( "/Applications/Programming" + subPath );
+			potentialPaths.add( "c:/Program Files" + subPath );
+			potentialPaths.add( "c:/Program Files (x86)" + subPath );
+			for( String path : potentialPaths ) {
+				java.io.File directory = new java.io.File( path );
+				if( directory.exists() && directory.isDirectory() ) {
+					s_galleryRootDirectory = directory;
+					break;
+				}
+			}
+			if( s_galleryRootDirectory != null ) {
+				//pass
+			} else {
+				String expectedRoot;
+				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+					expectedRoot = "c:/Program Files";
+				} else {
+					expectedRoot = "/Applications/Programming";
+				}
+				int result = promptUserToSpecifyOrInstall( expectedRoot + subPath );
+				if( result == javax.swing.JOptionPane.YES_OPTION ) {
+					GalleryDirectorySelectionPane galleryDirectorySelectionPane = new GalleryDirectorySelectionPane();
+					java.io.File directory = galleryDirectorySelectionPane.showInJDialog( null );
+					s_galleryRootDirectory = directory;
+				} else {
+					result = promptUserToRetryOrExit();
+					if( result == javax.swing.JOptionPane.YES_OPTION ) {
+						//pass
+					} else {
+						System.exit( -1 );
+					}
+				}
+			}
+		} while( s_galleryRootDirectory == null );
 	}
+	private static int promptUserToSpecifyOrInstall( String expectedLocation ) {
+		java.awt.Component owner = null;
+		String message = "Cannot find Alice Move & Turn Gallery in its expected location:\n    " + expectedLocation;
+		String title = "Cannot find Alice Move & Turn Gallery";
+		Object[] options = { "Specify Actual Gallery Location", "Exit and Install Gallery" }; 
+		return javax.swing.JOptionPane.showOptionDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, null );
+	}
+	
+	private static int promptUserToRetryOrExit() {
+		java.awt.Component owner = null;
+		String message = "Alice will not work until the gallery is successfully installed.\nIf you are a student, please check with your instructor on how to install the gallery.\nIf you are an instructor, please check the wiki for information.";
+		String title = "Must Install Alice Move & Turn Gallery";
+		Object[] options = { "Retry", "Exit" }; 
+		return javax.swing.JOptionPane.showOptionDialog( owner, message, title, javax.swing.JOptionPane.YES_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, null );
+	}
+	
 	public static java.io.File getGalleryRootDirectory() {
 		return s_galleryRootDirectory;
 	}
+	
+	private static final String SUB_PATH = "assets/org.alice.apis.moveandturn.gallery";
+	
 	protected GalleryModel() {
 	}
 	public GalleryModel( String path ) {
-		java.io.File file = new java.io.File( s_galleryRootDirectory, "assets/org.alice.apis.moveandturn.gallery/" + path + ".zip" );
+		java.io.File directory = new java.io.File( s_galleryRootDirectory, SUB_PATH );
+		java.io.File file = new java.io.File( directory, path + ".zip" );
+		
 		assert file.exists();
 		edu.cmu.cs.dennisc.codec.CodecUtilities.decodeZippedReferenceableBinary( this, file.getAbsolutePath(), "element.bin" );	
 	}
