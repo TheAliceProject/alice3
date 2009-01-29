@@ -37,6 +37,17 @@ public class FileUtilities {
 		return s_defaultDirectory;
 	}
 
+	public static String getCanonicalPathIfPossible( java.io.File file ) {
+		if( file != null ) {
+			try {
+				return file.getCanonicalPath();
+			} catch( java.io.IOException ioe ) {
+				return file.getAbsolutePath();
+			}
+		} else {
+			return null;
+		}
+	}
 	public static String fixFilenameIfNecessary( String filename ) {
 		StringBuffer sb = new StringBuffer( filename.length() );
 		for( int i = 0; i < filename.length(); i++ ) {

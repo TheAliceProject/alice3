@@ -36,13 +36,14 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 	private String m_paintedByCredit = null;
 	private String m_programmedByCredit = null;
 	
+	private static final String ROOT_PATH_KEY = "rootPath";
 	private static java.io.File s_galleryRootDirectory;
 	static {
 		do {
 			java.util.List< String > potentialPaths = new java.util.LinkedList< String >();
-			String rootPath = System.getProperty( GalleryModel.class.getName() + ".rootPath" );
-			if( rootPath != null ) {
-				potentialPaths.add( rootPath );
+			String rootPathProperty = System.getProperty( GalleryModel.class.getName() + "." + ROOT_PATH_KEY );
+			if( rootPathProperty != null ) {
+				potentialPaths.add( rootPathProperty );
 			}
 			String subPath = "/Alice/3.beta.0000/gallery";
 			potentialPaths.add( "/Program Files" + subPath );
@@ -50,6 +51,20 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 			potentialPaths.add( "/Applications/Programming" + subPath );
 			potentialPaths.add( "c:/Program Files" + subPath );
 			potentialPaths.add( "c:/Program Files (x86)" + subPath );
+
+			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( GalleryModel.class );
+			String rootPathUserPreference = userPreferences.get( ROOT_PATH_KEY, null );
+			if( rootPathUserPreference != null ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "rootPathUserPreference", rootPathUserPreference );
+				potentialPaths.add( rootPathUserPreference );
+			}
+			java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( GalleryModel.class );
+			String rootPathSystemPreference = systemPreferences.get( ROOT_PATH_KEY, null );
+			if( rootPathSystemPreference != null ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "rootPathSystemPreference", rootPathSystemPreference );
+				potentialPaths.add( rootPathSystemPreference );
+			}
+			
 			for( String path : potentialPaths ) {
 				java.io.File directory = new java.io.File( path );
 				if( directory.exists() && directory.isDirectory() ) {
@@ -70,7 +85,12 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 				if( result == javax.swing.JOptionPane.YES_OPTION ) {
 					GalleryDirectorySelectionPane galleryDirectorySelectionPane = new GalleryDirectorySelectionPane();
 					java.io.File directory = galleryDirectorySelectionPane.showInJDialog( null );
-					s_galleryRootDirectory = directory;
+					if( directory != null ) {
+						String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( directory );
+						userPreferences.put( ROOT_PATH_KEY, path );
+						systemPreferences.put( ROOT_PATH_KEY, path );
+						s_galleryRootDirectory = directory;
+					}
 				} else {
 					result = promptUserToRetryOrExit();
 					if( result == javax.swing.JOptionPane.YES_OPTION ) {
@@ -133,5 +153,15 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 	}
 	public void setProgrammedByCredit( String programmedByCredit ) {
 		m_programmedByCredit = programmedByCredit;
+	}
+	
+	public static void main( String[] args ) throws java.util.prefs.BackingStoreException {
+		if( args.length > 0 && args[ 0 ].equals( "clearPreferences" ) ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "clearPreferences" );
+			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( GalleryModel.class );
+			userPreferences.clear();
+			java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( GalleryModel.class );
+			systemPreferences.clear();
+		}
 	}
 }

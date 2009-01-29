@@ -335,7 +335,7 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 		this.isSubmitAttempted = true;
 		//for( boolean isSecureDesired : new boolean[] { false, true } ) {
 		boolean isSecureDesired = false;
-		for( int port : new int[] { 25, 567, 465, 80 } ) {
+		for( int port : new int[] { 25, /*567, 465,*/ 80 } ) {
 			try {
 				edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isSecureDesired, port, getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
 				this.isSubmitSuccessful = true;
