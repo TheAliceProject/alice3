@@ -26,7 +26,7 @@ class MoveAndTurnIDE( ecc.dennisc.alice.ide.barebones.BarebonesIDE ):
 		return MoveAndTurnSceneAutomaticSetUpMethodFillerInner()
 
 	def isLightweightSceneEditorDesired(self):
-		return True
+		return False
 	
 	def _createScenePane( self ):
 		return ecc.dennisc.alice.ide.moveandturn.editors.scene.MoveAndTurnSceneEditor( self.isLightweightSceneEditorDesired() )
