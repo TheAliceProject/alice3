@@ -26,14 +26,22 @@ package org.alice.apis.moveandturn.gallery;
  * @author Dennis Cosgrove
  */
 public class GalleryDirectorySelectionPane extends edu.cmu.cs.dennisc.swing.DirectorySelectionPane {
+	private String name;
+	private String childName;
+	private String grandchildName;
+	public GalleryDirectorySelectionPane( String name, String childName, String grandchildName ) {
+		this.name = name;
+		this.childName = childName;
+		this.grandchildName = grandchildName;
+	}
 	protected String getDesiredDirectoryName() {
-		return "gallery";
+		return this.name;
 	}
 	protected String getDesiredChildDirectoryName() {
-		return "assets";
+		return this.childName;
 	}
 	protected String getDesiredGrandchildDirectoryName() {
-		return "org.alice.apis.moveandturn.gallery";
+		return this.grandchildName;
 	}
 
 	@Override
