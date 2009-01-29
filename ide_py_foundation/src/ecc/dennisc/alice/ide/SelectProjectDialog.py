@@ -42,7 +42,7 @@ class ComingSoonTabPane( ProjectTabPane ):
 		self.add( javax.swing.JLabel( "coming soon" ) )
 		self.setEnabled( False )
 	def isValid(self):
-		return false
+		return False
 
 class TutorialPane( ComingSoonTabPane ):
 	def __init__( self, owner ):
