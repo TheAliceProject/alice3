@@ -344,11 +344,15 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		return new java.awt.image.BufferedImage( m_width, m_height, type );
 	}
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
-		if( this.isABGRExtensionSupported ) {
-			//todo: 
-			//return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_3BYTE_BGR );
-			return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
-			//return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_INT_ARGB );
+		
+		//todo: remove?
+		boolean isInitialized = this.m_renderContext.gl != null;
+		if( isInitialized == false || this.isABGRExtensionSupported ) {
+			//todo:
+			//int type = java.awt.image.BufferedImage.TYPE_3BYTE_ABGR;
+			int type = java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
+			//int type = java.awt.image.BufferedImage.TYPE_INT_ARGB;
+			return createBufferedImageForUseAsColorBuffer( type );
 		} else {
 			return null;
 		}
