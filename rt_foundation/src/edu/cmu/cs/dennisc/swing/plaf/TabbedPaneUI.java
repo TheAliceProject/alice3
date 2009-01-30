@@ -40,7 +40,7 @@ class CloseIcon implements javax.swing.Icon {
 	public void setFilled( boolean isFilled ) {
 		this.isFilled = isFilled;
 	}
-	
+
 	public boolean isHighlighted() {
 		return this.isHighlighted;
 	}
@@ -64,10 +64,10 @@ class CloseIcon implements javax.swing.Icon {
 	public int getIconHeight() {
 		return getIconWidth();
 	}
-	
+
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x0, int y0 ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		
+
 		float size = Math.min( getIconWidth(), getIconWidth() ) * 0.9f;
 
 		float w = size;
@@ -384,23 +384,205 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	}
 }
 
-//public class TabbedPaneUI extends javax.swing.plaf.TabbedPaneUI {
+//public abstract class TabbedPaneUI extends javax.swing.plaf.TabbedPaneUI {
+//	class Title extends javax.swing.JLabel implements javax.swing.plaf.UIResource {
+//	}
+//
+//	class TitlesPane extends javax.swing.JPanel implements javax.swing.plaf.UIResource {
+//		public TitlesPane() {
+//			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+//		}
+//		public void updateTitles() {
+//			this.removeAll();
+//			final int N = TabbedPaneUI.this.tabbedPane.getTabCount();
+//			for( int i=0; i<N; i++ ) {
+//				Title title = new Title();
+//				title.setText( TabbedPaneUI.this.tabbedPane.getTitleAt( i ) );
+//				title.setIcon( TabbedPaneUI.this.tabbedPane.getIconAt( i ) );
+//				this.add( title );
+//			}
+//			this.add( javax.swing.Box.createHorizontalGlue() );
+//		}
+//	}
+//
+//	class MoreButton extends javax.swing.JButton implements javax.swing.plaf.UIResource {
+//		public MoreButton() {
+//			super( "more >>" );
+//			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+//		}
+//	}
+//
+//	class HeaderPane extends javax.swing.JPanel implements javax.swing.plaf.UIResource {
+//		private TitlesPane titlesPane = new TitlesPane();
+//		private MoreButton moreButton = new MoreButton();
+//		public HeaderPane() {
+//			this.setLayout( new java.awt.BorderLayout() );
+//			this.add( this.titlesPane, java.awt.BorderLayout.CENTER );
+//			this.add( this.moreButton, java.awt.BorderLayout.EAST );
+//			this.setOpaque( true );
+//		}
+//		public void updateTitles() {
+//			this.titlesPane.updateTitles();
+//		}
+//	}
+//
+//	class TabbedPaneLayoutManager implements java.awt.LayoutManager {
+//		public void addLayoutComponent( String name, java.awt.Component comp ) {
+//		}
+//		public void removeLayoutComponent( java.awt.Component comp ) {
+//		}
+//		public java.awt.Dimension minimumLayoutSize( java.awt.Container parent ) {
+//			return new java.awt.Dimension( 100, 100 );
+//		}
+//		public java.awt.Dimension preferredLayoutSize( java.awt.Container parent ) {
+//			return new java.awt.Dimension( 1000, 1000 );
+//		}
+//		public void layoutContainer( java.awt.Container parent ) {
+//			TabbedPaneUI.this.handleLayoutContainer( parent );
+//		}
+//	}
+//
+//	private HeaderPane headerPane = new HeaderPane();
+//	//	private MainPane mainPane = new MainPane();
+//	private javax.swing.JTabbedPane tabbedPane = null;
+//	private javax.swing.event.ChangeListener changeAdapter = new javax.swing.event.ChangeListener() {
+//		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+//			TabbedPaneUI.this.handleStateChanged( e );
+//
+//		}
+//	};
+//	private java.awt.event.ContainerListener containerAdapter = new java.awt.event.ContainerListener() {
+//		private boolean isUIResource( java.awt.event.ContainerEvent e ) {
+//			return e.getSource() instanceof javax.swing.plaf.UIResource;
+//		}
+//		public void componentAdded( java.awt.event.ContainerEvent e ) {
+//			if( isUIResource( e ) ) {
+//				//pass
+//			} else {
+//				TabbedPaneUI.this.handleComponentAdded( e );
+//			}
+//		}
+//		public void componentRemoved( java.awt.event.ContainerEvent e ) {
+//			if( isUIResource( e ) ) {
+//				//pass
+//			} else {
+//				TabbedPaneUI.this.handleComponentRemoved( e );
+//			}
+//		}
+//	};
+//
+//	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
+//		//		this.mainPane.removeAll();
+//		//		java.awt.Component selectedComponent = this.tabbedPane.getSelectedComponent();
+//		//		if( selectedComponent != null ) {
+//		//			this.mainPane.add( selectedComponent );
+//		//		}
+//		//		this.tabbedPane.revalidate();
+//		//		this.tabbedPane.repaint();
+//	}
+//	private void handleComponentAdded( java.awt.event.ContainerEvent e ) {
+//		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleComponentAdded", e.getChild() );
+//		//		this.tabbedPane.invalidate();
+//		//		this.tabbedPane.revalidate();
+//	}
+//	private void handleComponentRemoved( java.awt.event.ContainerEvent e ) {
+//		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleComponentRemoved", e.getChild() );
+//		//		this.tabbedPane.invalidate();
+//		//		this.tabbedPane.revalidate();
+//	}
+////	private java.awt.Dimension calculateMinimumTabSize( java.awt.Dimension rv, int index, java.awt.Component component, String title, javax.swing.Icon icon, boolean isEnabled, boolean isActive, boolean isSelected, java.awt.FontMetrics fontMetrics ) {
+////		rv.setSize( 128, 32 );
+////		return rv;
+////	}
+////	private java.awt.Dimension calculatePreferredTabSize( java.awt.Dimension rv, int index, java.awt.Component component, String title, javax.swing.Icon icon, boolean isEnabled, boolean isActive, boolean isSelected, java.awt.FontMetrics fontMetrics ) {
+////		return calculateMinimumTabSize( rv, index, component, title, icon, isEnabled, isActive, isSelected, fontMetrics );
+////	}
+////
+////	private java.awt.Rectangle[] boundsForTitles = new java.awt.Rectangle[ 0 ];
+////	private int activeIndex = -1;
+//
+//	private void handleLayoutContainer( java.awt.Container parent ) {
+//		int selectedIndex = this.tabbedPane.getSelectedIndex();
+//		final int N = this.tabbedPane.getTabCount();
+////		if( this.boundsForTitles.length != N ) {
+////			this.boundsForTitles = new java.awt.Rectangle[ N ];
+////			for( int i = 0; i < N; i++ ) {
+////				this.boundsForTitles[ i ] = new java.awt.Rectangle();
+////			}
+////		}
+////		java.awt.FontMetrics fontMetrics = this.tabbedPane.getFontMetrics( this.tabbedPane.getFont() );
+////		java.awt.Dimension buffer = new java.awt.Dimension();
+////		int x = 0;
+////		int maxHeight = 8;
+////		for( int i = 0; i < N; i++ ) {
+////			java.awt.Component component = this.tabbedPane.getComponentAt( i );
+////			String title = this.tabbedPane.getTitleAt( i );
+////			javax.swing.Icon icon = this.tabbedPane.getIconAt( i );
+////			boolean isEnabled = this.tabbedPane.isEnabledAt( i );
+////			calculatePreferredTabSize( buffer, i, component, title, icon, isEnabled, i == this.activeIndex, i == selectedIndex, fontMetrics );
+////			x += buffer.width;
+////			maxHeight = Math.max( maxHeight, buffer.height );
+////			this.boundsForTitles[ i ].width = buffer.width;
+////			this.boundsForTitles[ i ].height = buffer.height;
+////		}
+//		for( int i = 0; i < N; i++ ) {
+//			java.awt.Component component = this.tabbedPane.getComponentAt( i );
+//			component.setVisible( i == selectedIndex );
+//		}
+//
+//		this.headerPane.updateTitles();
+////		this.headerPane.revalidate();
+////		this.headerPane.getLayout().layoutContainer( this.headerPane );
+//		
+//		int y = this.headerPane.getPreferredSize().height;
+//		this.headerPane.setLocation( 0, 0 );
+//		this.headerPane.setSize( parent.getWidth(), y );
+//		//TabbedPaneUI.this.headerPane.repaint();
+//
+//		java.awt.Component selectedComponent = TabbedPaneUI.this.tabbedPane.getSelectedComponent();
+//		if( selectedComponent != null ) {
+//			selectedComponent.setLocation( 0, y );
+//			selectedComponent.setSize( parent.getWidth(), parent.getHeight() - y );
+//		}
+//	}
+//
+//	@Override
+//	public void installUI( javax.swing.JComponent c ) {
+//		super.installUI( c );
+//		this.tabbedPane = (javax.swing.JTabbedPane)c;
+//		c.setLayout( new TabbedPaneLayoutManager() );
+//		c.add( this.headerPane );
+//		//c.add( this.mainPane );
+//		this.tabbedPane.addChangeListener( this.changeAdapter );
+//		this.tabbedPane.addContainerListener( this.containerAdapter );
+//	}
+//	@Override
+//	public void uninstallUI( javax.swing.JComponent c ) {
+//		this.tabbedPane.removeContainerListener( this.containerAdapter );
+//		this.tabbedPane.removeChangeListener( this.changeAdapter );
+//		//c.remove( this.mainPane );
+//		c.remove( this.headerPane );
+//		c.setLayout( null );
+//		this.tabbedPane = null;
+//		super.uninstallUI( c );
+//	}
 //	@Override
 //	public java.awt.Rectangle getTabBounds( javax.swing.JTabbedPane pane, int index ) {
 //		return new java.awt.Rectangle();
 //	}
 //	@Override
 //	public int getTabRunCount( javax.swing.JTabbedPane pane ) {
-//		return 0;
+//		return 1;
 //	}
 //	@Override
 //	public int tabForCoordinate( javax.swing.JTabbedPane pane, int x, int y ) {
 //		return -1;
 //	}
-//	@Override
-//	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
-//		super.paint( g, c );
-//		g.setColor( java.awt.Color.RED );
-//		g.fillRect( 100, 100, 400, 300 );
-//	}
+//	//	@Override
+//	//	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
+//	//		super.paint( g, c );
+//	//	}
+//	protected abstract boolean isCloseButtonDesiredAt( int index );
+//	protected abstract void closeTab( int index, java.awt.event.MouseEvent e );
+//
 //}

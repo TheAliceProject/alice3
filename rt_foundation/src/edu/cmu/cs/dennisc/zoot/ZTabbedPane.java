@@ -100,6 +100,7 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		String[] tabTitles = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 		for( String tabTitle : tabTitles ) {
 			tabbedPane.addTab( tabTitle, new MonthPane( tabTitle ) );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "addTab", tabbedPane.getTabCount() );
 		}
 		frame.getContentPane().add( tabbedPane );
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
