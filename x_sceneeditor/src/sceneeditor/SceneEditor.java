@@ -39,6 +39,7 @@ import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Torus;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.util.Jack;
 import edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter;
 
 
@@ -74,6 +75,15 @@ public class SceneEditor extends Program {
 		scene.addComponent(chicken);
 		chicken.getSGComposite().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.MOVEABLE_OBJECTS );
 		chicken.getSGComposite().putBonusDataFor( SceneEditor.BOUNDING_BOX_KEY, chicken.getAxisAlignedMinimumBoundingBox());
+		
+//		Jack jack = new Jack();
+//		jack.setModest( false );
+//		jack.setParent( chicken.getSGComposite() );
+//		
+//		Jack jack2 = new Jack();
+//		jack2.setModest( false );
+//		jack2.setParent( scene.getSGComposite() );
+		
 		scene.addComponent(sunLight);
 		sunLight.getSGComposite().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.LIGHT );
 		scene.addComponent(camera);

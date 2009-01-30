@@ -22,8 +22,14 @@
  */
 package sceneeditor;
 
+import java.awt.AWTException;
+import java.awt.Cursor;
 import java.awt.Point;
+import java.awt.Robot;
 
+import javax.swing.SwingUtilities;
+
+import edu.cmu.cs.dennisc.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.Angle;
@@ -34,7 +40,9 @@ import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 
 /**
  * @author David Culyba
@@ -53,6 +61,8 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 	
 	protected RotationRingHandle rotationHandle;
 	
+	private Cursor previousCursor = null;
+	
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
 	}
@@ -68,7 +78,7 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 
 	@Override
 	public void startManipulator( InputState startInput ) {
-		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable() );
+		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
 		if (clickedHandle instanceof RotationRingHandle)
 		{
 			this.rotationHandle = (RotationRingHandle)clickedHandle;
@@ -93,7 +103,15 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 				Vector3 toMouse = Vector3.createSubtraction( this.initialClickPoint, this.objectOriginInPlane );
 				toMouse.normalize();
 				this.originalMouseDirection = new Vector3(toMouse);
-				this.originalMouseRightDirection = Vector3.createCrossProduct( this.originalMouseDirection, rotationAxis );			
+				this.originalMouseRightDirection = Vector3.createCrossProduct( this.originalMouseDirection, rotationAxis );
+				
+				this.rotationHandle.setSphereVisibility( true );
+				Vector3 sphereDirection = TransformationUtilities.transformFromAbsolute_New( toMouse, this.rotationHandle );
+				this.rotationHandle.setSphereDirection( sphereDirection );
+				
+				//Hide the cursor
+				CursorUtilities.pushAndSet( this.onscreenLookingGlass.getAWTComponent(), CursorUtilities.NULL_CURSOR );
+				
 			}
 		}
 
@@ -156,7 +174,24 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 
 	@Override
 	public void endManipulator( InputState endInput, InputState previousInput ) {
-		// TODO Auto-generated method stub
+		this.rotationHandle.setSphereVisibility( false );
+		try {
+			Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.camera );
+			Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenLookingGlass, this.camera );
+			SwingUtilities.convertPointToScreen( awtPoint, this.onscreenLookingGlass.getAWTComponent() );
+			Robot mouseMover = new Robot();
+			mouseMover.mouseMove(awtPoint.x, awtPoint.y);
+		} catch( AWTException e ) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally
+		{
+			CursorUtilities.popAndSet( this.onscreenLookingGlass.getAWTComponent() );
+		}
+		
+
+		
 
 	}
 

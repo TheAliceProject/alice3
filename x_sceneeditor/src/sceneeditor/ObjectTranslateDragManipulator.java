@@ -26,6 +26,7 @@ import java.awt.Point;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
+import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
@@ -43,7 +44,9 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
 	protected Point3 initialClickPoint = new Point3();
+	protected Point3 initialObjectPosition = new Point3();
 	protected Plane movementPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+	protected Plane badAnglePlane = null; 
 	protected Point3 offsetToOrigin = null;
 	
 	public void setCamera( AbstractCamera camera ) {
@@ -54,15 +57,97 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
+	protected Point3 getPositionForPlane( Plane movementPlane, Ray pickRay )
+	{
+		if (pickRay != null)
+		{
+			Point3 pointInPlane = PlaneUtilities.getPointInPlane( movementPlane, pickRay );
+			Point3 newPosition = Point3.createAddition( this.offsetToOrigin, pointInPlane );
+			newPosition.y = this.initialObjectPosition.y;
+			return newPosition;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	protected Point3 getPositionBasedonOnMouseLocation( Point mouseLocation )
+	{
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.camera, mouseLocation.x, mouseLocation.y );
+		if (pickRay != null)
+		{
+			Plane toMoveIn = this.movementPlane;
+			double badAngleAmount = this.getBadAngleAmount( PlaneUtilities.getPlaneNormal( this.movementPlane ) );
+			if (badAngleAmount > 0.0d)
+			{
+				Vector3 newNormal = Vector3.createInterpolation( PlaneUtilities.getPlaneNormal( this.movementPlane ), PlaneUtilities.getPlaneNormal( this.badAnglePlane ), badAngleAmount );
+				newNormal.normalize();
+				toMoveIn = new Plane(this.initialClickPoint, newNormal);
+			}
+			Point3 newPosition = this.getPositionForPlane( toMoveIn, pickRay );
+			return newPosition;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	protected double getBadAngleAmount( Vector3 planeNormal )
+	{
+		final double BAD_ANGLE_THRESHOLD = .2d;
+		final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
+		double cameraDot = Vector3.calculateDotProduct( this.camera.getAbsoluteTransformation().orientation.backward, planeNormal );
+		double badAmount = Math.abs( cameraDot );
+		if (badAmount < BAD_ANGLE_THRESHOLD)
+		{
+			if (badAmount < MIN_BAD_ANGLE_THRESHOLD)
+			{
+				return 1.0d;
+			}
+			badAmount -= MIN_BAD_ANGLE_THRESHOLD;
+			double thresholdDif = BAD_ANGLE_THRESHOLD - MIN_BAD_ANGLE_THRESHOLD;
+			return (thresholdDif - badAmount) / thresholdDif;
+		}
+		else
+		{
+			return 0.0d;
+		}
+	}
+	
+	protected Plane createCameraFacingStoodUpPlane( Point3 clickPoint )
+	{
+		Vector3 cameraBackward = this.camera.getAxes( AsSeenBy.SCENE ).backward;
+		if (EpsilonUtilities.isWithinReasonableEpsilon( cameraBackward.y, 1.0d )) //handle case where camera is pointing down or up
+		{
+			return new Plane(clickPoint, Vector3.createPositiveYAxis());
+		}
+		else
+		{
+			cameraBackward.y = 0.0f;
+			cameraBackward.normalize();
+			return new Plane(clickPoint, cameraBackward);
+		}
+	}
+	
+	protected Plane createBadAnglePlane( Point3 clickPoint )
+	{
+		return this.createCameraFacingStoodUpPlane( clickPoint );
+	}
+	
+	protected Plane createPickPlane( Point3 clickPoint )
+	{
+		return new Plane(clickPoint, Vector3.createPositiveYAxis());
+	}
+	
 	@Override
 	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) && this.manipulatedTransformable != null)
 		{
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.camera, currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
-			if (pickRay != null)
+			Point3 newPosition = getPositionBasedonOnMouseLocation( currentInput.getMouseLocation() );
+			if (newPosition != null)
 			{
-				Point3 pointInPlane = PlaneUtilities.getPointInPlane( this.movementPlane, pickRay );
-				Point3 newPosition = Point3.createAddition( this.offsetToOrigin, pointInPlane );
 				this.manipulatedTransformable.setTranslationOnly( newPosition, AsSeenBy.SCENE );
 			}
 		}
@@ -79,11 +164,13 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
 		if (this.manipulatedTransformable != null)
 		{
-			Transformable t = startInput.getClickPickedTransformable();
+			Transformable t = startInput.getClickPickedTransformable(true);
 			
+			this.initialObjectPosition.set( this.manipulatedTransformable.getAbsoluteTransformation().translation );
 			startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
 			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
-			this.movementPlane = new Plane(this.initialClickPoint, Vector3.createPositiveYAxis());
+			this.movementPlane = createPickPlane(this.initialClickPoint);
+			this.badAnglePlane = createBadAnglePlane(this.initialClickPoint);
 			
 			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.camera, startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			if (pickRay != null)

@@ -36,6 +36,7 @@ import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
@@ -56,7 +57,10 @@ public class RotationRingHandle extends ManipulationHandle{
 	
 	protected Torus sgTorus = new Torus();
 	protected Sphere sgSphere = new Sphere();
+	protected Transformable sphereTransformable = new Transformable();
+	protected Visual sgSphereVisual = new Visual();
 	protected Vector3 rotationAxis;
+	protected Vector3 sphereDirection = new Vector3();
 	
 	public RotationRingHandle( )
 	{
@@ -66,13 +70,18 @@ public class RotationRingHandle extends ManipulationHandle{
 	public RotationRingHandle( Vector3 rotationAxis )
 	{
 		super();
+		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
+		this.sgSphereVisual.setParent( this.sphereTransformable );
+		this.sphereTransformable.setParent( this );
+		this.sgSphereVisual.geometries.setValue( new Geometry[] { this.sgSphere } );
 		this.sgTorus.minorRadius.setValue( MINOR_RADIUS );
+		this.sgSphere.radius.setValue( MINOR_RADIUS * 2.0d);
+		this.setSphereVisibility( false );
 		this.rotationAxis = rotationAxis;
 		this.rotationAxis.normalize();
-		
+		this.sphereDirection.set( 0.0d, 0.0d, -1.0d );
 		this.localTransformation.setValue( this.getTransformationForAxis( this.rotationAxis ) );
-		
-		this.sgVisual.geometries.setValue( new Geometry[] { sgTorus } );
+		this.sgVisual.geometries.setValue( new Geometry[] { this.sgTorus } );
 	}
 
 	public AffineMatrix4x4 getTransformationForAxis( Vector3 rotationAxis )
@@ -90,6 +99,27 @@ public class RotationRingHandle extends ManipulationHandle{
 		return transform;
 	}
 	
+	public void setSphereVisibility( boolean showSphere )
+	{
+		this.sgSphereVisual.isShowing.setValue( showSphere );
+	}
+	
+	public void setSphereDirection( Vector3 direction )
+	{
+		this.sphereDirection = direction;
+		placeSphere();
+	}
+	
+	public Point3 getSphereLocation(ReferenceFrame referenceFrame)
+	{
+		return this.sphereTransformable.getTranslation( referenceFrame );
+	}
+	
+	protected void placeSphere()
+	{
+		this.sphereTransformable.setTranslationOnly( Point3.createMultiplication( this.sphereDirection, this.sgTorus.majorRadius.getValue() ), this );
+	}
+	
 	@Override
 	public void resizeRelativeToObject( Composite object )
 	{
@@ -103,8 +133,9 @@ public class RotationRingHandle extends ManipulationHandle{
 				Point3 minPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMinimum() );
 				Point3 maxPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMaximum() );
 				Point3 diagonal = Point3.createSubtraction( maxPlanePoint, minPlanePoint );
-				double radius = diagonal.calculateMagnitude() / 2.0d;
-				sgTorus.majorRadius.setValue( radius + sgTorus.minorRadius.getValue() );
+				double radius = diagonal.calculateMagnitude() / 2.0d + sgTorus.minorRadius.getValue();
+				sgTorus.majorRadius.setValue( radius );
+				this.sphereTransformable.setTranslationOnly( Point3.createMultiplication( this.sphereDirection, radius ), this );
 			}
 		}
 	}

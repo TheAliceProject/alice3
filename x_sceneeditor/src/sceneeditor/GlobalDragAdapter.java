@@ -26,6 +26,7 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 
+import sceneeditor.ModifierMask.ModifierKey;
 import sceneeditor.SelectedObjectCondition.ObjectSwitchBehavior;
 
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
@@ -141,6 +142,11 @@ public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter implement
 		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseTranslateObject.addCondition( moveableObject );
 		this.manipulators.add( mouseTranslateObject );
+		
+		ManipulatorConditionSet mouseUpDownTranslateObject = new ManipulatorConditionSet( new ObjectUpDownDragManipulator() );
+		MouseDragCondition moveableObjectWithShift = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierKey.SHIFT ));
+		mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
+		this.manipulators.add( mouseUpDownTranslateObject );
 		
 		ManipulatorConditionSet mouseRotateObject = new ManipulatorConditionSet( new ObjectRotateDragManipulator() );
 		MouseDragCondition rotatableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.HANDLES));
@@ -309,11 +315,11 @@ public class GlobalDragAdapter extends OnscreenLookingGlassDragAdapter implement
 		PickHint clickedObjectType = PickCondition.getPickType( this.currentInputState.getClickPickResult() );
 		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
 		{
-			this.currentInputState.setCurrentlySelectedObject( this.currentInputState.getClickPickedTransformable() );
+			this.currentInputState.setCurrentlySelectedObject( this.currentInputState.getClickPickedTransformable(true) );
 		}
 		else if (clickedObjectType.intersects( PickHint.HANDLES) )
 		{
-			Transformable pickedHandle = this.currentInputState.getClickPickedTransformable();
+			Transformable pickedHandle = this.currentInputState.getClickPickedTransformable(true);
 			if (pickedHandle instanceof RotationRingHandle)
 			{
 				this.currentInputState.setCurrentlySelectedObject( ((RotationRingHandle)pickedHandle).getManipulatedObject() ); 

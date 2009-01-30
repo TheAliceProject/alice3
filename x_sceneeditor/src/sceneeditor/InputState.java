@@ -22,6 +22,7 @@
  */
 package sceneeditor;
 
+import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
@@ -138,7 +139,24 @@ public class InputState {
 		return this.clickPickResult;
 	}
 	
-	public Transformable getClickPickedTransformable()
+	protected Component getFirstClassFromComponent( Component object )
+	{
+		Object bonusData = object.getBonusDataFor( PickHint.PICK_HINT_KEY );
+		if ( bonusData instanceof PickHint)
+		{
+			return object;
+		}
+		else if (object != null)
+		{
+			return getFirstClassFromComponent( object.getParent() );
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public Transformable getClickPickedTransformable( boolean getFirstClassObject )
 	{
 		if (this.clickPickResult != null)
 		{
@@ -146,7 +164,18 @@ public class InputState {
 			if( sgVisual != null ) {
 				Composite sgParent = sgVisual.getParent();
 				if( sgParent instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
-					return (edu.cmu.cs.dennisc.scenegraph.Transformable)sgParent;
+					if (getFirstClassObject)
+					{
+						Component firstClassComponent = getFirstClassFromComponent( sgParent );
+						if (firstClassComponent instanceof Transformable)
+						{
+							return (Transformable)firstClassComponent;
+						}
+					}
+					else
+					{
+						return (edu.cmu.cs.dennisc.scenegraph.Transformable)sgParent;
+					}
 				}
 			}
 		}

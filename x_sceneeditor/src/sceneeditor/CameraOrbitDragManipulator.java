@@ -41,6 +41,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 
 	Point3 pivotPoint = null;
 	static final Plane GROUND_PLANE = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
+	static final double TURN_RATE = 2.0d;
 	
 	
 	public void setPivotPoint( Point3 pivotPoint )
@@ -51,16 +52,23 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 	@Override
 	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		int xChange = currentInput.getMouseLocation().x - previousInput.getMouseLocation().x;
+		int yChange = currentInput.getMouseLocation().y - previousInput.getMouseLocation().y;
 		
-		double rotationAngle = xChange * 6.0d;
+		
+		
+		double leftRightRotationAngle = xChange * TURN_RATE;
+		double upDownRotationAngle = yChange * TURN_RATE;
 		
 		//AffineMatrix4x4 absoluteCameraTransform = this.manipulatedTransformable.getAbsoluteTransformation();
 		
 		AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
 		StandIn standIn = new StandIn();
-		standIn.vehicle.setValue( camera.getRoot() );
+		standIn.vehicle.setValue( this.camera.getRoot() );
 		standIn.setTranslationOnly( this.pivotPoint, AsSeenBy.SCENE );
-		this.manipulatedTransformable.applyRotationAboutYAxis( new AngleInDegrees(rotationAngle), standIn );
+		standIn.setAxesOnlyToPointAt( this.camera );
+		standIn.setAxesOnlyToStandUp();
+		this.manipulatedTransformable.applyRotationAboutXAxis( new AngleInDegrees(upDownRotationAngle), standIn );
+		this.manipulatedTransformable.applyRotationAboutYAxis( new AngleInDegrees(leftRightRotationAngle), standIn );
 	}
 
 	@Override
