@@ -55,7 +55,6 @@ public class MailUtilities {
 			tlsValue = "false";
 		}
 		props.put( "mail.smtp.starttls.enable", tlsValue );
-
 		
 		String authValue;
 		if( authenticator != null ) {
@@ -70,11 +69,10 @@ public class MailUtilities {
 			props.put( "mail.ssmtp.auth", "true" );
 			props.put( "mail.ssmtp.port", Integer.toString( port ) );
 			props.put( "mail.smtp.socketFactory.port", Integer.toString( port ) );
-			props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
-			props.put( "mail.smtp.socketFactory.fallback", "false" );
 		}
 		
 		javax.mail.Session session = javax.mail.Session.getInstance( props, authenticator );
+		session.setDebug( true );
 		
 		javax.mail.internet.MimeMessage message = new javax.mail.internet.MimeMessage( session );
 		message.setSubject( subject );

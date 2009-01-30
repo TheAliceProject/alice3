@@ -61,7 +61,7 @@ public class CaughtExceptionBugReportPane extends edu.cmu.cs.dennisc.ui.bugrepor
 	}
 	@Override
 	protected boolean isTransportLayerSecurityDesired() {
-		return false;
+		return true;
 	}
 	@Override
 	protected String getHost() {

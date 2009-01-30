@@ -135,13 +135,13 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		//this.lightHighlight = java.awt.Color.YELLOW;
 	}
 
-	@Override
-	protected java.awt.LayoutManager createLayoutManager() {
-		class MyLayoutManager extends TabbedPaneLayout {
-			
-		}
-		return super.createLayoutManager();
-	}
+//	@Override
+//	protected java.awt.LayoutManager createLayoutManager() {
+//		class MyLayoutManager extends TabbedPaneLayout {
+//			
+//		}
+//		return super.createLayoutManager();
+//	}
 	private java.awt.geom.GeneralPath createPath( int width, int height ) {
 		float x0 = width - EAST_TAB_PAD / 2;
 		float x1 = width + EAST_TAB_PAD;
@@ -383,3 +383,24 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		}
 	}
 }
+
+//public class TabbedPaneUI extends javax.swing.plaf.TabbedPaneUI {
+//	@Override
+//	public java.awt.Rectangle getTabBounds( javax.swing.JTabbedPane pane, int index ) {
+//		return new java.awt.Rectangle();
+//	}
+//	@Override
+//	public int getTabRunCount( javax.swing.JTabbedPane pane ) {
+//		return 0;
+//	}
+//	@Override
+//	public int tabForCoordinate( javax.swing.JTabbedPane pane, int x, int y ) {
+//		return -1;
+//	}
+//	@Override
+//	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
+//		super.paint( g, c );
+//		g.setColor( java.awt.Color.RED );
+//		g.fillRect( 100, 100, 400, 300 );
+//	}
+//}
