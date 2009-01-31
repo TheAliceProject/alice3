@@ -169,21 +169,34 @@ public class FileUtilities {
 		assert name.endsWith( srcExtension );
 		return new java.io.File( directory, name.substring( 0, name.length()-srcExtension.length() ) + dstExtension ); 
 	}
-	
-	public static java.io.File[] listFiles( java.io.File root, String extension ) {
-		assert extension.charAt( 0 ) != '.';
-		final String ext = extension;
-		java.io.File[] rv = root.listFiles( new java.io.FileFilter() {
-			public boolean accept( java.io.File file ) {
-				return file.isFile() && ext.equalsIgnoreCase( getExtension( file ) );
-			}
-		} );
+
+	public static java.io.File[] listFiles( java.io.File root, java.io.FileFilter fileFilter ) {
+		java.io.File[] rv = root.listFiles( fileFilter );
 		if( rv != null ) {
 			//pass
 		} else {
 			rv = new java.io.File[ 0 ];
 		}
 		return rv;
+	}
+	public static java.io.File[] listDirectories( java.io.File root ) {
+		return listFiles( root, new java.io.FileFilter() {
+			public boolean accept( java.io.File file ) {
+				return file.isDirectory();
+			}
+		} ); 
+	}
+	public static java.io.File[] listDirectories( String rootPath ) {
+		return listDirectories( new java.io.File( rootPath ) );
+	}
+	public static java.io.File[] listFiles( java.io.File root, String extension ) {
+		assert extension.charAt( 0 ) != '.';
+		final String ext = extension;
+		return listFiles( root, new java.io.FileFilter() {
+			public boolean accept( java.io.File file ) {
+				return file.isFile() && ext.equalsIgnoreCase( getExtension( file ) );
+			}
+		} );
 	}
 	public static java.io.File[] listFiles( String rootPath, String extension ) {
 		return listFiles( new java.io.File( rootPath ), extension );

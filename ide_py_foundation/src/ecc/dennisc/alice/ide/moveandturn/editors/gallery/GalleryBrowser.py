@@ -323,7 +323,17 @@ def _getTextbookTypesDirectory():
 	return rv
 
 from CreateTextButton import CreateTextButton
-	
+
+#class MyGalleryAssetsPane( edu.cmu.cs.dennisc.alice.ide.galleryassetspane.GalleryAssetsPane ):
+#	def createFolderIcon(self):
+#		print "TODO: remove absolute path"
+#		return javax.swing.ImageIcon( "C:/Program Files (x86)/Alice/3.beta.0000/gallery/folder.png" )
+#	def getRootDirectory(self):
+#		print "TODO: remove absolute path"
+#		return java.io.File( "C:/Program Files (x86)/Alice/3.beta.0000/gallery/thumbnails/org.alice.apis.moveandturn.gallery/animals" )
+#	def createPathControl(self):
+#		return None
+
 class GalleryBrowser( javax.swing.JPanel, java.awt.event.KeyListener ):
 	def __init__( self, thumbnailsRoot, subRoot, map ):
 		javax.swing.JPanel.__init__( self )
