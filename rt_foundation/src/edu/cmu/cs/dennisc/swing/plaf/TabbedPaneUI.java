@@ -385,7 +385,16 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 }
 
 //public abstract class TabbedPaneUI extends javax.swing.plaf.TabbedPaneUI {
-//	class Title extends javax.swing.JLabel implements javax.swing.plaf.UIResource {
+//	private static final int INSET = 8;
+//	class Title extends javax.swing.JPanel implements javax.swing.plaf.UIResource {
+//		public Title() {
+//			int top = INSET;
+//			int left = INSET;
+//			int bottom = INSET;
+//			int right = INSET;
+//			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( top, left, bottom, right ) );
+//			this.setLayout( new java.awt.GridLayout( 1, 1 ) );
+//		}
 //	}
 //
 //	class TitlesPane extends javax.swing.JPanel implements javax.swing.plaf.UIResource {
@@ -397,8 +406,9 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 //			final int N = TabbedPaneUI.this.tabbedPane.getTabCount();
 //			for( int i=0; i<N; i++ ) {
 //				Title title = new Title();
-//				title.setText( TabbedPaneUI.this.tabbedPane.getTitleAt( i ) );
-//				title.setIcon( TabbedPaneUI.this.tabbedPane.getIconAt( i ) );
+//				title.add( javax.swing.plaf.TabbedPaneUI.this.createTitleComponent( i ) );
+////				title.setText( TabbedPaneUI.this.tabbedPane.getTitleAt( i ) );
+////				title.setIcon( TabbedPaneUI.this.tabbedPane.getIconAt( i ) );
 //				this.add( title );
 //			}
 //			this.add( javax.swing.Box.createHorizontalGlue() );
@@ -442,6 +452,13 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 //		}
 //	}
 //
+//	protected javax.swing.AbstractButton createMoreButton() {
+//		return new MoreButton();
+//	}
+//	protected java.awt.Component createTitleComponent( int index ) {
+//		return new MoreButton();
+//	}
+//	
 //	private HeaderPane headerPane = new HeaderPane();
 //	//	private MainPane mainPane = new MainPane();
 //	private javax.swing.JTabbedPane tabbedPane = null;

@@ -33,29 +33,41 @@ public class MailUtilities {
 			uee.printStackTrace();
 		}
 	}
-	public static void sendMail( 
-			boolean isTransportLayerSecurityDesired,
-			int port,
-			String host, 
-			AbstractAuthenticator authenticator, 
-			String replyTo, 
-			String replyToPresonal, 
-			String to, 
-			String subject, 
-			String text, 
-			Attachment... attachments 
-		) throws javax.mail.MessagingException {
+	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, Attachment... attachments )
+			throws javax.mail.MessagingException {
 		java.util.Properties props = new java.util.Properties();
 		props.put( "mail.transport.protocol", "smtp" );
 		props.put( "mail.smtp.host", host );
 		String tlsValue;
+		
+		int port;
+		if( portOverride != null ) {
+			port = portOverride;
+		} else {
+			if( isTransportLayerSecurityDesired ) {
+				port = 465;
+			} else {
+				port = 25;
+			}
+		}
+		props.put( "mail.smtp.port", Integer.toString( port ) );
 		if( isTransportLayerSecurityDesired ) {
+			props.put( "mail.smtp.auth", "true" );
+//			if( portOverride != null ) {
+//				//pass
+//			} else {
+				props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
+				props.put( "mail.smtp.socketFactory.fallback", "false" );
+//			}
+//			props.put( "mail.smtp.ssl.protocols", "SSLv3 TLSv1" );
 			tlsValue = "true";
 		} else {
 			tlsValue = "false";
 		}
-		props.put( "mail.smtp.starttls.enable", tlsValue );
 		
+
+		props.put( "mail.smtp.starttls.enable", tlsValue );
+
 		String authValue;
 		if( authenticator != null ) {
 			authValue = "true";
@@ -63,17 +75,12 @@ public class MailUtilities {
 			authValue = "false";
 		}
 		props.put( "mail.smtp.auth", authValue );
-		
-		props.put( "mail.smtp.port", Integer.toString( port ) );
-		if( port == 465 ) {
-			props.put( "mail.ssmtp.auth", "true" );
-			props.put( "mail.ssmtp.port", Integer.toString( port ) );
-			props.put( "mail.smtp.socketFactory.port", Integer.toString( port ) );
-		}
-		
+		props.put( "mail.smtp.quitwait", "false" );
+
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "sendMail", props );
 		javax.mail.Session session = javax.mail.Session.getInstance( props, authenticator );
 		session.setDebug( true );
-		
+
 		javax.mail.internet.MimeMessage message = new javax.mail.internet.MimeMessage( session );
 		message.setSubject( subject );
 
@@ -118,20 +125,10 @@ public class MailUtilities {
 		javax.mail.Transport.send( message );
 	}
 
-	public static void sendMail( 
-			boolean isTransportLayerSecurityDesired,
-			int port,
-			String host, 
-			AbstractAuthenticator authenticator, 
-			String replyTo, 
-			String replyToPresonal, 
-			String to, 
-			String subject, 
-			String text, 
-			java.util.ArrayList< Attachment > attachments 
-		) throws javax.mail.MessagingException {
+	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text,
+			java.util.ArrayList< Attachment > attachments ) throws javax.mail.MessagingException {
 		Attachment[] array = new Attachment[ attachments.size() ];
 		attachments.toArray( array );
-		sendMail( isTransportLayerSecurityDesired, port, host, authenticator, replyTo, replyToPresonal, to, subject, text, array );
+		sendMail( isTransportLayerSecurityDesired, portOverride, host, authenticator, replyTo, replyToPresonal, to, subject, text, array );
 	}
 }

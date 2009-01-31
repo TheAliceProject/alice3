@@ -228,7 +228,11 @@ class AWTOpenPane( OpenPane ):
 
 class TabbedPane( javax.swing.JTabbedPane, edu.cmu.cs.dennisc.pattern.Validator ):
 	def isValid( self ):
-		return self.getSelectedComponent().isValid()
+		selectedComponent = self.getSelectedComponent()
+		if selectedComponent:
+			return selectedComponent.isValid()
+		else:
+			return False
 
 class ProjectInputPane( edu.cmu.cs.dennisc.swing.InputPane ):
 	def __init__( self, owner ):

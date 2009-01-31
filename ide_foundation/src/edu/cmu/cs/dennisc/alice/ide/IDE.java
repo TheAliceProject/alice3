@@ -61,9 +61,7 @@ public abstract class IDE extends javax.swing.JFrame {
 								if( result == javax.swing.JOptionPane.YES_OPTION ) {
 									//pass
 								} else {
-									if( result == javax.swing.JOptionPane.NO_OPTION ) {
-										//pass
-									} else {
+									if( result == javax.swing.JOptionPane.CANCEL_OPTION ) {
 										IDE.isBugReportSubmissionPaneDesired = false;
 									}
 									break;
@@ -78,6 +76,8 @@ public abstract class IDE extends javax.swing.JFrame {
 		} );
 	}
 
+	public abstract java.io.File getApplicationRootDirectory();
+	
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
 		rv.append( "Please Submit Bug Report: " );
 		this.updateTitlePrefix( rv );
