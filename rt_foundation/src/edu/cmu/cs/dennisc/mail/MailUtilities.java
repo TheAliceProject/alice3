@@ -53,12 +53,8 @@ public class MailUtilities {
 		props.put( "mail.smtp.port", Integer.toString( port ) );
 		if( isTransportLayerSecurityDesired ) {
 			props.put( "mail.smtp.auth", "true" );
-//			if( portOverride != null ) {
-//				//pass
-//			} else {
-				props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
-				props.put( "mail.smtp.socketFactory.fallback", "false" );
-//			}
+			props.put( "mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory" );
+			props.put( "mail.smtp.socketFactory.fallback", "false" );
 //			props.put( "mail.smtp.ssl.protocols", "SSLv3 TLSv1" );
 			tlsValue = "true";
 		} else {
