@@ -5,6 +5,7 @@ import edu
 import ecc
 
 from edu.cmu.cs.dennisc import alice
+from edu.cmu.cs.dennisc import zoot
 
 def getSceneEditor():
 	return alice.ide.IDE.getSingleton()._scenePane
@@ -24,7 +25,7 @@ class FileListCellRenderer( ecc.dennisc.swing.AbstractIconListCellRenderer ):
 	def _getTextForLabelAndIcon( self, label, list, value, index, isSelected, isFocus ):
 		textForLabel = _getFilteredFileName( value, self._galleryBrowser )
 		if textForLabel.endswith( ".png" ):
-			textForLabel = textForLabel[:-4]
+			textForLabel = textForLabel[: - 4]
 		if value.isDirectory():
 			directoryThumbnailFile = java.io.File( value, "directoryThumbnail.png" )
 			if directoryThumbnailFile.exists():
@@ -37,7 +38,7 @@ class FileListCellRenderer( ecc.dennisc.swing.AbstractIconListCellRenderer ):
 				g = self._image.getGraphics()
 				
 				composite = g.getComposite()
-				g.setComposite( java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.CLEAR, 0.0 ) );
+				g.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.CLEAR, 0.0 ) );
 				g.fillRect( 0, 0, self._image.getWidth(), self._image.getHeight() )
 				g.setComposite( composite )
 				g.drawImage( imageBackground, 0, 0, None )
@@ -324,55 +325,179 @@ def _getTextbookTypesDirectory():
 
 from CreateTextButton import CreateTextButton
 
-#class MyGalleryAssetsPane( edu.cmu.cs.dennisc.alice.ide.galleryassetspane.GalleryAssetsPane ):
-#	def createFolderIcon(self):
-#		print "TODO: remove absolute path"
-#		return javax.swing.ImageIcon( "C:/Program Files (x86)/Alice/3.beta.0000/gallery/folder.png" )
-#	def getRootDirectory(self):
-#		print "TODO: remove absolute path"
-#		return java.io.File( "C:/Program Files (x86)/Alice/3.beta.0000/gallery/thumbnails/org.alice.apis.moveandturn.gallery/animals" )
-#	def createPathControl(self):
-#		return None
+#class GalleryBrowser( javax.swing.JPanel, java.awt.event.KeyListener ):
+#	def __init__( self, thumbnailsRoot, subRoot, map ):
+#		javax.swing.JPanel.__init__( self )
+#		self._thumbnailsRoot = thumbnailsRoot
+#		self._thumbnailsSubRoot = java.io.File( thumbnailsRoot, subRoot )
+#		self._map = map
+#		self._ancestorsVC = AncestorsVC( self )
+#		self._directoryFilesVC = DirectoryFilesListVC( self, listSelectionListener=ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleFileSelection ) )
+#		self._directoryFilesVC.setDirectory( self._ancestorsVC._root )
+#		
+#		panel = javax.swing.JPanel()
+#		panel.setLayout( java.awt.BorderLayout() )
+#		panel.add( self._ancestorsVC, java.awt.BorderLayout.NORTH )
+#		panel.add( javax.swing.JScrollPane( self._directoryFilesVC ), java.awt.BorderLayout.CENTER )
+#
+#		fromFilePane = javax.swing.JPanel()
+#		fromFilePane.setLayout( java.awt.GridLayout( 2, 1, 0, 4 ) )
+#		fromFilePane.add( CreateInstanceOfTypeButton( "My Classes...", self._handleCreateInstanceOfTypeButton, edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory() ) )
+#		fromFilePane.add( CreateInstanceOfTypeButton( "Textbook Classes...", self._handleCreateInstanceOfTypeButton, _getTextbookTypesDirectory() ) )
+#		
+#		self.setLayout( java.awt.GridBagLayout() )
+#		gbc = java.awt.GridBagConstraints()
+#		gbc.fill = java.awt.GridBagConstraints.BOTH
+#		gbc.weightx = 0.0
+#		gbc.weighty = 1.0
+##		gbc.insets.left = INSET
+##		gbc.insets.top = INSET
+##		gbc.insets.bottom = INSET
+#		gbc.weightx = 1.0
+#		self.add( panel, gbc )
+#		gbc.weightx = 0.0
+#		self.add( CreateTextButton(), gbc )
+#		gbc.insets.left = 12
+#		self.add( fromFilePane, gbc )
+#
+#		#self._ancestorsVC.addKeyListener( self )
+#		self._directoryFilesVC.addKeyListener( self )
+#
+#	def _handleCreateInstanceOfTypeButton(self, e, directory ):
+#		owner = alice.ide.IDE.getSingleton()
+#		file = ecc.dennisc.swing.showFileOpenDialog( owner, directory, edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION )
+#		if file:
+#			type = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType( file )
+#			
+#			superType = type.getFirstTypeEncounteredDeclaredInJava()
+#			
+#			cls = superType.m_cls
+#			clsFullName = cls.__name__
+#			
+#			prefixList = []
+#			prefixList.append( "org.alice.apis.moveandturn.gallery" )
+#			prefixList.append( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters" )
+#			prefixList.append( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes" )
+#			for prefix in prefixList:
+#				if clsFullName.startswith( prefix ):
+#					pre = prefix
+#					post = clsFullName[len( prefix ):]
+#					break
+#			
+#			
+#			path = pre + post.replace( ".", "/" ) + ".png"
+#			
+#			file = java.io.File( self._thumbnailsRoot, path )
+#
+#			inputPane = CreateInstancePane( file, self._thumbnailsRoot, type )
+#			owner = alice.ide.IDE.getSingleton()
+#			instance = inputPane.showInJDialog( owner, "Create Instance", True )
+#			if instance:
+#				getSceneEditor().addInstance( instance )
+#
+#	def keyPressed( self, e ):
+#		pass
+#	def keyReleased( self, e ):
+#		if e.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE:
+#			upOneLevelDir = self._ancestorsVC.getDirectoryUpOneLevel()
+#			if upOneLevelDir:
+#				self._handleFileSelection( upOneLevelDir )
+#	def keyTyped( self, e ):
+#		pass
+#
+#	def getDefaultFolderPath(self):
+#		root = alice.ide.IDE.getSingleton()._getResourcesRootDirectory() 
+#		rv = java.io.File( root, "folder.png" ).getAbsolutePath()
+#		return rv
+#
+#	def _handleFileSelection( self, file ):
+#		if file:
+#			if file.isDirectory():
+#				self._directoryFilesVC.setDirectory( file )
+#				self._ancestorsVC.setDirectory( file )
+#				self.revalidate()
+#			else:
+#				#fileView = FileView( file )
+##				result = javax.swing.JOptionPane.showConfirmDialog(self, fileView, "Create Instance", javax.swing.JOptionPane.YES_NO_OPTION )
+##				if result == javax.swing.JOptionPane.YES_OPTION:
+##					if self._scenePane:
+##						self._scenePane.addInstanceFromClassName( fileView.getClassName( self._thumbnailsRoot ) )
+#				inputPane = CreateInstancePane( file, self._thumbnailsRoot, None )
+#				owner = alice.ide.IDE.getSingleton()
+#				instance = inputPane.showInJDialog( owner, "Create Instance", True )
+#				if instance:
+#					getSceneEditor().addInstance( instance )
+#
+#				self._directoryFilesVC.clearSelection()
 
-class GalleryBrowser( javax.swing.JPanel, java.awt.event.KeyListener ):
+class GalleryBrowser( alice.ide.gallerypane.GalleryPane ):
 	def __init__( self, thumbnailsRoot, subRoot, map ):
-		javax.swing.JPanel.__init__( self )
 		self._thumbnailsRoot = thumbnailsRoot
 		self._thumbnailsSubRoot = java.io.File( thumbnailsRoot, subRoot )
 		self._map = map
-		self._ancestorsVC = AncestorsVC( self )
-		self._directoryFilesVC = DirectoryFilesListVC( self, listSelectionListener=ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleFileSelection ) )
-		self._directoryFilesVC.setDirectory( self._ancestorsVC._root )
-		
-		panel = javax.swing.JPanel()
-		panel.setLayout( java.awt.BorderLayout() )
-		panel.add( self._ancestorsVC, java.awt.BorderLayout.NORTH )
-		panel.add( javax.swing.JScrollPane( self._directoryFilesVC ), java.awt.BorderLayout.CENTER )
+		alice.ide.gallerypane.GalleryPane.__init__( self, self._thumbnailsSubRoot )
 
-		fromFilePane = javax.swing.JPanel()
+		westComponent = self.createWestComponent()
+		if westComponent:
+			self.add( westComponent, java.awt.BorderLayout.WEST )
+		eastComponent = self.createEastComponent()
+		if eastComponent:
+			self.add( eastComponent, java.awt.BorderLayout.EAST )
+#		self._ancestorsVC = AncestorsVC( self )
+#		self._directoryFilesVC = DirectoryFilesListVC( self, listSelectionListener=ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleFileSelection ) )
+#		self._directoryFilesVC.setDirectory( self._ancestorsVC._root )
+#		
+#		panel = javax.swing.JPanel()
+#		panel.setLayout( java.awt.BorderLayout() )
+#		panel.add( self._ancestorsVC, java.awt.BorderLayout.NORTH )
+#		panel.add( javax.swing.JScrollPane( self._directoryFilesVC ), java.awt.BorderLayout.CENTER )
+#
+#		fromFilePane = javax.swing.JPanel()
+#		fromFilePane.setLayout( java.awt.GridLayout( 2, 1, 0, 4 ) )
+#		fromFilePane.add( CreateInstanceOfTypeButton( "My Classes...", self._handleCreateInstanceOfTypeButton, edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory() ) )
+#		fromFilePane.add( CreateInstanceOfTypeButton( "Textbook Classes...", self._handleCreateInstanceOfTypeButton, _getTextbookTypesDirectory() ) )
+#		
+#		self.setLayout( java.awt.GridBagLayout() )
+#		gbc = java.awt.GridBagConstraints()
+#		gbc.fill = java.awt.GridBagConstraints.BOTH
+#		gbc.weightx = 0.0
+#		gbc.weighty = 1.0
+##		gbc.insets.left = INSET
+##		gbc.insets.top = INSET
+##		gbc.insets.bottom = INSET
+#		gbc.weightx = 1.0
+#		self.add( panel, gbc )
+#		gbc.weightx = 0.0
+#		self.add( CreateTextButton(), gbc )
+#		gbc.insets.left = 12
+#		self.add( fromFilePane, gbc )
+#
+#		#self._ancestorsVC.addKeyListener( self )
+#		self._directoryFilesVC.addKeyListener( self )
+
+	def createWestComponent( self ):
+		return None
+
+	def createEastComponent( self ):
+		pane = zoot.ZPane()
+		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) )
+		pane.setLayout( java.awt.BorderLayout() )
+
+		fromFilePane = zoot.ZPane()
 		fromFilePane.setLayout( java.awt.GridLayout( 2, 1, 0, 4 ) )
 		fromFilePane.add( CreateInstanceOfTypeButton( "My Classes...", self._handleCreateInstanceOfTypeButton, edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory() ) )
 		fromFilePane.add( CreateInstanceOfTypeButton( "Textbook Classes...", self._handleCreateInstanceOfTypeButton, _getTextbookTypesDirectory() ) )
-		
-		self.setLayout( java.awt.GridBagLayout() )
-		gbc = java.awt.GridBagConstraints()
-		gbc.fill = java.awt.GridBagConstraints.BOTH
-		gbc.weightx = 0.0
-		gbc.weighty = 1.0
-#		gbc.insets.left = INSET
-#		gbc.insets.top = INSET
-#		gbc.insets.bottom = INSET
-		gbc.weightx = 1.0
-		self.add( panel, gbc )
-		gbc.weightx = 0.0
-		self.add( CreateTextButton(), gbc )
-		gbc.insets.left = 12
-		self.add( fromFilePane, gbc )
 
-		#self._ancestorsVC.addKeyListener( self )
-		self._directoryFilesVC.addKeyListener( self )
+		pane.add( fromFilePane, java.awt.BorderLayout.NORTH )
+		pane.add( CreateTextButton(), java.awt.BorderLayout.SOUTH )
+		return pane
 
-	def _handleCreateInstanceOfTypeButton(self, e, directory ):
+	def getAdornedTextFor( self, name, isDirectory, isRequestedByPath ):
+		if self._map.has_key( name ):
+			name = self._map[ name ]
+		return alice.ide.gallerypane.GalleryPane.getAdornedTextFor( self, name, isDirectory, isRequestedByPath )
+	
+	def _handleCreateInstanceOfTypeButton( self, e, directory ):
 		owner = alice.ide.IDE.getSingleton()
 		file = ecc.dennisc.swing.showFileOpenDialog( owner, directory, edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION )
 		if file:
@@ -404,21 +529,9 @@ class GalleryBrowser( javax.swing.JPanel, java.awt.event.KeyListener ):
 			if instance:
 				getSceneEditor().addInstance( instance )
 
-	def keyPressed( self, e ):
-		pass
-	def keyReleased( self, e ):
-		if e.getKeyCode() == java.awt.event.KeyEvent.VK_BACK_SPACE:
-			upOneLevelDir = self._ancestorsVC.getDirectoryUpOneLevel()
-			if upOneLevelDir:
-				self._handleFileSelection( upOneLevelDir )
-	def keyTyped( self, e ):
-		pass
-
-	def getDefaultFolderPath(self):
-		root = alice.ide.IDE.getSingleton()._getResourcesRootDirectory() 
-		rv = java.io.File( root, "folder.png" ).getAbsolutePath()
-		return rv
-
+	def handleFileActivation( self, file ):
+		self._handleFileSelection( file )
+	#todo
 	def _handleFileSelection( self, file ):
 		if file:
 			if file.isDirectory():
@@ -426,15 +539,8 @@ class GalleryBrowser( javax.swing.JPanel, java.awt.event.KeyListener ):
 				self._ancestorsVC.setDirectory( file )
 				self.revalidate()
 			else:
-				#fileView = FileView( file )
-#				result = javax.swing.JOptionPane.showConfirmDialog(self, fileView, "Create Instance", javax.swing.JOptionPane.YES_NO_OPTION )
-#				if result == javax.swing.JOptionPane.YES_OPTION:
-#					if self._scenePane:
-#						self._scenePane.addInstanceFromClassName( fileView.getClassName( self._thumbnailsRoot ) )
 				inputPane = CreateInstancePane( file, self._thumbnailsRoot, None )
 				owner = alice.ide.IDE.getSingleton()
 				instance = inputPane.showInJDialog( owner, "Create Instance", True )
 				if instance:
 					getSceneEditor().addInstance( instance )
-
-				self._directoryFilesVC.clearSelection()

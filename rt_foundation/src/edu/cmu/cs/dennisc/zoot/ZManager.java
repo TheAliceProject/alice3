@@ -58,6 +58,9 @@ public class ZManager {
 			} );
 			handlePreparedOperation( cancellableOperation, e, preparationUpdates, preparationResult );
 		} else {
+			if( operation instanceof ResponseOperation ) {
+				((ResponseOperation)operation).respond( e );
+			}
 			operation.perform();
 		}
 	}
