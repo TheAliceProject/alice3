@@ -25,6 +25,13 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface Operation {
-	public void perform();
+public class ZButton extends javax.swing.JButton {
+	private ActionOperation actionOperation;
+	public ZButton( ActionOperation actionOperation ) {
+		this.actionOperation = actionOperation;
+		this.setAction( this.actionOperation.getActionForConfiguringSwingComponents() );
+	}
+	protected ActionOperation getActionOperation() {
+		return this.actionOperation;
+	}
 }

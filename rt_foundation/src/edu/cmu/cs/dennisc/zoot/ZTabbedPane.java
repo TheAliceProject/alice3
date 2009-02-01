@@ -45,9 +45,9 @@ class ZTabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
  * @author Dennis Cosgrove
  */
 public class ZTabbedPane extends javax.swing.JTabbedPane {
-	private ActionOperation tabCloseOperation;
+	private CancellableOperation tabCloseOperation;
 
-	public ZTabbedPane( ActionOperation tabCloseOperation ) {
+	public ZTabbedPane( CancellableOperation tabCloseOperation ) {
 		this.tabCloseOperation = tabCloseOperation;
 		this.setTabLayoutPolicy( javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT );
 		this.setUI( new ZTabbedPaneUI( this ) );
@@ -77,14 +77,11 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		}
 
 		//SingleSelectionOperation tabSelectionOperation = null;
-		ActionOperation tabCloseOperation = new ActionOperation() {
+		CancellableOperation tabCloseOperation = new CancellableOperation() {
 			private edu.cmu.cs.dennisc.zoot.event.TabEvent e;
-			public javax.swing.Action getActionForConfiguringSwingComponents() {
-				return null;
-			}
-			public Operation.PreparationResult prepare( java.util.EventObject e, Operation.PreparationObserver observer ) {
+			public CancellableOperation.PreparationResult prepare( java.util.EventObject e, CancellableOperation.PreparationObserver observer ) {
 				this.e = (edu.cmu.cs.dennisc.zoot.event.TabEvent)e;
-				return Operation.PreparationResult.PERFORM;
+				return CancellableOperation.PreparationResult.PERFORM;
 			}
 			public void perform() {
 				this.e.getTypedSource().remove( this.e.getIndex() );

@@ -8,13 +8,11 @@ from edu.cmu.cs.dennisc import alice
 
 import ecc
 
-class TabCloseOperation( zoot.ActionOperation ):
-	def getActionForConfiguringSwingComponents(self):
-		return None
+class TabCloseOperation( zoot.CancellableOperation ):
 	def prepare(self, e, observer):
 		self._tabbedPane = e.getSource()
 		self._index = e.getIndex()
-		return zoot.Operation.PreparationResult.PERFORM
+		return zoot.CancellableOperation.PreparationResult.PERFORM
 	def perform(self):
 		scrollPane = self._tabbedPane.getComponentAt( self._index )
 		self._tabbedPane.remove( self._index )

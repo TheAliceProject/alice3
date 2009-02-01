@@ -25,6 +25,14 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface Operation {
-	public void perform();
+public interface CancellableOperation extends Operation {
+	public enum PreparationResult {
+		CANCEL,
+		PERFORM,
+		PERFORM_AND_ADD_TO_HISTORY
+	}
+	public interface PreparationObserver {
+		public void update( java.util.EventObject e );
+	}
+	public PreparationResult prepare( java.util.EventObject e, PreparationObserver observer );
 }

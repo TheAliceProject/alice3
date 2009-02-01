@@ -20,11 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.awt;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Operation {
-	public void perform();
+public class RectangleUtilties {
+	public static java.awt.Rectangle createCenteredRectangle( java.awt.Rectangle bound, int width, int height ) {
+		int x0 = bound.x;
+		int x1 = bound.x + bound.width-1;
+		int xC = ( x0 + x1 ) / 2;
+
+		int y0 = bound.y;
+		int y1 = bound.y + bound.height-1;
+		int yC = ( y0 + y1 ) / 2;
+
+		return new java.awt.Rectangle( xC-width/2, yC-height/2, width, height );
+	}
+	public static java.awt.Rectangle createCenteredRectangle( java.awt.Rectangle bound, java.awt.Dimension size ) {
+		return createCenteredRectangle( bound, size.width, size.height );
+	}
 }

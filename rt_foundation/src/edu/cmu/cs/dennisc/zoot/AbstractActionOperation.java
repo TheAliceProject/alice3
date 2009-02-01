@@ -25,6 +25,16 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface Operation {
-	public void perform();
+public abstract class AbstractActionOperation implements ActionOperation {
+	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+			ZManager.performIfAppropriate( AbstractActionOperation.this, e );
+		} 
+	};
+	public javax.swing.Action getActionForConfiguringSwingComponents() {
+		return this.actionForConfiguringSwingComponents;
+	}
+	protected void putValue( String key, Object value ) {
+		this.actionForConfiguringSwingComponents.putValue( key, value );
+	}
 }

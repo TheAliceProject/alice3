@@ -34,26 +34,31 @@ public class ZManager {
 	}
 //	private static void addToHistory( Operation operation ) {
 //	}
-	private static void handlePreparedOperation( Operation operation, java.util.EventObject e, java.util.List< java.util.EventObject > preparationUpdates, Operation.PreparationResult preparationResult ) {
+	private static void handlePreparedOperation( CancellableOperation operation, java.util.EventObject e, java.util.List< java.util.EventObject > preparationUpdates, CancellableOperation.PreparationResult preparationResult ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "ZManager.handlePreparedOperation", operation, preparationResult );
 		if( preparationResult != null ) {
-			if( preparationResult == Operation.PreparationResult.CANCEL ) {
+			if( preparationResult == CancellableOperation.PreparationResult.CANCEL ) {
 				//pass
 			} else {
 				operation.perform();
-				if( preparationResult == Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY ) {
+				if( preparationResult == CancellableOperation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY ) {
 					//addToHistory( operation );
 				}
 			}
 		}
 	}
 	public static void performIfAppropriate( Operation operation, java.util.EventObject e ) {
-		final java.util.List< java.util.EventObject > preparationUpdates = new java.util.LinkedList< java.util.EventObject >();
-		Operation.PreparationResult preparationResult = operation.prepare( e, new Operation.PreparationObserver() {
-			public void update( java.util.EventObject e ) {
-				preparationUpdates.add( e );
-			}
-		} );
-		handlePreparedOperation( operation, e, preparationUpdates, preparationResult );
+		if( operation instanceof CancellableOperation ) {
+			CancellableOperation cancellableOperation = (CancellableOperation)operation;
+			final java.util.List< java.util.EventObject > preparationUpdates = new java.util.LinkedList< java.util.EventObject >();
+			CancellableOperation.PreparationResult preparationResult = cancellableOperation.prepare( e, new CancellableOperation.PreparationObserver() {
+				public void update( java.util.EventObject e ) {
+					preparationUpdates.add( e );
+				}
+			} );
+			handlePreparedOperation( cancellableOperation, e, preparationUpdates, preparationResult );
+		} else {
+			operation.perform();
+		}
 	}
 }
