@@ -336,6 +336,17 @@ class AbstractIDE( alice.ide.IDE ):
 					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
 					expression = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
 					self.addFillInAndPossiblyPartFills( blank, expression, fieldType )
+				if fieldType.isArray():
+					fieldComponentType = fieldType.getComponentType()
+					if type.isAssignableFrom( fieldComponentType ):
+						isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
+						expression = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
+						blank.addChild( ecc.dennisc.alice.ide.cascade.ArrayAccessFillIn( fieldType, expression ) )
+					if type.isAssignableFrom( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ):
+						isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
+						fieldAccess = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
+						arrayLength = alice.ast.ArrayLength( fieldAccess )
+						blank.addChild( ecc.dennisc.alice.ide.cascade.SimpleExpressionFillIn( arrayLength ) )
 					
 			#acceptableParameters = []
 			for parameter in codeInFocus.getParameters():

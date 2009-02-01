@@ -166,6 +166,13 @@ public abstract class VirtualMachine {
 	public abstract void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments );
 	public abstract Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments );
 	
+	protected Integer getArrayLength( Object array ) {
+		if( array != null ) {
+			return java.lang.reflect.Array.getLength( array );
+		} else {
+			throw new NullPointerException();
+		}
+	}
 	protected Object getFieldDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
 		assert instance instanceof InstanceInAlice;
 		InstanceInAlice instanceInAlice = (InstanceInAlice)instance;
@@ -347,6 +354,9 @@ public abstract class VirtualMachine {
 	protected Object evaluateArrayAccess( edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess ) {
 		return this.getItemAtIndex( arrayAccess.arrayType.getValue(), this.evaluate( arrayAccess.array.getValue() ), this.evaluate( arrayAccess.index.getValue(), Integer.class ) );
 	}
+	protected Integer evaluateArrayLength( edu.cmu.cs.dennisc.alice.ast.ArrayLength arrayLength ) {
+		return this.getArrayLength( this.evaluate( arrayLength.array.getValue() ) );
+	}
 	protected Object evaluateFieldAccess( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		return this.get( fieldAccess.field.getValue(), this.evaluate( fieldAccess.expression.getValue() ) );
 	}
@@ -434,6 +444,8 @@ public abstract class VirtualMachine {
 			return this.evaluateInstanceCreation( (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation ) {
 			return this.evaluateArrayInstanceCreation( (edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation)expression );
+		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayLength ) {
+			return this.evaluateArrayLength( (edu.cmu.cs.dennisc.alice.ast.ArrayLength)expression );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			return this.evaluateArrayAccess( (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)expression );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {

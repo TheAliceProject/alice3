@@ -43,9 +43,12 @@ public final class ClassInfoManager {
 		assert directory != null;
 		if( directory.exists() ) {
 			//assert directory.isDirectory();
+			//double t0 = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
 			for( java.io.File file : directory.listFiles() ) {
 				ClassInfoManager.add( file );
 			}
+			//double t1 = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( t1-t0 );
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "could not find class info directory: " + directory );
 		}

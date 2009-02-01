@@ -103,6 +103,19 @@ class MethodInvocationFillIn( cascade.FillIn ):
 		return MyFunctionTemplatePane( self._method, self._instanceOrTypeExpression )
 
 
+class ArrayAccessFillIn( cascade.FillIn ):
+	def __init__( self, arrayType, arrayExpression ):
+		self._arrayType = arrayType
+		self._arrayExpression = arrayExpression
+	def addChildren( self ):
+		self.addChild( ExpressionReceptorBlank( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) )
+	def getValue(self):
+		blank = self.getChildren()[ 0 ]
+		return alice.ast.ArrayAccess( self._arrayType, self._arrayExpression, blank.getSelectedFillIn().getValue() )
+	def createMenuProxy(self):
+		expression = alice.ast.ArrayAccess( self._arrayType, self._arrayExpression, alice.ide.editors.code.EmptyExpression( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) )
+		return alice.ide.editors.code.ExpressionPane( expression )
+
 class InfixExpressionOperatorFillIn( SimpleExpressionFillIn ):
 	def __init__(self, expression, operandType):
 		SimpleExpressionFillIn.__init__( self, expression )
@@ -224,6 +237,7 @@ class StringConcatenationFillIn( cascade.FillIn ):
 		leftValue = alice.ide.editors.code.EmptyExpression( operandType )
 		rightValue = alice.ide.editors.code.EmptyExpression( operandType )
 		return alice.ide.editors.code.ExpressionPane( alice.ast.StringConcatenation( leftValue, rightValue ) )
+
 
 #class ArithmeticMenuFillIn( edu.cmu.cs.dennisc.cascade.MenuFillIn ):
 #	def __init__(self, type):

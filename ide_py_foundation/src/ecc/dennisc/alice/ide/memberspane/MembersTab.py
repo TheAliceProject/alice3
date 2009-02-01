@@ -74,12 +74,18 @@ def _getValueFor_CreateIfNecessary( map, key, cls ):
 
 _mapMethodToTemplate = {}
 _mapConstructorToTemplate = {}
+_mapFieldToArrayAccessTemplate = {}
+_mapFieldToArrayLengthTemplate = {}
 _mapFieldToGetterTemplate = {}
 _mapFieldToSetterTemplate = {}
 def _getMethodTemplateFor( method ):
 	return _getValueFor_CreateIfNecessary( _mapMethodToTemplate, method, createMethodTemplate )
 def _getCostructorTemplateFor( constructor ):
 	return _getValueFor_CreateIfNecessary( _mapMethodToTemplate, constructor, ConstructorTemplatePaneWithAltMenu )
+def _getArrayAccessTemplateFor( field ):
+	return _getValueFor_CreateIfNecessary( _mapFieldToArrayAccessTemplate, field, alice.ide.editors.type.ArrayAccessTemplatePane )
+def _getArrayLengthTemplateFor( field ):
+	return _getValueFor_CreateIfNecessary( _mapFieldToArrayLengthTemplate, field, alice.ide.editors.type.ArrayLengthTemplatePane )
 def _getGetterTemplateFor( field ):
 	return _getValueFor_CreateIfNecessary( _mapFieldToGetterTemplate, field, GetterTemplatePanePotentiallyWithAltMenu )
 def _getSetterTemplateFor( field ):
@@ -106,6 +112,9 @@ class FieldPane( zoot.ZPageAxisPane ):
 #			customizeInstanceLine.add( zoot.ZLabel( "value customized to... (coming soon)", [ zoot.font.ZTextPosture.OBLIQUE ] ) )
 #			self.add( customizeInstanceLine )
 		self.add( _getGetterTemplateFor( field ) )
+		if field.getValueType().isArray():
+			self.add( _getArrayAccessTemplateFor( field ) )
+			self.add( _getArrayLengthTemplateFor( field ) )
 		if field.isFinal():
 			pass
 		else:
@@ -188,16 +197,16 @@ class AbstractTypeMethodsPane( AbstractTypeMembersPane ):
 									self.add( panel )
 								else:
 									self.add( vc )
-		for member in self._type.getDeclaredFields():
-			if member.isStatic():
-				pass
-			else:
-				if member.isPublicAccess() or member.isDeclaredInAlice():
-					visibility = member.getVisibility()
-					if visibility == None or visibility == alice.annotations.Visibility.PRIME_TIME:
-						template = self._getGetterTemplateOrSetterTemplate( member )
-						if template:
-							self.add( template )
+#		for member in self._type.getDeclaredFields():
+#			if member.isStatic():
+#				pass
+#			else:
+#				if member.isPublicAccess() or member.isDeclaredInAlice():
+#					visibility = member.getVisibility()
+#					if visibility == None or visibility == alice.annotations.Visibility.PRIME_TIME:
+#						template = self._getGetterTemplateOrSetterTemplate( member )
+#						if template:
+#							self.add( template )
 
 class TypeProceduresPane( AbstractTypeMethodsPane ):
 	def _isAcceptable( self, method ):
