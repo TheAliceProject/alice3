@@ -156,6 +156,7 @@ class UbiquitousTemplatesPane( ecc.dennisc.alice.ide.IDEListenerPane ):
 		for component in panes:
 			#component.setMinimumSize( java.awt.Dimension( 0, 0 ) )
 			self.add( component )
+			self.add( javax.swing.Box.createHorizontalStrut( 4 ) )
 #		self.setLayout( java.awt.GridBagLayout() )
 
 #		springLayout = javax.swing.SpringLayout()
