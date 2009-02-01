@@ -61,13 +61,13 @@ class StorytellingIDE( ecc.dennisc.alice.ide.moveandturn.MoveAndTurnIDE ):
 	def _createGalleryBrowser(self):
 		personEditorButton = PersonEditorButton( self )
 		moveandturnGalleryBrowser = ecc.dennisc.alice.ide.moveandturn.MoveAndTurnIDE._createGalleryBrowser( self )
-
-		panel = javax.swing.JPanel()
-		panel.setLayout( java.awt.BorderLayout() )
-		panel.add( personEditorButton, java.awt.BorderLayout.WEST )
-		panel.add( moveandturnGalleryBrowser, java.awt.BorderLayout.CENTER )
-		
-		return panel
+		moveandturnGalleryBrowser.add( personEditorButton, java.awt.BorderLayout.WEST )
+		return moveandturnGalleryBrowser
+#		panel = javax.swing.JPanel()
+#		panel.setLayout( java.awt.BorderLayout() )
+#		panel.add( personEditorButton, java.awt.BorderLayout.WEST )
+#		panel.add( moveandturnGalleryBrowser, java.awt.BorderLayout.CENTER )
+#		return panel
 
 	def _createSceneSetUpCodeGenerator( self ):
 		return StorytellingSceneAutomaticSetUpMethodFillerInner()
