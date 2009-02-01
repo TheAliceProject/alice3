@@ -22,6 +22,8 @@
  */
 package edu.cmu.cs.dennisc.alice.ide.editors.code;
 
+import edu.cmu.cs.dennisc.alice.ide.editors.type.ArrayAccessTemplatePane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -60,9 +62,32 @@ class EmptyAfforance extends edu.cmu.cs.dennisc.alice.ide.editors.common.Stateme
  * @author Dennis Cosgrove
  */
 class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
-	public StatementListPropertyPane( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
+	public StatementListPropertyPane( final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
 		super( javax.swing.BoxLayout.PAGE_AXIS, property );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 12, 16 ) );
+		this.addMouseListener( new java.awt.event.MouseListener() {
+			public void mouseClicked( final java.awt.event.MouseEvent e ) {
+				final edu.cmu.cs.dennisc.alice.ide.IDE ide = edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton();
+				if( ide != null ) {
+					ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
+						public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+							property.add( calculateIndex( e.getPoint() ), statement );
+							ide.markChanged( "statement" );
+						}
+						public void handleCancelation() {
+						}			
+					} );
+				}
+			}
+			public void mouseEntered( java.awt.event.MouseEvent e ) {
+			}
+			public void mouseExited( java.awt.event.MouseEvent e ) {
+			}
+			public void mousePressed( java.awt.event.MouseEvent e ) {
+			}
+			public void mouseReleased( java.awt.event.MouseEvent e ) {
+			}
+		} );
 	}
 	@Override
 	protected javax.swing.JComponent createComponent( Object instance ) {
@@ -76,7 +101,6 @@ class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.den
 			this.add( new EmptyAfforance() );
 		}
 	}
-
 	public boolean isFigurativelyEmpty() {
 		return this.getComponent( 0 ) instanceof EmptyAfforance;
 	}

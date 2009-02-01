@@ -238,6 +238,15 @@ class StringConcatenationFillIn( cascade.FillIn ):
 		rightValue = alice.ide.editors.code.EmptyExpression( operandType )
 		return alice.ide.editors.code.ExpressionPane( alice.ast.StringConcatenation( leftValue, rightValue ) )
 
+class SimpleStatementFillIn( cascade.SimpleFillIn ):
+	def createMenuProxy(self):
+		return alice.ide.editors.code.AbstractStatementPane.createPane( self.getModel(), None )
+
+class StatementBlank( cascade.Blank ):
+	def addChildren( self ):
+		self.addChild( SimpleStatementFillIn( alice.ast.DoInOrder( alice.ast.BlockStatement() ) ) )
+		self.addChild( SimpleStatementFillIn( alice.ast.DoTogether( alice.ast.BlockStatement() ) ) )
+		self.addChild( SimpleStatementFillIn( alice.ast.Comment() ) )
 
 #class ArithmeticMenuFillIn( edu.cmu.cs.dennisc.cascade.MenuFillIn ):
 #	def __init__(self, type):

@@ -178,6 +178,7 @@ class AbstractIDE( alice.ide.IDE ):
 		classInfoDirectory = java.io.File( applicationDirectory, "classinfos" )
 		alice.reflect.ClassInfoManager.setDirectory( classInfoDirectory )
 	
+	
 	def setDragInProgress( self, isDragInProgress ):
 		alice.ide.IDE.setDragInProgress( self, isDragInProgress )
 		self._scenePane.setDragInProgress( isDragInProgress )
@@ -295,6 +296,10 @@ class AbstractIDE( alice.ide.IDE ):
 	def promptUserForExpression( self, type, prevExpression, me, taskObserver ):
 		blank = self._createExpressionReceptorBlank( type, prevExpression )
 		blank.showPopupMenu( me.getSource(), me.getX(), me.getY(), taskObserver )	
+
+	def promptUserForStatement( self, me, taskObserver ):
+		blank = ecc.dennisc.alice.ide.cascade.StatementBlank()
+		blank.showPopupMenu( me.getSource(), me.getX(), me.getY(), taskObserver )
 
 	def unsetPreviousExpression( self ):
 		if self.__dict__.has_key( "_prevExpression" ):
