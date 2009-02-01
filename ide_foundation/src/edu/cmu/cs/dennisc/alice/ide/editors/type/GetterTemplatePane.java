@@ -28,12 +28,11 @@ package edu.cmu.cs.dennisc.alice.ide.editors.type;
 public class GetterTemplatePane extends MemberExpressionTemplatePane {
 	public GetterTemplatePane( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
-		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls = edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class;
+		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls = edu.cmu.cs.dennisc.alice.ast.FieldAccess.class;
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTClass( cls ) );
 		this.add( this.getInstanceOrTypeExpressionPane() );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "getProperty( " ) );
+		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "." ) );
 		this.add( this.getNameLabel() );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( " )" ) );
 		this.add( javax.swing.Box.createHorizontalGlue() );
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {

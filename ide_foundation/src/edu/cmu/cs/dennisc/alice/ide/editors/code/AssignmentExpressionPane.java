@@ -32,18 +32,19 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisP
 		edu.cmu.cs.dennisc.alice.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)left;
+			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "set " ) );
 			this.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
-			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( ".setProperty( " ) );
-			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( fieldAccess.field.getValue() ) );
-			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( ", " ) );
+			edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel nameLabel = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( fieldAccess.field.getValue() );
+			nameLabel.scaleFont( 1.5f );
+			this.add( nameLabel );
+			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true, 5 ) );
 			this.add( new ExpressionPropertyPane( this.assignmentExpression.rightHandSide, true ) );
-			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( " )" ) );
 		} else if( left instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)left;
-			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "assign" ) );
+			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "assign " ) );
 			//this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( variableAccess.variable.getValue() ) );
 			this.add( new VariablePane( variableAccess.variable.getValue() ) );
-			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "<--to--" ) );
+			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true, 5 ) );
 			this.add( new ExpressionPropertyPane( this.assignmentExpression.rightHandSide, true ) );
 		} else {
 			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "TODO" ) );

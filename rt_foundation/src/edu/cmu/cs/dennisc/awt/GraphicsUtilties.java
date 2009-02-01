@@ -26,6 +26,11 @@ package edu.cmu.cs.dennisc.awt;
  * @author Dennis Cosgrove
  */
 public class GraphicsUtilties {
+	public static void setRenderingHint( java.awt.Graphics g, java.awt.RenderingHints.Key key, Object value ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g2.setRenderingHint( key, value );
+		
+	}
 	public static void drawCenteredText( java.awt.Graphics g, String s, int x, int y, int width, int height ) {
 		java.awt.FontMetrics fm = g.getFontMetrics();
 		int messageWidth = fm.stringWidth( s );

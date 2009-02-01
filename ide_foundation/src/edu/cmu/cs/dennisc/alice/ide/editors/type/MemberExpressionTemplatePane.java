@@ -33,6 +33,7 @@ public abstract class MemberExpressionTemplatePane extends ExpressionTemplatePan
 	public MemberExpressionTemplatePane( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
 		this.member = member;
 		this.nameLabel = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( member );
+		this.nameLabel.scaleFont( 1.5f );
 		edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().addIDEListener( new edu.cmu.cs.dennisc.alice.ide.event.IDEAdapter() {
 			@Override
 			public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ide.event.FieldSelectionEvent e ) {

@@ -55,10 +55,15 @@ public class Line {
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( iEnd );
 			iEnd = matcher.end();
 			String sub = s.substring( iStart + PREFIX.length(), iEnd - POSTFIX.length() );
-			if( sub.endsWith( "()" ) ) {
-				chunks.add( new MethodInvocationChunk( sub ) );
+			if( sub.startsWith( "_gets_toward_" ) ) {
+				boolean isTowardLeading = sub.equals( "_gets_toward_leading_" );
+				chunks.add( new GetsChunk( isTowardLeading ) );
 			} else {
-				chunks.add( new PropertyChunk( sub ) );
+				if( sub.endsWith( "()" ) ) {
+					chunks.add( new MethodInvocationChunk( sub ) );
+				} else {
+					chunks.add( new PropertyChunk( sub ) );
+				}
 			}
 		}
 		if( iEnd < s.length() ) {

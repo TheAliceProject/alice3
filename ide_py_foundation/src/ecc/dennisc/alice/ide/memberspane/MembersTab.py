@@ -97,13 +97,16 @@ class FieldPane( zoot.ZPageAxisPane ):
 		initializeClassLine = zoot.ZLineAxisPane()
 		nameLabel = alice.ide.editors.common.NodeNameLabel( field )
 		nameLabel.scaleFont( 2.0 )
-		initializeClassLine.add( nameLabel )
 		if field.isDeclaredInAlice():
 			if field.isFinal():
-				initializeClassLine.add( zoot.ZLabel( " <---set-to---" ) )
+				initializeClassLine.add( zoot.ZLabel( "permanently set " ) )
 			else:
-				initializeClassLine.add( zoot.ZLabel( " <---initialized-to---" ) )
+				initializeClassLine.add( zoot.ZLabel( "initialize " ) )
+			initializeClassLine.add( nameLabel )
+			initializeClassLine.add( alice.ide.editors.code.GetsPane( True, 5 ) )
 			initializeClassLine.add( alice.ide.editors.code.ExpressionPropertyPane( field.initializer, True ) )
+		else:
+			initializeClassLine.add( javax.swing.Box.createVerticalStrut( 8 ) )
 		self.add( initializeClassLine )
 #		if field.isFinal():
 #			pass

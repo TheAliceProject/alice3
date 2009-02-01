@@ -22,8 +22,6 @@
  */
 package edu.cmu.cs.dennisc.alice.ide.editors.type;
 
-import edu.cmu.cs.dennisc.alice.ide.editors.ubiquitous.ExpressionRequiringUbiquitousStatementTemplatePane;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -32,13 +30,12 @@ public abstract class SetterTemplatePane extends MemberStatementTemplatePane {
 		super( field );
 		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls = edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class;
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTClass( cls ) );
+		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "set " ) );
 		this.add( this.getInstanceOrTypeExpressionPane() );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "setProperty( " ) );
-		this.add( javax.swing.Box.createHorizontalStrut( 4 ) );
+		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "." ) );
 		this.add( this.getNameLabel() );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( ", " ) );
+		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true, 5 ) );
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.EmptyExpressionPane( field.getValueType() ) );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( " )" ) );
 		this.add( javax.swing.Box.createHorizontalGlue() );
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {

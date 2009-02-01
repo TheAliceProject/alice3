@@ -67,12 +67,20 @@ class ConditionalStatementTemplatePane( CascadingUbiquitousStatementTemplatePane
 from ReturnStatementOwnerPane import ReturnStatementOwnerPane
 from MathFunctionsTemplatePane import MathFunctionsTemplatePane
 
+#class MiniGetsPane( alice.ide.editors.code.GetsPane ):
+#	def getPreferredSize(self):
+#		return java.awt.Dimension( 36, 12 )
 class SetVariableTemplatePane( CascadingUbiquitousStatementTemplatePane ):
 	def __init__( self, variable ):
 		self._variable = variable
 		CascadingUbiquitousStatementTemplatePane.__init__( self, alice.ast.ExpressionStatement, variable.valueType.getValue() )
 	def createComponent(self):
 		return zoot.ZLabel( self._variable.getName() + " <-- " )
+#		rv = zoot.ZLineAxisPane()
+#		rv.setOpaque( False )
+#		rv.add( zoot.ZLabel( self._variable.getName() ) )
+#		rv.add( MiniGetsPane( True, 2 ) )
+#		return rv
 	def _createArgs( self, expression ):
 		return [ alice.ast.AssignmentExpression( self._variable.valueType.getValue(), alice.ast.VariableAccess( self._variable ), alice.ast.AssignmentExpression.Operator.ASSIGN, expression ) ]
 
