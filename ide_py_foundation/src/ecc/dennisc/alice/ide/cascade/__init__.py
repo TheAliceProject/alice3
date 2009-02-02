@@ -242,11 +242,36 @@ class SimpleStatementFillIn( cascade.SimpleFillIn ):
 	def createMenuProxy(self):
 		return alice.ide.editors.code.AbstractStatementPane.createPane( self.getModel(), None )
 
+class IncompleteStatementFillIn( cascade.FillIn ):
+	def __init__(self, incomplete):
+		cascade.FillIn.__init__( self )
+		self._incomplete = incomplete
+	def createMenuProxy( self ):
+		return alice.ide.ast.NodeUtilities.createPane( self._incomplete )
+	
+class CountLoopFillIn( IncompleteStatementFillIn ):
+	def __init__(self):
+		IncompleteStatementFillIn.__init__( self, alice.ide.ast.NodeUtilities.createIncompleteCountLoop() )
+	def addChildren( self ):
+		self.addChild( ExpressionPropertyBlank( self._incomplete.count ) )
+	def getValue( self ):
+		return alice.ide.ast.NodeUtilities.createCountLoop( self.getChildren()[ 0 ].getSelectedFillIn().getValue() )
+
+class WhileLoopFillIn( IncompleteStatementFillIn ):
+	def __init__(self):
+		IncompleteStatementFillIn.__init__( self, alice.ide.ast.NodeUtilities.createIncompleteWhileLoop() )
+	def addChildren( self ):
+		self.addChild( ExpressionPropertyBlank( self._incomplete.conditional ) )
+	def getValue( self ):
+		return alice.ide.ast.NodeUtilities.createWhileLoop( self.getChildren()[ 0 ].getSelectedFillIn().getValue() )
+
 class StatementBlank( cascade.Blank ):
 	def addChildren( self ):
-		self.addChild( SimpleStatementFillIn( alice.ast.DoInOrder( alice.ast.BlockStatement() ) ) )
-		self.addChild( SimpleStatementFillIn( alice.ast.DoTogether( alice.ast.BlockStatement() ) ) )
-		self.addChild( SimpleStatementFillIn( alice.ast.Comment() ) )
+		self.addChild( SimpleStatementFillIn( alice.ide.ast.NodeUtilities.createDoInOrder() ) )
+		self.addChild( CountLoopFillIn() )
+		self.addChild( WhileLoopFillIn() )
+		self.addChild( SimpleStatementFillIn( alice.ide.ast.NodeUtilities.createDoTogether() ) )
+		self.addChild( SimpleStatementFillIn( alice.ide.ast.NodeUtilities.createComment() ) )
 
 #class ArithmeticMenuFillIn( edu.cmu.cs.dennisc.cascade.MenuFillIn ):
 #	def __init__(self, type):

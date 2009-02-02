@@ -174,6 +174,34 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getCodeDeclaredInAliceColor( this.code ) );
 		this.refresh();
+//		this.addMouseListener( new java.awt.event.MouseListener() {
+//			public void mouseClicked( final java.awt.event.MouseEvent e ) {
+//				final edu.cmu.cs.dennisc.alice.ide.IDE ide = edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton();
+//				if( ide != null ) {
+//					final StatementListPropertyPane statementListPropertyPane = getStatementListPropertyPaneUnder( e, createStatementListPropertyPaneInfos( null ) );
+//					if( statementListPropertyPane != null ) {
+//						ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
+//							public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+//								java.awt.Point p = javax.swing.SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), statementListPropertyPane );
+//								statementListPropertyPane.getProperty().add( statementListPropertyPane.calculateIndex( p ), statement );
+//								ide.markChanged( "statement" );
+//							}
+//							public void handleCancelation() {
+//							}
+//						} );
+//					}
+//				}
+//			}
+//			public void mouseEntered( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseExited( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mousePressed( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseReleased( java.awt.event.MouseEvent e ) {
+//			}
+//		} );
+		
 		//		this.addHierarchyListener( new java.awt.event.HierarchyListener() {
 		//			public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
 		//				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "hierarchyChanged", getIDE().isAncestorOf( CodeEditor.this ), CodeEditor.this.isShowing(), CodeEditor.this.getCode() );
@@ -207,11 +235,30 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 		} else {
 			throw new RuntimeException();
 		}
+		
+		//edu.cmu.cs.dennisc.zoot.ZPageAxisPane headerPane = new edu.cmu.cs.dennisc.zoot.ZPageAxisPane();
 		this.add( header );
 		this.add( new InstanceLine( this.code ) );
-		this.add( new TemplatePane( code.getBodyProperty().getValue() ) );
+		
+		StatementListPropertyPane bodyPane = new StatementListPropertyPane( code.getBodyProperty().getValue().statements ) {
+			@Override
+			protected boolean isMaximumSizeClampedToPreferredSize() {
+				return false;
+			}
+		};
+//		bodyPane.setOpaque( true );
+//		bodyPane.setBackground( java.awt.Color.RED );
 
-		//this.add( javax.swing.Box.createVerticalGlue() );
+		edu.cmu.cs.dennisc.zoot.ZPane pane = new edu.cmu.cs.dennisc.zoot.ZPane() {
+			@Override
+			protected boolean isMaximumSizeClampedToPreferredSize() {
+				return false;
+			}
+		};
+		pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
+		pane.add( bodyPane );
+		this.add( pane );
+
 		this.revalidate();
 		this.repaint();
 	}
@@ -254,32 +301,29 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 	}
 
 	public void dragEntered( PotentiallyDraggablePane source, java.awt.event.MouseEvent e ) {
-		StatementListPropertyPane topStatementListPropertyPane = edu.cmu.cs.dennisc.awt.ComponentUtilities.findFirstMatch( this, StatementListPropertyPane.class );
-		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
-		this.statementListPropertyPaneInfos = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
-		int i = 0;
-		for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
-			if( source.isAncestorOf( statementListPropertyPane ) ) {
-				continue;
-			}
-			//			if( source instanceof AbstractStatementPane ) {
-			//			}
-			java.awt.Rectangle bounds = javax.swing.SwingUtilities.convertRectangle( statementListPropertyPane, this.getBoundsFor( statementListPropertyPane ), this );
-			//			bounds.x = Math.max( bounds.x, 0 );
-			bounds.x = 0;
-			bounds.width = this.getWidth() - bounds.x;
-			if( statementListPropertyPane == topStatementListPropertyPane ) {
-				bounds.y = Math.max( bounds.y, 0 );
-				bounds.height = this.getHeight() - bounds.y;
-			}
-			this.statementListPropertyPaneInfos[ i ] = new StatementListPropertyPaneInfo( statementListPropertyPane, bounds );
-			i++;
-		}
+		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
 	}
-	private StatementListPropertyPane getStatementListPropertyPaneUnder( java.awt.event.MouseEvent e ) {
+	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( PotentiallyDraggablePane source ) {
+		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
+		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
+		int i = 0;
+		for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
+			if( source != null && source.isAncestorOf( statementListPropertyPane ) ) {
+				continue;
+			}
+			java.awt.Rectangle bounds = javax.swing.SwingUtilities.convertRectangle( statementListPropertyPane, this.getBoundsFor( statementListPropertyPane ), this );
+			bounds.x = 0;
+			bounds.width = this.getWidth() - bounds.x;
+			rv[ i ] = new StatementListPropertyPaneInfo( statementListPropertyPane, bounds );
+			i++;
+		}
+		return rv;
+		
+	}
+	private StatementListPropertyPane getStatementListPropertyPaneUnder( java.awt.event.MouseEvent e, StatementListPropertyPaneInfo[] statementListPropertyPaneInfos ) {
 		StatementListPropertyPane rv = null;
-		for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : this.statementListPropertyPaneInfos ) {
+		for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : statementListPropertyPaneInfos ) {
 			if( statementListPropertyPaneInfo != null ) {
 				if( statementListPropertyPaneInfo.contains( e ) ) {
 					StatementListPropertyPane slpp = statementListPropertyPaneInfo.getStatementListPropertyPane();
@@ -300,7 +344,7 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 	public void dragUpdated( PotentiallyDraggablePane source, java.awt.event.MouseEvent eSource ) {
 
 		java.awt.event.MouseEvent eThis = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( source, eSource, this );
-		StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eThis );
+		StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eThis, this.statementListPropertyPaneInfos );
 		this.currentUnder = nextUnder;
 
 		if( this.currentUnder != null ) {

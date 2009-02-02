@@ -69,14 +69,20 @@ class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.den
 			public void mouseClicked( final java.awt.event.MouseEvent e ) {
 				final edu.cmu.cs.dennisc.alice.ide.IDE ide = edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton();
 				if( ide != null ) {
-					ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
-						public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-							property.add( calculateIndex( e.getPoint() ), statement );
-							ide.markChanged( "statement" );
-						}
-						public void handleCancelation() {
-						}			
-					} );
+					//final StatementListPropertyPane statementListPropertyPane = getStatementListPropertyPaneUnder( e, createStatementListPropertyPaneInfos( null ) );
+					final StatementListPropertyPane statementListPropertyPane = StatementListPropertyPane.this;
+					if( statementListPropertyPane != null ) {
+						ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
+							public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+								java.awt.Point p = e.getPoint();
+								//p = javax.swing.SwingUtilities.convertPoint( e.getComponent(), p, statementListPropertyPane );
+								statementListPropertyPane.getProperty().add( statementListPropertyPane.calculateIndex( p ), statement );
+								ide.markChanged( "statement" );
+							}
+							public void handleCancelation() {
+							}
+						} );
+					}
 				}
 			}
 			public void mouseEntered( java.awt.event.MouseEvent e ) {

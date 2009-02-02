@@ -31,8 +31,15 @@ public class ZPane extends javax.swing.JPanel {
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 	}
+	protected boolean isMaximumSizeClampedToPreferredSize() {
+		return true;
+	}
 	@Override
 	public java.awt.Dimension getMaximumSize() {
-		return this.getPreferredSize();
+		if( isMaximumSizeClampedToPreferredSize() ) {
+			return this.getPreferredSize();
+		} else {
+			return super.getMaximumSize();
+		}
 	}
 }

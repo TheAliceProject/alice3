@@ -83,8 +83,9 @@ class CommentLine extends javax.swing.JTextArea {
 	public java.awt.Font getFont() {
 		java.awt.Font rv = super.getFont();
 		if( rv != null ) {
-			rv = rv.deriveFont( rv.getSize2D() * 1.5f );
-			rv = rv.deriveFont( java.awt.Font.BOLD );
+			rv = rv.deriveFont( rv.getSize2D() * 1.4f );
+			//rv = rv.deriveFont( java.awt.Font.BOLD );
+			rv = rv.deriveFont( java.awt.Font.ITALIC );
 		}
 		return rv;
 	}
@@ -124,7 +125,9 @@ class CommentLine extends javax.swing.JTextArea {
 public class CommentPane extends AbstractStatementPane {
 	public CommentPane( edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( comment, owner );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "comment:" ) );
+		edu.cmu.cs.dennisc.zoot.ZLabel label = new edu.cmu.cs.dennisc.zoot.ZLabel( "comment:" );
+		label.setFontToDerivedFont( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
+		this.add( label );
 		this.add( new CommentLine( comment ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 16, 4, 16 ) );
 	}
