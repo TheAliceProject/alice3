@@ -22,6 +22,8 @@
  */
 package edu.cmu.cs.dennisc.alice.ide;
 
+import edu.cmu.cs.dennisc.swing.SplashScreen;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -44,12 +46,9 @@ class Icon extends javax.swing.ImageIcon {
  */
 public class Launcher implements Runnable {
 	private static edu.cmu.cs.dennisc.swing.SplashScreen s_splashScreen;
-
 	public static edu.cmu.cs.dennisc.swing.SplashScreen getSplashScreen() {
 		return s_splashScreen;
 	}
-	
-	
 	public static void hideSplashScreenIfNecessary() {
 		if( s_splashScreen != null ) {
 			s_splashScreen.setVisible( false );
@@ -58,11 +57,14 @@ public class Launcher implements Runnable {
 	}
 
 
+	protected edu.cmu.cs.dennisc.swing.SplashScreen createSplashScreen( javax.swing.JFrame owner, javax.swing.Icon icon ) {
+		return new SplashScreen( owner, icon );
+	}
 	protected javax.swing.Icon getIcon() {
 		return new Icon( this.getClass().getResource( "images/SplashScreen.png" ) );
 	}
 	public void run() {
-		s_splashScreen = new edu.cmu.cs.dennisc.swing.SplashScreen( null, getIcon() );
+		s_splashScreen = this.createSplashScreen( null, getIcon() );
 		s_splashScreen.setVisible( true );
 	}
 
