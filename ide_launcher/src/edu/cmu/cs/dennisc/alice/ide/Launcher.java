@@ -42,9 +42,14 @@ class Icon extends javax.swing.ImageIcon {
 /**
  * @author Dennis Cosgrove
  */
-class Launcher implements Runnable {
+public class Launcher implements Runnable {
 	private static edu.cmu.cs.dennisc.swing.SplashScreen s_splashScreen;
 
+	public static edu.cmu.cs.dennisc.swing.SplashScreen getSplashScreen() {
+		return s_splashScreen;
+	}
+	
+	
 	public static void hideSplashScreenIfNecessary() {
 		if( s_splashScreen != null ) {
 			s_splashScreen.setVisible( false );
