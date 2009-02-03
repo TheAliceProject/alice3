@@ -96,19 +96,24 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	
 	protected double getBadAngleAmount( Vector3 planeNormal )
 	{
-		final double BAD_ANGLE_THRESHOLD = .2d;
+		final double BAD_ANGLE_THRESHOLD = 2.0d*Math.PI * (15.0d/360.0d);
 		final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
 		double cameraDot = Vector3.calculateDotProduct( this.camera.getAbsoluteTransformation().orientation.backward, planeNormal );
-		double badAmount = Math.abs( cameraDot );
-		if (badAmount < BAD_ANGLE_THRESHOLD)
+		if (cameraDot < -1.0d) cameraDot = -1.0d;
+		if (cameraDot > 1.0d) cameraDot = 1.0d;
+		
+		double cameraToPlaneNormalAngle = Math.acos(cameraDot);
+		double distanceToRightAngle = Math.abs(Math.PI*.5d - cameraToPlaneNormalAngle);
+		
+		if (distanceToRightAngle < BAD_ANGLE_THRESHOLD)
 		{
-			if (badAmount < MIN_BAD_ANGLE_THRESHOLD)
+			if (distanceToRightAngle < MIN_BAD_ANGLE_THRESHOLD)
 			{
 				return 1.0d;
 			}
-			badAmount -= MIN_BAD_ANGLE_THRESHOLD;
+			distanceToRightAngle -= MIN_BAD_ANGLE_THRESHOLD;
 			double thresholdDif = BAD_ANGLE_THRESHOLD - MIN_BAD_ANGLE_THRESHOLD;
-			return (thresholdDif - badAmount) / thresholdDif;
+			return (thresholdDif - distanceToRightAngle) / thresholdDif;
 		}
 		else
 		{
