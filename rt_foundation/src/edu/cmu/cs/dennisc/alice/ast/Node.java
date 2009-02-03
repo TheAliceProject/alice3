@@ -49,7 +49,27 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 			this.parent = parent;
 		}
 	}
+
 	
+	public <E extends Node> E getFirstAncestorAssignableTo( Class<E> cls, boolean isThisIncludedInSearch ) {
+		Node rv;
+		if( isThisIncludedInSearch ) {
+			rv = this;
+		} else {
+			rv = this.getParent();
+		}
+		while( rv != null ) {
+			if( cls.isAssignableFrom( rv.getClass() ) ) {
+				break;
+			}
+			rv = rv.getParent();
+		}
+		return (E)rv;
+	}
+	public final <E extends Node> E getFirstAncestorAssignableTo( Class<E> cls ) {
+		return getFirstAncestorAssignableTo( cls, false );
+	}
+
 	@Override
 	public void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		super.firePropertyChanging( e );
