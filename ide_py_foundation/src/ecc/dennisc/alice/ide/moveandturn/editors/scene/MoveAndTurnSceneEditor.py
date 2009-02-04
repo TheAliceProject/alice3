@@ -150,15 +150,23 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 #		javax.swing.SwingUtilities.invokeLater( ecc.dennisc.lang.ApplyRunnable( self._showSnapshotIfAppropriateFromRunnable ) )
 
 	def setDragInProgress(self, isDragInProgress):
-		#if edu.cmu.cs.dennisc.lang.SystemUtilities.isMac():
+		if isDragInProgress:
+			self.showSnapshotIfAppropriate()
+		else:
+			self.showLiveIfAppropriate()
+	
+	def showSnapshotIfAppropriate(self):
 		if self._program.isLightweightOnscreenLookingGlassDesired():
 			pass
 		else:
-			if isDragInProgress:
-				self._cardPane.showSnapshot()
-			else:
-				self._cardPane.showLive()
-			
+			self._cardPane.showSnapshot()
+
+	def showLiveIfAppropriate(self):
+		if self._program.isLightweightOnscreenLookingGlassDesired():
+			pass
+		else:
+			self._cardPane.showSnapshot()
+	
 	def handleExpandContractChange( self, isExpanded ):
 		self._program._expandContractToggleButton.getRenderer().setExpanded( isExpanded )
 
