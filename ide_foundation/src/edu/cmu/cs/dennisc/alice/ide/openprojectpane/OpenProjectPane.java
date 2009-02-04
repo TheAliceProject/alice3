@@ -402,7 +402,7 @@ class FileSystemPane extends TabPane {
 		this.add( pane, java.awt.BorderLayout.NORTH );
 	}
 	private void handleBrowse( java.awt.event.ActionEvent e ) {
-		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog( this, edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION );
+		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog( this, edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION, true );
 		if( file != null ) {
 			this.textField.setText( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 		}

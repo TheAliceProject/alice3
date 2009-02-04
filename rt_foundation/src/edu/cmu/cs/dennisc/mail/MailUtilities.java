@@ -73,9 +73,9 @@ public class MailUtilities {
 		props.put( "mail.smtp.auth", authValue );
 		props.put( "mail.smtp.quitwait", "false" );
 
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "sendMail", props );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "sendMail", props );
 		javax.mail.Session session = javax.mail.Session.getInstance( props, authenticator );
-		session.setDebug( true );
+		//session.setDebug( true );
 
 		javax.mail.internet.MimeMessage message = new javax.mail.internet.MimeMessage( session );
 		message.setSubject( subject );

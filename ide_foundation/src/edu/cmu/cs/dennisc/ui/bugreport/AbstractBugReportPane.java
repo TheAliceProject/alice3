@@ -335,9 +335,9 @@ public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 	private void submit() {
 		this.isSubmitAttempted = true;
 		//for( boolean isSecureDesired : new boolean[] { false, true } ) {
-		for( int port : new int[] { 25, /*567, 465,*/ 80 } ) {
+		for( Integer portOverride : new Integer[] { null, 80 } ) {
 			try {
-				edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( this.isTransportLayerSecurityDesired(), port, getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
+				edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( this.isTransportLayerSecurityDesired(), portOverride, getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
 				this.isSubmitSuccessful = true;
 				break;
 			} catch( javax.mail.MessagingException me ) {

@@ -1,5 +1,6 @@
 import java
 import javax
+import edu
 
 from edu.cmu.cs.dennisc import alice
 
@@ -64,7 +65,8 @@ class AbstractSaveOperation( alice.ide.AbstractOperation ):
 		if self._isPromptNecessary():
 			#owner = e.getSource()
 			owner = self.getIDE()
-			self._file = ecc.dennisc.swing.showFileSaveAsDialog( owner, self._getDefaultDirectory(), self._getExtension() )
+			#self._file = ecc.dennisc.swing.showFileSaveAsDialog( owner, self._getDefaultDirectory(), self._getExtension() )
+			self._file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( owner, self._getDefaultDirectory(), self._getExtension(), True )
 			if self._file:
 				return alice.ide.Operation.PreparationResult.PERFORM
 			else:

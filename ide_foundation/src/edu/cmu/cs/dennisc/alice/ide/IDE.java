@@ -22,6 +22,8 @@
  */
 package edu.cmu.cs.dennisc.alice.ide;
 
+import java.awt.Toolkit;
+
 import edu.cmu.cs.dennisc.alice.ast.Node;
 
 /**

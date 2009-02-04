@@ -12,4 +12,6 @@ class SceneAutomaticSetUpMethodFillerInner:
 		astStatements.add( [ edu.cmu.cs.dennisc.alice.ast.Comment( "DO NOT EDIT.  This code is automatically generated." ) ] )
 		self._fillInSceneAutomaticSetUpMethodForInstance( astStatements, sceneField, ecc.dennisc.alice.vm.getInstanceInJava( map[ sceneField ] ) )
 		for astField in sceneField.getValueType().fields.iterator():
-			self._fillInSceneAutomaticSetUpMethodForInstance( astStatements, astField, ecc.dennisc.alice.vm.getInstanceInJava( map[ astField ] ) )
+			if map.has_key( astField ):
+				instance = map[ astField ]
+				self._fillInSceneAutomaticSetUpMethodForInstance( astStatements, astField, ecc.dennisc.alice.vm.getInstanceInJava( instance ) )
