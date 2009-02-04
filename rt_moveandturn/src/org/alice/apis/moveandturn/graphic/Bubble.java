@@ -68,33 +68,32 @@ public abstract class Bubble extends Text {
 	protected final void paint( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.lang.String text, java.awt.Font font, java.awt.Color textColor, java.awt.geom.Rectangle2D textBounds ) {
 		m_sgCamera = sgCamera;
 		m_lookingGlass = lookingGlass;
+		if( m_state != null ) {
+			if( m_originOfTail != null ) {
+				//pass
+			} else {
+				m_originOfTail = m_originator.calculateOriginOfTail( this, m_sgCamera, m_lookingGlass );
+			}
+			assert m_originOfTail != null;
 
-		assert m_state != null;
+			if( m_bodyConnectionLocationOfTail != null ) {
+				//pass
+			} else {
+				m_bodyConnectionLocationOfTail = m_originator.calculateBodyConnectionLocationOfTail( this, m_sgCamera, m_lookingGlass );
+			}
+			assert m_bodyConnectionLocationOfTail != null;
 
-		if( m_originOfTail != null ) {
-			//pass
-		} else {
-			m_originOfTail = m_originator.calculateOriginOfTail( this, m_sgCamera, m_lookingGlass );
+			if( m_textBoundsOffset != null ) {
+				//pass
+			} else {
+				m_textBoundsOffset = m_originator.calculateTextBoundsOffset( this, m_sgCamera, m_lookingGlass );
+			}
+			assert m_textBoundsOffset != null;
+			
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+			g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+			paint( g2, lookingGlass, sgCamera, text, font, textColor, textBounds, m_state, m_portion, m_originOfTail, m_bodyConnectionLocationOfTail, m_textBoundsOffset, m_fillColor, m_outlineColor );
 		}
-		assert m_originOfTail != null;
-
-		if( m_bodyConnectionLocationOfTail != null ) {
-			//pass
-		} else {
-			m_bodyConnectionLocationOfTail = m_originator.calculateBodyConnectionLocationOfTail( this, m_sgCamera, m_lookingGlass );
-		}
-		assert m_bodyConnectionLocationOfTail != null;
-
-		if( m_textBoundsOffset != null ) {
-			//pass
-		} else {
-			m_textBoundsOffset = m_originator.calculateTextBoundsOffset( this, m_sgCamera, m_lookingGlass );
-		}
-		assert m_textBoundsOffset != null;
-		
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-		paint( g2, lookingGlass, sgCamera, text, font, textColor, textBounds, m_state, m_portion, m_originOfTail, m_bodyConnectionLocationOfTail, m_textBoundsOffset, m_fillColor, m_outlineColor );
 	}
 
 	//todo: update origin based on absolute transformation listeners 
