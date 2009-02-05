@@ -27,9 +27,17 @@ package edu.cmu.cs.dennisc.zoot.font;
  * @author Dennis Cosgrove
  */
 public enum ZTextWeight implements ZTextAttribute< Float > {
-	EXTRA_LIGHT(java.awt.font.TextAttribute.WEIGHT_EXTRA_LIGHT), LIGHT(java.awt.font.TextAttribute.WEIGHT_LIGHT), DEMILIGHT(java.awt.font.TextAttribute.WEIGHT_DEMILIGHT), REGULAR(java.awt.font.TextAttribute.WEIGHT_REGULAR), SEMIBOLD(
-			java.awt.font.TextAttribute.WEIGHT_SEMIBOLD), MEDIUM(java.awt.font.TextAttribute.WEIGHT_MEDIUM), DEMIBOLD(java.awt.font.TextAttribute.WEIGHT_DEMIBOLD), BOLD(java.awt.font.TextAttribute.WEIGHT_BOLD), HEAVY(
-			java.awt.font.TextAttribute.WEIGHT_HEAVY), EXTRABOLD(java.awt.font.TextAttribute.WEIGHT_EXTRABOLD), ULTRABOLD(java.awt.font.TextAttribute.WEIGHT_ULTRABOLD);
+	EXTRA_LIGHT(java.awt.font.TextAttribute.WEIGHT_EXTRA_LIGHT), 
+	LIGHT(java.awt.font.TextAttribute.WEIGHT_LIGHT), 
+	DEMILIGHT(java.awt.font.TextAttribute.WEIGHT_DEMILIGHT), 
+	REGULAR(java.awt.font.TextAttribute.WEIGHT_REGULAR), 
+	SEMIBOLD(java.awt.font.TextAttribute.WEIGHT_SEMIBOLD), 
+	MEDIUM(java.awt.font.TextAttribute.WEIGHT_MEDIUM), 
+	DEMIBOLD(java.awt.font.TextAttribute.WEIGHT_DEMIBOLD), 
+	BOLD(java.awt.font.TextAttribute.WEIGHT_BOLD), 
+	HEAVY(java.awt.font.TextAttribute.WEIGHT_HEAVY), 
+	EXTRABOLD(java.awt.font.TextAttribute.WEIGHT_EXTRABOLD), 
+	ULTRABOLD(java.awt.font.TextAttribute.WEIGHT_ULTRABOLD);
 	private Float m_value;
 
 	private ZTextWeight( Float value ) {
