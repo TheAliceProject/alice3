@@ -33,7 +33,7 @@ public class BallAndSocketBorderFactory implements ExpressionTypeBorderFactory {
 	private static final int TOP = ACTUAL_INSET; 
 	private static final int RIGHT = ACTUAL_INSET; 
 	private static final int BOTTOM = ACTUAL_INSET;
-	public javax.swing.border.Border createBorder( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public javax.swing.border.Border createBorder( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.awt.Component component ) {
 		return javax.swing.BorderFactory.createEmptyBorder( TOP, LEFT, BOTTOM, RIGHT );
 	}
 }

@@ -50,7 +50,7 @@ public abstract class StatementLikeSubstance extends PotentiallyDraggablePane< C
 		super( javax.swing.BoxLayout.LINE_AXIS );
 		this.statementCls = statementCls;
 		if( StatementLikeSubstance.borderFactory != null ) {
-			this.setBorder( StatementLikeSubstance.borderFactory.createBorder( this.statementCls ) );
+			this.setBorder( StatementLikeSubstance.borderFactory.createBorder( this.statementCls, this ) );
 		} else {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		}

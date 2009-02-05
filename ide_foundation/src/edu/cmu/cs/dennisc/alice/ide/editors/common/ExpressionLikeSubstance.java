@@ -42,7 +42,7 @@ public abstract class ExpressionLikeSubstance extends PotentiallyDraggablePane {
 		if( ExpressionLikeSubstance.borderFactory != null ) {
 			//todo
 			//this.setBorder( ExpressionLikeSubstance.borderFactory.createBorder( getExpressionType() ) );
-			this.setBorder( ExpressionLikeSubstance.borderFactory.createBorder( null ) );
+			this.setBorder( ExpressionLikeSubstance.borderFactory.createBorder( null, this ) );
 		} else {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		}

@@ -43,7 +43,7 @@ public abstract class DropDownPane extends edu.cmu.cs.dennisc.alice.ide.editors.
 	public DropDownPane( javax.swing.JComponent prefixPane, javax.swing.JComponent mainComponent, javax.swing.JComponent postfixPane ) {
 		super( javax.swing.BoxLayout.LINE_AXIS );
 		if( DropDownPane.borderFactory != null ) {
-			this.setBorder( DropDownPane.borderFactory.createBorder( null ) );
+			this.setBorder( DropDownPane.borderFactory.createBorder( null, this ) );
 		} else {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		}

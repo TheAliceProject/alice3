@@ -32,7 +32,7 @@ public class ArrowDropDownBorderFactory implements DropDownBorderFactory {
 	private static final int TOP = INSET; 
 	private static final int RIGHT = INSET + AFFORDANCE_SIZE; 
 	private static final int BOTTOM = INSET;
-	public javax.swing.border.Border createBorder( java.lang.Object context ) {
+	public javax.swing.border.Border createBorder( java.lang.Object context, java.awt.Component component ) {
 		return javax.swing.BorderFactory.createEmptyBorder( TOP, LEFT, BOTTOM, RIGHT );
 	}
 }

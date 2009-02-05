@@ -26,5 +26,5 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public interface BorderFactory<E> {
-	public javax.swing.border.Border createBorder( E context ); 
+	public javax.swing.border.Border createBorder( E context, java.awt.Component component ); 
 }
