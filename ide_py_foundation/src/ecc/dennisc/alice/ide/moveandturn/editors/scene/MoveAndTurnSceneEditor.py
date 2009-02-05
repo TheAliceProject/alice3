@@ -165,7 +165,7 @@ class MoveAndTurnSceneEditor( alice.ide.editors.scene.AbstractSceneEditor ):
 		if self._program.isLightweightOnscreenLookingGlassDesired():
 			pass
 		else:
-			self._cardPane.showSnapshot()
+			self._cardPane.showLive()
 	
 	def handleExpandContractChange( self, isExpanded ):
 		self._program._expandContractToggleButton.getRenderer().setExpanded( isExpanded )

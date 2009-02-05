@@ -78,6 +78,7 @@ class ProgramAdapter( apis.moveandturn.Program, ecc.dennisc.alice.ide.ProgramWit
 		self._currScene = None
 
 	def isLightweightOnscreenLookingGlassDesired( self ):
+		#print "isLightweightOnscreenLookingGlassDesired", self._isLightweightDesired
 		return self._isLightweightDesired
 
 	def generateCodeForSceneSetUp( self, setUpMethodGenerator ):
