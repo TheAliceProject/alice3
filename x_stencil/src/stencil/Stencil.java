@@ -14,6 +14,44 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		} );
 		this.synchronizeSize();
 		setOpaque( false );
+		this.addMouseListener( new java.awt.event.MouseListener() {
+			public void mouseClicked( java.awt.event.MouseEvent e ) {
+				Stencil.this.redispatch( e );
+			}
+			public void mouseEntered( java.awt.event.MouseEvent e ) {
+				Stencil.this.redispatch( e );
+			}
+			public void mouseExited( java.awt.event.MouseEvent e ) {
+				Stencil.this.redispatch( e );
+			}
+			public void mousePressed( java.awt.event.MouseEvent e ) {
+				Stencil.this.redispatch( e );
+			}
+			public void mouseReleased( java.awt.event.MouseEvent e ) {
+				Stencil.this.redispatch( e );
+			}
+		} );
+		this.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
+			public void mouseMoved( java.awt.event.MouseEvent e ) {
+				Stencil.this.redispatch( e );
+			}
+			public void mouseDragged( java.awt.event.MouseEvent e ) {
+				Stencil.this.redispatch( e );
+			}
+		} );
+	}
+
+	private void redispatch( java.awt.event.MouseEvent e ) {
+		java.awt.Point p = e.getPoint();
+		if( this.contains( p.x, p.y ) ) {
+			//pass
+		} else {
+			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt( this.container, p.x, p.y );
+			if( component != null ) {
+				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint( this, p, component );
+				component.dispatchEvent( new java.awt.event.MouseEvent( component, e.getID(), e.getWhen(), e.getModifiers(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger() ) );
+			}
+		}
 	}
 	
 	public void synchronizeSize() {
@@ -95,6 +133,17 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	}
 
 	@Override
+	public boolean contains( int x, int y ) {
+//todo?
+//		if( someone else has hooked up listeners to the glass pane or changed the cursor ) {
+//			return super.contains( x, y );
+//		} else {
+			java.awt.geom.Area area = calculateArea( this.getBounds(), PADDING_NOT_DESIRED );
+			return area.contains( x, y );
+//		}
+	}
+
+	@Override
 	public void doLayout() {
 		synchronized( this.holeGroups ) {
 			for( HoleGroup holeGroup : this.holeGroups ) {
@@ -152,7 +201,9 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		}
 	}
 
-	private java.awt.Rectangle calculateBoundsFor( HoleGroup holeGroup ) {
+	private final boolean PADDING_DESIRED = true;
+	private final boolean PADDING_NOT_DESIRED = false;
+	private java.awt.Rectangle calculateBoundsFor( HoleGroup holeGroup, boolean isPaddingDesired ) {
 		java.awt.Rectangle rv = null;
 		for( Hole hole : holeGroup.getHoles() ) {
 			java.awt.Rectangle rectHole = hole.getProxy().getBounds();
@@ -163,18 +214,20 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 				rv = new java.awt.Rectangle( rectHole );
 			}
 		}
-		int pad = holeGroup.getPad();
-		rv.x -= pad;
-		rv.y -= pad;
-		rv.width += pad*2;
-		rv.height += pad*2;
+		if( isPaddingDesired ) {
+			int pad = holeGroup.getPad();
+			rv.x -= pad;
+			rv.y -= pad;
+			rv.width += pad*2;
+			rv.height += pad*2;
+		}
 		return rv;
 	}
-	private java.awt.geom.Area calculateArea( java.awt.Rectangle bounds ) {
+	private java.awt.geom.Area calculateArea( java.awt.Rectangle bounds, boolean isPaddingDesired ) {
 		java.awt.geom.Area rv = new java.awt.geom.Area( bounds );
 		synchronized( this.holeGroups ) {
 			for( HoleGroup holeGroup : this.holeGroups ) {
-				java.awt.Rectangle rectGroup = this.calculateBoundsFor( holeGroup );
+				java.awt.Rectangle rectGroup = this.calculateBoundsFor( holeGroup, isPaddingDesired );
 				rv.subtract( new java.awt.geom.Area( rectGroup ) );
 			}
 		}
@@ -185,13 +238,13 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
 
-		java.awt.geom.Area area = calculateArea( this.getBounds() );
+		java.awt.geom.Area area = calculateArea( this.getBounds(), PADDING_DESIRED );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g2.setPaint( new java.awt.Color( 127, 255, 127, 127 ) );
 		g2.fill( area );
 		g2.setColor( java.awt.Color.GRAY );
 		for( HoleGroup holeGroup : this.holeGroups ) {
-			java.awt.Rectangle rectGroup = this.calculateBoundsFor( holeGroup );
+			java.awt.Rectangle rectGroup = this.calculateBoundsFor( holeGroup, PADDING_DESIRED );
 			g.draw3DRect( rectGroup.x, rectGroup.y, rectGroup.width, rectGroup.height, false );
 		}
 	}
