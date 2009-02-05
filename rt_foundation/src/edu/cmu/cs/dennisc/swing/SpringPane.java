@@ -68,5 +68,12 @@ public class SpringPane extends javax.swing.JPanel {
 		this.putConstraint(component, horizontal, x, vertical, y);
 		this.add( component );
 	}
+
+	//todo?
+//	@Override
+//	public void remove( java.awt.Component component ) {
+//		super.remove( component );
+//		this.springLayout.removeLayoutComponent( component );
+//	}
 	
 }

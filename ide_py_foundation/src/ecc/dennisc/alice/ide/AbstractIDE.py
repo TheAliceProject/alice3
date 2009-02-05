@@ -251,6 +251,9 @@ class AbstractIDE( alice.ide.IDE ):
 		if prevExpression:
 			self._prevExpression = prevExpression
 		return ecc.dennisc.alice.ide.cascade.ExpressionReceptorBlank( type )
+
+	def createProjectFromBootstrap(self):
+		print "todo"
 	
 	def promptUserForMore( self, parameter, me, taskObserver ):
 		class MoreMenuFillIn( cascade.MenuFillIn ):

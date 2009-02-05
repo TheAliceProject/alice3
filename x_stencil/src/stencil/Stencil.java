@@ -145,9 +145,50 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 			if( northDecorator != null ) {
 				this.add( northDecorator );
 			}
+			this.revalidate();
+			this.repaint();
 		}
 	}
 
+	public void removeHoleGroup( HoleGroup holeGroup ) {
+		synchronized( this.holeGroups ) {
+			this.holeGroups.remove( holeGroup );
+			for( Hole hole : holeGroup.getHoles() ) {
+				final java.awt.Component proxy = hole.getProxy();
+				this.remove( proxy );
+				java.awt.Component leadingDecorator = hole.getLeadingDecorator();
+				if( leadingDecorator != null ) {
+					this.remove( leadingDecorator );
+				}
+				java.awt.Component trailingDecorator = hole.getTrailingDecorator();
+				if( trailingDecorator != null ) {
+					this.remove( trailingDecorator );
+				}
+			}
+			java.awt.Component northDecorator = holeGroup.getNorthDecorator();
+			if( northDecorator != null ) {
+				this.remove( northDecorator );
+			}
+			this.revalidate();
+			this.repaint();
+		}
+	}
+
+	public Iterable< HoleGroup > getHoleGroups() {
+		return this.holeGroups;
+	}
+
+	public void clearHoleGroups() {
+		//todo synchronize
+		HoleGroup[] array = new HoleGroup[ this.holeGroups.size() ];
+		this.holeGroups.toArray( array );
+		for( HoleGroup holeGroup : array ) {
+			this.removeHoleGroup( holeGroup );
+		}
+	}
+
+	
+	//todo: check the hole components
 	@Override
 	public boolean contains( int x, int y ) {
 //todo?
@@ -199,42 +240,6 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 			}
 		}
 		super.doLayout();
-	}
-
-	public void removeHoleGroup( HoleGroup holeGroup ) {
-		synchronized( this.holeGroups ) {
-			this.holeGroups.remove( holeGroup );
-			for( Hole hole : holeGroup.getHoles() ) {
-				final java.awt.Component component = hole.getComponent();
-				final java.awt.Component proxy = hole.getProxy();
-				this.remove( proxy );
-				java.awt.Component leadingDecorator = hole.getLeadingDecorator();
-				if( leadingDecorator != null ) {
-					this.remove( leadingDecorator );
-				}
-				java.awt.Component trailingDecorator = hole.getTrailingDecorator();
-				if( trailingDecorator != null ) {
-					this.remove( trailingDecorator );
-				}
-			}
-			java.awt.Component northDecorator = holeGroup.getNorthDecorator();
-			if( northDecorator != null ) {
-				this.remove( northDecorator );
-			}
-		}
-	}
-
-	public Iterable< HoleGroup > getHoleGroups() {
-		return this.holeGroups;
-	}
-
-	public void clearHoleGroups() {
-		//todo synchronize
-		HoleGroup[] array = new HoleGroup[ this.holeGroups.size() ];
-		this.holeGroups.toArray( array );
-		for( HoleGroup holeGroup : array ) {
-			this.removeHoleGroup( holeGroup );
-		}
 	}
 
 	private final boolean PADDING_DESIRED = true;

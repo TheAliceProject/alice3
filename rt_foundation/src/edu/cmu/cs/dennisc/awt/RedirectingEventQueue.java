@@ -45,6 +45,7 @@ public class RedirectingEventQueue extends java.awt.EventQueue {
 				rv = null;
 				break;
 			}
+			rv = rv.getParent();
 		}
 		return rv;
 	}
