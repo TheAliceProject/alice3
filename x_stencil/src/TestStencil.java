@@ -78,7 +78,9 @@ public class TestStencil {
 //		} );
 		layeredPane.add( stencil, javax.swing.JLayeredPane.DRAG_LAYER );
 
-		frame.getContentPane().add( pane );
+		frame.getContentPane().add( new javax.swing.JButton( "top" ), java.awt.BorderLayout.NORTH );
+		frame.getContentPane().add( new javax.swing.JButton( "left" ), java.awt.BorderLayout.WEST );
+		frame.getContentPane().add( pane, java.awt.BorderLayout.CENTER );
 
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
 		frame.setSize( 1024, 768 );

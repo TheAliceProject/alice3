@@ -48,8 +48,10 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		} else {
 			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt( this.container, p.x, p.y );
 			if( component != null ) {
-				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint( this, p, component );
-				component.dispatchEvent( new java.awt.event.MouseEvent( component, e.getID(), e.getWhen(), e.getModifiers(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger() ) );
+				java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this, e, component );
+				component.dispatchEvent( me );
+				//java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint( this, p, component );
+				//component.dispatchEvent( new java.awt.event.MouseEvent( component, e.getID(), e.getWhen(), e.getModifiers(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger() ) );
 			}
 		}
 	}
@@ -153,7 +155,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 					java.awt.Component component = hole.getComponent();
 					java.awt.Component proxy = hole.getProxy();
 					java.awt.Point p = component.getLocation();
-					p = javax.swing.SwingUtilities.convertPoint( proxy.getParent(), p, this );
+					p = javax.swing.SwingUtilities.convertPoint( component.getParent(), p, this );
 					this.putConstraint( proxy, Horizontal.WEST, p.x, Vertical.NORTH, p.y );
 					
 					proxy.setPreferredSize( component.getSize() );
