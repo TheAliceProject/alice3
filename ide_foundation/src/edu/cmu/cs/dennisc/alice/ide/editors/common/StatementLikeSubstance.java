@@ -28,16 +28,29 @@ package edu.cmu.cs.dennisc.alice.ide.editors.common;
 public abstract class StatementLikeSubstance extends PotentiallyDraggablePane< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement> > {
 	private static edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassBorderFactory borderFactory = null;
 	private static edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassRenderer renderer = null;
+
+	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls;
+	
+	protected static Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getClassFor( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		if( statement != null ) {
+			return statement.getClass();
+		} else {
+			return edu.cmu.cs.dennisc.alice.ast.Statement.class;
+		}
+	}
+	
 	public static void setBorderFactory( edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassBorderFactory borderFactory ) {
 		StatementLikeSubstance.borderFactory = borderFactory;
 	}
 	public static void setRenderer( edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassRenderer renderer ) {
 		StatementLikeSubstance.renderer = renderer;
 	}
-	public StatementLikeSubstance() {
+	
+	public StatementLikeSubstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
 		super( javax.swing.BoxLayout.LINE_AXIS );
+		this.statementCls = statementCls;
 		if( StatementLikeSubstance.borderFactory != null ) {
-			this.setBorder( StatementLikeSubstance.borderFactory.createBorder( getStatementClass() ) );
+			this.setBorder( StatementLikeSubstance.borderFactory.createBorder( this.statementCls ) );
 		} else {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		}
@@ -48,7 +61,6 @@ public abstract class StatementLikeSubstance extends PotentiallyDraggablePane< C
 		return StatementLikeSubstance.renderer;
 	}
 	
-	protected abstract Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass();
 	
 //	@Override
 //	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
@@ -64,7 +76,7 @@ public abstract class StatementLikeSubstance extends PotentiallyDraggablePane< C
 	
 	@Override
 	protected Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getContext() {
-		return getStatementClass();
+		return this.statementCls;
 	}
 	
 ////	//todo: remove

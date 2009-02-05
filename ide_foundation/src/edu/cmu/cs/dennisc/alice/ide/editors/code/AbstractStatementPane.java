@@ -46,6 +46,7 @@ public abstract class AbstractStatementPane extends edu.cmu.cs.dennisc.alice.ide
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
 	public AbstractStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+		super( edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.getClassFor(statement) );
 		this.statement = statement;
 		
 		AbstractStatementPane.map.put( this.statement, this );
@@ -61,14 +62,6 @@ public abstract class AbstractStatementPane extends edu.cmu.cs.dennisc.alice.ide
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTInstance( this.statement ) );
 	}
 	
-	@Override
-	protected java.lang.Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass() {
-		if( this.statement != null ) {
-			return this.statement.getClass();
-		} else {
-			return edu.cmu.cs.dennisc.alice.ast.Statement.class;
-		}
-	}
 	protected edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
 		return this.statement;
 	}

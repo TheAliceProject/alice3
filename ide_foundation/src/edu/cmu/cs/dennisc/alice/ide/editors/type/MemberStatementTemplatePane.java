@@ -31,6 +31,7 @@ public abstract class MemberStatementTemplatePane extends StatementTemplatePane 
 	private InstanceOrTypeExpressionPane instanceOrTypeExpressionPane = new InstanceOrTypeExpressionPane();
 	
 	public MemberStatementTemplatePane( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 		this.member = member;
 		this.nameLabel = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( member );
 		this.nameLabel.scaleFont( 1.5f );
@@ -54,10 +55,6 @@ public abstract class MemberStatementTemplatePane extends StatementTemplatePane 
 	}
 	public edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel getNameLabel() {
 		return this.nameLabel;
-	}
-	@Override
-	protected java.lang.Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass() {
-		return edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class;
 	}
 	@Override
 	protected boolean isActuallyPotentiallyActive() {

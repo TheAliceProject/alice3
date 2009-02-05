@@ -26,6 +26,9 @@ package edu.cmu.cs.dennisc.alice.ide.editors.type;
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplatePane extends edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance {
+	public StatementTemplatePane(  Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
+		super( statementCls );
+	}
 	@Override
 	protected boolean isActuallyPotentiallyDraggable() {
 		return true;

@@ -66,6 +66,7 @@ public abstract class UbiquitousStatementTemplatePane extends edu.cmu.cs.dennisc
 	private javax.swing.JComponent component;
 
 	public UbiquitousStatementTemplatePane( /*Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls,*/ edu.cmu.cs.dennisc.alice.ast.Statement emptyStatement ) {
+		super( edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.getClassFor( emptyStatement ) );
 		this.setLayout( new java.awt.FlowLayout() );
 		//assert this.cls != null;
 		//this.cls = cls;
@@ -75,7 +76,7 @@ public abstract class UbiquitousStatementTemplatePane extends edu.cmu.cs.dennisc
 		this.component = this.createComponent();
 		this.add( this.component );
 		this.add( this.emptyStatementPane );
-		this.setBackground( getIDE().getColorForASTClass( this.getStatementClass() ) );
+		this.setBackground( getIDE().getColorForASTClass( this.getContext() ) );
 		this.setToolTipText( "" );
 		//this.label.setPreferredSize( new java.awt.Dimension( 128, 128 ) );
 	}
@@ -88,14 +89,10 @@ public abstract class UbiquitousStatementTemplatePane extends edu.cmu.cs.dennisc
 	}
 	
 	protected javax.swing.JComponent createComponent() {
-		String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( this.getStatementClass(), "edu.cmu.cs.dennisc.alice.ast.UbiquitousTemplates" );
+		String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( this.getContext(), "edu.cmu.cs.dennisc.alice.ast.UbiquitousTemplates" );
 		return new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( text );
 	}
 	
-//	@Override
-//	public Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass() {
-//		return this.cls;
-//	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = this.component.getPreferredSize();

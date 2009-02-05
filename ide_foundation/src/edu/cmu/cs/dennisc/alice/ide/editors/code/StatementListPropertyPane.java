@@ -29,16 +29,13 @@ import edu.cmu.cs.dennisc.alice.ide.editors.type.ArrayAccessTemplatePane;
  */
 class EmptyAfforance extends edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance {
 	public EmptyAfforance() {
+		super( edu.cmu.cs.dennisc.alice.ast.Statement.class );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
 		edu.cmu.cs.dennisc.alice.ide.editors.common.Label label = new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "drop statement here" );
 		label.setFont( label.getFont().deriveFont( java.awt.Font.ITALIC ) );
 		this.add( label );
 		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
 		this.setBackground( new java.awt.Color( 63, 63, 63, 63 ) );
-	}
-	@Override
-	protected java.lang.Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementClass() {
-		return edu.cmu.cs.dennisc.alice.ast.Statement.class;
 	}
 	@Override
 	protected boolean isActuallyPotentiallyActive() {

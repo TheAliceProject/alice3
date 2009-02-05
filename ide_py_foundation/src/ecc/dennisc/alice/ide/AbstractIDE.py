@@ -39,15 +39,13 @@ class MyFieldTile( alice.ide.editors.scene.FieldTile ):
 	
 class MySceneRunMethodPane( alice.ide.editors.common.StatementLikeSubstance ):
 	def __init__( self, field, method ):
-		alice.ide.editors.common.StatementLikeSubstance.__init__( self )
+		alice.ide.editors.common.StatementLikeSubstance.__init__( self, alice.ast.ExpressionStatement )
 		self.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) )
 		self.add( MyFieldTile( field ) )
 		self.add( alice.ide.editors.common.Label( method.getName() ) )
 		self.setBackground( alice.ide.IDE.getColorForASTClass( alice.ast.ExpressionStatement ) )
 #		self.setBackground(java.awt.Color.BLUE)
 #		self.setOpaque( True )
-	def getStatementClass( self ):
-		return alice.ast.ExpressionStatement
 	def isActuallyPotentiallyActive( self ):
 		return False
 	def isActuallyPotentiallySelectable( self ):

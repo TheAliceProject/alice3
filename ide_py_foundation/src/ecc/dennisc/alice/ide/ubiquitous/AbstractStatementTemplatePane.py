@@ -8,7 +8,5 @@ class AbstractStatementTemplatePane( alice.ide.editors.ubiquitous.UbiquitousStat
 		return self._createActualStatementArgs()
 	def _createActualStatementArgs( self ):
 		raise "Override"
-	def getStatementClass(self):
-		return self._statementCls
 	def createStatement( self, e ):
-		return apply( self.getStatementClass(), self._createActualStatementArgs() )
+		return apply( self._statementCls, self._createActualStatementArgs() )

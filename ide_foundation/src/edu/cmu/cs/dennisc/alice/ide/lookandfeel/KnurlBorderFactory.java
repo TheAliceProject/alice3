@@ -53,7 +53,7 @@ public class KnurlBorderFactory implements StatementClassBorderFactory {
 	private KnurlBorder sharedInstance = new KnurlBorder();
 	public javax.swing.border.Border createBorder( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
 		assert statementCls != null;
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( statementCls );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( statementCls );
 		return this.sharedInstance;
 	}
 }
