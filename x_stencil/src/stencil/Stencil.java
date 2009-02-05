@@ -41,17 +41,31 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		} );
 	}
 
+	private static java.awt.Component getDeepestMouseListener( java.awt.Component dst, java.awt.Component descendant ) {
+		java.awt.Component rv = descendant;
+		while( rv != null ) {
+			if( rv.getMouseListeners().length > 0 || rv.getMouseMotionListeners().length > 0 ) {
+				break;
+			}
+			if( rv == dst ) {
+				rv = null;
+				break;
+			}
+			rv = rv.getParent();
+		}
+		return rv;
+	}
+
 	private void redispatch( java.awt.event.MouseEvent e ) {
 		java.awt.Point p = e.getPoint();
 		if( this.contains( p.x, p.y ) ) {
 			//pass
 		} else {
-			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt( this.container, p.x, p.y );
-			if( component != null ) {
-				java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this, e, component );
-				component.dispatchEvent( me );
-				//java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint( this, p, component );
-				//component.dispatchEvent( new java.awt.event.MouseEvent( component, e.getID(), e.getWhen(), e.getModifiers(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger() ) );
+			java.awt.Component deepestComponent = javax.swing.SwingUtilities.getDeepestComponentAt( this.container, p.x, p.y );
+			java.awt.Component deepestMouseListener = getDeepestMouseListener( this.container, deepestComponent );
+			if( deepestMouseListener != null ) {
+				java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this, e, deepestMouseListener );
+				deepestMouseListener.dispatchEvent( me );
 			}
 		}
 	}
@@ -190,6 +204,23 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	public void removeHoleGroup( HoleGroup holeGroup ) {
 		synchronized( this.holeGroups ) {
 			this.holeGroups.remove( holeGroup );
+			for( Hole hole : holeGroup.getHoles() ) {
+				final java.awt.Component component = hole.getComponent();
+				final java.awt.Component proxy = hole.getProxy();
+				this.remove( proxy );
+				java.awt.Component leadingDecorator = hole.getLeadingDecorator();
+				if( leadingDecorator != null ) {
+					this.remove( leadingDecorator );
+				}
+				java.awt.Component trailingDecorator = hole.getTrailingDecorator();
+				if( trailingDecorator != null ) {
+					this.remove( trailingDecorator );
+				}
+			}
+			java.awt.Component northDecorator = holeGroup.getNorthDecorator();
+			if( northDecorator != null ) {
+				this.remove( northDecorator );
+			}
 		}
 	}
 
@@ -198,8 +229,11 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	}
 
 	public void clearHoleGroups() {
-		synchronized( this.holeGroups ) {
-			this.holeGroups.clear();
+		//todo synchronize
+		HoleGroup[] array = new HoleGroup[ this.holeGroups.size() ];
+		this.holeGroups.toArray( array );
+		for( HoleGroup holeGroup : array ) {
+			this.removeHoleGroup( holeGroup );
 		}
 	}
 
