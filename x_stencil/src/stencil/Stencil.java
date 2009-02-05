@@ -2,8 +2,9 @@ package stencil;
 
 class Vacuum extends javax.swing.JPanel {
 	public Vacuum() {
-		// this.setOpaque( false );
-		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
+		this.setOpaque( false );
+		// this.setBackground(
+		// edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
 	}
 }
 
@@ -21,6 +22,7 @@ class Hole {
 	public java.awt.Component getComponent() {
 		return this.component;
 	}
+
 	public Vacuum getVacuum() {
 		return this.vacuum;
 	}
@@ -28,14 +30,15 @@ class Hole {
 	public java.awt.Component getLeadingDecorator() {
 		return this.leadingDecorator;
 	}
+
 	public void setLeadingDecorator( java.awt.Component leadingDecorator ) {
 		this.leadingDecorator = leadingDecorator;
 	}
 
-
 	public java.awt.Component getTrailingDecorator() {
 		return this.trailingDecorator;
 	}
+
 	public void setTrailingDecorator( java.awt.Component trailingDecorator ) {
 		this.trailingDecorator = trailingDecorator;
 	}
@@ -54,13 +57,14 @@ class HoleGroup {
 		this.holes = holes;
 		for( Hole hole : this.holes ) {
 			Vacuum vacuum = hole.getVacuum();
-			//todo
+			// todo
 		}
 	}
 
 	public Hole[] getHoles() {
 		return this.holes;
 	}
+
 	private void addDecoratorIfNecessary( java.awt.Component decorator ) {
 		if( decorator != null ) {
 			if( this.stencil != null ) {
@@ -145,7 +149,8 @@ class HoleGroup {
 // }
 
 public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
-	private java.util.List< Hole > holes = new java.util.LinkedList< Hole >();
+	// private java.util.List< Hole > holes = new java.util.LinkedList< Hole
+	// >();
 	private java.util.List< HoleGroup > holeGroups = new java.util.LinkedList< HoleGroup >();
 	private java.awt.Container container;
 
@@ -178,19 +183,16 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	public void addHoleGroup( HoleGroup holeGroup ) {
 		synchronized( this.holeGroups ) {
 			this.holeGroups.add( holeGroup );
-			
+
 			for( Hole hole : holeGroup.getHoles() ) {
 				final java.awt.Component component = hole.getComponent();
 				final java.awt.Component vacuum = hole.getVacuum();
 				java.awt.Point p = component.getLocation();
-				p.x = 200;
-				p.y = 100;
-				vacuum.setLocation( p );
-				vacuum.setSize( 100, 100 );
 				component.addComponentListener( new java.awt.event.ComponentListener() {
 					private void handleChange( java.awt.event.ComponentEvent e ) {
 						Stencil.this.revalidate();
 					}
+
 					public void componentShown( java.awt.event.ComponentEvent e ) {
 						handleChange( e );
 					}
@@ -207,27 +209,38 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 						handleChange( e );
 					}
 				} );
-				this.add( vacuum );
-				this.getSpringLayout().putConstraint( javax.swing.SpringLayout.WEST, vacuum, 100, javax.swing.SpringLayout.WEST, this );
-				this.getSpringLayout().putConstraint( javax.swing.SpringLayout.NORTH, vacuum, 100, javax.swing.SpringLayout.NORTH, this );
-				
+				this.add( vacuum, Horizontal.WEST, p.x, Vertical.NORTH, p.y );
 				final int PAD = 8;
 				java.awt.Component leadingDecorator = hole.getLeadingDecorator();
 				if( leadingDecorator != null ) {
 					this.add( leadingDecorator );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( leadingDecorator );
 					this.getSpringLayout().putConstraint( javax.swing.SpringLayout.EAST, leadingDecorator, -PAD, javax.swing.SpringLayout.WEST, vacuum );
 					this.getSpringLayout().putConstraint( javax.swing.SpringLayout.NORTH, leadingDecorator, 0, javax.swing.SpringLayout.NORTH, vacuum );
 				}
 				java.awt.Component trailingDecorator = hole.getTrailingDecorator();
 				if( trailingDecorator != null ) {
 					this.add( trailingDecorator );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( trailingDecorator );
 					this.getSpringLayout().putConstraint( javax.swing.SpringLayout.WEST, trailingDecorator, PAD, javax.swing.SpringLayout.EAST, vacuum );
 					this.getSpringLayout().putConstraint( javax.swing.SpringLayout.NORTH, trailingDecorator, 0, javax.swing.SpringLayout.NORTH, vacuum );
 				}
 			}
 		}
+	}
+
+	@Override
+	public void doLayout() {
+		synchronized( this.holeGroups ) {
+			for( HoleGroup holeGroup : this.holeGroups ) {
+				for( Hole hole : holeGroup.getHoles() ) {
+					final java.awt.Component component = hole.getComponent();
+					final java.awt.Component vacuum = hole.getVacuum();
+					java.awt.Point p = component.getLocation();
+					this.putConstraint( vacuum, Horizontal.WEST, p.x, Vertical.NORTH, p.y );
+					vacuum.setPreferredSize( component.getSize() );
+				}
+			}
+		}
+		super.doLayout();
 	}
 
 	public void removeHoleGroup( HoleGroup holeGroup ) {
@@ -246,45 +259,61 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		}
 	}
 
-//	private java.awt.geom.Area calculateArea( java.awt.Rectangle bounds ) {
-//		java.awt.geom.Area rv = new java.awt.geom.Area( bounds );
-//		synchronized( this.holes ) {
-//			for( Hole hole : this.holes ) {
-//				rv.subtract( hole.getArea( this.container ) );
-//			}
-//		}
-//		return rv;
-//	}
+	private java.awt.geom.Area createArea( java.awt.Rectangle bounds ) {
+		bounds.x -= 10;
+		bounds.width += 20;
+		return new java.awt.geom.Area( bounds );
+	}
+	
+	private java.awt.geom.Area calculateArea( java.awt.Rectangle bounds ) {
+		java.awt.geom.Area rv = new java.awt.geom.Area( bounds );
+		synchronized( this.holeGroups ) {
+			for( HoleGroup holeGroup : this.holeGroups ) {
+				for( Hole hole : holeGroup.getHoles() ) {
+					java.awt.Rectangle rect = hole.getVacuum().getBounds();
+					rv.subtract( this.createArea( rect ) );
+				}
+			}
+		}
+		return rv;
+	}
 
-	// @Override
-	// protected void paintComponent( java.awt.Graphics g ) {
-	// super.paintComponent( g );
-	//		
-	// java.awt.geom.Area area = calculateArea( g.getClipBounds() );
-	// java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-	// g2.setPaint( new java.awt.Color( 127, 255, 127, 127 ) );
-	// g2.fill( area );
-	// }
+	@Override
+	protected void paintComponent( java.awt.Graphics g ) {
+		super.paintComponent( g );
+
+		java.awt.geom.Area area = calculateArea( g.getClipBounds() );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g2.setPaint( new java.awt.Color( 127, 255, 127, 127 ) );
+		g2.fill( area );
+	}
 
 	public static void main( String[] args ) {
 		class Pane extends javax.swing.JPanel {
-			private javax.swing.JButton button = new javax.swing.JButton( "button" );
+			private javax.swing.JButton button0 = new javax.swing.JButton( "put a hole over me" );
+			private javax.swing.JButton button1 = new javax.swing.JButton( "button" );
 
 			public Pane() {
-				button.addActionListener( new java.awt.event.ActionListener() {
+				button0.addActionListener( new java.awt.event.ActionListener() {
 					public void actionPerformed( java.awt.event.ActionEvent e ) {
-						Pane.this.button.setSize( Pane.this.button.getHeight(), Pane.this.button.getWidth() );
+						java.awt.Rectangle bounds = Pane.this.button0.getBounds();
+						Pane.this.button0.setLocation( bounds.x-10, bounds.y+10 );
+						Pane.this.button0.setSize( bounds.height, bounds.width );
 					}
 				} );
-				button.setSize( 240, 80 );
-				button.setLocation( 300, 200 );
+				button0.setSize( 240, 80 );
+				button0.setLocation( 400, 100 );
+
+				button1.setSize( 240, 80 );
+				button1.setLocation( 400, 600 );
+
 				this.setLayout( null );
-				this.add( button );
-				this.setSize( 640, 480 );
+				this.add( button0 );
+				this.add( button1 );
 			}
 
 			public javax.swing.JComponent getComponentFor( java.util.UUID uuid ) {
-				return this.button;
+				return this.button0;
 			}
 		}
 
@@ -298,11 +327,26 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		Hole hole = new Hole( pane.getComponentFor( java.util.UUID.randomUUID() ) );
 		hole.setLeadingDecorator( new javax.swing.JButton( "1" ) );
 		hole.setTrailingDecorator( new javax.swing.JButton( "west" ) );
-		
-		HoleGroup holeGroup = new HoleGroup( hole );
+
+		Hole hole2 = new Hole( pane.button1 );
+		hole2.setLeadingDecorator( new javax.swing.JButton( "2" ) );
+		hole2.setTrailingDecorator( new javax.swing.JButton( "west" ) );
+
+		HoleGroup holeGroup = new HoleGroup( hole, hole2 );
+		holeGroup.setNorthDecorator( new javax.swing.JLabel( "header" ) );
 		stencil.addHoleGroup( holeGroup );
 
 		stencil.setNorthEastComponent( new javax.swing.JButton( "exit" ) );
+
+		java.awt.Component specialPane = new javax.swing.JPanel() {
+			protected void paintComponent( java.awt.Graphics g ) {
+				super.paintComponent( g );
+				edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, "special", this.getSize() );
+			}
+		};
+		specialPane.setBackground( java.awt.Color.RED );
+		specialPane.setPreferredSize( new java.awt.Dimension( 160, 240 ) );
+		stencil.add( specialPane, Horizontal.WEST, 50, Vertical.NORTH, 50 );
 
 		layeredPane.addComponentListener( new java.awt.event.ComponentAdapter() {
 			public void componentResized( java.awt.event.ComponentEvent e ) {
@@ -315,7 +359,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		frame.getContentPane().add( pane );
 
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-		frame.setSize( 640, 480 );
+		frame.setSize( 1024, 768 );
 		frame.setVisible( true );
 	}
 }

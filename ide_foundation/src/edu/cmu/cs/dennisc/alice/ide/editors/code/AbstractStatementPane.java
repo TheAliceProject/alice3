@@ -62,7 +62,7 @@ public abstract class AbstractStatementPane extends edu.cmu.cs.dennisc.alice.ide
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTInstance( this.statement ) );
 	}
 	
-	protected edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
+	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
 		return this.statement;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getOwner() {
