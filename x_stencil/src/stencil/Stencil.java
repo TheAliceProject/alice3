@@ -9,11 +9,16 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		this.container = container;
 		this.container.addComponentListener( new java.awt.event.ComponentAdapter() {
 			public void componentResized( java.awt.event.ComponentEvent e ) {
-				Stencil.this.setSize( e.getComponent().getSize() );
-				Stencil.this.revalidate();
+				Stencil.this.synchronizeSize();
 			}
 		} );
+		this.synchronizeSize();
 		setOpaque( false );
+	}
+	
+	public void synchronizeSize() {
+		this.setSize( this.container.getSize() );
+		this.revalidate();
 	}
 
 	// public void addHole(Hole hole) {
