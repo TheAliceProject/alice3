@@ -70,12 +70,12 @@ public class TestStencil {
 		specialPane.setPreferredSize( new java.awt.Dimension( 160, 240 ) );
 		stencil.add( specialPane, edu.cmu.cs.dennisc.swing.SpringPane.Horizontal.WEST, 50, edu.cmu.cs.dennisc.swing.SpringPane.Vertical.NORTH, 50 );
 
-		layeredPane.addComponentListener( new java.awt.event.ComponentAdapter() {
-			public void componentResized( java.awt.event.ComponentEvent e ) {
-				stencil.setSize( e.getComponent().getSize() );
-				stencil.revalidate();
-			}
-		} );
+//		layeredPane.addComponentListener( new java.awt.event.ComponentAdapter() {
+//			public void componentResized( java.awt.event.ComponentEvent e ) {
+//				stencil.setSize( e.getComponent().getSize() );
+//				stencil.revalidate();
+//			}
+//		} );
 		layeredPane.add( stencil, javax.swing.JLayeredPane.DRAG_LAYER );
 
 		frame.getContentPane().add( pane );
