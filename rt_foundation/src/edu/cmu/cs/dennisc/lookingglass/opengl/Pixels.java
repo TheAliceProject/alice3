@@ -113,7 +113,6 @@ class Pixels implements edu.cmu.cs.dennisc.texture.event.TextureListener {
 				java.awt.image.DataBufferByte dataBufferByte = (java.awt.image.DataBufferByte)m_writableRaster.getDataBuffer();
 				byte[] data = dataBufferByte.getData();
 				m_data = java.nio.ByteBuffer.wrap( data );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "getRGBA", m_data );
 			} else {
 				m_data = null;
 			}
