@@ -308,6 +308,7 @@ public abstract class IDE extends javax.swing.JFrame {
 		setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
 		this.addWindowListener( new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
+				IDE.this.handleWindowOpened( e );
 			}
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
@@ -328,6 +329,8 @@ public abstract class IDE extends javax.swing.JFrame {
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
 	}
 
+	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+	}
 	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassBorderFactory createStatementBorderFactory() {
 		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.KnurlBorderFactory();
 	}
