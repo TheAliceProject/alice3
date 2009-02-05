@@ -191,7 +191,7 @@ class DropReceptorInfo {
 public abstract class PotentiallyDraggablePane<E> extends Control<E> {
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
-	private DropReceptorInfo[] potentialDropReceptorInfos = null;
+	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor = null;
 	
 	public PotentiallyDraggablePane( int axis ) {
@@ -397,7 +397,7 @@ public abstract class PotentiallyDraggablePane<E> extends Control<E> {
 				getIDE().handleDragStopped( this.currentDropReceptor );
 			}
 		}
-		this.potentialDropReceptorInfos = null;
+		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	}
 
 	private static java.awt.TexturePaint copyTexturePaint = null;

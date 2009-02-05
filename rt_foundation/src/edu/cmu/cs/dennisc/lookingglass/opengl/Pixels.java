@@ -48,7 +48,11 @@ class Pixels implements edu.cmu.cs.dennisc.texture.event.TextureListener {
 	}
 
 	public void textureChanged( edu.cmu.cs.dennisc.texture.event.TextureEvent textureEvent ) {
-		touchImage();
+		if( m_texture != null && m_writableRaster != null && m_bufferedImage != null ) {
+			if( m_texture.getWidth() != m_bufferedImage.getWidth() || m_texture.getHeight() != m_bufferedImage.getHeight() ) {  
+				touchImage();
+			}
+		}
 	}
 	public void touchImage() {
 		m_data = null;
@@ -109,6 +113,7 @@ class Pixels implements edu.cmu.cs.dennisc.texture.event.TextureListener {
 				java.awt.image.DataBufferByte dataBufferByte = (java.awt.image.DataBufferByte)m_writableRaster.getDataBuffer();
 				byte[] data = dataBufferByte.getData();
 				m_data = java.nio.ByteBuffer.wrap( data );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "getRGBA", m_data );
 			} else {
 				m_data = null;
 			}
