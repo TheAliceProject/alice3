@@ -241,23 +241,25 @@ public abstract class PotentiallyDraggablePane<E> extends Control<E> {
 	private synchronized void updateProxyPosition( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
 			java.awt.event.MouseEvent mousePressedEvent = this.getMousePressedEvent();
-			javax.swing.JLayeredPane layeredPane = getLayeredPane();
-			java.awt.Point locationOnScreenLayeredPane = layeredPane.getLocationOnScreen();
-			java.awt.Point locationOnScreen = this.getLocationOnScreen();
-			int dx = locationOnScreen.x - locationOnScreenLayeredPane.x;
-			int dy = locationOnScreen.y - locationOnScreenLayeredPane.y;
-	
-			dx -= mousePressedEvent.getX();
-			dy -= mousePressedEvent.getY();
-	
-			boolean isCopyDesired = edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e );
-			int x = e.getX() + dx;
-			int y = e.getY() + dy;
-			dragProxy.setCopyDesired( isCopyDesired );
-			dragProxy.setLocation( x, y );
-			//layeredPane.setPosition( dragProxy, dy );
+			if( mousePressedEvent != null ) {
+				javax.swing.JLayeredPane layeredPane = getLayeredPane();
+				java.awt.Point locationOnScreenLayeredPane = layeredPane.getLocationOnScreen();
+				java.awt.Point locationOnScreen = this.getLocationOnScreen();
+				int dx = locationOnScreen.x - locationOnScreenLayeredPane.x;
+				int dy = locationOnScreen.y - locationOnScreenLayeredPane.y;
+		
+				dx -= mousePressedEvent.getX();
+				dy -= mousePressedEvent.getY();
+		
+				boolean isCopyDesired = edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e );
+				int x = e.getX() + dx;
+				int y = e.getY() + dy;
+				dragProxy.setCopyDesired( isCopyDesired );
+				dragProxy.setLocation( x, y );
+				//layeredPane.setPosition( dragProxy, dy );
 
-			dropProxy.setCopyDesired( isCopyDesired );
+				dropProxy.setCopyDesired( isCopyDesired );
+			}
 		}
 	}
 		
