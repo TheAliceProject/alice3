@@ -43,11 +43,29 @@ public class BallAndSocketExpressionTypeRenderer implements ExpressionTypeRender
 		edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( context, x, y, width, height );
 		beveledShape.fill( g2 );
 	}
-	public void paintPrologue( edu.cmu.cs.dennisc.alice.ast.AbstractType context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
+	private edu.cmu.cs.dennisc.awt.BevelState getBevelState(boolean isActive, boolean isPressed, boolean isSelected) {
+		if (isActive) {
+			if (isPressed) {
+				return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+			} else {
+				return edu.cmu.cs.dennisc.awt.BevelState.RAISED;
+			}
+		} else {
+			return edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
+		}
+	}
+
+	public void paintPrologue( edu.cmu.cs.dennisc.alice.ast.AbstractType context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected ) {
 		g2.setPaint( c.getBackground() );
+		edu.cmu.cs.dennisc.awt.BevelState bevelState;
+		if( c instanceof edu.cmu.cs.dennisc.alice.ide.editors.code.EmptyExpressionPane ) {
+			bevelState = edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+		} else {
+			bevelState = this.getBevelState(isActive, isPressed, isSelected);
+		}
 		edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( context, x, y, width, height );
 		beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
 	}
-	public void paintEpilogue( edu.cmu.cs.dennisc.alice.ast.AbstractType context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
+	public void paintEpilogue( edu.cmu.cs.dennisc.alice.ast.AbstractType context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected ) {
 	}
 }

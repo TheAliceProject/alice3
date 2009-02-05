@@ -32,15 +32,34 @@ public class RoundedRectangleStatementClassRenderer implements StatementClassRen
 	public void fillBounds( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		g2.fillRoundRect( x, y, width-1, height-1, 8, 8 );
 	}
-	public void paintPrologue( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
+	public void paintPrologue( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected ) {
 		g2.setPaint( c.getBackground() );
 		fillBounds( context, c, g2, x, y, width, height );
 	}
-	public void paintEpilogue( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
+
+	private edu.cmu.cs.dennisc.awt.BevelState getBevelState(boolean isActive, boolean isPressed, boolean isSelected) {
+		if (isActive) {
+			if (isPressed) {
+				return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+			} else {
+				return edu.cmu.cs.dennisc.awt.BevelState.RAISED;
+			}
+		} else {
+			return edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
+		}
+	}
+
+	public void paintEpilogue( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected ) {
 		if( isSelected ) {
 			java.awt.Paint paint = new java.awt.GradientPaint( 0, 0, TOP_SELECTED_COLOR, 0, (float)height, BOTTOM_SELECTED_COLOR );
 			g2.setPaint( paint );
 			fillBounds( context, c, g2, x, y, width, height );
+		}
+		edu.cmu.cs.dennisc.awt.BevelState bevelState;
+		if( c instanceof edu.cmu.cs.dennisc.alice.ide.editors.code.EmptyStatementListAfforance ) {
+			bevelState = edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+		} else {
+			bevelState = this.getBevelState(isActive, isPressed, isSelected);
 		}
 		if( bevelState != edu.cmu.cs.dennisc.awt.BevelState.FLUSH ) {
 			edu.cmu.cs.dennisc.awt.BeveledRoundRectangle beveledRoundRectangle = new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( x+1, y+1, width-2, height-2, 8.0f, 8.0f );

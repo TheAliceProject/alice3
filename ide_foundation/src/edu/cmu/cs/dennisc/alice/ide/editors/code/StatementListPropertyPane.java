@@ -22,39 +22,6 @@
  */
 package edu.cmu.cs.dennisc.alice.ide.editors.code;
 
-import edu.cmu.cs.dennisc.alice.ide.editors.type.ArrayAccessTemplatePane;
-
-/**
- * @author Dennis Cosgrove
- */
-class EmptyAfforance extends edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance {
-	public EmptyAfforance() {
-		super( edu.cmu.cs.dennisc.alice.ast.Statement.class );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
-		edu.cmu.cs.dennisc.alice.ide.editors.common.Label label = new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "drop statement here" );
-		label.setFont( label.getFont().deriveFont( java.awt.Font.ITALIC ) );
-		this.add( label );
-		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
-		this.setBackground( new java.awt.Color( 63, 63, 63, 63 ) );
-	}
-	@Override
-	protected boolean isActuallyPotentiallyActive() {
-		return false;
-	}
-	@Override
-	protected boolean isActuallyPotentiallySelectable() {
-		return false;
-	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return false;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
-		return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -101,11 +68,11 @@ class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.den
 	protected void refresh() {
 		super.refresh();
 		if( this.getComponentCount() == 0 ) {
-			this.add( new EmptyAfforance() );
+			this.add( new EmptyStatementListAfforance() );
 		}
 	}
 	public boolean isFigurativelyEmpty() {
-		return this.getComponent( 0 ) instanceof EmptyAfforance;
+		return this.getComponent( 0 ) instanceof EmptyStatementListAfforance;
 	}
 
 	private int getCenterYOfComponentAt( int i ) {

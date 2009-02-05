@@ -31,28 +31,17 @@ public abstract class ZRenderedControl<E> extends ZControl {
 	}
 	protected abstract Renderer< E > getRenderer();
 	protected abstract E getContext();
-	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
-		if( isActive() ) {
-			if( isPressed() ) {
-				return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
-			} else {
-				return edu.cmu.cs.dennisc.awt.BevelState.RAISED;
-			}
-		} else {
-			return edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
-		}
-	}
 	
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		Renderer< E > renderer = this.getRenderer();
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		if( renderer != null ) {
-			renderer.paintPrologue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), getBevelState(), isActive(), isPressed(), isSelected() );
+			renderer.paintPrologue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), isActive(), isPressed(), isSelected() );
 		}
 		super.paint( g );
 		if( renderer != null ) {
-			renderer.paintEpilogue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), getBevelState(), isActive(), isPressed(), isSelected() );
+			renderer.paintEpilogue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), isActive(), isPressed(), isSelected() );
 		}
 	}
 }

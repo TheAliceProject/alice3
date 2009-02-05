@@ -265,9 +265,9 @@ public class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orientatio
 		double y = axis.y / w;
 		double z = axis.z / w;
 
-		rv.right.set( t * x * x + c, t * x * y + s * z, t * x * z - s * y );
-		rv.up.set( t * x * y - s * z, t * y * y + c, t * y * z + s * x );
-		rv.backward.set( t * x * y + s * y, t * y * z - s * x, t * z * z + c );
+		rv.right.set(    t * x * x + c,     t * x * y + s * z, t * x * z - s * y );
+		rv.up.set(       t * x * y - s * z, t * y * y + c,     t * y * z + s * x );
+		rv.backward.set( t * x * z + s * y, t * y * z - s * x, t * z * z + c );
 
 		return rv;
 	}

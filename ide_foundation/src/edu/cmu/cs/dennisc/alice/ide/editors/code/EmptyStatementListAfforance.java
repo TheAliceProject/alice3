@@ -25,18 +25,26 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyExpressionPane extends edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance {
-	private EmptyExpression emptyExpression;
-	public EmptyExpressionPane( EmptyExpression emptyExpression ) {
-		this.emptyExpression = emptyExpression;
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "???" ) );
-		this.setBackground( new java.awt.Color( 127, 127, 191 ) );
-	}
-	public EmptyExpressionPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this( new EmptyExpression( type ) );
+public class EmptyStatementListAfforance extends edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance {
+	public EmptyStatementListAfforance() {
+		super( edu.cmu.cs.dennisc.alice.ast.Statement.class );
+		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
+		edu.cmu.cs.dennisc.alice.ide.editors.common.Label label = new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "drop statement here" );
+		label.setFont( label.getFont().deriveFont( java.awt.Font.ITALIC ) );
+		this.add( label );
+		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
+		this.setBackground( new java.awt.Color( 63, 63, 63, 63 ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.emptyExpression.getType();
+	protected boolean isActuallyPotentiallyActive() {
+		return false;
+	}
+	@Override
+	protected boolean isActuallyPotentiallySelectable() {
+		return false;
+	}
+	@Override
+	protected boolean isKnurlDesired() {
+		return false;
 	}
 }

@@ -29,7 +29,7 @@ public class ArrowDropDownRenderer implements DropDownRenderer {
 	public void fillBounds( Object context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		g2.fillRect( x, y, width, height );
 	}
-	public void paintPrologue( Object context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
+	public void paintPrologue( Object context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected ) {
 		java.awt.Color prev = g2.getColor();
 		try {
 			//g2.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
@@ -70,7 +70,7 @@ public class ArrowDropDownRenderer implements DropDownRenderer {
 			g2.setColor( prev );
 		}
 	}
-	public void paintEpilogue( Object context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, edu.cmu.cs.dennisc.awt.BevelState bevelState, boolean isActive, boolean isPressed, boolean isSelected ) {
+	public void paintEpilogue( Object context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected ) {
 		if( isActive ) {
 			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
 			g2.setColor( java.awt.Color.BLUE );
