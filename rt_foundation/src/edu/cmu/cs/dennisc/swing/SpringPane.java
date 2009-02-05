@@ -26,6 +26,30 @@ package edu.cmu.cs.dennisc.swing;
  * @author Dennis Cosgrove
  */
 public class SpringPane extends javax.swing.JPanel {
+	public enum Vertical {
+		NORTH(javax.swing.SpringLayout.NORTH), 
+		//CENTER(null), 
+		SOUTH(javax.swing.SpringLayout.SOUTH);
+		private String internal;
+		private Vertical( String internal ) {
+			this.internal = internal;
+		}
+		public String getInternal() {
+			return internal;
+		}
+	}
+	public enum Horizontal {
+		WEST(javax.swing.SpringLayout.WEST), 
+		//CENTER(null), 
+		EAST(javax.swing.SpringLayout.EAST);
+		private String internal;
+		private Horizontal( String internal ) {
+			this.internal = internal;
+		}
+		public String getInternal() {
+			return internal;
+		}
+	}
 	private javax.swing.SpringLayout springLayout;
 	public SpringPane() {
 		this.springLayout = new javax.swing.SpringLayout();
@@ -34,4 +58,15 @@ public class SpringPane extends javax.swing.JPanel {
 	protected javax.swing.SpringLayout getSpringLayout() {
 		return this.springLayout;
 	}
+	
+	protected void putConstraint( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+		this.springLayout.putConstraint( horizontal.getInternal(), component, x, horizontal.getInternal(), this );
+		this.springLayout.putConstraint( vertical.getInternal(), component, y, vertical.getInternal(), this );
+	}
+	
+	public void add( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+		this.putConstraint(component, horizontal, x, vertical, y);
+		this.add( component );
+	}
+	
 }

@@ -46,8 +46,9 @@ public class CornerSpringPane extends SpringPane {
 		this.northWestComponent = northWestComponent;
 		if( this.northWestComponent != null ) {
 			int pad = getPad();
-			springLayout.putConstraint( javax.swing.SpringLayout.NORTH, this.northWestComponent, pad, javax.swing.SpringLayout.NORTH, this );
-			springLayout.putConstraint( javax.swing.SpringLayout.WEST, this.northWestComponent, pad, javax.swing.SpringLayout.WEST, this );
+			this.putConstraint( this.northWestComponent, Horizontal.WEST, pad, Vertical.NORTH, pad );
+			//springLayout.putConstraint( javax.swing.SpringLayout.NORTH, this.northWestComponent, pad, javax.swing.SpringLayout.NORTH, this );
+			//springLayout.putConstraint( javax.swing.SpringLayout.WEST, this.northWestComponent, pad, javax.swing.SpringLayout.WEST, this );
 			this.add( this.northWestComponent );
 		}
 	}
@@ -63,8 +64,9 @@ public class CornerSpringPane extends SpringPane {
 		this.northEastComponent = northEastComponent;
 		if( this.northEastComponent != null ) {
 			int pad = getPad();
-			springLayout.putConstraint( javax.swing.SpringLayout.NORTH, this.northEastComponent, pad, javax.swing.SpringLayout.NORTH, this );
-			springLayout.putConstraint( javax.swing.SpringLayout.EAST, this.northEastComponent, -pad, javax.swing.SpringLayout.EAST, this );
+			this.putConstraint( this.northEastComponent, Horizontal.EAST, -pad, Vertical.NORTH, pad );
+//			springLayout.putConstraint( javax.swing.SpringLayout.NORTH, this.northEastComponent, pad, javax.swing.SpringLayout.NORTH, this );
+//			springLayout.putConstraint( javax.swing.SpringLayout.EAST, this.northEastComponent, -pad, javax.swing.SpringLayout.EAST, this );
 			this.add( this.northEastComponent );
 		}
 	}
@@ -80,8 +82,9 @@ public class CornerSpringPane extends SpringPane {
 		this.southWestComponent = southWestComponent;
 		if( this.southWestComponent != null ) {
 			int pad = getPad();
-			springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, this.southWestComponent, -pad, javax.swing.SpringLayout.SOUTH, this );
-			springLayout.putConstraint( javax.swing.SpringLayout.WEST, this.southWestComponent, pad, javax.swing.SpringLayout.WEST, this );
+			this.putConstraint( this.southWestComponent, Horizontal.WEST, pad, Vertical.SOUTH, -pad );
+//			springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, this.southWestComponent, -pad, javax.swing.SpringLayout.SOUTH, this );
+//			springLayout.putConstraint( javax.swing.SpringLayout.WEST, this.southWestComponent, pad, javax.swing.SpringLayout.WEST, this );
 			this.add( this.southWestComponent );
 		}
 	}
@@ -97,8 +100,9 @@ public class CornerSpringPane extends SpringPane {
 		this.southEastComponent = southEastComponent;
 		if( this.southEastComponent != null ) {
 			int pad = getPad();
-			springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, this.southEastComponent, -pad, javax.swing.SpringLayout.SOUTH, this );
-			springLayout.putConstraint( javax.swing.SpringLayout.EAST, this.southEastComponent, -pad, javax.swing.SpringLayout.EAST, this );
+			this.putConstraint( this.southEastComponent, Horizontal.EAST, -pad, Vertical.SOUTH, -pad );
+//			springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, this.southEastComponent, -pad, javax.swing.SpringLayout.SOUTH, this );
+//			springLayout.putConstraint( javax.swing.SpringLayout.EAST, this.southEastComponent, -pad, javax.swing.SpringLayout.EAST, this );
 			this.add( this.southEastComponent );
 		}
 	}
