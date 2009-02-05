@@ -38,6 +38,9 @@ public class GalleryRootUtilities {
 			potentialPaths.add( "/Program Files" + subPath );
 			potentialPaths.add( "/Applications" + subPath );
 			potentialPaths.add( "/Applications/Programming" + subPath );
+			if( subPath.startsWith( "/LookingGlass" ) ) {
+				potentialPaths.add( "/Applications/Programming/Alice" + subPath );
+			}
 			potentialPaths.add( "c:/Program Files" + subPath );
 			potentialPaths.add( "c:/Program Files (x86)" + subPath );
 
