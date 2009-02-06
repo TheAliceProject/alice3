@@ -27,5 +27,4 @@ package zoot;
  */
 public interface Operation {
 	public javax.swing.Action getActionForConfiguringSwingComponents();
-	public void perform( Context context );
 }

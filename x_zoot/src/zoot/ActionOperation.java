@@ -25,15 +25,6 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface Context {
-	public java.util.EventObject getEvent();
-	public <E extends Object> E get( Object key, Class<E> cls );
-	public Object get( Object key );
-	public void put( Object key, Object value );
-	public boolean isCommitted();
-	public boolean isCancelled();
-	public void commit();
-	public void cancel();
-	public boolean isCancelWorthwhile();
-	public Context perform( Operation operation, java.util.EventObject o );
+public interface ActionOperation extends Operation {
+	public void perform( ActionContext actionContext );
 }

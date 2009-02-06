@@ -25,15 +25,16 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface Context {
-	public java.util.EventObject getEvent();
-	public <E extends Object> E get( Object key, Class<E> cls );
-	public Object get( Object key );
-	public void put( Object key, Object value );
-	public boolean isCommitted();
-	public boolean isCancelled();
-	public void commit();
-	public void cancel();
-	public boolean isCancelWorthwhile();
-	public Context perform( Operation operation, java.util.EventObject o );
+public interface SingleSelectionOperation<E> extends Operation {
+	public void performSelectionChange( SingleSelectionContext context );
+	
+	public E getSelection();
+	public void setSelection( E selection );
+	public E[] getCandidates();
+	public void setCandidates( E[] candidates );
+
+	public void addSelectionChangeListener( javax.swing.event.ChangeListener l );
+	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l );
+	public void addCandidatesChangeListener( javax.swing.event.ChangeListener l );
+	public void removeCandidatesChangeListener( javax.swing.event.ChangeListener l );
 }

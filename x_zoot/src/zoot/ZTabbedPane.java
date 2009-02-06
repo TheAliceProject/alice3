@@ -45,9 +45,9 @@ class ZTabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
  * @author Dennis Cosgrove
  */
 public class ZTabbedPane extends javax.swing.JTabbedPane {
-	private Operation tabCloseOperation;
+	private ActionOperation tabCloseOperation;
 
-	public ZTabbedPane( Operation tabCloseOperation ) {
+	public ZTabbedPane( ActionOperation tabCloseOperation ) {
 		this.tabCloseOperation = tabCloseOperation;
 		this.setTabLayoutPolicy( javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT );
 		this.setUI( new ZTabbedPaneUI( this ) );
@@ -57,7 +57,8 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 	}
 	public void closeTab( int index, java.awt.event.MouseEvent mouseEvent ) {
 		zoot.event.TabEvent tabEvent = new zoot.event.TabEvent( this, index, mouseEvent );
-		ZManager.performIfAppropriate( this.tabCloseOperation, tabEvent );
+		//todo?
+		ZManager.performIfAppropriate( this.tabCloseOperation, tabEvent, ZManager.CANCEL_IS_WORTHWHILE );
 	}
 
 	public static void main( String[] args ) {
@@ -77,15 +78,15 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		}
 
 		//SingleSelectionOperation tabSelectionOperation = null;
-		AbstractOperation tabCloseOperation = new AbstractOperation() {
-			public void perform( Context context ) {
-				java.util.EventObject e = context.getEvent();
+		AbstractActionOperation tabCloseOperation = new AbstractActionOperation() {
+			public void perform( ActionContext actionContext ) {
+				java.util.EventObject e = actionContext.getEvent();
 				if( e instanceof zoot.event.TabEvent ) {
 					zoot.event.TabEvent te = (zoot.event.TabEvent)e;
 					te.getTypedSource().remove( te.getIndex() );
-					context.commit();
+					actionContext.commit();
 				} else {
-					context.cancel();
+					actionContext.cancel();
 				}
 			}
 		};

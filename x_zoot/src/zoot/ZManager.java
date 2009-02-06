@@ -47,8 +47,10 @@ public class ZManager {
 //			}
 //		}
 //	}
-	public static void performIfAppropriate( Operation operation, final java.util.EventObject e ) {
-		Context context = new Context() {
+	public static final boolean CANCEL_IS_WORTHWHILE = true;
+	public static final boolean CANCEL_IS_FUTILE = false;
+	public static void performIfAppropriate( ActionOperation actionOperation, final java.util.EventObject e, final boolean isCancelWorthwhile ) {
+		ActionContext context = new ActionContext() {
 			private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
 			private boolean isCommitted = false;
 			private boolean isCancelled = false;
@@ -61,13 +63,16 @@ public class ZManager {
 			public boolean isPending() {
 				return ( this.isCommitted() || this.isCancelled() ) == false;
 			}
+			public void commit() {
+				assert this.isPending();
+				this.isCommitted = true;
+			}
 			public void cancel() {
 				assert this.isPending();
 				this.isCancelled = true;
 			}
-			public void commit() {
-				assert this.isPending();
-				this.isCommitted = true;
+			public boolean isCancelWorthwhile() {
+				return isCancelWorthwhile;
 			}
 			public <E extends Object> E get( Object key, Class<E> cls ) {
 				Object rv = this.get( key );
@@ -92,7 +97,7 @@ public class ZManager {
 			}
 			
 		};
-		operation.perform( context );
+		actionOperation.perform( context );
 		
 //		if( operation instanceof CancellableOperation ) {
 //			CancellableOperation cancellableOperation = (CancellableOperation)operation;
@@ -110,4 +115,6 @@ public class ZManager {
 //			operation.perform();
 //		}
 	}
+	
+	//public static ZMenu createMenu( StateOperation< java.util.ArrayList< E > > stateOperation )
 }

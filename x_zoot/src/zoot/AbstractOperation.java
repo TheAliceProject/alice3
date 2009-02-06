@@ -28,7 +28,7 @@ package zoot;
 public abstract class AbstractOperation implements Operation {
 	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
-			ZManager.performIfAppropriate( AbstractOperation.this, e );
+			AbstractOperation.this.handleActionPerformed( e );
 		} 
 	};
 	public javax.swing.Action getActionForConfiguringSwingComponents() {
@@ -37,4 +37,5 @@ public abstract class AbstractOperation implements Operation {
 	protected void putValue( String key, Object value ) {
 		this.actionForConfiguringSwingComponents.putValue( key, value );
 	}
+	protected abstract void handleActionPerformed(java.awt.event.ActionEvent e);
 }
