@@ -140,4 +140,45 @@ public class ComponentUtilities {
 	public static java.util.List< java.awt.Component > findAllMatches( java.awt.Component component ) {
 		return findAllMatches( component, null, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
 	}
+	
+	
+	public static <E extends java.awt.Component> E findFirstAncestor( java.awt.Component component, boolean isComponentIncludedInSearch, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+		java.awt.Component c;
+		if( isComponentIncludedInSearch ) {
+			c = component;
+		} else {
+			c = component.getParent();
+		}
+		while( c != null ) {
+			boolean isAcceptedByAll;
+			if( cls == null || cls.isAssignableFrom( c.getClass() ) ) {
+				isAcceptedByAll = true;
+				if( criterions == null ) {
+					//pass
+				} else {
+					for( edu.cmu.cs.dennisc.pattern.Criterion criterion : criterions ) {
+						if( criterion.accept( component ) ) {
+							//pass
+						} else {
+							isAcceptedByAll = false;
+							break;
+						}
+					}
+				}
+			} else {
+				isAcceptedByAll = false;
+			}
+			if( isAcceptedByAll ) {
+				return (E)c;
+			}
+			c = c.getParent();
+		}
+		return null;
+	}
+	public static <E extends java.awt.Component> E findFirstAncestor( java.awt.Component component, boolean isComponentIncludedInSearch, Class< E > cls ) {
+		return findFirstAncestor( component, isComponentIncludedInSearch, cls, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
+	}
+	public static java.awt.Component findFirstAncestor( java.awt.Component component, boolean isComponentIncludedInSearch, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
+		return findFirstAncestor( component, isComponentIncludedInSearch, null, criterions );
+	}
 }
