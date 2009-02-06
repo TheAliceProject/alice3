@@ -290,7 +290,12 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 			g2.setColor( java.awt.Color.GRAY );
 			g.draw3DRect( rectGroup.x, rectGroup.y, rectGroup.width, rectGroup.height, false );
 			g2.setColor( this.getForeground() );
-			g.drawRoundRect( rectGroup.x-10, rectGroup.y-10, rectGroup.width+20, rectGroup.height+20, 10, 10 );
+			final float BONUS_PAD = 10.0f;
+			java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( rectGroup.x-BONUS_PAD, rectGroup.y-BONUS_PAD, rectGroup.width+2*BONUS_PAD, rectGroup.height+2*BONUS_PAD, BONUS_PAD, BONUS_PAD );
+			java.awt.Stroke prevStroke = g2.getStroke();
+			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
+			g2.draw( rr );
+			g2.setStroke( prevStroke );
 		}
 	}
 

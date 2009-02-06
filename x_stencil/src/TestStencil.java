@@ -53,9 +53,22 @@ public class TestStencil {
 			}
 			i += 1;
 		}
+		
+		class Header extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
+			public Header() {
+				this.add( new javax.swing.JButton( "a" ) );
+				this.add( new javax.swing.JLabel( "/" ) );
+				this.add( new javax.swing.JButton( "b" ) );
+				this.add( new javax.swing.JLabel( "/" ) );
+				this.add( new javax.swing.JButton( "c" ) );
+				this.add( new javax.swing.JLabel( "/" ) );
+				this.add( new javax.swing.JButton( "d" ) );
+				this.setOpaque( true );
+			}
+		}
 
 		HoleGroup holeGroup = new HoleGroup( holes );
-		holeGroup.setNorthDecorator( new javax.swing.JButton( "header" ) );
+		holeGroup.setNorthDecorator( new Header() );
 		stencil.addHoleGroup( holeGroup );
 
 		stencil.setNorthEastComponent( new javax.swing.JButton( "exit" ) );
