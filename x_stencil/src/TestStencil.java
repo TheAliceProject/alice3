@@ -15,8 +15,8 @@ public class TestStencil {
 			};
 
 			public Pane() {
-				int x = 400;
-				int y = 100;
+				int x = 0;
+				int y = 0;
 				for( final javax.swing.JButton button : this.buttons ) {
 					this.add( button, Horizontal.WEST, x, Vertical.NORTH, y );
 					button.addActionListener( new java.awt.event.ActionListener() {
@@ -36,6 +36,11 @@ public class TestStencil {
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 
 		Pane pane = new Pane();
+		pane.setPreferredSize( new java.awt.Dimension( 1000, 3000 ) );
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( pane );
+		frame.getContentPane().add( new javax.swing.JButton( "top" ), java.awt.BorderLayout.NORTH );
+		frame.getContentPane().add( new javax.swing.JButton( "left" ), java.awt.BorderLayout.WEST );
+		frame.getContentPane().add( scrollPane, java.awt.BorderLayout.CENTER );
 
 		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
 		final Stencil stencil = new Stencil( layeredPane );
@@ -63,6 +68,7 @@ public class TestStencil {
 				this.add( new javax.swing.JButton( "c" ) );
 				this.add( new javax.swing.JLabel( "/" ) );
 				this.add( new javax.swing.JButton( "d" ) );
+				this.setBackground( java.awt.Color.BLUE );
 				this.setOpaque( true );
 			}
 		}
@@ -81,7 +87,7 @@ public class TestStencil {
 		};
 		specialPane.setBackground( java.awt.Color.RED );
 		specialPane.setPreferredSize( new java.awt.Dimension( 160, 240 ) );
-		stencil.add( specialPane, edu.cmu.cs.dennisc.swing.SpringPane.Horizontal.WEST, 50, edu.cmu.cs.dennisc.swing.SpringPane.Vertical.NORTH, 50 );
+		stencil.add( specialPane, edu.cmu.cs.dennisc.swing.SpringPane.Horizontal.WEST, 450, edu.cmu.cs.dennisc.swing.SpringPane.Vertical.NORTH, 50 );
 
 //		layeredPane.addComponentListener( new java.awt.event.ComponentAdapter() {
 //			public void componentResized( java.awt.event.ComponentEvent e ) {
@@ -91,12 +97,9 @@ public class TestStencil {
 //		} );
 		layeredPane.add( stencil, javax.swing.JLayeredPane.DRAG_LAYER );
 
-		frame.getContentPane().add( new javax.swing.JButton( "top" ), java.awt.BorderLayout.NORTH );
-		frame.getContentPane().add( new javax.swing.JButton( "left" ), java.awt.BorderLayout.WEST );
-		frame.getContentPane().add( pane, java.awt.BorderLayout.CENTER );
 
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-		frame.setSize( 1024, 768 );
+		frame.setSize( 640, 480 );
 		frame.setVisible( true );
 
 	}

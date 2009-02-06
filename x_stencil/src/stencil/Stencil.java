@@ -43,19 +43,23 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		} );
 	}
 
-	private static java.awt.Component getDeepestMouseListener( java.awt.Component dst, java.awt.Component descendant ) {
+	private static java.awt.Component getFirstMouseListeningInclusiveAncestor( java.awt.Component root, java.awt.Component descendant ) {
 		java.awt.Component rv = descendant;
 		while( rv != null ) {
 			if( rv.getMouseListeners().length > 0 || rv.getMouseMotionListeners().length > 0 ) {
 				break;
 			}
-			if( rv == dst ) {
+			if( rv == root ) {
 				rv = null;
 				break;
 			}
 			rv = rv.getParent();
 		}
 		return rv;
+	}
+	
+	private static javax.swing.JScrollPane findFirstScrollPaneAncestor( java.awt.Component descendant ) {
+		return edu.cmu.cs.dennisc.awt.ComponentUtilities.findFirstAncestor( descendant, false, javax.swing.JScrollPane.class );
 	}
 
 	private void redispatch( java.awt.event.MouseEvent e ) {
@@ -64,7 +68,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 			//pass
 		} else {
 			java.awt.Component deepestComponent = javax.swing.SwingUtilities.getDeepestComponentAt( this.container, p.x, p.y );
-			java.awt.Component deepestMouseListener = getDeepestMouseListener( this.container, deepestComponent );
+			java.awt.Component deepestMouseListener = getFirstMouseListeningInclusiveAncestor( this.container, deepestComponent );
 			if( deepestMouseListener != null ) {
 				java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this, e, deepestMouseListener );
 				deepestMouseListener.dispatchEvent( me );
@@ -128,6 +132,16 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 						handleChange( e );
 					}
 				} );
+				javax.swing.JScrollPane scrollPane = findFirstScrollPaneAncestor( hole.getComponent() );
+				if( scrollPane != null ) {
+					javax.swing.JViewport viewport = scrollPane.getViewport();
+					viewport.addChangeListener( new javax.swing.event.ChangeListener() {
+						public void stateChanged( javax.swing.event.ChangeEvent arg0 ) {
+							Stencil.this.revalidate();
+							Stencil.this.repaint();
+						}						
+					} );
+				}
 				this.add( proxy, Horizontal.WEST, p.x, Vertical.NORTH, p.y );
 				int pad = hole.getPad();
 				java.awt.Component leadingDecorator = hole.getLeadingDecorator();
@@ -234,9 +248,11 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 				
 				java.awt.Component northDecorator = holeGroup.getNorthDecorator();
 				if( northDecorator != null ) {
-					int height = 32; 
-					northDecorator.setPreferredSize( new java.awt.Dimension( maxWidth, height ) );
-					this.putConstraint( northDecorator, Horizontal.WEST, minX, Vertical.NORTH, minY-height-holeGroup.getPad()/2 );
+					northDecorator.doLayout();
+					java.awt.Dimension size = northDecorator.getPreferredSize();
+					size.width = Math.max( size.width, maxWidth );
+					northDecorator.setPreferredSize( size );
+					this.putConstraint( northDecorator, Horizontal.WEST, minX, Vertical.NORTH, minY-size.height-holeGroup.getPad()/2 );
 					
 				}
 			}
@@ -250,7 +266,16 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		java.awt.Rectangle rv = null;
 		for( Hole hole : holeGroup.getHoles() ) {
 			java.awt.Rectangle rectHole = hole.getProxy().getBounds();
-			rectHole = javax.swing.SwingUtilities.convertRectangle( hole.getProxy().getParent(), rectHole, this.container );
+			
+			javax.swing.JScrollPane scrollPane = findFirstScrollPaneAncestor( hole.getComponent() );
+			if( scrollPane != null ) {
+				javax.swing.JViewport viewport = scrollPane.getViewport();
+				rectHole = javax.swing.SwingUtilities.convertRectangle( hole.getProxy().getParent(), rectHole, viewport.getParent() );
+				rectHole = rectHole.intersection( viewport.getVisibleRect() );
+				rectHole = javax.swing.SwingUtilities.convertRectangle( viewport.getParent(), rectHole, this.container );
+			} else {
+				rectHole = javax.swing.SwingUtilities.convertRectangle( hole.getProxy().getParent(), rectHole, this.container );
+			}
 			if( rv != null ) {
 				rv = rv.union( rectHole );
 			} else {
