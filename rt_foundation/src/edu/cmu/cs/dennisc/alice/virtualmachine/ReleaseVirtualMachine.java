@@ -150,27 +150,17 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	@Override
-	public void pushCurrentThread( Thread parentThread ) {
-		AbstractFrame owner = m_mapThreadToFrame.get( parentThread );
+	protected void pushCurrentThread( Thread parentThread ) {
+		AbstractFrame owner;
+		if( parentThread != null ) {
+			owner = m_mapThreadToFrame.get( parentThread );
+		} else {
+			owner = null;
+		}
 		setCurrentFrame( new ThreadFrame( owner ) );
 	}
 	@Override
-	public void popCurrentThread() {
-		m_mapThreadToFrame.remove( Thread.currentThread() );
-	}
-
-	@Override
-	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments ) {
-		setCurrentFrame( new ThreadFrame( null ) );
-		Object rv = this.createInstance( constructor, arguments );
-		m_mapThreadToFrame.remove( Thread.currentThread() );
-		return rv;
-	}
-
-	@Override
-	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, java.lang.Object instance, java.lang.Object... arguments ) {
-		setCurrentFrame( new ThreadFrame( null ) );
-		invoke( method, instance, arguments );
+	protected void popCurrentThread() {
 		m_mapThreadToFrame.remove( Thread.currentThread() );
 	}
 }

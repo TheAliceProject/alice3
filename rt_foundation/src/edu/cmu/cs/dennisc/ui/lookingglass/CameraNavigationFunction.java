@@ -96,7 +96,6 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 	public void requestTarget( double x, double y, double z ) {
 		edu.cmu.cs.dennisc.math.Point3 translation = accessTranslation();
 		translation.set( x, y, z );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( translation );
 	}
 	public void requestOrbit( double yawDelta, double pitchDelta ) {
 		m_yawRequested += yawDelta;

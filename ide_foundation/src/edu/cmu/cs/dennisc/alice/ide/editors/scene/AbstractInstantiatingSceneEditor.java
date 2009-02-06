@@ -42,8 +42,14 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = sceneField.getDeclaringType();
 		assert type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 		//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
-			putInstanceForField( field, getVM().createInstance( field.getDeclaringType().getDeclaredConstructor() ) );
+		getVM().setConstructorBodyExecutionDesired( false );
+		try {
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
+				//todo?
+				putInstanceForField( field, getVM().createInstanceEntryPoint( field.getDeclaringType() ) );
+			}
+		} finally {
+			getVM().setConstructorBodyExecutionDesired( true );
 		}
 	}
 }

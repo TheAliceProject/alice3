@@ -43,8 +43,9 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	private void setParent( Node parent ) {
 		if( this.parent != parent ) {
 			if( this.parent != null ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: setOwner previous not null", this );
-//				Thread.dumpStack();
+				if( parent != null ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: setOwner previous not null", this );
+				}
 			}
 			this.parent = parent;
 		}

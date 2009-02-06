@@ -148,6 +148,7 @@ public abstract class PrintUtilities {
 
 	//Object...
 	private static StringBuffer append( StringBuffer rv, Object[] values, boolean isSingleLine ) {
+		//Thread.dumpStack();
 		for( Object value : values ) {
 			if( value != null ) {
 				java.util.Map< Class< ? >, java.lang.reflect.Method > map;

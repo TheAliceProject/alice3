@@ -22,12 +22,62 @@
  */
 package edu.cmu.cs.dennisc.alice.virtualmachine;
 
+import edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine.ThreadFrame;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class VirtualMachine {
-	private boolean isConstructorBodyExecutionDesired = true;
+	protected abstract Object getThis();
 
+	protected abstract void pushFrame( InstanceInAlice instance, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
+	protected abstract void popFrame();
+
+	protected abstract Object lookup( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter );
+
+	protected abstract void pushLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, Object value );
+	protected abstract Object getLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local );
+	protected abstract void setLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, Object value );
+	protected abstract void popLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local );
+
+	protected abstract void pushCurrentThread( Thread parentThread );
+	protected abstract void popCurrentThread();
+	
+//	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments ) {
+//		pushCurrentThread( null );
+//		try {
+//			return this.createInstance( constructor, arguments );
+//		} finally {
+//			popCurrentThread();
+//		}
+//	}
+
+	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, java.lang.Object instance, java.lang.Object... arguments ) {
+		pushCurrentThread( null );
+		try {
+			invoke( method, instance, arguments );
+		} finally {
+			popCurrentThread();
+		}
+	}
+
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType;
+	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType ) {
+		this.setEntryPointType( entryPointType );
+		pushCurrentThread( null );
+		try {
+			return this.createInstance( this.entryPointType.getDeclaredConstructor() );
+		} finally {
+			popCurrentThread();
+		}
+	}
+	
+	public void setEntryPointType( edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType ) {
+		this.entryPointType = entryPointType;
+	}
+		
+	// special functionality added for the scene editor
+	private boolean isConstructorBodyExecutionDesired = true;
 	public boolean isConstructorBodyExecutionDesired() {
 		return this.isConstructorBodyExecutionDesired;
 	}
@@ -64,7 +114,7 @@ public abstract class VirtualMachine {
 		}
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( constructor.getCnstrctr(), arguments );
 	}
-	public Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments ) {
+	protected Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments ) {
 		assert constructor != null;
 		if( constructor instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
 			return this.createInstanceFromConstructorDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)constructor, arguments );
@@ -101,7 +151,7 @@ public abstract class VirtualMachine {
 		}
 		return rv;
 	}
-	public Object createArrayInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type, int[] lengths, Object... arguments ) {
+	protected Object createArrayInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type, int[] lengths, Object... arguments ) {
 		assert type != null;
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice ) {
 			return this.createArrayInstanceFromTypeDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ArrayTypeDeclaredInAlice)type, lengths, arguments );
@@ -147,24 +197,6 @@ public abstract class VirtualMachine {
 		}
 		return rv;
 	}
-
-	protected abstract Object getThis();
-
-	protected abstract void pushFrame( InstanceInAlice instance, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
-	protected abstract void popFrame();
-
-	protected abstract Object lookup( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter );
-
-	protected abstract void pushLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, Object value );
-	protected abstract Object getLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local );
-	protected abstract void setLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, Object value );
-	protected abstract void popLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local );
-
-	public abstract void pushCurrentThread( Thread parentThread );
-	public abstract void popCurrentThread();
-	
-	public abstract void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments );
-	public abstract Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments );
 	
 	protected Integer getArrayLength( Object array ) {
 		if( array != null ) {
@@ -433,6 +465,9 @@ public abstract class VirtualMachine {
 	protected Object evaluateTypeLiteral( edu.cmu.cs.dennisc.alice.ast.TypeLiteral typeLiteral ) {
 		return typeLiteral.value.getValue();
 	}
+	protected Object evaluateEntryPointTypeExpression( edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression entryPointTypeExpression ) {
+		return this.entryPointType;
+	}
 	
 
 	protected Object evaluate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
@@ -488,6 +523,8 @@ public abstract class VirtualMachine {
 			return this.evaluateTypeExpression( (edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeLiteral ) {
 			return this.evaluateTypeLiteral( (edu.cmu.cs.dennisc.alice.ast.TypeLiteral)expression );
+		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression ) {
+			return this.evaluateEntryPointTypeExpression( (edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression)expression );
 		} else {
 			throw new RuntimeException();
 		}

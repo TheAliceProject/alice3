@@ -18,6 +18,9 @@ class RunOperation( ecc.dennisc.alice.ide.operations.run.AbstractRunOperation ):
 		program = ide.createRuntimeProgram()
 		program.showInJDialog( ide, True, [] )
 
+class RestartOperation( RunOperation ):
+	pass
+
 class MoveAndTurnIDE( ecc.dennisc.alice.ide.barebones.BarebonesIDE ):
 	def __init__( self ):
 		ecc.dennisc.alice.ide.barebones.BarebonesIDE.__init__( self )
@@ -58,11 +61,21 @@ class MoveAndTurnIDE( ecc.dennisc.alice.ide.barebones.BarebonesIDE ):
 		return edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine()
 
 	def _createRuntimeProgram(self, vm, sceneType ):
-		return ecc.dennisc.alice.ide.moveandturn.runtime.MoveAndTurnRuntimeProgram( vm, sceneType )
+	   return ecc.dennisc.alice.ide.moveandturn.runtime.MoveAndTurnRuntimeProgram( vm, sceneType, self.createRestartOperation() )
+
 	def createRuntimeProgram(self):
-		return self._createRuntimeProgram( self.createVirtualMachineForRuntimeProgram(), self.getSceneType() )
+		programType = self.getProgramType()
+		sceneType = self.getSceneType()
+		vm = self.createVirtualMachineForRuntimeProgram()
+		rv = self._createRuntimeProgram( vm, sceneType )
+		
+		vm.setEntryPointType( programType )
+		
+		return rv
 
 	def createRunOperation( self ):
 		return RunOperation()
+	def createRestartOperation( self ):
+		return RestartOperation()
 
 #print "<--", __name__

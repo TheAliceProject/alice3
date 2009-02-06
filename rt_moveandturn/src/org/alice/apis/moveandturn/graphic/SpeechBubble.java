@@ -67,6 +67,7 @@ public abstract class SpeechBubble extends Bubble {
 		float originY = (float)originOfTail.getY();
 		
 		float controlX = targetX;
+		//float controlY = Math.max( originY, targetY+320 );
 		float controlY = originY;
 		float topOffsetX = 6f;
 		float topOffsetY = -2f;

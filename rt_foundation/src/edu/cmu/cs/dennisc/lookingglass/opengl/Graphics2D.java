@@ -439,62 +439,116 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 	private static final double FLATNESS = 0.01;
 
 	private void fill( java.awt.geom.PathIterator pi ) {
-		class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter {
+		
+		class MyTessAdapter implements javax.media.opengl.glu.GLUtessellatorCallback {
 			private GL m_gl;
 
 			public MyTessAdapter( GL gl ) {
 				m_gl = gl;
 			}
-			@Override
 			public void begin( int primitiveType ) {
 				m_gl.glBegin( primitiveType );
 			}
-			@Override
+			public void beginData( int primitiveType, Object data ) {
+			}
 			public void vertex( Object data ) {
 				double[] a = (double[])data;
 				m_gl.glVertex2d( a[ 0 ], a[ 1 ] );
-				//				System.err.println( a[ 0 ] + " " + a[1 ] );
 			}
-			@Override
+			public void vertexData( Object arg0, Object arg1 ) {
+			}
 			public void end() {
 				m_gl.glEnd();
 			}
-		}
-
-		javax.media.opengl.glu.GLUtessellatorCallbackAdapter adapter = new MyTessAdapter( m_renderContext.gl );
-		javax.media.opengl.glu.GLUtessellator tesselator = m_renderContext.glu.gluNewTess();
-		m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
-		m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
-		m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
-
-		double[] segment = new double[ 6 ];
-
-		m_renderContext.glu.gluBeginPolygon( tesselator );
-		while( !pi.isDone() ) {
-			double[] xyz = new double[ 3 ];
-			switch( pi.currentSegment( segment ) ) {
-			case java.awt.geom.PathIterator.SEG_MOVETO:
-				m_renderContext.glu.gluTessBeginContour( tesselator );
-				//note: no break
-			case java.awt.geom.PathIterator.SEG_LINETO:
-				xyz[ 0 ] = segment[ 0 ];
-				xyz[ 1 ] = segment[ 1 ];
-				m_renderContext.glu.gluTessVertex( tesselator, xyz, 0, xyz );
-				break;
-			case java.awt.geom.PathIterator.SEG_CLOSE:
-				m_renderContext.glu.gluTessEndContour( tesselator );
-				break;
-
-			case java.awt.geom.PathIterator.SEG_QUADTO:
-				throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-			case java.awt.geom.PathIterator.SEG_CUBICTO:
-				throw new RuntimeException( "SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument" );
-			default:
-				throw new RuntimeException( "unhandled segment: should not occur" );
+			public void endData( Object arg0 ) {
 			}
-			pi.next();
+
+			public void edgeFlag( boolean value ) {
+			}
+			public void edgeFlagData( boolean arg0, Object arg1 ) {
+			}
+
+			public void combine( double[] coords, Object[] data, float[] weight, Object[] outData ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: handle combine" );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "coords:", coords );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "data:", data );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "weight:", weight );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "outData:", outData );
+				assert outData != null;
+				assert outData.length > 0;
+				double[] out = new double[ 3 ];
+				out[ 0 ] = coords[ 0 ];
+				out[ 1 ] = coords[ 1 ];
+				out[ 2 ] = coords[ 2 ];
+				outData[ 0 ] = out;
+			}
+			public void combineData( double[] arg0, Object[] arg1, float[] arg2, Object[] arg3, Object arg4 ) {
+			}
+			
+			public void error(int n) {
+				
+			}
+			public void errorData( int n, Object data ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "tesselator error" );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tn:", n );
+				try {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tgluErrorString:", m_renderContext.glu.gluErrorString( n ) );
+				} catch( ArrayIndexOutOfBoundsException aioobe ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tgluErrorString: unknown" );
+				}
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\tdata:", data );
+			}
 		}
-		m_renderContext.glu.gluTessEndPolygon( tesselator );
+
+		javax.media.opengl.glu.GLUtessellatorCallback adapter = new MyTessAdapter( m_renderContext.gl );
+		javax.media.opengl.glu.GLUtessellator tesselator = m_renderContext.glu.gluNewTess();
+		try {
+			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, adapter );
+			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, adapter );
+			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_END, adapter );
+			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_EDGE_FLAG, adapter );
+			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, adapter );
+			m_renderContext.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, adapter );
+
+			double[] segment = new double[ 6 ];
+
+//			m_renderContext.gl.glDisable( GL.GL_CULL_FACE );
+//			try {
+				m_renderContext.glu.gluBeginPolygon( tesselator );
+				try {
+					while( !pi.isDone() ) {
+						double[] xyz = new double[ 3 ];
+						switch( pi.currentSegment( segment ) ) {
+						case java.awt.geom.PathIterator.SEG_MOVETO:
+							m_renderContext.glu.gluTessBeginContour( tesselator );
+							//note: no break
+						case java.awt.geom.PathIterator.SEG_LINETO:
+							xyz[ 0 ] = segment[ 0 ];
+							xyz[ 1 ] = segment[ 1 ];
+							m_renderContext.glu.gluTessVertex( tesselator, xyz, 0, xyz );
+							break;
+						case java.awt.geom.PathIterator.SEG_CLOSE:
+							m_renderContext.glu.gluTessEndContour( tesselator );
+							break;
+			
+						case java.awt.geom.PathIterator.SEG_QUADTO:
+							throw new RuntimeException( "SEG_QUADTO: should not occur when shape.getPathIterator is passed a flatness argument" );
+						case java.awt.geom.PathIterator.SEG_CUBICTO:
+							throw new RuntimeException( "SEG_CUBICTO: should not occur when shape.getPathIterator is passed a flatness argument" );
+						default:
+							throw new RuntimeException( "unhandled segment: should not occur" );
+						}
+						pi.next();
+					}
+				} finally {
+					m_renderContext.glu.gluTessEndPolygon( tesselator );
+				}
+//			} finally {
+//				m_renderContext.gl.glEnable( GL.GL_CULL_FACE );
+//			}
+		} finally {
+			m_renderContext.glu.gluDeleteTess( tesselator );
+		}
 	}
 
 	private static final java.awt.Stroke LINE_STROKE = new java.awt.BasicStroke( 0 );
@@ -558,7 +612,9 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void fill( java.awt.Shape s ) {
+//		System.out.println( "fill: " + s );
 		fill( s.getPathIterator( null, FLATNESS ) );
+//		System.out.println( "/fill: " + s );
 	}
 	@Override
 	public boolean hit( java.awt.Rectangle rect, java.awt.Shape s, boolean onStroke ) {
@@ -788,7 +844,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		referencedObject.addReference();
 	}
 	@Override
-	public java.awt.geom.Rectangle2D getBounds( java.lang.String text, java.awt.Font font ) {
+	public java.awt.geom.Rectangle2D getBounds( String text, java.awt.Font font ) {
 		ReferencedObject< com.sun.opengl.util.j2d.TextRenderer > referencedObject = m_activeFontToTextRendererMap.get( font );
 		assert referencedObject != null;
 		assert referencedObject.isReferenced();

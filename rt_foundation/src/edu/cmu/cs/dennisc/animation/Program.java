@@ -33,7 +33,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 		private javax.swing.JButton m_pauseResume = new javax.swing.JButton( "pause" );
 		private javax.swing.JLabel m_feedback = new javax.swing.JLabel( "speed: 1x" );
 		private javax.swing.JSlider m_speed = new javax.swing.JSlider();
-		private javax.swing.JButton m_reset = new javax.swing.JButton( "reset" );
+		private javax.swing.JButton m_restart = new javax.swing.JButton( "restart" );
 
 		public ControlPanel() {
 
@@ -41,7 +41,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 			m_speed.setValue( 1 );
 			m_speed.setMaximum( 10 );
 
-			m_reset.setEnabled( Program.this.isResetSupported() );
+			m_restart.setEnabled( Program.this.isRestartSupported() );
 
 			m_pauseResume.addActionListener( new java.awt.event.ActionListener() {
 				public void actionPerformed( java.awt.event.ActionEvent e ) {
@@ -58,9 +58,9 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 					updateFeedback();
 				}
 			} );
-			m_reset.addActionListener( new java.awt.event.ActionListener() {
+			m_restart.addActionListener( new java.awt.event.ActionListener() {
 				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					Program.this.reset();
+					Program.this.restart();
 				}
 			} );
 
@@ -96,7 +96,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 			gbc.weightx = 1.0;
 			add( m_speed, gbc );
 			gbc.weightx = 0.0;
-			add( m_reset, gbc );
+			add( m_restart, gbc );
 		}
 
 		private boolean isPaused() {
@@ -136,10 +136,10 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	}
 	
 	
-	protected boolean isResetSupported() {
+	protected boolean isRestartSupported() {
 		return false;
 	}
-	protected void reset() {
+	protected void restart() {
 		throw new RuntimeException();
 	}
 

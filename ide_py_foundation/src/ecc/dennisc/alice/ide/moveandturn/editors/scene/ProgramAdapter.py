@@ -151,8 +151,8 @@ class ProgramAdapter( apis.moveandturn.Program, ecc.dennisc.alice.ide.ProgramWit
 		alice.ide.IDE.getSingleton().markChanged( "scene program addInstance" )
 
 	def createInstance( self, type ):
-		constructor = type.getDeclaredConstructor( [] )
-		return self._vm.createInstanceEntryPoint( constructor, [] )
+		#constructor = type.getDeclaredConstructor( [] )
+		return self._vm.createInstanceEntryPoint( type )
 
 	def addASTField( self, astField, instance ):
 		#self._sceneFieldsComposite._addDatum( astField )
@@ -243,11 +243,10 @@ class ProgramAdapter( apis.moveandturn.Program, ecc.dennisc.alice.ide.ProgramWit
 		ecc.dennisc.alice.ide.ProgramWithSceneMixin.setProgramType( self, programType )
 		if self._programType:
 			sceneType = self.getSceneType()
-			constructor = sceneType.getDeclaredConstructor( [] )
 
 			self._vm.setConstructorBodyExecutionDesired( False )
 			try:
-				sceneInstance = self._vm.createInstanceEntryPoint( constructor, [] )
+				sceneInstance = self.createInstance( sceneType )
 			finally:
 				self._vm.setConstructorBodyExecutionDesired( True )
 			
