@@ -13,6 +13,8 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 			}
 		} );
 		this.synchronizeSize();
+		this.setBackground( new java.awt.Color( 171, 236, 131, 191 ) );
+		this.setForeground( new java.awt.Color( 114, 157, 88 ) );
 		setOpaque( false );
 		this.addMouseListener( new java.awt.event.MouseListener() {
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
@@ -277,16 +279,18 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
+		//super.paintComponent( g );
 
 		java.awt.geom.Area area = calculateArea( this.getBounds(), PADDING_DESIRED );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		g2.setPaint( new java.awt.Color( 127, 255, 127, 127 ) );
+		g2.setPaint( this.getBackground() );
 		g2.fill( area );
-		g2.setColor( java.awt.Color.GRAY );
 		for( HoleGroup holeGroup : this.holeGroups ) {
 			java.awt.Rectangle rectGroup = this.calculateBoundsFor( holeGroup, PADDING_DESIRED );
+			g2.setColor( java.awt.Color.GRAY );
 			g.draw3DRect( rectGroup.x, rectGroup.y, rectGroup.width, rectGroup.height, false );
+			g2.setColor( this.getForeground() );
+			g.drawRoundRect( rectGroup.x-10, rectGroup.y-10, rectGroup.width+20, rectGroup.height+20, 10, 10 );
 		}
 	}
 
