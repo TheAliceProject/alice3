@@ -22,11 +22,6 @@
  */
 package edu.cmu.cs.dennisc.lookingglass.util;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
 /**
  * @author Dennis Cosgrove
  */

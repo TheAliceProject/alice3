@@ -40,7 +40,7 @@ public abstract class ResourceBundleUtilities {
 				//return null;
 			}
 			try {
-				String s = resourceBundle.getString( key );
+				String unused = resourceBundle.getString( key );
 				break;
 			} catch( RuntimeException re ) {
 				//pass;
