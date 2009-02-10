@@ -62,8 +62,11 @@ public abstract class AbstractAnimator implements Animator {
 					if( tRemaining > 0.0 ) {
 						//pass
 					} else {
-						synchronized( waitingAnimation.getThread() ) {
-							waitingAnimation.getThread().notify();
+						Thread thread = waitingAnimation.getThread();
+						if( thread != null ) {
+							synchronized( thread ) {
+								thread.notify();
+							}
 						}
 						iterator.remove();
 					}
@@ -76,6 +79,12 @@ public abstract class AbstractAnimator implements Animator {
 		return new WaitingAnimation( animation, animationObserver, currentThread );
 	}
 	
+	public void invokeLater( Animation animation, AnimationObserver animationObserver ) {
+		WaitingAnimation waitingAnimation = createWaitingAnimation( animation, animationObserver, null );
+		synchronized( m_waitingAnimations ) {
+			m_waitingAnimations.add( waitingAnimation );
+		}
+	}
 	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
 		if( java.awt.EventQueue.isDispatchThread() ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "FYI: Animation called from AWT event dispatch thread.  Launching as separate thread." );
