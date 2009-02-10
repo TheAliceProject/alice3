@@ -35,21 +35,27 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 		putInstanceForField( field, instanceInJava );
 	}
 	
+	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+		getVM().setConstructorBodyExecutionDesired( false );
+		try {
+			Object rv = getVM().createInstanceEntryPoint( sceneType );
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( field );
+				Object value = this.getVM().getAccessForSceneEditor( field, rv );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( value );
+				putInstanceForField( field, value );
+			}
+			return rv;
+		} finally {
+			getVM().setConstructorBodyExecutionDesired( true );
+		}
+	}
 	@Override
 	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		mapFieldToInstance.clear();
 		super.setSceneField( sceneField );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = sceneField.getDeclaringType();
-		assert type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-		//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-		getVM().setConstructorBodyExecutionDesired( false );
-		try {
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
-				//todo?
-				putInstanceForField( field, getVM().createInstanceEntryPoint( field.getDeclaringType() ) );
-			}
-		} finally {
-			getVM().setConstructorBodyExecutionDesired( true );
-		}
+		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+		assert sceneType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+		Object instance = this.createScene( sceneType );
 	}
 }

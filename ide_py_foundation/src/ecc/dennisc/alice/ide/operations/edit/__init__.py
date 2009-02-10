@@ -1,7 +1,17 @@
 import java
 import javax
+import edu
 
 from edu.cmu.cs.dennisc import alice
+
+def getBonusCopyText():
+	rv = "\n\nNOTE: one can copy by dragging with the "
+	if edu.cmu.cs.dennisc.lang.SystemUtilities.isMac():
+		rv += "Alt"
+	else:
+		rv += "Control"
+	rv += " key pressed."
+	return rv
 
 class UndoOperation( alice.ide.AbstractOperation ):
 	def __init__( self ):
@@ -53,7 +63,7 @@ class CopyOperation( alice.ide.AbstractUndoableOperation ):
 		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK ) )
 	def prepare( self, e, observer ):
 		title = "Copy coming soon"
-		message = "Copy is not yet implemented.  Apologies."
+		message = "Copy is not yet implemented.  Apologies."  + getBonusCopyText()
 		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ) 
 		return alice.ide.Operation.PreparationResult.CANCEL
 	def perform( self ):

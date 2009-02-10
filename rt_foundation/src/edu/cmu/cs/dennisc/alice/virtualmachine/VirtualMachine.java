@@ -22,12 +22,16 @@
  */
 package edu.cmu.cs.dennisc.alice.virtualmachine;
 
-import edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine.ThreadFrame;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class VirtualMachine {
+	@Deprecated
+	public Object getAccessForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
+		return get( field, instance );
+	}
+
+	
 	protected abstract Object getThis();
 
 	protected abstract void pushFrame( InstanceInAlice instance, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
@@ -52,6 +56,7 @@ public abstract class VirtualMachine {
 //		}
 //	}
 
+	
 	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, java.lang.Object instance, java.lang.Object... arguments ) {
 		pushCurrentThread( null );
 		try {

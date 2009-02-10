@@ -28,7 +28,7 @@ package edu.cmu.cs.dennisc.alice.ide;
  */
 public /*abstract*/ class IDEListenerPane extends javax.swing.JPanel implements edu.cmu.cs.dennisc.alice.ide.event.IDEListener {
 	public IDEListenerPane() {
-		getIDE().addIDEListener( IDEListenerPane.this );
+		getIDE().addIDEListener( this );
 	}
 	
 	protected IDE getIDE() {
@@ -62,6 +62,4 @@ public /*abstract*/ class IDEListenerPane extends javax.swing.JPanel implements 
 	}
 	public void transientSelectionChanged( edu.cmu.cs.dennisc.alice.ide.event.TransientSelectionEvent e ) {
 	}
-
-	
 }
