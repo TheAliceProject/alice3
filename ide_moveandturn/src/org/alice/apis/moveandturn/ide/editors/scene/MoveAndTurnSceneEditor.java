@@ -26,7 +26,8 @@ package org.alice.apis.moveandturn.ide.editors.scene;
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors.scene.AbstractInstantiatingSceneEditor {
-	private org.alice.apis.moveandturn.Program program = new org.alice.apis.moveandturn.Program() {
+	class Program extends org.alice.apis.moveandturn.Program {
+		private edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane controlsForOverlayPane = new edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane();
 		@Override
 		protected boolean isLightweightOnscreenLookingGlassDesired() {
 			return true;
@@ -37,25 +38,60 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		}
 		@Override
 		protected void initialize() {
+			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = getOnscreenLookingGlass();
+			if( onscreenLookingGlass instanceof edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass ) {
+				edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass lightweightOnscreenLookingGlass = (edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass)onscreenLookingGlass;
+				javax.swing.JPanel panel = lightweightOnscreenLookingGlass.getJPanel();
+				panel.setLayout( new java.awt.BorderLayout() );
+				panel.add( this.controlsForOverlayPane );
+			}
 		}
 		@Override
 		protected void run() {
 		}
-	};
+	}
+	private Program program = new Program();
+	private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
+	private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	
 	public MoveAndTurnSceneEditor() {
-		program.showInAWTContainer( this, new String[] {} );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.program.setArgs( new String[] {} );
+		this.program.init();
+		this.program.start();
+		new Thread() {
+			@Override
+			public void run() {
+				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
+				while( onscreenLookingGlass == null ) {
+					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+					onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
+				}
+				MoveAndTurnSceneEditor.this.cardPane = new edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass );
+				MoveAndTurnSceneEditor.this.add( MoveAndTurnSceneEditor.this.cardPane, java.awt.BorderLayout.CENTER );
+				MoveAndTurnSceneEditor.this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+			}
+		}.start();
 	}
 	
 	@Override
-	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
-		Object rv = super.createScene( sceneType );
+	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
+		Object rv = super.createScene( sceneField );
+		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( "performSetUp" );
 		this.getVM().invokeEntryPoint( method, rv );
-		
 		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
 		this.program.setScene( scene );
+		this.program.controlsForOverlayPane.setRootField( sceneField );
 		return rv;
+	}
+	
+	public void setDragInProgress( boolean isDragInProgress ) {
+		if( isDragInProgress ) {
+			this.cardPane.showSnapshot();
+		} else {
+			this.cardPane.showLive();
+		}
 	}
 	
 	public static void main( String[] args ) {
@@ -116,7 +152,7 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		frame.getContentPane().add( moveAndTurnSceneEditor );
 		frame.setSize( 1024, 768 );
-		frame.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
+		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
 		frame.setVisible( true );
 	}
 }

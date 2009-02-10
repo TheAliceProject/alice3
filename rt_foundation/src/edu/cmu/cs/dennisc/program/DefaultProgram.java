@@ -45,6 +45,9 @@ public abstract class DefaultProgram extends Program {
 	@Override
 	protected void postRun() {
 	}
+//	@Override
+//	protected void handleShownForTheFirstTime() {
+//	}
 	@Override
 	protected boolean handleWindowClosing( java.awt.event.WindowEvent e ) {
 		return true;
@@ -52,4 +55,5 @@ public abstract class DefaultProgram extends Program {
 	@Override
 	protected void handleWindowClosed( java.awt.event.WindowEvent e ) {
 	}
+	
 }

@@ -35,9 +35,11 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 		putInstanceForField( field, instanceInJava );
 	}
 	
-	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		getVM().setConstructorBodyExecutionDesired( false );
 		try {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+			assert sceneType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 			Object rv = getVM().createInstanceEntryPoint( sceneType );
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( field );
@@ -54,8 +56,6 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		mapFieldToInstance.clear();
 		super.setSceneField( sceneField );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
-		assert sceneType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-		Object instance = this.createScene( sceneType );
+		Object instance = this.createScene( sceneField );
 	}
 }

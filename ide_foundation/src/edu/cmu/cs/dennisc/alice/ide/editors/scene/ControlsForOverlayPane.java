@@ -77,6 +77,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 	public ControlsForOverlayPane() {
 		this.setNorthWestComponent( this.rootFieldTile );
 		edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().addIDEListener( this.ideAdapter );
+		this.setOpaque( false );
 	}
 	public ControlsForOverlayPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
 		this();
@@ -113,13 +114,15 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField = this.getRootField();
 			this.rootFieldTile.updateLabel();
 			java.awt.Component prev = this.rootFieldTile;
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
-				FieldTile fieldTile = createFieldTile( field );
-				this.add( fieldTile );
-				this.declaredFieldTiles.add( fieldTile );
-				springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 6, javax.swing.SpringLayout.SOUTH, prev );
-				springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile, 10, javax.swing.SpringLayout.WEST, this.rootFieldTile );
-				prev = fieldTile;
+			if( rootField != null ) {
+				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
+					FieldTile fieldTile = createFieldTile( field );
+					this.add( fieldTile );
+					this.declaredFieldTiles.add( fieldTile );
+					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 6, javax.swing.SpringLayout.SOUTH, prev );
+					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile, 10, javax.swing.SpringLayout.WEST, this.rootFieldTile );
+					prev = fieldTile;
+				}
 			}
 			revalidate();
 			repaint();

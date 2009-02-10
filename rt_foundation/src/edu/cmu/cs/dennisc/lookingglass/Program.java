@@ -95,6 +95,9 @@ public abstract class Program extends edu.cmu.cs.dennisc.program.Program {
 	protected void postRun() {
 	}
 	
+//	@Override
+//	protected void handleShownForTheFirstTime() {
+//	}
 	@Override
 	protected boolean handleWindowClosing( java.awt.event.WindowEvent e ) {
 		s_lookingGlassFactory.decrementAutomaticDisplayCount();

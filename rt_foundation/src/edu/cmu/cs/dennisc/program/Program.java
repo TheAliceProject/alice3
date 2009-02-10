@@ -160,6 +160,7 @@ public abstract class Program extends javax.swing.JApplet {
 	protected abstract void run();
 	protected abstract void postRun();
 
+//	protected abstract void handleShownForTheFirstTime();
 	protected abstract boolean handleWindowClosing( java.awt.event.WindowEvent e );
 	protected abstract void handleWindowClosed( java.awt.event.WindowEvent e );
 
@@ -200,14 +201,23 @@ public abstract class Program extends javax.swing.JApplet {
 		int x = toInt( getParameter( "LOCATION_X" ), 0 );
 		int y = toInt( getParameter( "LOCATION_Y" ), 0 );
 		window.setLocation( x, y );
-		window.addWindowListener( new java.awt.event.WindowAdapter() {
-			@Override
+		window.addWindowListener( new java.awt.event.WindowListener() {
+			public void windowOpened( java.awt.event.WindowEvent e ) {
+//				Program.this.handleShownForTheFirstTime();
+			}
+			public void windowActivated( java.awt.event.WindowEvent e ) {
+			}
+			public void windowDeactivated( java.awt.event.WindowEvent e ) {
+			}
+			public void windowDeiconified( java.awt.event.WindowEvent e ) {
+			}
+			public void windowIconified(java.awt.event.WindowEvent e) {
+			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
 				if( Program.this.handleWindowClosing( e ) ) {
 					window.dispose();
 				}
 			}
-			@Override
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 				Program.this.handleWindowClosed( e );
 				if( isExitDesiredOnClose ) {
@@ -311,11 +321,29 @@ public abstract class Program extends javax.swing.JApplet {
 	}
 
 	public void showInAWTContainer( java.awt.Container awtContainer, String[] args ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "showInAWTContainer", awtContainer, args );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "showInAWTContainer", awtContainer, args );
 		setArgs( args );
 		init();
 		awtContainer.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		//this.addComponentListener( new StartProgramComponentAdapter() );
+		
+//		class ComponentAdapter implements java.awt.event.ComponentListener {
+//			private boolean isFirstTime = true;
+//			public void componentShown( java.awt.event.ComponentEvent e ) {
+//				if( this.isFirstTime ) {
+//					Program.this.handleShownForTheFirstTime();
+//					this.isFirstTime = false;
+//				}
+//			}
+//			public void componentHidden( java.awt.event.ComponentEvent e ) {
+//			}
+//			public void componentResized( java.awt.event.ComponentEvent e ) {
+//			}
+//			public void componentMoved( java.awt.event.ComponentEvent e ) {
+//			}
+//		}
+//		this.addComponentListener( new ComponentAdapter() );
+		
 		awtContainer.add( this );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
