@@ -26,9 +26,14 @@ import java.awt.Color;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.color.ColorUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Box;
+import edu.cmu.cs.dennisc.scenegraph.Cylinder;
+import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
+import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 
 /**
  * @author David Culyba
@@ -36,7 +41,9 @@ import edu.cmu.cs.dennisc.scenegraph.Box;
 public class LinearTranslateHandle extends LinearDragHandle {
 
 	protected Color4f baseColor;
-
+	protected Arrow arrow;
+	
+	
 	public LinearTranslateHandle( Vector3 dragAxis, Color4f color )
 	{
 		super( dragAxis );
@@ -47,9 +54,8 @@ public class LinearTranslateHandle extends LinearDragHandle {
 	
 	@Override
 	protected void createShape() {
-		Box handleBox = new Box();
-		handleBox.set( new Point3(-.1, -.1, -.1), new Point3(.1, .1, .1) );
-		this.sgShape = handleBox;
+		this.arrow = new Arrow(1.1d, .2d, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+		this.arrow.setParent( this );
 	}
 	
 	@Override

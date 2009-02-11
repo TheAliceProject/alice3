@@ -130,33 +130,33 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 	{
 		MovementKey[] movementKeys = {
 				//Forward
-				new MovementKey(KeyEvent.VK_UP, new Point3(0, 0, -1)),
-				new MovementKey(KeyEvent.VK_NUMPAD8, new Point3(0, 0, -1)),
+//				new MovementKey(KeyEvent.VK_UP, new Point3(0, 0, -1)),
+//				new MovementKey(KeyEvent.VK_NUMPAD8, new Point3(0, 0, -1)),
 				new MovementKey(KeyEvent.VK_W, new Point3(0, 0, -1)),
 				//Backward
-				new MovementKey(KeyEvent.VK_DOWN, new Point3(0, 0, 1)),
-				new MovementKey(KeyEvent.VK_NUMPAD2, new Point3(0, 0, 1)),
+//				new MovementKey(KeyEvent.VK_DOWN, new Point3(0, 0, 1)),
+//				new MovementKey(KeyEvent.VK_NUMPAD2, new Point3(0, 0, 1)),
 				new MovementKey(KeyEvent.VK_S, new Point3(0, 0, 1)),
 				//Left
-				new MovementKey(KeyEvent.VK_LEFT, new Point3(-1, 0, 0)),
-				new MovementKey(KeyEvent.VK_NUMPAD4, new Point3(-1, 0, 0)),
+//				new MovementKey(KeyEvent.VK_LEFT, new Point3(-1, 0, 0)),
+//				new MovementKey(KeyEvent.VK_NUMPAD4, new Point3(-1, 0, 0)),
 				new MovementKey(KeyEvent.VK_A, new Point3(-1, 0, 0)),
 				//Right
-				new MovementKey(KeyEvent.VK_RIGHT, new Point3(1, 0, 0)),
-				new MovementKey(KeyEvent.VK_NUMPAD6, new Point3(1, 0, 0)),
+//				new MovementKey(KeyEvent.VK_RIGHT, new Point3(1, 0, 0)),
+//				new MovementKey(KeyEvent.VK_NUMPAD6, new Point3(1, 0, 0)),
 				new MovementKey(KeyEvent.VK_D, new Point3(1, 0, 0)),
 				//Up
-				new MovementKey(KeyEvent.VK_PAGE_UP, new Point3(0, 1, 0)),
+				new MovementKey(KeyEvent.VK_PAGE_UP, new Point3(0, 1, 0), MovementType.LOCAL, .5d),
 				//Down
-				new MovementKey(KeyEvent.VK_PAGE_DOWN, new Point3(0, -1, 0)),
+				new MovementKey(KeyEvent.VK_PAGE_DOWN, new Point3(0, -1, 0), MovementType.LOCAL, .5d),
 				//Up Left
-				new MovementKey(KeyEvent.VK_NUMPAD7, new Point3(-1, 0, -1)),
-				//Up Right
-				new MovementKey(KeyEvent.VK_NUMPAD9, new Point3(1, 0, -1)),
-				//Back Left
-				new MovementKey(KeyEvent.VK_NUMPAD1, new Point3(-1, 0, 1)),
-				//Back Right
-				new MovementKey(KeyEvent.VK_NUMPAD3, new Point3(1, 0, 1)),
+//				new MovementKey(KeyEvent.VK_NUMPAD7, new Point3(-1, 0, -1)),
+//				//Up Right
+//				new MovementKey(KeyEvent.VK_NUMPAD9, new Point3(1, 0, -1)),
+//				//Back Left
+//				new MovementKey(KeyEvent.VK_NUMPAD1, new Point3(-1, 0, 1)),
+//				//Back Right
+//				new MovementKey(KeyEvent.VK_NUMPAD3, new Point3(1, 0, 1)),
 		};
 		
 		MovementKey[] zoomKeys = {
@@ -190,7 +190,7 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( zoomKeys[i].keyValue, noModifiers), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH  ) );
 			cameraTranslate.addCondition( keyAndNotSelected );
 		}
-		this.manipulators.add( cameraTranslate );
+	//	this.manipulators.add( cameraTranslate );
 		
 		ManipulatorConditionSet objectTranslate = new ManipulatorConditionSet( new ObjectTranslateKeyManipulator( movementKeys ) );
 		for (int i=0; i<movementKeys.length; i++)
@@ -206,7 +206,7 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 			AndInputCondition keyAndNotSelected = new AndInputCondition( new KeyPressCondition( turnKeys[i].keyValue), new SelectedObjectCondition( PickHint.NON_INTERACTIVE, InvertedSelectedObjectCondition.ObjectSwitchBehavior.IGNORE_SWITCH  ) );
 			cameraRotate.addCondition( keyAndNotSelected );
 		}
-		this.manipulators.add( cameraRotate );
+//		this.manipulators.add( cameraRotate );
 	
 //		ManipulatorConditionSet cameraOrbit = new ManipulatorConditionSet( new CameraOrbitDragManipulator() );
 //		MouseDragCondition leftAndNoModifiers = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1 , new PickCondition( PickHint.NON_INTERACTIVE ), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
@@ -262,24 +262,24 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		currentManipulationHandles.add( rotateAboutZAxis );
 		nextManipulationHandles.add( rotateAboutZAxis2 );
 		
-		LinearTranslateHandle translateYAxis = new StoodUpLinearTranslateHandle(Vector3.accessPositiveYAxis(), Color4f.BLUE);
+		LinearTranslateHandle translateYAxis = new StoodUpLinearTranslateHandle(Vector3.accessPositiveYAxis(), Color4f.GREEN);
 		translateYAxis.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
 		currentManipulationHandles.add( translateYAxis );
-		LinearTranslateHandle translateYAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessPositiveYAxis(), Color4f.BLUE);
+		LinearTranslateHandle translateYAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessPositiveYAxis(), Color4f.GREEN);
 		translateYAxis2.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
 		nextManipulationHandles.add( translateYAxis2 );
 		
-		LinearTranslateHandle translateXAxis = new StoodUpLinearTranslateHandle(Vector3.accessPositiveXAxis(), Color4f.RED);
+		LinearTranslateHandle translateXAxis = new StoodUpLinearTranslateHandle(Vector3.accessNegativeXAxis(), Color4f.RED);
 		translateXAxis.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
 		currentManipulationHandles.add( translateXAxis );
-		LinearTranslateHandle translateXAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessPositiveXAxis(), Color4f.RED);
+		LinearTranslateHandle translateXAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessNegativeXAxis(), Color4f.RED);
 		translateXAxis2.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
 		nextManipulationHandles.add( translateXAxis2 );
 		
-		LinearTranslateHandle translateZAxis = new StoodUpLinearTranslateHandle(Vector3.accessPositiveZAxis(), Color4f.GREEN);
+		LinearTranslateHandle translateZAxis = new StoodUpLinearTranslateHandle(Vector3.accessNegativeZAxis(), Color4f.BLUE);
 		translateZAxis.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
 		currentManipulationHandles.add( translateZAxis );
-		LinearTranslateHandle translateZAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessPositiveZAxis(), Color4f.GREEN);
+		LinearTranslateHandle translateZAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessNegativeZAxis(), Color4f.BLUE);
 		translateZAxis2.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
 		nextManipulationHandles.add( translateZAxis2 );
 		
@@ -333,6 +333,7 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 	{
 		if (selectedObject != selected)
 		{
+			System.out.println("Setting selected to "+selected);
 			this.fireSelecting( new SelectionEvent(this, selected) );
 			for (int i=0; i<currentManipulationHandles.size(); i++)
 			{

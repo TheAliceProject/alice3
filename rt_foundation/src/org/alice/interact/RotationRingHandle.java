@@ -40,6 +40,14 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
  */
 public class RotationRingHandle extends ManipulationHandle{
 	
+	public enum HandlePosition
+	{
+		ORIGIN,
+		TOP,
+		BOTTOM,
+		MIDDLE,
+	}
+	
 	protected static final double MINOR_RADIUS = .05d;
 	
 	protected static final Color4f ACTIVE_COLOR = new Color4f(.4f, 1.0f, 0.3f, 1.0f);
@@ -54,14 +62,21 @@ public class RotationRingHandle extends ManipulationHandle{
 	protected Vector3 rotationAxis;
 	protected Vector3 sphereDirection = new Vector3();
 	
+	protected HandlePosition handlePosition = HandlePosition.ORIGIN;
+	
 	protected DoubleTargetBasedAnimation radiusAnimation;
 	
 	public RotationRingHandle( )
 	{
-		this( Vector3.accessPositiveYAxis());
+		this( Vector3.accessPositiveYAxis(), HandlePosition.ORIGIN);
 	}
 	
 	public RotationRingHandle( Vector3 rotationAxis )
+	{
+		this( rotationAxis, HandlePosition.ORIGIN);
+	}
+	
+	public RotationRingHandle( Vector3 rotationAxis, HandlePosition handlePosition )
 	{
 		super();
 		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
@@ -75,6 +90,7 @@ public class RotationRingHandle extends ManipulationHandle{
 		this.rotationAxis = rotationAxis;
 		this.rotationAxis.normalize();
 		this.sphereDirection.set( 0.0d, 0.0d, -1.0d );
+		this.handlePosition = handlePosition;
 		this.localTransformation.setValue( this.getTransformationForAxis( this.rotationAxis ) );
 		this.sgVisual.geometries.setValue( new Geometry[] { this.sgTorus } );
 	}

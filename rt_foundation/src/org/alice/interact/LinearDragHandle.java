@@ -34,7 +34,6 @@ import edu.cmu.cs.dennisc.scenegraph.Geometry;
 public abstract class LinearDragHandle extends ManipulationHandle {
 	
 	protected double offsetPadding = .1d;
-	protected edu.cmu.cs.dennisc.scenegraph.Shape sgShape = null;
 	protected Vector3 dragAxis;
 	protected double distanceFromOrigin;
 
@@ -48,13 +47,11 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 	public LinearDragHandle( Vector3 dragAxis )
 	{
 		super();
-		createShape();
-		this.sgVisual.geometries.setValue( new Geometry[] { this.sgShape } );
-		
 		this.dragAxis = new Vector3(dragAxis);
 		this.dragAxis.normalize();
 		this.localTransformation.setValue( this.getTransformationForAxis( this.dragAxis ) );
 		this.distanceFromOrigin = 0.0d;
+		createShape();
 	}
 
 	protected abstract void createShape();
