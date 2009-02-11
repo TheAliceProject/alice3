@@ -81,13 +81,6 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		if instance:
 			self.addInstance( instance )
 
-	def addASTField( self, astField, instance ):
-		pass
-#		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
-#		if isinstance( instanceInJava, apis.moveandturn.Model ):
-#			instanceInJava.getSGComposite().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS )
-#			instanceInJava.getSGComposite().putBonusDataFor( org.alice.interact.GlobalDragAdapter.BOUNDING_BOX_KEY, instanceInJava.getAxisAlignedMinimumBoundingBox())
-
 	def addASTFieldFor( self, instance ):
 		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
 		name = instanceInJava.getName()
@@ -97,9 +90,9 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		astField.finalVolatileOrNeither.setValue( alice.ast.FieldModifierFinalVolatileOrNeither.FINAL )
 		astField.access.setValue( alice.ast.Access.PRIVATE )
 		self.getSceneType().fields.add( [ astField ] )
-		self.addASTField( astField, instance )
-		self._registerType( type )
-		#self._sceneFieldsComposite.setSelectedValue( astField )
+
+		self.putInstanceForField( astField, instance )
+		
 		self._select( astField )
 
 	def addInstance( self, instance ):
@@ -126,10 +119,6 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 
 		sceneInstance = org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.createScene( self, sceneField )
 		if sceneInstance:
-			sceneType = self.getSceneType()
-			self.addASTField( sceneField, sceneInstance )
-			for field in sceneType.fields.iterator():
-				self.addASTField( field, self.getVM().get( field, sceneInstance ) )
 			self.restoreProjectProperties()
 			
 		return sceneInstance
@@ -139,8 +128,9 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 
 	def getFilledInSceneAutomaticSetUpMethod( self, fillerInner ):
 		rv = self.getSceneAutomaticSetUpMethod()
-		#todo
-		map = self._mapFieldToInstance
+		map = {}
+		for key in self.mapFieldToInstance.keySet():
+			map[ key ] = self.mapFieldToInstance.get( key )
 		fillerInner.fillInSceneAutomaticSetUpMethod( rv, self.getSceneField(), map )
 		return rv
 
@@ -188,12 +178,3 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		event = None
 		alice.ide.IDE.getSingleton().performIfAppropriate( operation, event )
 		
-	def handleModelSelection( self, sgModel ):
-		if sgModel:
-			model = apis.moveandturn.Element.getElement( sgModel )
-			if model:
-				try:
-					nextField = self._mapInstanceInJavaToField[ model ]
-					self._select( nextField )
-				except KeyError:
-					print "could not find field for", instance

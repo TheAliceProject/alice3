@@ -30,7 +30,7 @@ public class FocusCodeOperation extends edu.cmu.cs.dennisc.alice.ide.AbstractUnd
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode;
 	public FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
 		this.nextCode = nextCode;
-		this.putValue( javax.swing.Action.NAME, "open in new tab" );
+		this.putValue( javax.swing.Action.NAME, "edit" );
 	}
 	public PreparationResult prepare( java.util.EventObject e, PreparationObserver observer ) {
 		return PreparationResult.PERFORM_AND_ADD_TO_HISTORY;

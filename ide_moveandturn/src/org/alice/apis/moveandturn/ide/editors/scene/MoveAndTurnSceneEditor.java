@@ -102,7 +102,6 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 				sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.CAMERA );
 			}
 		}
-		
 	}
 	protected edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane createControlsForOverlayPane() {
 		return new edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane();

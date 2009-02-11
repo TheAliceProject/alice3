@@ -264,7 +264,7 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 				int arcHeight = 8;
 				g.setColor( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class ) );
 				g.fillRoundRect( x, y, width, height, arcWidth, arcHeight );
-				g.setColor( java.awt.Color.DARK_GRAY );
+				g.setColor( java.awt.Color.GRAY );
 				g.drawRoundRect( x, y, width, height, arcWidth, arcHeight );
 
 				if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {

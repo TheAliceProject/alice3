@@ -28,7 +28,7 @@ import edu.cmu.cs.dennisc.scenegraph.*;
  * @author Dennis Cosgrove
  */
 public class Arrow extends Transformable {
-	public Arrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance frontFacingAppearance ) {
+	public Arrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis, SingleAppearance frontFacingAppearance, boolean isBottomCapDesired ) {
 		double lengthCylinder = unit * lengthFactor * 0.8;
 		double radiusCylinder = unit * 0.05;
 		double lengthCone = unit * lengthFactor * 0.2;
@@ -44,7 +44,7 @@ public class Arrow extends Transformable {
 		sgCylinder.bottomToTopAxis.setValue( bottomToTopAxis );
 		sgCylinder.hasTopCap.setValue( false );
 		//todo?
-		sgCylinder.hasBottomCap.setValue( false );
+		sgCylinder.hasBottomCap.setValue( isBottomCapDesired );
 		
 		
 		edu.cmu.cs.dennisc.math.Vector3 translation = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(  
