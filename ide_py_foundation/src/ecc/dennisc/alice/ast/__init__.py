@@ -21,18 +21,18 @@ class IsInstanceCrawler( edu.cmu.cs.dennisc.pattern.Crawler ):
 #todo: add context
 def getVariables( method ):
 	crawler = IsInstanceCrawler( alice.ast.VariableDeclaredInAlice )
-	method.crawl( crawler )
+	method.crawl( crawler, False )
 	return crawler._references
 
 #todo: add context
 def getConstants( method ):
 	crawler = IsInstanceCrawler( alice.ast.ConstantDeclaredInAlice )
-	method.crawl( crawler )
+	method.crawl( crawler, False )
 	return crawler._references
 
 def getVariableDeclarationStatements( method ):
 	crawler = IsInstanceCrawler( alice.ast.VariableDeclarationStatement )
-	method.crawl( crawler )
+	method.crawl( crawler, False )
 	return crawler._references
 
 def wrapInArguments( parameters, expressions ):

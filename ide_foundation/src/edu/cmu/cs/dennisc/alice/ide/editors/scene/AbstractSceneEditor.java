@@ -87,6 +87,9 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.alice.ide.I
 	public void addFieldToSceneType( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		getSceneTypeDeclaredInAlice().fields.add( field );
 	}
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
+		return this.sceneField;
+	}
 	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		if( this.sceneField != null ) {
 			this.sceneField.removeListPropertyListener( this );

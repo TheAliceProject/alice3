@@ -30,8 +30,16 @@ public class FieldAccessPane extends edu.cmu.cs.dennisc.alice.ide.editors.common
 
 	public FieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		this.fieldAccess = fieldAccess;
-		this.add( new ExpressionPropertyPane( this.fieldAccess.expression, false ) );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( ".") );
+		boolean isExpressionDesired;
+		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+			isExpressionDesired = "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() );
+		} else {
+			isExpressionDesired = true;
+		}
+		if( isExpressionDesired ) {
+			this.add( new ExpressionPropertyPane( this.fieldAccess.expression, false ) );
+			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( ".") );
+		}
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( this.fieldAccess.field.getValue() ) );
 		this.setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}

@@ -619,7 +619,7 @@ class AbstractIDE( alice.ide.IDE ):
 		programType = self.getProgramType()
 		if programType:
 			crawler = Crawler( method )
-			programType.crawl( crawler )
+			programType.crawl( crawler, True )
 			return crawler._references
 		else:
 			return []
@@ -635,7 +635,7 @@ class AbstractIDE( alice.ide.IDE ):
 		programType = self.getProgramType()
 		if programType:
 			crawler = Crawler( field )
-			programType.crawl( crawler )
+			programType.crawl( crawler, True )
 			return crawler._references
 		else:
 			return []

@@ -46,9 +46,12 @@ class MethodHeaderPane extends AbstractCodeHeaderPane {
 		super( methodDeclaredInAlice );
 		if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
 			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( methodDeclaredInAlice.getReturnType() ) );
+			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			edu.cmu.cs.dennisc.alice.ide.editors.common.Label nameLabel = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( methodDeclaredInAlice );
 			nameLabel.scaleFont( 2.0f );
+			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( nameLabel );
+			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( parametersPane );
 			//this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " {" ) );
 		} else {
@@ -63,10 +66,14 @@ class MethodHeaderPane extends AbstractCodeHeaderPane {
 			} else {
 				sb.append( "function " );
 			}
-			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( sb.toString() ) );		
+			Label label = new Label( sb.toString() );
+			label.italicizeFont();
+			this.add( label );
 			edu.cmu.cs.dennisc.alice.ide.editors.common.Label nameLabel = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( methodDeclaredInAlice );
 			nameLabel.scaleFont( 2.0f );
+			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( nameLabel );
+			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( parametersPane );
 		}
 	}
@@ -239,13 +246,43 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 		//edu.cmu.cs.dennisc.zoot.ZPageAxisPane headerPane = new edu.cmu.cs.dennisc.zoot.ZPageAxisPane();
 		this.add( header );
 		this.add( new InstanceLine( this.code ) );
+		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
 		
 		StatementListPropertyPane bodyPane = new StatementListPropertyPane( code.getBodyProperty().getValue().statements ) {
 			@Override
 			protected boolean isMaximumSizeClampedToPreferredSize() {
 				return false;
 			}
+			@Override
+			protected void paintComponent( java.awt.Graphics g ) {
+				super.paintComponent( g );
+				int x = 0;
+				int y = 0;
+				int width = this.getWidth() -1;
+				int height = this.getHeight() -1;
+				int arcWidth = 8;
+				int arcHeight = 8;
+				g.setColor( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class ) );
+				g.fillRoundRect( x, y, width, height, arcWidth, arcHeight );
+				g.setColor( java.awt.Color.DARK_GRAY );
+				g.drawRoundRect( x, y, width, height, arcWidth, arcHeight );
+
+				if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+					//pass
+				} else {
+					java.awt.FontMetrics fm = g.getFontMetrics();
+				    int ascent = fm.getMaxAscent ();
+				    int descent= fm.getMaxDescent ();
+				    
+					g.setColor( java.awt.Color.BLACK );
+				    x = 4;
+				    y = 4;
+					g.drawString( "do in order", x, y + ascent-descent );
+				}
+			}
 		};
+		bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
+		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 0, 0 ) );
 //		bodyPane.setOpaque( true );
 //		bodyPane.setBackground( java.awt.Color.RED );
 
@@ -374,7 +411,8 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 			} else {
 				java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this, eThis, this.currentUnder );
 				Integer height = 0;
-				java.awt.Point p = new java.awt.Point( 0, 0 );
+				int x = this.currentUnder.getBorder().getBorderInsets( this.currentUnder ).left;
+				java.awt.Point p = new java.awt.Point( x, 0 );
 				if( this.currentUnder.isFigurativelyEmpty() ) {
 					height = null;
 				} else {

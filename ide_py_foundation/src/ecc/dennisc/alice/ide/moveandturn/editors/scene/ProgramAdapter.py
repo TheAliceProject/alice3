@@ -152,7 +152,7 @@ class ProgramAdapter( apis.moveandturn.Program, ecc.dennisc.alice.ide.ProgramWit
 
 	def createInstance( self, type ):
 		#constructor = type.getDeclaredConstructor( [] )
-		return self._vm.createInstanceEntryPoint( type )
+		return self._vm.createInstanceForSceneEditor( type )
 
 	def addASTField( self, astField, instance ):
 		#self._sceneFieldsComposite._addDatum( astField )

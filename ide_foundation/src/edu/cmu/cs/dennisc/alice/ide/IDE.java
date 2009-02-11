@@ -885,7 +885,7 @@ public abstract class IDE extends javax.swing.JFrame {
 						mapUUIDToNode.put( node.getUUID(), node );
 					}
 				}
-			} );
+			}, true );
 			rv = mapUUIDToNode.get( uuid );
 		}
 		return rv;

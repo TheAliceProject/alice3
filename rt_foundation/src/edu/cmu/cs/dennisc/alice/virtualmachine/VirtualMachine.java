@@ -30,6 +30,15 @@ public abstract class VirtualMachine {
 	public Object getAccessForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		return get( field, instance );
 	}
+	@Deprecated
+	public Object createInstanceForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType ) {
+		pushCurrentThread( null );
+		try {
+			return this.createInstance( this.entryPointType.getDeclaredConstructor() );
+		} finally {
+			popCurrentThread();
+		}
+	}
 
 	
 	protected abstract Object getThis();

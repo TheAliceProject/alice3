@@ -26,34 +26,13 @@ package org.alice.apis.moveandturn.ide.editors.scene;
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors.scene.AbstractInstantiatingSceneEditor {
-	class Program extends org.alice.apis.moveandturn.Program {
-		private edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane controlsForOverlayPane = new edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane();
-		@Override
-		protected boolean isLightweightOnscreenLookingGlassDesired() {
-			return true;
-		}
-		@Override
-		protected boolean isSpeedMultiplierControlPanelDesired() {
-			return false;
-		}
-		@Override
-		protected void initialize() {
-			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = getOnscreenLookingGlass();
-			if( onscreenLookingGlass instanceof edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass ) {
-				edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass lightweightOnscreenLookingGlass = (edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass)onscreenLookingGlass;
-				javax.swing.JPanel panel = lightweightOnscreenLookingGlass.getJPanel();
-				panel.setLayout( new java.awt.BorderLayout() );
-				panel.add( this.controlsForOverlayPane );
-			}
-		}
-		@Override
-		protected void run() {
-		}
-	}
-	private Program program = new Program();
-	private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
-	private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	
+	private Program program = this.createProgram();
+	private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
+	private edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane controlsForOverlayPane = this.createControlsForOverlayPane();
+	private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
+
+
 	public MoveAndTurnSceneEditor() {
 		this.setLayout( new java.awt.BorderLayout() );
 		this.program.setArgs( new String[] {} );
@@ -73,6 +52,21 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 			}
 		}.start();
 	}
+
+	protected edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane createControlsForOverlayPane() {
+		return new edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane();
+	}
+	protected Program createProgram() {
+		return new Program( this );
+	}
+	protected Program getProgram() {
+		return this.program;
+	}
+	public void initializeLightweightOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass lightweightOnscreenLookingGlass ) {
+		javax.swing.JPanel panel = lightweightOnscreenLookingGlass.getJPanel();
+		panel.setLayout( new java.awt.BorderLayout() );
+		panel.add( this.controlsForOverlayPane );
+	}
 	
 	@Override
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
@@ -82,7 +76,7 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		this.getVM().invokeEntryPoint( method, rv );
 		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
 		this.program.setScene( scene );
-		this.program.controlsForOverlayPane.setRootField( sceneField );
+		this.controlsForOverlayPane.setRootField( sceneField );
 		return rv;
 	}
 	
@@ -94,6 +88,26 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		}
 	}
 	
+	public Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return this.getVM().createInstanceEntryPoint( type );
+	}
+
+	public void preserveProjectProperties() {
+		this.preserveCameraNavigationProperties( this.cameraNavigationDragAdapter );
+	}
+	public void restoreProjectProperties() {
+		this.restoreCameraNavigationProperties( this.cameraNavigationDragAdapter );
+	}
+	
+	private java.util.Stack< Boolean > isCameraNavigationDragAdapterEnabledStack = new java.util.Stack< Boolean >();
+	protected void pushAndSetCameraNavigationDragAdapterEnabled( Boolean isCameraNavigationDragAdapterEnabled ) {
+		this.isCameraNavigationDragAdapterEnabledStack.push( this.cameraNavigationDragAdapter.isEnabled() );
+		this.cameraNavigationDragAdapter.setEnabled( isCameraNavigationDragAdapterEnabled );
+	}
+	protected void popCameraNavigationDragAdapterEnabled() {
+		this.cameraNavigationDragAdapter.setEnabled( this.isCameraNavigationDragAdapterEnabledStack.pop() );
+	}
+
 	public static void main( String[] args ) {
 		
 		edu.cmu.cs.dennisc.alice.ide.IDE ide = new edu.cmu.cs.dennisc.alice.ide.IDE() {

@@ -30,8 +30,8 @@ public class TypePane extends edu.cmu.cs.dennisc.alice.ide.editors.code.TypeExpr
 	public TypePane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ) );
 	}
-	@Override
-	protected boolean isClassPrefixDesired() {
-		return true;
-	}
+//	@Override
+//	protected boolean isClassPrefixDesired() {
+//		return true;
+//	}
 }

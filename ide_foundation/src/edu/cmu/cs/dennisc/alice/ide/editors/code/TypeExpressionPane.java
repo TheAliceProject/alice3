@@ -31,13 +31,15 @@ public class TypeExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane  {
 	public TypeExpressionPane( edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression ) {
 		this.typeExpression = typeExpression;
 		String text = this.typeExpression.value.getValue().getName();
-		if( isClassPrefixDesired() ) {
-			if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
-				//pass
-			} else {
-				text = "class: " + text;
-			}
-		}
+//		if( isClassPrefixDesired() ) {
+//			if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+//				//pass
+//			} else {
+//				text = "class: " + text;
+//			}
+//		}
+
+		this.setToolTipText( "class: " + text );
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( text ) );
 		java.awt.Color color = edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getColorForASTInstance( this.typeExpression );
 		this.setBackground( color );

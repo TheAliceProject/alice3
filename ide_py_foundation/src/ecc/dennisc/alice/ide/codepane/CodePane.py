@@ -178,6 +178,20 @@ class ParameterPane( alice.ide.editors.code.ParameterPane ):
 		alice.ide.editors.code.ParameterPane.__init__( self, parameter )
 		self.addMouseListener( ParameterAltTriggerMouseAdapter( parameter, code ) )
 
+class TypedParameterPane( zoot.ZLineAxisPane ):
+	def __init__(self, typePane, parameterPane ):
+		zoot.ZLineAxisPane.__init__(self)
+		self.setOpaque( True )
+		self.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) )
+		self.setForeground( java.awt.Color.GRAY )
+		self.add( typePane )
+		self.add( parameterPane )
+		
+		
+	def paintComponent(self, g):
+		zoot.ZLineAxisPane.paintComponent( self, g )
+		g.drawRect( 0, 0, self.getWidth()-1, self.getHeight()-1)
+
 class ParametersPane( alice.ide.editors.code.AbstractListPropertyPane ):
 	def __init__(self, code ):
 		self._code = code
@@ -194,18 +208,18 @@ class ParametersPane( alice.ide.editors.code.AbstractListPropertyPane ):
 				text = " with parameter: "
 			else:
 				text = " with parameters: "
-			self.add( alice.ide.editors.common.Label( text ) )
+				
+			label = alice.ide.editors.common.Label( text )
+			label.italicizeFont()
+			self.add( label )
+			self.add( javax.swing.Box.createHorizontalStrut( 8 ) )
 	def createInterstitial(self, i, N ):
 		if i<N-1:
-			return zoot.ZLabel( ", " )
+			return zoot.ZLabel( ",  " )
 		else:
-			return None
+			return javax.swing.Box.createHorizontalStrut( 8 )
 	def createComponent(self, parameter):
-		pane = zoot.ZLineAxisPane()
-		pane.add( edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( parameter.getValueType() ) )
-		#pane.add( javax.swing.Box.createHorizontalStrut( 4 ) )
-		pane.add( ParameterPane( parameter, self._code ) )
-		return pane
+		return TypedParameterPane( edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( parameter.getValueType() ), ParameterPane( parameter, self._code ) )
 	def addPostfixComponents(self):
 		if isinstance( self._code, alice.ast.ConstructorDeclaredInAlice ):
 			pass
