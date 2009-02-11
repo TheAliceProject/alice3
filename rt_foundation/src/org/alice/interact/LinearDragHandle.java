@@ -77,7 +77,7 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 	{
 		if (object != null)
 		{
-			Object bbox = object.getBonusDataFor( SceneEditor.BOUNDING_BOX_KEY );
+			Object bbox = object.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
 			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
 			{
 				edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = (edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox;

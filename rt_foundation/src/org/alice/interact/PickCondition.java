@@ -22,7 +22,6 @@
  */
 package org.alice.interact;
 
-import org.alice.apis.moveandturn.Element;
 
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 

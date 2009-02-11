@@ -45,6 +45,8 @@ import edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter;
  */
 public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.KeyListener {
 	
+	public static final String BOUNDING_BOX_KEY = "BOUNDING_BOX_KEY";
+	
 	private java.util.Vector< ManipulatorConditionSet > manipulators = new java.util.Vector< ManipulatorConditionSet >();
 
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
