@@ -48,7 +48,11 @@ public class ExtravagantAxes extends Transformable {
 	}
 	
 	private Arrow createArrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis ) {
-		return new Arrow( unit, lengthFactor, bottomToTopAxis, s_axisToSGAppearanceMap.get( bottomToTopAxis ), false );
+		double lengthCylinder = unit * lengthFactor * 0.8;
+		double radiusCylinder = unit * 0.05;
+		double lengthCone = unit * lengthFactor * 0.2;
+		double radiusCone = radiusCylinder * 1.2;
+		return new Arrow( lengthCylinder, radiusCylinder, lengthCone, radiusCone, bottomToTopAxis, s_axisToSGAppearanceMap.get( bottomToTopAxis ), false );
 	}
 	public ExtravagantAxes( double unitLength, double forwardFactor ) {
 		Arrow sgXAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X );

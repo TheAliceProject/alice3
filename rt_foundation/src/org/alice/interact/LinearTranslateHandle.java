@@ -54,7 +54,7 @@ public class LinearTranslateHandle extends LinearDragHandle {
 	
 	@Override
 	protected void createShape() {
-		this.arrow = new Arrow(1.1d, .2d, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+		this.arrow = new Arrow(1, 0.3, 0.25, 0.5, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
 		this.arrow.setParent( this );
 	}
 	

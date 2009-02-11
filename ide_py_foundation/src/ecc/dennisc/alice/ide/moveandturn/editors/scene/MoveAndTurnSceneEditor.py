@@ -11,20 +11,20 @@ from edu.cmu.cs.dennisc import lookingglass
 
 import ecc
 
-class BogusSelectionOperation( alice.ide.AbstractUndoableOperation ):
-	def __init__(self, nextSelection, prevSelection ):
-		alice.ide.AbstractUndoableOperation.__init__( self )
-		self._nextSelection = nextSelection
-		self._prevSelection = prevSelection
-	def prepare(self, e, observer):
-		return alice.ide.Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY
-	def perform(self):
-		self.redo()
-	def redo(self):
-		self.getIDE().setFieldSelection( self._nextSelection )
-	def undo(self):
-		self.getIDE().setFieldSelection( self._prevSelection )
-	
+#class BogusSelectionOperation( alice.ide.AbstractUndoableOperation ):
+#	def __init__(self, nextSelection, prevSelection ):
+#		alice.ide.AbstractUndoableOperation.__init__( self )
+#		self._nextSelection = nextSelection
+#		self._prevSelection = prevSelection
+#	def prepare(self, e, observer):
+#		return alice.ide.Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY
+#	def perform(self):
+#		self.redo()
+#	def redo(self):
+#		self.getIDE().setFieldSelection( self._nextSelection )
+#	def undo(self):
+#		self.getIDE().setFieldSelection( self._prevSelection )
+#	
 
 class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor ):
 	def __init__( self, isLightweightDesired ):
@@ -98,7 +98,7 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		self.getSceneType().fields.add( [ astField ] )
 
 		self.putInstanceForField( astField, instance )
-		self.getIDE().setSelectedField( astField )
+		self.getIDE().setFieldSelection( astField )
 #		self._select( astField )
 
 	def addInstance( self, instance ):
