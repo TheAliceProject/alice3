@@ -162,22 +162,7 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 			self.popCameraNavigationDragAdapterEnabled()
 
 	def handleDelete(self, node):
-		print "handleDelete:", node
-		if self._mapFieldToInstance.has_key( node ):
-			instance = self._mapFieldToInstance[ node ]
+		instance = self.mapFieldToInstance.get( node )
+		if instance:
 			self.getScene().removeComponent( ecc.dennisc.alice.vm.getInstanceInJava( instance ) )
-			#print "handleDelete: (instance)", instance
-
-	def removeASTField( self, astField ):
-		#instance = self._mapFieldToInstance[ astField ]
-		sceneType = self.getSceneType()
-		index = sceneType.fields.indexOf( astField )
-		if index != - 1:
-			sceneType.fields.remove( index )
-		else:
-			print astField
-			raise sceneType
-		#self._sceneFieldsComposite._removeDatum( astField )
-		instance = self._mapFieldToInstance[ astField ]
-		self._scene.removeComponent( ecc.dennisc.alice.vm.getInstanceInJava( instance ) )
 		
