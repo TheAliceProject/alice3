@@ -37,6 +37,10 @@ jarMap = {
 		[ 
 			"rt_foundation", 
 			[ "edu" ] 
+		],
+		[ 
+			"rt_foundation", 
+			[ "org" ] 
 		]
 	], 
 	"moveandturn" : [ 
@@ -49,26 +53,26 @@ jarMap = {
 			[ "org" ] 
 		]
 	], 
-#	"lg_walkandtouch" : [
-#		[ 
-#			"lg_walkandtouch", 
-#			[ "edu" ] 
-#		],
-#		[ 
-#			"lg_walkandtouch_gallery_generated", 
-#			[ "edu" ] 
-#		],
-#	], 
-#	"storytelling" : [
-#		[ 
-#			"rt_storytelling",
-#			[ "org", "edu" ] 
-#		],
-#		[ 
-#			"rt_storytelling_generated_depended_upon",
-#			[ "org" ] 
-#		]
-#	], 
+	"lg_walkandtouch" : [
+		[ 
+			"lg_walkandtouch", 
+			[ "edu" ] 
+		],
+		[ 
+			"lg_walkandtouch_gallery_generated", 
+			[ "edu" ] 
+		],
+	], 
+	"storytelling" : [
+		[ 
+			"rt_storytelling",
+			[ "org", "edu" ] 
+		],
+		[ 
+			"rt_storytelling_generated_depended_upon",
+			[ "org" ] 
+		]
+	], 
 	"ide" : [
 		[ 
 			"ide_launcher", 
