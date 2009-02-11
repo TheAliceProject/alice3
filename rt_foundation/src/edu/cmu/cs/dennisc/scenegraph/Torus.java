@@ -107,7 +107,7 @@ public class Torus extends Shape {
 	public final BoundDoubleProperty majorRadius = new BoundDoubleProperty( this, 0.9 ) {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
-			assert value >= 0.0;
+			assert value >= 0.0 : value;
 			super.setValue( owner, value );
 		}
 	};

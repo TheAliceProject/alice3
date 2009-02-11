@@ -125,6 +125,7 @@ public abstract class ManipulationHandle extends Transformable {
 	
 	public void setAnimator( Animator animator )
 	{
+		assert animator != null;
 		this.animator = animator;
 		this.createAnimations();
 	}

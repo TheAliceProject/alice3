@@ -51,7 +51,12 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 				MoveAndTurnSceneEditor.this.add( MoveAndTurnSceneEditor.this.cardPane, java.awt.BorderLayout.CENTER );
 				MoveAndTurnSceneEditor.this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 				MoveAndTurnSceneEditor.this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
-				MoveAndTurnSceneEditor.this.globalDragAdapter.setAnimator( MoveAndTurnSceneEditor.this.program.getAnimator() );
+				edu.cmu.cs.dennisc.animation.Animator animator = MoveAndTurnSceneEditor.this.program.getAnimator();
+				while( animator == null ) {
+					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+					animator = MoveAndTurnSceneEditor.this.program.getAnimator();
+				}
+				MoveAndTurnSceneEditor.this.globalDragAdapter.setAnimator( animator );
 			}
 		}.start();
 	}
@@ -70,6 +75,22 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		panel.setLayout( new java.awt.BorderLayout() );
 		panel.add( this.controlsForOverlayPane );
 	}
+	
+	@Override
+	public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ide.event.FieldSelectionEvent e ) {
+		super.fieldSelectionChanged( e );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = e.getNextValue();
+		Object instance = this.getInstanceForField( field );
+		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
+			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
+			instance = instanceInAlice.getInstanceInJava();
+		}
+		if( instance instanceof org.alice.apis.moveandturn.Model ) {
+			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
+			this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
+		}
+	}
+	
 	
 	@Override
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {

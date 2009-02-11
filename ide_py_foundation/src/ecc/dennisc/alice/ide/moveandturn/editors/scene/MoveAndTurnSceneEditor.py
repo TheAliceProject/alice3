@@ -161,8 +161,16 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 
 	def addASTField( self, astField, instance ):
 		#self.getScene()FieldsComposite._addDatum( astField )
+		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
 		self._mapFieldToInstance[ astField ] = instance
-		self._mapInstanceInJavaToField[ ecc.dennisc.alice.vm.getInstanceInJava( instance ) ] = astField
+		self._mapInstanceInJavaToField[ instanceInJava ] = astField
+		
+		if isinstance( instanceInJava, apis.moveandturn.Model ):
+			print instanceInJava
+			instanceInJava.getSGComposite().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS )
+			instanceInJava.getSGComposite().putBonusDataFor( org.alice.interact.GlobalDragAdapter.BOUNDING_BOX_KEY, instanceInJava.getAxisAlignedMinimumBoundingBox())
+		
+		
 
 	def handleDelete(self, node):
 		print "handleDelete:", node
