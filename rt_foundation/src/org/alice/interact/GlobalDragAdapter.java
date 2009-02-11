@@ -333,6 +333,7 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 	{
 		if (selectedObject != selected)
 		{
+			this.fireSelecting( new SelectionEvent(this, selected) );
 			for (int i=0; i<currentManipulationHandles.size(); i++)
 			{
 				ManipulationHandle handle = currentManipulationHandles.get( i );
@@ -356,7 +357,10 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 			currentManipulationHandles = nextManipulationHandles;
 			nextManipulationHandles = tempHandles;
 			
+			this.currentInputState.setCurrentlySelectedObject( selected ); 
 			selectedObject = selected;
+			this.fireSelected( new SelectionEvent(this, selected) );
+			this.handleStateChange();
 		}
 	}
 	
@@ -561,19 +565,19 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		PickHint clickedObjectType = PickCondition.getPickType( this.currentInputState.getClickPickResult() );
 		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
 		{
-			this.currentInputState.setCurrentlySelectedObject( this.currentInputState.getClickPickedTransformable(true) );
+			this.setSelectedObject( this.currentInputState.getClickPickedTransformable(true) );
 		}
 		else if (clickedObjectType.intersects( PickHint.HANDLES) )
 		{
 			Transformable pickedHandle = this.currentInputState.getClickPickedTransformable(true);
 			if (pickedHandle instanceof RotationRingHandle)
 			{
-				this.currentInputState.setCurrentlySelectedObject( ((RotationRingHandle)pickedHandle).getManipulatedObject() ); 
+				this.setSelectedObject( ((RotationRingHandle)pickedHandle).getManipulatedObject() );
 			}
 		}
 		else
 		{
-			this.currentInputState.setCurrentlySelectedObject( null );
+			this.setSelectedObject( null );
 		}
 		this.handleStateChange();
 	}
