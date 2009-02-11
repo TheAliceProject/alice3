@@ -109,6 +109,11 @@ public class RotationRingHandle extends ManipulationHandle{
 			protected void updateValue( Double value ) {
 				if (RotationRingHandle.this.sgTorus != null)
 				{
+					if (value < 0.0d)
+					{
+						System.err.println("Torus radius is trying to be "+value);
+						value = 0.0d;
+					}
 					RotationRingHandle.this.sgTorus.majorRadius.setValue( value );
 				}
 			}
