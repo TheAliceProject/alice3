@@ -81,6 +81,12 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		if instance:
 			self.addInstance( instance )
 
+#	def _select(self, nextField ):
+#		prevField = self._currSelectedField
+#		operation = self._createSelectionOperation( nextField, prevField )
+#		event = None
+#		alice.ide.IDE.getSingleton().performIfAppropriate( operation, event )
+
 	def addASTFieldFor( self, instance ):
 		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
 		name = instanceInJava.getName()
@@ -92,8 +98,8 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		self.getSceneType().fields.add( [ astField ] )
 
 		self.putInstanceForField( astField, instance )
-		
-		self._select( astField )
+		self.getIDE().setSelectedField( astField )
+#		self._select( astField )
 
 	def addInstance( self, instance ):
 		self.addASTFieldFor( instance )
@@ -171,10 +177,4 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		#self._sceneFieldsComposite._removeDatum( astField )
 		instance = self._mapFieldToInstance[ astField ]
 		self._scene.removeComponent( ecc.dennisc.alice.vm.getInstanceInJava( instance ) )
-	
-	def _select(self, nextField ):
-		prevField = self._currSelectedField
-		operation = self._createSelectionOperation( nextField, prevField )
-		event = None
-		alice.ide.IDE.getSingleton().performIfAppropriate( operation, event )
 		
