@@ -366,16 +366,6 @@ class MembersTabComponent( javax.swing.JPanel ):
 			for type in _getTypes( currentlySelectedField ):
 				linePane = zoot.ZLineAxisPane()
 				linePane.add( alice.ide.editors.common.TypePane( type ) )
-				if type.isDeclaredInAlice():
-					linePane.add( javax.swing.Box.createHorizontalStrut( 32 ) )
-					linePane.add( self._getCreateMemberButton( type ) )
-#					gbc.fill = java.awt.GridBagConstraints.NONE
-#					gbc.insets.top = 10
-#					gbc.insets.bottom = 4
-#					self.add( self._getCreateMemberButton( type ), gbc )
-#					gbc.insets.top = 2
-#					gbc.insets.bottom = 2
-#					gbc.fill = java.awt.GridBagConstraints.BOTH
 				linePane.add( javax.swing.Box.createHorizontalGlue() )
 				gbc.insets.left = 2
 				self.add( linePane, gbc )
@@ -398,6 +388,13 @@ class MembersTabComponent( javax.swing.JPanel ):
 #						self.add( classInstanceCreationTemplate, gbc )
 #						gbc.fill = java.awt.GridBagConstraints.BOTH
 				self.add( self._getTypeMembersPane( type ), gbc )
+				if type.isDeclaredInAlice():
+					#linePane.add( javax.swing.Box.createHorizontalStrut( 32 ) )
+					linePane = zoot.ZLineAxisPane()
+					linePane.add( self._getCreateMemberButton( type ) )
+					linePane.add( javax.swing.Box.createHorizontalGlue() )
+					self.add( linePane, gbc )
+					self.add( javax.swing.Box.createVerticalStrut( 24 ), gbc )
 				
 			gbc.weightx = 1.0
 			gbc.weighty = 1.0

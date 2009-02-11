@@ -28,6 +28,9 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
 	public StatementListPropertyPane( final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
 		super( javax.swing.BoxLayout.PAGE_AXIS, property );
+		
+		this.setLayout( new edu.cmu.cs.dennisc.swing.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, 4 ) );
+		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 12, 16 ) );
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
