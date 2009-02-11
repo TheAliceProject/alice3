@@ -101,6 +101,7 @@ public class Torus extends Shape {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
 			assert value >= 0.0;
+			assert value.isNaN() == false;
 			super.setValue( owner, value );
 		}
 	};
@@ -108,6 +109,7 @@ public class Torus extends Shape {
 		@Override
 		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, Double value) {
 			assert value >= 0.0 : value;
+			assert value.isNaN() == false;
 			super.setValue( owner, value );
 		}
 	};
