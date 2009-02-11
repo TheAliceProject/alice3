@@ -126,7 +126,10 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		sceneInstance = org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.createScene( self, sceneField )
 		if sceneInstance:
 			self.restoreProjectProperties()
-			
+
+		#fields = sceneField.getValueType().getDeclaredFields()
+		#lastField = fields.get( fields.size() - 1 )
+		#self.getIDE().setFieldSelection( lastField )
 		return sceneInstance
 
 	def getSceneAutomaticSetUpMethod( self ):
