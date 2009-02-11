@@ -26,8 +26,11 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.util.List;
 
 import org.alice.interact.ModifierMask.ModifierKey;
+import org.alice.interact.event.SelectionEvent;
+import org.alice.interact.event.SelectionListener;
 
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -65,6 +68,37 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 	private java.util.Vector< ManipulationHandle > nextManipulationHandles = new java.util.Vector< ManipulationHandle >();
 	
 	private Transformable selectedObject = null;
+	
+	private List< SelectionListener > selectionListeners = new java.util.LinkedList< SelectionListener >(); 
+	public void addPropertyListener( SelectionListener selectionListener ) {
+		synchronized( this.selectionListeners ) {
+			this.selectionListeners.add( selectionListener );
+		}
+	}
+	public void removeSelectionListener( SelectionListener selectionListener ) {
+		synchronized( this.selectionListeners ) {
+			this.selectionListeners.remove( selectionListener );
+		}
+	}
+	public Iterable< SelectionListener > getSelectionListeners() {
+		return this.selectionListeners;
+	}
+
+	private void fireSelecting( SelectionEvent e ) {
+		synchronized( this.selectionListeners ) {
+			for( SelectionListener selectionListener : this.selectionListeners ) {
+				selectionListener.selecting( e );
+			}
+		}
+	}
+	private void fireSelected( SelectionEvent e ) {
+		synchronized( this.selectionListeners ) {
+			for( SelectionListener selectionListener : this.selectionListeners ) {
+				selectionListener.selected( e );
+			}
+		}
+	}
+
 	
 	protected class HandleSet
 	{
