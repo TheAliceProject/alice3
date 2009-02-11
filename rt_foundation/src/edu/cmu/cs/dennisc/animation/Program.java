@@ -121,7 +121,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 		m_animator.setSpeedFactor( speed );
 	}
 
-	protected Animator getAnimator() {
+	public Animator getAnimator() {
 		return m_animator;
 	}
 	protected void setAnimator( Animator animator ) {

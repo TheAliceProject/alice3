@@ -32,6 +32,7 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 	private edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane controlsForOverlayPane = this.createControlsForOverlayPane();
 	private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 
+	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 
 	public MoveAndTurnSceneEditor() {
 		this.setLayout( new java.awt.BorderLayout() );
@@ -49,6 +50,8 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 				MoveAndTurnSceneEditor.this.cardPane = new edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass );
 				MoveAndTurnSceneEditor.this.add( MoveAndTurnSceneEditor.this.cardPane, java.awt.BorderLayout.CENTER );
 				MoveAndTurnSceneEditor.this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+				MoveAndTurnSceneEditor.this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+				MoveAndTurnSceneEditor.this.globalDragAdapter.setAnimator( MoveAndTurnSceneEditor.this.program.getAnimator() );
 			}
 		}.start();
 	}
