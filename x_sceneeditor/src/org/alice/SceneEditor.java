@@ -21,7 +21,7 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package org.alice.interact;
+package org.alice;
 import org.alice.apis.moveandturn.DirectionalLight;
 import org.alice.apis.moveandturn.Program;
 import org.alice.apis.moveandturn.Scene;
@@ -29,6 +29,8 @@ import org.alice.apis.moveandturn.SymmetricPerspectiveCamera;
 import org.alice.apis.moveandturn.TurnDirection;
 import org.alice.apis.moveandturn.gallery.animals.Chicken;
 import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
+import org.alice.interact.GlobalDragAdapter;
+import org.alice.interact.PickHint;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -48,7 +50,7 @@ import edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter;
  */
 public class SceneEditor extends Program {
 	
-	public static final String BOUNDING_BOX_KEY = "BOUNDING_BOX_KEY";
+	
 	
 	static {
 		Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler() {
@@ -74,7 +76,7 @@ public class SceneEditor extends Program {
 		grassyGround.getSGComposite().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.GROUND );
 		scene.addComponent(chicken);
 		chicken.getSGComposite().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.MOVEABLE_OBJECTS );
-		chicken.getSGComposite().putBonusDataFor( SceneEditor.BOUNDING_BOX_KEY, chicken.getAxisAlignedMinimumBoundingBox());
+		chicken.getSGComposite().putBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY, chicken.getAxisAlignedMinimumBoundingBox());
 		
 //		Jack jack = new Jack();
 //		jack.setModest( false );
