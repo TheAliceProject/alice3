@@ -29,11 +29,7 @@ class BogusSelectionOperation( alice.ide.AbstractUndoableOperation ):
 class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor ):
 	def __init__( self, isLightweightDesired ):
 		org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.__init__( self )
-		self._sceneField = None
 		self._currSelectedField = None
-		self._mapFieldToInstance = {}
-		self._mapInstanceInJavaToField = {}
-		self._typeMap = {}
 		print "isLightweightDesired paramater not used", isLightweightDesired
 
 	def createControlsForOverlayPane( self ):
@@ -43,7 +39,7 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		#self._controlsForOverlayPane.handleExpandContractChange( isExpanded )
 	
 	def getScene(self):
-		return self.getProgram().getScene()
+		return self.getSceneInstanceInJava()
 	
 	def getSceneType( self ):
 		return self.getSceneField().getValueType()
@@ -85,31 +81,55 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		if instance:
 			self.addInstance( instance )
 
-	
+	def addASTField( self, astField, instance ):
+		pass
+#		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
+#		if isinstance( instanceInJava, apis.moveandturn.Model ):
+#			instanceInJava.getSGComposite().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS )
+#			instanceInJava.getSGComposite().putBonusDataFor( org.alice.interact.GlobalDragAdapter.BOUNDING_BOX_KEY, instanceInJava.getAxisAlignedMinimumBoundingBox())
+
+	def addASTFieldFor( self, instance ):
+		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
+		name = instanceInJava.getName()
+		#programType = alice.ast.TypeDeclaredInJava.get( nameable.__class__ )
+		type = instance.getType()
+		astField = alice.ast.FieldDeclaredInAlice( name, type, alice.ast.InstanceCreation( type.getDeclaredConstructor( [] ), [] ) )
+		astField.finalVolatileOrNeither.setValue( alice.ast.FieldModifierFinalVolatileOrNeither.FINAL )
+		astField.access.setValue( alice.ast.Access.PRIVATE )
+		self.getSceneType().fields.add( [ astField ] )
+		self.addASTField( astField, instance )
+		self._registerType( type )
+		#self._sceneFieldsComposite.setSelectedValue( astField )
+		self._select( astField )
+
+	def addInstance( self, instance ):
+		self.addASTFieldFor( instance )
+		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
+		if isinstance( instanceInJava, apis.moveandturn.Model ):
+			camera = self.getScene().findFirstMatch( apis.moveandturn.AbstractCamera )
+			if camera:
+				java.lang.Thread( ecc.dennisc.lang.ApplyRunnable( self._getGoodLookAtShowInstanceAndReturnCamera, ( camera, instanceInJava, ) ) ).start()
+			else:
+				self.getScene().addComponent( instanceInJava )
+		else:
+			self.getScene().addComponent( instanceInJava )
+		alice.ide.IDE.getSingleton().markChanged( "scene program addInstance" )
 
 	def createScene( self, sceneField ):
-
-		if self._sceneField:
-			program = self.getProgram()
+		program = self.getProgram()
+		scene = self.getScene()
+		if scene:
 			lg = program.getOnscreenLookingGlass()
 			program.setScene( None )
 			lg.removeCamera( lg.getCameraAt( 0 ) )
 			#self._sceneFieldsComposite.setListData( [] )
 
-		self._sceneField = sceneField
-		self._typeMap = {}
 		sceneInstance = org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.createScene( self, sceneField )
-		if self._sceneField:
-			sceneType = self._sceneField.getValueType()
-
+		if sceneInstance:
+			sceneType = self.getSceneType()
 			self.addASTField( sceneField, sceneInstance )
 			for field in sceneType.fields.iterator():
 				self.addASTField( field, self.getVM().get( field, sceneInstance ) )
-				self._registerType( field.getValueType() )
-			#self._sceneFieldsComposite.setSelectedValue( field )
-
-			#self.getProgram().setScene( sceneInstance.getInstanceInJava() )
-			#self.getContentPane().revalidate()
 			self.restoreProjectProperties()
 			
 		return sceneInstance
@@ -130,9 +150,6 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 	def _createSelectionOperation(self, nextField, prevField ):
 		return BogusSelectionOperation( nextField, prevField )
 
-	def _registerType( self, type ):
-		self._typeMap[ type.getName() ] = type
-
 	def _getGoodLookAtShowInstanceAndReturnCamera( self, camera, instance ):
 		self.pushAndSetCameraNavigationDragAdapterEnabled( False )
 		try:
@@ -145,53 +162,12 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		finally:
 			self.popCameraNavigationDragAdapterEnabled()
 
-
-	def addInstance( self, instance ):
-		self.addASTFieldFor( instance )
-		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
-		if isinstance( instanceInJava, apis.moveandturn.Model ):
-			camera = self.getScene().findFirstMatch( apis.moveandturn.AbstractCamera )
-			if camera:
-				java.lang.Thread( ecc.dennisc.lang.ApplyRunnable( self._getGoodLookAtShowInstanceAndReturnCamera, ( camera, instanceInJava, ) ) ).start()
-			else:
-				self.getScene().addComponent( instanceInJava )
-		else:
-			self.getScene().addComponent( instanceInJava )
-		alice.ide.IDE.getSingleton().markChanged( "scene program addInstance" )
-
-	def addASTField( self, astField, instance ):
-		#self.getScene()FieldsComposite._addDatum( astField )
-		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
-		self._mapFieldToInstance[ astField ] = instance
-		self._mapInstanceInJavaToField[ instanceInJava ] = astField
-		
-		if isinstance( instanceInJava, apis.moveandturn.Model ):
-			print instanceInJava
-			instanceInJava.getSGComposite().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS )
-			instanceInJava.getSGComposite().putBonusDataFor( org.alice.interact.GlobalDragAdapter.BOUNDING_BOX_KEY, instanceInJava.getAxisAlignedMinimumBoundingBox())
-		
-		
-
 	def handleDelete(self, node):
 		print "handleDelete:", node
 		if self._mapFieldToInstance.has_key( node ):
 			instance = self._mapFieldToInstance[ node ]
 			self.getScene().removeComponent( ecc.dennisc.alice.vm.getInstanceInJava( instance ) )
 			#print "handleDelete: (instance)", instance
-
-	def addASTFieldFor( self, instance ):
-		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
-		name = instanceInJava.getName()
-		#programType = alice.ast.TypeDeclaredInJava.get( nameable.__class__ )
-		type = instance.getType()
-		astField = alice.ast.FieldDeclaredInAlice( name, type, alice.ast.InstanceCreation( type.getDeclaredConstructor( [] ), [] ) )
-		astField.finalVolatileOrNeither.setValue( alice.ast.FieldModifierFinalVolatileOrNeither.FINAL )
-		astField.access.setValue( alice.ast.Access.PRIVATE )
-		self.getSceneType().fields.add( [ astField ] )
-		self.addASTField( astField, instance )
-		self._registerType( type )
-		#self._sceneFieldsComposite.setSelectedValue( astField )
-		self._select( astField )
 
 	def removeASTField( self, astField ):
 		#instance = self._mapFieldToInstance[ astField ]
@@ -221,60 +197,3 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 					self._select( nextField )
 				except KeyError:
 					print "could not find field for", instance
-
-#	def valueChanged( self, e ):
-#		field = e.getSource().getSelectedValue()
-#		operation = self._createSelectionOperation( field, self._currSelectedField )
-#		self._currSelectedField = field
-#		selection = ecc.dennisc.alice.vm.getInstanceInJava( self._mapFieldToInstance[ field ] )
-#		if self._prevSelection != selection:
-#			if self._prevSelection:
-#				try:
-#					self._prevSelection.setBoundingBoxShowing( False )
-#				except:
-#					#import traceback
-#					#traceback.print_exc()
-#					print "valueChanged: setBoundingBoxShowing( False ) failed: ", self._prevSelection
-#			self._prevSelection = selection
-#			if self._prevSelection:
-#				try:
-#					self._prevSelection.setBoundingBoxShowing( True )
-#				except:
-#					#import traceback
-#					#traceback.print_exc()
-#					print "valueChanged: setBoundingBoxShowing( True ) failed: ", self._prevSelection
-#					
-#			alice.ide.IDE.getSingleton().performIfAppropriate( operation, e )
-
-#	def setProgramType( self, programType ):
-#		if self._programType:
-#			self.setScene( None )
-#			self.getOnscreenLookingGlass().removeCamera( self.getOnscreenLookingGlass().getCameraAt( 0 ) )
-#			#self._sceneFieldsComposite.setListData( [] )
-#
-#		self._typeMap = {}
-#		ecc.dennisc.alice.ide.ProgramWithSceneMixin.setProgramType( self, programType )
-#		if self._programType:
-#			sceneType = self.getSceneType()
-#
-#			self._vm.setConstructorBodyExecutionDesired( False )
-#			try:
-#				sceneInstance = self.createInstance( sceneType )
-#			finally:
-#				self._vm.setConstructorBodyExecutionDesired( True )
-#			
-#			#self._astField = alice.ast.FieldDeclaredInAlice( "scene", self._programType, alice.ast.NullLiteral() )
-#	
-#			automaticSetUpMethod = self.getSceneAutomaticSetUpMethod()
-#			self._vm.invokeEntryPoint( automaticSetUpMethod, sceneInstance, [] )
-#
-#			self.addASTField( self.getSceneField(), sceneInstance )
-#			for field in sceneType.fields.iterator():
-#				self.addASTField( field, self._vm.get( field, sceneInstance ) )
-#				self._registerType( field.getValueType() )
-#			#self._sceneFieldsComposite.setSelectedValue( field )
-#
-#
-#			self._scene = sceneInstance.getInstanceInJava()
-#			self.setScene( self._scene )
-#			self.getContentPane().revalidate()

@@ -41,23 +41,6 @@ class ExpressionPropertyBlank( cascade.Blank ):
 	def addChildren(self):
 		getIDE().addFillIns( self, self._expressionProperty.getExpressionType() )
 
-class InfixExpressionFillIn( cascade.SimpleFillIn ):
-	def __init__( self, infixExpression ):
-		cascade.SimpleFillIn.__init__( self, infixExpression )
-
-	def createMenuProxy(self):
-		return alice.ide.editors.code.ExpressionPane( self.getModel() )
-	
-	def addChildren(self):
-		self.addChild( ExpressionPropertyBlank( self.getModel().leftOperand ) )
-		self.addChild( ExpressionPropertyBlank( self.getModel().rightOperand ) )
-
-	def getValue(self):
-		infixExpression = self.getModel()
-		infixExpression.leftOperand.setValue( self.getChildren()[ 0 ].getSelectedFillIn().getValue() )
-		infixExpression.rightOperand.setValue( self.getChildren()[ 1 ].getSelectedFillIn().getValue() )
-		return infixExpression
-
 class ExpressionBlank( cascade.Blank ):
 	def __init__( self, type ):
 		self._type = type
@@ -115,6 +98,7 @@ class ArrayAccessFillIn( cascade.FillIn ):
 	def createMenuProxy(self):
 		expression = alice.ast.ArrayAccess( self._arrayType, self._arrayExpression, alice.ide.editors.code.EmptyExpression( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) )
 		return alice.ide.editors.code.ExpressionPane( expression )
+
 
 class InfixExpressionOperatorFillIn( SimpleExpressionFillIn ):
 	def __init__(self, expression, operandType):
@@ -177,6 +161,7 @@ class ArithmeticInfixExpressionOperatorBlank( InfixExpressionOperatorBlank ):
 		self.addChild( self._createArithmeticInfixExpressionFillIn( alice.ast.ArithmeticInfixExpression.Operator.INTEGER_REMAINDER ) )
 	def _createArithmeticInfixExpressionFillIn( self, operator ):
 		return self._createInfixExpressionFillIn( operator, self._expressionInstantiator, self._operandCls )
+
 
 class InfixExpressionFillIn( cascade.FillIn ):
 	def __init__( self, expressionInstantiator, operatorBlankInstantiator, text ):

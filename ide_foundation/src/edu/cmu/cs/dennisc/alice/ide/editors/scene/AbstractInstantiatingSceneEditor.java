@@ -27,15 +27,52 @@ package edu.cmu.cs.dennisc.alice.ide.editors.scene;
  */
 public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEditor {
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, Object > mapFieldToInstance = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, Object >();
-	private void putInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instanceInJava ) {
-		mapFieldToInstance.put( field, instanceInJava );
+	private java.util.Map< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField > mapInstanceToField = new java.util.HashMap< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField >();
+	private java.util.Map< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField > mapInstanceInJavaToField = new java.util.HashMap< Object, edu.cmu.cs.dennisc.alice.ast.AbstractField >();
+
+	protected void putFieldForInstanceInJava( Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		this.mapInstanceInJavaToField.put( instanceInJava, field );
 	}
+
+	protected void putInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
+		this.mapFieldToInstance.put( field, instance );
+		this.mapInstanceToField.put( instance, field );
+		Object instanceInJava;
+		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
+			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
+			instanceInJava = instanceInAlice.getInstanceInJava();
+		} else {
+			instanceInJava = instance;
+		}
+		this.putFieldForInstanceInJava( instanceInJava, field );
+	}
+
 	protected Object getInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return this.mapFieldToInstance.get( field );
 	}
-	public void addFieldToSceneType( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instanceInJava ) {
+	protected Object getInstanceInJavaForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		Object rv;
+		Object instance = this.mapFieldToInstance.get( field );
+		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
+			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;
+			rv = instanceInAlice.getInstanceInJava();
+		} else {
+			rv = instance;
+		}
+		return rv;
+	}
+	
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstance( Object instance ) {
+		return this.mapInstanceToField.get( instance );
+	}
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInJava( Object instanceInJava ) {
+		return this.mapInstanceInJavaToField.get( instanceInJava );
+	}
+
+	
+	public void addFieldToSceneType( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
 		super.addFieldToSceneType( field );
-		putInstanceForField( field, instanceInJava );
+		putInstanceForField( field, instance );
 	}
 	
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
@@ -44,6 +81,7 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 			edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
 			assert sceneType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 			Object rv = getVM().createInstanceEntryPoint( sceneType );
+			putInstanceForField( sceneField, rv );
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 				Object value = this.getVM().getAccessForSceneEditor( field, rv );
 				putInstanceForField( field, value );
@@ -57,6 +95,10 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		mapFieldToInstance.clear();
 		super.setSceneField( sceneField );
-		Object instance = this.createScene( sceneField );
+		Object unused = this.createScene( sceneField );
+	}
+	
+	protected Object getSceneInstanceInJava() {
+		return this.getInstanceInJavaForField( this.getSceneField() );
 	}
 }

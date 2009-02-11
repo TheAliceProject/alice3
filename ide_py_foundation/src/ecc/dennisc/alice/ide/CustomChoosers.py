@@ -312,13 +312,6 @@ class ArrayInitializerListPropertyVC( ListPropertyVC ):
 class ArrayInitializerPane( NodeListPropertyPane, javax.swing.event.ListDataListener ):
 	def _getType( self ):
 		return self._listVC.getType()
-	def getPreferredSize( self ):
-		type = self._getType()
-		if type and type.isArray() == True:
-			rv = NodeListPropertyPane.getPreferredSize( self )
-		else:
-			rv = java.awt.Dimension( 0, 0 )
-		return rv
 
 	
 	def contentsChanged( self, e ):
@@ -333,6 +326,13 @@ class ArrayInitializerPane( NodeListPropertyPane, javax.swing.event.ListDataList
 		rv.getModel().addListDataListener( self )
 		return rv
 
+#	def getPreferredSize( self ):
+#		type = self._getType()
+#		if type and type.isArray() == True:
+#			rv = NodeListPropertyPane.getPreferredSize( self )
+#		else:
+#			rv = java.awt.Dimension( 0, 0 )
+#		return rv
 	def getPreferredSize( self ):
 		rv = NodeListPropertyPane.getPreferredSize( self )
 		rv.width = max( rv.width, 400 )

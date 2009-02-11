@@ -47,61 +47,14 @@ public class ExtravagantAxes extends Transformable {
 		s_axisToSGAppearanceMap.put( Cylinder.BottomToTopAxis.NEGATIVE_Z, sgWhiteAppearance );
 	}
 	
-	private class Axis extends Transformable {
-		public Axis( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis ) {
-			SingleAppearance frontFacingAppearance = s_axisToSGAppearanceMap.get( bottomToTopAxis );
-			
-			double lengthCylinder = unit * lengthFactor * 0.8;
-			double radiusCylinder = unit * 0.05;
-			double lengthCone = unit * lengthFactor * 0.2;
-			double radiusCone = radiusCylinder * 1.2;
-
-			Visual sgVisualCylinder = new Visual();
-			sgVisualCylinder.frontFacingAppearance.setValue( frontFacingAppearance );
-			
-			Cylinder sgCylinder = new Cylinder();
-			sgCylinder.topRadius.setValue( radiusCylinder );
-			sgCylinder.bottomRadius.setValue( radiusCylinder );
-			sgCylinder.length.setValue( lengthCylinder );
-			sgCylinder.bottomToTopAxis.setValue( bottomToTopAxis );
-			sgCylinder.hasTopCap.setValue( false );
-			//todo?
-			sgCylinder.hasBottomCap.setValue( false );
-			
-			
-			edu.cmu.cs.dennisc.math.Vector3 translation = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(  
-				new edu.cmu.cs.dennisc.math.Vector3( lengthCylinder, lengthCylinder, lengthCylinder ), 
-				bottomToTopAxis.accessVector() 
-			);
-			
-			Transformable sgTransformableCone = new Transformable();
-			sgTransformableCone.applyTranslation( translation );
-
-			Visual sgVisualCone = new Visual();
-			sgVisualCone.frontFacingAppearance.setValue( frontFacingAppearance );
-
-			Cylinder sgCone = new Cylinder();
-		    sgCone.topRadius.setValue( 0.0 );
-		    sgCone.bottomRadius.setValue( radiusCone );
-		    sgCone.length.setValue( lengthCone );
-		    sgCone.bottomToTopAxis.setValue( bottomToTopAxis );
-		    sgCone.hasTopCap.setValue( false ); //redundant
-		    sgCone.hasBottomCap.setValue( true );
-		    
-		    sgVisualCylinder.geometries.setValue( new Geometry[] { sgCylinder } );
-		    sgVisualCone.geometries.setValue( new Geometry[] { sgCone } );
-		    
-		    sgVisualCylinder.setParent( this );
-		    sgTransformableCone.setParent( this );
-		    sgVisualCone.setParent( sgTransformableCone );
-		}
+	private Arrow createArrow( double unit, double lengthFactor, Cylinder.BottomToTopAxis bottomToTopAxis ) {
+		return new Arrow( unit, lengthFactor, bottomToTopAxis, s_axisToSGAppearanceMap.get( bottomToTopAxis ) );
 	}
-	
 	public ExtravagantAxes( double unitLength, double forwardFactor ) {
-		Axis sgXAxis = new Axis( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X );
-		Axis sgYAxis = new Axis( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Y );
-		Axis sgZAxis = new Axis( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z );
-		Axis sgFAxis = new Axis( unitLength, 2.0, Cylinder.BottomToTopAxis.NEGATIVE_Z );
+		Arrow sgXAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_X );
+		Arrow sgYAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Y );
+		Arrow sgZAxis = createArrow( unitLength, 1.0, Cylinder.BottomToTopAxis.POSITIVE_Z );
+		Arrow sgFAxis = createArrow( unitLength, 2.0, Cylinder.BottomToTopAxis.NEGATIVE_Z );
 
 		sgXAxis.setParent( this );
 	    sgYAxis.setParent( this );

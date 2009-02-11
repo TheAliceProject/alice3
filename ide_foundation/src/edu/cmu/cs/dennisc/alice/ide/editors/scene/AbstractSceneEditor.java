@@ -121,6 +121,7 @@ public abstract class AbstractSceneEditor extends edu.cmu.cs.dennisc.alice.ide.I
 		this.revalidate();
 		this.repaint();
 	}
+	
 	public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 	}
 	public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {

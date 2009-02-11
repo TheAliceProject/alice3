@@ -22,6 +22,15 @@
  */
 package org.alice.apis.moveandturn.ide.editors.scene;
 
+import org.alice.apis.moveandturn.gallery.environments.Ground;
+import org.alice.apis.moveandturn.gallery.environments.grounds.DirtGround;
+import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
+import org.alice.apis.moveandturn.gallery.environments.grounds.MoonSurface;
+import org.alice.apis.moveandturn.gallery.environments.grounds.SandyGround;
+import org.alice.apis.moveandturn.gallery.environments.grounds.SeaSurface;
+import org.alice.apis.moveandturn.gallery.environments.grounds.SnowyGround;
+import org.alice.interact.GlobalDragAdapter;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -61,6 +70,40 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		}.start();
 	}
 
+	private static boolean isGround( org.alice.apis.moveandturn.Model model ) {
+		Class[] clses = { Ground.class, GrassyGround.class, DirtGround.class, MoonSurface.class, SandyGround.class, SeaSurface.class, SnowyGround.class };
+		for( Class<? extends org.alice.apis.moveandturn.PolygonalModel> cls : clses ) {
+			if( cls.isAssignableFrom( model.getClass() ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	protected void putFieldForInstanceInJava( java.lang.Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super.putFieldForInstanceInJava( instanceInJava, field );
+		if( instanceInJava instanceof org.alice.apis.moveandturn.Transformable ) {
+			org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instanceInJava;
+			edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = transformable.getSGTransformable();
+			if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
+				org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;
+				if( MoveAndTurnSceneEditor.isGround( model ) ) {
+					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.GROUND );
+				} else {
+					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
+					sgTransformable.putBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY, model.getAxisAlignedMinimumBoundingBox());
+				}
+			} else if( transformable instanceof org.alice.apis.moveandturn.Light ) {
+				org.alice.apis.moveandturn.Light light = (org.alice.apis.moveandturn.Light)instanceInJava;
+				sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.LIGHT );
+			} else if( transformable instanceof org.alice.apis.moveandturn.AbstractCamera ) {
+				org.alice.apis.moveandturn.AbstractCamera camera = (org.alice.apis.moveandturn.AbstractCamera)instanceInJava;
+				sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.CAMERA );
+			}
+		}
+		
+	}
 	protected edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane createControlsForOverlayPane() {
 		return new edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane();
 	}
