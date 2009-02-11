@@ -113,8 +113,7 @@ public class SceneEditor extends Program {
 		globalDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 		
 		
-//		cameraNavigationDragAdapter.setOnscreenLookingGlass(this
-//				.getOnscreenLookingGlass());
+		cameraNavigationDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 	}
 
 	@Override
