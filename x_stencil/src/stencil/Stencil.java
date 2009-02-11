@@ -8,6 +8,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	public Stencil( java.awt.Container container ) {
 		this.container = container;
 		this.container.addComponentListener( new java.awt.event.ComponentAdapter() {
+			@Override
 			public void componentResized( java.awt.event.ComponentEvent e ) {
 				Stencil.this.synchronizeSize();
 			}

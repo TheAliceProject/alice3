@@ -80,6 +80,7 @@ public class TestStencil {
 		stencil.setNorthEastComponent( new javax.swing.JButton( "exit" ) );
 
 		java.awt.Component specialPane = new javax.swing.JPanel() {
+			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				super.paintComponent( g );
 				edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, "special", this.getSize() );
