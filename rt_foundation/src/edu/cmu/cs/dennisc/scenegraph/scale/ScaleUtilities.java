@@ -27,7 +27,7 @@ package edu.cmu.cs.dennisc.scenegraph.scale;
  */
 public class ScaleUtilities {
 	public void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > inclusionCriterion ) {
-		if( inclusionCriterion.accept( sgComponent ) ) {
+		if( inclusionCriterion == null || inclusionCriterion.accept( sgComponent ) ) {
 			if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 				edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
 				if( sgComposite instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
