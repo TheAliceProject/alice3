@@ -41,6 +41,7 @@ import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Torus;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
 import edu.cmu.cs.dennisc.scenegraph.util.Jack;
 import edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter;
 

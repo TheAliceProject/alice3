@@ -27,6 +27,7 @@ import java.awt.event.KeyEvent;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -106,7 +107,6 @@ public class TranslateKeyManipulator extends DragManipulator {
 //		}
 		return moveDirs;
 	}
-	
 	
 	private void moveTransformable( Point3[] movementAmounts )
 	{

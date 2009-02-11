@@ -26,12 +26,7 @@ import java.awt.Color;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.color.ColorUtilities;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.Box;
-import edu.cmu.cs.dennisc.scenegraph.Cylinder;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 
@@ -54,7 +49,7 @@ public class LinearTranslateHandle extends LinearDragHandle {
 	
 	@Override
 	protected void createShape() {
-		this.arrow = new Arrow(1, 0.3, 0.25, 0.5, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+		this.arrow = new Arrow(.15, 0.075, 0.15, 0.15, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
 		this.arrow.setParent( this );
 	}
 	

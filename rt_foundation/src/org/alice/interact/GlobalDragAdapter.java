@@ -240,8 +240,8 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		this.handleSets.add( new HandleSet( java.awt.event.KeyEvent.VK_1, HandleGroup.DEFAULT) );
 		this.currentHandleSet = this.handleSets.lastElement();
 		
-		RotationRingHandle rotateAboutYAxis = new StoodUpRotationRingHandle(Vector3.accessPositiveYAxis());
-		RotationRingHandle rotateAboutYAxis2 = new StoodUpRotationRingHandle(Vector3.accessPositiveYAxis());
+		RotationRingHandle rotateAboutYAxis = new StoodUpRotationRingHandle(Vector3.accessPositiveYAxis(), RotationRingHandle.HandlePosition.BOTTOM );
+		RotationRingHandle rotateAboutYAxis2 = new StoodUpRotationRingHandle(Vector3.accessPositiveYAxis(), RotationRingHandle.HandlePosition.BOTTOM );
 		rotateAboutYAxis.addToGroups( HandleGroup.ROTATION, HandleGroup.DEFAULT, HandleGroup.STOOD_UP);
 		rotateAboutYAxis2.addToGroups( HandleGroup.ROTATION, HandleGroup.DEFAULT, HandleGroup.STOOD_UP);
 		currentManipulationHandles.add( rotateAboutYAxis );
@@ -263,7 +263,7 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		nextManipulationHandles.add( rotateAboutZAxis2 );
 		
 		LinearTranslateHandle translateYAxis = new StoodUpLinearTranslateHandle(Vector3.accessPositiveYAxis(), Color4f.GREEN);
-		translateYAxis.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
+		translateYAxis.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP);
 		currentManipulationHandles.add( translateYAxis );
 		LinearTranslateHandle translateYAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessPositiveYAxis(), Color4f.GREEN);
 		translateYAxis2.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );

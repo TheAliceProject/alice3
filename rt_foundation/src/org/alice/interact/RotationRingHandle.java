@@ -23,6 +23,7 @@
 package org.alice.interact;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -48,7 +49,7 @@ public class RotationRingHandle extends ManipulationHandle{
 		MIDDLE,
 	}
 	
-	protected static final double MINOR_RADIUS = .05d;
+	protected static final double MINOR_RADIUS = .075d;
 	
 	protected static final Color4f ACTIVE_COLOR = new Color4f(.4f, 1.0f, 0.3f, 1.0f);
 	protected static final Color4f ROLLOVER_COLOR = new Color4f(1.0f, 1.0f, 0.3f, 1.0f);
@@ -61,6 +62,7 @@ public class RotationRingHandle extends ManipulationHandle{
 	protected Visual sgSphereVisual = new Visual();
 	protected Vector3 rotationAxis;
 	protected Vector3 sphereDirection = new Vector3();
+	protected Vector3 handleOffset =  new Vector3();
 	
 	protected HandlePosition handlePosition = HandlePosition.ORIGIN;
 	
@@ -95,6 +97,52 @@ public class RotationRingHandle extends ManipulationHandle{
 		this.sgVisual.geometries.setValue( new Geometry[] { this.sgTorus } );
 	}
 	
+	@Override
+	public void setManipulatedObject( Transformable manipulatedObject ) {
+		super.setManipulatedObject( manipulatedObject );
+		
+		if (manipulatedObject != null)
+		{
+			Object bboxObj = manipulatedObject.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
+			if (bboxObj instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
+			{
+				AxisAlignedBox bbox = (AxisAlignedBox)bboxObj;
+				Vector3 maxVector = VectorUtilities.projectOntoVector( new Vector3(bbox.getMaximum()), this.rotationAxis );
+				Vector3 minVector = VectorUtilities.projectOntoVector( new Vector3(bbox.getMinimum()), this.rotationAxis );
+				this.handleOffset.set( 0.0d, 0.0d, 0.0d );
+				switch (this.handlePosition)
+				{
+					case TOP :
+					{
+						this.handleOffset.set( maxVector );
+						double handleSize = this.sgTorus.minorRadius.getValue();
+						Vector3 sizeOffset = new Vector3(this.rotationAxis);
+						sizeOffset.normalize();
+						sizeOffset.multiply( -handleSize );
+						this.handleOffset.add( sizeOffset);
+					} break;
+					case MIDDLE :
+					{
+						this.handleOffset.set( maxVector );
+						this.handleOffset.add( minVector );
+						this.handleOffset.multiply( .5d );
+					} break;
+					case BOTTOM :
+					{
+						this.handleOffset.set( minVector );
+						double handleSize = this.sgTorus.minorRadius.getValue();
+						Vector3 sizeOffset = new Vector3(this.rotationAxis);
+						sizeOffset.normalize();
+						sizeOffset.multiply( handleSize );
+						this.handleOffset.add( sizeOffset);
+					} break;
+				}
+				this.setTranslationOnly( this.handleOffset, this.getReferenceFrame());
+			}
+		}
+		
+	}
+	
 	public void setSphereVisibility( boolean showSphere )
 	{
 		this.sgSphereVisual.isShowing.setValue( showSphere );
@@ -127,7 +175,6 @@ public class RotationRingHandle extends ManipulationHandle{
 				{
 					if (value < 0.0d)
 					{
-						System.err.println("Torus radius is trying to be "+value);
 						value = 0.0d;
 					}
 					RotationRingHandle.this.sgTorus.majorRadius.setValue( value );

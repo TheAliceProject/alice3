@@ -22,6 +22,8 @@
  */
 package org.alice.interact;
 
+import org.alice.interact.RotationRingHandle.HandlePosition;
+
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInDegrees;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
@@ -55,6 +57,11 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	public StoodUpRotationRingHandle( Vector3 rotationAxis )
 	{
 		super( rotationAxis );
+	}
+	
+	public StoodUpRotationRingHandle( Vector3 rotationAxis, HandlePosition handlePosition )
+	{
+		super(rotationAxis, handlePosition);
 	}
 	
 	@Override
@@ -92,6 +99,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	@Override
 	public void positionRelativeToObject( Composite object ) {
 		this.setTransformation( this.getTransformationForAxis( this.rotationAxis ), this.getReferenceFrame() );
+		this.setTranslationOnly( this.handleOffset, this.getReferenceFrame() );
 	}
 
 	public void propertyChanged( PropertyEvent e ) {
