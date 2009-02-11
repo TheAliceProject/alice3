@@ -119,7 +119,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 					FieldTile fieldTile = createFieldTile( field );
 					this.add( fieldTile );
 					this.declaredFieldTiles.add( fieldTile );
-					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 6, javax.swing.SpringLayout.SOUTH, prev );
+					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 2, javax.swing.SpringLayout.SOUTH, prev );
 					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile, 10, javax.swing.SpringLayout.WEST, this.rootFieldTile );
 					prev = fieldTile;
 				}

@@ -34,7 +34,7 @@ public class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyO
 
 	private static final String ELEMENT_KEY = "ELEMENT_KEY";
 
-	protected static Element getElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
+	public static Element getElement( edu.cmu.cs.dennisc.scenegraph.Element sgElement ) {
 		if( sgElement != null ) {
 			return (Element)sgElement.getBonusDataFor( ELEMENT_KEY );
 		} else {

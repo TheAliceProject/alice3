@@ -66,8 +66,24 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 					animator = MoveAndTurnSceneEditor.this.program.getAnimator();
 				}
 				MoveAndTurnSceneEditor.this.globalDragAdapter.setAnimator( animator );
+				MoveAndTurnSceneEditor.this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
+					public void selecting( org.alice.interact.event.SelectionEvent e ) {
+					}
+					public void selected(org.alice.interact.event.SelectionEvent e) {
+						MoveAndTurnSceneEditor.this.handleSelection( e );
+					}
+				} );
 			}
 		}.start();
+	}
+	
+	private void handleSelection( org.alice.interact.event.SelectionEvent e ) {
+		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
+		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldForInstanceInJava( element );
+		if( field != null ) {
+			this.getIDE().setFieldSelection( field );
+		}
 	}
 
 	private static boolean isGround( org.alice.apis.moveandturn.Model model ) {
