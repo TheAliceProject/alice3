@@ -41,7 +41,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public class ObjectTranslateDragManipulator extends DragManipulator implements CameraInformedManipulator {
 
-	protected static final double BAD_ANGLE_THRESHOLD = 2.0d*Math.PI * (15.0d/360.0d);
+	protected static final double BAD_ANGLE_THRESHOLD = 2.0d*Math.PI * (8.0d/360.0d);
 	protected static final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
 	
 	protected AbstractCamera camera = null;
@@ -82,7 +82,7 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 		if (pickRay != null)
 		{
 			Plane toMoveIn = this.movementPlane;
-			double badAngleAmount = this.getBadAngleAmount( PlaneUtilities.getPlaneNormal( this.movementPlane ), pickRay );
+			double badAngleAmount = this.getBadAngleAmount( this.movementPlane, pickRay );
 			if (badAngleAmount > 0.0d)
 			{
 				Vector3 newNormal = Vector3.createInterpolation( PlaneUtilities.getPlaneNormal( this.movementPlane ), PlaneUtilities.getPlaneNormal( this.badAnglePlane ), badAngleAmount );
@@ -98,21 +98,25 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 		}
 	}
 	
-	protected double getBadAngleAmount( Vector3 planeNormal, Ray pickRay )
+	protected double getBadAngleAmount( Plane plane, Ray pickRay )
 	{
-		
-		//Vector3 cameraDirection = Vector3.createMultiplication( pickRay.getDirection(), -1.0d);
 		Vector3 cameraDirection = this.camera.getAbsoluteTransformation().orientation.backward;
+		double cameraDistanceFactor = PlaneUtilities.distanceToPlane( plane, this.camera.getAbsoluteTransformation().translation );
+		Vector3 planeNormal = PlaneUtilities.getPlaneNormal( plane );
 		AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(cameraDirection, planeNormal);
 		double distanceToRightAngle = Math.abs(Math.PI*.5d - angleBetweenVector.getAsRadians());
-		if (distanceToRightAngle < BAD_ANGLE_THRESHOLD)
+		
+		double scaledBadAngleThreshold = BAD_ANGLE_THRESHOLD / cameraDistanceFactor;
+		double scaledMinBadAngleThreshold = MIN_BAD_ANGLE_THRESHOLD / cameraDistanceFactor;
+		
+		if (distanceToRightAngle < scaledBadAngleThreshold)
 		{
-			if (distanceToRightAngle < MIN_BAD_ANGLE_THRESHOLD)
+			if (distanceToRightAngle < scaledMinBadAngleThreshold)
 			{
 				return 1.0d;
 			}
-			distanceToRightAngle -= MIN_BAD_ANGLE_THRESHOLD;
-			double thresholdDif = BAD_ANGLE_THRESHOLD - MIN_BAD_ANGLE_THRESHOLD;
+			distanceToRightAngle -= scaledMinBadAngleThreshold;
+			double thresholdDif = scaledBadAngleThreshold - scaledMinBadAngleThreshold;
 			return (thresholdDif - distanceToRightAngle) / thresholdDif;
 		}
 		else
