@@ -329,7 +329,7 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		}
 	}
 	
-	protected void setSelectedObject(Transformable selected)
+	public void setSelectedObject(Transformable selected)
 	{
 		if (selectedObject != selected)
 		{
