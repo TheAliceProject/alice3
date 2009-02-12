@@ -230,6 +230,10 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		mouseHandleDrag.addCondition( handleObjectCondition );
 		this.manipulators.add( mouseHandleDrag );
 		
+		ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new SelectObjectDragManipulator(this) );
+		selectObject.addCondition( new MouseDragCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.EVERYTHING)) );
+		this.manipulators.add( selectObject );
+		
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
@@ -357,7 +361,6 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 	{
 		if (selectedObject != selected)
 		{
-			System.out.println("Setting selected to "+selected);
 			this.fireSelecting( new SelectionEvent(this, selected) );
 			for (int i=0; i<currentManipulationHandles.size(); i++)
 			{
@@ -586,24 +589,6 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DOWN );
 		this.currentInputState.setClickPickResult( pickIntoScene( e.getPoint() ) );
-		
-		PickHint clickedObjectType = PickCondition.getPickType( this.currentInputState.getClickPickResult() );
-		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
-		{
-			this.setSelectedObject( this.currentInputState.getClickPickedTransformable(true) );
-		}
-		else if (clickedObjectType.intersects( PickHint.HANDLES) )
-		{
-			Transformable pickedHandle = this.currentInputState.getClickPickedTransformable(true);
-			if (pickedHandle instanceof RotationRingHandle)
-			{
-				this.setSelectedObject( ((RotationRingHandle)pickedHandle).getManipulatedObject() );
-			}
-		}
-		else
-		{
-			this.setSelectedObject( null );
-		}
 		this.handleStateChange();
 	}
 	

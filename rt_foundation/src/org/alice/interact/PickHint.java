@@ -58,13 +58,14 @@ public class PickHint extends BitSet{
 	
 	protected static final int NUM_TYPES = PickType.values().length;
 	
-	public static final PickHint EVERYTHING = createEverythingHint();
+	
 	public static final PickHint NOTHING = new PickHint( PickType.NOTHING );
 	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT );
 	public static final PickHint HANDLES = new PickHint( PickType.HANDLE );
 	public static final PickHint GROUND = new PickHint( PickType.GROUND );
 	public static final PickHint LIGHT = new PickHint( PickType.LIGHT );
 	public static final PickHint CAMERA = new PickHint( PickType.CAMERA );
+	public static final PickHint EVERYTHING = createEverythingHint();
 	
 	public static final PickHint NON_INTERACTIVE = new PickHint( PickType.NOTHING, PickType.GROUND ,PickType.LIGHT, PickType.CAMERA);
 	
@@ -85,7 +86,10 @@ public class PickHint extends BitSet{
 	public static PickHint createEverythingHint()
 	{
 		PickHint toReturn = new PickHint();
-		toReturn.flip(0, toReturn.length());
+		for (int i=0; i<NUM_TYPES; i++)
+		{
+			toReturn.set( i );
+		}
 		return toReturn;
 	}
 	
