@@ -83,7 +83,7 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 	
 	@Override
 	protected void createShape() {
-		this.arrow = new Arrow(.15, 0.075, 0.15, 0.15, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+		this.arrow = new Arrow(.05, 0.1, 0.15, 0.15, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
 		this.arrow.setParent( this );
 	}
 	

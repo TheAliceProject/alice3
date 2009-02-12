@@ -84,7 +84,7 @@ public class LinearDragManipulator extends DragManipulator implements CameraInfo
 				
 				double mouseYDistance = upDownSign * Vector3.calculateDotProduct( fromOriginalMouseToCurrentMouse, dragUpAxis );
 				double mouseXDistance = leftRightSign * Vector3.calculateDotProduct( fromOriginalMouseToCurrentMouse, dragRightAxis );
-				return mouseYDistance + mouseXDistance;
+				return this.linearHandle.getCurrentHandleLength() + mouseYDistance + mouseXDistance;
 			}
 			else
 			{

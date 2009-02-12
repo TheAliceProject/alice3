@@ -32,6 +32,7 @@ public abstract class TargetBasedAnimation< E > extends AbstractAnimation {
 
 	protected static final double DEFAULT_SPEED = 12.0d;
 	private static final double DISTANCE_TO_DONE = .001d;
+	private static final double MAX_FRAME_LENGTH = .1d;
 	
 	protected E targetValue;
 	protected E currentValue;
@@ -109,6 +110,8 @@ public abstract class TargetBasedAnimation< E > extends AbstractAnimation {
 		{
 			if (!Double.isNaN( deltaSinceLastUpdate ))
 			{
+				if (deltaSinceLastUpdate > MAX_FRAME_LENGTH)
+					deltaSinceLastUpdate = MAX_FRAME_LENGTH;
 				this.currentValue = this.interpolate( this.currentValue, this.targetValue, deltaSinceLastUpdate);
 			}
 			if ( this.getDistanceToDone() < DISTANCE_TO_DONE)

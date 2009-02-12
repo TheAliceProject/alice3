@@ -31,17 +31,19 @@ import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
  * @author David Culyba
  */
 public class ScaleDragManipulator extends LinearDragManipulator {
-
+	
+	private static final double MIN_HANDLE_PULL = .1d;
+	
 	@Override
 	protected void updateBasedOnHandlePull( double previousPull, double newPull )
 	{
-		double pullScale = 10.0d;
-		double pullDif = (newPull*pullScale + 1.0d) / (previousPull*pullScale +1.0d);
 		
+		double pullDif = (newPull) / (previousPull);
 		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
-		Vector3 scaleVector = new Vector3(1.0d, 1.0d, 1.0d);
+		Vector3 scaleVector;
 		if (scaleHandle.applyAlongAxis())
 		{
+			scaleVector = new Vector3(1.0d, 1.0d, 1.0d);
 			if (scaleHandle.dragAxis.x != 0.0d)
 				scaleVector.x = Math.abs( scaleHandle.dragAxis.x ) * pullDif;
 			if (scaleHandle.dragAxis.y != 0.0d)
@@ -51,7 +53,13 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 		}
 		else
 		{
-			scaleVector.multiply( pullDif );
+			scaleVector = new Vector3(pullDif, pullDif, pullDif);
+		}
+		
+		//Don't scale if the handles are pulled past their origin
+		if (previousPull <= MIN_HANDLE_PULL || newPull <= MIN_HANDLE_PULL)
+		{
+			scaleVector = new Vector3(1.0d, 1.0d, 1.0d);
 		}
 		
 		

@@ -291,17 +291,17 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		currentManipulationHandles.add( scaleAxis );
 		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxis) );
 		
-		LinearScaleHandle scaleAxisX = new LinearScaleHandle(Vector3.accessNegativeXAxis(), Color4f.RED, true);
+		LinearScaleHandle scaleAxisX = new LinearScaleHandle(Vector3.accessNegativeXAxis(), Color4f.MAGENTA, true);
 		scaleAxisX.addToGroups( HandleGroup.RESIZE );
 		currentManipulationHandles.add( scaleAxisX );
 		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxisX) );
 		
-		LinearScaleHandle scaleAxisY = new LinearScaleHandle(Vector3.accessPositiveYAxis(), Color4f.GREEN, true);
+		LinearScaleHandle scaleAxisY = new LinearScaleHandle(Vector3.accessPositiveYAxis(), Color4f.YELLOW, true);
 		scaleAxisY.addToGroups( HandleGroup.RESIZE );
 		currentManipulationHandles.add( scaleAxisY );
 		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxisY) );
 		
-		LinearScaleHandle scaleAxisZ = new LinearScaleHandle(Vector3.accessNegativeZAxis(), Color4f.BLUE, true);
+		LinearScaleHandle scaleAxisZ = new LinearScaleHandle(Vector3.accessNegativeZAxis(), Color4f.CYAN, true);
 		scaleAxisZ.addToGroups( HandleGroup.RESIZE );
 		currentManipulationHandles.add( scaleAxisZ );
 		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxisZ) );

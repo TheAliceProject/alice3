@@ -35,7 +35,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public abstract class LinearDragHandle extends ManipulationHandle {
 	
-	protected double offsetPadding = .1d;
+	protected double offsetPadding = 0.0d;
 	protected Vector3 dragAxis;
 	protected double distanceFromOrigin;
 
@@ -153,6 +153,11 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 			}
 		}
 		return 0.0d;
+	}
+	
+	public double getCurrentHandleLength()
+	{
+		return this.distanceFromOrigin;
 	}
 	
 	@Override
