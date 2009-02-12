@@ -202,16 +202,16 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 			alreadyVisited.add( this );
 			crawler.visit( this );
 			for( edu.cmu.cs.dennisc.property.Property< ? > property : this.getProperties() ) {
-				if( property instanceof DeclarationProperty< ? > ) {
-					DeclarationProperty< ? > declarationProperty = (DeclarationProperty< ? >)property;
-					if( declarationProperty.isReference() ) {
-						if( this.isReferencedDeclarationPropertyInclusionDesired ) {
-							//pass
-						} else {
-							continue;
-						}
-					}
-				}
+//				if( property instanceof DeclarationProperty< ? > ) {
+//					DeclarationProperty< ? > declarationProperty = (DeclarationProperty< ? >)property;
+//					if( declarationProperty.isReference() ) {
+//						if( this.isReferencedDeclarationPropertyInclusionDesired ) {
+//							//pass
+//						} else {
+//							continue;
+//						}
+//					}
+//				}
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( property.getName() );
 				Object value = property.getValue( this );
 				if( value instanceof Iterable ) {
