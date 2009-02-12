@@ -86,6 +86,94 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		}
 	}
 
+	private boolean isExpanded = false;
+	private void updateSceneBasedOnScope() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
+		if( code != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+			if( sceneField != null ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+				boolean isSceneScope = type.isAssignableFrom( sceneType ) || this.isExpanded;
+				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
+
+				try {
+					edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = this.getProgram().getOnscreenLookingGlass().getCameraAt( 0 );
+					if( isSceneScope ) {
+						camera.background.setValue( null );
+					} else {
+						cameraBackground.color.setValue( edu.cmu.cs.dennisc.color.Color4f.BLACK );
+						camera.background.setValue( cameraBackground );
+					}
+				} catch( Throwable t ) {
+					//pass
+				}
+//				Object sceneInstanceInJava = this.getInstanceInJavaForField( sceneField );
+//				if( sceneInstanceInJava instanceof org.alice.apis.moveandturn.Scene ) {
+//					org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)sceneInstanceInJava;
+//					if( isSceneScope ) {
+//						scene.setAtmosphereColor( new org.alice.apis.moveandturn.Color( 0.75f, 0.75f, 1.0f ), org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+//					} else {
+//						scene.setAtmosphereColor( org.alice.apis.moveandturn.Color.BLACK, org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+//					}
+//				}
+				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
+					Object instanceInJava = this.getInstanceInJavaForField( field );
+					if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
+						org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;
+						if( isSceneScope || type.isAssignableTo( model.getClass() ) ) {
+							model.setColor( org.alice.apis.moveandturn.Color.WHITE, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//							model.setOpacity( 1.0f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+						} else {
+							model.setColor( new org.alice.apis.moveandturn.Color( 0.25, 0.25, 0.25 ), org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//							model.setOpacity( 0.125f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ide.event.FocusedCodeChangeEvent e ) {
+		super.focusedCodeChanged( e );
+		this.updateSceneBasedOnScope();
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
+		if( code != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
+			
+			edu.cmu.cs.dennisc.alice.ast.AbstractField selectedField = this.getIDE().getFieldSelection();
+			if( selectedField != null ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = selectedField.getValueType();
+				if( type.isAssignableFrom( selectedType ) ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+					if( sceneField != null ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+						if( type.isAssignableFrom( sceneType ) ) {
+							//pass
+						} else {
+							for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+								if( type.isAssignableFrom( field.getValueType() ) ) {
+									this.getIDE().setFieldSelection( field );
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		}
+	
+	}
+	public void handleExpandContractChange( boolean isExpanded ) {
+		this.isExpanded = isExpanded;
+		this.updateSceneBasedOnScope();
+	}
+	
+	
 	private static boolean isGround( org.alice.apis.moveandturn.Model model ) {
 		Class[] clses = { Ground.class, GrassyGround.class, DirtGround.class, MoonSurface.class, SandyGround.class, SeaSurface.class, SnowyGround.class };
 		for( Class< ? extends org.alice.apis.moveandturn.PolygonalModel > cls : clses ) {
@@ -151,53 +239,6 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 	
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 	
-	@Override
-	public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ide.event.FocusedCodeChangeEvent e ) {
-		super.focusedCodeChanged( e );
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
-
-		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
-		if( sceneField != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
-			boolean isSceneScope = type.isAssignableFrom( sceneType );
-			java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
-
-			try {
-				edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = this.getProgram().getOnscreenLookingGlass().getCameraAt( 0 );
-				if( isSceneScope ) {
-					camera.background.setValue( null );
-				} else {
-					cameraBackground.color.setValue( edu.cmu.cs.dennisc.color.Color4f.BLACK );
-					camera.background.setValue( cameraBackground );
-				}
-			} catch( Throwable t ) {
-				//pass
-			}
-//			Object sceneInstanceInJava = this.getInstanceInJavaForField( sceneField );
-//			if( sceneInstanceInJava instanceof org.alice.apis.moveandturn.Scene ) {
-//				org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)sceneInstanceInJava;
-//				if( isSceneScope ) {
-//					scene.setAtmosphereColor( new org.alice.apis.moveandturn.Color( 0.75f, 0.75f, 1.0f ), org.alice.apis.moveandturn.Scene.RIGHT_NOW );
-//				} else {
-//					scene.setAtmosphereColor( org.alice.apis.moveandturn.Color.BLACK, org.alice.apis.moveandturn.Scene.RIGHT_NOW );
-//				}
-//			}
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
-				Object instanceInJava = this.getInstanceInJavaForField( field );
-				if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
-					org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;
-					if( isSceneScope || type.isAssignableTo( model.getClass() ) ) {
-						model.setColor( org.alice.apis.moveandturn.Color.WHITE, org.alice.apis.moveandturn.Model.RIGHT_NOW );
-//						model.setOpacity( 1.0f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
-					} else {
-						model.setColor( new org.alice.apis.moveandturn.Color( 0.25, 0.25, 0.25 ), org.alice.apis.moveandturn.Model.RIGHT_NOW );
-//						model.setOpacity( 0.125f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
-					}
-				}
-			}
-		}
-	}
 
 	@Override
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {

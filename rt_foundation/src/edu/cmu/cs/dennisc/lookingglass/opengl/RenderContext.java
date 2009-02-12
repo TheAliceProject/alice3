@@ -213,7 +213,7 @@ public class RenderContext extends Context {
 			synchronized( m_toBeForgottenDisplayLists ) {
 				for( Integer toBeForgottenDisplayList : m_toBeForgottenDisplayLists ) {
 					gl.glDeleteLists( toBeForgottenDisplayList, 1 );
-					System.out.println( "forget gl display list: " + toBeForgottenDisplayList );
+					//System.out.println( "forget gl display list: " + toBeForgottenDisplayList );
 				}
 				m_toBeForgottenDisplayLists.clear();
 			}

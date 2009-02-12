@@ -26,19 +26,23 @@ package edu.cmu.cs.dennisc.scenegraph.scale;
  * @author Dennis Cosgrove
  */
 public class ScaleUtilities {
-	public void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > inclusionCriterion ) {
+	private static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgRoot, edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > inclusionCriterion ) {
 		if( inclusionCriterion == null || inclusionCriterion.accept( sgComponent ) ) {
 			if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 				edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = (edu.cmu.cs.dennisc.scenegraph.Composite)sgComponent;
 				if( sgComposite instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
 					edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)sgComposite;
-					edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
-					m.translation.multiply( axis );
-					sgTransformable.localTransformation.setValue( m );
+					if( sgRoot == sgTransformable ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
+						m.translation.multiply( axis );
+						sgTransformable.localTransformation.setValue( m );
+					}
 				}
 				final int N = sgComposite.getComponentCount();
 				for( int i=0; i<N; i++ ) {
-					applyScale( sgComposite.getComponentAt( i ), axis, inclusionCriterion );
+					applyScale( sgRoot, sgComposite.getComponentAt( i ), axis, inclusionCriterion );
 				}
 			} else if( sgComponent instanceof edu.cmu.cs.dennisc.scenegraph.Visual ) {
 				edu.cmu.cs.dennisc.scenegraph.Visual sgVisual = (edu.cmu.cs.dennisc.scenegraph.Visual)sgComponent;
@@ -47,5 +51,8 @@ public class ScaleUtilities {
 				sgVisual.scale.setValue( scale );
 			}
 		}
+	}
+	public static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > inclusionCriterion ) {
+		applyScale( sgComponent, sgComponent, axis, inclusionCriterion );
 	}
 }

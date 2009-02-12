@@ -70,9 +70,6 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 
 	def createControlsForOverlayPane( self ):
 		return MyControlsForOverlayPane()
-	def handleExpandContractChange( self, isExpanded ):
-		print "todo: handleExpandContractChange", isExpanded
-		#self._controlsForOverlayPane.handleExpandContractChange( isExpanded )
 	
 	def performOrientToUpright(self, field):
 		instanceInJava = self.getInstanceInJavaForField( field )
