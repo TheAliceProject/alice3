@@ -164,10 +164,17 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 	
 	public void setDragInProgress( boolean isDragInProgress ) {
 		if( isDragInProgress ) {
-			this.cardPane.showSnapshot();
+			this.showSnapshotIfAppropriate();
 		} else {
-			this.cardPane.showLive();
+			this.showLiveIfAppropriate();
 		}
+	}
+	
+	public void showSnapshotIfAppropriate() {
+		this.cardPane.showSnapshot();
+	}
+	public void showLiveIfAppropriate() {
+		this.cardPane.showLive();
 	}
 	
 	public Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
