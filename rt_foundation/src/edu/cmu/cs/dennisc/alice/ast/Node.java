@@ -194,7 +194,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	}
 
 	//todo
-	private boolean isReferencedDeclarationPropertyInclusionDesired = false;
+	private static boolean isReferencedDeclarationPropertyInclusionDesired = false;
 	public void accept( java.util.Set< edu.cmu.cs.dennisc.pattern.Crawlable > alreadyVisited, edu.cmu.cs.dennisc.pattern.Crawler crawler ) {
 		if( alreadyVisited.contains( this ) ) {
 			//pass
@@ -202,16 +202,16 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 			alreadyVisited.add( this );
 			crawler.visit( this );
 			for( edu.cmu.cs.dennisc.property.Property< ? > property : this.getProperties() ) {
-//				if( property instanceof DeclarationProperty< ? > ) {
-//					DeclarationProperty< ? > declarationProperty = (DeclarationProperty< ? >)property;
-//					if( declarationProperty.isReference() ) {
-//						if( this.isReferencedDeclarationPropertyInclusionDesired ) {
-//							//pass
-//						} else {
-//							continue;
-//						}
-//					}
-//				}
+				if( Node.isReferencedDeclarationPropertyInclusionDesired ) {
+					//pass
+				} else {
+					if( property instanceof DeclarationProperty< ? > ) {
+						DeclarationProperty< ? > declarationProperty = (DeclarationProperty< ? >)property;
+						if( declarationProperty.isReference() ) {
+							continue;
+						}
+					}
+				}
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( property.getName() );
 				Object value = property.getValue( this );
 				if( value instanceof Iterable ) {
@@ -232,7 +232,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	}
 	
 	public final synchronized void crawl( edu.cmu.cs.dennisc.pattern.Crawler crawler, boolean isReferencedDeclarationPropertyInclusionDesired ) {
-		this.isReferencedDeclarationPropertyInclusionDesired = isReferencedDeclarationPropertyInclusionDesired;
+		Node.isReferencedDeclarationPropertyInclusionDesired = isReferencedDeclarationPropertyInclusionDesired;
 		accept( new java.util.HashSet< edu.cmu.cs.dennisc.pattern.Crawlable >(), crawler );
 	}
 
