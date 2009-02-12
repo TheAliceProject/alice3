@@ -24,7 +24,43 @@ import ecc
 #		self.getIDE().setFieldSelection( self._nextSelection )
 #	def undo(self):
 #		self.getIDE().setFieldSelection( self._prevSelection )
-#	
+#
+
+class OrientToUprightOperation( alice.ide.AbstractUndoableOperation ):
+	def __init__( self, field ):
+		self._field = field
+		self.putValue( javax.swing.Action.NAME, "orient to upright" )
+	def prepare( self, e, observer ):
+		return alice.ide.Operation.PreparationResult.PERFORM
+	def perform( self ):
+		alice.ide.IDE.getSingleton()._scenePane.performOrientToUpright( self._field )
+
+class PlaceOnTopOfGroundOperation( alice.ide.AbstractUndoableOperation ):
+	def __init__( self, field ):
+		self._field = field
+		self.putValue( javax.swing.Action.NAME, "place on top of ground" )
+	def prepare( self, e, observer ):
+		return alice.ide.Operation.PreparationResult.PERFORM
+	def perform( self ):
+		alice.ide.IDE.getSingleton()._scenePane.performPlaceOnTopOfGround( self._field )
+
+class MyFieldAltTriggerMouseAdapter( ecc.dennisc.alice.ide.operations.ast.FieldAltTriggerMouseAdapter ):
+	def createOperations(self):
+		rv = ecc.dennisc.alice.ide.operations.ast.FieldAltTriggerMouseAdapter.createOperations( self )
+		if self._field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable ):
+			rv.append( None )
+			rv.append( OrientToUprightOperation( self._field ) )
+			rv.append( PlaceOnTopOfGroundOperation( self._field ) )
+		return rv
+
+class MyFieldTile( ecc.dennisc.alice.ide.barebones.editors.scene.MyFieldTile ):
+	def createAltTriggerMouseAdapter(self, field):
+		return MyFieldAltTriggerMouseAdapter( field )
+
+class MyControlsForOverlayPane( ecc.dennisc.alice.ide.barebones.editors.scene.ControlsForOverlayPane ):
+	def createFieldTile(self, field ):
+		return MyFieldTile( field )
+
 
 class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor ):
 	def __init__( self, isLightweightDesired ):
@@ -33,10 +69,21 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 		print "isLightweightDesired paramater not used", isLightweightDesired
 
 	def createControlsForOverlayPane( self ):
-		return ecc.dennisc.alice.ide.barebones.editors.scene.ControlsForOverlayPane()
+		return MyControlsForOverlayPane()
 	def handleExpandContractChange( self, isExpanded ):
 		print "todo: handleExpandContractChange", isExpanded
 		#self._controlsForOverlayPane.handleExpandContractChange( isExpanded )
+	
+	def performOrientToUpright(self, field):
+		instanceInJava = self.getInstanceInJavaForField( field )
+		instanceInJava.orientToUpright()
+		
+	def performPlaceOnTopOfGround(self, field):
+		instanceInJava = self.getInstanceInJavaForField( field )
+		asSeenBy = org.alice.apis.moveandturn.AsSeenBy.SCENE
+		position = instanceInJava.getPosition( asSeenBy )
+		position.y = 0
+		instanceInJava.moveTo( instanceInJava.acquireStandIn( asSeenBy, position ) )
 	
 	def getScene(self):
 		return self.getSceneInstanceInJava()

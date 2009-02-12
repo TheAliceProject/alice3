@@ -1,4 +1,4 @@
-#print "-->", __name__
+print "-->", __name__
 
 import java
 import javax
@@ -194,14 +194,19 @@ class CreateNewInstanceOperation( alice.ide.AbstractOperation ):
 class FieldAltTriggerMouseAdapter( edu.cmu.cs.dennisc.awt.event.AltTriggerMouseAdapter ):
 	def __init__( self, field ):
 		self._field = field
+
+	def createOperations(self):
+		rv = []
+		rv.append( RenameFieldOperation( self._field ) )
+		if self._field.isDeletionAllowed.getValue():
+			rv.append( DeleteFieldOperation( self._field ) )
+		rv.append( SaveTypeOperation( self._field.getValueType() ) )
+		rv.append( CreateNewInstanceOperation( self._field.getValueType() ) )
+		return rv
+
 	def altTriggered(self, e ):
 		if self._field.isDeclaredInAlice():
-			operations = []
-			operations.append( RenameFieldOperation( self._field ) )
-			if self._field.isDeletionAllowed.getValue():
-				operations.append( DeleteFieldOperation( self._field ) )
-			operations.append( SaveTypeOperation( self._field.getValueType() ) )
-			operations.append( CreateNewInstanceOperation( self._field.getValueType() ) )
+			operations = self.createOperations()
 			popup = alice.ide.MenuUtilities.createJPopupMenu( operations )
 			popup.show( e.getSource(), e.getX(), e.getY() )
 

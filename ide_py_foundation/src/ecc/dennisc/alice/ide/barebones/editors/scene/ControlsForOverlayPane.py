@@ -8,12 +8,14 @@ import ecc
 
 class MyFieldTile( alice.ide.editors.scene.FieldTile ):
 	def __init__(self, field):
-		self._adapter = ecc.dennisc.alice.ide.operations.ast.FieldAltTriggerMouseAdapter( field )
+		self._adapter = self.createAltTriggerMouseAdapter( field )
 		alice.ide.editors.scene.FieldTile.__init__( self, field )
 		self.addMouseListener( self._adapter )
 	def setField(self, field):
 		alice.ide.editors.scene.FieldTile.setField( self, field )
 		self._adapter._field = field
+	def createAltTriggerMouseAdapter(self, field):
+		return ecc.dennisc.alice.ide.operations.ast.FieldAltTriggerMouseAdapter( field )
 
 class ControlsForOverlayPane( edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane ):
 	def __init__( self ):

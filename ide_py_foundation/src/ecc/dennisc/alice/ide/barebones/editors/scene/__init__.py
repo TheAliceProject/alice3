@@ -1,2 +1,2 @@
 from BarebonesScenePane import BarebonesScenePane
-from ControlsForOverlayPane import ControlsForOverlayPane
+from ControlsForOverlayPane import ControlsForOverlayPane, MyFieldTile
