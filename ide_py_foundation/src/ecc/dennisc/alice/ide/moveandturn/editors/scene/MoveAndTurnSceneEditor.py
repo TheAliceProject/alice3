@@ -81,8 +81,9 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 	def performPlaceOnTopOfGround(self, field):
 		instanceInJava = self.getInstanceInJavaForField( field )
 		asSeenBy = org.alice.apis.moveandturn.AsSeenBy.SCENE
+		bb = instanceInJava.getAxisAlignedMinimumBoundingBox()
 		position = instanceInJava.getPosition( asSeenBy )
-		position.y = 0
+		position.y = -bb.minimum.y
 		instanceInJava.moveTo( instanceInJava.acquireStandIn( asSeenBy, position ) )
 	
 	def getScene(self):
