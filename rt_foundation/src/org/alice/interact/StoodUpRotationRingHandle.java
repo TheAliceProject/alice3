@@ -87,10 +87,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 		{
 			this.standUpReference.setParent( this.manipulatedObject );
 			this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
-			//this.standUpReference.setTransformation( AffineMatrix4x4.createIdentity(), AsSeenBy.SCENE );
 			this.standUpReference.setAxesOnlyToStandUp();
-//			PrintUtilities.printlns( this.standUpReference.getAbsoluteTransformation() );
-//			PrintUtilities.printlns( this.standUpReference.localTransformation.getValue() );
 			return this.standUpReference;
 		}
 		return this;

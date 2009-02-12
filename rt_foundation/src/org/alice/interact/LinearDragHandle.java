@@ -24,9 +24,11 @@ package org.alice.interact;
 
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -53,6 +55,14 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 		this.distanceFromOrigin = 0.0d;
 		createShape();
 	}
+	
+	public LinearDragHandle( LinearDragHandle handle)
+	{
+		this(handle.dragAxis);
+		this.initFromHandle( handle );
+		this.distanceFromOrigin = handle.distanceFromOrigin;
+		this.offsetPadding = handle.offsetPadding;
+	}
 
 	protected abstract void createShape();
 	
@@ -63,11 +73,16 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 		this.lengthAnimation = new DoubleTargetBasedAnimation( new Double(this.distanceFromOrigin) ){
 			@Override
 			protected void updateValue( Double value ) {
-				LinearDragHandle.this.distanceFromOrigin = value;
-				LinearDragHandle.this.positionRelativeToObject( LinearDragHandle.this.getManipulatedObject() );
+				LinearDragHandle.this.setSize(value);
 			}
 		};
 		this.animator.invokeLater( this.lengthAnimation, null );
+	}
+	
+	protected void setSize(double size)
+	{
+		this.distanceFromOrigin = size;
+		this.positionRelativeToObject( this.getManipulatedObject() );
 	}
 	
 	protected double getHandleLength( Composite object )
@@ -77,20 +92,64 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 			Object bbox = object.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
 			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
 			{
-				edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = (edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox;
-				Vector3 maxVector = VectorUtilities.projectOntoVector( new Vector3(boundingBox.getMaximum()), this.dragAxis );
-				Vector3 minVector = VectorUtilities.projectOntoVector( new Vector3(boundingBox.getMinimum()), this.dragAxis );
+				AxisAlignedBox boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
+				if (object instanceof Transformable)
+				{
+					boundingBox.scale( this.getTransformableScale( (Transformable)object ) );
+				}
+
+				Vector3 desiredHandleValues = new Vector3(0.0d, 0.0d, 0.0d);
+				Vector3 extents[] = { new Vector3(boundingBox.getMaximum()), new Vector3(boundingBox.getMinimum()) };
+				for (int i=0; i<extents.length; i++)
+				{
+					if (Math.signum( extents[i].x ) == Math.signum( this.dragAxis.x ))
+						if ( Math.abs(extents[i].x) > Math.abs(desiredHandleValues.x) )
+							desiredHandleValues.x = extents[i].x;
+					
+					if (Math.signum( extents[i].y ) == Math.signum( this.dragAxis.y ))
+						if ( Math.abs(extents[i].y) > Math.abs(desiredHandleValues.y) )
+							desiredHandleValues.y = extents[i].y;
+					
+					if (Math.signum( extents[i].z ) == Math.signum( this.dragAxis.z ))
+						if ( Math.abs(extents[i].z) > Math.abs(desiredHandleValues.z) )
+							desiredHandleValues.z = extents[i].z;
+				}
 				
-				double maxDot = Vector3.calculateDotProduct( maxVector, this.dragAxis  );
-				double minDot = Vector3.calculateDotProduct( minVector, this.dragAxis  );
-				if (maxDot > minDot)
-				{
-					return Math.abs( maxDot );
-				}
-				else
-				{
-					return Math.abs( minDot );
-				}
+				double xLength = desiredHandleValues.x / this.dragAxis.x;
+				if (Double.isNaN( xLength ))
+					xLength = 0.0d;
+				double yLength = desiredHandleValues.y / this.dragAxis.y;
+				if (Double.isNaN( yLength ))
+					yLength = 0.0d;
+				double zLength = desiredHandleValues.z / this.dragAxis.z;
+				if (Double.isNaN( zLength ))
+					zLength = 0.0d;
+				
+				double maxSize = Math.max( xLength, Math.max( yLength, zLength ) );
+				
+				return maxSize;
+				
+//				Vector3 maxVector = VectorUtilities.projectOntoVector( new Vector3(boundingBox.getMaximum()), this.dragAxis );
+//				Vector3 minVector = VectorUtilities.projectOntoVector( new Vector3(boundingBox.getMinimum()), this.dragAxis );
+//				
+//				System.out.println("Drag axis: "+this.dragAxis+", Max: "+maxVector+"Min: "+minVector);
+//				
+//				double maxDot = Vector3.calculateDotProduct( maxVector, this.dragAxis  );
+//				if (Double.isNaN( maxDot ))
+//					maxDot = 0.0d;
+//				double minDot = Vector3.calculateDotProduct( minVector, this.dragAxis  );
+//				if (Double.isNaN( minDot ))
+//					minDot = 0.0d;
+//				if (maxDot > minDot)
+//				{
+//					System.out.println("   Returning max: "+maxDot);
+//					return Math.abs( maxDot );
+//				}
+//				else
+//				{
+//					System.out.println("   Returning min: "+minDot);
+//					return Math.abs( minDot );
+//				}
 			}
 		}
 		return 0.0d;
@@ -123,4 +182,19 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 		}
 	}
 
+	@Override
+	 public void resizeToObject( Composite object )
+	{
+		if (object != null)
+		{
+			double handleLength = this.getHandleLength( object );
+			this.setSize( handleLength );
+			if (this.lengthAnimation != null)
+			{
+				this.lengthAnimation.setCurrentValue( this.distanceFromOrigin );
+				this.lengthAnimation.setTarget( this.distanceFromOrigin );
+			}
+		}
+	}
+	
 }

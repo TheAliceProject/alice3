@@ -128,7 +128,7 @@ public class LinearDragManipulator extends DragManipulator implements CameraInfo
 		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
 		if (clickedHandle instanceof LinearDragHandle)
 		{
-			this.linearHandle = (LinearTranslateHandle)clickedHandle;
+			this.linearHandle = (LinearDragHandle)clickedHandle;
 			this.manipulatedTransformable = this.linearHandle.getManipulatedObject();
 			this.absoluteDragAxis = this.linearHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.linearHandle.getDragAxis() );
 			

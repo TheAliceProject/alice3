@@ -26,6 +26,7 @@ import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
@@ -64,6 +65,19 @@ public abstract class ManipulationHandle extends Transformable {
 			this.setParent( manipulatedObject );
 		}
 	}
+	
+	protected void initFromHandle( ManipulationHandle handle )
+	{
+		this.manipulatedObject = handle.manipulatedObject;
+		this.isActive = handle.isActive;
+		this.isFaded = handle.isFaded;
+		this.isMuted = handle.isMuted;
+		this.isRollover = handle.isRollover;
+		this.isVisible = handle.isVisible;
+		this.groupMembership.clear();
+		this.groupMembership.or( handle.groupMembership );
+		this.localTransformation.setValue( new edu.cmu.cs.dennisc.math.AffineMatrix4x4(handle.localTransformation.getValue()) );
+	}
 
 	public ManipulationHandle( )
 	{
@@ -79,6 +93,36 @@ public abstract class ManipulationHandle extends Transformable {
 	{
 		sgFrontFacingAppearance.diffuseColor.setValue( this.getDesiredColor() );
 		sgFrontFacingAppearance.opacity.setValue( new Float(this.getDesiredOpacity()) );
+	}
+	
+	protected edu.cmu.cs.dennisc.math.Matrix3x3 getTransformableScale( Transformable t )
+	{
+		edu.cmu.cs.dennisc.math.Matrix3x3 returnScale;
+		Visual objectVisual = getSGVisualForTransformable( t );
+		if (objectVisual != null)
+		{
+			returnScale = new edu.cmu.cs.dennisc.math.Matrix3x3();
+			returnScale.setValue( objectVisual.scale.getValue() );
+		}
+		else
+		{
+			returnScale = edu.cmu.cs.dennisc.math.ScaleUtilities.newScaleMatrix3d( 1.0d, 1.0d, 1.0d );
+		}
+		return returnScale;
+		
+	}
+	
+	protected Visual getSGVisualForTransformable( Transformable object )
+	{
+		for (int i=0; i<object.getComponentCount(); i++)
+		{
+			Component c = object.getComponentAt( i );
+			if (c instanceof Visual)
+			{
+				return (Visual)c;
+			}
+		}
+		return null;
 	}
 	
 	protected void createAnimations()
@@ -155,7 +199,7 @@ public abstract class ManipulationHandle extends Transformable {
 	}
 	
 	abstract public void positionRelativeToObject( Composite object );
-	
+	abstract public void resizeToObject( Composite object );
 	
 	protected void updateVisibleState()
 	{
@@ -200,11 +244,16 @@ public abstract class ManipulationHandle extends Transformable {
 	 * @param isFaded the isFaded to set
 	 */
 	public void setFaded( boolean isFaded ) {
+		boolean wasFaded = this.isFaded();
 		int fadedValue = isFaded ? 1 : -1;
 		this.isFaded += fadedValue;
 		if (this.isFaded < 0)
 		{
 			System.err.println("Faded went below 0: "+this.isFaded);
+		}
+		if (!this.isFaded() && wasFaded)
+		{
+			resizeToObject( this.getManipulatedObject() );
 		}
 		this.updateVisibleState();
 	}

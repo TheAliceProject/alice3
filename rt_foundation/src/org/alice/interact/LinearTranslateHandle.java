@@ -46,6 +46,12 @@ public class LinearTranslateHandle extends LinearDragHandle {
 		this.initializeAppearance();
 	}
 	
+	public LinearTranslateHandle( LinearTranslateHandle handle )
+	{
+		super(handle);
+		this.baseColor = handle.baseColor;
+		this.initializeAppearance();
+	}
 	
 	@Override
 	protected void createShape() {

@@ -97,16 +97,25 @@ public class RotationRingHandle extends ManipulationHandle{
 		this.sgVisual.geometries.setValue( new Geometry[] { this.sgTorus } );
 	}
 	
-	@Override
-	public void setManipulatedObject( Transformable manipulatedObject ) {
-		super.setManipulatedObject( manipulatedObject );
-		
+	public RotationRingHandle( RotationRingHandle handle )
+	{
+		this(handle.rotationAxis, handle.handlePosition);
+		this.initFromHandle( handle );
+		this.handleOffset.set( handle.handleOffset );
+	}
+	
+	protected void setPositionRelativeToObjectSize( Composite object )
+	{
 		if (manipulatedObject != null)
 		{
 			Object bboxObj = manipulatedObject.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
 			if (bboxObj instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
 			{
-				AxisAlignedBox bbox = (AxisAlignedBox)bboxObj;
+				AxisAlignedBox bbox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bboxObj);
+				if (object instanceof Transformable)
+				{
+					bbox.scale( this.getTransformableScale( (Transformable)object ) );
+				}
 				Vector3 maxVector = VectorUtilities.projectOntoVector( new Vector3(bbox.getMaximum()), this.rotationAxis );
 				Vector3 minVector = VectorUtilities.projectOntoVector( new Vector3(bbox.getMinimum()), this.rotationAxis );
 				this.handleOffset.set( 0.0d, 0.0d, 0.0d );
@@ -140,7 +149,12 @@ public class RotationRingHandle extends ManipulationHandle{
 				this.setTranslationOnly( this.handleOffset, this.getReferenceFrame());
 			}
 		}
-		
+	}
+	
+	@Override
+	public void setManipulatedObject( Transformable manipulatedObject ) {
+		super.setManipulatedObject( manipulatedObject );
+		this.setPositionRelativeToObjectSize( manipulatedObject );
 	}
 	
 	public void setSphereVisibility( boolean showSphere )
@@ -168,16 +182,25 @@ public class RotationRingHandle extends ManipulationHandle{
 	protected void createAnimations()
 	{
 		super.createAnimations();
-		this.radiusAnimation = new DoubleTargetBasedAnimation( new Double(this.sgTorus.majorRadius.getValue()) ){
+		double currentRadius = this.sgTorus.majorRadius.getValue();
+		if (Double.isNaN( currentRadius ))
+		{
+			currentRadius = 0.0d;
+		}
+		this.radiusAnimation = new DoubleTargetBasedAnimation( new Double(currentRadius) ){
 			@Override
 			protected void updateValue( Double value ) {
 				if (RotationRingHandle.this.sgTorus != null)
 				{
+					if (value.isNaN())
+					{
+						value = 0.0d;
+					}
 					if (value < 0.0d)
 					{
 						value = 0.0d;
 					}
-					RotationRingHandle.this.sgTorus.majorRadius.setValue( value );
+					RotationRingHandle.this.setSize(value);
 				}
 			}
 		};
@@ -191,6 +214,10 @@ public class RotationRingHandle extends ManipulationHandle{
 		if (this.manipulatedObject != null && this.radiusAnimation != null)
 		{
 			double endRadius = this.isVisible() ? this.getMajorAxisRadius( this.manipulatedObject ) : 0.0d;
+			if (Double.isNaN( endRadius ))
+			{
+				endRadius = 0.0d;
+			}
 			this.radiusAnimation.setTarget( endRadius );
 		}
 	}
@@ -216,6 +243,11 @@ public class RotationRingHandle extends ManipulationHandle{
 		}
 	}
 	
+	private void setSize(double size)
+	{
+		RotationRingHandle.this.sgTorus.majorRadius.setValue( size );
+	}
+	
 	private double getMajorAxisRadius( Composite object )
 	{
 		if (object != null)
@@ -223,13 +255,21 @@ public class RotationRingHandle extends ManipulationHandle{
 			Object bbox = object.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
 			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
 			{
-				edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox = (edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox;
+				AxisAlignedBox boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
+				if (object instanceof Transformable)
+				{
+					boundingBox.scale( this.getTransformableScale( (Transformable)object ) );
+				}
 				Plane planeOfRotation = new Plane(Point3.createZero(), this.rotationAxis);
 				Point3 minPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMinimum() );
 				Point3 maxPlanePoint = PlaneUtilities.projectPointIntoPlane( planeOfRotation, boundingBox.getMaximum() );
 				double minSize = minPlanePoint.calculateMagnitude();
 				double maxSize = maxPlanePoint.calculateMagnitude();
 				double radius = Math.max( minSize, maxSize );
+				if (Double.isNaN( radius ))
+				{
+					radius = 0.0d;
+				}
 				return radius;
 			}
 		}
@@ -244,6 +284,19 @@ public class RotationRingHandle extends ManipulationHandle{
 	@Override
 	public void positionRelativeToObject( Composite object ) {
 		//These handles just use their local transform as their position
+	}
+	
+	@Override
+	public void resizeToObject( Composite object )
+	{
+		this.setPositionRelativeToObjectSize( object );
+		double radius = this.getMajorAxisRadius( object );
+		this.setSize(radius);
+		if (this.radiusAnimation != null)
+		{
+			this.radiusAnimation.setCurrentValue( radius );
+			this.radiusAnimation.setTarget( radius );
+		}
 	}
 
 }

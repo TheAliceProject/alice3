@@ -45,6 +45,14 @@ public abstract class DoubleTargetBasedAnimation extends TargetBasedAnimation<Do
 	public DoubleTargetBasedAnimation( Double currentValue, Double targetValue, double speed )
 	{
 		super(currentValue, targetValue, speed);
+		if (this.currentValue.isNaN())
+		{
+			this.currentValue = new Double(0.0d);
+		}
+		if (this.targetValue.isNaN())
+		{
+			this.targetValue = new Double(0.0d);
+		}
 	}
 	
 	@Override

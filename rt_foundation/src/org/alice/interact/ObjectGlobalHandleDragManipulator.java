@@ -77,6 +77,10 @@ public class ObjectGlobalHandleDragManipulator extends DragManipulator implement
 		{
 			this.activeManipulator = new LinearDragManipulator();
 		}
+		else if (this.activeHandle instanceof LinearScaleHandle)
+		{
+			this.activeManipulator = new ScaleDragManipulator();
+		}
 		if (this.activeManipulator != null)
 		{
 			if (this.activeManipulator instanceof CameraInformedManipulator)

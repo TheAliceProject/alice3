@@ -235,6 +235,7 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
 		}
 		
+		this.handleSets.add( new HandleSet( java.awt.event.KeyEvent.VK_4, HandleGroup.RESIZE) );
 		this.handleSets.add( new HandleSet( java.awt.event.KeyEvent.VK_3, HandleGroup.ROTATION) );
 		this.handleSets.add( new HandleSet( java.awt.event.KeyEvent.VK_2, HandleGroup.TRANSLATION) );
 		this.handleSets.add( new HandleSet( java.awt.event.KeyEvent.VK_1, HandleGroup.DEFAULT) );
@@ -282,6 +283,29 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		LinearTranslateHandle translateZAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessNegativeZAxis(), Color4f.BLUE);
 		translateZAxis2.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
 		nextManipulationHandles.add( translateZAxis2 );
+		
+		Vector3 uniformScaleDirection = new Vector3(-1.0d, 1.0d, 0.0d);
+		uniformScaleDirection.normalize();
+		LinearScaleHandle scaleAxis = new LinearScaleHandle(uniformScaleDirection, Color4f.PINK);
+		scaleAxis.addToGroups( HandleGroup.RESIZE );
+		currentManipulationHandles.add( scaleAxis );
+		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxis) );
+		
+		LinearScaleHandle scaleAxisX = new LinearScaleHandle(Vector3.accessNegativeXAxis(), Color4f.RED, true);
+		scaleAxisX.addToGroups( HandleGroup.RESIZE );
+		currentManipulationHandles.add( scaleAxisX );
+		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxisX) );
+		
+		LinearScaleHandle scaleAxisY = new LinearScaleHandle(Vector3.accessPositiveYAxis(), Color4f.GREEN, true);
+		scaleAxisY.addToGroups( HandleGroup.RESIZE );
+		currentManipulationHandles.add( scaleAxisY );
+		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxisY) );
+		
+		LinearScaleHandle scaleAxisZ = new LinearScaleHandle(Vector3.accessNegativeZAxis(), Color4f.BLUE, true);
+		scaleAxisZ.addToGroups( HandleGroup.RESIZE );
+		currentManipulationHandles.add( scaleAxisZ );
+		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxisZ) );
+
 		
 	}	
 	
