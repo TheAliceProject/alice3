@@ -35,7 +35,7 @@ import org.alice.interact.GlobalDragAdapter;
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors.scene.AbstractInstantiatingSceneEditor {
-	
+
 	private Program program = this.createProgram();
 	private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
 	private edu.cmu.cs.dennisc.alice.ide.editors.scene.ControlsForOverlayPane controlsForOverlayPane = this.createControlsForOverlayPane();
@@ -69,14 +69,14 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 				MoveAndTurnSceneEditor.this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
 					public void selecting( org.alice.interact.event.SelectionEvent e ) {
 					}
-					public void selected(org.alice.interact.event.SelectionEvent e) {
+					public void selected( org.alice.interact.event.SelectionEvent e ) {
 						MoveAndTurnSceneEditor.this.handleSelection( e );
 					}
 				} );
 			}
 		}.start();
 	}
-	
+
 	private void handleSelection( org.alice.interact.event.SelectionEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
 		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
@@ -88,14 +88,14 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 
 	private static boolean isGround( org.alice.apis.moveandturn.Model model ) {
 		Class[] clses = { Ground.class, GrassyGround.class, DirtGround.class, MoonSurface.class, SandyGround.class, SeaSurface.class, SnowyGround.class };
-		for( Class<? extends org.alice.apis.moveandturn.PolygonalModel> cls : clses ) {
+		for( Class< ? extends org.alice.apis.moveandturn.PolygonalModel > cls : clses ) {
 			if( cls.isAssignableFrom( model.getClass() ) ) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
 	protected void putFieldForInstanceInJava( java.lang.Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super.putFieldForInstanceInJava( instanceInJava, field );
@@ -108,7 +108,7 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.GROUND );
 				} else {
 					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
-					sgTransformable.putBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY, model.getAxisAlignedMinimumBoundingBox());
+					sgTransformable.putBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY, model.getAxisAlignedMinimumBoundingBox() );
 				}
 			} else if( transformable instanceof org.alice.apis.moveandturn.Light ) {
 				org.alice.apis.moveandturn.Light light = (org.alice.apis.moveandturn.Light)instanceInJava;
@@ -133,7 +133,7 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		panel.setLayout( new java.awt.BorderLayout() );
 		panel.add( this.controlsForOverlayPane );
 	}
-	
+
 	@Override
 	public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ide.event.FieldSelectionEvent e ) {
 		super.fieldSelectionChanged( e );
@@ -149,7 +149,56 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		}
 	}
 	
+	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 	
+	@Override
+	public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ide.event.FocusedCodeChangeEvent e ) {
+		super.focusedCodeChanged( e );
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
+
+		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+		if( sceneField != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+			boolean isSceneScope = type.isAssignableFrom( sceneType );
+			java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
+
+			try {
+				edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = this.getProgram().getOnscreenLookingGlass().getCameraAt( 0 );
+				if( isSceneScope ) {
+					camera.background.setValue( null );
+				} else {
+					cameraBackground.color.setValue( edu.cmu.cs.dennisc.color.Color4f.BLACK );
+					camera.background.setValue( cameraBackground );
+				}
+			} catch( Throwable t ) {
+				//pass
+			}
+//			Object sceneInstanceInJava = this.getInstanceInJavaForField( sceneField );
+//			if( sceneInstanceInJava instanceof org.alice.apis.moveandturn.Scene ) {
+//				org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)sceneInstanceInJava;
+//				if( isSceneScope ) {
+//					scene.setAtmosphereColor( new org.alice.apis.moveandturn.Color( 0.75f, 0.75f, 1.0f ), org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+//				} else {
+//					scene.setAtmosphereColor( org.alice.apis.moveandturn.Color.BLACK, org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+//				}
+//			}
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
+				Object instanceInJava = this.getInstanceInJavaForField( field );
+				if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
+					org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;
+					if( isSceneScope || type.isAssignableTo( model.getClass() ) ) {
+						model.setColor( org.alice.apis.moveandturn.Color.WHITE, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//						model.setOpacity( 1.0f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+					} else {
+						model.setColor( new org.alice.apis.moveandturn.Color( 0.25, 0.25, 0.25 ), org.alice.apis.moveandturn.Model.RIGHT_NOW );
+//						model.setOpacity( 0.125f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		Object rv = super.createScene( sceneField );
@@ -161,7 +210,7 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 		this.controlsForOverlayPane.setRootField( sceneField );
 		return rv;
 	}
-	
+
 	public void setDragInProgress( boolean isDragInProgress ) {
 		if( isDragInProgress ) {
 			this.showSnapshotIfAppropriate();
@@ -169,14 +218,14 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 			this.showLiveIfAppropriate();
 		}
 	}
-	
+
 	public void showSnapshotIfAppropriate() {
 		this.cardPane.showSnapshot();
 	}
 	public void showLiveIfAppropriate() {
 		this.cardPane.showLive();
 	}
-	
+
 	public Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return this.getVM().createInstanceEntryPoint( type );
 	}
@@ -187,8 +236,9 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 	public void restoreProjectProperties() {
 		this.restoreCameraNavigationProperties( this.cameraNavigationDragAdapter );
 	}
-	
+
 	private java.util.Stack< Boolean > isCameraNavigationDragAdapterEnabledStack = new java.util.Stack< Boolean >();
+
 	protected void pushAndSetCameraNavigationDragAdapterEnabled( Boolean isCameraNavigationDragAdapterEnabled ) {
 		this.isCameraNavigationDragAdapterEnabledStack.push( this.cameraNavigationDragAdapter.isEnabled() );
 		this.cameraNavigationDragAdapter.setEnabled( isCameraNavigationDragAdapterEnabled );
@@ -198,7 +248,7 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 	}
 
 	public static void main( String[] args ) {
-		
+
 		edu.cmu.cs.dennisc.alice.ide.IDE ide = new edu.cmu.cs.dennisc.alice.ide.IDE() {
 			@Override
 			public edu.cmu.cs.dennisc.alice.ast.Node createCopy( edu.cmu.cs.dennisc.alice.ast.Node original ) {
@@ -233,13 +283,12 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 			public void promptUserForStatement( java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
 			}
 			@Override
-			public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, java.awt.event.MouseEvent e,
-					edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+			public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 			}
 			@Override
 			public void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 			}
-			
+
 			@Override
 			public void unsetPreviousExpression() {
 			}
@@ -247,11 +296,11 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 			protected void preserveProjectProperties() {
 			}
 		};
-		
+
 		MoveAndTurnSceneEditor moveAndTurnSceneEditor = new MoveAndTurnSceneEditor();
-		
+
 		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
-		
+
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		frame.getContentPane().add( moveAndTurnSceneEditor );
 		frame.setSize( 1024, 768 );
