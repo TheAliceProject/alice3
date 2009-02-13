@@ -59,6 +59,7 @@ public interface LookingGlass extends edu.cmu.cs.dennisc.pattern.Releasable {
 
 	public void addCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
 	public void removeCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
+	public void clearCameras();
 	public int getCameraCount();
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getCameraAt( int index );
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] getCameras( edu.cmu.cs.dennisc.scenegraph.AbstractCamera[] rv );

@@ -70,10 +70,16 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	private int m_sgCameraIndex = 0;
+	private boolean isMultipleCameraWarningAlreadyDelivered = false;
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCamera() {
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = getOnscreenLookingGlass();
 		if( onscreenLookingGlass != null ) {
-			if( m_sgCameraIndex < onscreenLookingGlass.getCameraCount() ) {
+			int cameraCount = onscreenLookingGlass.getCameraCount();
+			if( cameraCount > 1 && this.isMultipleCameraWarningAlreadyDelivered == false ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: onscreenLookingGlass.getCameraCount()", onscreenLookingGlass.getCameraCount() );
+				this.isMultipleCameraWarningAlreadyDelivered = true;
+			}
+			if( m_sgCameraIndex < cameraCount ) {
 				return onscreenLookingGlass.getCameraAt( m_sgCameraIndex );
 			} else {
 				return null;

@@ -177,6 +177,8 @@ class AbstractIDE( alice.ide.IDE ):
 		alice.reflect.ClassInfoManager.setDirectory( classInfoDirectory )
 	
 	
+	def handleWindowOpened(self, e):
+		alice.ide.Launcher.hideSplashScreenIfNecessary()
 	def setDragInProgress( self, isDragInProgress ):
 		alice.ide.IDE.setDragInProgress( self, isDragInProgress )
 		self._scenePane.setDragInProgress( isDragInProgress )

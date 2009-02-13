@@ -40,6 +40,7 @@ public class KeyEventUtilities {
 			switch( keyCode ) {
 			case java.awt.event.KeyEvent.VK_CONTROL:
 			case java.awt.event.KeyEvent.VK_ALT:
+			case java.awt.event.KeyEvent.VK_META:
 				rv = null;
 				break;
 			default:
@@ -53,6 +54,7 @@ public class KeyEventUtilities {
 					keyCode = java.awt.event.KeyEvent.VK_ALT;
 					break;
 				case java.awt.event.KeyEvent.VK_ALT:
+				case java.awt.event.KeyEvent.VK_META:
 					keyCode = java.awt.event.KeyEvent.VK_CONTROL;
 					break;
 				}

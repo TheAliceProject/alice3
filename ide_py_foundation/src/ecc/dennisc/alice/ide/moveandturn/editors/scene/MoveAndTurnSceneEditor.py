@@ -161,20 +161,14 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 
 	def createScene( self, sceneField ):
 		program = self.getProgram()
-		scene = self.getScene()
-		if scene:
+		if program:
 			lg = program.getOnscreenLookingGlass()
+			lg.clearCameras()
 			program.setScene( None )
-			lg.removeCamera( lg.getCameraAt( 0 ) )
-			#self._sceneFieldsComposite.setListData( [] )
 
 		sceneInstance = org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.createScene( self, sceneField )
 		if sceneInstance:
 			self.restoreProjectProperties()
-
-		#fields = sceneField.getValueType().getDeclaredFields()
-		#lastField = fields.get( fields.size() - 1 )
-		#self.getIDE().setFieldSelection( lastField )
 		return sceneInstance
 
 	def getSceneAutomaticSetUpMethod( self ):
