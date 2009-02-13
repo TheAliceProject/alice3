@@ -54,9 +54,9 @@ public abstract class ZControl extends ZBoxPane {
 				}
 				public void mousePressed( java.awt.event.MouseEvent e ) {
 					if( e.isPopupTrigger() ) {
-						ZControl.this.handleLeftMousePress( e );
-					} else {
 						ZControl.this.handleRightMousePress( e );
+					} else {
+						ZControl.this.handleLeftMousePress( e );
 					}
 					ZControl.this.setPressed( true );
 				}
