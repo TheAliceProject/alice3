@@ -51,9 +51,9 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 	public GalleryModel( String path ) {
 		java.io.File directory = new java.io.File( new java.io.File( s_galleryRootDirectory, CHILD_NAME ), GRANDCHILD_NAME );
 		java.io.File file = new java.io.File( directory, path + ".zip" );
-		
 		assert file.exists();
-		edu.cmu.cs.dennisc.codec.CodecUtilities.decodeZippedReferenceableBinary( this, file.getAbsolutePath(), "element.bin" );	
+		edu.cmu.cs.dennisc.codec.CodecUtilities.decodeZippedReferenceableBinary( this, file.getAbsolutePath(), "element.bin" );
+		this.realize();
 	}
 	@PropertyGetterTemplate(visibility = Visibility.TUCKED_AWAY)
 	public String getModeledByCredit() {

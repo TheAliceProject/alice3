@@ -85,6 +85,7 @@ public abstract class Transformable extends AbstractTransformable {
 
 	private boolean m_isRealized = false;
 	protected void realize() {
+		m_isRealized = true;
 	}
 
 	@Override
@@ -127,7 +128,6 @@ public abstract class Transformable extends AbstractTransformable {
 				//pass
 			} else {
 				realize();
-				m_isRealized = true;
 			}
 			vehicle.addComponent( this );
 			if( absolute != null ) {
@@ -178,22 +178,17 @@ public abstract class Transformable extends AbstractTransformable {
 		}
 		return rv;
 	}
-//	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, ReferenceFrame asSeenBy, boolean isOriginIncluded ) {
-//		if( isOriginIncluded ) {
-//			rv.addOrigin( asSeenBy );
-//		}
-//		return rv;
-//	}
 	
 	private edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound createCumulativeBound( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
 		java.util.List< Transformable > transformables = new java.util.LinkedList< Transformable >();
 		updateHowMuch( transformables, howMuch.isThisACandidate(), howMuch.isChildACandidate(), howMuch.isGrandchildAndBeyondACandidate() );
 		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv = new edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound();
 		ReferenceFrame actualAsSeenBy = asSeenBy.getActualReferenceFrame( this );
+
 		for( Transformable transformable : transformables ) {
 			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = transformable.getTransformation( actualAsSeenBy );
+			assert m.isNaN() == false;
 			transformable.updateCumulativeBound( rv, m, originPolicy.isOriginIncluded() );
-			//transformable.updateCumulativeBound( rv, actualAsSeenBy, originPolicy.isOriginIncluded() );
 		}
 		return rv;
 	}
