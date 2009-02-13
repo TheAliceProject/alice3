@@ -30,9 +30,12 @@ public class MouseEventUtilities {
 		if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
 			return true;
 		} else {
-			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
-				final int MASK = java.awt.event.MouseEvent.ALT_GRAPH_DOWN_MASK;
-				return ( e.getModifiersEx() & MASK ) == MASK;
+			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+				if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+					return e.isControlDown();
+				} else {
+					return false;
+				}
 			} else {
 				return false;
 			}
