@@ -57,12 +57,19 @@ class InitializerView( javax.swing.JPanel, edu.cmu.cs.dennisc.pattern.Validator 
 			if self._expression:
 				if self._expression.getType().isAssignableTo( self._type ):
 					view = alice.ide.editors.code.ExpressionPane( self._expression )
+					text = None
 				else:
-					view = javax.swing.JLabel( "invalid: <click here>" )
+					text = "invalid: <click here>"
 			else:
-				view = javax.swing.JLabel( "<click here>" )
+				text = "<click here>"
 		else:
-			view = javax.swing.JLabel( "<fill in type first>" )
+			text = "<fill in type first>"
+
+		if text:
+			view = javax.swing.JLabel( text )
+			view.setOpaque( True )
+			view.setBackground( java.awt.Color.RED )
+		
 		self.add( view )
 		self._paneWithValidation.repaint()
 		springPane = self._paneWithValidation.getParent()
