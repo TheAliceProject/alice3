@@ -331,8 +331,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		IDE.this.performIfAppropriate( IDE.this.exitOperation, e );
 	}
 
-	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-	}
+	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	protected edu.cmu.cs.dennisc.alice.ide.lookandfeel.StatementClassBorderFactory createStatementBorderFactory() {
 		return new edu.cmu.cs.dennisc.alice.ide.lookandfeel.KnurlBorderFactory();
 	}
