@@ -34,9 +34,10 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	private java.awt.Point m_previous = new java.awt.Point();
 	private java.awt.Point m_press = new java.awt.Point();
 
-	private int m_modifierMask = java.awt.event.MouseEvent.BUTTON1_MASK | java.awt.event.MouseEvent.BUTTON2_MASK | java.awt.event.MouseEvent.BUTTON3_MASK;
+//	private int m_modifierMask = java.awt.event.MouseEvent.BUTTON1_MASK | java.awt.event.MouseEvent.BUTTON2_MASK | java.awt.event.MouseEvent.BUTTON3_MASK;
 	private boolean m_isActive = false;
 
+	
 	
 	private java.util.List< edu.cmu.cs.dennisc.awt.EventInterceptor > m_eventInterceptors = new java.util.LinkedList< edu.cmu.cs.dennisc.awt.EventInterceptor >();
 	
@@ -107,14 +108,18 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 		}
 	}
 
-	public int getModifierMask() {
-		return m_modifierMask;
-	}
-	public void setModifierMask( int modifierMask ) {
-		m_modifierMask = modifierMask;
-	}
-	protected boolean isModifierMaskTestPassed( int modifierMask ) {
-		return (m_modifierMask & modifierMask) != 0;
+//	public int getModifierMask() {
+//		return m_modifierMask;
+//	}
+//	public void setModifierMask( int modifierMask ) {
+//		m_modifierMask = modifierMask;
+//	}
+//	protected boolean isModifierMaskTestPassed( int modifierMask ) {
+//		return (m_modifierMask & modifierMask) != 0;
+//	}
+	
+	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
+		return ( e.getModifiers() & ( java.awt.event.MouseEvent.BUTTON1_MASK | java.awt.event.MouseEvent.BUTTON2_MASK | java.awt.event.MouseEvent.BUTTON3_MASK ) ) != 0;
 	}
 
 	public edu.cmu.cs.dennisc.animation.Animator getAnimator() {
@@ -185,8 +190,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 			m_isActive = false;
 		} else {
 			e.getComponent().requestFocus();
-			int modifiers = e.getModifiers();
-			m_isActive = isModifierMaskTestPassed( modifiers );
+			m_isActive = this.isAcceptable( e );
 		}
 		if( m_isActive ) {
 			if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {

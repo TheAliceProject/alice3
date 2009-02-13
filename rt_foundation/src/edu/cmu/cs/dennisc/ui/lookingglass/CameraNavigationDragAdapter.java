@@ -37,8 +37,11 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	private double m_metersPerMouseWheelTick;
 
 	public CameraNavigationDragAdapter() {
-		setModifierMask( java.awt.event.MouseEvent.BUTTON3_MASK );
 		m_metersPerMouseWheelTick = 1.0;
+	}
+	@Override
+	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
+		return edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e );
 	}
 
 	@Override
@@ -106,7 +109,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 		m_yPixelPrev = m_yPixel0;
 	}
 	public void stopCameraNavigationMode() {
-		m_function.requestVelocity( 0, 0, 0 );
+		m_function.stopImmediately();
 		m_cameraNavigationMode = null;
 	}
 

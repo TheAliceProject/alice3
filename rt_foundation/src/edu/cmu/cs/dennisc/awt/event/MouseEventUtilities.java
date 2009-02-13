@@ -26,6 +26,17 @@ package edu.cmu.cs.dennisc.awt.event;
  * @author Dennis Cosgrove
  */
 public class MouseEventUtilities {
+	public static boolean isQuoteLeftUnquoteMouseButton( java.awt.event.MouseEvent e ) {
+		if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+				return e.isControlDown() == false;
+			} else {
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
 	public static boolean isQuoteRightUnquoteMouseButton( java.awt.event.MouseEvent e ) {
 		if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
 			return true;

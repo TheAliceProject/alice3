@@ -82,6 +82,10 @@ public class CameraNavigationFunction extends edu.cmu.cs.dennisc.math.rigidbody.
 	public void requestVelocity( double x, double y, double z ) {
 		m_velocityRequested.set( x, y, z );
 	}
+	public void stopImmediately() {
+		requestVelocity( 0, 0, 0 );
+		setVelocity( 0, 0, 0 );
+	}
 
 	public void requestDistance( double distance ) {
 		m_distanceRequested = Math.max( Math.min( distance, DISTANCE_MAXIMUM ), DISTANCE_MINIMUM );

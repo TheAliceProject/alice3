@@ -28,12 +28,13 @@ package edu.cmu.cs.dennisc.ui.lookingglass;
 public abstract class PlanarProjectionDragAdapter extends edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter {
 	private edu.cmu.cs.dennisc.math.Plane m_bufferPlaneInAbsolute = new edu.cmu.cs.dennisc.math.Plane();
 
-	public PlanarProjectionDragAdapter() {
-		setModifierMask( java.awt.event.MouseEvent.BUTTON1_MASK );
-	}
 	protected abstract edu.cmu.cs.dennisc.math.Plane getPlaneInAbsolute( edu.cmu.cs.dennisc.math.Plane rv );
 	protected abstract void handlePointInAbsolute( edu.cmu.cs.dennisc.math.Point3 xyzInAbsolute );
 	
+	@Override
+	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
+		return edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
+	}
 	private edu.cmu.cs.dennisc.math.Point3 getPointInAbsolutePlane( java.awt.Point p ) {
 		edu.cmu.cs.dennisc.math.Point3 rv;
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getOnscreenLookingGlass().getCameraAtPixel( p.x, p.y );

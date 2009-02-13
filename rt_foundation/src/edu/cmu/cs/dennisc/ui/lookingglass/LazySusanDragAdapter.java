@@ -36,7 +36,10 @@ public class LazySusanDragAdapter extends edu.cmu.cs.dennisc.ui.DragAdapter {
 	public LazySusanDragAdapter( edu.cmu.cs.dennisc.scenegraph.Transformable lazySusan, double radiansPerPixel ) {
 		m_lazySusan = lazySusan;
 		m_radiansPerPixel = radiansPerPixel;
-		setModifierMask( java.awt.event.MouseEvent.BUTTON1_MASK );
+	}
+	@Override
+	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
+		return edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
 	}
 
 	//todo: add get/set m_lazySusan

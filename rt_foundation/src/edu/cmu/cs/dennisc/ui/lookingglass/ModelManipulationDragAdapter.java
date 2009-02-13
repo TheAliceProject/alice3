@@ -39,10 +39,11 @@ public class ModelManipulationDragAdapter extends edu.cmu.cs.dennisc.ui.lookingg
 
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 m_undoPOV;
 	
-	public ModelManipulationDragAdapter() {
-		setModifierMask( java.awt.event.MouseEvent.BUTTON1_MASK );
-	}
 
+	@Override
+	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
+		return edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
+	}
 	protected edu.cmu.cs.dennisc.lookingglass.PickObserver getPickObserver() {
 		return null;
 	}
