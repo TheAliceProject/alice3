@@ -282,7 +282,7 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 			}
 		};
 		bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
-		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 0, 0 ) );
+		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
 //		bodyPane.setOpaque( true );
 //		bodyPane.setBackground( java.awt.Color.RED );
 
