@@ -266,16 +266,9 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 //		}
 //	}
 	
-	private int getQuoteControlUnquoteKey() {
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
-			return java.awt.event.KeyEvent.VK_ALT;
-		} else {
-			return java.awt.event.KeyEvent.VK_CONTROL;
-		}
-	}
 	private void addToDragStyleIfNecessary( int keyCode ) {
 		if( m_dragStyleCurrent != null ) {
-			if( keyCode == getQuoteControlUnquoteKey() ) {
+			if( keyCode == edu.cmu.cs.dennisc.awt.event.KeyEventUtilities.getQuoteControlUnquoteKey() ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					//note: this should happen plenty, as key press events keep coming
 					//pass
@@ -303,7 +296,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 
 	private void removeFromDragStyleIfNecessary( int keyCode ) {
 		if( m_dragStyleCurrent != null ) {
-			if( keyCode == getQuoteControlUnquoteKey() ) {
+			if( keyCode == edu.cmu.cs.dennisc.awt.event.KeyEventUtilities.getQuoteControlUnquoteKey() ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					if( m_dragStyleCurrent.isShiftDown() ) {
 						handleDragStyleChange( m_dragStyleCurrent, DragStyle.SHIFT );
