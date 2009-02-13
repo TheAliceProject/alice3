@@ -92,7 +92,7 @@ public abstract class ZControl extends ZBoxPane {
 			} );
 			this.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
 				public void mouseDragged( java.awt.event.MouseEvent e ) {
-					if( e.isPopupTrigger() ) {
+					if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
 						//pass
 					} else {
 						ZControl.this.handleMouseDragged( e );

@@ -67,7 +67,7 @@ public class Stencil extends javax.swing.JPanel {
 			java.awt.Component component = javax.swing.SwingUtilities.getDeepestComponentAt( m_container, p.x, p.y );
 			if( component != null ) {
 				java.awt.Point pComponent = javax.swing.SwingUtilities.convertPoint( this, p, component );
-				component.dispatchEvent( new java.awt.event.MouseEvent( component, e.getID(), e.getWhen(), e.getModifiers(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger() ) );
+				component.dispatchEvent( new java.awt.event.MouseEvent( component, e.getID(), e.getWhen(), e.getModifiers() + e.getModifiersEx(), pComponent.x, pComponent.y, e.getClickCount(), e.isPopupTrigger() ) );
 			}
 		}
 	}
