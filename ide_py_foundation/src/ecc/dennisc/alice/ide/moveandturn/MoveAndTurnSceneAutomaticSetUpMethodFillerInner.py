@@ -19,6 +19,25 @@ class MoveAndTurnSceneAutomaticSetUpMethodFillerInner( ecc.dennisc.alice.ide.Sce
 			addComponentMethod = ecc.dennisc.alice.ast.lookupMethod( apis.moveandturn.Composite, "addComponent", [ apis.moveandturn.Transformable ] )
 			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.ThisExpression(), addComponentMethod, [alice.ast.FieldAccess( alice.ast.ThisExpression(), astField )] ) ] )
 			if isinstance( instance, apis.moveandturn.Model ):
+				widthFactor = instance.getResizeWidthAmount()
+				if edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( widthFactor, 1 ):
+					pass
+				else:
+					resizeWidthMethod = ecc.dennisc.alice.ast.lookupMethod( apis.moveandturn.Transformable, "resizeWidth", [ java.lang.Number, java.lang.Number, apis.moveandturn.ResizePolicy ] )
+					astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), resizeWidthMethod, [ alice.ast.DoubleLiteral( widthFactor ), alice.ast.DoubleLiteral( 0.0 ), ecc.dennisc.alice.ast.createEnumConstant(apis.moveandturn.ResizePolicy.PRESERVE_NOTHING) ] ) ] )
+				heightFactor = instance.getResizeHeightAmount()
+				if edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( heightFactor, 1 ):
+					pass
+				else:
+					resizeHeightMethod = ecc.dennisc.alice.ast.lookupMethod( apis.moveandturn.Transformable, "resizeHeight", [ java.lang.Number, java.lang.Number, apis.moveandturn.ResizePolicy ] )
+					astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), resizeHeightMethod, [ alice.ast.DoubleLiteral( heightFactor ), alice.ast.DoubleLiteral( 0.0 ), ecc.dennisc.alice.ast.createEnumConstant(apis.moveandturn.ResizePolicy.PRESERVE_NOTHING) ] ) ] )
+				depthFactor = instance.getResizeDepthAmount()
+				if edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( depthFactor, 1 ):
+					pass
+				else:
+					resizeDepthMethod = ecc.dennisc.alice.ast.lookupMethod( apis.moveandturn.Transformable, "resizeDepth", [ java.lang.Number, java.lang.Number, apis.moveandturn.ResizePolicy ] )
+					astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), resizeDepthMethod, [ alice.ast.DoubleLiteral( depthFactor ), alice.ast.DoubleLiteral( 0.0 ), ecc.dennisc.alice.ast.createEnumConstant(apis.moveandturn.ResizePolicy.PRESERVE_NOTHING) ] ) ] )
+					
 #				setColorMethod = ecc.dennisc.alice.ast.lookupMethod( apis.moveandturn.Model, "setColor", [ edu.cmu.cs.dennisc.color.Color4f ] )
 #				astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), setColorMethod, [ ecc.dennisc.alice.ast.createColor4f( instance.getColor() ) ] ) ] )
 				if isinstance( instance, apis.moveandturn.Text ):

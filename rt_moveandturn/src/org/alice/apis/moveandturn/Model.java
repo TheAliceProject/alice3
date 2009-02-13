@@ -43,6 +43,7 @@ public abstract class Model extends Transformable {
 	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
 	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
 
+	private edu.cmu.cs.dennisc.math.Matrix3x3 m_originalScale = edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity();
 	private java.util.List< SurfaceTexture > m_potentialSurfaceTextures = new java.util.LinkedList< SurfaceTexture >();
 	
 
@@ -71,6 +72,7 @@ public abstract class Model extends Transformable {
 	@Override
 	protected void realize() {
 		super.realize();
+		m_originalScale.setValue( m_sgVisual.scale.getValue() );
 		createSGGeometryIfNecessary();
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = getSGGeometry();
 		if( sgGeometry != null ) {
@@ -79,6 +81,20 @@ public abstract class Model extends Transformable {
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: no geometry: ", this );
 		}
+	}
+	
+	
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public Double getResizeWidthAmount() { 
+		return m_sgVisual.scale.getValue().right.x / m_originalScale.right.x;
+	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public Double getResizeHeightAmount() { 
+		return m_sgVisual.scale.getValue().up.y / m_originalScale.up.y;
+	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public Double getResizeDepthAmount() { 
+		return m_sgVisual.scale.getValue().backward.z / m_originalScale.backward.z;
 	}
 
 	private Model getPartNamed( String name ) {

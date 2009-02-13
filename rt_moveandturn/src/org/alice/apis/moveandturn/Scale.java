@@ -34,6 +34,10 @@ public class Scale implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodab
 		this.internal.setValue( internal );
 	}
 	
+	public boolean isIdentity() {
+		return this.internal.isIdentity();
+	}
+	
 	public edu.cmu.cs.dennisc.math.Matrix3x3 getInternal() {
 		return this.internal;
 	}
