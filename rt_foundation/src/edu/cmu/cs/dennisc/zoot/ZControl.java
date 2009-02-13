@@ -53,9 +53,9 @@ public abstract class ZControl extends ZBoxPane {
 					}
 				}
 				public void mousePressed( java.awt.event.MouseEvent e ) {
-					if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+					if( e.isPopupTrigger() ) {
 						ZControl.this.handleLeftMousePress( e );
-					} else if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
+					} else {
 						ZControl.this.handleRightMousePress( e );
 					}
 					ZControl.this.setPressed( true );
@@ -74,12 +74,16 @@ public abstract class ZControl extends ZBoxPane {
 				public void mouseExited( java.awt.event.MouseEvent e ) {
 				}
 				public void mousePressed( java.awt.event.MouseEvent e ) {
-					if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+					if( e.isPopupTrigger() ) {
+						//pass
+					} else {
 						ZControl.this.handleMousePressed( e );
 					}
 				}
 				public void mouseReleased( java.awt.event.MouseEvent e ) {
-					if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+					if( e.isPopupTrigger() ) {
+						//pass
+					} else {
 						ZControl.this.handleMouseReleased( e );
 					}
 				}
@@ -88,7 +92,9 @@ public abstract class ZControl extends ZBoxPane {
 			} );
 			this.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
 				public void mouseDragged( java.awt.event.MouseEvent e ) {
-					if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+					if( e.isPopupTrigger() ) {
+						//pass
+					} else {
 						ZControl.this.handleMouseDragged( e );
 					}
 				}

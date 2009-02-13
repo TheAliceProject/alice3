@@ -208,7 +208,17 @@ class FieldAltTriggerMouseAdapter( edu.cmu.cs.dennisc.awt.event.AltTriggerMouseA
 		if self._field.isDeclaredInAlice():
 			operations = self.createOperations()
 			popup = alice.ide.MenuUtilities.createJPopupMenu( operations )
-			popup.show( e.getSource(), e.getX(), e.getY() )
+			src = e.getSource()
+			x = e.getX()
+			y = e.getY()
+			if src.isShowing():
+				pass
+			else:
+				# tiles in the scene editor sometimes report as not showing and their parent is None 
+				x += src.getX()
+				y += src.getY()
+				src = alice.ide.IDE.getSingleton()._scenePane
+			popup.show( src, x, y )
 
 
 class MethodAltTriggerMouseAdapter( edu.cmu.cs.dennisc.awt.event.AltTriggerMouseAdapter ):
