@@ -32,7 +32,7 @@ public abstract class AltTriggerMouseAdapter implements java.awt.event.MouseList
 	public void mouseExited( java.awt.event.MouseEvent e ) {
 	}
 	public void mousePressed( java.awt.event.MouseEvent e ) {
-		if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
+		if( e.isPopupTrigger() ) {
 			this.altTriggered( e );
 		}
 	}
