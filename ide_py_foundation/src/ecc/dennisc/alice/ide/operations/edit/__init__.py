@@ -17,7 +17,7 @@ class UndoOperation( alice.ide.AbstractOperation ):
 	def __init__( self ):
 		alice.ide.AbstractOperation.__init__( self )
 		self.putValue( javax.swing.Action.NAME, "Undo" )
-		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK ) )
+		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Z, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) )
 	def prepare( self, e, observer ):
 		title = "Undo coming soon"
 		message = "Undo is not yet implemented.  Apologies."
@@ -30,7 +30,7 @@ class RedoOperation( alice.ide.AbstractOperation ):
 	def __init__( self ):
 		alice.ide.AbstractOperation.__init__( self )
 		self.putValue( javax.swing.Action.NAME, "Redo" )
-		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK ) )
+		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) )
 	def prepare( self, e, observer ):
 		title = "Redo coming soon"
 		message = "Redo is not yet implemented.  Apologies."
@@ -43,7 +43,7 @@ class CutOperation( alice.ide.AbstractUndoableOperation ):
 	def __init__( self ):
 		alice.ide.AbstractUndoableOperation.__init__( self )
 		self.putValue( javax.swing.Action.NAME, "Cut" )
-		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_MASK ) )
+		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) )
 	def prepare( self, e, observer ):
 		title = "Cut coming soon"
 		message = "Cut is not yet implemented.  Apologies."
@@ -60,7 +60,7 @@ class CopyOperation( alice.ide.AbstractUndoableOperation ):
 	def __init__( self ):
 		alice.ide.AbstractUndoableOperation.__init__( self )
 		self.putValue( javax.swing.Action.NAME, "Copy" )
-		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK ) )
+		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) )
 	def prepare( self, e, observer ):
 		title = "Copy coming soon"
 		message = "Copy is not yet implemented.  Apologies."  + getBonusCopyText()
@@ -77,7 +77,7 @@ class PasteOperation( alice.ide.AbstractUndoableOperation ):
 	def __init__( self ):
 		alice.ide.AbstractUndoableOperation.__init__( self )
 		self.putValue( javax.swing.Action.NAME, "Paste" )
-		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_V, java.awt.event.InputEvent.CTRL_MASK ) )
+		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_V, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) )
 	def prepare( self, e, observer ):
 		title = "Paste coming soon"
 		message = "Paste is not yet implemented.  Apologies."

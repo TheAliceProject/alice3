@@ -25,44 +25,25 @@ package edu.cmu.cs.dennisc.awt.event;
 /**
  * @author Dennis Cosgrove
  */
-public class KeyEventUtilities {
-	public static int getQuoteControlUnquoteKey() {
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
-			return java.awt.event.KeyEvent.VK_ALT;
-		} else {
-			return java.awt.event.KeyEvent.VK_CONTROL;
-		}
+public class InputEventUtilities {
+	public static int getCompleteModifiers( java.awt.event.InputEvent e ) {
+		return e.getModifiers() | e.getModifiersEx();
 	}
-	public static java.awt.event.KeyEvent performPlatformFilter( java.awt.event.KeyEvent original ) {
-		java.awt.event.KeyEvent rv;
+	public static int performPlatformModifiersFilter( int originalModifiers ) {
+		int rv;
 		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
-			int keyCode = original.getKeyCode();
-			switch( keyCode ) {
-			case java.awt.event.KeyEvent.VK_CONTROL:
-			case java.awt.event.KeyEvent.VK_ALT:
-				rv = null;
-				break;
-			default:
-				rv = original;
-			}
-			if( rv != null ) {
-				//pass
-			} else {
-				switch( keyCode ) {
-				case java.awt.event.KeyEvent.VK_CONTROL:
-					keyCode = java.awt.event.KeyEvent.VK_ALT;
-					break;
-				case java.awt.event.KeyEvent.VK_ALT:
-					keyCode = java.awt.event.KeyEvent.VK_CONTROL;
-					break;
-				}
-				int completeModifiers = InputEventUtilities.getCompleteModifiers( original );
-				int filteredModifiers = InputEventUtilities.performPlatformModifiersFilter( completeModifiers );
-				rv = new java.awt.event.KeyEvent(original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getKeyCode(), original.getKeyChar() );
-			}
+			//todo
+			rv = originalModifiers;
 		} else {
-			rv = original;
+			rv = originalModifiers;
 		}
 		return rv;
+	}
+	public static int getAcceleratorMask() {
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			return java.awt.event.InputEvent.META_MASK;
+		} else {		
+			return java.awt.event.InputEvent.CTRL_MASK;
+		}
 	}
 }

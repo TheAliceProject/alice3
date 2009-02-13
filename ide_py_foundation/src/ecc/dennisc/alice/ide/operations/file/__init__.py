@@ -35,7 +35,7 @@ class NewOperation( AbstractOpenOperation ):
 	def __init__( self ):
 		AbstractOpenOperation.__init__( self )
 		self.putValue( javax.swing.Action.NAME, "New..." )
-		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK ) )
+		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_N, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) )
 		self.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_N )
 	def _isNew( self ):
 		return True
@@ -44,7 +44,7 @@ class OpenOperation( AbstractOpenOperation ):
 	def __init__( self ):
 		AbstractOpenOperation.__init__( self )
 		self.putValue( javax.swing.Action.NAME, "Open..." )
-		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK ) )
+		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_O, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) )
 		self.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_O )
 
 	def _isNew( self ):
@@ -80,7 +80,7 @@ class SaveOperation( AbstractSaveOperation ):
 	def __init__( self ):
 		AbstractSaveOperation.__init__( self )
 		self.putValue( javax.swing.Action.NAME, "Save" )
-		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK ) )
+		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) )
 		self.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_S )
 	def _isPromptNecessary( self ):
 		return ( self._file and self._file.canWrite() ) == False
@@ -89,7 +89,7 @@ class SaveAsOperation( AbstractSaveOperation ):
 	def __init__( self ):
 		AbstractSaveOperation.__init__( self )
 		self.putValue( javax.swing.Action.NAME, "Save As..." )
-		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK | java.awt.event.InputEvent.SHIFT_MASK ) )
+		self.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() | java.awt.event.InputEvent.SHIFT_MASK ) )
 		self.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_A )
 	def _isPromptNecessary( self ):
 		return True

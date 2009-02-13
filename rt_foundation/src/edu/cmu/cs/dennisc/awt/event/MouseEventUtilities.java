@@ -52,4 +52,24 @@ public class MouseEventUtilities {
 			}
 		}
 	}
+	
+	public static java.awt.event.MouseEvent performPlatformFilter( java.awt.event.MouseEvent original ) {
+		java.awt.event.MouseEvent rv;
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			int completeModifiers = InputEventUtilities.getCompleteModifiers( original );
+			int filteredModifiers = InputEventUtilities.performPlatformModifiersFilter( completeModifiers );
+			if( completeModifiers == filteredModifiers ) {
+				rv = original;
+			} else {
+				//todo:
+				boolean isPopupTrigger = original.isPopupTrigger();
+				
+				
+				rv = new java.awt.event.MouseEvent(original.getComponent(), original.getID(), original.getWhen(), filteredModifiers, original.getX(), original.getY(), original.getClickCount(), isPopupTrigger );
+			}
+		} else {
+			rv = original;
+		}
+		return rv;
+	}
 }
