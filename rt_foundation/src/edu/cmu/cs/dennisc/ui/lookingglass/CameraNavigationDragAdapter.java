@@ -41,8 +41,6 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 	@Override
 	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) );
 		return edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e );
 	}
 
@@ -116,7 +114,6 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 
 	public void handleMouseDragged( int xPixel, int yPixel ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMouseDragged", xPixel, yPixel );
 		final double TRANSLATION_XZ_FACTOR = 0.05;
 		final double TRANSLATION_Y_FACTOR = 0.05;
 		final double ORBIT_YAW_FACTOR = 0.02;

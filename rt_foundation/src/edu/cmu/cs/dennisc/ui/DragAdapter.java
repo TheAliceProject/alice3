@@ -250,6 +250,14 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	}
 
 	public final void mouseMoved( java.awt.event.MouseEvent e ) {
+		//the mac does not report dragged events if control is pressed
+		if( m_isActive ) {
+			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+				if( e.isControlDown() ) {
+					mouseDragged(e);
+				}
+			}
+		}
 	}
 
 	protected void handleDragStyleChange( DragStyle from, DragStyle to ) {
