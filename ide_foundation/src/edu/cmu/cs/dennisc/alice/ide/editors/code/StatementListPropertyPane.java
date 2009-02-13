@@ -26,10 +26,11 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
  * @author Dennis Cosgrove
  */
 class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
+	public static final int INTRASTICIAL_PAD = 4;
 	public StatementListPropertyPane( final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
 		super( javax.swing.BoxLayout.PAGE_AXIS, property );
 		
-		this.setLayout( new edu.cmu.cs.dennisc.swing.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, 4 ) );
+		this.setLayout( new edu.cmu.cs.dennisc.swing.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, StatementListPropertyPane.INTRASTICIAL_PAD ) );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 12, 16 ) );
 //		this.addMouseListener( new java.awt.event.MouseListener() {

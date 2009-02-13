@@ -411,19 +411,25 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 			} else {
 				java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this, eThis, this.currentUnder );
 				Integer height = 0;
-				int x = this.currentUnder.getBorder().getBorderInsets( this.currentUnder ).left;
+				java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder );
+				int x = insets.left;
 				java.awt.Point p = new java.awt.Point( x, 0 );
 				if( this.currentUnder.isFigurativelyEmpty() ) {
 					height = null;
+					p.y = insets.top;
 				} else {
 					int n = this.currentUnder.getComponentCount();
 					if( n > 0 ) {
 						int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
-						if( index < n ) {
+						if( index == 0 ) {
+							//java.awt.Component firstComponent = this.currentUnder.getComponent( 0 );
+							p.y = 0;
+						} else if( index < n ) {
 							p.y = this.currentUnder.getComponent( index ).getY();
 						} else {
 							java.awt.Component lastComponent = this.currentUnder.getComponent( n - 1 );
 							p.y = lastComponent.getY() + lastComponent.getHeight();
+							p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
 							if( this.currentUnder.getProperty() == this.code.getBodyProperty().getValue().statements ) {
 								height = null;
 							}
