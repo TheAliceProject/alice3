@@ -53,10 +53,11 @@ public abstract class ZControl extends ZBoxPane {
 					}
 				}
 				public void mousePressed( java.awt.event.MouseEvent e ) {
-					if( e.isPopupTrigger() ) {
-						ZControl.this.handleRightMousePress( e );
-					} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+					if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 						ZControl.this.handleLeftMousePress( e );
+					} else if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+						ZControl.this.handleRightMousePress( e );
 					}
 					ZControl.this.setPressed( true );
 				}
@@ -74,16 +75,12 @@ public abstract class ZControl extends ZBoxPane {
 				public void mouseExited( java.awt.event.MouseEvent e ) {
 				}
 				public void mousePressed( java.awt.event.MouseEvent e ) {
-					if( e.isPopupTrigger() ) {
-						//pass
-					} else {
+					if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 						ZControl.this.handleMousePressed( e );
 					}
 				}
 				public void mouseReleased( java.awt.event.MouseEvent e ) {
-					if( e.isPopupTrigger() ) {
-						//pass
-					} else {
+					if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 						ZControl.this.handleMouseReleased( e );
 					}
 				}
@@ -92,13 +89,12 @@ public abstract class ZControl extends ZBoxPane {
 			} );
 			this.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
 				public void mouseDragged( java.awt.event.MouseEvent e ) {
-					if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-						//pass
-					} else {
+					if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 						ZControl.this.handleMouseDragged( e );
 					}
 				}
 				public void mouseMoved( java.awt.event.MouseEvent e ) {
+					//todo: handle ctrl-left-drag a.k.a. right-drag on mac
 				}
 			} );
 		}

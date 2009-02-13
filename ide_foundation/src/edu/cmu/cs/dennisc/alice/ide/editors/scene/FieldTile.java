@@ -97,9 +97,7 @@ public class FieldTile extends edu.cmu.cs.dennisc.alice.ide.editors.common.Expre
 				public void mouseClicked( java.awt.event.MouseEvent e ) {
 				}
 				public void mousePressed( java.awt.event.MouseEvent e ) {
-					if( e.isPopupTrigger() ) {
-						//pass
-					} else {
+					if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 						getIDE().performIfAppropriate( new SelectFieldOperation( FieldTile.this.field ), e );
 					}
 				}

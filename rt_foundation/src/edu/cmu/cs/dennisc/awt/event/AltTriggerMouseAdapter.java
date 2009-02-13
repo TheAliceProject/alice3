@@ -32,7 +32,7 @@ public abstract class AltTriggerMouseAdapter implements java.awt.event.MouseList
 	public void mouseExited( java.awt.event.MouseEvent e ) {
 	}
 	public void mousePressed( java.awt.event.MouseEvent e ) {
-		if( e.isPopupTrigger() ) {
+		if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
 			this.altTriggered( e );
 		}
 	}
