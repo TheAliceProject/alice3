@@ -36,7 +36,7 @@ public class GetsPane extends edu.cmu.cs.dennisc.zoot.ZPane {
 		this.setForeground( java.awt.Color.BLACK );
 	}
 	private float getArrowHeight() {
-		return getFont().getSize2D();
+		return getFont().getSize2D() * 2.0f;
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {

@@ -33,6 +33,13 @@ public class KeyEventUtilities {
 			return java.awt.event.KeyEvent.VK_CONTROL;
 		}
 	}
+	public static int getQuoteAltUnquoteKey() {
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			return java.awt.event.KeyEvent.VK_CONTROL;
+		} else {
+			return java.awt.event.KeyEvent.VK_ALT;
+		}
+	}
 	public static java.awt.event.KeyEvent performPlatformFilter( java.awt.event.KeyEvent original ) {
 		java.awt.event.KeyEvent rv;
 		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
