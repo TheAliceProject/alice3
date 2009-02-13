@@ -336,6 +336,9 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 			@Override
 			protected void preserveProjectProperties() {
 			}
+			@Override
+			public void handleQuit( java.util.EventObject e ) {
+			}
 		};
 
 		MoveAndTurnSceneEditor moveAndTurnSceneEditor = new MoveAndTurnSceneEditor();

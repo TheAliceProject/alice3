@@ -22,14 +22,12 @@
  */
 package edu.cmu.cs.dennisc.alice.ide;
 
-import java.awt.Toolkit;
-
-import edu.cmu.cs.dennisc.alice.ast.Node;
+//import edu.cmu.cs.dennisc.alice.ast.Node;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IDE extends javax.swing.JFrame {
+public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	private static boolean isBugReportSubmissionPaneDesired = true;
 	static {
 		Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler() {
@@ -313,7 +311,7 @@ public abstract class IDE extends javax.swing.JFrame {
 			public void windowClosed( java.awt.event.WindowEvent e ) {
 			}
 			public void windowClosing( java.awt.event.WindowEvent e ) {
-				IDE.this.performIfAppropriate( IDE.this.exitOperation, e );
+				IDE.this.handleQuit( e );
 			}
 			public void windowActivated( java.awt.event.WindowEvent e ) {
 			}
@@ -327,6 +325,10 @@ public abstract class IDE extends javax.swing.JFrame {
 
 		//this.setLocale( new java.util.Locale( "en", "US", "java" ) );
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
+	}
+	
+	public void handleQuit( java.util.EventObject e ) {
+		IDE.this.performIfAppropriate( IDE.this.exitOperation, e );
 	}
 
 	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
@@ -854,8 +856,8 @@ public abstract class IDE extends javax.swing.JFrame {
 	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
 
 
-	private static <E extends Node> E getAncestor( Node node, Class<E> cls ) {
-		Node ancestor = node.getParent();
+	private static <E extends edu.cmu.cs.dennisc.alice.ast.Node> E getAncestor( edu.cmu.cs.dennisc.alice.ast.Node node, Class<E> cls ) {
+		edu.cmu.cs.dennisc.alice.ast.Node ancestor = node.getParent();
 		while( ancestor != null ) {
 			if( cls.isAssignableFrom( ancestor.getClass() ) ) {
 				break;

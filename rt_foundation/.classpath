@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="/jar_mail/mail.jar"/>
 	<classpathentry kind="lib" path="/jar_mail/lib/smtp.jar"/>
 	<classpathentry kind="lib" path="/jar_jaf/activation.jar"/>
+	<classpathentry kind="lib" path="/jar_apple/AppleJavaExtensions.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
