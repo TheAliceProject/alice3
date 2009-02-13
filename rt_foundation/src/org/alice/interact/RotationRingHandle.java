@@ -248,6 +248,7 @@ public class RotationRingHandle extends ManipulationHandle{
 	private void setSize(double size)
 	{
 		RotationRingHandle.this.sgTorus.majorRadius.setValue( size );
+		this.placeSphere();
 	}
 	
 	private double getMajorAxisRadius( Composite object )

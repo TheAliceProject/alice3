@@ -79,7 +79,6 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 	protected void initManipulator( RotationRingHandle handle, InputState startInput )
 	{
 		this.rotationHandle = handle;
-		
 		this.manipulatedTransformable = this.rotationHandle.getManipulatedObject();
 		this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.rotationHandle.getRotationAxis() );
 		//PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );
@@ -87,7 +86,7 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 		startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
 		Vector3 rotationAxis = this.absoluteRotationAxis;
 		this.rotationPlane = new Plane(this.initialClickPoint, rotationAxis);
-		
+
 		Ray originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, rotationAxis );
 		double intersection = this.rotationPlane.intersect( originRay );
 		if ( Double.isNaN( intersection ))

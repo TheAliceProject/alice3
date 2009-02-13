@@ -24,6 +24,8 @@ package org.alice.interact;
 
 import java.awt.event.KeyEvent;
 
+import edu.cmu.cs.dennisc.awt.event.KeyEventUtilities;
+
 /**
  * @author David Culyba
  */
@@ -38,10 +40,10 @@ public class ModifierMask {
 	
 	enum ModifierKey
 	{
-		CONTROL (KeyEvent.VK_CONTROL, false),
-		NOT_CONTROL (KeyEvent.VK_CONTROL, true),
-		ALT (KeyEvent.VK_ALT, false),
-		NOT_ALT (KeyEvent.VK_ALT, true),
+		CONTROL (KeyEventUtilities.getQuoteControlUnquoteKey(), false),
+		NOT_CONTROL (KeyEventUtilities.getQuoteControlUnquoteKey(), true),
+		ALT (KeyEventUtilities.getQuoteAltUnquoteKey(), false),
+		NOT_ALT (KeyEventUtilities.getQuoteAltUnquoteKey(), true),
 		SHIFT (KeyEvent.VK_SHIFT, false),
 		NOT_SHIFT (KeyEvent.VK_SHIFT, true);
 		

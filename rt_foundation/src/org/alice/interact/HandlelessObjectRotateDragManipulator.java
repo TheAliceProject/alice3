@@ -22,14 +22,6 @@
  */
 package org.alice.interact;
 
-import java.awt.AWTException;
-import java.awt.Point;
-import java.awt.Robot;
-
-import javax.swing.SwingUtilities;
-
-import edu.cmu.cs.dennisc.awt.CursorUtilities;
-import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
@@ -48,7 +40,9 @@ public class HandlelessObjectRotateDragManipulator extends ObjectRotateDragManip
 	@Override
 	public void startManipulator( InputState startInput ) 
 	{
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
+		this.manipulatedTransformable = startInput.getClickPickedTransformable( true );
+		//Make sure the object we're working with is selected
+		this.dragAdapter.setSelectedObject( this.manipulatedTransformable );
 		this.rotationHandle = this.dragAdapter.getCurrentRotationRingForAxis( this.rotateAxis, this.manipulatedTransformable );
 		if (this.rotationHandle != null)
 		{
