@@ -225,6 +225,11 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
 		this.manipulators.add( mouseUpDownTranslateObject );
 		
+		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(Vector3.accessPositiveYAxis()) );
+		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierKey.CONTROL ));
+		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
+		this.manipulators.add( mouseRotateObjectLeftRight );
+		
 		ManipulatorConditionSet mouseHandleDrag = new ManipulatorConditionSet( new ObjectGlobalHandleDragManipulator() );
 		MouseDragCondition handleObjectCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.HANDLES));
 		mouseHandleDrag.addCondition( handleObjectCondition );
@@ -415,6 +420,35 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 		}
 	}
 	
+	public RotationRingHandle getCurrentRotationRingForAxis( Vector3 rotationAxis, Transformable object )
+	{
+		for (int i=0; i<this.currentManipulationHandles.size(); i++)
+		{
+			ManipulationHandle currentHandle = this.currentManipulationHandles.get( i );
+			if (currentHandle instanceof RotationRingHandle)
+			{
+				RotationRingHandle rotationRing = (RotationRingHandle)currentHandle;
+				if (rotationRing.getRotationAxis().equals( rotationAxis ) && rotationRing.getManipulatedObject() == object)
+				{
+					return rotationRing;
+				}
+			}
+		}
+		for (int i=0; i<this.nextManipulationHandles.size(); i++)
+		{
+			ManipulationHandle currentHandle = this.nextManipulationHandles.get( i );
+			if (currentHandle instanceof RotationRingHandle)
+			{
+				RotationRingHandle rotationRing = (RotationRingHandle)currentHandle;
+				if (rotationRing.getRotationAxis().equals( rotationAxis ) && rotationRing.getManipulatedObject() == object)
+				{
+					return rotationRing;
+				}
+			}
+		}
+		return null;
+	}
+	
 	public void setActivateHandle( ManipulationHandle handle, boolean isActive )
 	{
 		if (handle != null)
@@ -471,6 +505,9 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 	
 	protected void handleStateChange()
 	{
+		java.util.Vector< DragManipulator > toStart = new java.util.Vector< DragManipulator >();
+		java.util.Vector< DragManipulator > toEnd = new java.util.Vector< DragManipulator >();
+		java.util.Vector< DragManipulator > toUpdate = new java.util.Vector< DragManipulator >();
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
@@ -478,18 +515,40 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 			{
 				if ( currentManipulatorSet.shouldContinue( this.currentInputState, this.previousInputState ))
 				{
-					currentManipulatorSet.getManipulator().dataUpdateManipulator( this.currentInputState, this.previousInputState );
+					toUpdate.add( currentManipulatorSet.getManipulator() );
 				}
 				else if ( currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState ) )
 				{
-					currentManipulatorSet.getManipulator().startManipulator( this.currentInputState );
+					toStart.add( currentManipulatorSet.getManipulator() );
 				}
 				else if ( currentManipulatorSet.justEnded( this.currentInputState, this.previousInputState ) )
 				{
-					currentManipulatorSet.getManipulator().endManipulator( this.currentInputState, this.previousInputState );
+					toEnd.add( currentManipulatorSet.getManipulator() );
 				}
 			}
 		}
+		//End manipulators first
+		for (int i=0; i<toEnd.size(); i++)
+		{
+			toEnd.get( i ).endManipulator( this.currentInputState, this.previousInputState );
+		}
+		for (int i=0; i<toStart.size(); i++)
+		{
+			toStart.get( i ).startManipulator( this.currentInputState );
+		}
+		for (int i=0; i<toUpdate.size(); i++)
+		{
+			//If the manipulator we're updating was just started, don't update it with previous data (it's out of scope for the manipulator)
+			if (toStart.contains( toUpdate.get( i ) ))
+			{
+				toUpdate.get( i ).dataUpdateManipulator( this.currentInputState, this.currentInputState );
+			}
+			else
+			{
+				toUpdate.get( i ).dataUpdateManipulator( this.currentInputState, this.previousInputState );
+			}
+		}
+		
 		
 		if (this.currentInputState.getRolloverPickObject() != this.previousInputState.getRolloverPickObject())
 		{

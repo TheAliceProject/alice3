@@ -191,7 +191,6 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	@Override
 	public void startManipulator( InputState startInput ) {
 		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();	
-		
 		if (this.manipulatedTransformable != null)
 		{
 			this.initialMouseLocation.setLocation( startInput.getMouseLocation() ); 

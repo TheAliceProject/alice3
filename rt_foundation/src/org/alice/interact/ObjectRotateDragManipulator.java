@@ -76,46 +76,51 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 	{
 	}
 	
+	protected void initManipulator( RotationRingHandle handle, InputState startInput )
+	{
+		this.rotationHandle = handle;
+		
+		this.manipulatedTransformable = this.rotationHandle.getManipulatedObject();
+		this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.rotationHandle.getRotationAxis() );
+		//PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );
+		startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
+		startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
+		Vector3 rotationAxis = this.absoluteRotationAxis;
+		this.rotationPlane = new Plane(this.initialClickPoint, rotationAxis);
+		
+		Ray originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, rotationAxis );
+		double intersection = this.rotationPlane.intersect( originRay );
+		if ( Double.isNaN( intersection ))
+		{
+			originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation,  Vector3.createMultiplication( rotationAxis, -1.0d ) );
+			intersection = this.rotationPlane.intersect( originRay );
+		}
+		if ( !Double.isNaN( intersection ))
+		{
+			this.objectOriginInPlane = originRay.getPointAlong( intersection );
+			
+			Vector3 toMouse = Vector3.createSubtraction( this.initialClickPoint, this.objectOriginInPlane );
+			toMouse.normalize();
+			this.originalMouseDirection = new Vector3(toMouse);
+			this.originalMouseRightDirection = Vector3.createCrossProduct( this.originalMouseDirection, rotationAxis );
+			
+			this.rotationHandle.setSphereVisibility( true );
+			Vector3 sphereDirection = TransformationUtilities.transformFromAbsolute_New( toMouse, this.rotationHandle );
+			this.rotationHandle.setSphereDirection( sphereDirection );
+			
+			//Hide the cursor
+			this.hideCursor();
+			
+		}
+		this.cameraFacingPlane = new Plane( this.initialClickPoint, this.camera.getAbsoluteTransformation().orientation.backward);
+	}
 
 	@Override
 	public void startManipulator( InputState startInput ) {
 		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
 		if (clickedHandle instanceof RotationRingHandle)
 		{
-			this.rotationHandle = (RotationRingHandle)clickedHandle;
-			this.manipulatedTransformable = this.rotationHandle.getManipulatedObject();
-			this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.rotationHandle.getRotationAxis() );
-			//PickResult pick = this.onscreenLookingGlass.pickFrontMost( startInput.getMouseLocation().x, startInput.getMouseLocation().y, /*isSubElementRequired=*/false );
-			startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
-			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
-			Vector3 rotationAxis = this.absoluteRotationAxis;
-			this.rotationPlane = new Plane(this.initialClickPoint, rotationAxis);
-			Ray originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation, rotationAxis );
-			double intersection = this.rotationPlane.intersect( originRay );
-			if ( Double.isNaN( intersection ))
-			{
-				originRay = new Ray( this.manipulatedTransformable.getAbsoluteTransformation().translation,  Vector3.createMultiplication( rotationAxis, -1.0d ) );
-				intersection = this.rotationPlane.intersect( originRay );
-			}
-			if ( !Double.isNaN( intersection ))
-			{
-				this.objectOriginInPlane = originRay.getPointAlong( intersection );
-				
-				Vector3 toMouse = Vector3.createSubtraction( this.initialClickPoint, this.objectOriginInPlane );
-				toMouse.normalize();
-				this.originalMouseDirection = new Vector3(toMouse);
-				this.originalMouseRightDirection = Vector3.createCrossProduct( this.originalMouseDirection, rotationAxis );
-				
-				this.rotationHandle.setSphereVisibility( true );
-				Vector3 sphereDirection = TransformationUtilities.transformFromAbsolute_New( toMouse, this.rotationHandle );
-				this.rotationHandle.setSphereDirection( sphereDirection );
-				
-				//Hide the cursor
-				CursorUtilities.pushAndSet( this.onscreenLookingGlass.getAWTComponent(), CursorUtilities.NULL_CURSOR );
-				
-			}
-			this.cameraFacingPlane = new Plane( this.initialClickPoint, this.camera.getAbsoluteTransformation().orientation.backward);
-			
+			this.initManipulator( (RotationRingHandle)clickedHandle, startInput );
 		}
 
 	}
@@ -190,10 +195,14 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	public void endManipulator( InputState endInput, InputState previousInput ) {
-		this.rotationHandle.setSphereVisibility( false );
+	
+	protected void hideCursor()
+	{
+		CursorUtilities.pushAndSet( this.onscreenLookingGlass.getAWTComponent(), CursorUtilities.NULL_CURSOR );
+	}
+	
+	protected void showCursor()
+	{
 		try {
 			Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.camera );
 			Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenLookingGlass, this.camera );
@@ -201,17 +210,17 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 			Robot mouseMover = new Robot();
 			mouseMover.mouseMove(awtPoint.x, awtPoint.y);
 		} catch( AWTException e ) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		finally
 		{
 			CursorUtilities.popAndSet( this.onscreenLookingGlass.getAWTComponent() );
 		}
-		
+	}
 
-		
-
+	@Override
+	public void endManipulator( InputState endInput, InputState previousInput ) {
+		this.rotationHandle.setSphereVisibility( false );
+		this.showCursor();		
 	}
 
 }
