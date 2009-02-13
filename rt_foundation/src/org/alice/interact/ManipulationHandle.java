@@ -204,7 +204,7 @@ public abstract class ManipulationHandle extends Transformable {
 	protected void updateVisibleState()
 	{
 		if (this.opacityAnimation != null)
-		{
+		{		
 			this.opacityAnimation.setTarget( this.getDesiredOpacity() );
 		}
 		if (this.colorAnimation != null)
@@ -226,6 +226,10 @@ public abstract class ManipulationHandle extends Transformable {
 	public void setVisible( boolean isVisible ) {
 		int visibleValue = isVisible ? 1 : -1;
 		this.isVisible += visibleValue;
+		
+		//visibility setting trumps faded and resets it
+		this.isFaded = 0;
+		
 		if (this.isVisible < 0)
 		{
 			System.err.println("Visible went below 0: "+this.isVisible);

@@ -25,7 +25,6 @@ package org.alice.interact;
 import java.awt.Point;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Plane;
@@ -34,7 +33,6 @@ import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
@@ -52,6 +50,8 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	protected Plane movementPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
 	protected Plane badAnglePlane = null; 
 	protected Point3 offsetToOrigin = null;
+	protected Point initialMouseLocation = new Point();
+	protected Boolean hasMoved = false;
 	
 	public void setCamera( AbstractCamera camera ) {
 		this.camera = camera;
@@ -162,6 +162,15 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) && this.manipulatedTransformable != null)
 		{
+			if (!this.hasMoved)
+			{
+				this.hasMoved = true;
+				if (this.dragAdapter != null)
+				{
+					this.dragAdapter.setActivateTransformable( this.manipulatedTransformable, true );
+				}
+			}
+				
 			Point3 newPosition = getPositionBasedonOnMouseLocation( currentInput.getMouseLocation() );
 			if (newPosition != null)
 			{
@@ -185,11 +194,8 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 		
 		if (this.manipulatedTransformable != null)
 		{
-			if (this.dragAdapter != null)
-			{
-				this.dragAdapter.setActivateTransformable( this.manipulatedTransformable, true );
-			}
-			Transformable t = startInput.getClickPickedTransformable(true);
+			this.initialMouseLocation.setLocation( startInput.getMouseLocation() ); 
+			this.hasMoved = false;
 			this.initialObjectPosition.set( this.manipulatedTransformable.getAbsoluteTransformation().translation );
 			startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
 			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );

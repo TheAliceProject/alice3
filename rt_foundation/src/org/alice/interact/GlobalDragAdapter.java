@@ -461,7 +461,9 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 				else // unfade all handles
 				{
 					if (currentHandle.isFaded())
+					{
 						currentHandle.setFaded( false );
+					}
 				}
 			}
 		}

@@ -35,6 +35,8 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public abstract class LinearDragHandle extends ManipulationHandle {
 	
+	protected static final double MIN_LENGTH = .4d;
+	
 	protected double offsetPadding = 0.0d;
 	protected Vector3 dragAxis;
 	protected double distanceFromOrigin;
@@ -125,31 +127,12 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 				if (Double.isNaN( zLength ))
 					zLength = 0.0d;
 				
-				double maxSize = Math.max( xLength, Math.max( yLength, zLength ) );
-				
-				return maxSize;
-				
-//				Vector3 maxVector = VectorUtilities.projectOntoVector( new Vector3(boundingBox.getMaximum()), this.dragAxis );
-//				Vector3 minVector = VectorUtilities.projectOntoVector( new Vector3(boundingBox.getMinimum()), this.dragAxis );
-//				
-//				System.out.println("Drag axis: "+this.dragAxis+", Max: "+maxVector+"Min: "+minVector);
-//				
-//				double maxDot = Vector3.calculateDotProduct( maxVector, this.dragAxis  );
-//				if (Double.isNaN( maxDot ))
-//					maxDot = 0.0d;
-//				double minDot = Vector3.calculateDotProduct( minVector, this.dragAxis  );
-//				if (Double.isNaN( minDot ))
-//					minDot = 0.0d;
-//				if (maxDot > minDot)
-//				{
-//					System.out.println("   Returning max: "+maxDot);
-//					return Math.abs( maxDot );
-//				}
-//				else
-//				{
-//					System.out.println("   Returning min: "+minDot);
-//					return Math.abs( minDot );
-//				}
+				double length = Math.max( xLength, Math.max( yLength, zLength ) );
+				if (length < MIN_LENGTH)
+				{
+					length = MIN_LENGTH;
+				}
+				return length;
 			}
 		}
 		return 0.0d;

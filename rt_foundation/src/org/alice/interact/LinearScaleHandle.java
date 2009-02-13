@@ -108,30 +108,6 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 		}
 	}
 	
-//	@Override
-//	protected double getHandleLength( Composite object )
-//	{
-//		if (object != null)
-//		{
-//			Object bbox = object.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
-//			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
-//			{
-//				AxisAlignedBox boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
-//				if (object instanceof Transformable)
-//				{
-//					boundingBox.scale( this.getTransformableScale( (Transformable)object ) );
-//				}
-//				double minSize = boundingBox.getMinimum().calculateMagnitude();
-//				if (Double.isNaN( minSize ))
-//					minSize = 0.0d;
-//				double maxSize = boundingBox.getMaximum().calculateMagnitude();
-//				if (Double.isNaN( maxSize ))
-//					maxSize = 0.0d;
-//				return Math.max( minSize, maxSize );
-//			}
-//		}
-//		return 0.0d;
-//	}
 	
 	@Override
 	public void positionRelativeToObject( Composite object ) {

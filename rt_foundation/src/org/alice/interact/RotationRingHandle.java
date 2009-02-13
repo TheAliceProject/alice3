@@ -22,6 +22,7 @@
  */
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.alice.ast.ThisExpression;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Plane;
@@ -50,6 +51,7 @@ public class RotationRingHandle extends ManipulationHandle{
 	}
 	
 	protected static final double MINOR_RADIUS = .075d;
+	protected static final double MIN_RADIUS = .4d;
 	
 	protected static final Color4f ACTIVE_COLOR = new Color4f(.4f, 1.0f, 0.3f, 1.0f);
 	protected static final Color4f ROLLOVER_COLOR = new Color4f(1.0f, 1.0f, 0.3f, 1.0f);
@@ -146,6 +148,10 @@ public class RotationRingHandle extends ManipulationHandle{
 						this.handleOffset.add( sizeOffset);
 					} break;
 				}
+				if (this.handleOffset.isNaN())
+				{
+					this.handleOffset.set( 0.0d, 0.0d, 0.0d );
+				}
 				this.setTranslationOnly( this.handleOffset, this.getReferenceFrame());
 			}
 		}
@@ -214,10 +220,6 @@ public class RotationRingHandle extends ManipulationHandle{
 		if (this.manipulatedObject != null && this.radiusAnimation != null)
 		{
 			double endRadius = this.isVisible() ? this.getMajorAxisRadius( this.manipulatedObject ) : 0.0d;
-			if (Double.isNaN( endRadius ))
-			{
-				endRadius = 0.0d;
-			}
 			this.radiusAnimation.setTarget( endRadius );
 		}
 	}
@@ -266,9 +268,9 @@ public class RotationRingHandle extends ManipulationHandle{
 				double minSize = minPlanePoint.calculateMagnitude();
 				double maxSize = maxPlanePoint.calculateMagnitude();
 				double radius = Math.max( minSize, maxSize );
-				if (Double.isNaN( radius ))
+				if (Double.isNaN( radius ) || radius < MIN_RADIUS)
 				{
-					radius = 0.0d;
+					radius = MIN_RADIUS;
 				}
 				return radius;
 			}
