@@ -117,8 +117,9 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	private edu.cmu.cs.dennisc.movie.MovieEncoder m_movieEncoder = null;
 
 	private void handleSpeedChange( double speed ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "speed: " + speed + "x" );
-		m_animator.setSpeedFactor( speed );
+		if( m_animator != null ) {
+			m_animator.setSpeedFactor( speed );
+		}
 	}
 
 	public Animator getAnimator() {
