@@ -679,11 +679,11 @@ class AbstractIDE( alice.ide.IDE ):
 		if type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model ):
 			return "(a.k.a. Generic Alice Model)"
 		elif type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel ):
-			return "(a.k.a. Storytelling Alice Scenery)"
+			return "(a.k.a. Looking Glass Scenery)"
 		elif type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Character ):
-			return "(a.k.a. Storytelling Alice Character)"
+			return "(a.k.a. Looking Glass Character)"
 		elif type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Person ):
-			return "(a.k.a. Storytelling Alice Person)"
+			return "(a.k.a. Looking Glass Person)"
 		else:
 			if type.isDeclaredInAlice():
 				return "<is declared in alice>"

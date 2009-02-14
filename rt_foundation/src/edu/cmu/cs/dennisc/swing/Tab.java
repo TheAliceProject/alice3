@@ -177,10 +177,8 @@ public class Tab extends javax.swing.JComponent {
 	public Tab( javax.swing.JComponent title, javax.swing.JComponent component ) {
 		m_component = component;
 
-		//m_titleLabel.setFont( edu.cmu.cs.dennisc.ui.storytelling.programeditor.vcs.Look.getBaseFont() );
 		m_title = title;
 		
-		//final int SIZE = edu.cmu.cs.dennisc.ui.storytelling.programeditor.vcs.Look.getBaseFontSize();
 		final int SIZE = m_title.getFont().getSize() * 7 / 4;
 		m_closeButton.setMinimumSize( new java.awt.Dimension( SIZE, SIZE ) );
 		m_closeButton.setPreferredSize( new java.awt.Dimension( SIZE, SIZE ) );

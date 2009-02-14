@@ -39,6 +39,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 				g.fillRect( 0, 0, getWidth(), getHeight() );
 				g.setColor( java.awt.Color.BLACK );
 				edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
+				//edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
 				if( this.prevThrowable != null ) {
 					//pass
 				} else {

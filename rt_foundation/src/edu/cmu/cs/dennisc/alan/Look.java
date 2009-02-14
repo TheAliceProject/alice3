@@ -66,21 +66,6 @@ public final class Look {
 		setBaseFontSize( baseFontSize );
 	}
 	
-//	private static java.util.List< edu.cmu.cs.dennisc.ui.storytelling.programeditor.vcs.event.BaseFontSizeListener > s_baseFontSizeListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.ui.storytelling.programeditor.vcs.event.BaseFontSizeListener >();
-//	
-//	private static void fireBaseFontSizeListeners() {
-//		for( edu.cmu.cs.dennisc.ui.storytelling.programeditor.vcs.event.BaseFontSizeListener baseFontSizeListener : s_baseFontSizeListeners ) { 
-//			baseFontSizeListener.baseFontSizeChanged();
-//		}
-//	}
-//	public static void addBaseFontSizeListener( edu.cmu.cs.dennisc.ui.storytelling.programeditor.vcs.event.BaseFontSizeListener baseFontSizeListener ) {
-//		s_baseFontSizeListeners.add( baseFontSizeListener );
-//	}
-//	public static void removeBaseFontSizeListener( edu.cmu.cs.dennisc.ui.storytelling.programeditor.vcs.event.BaseFontSizeListener baseFontSizeListener ) {
-//		s_baseFontSizeListeners.remove( baseFontSizeListener );
-//	}
-	
-	
 	public static java.awt.Font getBaseFont() {
 		if( s_baseFont != null ) {
 			//pass
@@ -189,8 +174,6 @@ public final class Look {
 			//todo?
 //			generalPath.closePath();
 			shape = generalPath;
-//		} else if( org.alice.apis.storytelling.Transformable.class.isAssignableFrom( cls ) ) {
-//			shape = new java.awt.geom.CubicCurve2D.Float( x1, y0, x0, y0, x0, y1, x1, y1 );
 		} else {
 			shape = new java.awt.geom.Rectangle2D.Float( x0, y0, width, height );
 		}
