@@ -32,7 +32,7 @@ public class GetsChunk extends Chunk {
 	}
 	@Override
 	public javax.swing.JComponent createComponent( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return new GetsPane( this.isTowardLeading, 5 );
+		return new GetsPane( this.isTowardLeading );
 	}
 	@Override
 	protected java.lang.StringBuffer updateRepr( java.lang.StringBuffer rv ) {

@@ -27,7 +27,28 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass{
-	private javax.media.opengl.GLJPanel m_glPanel = new javax.media.opengl.GLJPanel();
+	class RenderPane extends javax.media.opengl.GLJPanel {
+		private Throwable prevThrowable = null;
+		@Override
+		protected void paintComponent( java.awt.Graphics g ) {
+			try {
+				super.paintComponent( g );
+				this.prevThrowable = null;
+			} catch( Throwable t ) {
+				g.setColor( java.awt.Color.RED );
+				g.fillRect( 0, 0, getWidth(), getHeight() );
+				g.setColor( java.awt.Color.BLACK );
+				edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
+				if( this.prevThrowable != null ) {
+					//pass
+				} else {
+					this.prevThrowable = t;
+					t.printStackTrace();
+				}
+			}
+		}
+	}
+	private RenderPane m_glPanel = new RenderPane();
 	/*package-private*/ LightweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
 	}

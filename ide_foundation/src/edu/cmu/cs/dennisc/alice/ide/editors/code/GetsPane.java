@@ -28,12 +28,15 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 public class GetsPane extends edu.cmu.cs.dennisc.zoot.ZPane {
 	private boolean isTowardLeadingEdge;
 	private int length;
-	public GetsPane( boolean isTowardLeadingEdge, int length ) {
+	private GetsPane( boolean isTowardLeadingEdge, int length ) {
 		//this.setLocale( new java.util.Locale( "ar" ) );
 		this.isTowardLeadingEdge = isTowardLeadingEdge;
 		this.length = length;
 		this.setBackground( java.awt.Color.YELLOW );
 		this.setForeground( java.awt.Color.BLACK );
+	}
+	public GetsPane( boolean isTowardLeadingEdge ) {
+		this( isTowardLeadingEdge, 4 );
 	}
 	private float getArrowHeight() {
 		return getFont().getSize2D() * 2.0f;

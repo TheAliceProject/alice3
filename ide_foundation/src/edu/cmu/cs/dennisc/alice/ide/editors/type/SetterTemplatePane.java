@@ -34,7 +34,7 @@ public abstract class SetterTemplatePane extends MemberStatementTemplatePane {
 		this.add( this.getInstanceOrTypeExpressionPane() );
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "." ) );
 		this.add( this.getNameLabel() );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true, 5 ) );
+		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true ) );
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.EmptyExpressionPane( field.getValueType() ) );
 		this.add( javax.swing.Box.createHorizontalGlue() );
 	}
