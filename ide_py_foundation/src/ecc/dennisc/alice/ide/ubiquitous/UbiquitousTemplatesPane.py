@@ -75,7 +75,7 @@ class SetVariableTemplatePane( CascadingUbiquitousStatementTemplatePane ):
 		self._variable = variable
 		CascadingUbiquitousStatementTemplatePane.__init__( self, alice.ast.ExpressionStatement, variable.valueType.getValue() )
 	def createComponent(self):
-		return zoot.ZLabel( self._variable.getName() + " <-- " )
+		return zoot.ZLabel( self._variable.getName() + " <== " )
 #		rv = zoot.ZLineAxisPane()
 #		rv.setOpaque( False )
 #		rv.add( zoot.ZLabel( self._variable.getName() ) )
