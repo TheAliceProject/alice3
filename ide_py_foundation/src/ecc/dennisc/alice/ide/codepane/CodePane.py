@@ -144,22 +144,22 @@ class ShiftBackwardParameterOperation( AbstractShiftParameterOperation ):
 #	def mouseClicked( self, e ):
 #		pass
 
-class ParameterAltTriggerMouseAdapter( edu.cmu.cs.dennisc.awt.event.AltTriggerMouseAdapter ):
-	def __init__( self, parameter, code ):
-		self._parameter = parameter
-		self._code = code
-	def altTriggered(self, e ):
-		N = self._code.parameters.size()
-		index = self._code.parameters.indexOf( self._parameter )
-		operations = []
-		operations.append( ecc.dennisc.alice.ide.operations.ast.RenameParameterOperation( self._parameter, self._code ) )
-		if index > 0:
-			operations.append( ShiftForwardParameterOperation( self._parameter, self._code ) )
-		if index < N-1:
-			operations.append( ShiftBackwardParameterOperation( self._parameter, self._code ) )
-		operations.append( DeleteParameterOperation( self._parameter, self._code ) )
-		popup = alice.ide.MenuUtilities.createJPopupMenu( operations )
-		popup.show( e.getSource(), e.getX(), e.getY() )
+#class ParameterAltTriggerMouseAdapter( edu.cmu.cs.dennisc.awt.event.AltTriggerMouseAdapter ):
+#	def __init__( self, parameter, code ):
+#		self._parameter = parameter
+#		self._code = code
+#	def altTriggered(self, e ):
+#		N = self._code.parameters.size()
+#		index = self._code.parameters.indexOf( self._parameter )
+#		operations = []
+#		operations.append( ecc.dennisc.alice.ide.operations.ast.RenameParameterOperation( self._parameter, self._code ) )
+#		if index > 0:
+#			operations.append( ShiftForwardParameterOperation( self._parameter, self._code ) )
+#		if index < N-1:
+#			operations.append( ShiftBackwardParameterOperation( self._parameter, self._code ) )
+#		operations.append( DeleteParameterOperation( self._parameter, self._code ) )
+#		popup = alice.ide.MenuUtilities.createJPopupMenu( operations )
+#		popup.show( e.getSource(), e.getX(), e.getY() )
 
 #class ParameterPane( zoot.ZLineAxisPane ):
 #	def __init__(self, parameter, code):
@@ -173,24 +173,29 @@ class ParameterAltTriggerMouseAdapter( edu.cmu.cs.dennisc.awt.event.AltTriggerMo
 #		#self.setBorder( javax.swing.BorderFactory.createEtchedBorder() )
 #		self.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.LIGHT_GRAY ) )
 
-class ParameterPane( alice.ide.editors.code.ParameterPane ):
-	def __init__(self, parameter, code):
-		alice.ide.editors.code.ParameterPane.__init__( self, parameter )
-		self.addMouseListener( ParameterAltTriggerMouseAdapter( parameter, code ) )
+#class ParameterPane( alice.ide.editors.code.ParameterPane ):
+#	def __init__(self, parameter, code):
+#		alice.ide.editors.code.ParameterPane.__init__( self, parameter )
+#		self.addMouseListener( ParameterAltTriggerMouseAdapter( parameter, code ) )
 
-class TypedParameterPane( zoot.ZLineAxisPane ):
-	def __init__(self, typePane, parameterPane ):
-		zoot.ZLineAxisPane.__init__(self)
-		self.setOpaque( True )
-		self.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) )
-		self.setForeground( java.awt.Color.GRAY )
-		self.add( typePane )
-		self.add( parameterPane )
+class TypedParameterPane( alice.ide.editors.code.TypedDeclarationPane ):
+	def __init__(self, parameter, code):
+		self._parameter = parameter
+		self._code = code
+		alice.ide.editors.code.TypedDeclarationPane.__init__( self, [ edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( self._parameter.getValueType() ), alice.ide.editors.code.ParameterPane( self._parameter ) ] )
 		
-		
-	def paintComponent(self, g):
-		zoot.ZLineAxisPane.paintComponent( self, g )
-		g.drawRect( 0, 0, self.getWidth()-1, self.getHeight()-1)
+	def handleAltTriggered(self, e):
+		N = self._code.parameters.size()
+		index = self._code.parameters.indexOf( self._parameter )
+		operations = []
+		operations.append( ecc.dennisc.alice.ide.operations.ast.RenameParameterOperation( self._parameter, self._code ) )
+		if index > 0:
+			operations.append( ShiftForwardParameterOperation( self._parameter, self._code ) )
+		if index < N-1:
+			operations.append( ShiftBackwardParameterOperation( self._parameter, self._code ) )
+		operations.append( DeleteParameterOperation( self._parameter, self._code ) )
+		popup = alice.ide.MenuUtilities.createJPopupMenu( operations )
+		popup.show( e.getSource(), e.getX(), e.getY() )
 
 class ParametersPane( alice.ide.editors.code.AbstractListPropertyPane ):
 	def __init__(self, code ):
@@ -219,7 +224,7 @@ class ParametersPane( alice.ide.editors.code.AbstractListPropertyPane ):
 		else:
 			return javax.swing.Box.createHorizontalStrut( 8 )
 	def createComponent(self, parameter):
-		return TypedParameterPane( edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( parameter.getValueType() ), ParameterPane( parameter, self._code ) )
+		return TypedParameterPane( parameter, self._code )
 	def addPostfixComponents(self):
 		if isinstance( self._code, alice.ast.ConstructorDeclaredInAlice ):
 			pass

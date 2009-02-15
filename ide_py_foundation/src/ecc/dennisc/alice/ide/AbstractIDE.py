@@ -655,9 +655,15 @@ class AbstractIDE( alice.ide.IDE ):
 			return self.getAccesses( member )
 
 	def getAvailableTypes( self ):
-		clses = ( java.lang.Double, java.lang.Integer, java.lang.Boolean, java.lang.String, org.alice.apis.moveandturn.Model, edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel, edu.wustl.cse.lookingglass.apis.walkandtouch.Character, edu.wustl.cse.lookingglass.apis.walkandtouch.Person )
+		clses = [ java.lang.Double, java.lang.Integer, java.lang.Boolean, java.lang.String ]
+		clses.append( org.alice.apis.moveandturn.Model )
+		try:
+			clses.append( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel )
+			clses.append( edu.wustl.cse.lookingglass.apis.walkandtouch.Character )
+			clses.append( edu.wustl.cse.lookingglass.apis.walkandtouch.Person )
+		except:
+			print "note: cannot find walkandtouch"
 		rv = []
-		
 		for cls in clses:
 			rv.append( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) )
 		
@@ -676,18 +682,21 @@ class AbstractIDE( alice.ide.IDE ):
 
 	def getBonusTextForType( self, type ):
 		#todo
-		if type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model ):
-			return "(a.k.a. Generic Alice Model)"
-		elif type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel ):
-			return "(a.k.a. Looking Glass Scenery)"
-		elif type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Character ):
-			return "(a.k.a. Looking Glass Character)"
-		elif type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Person ):
-			return "(a.k.a. Looking Glass Person)"
-		else:
-			if type.isDeclaredInAlice():
-				return "<is declared in alice>"
+		try:
+			if type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Model ):
+				return "(a.k.a. Generic Alice Model)"
+			elif type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.PolygonalModel ):
+				return "(a.k.a. Looking Glass Scenery)"
+			elif type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Character ):
+				return "(a.k.a. Looking Glass Character)"
+			elif type is edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.Person ):
+				return "(a.k.a. Looking Glass Person)"
 			else:
-				return ""
+				if type.isDeclaredInAlice():
+					return "<is declared in alice>"
+				else:
+					return ""
+		except:
+			return ""
 
 #print "<--", __name__
