@@ -22,8 +22,6 @@
  */
 package edu.cmu.cs.dennisc.alice.ide;
 
-//import edu.cmu.cs.dennisc.alice.ast.Node;
-
 /**
  * @author Dennis Cosgrove
  */
