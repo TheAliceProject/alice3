@@ -44,7 +44,20 @@ class ArgumentListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.denn
 		if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
 			prefixPane = null;
 		} else {
-			prefixPane = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( argument.parameter.getValue() );
+			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = argument.parameter.getValue();
+			boolean isNameDesired;
+			if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod ) {
+				edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod parameterDeclaredInJavaMethod = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod)parameter;
+				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava methodDeclaredInJava = parameterDeclaredInJavaMethod.getMethod();
+				isNameDesired = methodDeclaredInJava.isParameterInShortestChainedMethod( parameterDeclaredInJavaMethod ) == false;
+			} else {
+				isNameDesired = true;
+			}
+			if( isNameDesired ) {
+				prefixPane = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( argument.parameter.getValue() );
+			} else {
+				prefixPane = null;
+			}
 		}
 		return new ExpressionPropertyPane( argument.expression, true, prefixPane );
 	}

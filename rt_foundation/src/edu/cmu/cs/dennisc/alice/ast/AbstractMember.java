@@ -42,6 +42,22 @@ public abstract class AbstractMember extends AbstractAccessibleDeclaration {
 		}
 	}
 	
+	protected AbstractMember getShortestInChain() {
+		AbstractMember next = this.getNextShorterInChain();
+		if( next != null ) {
+			return next.getShortestInChain();
+		} else {
+			return this;
+		}
+	}
+	protected AbstractMember getLongestInChain() {
+		AbstractMember next = this.getNextLongerInChain();
+		if( next != null ) {
+			return next.getLongestInChain();
+		} else {
+			return this;
+		}
+	}
 	public abstract AbstractMember getNextLongerInChain();
 	public abstract AbstractMember getNextShorterInChain();	
 }
