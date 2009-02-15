@@ -41,7 +41,7 @@ public class TypeExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane  {
 
 		this.setToolTipText( "class: " + text );
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( text ) );
-		java.awt.Color color = edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getColorForASTInstance( this.typeExpression );
+		java.awt.Color color = edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTInstance( this.typeExpression );
 		this.setBackground( color );
 		int yInset = 4;
 		this.setBorder( javax.swing.BorderFactory.createMatteBorder( yInset, X_INSET, yInset, X_INSET, color ) );

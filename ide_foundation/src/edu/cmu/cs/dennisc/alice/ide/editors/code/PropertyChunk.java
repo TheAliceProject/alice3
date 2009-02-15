@@ -59,14 +59,28 @@ public class PropertyChunk extends Chunk {
 	public javax.swing.JComponent createComponent( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		javax.swing.JComponent rv;
 		if( this.isBonusSpecified ) {
+			class LocalTypedDeclarationPane extends TypedDeclarationPane {
+				private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
+				public LocalTypedDeclarationPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
+					this.localDeclaredInAlice = localDeclaredInAlice;
+				}
+				@Override
+				protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
+					javax.swing.JPopupMenu popupMenu = edu.cmu.cs.dennisc.alice.ide.MenuUtilities.createJPopupMenu( new edu.cmu.cs.dennisc.alice.ide.operations.RenameLocalDeclarationOperation( this.localDeclaredInAlice ) );
+					popupMenu.show( e.getComponent(), e.getX(), e.getY() );
+				}
+			}
+			
 			if( this.propertyName.equals( "variable" ) ) {
-				rv = new VariablePane( (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)owner.getInstancePropertyNamed( this.propertyName ).getValue() );
+				edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)owner.getInstancePropertyNamed( this.propertyName ).getValue();
+				rv = new LocalTypedDeclarationPane( variableDeclaredInAlice );
+				rv.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( variableDeclaredInAlice.valueType.getValue() ) );
+				rv.add( new VariablePane( variableDeclaredInAlice ) );
 			} else if( this.propertyName.equals( "constant" ) ) {
-				rv = new ConstantPane( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)owner.getInstancePropertyNamed( this.propertyName ).getValue() );
-			} else if( this.propertyName.equals( "variable_type" ) ) {
-				rv = new edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( ( (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)owner.getInstancePropertyNamed( "variable" ).getValue() ).valueType.getValue() );
-			} else if( this.propertyName.equals( "constant_type" ) ) {
-				rv = new edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( ( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)owner.getInstancePropertyNamed( "constant" ).getValue() ).valueType.getValue() );
+				edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constantDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)owner.getInstancePropertyNamed( this.propertyName ).getValue();
+				rv = new LocalTypedDeclarationPane( constantDeclaredInAlice );
+				rv.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( constantDeclaredInAlice.valueType.getValue() ) );
+				rv.add( new ConstantPane( constantDeclaredInAlice ) );
 			} else {
 				rv = new edu.cmu.cs.dennisc.zoot.ZLabel( "TODO: " + this.propertyName );
 			}
