@@ -22,12 +22,14 @@
  */
 package org.alice.apis.storytelling;
 
-//todo: rename
-//public abstract class Model extends org.alice.apis.moveandturn.Model {
+import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model extends edu.wustl.cse.lookingglass.apis.walkandtouch.Person {
+public abstract class Model extends org.alice.apis.moveandturn.Model {
+//public abstract class Model extends edu.wustl.cse.lookingglass.apis.walkandtouch.Person {
 	protected abstract boolean isEasilyTransformed();
 	protected abstract edu.cmu.cs.dennisc.nebulous.Model getNebulousModel();
 	
@@ -46,33 +48,40 @@ public abstract class Model extends edu.wustl.cse.lookingglass.apis.walkandtouch
 
 	private FiniteStateMachine m_fsm = new FiniteStateMachine( this );
 
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void handleStateChange( Transition transition ) {
 		perform( new CannedAnimation( transition, this ) );
 		setCurrentState( transition.getPost() );
 	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void handleStateChange( FiniteStateMachine.State currentState, FiniteStateMachine.State nextState ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleStateChange", currentState, nextState );
 		//perform( new StateAnimation( this, nextState ) );
 		setCurrentState( nextState );
 	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void performStateTransition( FiniteStateMachine.State state ) {
 		m_fsm.setState( state );
 	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void routeTo( org.alice.apis.moveandturn.Transformable target ) {
 		//todo
 		perform( new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( getSGTransformable(), target.getSGTransformable(), null, edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() ) );
 	}
 
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void perform( FiniteStateMachine.Cycle cycle ) {
 		m_fsm.setState( cycle.getState() );
 		perform( new CannedAnimation( cycle, this ) );
 	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void perform( FiniteStateMachine.CycleAB cycleAB, Model b, FiniteStateMachine.BindingAB binding ) {
 		m_fsm.setState( cycleAB.getStateAB(), b, binding );
 //		do together
 //			perform( new CannedAnimation( cycleABC.getA(), this ) );
 //			perform( new CannedAnimation( cycleABC.getB(), b ) );
 	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void perform( FiniteStateMachine.CycleABC cycleABC, Model b, Model c, FiniteStateMachine.BindingABC binding ) {
 		m_fsm.setState( cycleABC.getStateABC(), b, c, binding );
 //		do together
@@ -123,6 +132,7 @@ public abstract class Model extends edu.wustl.cse.lookingglass.apis.walkandtouch
 		}
 	}
 
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void performStateTransition( FiniteStateMachine.StateAB state, Model b, FiniteStateMachine.BindingAB binding ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( 
 				new RouteToAndSetStateRunnable( this, state.getA(), b ), 
@@ -131,6 +141,7 @@ public abstract class Model extends edu.wustl.cse.lookingglass.apis.walkandtouch
 
 		//m_fsm.setState( state, b );
 	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void performStateTransition(  FiniteStateMachine.StateABC state, Model b, Model c, FiniteStateMachine.BindingABC binding ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( 
 				new RouteToAndSetStateRunnable( this, state.getA(), b ), 

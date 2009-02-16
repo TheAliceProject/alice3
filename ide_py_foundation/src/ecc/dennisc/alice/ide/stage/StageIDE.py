@@ -12,21 +12,21 @@ from edu.cmu.cs.dennisc import lookingglass
 class StageSceneAutomaticSetUpMethodFillerInner( ecc.dennisc.alice.ide.moveandturn.MoveAndTurnSceneAutomaticSetUpMethodFillerInner ):
 	def _fillInSceneAutomaticSetUpMethodForElement( self, astStatements, astField, instance ):
 		ecc.dennisc.alice.ide.moveandturn.MoveAndTurnSceneAutomaticSetUpMethodFillerInner._fillInSceneAutomaticSetUpMethodForElement( self, astStatements, astField, instance )
-		if isinstance( instance, apis.stage.Person ):
-			setSkinToneMethod = ecc.dennisc.alice.ast.lookupMethod( apis.stage.Person, "setSkinTone", [ apis.stage.SkinTone ] )
+		if isinstance( instance, apis.storytelling.Person ):
+			setSkinToneMethod = ecc.dennisc.alice.ast.lookupMethod( apis.storytelling.Person, "setSkinTone", [ apis.storytelling.SkinTone ] )
 			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), setSkinToneMethod, [ ecc.dennisc.alice.ast.createEnumConstant( instance.getSkinTone() ) ] ) ] )
-			setFitnessLevelMethod = ecc.dennisc.alice.ast.lookupMethod( apis.stage.Person, "setFitnessLevel", [ apis.stage.FitnessLevel ] )
+			setFitnessLevelMethod = ecc.dennisc.alice.ast.lookupMethod( apis.storytelling.Person, "setFitnessLevel", [ apis.storytelling.FitnessLevel ] )
 			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), setFitnessLevelMethod, [ecc.dennisc.alice.ast.createEnumConstant( instance.getFitnessLevel() ) ] ) ] )
-			if isinstance( instance, apis.stage.FemaleAdult ):
-				setOutfitMethod = ecc.dennisc.alice.ast.lookupMethod( apis.stage.FemaleAdult, "setOutfit", [ apis.stage.FemaleAdultFullBodyOutfit ] )
-			elif isinstance( instance, apis.stage.MaleAdult ):
-				setOutfitMethod = ecc.dennisc.alice.ast.lookupMethod( apis.stage.MaleAdult, "setOutfit", [ apis.stage.MaleAdultFullBodyOutfit ] )
+			if isinstance( instance, apis.storytelling.FemaleAdult ):
+				setOutfitMethod = ecc.dennisc.alice.ast.lookupMethod( apis.storytelling.FemaleAdult, "setOutfit", [ apis.storytelling.FemaleAdultFullBodyOutfit ] )
+			elif isinstance( instance, apis.storytelling.MaleAdult ):
+				setOutfitMethod = ecc.dennisc.alice.ast.lookupMethod( apis.storytelling.MaleAdult, "setOutfit", [ apis.storytelling.MaleAdultFullBodyOutfit ] )
 			else:
 				raise "todo"
 			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), setOutfitMethod, [ecc.dennisc.alice.ast.createEnumConstant( instance.getOutfit() ) ] ) ] )
-			setEyeColorMethod = ecc.dennisc.alice.ast.lookupMethod( apis.stage.Person, "setEyeColor", [ apis.stage.EyeColor ] )
+			setEyeColorMethod = ecc.dennisc.alice.ast.lookupMethod( apis.storytelling.Person, "setEyeColor", [ apis.storytelling.EyeColor ] )
 			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), setEyeColorMethod, [ecc.dennisc.alice.ast.createEnumConstant( instance.getEyeColor() ) ] ) ] )
-			setHairMethod = ecc.dennisc.alice.ast.lookupMethod( apis.stage.Person, "setHair", [ apis.stage.Hair ] )
+			setHairMethod = ecc.dennisc.alice.ast.lookupMethod( apis.storytelling.Person, "setHair", [ apis.storytelling.Hair ] )
 			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), setHairMethod, [ecc.dennisc.alice.ast.createEnumConstant( instance.getHair() ) ] ) ] )
 
 class PersonEditorButton( javax.swing.JButton, java.awt.event.ActionListener ):

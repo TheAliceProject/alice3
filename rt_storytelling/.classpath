@@ -4,7 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_foundation"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_generated_depended_upon"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
