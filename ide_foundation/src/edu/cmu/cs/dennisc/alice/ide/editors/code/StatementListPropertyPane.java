@@ -30,7 +30,13 @@ class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.den
 	public StatementListPropertyPane( final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
 		super( javax.swing.BoxLayout.PAGE_AXIS, property );
 		
-		this.setLayout( new edu.cmu.cs.dennisc.swing.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, StatementListPropertyPane.INTRASTICIAL_PAD ) );
+		int pad;
+		if( property.getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
+			pad = 0;
+		} else {
+			pad = INTRASTICIAL_PAD;
+		}
+		this.setLayout( new edu.cmu.cs.dennisc.swing.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, pad ) );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 12, 16 ) );
 //		this.addMouseListener( new java.awt.event.MouseListener() {
