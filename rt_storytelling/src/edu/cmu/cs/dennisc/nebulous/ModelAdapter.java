@@ -41,6 +41,9 @@ public class ModelAdapter< E extends Model > extends edu.cmu.cs.dennisc.lookingg
 	}
 	@Override
 	protected void renderGeometry( edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext rc ) {
+//		if( rc.isGLChanged() ) {
+//			m_element.forget();
+//		}
 		m_element.render();
 	}
 }

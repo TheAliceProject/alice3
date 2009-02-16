@@ -20,45 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
-package edu.cmu.cs.dennisc.lookingglass.opengl;
+package org.alice.apis.storytelling;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Context {
-	public javax.media.opengl.GL gl;
-	public javax.media.opengl.glu.GLU glu;
-	public com.sun.opengl.util.GLUT glut;
-
-	private javax.media.opengl.glu.GLUquadric m_quadric;
-
-	public Context() {
-		glu = new javax.media.opengl.glu.GLU();
-		glut = new com.sun.opengl.util.GLUT();
+public enum CoughStyle {
+	SHORT( Adult.Cycle.COUGH_SHORT ),
+	EXTENDED( Adult.Cycle.COUGH_EXTENDED );
+	private Adult.Cycle m_cycle;
+	CoughStyle( Adult.Cycle cycle ) {
+		m_cycle = cycle;
 	}
-
-	//todo: synchronize?
-	public javax.media.opengl.glu.GLUquadric getQuadric() {
-		if( m_quadric == null ) {
-			m_quadric = glu.gluNewQuadric();
-		}
-		return m_quadric;
+	public Adult.Cycle getCycle() {
+		return m_cycle;
 	}
-
-	protected abstract void handleGLChange();
-
-//	private boolean isGLChanged = true;
-//	public boolean isGLChanged() {
-//		return this.isGLChanged;
-//	}
-	public void setGL( javax.media.opengl.GL gl ) {
-//		this.isGLChanged = this.gl != gl;
-//		if( this.isGLChanged ) {
-		if( this.gl != gl ) {
-			this.gl = gl;
-			handleGLChange();
-		}
+	public static CoughStyle getRandom() {
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( CoughStyle.class );
 	}
-	public abstract void setAppearanceIndex( int index );
 }
+	

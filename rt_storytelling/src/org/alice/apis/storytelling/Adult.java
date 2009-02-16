@@ -695,9 +695,87 @@ public abstract class Adult extends Person {
 	}
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void callOutToEveryone() {
+		perform( Cycle.CALL_OUT_TO_EVERYONE );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void callEveryoneOver() {
+		perform( Cycle.CALL_EVERYONE_OVER );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void swayBackAndForth( SwayBackAndForthStyle swayBackAndForthStyle ) {
+		perform( swayBackAndForthStyle.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void swayBackAndForth() {
+		swayBackAndForth( SwayBackAndForthStyle.WITH_HANDS_LOOSE );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void blowHorn() {
+		perform( Cycle.BLOW_HORN );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void blowWhistle() {
+		perform( Cycle.BLOW_WHISTLE );
+	}
+	
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void browse() {
+//		perform( Cycle.BROWSE );
+//	}
+
+//	CHECK_CHEST( State.HANDS_AT_SIDES ),
+//	CHECK_RIGHT_TOE( State.HANDS_AT_SIDES ),
+//	CHECK_RIGHT_ARM( State.HANDS_AT_SIDES ),
+//	CHECK_BELLY( State.HANDS_AT_SIDES ),
+
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void clap( ClapStyle clapStyle ) {
+//		perform( clapStyle.getSubjectCycle() );
+//	}
+//	@MethodTemplate( visibility=Visibility.CHAINED )
+//	public void clap() {
+//		clap( ClapStyle.NORMAL );
+//	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void spinAround() {
+		perform( Cycle.SPIN_AROUND );
+	}
+//	CHECK_CLOTHES_WITH_SIDE_STEP( State.HANDS_AT_SIDES ),
+//	CHECK_CLOTHES_WITH_EXAGERATED_ARM_LIFT( State.HANDS_AT_SIDES ),
+//	CHECK_CLOTHES_WITH_BODY_TWIST( State.HANDS_AT_SIDES ),
+//	CHECK_CLOTHES_WITH_STEP_BACK_AND_HANDS_ON_HIPS( State.HANDS_AT_SIDES ),
+//	CHECK_CLOTHES_WITH_RIGHT_LEG_FORWARD( State.HANDS_AT_SIDES ),
+//	CHECK_CLOTHES_WITH_RIGHT_LEG_LIFT( State.HANDS_AT_SIDES ),
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void wriggleTheKinksOut() {
+		perform( Cycle.WIGGLE );
+	}
+
+//	CHECK_CLOTHES_BOTH_LEGS( State.HANDS_AT_SIDES ),
+//	CHECK_CLOTHES_WITH_SLIGHT_ARM_LIFT( State.HANDS_AT_SIDES ),
+//	CHECK_CLOTHES_WITH_BEND_FORWARD( State.HANDS_AT_SIDES ),
+//	CHECK_CLOTHES_RIGHT_ARM( State.HANDS_AT_SIDES ),
+
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void cough( CoughStyle coughStyle ) {
+//		perform( coughStyle.getCycle() );
+//	}
+//	@MethodTemplate( visibility=Visibility.CHAINED )
+//	public void cough() {
+//		cough( CoughStyle.SHORT );
+//	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void belch() {
 		perform( Cycle.BELCH );
 	}
+
+	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void fart() {
 		perform( Cycle.FART );
@@ -712,16 +790,6 @@ public abstract class Adult extends Person {
 //		perform( Cycle.SWOON );
 //	}
 	
-
-//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-//	public void clap( ClapStyle applaudStyle ) {
-//		perform( applaudStyle.getSubjectCycle() );
-//	}
-//	@MethodTemplate( visibility=Visibility.CHAINED )
-//	public void clap() {
-//		clap( ClapStyle.NORMAL );
-//	}
-
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void boo( BooStyle booStyle ) {
 		perform( booStyle.getSubjectCycle() );

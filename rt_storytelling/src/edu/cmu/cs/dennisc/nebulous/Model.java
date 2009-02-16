@@ -31,6 +31,11 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	}
 	public native void render();
 	public native void pick();
+	
+//	public void forget() {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: implement forget natively" );
+//	}
+	
 	@Override
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
 		throw new RuntimeException( "todo" );
