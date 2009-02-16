@@ -40,16 +40,25 @@ public abstract class FunctionTemplatePane extends MemberExpressionTemplatePane 
 		}
 		this.add( javax.swing.Box.createHorizontalStrut( 4 ) );
 		this.add( this.getNameLabel() );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "( " ) );
+		boolean isJava = "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() );
 		boolean isCommaDesired = false;
+		if( isJava ) {
+			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "( " ) );
+		}
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
 			if( isCommaDesired ) {
 				this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( ", " ) );
 			}
 			this.add( javax.swing.Box.createHorizontalStrut( 4 ) );
-			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.EmptyExpressionPane( parameter.getValueType() ) );
+			this.add( new EmptyParameterPane( parameter ) );
+//			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.EmptyExpressionPane( parameter.getValueType() ) );
+			if( isJava ) {
+				isCommaDesired = true;
+			}
 		}
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( " )" ) );
+		if( isJava ) {
+			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( " )" ) );
+		}
 		this.add( javax.swing.Box.createHorizontalGlue() );
 	}
 	public FunctionTemplatePane( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {

@@ -120,7 +120,7 @@ public class GetsPane extends edu.cmu.cs.dennisc.zoot.ZPane {
 	public static void main( String[] args ) {
 		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "ar" ) );
 		javax.swing.JFrame frame = new javax.swing.JFrame();
-		frame.getContentPane().add( new GetsPane( false, 5 ) );
+		frame.getContentPane().add( new GetsPane( false ) );
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
 		frame.setSize( 640, 480 );
 		frame.setVisible( true );
