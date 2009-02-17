@@ -198,9 +198,9 @@ public abstract class Program extends javax.swing.JApplet {
 	}
 
 	protected void showInWindow( final java.awt.Window window, final boolean isExitDesiredOnClose ) {
-		int x = toInt( getParameter( "LOCATION_X" ), 0 );
-		int y = toInt( getParameter( "LOCATION_Y" ), 0 );
-		window.setLocation( x, y );
+		int xLocation = toInt( getParameter( "X_LOCATION" ), 0 );
+		int yLocation = toInt( getParameter( "Y_LOCATION" ), 0 );
+		window.setLocation( xLocation, yLocation );
 		window.addWindowListener( new java.awt.event.WindowListener() {
 			public void windowOpened( java.awt.event.WindowEvent e ) {
 //				Program.this.handleShownForTheFirstTime();
@@ -252,11 +252,6 @@ public abstract class Program extends javax.swing.JApplet {
 
 		init();
 		frame.pack();
-
-		int xLocation = toInt( getParameter( "X_LOCATION" ), 0 );
-		int yLocation = toInt( getParameter( "Y_LOCATION" ), 0 );
-		frame.setLocation( xLocation, yLocation );
-
 		frame.addComponentListener( new StartProgramComponentAdapter() );
 		showInWindow( frame, isExitDesiredOnClose );
 
