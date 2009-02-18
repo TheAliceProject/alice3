@@ -147,23 +147,51 @@ def _promptForExpression( me, type, taskObserver ):
 	fillIn = ecc.dennisc.alice.ide.cascade.ExpressionReceptorBlank( type )
 	fillIn.showPopupMenu( me.getSource(), me.getX(), me.getY(), taskObserver )		
 
+def _getDefaultExpressionForType( type ):
+	if type in alice.ast.TypeDeclaredInJava.DOUBLE_TYPES:
+		return alice.ast.DoubleLiteral( 0.0 )
+	elif type in alice.ast.TypeDeclaredInJava.INTEGER_TYPES:
+		return alice.ast.IntegerLiteral( 0 )
+	elif type in alice.ast.TypeDeclaredInJava.BOOLEAN_TYPES:
+		return alice.ast.BooleanLiteral( False )
+	elif type is alice.ast.TypeDeclaredInJava.get( java.lang.String ):
+		return alice.ast.StringLiteral( "hello" )
+	else:
+		return alice.ast.NullLiteral()
+
 class InitializerView( javax.swing.JPanel, edu.cmu.cs.dennisc.pattern.Validator ):
 	def __init__( self, type, expression, paneWithValidation ):
 		javax.swing.JPanel.__init__( self )
 		self.setLayout( java.awt.GridLayout( 1, 1 ) )
-		self._type = type
-		self._expression = expression
 		self._paneWithValidation = paneWithValidation
-		self.refresh()
+		self._type = type
+		self._mapTypeToExpression = {}
+		self.setExpression( expression )
 
-	def isDropDownAffordanceDesired( self ):
+	def isValid( self ):
 		return self._type != None
 
+	def isDropDownAffordanceDesired( self ):
+		return self.isValid()
+
 	def getExpression( self ):
-		return self._expression
+		if self._mapTypeToExpression.has_key( self._type ):
+			rv = self._mapTypeToExpression[ self._type ]
+#			if rv.getType().isAssignableTo( self._type ):
+#				pass
+#			else:
+#				rv = _getDefaultExpressionForType( type )
+		else:
+			rv = _getDefaultExpressionForType( self._type )
+		return rv
+			
 	
 	def setExpression( self, expression ):
-		self._expression = expression
+		if expression:
+			pass
+		else:
+			expression = _getDefaultExpressionForType( self._type )
+		self._mapTypeToExpression[ self._type ] = expression
 		self.refresh()
 		self._paneWithValidation.updateOKButton()
 
@@ -172,35 +200,25 @@ class InitializerView( javax.swing.JPanel, edu.cmu.cs.dennisc.pattern.Validator 
 		self.refresh()
 		self._paneWithValidation.updateOKButton()
 		
-	def isValid( self ):
-		if self._type:
-			if self._expression:
-				if self._expression.getType().isAssignableTo( self._type ):
-					return True
-		return False
 
 	def refresh( self ):
 		self.removeAll()
+		text = None
 		if self._type:
-			if self._expression:
-				if self._expression.getType().isAssignableTo( self._type ):
-					view = alice.ide.editors.code.ExpressionPane( self._expression )
-				else:
-					view = javax.swing.JLabel( "invalid: <click here>" )
-			else:
-				view = javax.swing.JLabel( "<click here>" )
+			expression = self.getExpression()
+			view = alice.ide.editors.code.ExpressionPane( expression )
 		else:
 			view = javax.swing.JLabel( "<fill in type first>" )
+			view.setOpaque( True )
+			view.setBackground( java.awt.Color.RED )
 		self.add( view )
 		self._paneWithValidation.repaint()
-#		springPane = self._paneWithValidation.getParent()
-#		if springPane:
-#			inputPane = springPane.getParent()
-#			if inputPane:
-#				try:
-#					inputPane.updateSizeIfNecessary()
-#				except:
-#					print "warning: could not update input pane", inputPane
+		inputPane = self._paneWithValidation.getParent()
+		if inputPane:
+			try:
+				inputPane.updateSizeIfNecessary()
+			except:
+				print "warning: could not update input pane"
 		self.revalidate()
 		self.repaint()
 
@@ -232,6 +250,28 @@ class InitializerPane( alice.ide.editors.code.DropDownPane, java.awt.event.Mouse
 		self._view.setType( type )
 	def isValid( self ):
 		return self._view.isValid()
+		
+class ItemInitializerPane( javax.swing.JPanel ):
+	def __init__( self, type, paneWithValidation ):
+		self._pane = InitializerPane( type, paneWithValidation )
+		javax.swing.JPanel.__init__( self )
+		self.setLayout( java.awt.FlowLayout( java.awt.FlowLayout.LEADING ) )
+		self.add( self._pane )
+	def _getType( self ):
+		return self._pane._view._type
+	def getPreferredSize( self ):
+		type = self._getType()
+		if type and type.isArray() == False:
+			rv = NodeListPropertyPane.getPreferredSize( self )
+		else:
+			rv = java.awt.Dimension( 0, 0 )
+		return rv
+	def _handleTypeChange( self, type ):
+		self._pane._handleTypeChange( type )
+	def _getInitializer( self ):
+		return self._pane._view.getExpression()
+	def isValid( self ):
+		return self._pane.isValid()
 
 class ArrayInitializerListCellRenderer( zoot.ZLineAxisPane, javax.swing.ListCellRenderer ):
 	def __init__( self, type, paneWithValidation ):
@@ -243,12 +283,9 @@ class ArrayInitializerListCellRenderer( zoot.ZLineAxisPane, javax.swing.ListCell
 		self.add( self._label )
 		self.add( self._initializerPane )
 		self.setBackground( java.awt.Color( 191, 191, 255 ) )
-
 	def _handleTypeChange( self, type ):
 		self._type = type
-		self._initializerPane._handleTypeChange( self._type.getComponentType() )
-		self.repaint()
-
+		self._initializerPane._handleTypeChange( type.getComponentType() )
 	def getListCellRendererComponent( self, list, value, index, isSelected, cellHasFocus ):
 		self._label.setText( "[ " + str( index ) + " ]" )
 		self._initializerPane._view.setExpression( value )
@@ -279,6 +316,7 @@ class ArrayInitializerListPropertyVC( ListPropertyVC ):
 	def __init__( self, type, paneWithValidation ):
 		ListPropertyVC.__init__( self, type, paneWithValidation )
 		self._initializeInitializer()
+		self._handleTypeChange( type )
 		self.addMouseListener( _ArrayInitializerMouseAdapter( self ) )
 	def _initializeInitializer( self ):
 		self._initializer = alice.ast.ArrayInstanceCreation()
@@ -289,8 +327,14 @@ class ArrayInitializerListPropertyVC( ListPropertyVC ):
 	def getType( self ):
 		return self.getCellRenderer()._type
 	def _handleTypeChange( self, type ):
-		self.getCellRenderer()._handleTypeChange( type )
-		self.repaint()
+		if type.isArray():
+			N = self._initializer.expressions.size()
+			i = 0
+			while i<N:
+				self._initializer.expressions.set( i, [ _getDefaultExpressionForType( type.getComponentType() ) ] )
+				i += 1
+			self.getCellRenderer()._handleTypeChange( type )
+			self.repaint()
 	def _getInitializer( self ):
 		self._initializer.arrayType.setValue( self.getType() )
 		self._initializer.lengths.set( 0, [ self._initializer.expressions.size() ] )
@@ -312,6 +356,13 @@ class ArrayInitializerListPropertyVC( ListPropertyVC ):
 class ArrayInitializerPane( NodeListPropertyPane, javax.swing.event.ListDataListener ):
 	def _getType( self ):
 		return self._listVC.getType()
+	def getPreferredSize( self ):
+		type = self._getType()
+		if type and type.isArray() == True:
+			rv = NodeListPropertyPane.getPreferredSize( self )
+		else:
+			rv = java.awt.Dimension( 0, 0 )
+		return rv
 
 	
 	def contentsChanged( self, e ):
@@ -325,26 +376,14 @@ class ArrayInitializerPane( NodeListPropertyPane, javax.swing.event.ListDataList
 		rv = ArrayInitializerListPropertyVC( type, paneWithValidation )
 		rv.getModel().addListDataListener( self )
 		return rv
-
-#	def getPreferredSize( self ):
-#		type = self._getType()
-#		if type and type.isArray() == True:
-#			rv = NodeListPropertyPane.getPreferredSize( self )
-#		else:
-#			rv = java.awt.Dimension( 0, 0 )
-#		return rv
-	def getPreferredSize( self ):
-		rv = NodeListPropertyPane.getPreferredSize( self )
-		rv.width = max( rv.width, 400 )
-		rv.height = max( rv.height, 300 )
-		return rv
 	
 	def _isDialogTriggeredOnAdd( self ):
 		return False
 	def _isRenameDesired( self ):
 		return False
 	def _handleAdd( self, e ):
-		self._listVC.getModel().handleAdd( None )
+		expression = _getDefaultExpressionForType( self._getType().getComponentType() )
+		self._listVC.getModel().handleAdd( expression )
 		
 	def setArrayInstanceCreation( self, arrayInstanceCreation ):
 		#self._listVC.setComponentType( arrayInstanceCreation.arrayType.getValue().getComponentType() )
@@ -363,6 +402,7 @@ class ArrayChooser( PaneWithValidation ):
 	def __init__( self, value ):
 		PaneWithValidation.__init__( self )
 		self._typeVC = TypeComboBox()
+		#todo: handle value
 		self._isArrayVC = javax.swing.JCheckBox( "is array" )
 		self._isArrayVC.setSelected( True )
 		self._isArrayVC.setEnabled( False )

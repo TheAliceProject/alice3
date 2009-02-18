@@ -420,7 +420,12 @@ class AbstractIDE( alice.ide.IDE ):
 		self._addExpressionBonusFillInsForType( blank, type )
 
 		if type.isArray():
-			blank.addChild( ecc.dennisc.alice.ide.cascade.CustomArrayFillIn() )
+			prevArray = None
+			#todo
+#			if self.__dict__.has_key( "_prevExpression" ):
+#				if True: #todo? self._prevExpression.getType().isAssignableTo( type ):
+#					prevArray = self._prevExpression
+			blank.addChild( ecc.dennisc.alice.ide.cascade.CustomArrayFillIn( prevArray ) )
 
 		if blank.getChildren().size():
 			pass
