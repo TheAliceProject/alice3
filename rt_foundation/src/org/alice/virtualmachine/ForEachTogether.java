@@ -20,12 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.virtualmachine;
+package org.alice.virtualmachine;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
 class ForEachRunnableAdapter<E> implements Runnable {
 	private ForEachRunnable< E > forEachRunnable;
 	private E value;
@@ -42,7 +41,6 @@ class ForEachRunnableAdapter<E> implements Runnable {
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
 public class ForEachTogether {
 	public static < E extends Object> void invokeAndWait( E[] array, ForEachRunnable< E > forEachRunnable ) {
 		switch( array.length ) {

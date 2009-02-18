@@ -20,12 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.virtualmachine;
+package org.alice.virtualmachine;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
 public class DoTogether {
 	//todo 
 	public static void invokeAndWait( 

@@ -629,7 +629,7 @@ public abstract class VirtualMachine {
 					}
 				};
 			}
-			edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
 		}
 	}
 	protected void executeExpressionStatement( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
@@ -676,7 +676,7 @@ public abstract class VirtualMachine {
 			break;
 		default:
 			final Thread parentThread = Thread.currentThread();
-			ForEachTogether.invokeAndWait( array, new ForEachRunnable< Object >() {
+			org.alice.virtualmachine.ForEachTogether.invokeAndWait( array, new org.alice.virtualmachine.ForEachRunnable< Object >() {
 				public void run( Object value ) {
 					pushCurrentThread( parentThread );
 					try {
