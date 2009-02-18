@@ -32,7 +32,6 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 public class ObjectGlobalHandleDragManipulator extends DragManipulator implements CameraInformedManipulator {
 
 	protected DragManipulator activeManipulator;
-	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	protected ManipulationHandle activeHandle = null;
 	
@@ -86,7 +85,6 @@ public class ObjectGlobalHandleDragManipulator extends DragManipulator implement
 			if (this.activeManipulator instanceof CameraInformedManipulator)
 			{
 				CameraInformedManipulator cIM = (CameraInformedManipulator)this.activeManipulator;
-				cIM.setCamera( this.camera );
 				cIM.setOnscreenLookingGlass( this.onscreenLookingGlass );
 			}
 			this.activeManipulator.startManipulator( startInput );
@@ -103,9 +101,13 @@ public class ObjectGlobalHandleDragManipulator extends DragManipulator implement
 
 	}
 
-	public void setCamera( AbstractCamera camera ) {
-		this.camera = camera;
-
+	public AbstractCamera getCamera()
+	{
+		if( this.onscreenLookingGlass != null )
+		{
+			return onscreenLookingGlass.getCameraAt( 0 );
+		} 
+		return null;
 	}
 
 	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {

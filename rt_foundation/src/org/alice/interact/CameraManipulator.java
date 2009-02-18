@@ -30,15 +30,15 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  */
 public abstract class CameraManipulator extends DragManipulator implements CameraInformedManipulator {
 
-	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
-	public void setCamera( AbstractCamera camera ) {
-		this.camera = camera;
-		if (this.camera != null)
+	public AbstractCamera getCamera()
+	{
+		if( this.onscreenLookingGlass != null )
 		{
-			this.manipulatedTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)camera.getParent();
-		}
+			return onscreenLookingGlass.getCameraAt( 0 );
+		} 
+		return null;
 	}
 
 	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {

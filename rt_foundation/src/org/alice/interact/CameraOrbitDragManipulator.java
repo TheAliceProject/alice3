@@ -63,9 +63,9 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 		
 		AffineMatrix4x4 m = AffineMatrix4x4.createIdentity();
 		StandIn standIn = new StandIn();
-		standIn.vehicle.setValue( this.camera.getRoot() );
+		standIn.vehicle.setValue( this.getCamera().getRoot() );
 		standIn.setTranslationOnly( this.pivotPoint, AsSeenBy.SCENE );
-		standIn.setAxesOnlyToPointAt( this.camera );
+		standIn.setAxesOnlyToPointAt( this.getCamera() );
 		standIn.setAxesOnlyToStandUp();
 		this.manipulatedTransformable.applyRotationAboutXAxis( new AngleInDegrees(upDownRotationAngle), standIn );
 		this.manipulatedTransformable.applyRotationAboutYAxis( new AngleInDegrees(leftRightRotationAngle), standIn );

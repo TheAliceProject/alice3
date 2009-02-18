@@ -22,12 +22,14 @@
  */
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+
 /**
  * @author David Culyba
  */
 public interface CameraInformedManipulator {
 	
-	public void setCamera( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera);
+	public AbstractCamera getCamera();
 	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass );
 	
 }

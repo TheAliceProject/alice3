@@ -50,7 +50,6 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 	protected static final double BAD_ANGLE_THRESHOLD = 2.0d*Math.PI * (15.0d/360.0d);
 	protected static final double WORLD_DISTANCE_TO_RADIANS_MULTIPLIER = 1.1d;
 	
-	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
 	protected Point3 initialClickPoint = new Point3();
@@ -64,8 +63,13 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 	protected RotationRingHandle rotationHandle;
 	
 	
-	public void setCamera( AbstractCamera camera ) {
-		this.camera = camera;
+	public AbstractCamera getCamera()
+	{
+		if( this.onscreenLookingGlass != null )
+		{
+			return onscreenLookingGlass.getCameraAt( 0 );
+		} 
+		return null;
 	}
 
 	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
@@ -111,7 +115,7 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 			this.hideCursor();
 			
 		}
-		this.cameraFacingPlane = new Plane( this.initialClickPoint, this.camera.getAbsoluteTransformation().orientation.backward);
+		this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
 	}
 
 	@Override
@@ -126,16 +130,16 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 	
 	protected Angle getRotationBasedOnMouse( Point mouseLocation )
 	{
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.camera, mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if (pickRay != null)
 		{
-			AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.camera.getAbsoluteTransformation().orientation.backward);
+			AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward);
 			double distanceToRightAngle = Math.abs(Math.PI*.5d - angleBetweenVector.getAsRadians());
 			if (distanceToRightAngle < BAD_ANGLE_THRESHOLD)
 			{
 				Point3 pointInPlane = PlaneUtilities.getPointInPlane( this.cameraFacingPlane, pickRay );
 				Vector3 fromOriginalMouseToCurrentMouse = Vector3.createSubtraction( pointInPlane, this.initialClickPoint );
-				Vector3 rotationRightAxis = Vector3.createCrossProduct( this.absoluteRotationAxis, this.camera.getAbsoluteTransformation().orientation.backward);
+				Vector3 rotationRightAxis = Vector3.createCrossProduct( this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward);
 				double mouseDistance = Vector3.calculateDotProduct( fromOriginalMouseToCurrentMouse, rotationRightAxis );
 				
 				return new AngleInRadians(mouseDistance * WORLD_DISTANCE_TO_RADIANS_MULTIPLIER);
@@ -203,8 +207,8 @@ public class ObjectRotateDragManipulator extends DragManipulator implements Came
 	protected void showCursor()
 	{
 		try {
-			Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.camera );
-			Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenLookingGlass, this.camera );
+			Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.getCamera() );
+			Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenLookingGlass, this.getCamera() );
 			SwingUtilities.convertPointToScreen( awtPoint, this.onscreenLookingGlass.getAWTComponent() );
 			Robot mouseMover = new Robot();
 			mouseMover.mouseMove(awtPoint.x, awtPoint.y);

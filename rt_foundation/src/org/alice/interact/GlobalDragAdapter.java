@@ -591,7 +591,6 @@ public class GlobalDragAdapter implements java.awt.event.MouseWheelListener, jav
 				{
 					if (this.manipulators.get( i ).getManipulator() instanceof CameraInformedManipulator)
 					{
-						((CameraInformedManipulator)this.manipulators.get( i ).getManipulator()).setCamera( sgCamera );
 						((CameraInformedManipulator)this.manipulators.get( i ).getManipulator()).setOnscreenLookingGlass( getOnscreenLookingGlass() );
 					}
 				}

@@ -47,7 +47,7 @@ public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator 
 	@Override
 	protected Plane createBadAnglePlane( Point3 clickPoint )
 	{
-		Vector3 cameraUp = this.camera.getAbsoluteTransformation().orientation.up;
+		Vector3 cameraUp = this.getCamera().getAbsoluteTransformation().orientation.up;
 		Vector3 badPlaneNormal = Vector3.createPositiveYAxis();
 		badPlaneNormal.subtract( cameraUp );
 		badPlaneNormal.normalize();

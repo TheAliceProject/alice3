@@ -41,8 +41,6 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 
 	protected static final double BAD_ANGLE_THRESHOLD = 2.0d*Math.PI * (8.0d/360.0d);
 	protected static final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
-	
-	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
 	protected Point3 initialClickPoint = new Point3();
@@ -53,8 +51,13 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	protected Point initialMouseLocation = new Point();
 	protected Boolean hasMoved = false;
 	
-	public void setCamera( AbstractCamera camera ) {
-		this.camera = camera;
+	public AbstractCamera getCamera()
+	{
+		if( this.onscreenLookingGlass != null )
+		{
+			return onscreenLookingGlass.getCameraAt( 0 );
+		} 
+		return null;
 	}
 
 	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
@@ -78,7 +81,7 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	
 	protected Point3 getPositionBasedonOnMouseLocation( Point mouseLocation )
 	{
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.camera, mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if (pickRay != null)
 		{
 			Plane toMoveIn = this.movementPlane;
@@ -100,8 +103,8 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	
 	protected double getBadAngleAmount( Plane plane, Ray pickRay )
 	{
-		Vector3 cameraDirection = this.camera.getAbsoluteTransformation().orientation.backward;
-		double cameraDistanceFactor = PlaneUtilities.distanceToPlane( plane, this.camera.getAbsoluteTransformation().translation );
+		Vector3 cameraDirection = this.getCamera().getAbsoluteTransformation().orientation.backward;
+		double cameraDistanceFactor = PlaneUtilities.distanceToPlane( plane, this.getCamera().getAbsoluteTransformation().translation );
 		Vector3 planeNormal = PlaneUtilities.getPlaneNormal( plane );
 		AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(cameraDirection, planeNormal);
 		double distanceToRightAngle = Math.abs(Math.PI*.5d - angleBetweenVector.getAsRadians());
@@ -132,10 +135,10 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	
 	protected Vector3 createCameraFacingStoodUpVector()
 	{
-		Vector3 cameraBackward = this.camera.getAxes( AsSeenBy.SCENE ).backward;
+		Vector3 cameraBackward = this.getCamera().getAxes( AsSeenBy.SCENE ).backward;
 		if (EpsilonUtilities.isWithinReasonableEpsilon( cameraBackward.y, 1.0d )) //handle case where camera is pointing down or up
 		{
-			return Vector3.createMultiplication( this.camera.getAbsoluteTransformation().orientation.up, -1.0d );
+			return Vector3.createMultiplication( this.getCamera().getAbsoluteTransformation().orientation.up, -1.0d );
 		}
 		else
 		{
@@ -201,7 +204,7 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 			this.movementPlane = createPickPlane(this.initialClickPoint);
 			this.badAnglePlane = createBadAnglePlane(this.initialClickPoint);
 			
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.camera, startInput.getMouseLocation().x, startInput.getMouseLocation().y );
+			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			if (pickRay != null)
 			{
 				Point3 pointInPlane = PlaneUtilities.getPointInPlane( this.movementPlane, pickRay );

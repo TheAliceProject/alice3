@@ -38,7 +38,6 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public class LinearDragManipulator extends DragManipulator implements CameraInformedManipulator {
 
-	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
 	protected LinearDragHandle linearHandle;
@@ -48,8 +47,13 @@ public class LinearDragManipulator extends DragManipulator implements CameraInfo
 	protected Plane cameraFacingPlane;
 	protected Plane handleAlignedPlane;
 	
-	public void setCamera( AbstractCamera camera ) {
-		this.camera = camera;
+	public AbstractCamera getCamera()
+	{
+		if( this.onscreenLookingGlass != null )
+		{
+			return onscreenLookingGlass.getCameraAt( 0 );
+		} 
+		return null;
 	}
 
 	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
@@ -58,17 +62,17 @@ public class LinearDragManipulator extends DragManipulator implements CameraInfo
 	
 	protected double getDistanceAlongAxisBasedOnMouse( Point mouseLocation )
 	{
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.camera, mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if (pickRay != null)
 		{
-			double axisCameraDot = Vector3.calculateDotProduct( this.absoluteDragAxis, this.camera.getAbsoluteTransformation().orientation.backward );
+			double axisCameraDot = Vector3.calculateDotProduct( this.absoluteDragAxis, this.getCamera().getAbsoluteTransformation().orientation.backward );
 			if (Math.abs( axisCameraDot ) > .98d )
 			{
 				Point3 pointInPlane = PlaneUtilities.getPointInPlane( this.cameraFacingPlane, pickRay );
 				Vector3 fromOriginalMouseToCurrentMouse = Vector3.createSubtraction( pointInPlane, this.initialClickPoint );
-				Vector3 dragRightAxis = this.camera.getAbsoluteTransformation().orientation.right;
+				Vector3 dragRightAxis = this.getCamera().getAbsoluteTransformation().orientation.right;
 				dragRightAxis.normalize();
-				Vector3 dragUpAxis = this.camera.getAbsoluteTransformation().orientation.up;
+				Vector3 dragUpAxis = this.getCamera().getAbsoluteTransformation().orientation.up;
 				dragUpAxis.normalize();
 				
 				double leftRightSign = 1.0d;
@@ -135,7 +139,7 @@ public class LinearDragManipulator extends DragManipulator implements CameraInfo
 			startInput.getClickPickResult().getPositionInSource(this.initialClickPoint);
 			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( this.initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
 			
-			Vector3 toCamera = Vector3.createSubtraction( this.camera.getAbsoluteTransformation().translation, this.manipulatedTransformable.getAbsoluteTransformation().translation );
+			Vector3 toCamera = Vector3.createSubtraction( this.getCamera().getAbsoluteTransformation().translation, this.manipulatedTransformable.getAbsoluteTransformation().translation );
 			toCamera.normalize();
 			Vector3 axisAlignedNormal = null;
 			if (Math.abs(Vector3.calculateDotProduct( toCamera, this.absoluteDragAxis )) > .99d)
@@ -150,7 +154,7 @@ public class LinearDragManipulator extends DragManipulator implements CameraInfo
 				axisAlignedNormal = awayFromAxis;
 			}
 			this.handleAlignedPlane = new Plane(this.linearHandle.getAbsoluteTransformation().translation, axisAlignedNormal);
-			this.cameraFacingPlane = new Plane( this.initialClickPoint, this.camera.getAbsoluteTransformation().orientation.backward);
+			this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
 			this.originalOrigin = this.manipulatedTransformable.getAbsoluteTransformation().translation; 
 		}
 	}
