@@ -20,27 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.bugreport;
+package edu.cmu.cs.dennisc.alice.ide.bugreport.jira;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Authenticator extends edu.cmu.cs.dennisc.mail.AbstractAuthenticator {
-	@Override
-	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-		return new javax.mail.PasswordAuthentication( "anonymous-alice-user", "silkySmooth123" );
+public class LoginUtilities {
+	public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
+		return client.invoke( "jira1.login", new Object[] { "alice3_rpc", "brokenAnkles" } );
 	}
-	@Override
-	public java.lang.String getAnonymousFrom() {
-		return "anonymous-alice-user@haru.pc.cc.cmu.edu";
-	}
-//	@Override
-//	public String getAnonymousFrom() {
-//		return "anonymous.alice.bugs.3.beta.xxxx@gmail.com";
-//	}
-//	@Override
-//	protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-//		String anonymousPassword = "pleaseDoNotStealThisAccount";
-//		return new javax.mail.PasswordAuthentication( getAnonymousFrom(), anonymousPassword );
-//	}
 }

@@ -103,7 +103,7 @@ class FieldPane( zoot.ZPageAxisPane ):
 			else:
 				initializeClassLine.add( zoot.ZLabel( "initialize " ) )
 			initializeClassLine.add( nameLabel )
-			initializeClassLine.add( alice.ide.editors.code.GetsPane( True, 5 ) )
+			initializeClassLine.add( alice.ide.editors.code.GetsPane( True ) )
 			initializeClassLine.add( alice.ide.editors.code.ExpressionPropertyPane( field.initializer, True ) )
 		else:
 			initializeClassLine.add( javax.swing.Box.createVerticalStrut( 8 ) )

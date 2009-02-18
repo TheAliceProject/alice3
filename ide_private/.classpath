@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_foundation"/>
 	<classpathentry kind="lib" path="/jar_mail/mail.jar"/>
+	<classpathentry kind="lib" path="/jar_rpc/xmlrpc-client-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

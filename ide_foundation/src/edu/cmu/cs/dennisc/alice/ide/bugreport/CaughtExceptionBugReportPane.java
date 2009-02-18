@@ -51,7 +51,6 @@ public class CaughtExceptionBugReportPane extends edu.cmu.cs.dennisc.ui.bugrepor
 //		} );
 		return rv;
 	}
-	
 
 	@Override
 	protected StringBuffer updateSubject( StringBuffer rv ) {
@@ -74,6 +73,6 @@ public class CaughtExceptionBugReportPane extends edu.cmu.cs.dennisc.ui.bugrepor
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.mail.AbstractAuthenticator getAuthenticator() {
-		return new Authenticator();
+		return new edu.cmu.cs.dennisc.alice.ide.bugreport.mail.Authenticator();
 	}
 }
