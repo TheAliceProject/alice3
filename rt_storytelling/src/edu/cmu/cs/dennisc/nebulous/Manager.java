@@ -27,22 +27,25 @@ package edu.cmu.cs.dennisc.nebulous;
  */
 public class Manager {
 	static {
-		Manager.addDirectoryToBundlePath( new java.io.File( "s:/AliceBundles" ) );
+		java.io.File directory = new java.io.File( "s:/AliceBundles" );
+		for( java.io.File file : directory.listFiles() ) {
+			Manager.addBundle( file );
+		}
 	}
 	static boolean s_isInitialized = false;
 	static boolean s_isLicensePromptDesired = true;
-	static java.util.List< java.io.File > s_pendingBundleDirectories;
-	private static native void addDirectoryPathToBundlePath( String directoryPath );
-	private static native void removeDirectoryPathFromBundlePath( String directoryPath );
+	static java.util.List< java.io.File > s_pendingBundles;
+	private static native void addBundlePath( String bundlePath );
+	private static native void removeBundlePath( String bundlePath );
 	
 	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
-	private static java.util.List< java.io.File > getPendingBundleDirectories() {
-		if( s_pendingBundleDirectories != null ) {
+	private static java.util.List< java.io.File > getPendingBundles() {
+		if( s_pendingBundles != null ) {
 			//pass
 		} else {
-			s_pendingBundleDirectories = new java.util.LinkedList< java.io.File >();
+			s_pendingBundles = new java.util.LinkedList< java.io.File >();
 		}
-		return s_pendingBundleDirectories;
+		return s_pendingBundles;
 	}
 	public static void initializeIfNecessary() throws LicenseRejectedException {
 		if( isInitialized() ) {
@@ -90,8 +93,8 @@ public class Manager {
 			if( isLicenseAccepted ) {
 				preferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
 				System.loadLibrary( "jni_nebulous" );
-				for( java.io.File directory : Manager.getPendingBundleDirectories() ) {
-					Manager.addDirectoryPathToBundlePath( directory.getAbsolutePath() );
+				for( java.io.File directory : Manager.getPendingBundles() ) {
+					Manager.addBundlePath( directory.getAbsolutePath() );
 				}
 				s_isInitialized = true;
 			} else {
@@ -106,18 +109,18 @@ public class Manager {
 		s_isLicensePromptDesired = true;
 	}
 	
-	public static void addDirectoryToBundlePath( java.io.File directory ) {
+	public static void addBundle( java.io.File file ) {
 		if( isInitialized() ) {
-			Manager.addDirectoryPathToBundlePath( directory.getAbsolutePath() );
+			Manager.addBundlePath( file.getAbsolutePath() );
 		} else {
-			Manager.getPendingBundleDirectories().add( directory );
+			Manager.getPendingBundles().add( file );
 		}
 	}
-	public static void removeDirectoryFromBundlePath( java.io.File directory ) {
+	public static void removeBundle( java.io.File file ) {
 		if( isInitialized() ) {
-			Manager.removeDirectoryPathFromBundlePath( directory.getAbsolutePath() );
+			Manager.removeBundlePath( file.getAbsolutePath() );
 		} else {
-			Manager.getPendingBundleDirectories().remove( directory );
+			Manager.getPendingBundles().remove( file );
 		}
 	}
 }

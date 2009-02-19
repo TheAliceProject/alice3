@@ -423,9 +423,24 @@ public abstract class VirtualMachine {
 		return bitwiseInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
 	}
 	protected Boolean evaluateConditionalInfixExpression( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression conditionalInfixExpression ) {
+		edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator = conditionalInfixExpression.operator.getValue();
 		Boolean leftOperand = (Boolean)this.evaluate( conditionalInfixExpression.leftOperand.getValue() );
-		Boolean rightOperand = (Boolean)this.evaluate( conditionalInfixExpression.rightOperand.getValue() );
-		return (Boolean)conditionalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+		if( operator == edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.AND ) {
+			if( leftOperand ) {
+				return (Boolean)this.evaluate( conditionalInfixExpression.rightOperand.getValue() );
+			} else {
+				return false;
+			}
+		} else if( operator == edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.OR ) {
+			if( leftOperand ) {
+				return true;
+			} else {
+				return (Boolean)this.evaluate( conditionalInfixExpression.rightOperand.getValue() );
+			}
+		} else {
+			
+			return false;
+		}
 	}
 	protected Boolean evaluateRelationalInfixExpression( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression relationalInfixExpression ) {
 		Object leftOperand = this.evaluate( relationalInfixExpression.leftOperand.getValue() );

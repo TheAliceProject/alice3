@@ -138,7 +138,7 @@ class GetAtIndexTemplatePane( GetTemplatePane ):
 				blank.showPopupMenu( me.getSource(), me.getX(), me.getY(), self )	
 		observer = MyBlockingTaskObserver()
 		indexExpression = observer.getResult()
-		accessExpression = alice.ast.ArrayAccess( self._arrayType, alice.ast.VariableAccess( self._variable ), indexExpression )
+		accessExpression = alice.ast.ArrayAccess( self._arrayType, self._createAccess(), indexExpression )
 		return accessExpression
 
 class GetVariableArrayAtIndexTemplatePane( GetAtIndexTemplatePane ):
