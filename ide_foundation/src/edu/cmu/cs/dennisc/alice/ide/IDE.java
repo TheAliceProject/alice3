@@ -35,8 +35,17 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 					try {
 						edu.cmu.cs.dennisc.alice.ide.bugreport.CaughtExceptionBugReportPane bugReportPane = new edu.cmu.cs.dennisc.alice.ide.bugreport.CaughtExceptionBugReportPane();
 						bugReportPane.setThreadAndThrowable( thread, throwable );
+						javax.swing.JFrame frame = IDE.getSingleton();
+						String title;
+						if( frame != null ) {
+							title = IDE.getSingleton().getBugReportSubmissionTitle();
+						} else {
+							frame = new javax.swing.JFrame();
+							frame.setVisible( true );
+							title = "";
+						}
 						while( true ) {
-							javax.swing.JDialog window = new javax.swing.JDialog( IDE.getSingleton(), IDE.getSingleton().getBugReportSubmissionTitle(), true );
+							javax.swing.JDialog window = new javax.swing.JDialog( frame, title, true );
 							bugReportPane.setWindow( window );
 							//javax.swing.JFrame window = new javax.swing.JFrame( "Please Submit Bug Report" );
 							window.getContentPane().add( bugReportPane );
