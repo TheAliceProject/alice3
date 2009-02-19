@@ -63,7 +63,7 @@ class IngedientListVC( ecc.dennisc.swing.ListVC ):
 	def _update( self ):
 		if self._lifeStage and self._gender:
 			cls = self._getIngredientInterface()
-			enumClses = apis.storytelling.IngredientUtilities.get( cls )
+			enumClses = apis.stage.IngredientUtilities.get( cls )
 			data = []
 			if enumClses:
 				for enumCls in enumClses:
@@ -109,10 +109,10 @@ class IngredientsVC( javax.swing.JPanel ):
 	def __init__( self ):
 		javax.swing.JPanel.__init__( self )
 		
-		self._lifeStageVC = ecc.dennisc.swing.EnumConstantListVC( apis.storytelling.LifeStage, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleLifeStageSelection ) )
-		self._genderVC = ecc.dennisc.swing.EnumConstantListVC( apis.storytelling.Gender, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleGenderSelection ) )
-		self._baseSkinToneVC = ecc.dennisc.swing.EnumConstantListVC( apis.storytelling.BaseSkinTone, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleBaseSkinToneSelection ) )
-		self._baseEyeColorVC = ecc.dennisc.swing.EnumConstantListVC( apis.storytelling.BaseEyeColor, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleBaseEyeColorSelection ) )
+		self._lifeStageVC = ecc.dennisc.swing.EnumConstantListVC( apis.stage.LifeStage, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleLifeStageSelection ) )
+		self._genderVC = ecc.dennisc.swing.EnumConstantListVC( apis.stage.Gender, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleGenderSelection ) )
+		self._baseSkinToneVC = ecc.dennisc.swing.EnumConstantListVC( apis.stage.BaseSkinTone, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleBaseSkinToneSelection ) )
+		self._baseEyeColorVC = ecc.dennisc.swing.EnumConstantListVC( apis.stage.BaseEyeColor, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleBaseEyeColorSelection ) )
 		self._fullBodyOutfitVC = FullBodyOutfitListVC( None, None, None, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleFullBodyOutfitSelection ) )
 		self._hairVC = HairListVC( None, None, None, ecc.dennisc.swing.event.FilteredListSelectionAdapter( self._handleHairSelection ) )
 		
@@ -200,16 +200,16 @@ class PersonViewer( ecc.dennisc.alice.ide.moveandturn.editors.ModelViewer ):
 	def __init__( self ):
 		ecc.dennisc.alice.ide.moveandturn.editors.ModelViewer.__init__( self )
 		self._mapToMap = {}
-		self._mapToMap[ apis.storytelling.LifeStage.ADULT ] = {}
-		self._mapToMap[ apis.storytelling.LifeStage.ADULT ][ apis.storytelling.Gender.FEMALE ] = apis.storytelling.FemaleAdult()
-		self._mapToMap[ apis.storytelling.LifeStage.ADULT ][ apis.storytelling.Gender.MALE ] = apis.storytelling.MaleAdult()
+		self._mapToMap[ apis.stage.LifeStage.ADULT ] = {}
+		self._mapToMap[ apis.stage.LifeStage.ADULT ][ apis.stage.Gender.FEMALE ] = apis.stage.FemaleAdult()
+		self._mapToMap[ apis.stage.LifeStage.ADULT ][ apis.stage.Gender.MALE ] = apis.stage.MaleAdult()
 		self._lifeStage = None
 		self._gender = None
 		self._baseSkinTone = None
 		self._baseEyeColor = None
 		self._fullBodyOutfit = None
 		self._hair = None
-		self._fitnessLevel = apis.storytelling.FitnessLevel.NORMAL
+		self._fitnessLevel = apis.stage.FitnessLevel.NORMAL
 		
 	def initialize( self ):
 		ecc.dennisc.alice.ide.moveandturn.editors.ModelViewer.initialize( self )

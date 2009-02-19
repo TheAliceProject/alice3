@@ -21,7 +21,7 @@ class CascadingUbiquitousStatementTemplatePane( alice.ide.editors.ubiquitous.Exp
 		return apply( self._statementCls, self._createArgs( expression ) )
 	
 	def promptUserForExpression( self, observer, dndEvent ):
-		fillIn = ecc.dennisc.alice.ide.cascade.ExpressionReceptorBlank( self._blankType )
+		node = ecc.dennisc.alice.ide.cascade.ExpressionReceptorBlank( self._blankType )
 		me = dndEvent.getEndingMouseEvent()
-		fillIn.showPopupMenu( me.getSource(), me.getX(), me.getY(), observer )		
+		node.showPopupMenu( me.getSource(), me.getX(), me.getY(), observer )		
 

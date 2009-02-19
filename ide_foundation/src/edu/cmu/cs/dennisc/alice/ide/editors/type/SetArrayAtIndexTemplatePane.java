@@ -25,15 +25,17 @@ package edu.cmu.cs.dennisc.alice.ide.editors.type;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class SetterTemplatePane extends MemberStatementTemplatePane {
-	public SetterTemplatePane( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+public abstract class SetArrayAtIndexTemplatePane extends MemberStatementTemplatePane {
+	public SetArrayAtIndexTemplatePane( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
 		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls = edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class;
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTClass( cls ) );
-		//this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "set " ) );
 		this.add( this.getInstanceOrTypeExpressionPane() );
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "." ) );
 		this.add( this.getNameLabel() );
+		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "[" ) );
+		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.EmptyExpressionPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) );
+		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "]" ) );
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true ) );
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.EmptyExpressionPane( field.getValueType() ) );
 		this.add( javax.swing.Box.createHorizontalGlue() );
@@ -50,26 +52,19 @@ public abstract class SetterTemplatePane extends MemberStatementTemplatePane {
 		edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			@Override
 			public void run() {
-				SetterTemplatePane.this.promptUserForExpression( field.getDesiredValueType(), this, e );
+				SetArrayAtIndexTemplatePane.this.promptUserForExpression( field.getDesiredValueType(), this, e );
 			}
 		};
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = taskObserver.getResult();
 
 		edu.cmu.cs.dennisc.alice.ast.ExpressionStatement rv;
 		if( expression != null ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess();
-			fieldAccess.expression.setValue( getIDE().createInstanceExpression() );
-			fieldAccess.field.setValue( field );
-			edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression();
-			assignmentExpression.expressionType.setValue( field.getValueType() );
-			assignmentExpression.leftHandSide.setValue( fieldAccess );
-			assignmentExpression.operator.setValue( edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN );
-			assignmentExpression.rightHandSide.setValue( expression );
 			rv = new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement();
-			rv.expression.setValue( assignmentExpression );
+			rv.expression.setValue( expression );
 		} else {
 			rv = null;
 		}
 		return rv;
 	}
+
 }

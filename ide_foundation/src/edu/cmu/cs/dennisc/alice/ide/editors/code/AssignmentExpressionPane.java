@@ -31,41 +31,49 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisP
 		this.assignmentExpression = assignmentExpression;
 		edu.cmu.cs.dennisc.alice.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
 		
-		if( left instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)left;
-			if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
-				this.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
-				this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " . " ) );
-				edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel nameLabel = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( fieldAccess.field.getValue() );
-				nameLabel.scaleFont( 1.5f );
-				this.add( nameLabel );
-				this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " = " ) );
-			} else {
-				//this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "set " ) );
-				//this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " [ " ) );
-				this.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
-				this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " . " ) );
-				edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel nameLabel = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( fieldAccess.field.getValue() );
-				nameLabel.scaleFont( 1.5f );
-				this.add( nameLabel );
-				//this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " ] " ) );
-				this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true ) );
-			}
-			this.add( new ExpressionPropertyPane( this.assignmentExpression.rightHandSide, true ) );
-		} else if( left instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
-			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)left;
-			if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
-				this.add( new VariablePane( variableAccess.variable.getValue() ) );
-				this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " = " ) );
-			} else {
-				//this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "assign " ) );
-				//this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( variableAccess.variable.getValue() ) );
-				this.add( new VariablePane( variableAccess.variable.getValue() ) );
-				this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true ) );
-			}
-			this.add( new ExpressionPropertyPane( this.assignmentExpression.rightHandSide, true ) );
+		edu.cmu.cs.dennisc.alice.ast.Expression expression;
+		javax.swing.JComponent parent;
+		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
+			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
+			parent = new edu.cmu.cs.dennisc.zoot.ZLineAxisPane();
+			this.add( parent );
+			expression = arrayAccess.array.getValue();
 		} else {
-			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "TODO" ) );
+			parent = this;
+			expression = left;
 		}
+		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
+			edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel nameLabel = new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( fieldAccess.field.getValue() );
+			nameLabel.scaleFont( 1.5f );
+			if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+				parent.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
+				parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " . " ) );
+				parent.add( nameLabel );
+			} else {
+				parent.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
+			}
+			parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " . " ) );
+			parent.add( nameLabel );
+		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
+			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression;
+			parent.add( new VariablePane( variableAccess.variable.getValue() ) );
+		} else {
+			parent.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "TODO" ) );
+		}
+		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
+			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
+			parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( "[ " ) );
+			parent.add( new ExpressionPropertyPane( arrayAccess.index, true ) );
+			parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " ]" ) );
+		}
+		if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+			parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " = " ) );
+		} else {
+			parent.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true ) );
+		}
+		parent.add( new ExpressionPropertyPane( this.assignmentExpression.rightHandSide, true ) );
+		
+		
 	}
 }

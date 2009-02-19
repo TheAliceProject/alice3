@@ -99,7 +99,6 @@ class ArrayAccessFillIn( cascade.FillIn ):
 		expression = alice.ast.ArrayAccess( self._arrayType, self._arrayExpression, alice.ide.editors.code.EmptyExpression( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) )
 		return alice.ide.editors.code.ExpressionPane( expression )
 
-
 class InfixExpressionOperatorFillIn( SimpleExpressionFillIn ):
 	def __init__(self, expression, operandType):
 		SimpleExpressionFillIn.__init__( self, expression )
@@ -286,6 +285,40 @@ class StatementBlank( cascade.Blank ):
 #	def _createRelationalInfixExpressionFillIn( self, operator ):
 #		return InfixExpressionFillIn( alice.ast.RelationalInfixExpression( self._type, alice.ide.editors.code.EmptyExpression( self._type ), operator, alice.ide.editors.code.EmptyExpression( self._type ) ) )
 
+class SetArrayAtIndexFillIn( cascade.FillIn ):
+	def __init__( self, rightExpressionType ):
+		cascade.FillIn.__init__( self )
+		self._rightExpressionType = rightExpressionType
+	def addChildren( self ):
+		self.addChild( ecc.dennisc.alice.ide.cascade.ExpressionReceptorBlank( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) )
+		self.addChild( ecc.dennisc.alice.ide.cascade.ExpressionReceptorBlank( self._rightExpressionType ) )
+	def _createExpression(self, indexExpression, rightExpression ):
+		raise "Override"
+	def getValue(self):
+		blank0 = self.getChildren()[ 0 ]
+		blank1 = self.getChildren()[ 1 ]
+		indexExpression = blank0.getSelectedFillIn().getValue()
+		rightExpression = blank1.getSelectedFillIn().getValue()
+		return self._createExpression( indexExpression, rightExpression )
+
+class SetArrayVariableAtIndexFillIn( SetArrayAtIndexFillIn ):
+	def __init__( self, variable ):
+		self._variable = variable
+		SetArrayAtIndexFillIn.__init__( self, self._variable.valueType.getValue().getComponentType() )
+	def _createExpression(self, indexExpression, rightExpression ):
+		arrayType = self._variable.valueType.getValue()
+		accessExpression = alice.ast.ArrayAccess( arrayType, alice.ast.VariableAccess( self._variable ), indexExpression )
+		return alice.ast.AssignmentExpression( arrayType.getComponentType(), accessExpression, alice.ast.AssignmentExpression.Operator.ASSIGN, rightExpression )
+
+class SetArrayFieldAtIndexFillIn( SetArrayAtIndexFillIn ):
+	def __init__( self, instanceExpression, field ):
+		self._instanceExpression = instanceExpression
+		self._field = field
+		SetArrayAtIndexFillIn.__init__( self, self._field.valueType.getValue().getComponentType() )
+	def _createExpression(self, indexExpression, rightExpression ):
+		arrayType = self._field.valueType.getValue()
+		accessExpression = alice.ast.ArrayAccess( arrayType, alice.ast.FieldAccess( self._instanceExpression, self._field ), indexExpression )
+		return alice.ast.AssignmentExpression( arrayType.getComponentType(), accessExpression, alice.ast.AssignmentExpression.Operator.ASSIGN, rightExpression )
 
 from CustomFillIns import *
 

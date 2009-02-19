@@ -54,7 +54,7 @@ class AbstractDeleteMemberOperation( alice.ide.AbstractUndoableOperation ):
 	def __init__( self, member, membersProperty ):
 		self._member = member
 		self._membersProperty = membersProperty
-		self.putValue( javax.swing.Action.NAME, "delete..." )
+		self.putValue( javax.swing.Action.NAME, "delete" )
 
 	def _getHasReferencesText(self, N):
 		raise "Override"

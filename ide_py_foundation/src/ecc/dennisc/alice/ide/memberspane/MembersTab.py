@@ -28,9 +28,19 @@ class SetterTemplatePanePotentiallyWithAltMenu( alice.ide.editors.type.SetterTem
 		self.addMouseListener( ecc.dennisc.alice.ide.operations.ast.FieldAltTriggerMouseAdapter( field ) )
 	
 	def promptUserForExpression( self, type, observer, dndEvent ):
-		fillIn = ecc.dennisc.alice.ide.cascade.ExpressionReceptorBlank( type )
+		node = ecc.dennisc.alice.ide.cascade.ExpressionReceptorBlank( type )
 		me = dndEvent.getEndingMouseEvent()
-		fillIn.showPopupMenu( me.getSource(), me.getX(), me.getY(), observer )		
+		node.showPopupMenu( me.getSource(), me.getX(), me.getY(), observer )		
+
+class SetArrayAtIndexTemplatePanePotentiallyWithAltMenu( alice.ide.editors.type.SetArrayAtIndexTemplatePane ):
+	def __init__( self, field ):
+		alice.ide.editors.type.SetArrayAtIndexTemplatePane.__init__( self, field )
+		self.addMouseListener( ecc.dennisc.alice.ide.operations.ast.FieldAltTriggerMouseAdapter( field ) )
+	
+	def promptUserForExpression( self, type, observer, dndEvent ):
+		node = ecc.dennisc.alice.ide.cascade.SetArrayFieldAtIndexFillIn( self.getIDE().createInstanceExpression(), self.getField() )
+		me = dndEvent.getEndingMouseEvent()
+		node.showPopupMenu( me.getSource(), me.getX(), me.getY(), observer )		
 
 class FunctionTemplatePanePotentiallyWithAltMenu( alice.ide.editors.type.FunctionTemplatePane ):
 	def __init__( self, method ):
@@ -78,6 +88,7 @@ _mapFieldToArrayAccessTemplate = {}
 _mapFieldToArrayLengthTemplate = {}
 _mapFieldToGetterTemplate = {}
 _mapFieldToSetterTemplate = {}
+_mapFieldToSetArrayAtIndexTemplate = {}
 def _getMethodTemplateFor( method ):
 	return _getValueFor_CreateIfNecessary( _mapMethodToTemplate, method, createMethodTemplate )
 def _getCostructorTemplateFor( constructor ):
@@ -90,6 +101,8 @@ def _getGetterTemplateFor( field ):
 	return _getValueFor_CreateIfNecessary( _mapFieldToGetterTemplate, field, GetterTemplatePanePotentiallyWithAltMenu )
 def _getSetterTemplateFor( field ):
 	return _getValueFor_CreateIfNecessary( _mapFieldToSetterTemplate, field, SetterTemplatePanePotentiallyWithAltMenu )
+def _getSetArrayAtIndexTemplateFor( field ):
+	return _getValueFor_CreateIfNecessary( _mapFieldToSetArrayAtIndexTemplate, field, SetArrayAtIndexTemplatePanePotentiallyWithAltMenu )
 
 class FieldPane( zoot.ZPageAxisPane ):
 	def __init__( self, field ):
@@ -122,6 +135,8 @@ class FieldPane( zoot.ZPageAxisPane ):
 			pass
 		else:
 			self.add( _getSetterTemplateFor( field ) )
+			if field.getValueType().isArray():
+				self.add( _getSetArrayAtIndexTemplateFor( field ) )
 
 class AbstractTypeMembersPane( javax.swing.JPanel, edu.cmu.cs.dennisc.property.event.ListPropertyListener ):
 	def __init__( self, type ):
@@ -195,6 +210,7 @@ class AbstractTypeMethodsPane( AbstractTypeMembersPane ):
 								if m.isDeclaredInAlice():
 									panel = zoot.ZLineAxisPane()
 									panel.add( alice.ide.Button( ecc.dennisc.alice.ide.operations.ast.EditMethodOperation( m ) ) )
+									panel.add( javax.swing.Box.createHorizontalStrut( 4 ) )
 									panel.add( vc )
 									panel.add( javax.swing.Box.createHorizontalGlue() )
 									self.add( panel )
