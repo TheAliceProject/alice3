@@ -119,6 +119,43 @@ def createAffineMatrix4x4( m ):
 	)
 	return rv
 
+def createPosition( t ):
+	cls = org.alice.apis.moveandturn.Position
+	cnstrctr = alice.ast.TypeDeclaredInJava.getConstructor( cls.getConstructor( [java.lang.Number]*3 ) )
+	rv = alice.ast.InstanceCreation( 
+		cnstrctr, [ 
+			alice.ast.Argument( cnstrctr.parameters.get( 0 ), alice.ast.DoubleLiteral( t.x ) ),
+			alice.ast.Argument( cnstrctr.parameters.get( 1 ), alice.ast.DoubleLiteral( t.y ) ),
+			alice.ast.Argument( cnstrctr.parameters.get( 2 ), alice.ast.DoubleLiteral( t.z ) )
+		]
+	)
+	return rv
+
+def createQuaternion( q ):
+	cls = org.alice.apis.moveandturn.Quaternion
+	cnstrctr = alice.ast.TypeDeclaredInJava.getConstructor( cls.getConstructor( [java.lang.Number]*4 ) )
+	rv = alice.ast.InstanceCreation( 
+		cnstrctr, [ 
+			alice.ast.Argument( cnstrctr.parameters.get( 0 ), alice.ast.DoubleLiteral( q.x ) ),
+			alice.ast.Argument( cnstrctr.parameters.get( 1 ), alice.ast.DoubleLiteral( q.y ) ),
+			alice.ast.Argument( cnstrctr.parameters.get( 2 ), alice.ast.DoubleLiteral( q.z ) ),
+			alice.ast.Argument( cnstrctr.parameters.get( 3 ), alice.ast.DoubleLiteral( q.w ) )
+		]
+	)
+	return rv
+
+def createPointOfView( m ):
+	q = edu.cmu.cs.dennisc.math.UnitQuaternion( m.orientation )
+	cls = org.alice.apis.moveandturn.PointOfView
+	cnstrctr = alice.ast.TypeDeclaredInJava.getConstructor( cls.getConstructor( [org.alice.apis.moveandturn.Orientation, org.alice.apis.moveandturn.Position] ) )
+	rv = alice.ast.InstanceCreation( 
+		cnstrctr, [ 
+			alice.ast.Argument( cnstrctr.parameters.get( 0 ), createQuaternion( q ) ),
+			alice.ast.Argument( cnstrctr.parameters.get( 1 ), createPosition( m.translation ) )
+		]
+	)
+	return rv
+
 def createColor( c ):
 	rv = None
 	cls = org.alice.apis.moveandturn.Color

@@ -14,8 +14,13 @@ class MoveAndTurnSceneAutomaticSetUpMethodFillerInner( ecc.dennisc.alice.ide.Sce
 		setNameMethod = ecc.dennisc.alice.ast.lookupMethod( edu.cmu.cs.dennisc.pattern.AbstractElement, "setName", [ java.lang.String ] )
 		if isinstance( instance, apis.moveandturn.Transformable ):
 			setNameExpression = alice.ast.FieldAccess( alice.ast.ThisExpression(), astField )
-			setLocalTransformationMethod = ecc.dennisc.alice.ast.lookupMethod( apis.moveandturn.AbstractTransformable, "setLocalTransformation", [ edu.cmu.cs.dennisc.math.AffineMatrix4x4 ] )
-			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), setLocalTransformationMethod, [ ecc.dennisc.alice.ast.createAffineMatrix4x4( instance.getLocalTransformation() ) ] ) ] )
+
+#			setLocalTransformationMethod = ecc.dennisc.alice.ast.lookupMethod( apis.moveandturn.AbstractTransformable, "setLocalTransformation", [ edu.cmu.cs.dennisc.math.AffineMatrix4x4 ] )
+#			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), setLocalTransformationMethod, [ ecc.dennisc.alice.ast.createAffineMatrix4x4( instance.getLocalTransformation() ) ] ) ] )
+
+			setLocalPointOfViewMethod = ecc.dennisc.alice.ast.lookupMethod( apis.moveandturn.AbstractTransformable, "setLocalPointOfView", [ apis.moveandturn.PointOfView ] )
+			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.FieldAccess( alice.ast.ThisExpression(), astField ), setLocalPointOfViewMethod, [ ecc.dennisc.alice.ast.createPointOfView( instance.getLocalTransformation() ) ] ) ] )
+
 			addComponentMethod = ecc.dennisc.alice.ast.lookupMethod( apis.moveandturn.Composite, "addComponent", [ apis.moveandturn.Transformable ] )
 			astStatements.add( [ ecc.dennisc.alice.ast.createMethodInvocationStatement( alice.ast.ThisExpression(), addComponentMethod, [alice.ast.FieldAccess( alice.ast.ThisExpression(), astField )] ) ] )
 			if isinstance( instance, apis.moveandturn.Model ):
