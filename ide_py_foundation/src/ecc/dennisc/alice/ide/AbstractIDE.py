@@ -483,7 +483,8 @@ class AbstractIDE( alice.ide.IDE ):
 		self._sceneMembersSplit = javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT )
 		self._listenersCodeSplit = javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT )
 
-		self._sceneMembersSplit.setTopComponent( self._scenePane )
+		#self._sceneMembersSplit.setTopComponent( self._scenePane )
+		
 		self._sceneMembersSplit.setBottomComponent( self._membersPane )
 
 		#self._listenersCodeSplit.setTopComponent( self._listenersPane )
