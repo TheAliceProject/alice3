@@ -166,11 +166,11 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		
 	}
 
-	private static final String SYNOPSIS_TEXT = "please fill in a one line synopsis of the bug";
+	private static final String SUMMARY_TEXT = "please fill in a one line synopsis of the bug";
 	private static final String DESCRIPTION_TEXT = "please fill in a detailed description of the bug";
 	private static final String STEPS_TEXT = "please fill in the steps required to reproduce the bug";
-	private SuggestiveTextField vcSynopsis = new SuggestiveTextField( "", SYNOPSIS_TEXT );
-	private SuggestiveTextArea vcDecription = new SuggestiveTextArea( "", DESCRIPTION_TEXT );
+	private SuggestiveTextField vcSummary = new SuggestiveTextField( "", SUMMARY_TEXT );
+	private SuggestiveTextArea vcDescription = new SuggestiveTextArea( "", DESCRIPTION_TEXT );
 	private SuggestiveTextArea vcStepsToReproduce = new SuggestiveTextArea( "", STEPS_TEXT );
 	private SystemPropertiesPane vcSystemPropertiesPane = new SystemPropertiesPane();
 
@@ -203,16 +203,21 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 			@Override
 			protected javax.swing.JComponent createCenterPane() {
 				javax.swing.JPanel rv = new javax.swing.JPanel();
-				edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( rv, createInsightPaneRows(), 8, 4 );
+				rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
+				edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( rv, AbstractIssuePane.this.createInsightPaneRows(), 8, 4 );
 				return rv;
 			}
 			@Override
-			protected java.lang.String getCollapsedText() {
-				return "Would you like to provide insight into this problem?";
+			protected java.lang.String getCollapsedButtonText() {
+				return "yes >>>";
 			}
 			@Override
-			protected java.lang.String getExpandedText() {
-				return "Provide insight:";
+			protected java.lang.String getCollapsedLabelText() {
+				return "Can you provide insight into this problem?";
+			}
+			@Override
+			protected java.lang.String getExpandedLabelText() {
+				return "Please provide insight:";
 			}
 		}
 		MyExpandPane expandPane = new MyExpandPane();
@@ -249,18 +254,18 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		return addInsightPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 	}
 	protected java.util.ArrayList< java.awt.Component[] > addInsightPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) { 
-		javax.swing.JLabel synopsisLabel = new javax.swing.JLabel( "synopsis:", javax.swing.SwingConstants.TRAILING );
+		javax.swing.JLabel summaryLabel = new javax.swing.JLabel( "summary:", javax.swing.SwingConstants.TRAILING );
 		javax.swing.JLabel descriptionLabel = new javax.swing.JLabel( "description:", javax.swing.SwingConstants.TRAILING );
 		javax.swing.JLabel stepsToReproduceLabel = new javax.swing.JLabel( "steps:", javax.swing.SwingConstants.TRAILING );
-		synopsisLabel.setToolTipText( SYNOPSIS_TEXT );
+		summaryLabel.setToolTipText( SUMMARY_TEXT );
 		descriptionLabel.setToolTipText( DESCRIPTION_TEXT );
 		stepsToReproduceLabel.setToolTipText( STEPS_TEXT );
 
 		descriptionLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		stepsToReproduceLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 
-		rv.add( new java.awt.Component[] { synopsisLabel, this.vcSynopsis } ); 
-		rv.add( new java.awt.Component[] { descriptionLabel, this.vcDecription } ); 
+		rv.add( new java.awt.Component[] { summaryLabel, this.vcSummary } ); 
+		rv.add( new java.awt.Component[] { descriptionLabel, this.vcDescription } ); 
 		rv.add( new java.awt.Component[] { stepsToReproduceLabel, this.vcStepsToReproduce } ); 
 		return rv;
 	}
@@ -300,29 +305,22 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		rv.width = 480;
 		return rv;
 	}
-	
-	private java.lang.String getReplyTo() {
-		String address = this.vcReporterEMailAddress.getText();
-		return address;
-	}
-	private java.lang.String getReplyToPersonal() {
-		String address = this.vcReporterName.getText();
-		return address;
-	}
 
-	protected StringBuffer updateSubject( StringBuffer rv ) {
-		rv.append( this.vcSynopsis.getText() );
-		return rv;
+	protected String getReporterEMailAddress() {
+		return this.vcReporterEMailAddress.getText();
 	}
-	private String getSubject() {
-		StringBuffer sb = new StringBuffer();
-		updateSubject( sb );
-		return sb.toString();
+	protected String getReporterName() {
+		return this.vcReporterName.getText();
 	}
-	protected java.lang.String getBody() {
-		return "detailed decription:\n" + this.vcDecription.getText() + "\n\nsteps to reproduce:\n" + this.vcStepsToReproduce.getText();
+	protected String getSummary() {
+		return this.vcSummary.getText();
 	}
-
+	protected String getDescription() {
+		return this.vcDescription.getText();
+	}
+	protected String getStepsToReproduce() {
+		return this.vcStepsToReproduce.getText();
+	}
 	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
 		rv.add( new edu.cmu.cs.dennisc.mail.Attachment() {
 			public javax.activation.DataSource getDataSource() {
@@ -350,6 +348,17 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		return rv;
 	}
 	
+	protected StringBuffer updateSubject( StringBuffer rv ) {
+		rv.append( this.getSummary() );
+		return rv;
+	}
+	private String getSubject() {
+		StringBuffer sb = new StringBuffer();
+		updateSubject( sb );
+		return sb.toString();
+	}
+	
+	
 	private boolean isSubmitAttempted = false;
 	private boolean isSubmitSuccessful = false;
 	public boolean isSubmitAttempted() { 
@@ -358,18 +367,18 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	public boolean isSubmitSuccessful() { 
 		return this.isSubmitSuccessful;
 	}
-	protected abstract boolean submit();
-//	private void submit() {
-//		this.isSubmitAttempted = true;
-//		//for( boolean isSecureDesired : new boolean[] { false, true } ) {
-//		for( Integer portOverride : new Integer[] { null, 80 } ) {
-//			try {
-//				edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( this.isTransportLayerSecurityDesired(), portOverride, getHost(), getAuthenticator(), getReplyTo(), getReplyToPersonal(), getTo(), getSubject(), getBody(), createAttachments() );
-//				this.isSubmitSuccessful = true;
-//				break;
-//			} catch( javax.mail.MessagingException me ) {
-//				me.printStackTrace();
-//			}
-//		}
-//	}
+	protected abstract void uploadToJIRA() throws Exception;
+	protected abstract void sendMail( String subject ) throws Exception;
+	protected boolean submit() {
+		try {
+			uploadToJIRA();
+		} catch( Exception eJIRA ) {
+			try {
+				sendMail( this.getSubject() );
+			} catch( Exception eMail ) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

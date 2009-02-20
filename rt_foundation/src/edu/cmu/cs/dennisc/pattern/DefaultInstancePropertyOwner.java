@@ -121,9 +121,12 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 		} else {
 			//todo: remove
 			name = Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
-
-			java.lang.reflect.Field field = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getField( getClass(), name );
-			return (Property< ? >)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field, this );
+			try {
+				java.lang.reflect.Field field = getClass().getField( name );
+				return (Property< ? >)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field, this );
+			} catch (NoSuchFieldException nsfe) {
+				return null;
+			}
 		}
 	}
 	public InstanceProperty< ? > getInstancePropertyNamed( String name ) {
@@ -453,7 +456,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 						propertyCount ++;
 					} catch( Exception e ) {
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: exception in equivalence check:", e );
-						//e.printStackTrace();
+						e.printStackTrace();
 						return false;
 					}
 				}

@@ -30,13 +30,28 @@ package edu.cmu.cs.dennisc.swing;
 public abstract class ExpandPane extends javax.swing.JPanel {
 	class ToggleButton extends javax.swing.JToggleButton {
 		@Override
+		public java.awt.Dimension getPreferredSize() {
+			java.awt.Dimension rv = super.getPreferredSize();
+			java.awt.Font font = this.getFont();
+			if( font != null ) {
+				java.awt.Graphics g = SwingUtilities.getGraphics();
+				java.awt.FontMetrics fm = g.getFontMetrics( font );
+				for( String s : new String[] { ExpandPane.this.getExpandedButtonText(), ExpandPane.this.getCollapsedButtonText() } ) {
+					java.awt.geom.Rectangle2D bounds = fm.getStringBounds( s, g );
+					rv.width = Math.max( rv.width, (int)bounds.getWidth()+16 );
+					rv.height = Math.max( rv.height, (int)bounds.getHeight()+4 );
+				}
+			}
+			return rv;
+		}
+		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
 			super.paintComponent( g );
 			String text;
 			if( this.isSelected() ) {
-				text = "V";
+				text = ExpandPane.this.getExpandedButtonText();
 			} else {
-				text = ">";
+				text = ExpandPane.this.getCollapsedButtonText();
 			}
 			edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, this.getSize() );
 		}
@@ -51,7 +66,8 @@ public abstract class ExpandPane extends javax.swing.JPanel {
 				ExpandPane.this.handleToggled( e );
 			}
 		} );
-		this.label.setText( this.getCollapsedText() );
+		this.label.setText( this.getCollapsedLabelText() );
+		//this.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
 		this.setLayout( new java.awt.BorderLayout() );
 		this.add( this.createTopPane(), java.awt.BorderLayout.NORTH );
 		this.center = this.createCenterPane();
@@ -65,15 +81,22 @@ public abstract class ExpandPane extends javax.swing.JPanel {
 	protected javax.swing.JLabel createLabel() {
 		return new javax.swing.JLabel();
 	}
-	protected abstract String getExpandedText();
-	protected abstract String getCollapsedText();
+	
+	protected abstract String getExpandedLabelText();
+	protected abstract String getCollapsedLabelText();
+	protected String getExpandedButtonText() {
+		return "V";
+	}
+	protected String getCollapsedButtonText() {
+		return ">>>";
+	}
 	private void handleToggled( java.awt.event.ActionEvent e ) {
 		if( this.toggle.isSelected() ) {
 			this.add( this.center, java.awt.BorderLayout.CENTER );
-			this.label.setText( this.getExpandedText() );
+			this.label.setText( this.getExpandedLabelText() );
 		} else {
 			this.remove( this.center );
-			this.label.setText( this.getCollapsedText() );
+			this.label.setText( this.getCollapsedLabelText() );
 		}
 		this.revalidate();
 		this.repaint();

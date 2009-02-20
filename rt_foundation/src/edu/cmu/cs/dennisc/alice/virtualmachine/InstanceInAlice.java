@@ -33,12 +33,37 @@ public class InstanceInAlice {
 	private java.util.Map< FieldDeclaredInAlice, Object > m_map = new java.util.HashMap< FieldDeclaredInAlice, Object >();
 	private Object m_instanceInJava;
 	private AbstractType m_type;
-	public InstanceInAlice( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
-		
-		
-		//todo
-
-		
+//	public InstanceInAlice( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
+//		
+//		
+//		//todo
+//
+//		
+//		m_type = constructor.getDeclaringType();
+//		assert m_type != null;
+//		assert m_type instanceof TypeDeclaredInAlice;
+//		assert arguments.length == 0;
+//		AbstractType t = m_type;
+//		while( t instanceof TypeDeclaredInAlice ) {
+//			for( AbstractField field : t.getDeclaredFields() ) {
+//				assert field instanceof FieldDeclaredInAlice;
+//				FieldDeclaredInAlice fieldDeclaredInAlice = (FieldDeclaredInAlice)field;
+//				set( fieldDeclaredInAlice, vm.evaluate( fieldDeclaredInAlice.initializer.getValue() ) );
+//			}
+//			t = t.getSuperType();
+//		}
+//		
+//		assert t instanceof TypeDeclaredInJava;
+//		TypeDeclaredInJava typeDeclaredInJava = (TypeDeclaredInJava)t;
+//
+//		
+//		//todo
+//		
+//		//return edu.cmu.cs.dennisc.reflect.ReflectionUtilities.newInstance( m_cls, parameterClses, arguments );
+//		
+//		m_instanceInJava = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( typeDeclaredInJava.getCls() );
+//	}
+	public void initialize( VirtualMachine vm, ConstructorDeclaredInAlice constructor, Object[] arguments ) {
 		m_type = constructor.getDeclaringType();
 		assert m_type != null;
 		assert m_type instanceof TypeDeclaredInAlice;
@@ -52,7 +77,6 @@ public class InstanceInAlice {
 			}
 			t = t.getSuperType();
 		}
-		
 		assert t instanceof TypeDeclaredInJava;
 		TypeDeclaredInJava typeDeclaredInJava = (TypeDeclaredInJava)t;
 

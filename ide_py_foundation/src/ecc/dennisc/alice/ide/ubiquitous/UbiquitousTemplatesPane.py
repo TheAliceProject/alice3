@@ -85,28 +85,51 @@ class SetVariableTemplatePane( CascadingUbiquitousStatementTemplatePane ):
 		return [ alice.ast.AssignmentExpression( self._variable.valueType.getValue(), alice.ast.VariableAccess( self._variable ), alice.ast.AssignmentExpression.Operator.ASSIGN, expression ) ]
 
 
-class SetVariableArrayAtIndexTemplatePane( alice.ide.editors.ubiquitous.ExpressionRequiringUbiquitousStatementTemplatePane ):
-	def __init__( self, variable ):
-		self._variable = variable
+class SetArrayAtIndexTemplatePane( alice.ide.editors.ubiquitous.ExpressionRequiringUbiquitousStatementTemplatePane ):
+	def __init__( self, name, arrayType ):
+		self._name = name
+		self._arrayType = arrayType
 		alice.ide.editors.ubiquitous.ExpressionRequiringUbiquitousStatementTemplatePane.__init__( self, apply( alice.ast.ExpressionStatement, self._createArgsForEmpty() ) )
-
 	def createComponent(self):
-		return zoot.ZLabel( self._variable.getName() + "[ ? ] <== " )
+		return zoot.ZLabel( self._name + "[ ? ] <== " )
+
+	def _createAccess(self):
+		raise "Override"
 
 	def _createArgs( self, indexExpression, rightExpression ):
-		arrayType = self._variable.valueType.getValue()
-		accessExpression = alice.ast.ArrayAccess( arrayType, alice.ast.VariableAccess( self._variable ), indexExpression )
-		return [ alice.ast.AssignmentExpression( arrayType.getComponentType(), accessExpression, alice.ast.AssignmentExpression.Operator.ASSIGN, rightExpression ) ]
+		accessExpression = alice.ast.ArrayAccess( self._arrayType, self._createAccess(), indexExpression )
+		return [ alice.ast.AssignmentExpression( self._arrayType.getComponentType(), accessExpression, alice.ast.AssignmentExpression.Operator.ASSIGN, rightExpression ) ]
 	def _createArgsForEmpty( self ):
-		return self._createArgs( alice.ide.editors.code.EmptyExpression( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), alice.ide.editors.code.EmptyExpression( self._variable.valueType.getValue().getComponentType() ) )
+		return self._createArgs( alice.ide.editors.code.EmptyExpression( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), alice.ide.editors.code.EmptyExpression( self._arrayType.getComponentType() ) )
 
 	def createUbiquitousStatement( self, expression ):
 		return apply( alice.ast.ExpressionStatement, [ expression ] )
 	
+	def _createNode(self):
+		raise "Override"
+
 	def promptUserForExpression( self, observer, dndEvent ):
-		node = ecc.dennisc.alice.ide.cascade.SetArrayVariableAtIndexFillIn( self._variable )
+		node = self._createNode()
 		me = dndEvent.getEndingMouseEvent()
 		node.showPopupMenu( me.getSource(), me.getX(), me.getY(), observer )		
+
+class SetVariableArrayAtIndexTemplatePane( SetArrayAtIndexTemplatePane ):
+	def __init__( self, variable ):
+		self._variable = variable
+		SetArrayAtIndexTemplatePane.__init__( self, self._variable.getName(), self._variable.valueType.getValue() )
+	def _createAccess(self):
+		return alice.ast.VariableAccess( self._variable )
+	def _createNode(self):
+		return ecc.dennisc.alice.ide.cascade.SetArrayVariableAtIndexFillIn( self._variable )
+
+class SetParameterArrayAtIndexTemplatePane( SetArrayAtIndexTemplatePane ):
+	def __init__( self, parameter ):
+		self._parameter = parameter
+		SetArrayAtIndexTemplatePane.__init__( self, self._parameter.getName(), self._parameter.valueType.getValue() )
+	def _createAccess(self):
+		return alice.ast.ParameterAccess( self._parameter )
+	def _createNode(self):
+		return ecc.dennisc.alice.ide.cascade.SetArrayParameterAtIndexFillIn( self._parameter )
 
 class GetTemplatePane( alice.ide.editors.code.AccessiblePane ):
 	def __init__( self ):
@@ -188,6 +211,7 @@ _mapVariableToSetTemplatePane = {}
 _mapVariableToSetArrayAtIndexTemplatePane = {} 
 _mapVariableToGetArrayAtIndexTemplatePane = {} 
 _mapVariableToGetArrayLengthTemplatePane = {} 
+_mapParameterToSetArrayAtIndexTemplatePane = {} 
 _mapParameterToGetArrayAtIndexTemplatePane = {} 
 _mapParameterToGetArrayLengthTemplatePane = {} 
 
@@ -205,6 +229,13 @@ def _getSetArrayAtIndexTemplatePaneForVariable( variable ):
 	else:
 		value = SetVariableArrayAtIndexTemplatePane( variable )
 		_mapVariableToSetArrayAtIndexTemplatePane[ variable ] = value
+		return value
+def _getSetArrayAtIndexTemplatePaneForParameter( parameter ):
+	if _mapParameterToSetArrayAtIndexTemplatePane.has_key( parameter ):
+		return _mapParameterToSetArrayAtIndexTemplatePane[ parameter ]
+	else:
+		value = SetParameterArrayAtIndexTemplatePane( parameter )
+		_mapParameterToSetArrayAtIndexTemplatePane[ parameter ] = value
 		return value
 
 def _getGetArrayAtIndexTemplatePaneForVariable( variable ):
@@ -248,6 +279,7 @@ class SetVariableTemplatesOwnerPane( zoot.ZLineAxisPane ):
 		if self._method:
 			for parameter in self._method.getParameters():
 				if parameter.valueType.getValue().isArray():
+					templatePanesNeedingToBeAdded.append( _getSetArrayAtIndexTemplatePaneForParameter( parameter ) )
 					templatePanesNeedingToBeAdded.append( _getGetArrayAtIndexTemplatePaneForParameter( parameter ) )
 					templatePanesNeedingToBeAdded.append( _getGetArrayLengthTemplatePaneForParameter( parameter ) )
 			for variableDeclarationStatement in ecc.dennisc.alice.ast.getVariableDeclarationStatements( self._method ):

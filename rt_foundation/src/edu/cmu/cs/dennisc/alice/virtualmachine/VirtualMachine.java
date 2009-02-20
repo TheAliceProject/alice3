@@ -100,20 +100,23 @@ public abstract class VirtualMachine {
 	}
 	
 	protected Object createInstanceFromConstructorDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor, Object[] arguments ) {
-		InstanceInAlice instanceInAlice = new InstanceInAlice( this, constructor, arguments );
-		if( this.isConstructorBodyExecutionDesired ) {
-			java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >();
-			for( int i=0; i<arguments.length; i++ ) {
-				map.put( constructor.parameters.get( i ), arguments[ i ] );
+		InstanceInAlice instanceInAlice = new InstanceInAlice();
+		java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object >();
+		for( int i=0; i<arguments.length; i++ ) {
+			map.put( constructor.parameters.get( i ), arguments[ i ] );
+		}
+		this.pushFrame( instanceInAlice, map );
+		try {
+			instanceInAlice.initialize( this, constructor, arguments );
+			if( this.isConstructorBodyExecutionDesired ) {
+				try {
+					this.executeBlockStatement( constructor.body.getValue() );
+				} catch( ReturnException re ) {
+					throw new RuntimeException( re );
+				}
 			}
-			this.pushFrame( instanceInAlice, map );
-			try {
-				this.executeBlockStatement( constructor.body.getValue() );
-			} catch( ReturnException re ) {
-				throw new RuntimeException( re );
-			} finally {
-				this.popFrame();
-			}
+		} finally {
+			this.popFrame();
 		}
 		return instanceInAlice;
 	}

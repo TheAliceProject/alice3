@@ -310,6 +310,15 @@ class SetArrayVariableAtIndexFillIn( SetArrayAtIndexFillIn ):
 		accessExpression = alice.ast.ArrayAccess( arrayType, alice.ast.VariableAccess( self._variable ), indexExpression )
 		return alice.ast.AssignmentExpression( arrayType.getComponentType(), accessExpression, alice.ast.AssignmentExpression.Operator.ASSIGN, rightExpression )
 
+class SetArrayParameterAtIndexFillIn( SetArrayAtIndexFillIn ):
+	def __init__( self, parameter ):
+		self._parameter = parameter
+		SetArrayAtIndexFillIn.__init__( self, self._parameter.valueType.getValue().getComponentType() )
+	def _createExpression(self, indexExpression, rightExpression ):
+		arrayType = self._parameter.valueType.getValue()
+		accessExpression = alice.ast.ArrayAccess( arrayType, alice.ast.ParameterAccess( self._parameter ), indexExpression )
+		return alice.ast.AssignmentExpression( arrayType.getComponentType(), accessExpression, alice.ast.AssignmentExpression.Operator.ASSIGN, rightExpression )
+
 class SetArrayFieldAtIndexFillIn( SetArrayAtIndexFillIn ):
 	def __init__( self, instanceExpression, field ):
 		self._instanceExpression = instanceExpression

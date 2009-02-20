@@ -46,4 +46,9 @@ public abstract class CollectionUtilities {
 			collection.add( e );
 		}
 	}
+	public static <E extends Object> java.util.ArrayList<E> createArrayList( E... array ) {
+		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
+		set( rv, array );
+		return rv;
+	}
 }

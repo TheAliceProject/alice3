@@ -58,6 +58,9 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisP
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression;
 			parent.add( new VariablePane( variableAccess.variable.getValue() ) );
+		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ParameterAccess ) {
+			edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess = (edu.cmu.cs.dennisc.alice.ast.ParameterAccess)expression;
+			parent.add( new ParameterPane( parameterAccess.parameter.getValue() ) );
 		} else {
 			parent.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "TODO" ) );
 		}

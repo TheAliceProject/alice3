@@ -66,7 +66,8 @@ class MoveAndTurnSceneEditor( org.alice.apis.moveandturn.ide.editors.scene.MoveA
 	def __init__( self, isLightweightDesired ):
 		org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.__init__( self )
 		self._currSelectedField = None
-		print "isLightweightDesired paramater not used", isLightweightDesired
+		#todo: remove
+		#print "isLightweightDesired paramater not used", isLightweightDesired
 
 	def createControlsForOverlayPane( self ):
 		return MyControlsForOverlayPane()
