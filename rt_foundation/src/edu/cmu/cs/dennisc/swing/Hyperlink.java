@@ -29,7 +29,7 @@ public class Hyperlink extends javax.swing.JLabel {
 	private javax.swing.Action action;
 	public Hyperlink( javax.swing.Action action ) {
 		this.action = action;
-		this.setText( (String)action.getValue( javax.swing.Action.NAME ) );
+		this.setText( "<html><u>" + (String)action.getValue( javax.swing.Action.NAME ) + "</u></html>" );
 		this.addMouseListener( new java.awt.event.MouseListener() {
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
 				Hyperlink.this.action.actionPerformed( null );
@@ -46,12 +46,12 @@ public class Hyperlink extends javax.swing.JLabel {
 			} 
 		} );
 	}
-	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		java.awt.Font font = g.getFont();
-		java.util.Map< java.awt.font.TextAttribute, Object > attributes = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		attributes.put( java.awt.font.TextAttribute.UNDERLINE, java.awt.font.TextAttribute.UNDERLINE_ON );
-		g.setFont( font.deriveFont( attributes ) );
-		super.paintComponent( g );
-	}
+//	@Override
+//	protected void paintComponent( java.awt.Graphics g ) {
+//		java.awt.Font font = g.getFont();
+//		java.util.Map< java.awt.font.TextAttribute, Object > attributes = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
+//		attributes.put( java.awt.font.TextAttribute.UNDERLINE, java.awt.font.TextAttribute.UNDERLINE_ON );
+//		g.setFont( font.deriveFont( attributes ) );
+//		super.paintComponent( g );
+//	}
 }

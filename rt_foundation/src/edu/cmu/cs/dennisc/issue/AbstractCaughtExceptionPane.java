@@ -130,12 +130,12 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 	
 	@Override
 	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
-		rv = super.addBugPaneRows( rv );
 		assert this.vcExceptionPane == null;
 		this.vcExceptionPane = new ExceptionPane();
 		javax.swing.JLabel exceptionLabel = new javax.swing.JLabel( "exception:", javax.swing.SwingConstants.TRAILING );
 		exceptionLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.add( new java.awt.Component[] { exceptionLabel, this.vcExceptionPane } ); 
+		rv = super.addBugPaneRows( rv );
 		return rv;
 	}
 }

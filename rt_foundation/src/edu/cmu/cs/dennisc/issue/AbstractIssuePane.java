@@ -194,25 +194,47 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	private javax.swing.JButton vcSubmit = new javax.swing.JButton( new SubmitAction() );
 
 	public AbstractIssuePane() {
-		javax.swing.JPanel bugPane = new javax.swing.JPanel();
-		//bugPane.setBorder( javax.swing.BorderFactory.createTitledBorder( "about the bug" ) );
 		javax.swing.JPanel reporterPane = new javax.swing.JPanel();
 		//reporterPane.setBorder( javax.swing.BorderFactory.createTitledBorder( "about you" ) );
+		javax.swing.JPanel bugPane = new javax.swing.JPanel();
+		//bugPane.setBorder( javax.swing.BorderFactory.createTitledBorder( "about the bug" ) );
+		
+		class MyExpandPane extends edu.cmu.cs.dennisc.swing.ExpandPane {
+			@Override
+			protected javax.swing.JComponent createCenterPane() {
+				javax.swing.JPanel rv = new javax.swing.JPanel();
+				edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( rv, createInsightPaneRows(), 8, 4 );
+				return rv;
+			}
+			@Override
+			protected java.lang.String getCollapsedText() {
+				return "Would you like to provide insight into this problem?";
+			}
+			@Override
+			protected java.lang.String getExpandedText() {
+				return "Provide insight:";
+			}
+		}
+		MyExpandPane expandPane = new MyExpandPane();
 		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( bugPane, createBugPaneRows(), 8, 4 );
 		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( reporterPane, createReporterPaneRows(), 8, 4 );
+		//edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( insightPane, createInsightPaneRows(), 8, 4 );
 
 		//this.vcSubmit.setBackground( java.awt.Color.GREEN.brighter() );
 		java.awt.Font font = this.vcSubmit.getFont();
 		this.vcSubmit.setFont( font.deriveFont( font.getSize() * 1.5f ) );
 		this.vcSubmit.setAlignmentX( java.awt.Component.CENTER_ALIGNMENT );
 		
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-		this.add( bugPane );
-		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 40 ) ) );
-		this.add( reporterPane );
-		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 40 ) ) );
-		this.add( this.vcSubmit );
+
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
+		this.add( reporterPane );
+		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ) );
+		this.add( bugPane );
+		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ) );
+		this.add( expandPane );
+		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ) );
+		this.add( this.vcSubmit );
 	}
 	
 	private java.awt.Window window;
@@ -223,30 +245,38 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		this.window = window;
 	}
 
-	private java.util.ArrayList< java.awt.Component[] > createBugPaneRows() {
-		return addBugPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
+	private java.util.ArrayList< java.awt.Component[] > createInsightPaneRows() {
+		return addInsightPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 	}
-	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) { 
+	protected java.util.ArrayList< java.awt.Component[] > addInsightPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) { 
 		javax.swing.JLabel synopsisLabel = new javax.swing.JLabel( "synopsis:", javax.swing.SwingConstants.TRAILING );
 		javax.swing.JLabel descriptionLabel = new javax.swing.JLabel( "description:", javax.swing.SwingConstants.TRAILING );
 		javax.swing.JLabel stepsToReproduceLabel = new javax.swing.JLabel( "steps:", javax.swing.SwingConstants.TRAILING );
-		javax.swing.JLabel exceptionLabel = new javax.swing.JLabel( "exception:", javax.swing.SwingConstants.TRAILING );
-		javax.swing.JLabel systemLabel = new javax.swing.JLabel( "system:", javax.swing.SwingConstants.TRAILING );
-		
 		synopsisLabel.setToolTipText( SYNOPSIS_TEXT );
 		descriptionLabel.setToolTipText( DESCRIPTION_TEXT );
 		stepsToReproduceLabel.setToolTipText( STEPS_TEXT );
 
 		descriptionLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		stepsToReproduceLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
-		exceptionLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
-		systemLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
+
 		rv.add( new java.awt.Component[] { synopsisLabel, this.vcSynopsis } ); 
 		rv.add( new java.awt.Component[] { descriptionLabel, this.vcDecription } ); 
 		rv.add( new java.awt.Component[] { stepsToReproduceLabel, this.vcStepsToReproduce } ); 
+		return rv;
+	}
+
+	private java.util.ArrayList< java.awt.Component[] > createBugPaneRows() {
+		return addBugPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
+	}
+	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) { 
+		javax.swing.JLabel systemLabel = new javax.swing.JLabel( "system:", javax.swing.SwingConstants.TRAILING );
+		systemLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.add( new java.awt.Component[] { systemLabel, this.vcSystemPropertiesPane } ); 
 		return rv;
 	}
+	
+	
+	
 	private java.util.ArrayList< java.awt.Component[] > createReporterPaneRows() {
 		return addReporterPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 	}
@@ -266,7 +296,8 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = super.getPreferredSize();
-		rv.width = Math.max( rv.width, 640 );
+		//rv.width = Math.max( rv.width, 640 );
+		rv.width = 480;
 		return rv;
 	}
 	
