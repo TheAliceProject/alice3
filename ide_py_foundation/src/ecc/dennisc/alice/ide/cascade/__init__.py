@@ -15,7 +15,12 @@ def getIDE():
 
 class SimpleExpressionFillIn( cascade.SimpleFillIn ):
 	def createMenuProxy(self):
-		return alice.ide.editors.code.ExpressionPane( self.getModel() )
+		expression = self.getModel()
+		if isinstance( expression, alice.ast.FieldAccess ):
+			rv = alice.ide.editors.code.FieldAccessPane( expression )
+		else:
+			rv = alice.ide.editors.code.ExpressionPane( expression )
+		return rv
 
 class PrevExpressionFillIn( SimpleExpressionFillIn ):
 	def createMenuProxy(self):

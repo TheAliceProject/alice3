@@ -184,7 +184,10 @@ class AbstractTypeMethodsPane( AbstractTypeMembersPane ):
 		raise "Override"
 	def _getMemberListPropertiesToListenTo( self ):
 		if self._type.isDeclaredInAlice():
-			return [ self._type.methods, self._type.fields ]
+			if self._type.isArray():
+				return []
+			else:
+				return [ self._type.methods, self._type.fields ]
 		else:
 			return []
 	def _update( self ):
@@ -378,39 +381,44 @@ class MembersTabComponent( javax.swing.JPanel ):
 			gbc.anchor = java.awt.GridBagConstraints.NORTHWEST
 			gbc.fill = java.awt.GridBagConstraints.BOTH
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER
-			gbc.insets.bottom = 2
-			for type in _getTypes( currentlySelectedField ):
-				linePane = zoot.ZLineAxisPane()
-				linePane.add( alice.ide.editors.common.TypePane( type ) )
-				linePane.add( javax.swing.Box.createHorizontalGlue() )
-				gbc.insets.left = 2
-				self.add( linePane, gbc )
-				gbc.insets.left = 24
-				#classLabel = javax.swing.JLabel( "class " + type.getName() )
-				#classLabel.setFont( java.awt.Font( None, java.awt.Font.ITALIC, 12 ) )
-				#self.add( classLabel, gbc )
-				if type.isDeclaredInAlice():
-					editConstructorButton, classInstanceCreationTemplate = self._getConstructorComponents( type )
-					if editConstructorButton:
-						panel = javax.swing.JPanel()
-						panel.setOpaque( False )
-						panel.setLayout( javax.swing.BoxLayout( panel, javax.swing.BoxLayout.LINE_AXIS ) )
-						panel.add( editConstructorButton )
-						#panel.add( classInstanceCreationTemplate )
-						panel.add( javax.swing.Box.createHorizontalGlue() )
-						self.add( panel, gbc )
-#						gbc.fill = java.awt.GridBagConstraints.NONE
-#						self.add( editConstructorButton, gbc )
-#						self.add( classInstanceCreationTemplate, gbc )
-#						gbc.fill = java.awt.GridBagConstraints.BOTH
-				self.add( self._getTypeMembersPane( type ), gbc )
-				if type.isDeclaredInAlice():
-					#linePane.add( javax.swing.Box.createHorizontalStrut( 32 ) )
+			if currentlySelectedField.getValueType().isArray():
+				label = zoot.ZLabel( "<html><b>todo:</b><br><i>handle selection of a field whose type is an array type</i></html>" )
+				label.setFontToScaledFont( 1.2 )
+				self.add( label, gbc )
+			else:
+				gbc.insets.bottom = 2
+				for type in _getTypes( currentlySelectedField ):
 					linePane = zoot.ZLineAxisPane()
-					linePane.add( self._getCreateMemberButton( type ) )
+					linePane.add( alice.ide.editors.common.TypePane( type ) )
 					linePane.add( javax.swing.Box.createHorizontalGlue() )
+					gbc.insets.left = 2
 					self.add( linePane, gbc )
-					self.add( javax.swing.Box.createVerticalStrut( 24 ), gbc )
+					gbc.insets.left = 24
+					#classLabel = javax.swing.JLabel( "class " + type.getName() )
+					#classLabel.setFont( java.awt.Font( None, java.awt.Font.ITALIC, 12 ) )
+					#self.add( classLabel, gbc )
+					if type.isDeclaredInAlice():
+						editConstructorButton, classInstanceCreationTemplate = self._getConstructorComponents( type )
+						if editConstructorButton:
+							panel = javax.swing.JPanel()
+							panel.setOpaque( False )
+							panel.setLayout( javax.swing.BoxLayout( panel, javax.swing.BoxLayout.LINE_AXIS ) )
+							panel.add( editConstructorButton )
+							#panel.add( classInstanceCreationTemplate )
+							panel.add( javax.swing.Box.createHorizontalGlue() )
+							self.add( panel, gbc )
+	#						gbc.fill = java.awt.GridBagConstraints.NONE
+	#						self.add( editConstructorButton, gbc )
+	#						self.add( classInstanceCreationTemplate, gbc )
+	#						gbc.fill = java.awt.GridBagConstraints.BOTH
+					self.add( self._getTypeMembersPane( type ), gbc )
+					if type.isDeclaredInAlice():
+						#linePane.add( javax.swing.Box.createHorizontalStrut( 32 ) )
+						linePane = zoot.ZLineAxisPane()
+						linePane.add( self._getCreateMemberButton( type ) )
+						linePane.add( javax.swing.Box.createHorizontalGlue() )
+						self.add( linePane, gbc )
+						self.add( javax.swing.Box.createVerticalStrut( 24 ), gbc )
 				
 			gbc.weightx = 1.0
 			gbc.weighty = 1.0

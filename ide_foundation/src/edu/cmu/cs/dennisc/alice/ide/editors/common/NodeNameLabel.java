@@ -66,7 +66,13 @@ public class NodeNameLabel extends Label {
 		return this.node;
 	}
 	private void updateText() {
-		this.setText( this.node.getName() );
+		String text;
+		if( this.node != null ) {
+			text = this.node.getName();
+		} else {
+			text = "null";
+		}
+		this.setText( text );
 		this.repaint();
 	}
 }

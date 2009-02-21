@@ -16,6 +16,7 @@ def _getIconForType( type ):
 		rv = _mapTypeToIcon[ type ]
 	else:
 		component = alice.ide.editors.common.TypePane( type )
+		edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( component )
 		rv = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component, ecc.dennisc.alice.ide.getIDE() )
 		_mapTypeToIcon[ type ] = rv
 	return rv

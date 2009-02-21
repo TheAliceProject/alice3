@@ -696,7 +696,18 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
 					IDE.this.setFocusedCode( runMethod );
 					java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
-					IDE.this.setFieldSelection( fields.get( fields.size() - 1 ) );
+					final int N = fields.size();
+					int i = N-1;
+					while( i>=0 ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fields.get( i );
+						if( field.getValueType().isArray() ) {
+							//pass
+						} else {
+							IDE.this.setFieldSelection( field );
+							break;
+						}
+						i --;
+					}
 				}
 			}
 		} );

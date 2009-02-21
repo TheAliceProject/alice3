@@ -858,11 +858,11 @@ public abstract class Adult extends Person {
 	}
 
 	
-	@MethodTemplate( visibility=Visibility.CHAINED )
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void fart( FartStyle fartStyle ) {
 		perform( fartStyle.getCycle() );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void fart() {
 		fart( FartStyle.WITH_A_QUICK_SNIFF );
 	}

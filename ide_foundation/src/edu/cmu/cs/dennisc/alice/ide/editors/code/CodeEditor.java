@@ -56,14 +56,15 @@ class MethodHeaderPane extends AbstractCodeHeaderPane {
 			//this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " {" ) );
 		} else {
 			StringBuffer sb = new StringBuffer();
-			if( methodDeclaredInAlice.isOverride() ) {
-				sb.append( "override " );
-			} else {
-				//pass
-			}
+//			if( methodDeclaredInAlice.isOverride() ) {
+//				sb.append( "override " );
+//			} else {
+//				//pass
+//			}
 			if( methodDeclaredInAlice.isProcedure() ) {
 				sb.append( "procedure " );
 			} else {
+				this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( "function " );
 			}
 			Label label = new Label( sb.toString() );
