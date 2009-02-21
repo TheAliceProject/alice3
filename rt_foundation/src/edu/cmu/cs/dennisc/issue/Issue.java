@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.issue;
 /**
  * @author Dennis Cosgrove
  */
-public class Issue {
+public class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingToString {
 	public enum Type {
 		BUG, NEW_FEAURE, IMPROVEMENT
 	}
@@ -45,33 +45,50 @@ public class Issue {
 		this.type = type;
 	}
 	public String getSummary() {
-		return summary;
+		return this.summary;
 	}
 	public void setSummary( String summary ) {
 		this.summary = summary;
 	}
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 	public void setDescription( String description ) {
 		this.description = description;
 	}
 	public String getSteps() {
-		return steps;
+		return this.steps;
 	}
 	public void setSteps( String steps ) {
 		this.steps = steps;
 	}
 	public String getEnvironment() {
-		return environment;
+		return this.environment;
 	}
 	public void setEnvironment( String environment ) {
 		this.environment = environment;
 	}
 	public String getException() {
-		return exception;
+		return this.exception;
 	}
 	public void setException( String exception ) {
 		this.exception = exception;
+	}
+
+	@Override
+	protected StringBuffer updateRepr( StringBuffer rv ) {
+		rv.append( "type=" );
+		rv.append( this.getType() );
+		rv.append( ";summary=" );
+		rv.append( this.getSummary() );
+		rv.append( ";description=" );
+		rv.append( this.getDescription() );
+		rv.append( ";steps=" );
+		rv.append( this.getSteps() );
+		rv.append( ";environment=" );
+		rv.append( this.getEnvironment() );
+		rv.append( ";exception=" );
+		rv.append( this.getException() );
+		return rv;
 	}
 }

@@ -306,19 +306,32 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		return rv;
 	}
 
-	protected String getReporterEMailAddress() {
+	private String getReporterEMailAddress() {
 		return this.vcReporterEMailAddress.getText();
 	}
-	protected String getReporterName() {
+	private String getReporterName() {
 		return this.vcReporterName.getText();
 	}
-	protected String getSummary() {
+	
+	protected Issue updateIssue( Issue rv ) {
+		rv.setSummary( this.getSummary() );
+		rv.setDescription( this.getDescription() );
+		rv.setSteps( this.getStepsToReproduce() );
+		rv.setEnvironment( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
+		return rv;
+	}
+	private Issue createIssue() {
+		Issue rv = new Issue();
+		updateIssue( rv );
+		return rv;
+	}
+	private String getSummary() {
 		return this.vcSummary.getText();
 	}
-	protected String getDescription() {
+	private String getDescription() {
 		return this.vcDescription.getText();
 	}
-	protected String getStepsToReproduce() {
+	private String getStepsToReproduce() {
 		return this.vcStepsToReproduce.getText();
 	}
 	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
@@ -367,14 +380,15 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	public boolean isSubmitSuccessful() { 
 		return this.isSubmitSuccessful;
 	}
-	protected abstract void uploadToJIRA() throws Exception;
-	protected abstract void sendMail( String subject ) throws Exception;
+	protected abstract void uploadToJIRA( Issue issue ) throws Exception;
+	protected abstract void sendMail( Issue issue, String subject, String reporterEMailAddress, String reporterName ) throws Exception;
 	protected boolean submit() {
+		Issue issue = this.createIssue();
 		try {
-			uploadToJIRA();
+			uploadToJIRA( issue );
 		} catch( Exception eJIRA ) {
 			try {
-				sendMail( this.getSubject() );
+				sendMail( issue, this.getSubject(), this.getReporterEMailAddress(), this.getReporterName() );
 			} catch( Exception eMail ) {
 				return false;
 			}
