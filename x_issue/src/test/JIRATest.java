@@ -1,0 +1,109 @@
+package test;
+
+class JIRAUtilites {
+	private static int getType( edu.cmu.cs.dennisc.issue.Issue.Type type ) {
+		if( type == edu.cmu.cs.dennisc.issue.Issue.Type.BUG ) {
+			return 1;
+		} else if( type == edu.cmu.cs.dennisc.issue.Issue.Type.NEW_FEAURE ) {
+			return 2;
+		} else if( type == edu.cmu.cs.dennisc.issue.Issue.Type.IMPROVEMENT ) {
+			return 4;
+		} else {
+			throw new RuntimeException();
+		}
+	}
+	private static redstone.xmlrpc.XmlRpcStruct createCustomField( int id, String value ) {
+	    redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
+	    java.util.Vector< String > values = new java.util.Vector< String >();
+	    values.add( value );
+	    rv.put( "customfieldId", "customfield_" + id );
+	    rv.put( "values", values );
+	    return rv;
+	}
+//	private static redstone.xmlrpc.XmlRpcStruct createCustomField( int id, byte[]... binaries ) {
+//	    redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
+//	    java.util.Vector< byte[] > values = new java.util.Vector< byte[] >();
+//	    for( byte[] binary : binaries ) {
+//		    values.add( binary );
+//	    }
+//	    rv.put( "customfieldId", "customfield_" + id );
+//	    rv.put( "values", values );
+//	    return rv;
+//	}
+	
+	public static redstone.xmlrpc.XmlRpcStruct createIssue( edu.cmu.cs.dennisc.issue.Issue issue ) {
+		redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
+		rv.put( "project", "AIIIP" );
+		rv.put( "type", getType( issue.getType() ) );
+		rv.put( "summary", issue.getSummary() );
+		rv.put( "description", issue.getDescription() );
+		rv.put( "environment", issue.getEnvironment() );
+	    
+	    java.util.Vector< redstone.xmlrpc.XmlRpcStruct > customFields = new java.util.Vector< redstone.xmlrpc.XmlRpcStruct >();
+	    customFields.add( createCustomField( 10000, issue.getSteps() ) );
+	    customFields.add( createCustomField( 10001, issue.getException() ) );
+
+	    
+	    
+	    rv.put( "customFieldValues", customFields );
+	    
+	    return rv;
+	}
+}
+
+public class JIRATest {
+	public static final String JIRA_URI  = "http://bugs.alice.org:8080";
+	public static final String RPC_PATH  = "/rpc/xmlrpc";
+//	public static final String USER_NAME = "alice3_rpc";
+//	public static final String PASSWORD  = "brokenAnkles";
+	public static final String USER_NAME = "dennis";
+	public static final String PASSWORD  = "shaqDrains2";
+
+	public static void main( String[] args ) throws Exception {
+		boolean streamMessages = true;
+//		Jira jira = ( Jira ) redstone.xmlrpc.XmlRpcProxy.createProxy( new java.net.URL( JIRA_URI + RPC_PATH ), new Class[] { Jira.class }, streamMessages );
+//	    String token = jira.login( USER_NAME, PASSWORD );
+//	    jira.logout( token );
+
+	    redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( JIRA_URI + RPC_PATH, streamMessages );
+	    Object token = client.invoke( "jira1.login", new Object[] { USER_NAME, PASSWORD } );
+	    try {
+		    System.out.println( "token: " + token );
+	
+		    redstone.xmlrpc.XmlRpcStruct serverInfo = (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.getServerInfo", new Object[] { token } );
+		    System.out.println( "serverInfo: " + serverInfo );
+		    java.util.List< redstone.xmlrpc.XmlRpcStruct > projects = (java.util.List< redstone.xmlrpc.XmlRpcStruct >)client.invoke( "jira1.getProjectsNoSchemes", new Object[] { token } );
+		    System.out.println( "projects: " );
+		    for( redstone.xmlrpc.XmlRpcStruct project : projects ) {
+			    System.out.println( "\t" + project );
+		    }
+
+		    edu.cmu.cs.dennisc.issue.Issue issue = new edu.cmu.cs.dennisc.issue.Issue();
+		    issue.setType( edu.cmu.cs.dennisc.issue.Issue.Type.BUG );
+		    issue.setSummary( new java.util.Date().toString() );
+		    issue.setDescription( "the current date string" );
+		    issue.setSteps( "1 2 3 4" );
+		    issue.setEnvironment( "cold" );
+		    issue.setException( "to the rule" );
+		    
+//		    redstone.xmlrpc.XmlRpcStruct remoteIn = JIRAUtilites.createIssue( issue );
+//		    System.out.println( "\tin: " + remoteIn );
+//		    redstone.xmlrpc.XmlRpcStruct remoteOut = (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.createIssue", new Object[] { token, remoteIn } );
+//		    System.out.println( "\tout: " + remoteOut );
+
+		    redstone.xmlrpc.XmlRpcStruct old = (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.getIssue", new Object[] { token, "AIIIP-27" } );
+		    System.out.println( "\told:" );
+		    for( Object key : old.keySet() ) {
+			    System.out.println( "\t\t" + key + ": " + old.get( key ) );
+		    }
+		    
+		    
+	//	    java.util.Hashtable< String, String > issue = new java.util.Hashtable< String, String >();
+	//	    issue.put( "summary", "gabe is the man" );
+	//	    client.invoke( "jira1.createIssue", new Object[] { token, issue } );
+	    } finally {
+		    client.invoke( "jira1.logout", new Object[] { token } );
+		    System.out.println( "done." );
+	    }
+	}
+}
