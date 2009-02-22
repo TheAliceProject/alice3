@@ -57,7 +57,8 @@ public class Manager {
 	static {
 		try {
 			initializeIfNecessary();
-			java.io.File directory = new java.io.File( "s:/AliceBundles" );
+			
+			java.io.File directory = new java.io.File( "/Alice_nebulous/AliceBundles" );
 			for( java.io.File file : directory.listFiles() ) {
 				Manager.addBundle( file );
 			}

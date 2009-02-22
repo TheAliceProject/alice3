@@ -32,11 +32,11 @@ public abstract class ProgressPane extends javax.swing.JPanel {
 	private UploadWorker uploadWorker;
 	private boolean isDone = false;
 	private boolean isSuccessful = false;
+
 	public ProgressPane() {
 		this.uploadWorker = this.createUploadWorker();
 		this.console.setPreferredSize( new java.awt.Dimension( 400, 240 ) );
-		this.uploadWorker.execute();
-		
+
 		this.background.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				ProgressPane.this.handleRunInBackground( e );
@@ -45,12 +45,16 @@ public abstract class ProgressPane extends javax.swing.JPanel {
 		javax.swing.JPanel buttonPane = new javax.swing.JPanel();
 		buttonPane.setLayout( new java.awt.FlowLayout() );
 		buttonPane.add( this.background );
-		
+
 		this.setLayout( new java.awt.BorderLayout() );
 		this.add( new javax.swing.JScrollPane( this.console ), java.awt.BorderLayout.CENTER );
 		this.add( new javax.swing.JScrollPane( buttonPane ), java.awt.BorderLayout.SOUTH );
 	}
-	
+	public void initializeAndExecuteWorker( Issue issue, String subject, String reporterEMailAddress, String reporterName ) {
+//		this.uploadWorker.initialize( issue, subject, reporterEMailAddress, reporterName );
+		this.uploadWorker.execute();
+	}
+
 	protected abstract UploadWorker createUploadWorker();
 	private void hideRoot() {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
@@ -64,7 +68,7 @@ public abstract class ProgressPane extends javax.swing.JPanel {
 			javax.swing.text.Document document = ProgressPane.this.console.getDocument();
 			try {
 				document.insertString( document.getLength(), chunk, null );
-			} catch (javax.swing.text.BadLocationException ble ) {
+			} catch( javax.swing.text.BadLocationException ble ) {
 				throw new RuntimeException( ble );
 			}
 			System.out.print( chunk );

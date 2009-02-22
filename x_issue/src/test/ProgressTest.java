@@ -4,6 +4,10 @@ public class ProgressTest extends javax.swing.JFrame {
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 
 		MyProgressPane myProgressPane = new MyProgressPane();
+		
+		//TODO
+		//myProgressPane.initializeAndExecuteWorker( issue, subject, reporterEMailAddress, reporterName );
+		
 		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
 		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override
