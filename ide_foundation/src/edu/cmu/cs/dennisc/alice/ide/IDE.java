@@ -22,65 +22,16 @@
  */
 package edu.cmu.cs.dennisc.alice.ide;
 
+import edu.cmu.cs.dennisc.alice.ide.issue.ExceptionHandler;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
-	private static boolean isBugReportSubmissionPaneDesired = true;
+	private static ExceptionHandler exceptionHandler;
 	static {
-		Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler() {
-			public void uncaughtException( Thread thread, Throwable throwable ) {
-				throwable.printStackTrace();
-				if( IDE.isBugReportSubmissionPaneDesired ) {
-					try {
-						edu.cmu.cs.dennisc.alice.ide.bugreport.CaughtExceptionBugReportPane bugReportPane = new edu.cmu.cs.dennisc.alice.ide.bugreport.CaughtExceptionBugReportPane();
-						bugReportPane.setThreadAndThrowable( thread, throwable );
-						javax.swing.JFrame frame = IDE.getSingleton();
-						String title;
-						if( frame != null ) {
-							title = IDE.getSingleton().getBugReportSubmissionTitle();
-						} else {
-							frame = new javax.swing.JFrame();
-							frame.setVisible( true );
-							title = "";
-						}
-						while( true ) {
-							javax.swing.JDialog window = new javax.swing.JDialog( frame, title, true );
-							bugReportPane.setWindow( window );
-							//javax.swing.JFrame window = new javax.swing.JFrame( "Please Submit Bug Report" );
-							window.getContentPane().add( bugReportPane );
-							window.pack();
-							window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-							window.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
-							window.setVisible( true );
-
-							if( bugReportPane.isSubmitAttempted() ) {
-								if( bugReportPane.isSubmitSuccessful() ) {
-									javax.swing.JOptionPane.showMessageDialog( IDE.getSingleton(), "Your bug report has been successfully submitted.  Thank you." );
-								} else {
-									javax.swing.JOptionPane.showMessageDialog( IDE.getSingleton(), "Your bug report FAILED to submitted.  Thank you for trying." );
-								}
-								break;
-							} else {
-								int result = javax.swing.JOptionPane.showConfirmDialog( IDE.getSingleton(),
-										"NOTE: You do not actually have to fill in any of the fields to submit a bug report.\n\nWould you like to submit this bug?\n\n(If you wish to not see this dialog again during this session, press cancel.  NOTE: Alice may silently fail under these conditions.)",
-										"Bug report NOT submitted", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
-								if( result == javax.swing.JOptionPane.YES_OPTION ) {
-									//pass
-								} else {
-									if( result == javax.swing.JOptionPane.CANCEL_OPTION ) {
-										IDE.isBugReportSubmissionPaneDesired = false;
-									}
-									break;
-								}
-							}
-						}
-					} catch( Throwable t ) {
-						t.printStackTrace();
-					}
-				}
-			}
-		} );
+		IDE.exceptionHandler = new ExceptionHandler();
+		Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
 	}
 
 	public abstract java.io.File getApplicationRootDirectory();
@@ -95,8 +46,12 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		updateBugReportSubmissionTitle( sb );
 		return sb.toString();
 	}
+	protected String getApplicationName() {
+		return "Alice";
+	}
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
-		rv.append( "Alice " );
+		rv.append( this.getApplicationName() );
+		rv.append( " " );
 		rv.append( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
 		rv.append( " " );
 		return rv;
@@ -288,6 +243,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		return this.ideListenerArray;
 	}
 	public IDE() {
+		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
+		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
 		assert s_singleton == null;
 		s_singleton = this;
 		

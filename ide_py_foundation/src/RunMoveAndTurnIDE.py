@@ -4,7 +4,6 @@ import edu
 
 import ecc
 
-
 def createAndShowIDE():
 	ide = ecc.dennisc.alice.ide.moveandturn.MoveAndTurnIDE()
 	ide.setSize( 1280, 1024 )

@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
 	<classpathentry kind="lib" path="/jar_jaf/activation.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ide_private"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_issue"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
