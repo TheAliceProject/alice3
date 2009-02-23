@@ -1,3 +1,5 @@
+import javax.swing.Box;
+
 import stencil.*;
 
 public class TestStencil {
@@ -61,13 +63,12 @@ public class TestStencil {
 		
 		class Header extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
 			public Header() {
-				this.add( new javax.swing.JButton( "a" ) );
+				this.add( new javax.swing.JLabel( "a" ) );
 				this.add( new javax.swing.JLabel( "/" ) );
-				this.add( new javax.swing.JButton( "b" ) );
+				this.add( new javax.swing.JLabel( "b" ) );
 				this.add( new javax.swing.JLabel( "/" ) );
-				this.add( new javax.swing.JButton( "c" ) );
-				this.add( new javax.swing.JLabel( "/" ) );
-				this.add( new javax.swing.JButton( "d" ) );
+				this.add( new javax.swing.JLabel( "c" ) );
+				this.add( Box.createHorizontalGlue() );
 				this.setBackground( java.awt.Color.BLUE );
 				this.setOpaque( true );
 			}

@@ -1,5 +1,16 @@
 package stencil;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+
 public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	// private java.util.List< Hole > holes = new java.util.LinkedList< Hole >();
 	private java.util.List< HoleGroup > holeGroups = new java.util.LinkedList< HoleGroup >();
@@ -154,7 +165,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 				java.awt.Component trailingDecorator = hole.getTrailingDecorator();
 				if( trailingDecorator != null ) {
 					this.add( trailingDecorator );
-					this.getSpringLayout().putConstraint( javax.swing.SpringLayout.WEST, trailingDecorator, pad, javax.swing.SpringLayout.EAST, proxy );
+					this.getSpringLayout().putConstraint( javax.swing.SpringLayout.WEST, trailingDecorator, pad*2, javax.swing.SpringLayout.EAST, proxy );
 					this.getSpringLayout().putConstraint( javax.swing.SpringLayout.NORTH, trailingDecorator, 0, javax.swing.SpringLayout.NORTH, proxy );
 				}
 			}
@@ -219,32 +230,55 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 
 	@Override
 	public void doLayout() {
+
 		synchronized( this.holeGroups ) {
+			
 			for( HoleGroup holeGroup : this.holeGroups ) {
 				int minX = Short.MAX_VALUE;
 				int minY = Short.MAX_VALUE;
+				
+				// get the clipped size of the holes
 				for( Hole hole : holeGroup.getHoles() ) {
+					javax.swing.JScrollPane scrollPane = findFirstScrollPaneAncestor( hole.getComponent() );
 					java.awt.Component component = hole.getComponent();
+					component.doLayout();
 					java.awt.Component proxy = hole.getProxy();
 					java.awt.Point p = component.getLocation();
 					p = javax.swing.SwingUtilities.convertPoint( component.getParent(), p, this );
-					this.putConstraint( proxy, Horizontal.WEST, p.x, Vertical.NORTH, p.y );
+					this.putConstraint( proxy, Horizontal.WEST, p.x, Vertical.NORTH, p.y );				
 					
-					proxy.setPreferredSize( component.getSize() );
+//					proxy.setPreferredSize( component.getSize() );
+//					Dimension clippedSize = getClippedBoundsFor((JComponent)component, scrollPane);
+					proxy.setPreferredSize( ((JComponent)component).getVisibleRect().getSize() );
 					minX = Math.min( minX, p.x );
 					minY = Math.min( minY, p.y );
 				}
 				int maxWidth = 0;
+				
+				// make all the proxies be the same size as the clipped holes
+				// and find the appropriate holeGroup width
 				for( Hole hole : holeGroup.getHoles() ) {
 					java.awt.Component proxy = hole.getProxy();
 					java.awt.Dimension size = proxy.getPreferredSize();
 					maxWidth = Math.max( maxWidth, size.width );
 				}
+				
+				// set all the proxies to have the holeGroup width
 				for( Hole hole : holeGroup.getHoles() ) {
 					java.awt.Component proxy = hole.getProxy();
 					java.awt.Dimension size = proxy.getPreferredSize();
+					
+					
+					if (size.equals(new Dimension(0,0)) ){
+						if (hole.getLeadingDecorator() != null) hole.getLeadingDecorator().setVisible(false);
+						if (hole.getTrailingDecorator() != null) hole.getTrailingDecorator().setVisible(false);
+					} else {
+						if (hole.getLeadingDecorator() != null) hole.getLeadingDecorator().setVisible(true);
+						if (hole.getTrailingDecorator() != null) hole.getTrailingDecorator().setVisible(true);
+					}
 					size.width = maxWidth;
 					proxy.setPreferredSize( size );
+					
 				}
 				
 				java.awt.Component northDecorator = holeGroup.getNorthDecorator();
@@ -272,6 +306,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 			if( scrollPane != null ) {
 				javax.swing.JViewport viewport = scrollPane.getViewport();
 				rectHole = javax.swing.SwingUtilities.convertRectangle( hole.getProxy().getParent(), rectHole, viewport.getParent() );
+				Rectangle viewRect = new Rectangle(viewport.getViewPosition(), viewport.getExtentSize());
 				rectHole = rectHole.intersection( viewport.getVisibleRect() );
 				rectHole = javax.swing.SwingUtilities.convertRectangle( viewport.getParent(), rectHole, this.container );
 			} else {
@@ -290,6 +325,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 			rv.width += pad*2;
 			rv.height += pad*2;
 		}
+
 		return rv;
 	}
 	private java.awt.geom.Area calculateArea( java.awt.Rectangle bounds, boolean isPaddingDesired ) {
@@ -323,6 +359,39 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 			g2.draw( rr );
 			g2.setStroke( prevStroke );
 		}
+	}
+	
+	protected Dimension getClippedBoundsFor( JComponent component, JScrollPane scrollPane ) {
+	
+//		javax.swing.JViewport viewport = scrollPane.getViewport();
+//		// this always returns at view from 0,0 which is not correct behavior according to docs
+////		Rectangle viewRect = viewport.getVisibleRect();
+//		Rectangle viewRect = new Rectangle(viewport.getViewPosition(), viewport.getExtentSize());
+//		PrintUtilities.println("viewrect ", viewRect);
+//		Rectangle componentRect = javax.swing.SwingUtilities.convertRectangle(component, component.getBounds(), viewport.getParent());
+//		PrintUtilities.println("componentRect ", componentRect);
+//		
+//		// somehow what this is returning is off by a factor of 2. No clue why.
+//		componentRect.y = componentRect.y/2 - viewport.getViewPosition().y/2;
+//		
+//		Rectangle visibleComponentRect = viewRect.intersection(componentRect);
+//
+//		if ((component instanceof JButton) ) {
+//			JButton jButton = (JButton)component;
+////			PrintUtilities.println("visible rect ", viewRect);
+////			PrintUtilities.println("viewport pos ", viewport.getViewPosition());
+//			PrintUtilities.println( jButton.getText(), " ", visibleComponentRect, " ", visibleComponentRect.isEmpty());
+//			PrintUtilities.println();
+//			
+//		}
+		
+		return component.getVisibleRect().getSize();
+		
+//		if (visibleComponentRect.isEmpty()) {
+//			return new Dimension(0,0);
+//		} else {
+//			return visibleComponentRect.getSize();
+//		}
 	}
 
 }

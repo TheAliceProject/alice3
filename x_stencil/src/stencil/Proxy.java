@@ -5,6 +5,6 @@ class Proxy extends javax.swing.JComponent {
 //	protected void paintComponent( java.awt.Graphics g ) {
 //		super.paintComponent( g );
 //		g.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
-//		g.fillRect( 0, 0, getWidth(), getHeight() );
+//		g.drawRect( 0, 0, getWidth(), getHeight() );
 //	}
 }
