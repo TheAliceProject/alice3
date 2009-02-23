@@ -69,6 +69,7 @@ public class SceneEditor extends Program {
 	Chicken chicken = new Chicken();
 
 	org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
+	org.alice.interact.CreateASimDragAdapter simDragAdapter = new org.alice.interact.CreateASimDragAdapter();
 	CameraNavigationDragAdapter cameraNavigationDragAdapter = new CameraNavigationDragAdapter();
 
 	@Override
@@ -111,10 +112,11 @@ public class SceneEditor extends Program {
 		chicken.setVehicle(scene);
 		this.setScene(this.scene);
 		sunLight.turn(TurnDirection.FORWARD, 0.25);
-		globalDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
+		simDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 		
+		simDragAdapter.setSelectedObject( chicken.getSGTransformable() );
 		
-		cameraNavigationDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
+		//cameraNavigationDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 	}
 
 	@Override

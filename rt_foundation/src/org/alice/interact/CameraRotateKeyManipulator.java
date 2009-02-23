@@ -48,6 +48,10 @@ public class CameraRotateKeyManipulator extends RotateKeyManipulator implements 
 
 	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
 		this.onscreenLookingGlass = onscreenLookingGlass;
+		if (this.getCamera() != null)
+		{
+			this.manipulatedTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)getCamera().getParent();
+		}
 	}
 
 }

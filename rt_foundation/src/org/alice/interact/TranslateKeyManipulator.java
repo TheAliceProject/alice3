@@ -24,10 +24,12 @@ package org.alice.interact;
 
 import java.awt.event.KeyEvent;
 
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.StandIn;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 
 /**
  * @author David Culyba
@@ -42,6 +44,8 @@ public class TranslateKeyManipulator extends DragManipulator {
 	protected double startTime = 0.0d;
 	MovementKey[] directionKeys;
 	
+	protected AxisAlignedBox bounds;
+	
 	public TranslateKeyManipulator()
 	{
 		directionKeys = new MovementKey[0];
@@ -50,6 +54,11 @@ public class TranslateKeyManipulator extends DragManipulator {
 	public TranslateKeyManipulator( MovementKey[] directionKeys )
 	{
 		setKeys(directionKeys);
+	}
+	
+	public void setBounds(AxisAlignedBox bounds)
+	{
+		this.bounds = bounds;
 	}
 	
 	public void setKeys(MovementKey[] directionKeys)
@@ -118,6 +127,36 @@ public class TranslateKeyManipulator extends DragManipulator {
 				if (movementType != null)
 				{
 					movementType.applyTranslation( this.manipulatedTransformable, movementAmounts[i] );
+					if (this.bounds != null)
+					{
+						Point3 currentPos = this.manipulatedTransformable.getTranslation( AsSeenBy.SCENE );
+						if (currentPos.x > this.bounds.getXMaximum())
+						{
+							currentPos.x = this.bounds.getXMaximum();
+						}
+						if (currentPos.x < this.bounds.getXMinimum())
+						{
+							currentPos.x = this.bounds.getXMinimum();
+						}
+						if (currentPos.y > this.bounds.getYMaximum())
+						{
+							currentPos.y = this.bounds.getYMaximum();
+						}
+						if (currentPos.y < this.bounds.getYMinimum())
+						{
+							currentPos.y = this.bounds.getYMinimum();
+						}
+						if (currentPos.z > this.bounds.getZMaximum())
+						{
+							currentPos.z = this.bounds.getZMaximum();
+						}
+						if (currentPos.z < this.bounds.getZMinimum())
+						{
+							currentPos.z = this.bounds.getZMinimum();
+						}
+						
+						this.manipulatedTransformable.setTranslationOnly( currentPos, AsSeenBy.SCENE );
+					}
 				}
 			}
 		}

@@ -22,36 +22,24 @@
  */
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-
 /**
  * @author David Culyba
  */
-public class CameraTranslateKeyManipulator extends TranslateKeyManipulator implements CameraInformedManipulator {
+public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
 
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
-	public CameraTranslateKeyManipulator( MovementKey[] directionKeys )
+	public ObjectRotateKeyManipulator( MovementKey[] directionKeys )
 	{
 		super(directionKeys);
 	}
 	
-	public AbstractCamera getCamera()
-	{
-		if( this.onscreenLookingGlass != null )
+	@Override
+	public void startManipulator( InputState startInput ) {
+		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
+		if (this.manipulatedTransformable != null)
 		{
-			return onscreenLookingGlass.getCameraAt( 0 );
-		} 
-		return null;
-	}
-
-	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
-		if (this.getCamera() != null)
-		{
-			this.manipulatedTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)getCamera().getParent();
+			super.startManipulator( startInput );
 		}
 	}
-
+	
 }

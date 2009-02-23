@@ -22,7 +22,7 @@
  */
 package org.alice.interact.event;
 
-import org.alice.interact.GlobalDragAdapter;
+import org.alice.interact.AbstractDragAdapter;
 
 import edu.cmu.cs.dennisc.pattern.event.Event;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -30,9 +30,9 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public class SelectionEvent extends Event< GlobalDragAdapter >{
+public class SelectionEvent extends Event< AbstractDragAdapter >{
 	private Transformable transformable;
-	public SelectionEvent( GlobalDragAdapter source, Transformable transformable ) {
+	public SelectionEvent( AbstractDragAdapter source, Transformable transformable ) {
 		super( source );
 		this.transformable = transformable;
 	}
