@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.eula;
  * @author Dennis Cosgrove
  */
 public class EULAUtilities extends Exception {
-	public static void promptUserToAcceptEULAIfNecessary( Class preferencesCls, String preferencesKey, String license, String message ) throws LicenseRejectedException {
+	public static void promptUserToAcceptEULAIfNecessary( Class preferencesCls, String preferencesKey, String title, String license, String name ) throws LicenseRejectedException {
 		java.util.prefs.Preferences preferences = java.util.prefs.Preferences.userNodeForPackage( preferencesCls );
 //		try {
 //			preferences.clear();
@@ -40,12 +40,12 @@ public class EULAUtilities extends Exception {
 			edu.cmu.cs.dennisc.ui.eula.EULAPane pane = new edu.cmu.cs.dennisc.ui.eula.EULAPane( license );
 			java.awt.Component owner = null;
 			while( true ) {
-				isLicenseAccepted = pane.showInJDialog( owner, "License Agreement" ) == Boolean.TRUE;
+				isLicenseAccepted = pane.showInJDialog( owner, title ) == Boolean.TRUE;
 				if( isLicenseAccepted ) {
 					break;
 				} else {
-					String title = "Return to license agreement?";
-					if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION ) ) {
+					String message = "You must accept the license agreement in order to use " + name + ".\n\nWould you like to return to the license agreement?";
+					if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( owner, message, "Return to license agreement?", javax.swing.JOptionPane.YES_NO_OPTION ) ) {
 						//pass
 					} else {
 						break;
