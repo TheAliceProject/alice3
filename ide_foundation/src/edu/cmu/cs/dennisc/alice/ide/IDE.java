@@ -242,20 +242,23 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		}
 		return this.ideListenerArray;
 	}
+	protected void promptForLicenseAgreements() {
+		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
+		try {
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.alice.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 2): Alice", edu.cmu.cs.dennisc.alice.License.TEXT, "Alice" );
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.wustl.cse.lookingglass.apis.walkandtouch.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 2): Looking Glass Walk & Touch API", edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT, "the Looking Glass Walk & Touch API" );
+		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
+			javax.swing.JOptionPane.showMessageDialog( this, "You must accept both license agreements in order to use Alice and the Looking Glass Walk & Touch API.  Exiting." );
+			System.exit( -1 );
+		}
+	}
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
 		assert s_singleton == null;
 		s_singleton = this;
-		
-		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
-		try {
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.alice.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 2): Alice", edu.cmu.cs.dennisc.alice.License.TEXT, "Alice" );
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.alice.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 2): Looking Glass Walk & Touch API", edu.cmu.cs.dennisc.alice.License.TEXT, "the Looking Glass Walk & Touch API" );
-		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			javax.swing.JOptionPane.showMessageDialog( this, "You must accept both license agreements in order to use Alice and the Looking Glass Walk & Touch API.  Exiting." );
-			System.exit( -1 );
-		}
+
+		this.promptForLicenseAgreements();
 		
 		edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance.setBorderFactory( this.createExpressionBorderFactory() );
 		edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance.setRenderer( this.createExpressionRenderer() );
