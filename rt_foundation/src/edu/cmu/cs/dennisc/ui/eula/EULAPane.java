@@ -28,10 +28,11 @@ package edu.cmu.cs.dennisc.ui.eula;
 public class EULAPane extends edu.cmu.cs.dennisc.swing.InputPane< Boolean > {
 	private javax.swing.JCheckBox accept = new javax.swing.JCheckBox();
 	private javax.swing.JCheckBox reject = new javax.swing.JCheckBox();
+
 	public EULAPane( String text ) {
 		super();
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		
+
 		javax.swing.JTextArea headerTextArea = new javax.swing.JTextArea();
 		headerTextArea.setText( "Please read the following license agreement carefully." );
 		headerTextArea.setEditable( false );
@@ -46,27 +47,26 @@ public class EULAPane extends edu.cmu.cs.dennisc.swing.InputPane< Boolean > {
 		textArea.setWrapStyleWord( true );
 		this.accept.setText( "I accept the terms in the License Agreement" );
 		this.reject.setText( "I do not accept the terms in the License Agreement" );
-		
+
 		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
 		this.accept.setSelected( false );
 		this.reject.setSelected( true );
 		group.add( this.accept );
 		group.add( this.reject );
-		
+
 		this.addOKButtonValidator( new edu.cmu.cs.dennisc.pattern.Validator() {
 			public boolean isValid() {
 				return EULAPane.this.accept.isSelected();
 			}
 		} );
 
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
+		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
 		scrollPane.setPreferredSize( new java.awt.Dimension( 480, 320 ) );
 
 		headerTextArea.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		scrollPane.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.accept.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.reject.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		
 
 		javax.swing.event.ChangeListener changeAdapter = new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
@@ -75,13 +75,19 @@ public class EULAPane extends edu.cmu.cs.dennisc.swing.InputPane< Boolean > {
 		};
 		this.accept.addChangeListener( changeAdapter );
 		this.reject.addChangeListener( changeAdapter );
-		
+
 		javax.swing.BoxLayout boxLayout = new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS );
 		this.setLayout( boxLayout );
 		this.add( headerTextArea );
 		this.add( scrollPane );
 		this.add( this.accept );
 		this.add( this.reject );
+
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				scrollPane.getVerticalScrollBar().setValue( 0 );
+			}
+		} );
 	}
 	@Override
 	protected Boolean getActualInputValue() {

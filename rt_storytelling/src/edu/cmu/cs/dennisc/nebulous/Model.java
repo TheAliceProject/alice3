@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.nebulous;
  * @author Dennis Cosgrove
  */
 public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
-	public Model() throws LicenseRejectedException {
+	public Model() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		Manager.initializeIfNecessary();
 	}
 	public native void render();

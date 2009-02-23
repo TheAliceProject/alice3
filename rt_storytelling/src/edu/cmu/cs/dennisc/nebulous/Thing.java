@@ -52,7 +52,7 @@ public class Thing extends Model {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Thing.class, ThingAdapter.class );
 	}
 	private native void initialize( Object o );
-	public Thing( Object o ) throws LicenseRejectedException {
+	public Thing( Object o ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		initialize( o );
 	}
 }

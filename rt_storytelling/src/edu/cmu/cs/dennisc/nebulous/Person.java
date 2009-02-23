@@ -51,7 +51,7 @@ public class Person extends Model {
 	static {
 		edu.cmu.cs.dennisc.lookingglass.opengl.AdapterFactory.register( Person.class, PersonAdapter.class );
 	}
-	public Person( Object o ) throws LicenseRejectedException {
+	public Person( Object o ) throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		initialize( o );
 	}
 	private native void initialize( Object o );

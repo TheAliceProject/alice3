@@ -62,8 +62,12 @@ public class Manager {
 			for( java.io.File file : directory.listFiles() ) {
 				Manager.addBundle( file );
 			}
-		} catch( LicenseRejectedException lre ) {
-			throw new RuntimeException( lre );
+		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
+			javax.swing.JOptionPane.showMessageDialog( null, "license rejected" );
+			//throw new RuntimeException( lre );
+		} catch( Throwable t ) {
+			javax.swing.JOptionPane.showMessageDialog( null, "exception in initializer" );
+			t.printStackTrace();
 		}
 	}
 	
@@ -76,7 +80,7 @@ public class Manager {
 		}
 		return s_pendingBundles;
 	}
-	public static void initializeIfNecessary() throws LicenseRejectedException {
+	public static void initializeIfNecessary() throws edu.cmu.cs.dennisc.eula.LicenseRejectedException {
 		if( isInitialized() ) {
 			//pass
 		} else {
@@ -107,7 +111,7 @@ public class Manager {
 						if( isLicenseAccepted ) {
 							break;
 						} else {
-							String message = "You must accept the license agreement in order to use The Sims 2 art assets and animations.\n\nWould you like to return the license agreement?";
+							String message = "You must accept the license agreement in order to use The Sims 2 art assets and animations.\n\nWould you like to return to the license agreement?";
 							String title = "Return to license agreement?";
 							if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION ) ) {
 								//pass
@@ -127,7 +131,7 @@ public class Manager {
 				}
 				s_isInitialized = true;
 			} else {
-				throw new LicenseRejectedException();
+				throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
 			}
 		}
 	}

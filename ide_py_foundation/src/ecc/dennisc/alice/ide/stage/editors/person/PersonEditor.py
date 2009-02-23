@@ -60,8 +60,18 @@ class IngedientListVC( ecc.dennisc.swing.ListVC ):
 	def _getIngredientInterface( self ):
 		raise "Override"
 
+	def _selectAppropriateIndex(self, prevSelectedIndex):
+		if prevSelectedIndex >= 0:
+			if prevSelectedIndex < 10:
+				n = prevSelectedIndex
+			else:
+				import random
+				n = random.randint( 0, 9 )
+			self.setSelectedIndex( n )
 	def _update( self ):
+		prevSelectedIndex = self.getSelectedIndex()
 		if self._lifeStage and self._gender:
+			#prevValue = self.getSelectedValue()
 			cls = self._getIngredientInterface()
 			enumClses = apis.stage.IngredientUtilities.get( cls )
 			data = []
@@ -70,7 +80,9 @@ class IngedientListVC( ecc.dennisc.swing.ListVC ):
 					values = enumCls.values()
 					if values:
 						data += values
+			self.setSelectedIndex( -1 )
 			self.setListData( data )
+			self._selectAppropriateIndex( prevSelectedIndex )
 
 	def setLifeStage( self, lifeStage ):
 		if self._lifeStage == lifeStage:
@@ -104,6 +116,11 @@ class HairListVC( IngedientListVC ):
 	
 	def _getIngredientInterface( self ):
 		return self._lifeStage.getHairInterface( self._gender )
+
+
+#def randomMaleOutfitIndex():
+#	import random
+#	return 
 
 class IngredientsVC( javax.swing.JPanel ):
 	def __init__( self ):
@@ -174,31 +191,43 @@ class IngredientsVC( javax.swing.JPanel ):
 		self.add( javax.swing.JScrollPane( self._fullBodyOutfitVC ), gbc ) 
 		gbc.insets.left = 0
 
-	
+	def selectRandomOutfit(self):
+		if self._genderVC.getSelectedIndex() == 0:
+			N = 162
+		else:
+			N = 249
+		#i = N-1
+		import random
+		i = random.randint( 0, N-1 )
+		self._fullBodyOutfitVC.setSelectedIndex( i )
+		
 	def _handleLifeStageSelection( self, lifeStage ):
-		self._fullBodyOutfitVC.setLifeStage( lifeStage )
-		self._hairVC.setLifeStage( lifeStage )
+		if lifeStage:
+			self._fullBodyOutfitVC.setLifeStage( lifeStage )
+			self._hairVC.setLifeStage( lifeStage )
 			
 	def _handleGenderSelection( self, gender ):
-		self._fullBodyOutfitVC.setGender( gender )
-		self._hairVC.setGender( gender )
+		if gender:
+			self._fullBodyOutfitVC.setGender( gender )
+			self._hairVC.setGender( gender )
 
 	def _handleBaseSkinToneSelection( self, baseSkinTone ):
-		self._fullBodyOutfitVC.setBaseSkinTone( baseSkinTone )
-		self._hairVC.setBaseSkinTone( baseSkinTone )
+		if baseSkinTone:
+			self._fullBodyOutfitVC.setBaseSkinTone( baseSkinTone )
+			self._hairVC.setBaseSkinTone( baseSkinTone )
 
 	def _handleBaseEyeColorSelection( self, baseEyeColor ):
 		pass
 
 	def _handleFullBodyOutfitSelection( self, fullBodyOutfit ):
 		pass
-
 	def _handleHairSelection( self, hair ):
 		pass
 
 class PersonViewer( ecc.dennisc.alice.ide.moveandturn.editors.ModelViewer ):
 	def __init__( self ):
 		ecc.dennisc.alice.ide.moveandturn.editors.ModelViewer.__init__( self )
+		self._dragAdapter = org.alice.interact.CreateASimDragAdapter()
 		self._mapToMap = {}
 		self._mapToMap[ apis.stage.LifeStage.ADULT ] = {}
 		self._mapToMap[ apis.stage.LifeStage.ADULT ][ apis.stage.Gender.FEMALE ] = apis.stage.FemaleAdult()
@@ -214,37 +243,49 @@ class PersonViewer( ecc.dennisc.alice.ide.moveandturn.editors.ModelViewer ):
 	def initialize( self ):
 		ecc.dennisc.alice.ide.moveandturn.editors.ModelViewer.initialize( self )
 		#self._scene.setAmbientLightBrightness( 1.0 )
-		self._camera.moveTo( self._scene.createOffsetStandIn( - 2, 4, - 8 ), 0.0 )
-		self._camera.pointAt( self._scene.createOffsetStandIn( 0, 2, 0 ), 0.0 )
+		self._camera.moveTo( self._scene.createOffsetStandIn( -1, 2, -7 ), 0.0 )
+		self._camera.pointAt( self._scene.createOffsetStandIn( 0, 1.5, 0 ), 0.0 )
 		self._sunLight.turn( apis.moveandturn.TurnDirection.FORWARD, org.alice.apis.moveandturn.AngleInRevolutions( 0.125 ) )
+
+		self._dragAdapter.setOnscreenLookingGlass( self.getOnscreenLookingGlass() )
+		#self._dragAdapter.setSGCamera( self._camera.getSGCamera() )
 
 	def _update( self ):
 		if self._lifeStage and self._gender:
 			person = self._mapToMap[ self._lifeStage ][ self._gender ]
+			model = None
 			if self._baseSkinTone:
 				person.setSkinTone( self._baseSkinTone )
 				if self._fitnessLevel:
 					person.setFitnessLevel( self._fitnessLevel )
 					if self._fullBodyOutfit:
 						person.setOutfit( self._fullBodyOutfit )
-						self.setModel( person )
+						model = person
 			if self._baseEyeColor:
 				person.setEyeColor( self._baseEyeColor )
 			if self._hair:
 				person.setHair( self._hair )
+			self.setModel( model )
 
 	def setLifeStage( self, lifeStage ):
 		if self._lifeStage == lifeStage:
 			pass
 		else:
 			self._lifeStage = lifeStage
+			self._fullBodyOutfit = None
+			self._hair = None
 			self._update()
 	def setGender( self, gender ):
 		if self._gender == gender:
 			pass
 		else:
 			self._gender = gender
+			self._fullBodyOutfit = None
+			self._hair = None
 			self._update()
+			person = self._mapToMap[ apis.stage.LifeStage.ADULT ][ gender ]
+			if person:
+				self._dragAdapter.setSelectedObject( person.getSGTransformable() )
 	def setBaseSkinTone( self, baseSkinTone ):
 		if self._baseSkinTone == baseSkinTone:
 			pass
@@ -289,7 +330,7 @@ class InstanceAndClassNamesPane( PaneWithValidation ):
 
 		#todo
 		self._identifierPane = IdentifierPane( None, [] )
-		self._identifierPane._textVC.setText( "unnamed" )
+		self._identifierPane._textVC.setText( "" )
 		self._identifierPane._textVC.selectAll()
 
 		#self._instanceNameVC = ecc.dennisc.swing.InputTextFieldWithValidationCallback( ecc.dennisc.swing.event.ChangeAdapter( self._handleInstanceNameChange ), self._isInstanceNameValid )
@@ -315,7 +356,74 @@ class InstanceAndClassNamesPane( PaneWithValidation ):
 		self._classNameVC.setText( ecc.dennisc.alice.vm.getConventionalClassName( self.getInstanceName() ) )
 		return self._identifierPane.isValid()
 
+from ecc.dennisc.alice.ide.inputpanes.AbstractInputPane import AbstractInputPane
 
+def createComponentArray( *args ):
+	import jarray
+	return jarray.array( args, java.awt.Component )
+
+def _createLabel( text ):
+	rv = javax.swing.JLabel( text )
+	rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING )
+	return rv
+
+class NewInstancePane( AbstractInputPane ):
+	def __init__( self, siblings ):
+		AbstractInputPane.__init__( self )
+
+		inset = 16
+		self.setBorder( javax.swing.border.EmptyBorder( inset, inset, inset, inset ) )
+
+		self._textVC = javax.swing.JTextField()
+		self._textVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( self._handleTextChange ) )
+		self._instanceNameVC = javax.swing.JTextField()
+		self._instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( self._handleInstanceNameChange ) )
+		self._classNameVC = javax.swing.JTextField()
+		self._classNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( self._handleClassNameChange ) )
+
+		self._constrainInstanceNameToTextVC = javax.swing.JCheckBox( "generate from text above" )
+		self._constrainInstanceNameToTextVC.addItemListener( ecc.dennisc.swing.event.ItemAdapter( self._handleInstanceNameContraintChange ) )
+		self._constrainInstanceNameToTextVC.setSelected( True )
+		self._constrainClassNameToInstanceNameVC = javax.swing.JCheckBox( "generate from instance name" )
+		self._constrainClassNameToInstanceNameVC.addItemListener( ecc.dennisc.swing.event.ItemAdapter( self._handleClassNameContraintChange ) )
+		self._constrainClassNameToInstanceNameVC.setSelected( True )
+
+		rows = java.util.ArrayList()
+		rows.add( createComponentArray( _createLabel( "" ), self._textVC,  javax.swing.JLabel() ) )
+		rows.add( createComponentArray( _createLabel( "instance name:" ), self._instanceNameVC,  self._constrainInstanceNameToTextVC ) )
+		#rows.add( createComponentArray( _createLabel( "class name:" ), self._classNameVC, self._constrainClassNameToInstanceNameVC ) )
+		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( self, rows, 8, 4 )
+		
+	def isValid( self ):
+		instanceName = self._instanceNameVC.getText()
+		className = self._classNameVC.getText()
+		#todo: check siblings
+		return ecc.dennisc.alice.vm.isValidIdentifier( instanceName ) and ecc.dennisc.alice.vm.isValidIdentifier( className )
+	
+	def _handleInstanceNameContraintChange( self, e ):
+		self._instanceNameVC.setEditable( not e.getSource().isSelected() )
+
+	def _handleClassNameContraintChange( self, e ):
+		self._classNameVC.setEditable( not e.getSource().isSelected() )
+
+	def _handleTextChange( self, text ):
+		text = self._textVC.getText()
+		if self._constrainInstanceNameToTextVC.isSelected():
+			instanceName = ecc.dennisc.alice.vm.getConventionalInstanceName( text )
+			self._instanceNameVC.setText( instanceName )
+		self.updateOKButton()
+	def _handleInstanceNameChange( self, text ):
+		if self._constrainClassNameToInstanceNameVC.isSelected():
+			instanceName = self._instanceNameVC.getText()
+			className = "My" + ecc.dennisc.alice.vm.getConventionalClassName( instanceName )
+			self._classNameVC.setText( className )
+		self.updateOKButton()
+	def _handleClassNameChange( self, text ):
+		self.updateOKButton()
+
+	def getActualInputValue( self ):
+		return self._instanceNameVC.getText()
+		
 class PersonEditor( edu.cmu.cs.dennisc.swing.InputPane ):
 	def __init__( self, sceneEditor ):
 		edu.cmu.cs.dennisc.swing.InputPane.__init__( self )
@@ -336,23 +444,26 @@ class PersonEditor( edu.cmu.cs.dennisc.swing.InputPane ):
 		#self._lifeStageVC.selectRandom()
 		self._ingredients._lifeStageVC.setSelectedIndex( 3 )
 		self._ingredients._genderVC.selectRandom()
+		#self._ingredients._genderVC.setSelectedIndex( 0 )
 		self._ingredients._baseSkinToneVC.selectRandom()
 		self._ingredients._baseEyeColorVC.selectRandom()
-		self._ingredients._fullBodyOutfitVC.selectRandom()
+		#self._ingredients._fullBodyOutfitVC.selectRandom()
+		#self._ingredients._fullBodyOutfitVC.setSelectedIndex( 0 )
+		self._ingredients.selectRandomOutfit()
 		self._ingredients._hairVC.selectRandom()
 
-		self._instanceAndClassNamesPane = InstanceAndClassNamesPane()
-		self._instanceAndClassNamesPane.setInputPane( self )
-		self.addOKButtonValidator( self._instanceAndClassNamesPane )
+		#self._instanceAndClassNamesPane = InstanceAndClassNamesPane()
+		#self._instanceAndClassNamesPane.setInputPane( self )
+		#self.addOKButtonValidator( self._instanceAndClassNamesPane )
 
 		pane = javax.swing.JPanel()
 		pane.setLayout( java.awt.BorderLayout() )
 		pane.add( self._personViewerParent, java.awt.BorderLayout.CENTER )
-		pane.add( self._instanceAndClassNamesPane, java.awt.BorderLayout.SOUTH )
+		#pane.add( self._instanceAndClassNamesPane, java.awt.BorderLayout.SOUTH )
 		
 		self._splitPane = javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, pane, self._ingredients )
 		#self._splitPane.setDividerLocation( 0.75 )
-		self._splitPane.setDividerLocation( 600 )
+		self._splitPane.setDividerLocation( 400 )
 		
 		self.setLayout( java.awt.BorderLayout() )
 		self.add( self._splitPane, java.awt.BorderLayout.CENTER )
@@ -384,9 +495,18 @@ class PersonEditor( edu.cmu.cs.dennisc.swing.InputPane ):
 		model = self._personViewer.getModel()
 		typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( model.__class__ )
 		type, isAlreadyReferenced = ecc.dennisc.alice.ide.moveandturn.editors.gallery._getTypeForTypeDeclaredInJava( typeDeclaredInJava )
+		
+		newInstancePane = NewInstancePane( [] )
+		instanceName = newInstancePane.showInJDialog( self, "Name Person", True )
+
+		if instanceName:
+			pass
+		else:
+			instanceName = "unnamed"
+
 		rv = self._sceneEditor.createInstance( type )
 		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( rv )
-		instanceInJava.setName( self._instanceAndClassNamesPane.getInstanceName() )
+		instanceInJava.setName( instanceName )
 		instanceInJava.setSkinTone( model.getSkinTone() )
 		instanceInJava.setFitnessLevel( model.getFitnessLevel() )
 		instanceInJava.setOutfit( model.getOutfit() )

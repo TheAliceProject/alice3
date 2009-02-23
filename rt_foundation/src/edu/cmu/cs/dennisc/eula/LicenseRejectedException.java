@@ -20,32 +20,10 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.apis.stage;
+package edu.cmu.cs.dennisc.eula;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Thing extends Model {
-	private edu.cmu.cs.dennisc.nebulous.Thing m_nebThing = null;
-	@Override
-	protected void createSGGeometryIfNecessary() {
-		if( m_nebThing != null ) {
-			//pass
-		} else {
-			try {
-				m_nebThing = new edu.cmu.cs.dennisc.nebulous.Thing( this );
-			} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-				throw new RuntimeException( lre );
-			}
-		}
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
-		return m_nebThing;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.nebulous.Model getNebulousModel() {
-		createSGGeometryIfNecessary();
-		return m_nebThing;
-	}
+public class LicenseRejectedException extends Exception {
 }

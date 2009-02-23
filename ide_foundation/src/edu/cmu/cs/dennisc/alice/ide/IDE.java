@@ -248,6 +248,15 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		assert s_singleton == null;
 		s_singleton = this;
 		
+		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
+		try {
+			String aliceMessage = "You must accept the license agreement in order to use Alice.\n\nWould you like to return to the license agreement?";
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.alice.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, edu.cmu.cs.dennisc.alice.License.TEXT, aliceMessage );
+		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
+			javax.swing.JOptionPane.showMessageDialog( this, "You must accept the license agreement in order to use Alice.  Exiting." );
+			System.exit( -1 );
+		}
+		
 		edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance.setBorderFactory( this.createExpressionBorderFactory() );
 		edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance.setRenderer( this.createExpressionRenderer() );
 

@@ -30,7 +30,7 @@ public class CannedAnimation extends edu.cmu.cs.dennisc.animation.AbstractAnimat
 	public CannedAnimation( FiniteStateMachine.Cycle cycle, Model model ) {
 		try {
 			m_control = new edu.cmu.cs.dennisc.nebulous.AnimationControl( cycle, model.getNebulousModel() );
-		} catch( edu.cmu.cs.dennisc.nebulous.LicenseRejectedException lre ) {
+		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "license not accepted" );
 		} catch( RuntimeException re ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "unable to animate cycle: " + cycle );
@@ -39,7 +39,7 @@ public class CannedAnimation extends edu.cmu.cs.dennisc.animation.AbstractAnimat
 	public CannedAnimation( Transition transition, Model model ) {
 		try {
 			m_control = new edu.cmu.cs.dennisc.nebulous.AnimationControl( transition, model.getNebulousModel() );
-		} catch( edu.cmu.cs.dennisc.nebulous.LicenseRejectedException lre ) {
+		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			m_control = null;
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "license not accepted" );
 		} catch( RuntimeException re ) {

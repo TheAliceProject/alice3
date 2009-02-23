@@ -170,7 +170,7 @@ public abstract class Person extends Model {
 		m_gender = gender;
 		try {
 			m_nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( this );
-		} catch( edu.cmu.cs.dennisc.nebulous.LicenseRejectedException lre ) {
+		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			throw new RuntimeException( lre );
 		}
 		//final String PELVIS_PART_NAME = "pelvis";
