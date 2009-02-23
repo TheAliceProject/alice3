@@ -29,7 +29,6 @@ public abstract class IngredientUtilities {
 		s_map.put( 
 			MaleAdultHair.class,
 			new Class/*< ? extends MaleAdultHair >*/[] {
-				MaleAdultHairBald.class ,
 				//MaleAdultHairBeanie.class ,
 				MaleAdultHairCloseCrop.class ,
 				MaleAdultHairCornRows.class ,
@@ -46,7 +45,8 @@ public abstract class IngredientUtilities {
 				//MaleAdultHairShocked.class ,
 				MaleAdultHairShortCombed.class ,
 				MaleAdultHairShortSpikey.class ,
-				MaleAdultHairTopHat.class 
+				MaleAdultHairTopHat.class , 
+				MaleAdultHairBald.class
 			}
 		);
 		s_map.put( 
@@ -73,7 +73,7 @@ public abstract class IngredientUtilities {
 				FemaleAdultFullBodyOutfitDressLongHug.class ,
 				FemaleAdultFullBodyOutfitDressLongLoose.class ,
 				FemaleAdultFullBodyOutfitDressLongTwo.class ,
-				FemaleAdultFullBodyOutfitExterminator.class ,
+//				FemaleAdultFullBodyOutfitExterminator.class ,
 				FemaleAdultFullBodyOutfitFastFood.class ,
 				FemaleAdultFullBodyOutfitFurCoatShortDressShoes.class ,
 				FemaleAdultFullBodyOutfitGardener.class ,
@@ -102,7 +102,7 @@ public abstract class IngredientUtilities {
 				FemaleAdultFullBodyOutfitServer.class ,
 				FemaleAdultFullBodyOutfitShirtUntuckedOxford.class ,
 				FemaleAdultFullBodyOutfitShortDressBoots.class ,
-				FemaleAdultFullBodyOutfitShortDressShoes.class ,
+//				FemaleAdultFullBodyOutfitShortDressShoes.class ,
 				FemaleAdultFullBodyOutfitSlickSuit.class ,
 				FemaleAdultFullBodyOutfitSocialWorker.class ,
 				FemaleAdultFullBodyOutfitSoldier.class ,
@@ -119,9 +119,9 @@ public abstract class IngredientUtilities {
 				FemaleAdultFullBodyOutfitTweedJacket.class ,
 				FemaleAdultFullBodyOutfitUnderwear.class ,
 				FemaleAdultFullBodyOutfitWarrior.class ,
-				UnisexAdultFullBodyOutfitAstronaut.class ,
-				UnisexAdultFullBodyOutfitLlama.class ,
-				UnisexAdultFullBodyOutfiteton.class 
+//				UnisexAdultFullBodyOutfitAstronaut.class ,
+//				UnisexAdultFullBodyOutfitLlama.class ,
+//				UnisexAdultFullBodyOutfiteton.class 
 			}
 		);
 		s_map.put( 
@@ -181,7 +181,7 @@ public abstract class IngredientUtilities {
 				MaleAdultFullBodyOutfitShirtFlares.class ,
 				MaleAdultFullBodyOutfitShirtUntuckedSaddle.class ,
 				MaleAdultFullBodyOutfitShorts.class ,
-				MaleAdultFullBodyOutfitShrink.class ,
+//				MaleAdultFullBodyOutfitShrink.class ,
 				MaleAdultFullBodyOutfitSlickSuit.class ,
 				MaleAdultFullBodyOutfitSloppySuit.class ,
 				MaleAdultFullBodyOutfitSoldier.class ,
@@ -192,15 +192,14 @@ public abstract class IngredientUtilities {
 				MaleAdultFullBodyOutfitTrenchCoatPantsBoots.class ,
 				MaleAdultFullBodyOutfitTweedJacket.class ,
 				MaleAdultFullBodyOutfitUnderwear.class ,
-				UnisexAdultFullBodyOutfitAstronaut.class ,
-				UnisexAdultFullBodyOutfitLlama.class ,
-				UnisexAdultFullBodyOutfiteton.class 
+//				UnisexAdultFullBodyOutfitAstronaut.class ,
+//				UnisexAdultFullBodyOutfitLlama.class ,
+//				UnisexAdultFullBodyOutfiteton.class 
 			}
 		);
 		s_map.put( 
 			FemaleAdultHair.class,
 			new Class/*< ? extends FemaleAdultHair >*/[] {
-				FemaleAdultHairBald.class ,
 				FemaleAdultHairBeanie.class ,
 				FemaleAdultHairBraids.class ,
 				FemaleAdultHairCornRowsLong.class ,
@@ -210,7 +209,8 @@ public abstract class IngredientUtilities {
 				FemaleAdultHairPoofs.class ,
 				FemaleAdultHairRosettes.class ,
 				FemaleAdultHairShocked.class ,
-				FemaleAdultHairShortSlick.class 
+				FemaleAdultHairShortSlick.class , 
+				FemaleAdultHairBald.class
 			}
 		);
 	}
