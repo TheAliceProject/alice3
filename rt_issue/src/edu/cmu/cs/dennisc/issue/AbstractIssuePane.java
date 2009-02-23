@@ -380,19 +380,22 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	public boolean isSubmitSuccessful() { 
 		return this.isSubmitSuccessful;
 	}
-	protected abstract void uploadToJIRA( Issue issue ) throws Exception;
-	protected abstract void sendMail( Issue issue, String subject, String reporterEMailAddress, String reporterName ) throws Exception;
+	//protected abstract void uploadToJIRA( Issue issue ) throws Exception;
+	//protected abstract void sendMail( Issue issue, String subject, String reporterEMailAddress, String reporterName ) throws Exception;
 	protected boolean submit() {
 		Issue issue = this.createIssue();
-		try {
-			uploadToJIRA( issue );
-		} catch( Exception eJIRA ) {
-			try {
-				sendMail( issue, this.getSubject(), this.getReporterEMailAddress(), this.getReporterName() );
-			} catch( Exception eMail ) {
-				return false;
-			}
-		}
-		return true;
+		ProgressPane progressPane = new ProgressPane();
+		progressPane.initializeAndExecuteWorker( issue, this.getSubject(), this.getReporterEMailAddress(), this.getReporterName() );
+		return progressPane.isSuccessful();
+//		try {
+//			uploadToJIRA( issue );
+//		} catch( Exception eJIRA ) {
+//			try {
+//				sendMail( issue, this.getSubject(), this.getReporterEMailAddress(), this.getReporterName() );
+//			} catch( Exception eMail ) {
+//				return false;
+//			}
+//		}
+//		return true;
 	}
 }

@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.issue;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean, String > {
+public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean, String > {
 	private ProgressPane progressPane;
 
 	private Issue issue;

@@ -37,6 +37,7 @@ public class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingTo
 	private String steps;
 	private String environment;
 	private String exception;
+	private java.util.List< edu.cmu.cs.dennisc.mail.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.mail.Attachment >();
 
 	public Type getType() {
 		return type;
@@ -74,6 +75,16 @@ public class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingTo
 	public void setException( String exception ) {
 		this.exception = exception;
 	}
+	
+	public void addAttachment( edu.cmu.cs.dennisc.mail.Attachment attachment ) {
+		this.attachments.add( attachment );
+	}
+	public void removeAttachment( edu.cmu.cs.dennisc.mail.Attachment attachment ) {
+		this.attachments.remove( attachment );
+	}
+	public Iterable< edu.cmu.cs.dennisc.mail.Attachment > getAttachments() {
+		return this.attachments;
+	}
 
 	@Override
 	protected StringBuffer updateRepr( StringBuffer rv ) {
@@ -89,6 +100,9 @@ public class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingTo
 		rv.append( this.getEnvironment() );
 		rv.append( ";exception=" );
 		rv.append( this.getException() );
+		
+		//todo: attachments
+		
 		return rv;
 	}
 }

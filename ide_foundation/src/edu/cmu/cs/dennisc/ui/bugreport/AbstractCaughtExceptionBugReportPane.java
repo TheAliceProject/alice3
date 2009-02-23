@@ -25,6 +25,7 @@ package edu.cmu.cs.dennisc.ui.bugreport;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public abstract class AbstractCaughtExceptionBugReportPane extends AbstractBugReportPane {
 	class ExceptionPane extends javax.swing.JPanel {
 		private Thread thread;

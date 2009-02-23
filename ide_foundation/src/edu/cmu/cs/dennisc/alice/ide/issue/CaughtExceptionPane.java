@@ -26,16 +26,16 @@ package edu.cmu.cs.dennisc.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaughtExceptionPane {
-	@Override
-	protected void uploadToJIRA( edu.cmu.cs.dennisc.issue.Issue issue ) throws java.lang.Exception {
-		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
-		throw new Exception();
-	}
-	@Override
-	protected void sendMail( edu.cmu.cs.dennisc.issue.Issue issue, java.lang.String subject, java.lang.String reporterEMailAddress, java.lang.String reporterName ) throws java.lang.Exception {
-		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
-		throw new Exception();
-	}
+//	@Override
+//	protected void uploadToJIRA( edu.cmu.cs.dennisc.issue.Issue issue ) throws java.lang.Exception {
+//		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
+//		throw new Exception();
+//	}
+//	@Override
+//	protected void sendMail( edu.cmu.cs.dennisc.issue.Issue issue, java.lang.String subject, java.lang.String reporterEMailAddress, java.lang.String reporterName ) throws java.lang.Exception {
+//		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
+//		throw new Exception();
+//	}
 //	private javax.swing.JCheckBox vcUploadProject = null;
 //	@Override
 //	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {

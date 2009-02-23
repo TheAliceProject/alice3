@@ -25,6 +25,7 @@ package edu.cmu.cs.dennisc.ui.bugreport;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 class FocusAdapter implements java.awt.event.FocusListener {
 	private javax.swing.text.JTextComponent textComponent;
 	public FocusAdapter( javax.swing.text.JTextComponent textComponent ) {
@@ -47,6 +48,7 @@ class FocusAdapter implements java.awt.event.FocusListener {
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 class SuggestiveTextUtilties {
 	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
 		String text = textComponent.getText();
@@ -71,6 +73,7 @@ class SuggestiveTextUtilties {
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 class SuggestiveTextField extends javax.swing.JTextField {
 	private String textForBlankCondition;
 	public SuggestiveTextField( String text, String textForBlankCondition ) {
@@ -142,6 +145,7 @@ class SuggestiveTextArea extends javax.swing.JTextArea {
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public abstract class AbstractBugReportPane extends javax.swing.JPanel {
 	private static javax.swing.JLabel createSystemPropertyLabel( String propertyName ) {
 		return new javax.swing.JLabel( propertyName + ": " + System.getProperty( propertyName ) );

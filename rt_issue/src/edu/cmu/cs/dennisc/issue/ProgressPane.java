@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.issue;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ProgressPane extends javax.swing.JPanel {
+public class ProgressPane extends javax.swing.JPanel {
 	private javax.swing.JTextPane console = new javax.swing.JTextPane();
 	private javax.swing.JButton background = new javax.swing.JButton( "run in background" );
 	private UploadWorker uploadWorker;
@@ -55,7 +55,9 @@ public abstract class ProgressPane extends javax.swing.JPanel {
 		this.uploadWorker.execute();
 	}
 
-	protected abstract UploadWorker createUploadWorker();
+	protected UploadWorker createUploadWorker() {
+		return new UploadWorker( this );
+	}
 	private void hideRoot() {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
 		root.setVisible( false );

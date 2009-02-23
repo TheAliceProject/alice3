@@ -25,6 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.bugreport;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class CaughtExceptionBugReportPane extends edu.cmu.cs.dennisc.ui.bugreport.AbstractCaughtExceptionBugReportPane {
 	private javax.swing.JCheckBox vcUploadProject = null;
 	@Override
