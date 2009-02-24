@@ -375,6 +375,7 @@ class NewInstancePane( AbstractInputPane ):
 		self.setBorder( javax.swing.border.EmptyBorder( inset, inset, inset, inset ) )
 
 		self._textVC = javax.swing.JTextField()
+		self._textVC.addActionListener(ecc.dennisc.swing.event.ActionAdapter( self._handleTextAction ))
 		self._textVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( self._handleTextChange ) )
 		self._instanceNameVC = javax.swing.JTextField()
 		self._instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( self._handleInstanceNameChange ) )
@@ -399,7 +400,10 @@ class NewInstancePane( AbstractInputPane ):
 		className = self._classNameVC.getText()
 		#todo: check siblings
 		return ecc.dennisc.alice.vm.isValidIdentifier( instanceName ) and ecc.dennisc.alice.vm.isValidIdentifier( className )
-	
+
+	def _handleTextAction(self, e):
+		self.fireOKButtonIfPossible()
+		
 	def _handleInstanceNameContraintChange( self, e ):
 		self._instanceNameVC.setEditable( not e.getSource().isSelected() )
 
@@ -491,22 +495,22 @@ class PersonEditor( edu.cmu.cs.dennisc.swing.InputPane ):
 	def _isInstanceNameValid( self, text ):
 		return self._instanceAndClassNamesPane._isInstanceNameValid( text )
 	
+	def setOK(self, isOK):
+		edu.cmu.cs.dennisc.swing.InputPane.setOK( self, isOK )
+		if isOK:
+			newInstancePane = NewInstancePane( [] )
+			self._instanceName = newInstancePane.showInJDialog( self, "Name Person", True )
+		else:
+			self._instanceName = "unnamed"
+	
 	def getActualInputValue( self ):
 		model = self._personViewer.getModel()
 		typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( model.__class__ )
 		type, isAlreadyReferenced = ecc.dennisc.alice.ide.moveandturn.editors.gallery._getTypeForTypeDeclaredInJava( typeDeclaredInJava )
 		
-		newInstancePane = NewInstancePane( [] )
-		instanceName = newInstancePane.showInJDialog( self, "Name Person", True )
-
-		if instanceName:
-			pass
-		else:
-			instanceName = "unnamed"
-
 		rv = self._sceneEditor.createInstance( type )
 		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( rv )
-		instanceInJava.setName( instanceName )
+		instanceInJava.setName( self._instanceName )
 		instanceInJava.setSkinTone( model.getSkinTone() )
 		instanceInJava.setFitnessLevel( model.getFitnessLevel() )
 		instanceInJava.setOutfit( model.getOutfit() )

@@ -107,6 +107,10 @@ public abstract class InputPane<E> extends javax.swing.JPanel {
 
 	private boolean m_isOK = false;
 
+	protected void setOK( boolean isOK ) {
+		m_isOK = isOK;
+	}
+	
 	protected abstract E getActualInputValue();
 
 	public final E getInputValue() {
@@ -157,14 +161,14 @@ public abstract class InputPane<E> extends javax.swing.JPanel {
 		javax.swing.JButton okButton = new javax.swing.JButton( "OK" );
 		okButton.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				InputPane.this.m_isOK = true;
+				InputPane.this.setOK( true );
 				dialog.setVisible( false );
 			}
 		} );
 		javax.swing.JButton cancelButton = new javax.swing.JButton( "Cancel" );
 		cancelButton.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				InputPane.this.m_isOK = false;
+				InputPane.this.setOK( false );
 				dialog.setVisible( false );
 			}
 		} );
