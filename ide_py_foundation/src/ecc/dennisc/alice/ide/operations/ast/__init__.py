@@ -1,4 +1,4 @@
-print "-->", __name__
+#print "-->", __name__
 
 import java
 import javax
