@@ -22,15 +22,14 @@
  */
 package org.alice.apis.stage;
 
+import org.alice.apis.moveandturn.HowMuch;
+import org.alice.apis.moveandturn.OriginInclusionPolicy;
+import org.alice.apis.moveandturn.ReferenceFrame;
 import org.alice.apis.stage.Hair;
 import org.alice.apis.stage.Outfit;
 
 import edu.cmu.cs.dennisc.alice.annotations.*;
 
-/**
- * @author Dennis Cosgrove
- */
-//@ClassTemplate( isFollowToSuperClassDesired=false )
 /**
  * @author Dennis Cosgrove
  */
@@ -213,6 +212,7 @@ public abstract class Person extends Model {
 
 	@Override
 	protected void createSGGeometryIfNecessary() {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "createSGGeometryIfNecessary", m_lifeStage, m_gender );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
@@ -335,4 +335,11 @@ public abstract class Person extends Model {
 	public Boolean isFacing( Person other ) {
 		return other.getPosition( this ).z < 0.0;
 	}
+
+	@Override
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
+		//todo
+		return m_nebPerson.getAxisAlignedMinimumBoundingBox();
+	}
+	
 }

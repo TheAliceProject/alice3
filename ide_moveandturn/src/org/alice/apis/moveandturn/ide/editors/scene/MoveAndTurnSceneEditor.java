@@ -196,8 +196,6 @@ public class MoveAndTurnSceneEditor extends edu.cmu.cs.dennisc.alice.ide.editors
 					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.GROUND );
 				} else {
 					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( model );
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( model.getAxisAlignedMinimumBoundingBox() );
 					sgTransformable.putBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY, model.getAxisAlignedMinimumBoundingBox() );
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( sgTransformable.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY ) );
 				}

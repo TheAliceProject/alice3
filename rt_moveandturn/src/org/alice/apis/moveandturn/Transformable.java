@@ -193,7 +193,7 @@ public abstract class Transformable extends AbstractTransformable {
 		return rv;
 	}
 	
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
 		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = createCumulativeBound( asSeenBy, howMuch, originPolicy );
 		return cumulativeBound.getBoundingBox();
@@ -211,7 +211,7 @@ public abstract class Transformable extends AbstractTransformable {
 		return getAxisAlignedMinimumBoundingBox( AsSeenBy.SELF );
 	}
 
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
 		edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound cumulativeBound = createCumulativeBound( asSeenBy, howMuch, originPolicy );
 		return cumulativeBound.getBoundingSphere();

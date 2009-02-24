@@ -49,6 +49,7 @@ class IngedientListVC( ecc.dennisc.swing.ListVC ):
 		self._lifeStage = None
 		self._gender = None
 		self._baseSkinTone = None
+		self._updateIndex = False
 		self.setLifeStage( lifeStage )
 		self.setGender( gender )
 		self.setBaseSkinTone( baseSkinTone )
@@ -82,25 +83,31 @@ class IngedientListVC( ecc.dennisc.swing.ListVC ):
 						data += values
 			self.setSelectedIndex( -1 )
 			self.setListData( data )
-			self._selectAppropriateIndex( prevSelectedIndex )
+			if self._updateIndex:
+				self._selectAppropriateIndex( prevSelectedIndex )
+			else:
+				self.setSelectedIndex( prevSelectedIndex )
 
 	def setLifeStage( self, lifeStage ):
 		if self._lifeStage == lifeStage:
 			pass
 		else:
 			self._lifeStage = lifeStage
+			self._updateIndex = True
 			self._update()
 	def setGender( self, gender ):
 		if self._gender == gender:
 			pass
 		else:
 			self._gender = gender
+			self._updateIndex = True
 			self._update()
 	def setBaseSkinTone( self, baseSkinTone ):
 		if self._baseSkinTone == baseSkinTone:
 			pass
 		else:
 			self._baseSkinTone = baseSkinTone
+			self._updateIndex = False
 			self._update()
 			
 class FullBodyOutfitListVC( IngedientListVC ):
@@ -382,7 +389,7 @@ class NewInstancePane( AbstractInputPane ):
 		self._classNameVC = javax.swing.JTextField()
 		self._classNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( self._handleClassNameChange ) )
 
-		self._constrainInstanceNameToTextVC = javax.swing.JCheckBox( "generate from text above" )
+		self._constrainInstanceNameToTextVC = javax.swing.JCheckBox( "generate from name" )
 		self._constrainInstanceNameToTextVC.addItemListener( ecc.dennisc.swing.event.ItemAdapter( self._handleInstanceNameContraintChange ) )
 		self._constrainInstanceNameToTextVC.setSelected( True )
 		self._constrainClassNameToInstanceNameVC = javax.swing.JCheckBox( "generate from instance name" )
@@ -390,7 +397,7 @@ class NewInstancePane( AbstractInputPane ):
 		self._constrainClassNameToInstanceNameVC.setSelected( True )
 
 		rows = java.util.ArrayList()
-		rows.add( createComponentArray( _createLabel( "" ), self._textVC,  javax.swing.JLabel() ) )
+		rows.add( createComponentArray( _createLabel( "name:" ), self._textVC,  javax.swing.JLabel() ) )
 		rows.add( createComponentArray( _createLabel( "instance name:" ), self._instanceNameVC,  self._constrainInstanceNameToTextVC ) )
 		#rows.add( createComponentArray( _createLabel( "class name:" ), self._classNameVC, self._constrainClassNameToInstanceNameVC ) )
 		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( self, rows, 8, 4 )
@@ -500,6 +507,10 @@ class PersonEditor( edu.cmu.cs.dennisc.swing.InputPane ):
 		if isOK:
 			newInstancePane = NewInstancePane( [] )
 			self._instanceName = newInstancePane.showInJDialog( self, "Name Person", True )
+		else:
+			self._instanceName = ""
+		if self._instanceName:
+			pass
 		else:
 			self._instanceName = "unnamed"
 	

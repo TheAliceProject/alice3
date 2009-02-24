@@ -164,7 +164,7 @@ class SaveTypeOperation( alice.ide.AbstractOperation ):
 class CreateNewInstanceOperation( alice.ide.AbstractOperation ):
 	def __init__( self, type ):
 		self._type = type
-		self.putValue( javax.swing.Action.NAME, "create new instance" )
+		self.putValue( javax.swing.Action.NAME, "create new instance..." )
 
 	def prepare( self, e, observer ):
 		t = self._type.getFirstTypeEncounteredDeclaredInJava()
@@ -176,13 +176,17 @@ class CreateNewInstanceOperation( alice.ide.AbstractOperation ):
 		prefixList.append( "org.alice.apis.moveandturn.gallery" )
 		prefixList.append( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes" )
 		prefixList.append( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters" )
+		file = None
 		for prefix in prefixList:
 			if clsName.startswith( prefix ):
 				file = java.io.File( thumbnailsRoot, prefix + clsName[ len( prefix ): ].replace( ".", "/" ) + ".png" )
 
-		inputPane = ecc.dennisc.alice.ide.moveandturn.editors.gallery.CreateInstancePane( file, thumbnailsRoot, self._type )
-		owner = self.getIDE()
-		self._instance = inputPane.showInJDialog( owner, "Create Instance", True )
+		if file:
+			inputPane = ecc.dennisc.alice.ide.moveandturn.editors.gallery.CreateInstancePane( file, thumbnailsRoot, self._type )
+			owner = self.getIDE()
+			self._instance = inputPane.showInJDialog( owner, "Create Instance", True )
+		else:
+			self._instance = None
 		if self._instance:
 			return alice.ide.Operation.PreparationResult.PERFORM
 		else:
@@ -201,7 +205,14 @@ class FieldAltTriggerMouseAdapter( edu.cmu.cs.dennisc.awt.event.AltTriggerMouseA
 		if self._field.isDeletionAllowed.getValue():
 			rv.append( DeleteFieldOperation( self._field ) )
 		rv.append( SaveTypeOperation( self._field.getValueType() ) )
-		rv.append( CreateNewInstanceOperation( self._field.getValueType() ) )
+		try:
+			import org
+			if self._field.getValueType().isAssignableTo( org.alice.apis.stage.Model ):
+				pass
+			else:
+				rv.append( CreateNewInstanceOperation( self._field.getValueType() ) )
+		except:
+			print "todo: CreateNewInstanceOperation"
 		return rv
 
 	def altTriggered(self, e ):

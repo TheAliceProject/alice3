@@ -441,7 +441,7 @@ class AbstractIDE( alice.ide.IDE ):
 			pass
 		else:
 			testName = "projects"
-			self._applicationRootDirectory = java.io.File( java.lang.System.getProperty( "user.dir" ) )
+			self._applicationRootDirectory = java.io.File( java.lang.System.getProperty( "user.dir" ), "application" )
 			if java.io.File( self._applicationRootDirectory, testName ).exists():
 				pass
 			else:
