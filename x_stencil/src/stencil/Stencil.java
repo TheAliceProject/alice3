@@ -231,6 +231,8 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	@Override
 	public void doLayout() {
 
+		//todo: super.doLayout() at beginning and end?
+		
 		synchronized( this.holeGroups ) {
 			
 			for( HoleGroup holeGroup : this.holeGroups ) {
