@@ -82,7 +82,7 @@ public class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingTo
 	public void removeAttachment( edu.cmu.cs.dennisc.mail.Attachment attachment ) {
 		this.attachments.remove( attachment );
 	}
-	public Iterable< edu.cmu.cs.dennisc.mail.Attachment > getAttachments() {
+	public java.util.List< edu.cmu.cs.dennisc.mail.Attachment > getAttachments() {
 		return this.attachments;
 	}
 

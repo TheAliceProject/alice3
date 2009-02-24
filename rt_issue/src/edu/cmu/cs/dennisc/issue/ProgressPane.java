@@ -50,8 +50,8 @@ public class ProgressPane extends javax.swing.JPanel {
 		this.add( new javax.swing.JScrollPane( this.console ), java.awt.BorderLayout.CENTER );
 		this.add( new javax.swing.JScrollPane( buttonPane ), java.awt.BorderLayout.SOUTH );
 	}
-	public void initializeAndExecuteWorker( Issue issue, String subject, String reporterEMailAddress, String reporterName ) {
-//		this.uploadWorker.initialize( issue, subject, reporterEMailAddress, reporterName );
+	public void initializeAndExecuteWorker( Issue issue, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.Authenticator jiraAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String subject, String reporterEMailAddress, String reporterName, String recipient ) {
+		this.uploadWorker.initialize( issue, jiraServer, jiraAuthenticator, mailServer, mailAuthenticator, subject, reporterEMailAddress, reporterName, recipient );
 		this.uploadWorker.execute();
 	}
 
@@ -60,7 +60,9 @@ public class ProgressPane extends javax.swing.JPanel {
 	}
 	private void hideRoot() {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
-		root.setVisible( false );
+		if( root != null ) {
+			root.setVisible( false );
+		}
 	}
 	private void handleRunInBackground( java.awt.event.ActionEvent e ) {
 		this.hideRoot();

@@ -121,8 +121,7 @@ public class MailUtilities {
 		javax.mail.Transport.send( message );
 	}
 
-	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text,
-			java.util.ArrayList< Attachment > attachments ) throws javax.mail.MessagingException {
+	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, java.util.List< Attachment > attachments ) throws javax.mail.MessagingException {
 		Attachment[] array = new Attachment[ attachments.size() ];
 		attachments.toArray( array );
 		sendMail( isTransportLayerSecurityDesired, portOverride, host, authenticator, replyTo, replyToPresonal, to, subject, text, array );

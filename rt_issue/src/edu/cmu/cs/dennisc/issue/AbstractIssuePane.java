@@ -371,6 +371,12 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		return sb.toString();
 	}
 	
+	protected abstract String getJIRAServer();
+	protected abstract String getMailServer();
+	protected abstract String getMailRecipient();
+	protected abstract edu.cmu.cs.dennisc.jira.Authenticator getJIRAAuthenticator();
+	protected abstract edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator();
+	
 	
 	private boolean isSubmitAttempted = false;
 	private boolean isSubmitSuccessful = false;
@@ -385,7 +391,28 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	protected boolean submit() {
 		Issue issue = this.createIssue();
 		ProgressPane progressPane = new ProgressPane();
-		progressPane.initializeAndExecuteWorker( issue, this.getSubject(), this.getReporterEMailAddress(), this.getReporterName() );
+		final String RPC_PATH  = "/rpc/xmlrpc";
+		java.net.URL jiraURL;
+		try {
+			jiraURL = new java.net.URL( this.getJIRAServer() + RPC_PATH );
+		} catch( java.net.MalformedURLException murl ) {
+			throw new RuntimeException( murl );
+		}
+		progressPane.initializeAndExecuteWorker( issue, jiraURL, this.getJIRAAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getSubject(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient() );
+
+		javax.swing.JFrame frame = new javax.swing.JFrame();
+		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
+		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing( java.awt.event.WindowEvent e ) {
+				e.getComponent().setVisible( false );
+			}
+		} );
+		dialog.getContentPane().add( progressPane );
+		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
+		dialog.pack();
+		dialog.setVisible( true );
+		
 		return progressPane.isSuccessful();
 //		try {
 //			uploadToJIRA( issue );

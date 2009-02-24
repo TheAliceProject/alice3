@@ -60,7 +60,11 @@ public class JIRAUtilities {
 		redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
 		rv.put( "project", project );
 		rv.put( "type", getType( issue.getType() ) );
-		rv.put( "summary", issue.getSummary() );
+		String summary = issue.getSummary();
+		if( summary == null || summary.length() == 0 ) {
+			summary = "unspecified";
+		}
+		rv.put( "summary", summary );
 		rv.put( "description", issue.getDescription() );
 		rv.put( "environment", issue.getEnvironment() );
 	    java.util.Vector< redstone.xmlrpc.XmlRpcStruct > customFields = new java.util.Vector< redstone.xmlrpc.XmlRpcStruct >();

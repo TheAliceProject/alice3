@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="/jar_rpc/xmlrpc-client-1.1.jar"/>
 	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_issue"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ide_foundation"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

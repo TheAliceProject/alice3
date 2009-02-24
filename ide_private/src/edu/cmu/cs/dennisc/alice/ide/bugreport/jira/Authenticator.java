@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.bugreport.jira;
 /**
  * @author Dennis Cosgrove
  */
-public class LoginUtilities {
+public class Authenticator implements edu.cmu.cs.dennisc.jira.Authenticator {
 	public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
 		return client.invoke( "jira1.login", new Object[] { "alice3_rpc", "brokenAnkles" } );
 	}

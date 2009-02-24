@@ -26,16 +26,27 @@ package edu.cmu.cs.dennisc.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaughtExceptionPane {
-//	@Override
-//	protected void uploadToJIRA( edu.cmu.cs.dennisc.issue.Issue issue ) throws java.lang.Exception {
-//		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
-//		throw new Exception();
-//	}
-//	@Override
-//	protected void sendMail( edu.cmu.cs.dennisc.issue.Issue issue, java.lang.String subject, java.lang.String reporterEMailAddress, java.lang.String reporterName ) throws java.lang.Exception {
-//		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
-//		throw new Exception();
-//	}
+	@Override
+	protected String getJIRAServer() {
+		return "http://bugs.alice.org:8080";
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.jira.Authenticator getJIRAAuthenticator() {
+		return new edu.cmu.cs.dennisc.alice.ide.bugreport.jira.Authenticator();
+	}
+	@Override
+	protected String getMailServer() {
+		return "haru.pc.cc.cmu.edu";
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator() {
+		return new edu.cmu.cs.dennisc.alice.ide.bugreport.mail.Authenticator();
+	}
+	@Override
+	protected String getMailRecipient() {
+		return "alice.bugs.3.beta.xxxx@gmail.com";
+	}
+
 //	private javax.swing.JCheckBox vcUploadProject = null;
 //	@Override
 //	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
@@ -67,22 +78,5 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaught
 //		rv.append( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
 //		rv.append( " " );
 //		return super.updateSubject( rv );
-//	}
-//	@Override
-//	protected boolean isTransportLayerSecurityDesired() {
-//		return true;
-//	}
-//	@Override
-//	protected String getHost() {
-//		//return "smtp.gmail.com";
-//		return "haru.pc.cc.cmu.edu";
-//	}
-//	@Override
-//	protected String getTo() {
-//		return "alice.bugs.3.beta.xxxx@gmail.com";
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.mail.AbstractAuthenticator getAuthenticator() {
-//		return new edu.cmu.cs.dennisc.alice.ide.bugreport.mail.Authenticator();
 //	}
 }

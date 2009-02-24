@@ -26,5 +26,5 @@ package edu.cmu.cs.dennisc.jira;
  * @author Dennis Cosgrove
  */
 public interface Authenticator {
-	public Object login( redstone.xmlrpc.XmlRpcStruct xmlRpcStruct );
+	public Object login( redstone.xmlrpc.XmlRpcClient xmlRpcStruct ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault;
 }

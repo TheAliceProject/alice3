@@ -131,6 +131,7 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 	@Override
 	protected Issue updateIssue( edu.cmu.cs.dennisc.issue.Issue rv ) {
 		super.updateIssue( rv );
+		rv.setType( Issue.Type.BUG );
 		rv.setException( this.vcExceptionPane.getThrowable().toString() );
 		return rv;
 	}
