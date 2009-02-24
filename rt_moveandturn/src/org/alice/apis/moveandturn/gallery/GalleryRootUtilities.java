@@ -48,8 +48,7 @@ public class GalleryRootUtilities {
 			potentialPaths.add( "c:/Program Files" + subPath );
 			potentialPaths.add( "c:/Program Files (x86)" + subPath );
 			if( APPLICATION_ROOT != null && APPLICATION_ROOT.exists() ) {
-				potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( APPLICATION_ROOT ) + subPath );
-				potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( APPLICATION_ROOT.getParentFile() ) + subPath );
+				potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( APPLICATION_ROOT ) + "/" + name );
 			}
 			
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
