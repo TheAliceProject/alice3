@@ -92,28 +92,18 @@ public class TranslateKeyManipulator extends DragManipulator {
 	{
 		MovementType[] movementTypes = MovementType.values();
 		Point3[] moveDirs = new Point3[movementTypes.length];
-		double[] multiplierTotals = new double[movementTypes.length];
 		for (int i=0; i<moveDirs.length; i++ )
 		{
 			moveDirs[i] = new Point3(0.0d, 0.0d, 0.0d);
-			multiplierTotals[i] = 0.0d;
 		}
 		for (int i=0; i<this.directionKeys.length; i++)
 		{
 			if (input.isKeyDown( this.directionKeys[i].keyValue ))
-			{
+			{				
 				Point3 multipliedPoint = Point3.createMultiplication( this.directionKeys[i].direction, this.directionKeys[i].directionMultiplier );
-				multiplierTotals[this.directionKeys[i].movementType.getIndex()] += this.directionKeys[i].directionMultiplier;
 				moveDirs[this.directionKeys[i].movementType.getIndex()].add( multipliedPoint );
 			}	
 		}
-//		for (int i=0; i<moveDirs.length; i++)
-//		{
-//			if (!(moveDirs[i].x == 0.0d && moveDirs[i].y == 0.0d && moveDirs[i].z == 0.0d))
-//			{
-//				moveDirs[i].multiply( 1.0d / multiplierTotals[i] );
-//			}
-//		}
 		return moveDirs;
 	}
 	
@@ -195,14 +185,6 @@ public class TranslateKeyManipulator extends DragManipulator {
 
 	@Override
 	public void dataUpdateManipulator( InputState currentInput, InputState previousInput  ) {
-//		if (this.manipulatedTransformable != null)
-//		{
-//			edu.cmu.cs.dennisc.math.AffineMatrix4x4 transform = this.manipulatedTransformable.localTransformation.getValue();
-//			int xDelta = currentInput.getMouseLocation().x - previousInput.getMouseLocation().x;
-//			int yDelta = currentInput.getMouseLocation().y - previousInput.getMouseLocation().y;
-//			transform.applyTranslation( xDelta*.05d, yDelta*-.05d, 0.0d);
-//			this.manipulatedTransformable.setLocalTransformation( transform );
-//		}
 	}
 
 	@Override

@@ -40,9 +40,11 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 	protected void setUpControls() {
 		MovementKey[] movementKeys = {
 				//Up
-				new MovementKey(KeyEvent.VK_PAGE_UP, new Point3(0, 1, 0), MovementType.STOOD_UP, .5d),
+				new MovementKey(KeyEvent.VK_PAGE_UP, new Point3(0, 1, 0), MovementType.STOOD_UP, .35d),
+				new MovementKey(KeyEvent.VK_UP, new Point3(0, 1, 0), MovementType.STOOD_UP, .35d),
 				//Down
-				new MovementKey(KeyEvent.VK_PAGE_DOWN, new Point3(0, -1, 0), MovementType.STOOD_UP, .5d),
+				new MovementKey(KeyEvent.VK_PAGE_DOWN, new Point3(0, -1, 0), MovementType.STOOD_UP, .35d),
+				new MovementKey(KeyEvent.VK_DOWN, new Point3(0, -1, 0), MovementType.STOOD_UP, .35d),
 		};
 		
 		MovementKey[] zoomKeys = {
@@ -56,11 +58,11 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 		
 		MovementKey[] turnKeys = {
 				//Left
-				new MovementKey(KeyEvent.VK_OPEN_BRACKET, new Vector3(0, 1, 0), MovementType.LOCAL, 25.0d),
-				new MovementKey(KeyEvent.VK_LEFT, new Vector3(0, 1, 0), MovementType.LOCAL, 25.0d),
+				new MovementKey(KeyEvent.VK_OPEN_BRACKET, new Vector3(0, 1, 0), MovementType.LOCAL, -25.0d),
+				new MovementKey(KeyEvent.VK_LEFT, new Vector3(0, 1, 0), MovementType.LOCAL, -25.0d),
 				//Right
-				new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new Vector3(0, 1, 0), MovementType.LOCAL, -25.0d),
-				new MovementKey(KeyEvent.VK_RIGHT, new Vector3(0, 1, 0), MovementType.LOCAL, -25.0d),
+				new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new Vector3(0, 1, 0), MovementType.LOCAL, 25.0d),
+				new MovementKey(KeyEvent.VK_RIGHT, new Vector3(0, 1, 0), MovementType.LOCAL, 25.0d),
 		};
 		
 		CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator( movementKeys );
@@ -98,14 +100,13 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 		AxisAlignedBox cameraBounds = new AxisAlignedBox();
 		Vector3 cameraBackwards = camera.getAbsoluteTransformation().orientation.backward;
 		
-		cameraBackwards.multiply( 1.5d );
 		Point3 cameraMin = new Point3(camera.getAbsoluteTransformation().translation);
 		Point3 cameraMax = new Point3(cameraMin);
 		double originalY = cameraMin.y;
-		cameraMin.subtract( cameraBackwards );
-		cameraMin.y = 1.0d;
-		cameraMax.add( cameraBackwards );
-		cameraMax.y = originalY + .5d;
+		cameraMin.add( Vector3.createMultiplication( cameraBackwards, 1.5d) );
+		cameraMin.y = .25d;
+		cameraMax.subtract( Vector3.createMultiplication( cameraBackwards, 4.5d) );
+		cameraMax.y = originalY + 1.5d;
 		cameraBounds.setMinimum( cameraMin );
 		cameraBounds.setMaximum( cameraMax );
 		for (int i=0; i<this.manipulators.size(); i++)
