@@ -6,6 +6,33 @@ public class TestStencil {
 	public static void main( String[] args ) {
 		class Pane extends edu.cmu.cs.dennisc.swing.SpringPane {
 			private javax.swing.JButton[] buttons = { 
+					new javax.swing.JButton( "a" ), 
+					new javax.swing.JButton( "b" ), 
+					new javax.swing.JButton( "c" ), 
+					new javax.swing.JButton( "d" ), 
+					new javax.swing.JButton( "d" ), 
+					new javax.swing.JButton( "e" ), 
+					new javax.swing.JButton( "f" ), 
+					new javax.swing.JButton( "g" ), 
+					new javax.swing.JButton( "h" ), 
+					new javax.swing.JButton( "i" ), 
+					new javax.swing.JButton( "j" ), 
+					new javax.swing.JButton( "k" ), 
+					new javax.swing.JButton( "l" ), 
+					new javax.swing.JButton( "m" ), 
+					new javax.swing.JButton( "n" ), 
+					new javax.swing.JButton( "o" ), 
+					new javax.swing.JButton( "p" ), 
+					new javax.swing.JButton( "q" ), 
+					new javax.swing.JButton( "r" ), 
+					new javax.swing.JButton( "s" ), 
+					new javax.swing.JButton( "t" ), 
+					new javax.swing.JButton( "u" ), 
+					new javax.swing.JButton( "v" ), 
+					new javax.swing.JButton( "w" ), 
+					new javax.swing.JButton( "x" ), 
+					new javax.swing.JButton( "y" ), 
+					new javax.swing.JButton( "z" ), 
 					new javax.swing.JButton( "four score" ), 
 					new javax.swing.JButton( "and seven years ago" ), 
 					new javax.swing.JButton( "our forefathers brought forth" ), 
@@ -13,7 +40,17 @@ public class TestStencil {
 					new javax.swing.JButton( "a new nation," ),
 					new javax.swing.JButton( "conceived in Liberty," ), 
 					new javax.swing.JButton( "and dedicated to the proposition that" ), 
-					new javax.swing.JButton( "that all men are created equal." ) 
+					new javax.swing.JButton( "that all men are created equal." ), 
+					new javax.swing.JButton( "0" ), 
+					new javax.swing.JButton( "1" ), 
+					new javax.swing.JButton( "2" ), 
+					new javax.swing.JButton( "3" ), 
+					new javax.swing.JButton( "4" ), 
+					new javax.swing.JButton( "5" ), 
+					new javax.swing.JButton( "6" ), 
+					new javax.swing.JButton( "7" ), 
+					new javax.swing.JButton( "8" ), 
+					new javax.swing.JButton( "9" ) 
 			};
 
 			public Pane() {
@@ -33,26 +70,61 @@ public class TestStencil {
 					y += 32;
 				}
 			}
+			
+			public javax.swing.JButton getButtonWithText( String text ) { 
+				for( javax.swing.JButton button : this.buttons ) {
+					if( button.getText().equals( text ) ) {
+						return button;
+					}
+				}
+				return null;
+			}
 		}
 
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 
-		Pane pane = new Pane();
+		final Pane pane = new Pane();
 		pane.setPreferredSize( new java.awt.Dimension( 1000, 3000 ) );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( pane );
-		frame.getContentPane().add( new javax.swing.JButton( "top" ), java.awt.BorderLayout.NORTH );
-		frame.getContentPane().add( new javax.swing.JButton( "left" ), java.awt.BorderLayout.WEST );
-		frame.getContentPane().add( scrollPane, java.awt.BorderLayout.CENTER );
 
-		javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
+
+		final javax.swing.JLayeredPane layeredPane = frame.getLayeredPane();
 		final Stencil stencil = new Stencil( layeredPane );
 
-		final int MIN = 2;
-		final int MAX = 5;
+		javax.swing.JButton topButton = new javax.swing.JButton( "enable stencil" );
+		topButton.addActionListener( new java.awt.event.ActionListener() {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				layeredPane.add( stencil, javax.swing.JLayeredPane.DRAG_LAYER );
+			}
+		} );
+
+		javax.swing.JButton leftButton = new javax.swing.JButton( "scroll to \"0\"" );
+		leftButton.addActionListener( new java.awt.event.ActionListener() {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				javax.swing.JComponent component = pane.getButtonWithText( "0" );
+				component.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( component ) );
+			}
+		} );
+		frame.getContentPane().add( topButton, java.awt.BorderLayout.NORTH );
+		frame.getContentPane().add( leftButton, java.awt.BorderLayout.WEST );
+		frame.getContentPane().add( scrollPane, java.awt.BorderLayout.CENTER );
+
+		final int MIN = 27;
+		final int MAX = 31;
 		int i = 0;
 		java.util.List< Hole > holes = new java.util.LinkedList< Hole >();
-		for( javax.swing.JButton button : pane.buttons ) {
+		for( final javax.swing.JButton button : pane.buttons ) {
 			if( MIN <= i && i <= MAX ) {
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						if( button.isShowing() ) {
+							//pass
+						} else {
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: scrollToVisible is not going to work for (not yet showing):", button );
+						}
+						button.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( button ) );
+					}
+				} );
 				Hole hole = new Hole( button );
 				hole.setLeadingDecorator( new javax.swing.JButton( Integer.toString( i - MIN + 1 ) ) );
 				hole.setTrailingDecorator( new javax.swing.JButton( "inspect" ) );
@@ -97,7 +169,6 @@ public class TestStencil {
 //				stencil.revalidate();
 //			}
 //		} );
-		layeredPane.add( stencil, javax.swing.JLayeredPane.DRAG_LAYER );
 
 
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
