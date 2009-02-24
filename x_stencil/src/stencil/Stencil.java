@@ -1,15 +1,10 @@
 package stencil;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-
-import edu.cmu.cs.dennisc.print.PrintUtilities;
+//import java.awt.Dimension;
+//import java.awt.Rectangle;
+//
+//import javax.swing.JComponent;
+//import javax.swing.JScrollPane;
 
 public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	// private java.util.List< Hole > holes = new java.util.LinkedList< Hole >();
@@ -251,7 +246,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 					
 //					proxy.setPreferredSize( component.getSize() );
 //					Dimension clippedSize = getClippedBoundsFor((JComponent)component, scrollPane);
-					proxy.setPreferredSize( ((JComponent)component).getVisibleRect().getSize() );
+					proxy.setPreferredSize( ((javax.swing.JComponent)component).getVisibleRect().getSize() );
 					minX = Math.min( minX, p.x );
 					minY = Math.min( minY, p.y );
 				}
@@ -271,7 +266,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 					java.awt.Dimension size = proxy.getPreferredSize();
 					
 					
-					if (size.equals(new Dimension(0,0)) ){
+					if (size.equals(new java.awt.Dimension(0,0)) ){
 						if (hole.getLeadingDecorator() != null) hole.getLeadingDecorator().setVisible(false);
 						if (hole.getTrailingDecorator() != null) hole.getTrailingDecorator().setVisible(false);
 					} else {
@@ -308,7 +303,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 			if( scrollPane != null ) {
 				javax.swing.JViewport viewport = scrollPane.getViewport();
 				rectHole = javax.swing.SwingUtilities.convertRectangle( hole.getProxy().getParent(), rectHole, viewport.getParent() );
-				Rectangle viewRect = new Rectangle(viewport.getViewPosition(), viewport.getExtentSize());
+				java.awt.Rectangle viewRect = new java.awt.Rectangle(viewport.getViewPosition(), viewport.getExtentSize());
 				rectHole = rectHole.intersection( viewport.getVisibleRect() );
 				rectHole = javax.swing.SwingUtilities.convertRectangle( viewport.getParent(), rectHole, this.container );
 			} else {
@@ -363,7 +358,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		}
 	}
 	
-	protected Dimension getClippedBoundsFor( JComponent component, JScrollPane scrollPane ) {
+	protected java.awt.Dimension getClippedBoundsFor( javax.swing.JComponent component, javax.swing.JScrollPane scrollPane ) {
 	
 //		javax.swing.JViewport viewport = scrollPane.getViewport();
 //		// this always returns at view from 0,0 which is not correct behavior according to docs
