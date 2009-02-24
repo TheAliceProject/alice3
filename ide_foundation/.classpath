@@ -11,5 +11,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_issue"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch_gallery_generated"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_generated_depended_upon"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_private"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
