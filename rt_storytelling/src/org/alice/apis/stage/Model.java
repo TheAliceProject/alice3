@@ -29,6 +29,19 @@ import edu.cmu.cs.dennisc.alice.annotations.Visibility;
  * @author Dennis Cosgrove
  */
 public abstract class Model extends org.alice.apis.moveandturn.Model {
+	static {
+		java.io.File directory = new java.io.File( "/Program Files/Alice/3.beta.0025/application/gallery/org.alice.apis.stage/" );
+		if( directory.exists() ) {
+			for( java.io.File file : directory.listFiles() ) {
+				try {
+					edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
+				} catch( Throwable t ) {
+					t.printStackTrace();
+				}
+			}
+		}
+	}
+
 //public abstract class Model extends edu.wustl.cse.lookingglass.apis.walkandtouch.Person {
 	protected abstract boolean isEasilyTransformed();
 	protected abstract edu.cmu.cs.dennisc.nebulous.Model getNebulousModel();

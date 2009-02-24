@@ -57,11 +57,6 @@ public class Manager {
 	static {
 		try {
 			initializeIfNecessary();
-			
-			java.io.File directory = new java.io.File( "/Alice_nebulous/AliceBundles" );
-			for( java.io.File file : directory.listFiles() ) {
-				Manager.addBundle( file );
-			}
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			javax.swing.JOptionPane.showMessageDialog( null, "license rejected" );
 			//throw new RuntimeException( lre );
