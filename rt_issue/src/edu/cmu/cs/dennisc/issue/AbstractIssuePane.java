@@ -320,11 +320,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		rv.setEnvironment( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
 		return rv;
 	}
-	private Issue createIssue() {
-		Issue rv = new Issue();
-		updateIssue( rv );
-		return rv;
-	}
+	protected abstract Issue createIssue();
 	private String getSummary() {
 		return this.vcSummary.getText();
 	}
@@ -361,13 +357,13 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		return rv;
 	}
 	
-	protected StringBuffer updateSubject( StringBuffer rv ) {
+	protected StringBuffer updateMailSubject( StringBuffer rv ) {
 		rv.append( this.getSummary() );
 		return rv;
 	}
-	private String getSubject() {
+	protected final String getMailSubject() {
 		StringBuffer sb = new StringBuffer();
-		updateSubject( sb );
+		updateMailSubject( sb );
 		return sb.toString();
 	}
 	
@@ -390,6 +386,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	//protected abstract void sendMail( Issue issue, String subject, String reporterEMailAddress, String reporterName ) throws Exception;
 	protected boolean submit() {
 		Issue issue = this.createIssue();
+		updateIssue( issue );
 		ProgressPane progressPane = new ProgressPane();
 		final String RPC_PATH  = "/rpc/xmlrpc";
 		java.net.URL jiraURL;
@@ -398,7 +395,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		} catch( java.net.MalformedURLException murl ) {
 			throw new RuntimeException( murl );
 		}
-		progressPane.initializeAndExecuteWorker( issue, jiraURL, this.getJIRAAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getSubject(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient() );
+		progressPane.initializeAndExecuteWorker( issue, jiraURL, this.getJIRAAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient() );
 
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );

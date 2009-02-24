@@ -78,7 +78,20 @@ public class JIRATest {
 			    System.out.println( "\t" + project );
 		    }
 
-		    edu.cmu.cs.dennisc.issue.Issue issue = new edu.cmu.cs.dennisc.issue.Issue();
+		    edu.cmu.cs.dennisc.issue.Issue issue = new edu.cmu.cs.dennisc.issue.Issue() {
+		    	@Override
+		    	public String getJIRASummary() {
+		    		return this.getSummary();
+		    	}
+		    	@Override
+		    	public String getMailSubject() {
+		    		return this.getSummary();
+		    	}
+		    	@Override
+		    	public String getMailBody() {
+		    		return this.getDescription();
+		    	}
+		    };
 		    issue.setType( edu.cmu.cs.dennisc.issue.Issue.Type.BUG );
 		    issue.setSummary( new java.util.Date().toString() );
 		    issue.setDescription( "the current date string" );

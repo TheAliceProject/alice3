@@ -47,6 +47,13 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaught
 		return "alice.bugs.3.beta.xxxx@gmail.com";
 	}
 
+	@Override
+	protected StringBuffer updateMailSubject( StringBuffer rv ) {
+		rv.append( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
+		rv.append( " " );
+		return super.updateMailSubject( rv );
+	}
+
 //	private javax.swing.JCheckBox vcUploadProject = null;
 //	@Override
 //	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
@@ -71,12 +78,5 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaught
 ////			}
 ////		} );
 //		return rv;
-//	}
-//
-//	@Override
-//	protected StringBuffer updateSubject( StringBuffer rv ) {
-//		rv.append( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
-//		rv.append( " " );
-//		return super.updateSubject( rv );
 //	}
 }

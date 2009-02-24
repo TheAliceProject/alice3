@@ -95,7 +95,7 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 		this.revalidate();
 	}
 	@Override
-	protected StringBuffer updateSubject( StringBuffer rv ) {
+	protected StringBuffer updateMailSubject( StringBuffer rv ) {
 		Throwable throwable = this.vcExceptionPane.getThrowable();
 		if( throwable != null ) {
 			rv.append( "exception: " );
@@ -124,8 +124,32 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 				}
 //			}
 		}
-		super.updateSubject( rv );
+		super.updateMailSubject( rv );
 		return rv;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.issue.Issue createIssue() {
+		return new edu.cmu.cs.dennisc.issue.Issue() {
+			@Override
+			public String getJIRASummary() {
+				String rv = this.getSummary();
+				if( rv != null && rv.length() > 0 ) {
+					//pass
+				} else {
+					//rv = this.getMailSubject();
+					rv = "unspecified";
+				}
+				return rv;
+			}
+			@Override
+			public String getMailSubject() {
+				return AbstractCaughtExceptionPane.this.getMailSubject();
+			}
+			@Override
+			public String getMailBody() {
+				return "detailed decription:\n" + this.getDescription() + "\n\nsteps to reproduce:\n" + this.getSteps();
+			}
+		};
 	}
 	
 	@Override

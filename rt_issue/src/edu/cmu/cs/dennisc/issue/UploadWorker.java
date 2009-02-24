@@ -36,7 +36,6 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 
 	private String mailServer;
 	private edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator;
-	private String subject;
 	private String reporterEMailAddress;
 	private String reporterName;
 	private String recipient;
@@ -45,13 +44,12 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 		assert progressPane != null;
 		this.progressPane = progressPane;
 	}
-	public void initialize( Issue issue, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.Authenticator jiraAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String subject, String reporterEMailAddress, String reporterName, String recipient ) {
+	public void initialize( Issue issue, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.Authenticator jiraAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient ) {
 		this.jiraServer = jiraServer;
 		this.jiraAuthenticator = jiraAuthenticator;
 		this.mailServer = mailServer;
 		this.mailAuthenticator = mailAuthenticator;
 		this.issue = issue;
-		this.subject = subject;
 		this.reporterEMailAddress = reporterEMailAddress;
 		this.reporterName = reporterName;
 		this.recipient = recipient;
@@ -83,14 +81,6 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 		//todo?
 		return this.reporterName;
 	}
-	private String getSubject() {
-		//todo?
-		return this.subject;
-	}
-	private String getBody() {
-		//todo
-		return "TODO: body";
-	}
 	
 	protected void uploadToJIRA() throws Exception {
 		final boolean STREAM_MESSAGES = true;
@@ -115,19 +105,18 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 	}
 
 	protected void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride ) throws Exception {
-		StringBuffer sb = new StringBuffer();
-		if( isTransportLayerSecurityDesired ) {
-			sb.append( "SECURE: " );
-		} else {
-			sb.append( "unsecure: " );
-		}
-		if( portOverride != null ) {
-			sb.append( "port override: " );
-			sb.append( portOverride );
-		}
-		String subject = sb.toString();
-
-		edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.mailServer, this.mailAuthenticator, this.getReplyTo(), this.getReplyToPersonal(), this.recipient, this.getSubject(), this.getBody(), this.issue.getAttachments() );
+//		StringBuffer sb = new StringBuffer();
+//		if( isTransportLayerSecurityDesired ) {
+//			sb.append( "SECURE: " );
+//		} else {
+//			sb.append( "unsecure: " );
+//		}
+//		if( portOverride != null ) {
+//			sb.append( "port override: " );
+//			sb.append( portOverride );
+//		}
+//		String subject = sb.toString();
+		edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.mailServer, this.mailAuthenticator, this.getReplyTo(), this.getReplyToPersonal(), this.recipient, this.issue.getMailSubject(), this.issue.getMailBody(), this.issue.getAttachments() );
 		////		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
 		////		throw new Exception();
 	}

@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.issue;
 /**
  * @author Dennis Cosgrove
  */
-public class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingToString {
+public abstract class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingToString {
 	public enum Type {
 		BUG, NEW_FEAURE, IMPROVEMENT
 	}
@@ -85,6 +85,10 @@ public class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingTo
 	public java.util.List< edu.cmu.cs.dennisc.mail.Attachment > getAttachments() {
 		return this.attachments;
 	}
+
+	public abstract String getMailSubject();
+	public abstract String getMailBody();
+	public abstract String getJIRASummary();
 
 	@Override
 	protected StringBuffer updateRepr( StringBuffer rv ) {
