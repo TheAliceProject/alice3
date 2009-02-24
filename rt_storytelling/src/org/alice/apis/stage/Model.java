@@ -22,6 +22,8 @@
  */
 package org.alice.apis.stage;
 
+import org.alice.apis.moveandturn.gallery.GalleryRootUtilities;
+
 import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 
@@ -30,7 +32,8 @@ import edu.cmu.cs.dennisc.alice.annotations.Visibility;
  */
 public abstract class Model extends org.alice.apis.moveandturn.Model {
 	static {
-		java.io.File directory = new java.io.File( "/Program Files/Alice/3.beta.0025/application/gallery/org.alice.apis.stage/" );
+		java.io.File root = GalleryRootUtilities.calculateGalleryRootDirectory( Model.class, "/Alice/3.beta.0025/gallery", "gallery", "assets", "org.alice.apis.stage", "Cannot find The Sims (TM) 2 Art Assets", "Alice" );
+		java.io.File directory = new java.io.File( root, "assets/org.alice.apis.stage" ); 
 		if( directory.exists() ) {
 			for( java.io.File file : directory.listFiles() ) {
 				try {
@@ -39,6 +42,8 @@ public abstract class Model extends org.alice.apis.moveandturn.Model {
 					t.printStackTrace();
 				}
 			}
+		} else {
+			javax.swing.JOptionPane.showMessageDialog( null, "cannot find The Sims (TM) 2 Art Assets" );
 		}
 	}
 

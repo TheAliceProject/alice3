@@ -26,6 +26,10 @@ package org.alice.apis.moveandturn.gallery;
  * @author Dennis Cosgrove
  */
 public class GalleryRootUtilities {
+	private static java.io.File APPLICATION_ROOT;
+	static {
+		APPLICATION_ROOT = new java.io.File( System.getProperty( "user.dir" ) );
+	}
 	private static final String ROOT_PATH_KEY = "rootPath";
 	public static java.io.File calculateGalleryRootDirectory( Class<?> cls, String subPath, String name, String childName, String grandchildName, String titleForPromptingUserToSpecifyOrInstall, String applicationName ) {
 		java.io.File rv = null;
@@ -43,7 +47,11 @@ public class GalleryRootUtilities {
 			}
 			potentialPaths.add( "c:/Program Files" + subPath );
 			potentialPaths.add( "c:/Program Files (x86)" + subPath );
-
+			if( APPLICATION_ROOT != null && APPLICATION_ROOT.exists() ) {
+				potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( APPLICATION_ROOT ) + subPath );
+				potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( APPLICATION_ROOT.getParentFile() ) + subPath );
+			}
+			
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
 			String rootPathUserPreference = userPreferences.get( ROOT_PATH_KEY, null );
 			if( rootPathUserPreference != null ) {
