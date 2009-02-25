@@ -25,19 +25,20 @@ package org.alice.apis.stage;
 /**
  * @author Dennis Cosgrove
  */
-public enum BooStyle {
-	NORMAL( Adult.Cycle.BOO ),
-	LOUD( Adult.Cycle.BOO_LOUDLY );
-	private Adult.Cycle m_subjectCycle;
-	BooStyle( Adult.Cycle subjectCycle ) {
-		m_subjectCycle = subjectCycle;
+public enum SearchForSourceOfOdorStyle {
+	//perform( Cycle.DISCOVER_ARM_PIT_REEKS_SUBTLY );
+	//perform( Cycle.DISCOVER_ARM_PIT_REEKS );
+	DISCOVER_UNDER_ARM( Adult.Cycle.SMELL_UNDERARMS_APPROVINGLY ),
+	FAIL_TO_DISCOVER_UNDER_ARM( Adult.Cycle.SMELL_UNDERARMS_WITHOUT_REACHING_CONCLUSION );
+	private Adult.Cycle m_cycle;
+	SearchForSourceOfOdorStyle( Adult.Cycle cycle ) {
+		m_cycle = cycle;
 	}
-	//todo: rename
-	public Adult.Cycle getSubjectCycle() {
-		return m_subjectCycle;
+	public Adult.Cycle getCycle() {
+		return m_cycle;
 	}
-	public static BooStyle getRandom() {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BooStyle.class );
+	public static SearchForSourceOfOdorStyle getRandom() {
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( SearchForSourceOfOdorStyle.class );
 	}
 }
 	

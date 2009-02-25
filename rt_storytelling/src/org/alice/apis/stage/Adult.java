@@ -852,35 +852,6 @@ public abstract class Adult extends Person {
 //	SLOUCHED_BREATHE_WITH_HEAD_BACK( State.SLOUCHED_WEIGHT_ON_RIGHT_FOOT ),
 	
 	
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void belch() {
-		perform( Cycle.BELCH );
-	}
-
-	
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void fart( FartStyle fartStyle ) {
-		perform( fartStyle.getCycle() );
-	}
-	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void fart() {
-		fart( FartStyle.WITH_A_QUICK_SNIFF );
-	}
-
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void hockALoogie() {
-		perform( Cycle.HOCK_LOOGEY );
-	}
-
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void snortPhlegm() {
-		perform( Cycle.SNIFF_PHELGM );
-	}
-	
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void pickRearEnd() {
-		perform( Cycle.PICK_REAR_END );
-	}
 
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void attemptToIntimidate( IntimidationStyle intimidationStyle ) {
@@ -905,78 +876,258 @@ public abstract class Adult extends Person {
 //		perform( Cycle.SWOON );
 //	}
 	
-//	HOPEFUL_SIGH( State.HANDS_AT_SIDES ),
-//	NOD_WITH_MIND_SOMEWHERE_ELSE( State.HANDS_AT_SIDES ),
-//	OUTGOING_CIRCLE_FISTS( State.HANDS_AT_SIDES ),
-//	CLAP_HEY_THERE( State.HANDS_AT_SIDES ),
-//	POINT_BOTH_HANDS( State.HANDS_AT_SIDES ),
-//	POINT_BOTH_HANDS_WITH_A_FLOURISH( State.HANDS_AT_SIDES ),
-//	GIVE_THUMBS_UP( State.HANDS_AT_SIDES ),
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void sighHopefully() {
+		perform( Cycle.HOPEFUL_SIGH );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void nodWithMindSomewhereElse() {
+		perform( Cycle.NOD_WITH_MIND_SOMEWHERE_ELSE );
+	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void groove() {
+		perform( Cycle.OUTGOING_CIRCLE_FISTS );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void pointWithBothHands( PointWithBothHandsStyle pointWithBothHandsStyle ) {
+		perform( pointWithBothHandsStyle.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void pointWithBothHands() {
+		pointWithBothHands( PointWithBothHandsStyle.NORMAL );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void giveThumbsUp() {
+		perform( Cycle.GIVE_THUMBS_UP );
+	}
 //	FLIRTATIOUS_POSE_AND_WAVE( State.HANDS_AT_SIDES ),
-//	RIGHT_HAND_TALK_TO_FACE( State.PREPARED_TO_PLAY_HANDS_TALKING ),
-//	LEFT_HAND_TALK_TO_FACE( State.HANDS_AT_SIDES ),
-//	RIGHT_HAND_AND_LEFT_HAND_TALK( State.HANDS_AT_SIDES ),
-//	RIGHT_HAND_ATTACK_LEFT_HAND( State.HANDS_AT_SIDES ),
-//	MIME_UP_AND_DOWN( State.PREPARED_TO_MIME ),
-//	MIME_SIDE_TO_SIDE( State.PREPARED_TO_MIME ),
-//	MIME_SIDE_TO_SIDE_EXAGERATEDLY( State.PREPARED_TO_MIME ),
-//	ROCK_BACK_AND_FORTH( State.HANDS_AT_SIDES ),
-//	SPAR_IN_PLACE( State.HANDS_AT_SIDES ),
-//	SHUFFLE_FEET_HEAL_TO_TOE( State.HANDS_AT_SIDES ),
-//	BITE_THUMB( State.LOOKING_AT_FLOOR ),
-//	FIDGET_FINGERS( State.LOOKING_AT_FLOOR ),
-//	SHIFT_LOOK( State.LOOKING_AT_FLOOR ),
-//	SHIFT_WEIGHT( State.LOOKING_AT_FLOOR ),
-//	WRING_HANDS( State.LOOKING_AT_FLOOR ),
-//	SLOUCHED_STRETCH( State.LOOKING_AT_FLOOR ),
-//	ACT_COY( State.LOOKING_AT_FLOOR ),
-//	FLICK_LINT( State.LOOKING_AT_FLOOR ),
-//	RUN_HAND_THROUGH_HAIR( State.LOOKING_AT_FLOOR ),
-//	SCRATCH_ARM_PIT( State.HANDS_AT_SIDES ),
-//	RUB_UNDERNEATH_NOSE( State.HANDS_AT_SIDES ),
-//	SCRATCH_HEAD( State.HANDS_AT_SIDES ),
-//	WIPE_MOUTH( State.HANDS_AT_SIDES ),
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void talkWithRightHandToFace() {
+		perform( Cycle.RIGHT_HAND_TALK_TO_FACE );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void talkWithLeftHandToFace() {
+		perform( Cycle.LEFT_HAND_TALK_TO_FACE );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void talkBackAndForthBetweenHands() {
+		perform( Cycle.RIGHT_HAND_AND_LEFT_HAND_TALK );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void attackLeftHandWithRightHand() {
+		perform( Cycle.RIGHT_HAND_ATTACK_LEFT_HAND );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void mimeUpAndDown() {
+		perform( Cycle.MIME_UP_AND_DOWN );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void mimeSideToSide() {
+		perform( Cycle.MIME_SIDE_TO_SIDE_EXAGERATEDLY );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void mimeStuckInBox() {
+		perform( Cycle.MIME_SIDE_TO_SIDE );
+	}
+	
+	//todo: name
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void rockBackAndForth( RockBackAndForthStyle rockBackAndForthStyle ) {
+		perform( rockBackAndForthStyle.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void rockBackAndForth() {
+		rockBackAndForth( RockBackAndForthStyle.POPPING_FIST_IN_HAND );
+	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void sparInPlace() {
+		perform( Cycle.SPAR_IN_PLACE );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void shuffleFeet() {
+		perform( Cycle.SHUFFLE_FEET_HEAL_TO_TOE );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void demostrateShyness( DemonstrateShynessStyle demonstrateShynessStyle ) {
+		perform( demonstrateShynessStyle.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void demostrateShyness() {
+		demostrateShyness( DemonstrateShynessStyle.ACT_COY );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void shylyRunHandThroughHair() {
+		perform( Cycle.RUN_HAND_THROUGH_HAIR );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void scratchArmPit() {
+		perform( Cycle.SCRATCH_ARM_PIT );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void rubUnderneathNose() {
+		perform( Cycle.RUB_UNDERNEATH_NOSE );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void scratchHead() {
+		perform( Cycle.SCRATCH_HEAD );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void wipeMouth() {
+		perform( Cycle.WIPE_MOUTH );
+	}
+
 //	SCRATCH_HEAD_FROM_ARMS_ON_HIPS_POSE( State.HANDS_ON_HIPS ),
 //	RUB_UNDERNEATH_NOSE_FROM_ARMS_ON_HIPS_WEIGHT_SHIFTED_RIGHT_POSE( State.HANDS_ON_HIPS_WEIGHT_SHIFTED_RIGHT ),
 //	CHECK_NAILS_FROM_ARMS_ON_HIPS_WEIGHT_SHIFTED_RIGHT_POSE( State.HANDS_ON_HIPS_WEIGHT_SHIFTED_RIGHT ),
-//	SCUFF_LEFT_FOOT( State.HANDS_ON_HIPS_WEIGHT_SHIFTED_RIGHT ),
-//	BRUSH_THIGHS( State.HANDS_AT_SIDES ),
-//	SCRATCH_FOREARM( State.HANDS_AT_SIDES_WEIGHT_SHIFTED_RIGHT ),
-//	LOOSEN_UP_FINGERS( State.HANDS_AT_SIDES ),
-//	ROCK_BACK_AND_FORTH_WITH_ARMS_CROSSED( State.ARMS_CROSSED ),
-//	TAP_LIP_FOR_INSPIRATION( State.HANDS_AT_SIDES ),
-//	STRETCH_SHOULDERS( State.HANDS_AT_SIDES ),
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void checkNails() {
+		perform( Cycle.CHECK_NAILS_FROM_ARMS_ON_HIPS_WEIGHT_SHIFTED_RIGHT_POSE );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void scuffFoot() {
+		perform( Cycle.SCUFF_LEFT_FOOT );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void brushThighs() {
+		perform( Cycle.BRUSH_THIGHS );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void scratchForearm() {
+		perform( Cycle.SCRATCH_FOREARM );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void loosenUpFingers() {
+		perform( Cycle.LOOSEN_UP_FINGERS );
+	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void stretchShoulders() {
+		perform( Cycle.STRETCH_SHOULDERS );
+	}
+
 //	CRACK_KNUCKLES_TO_LOOSEN_THEM( State.HANDS_AT_SIDES_WEIGHT_SHIFTED_RIGHT ),
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void rubNeck() {
 		perform( Cycle.RUB_NECK );
 	}
-//	BRUSH_HAIR_FROM_FACE( State.HANDS_ON_HIPS_WEIGHT_SHIFTED_RIGHT ),
-//	TWIST_TORSO( State.ARMS_CROSSED ),
-//	SHIFT_WEIGHT_BACK_AND_FORTH( State.ARMS_CROSSED_WEIGHT_SHIFTED_RIGHT ),
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void rubChin() {
 		perform( Cycle.RUB_CHIN );
 	}
-//	REALIZE_SOMETHING( State.HANDS_AT_SIDES ),
-//	TAP_TEMPLE( State.HANDS_AT_SIDES ),
-//	PRIMAL_SCREAM( State.HANDS_AT_SIDES ),
-//	DEEP_SIGH( State.DEPRESSED ),
-//	SHAKE_HEAD( State.DEPRESSED ),
-//	BEMOAN_WHY_ME( State.DEPRESSED ),
-//	KICK_IN_FRUSTRATION( State.DEPRESSED ),
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void brushHairFromFace() {
+		perform( Cycle.BRUSH_HAIR_FROM_FACE );
+	}
+
+//	TWIST_TORSO( State.ARMS_CROSSED ),
+//	SHIFT_WEIGHT_BACK_AND_FORTH( State.ARMS_CROSSED_WEIGHT_SHIFTED_RIGHT ),
+
+//	//todo: rename
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void tapLipForInspiration() {
+//		perform( Cycle.TAP_LIP_FOR_INSPIRATION );
+//	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void tapTemple() {
+		perform( Cycle.TAP_TEMPLE );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void realizeSomething() {
+		perform( Cycle.REALIZE_SOMETHING );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void scream() {
+		perform( Cycle.PRIMAL_SCREAM );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void sighDeeply() {
+		perform( Cycle.DEEP_SIGH );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void shakeHeadDejectedly() {
+		perform( Cycle.SHAKE_HEAD );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void bemoanWhyMe() {
+		perform( Cycle.BEMOAN_WHY_ME );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void kickInFrustration() {
+		perform( Cycle.KICK_IN_FRUSTRATION );
+	}
+
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void cavort() {
 		perform( Cycle.CAVORT );
 	}
-//	PRACTICE_FRIENDLY_HUG( State.HANDS_AT_SIDES ),
-//	PRACTICE_ROMANTIC_HUG( State.HANDS_AT_SIDES ),
-//	PRACTICE_FRIENDLY_KISS( State.HANDS_AT_SIDES ),
-//	PRACTICE_ROMANTIC_KISS( State.HANDS_AT_SIDES ),
+
+////	PRACTICE_ROMANTIC_HUG( State.HANDS_AT_SIDES ),
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void practiceHug() {
+//		perform( Cycle.PRACTICE_FRIENDLY_HUG );
+//	}
+//
+////	PRACTICE_ROMANTIC_KISS( State.HANDS_AT_SIDES ),
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void practiceKiss() {
+//		perform( Cycle.PRACTICE_FRIENDLY_KISS );
+//	}
+
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void demonstrateTheNeedToUrinate() {
 		perform( Cycle.DEMONSTRATE_A_NEED_TO_URINATE );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void searchForSourceOfOdor( SearchForSourceOfOdorStyle smellArmpitStyle ) {
+		perform( smellArmpitStyle.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void searchForSourceOfOdor() {
+		searchForSourceOfOdor( SearchForSourceOfOdorStyle.DISCOVER_UNDER_ARM );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void hockALoogie() {
+		perform( Cycle.HOCK_LOOGEY );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void snortPhlegm() {
+		perform( Cycle.SNIFF_PHELGM );
+	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void pickRearEnd() {
+		perform( Cycle.PICK_REAR_END );
+	}
+//	DEMOSTRATE_MENTAL_ANGUISH( State.HANDS_AT_SIDES ),
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void wetPants() {
+		perform( Cycle.WET_PANTS );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void belch() {
+		perform( Cycle.BELCH );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void fart( FartStyle fartStyle ) {
+		perform( fartStyle.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void fart() {
+		fart( FartStyle.WITH_A_QUICK_SNIFF );
+	}
+
 //	FEEL_BACK( State.HANDS_AT_SIDES ),
 //	FEEL_NECK( State.HANDS_AT_SIDES ),
 //	CATCH_ONESELF_ALMOST_FALLING_ASLEEP( State.HANDS_AT_SIDES ),
@@ -994,22 +1145,31 @@ public abstract class Adult extends Person {
 		perform( Cycle.DEMONSTRATE_THIRST );
 	}
 	
-//	DISCOVER_ARM_PIT_REEKS_SUBTLY( State.HANDS_AT_SIDES ),
-//	DISCOVER_ARM_PIT_REEKS( State.HANDS_AT_SIDES ),
-//	DEMOSTRATE_MENTAL_ANGUISH( State.HANDS_AT_SIDES ),
-//	WET_PANTS( State.HANDS_AT_SIDES ),
+
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void demonstrateNausea() {
 		perform( Cycle.DEMOSTRATE_NAUSEA );
 	}
+	
+	//examineHair( ReflectiveSurface ) //mirror, window, stainlessSteelFridge
 //	EXAMINE_HAIR_IN_MIRROR( State.PREPARED_TO_GUSSY_UP ),
-//	SMELL_BREATH( State.PREPARED_TO_GUSSY_UP ),
+	
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void smellBreath() {
+//		perform( Cycle.SMELL_BREATH );
+//	}
+	
 //	EXAMINE_FACE_IN_MIRROR( State.PREPARED_TO_GUSSY_UP ),
 //	BRUSH_SHOULDER_FROM_PREEN( State.PREPARED_TO_PREEN ),
 //	BRUSH_PANTS_FROM_PREEN( State.PREPARED_TO_PREEN ),
 //	EXAMINE_SELF( State.PREPARED_TO_PREEN ),
-//	PICK_AT_LINT_ON_PANTS( State.PREPARED_TO_PREEN ),
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void pickAtLintOnPants() {
+		perform( Cycle.PICK_AT_LINT_ON_PANTS );
+	}
 //	CLAP_AND_POINT_WITH_BOTH_HANDS( State.HANDS_AT_SIDES ),
+
 //	DISPLAY_SIGN( State.PREPARED_TO_PANHANDLE ),
 //	RATTLE_CAN_FOR_PASSERSBY( State.PREPARED_TO_PANHANDLE ),
 //	RATTLE_CAN( State.PREPARED_TO_PANHANDLE ),
@@ -1022,40 +1182,98 @@ public abstract class Adult extends Person {
 //	HOWL_WITH_LABOR_PAINS( State.GOING_INTO_LABOR ),
 //	YELL_WITH_LABOR_PAINS( State.GOING_INTO_LABOR ),
 //	APPLAUD( State.HANDS_AT_SIDES ),
-//	EXPRESS_NO_WAY_IN_DISGUST( State.HANDS_AT_SIDES ),
-//	SIGH_IN_DISGUST( State.HANDS_AT_SIDES ),
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void sighInDisjust() {
+		perform( Cycle.SIGH_IN_DISGUST );
+	}
 //	GREET_WITH_A_FLOURISH( State.HANDS_AT_SIDES ),
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void fanSelf() {
+		perform( Cycle.FAN_SELF );
+	}
 //	FAN_SELF( State.HANDS_AT_SIDES ),
 //	EXAGGERATED_SWOON( State.HANDS_AT_SIDES ),
-//	CAT_CALL( State.HANDS_AT_SIDES ),
-//	BOO( State.HANDS_AT_SIDES ),
-//	BOO_LOUDLY( State.HANDS_AT_SIDES ),
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void catCall() {
+//		perform( Cycle.CAT_CALL );
+//	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void boo( BooStyle booStyle ) {
+		perform( booStyle.getSubjectCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void boo() {
+		boo( BooStyle.NORMAL );
+	}
+
 //	CLAP_WITH_FIST_PUMP( State.HANDS_AT_SIDES ),
 //	CHEER( State.PREPARED_TO_CHEER ),
 //	CLEAR_THROAT( State.HANDS_AT_SIDES ),
 //	WAIL( State.PREPARED_TO_CRY ),
 //	SOB( State.PREPARED_TO_CRY ),
 //	REFUSE_IN_A_KEEP_IT_AWAY_FROM_ME_POSTURE( State.HANDS_AT_SIDES ),
-//	RETCH( State.HANDS_AT_SIDES ),
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void retch() {
+		perform( Cycle.RETCH );
+	}
 //	EXPRESS_EMBARRASSMENT( State.PREPARED_TO_EXPRESS_EMBARRASSMENT ),
 //	EXPRESS_MORTIFIED_EMBARRASSMENT( State.PREPARED_TO_EXPRESS_EMBARRASSMENT ),
-//	CRAZY_SIGN( State.HANDS_AT_SIDES ),
-//	GIGGLE( State.PREPARED_TO_LAUGH ),
-//	CHUCKLE( State.PREPARED_TO_LAUGH ),
-//	SNICKER( State.PREPARED_TO_LAUGH ),
-//	LAUGH_WITH_HANDS_ON_BELLY( State.PREPARED_TO_LAUGH_BIG ),
-//	LAUGH_WITH_HANDS_ON_FACE( State.PREPARED_TO_LAUGH_BIG ),
-//	LAUGH_WITH_CLAP( State.PREPARED_TO_LAUGH_BIG ),
-//	COVER_EARS_TO_SHIELD_LOUD_NOISE( State.HANDS_COVERING_EARS ),
-//	SHRUG_OH_WELL( State.HANDS_AT_SIDES ),
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void makeCrazySign() {
+		perform( Cycle.CRAZY_SIGN );
+	}
+
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void laugh( LaughStyle laughStyle ) {
+//		perform( laughStyle.getCycle() );
+//	}
+//	@MethodTemplate( visibility=Visibility.CHAINED )
+//	public void laugh() {
+//		laugh( LaughStyle.CHUCKLE );
+//	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void coverEars() {
+		perform( Cycle.COVER_EARS_TO_SHIELD_LOUD_NOISE );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void coverMouth() {
+		perform( Cycle.COVER_MOUTH_IN_SHOCK );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void coverEyes() {
+		perform( Cycle.COVER_EYES_IN_AVERSION );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void shrug( ShrugStyle shrugStyle ) {
+		perform( shrugStyle.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void shrug() {
+		shrug( ShrugStyle.AS_IF_TO_SAY_OH_WELL );
+	}
 //	EXAGGERATED_PINING_SIGH( State.PREPARED_TO_PINE ),
-//	CHECK_FOR_RAIN( State.HANDS_AT_SIDES ),
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void checkForRain() {
+		perform( Cycle.CHECK_FOR_RAIN );
+	}
 //	SIGH_DEVASTATEDLY( State.DEVASTATED ),
 //	SIGH_DEVASTATEDLY_WITH_NOSE_WIPE( State.DEVASTATED ),
 //	RECOIL_IN_SHOCK( State.HANDS_AT_SIDES ),
-//	SHOO( State.HANDS_AT_SIDES ),
-//	EXAGGERATED_SHOO( State.HANDS_AT_SIDES ),
-//	SHRUG_I_DONT_KNOW( State.HANDS_AT_SIDES ),
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void recoilInShock() {
+		perform( Cycle.RECOIL_IN_SHOCK );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void shoo( ShooStyle shooStyle ) {
+		perform( shooStyle.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void shoo() {
+		shoo( ShooStyle.NORMAL );
+	}
 //	SIGH( State.HANDS_AT_SIDES ),
 //	WAVE_AWAY_FOUL_SCENT( State.NOSE_COVERED ),
 //	TEST_SNIFF_OF_FOUL_SCENT( State.NOSE_COVERED ),
@@ -1069,50 +1287,81 @@ public abstract class Adult extends Person {
 	}
 //	EXPRESS_STARTLE( State.HANDS_AT_SIDES ),
 //	JUMP_IN_EXTREME_SURPRISE( State.HANDS_AT_SIDES ),
-//	STAMP_FOOT( State.PREPARED_TO_HAVE_INTENSE_TANTRUM ),
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void stampFoot() {
+		perform( Cycle.STAMP_FOOT );
+	}
 //	EXPRESS_WHY_ME( State.PREPARED_TO_HAVE_INTENSE_TANTRUM ),
-//	THROW_INTENSE_TANTRUM( State.PREPARED_TO_HAVE_INTENSE_TANTRUM ),
-//	COVER_MOUTH_IN_SHOCK( State.PREPARED_TO_CRINGE ),
-//	COVER_EYES_IN_AVERSION( State.PREPARED_TO_CRINGE ),
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void throwTantrum() {
+//		perform( Cycle.THROW_INTENSE_TANTRUM );
+//	}
 //	CLENCH_HANDS_IN_WORRY( State.PREPARED_TO_CRINGE ),
 //	WAVE( State.HANDS_AT_SIDES ),
-//	POINT_SCOLDINGLY( State.HANDS_AT_SIDES ),
-//	REJECT_FLATLY( State.HANDS_AT_SIDES ),
-//	REJECT_MENTALLY_SPENT( State.HANDS_AT_SIDES ),
-//	REJECT_MEEKLY( State.HANDS_AT_SIDES ),
-//	LISTEN_IN_AGREEMENT( State.HANDS_AT_SIDES ),
-//	LISTEN_QUESTIONINGLY( State.HANDS_AT_SIDES ),
-//	LISTEN_WITH_HANDS_TOGETHER( State.HANDS_AT_SIDES ),
-//	DEBATE_POINT_WITH_FINGER_WAG( State.HANDS_AT_SIDES ),
-//	DEBATE_POINT_WITH_HAND_CHOPS( State.HANDS_AT_SIDES ),
-//	DEBATE_POINT_WITH_BOTH_SIDES_OF_THE_ISSUE( State.HANDS_AT_SIDES ),
-//	CONTEMPLATE_AND_RESPOND( State.HANDS_AT_SIDES ),
-//	BELCH_THUNDEROUSLY( State.HANDS_AT_SIDES ),
-//	FART( State.HANDS_AT_SIDES ),
-//	SMELL_UNDERARMS_APPROVINGLY( State.HANDS_AT_SIDES ),
-//	SMELL_UNDERARMS_WITHOUT_REACHING_CONCLUSION( State.HANDS_AT_SIDES ),
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void sneeze() {
-		perform( Cycle.SNEEZE );
+	public void pointScoldinginly() {
+		perform( Cycle.POINT_SCOLDINGLY );
 	}
-//	CALL_OUT( State.HANDS_AT_SIDES ),
-//	INVITE_TO_ACCEPT_HUG( State.GREETING_WITH_OPEN_ARMS ),
-//	CALL_OVER_WITH_WAVE( State.HANDS_AT_SIDES ),
-//	CALL_OVER_WITH_WHISTLE( State.HANDS_AT_SIDES ),
 
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void boo( BooStyle booStyle ) {
-		perform( booStyle.getSubjectCycle() );
+	public void reject( RejectStyle rejectStyle ) {
+		perform( rejectStyle.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
-	public void boo() {
-		boo( BooStyle.NORMAL );
+	public void reject() {
+		reject( RejectStyle.ASSERTIVELY );
 	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void listen( ListenStyle listenStyle ) {
+		perform( listenStyle.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public void listen() {
+		listen( ListenStyle.WITH_HANDS_TOGETHER );
+	}
+
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void actCoy() {
-		perform( Cycle.ACT_COY );
+	public void pointOutBothSidesOfAnIssue() {
+		perform( Cycle.DEBATE_POINT_WITH_BOTH_SIDES_OF_THE_ISSUE );
 	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void debatePoint() {
+		perform( Cycle.DEBATE_POINT_WITH_FINGER_WAG );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void performHandChops() {
+		perform( Cycle.DEBATE_POINT_WITH_HAND_CHOPS );
+	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void contemplateAndRespond() {
+		perform( Cycle.CONTEMPLATE_AND_RESPOND );
+	}
+
+
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void sneeze() {
+//		perform( Cycle.SNEEZE );
+//	}
+
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void callOut() {
+		perform( Cycle.CALL_OUT );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void inviteToAcceptHug() {
+		perform( Cycle.INVITE_TO_ACCEPT_HUG );
+	}
+//	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+//	public void callOver( CallOverStyle callOverStyle ) {
+//		perform( callOverStyle.getCycle() );
+//	}
+//	@MethodTemplate( visibility=Visibility.CHAINED )
+//	public void callOver() {
+//		callOver( CallOverStyle.WITH_A_WAVE );
+//	}
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void wave( WaveStyle waveStyle ) {

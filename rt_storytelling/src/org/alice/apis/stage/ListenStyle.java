@@ -25,19 +25,18 @@ package org.alice.apis.stage;
 /**
  * @author Dennis Cosgrove
  */
-public enum BooStyle {
-	NORMAL( Adult.Cycle.BOO ),
-	LOUD( Adult.Cycle.BOO_LOUDLY );
-	private Adult.Cycle m_subjectCycle;
-	BooStyle( Adult.Cycle subjectCycle ) {
-		m_subjectCycle = subjectCycle;
+public enum ListenStyle {
+	WITH_HANDS_TOGETHER( Adult.Cycle.LISTEN_WITH_HANDS_TOGETHER ),
+	IN_AGREEMENT( Adult.Cycle.LISTEN_IN_AGREEMENT ),
+	QUESTIONINGLY( Adult.Cycle.LISTEN_QUESTIONINGLY );
+	private Adult.Cycle m_cycle;
+	ListenStyle( Adult.Cycle cycle ) {
+		m_cycle = cycle;
 	}
-	//todo: rename
-	public Adult.Cycle getSubjectCycle() {
-		return m_subjectCycle;
+	public Adult.Cycle getCycle() {
+		return m_cycle;
 	}
-	public static BooStyle getRandom() {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( BooStyle.class );
+	public static ListenStyle getRandom() {
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( ListenStyle.class );
 	}
 }
-	
