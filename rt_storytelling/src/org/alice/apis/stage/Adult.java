@@ -649,8 +649,8 @@ public abstract class Adult extends Person {
 
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void doSitUp( SitUpStyle sitUpStyle ) {
-		perform( sitUpStyle.getSubjectCycle() );
+	public void doSitUp( SitUpStyle style ) {
+		perform( style.getSubjectCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void doSitUp() {
@@ -658,8 +658,8 @@ public abstract class Adult extends Person {
 	}
 
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void doPushUp( PushUpStyle pushUpStyle ) {
-		perform( pushUpStyle.getSubjectCycle() );
+	public void doPushUp( PushUpStyle style ) {
+		perform( style.getSubjectCycle() );
 	}
 
 	@MethodTemplate( visibility=Visibility.CHAINED )
@@ -668,8 +668,8 @@ public abstract class Adult extends Person {
 	}
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void doLegLift( LegLiftStyle legLiftStyle ) {
-		perform( legLiftStyle.getSubjectCycle() );
+	public void doLegLift( LegLiftStyle style ) {
+		perform( style.getSubjectCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void doLegLift() {
@@ -772,8 +772,8 @@ public abstract class Adult extends Person {
 		perform( Cycle.OUTGOING_CIRCLE_FISTS );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void pointWithBothHands( PointWithBothHandsStyle pointWithBothHandsStyle ) {
-		perform( pointWithBothHandsStyle.getCycle() );
+	public void pointWithBothHands( PointWithBothHandsStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void pointWithBothHands() {
@@ -809,8 +809,8 @@ public abstract class Adult extends Person {
 		perform( Adult.Cycle.GET_ATTENTION_INSISTENTLY );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void attemptToIntimidate( IntimidationStyle intimidationStyle ) {
-		perform( intimidationStyle.getCycle() );
+	public void attemptToIntimidate( IntimidationStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void attemptToIntimidate() {
@@ -837,8 +837,8 @@ public abstract class Adult extends Person {
 		perform( Cycle.POINT_SCOLDINGLY );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void reject( RejectStyle rejectStyle ) {
-		perform( rejectStyle.getCycle() );
+	public void reject( RejectStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void reject() {
@@ -865,8 +865,8 @@ public abstract class Adult extends Person {
 		perform( Cycle.DEMONSTRATE_A_NEED_TO_URINATE );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void searchForSourceOfOdor( SearchForSourceOfOdorStyle smellArmpitStyle ) {
-		perform( smellArmpitStyle.getCycle() );
+	public void searchForSourceOfOdor( SearchForSourceOfOdorStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void searchForSourceOfOdor() {
@@ -894,8 +894,8 @@ public abstract class Adult extends Person {
 		perform( Cycle.BELCH );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void fart( FartStyle fartStyle ) {
-		perform( fartStyle.getCycle() );
+	public void fart( FartStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void fart() {
@@ -953,8 +953,8 @@ public abstract class Adult extends Person {
 		perform( Cycle.BRUSH_PANTS );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void rockBackAndForth( RockBackAndForthStyle rockBackAndForthStyle ) {
-		perform( rockBackAndForthStyle.getCycle() );
+	public void rockBackAndForth( RockBackAndForthStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void rockBackAndForth() {
@@ -971,8 +971,8 @@ public abstract class Adult extends Person {
 	}
 
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void demostrateShyness( DemonstrateShynessStyle demonstrateShynessStyle ) {
-		perform( demonstrateShynessStyle.getCycle() );
+	public void demostrateShyness( DemonstrateShynessStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void demostrateShyness() {
@@ -980,16 +980,16 @@ public abstract class Adult extends Person {
 	}
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void swayBackAndForth( SwayBackAndForthStyle swayBackAndForthStyle ) {
-		perform( swayBackAndForthStyle.getCycle() );
+	public void swayBackAndForth( SwayBackAndForthStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void swayBackAndForth() {
 		swayBackAndForth( SwayBackAndForthStyle.WITH_HANDS_LOOSE );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void tiltHeadToTheSideAndBack( TiltHeadBackAndForthStyle tiltHeadBackAndForthStyle ) {
-		perform( tiltHeadBackAndForthStyle.getCycle() );
+	public void tiltHeadToTheSideAndBack( TiltHeadBackAndForthStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void tiltHeadToTheSideAndBack() {
@@ -1060,16 +1060,16 @@ public abstract class Adult extends Person {
 		perform( Cycle.COVER_EYES_IN_AVERSION );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void shrug( ShrugStyle shrugStyle ) {
-		perform( shrugStyle.getCycle() );
+	public void shrug( ShrugStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void shrug() {
 		shrug( ShrugStyle.AS_IF_TO_SAY_OH_WELL );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void boo( BooStyle booStyle ) {
-		perform( booStyle.getSubjectCycle() );
+	public void boo( BooStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void boo() {
@@ -1084,16 +1084,16 @@ public abstract class Adult extends Person {
 		perform( Cycle.RECOIL_IN_SHOCK );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void shoo( ShooStyle shooStyle ) {
-		perform( shooStyle.getCycle() );
+	public void shoo( ShooStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void shoo() {
 		shoo( ShooStyle.NORMAL );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void listen( ListenStyle listenStyle ) {
-		perform( listenStyle.getCycle() );
+	public void listen( ListenStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void listen() {
@@ -1116,8 +1116,8 @@ public abstract class Adult extends Person {
 		perform( Cycle.CONTEMPLATE_AND_RESPOND );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void wave( WaveStyle waveStyle ) {
-		perform( waveStyle.getCycle() );
+	public void wave( WaveStyle style ) {
+		perform( style.getCycle() );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void wave() {

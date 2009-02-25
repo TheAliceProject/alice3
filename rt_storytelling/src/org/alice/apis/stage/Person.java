@@ -259,6 +259,7 @@ public abstract class Person extends Model {
 	}
 
 	private Outfit m_outfit = null;
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public Outfit getOutfit() {
 		return m_outfit;
 	}
@@ -269,6 +270,7 @@ public abstract class Person extends Model {
 	}
 	
 	private SkinTone m_skinTone = null;
+	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
 	public SkinTone getSkinTone() {
 		return m_skinTone;
 	}
@@ -279,6 +281,7 @@ public abstract class Person extends Model {
 	}
 
 	private FitnessLevel m_fitnessLevel = null;
+	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
 	public FitnessLevel getFitnessLevel() {
 		return m_fitnessLevel;
 	}
@@ -289,6 +292,7 @@ public abstract class Person extends Model {
 	}
 
 	private EyeColor m_eyeColor = null;
+	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
 	public EyeColor getEyeColor() {
 		return m_eyeColor;
 	}
@@ -299,6 +303,7 @@ public abstract class Person extends Model {
 	}
 	
 	private Hair m_hair = null;
+	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
 	public Hair getHair() {
 		return m_hair;
 	}
