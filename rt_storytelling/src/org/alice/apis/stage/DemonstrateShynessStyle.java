@@ -32,6 +32,7 @@ public enum DemonstrateShynessStyle {
 	SHIFT_WEIGHT( Adult.Cycle.SHIFT_WEIGHT ),
 	SHIFT_LOOK( Adult.Cycle.SHIFT_LOOK ),
 	BITE_THUMB( Adult.Cycle.BITE_THUMB ),
+	RUN_HAND_THROUGH_HAIR( Adult.Cycle.RUN_HAND_THROUGH_HAIR ),
 	FIDGET_FINGERS( Adult.Cycle.FIDGET_FINGERS );
 	private Adult.Cycle m_cycle;
 	DemonstrateShynessStyle( Adult.Cycle cycle ) {

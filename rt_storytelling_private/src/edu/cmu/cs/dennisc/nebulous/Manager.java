@@ -20,7 +20,7 @@ public class Manager {
 			javax.swing.JOptionPane.showMessageDialog( null, "license rejected" );
 			//throw new RuntimeException( lre );
 		} catch( Throwable t ) {
-			javax.swing.JOptionPane.showMessageDialog( null, "exception in initializer" );
+			javax.swing.JOptionPane.showMessageDialog( null, "failed to initialize art assets" );
 			t.printStackTrace();
 		}
 	}
