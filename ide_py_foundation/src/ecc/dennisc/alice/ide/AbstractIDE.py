@@ -668,6 +668,10 @@ class AbstractIDE( alice.ide.IDE ):
 			clses.append( edu.wustl.cse.lookingglass.apis.walkandtouch.Person )
 		except:
 			print "note: cannot find walkandtouch"
+		try:
+			clses.append( org.alice.apis.stage.Adult )
+		except:
+			print "note: cannot find stage"
 		rv = []
 		for cls in clses:
 			rv.append( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) )
