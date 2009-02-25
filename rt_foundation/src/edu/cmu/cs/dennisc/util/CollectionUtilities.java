@@ -51,4 +51,9 @@ public abstract class CollectionUtilities {
 		set( rv, array );
 		return rv;
 	}
+	public static <E extends Object> java.util.Vector<E> createVector( E... array ) {
+		java.util.Vector<E> rv = new java.util.Vector< E >();
+		set( rv, array );
+		return rv;
+	}
 }

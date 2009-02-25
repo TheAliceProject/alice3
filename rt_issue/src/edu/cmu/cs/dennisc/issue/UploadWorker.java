@@ -83,25 +83,27 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 	}
 	
 	protected void uploadToJIRA() throws Exception {
+		final String PROJECT_KEY = "AIIIP";
 		final boolean STREAM_MESSAGES = true;
 		redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( this.jiraServer, STREAM_MESSAGES );
 		Object token = this.jiraAuthenticator.login( client );
 		try {
 			redstone.xmlrpc.XmlRpcStruct serverInfo = (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.getServerInfo", new Object[] { token } );
-			//System.out.println( "serverInfo: " + serverInfo );
-			//java.util.List< redstone.xmlrpc.XmlRpcStruct > projects = (java.util.List< redstone.xmlrpc.XmlRpcStruct >)client.invoke( "jira1.getProjectsNoSchemes", new Object[] { token } );
-			//System.out.println( "projects: " );
-			//for( redstone.xmlrpc.XmlRpcStruct project : projects ) {
-			//	System.out.println( "\t" + project );
-			//}
-			redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.JIRAUtilities.createIssue( issue, "AIIIP" );
-			client.invoke( "jira1.createIssue", new Object[] { token, remote } );
+//			System.out.println( "serverInfo: " + serverInfo );
+			java.util.List< redstone.xmlrpc.XmlRpcStruct > projects = (java.util.List< redstone.xmlrpc.XmlRpcStruct >)client.invoke( "jira1.getProjectsNoSchemes", new Object[] { token } );
+//			System.out.println( "projects: " );
+//			for( redstone.xmlrpc.XmlRpcStruct project : projects ) {
+//				System.out.println( "\t" + project );
+//			}
+			redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.JIRAUtilities.createIssue( issue, client, token, PROJECT_KEY );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( result );
+			
 		} finally {
 			client.invoke( "jira1.logout", new Object[] { token } );
 			//System.out.println( "done." );
 		}
-		////		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
-		////		throw new Exception();
+//				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
+//				throw new Exception();
 	}
 
 	protected void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride ) throws Exception {

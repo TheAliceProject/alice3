@@ -48,10 +48,9 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaught
 	}
 
 	@Override
-	protected StringBuffer updateMailSubject( StringBuffer rv ) {
-		rv.append( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
-		rv.append( " " );
-		return super.updateMailSubject( rv );
+	protected edu.cmu.cs.dennisc.issue.Issue updateIssue( edu.cmu.cs.dennisc.issue.Issue rv ) {
+		rv.setAffectsVersions( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
+		return super.updateIssue( rv );
 	}
 
 //	private javax.swing.JCheckBox vcUploadProject = null;

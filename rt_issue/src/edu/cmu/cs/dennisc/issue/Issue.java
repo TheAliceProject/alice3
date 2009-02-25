@@ -35,8 +35,8 @@ public abstract class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRe
 	private String summary;
 	private String description;
 	private String steps;
-	private String environment;
-	private String exception;
+	private Throwable throwable;
+	private String[] affectsVersions = new String[] {};
 	private java.util.List< edu.cmu.cs.dennisc.mail.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.mail.Attachment >();
 
 	public Type getType() {
@@ -63,17 +63,48 @@ public abstract class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRe
 	public void setSteps( String steps ) {
 		this.steps = steps;
 	}
-	public String getEnvironment() {
-		return this.environment;
+//	public String getEnvironment() {
+//		return this.environment;
+//	}
+//	public void setEnvironment( String environment ) {
+//		this.environment = environment;
+//	}
+	public Throwable getThrowable() {
+		return this.throwable;
 	}
-	public void setEnvironment( String environment ) {
-		this.environment = environment;
+	public void setThrowable( Throwable throwable ) {
+		this.throwable = throwable;
 	}
-	public String getException() {
-		return this.exception;
+	
+	public String[] getAffectsVersions() {
+		return this.affectsVersions;
 	}
-	public void setException( String exception ) {
-		this.exception = exception;
+	public void setAffectsVersions( String... affectsVersions ) {
+		this.affectsVersions = affectsVersions;
+	}
+	
+	
+	
+	public String getExceptionText() {
+		if( this.throwable != null ) {
+			return edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsString( this.throwable );
+		} else {
+			return "";
+		}
+	}
+	public String getAffectsVersionText() {
+		String rv;
+		if( this.affectsVersions != null && this.affectsVersions.length > 0 ) {
+			rv = this.affectsVersions[ 0 ];
+		} else {
+			rv = null;
+		}
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = "";
+		}
+		return rv;
 	}
 	
 	public void addAttachment( edu.cmu.cs.dennisc.mail.Attachment attachment ) {
@@ -100,10 +131,8 @@ public abstract class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRe
 		rv.append( this.getDescription() );
 		rv.append( ";steps=" );
 		rv.append( this.getSteps() );
-		rv.append( ";environment=" );
-		rv.append( this.getEnvironment() );
-		rv.append( ";exception=" );
-		rv.append( this.getException() );
+		rv.append( ";throwable=" );
+		rv.append( this.getThrowable() );
 		
 		//todo: attachments
 		

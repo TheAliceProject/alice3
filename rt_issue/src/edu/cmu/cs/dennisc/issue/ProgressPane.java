@@ -32,6 +32,7 @@ public class ProgressPane extends javax.swing.JPanel {
 	private UploadWorker uploadWorker;
 	private boolean isDone = false;
 	private boolean isSuccessful = false;
+	private boolean isBackgrounded = false;
 
 	public ProgressPane() {
 		this.uploadWorker = this.createUploadWorker();
@@ -65,6 +66,7 @@ public class ProgressPane extends javax.swing.JPanel {
 		}
 	}
 	private void handleRunInBackground( java.awt.event.ActionEvent e ) {
+		this.isBackgrounded = true;
 		this.hideRoot();
 	}
 	public void handleProcess( java.util.List< String > chunks ) {
@@ -85,6 +87,9 @@ public class ProgressPane extends javax.swing.JPanel {
 	}
 	public boolean isDone() {
 		return this.isDone;
+	}
+	public boolean isBackgrounded() {
+		return this.isBackgrounded;
 	}
 	public boolean isSuccessful() {
 		return this.isSuccessful;

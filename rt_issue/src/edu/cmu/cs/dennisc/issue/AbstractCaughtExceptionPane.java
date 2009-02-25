@@ -94,69 +94,12 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 		this.vcExceptionPane.setThreadAndThrowable( thread, throwable );
 		this.revalidate();
 	}
-	@Override
-	protected StringBuffer updateMailSubject( StringBuffer rv ) {
-		Throwable throwable = this.vcExceptionPane.getThrowable();
-		if( throwable != null ) {
-			rv.append( "exception: " );
-			rv.append( throwable.getClass().getName() );
-			rv.append( "; " );
-			String message = throwable.getMessage();
-			if( message != null ) {
-				rv.append( "message: " );
-				rv.append( throwable.getMessage() );
-				rv.append( "; " );
-			}
-			//todo: handle PyException
-//			if( throwable instanceof org.python.core.PyException ) {
-//				org.python.core.PyException pyException = new org.python.core.PyException();
-//				rv.append( "frame: " );
-//				rv.append( pyException.traceback.tb_frame );
-//				rv.append( "; line: " );
-//				rv.append( pyException.traceback.tb_lineno );
-//				rv.append( "; " );
-//			} else {
-				StackTraceElement[] stackTraceElements = throwable.getStackTrace();
-				if( stackTraceElements != null && stackTraceElements.length > 0 && stackTraceElements[ 0 ] != null ) {
-					rv.append( "stack[0]: " );
-					rv.append( stackTraceElements[ 0 ].toString() );
-					rv.append( "; " );
-				}
-//			}
-		}
-		super.updateMailSubject( rv );
-		return rv;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.issue.Issue createIssue() {
-		return new edu.cmu.cs.dennisc.issue.Issue() {
-			@Override
-			public String getJIRASummary() {
-				String rv = this.getSummary();
-				if( rv != null && rv.length() > 0 ) {
-					//pass
-				} else {
-					//rv = this.getMailSubject();
-					rv = "unspecified";
-				}
-				return rv;
-			}
-			@Override
-			public String getMailSubject() {
-				return AbstractCaughtExceptionPane.this.getMailSubject();
-			}
-			@Override
-			public String getMailBody() {
-				return "detailed decription:\n" + this.getDescription() + "\n\nsteps to reproduce:\n" + this.getSteps();
-			}
-		};
-	}
-	
+
 	@Override
 	protected Issue updateIssue( edu.cmu.cs.dennisc.issue.Issue rv ) {
 		super.updateIssue( rv );
 		rv.setType( Issue.Type.BUG );
-		rv.setException( edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsString( this.vcExceptionPane.getThrowable() ) );
+		rv.setThrowable( this.vcExceptionPane.getThrowable() );
 		return rv;
 	}
 	

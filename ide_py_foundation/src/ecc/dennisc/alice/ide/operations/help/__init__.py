@@ -37,6 +37,6 @@ class AboutOperation(alice.ide.AbstractOperation):
 		return alice.ide.Operation.PreparationResult.PERFORM
 	def perform(self):
 		aboutPane = alice.ide.about.AboutPane();
-		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), aboutPane, "About", javax.swing.JOptionPane.PLAIN_MESSAGE );
+		javax.swing.JOptionPane.showMessageDialog( self.getIDE(), aboutPane, "About Alice 3", javax.swing.JOptionPane.PLAIN_MESSAGE );
 		#s = "Current Version: %s\n\nAlice and the Move and Turn API designed and implemented by Dennis Cosgrove http://www.cs.cmu.edu/~dennisc/\nLooking Glass and the Walk and Touch API designed and implemented by Caitlin Kelleher http://www.cse.wustl.edu/~ckelleher/" % edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText()
 		#javax.swing.JOptionPane.showMessageDialog( self.getIDE(), s, "About", javax.swing.JOptionPane.PLAIN_MESSAGE )

@@ -27,6 +27,7 @@ package edu.cmu.cs.dennisc.issue;
  */
 class FocusAdapter implements java.awt.event.FocusListener {
 	private javax.swing.text.JTextComponent textComponent;
+
 	public FocusAdapter( javax.swing.text.JTextComponent textComponent ) {
 		this.textComponent = textComponent;
 	}
@@ -56,23 +57,25 @@ class SuggestiveTextUtilties {
 			java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
 			g.setFont( font );
 			int grayscale = 160;
-//			int grayscale;
-//			if( textComponent.isFocusOwner() ) {
-//				grayscale = 160;
-//			} else {
-//				grayscale = 100;
-//			}
+			//			int grayscale;
+			//			if( textComponent.isFocusOwner() ) {
+			//				grayscale = 160;
+			//			} else {
+			//				grayscale = 100;
+			//			}
 			g.setColor( new java.awt.Color( grayscale, grayscale, grayscale ) );
 			java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
 			g.drawString( textForBlankCondition, 4, (int)bounds.getHeight() + 0 );
 		}
 	}
 }
+
 /**
  * @author Dennis Cosgrove
  */
 class SuggestiveTextField extends javax.swing.JTextField {
 	private String textForBlankCondition;
+
 	public SuggestiveTextField( String text, String textForBlankCondition ) {
 		super( text );
 		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
@@ -99,6 +102,7 @@ class SuggestiveTextField extends javax.swing.JTextField {
  */
 class SuggestiveTextArea extends javax.swing.JTextArea {
 	private String textForBlankCondition;
+
 	public SuggestiveTextArea( String text, String textForBlankCondition ) {
 		super( text );
 		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
@@ -123,13 +127,13 @@ class SuggestiveTextArea extends javax.swing.JTextArea {
 		} );
 	}
 	@Override
-    public boolean isManagingFocus() {
-        return false;
-    }
+	public boolean isManagingFocus() {
+		return false;
+	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = super.getPreferredSize();
-		rv.height = Math.max( rv.height, 100 );
+		rv.height = Math.max( rv.height, 64 );
 		return rv;
 	}
 	@Override
@@ -146,6 +150,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	private static javax.swing.JLabel createSystemPropertyLabel( String propertyName ) {
 		return new javax.swing.JLabel( propertyName + ": " + System.getProperty( propertyName ) );
 	}
+
 	class SystemPropertiesPane extends javax.swing.JPanel {
 		class ShowAllSystemPropertiesAction extends javax.swing.AbstractAction {
 			public ShowAllSystemPropertiesAction() {
@@ -157,13 +162,14 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		}
 
 		private edu.cmu.cs.dennisc.swing.Hyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.swing.Hyperlink( new ShowAllSystemPropertiesAction() );
+
 		public SystemPropertiesPane() {
 			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
 			this.add( createSystemPropertyLabel( "java.version" ) );
 			this.add( createSystemPropertyLabel( "os.name" ) );
 			this.add( this.vcShowAllSystemProperties );
 		}
-		
+
 	}
 
 	private static final String SUMMARY_TEXT = "please fill in a one line synopsis of the bug";
@@ -191,6 +197,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 			}
 		}
 	}
+
 	private javax.swing.JButton vcSubmit = new javax.swing.JButton( new SubmitAction() );
 
 	public AbstractIssuePane() {
@@ -227,33 +234,63 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 
 		//this.vcSubmit.setBackground( java.awt.Color.GREEN.brighter() );
 		java.awt.Font font = this.vcSubmit.getFont();
-		this.vcSubmit.setFont( font.deriveFont( font.getSize() * 1.5f ) );
+		this.vcSubmit.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
 		this.vcSubmit.setAlignmentX( java.awt.Component.CENTER_ALIGNMENT );
 		
 
+		StringBuffer sb = new StringBuffer();
+		sb.append( "An exception has been caught:\n\n" );
+		sb.append( "  If you were running your program then:\n    it could be either a bug(error) in Alice or your code.\n\n" );
+		sb.append( "  If you were building your program then:\n    it is a bug in Alice.\n\n" );
+		sb.append( "Please press the \"submit bug report\" button" );
+		//sb.append( " and accept our apologies" );
+		sb.append( "." );
+		javax.swing.JTextArea header = new javax.swing.JTextArea( sb.toString() ) {
+			@Override
+			public void paint(java.awt.Graphics g) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+				super.paint( g );
+			}
+		};
+		header.setEditable( false );
+		//header.setOpaque( false );
+		header.setLineWrap( true );
+		header.setWrapStyleWord( true );
+		header.setFont( font.deriveFont( font.getSize2D() * 1.15f ) );
+		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,8,4,0 ) );
+
+		javax.swing.JPanel headerPane = new javax.swing.JPanel();
+		headerPane.setLayout( new java.awt.BorderLayout() );
+		headerPane.add( header );
+		headerPane.setBorder( javax.swing.BorderFactory.createEtchedBorder() );
+		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
+		this.add( headerPane );
+		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 16 ) ) );
 		this.add( reporterPane );
-		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ) );
+		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 24 ) ) );
 		this.add( bugPane );
-		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ) );
+		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 24 ) ) );
 		this.add( expandPane );
-		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ) );
+		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 16 ) ) );
 		this.add( this.vcSubmit );
 	}
-	
+
 	private java.awt.Window window;
+
 	public java.awt.Window setWindow() {
 		return this.window;
 	}
-	public void setWindow( java.awt.Window  window ) {
+	public void setWindow( java.awt.Window window ) {
 		this.window = window;
 	}
 
 	private java.util.ArrayList< java.awt.Component[] > createInsightPaneRows() {
 		return addInsightPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 	}
-	protected java.util.ArrayList< java.awt.Component[] > addInsightPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) { 
+	protected java.util.ArrayList< java.awt.Component[] > addInsightPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
 		javax.swing.JLabel summaryLabel = new javax.swing.JLabel( "summary:", javax.swing.SwingConstants.TRAILING );
 		javax.swing.JLabel descriptionLabel = new javax.swing.JLabel( "description:", javax.swing.SwingConstants.TRAILING );
 		javax.swing.JLabel stepsToReproduceLabel = new javax.swing.JLabel( "steps:", javax.swing.SwingConstants.TRAILING );
@@ -264,37 +301,37 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		descriptionLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		stepsToReproduceLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 
-		rv.add( new java.awt.Component[] { summaryLabel, this.vcSummary } ); 
-		rv.add( new java.awt.Component[] { descriptionLabel, this.vcDescription } ); 
-		rv.add( new java.awt.Component[] { stepsToReproduceLabel, this.vcStepsToReproduce } ); 
+		this.vcDescription.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		this.vcStepsToReproduce.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.add( new java.awt.Component[] { summaryLabel, this.vcSummary } );
+		rv.add( new java.awt.Component[] { descriptionLabel, new javax.swing.JScrollPane( this.vcDescription ) } );
+		rv.add( new java.awt.Component[] { stepsToReproduceLabel, new javax.swing.JScrollPane( this.vcStepsToReproduce ) } );
 		return rv;
 	}
 
 	private java.util.ArrayList< java.awt.Component[] > createBugPaneRows() {
 		return addBugPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 	}
-	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) { 
+	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
 		javax.swing.JLabel systemLabel = new javax.swing.JLabel( "system:", javax.swing.SwingConstants.TRAILING );
 		systemLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
-		rv.add( new java.awt.Component[] { systemLabel, this.vcSystemPropertiesPane } ); 
+		rv.add( new java.awt.Component[] { systemLabel, this.vcSystemPropertiesPane } );
 		return rv;
 	}
-	
-	
-	
+
 	private java.util.ArrayList< java.awt.Component[] > createReporterPaneRows() {
 		return addReporterPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 	}
-	protected java.util.ArrayList< java.awt.Component[] > addReporterPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) { 
+	protected java.util.ArrayList< java.awt.Component[] > addReporterPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
 		javax.swing.JLabel nameLabel = new javax.swing.JLabel( "reported by:", javax.swing.SwingConstants.TRAILING );
 		javax.swing.JLabel emailLabel = new javax.swing.JLabel( "e-mail address:", javax.swing.SwingConstants.TRAILING );
 		nameLabel.setToolTipText( NAME_TEXT );
 		emailLabel.setToolTipText( EMAIL_TEXT );
-		rv.add( new java.awt.Component[] { nameLabel, this.vcReporterName } ); 
-		rv.add( new java.awt.Component[] { emailLabel, this.vcReporterEMailAddress } ); 
+		rv.add( new java.awt.Component[] { nameLabel, this.vcReporterName } );
+		rv.add( new java.awt.Component[] { emailLabel, this.vcReporterEMailAddress } );
 		return rv;
 	}
-	
+
 	public javax.swing.JButton getSubmitButton() {
 		return this.vcSubmit;
 	}
@@ -312,15 +349,95 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	private String getReporterName() {
 		return this.vcReporterName.getText();
 	}
-	
+
 	protected Issue updateIssue( Issue rv ) {
 		rv.setSummary( this.getSummary() );
 		rv.setDescription( this.getDescription() );
 		rv.setSteps( this.getStepsToReproduce() );
-		rv.setEnvironment( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
+		for( edu.cmu.cs.dennisc.mail.Attachment attachment : this.createAttachments() ) {
+			rv.addAttachment( attachment );
+		}
 		return rv;
 	}
-	protected abstract Issue createIssue();
+	
+	
+	private String getSubSummary( Issue issue ) {
+		String summary = issue.getSummary();
+		if( summary != null && summary.length() > 0 ) {
+			return summary;
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( "summary: unspecified; " );
+			Throwable throwable = issue.getThrowable();
+			if( throwable != null ) {
+				sb.append( "exception: " );
+				sb.append( throwable.getClass().getName() );
+				sb.append( "; " );
+				String message = throwable.getMessage();
+				if( message != null ) {
+					sb.append( "message: " );
+					sb.append( message );
+					sb.append( "; " );
+				}
+				//todo: handle PyException
+				//			if( throwable instanceof org.python.core.PyException ) {
+				//				org.python.core.PyException pyException = new org.python.core.PyException();
+				//				sb.append( "frame: " );
+				//				sb.append( pyException.traceback.tb_frame );
+				//				sb.append( "; line: " );
+				//				sb.append( pyException.traceback.tb_lineno );
+				//				sb.append( "; " );
+				//			} else {
+				StackTraceElement[] stackTraceElements = throwable.getStackTrace();
+				if( stackTraceElements != null && stackTraceElements.length > 0 && stackTraceElements[ 0 ] != null ) {
+					sb.append( "stack[0]: " );
+					sb.append( stackTraceElements[ 0 ].toString() );
+					sb.append( "; " );
+				}
+				//			}
+			}
+			return sb.toString();
+		}
+	}
+	
+	protected final String getJIRASummary( Issue issue ) {
+		return getSubSummary( issue );
+	}
+	private StringBuffer updateMailSubject( StringBuffer rv, Issue issue ) {
+		rv.append( issue.getAffectsVersionText() );
+		rv.append( ": " );
+		String summary = issue.getSummary();
+		if( summary != null && summary.length() > 0 ) {
+			rv.append( summary );
+		} else {
+			rv.append( this.getSubSummary( issue ) );
+		}
+		return rv;
+	}
+	protected final String getMailSubject( Issue issue ) {
+		StringBuffer sb = new StringBuffer();
+		updateMailSubject( sb, issue );
+		return sb.toString();
+	}
+	protected final String getMailBody( Issue issue ) {
+		return "detailed decription:\n" + issue.getDescription() + "\n\nsteps to reproduce:\n" + issue.getSteps() + "\n\nexception:\n" + issue.getExceptionText();
+	}
+	protected edu.cmu.cs.dennisc.issue.Issue createIssue() {
+		return new edu.cmu.cs.dennisc.issue.Issue() {
+			@Override
+			public String getJIRASummary() {
+				return AbstractIssuePane.this.getJIRASummary( this );
+			}
+			@Override
+			public String getMailSubject() {
+				return AbstractIssuePane.this.getMailSubject( this );
+			}
+			@Override
+			public String getMailBody() {
+				return AbstractIssuePane.this.getMailBody( this );
+			}
+		};
+	}
 	private String getSummary() {
 		return this.vcSummary.getText();
 	}
@@ -356,39 +473,31 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		}
 		return rv;
 	}
-	
-	protected StringBuffer updateMailSubject( StringBuffer rv ) {
-		rv.append( this.getSummary() );
-		return rv;
-	}
-	protected final String getMailSubject() {
-		StringBuffer sb = new StringBuffer();
-		updateMailSubject( sb );
-		return sb.toString();
-	}
-	
+
 	protected abstract String getJIRAServer();
 	protected abstract String getMailServer();
 	protected abstract String getMailRecipient();
 	protected abstract edu.cmu.cs.dennisc.jira.Authenticator getJIRAAuthenticator();
 	protected abstract edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator();
-	
-	
+
 	private boolean isSubmitAttempted = false;
 	private boolean isSubmitSuccessful = false;
-	public boolean isSubmitAttempted() { 
+	private boolean isSubmitBackgrounded = false;
+
+	public boolean isSubmitAttempted() {
 		return this.isSubmitAttempted;
 	}
-	public boolean isSubmitSuccessful() { 
+	public boolean isSubmitBackgrounded() {
+		return this.isSubmitBackgrounded;
+	}
+	public boolean isSubmitSuccessful() {
 		return this.isSubmitSuccessful;
 	}
-	//protected abstract void uploadToJIRA( Issue issue ) throws Exception;
-	//protected abstract void sendMail( Issue issue, String subject, String reporterEMailAddress, String reporterName ) throws Exception;
 	protected boolean submit() {
 		Issue issue = this.createIssue();
 		updateIssue( issue );
 		ProgressPane progressPane = new ProgressPane();
-		final String RPC_PATH  = "/rpc/xmlrpc";
+		final String RPC_PATH = "/rpc/xmlrpc";
 		java.net.URL jiraURL;
 		try {
 			jiraURL = new java.net.URL( this.getJIRAServer() + RPC_PATH );
@@ -397,11 +506,13 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		}
 		progressPane.initializeAndExecuteWorker( issue, jiraURL, this.getJIRAAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient() );
 
+		this.isSubmitBackgrounded = false;
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		javax.swing.JDialog dialog = new javax.swing.JDialog( frame, "Uploading Bug Report", true );
 		dialog.addWindowListener( new java.awt.event.WindowAdapter() {
 			@Override
 			public void windowClosing( java.awt.event.WindowEvent e ) {
+				AbstractIssuePane.this.isSubmitBackgrounded = true;
 				e.getComponent().setVisible( false );
 			}
 		} );
@@ -409,17 +520,13 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		dialog.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
 		dialog.pack();
 		dialog.setVisible( true );
+
+		if( this.isSubmitBackgrounded ) {
+			//pass
+		} else {
+			this.isSubmitBackgrounded = progressPane.isBackgrounded();
+		}
 		
 		return progressPane.isSuccessful();
-//		try {
-//			uploadToJIRA( issue );
-//		} catch( Exception eJIRA ) {
-//			try {
-//				sendMail( issue, this.getSubject(), this.getReporterEMailAddress(), this.getReporterName() );
-//			} catch( Exception eMail ) {
-//				return false;
-//			}
-//		}
-//		return true;
 	}
 }
