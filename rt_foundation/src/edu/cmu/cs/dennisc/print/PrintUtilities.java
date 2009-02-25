@@ -207,6 +207,7 @@ public abstract class PrintUtilities {
 		ps.print( toString( value ) );
 	}
 	public static void println( java.io.PrintStream ps, Object... value ) {
+		//Thread.dumpStack();
 		ps.println( toString( value ) );
 	}
 	public static void printlns( java.io.PrintStream ps, Object... value ) {

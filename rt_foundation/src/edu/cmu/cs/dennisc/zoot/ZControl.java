@@ -53,7 +53,6 @@ public abstract class ZControl extends ZBoxPane {
 					}
 				}
 				public void mousePressed( java.awt.event.MouseEvent e ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
 					if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 						ZControl.this.handleLeftMousePress( e );
 					} else if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
