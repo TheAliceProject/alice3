@@ -883,7 +883,13 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 			ensureNodeVisible( node );
-			return edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane.lookup( statement );
+			final edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane rv = edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane.lookup( statement );
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					rv.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( rv ) );
+				}
+			} );
+			return rv;
 		} else {
 			return null;
 		}
