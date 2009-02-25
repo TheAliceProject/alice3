@@ -68,7 +68,7 @@ class ViewEULAsPane extends javax.swing.JPanel {
 		javax.swing.JLabel simsLabel = new javax.swing.JLabel( "<html>The Sims <sup>TM</sup> 2 Art Assets:</html>", javax.swing.SwingConstants.TRAILING );
 
 		rv.add( new java.awt.Component[] { aliceLabel, new javax.swing.JButton( new ViewEULAAction( edu.cmu.cs.dennisc.alice.License.TEXT, "License Agreement: Alice 3" ) ), javax.swing.Box.createHorizontalGlue() } );
-		rv.add( new java.awt.Component[] { lookingGlassLabel, new javax.swing.JButton( new ViewEULAAction( edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT, "License Agreement: Looking Glass Walk & Touch API" ) ), javax.swing.Box.createHorizontalGlue() } );
+		rv.add( new java.awt.Component[] { lookingGlassLabel, new javax.swing.JButton( new ViewEULAAction( edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "License Agreement: Looking Glass Walk & Touch API" ) ), javax.swing.Box.createHorizontalGlue() } );
 		rv.add( new java.awt.Component[] { simsLabel, new javax.swing.JButton( new ViewEULAAction( edu.cmu.cs.dennisc.nebulous.License.TEXT, "License Agreement: The Sims (TM) 2 Art Assets" ) ), javax.swing.Box.createHorizontalGlue() } );
 		
 		return rv;
@@ -83,9 +83,9 @@ public class AboutPane extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane {
 	public AboutPane() {
 		this.add( this.createLabel( "current version: " + edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() ) );
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
-		this.add( this.createLabel( "Alice 3, the Move and Turn API, and the Stage API designed and implemented by Dennis Cosgrove" ) );
-		this.add( this.createLabel( "The Looking Glass Walk and Touch API designed and implemented by Caitlin Kelleher" ) );
-		this.add( this.createLabel( "Scene Editor designed and implemented by David Culyba and Dennis Cosgrove" ) );
+		this.add( this.createLabel( "Alice 3, the Move and Turn API, and the Stage API: designed and implemented by Dennis Cosgrove" ) );
+		this.add( this.createLabel( "The Looking Glass Walk and Touch API: designed and implemented by Caitlin Kelleher" ) );
+		this.add( this.createLabel( "Scene Editor: designed and implemented by David Culyba and Dennis Cosgrove" ) );
 		this.add( javax.swing.Box.createVerticalStrut( 24 ) );
 		this.add( this.createViewEULAsPane() );
 		this.add( javax.swing.Box.createVerticalStrut( 24 ) );
@@ -104,6 +104,6 @@ public class AboutPane extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane {
 	
 	public static void main( String[] args ) {
 		AboutPane aboutPane = new AboutPane();
-		javax.swing.JOptionPane.showMessageDialog( null, aboutPane, "About", javax.swing.JOptionPane.PLAIN_MESSAGE );
+		javax.swing.JOptionPane.showMessageDialog( null, aboutPane, "About Alice 3", javax.swing.JOptionPane.PLAIN_MESSAGE );
 	}
 }
