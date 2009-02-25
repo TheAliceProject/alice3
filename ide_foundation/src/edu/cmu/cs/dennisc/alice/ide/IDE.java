@@ -886,7 +886,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			final edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane rv = edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane.lookup( statement );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					rv.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( rv ) );
+					if( rv != null ) {
+						rv.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( rv ) );
+					}
 				}
 			} );
 			return rv;
