@@ -881,13 +881,14 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	}
 	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
-			edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
+			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 			ensureNodeVisible( node );
-			final edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane rv = edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane.lookup( statement );
+			edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane rv = edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane.lookup( statement );
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 				public void run() {
-					if( rv != null ) {
-						rv.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( rv ) );
+					edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane pane = edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane.lookup( statement );
+					if( pane != null ) {
+						pane.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( pane ) );
 					}
 				}
 			} );
