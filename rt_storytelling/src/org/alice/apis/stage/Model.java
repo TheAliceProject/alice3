@@ -37,7 +37,11 @@ public abstract class Model extends org.alice.apis.moveandturn.Model {
 		if( directory.exists() ) {
 			for( java.io.File file : directory.listFiles() ) {
 				try {
-					edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
+					if( file.getName().endsWith( "txt" ) ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.nebulous.Manager.addBundle( file );
+					}
 				} catch( Throwable t ) {
 					t.printStackTrace();
 				}
