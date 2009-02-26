@@ -33,6 +33,10 @@ public class GalleryRootUtilities {
 	private static final String ROOT_PATH_KEY = "rootPath";
 	public static java.io.File calculateGalleryRootDirectory( Class<?> cls, String subPath, String name, String childName, String grandchildName, String titleForPromptingUserToSpecifyOrInstall, String applicationName ) {
 		java.io.File rv = null;
+		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
+		String rootPathUserPreference = userPreferences.get( ROOT_PATH_KEY, null );
+		java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( cls );
+		String rootPathSystemPreference = systemPreferences.get( ROOT_PATH_KEY, null );
 		do {
 			java.util.List< String > potentialPaths = new java.util.LinkedList< String >();
 			String rootPathProperty = System.getProperty( cls.getName() + "." + ROOT_PATH_KEY );
@@ -50,15 +54,10 @@ public class GalleryRootUtilities {
 			if( APPLICATION_ROOT != null && APPLICATION_ROOT.exists() ) {
 				potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( APPLICATION_ROOT ) + "/" + name );
 			}
-			
-			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
-			String rootPathUserPreference = userPreferences.get( ROOT_PATH_KEY, null );
 			if( rootPathUserPreference != null ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "rootPathUserPreference", rootPathUserPreference );
 				potentialPaths.add( rootPathUserPreference );
 			}
-			java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( cls );
-			String rootPathSystemPreference = systemPreferences.get( ROOT_PATH_KEY, null );
 			if( rootPathSystemPreference != null ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "rootPathSystemPreference", rootPathSystemPreference );
 				potentialPaths.add( rootPathSystemPreference );
@@ -85,9 +84,6 @@ public class GalleryRootUtilities {
 					GalleryDirectorySelectionPane galleryDirectorySelectionPane = new GalleryDirectorySelectionPane( name, childName, grandchildName );
 					java.io.File directory = galleryDirectorySelectionPane.showInJDialog( null );
 					if( directory != null ) {
-						String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( directory );
-						userPreferences.put( ROOT_PATH_KEY, path );
-						systemPreferences.put( ROOT_PATH_KEY, path );
 						rv = directory;
 					}
 				} else {
@@ -100,6 +96,9 @@ public class GalleryRootUtilities {
 				}
 			}
 		} while( rv == null );
+		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( rv );
+		userPreferences.put( ROOT_PATH_KEY, path );
+		systemPreferences.put( ROOT_PATH_KEY, path );
 		return rv;
 	}
 	private static int promptUserToSpecifyOrInstall( String expectedLocation, String title ) {
