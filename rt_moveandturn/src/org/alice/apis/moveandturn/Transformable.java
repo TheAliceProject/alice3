@@ -228,8 +228,11 @@ public abstract class Transformable extends AbstractTransformable {
 	public edu.cmu.cs.dennisc.math.Sphere getBoundingSphere() {
 		return getBoundingSphere( AsSeenBy.SELF );
 	}
+	
+	private org.alice.apis.moveandturn.Font DEFAULT_FONT = new org.alice.apis.moveandturn.Font().deriveScaledFont( 2.0f );
+	
 	protected void displayBubble( org.alice.apis.moveandturn.graphic.Bubble bubble, Number duration ) {
-		perform( new org.alice.apis.moveandturn.graphic.animation.BubbleAnimation( this.getOwner(), bubble, 0.5, duration.doubleValue(), 0.5 ) );
+		perform( new org.alice.apis.moveandturn.graphic.animation.BubbleAnimation( this.getOwner(), bubble, 0.2, duration.doubleValue(), 0.2 ) );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void say( String text, Number duration, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
@@ -249,7 +252,7 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void say( String text, Number duration ) {
-		say( text, duration, new org.alice.apis.moveandturn.Font() );
+		say( text, duration, DEFAULT_FONT );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void say( String text ) {
@@ -276,7 +279,7 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void think( String text, Number duration ) {
-		think( text, duration, new org.alice.apis.moveandturn.Font() );
+		think( text, duration, DEFAULT_FONT );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void think( String text ) {

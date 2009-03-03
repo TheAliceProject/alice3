@@ -313,14 +313,17 @@ class AbstractIDE( alice.ide.IDE ):
 			blank.addSeparator( text )
 		return False
 
-	def addFillInAndPossiblyPartFills( self, blank, expression, type ):
+	def addFillInAndPossiblyPartFills( self, blank, expression, type, type2 ):
 		blank.addChild( SimpleExpressionFillIn( expression ) )
 		if type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel ):
-			typeInJava = type.getFirstTypeEncounteredDeclaredInJava()
-			clsInJava = typeInJava.getCls()
-			try:
-				paramType = clsInJava.Part
-			except:
+			if type2.isAssignableFrom( org.alice.apis.moveandturn.Model ):
+				typeInJava = type.getFirstTypeEncounteredDeclaredInJava()
+				clsInJava = typeInJava.getCls()
+				try:
+					paramType = clsInJava.Part
+				except:
+					paramType = None
+			else:
 				paramType = None
 			if paramType:
 				getPartMethod = typeInJava.getDeclaredMethod( "getPart", [ paramType ] )
@@ -337,13 +340,13 @@ class AbstractIDE( alice.ide.IDE ):
 			if type.isAssignableFrom( selectedType ):
 				isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
 				#blank.addChild( SimpleExpressionFillIn( alice.ast.ThisExpression() ) )
-				self.addFillInAndPossiblyPartFills( blank, alice.ast.ThisExpression(), selectedType )
+				self.addFillInAndPossiblyPartFills( blank, alice.ast.ThisExpression(), selectedType, type )
 			for field in selectedType.fields.iterator():
 				fieldType = field.valueType.getValue()
 				if type.isAssignableFrom( fieldType ):
 					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
 					expression = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
-					self.addFillInAndPossiblyPartFills( blank, expression, fieldType )
+					self.addFillInAndPossiblyPartFills( blank, expression, fieldType, type )
 				if fieldType.isArray():
 					fieldComponentType = fieldType.getComponentType()
 					if type.isAssignableFrom( fieldComponentType ):
@@ -360,15 +363,15 @@ class AbstractIDE( alice.ide.IDE ):
 			for parameter in codeInFocus.getParameters():
 				if type.isAssignableFrom( parameter.getValueType() ):
 					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-					self.addFillInAndPossiblyPartFills( blank, alice.ast.ParameterAccess( parameter ), parameter.getValueType() )
+					self.addFillInAndPossiblyPartFills( blank, alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type )
 			for variable in ecc.dennisc.alice.ast.getVariables( codeInFocus ):
 				if type.isAssignableFrom( variable.valueType.getValue() ):
 					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-					self.addFillInAndPossiblyPartFills( blank, alice.ast.VariableAccess( variable ), variable.valueType.getValue() )
+					self.addFillInAndPossiblyPartFills( blank, alice.ast.VariableAccess( variable ), variable.valueType.getValue(), type )
 			for constant in ecc.dennisc.alice.ast.getConstants( codeInFocus ):
 				if type.isAssignableFrom( constant.valueType.getValue() ):
 					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-					self.addFillInAndPossiblyPartFills( blank, alice.ast.ConstantAccess( constant ), constant.valueType.getValue() )
+					self.addFillInAndPossiblyPartFills( blank, alice.ast.ConstantAccess( constant ), constant.valueType.getValue(), type )
 			if isNecessary:
 				pass
 			else:
