@@ -3,7 +3,7 @@ package test;
 public class ExpandPaneTest extends edu.cmu.cs.dennisc.swing.ExpandPane {
 	@Override
 	protected javax.swing.JLabel createLabel() {
-		edu.cmu.cs.dennisc.zoot.ZLabel rv = new edu.cmu.cs.dennisc.zoot.ZLabel();
+		edu.cmu.cs.dennisc.moot.ZLabel rv = new edu.cmu.cs.dennisc.moot.ZLabel();
 		rv.setFontToScaledFont( 2.0f );
 		return rv;
 	}

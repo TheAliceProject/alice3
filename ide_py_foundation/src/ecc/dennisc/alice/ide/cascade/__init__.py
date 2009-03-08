@@ -8,7 +8,7 @@ import ecc
 
 from edu.cmu.cs.dennisc import cascade
 from edu.cmu.cs.dennisc import alice
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 
 def getIDE():
 	return alice.ide.IDE.getSingleton()
@@ -24,7 +24,7 @@ class SimpleExpressionFillIn( cascade.SimpleFillIn ):
 
 class PrevExpressionFillIn( SimpleExpressionFillIn ):
 	def createMenuProxy(self):
-		rv = zoot.ZLineAxisPane()
+		rv = moot.ZLineAxisPane()
 		rv.add( SimpleExpressionFillIn.createMenuProxy( self ) )
 		rv.add( alice.ide.editors.common.Label( " (current value)" ) )
 		return rv

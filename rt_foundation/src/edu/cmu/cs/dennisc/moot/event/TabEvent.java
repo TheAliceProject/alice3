@@ -20,13 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Renderer<E> {
-	public void fillBounds( E context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height );
-	public void paintPrologue( E context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected );
-	public void paintEpilogue( E context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected );
+public class TabEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.moot.ZTabbedPane > {
+	private int index;
+	private java.awt.event.MouseEvent mouseEvent;
+	public TabEvent( edu.cmu.cs.dennisc.moot.ZTabbedPane source, int index, java.awt.event.MouseEvent mouseEvent ) {
+		super( source );
+		this.index = index;
+		this.mouseEvent = mouseEvent;
+	}
+	public int getIndex() {
+		return this.index;
+	}
+	public java.awt.event.MouseEvent getMouseEvent() {
+		return this.mouseEvent;
+	}
 }

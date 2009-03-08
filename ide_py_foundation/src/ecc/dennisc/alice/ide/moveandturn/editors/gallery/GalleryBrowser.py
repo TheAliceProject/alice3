@@ -5,7 +5,7 @@ import edu
 import ecc
 
 from edu.cmu.cs.dennisc import alice
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 
 def getSceneEditor():
 	return alice.ide.IDE.getSingleton()._scenePane
@@ -210,11 +210,11 @@ class GalleryBrowser( alice.ide.gallerypane.GalleryPane ):
 		return None
 
 	def createEastComponent( self ):
-		pane = zoot.ZPane()
+		pane = moot.ZPane()
 		pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) )
 		pane.setLayout( java.awt.BorderLayout() )
 
-		fromFilePane = zoot.ZPane()
+		fromFilePane = moot.ZPane()
 		fromFilePane.setLayout( java.awt.GridLayout( 2, 1, 0, 4 ) )
 		fromFilePane.add( CreateInstanceOfTypeButton( "My Classes...", self._handleCreateInstanceOfTypeButton, edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory() ) )
 		fromFilePane.add( CreateInstanceOfTypeButton( "Textbook Classes...", self._handleCreateInstanceOfTypeButton, _getTextbookTypesDirectory() ) )

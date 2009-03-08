@@ -138,7 +138,7 @@ class FontChooser( PaneWithValidation ):
 		return self._fontVC.getValue()
 
 from edu.cmu.cs.dennisc import alice
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 #from ecc.dennisc.alice.ide.PaneWithValidation import PaneWithValidation
 #from CreateTypedDeclarationPane import CreateTypedDeclarationPane	
 from ecc.dennisc.alice.ide.NodeListPropertyPane import *
@@ -273,9 +273,9 @@ class ItemInitializerPane( javax.swing.JPanel ):
 	def isValid( self ):
 		return self._pane.isValid()
 
-class ArrayInitializerListCellRenderer( zoot.ZLineAxisPane, javax.swing.ListCellRenderer ):
+class ArrayInitializerListCellRenderer( moot.ZLineAxisPane, javax.swing.ListCellRenderer ):
 	def __init__( self, type, paneWithValidation ):
-		zoot.ZLineAxisPane.__init__( self )
+		moot.ZLineAxisPane.__init__( self )
 		self._type = type
 		self._paneWithValidation = paneWithValidation
 		self._label = javax.swing.JLabel( "[ ??? ]" )
@@ -411,7 +411,7 @@ class ArrayChooser( PaneWithValidation ):
 		self._handleTypeChange()
 		#self._isArrayVC.addItemListener( ecc.dennisc.swing.event.ItemAdapter( self._handleIsArrayChange ) )
 		self.setLayout( java.awt.BorderLayout() )
-		pane = zoot.ZLineAxisPane()
+		pane = moot.ZLineAxisPane()
 		pane.add( self._typeVC )
 		pane.add( self._isArrayVC )
 		self.add( pane, java.awt.BorderLayout.NORTH )

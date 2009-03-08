@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.gallerypane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class GalleryPane extends edu.cmu.cs.dennisc.zoot.ZPane {
+public abstract class GalleryPane extends edu.cmu.cs.dennisc.moot.ZPane {
 	private AssetsPane assetsPane;
 	public GalleryPane( java.io.File rootDirectory ) {
 		this.assetsPane = this.createAssetsPane( rootDirectory );

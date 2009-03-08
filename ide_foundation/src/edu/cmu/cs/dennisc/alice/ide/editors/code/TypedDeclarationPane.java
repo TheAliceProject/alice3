@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane  {
+public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane  {
 	private edu.cmu.cs.dennisc.awt.event.AltTriggerMouseAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.AltTriggerMouseAdapter() {
 		@Override
 		protected void altTriggered( java.awt.event.MouseEvent e ) {

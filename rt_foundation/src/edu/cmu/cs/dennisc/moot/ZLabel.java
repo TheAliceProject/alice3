@@ -20,7 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
@@ -44,7 +44,7 @@ public class ZLabel extends javax.swing.JLabel {
 		this( text );
 		this.setFontToDerivedFont( attribute, value );
 	}
-	public ZLabel( String text, edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? >... textAttributes ) {
+	public ZLabel( String text, edu.cmu.cs.dennisc.moot.font.ZTextAttribute< ? >... textAttributes ) {
 		this( text );
 		this.setFontToDerivedFont( textAttributes );
 		
@@ -59,10 +59,10 @@ public class ZLabel extends javax.swing.JLabel {
 		map.put( attribute, value );
 		this.setFontToDerivedFont( map );
 	}
-	public void setFontToDerivedFont( edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? >... textAttributes ) {
+	public void setFontToDerivedFont( edu.cmu.cs.dennisc.moot.font.ZTextAttribute< ? >... textAttributes ) {
 		java.awt.Font font = this.getFont();
 		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		for( edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? > textAttribute : textAttributes ) {
+		for( edu.cmu.cs.dennisc.moot.font.ZTextAttribute< ? > textAttribute : textAttributes ) {
 			map.put( textAttribute.getKey(), textAttribute.getValue() );
 		}
 		this.setFont( font.deriveFont( map ) );

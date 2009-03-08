@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 /**
  * @author Dennis Cosgrove
  */
-public class GetsPane extends edu.cmu.cs.dennisc.zoot.ZPane {
+public class GetsPane extends edu.cmu.cs.dennisc.moot.ZPane {
 	private boolean isTowardLeadingEdge;
 	private int length;
 

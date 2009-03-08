@@ -20,23 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot.event;
+package alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TabEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.zoot.ZTabbedPane > {
-	private int index;
-	private java.awt.event.MouseEvent mouseEvent;
-	public TabEvent( edu.cmu.cs.dennisc.zoot.ZTabbedPane source, int index, java.awt.event.MouseEvent mouseEvent ) {
-		super( source );
-		this.index = index;
-		this.mouseEvent = mouseEvent;
-	}
-	public int getIndex() {
-		return this.index;
-	}
-	public java.awt.event.MouseEvent getMouseEvent() {
-		return this.mouseEvent;
+public abstract class Component extends javax.swing.JPanel {
+	protected alice.ide.IDE getIDE() {
+		return alice.ide.IDE.getSingleton();
 	}
 }

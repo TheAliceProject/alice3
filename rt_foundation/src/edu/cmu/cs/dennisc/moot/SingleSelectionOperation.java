@@ -20,10 +20,10 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ExpressionTypeBorderFactory extends edu.cmu.cs.dennisc.moot.BorderFactory< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public interface SingleSelectionOperation extends Operation {
 }

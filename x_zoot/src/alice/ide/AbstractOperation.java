@@ -26,7 +26,7 @@ package alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOperation extends zoot.AbstractOperation {
-	protected edu.cmu.cs.dennisc.alice.ide.IDE getIDE() {
-		return edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton();
+	protected alice.ide.IDE getIDE() {
+		return alice.ide.IDE.getSingleton();
 	}
 }

@@ -20,13 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
-package edu.cmu.cs.dennisc.zoot.font;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ZTextAttribute<E> {
-	public java.awt.font.TextAttribute getKey();
-	public E getValue();
+public interface ResponseOperation extends Operation {
+	public void respond( java.util.EventObject e );
 }

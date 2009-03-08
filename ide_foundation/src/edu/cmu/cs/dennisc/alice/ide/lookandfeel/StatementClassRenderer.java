@@ -26,5 +26,5 @@ package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
 /**
  * @author Dennis Cosgrove
  */
-public interface StatementClassRenderer extends edu.cmu.cs.dennisc.zoot.Renderer< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > > {
+public interface StatementClassRenderer extends edu.cmu.cs.dennisc.moot.Renderer< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > > {
 }

@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 /**
  * @author Dennis Cosgrove
  */
-public class TemplatePane extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane {
+public class TemplatePane extends edu.cmu.cs.dennisc.moot.ZPageAxisPane {
 	//public TemplatePane() {
 	//}
 	public TemplatePane( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {

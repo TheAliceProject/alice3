@@ -5,7 +5,7 @@ import javax
 import edu
 
 from edu.cmu.cs.dennisc import alice
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 
 import ecc
 
@@ -34,16 +34,16 @@ class CreateFunctionPane( CreateTypedDeclarationPane ):
 		body = alice.ast.BlockStatement( [ returnStatement ] )
 		return alice.ast.MethodDeclaredInAlice( self._getName(), self._getType(), [], body )
 
-class WarningPane( zoot.ZPageAxisPane ):
+class WarningPane( moot.ZPageAxisPane ):
 	def __init__( self, invocationReferences, isProcedure ):
-		zoot.ZPageAxisPane.__init__( self )
+		moot.ZPageAxisPane.__init__( self )
 		if isProcedure:
 			methodText = "procedure"
 		else:
 			methodText = "function"
 		self.add( javax.swing.JLabel( "There are invocations to this %s in your program." % methodText ) )
 		self.add( javax.swing.JLabel( "You will need to fill in argument values for this new parameter." ) )
-		pane = zoot.ZLineAxisPane()
+		pane = moot.ZLineAxisPane()
 		pane.add( javax.swing.JLabel( "Look for:" ) )
 		pane.add( alice.ide.editors.code.ExpressionPane( alice.ast.NullLiteral() ) )
 		self.add( pane )

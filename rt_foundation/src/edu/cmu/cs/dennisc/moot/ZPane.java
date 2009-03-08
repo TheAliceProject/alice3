@@ -20,11 +20,26 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ActionOperation extends Operation {
-	public javax.swing.Action getActionForConfiguringSwingComponents();
+public class ZPane extends javax.swing.JPanel {
+	public ZPane() {
+		this.setOpaque( false );
+		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+	}
+	protected boolean isMaximumSizeClampedToPreferredSize() {
+		return true;
+	}
+	@Override
+	public java.awt.Dimension getMaximumSize() {
+		if( isMaximumSizeClampedToPreferredSize() ) {
+			return this.getPreferredSize();
+		} else {
+			return super.getMaximumSize();
+		}
+	}
 }

@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.gallerypane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
+public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 	class ThumbnailSnapshotListCellRenderer extends edu.cmu.cs.dennisc.alice.ide.swing.SnapshotListCellRenderer {
 		private javax.swing.Icon folderIcon;
 

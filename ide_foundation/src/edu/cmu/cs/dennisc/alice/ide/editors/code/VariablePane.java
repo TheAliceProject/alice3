@@ -30,7 +30,7 @@ public class VariablePane extends AccessiblePane {
 	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
 		this.variable = variable;
 		//this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( variable ) );
-		this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( variable.getValidName() ) );
+		this.add( new edu.cmu.cs.dennisc.moot.ZLabel( variable.getValidName() ) );
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
 	}
 	@Override

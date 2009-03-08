@@ -32,7 +32,7 @@ class ArgumentListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.denn
 	@Override
 	protected java.awt.Component createInterstitial( int i, final int N ) {
 		if( i < N - 1 ) {
-			return new edu.cmu.cs.dennisc.zoot.ZLabel( ", " );
+			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
 		} else {
 			return null;
 		}

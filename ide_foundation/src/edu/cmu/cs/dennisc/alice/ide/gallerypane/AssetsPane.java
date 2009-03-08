@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.gallerypane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AssetsPane extends edu.cmu.cs.dennisc.zoot.ZPane {
+public abstract class AssetsPane extends edu.cmu.cs.dennisc.moot.ZPane {
 	private ThumbnailsPane thumbnailsPane;
 	private PathControl pathControl;
 

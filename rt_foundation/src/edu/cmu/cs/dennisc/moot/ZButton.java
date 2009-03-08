@@ -20,10 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ExpressionTypeBorderFactory extends edu.cmu.cs.dennisc.moot.BorderFactory< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public class ZButton extends javax.swing.JButton {
+	private ActionOperation actionOperation;
+	public ZButton( ActionOperation actionOperation ) {
+		this.actionOperation = actionOperation;
+		this.setAction( this.actionOperation.getActionForConfiguringSwingComponents() );
+	}
+	protected ActionOperation getActionOperation() {
+		return this.actionOperation;
+	}
 }

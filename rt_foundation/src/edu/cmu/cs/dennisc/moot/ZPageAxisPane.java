@@ -20,10 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface SingleSelectionOperation extends Operation {
+public class ZPageAxisPane extends ZBoxPane {
+	public ZPageAxisPane() {
+		super( javax.swing.BoxLayout.PAGE_AXIS );
+	}
 }

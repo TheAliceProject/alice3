@@ -3,24 +3,24 @@
 import java
 import javax
 import edu
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 from edu.cmu.cs.dennisc import alice
 
 import ecc
 
-class TabCloseOperation( zoot.CancellableOperation ):
+class TabCloseOperation( moot.CancellableOperation ):
 	def prepare(self, e, observer):
 		self._tabbedPane = e.getSource()
 		self._index = e.getIndex()
-		return zoot.CancellableOperation.PreparationResult.PERFORM
+		return moot.CancellableOperation.PreparationResult.PERFORM
 	def perform(self):
 		scrollPane = self._tabbedPane.getComponentAt( self._index )
 		self._tabbedPane.remove( self._index )
 		self._tabbedPane.handleRemove( scrollPane )
 
-class CodeTabbedPane( zoot.ZTabbedPane ):
+class CodeTabbedPane( moot.ZTabbedPane ):
 	def __init__( self ):
-		zoot.ZTabbedPane.__init__( self, TabCloseOperation() )
+		moot.ZTabbedPane.__init__( self, TabCloseOperation() )
 		self._blockStatementViews = None
 		self._potentialReceptors = None
 		self._mapCodeToScrollPane = {}

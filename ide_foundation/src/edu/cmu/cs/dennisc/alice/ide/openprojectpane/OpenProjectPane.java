@@ -23,7 +23,7 @@
 
 package edu.cmu.cs.dennisc.alice.ide.openprojectpane;
 
-abstract class TabPane extends edu.cmu.cs.dennisc.zoot.ZPane {
+abstract class TabPane extends edu.cmu.cs.dennisc.moot.ZPane {
 	//	protected boolean isTabEnabled() {
 	//		return this.isEnabled();
 	//	}
@@ -428,7 +428,7 @@ class FileSystemPane extends TabPane {
  */
 public class OpenProjectPane extends edu.cmu.cs.dennisc.swing.InputPane< java.io.File > {
 	//private javax.swing.JTabbedPane tabbedPane = new javax.swing.JTabbedPane();
-	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane( null );
+	private edu.cmu.cs.dennisc.moot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.moot.ZTabbedPane( null );
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private FileSystemPane fileSystemPane = new FileSystemPane();
 	private TemplatesPane templatesPane = new TemplatesPane();

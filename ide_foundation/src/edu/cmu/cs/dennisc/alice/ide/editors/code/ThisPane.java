@@ -29,7 +29,7 @@ public class ThisPane extends AccessiblePane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	public ThisPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
-		this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( "this" ) );
+		this.add( new edu.cmu.cs.dennisc.moot.ZLabel( "this" ) );
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override

@@ -5,7 +5,7 @@ import javax
 import edu
 
 from edu.cmu.cs.dennisc import alice
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 
 import ecc
 
@@ -161,9 +161,9 @@ class ShiftBackwardParameterOperation( AbstractShiftParameterOperation ):
 #		popup = alice.ide.MenuUtilities.createJPopupMenu( operations )
 #		popup.show( e.getSource(), e.getX(), e.getY() )
 
-#class ParameterPane( zoot.ZLineAxisPane ):
+#class ParameterPane( moot.ZLineAxisPane ):
 #	def __init__(self, parameter, code):
-#		zoot.ZLineAxisPane.__init__( self )
+#		moot.ZLineAxisPane.__init__( self )
 #		self.add( alice.ide.editors.common.NodeNameLabel( parameter ) )
 #		self.add( alice.ide.editors.common.Label( ": " ) )
 #		self.add( alice.ide.editors.code.EmptyExpressionPane( parameter.getValueType() ) )
@@ -203,7 +203,7 @@ class ParametersPane( alice.ide.editors.code.AbstractListPropertyPane ):
 		alice.ide.editors.code.AbstractListPropertyPane.__init__( self, javax.swing.BoxLayout.LINE_AXIS, code.parameters )
 	def addPrefixComponents(self):
 		if "java" == edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant():
-			self.add( zoot.ZLabel( "( " ) )
+			self.add( moot.ZLabel( "( " ) )
 		else:
 			n = self.getProperty().size()
 			if n == 0:
@@ -220,7 +220,7 @@ class ParametersPane( alice.ide.editors.code.AbstractListPropertyPane ):
 			self.add( javax.swing.Box.createHorizontalStrut( 8 ) )
 	def createInterstitial(self, i, N ):
 		if i<N-1:
-			return zoot.ZLabel( ",  " )
+			return moot.ZLabel( ",  " )
 		else:
 			return javax.swing.Box.createHorizontalStrut( 8 )
 	def createComponent(self, parameter):
@@ -234,7 +234,7 @@ class ParametersPane( alice.ide.editors.code.AbstractListPropertyPane ):
 			else:
 				self.add( alice.ide.Button( AddParameterOperation( self._code ) ) )
 		if "java" == edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant():
-			self.add( zoot.ZLabel( " )" ) )
+			self.add( moot.ZLabel( " )" ) )
 
 class CodePane( alice.ide.editors.code.CodeEditor ):
 	def createParametersPane(self, code):

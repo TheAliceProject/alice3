@@ -20,19 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+
+package edu.cmu.cs.dennisc.moot.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface CancellableOperation extends Operation {
-	public enum PreparationResult {
-		CANCEL,
-		PERFORM,
-		PERFORM_AND_ADD_TO_HISTORY
+public enum ZTextFamily implements ZTextAttribute< String > {
+	SERIF("Serif"), SANS_SERIF("SansSerif");
+	private String m_value;
+
+	private ZTextFamily( String value ) {
+		m_value = value;
 	}
-	public interface PreparationObserver {
-		public void update( java.util.EventObject e );
+
+	public java.awt.font.TextAttribute getKey() {
+		return java.awt.font.TextAttribute.FAMILY;
 	}
-	public PreparationResult prepare( java.util.EventObject e, PreparationObserver observer );
+	public String getValue() {
+		return m_value;
+	}
 }

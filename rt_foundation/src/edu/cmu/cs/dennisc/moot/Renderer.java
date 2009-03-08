@@ -20,11 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Operation {
-	public void perform();
+public interface Renderer<E> {
+	public void fillBounds( E context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height );
+	public void paintPrologue( E context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected );
+	public void paintEpilogue( E context, java.awt.Component c, java.awt.Graphics2D g2, int x, int y, int width, int height, boolean isActive, boolean isPressed, boolean isSelected );
 }

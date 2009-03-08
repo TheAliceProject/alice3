@@ -20,11 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ResponseOperation extends Operation {
-	public void respond( java.util.EventObject e );
+public abstract class AbstractActionOperation implements ActionOperation {
+	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+			ZManager.performIfAppropriate( AbstractActionOperation.this, e );
+		} 
+	};
+	public javax.swing.Action getActionForConfiguringSwingComponents() {
+		return this.actionForConfiguringSwingComponents;
+	}
+	protected void putValue( String key, Object value ) {
+		this.actionForConfiguringSwingComponents.putValue( key, value );
+	}
 }

@@ -32,7 +32,7 @@ import edu.cmu.cs.dennisc.alice.ide.event.TransientSelectionEvent;
 /**
  * @author Dennis Cosgrove
  */
-class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
+class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 	public AbstractCodeHeaderPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice ) {
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 0, 4 ) );
 	}
@@ -53,7 +53,7 @@ class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.add( nameLabel );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( parametersPane );
-			//this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " {" ) );
+			//this.add( new edu.cmu.cs.dennisc.moot.ZLabel( " {" ) );
 		} else {
 			StringBuffer sb = new StringBuffer();
 //			if( methodDeclaredInAlice.isOverride() ) {
@@ -88,7 +88,7 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 		super( constructorDeclaredInAlice );
 		if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
 			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( "()" ) );
+			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( "()" ) );
 		} else {
 			this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "declare " ) );
 			edu.cmu.cs.dennisc.alice.ide.editors.common.Label label = new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "constructor" );
@@ -104,7 +104,7 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 /**
  * @author Dennis Cosgrove
  */
-class InstanceLine extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
+class InstanceLine extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		Label a = new edu.cmu.cs.dennisc.alice.ide.editors.common.Label( "current instance of " );
 		a.italicizeFont();
@@ -148,7 +148,7 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane implements edu.cmu.cs.dennisc.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor {
+public abstract class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements edu.cmu.cs.dennisc.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor {
 	public void fieldSelectionChanged( FieldSelectionEvent e ) {
 	}
 	public void fieldSelectionChanging( FieldSelectionEvent e ) {
@@ -244,7 +244,7 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 			throw new RuntimeException();
 		}
 		
-		//edu.cmu.cs.dennisc.zoot.ZPageAxisPane headerPane = new edu.cmu.cs.dennisc.zoot.ZPageAxisPane();
+		//edu.cmu.cs.dennisc.moot.ZPageAxisPane headerPane = new edu.cmu.cs.dennisc.moot.ZPageAxisPane();
 		this.add( header );
 		this.add( new InstanceLine( this.code ) );
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
@@ -287,7 +287,7 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.zoot.ZPageAxisPane i
 //		bodyPane.setOpaque( true );
 //		bodyPane.setBackground( java.awt.Color.RED );
 
-		edu.cmu.cs.dennisc.zoot.ZPane pane = new edu.cmu.cs.dennisc.zoot.ZPane() {
+		edu.cmu.cs.dennisc.moot.ZPane pane = new edu.cmu.cs.dennisc.moot.ZPane() {
 			@Override
 			protected boolean isMaximumSizeClampedToPreferredSize() {
 				return false;

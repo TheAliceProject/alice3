@@ -25,5 +25,5 @@ package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
 /**
  * @author Dennis Cosgrove
  */
-public interface StatementClassBorderFactory extends edu.cmu.cs.dennisc.zoot.BorderFactory< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > > {
+public interface StatementClassBorderFactory extends edu.cmu.cs.dennisc.moot.BorderFactory< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > > {
 }

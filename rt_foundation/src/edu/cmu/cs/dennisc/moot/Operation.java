@@ -20,22 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZFrame extends javax.swing.JFrame implements edu.cmu.cs.dennisc.apple.event.ApplicationListener {
-	public ZFrame() {
-		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( this );
-	}
-//	public abstract void handleQuit( java.util.EventObject e );
-	public static void main( String[] args ) {
-		ZFrame frame = new ZFrame() {
-			public void handleQuit( java.util.EventObject e ) {
-				javax.swing.JOptionPane.showMessageDialog( this, e.toString() );
-			}
-		};
-		frame.setVisible( true );
-	}
+public interface Operation {
+	public void perform();
 }

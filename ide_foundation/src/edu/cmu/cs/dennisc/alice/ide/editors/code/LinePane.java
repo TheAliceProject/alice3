@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 /**
  * @author Dennis Cosgrove
  */
-class LinePane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
+class LinePane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 	public LinePane( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Line line ) {
 //		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 //			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)owner;

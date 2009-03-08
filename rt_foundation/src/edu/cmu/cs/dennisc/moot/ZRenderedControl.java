@@ -20,10 +20,28 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ExpressionTypeBorderFactory extends edu.cmu.cs.dennisc.moot.BorderFactory< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public abstract class ZRenderedControl<E> extends ZControl {
+	public ZRenderedControl( int axis ) {
+		super( axis );
+	}
+	protected abstract Renderer< E > getRenderer();
+	protected abstract E getContext();
+	
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		Renderer< E > renderer = this.getRenderer();
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		if( renderer != null ) {
+			renderer.paintPrologue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), isActive(), isPressed(), isSelected() );
+		}
+		super.paint( g );
+		if( renderer != null ) {
+			renderer.paintEpilogue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), isActive(), isPressed(), isSelected() );
+		}
+	}
 }

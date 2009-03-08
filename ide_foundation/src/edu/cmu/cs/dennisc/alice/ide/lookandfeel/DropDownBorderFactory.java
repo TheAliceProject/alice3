@@ -25,5 +25,5 @@ package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
 /**
  * @author Dennis Cosgrove
  */
-public interface DropDownBorderFactory extends edu.cmu.cs.dennisc.zoot.BorderFactory< Object > {
+public interface DropDownBorderFactory extends edu.cmu.cs.dennisc.moot.BorderFactory< Object > {
 }

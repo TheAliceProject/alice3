@@ -5,7 +5,7 @@ import javax
 import edu
 
 from edu.cmu.cs.dennisc import alice
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 
 import ecc
 
@@ -147,9 +147,9 @@ class ItemInitializerPane( javax.swing.JPanel ):
 	def isValid( self ):
 		return self._pane.isValid()
 
-class ArrayInitializerListCellRenderer( zoot.ZLineAxisPane, javax.swing.ListCellRenderer ):
+class ArrayInitializerListCellRenderer( moot.ZLineAxisPane, javax.swing.ListCellRenderer ):
 	def __init__( self, type, paneWithValidation ):
-		zoot.ZLineAxisPane.__init__( self )
+		moot.ZLineAxisPane.__init__( self )
 		self._type = type
 		self._paneWithValidation = paneWithValidation
 		self._label = javax.swing.JLabel( "[ ??? ]" )

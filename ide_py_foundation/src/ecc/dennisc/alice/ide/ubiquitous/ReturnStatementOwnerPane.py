@@ -3,7 +3,7 @@ import javax
 import edu
 
 from edu.cmu.cs.dennisc import alice
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 
 import ecc
 
@@ -17,9 +17,9 @@ class ReturnStatementTemplatePane( CascadingUbiquitousStatementTemplatePane ):
 	def _createArgs( self, expression ):
 		return [ self._blankType, expression ]
 
-class ReturnStatementOwnerPane( zoot.ZPane ):
+class ReturnStatementOwnerPane( moot.ZPane ):
 	def __init__( self ):
-		zoot.ZPane.__init__( self )
+		moot.ZPane.__init__( self )
 		self.setLayout( java.awt.GridLayout( 1, 1 ) )
 		self._returnStatementPane = ReturnStatementTemplatePane()
 	def handleMethodChange( self, code ):

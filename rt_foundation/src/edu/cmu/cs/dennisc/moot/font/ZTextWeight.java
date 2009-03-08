@@ -20,26 +20,33 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+
+package edu.cmu.cs.dennisc.moot.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ZPane extends javax.swing.JPanel {
-	public ZPane() {
-		this.setOpaque( false );
-		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+public enum ZTextWeight implements ZTextAttribute< Float > {
+	EXTRA_LIGHT(java.awt.font.TextAttribute.WEIGHT_EXTRA_LIGHT), 
+	LIGHT(java.awt.font.TextAttribute.WEIGHT_LIGHT), 
+	DEMILIGHT(java.awt.font.TextAttribute.WEIGHT_DEMILIGHT), 
+	REGULAR(java.awt.font.TextAttribute.WEIGHT_REGULAR), 
+	SEMIBOLD(java.awt.font.TextAttribute.WEIGHT_SEMIBOLD), 
+	MEDIUM(java.awt.font.TextAttribute.WEIGHT_MEDIUM), 
+	DEMIBOLD(java.awt.font.TextAttribute.WEIGHT_DEMIBOLD), 
+	BOLD(java.awt.font.TextAttribute.WEIGHT_BOLD), 
+	HEAVY(java.awt.font.TextAttribute.WEIGHT_HEAVY), 
+	EXTRABOLD(java.awt.font.TextAttribute.WEIGHT_EXTRABOLD), 
+	ULTRABOLD(java.awt.font.TextAttribute.WEIGHT_ULTRABOLD);
+	private Float m_value;
+
+	private ZTextWeight( Float value ) {
+		m_value = value;
 	}
-	protected boolean isMaximumSizeClampedToPreferredSize() {
-		return true;
+	public java.awt.font.TextAttribute getKey() {
+		return java.awt.font.TextAttribute.WEIGHT;
 	}
-	@Override
-	public java.awt.Dimension getMaximumSize() {
-		if( isMaximumSizeClampedToPreferredSize() ) {
-			return this.getPreferredSize();
-		} else {
-			return super.getMaximumSize();
-		}
+	public Float getValue() {
+		return m_value;
 	}
 }

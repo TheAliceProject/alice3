@@ -27,7 +27,7 @@ import edu.cmu.cs.dennisc.alice.ide.issue.ExceptionHandler;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
+public abstract class IDE extends edu.cmu.cs.dennisc.moot.ZFrame {
 	private static ExceptionHandler exceptionHandler;
 	static {
 		IDE.exceptionHandler = new ExceptionHandler();

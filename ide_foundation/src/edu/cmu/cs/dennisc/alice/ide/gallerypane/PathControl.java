@@ -25,10 +25,10 @@ package edu.cmu.cs.dennisc.alice.ide.gallerypane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PathControl extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
-	class DirectoryControl extends edu.cmu.cs.dennisc.zoot.ZPane {
+public abstract class PathControl extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
+	class DirectoryControl extends edu.cmu.cs.dennisc.moot.ZPane {
 		private static final int ARROW_SIZE = 10;
-		class SelectDirectoryActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+		class SelectDirectoryActionOperation extends edu.cmu.cs.dennisc.moot.AbstractActionOperation {
 			public SelectDirectoryActionOperation() {
 				this.putValue( javax.swing.Action.NAME, PathControl.this.getTextFor( DirectoryControl.this.file ) );
 			}
@@ -36,20 +36,20 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane 
 				PathControl.this.handleSelectDirectory( DirectoryControl.this.file );
 			}
 		}
-		class SelectChildDirectoryActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation /*implements edu.cmu.cs.dennisc.zoot.ResponseOperation*/ {
+		class SelectChildDirectoryActionOperation extends edu.cmu.cs.dennisc.moot.AbstractActionOperation /*implements edu.cmu.cs.dennisc.moot.ResponseOperation*/ {
 			//public void respond( java.util.EventObject e ) {
 			//}
 			public void perform() {
 				DirectoryControl.this.handleSelectChildDirectory();
 			}
 		}
-		private edu.cmu.cs.dennisc.zoot.ZButton selectButton;
-		private edu.cmu.cs.dennisc.zoot.ZButton selectChildButton;
+		private edu.cmu.cs.dennisc.moot.ZButton selectButton;
+		private edu.cmu.cs.dennisc.moot.ZButton selectChildButton;
 		private java.io.File file;
 		public DirectoryControl( java.io.File file ) {
 			this.file = file;
-			this.selectButton = new edu.cmu.cs.dennisc.zoot.ZButton( new SelectDirectoryActionOperation() );
-			this.selectChildButton = new edu.cmu.cs.dennisc.zoot.ZButton( new SelectChildDirectoryActionOperation() ) {
+			this.selectButton = new edu.cmu.cs.dennisc.moot.ZButton( new SelectDirectoryActionOperation() );
+			this.selectChildButton = new edu.cmu.cs.dennisc.moot.ZButton( new SelectChildDirectoryActionOperation() ) {
 				@Override
 				protected void paintComponent(java.awt.Graphics g) {
 					super.paintComponent( g );
@@ -133,7 +133,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane 
 		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
 		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
 
-		class SelectFileActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+		class SelectFileActionOperation extends edu.cmu.cs.dennisc.moot.AbstractActionOperation {
 			private java.io.File file;
 			public SelectFileActionOperation( java.io.File file ) {
 				this.file = file;

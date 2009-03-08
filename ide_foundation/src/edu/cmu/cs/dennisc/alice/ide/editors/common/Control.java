@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Control<E> extends edu.cmu.cs.dennisc.zoot.ZRenderedControl<E> {
+public abstract class Control<E> extends edu.cmu.cs.dennisc.moot.ZRenderedControl<E> {
 	public Control( int axis ) {
 		super( axis );
 	}
@@ -34,7 +34,7 @@ public abstract class Control<E> extends edu.cmu.cs.dennisc.zoot.ZRenderedContro
 	}
 	//protected abstract edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape();
 	protected void fillBounds( java.awt.Graphics2D g2 ) {
-		edu.cmu.cs.dennisc.zoot.Renderer renderer = this.getRenderer();
+		edu.cmu.cs.dennisc.moot.Renderer renderer = this.getRenderer();
 		if( renderer!=null ) {
 			renderer.fillBounds( this.getContext(), this, g2, 0, 0, getWidth(), getHeight() );
 		}

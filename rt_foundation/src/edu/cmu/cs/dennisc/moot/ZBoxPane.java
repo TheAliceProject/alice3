@@ -20,24 +20,14 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
-package edu.cmu.cs.dennisc.zoot.font;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ZTextFamily implements ZTextAttribute< String > {
-	SERIF("Serif"), SANS_SERIF("SansSerif");
-	private String m_value;
-
-	private ZTextFamily( String value ) {
-		m_value = value;
-	}
-
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.FAMILY;
-	}
-	public String getValue() {
-		return m_value;
+public class ZBoxPane extends ZPane {
+	public ZBoxPane( int axis ) {
+		javax.swing.BoxLayout boxLayout = new javax.swing.BoxLayout( this, axis );
+		setLayout( boxLayout );
 	}
 }

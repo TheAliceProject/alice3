@@ -41,7 +41,7 @@ public class PropertyChunk extends Chunk {
 //	} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
 //		rv = new ConstantPane( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)owner );
 //	} else {
-//		rv = new edu.cmu.cs.dennisc.zoot.ZLabel( "should never happen" );
+//		rv = new edu.cmu.cs.dennisc.moot.ZLabel( "should never happen" );
 //	}
 	static java.util.Map< Object, String > operatorMap = new java.util.HashMap< Object, String >();
 	static {
@@ -82,7 +82,7 @@ public class PropertyChunk extends Chunk {
 				rv.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.TypePane( constantDeclaredInAlice.valueType.getValue() ) );
 				rv.add( new ConstantPane( constantDeclaredInAlice ) );
 			} else {
-				rv = new edu.cmu.cs.dennisc.zoot.ZLabel( "TODO: " + this.propertyName );
+				rv = new edu.cmu.cs.dennisc.moot.ZLabel( "TODO: " + this.propertyName );
 			}
 		} else {
 			edu.cmu.cs.dennisc.property.InstanceProperty< ? > property = owner.getInstancePropertyNamed( this.propertyName );
@@ -90,7 +90,7 @@ public class PropertyChunk extends Chunk {
 			if( "operator".equals( this.propertyName ) ) {
 				String value = PropertyChunk.operatorMap.get( property.getValue() );
 				if( value != null ) {
-					edu.cmu.cs.dennisc.zoot.ZLabel label = new edu.cmu.cs.dennisc.zoot.ZLabel( value );
+					edu.cmu.cs.dennisc.moot.ZLabel label = new edu.cmu.cs.dennisc.moot.ZLabel( value );
 					label.setFontToScaledFont( 2.0f );
 					rv = label;
 				}

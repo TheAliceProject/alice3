@@ -30,7 +30,7 @@ public class ConstantPane extends AccessiblePane {
 	public ConstantPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
 		this.constant = constant;
 		//this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( constant ) );
-		this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( constant.getValidName() ) );
+		this.add( new edu.cmu.cs.dennisc.moot.ZLabel( constant.getValidName() ) );
 		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
 	}
 	@Override

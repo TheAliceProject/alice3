@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane  {
+public class TypeExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane  {
 	private edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression;
 	private static final int X_INSET = 10;
 	public TypeExpressionPane( edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression ) {

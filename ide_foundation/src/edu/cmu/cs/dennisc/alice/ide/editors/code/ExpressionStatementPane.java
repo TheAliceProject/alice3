@@ -92,7 +92,7 @@ class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		}
 		if( "java".equals( getIDE().getLocale().getVariant() ) ) {
-			this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( ";" ) );
+			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( ";" ) );
 		}
 		ExpressionStatementPane.this.revalidate();
 		ExpressionStatementPane.this.repaint();

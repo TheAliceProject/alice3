@@ -20,7 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
@@ -56,7 +56,7 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		return this.tabCloseOperation != null;
 	}
 	public void closeTab( int index, java.awt.event.MouseEvent mouseEvent ) {
-		edu.cmu.cs.dennisc.zoot.event.TabEvent tabEvent = new edu.cmu.cs.dennisc.zoot.event.TabEvent( this, index, mouseEvent );
+		edu.cmu.cs.dennisc.moot.event.TabEvent tabEvent = new edu.cmu.cs.dennisc.moot.event.TabEvent( this, index, mouseEvent );
 		ZManager.performIfAppropriate( this.tabCloseOperation, tabEvent );
 	}
 
@@ -78,9 +78,9 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 
 		//SingleSelectionOperation tabSelectionOperation = null;
 		CancellableOperation tabCloseOperation = new CancellableOperation() {
-			private edu.cmu.cs.dennisc.zoot.event.TabEvent e;
+			private edu.cmu.cs.dennisc.moot.event.TabEvent e;
 			public CancellableOperation.PreparationResult prepare( java.util.EventObject e, CancellableOperation.PreparationObserver observer ) {
-				this.e = (edu.cmu.cs.dennisc.zoot.event.TabEvent)e;
+				this.e = (edu.cmu.cs.dennisc.moot.event.TabEvent)e;
 				return CancellableOperation.PreparationResult.PERFORM;
 			}
 			public void perform() {

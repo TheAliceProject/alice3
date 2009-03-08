@@ -20,10 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
+
+package edu.cmu.cs.dennisc.moot.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ExpressionTypeBorderFactory extends edu.cmu.cs.dennisc.moot.BorderFactory< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public enum ZTextPosture implements ZTextAttribute< Float > {
+	REGULAR(java.awt.font.TextAttribute.POSTURE_REGULAR), OBLIQUE(java.awt.font.TextAttribute.POSTURE_OBLIQUE);
+	private Float m_value;
+
+	private ZTextPosture( Float value ) {
+		m_value = value;
+	}
+	public java.awt.font.TextAttribute getKey() {
+		return java.awt.font.TextAttribute.POSTURE;
+	}
+	public Float getValue() {
+		return m_value;
+	}
 }

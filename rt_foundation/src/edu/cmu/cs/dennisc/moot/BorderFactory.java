@@ -20,21 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractActionOperation implements ActionOperation {
-	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			ZManager.performIfAppropriate( AbstractActionOperation.this, e );
-		} 
-	};
-	public javax.swing.Action getActionForConfiguringSwingComponents() {
-		return this.actionForConfiguringSwingComponents;
-	}
-	protected void putValue( String key, Object value ) {
-		this.actionForConfiguringSwingComponents.putValue( key, value );
-	}
+public interface BorderFactory<E> {
+	public javax.swing.border.Border createBorder( E context, java.awt.Component component ); 
 }

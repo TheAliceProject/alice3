@@ -61,7 +61,7 @@ public abstract class DropDownPane extends edu.cmu.cs.dennisc.alice.ide.editors.
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.Renderer<Object> getRenderer() {
+	protected edu.cmu.cs.dennisc.moot.Renderer<Object> getRenderer() {
 		return DropDownPane.renderer;
 	}
 	@Override

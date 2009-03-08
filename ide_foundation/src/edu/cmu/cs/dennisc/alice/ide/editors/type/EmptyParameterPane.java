@@ -25,11 +25,11 @@ package edu.cmu.cs.dennisc.alice.ide.editors.type;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyParameterPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
+public class EmptyParameterPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 	public EmptyParameterPane( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
 		String name = parameter.getName();
 		if( name != null ) {
-			this.add( new edu.cmu.cs.dennisc.zoot.ZLabel( name + ": " ) );
+			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( name + ": " ) );
 		}
 		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.EmptyExpressionPane( parameter.getValueType() ) );
 		this.setBackground( java.awt.Color.WHITE );

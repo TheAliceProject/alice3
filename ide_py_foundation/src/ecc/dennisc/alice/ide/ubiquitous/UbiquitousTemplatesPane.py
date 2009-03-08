@@ -3,7 +3,7 @@ import javax
 import edu
 
 from edu.cmu.cs.dennisc import alice
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 
 import ecc
 
@@ -75,10 +75,10 @@ class SetVariableTemplatePane( CascadingUbiquitousStatementTemplatePane ):
 		self._variable = variable
 		CascadingUbiquitousStatementTemplatePane.__init__( self, alice.ast.ExpressionStatement, variable.valueType.getValue() )
 	def createComponent(self):
-		return zoot.ZLabel( self._variable.getName() + " <== " )
-#		rv = zoot.ZLineAxisPane()
+		return moot.ZLabel( self._variable.getName() + " <== " )
+#		rv = moot.ZLineAxisPane()
 #		rv.setOpaque( False )
-#		rv.add( zoot.ZLabel( self._variable.getName() ) )
+#		rv.add( moot.ZLabel( self._variable.getName() ) )
 #		rv.add( MiniGetsPane( True, 2 ) )
 #		return rv
 	def _createArgs( self, expression ):
@@ -91,7 +91,7 @@ class SetArrayAtIndexTemplatePane( alice.ide.editors.ubiquitous.ExpressionRequir
 		self._arrayType = arrayType
 		alice.ide.editors.ubiquitous.ExpressionRequiringUbiquitousStatementTemplatePane.__init__( self, apply( alice.ast.ExpressionStatement, self._createArgsForEmpty() ) )
 	def createComponent(self):
-		return zoot.ZLabel( self._name + "[ ? ] <== " )
+		return moot.ZLabel( self._name + "[ ? ] <== " )
 
 	def _createAccess(self):
 		raise "Override"
@@ -270,9 +270,9 @@ def _getGetArrayLengthTemplatePaneForParameter( parameter ):
 		_mapParameterToGetArrayLengthTemplatePane[ parameter ] = value
 		return value
 
-class SetVariableTemplatesOwnerPane( zoot.ZLineAxisPane ):
+class SetVariableTemplatesOwnerPane( moot.ZLineAxisPane ):
 	def __init__( self ):
-		zoot.ZLineAxisPane.__init__( self )
+		moot.ZLineAxisPane.__init__( self )
 		self._method = None
 	def refreshTemplates(self):
 		templatePanesNeedingToBeAdded = []

@@ -7,7 +7,7 @@ import org
 
 from edu.cmu.cs.dennisc import alice
 from edu.cmu.cs.dennisc import cascade
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 
 import ecc
 
@@ -71,19 +71,19 @@ class SceneRunContainer( IDEListenerPane ):
 	def getMaximumSize( self ):
 		return self.getPreferredSize()
 
-class RunPane( zoot.ZLineAxisPane ):
+class RunPane( moot.ZLineAxisPane ):
 	def __init__( self, runOperation ):
-		zoot.ZLineAxisPane.__init__( self )
-		self.add( zoot.ZLabel( "invoke" ) )
+		moot.ZLineAxisPane.__init__( self )
+		self.add( moot.ZLabel( "invoke" ) )
 		self.add( SceneRunContainer() )
-		self.add( zoot.ZLabel( "when the program is" ) )
+		self.add( moot.ZLabel( "when the program is" ) )
 		strutWidth = 4
 		self.add( javax.swing.Box.createHorizontalStrut( strutWidth ) )
 		self.add( alice.ide.Button( runOperation ) )
 		self.add( javax.swing.Box.createHorizontalGlue() )
 		self._minWidth = 0
 	def getPreferredSize( self ):
-		rv = zoot.ZLineAxisPane.getPreferredSize( self )
+		rv = moot.ZLineAxisPane.getPreferredSize( self )
 		rv.width = max( rv.width, self._minWidth )
 		return rv
 

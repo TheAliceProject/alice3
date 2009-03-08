@@ -27,7 +27,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 /**
  * @author Dennis Cosgrove
  */
-class CodeTitlePane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
+class CodeTitlePane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;

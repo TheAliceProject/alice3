@@ -20,28 +20,26 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+
+package edu.cmu.cs.dennisc.moot.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZRenderedControl<E> extends ZControl {
-	public ZRenderedControl( int axis ) {
-		super( axis );
+public enum ZTextWidth implements ZTextAttribute< Float > {
+	CONDENSED(java.awt.font.TextAttribute.WIDTH_CONDENSED), 
+	SEMI_CONDENSED(java.awt.font.TextAttribute.WIDTH_SEMI_CONDENSED), 
+	REGULAR(java.awt.font.TextAttribute.WIDTH_REGULAR), 
+	SEMI_EXTENDED(java.awt.font.TextAttribute.WIDTH_SEMI_EXTENDED), 
+	EXTENDED(java.awt.font.TextAttribute.WIDTH_EXTENDED); 
+	private Float m_value;
+	private ZTextWidth( Float value ) {
+		m_value = value;
 	}
-	protected abstract Renderer< E > getRenderer();
-	protected abstract E getContext();
-	
-	@Override
-	public void paint( java.awt.Graphics g ) {
-		Renderer< E > renderer = this.getRenderer();
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		if( renderer != null ) {
-			renderer.paintPrologue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), isActive(), isPressed(), isSelected() );
-		}
-		super.paint( g );
-		if( renderer != null ) {
-			renderer.paintEpilogue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), isActive(), isPressed(), isSelected() );
-		}
+	public java.awt.font.TextAttribute getKey() {
+		return java.awt.font.TextAttribute.WIDTH;
+	}
+	public Float getValue() {
+		return m_value;
 	}
 }

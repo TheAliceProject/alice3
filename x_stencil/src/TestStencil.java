@@ -133,7 +133,7 @@ public class TestStencil {
 			i += 1;
 		}
 		
-		class Header extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane {
+		class Header extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 			public Header() {
 				this.add( new javax.swing.JLabel( "a" ) );
 				this.add( new javax.swing.JLabel( "/" ) );

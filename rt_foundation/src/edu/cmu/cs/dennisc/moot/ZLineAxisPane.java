@@ -20,11 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface BorderFactory<E> {
-	public javax.swing.border.Border createBorder( E context, java.awt.Component component ); 
+public class ZLineAxisPane extends ZBoxPane {
+	public ZLineAxisPane() {
+		super( javax.swing.BoxLayout.LINE_AXIS );
+	}
 }

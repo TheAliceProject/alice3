@@ -20,23 +20,10 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
-package edu.cmu.cs.dennisc.zoot.font;
+package alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ZTextPosture implements ZTextAttribute< Float > {
-	REGULAR(java.awt.font.TextAttribute.POSTURE_REGULAR), OBLIQUE(java.awt.font.TextAttribute.POSTURE_OBLIQUE);
-	private Float m_value;
-
-	private ZTextPosture( Float value ) {
-		m_value = value;
-	}
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.POSTURE;
-	}
-	public Float getValue() {
-		return m_value;
-	}
+public abstract class Editor extends Viewer {
 }

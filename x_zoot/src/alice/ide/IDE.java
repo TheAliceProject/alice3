@@ -20,18 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ZButton extends javax.swing.JButton {
-	private ActionOperation actionOperation;
-	public ZButton( ActionOperation actionOperation ) {
-		this.actionOperation = actionOperation;
-		this.setAction( this.actionOperation.getActionForConfiguringSwingComponents() );
+public abstract class IDE extends zoot.ZFrame {
+	public static IDE getSingleton() {
+		return IDE.getSingleton();
 	}
-	protected ActionOperation getActionOperation() {
-		return this.actionOperation;
-	}
+	public abstract boolean isProjectUpToDateWithFile();
+	public abstract void loadProjectFrom( java.io.File file );
+	public abstract void createProjectFromBootstrap();
 }

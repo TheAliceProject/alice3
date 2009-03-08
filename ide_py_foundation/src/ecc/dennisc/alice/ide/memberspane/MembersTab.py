@@ -5,7 +5,7 @@ import javax
 import edu
 
 from edu.cmu.cs.dennisc import alice
-from edu.cmu.cs.dennisc import zoot
+from edu.cmu.cs.dennisc import moot
 
 import ecc
 
@@ -104,17 +104,17 @@ def _getSetterTemplateFor( field ):
 def _getSetArrayAtIndexTemplateFor( field ):
 	return _getValueFor_CreateIfNecessary( _mapFieldToSetArrayAtIndexTemplate, field, SetArrayAtIndexTemplatePanePotentiallyWithAltMenu )
 
-class FieldPane( zoot.ZPageAxisPane ):
+class FieldPane( moot.ZPageAxisPane ):
 	def __init__( self, field ):
-		zoot.ZPageAxisPane.__init__( self )
-		initializeClassLine = zoot.ZLineAxisPane()
+		moot.ZPageAxisPane.__init__( self )
+		initializeClassLine = moot.ZLineAxisPane()
 		nameLabel = alice.ide.editors.common.NodeNameLabel( field )
 		nameLabel.scaleFont( 2.0 )
 		if field.isDeclaredInAlice():
 			if field.isFinal():
-				initializeClassLine.add( zoot.ZLabel( "permanently set " ) )
+				initializeClassLine.add( moot.ZLabel( "permanently set " ) )
 			else:
-				initializeClassLine.add( zoot.ZLabel( "initialize " ) )
+				initializeClassLine.add( moot.ZLabel( "initialize " ) )
 			initializeClassLine.add( nameLabel )
 			initializeClassLine.add( alice.ide.editors.code.GetsPane( True ) )
 			initializeClassLine.add( alice.ide.editors.code.ExpressionPropertyPane( field.initializer, True ) )
@@ -124,8 +124,8 @@ class FieldPane( zoot.ZPageAxisPane ):
 #		if field.isFinal():
 #			pass
 #		else:
-#			customizeInstanceLine = zoot.ZLineAxisPane()
-#			customizeInstanceLine.add( zoot.ZLabel( "value customized to... (coming soon)", [ zoot.font.ZTextPosture.OBLIQUE ] ) )
+#			customizeInstanceLine = moot.ZLineAxisPane()
+#			customizeInstanceLine.add( moot.ZLabel( "value customized to... (coming soon)", [ moot.font.ZTextPosture.OBLIQUE ] ) )
 #			self.add( customizeInstanceLine )
 		self.add( _getGetterTemplateFor( field ) )
 		if field.getValueType().isArray():
@@ -211,7 +211,7 @@ class AbstractTypeMethodsPane( AbstractTypeMembersPane ):
 							if self._isAcceptable( m ):
 								vc = _getMethodTemplateFor( m )
 								if m.isDeclaredInAlice():
-									panel = zoot.ZLineAxisPane()
+									panel = moot.ZLineAxisPane()
 									panel.add( alice.ide.Button( ecc.dennisc.alice.ide.operations.ast.EditMethodOperation( m ) ) )
 									panel.add( javax.swing.Box.createHorizontalStrut( 4 ) )
 									panel.add( vc )
@@ -382,13 +382,13 @@ class MembersTabComponent( javax.swing.JPanel ):
 			gbc.fill = java.awt.GridBagConstraints.BOTH
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER
 			if currentlySelectedField.getValueType().isArray():
-				label = zoot.ZLabel( "<html><b>todo:</b><br><i>handle selection of a field whose type is an array type</i></html>" )
+				label = moot.ZLabel( "<html><b>todo:</b><br><i>handle selection of a field whose type is an array type</i></html>" )
 				label.setFontToScaledFont( 1.2 )
 				self.add( label, gbc )
 			else:
 				gbc.insets.bottom = 2
 				for type in _getTypes( currentlySelectedField ):
-					linePane = zoot.ZLineAxisPane()
+					linePane = moot.ZLineAxisPane()
 					linePane.add( alice.ide.editors.common.TypePane( type ) )
 					linePane.add( javax.swing.Box.createHorizontalGlue() )
 					gbc.insets.left = 2
@@ -414,7 +414,7 @@ class MembersTabComponent( javax.swing.JPanel ):
 					self.add( self._getTypeMembersPane( type ), gbc )
 					if type.isDeclaredInAlice():
 						#linePane.add( javax.swing.Box.createHorizontalStrut( 32 ) )
-						linePane = zoot.ZLineAxisPane()
+						linePane = moot.ZLineAxisPane()
 						linePane.add( self._getCreateMemberButton( type ) )
 						linePane.add( javax.swing.Box.createHorizontalGlue() )
 						self.add( linePane, gbc )

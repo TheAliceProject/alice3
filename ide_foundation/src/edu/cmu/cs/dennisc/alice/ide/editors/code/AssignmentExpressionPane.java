@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
 /**
  * @author Dennis Cosgrove
  */
-public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisPane  {
+public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane  {
 	private edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression;
 	public AssignmentExpressionPane( edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression ) {
 		this.assignmentExpression = assignmentExpression;
@@ -35,7 +35,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisP
 		javax.swing.JComponent parent;
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent = new edu.cmu.cs.dennisc.zoot.ZLineAxisPane();
+			parent = new edu.cmu.cs.dennisc.moot.ZLineAxisPane();
 			this.add( parent );
 			expression = arrayAccess.array.getValue();
 		} else {
@@ -48,12 +48,12 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisP
 			nameLabel.scaleFont( 1.5f );
 			if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
 				parent.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
-				parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " . " ) );
+				parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( " . " ) );
 				parent.add( nameLabel );
 			} else {
 				parent.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
 			}
-			parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " . " ) );
+			parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( " . " ) );
 			parent.add( nameLabel );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression;
@@ -66,12 +66,12 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.zoot.ZLineAxisP
 		}
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( "[ " ) );
+			parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( "[ " ) );
 			parent.add( new ExpressionPropertyPane( arrayAccess.index, true ) );
-			parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " ]" ) );
+			parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( " ]" ) );
 		}
 		if( "java".equals( edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
-			parent.add( new edu.cmu.cs.dennisc.zoot.ZLabel( " = " ) );
+			parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( " = " ) );
 		} else {
 			parent.add( new edu.cmu.cs.dennisc.alice.ide.editors.code.GetsPane( true ) );
 		}

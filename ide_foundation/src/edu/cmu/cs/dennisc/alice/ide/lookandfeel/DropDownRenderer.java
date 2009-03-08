@@ -26,5 +26,5 @@ package edu.cmu.cs.dennisc.alice.ide.lookandfeel;
 /**
  * @author Dennis Cosgrove
  */
-public interface DropDownRenderer extends edu.cmu.cs.dennisc.zoot.Renderer< Object > {
+public interface DropDownRenderer extends edu.cmu.cs.dennisc.moot.Renderer< Object > {
 }

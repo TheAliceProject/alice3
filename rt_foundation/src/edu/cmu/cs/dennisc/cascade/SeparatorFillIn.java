@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public class SeparatorFillIn extends FillIn< Object > {
-	private edu.cmu.cs.dennisc.zoot.ZLineAxisPane pane;
+	private edu.cmu.cs.dennisc.moot.ZLineAxisPane pane;
 	public SeparatorFillIn() {
 		this( null );
 	}
@@ -34,7 +34,7 @@ public class SeparatorFillIn extends FillIn< Object > {
 		if( text != null ) {
 			javax.swing.JLabel label = new javax.swing.JLabel( text );
 			label.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-			this.pane = new edu.cmu.cs.dennisc.zoot.ZLineAxisPane();
+			this.pane = new edu.cmu.cs.dennisc.moot.ZLineAxisPane();
 			this.pane.add( label );
 		} else {
 			this.pane = null;

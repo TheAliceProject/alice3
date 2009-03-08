@@ -20,13 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.moot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ZPageAxisPane extends ZBoxPane {
-	public ZPageAxisPane() {
-		super( javax.swing.BoxLayout.PAGE_AXIS );
+public interface CancellableOperation extends Operation {
+	public enum PreparationResult {
+		CANCEL,
+		PERFORM,
+		PERFORM_AND_ADD_TO_HISTORY
 	}
+	public interface PreparationObserver {
+		public void update( java.util.EventObject e );
+	}
+	public PreparationResult prepare( java.util.EventObject e, PreparationObserver observer );
 }
