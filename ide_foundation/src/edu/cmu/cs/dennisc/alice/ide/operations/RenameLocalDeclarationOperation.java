@@ -27,18 +27,29 @@ package edu.cmu.cs.dennisc.alice.ide.operations;
  */
 public class RenameLocalDeclarationOperation extends edu.cmu.cs.dennisc.alice.ide.AbstractUndoableOperation {
 	private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
+	private String prevValue;
+	private String nextValue;
 	public RenameLocalDeclarationOperation( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
 		this.localDeclaredInAlice = localDeclaredInAlice;
 		this.putValue( javax.swing.Action.NAME, "rename..." );
 	}
 	public edu.cmu.cs.dennisc.alice.ide.Operation.PreparationResult prepare( java.util.EventObject e, edu.cmu.cs.dennisc.alice.ide.Operation.PreparationObserver observer ) {
-		return edu.cmu.cs.dennisc.alice.ide.Operation.PreparationResult.PERFORM;
+		//todo
+		this.nextValue = javax.swing.JOptionPane.showInputDialog( "name" );
+		if( nextValue != null && nextValue.length() > 0 ) {
+			return edu.cmu.cs.dennisc.alice.ide.Operation.PreparationResult.PERFORM;
+		} else {
+			return edu.cmu.cs.dennisc.alice.ide.Operation.PreparationResult.CANCEL;
+		}
 	}
 	public void perform() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "rename", this.localDeclaredInAlice );
+		this.prevValue = this.localDeclaredInAlice.name.getValue();
+		this.redo();
 	}
 	public void redo() {
+		this.localDeclaredInAlice.name.setValue( this.nextValue );
 	}
 	public void undo() {
+		this.localDeclaredInAlice.name.setValue( this.prevValue );
 	}
 }

@@ -51,6 +51,9 @@ public class NodeNameLabel extends Label {
 		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)this.node;
 			nameProperty = parameter.name;
+		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = (edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice)this.node;
+			nameProperty = local.name;
 		}
 		if( nameProperty != null ) {
 			this.namePropertyAdapter = new NamePropertyAdapter();
@@ -65,12 +68,20 @@ public class NodeNameLabel extends Label {
 	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() {
 		return this.node;
 	}
+	protected String getTextForNullName() {
+		return "null";
+	}
 	private void updateText() {
 		String text;
 		if( this.node != null ) {
 			text = this.node.getName();
 		} else {
-			text = "null";
+			text = null;
+		}
+		if( text != null ) {
+			//pass
+		} else {
+			text = this.getTextForNullName();
 		}
 		this.setText( text );
 		this.repaint();

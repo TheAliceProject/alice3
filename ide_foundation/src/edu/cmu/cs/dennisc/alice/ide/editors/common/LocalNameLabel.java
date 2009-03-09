@@ -20,25 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ide.editors.code;
+package edu.cmu.cs.dennisc.alice.ide.editors.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends AccessiblePane {
-	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		this.variable = variable;
-		//this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.NodeNameLabel( variable ) );
-		this.add( new edu.cmu.cs.dennisc.alice.ide.editors.common.LocalNameLabel( variable ) );
-		this.setBackground( edu.cmu.cs.dennisc.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+public class LocalNameLabel extends NodeNameLabel {
+	public LocalNameLabel( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+		super( local );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.variable.valueType.getValue();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ide.editors.common.DropAndDropEvent e ) {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+	protected String getTextForNullName() {
+		return ((edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice)getNode()).getValidName();
 	}
 }
