@@ -2,12 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/rt_foundation"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/rt_issue"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/x_ide_private"/>
-	<classpathentry kind="lib" path="/jar_jaf/activation.jar"/>
+	<classpathentry kind="lib" path="/jar_rpc/xmlrpc-client-1.1.jar"/>
 	<classpathentry kind="lib" path="/jar_mail/mail.jar"/>
 	<classpathentry kind="lib" path="/jar_mail/lib/smtp.jar"/>
-	<classpathentry kind="lib" path="/jar_rpc/xmlrpc-client-1.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_foundation"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_issue"/>
+	<classpathentry kind="lib" path="/jar_jaf/activation.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
