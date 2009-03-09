@@ -20,19 +20,25 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package alice.ide.classmemberseditor;
+package alice.ide.codeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ClassMembersEditor extends alice.ide.Editor {
-	private zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane( null );
-	public ClassMembersEditor() {
-		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
-		this.add( this.tabbedPane );
+public class ConstantPane extends AccessiblePane {
+	private edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
+	public ConstantPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
+		this.constant = constant;
+		//this.add( new alice.ide.ast.NodeNameLabel( constant ) );
+		this.add( new alice.ide.ast.LocalNameLabel( constant ) );
+		this.setBackground( alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
 	}
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return new java.awt.Dimension( 100, 100 );
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+		return this.constant.valueType.getValue();
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( alice.ide.ast.DropAndDropEvent e ) {
+		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
 	}
 }

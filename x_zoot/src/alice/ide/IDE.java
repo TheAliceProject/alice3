@@ -49,6 +49,22 @@ public abstract class IDE extends zoot.ZFrame {
 		return IDE.singleton;
 	}
 	
+	private alice.ide.sceneeditor.SceneEditor sceneEditor = this.createSceneEditor(); 
+	private alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor(); 
+	private alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
+	private zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane( null );
+	private zoot.ZLabel feedback = new zoot.ZLabel();
+
+	protected alice.ide.sceneeditor.SceneEditor createSceneEditor() {
+		return new alice.ide.sceneeditor.SceneEditor();
+	}
+	protected alice.ide.listenerseditor.ListenersEditor createListenersEditor() {
+		return new alice.ide.listenerseditor.ListenersEditor();
+	}
+	protected alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
+		return new alice.ide.memberseditor.MembersEditor();
+	}
+	
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -58,51 +74,52 @@ public abstract class IDE extends zoot.ZFrame {
 		this.promptForLicenseAgreements();
 
 		Perspective perspective = new Perspective();
-		perspective.activate( this.getContentPane() );
+		perspective.activate( this.sceneEditor, this.membersEditor, this.listenersEditor, this.tabbedPane );
+		this.getContentPane().setLayout( new java.awt.BorderLayout() );
+		this.getContentPane().add( perspective, java.awt.BorderLayout.CENTER );
+		this.getContentPane().add( this.feedback, java.awt.BorderLayout.SOUTH );
 		
-//		edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance.setBorderFactory( this.createExpressionBorderFactory() );
-//		edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance.setRenderer( this.createExpressionRenderer() );
-//
-//		edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.setBorderFactory( this.createStatementBorderFactory() );
-//		edu.cmu.cs.dennisc.alice.ide.editors.common.StatementLikeSubstance.setRenderer( this.createStatementRenderer() );
-//		
-//		edu.cmu.cs.dennisc.alice.ide.editors.code.DropDownPane.setBorderFactory( this.createDropDownBorderFactory() );
-//		edu.cmu.cs.dennisc.alice.ide.editors.code.DropDownPane.setRenderer( this.createDropDownRenderer() );
+		alice.ide.ast.ExpressionLikeSubstance.setBorderFactory( this.createExpressionBorderFactory() );
+		alice.ide.ast.ExpressionLikeSubstance.setRenderer( this.createExpressionRenderer() );
+
+		alice.ide.ast.StatementLikeSubstance.setBorderFactory( this.createStatementBorderFactory() );
+		alice.ide.ast.StatementLikeSubstance.setRenderer( this.createStatementRenderer() );
+		
+		alice.ide.codeeditor.DropDownPane.setBorderFactory( this.createDropDownBorderFactory() );
+		alice.ide.codeeditor.DropDownPane.setRenderer( this.createDropDownRenderer() );
 
 		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
 		this.vmForSceneEditor = createVirtualMachineForSceneEditor();
 
-		this.runOperation = createRunOperation();
-		this.exitOperation = createExitOperation();
+		this.runOperation = this.createRunOperation();
+		this.exitOperation = this.createExitOperation();
 
 		getContentPane().addMouseWheelListener( new edu.cmu.cs.dennisc.swing.plaf.metal.FontMouseWheelAdapter() );
-		//todo
-		setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
-		this.addWindowListener( new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				IDE.this.handleWindowOpened( e );
-			}
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				IDE.this.handleQuit( e );
-			}
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
 
 		//this.setLocale( new java.util.Locale( "en", "US", "java" ) );
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
 	}
 	
+	protected alice.ide.lookandfeel.StatementClassBorderFactory createStatementBorderFactory() {
+		return new alice.ide.lookandfeel.KnurlBorderFactory();
+	}
+	protected alice.ide.lookandfeel.StatementClassRenderer createStatementRenderer() {
+		return new alice.ide.lookandfeel.RoundedRectangleStatementClassRenderer();
+	}
+	protected alice.ide.lookandfeel.ExpressionTypeBorderFactory createExpressionBorderFactory() {
+		return new alice.ide.lookandfeel.BallAndSocketBorderFactory();
+	}
+	protected alice.ide.lookandfeel.ExpressionTypeRenderer createExpressionRenderer() {
+		return new alice.ide.lookandfeel.BallAndSocketExpressionTypeRenderer();
+	}
+	protected alice.ide.lookandfeel.DropDownBorderFactory createDropDownBorderFactory() {
+		return new alice.ide.lookandfeel.ArrowDropDownBorderFactory();
+	}
+	protected alice.ide.lookandfeel.DropDownRenderer createDropDownRenderer() {
+		return new alice.ide.lookandfeel.ArrowDropDownRenderer();
+	}
 
 	public abstract java.io.File getApplicationRootDirectory();
 	
@@ -144,146 +161,163 @@ public abstract class IDE extends zoot.ZFrame {
 		this.setTitle( sb.toString() );
 	}
 
-//	protected abstract edu.cmu.cs.dennisc.alice.ide.editors.code.CodeEditor getCodeEditorInFocus();
-//
-//	private ComponentStencil stencil;
-//	private java.util.List< ? extends java.awt.Component > holes = null;
-//	private edu.cmu.cs.dennisc.alice.ide.editors.common.PotentiallyDraggablePane potentialDragSource;
-//	private java.awt.Component currentDropReceptorComponent;
-//
-//	protected boolean isFauxStencilDesired() {
-//		return this.isDragInProgress;
-//		//return true;
-//	}
-//
-//	class ComponentStencil extends javax.swing.JPanel {
-//		public ComponentStencil() {
-//			setOpaque( false );
-//		}
-//		@Override
-//		protected void paintComponent( java.awt.Graphics g ) {
-//			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//			if( IDE.this.holes != null ) {
-//				//java.awt.geom.Area area = new java.awt.geom.Area( g2.getClipBounds() );
-//				java.awt.geom.Area area = new java.awt.geom.Area( new java.awt.Rectangle( 0, 0, getWidth(), getHeight() ) );
-//				synchronized( IDE.this.holes ) {
-//					if( IDE.this.currentDropReceptorComponent != null ) {
-//						this.setForeground( new java.awt.Color( 0, 0, 127, 95 ) );
-//					} else {
-//						this.setForeground( new java.awt.Color( 0, 0, 127, 127 ) );
-//					}
-//
-//					java.awt.Rectangle potentialDragSourceBounds;
-//					if( IDE.this.potentialDragSource != null ) {
-//						potentialDragSourceBounds = IDE.this.potentialDragSource.getBounds();
-//						potentialDragSourceBounds = javax.swing.SwingUtilities.convertRectangle( IDE.this.potentialDragSource.getParent(), potentialDragSourceBounds, this );
-//					} else {
-//						potentialDragSourceBounds = null;
-//					}
-//
-//					if( isFauxStencilDesired() ) {
-//						for( java.awt.Component component : IDE.this.holes ) {
-//							java.awt.Rectangle holeBounds = component.getBounds();
-//							holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent(), holeBounds, this );
-//							area.subtract( new java.awt.geom.Area( holeBounds ) );
-//						}
-//
-//						if( potentialDragSourceBounds != null ) {
-//							area.subtract( new java.awt.geom.Area( potentialDragSourceBounds ) );
-//						}
-//						g2.fill( area );
-//					}
-//
-//					g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
-//					final int BUFFER = 6;
-//					for( java.awt.Component component : IDE.this.holes ) {
-//						if( IDE.this.currentDropReceptorComponent == component ) {
-//							g2.setColor( java.awt.Color.GREEN );
-//						} else {
-//							g2.setColor( java.awt.Color.BLUE );
-//						}
-//						java.awt.Rectangle holeBounds = component.getBounds();
-//						holeBounds = javax.swing.SwingUtilities.convertRectangle( component, holeBounds, this );
-//						holeBounds.x -= BUFFER;
-//						holeBounds.y -= BUFFER;
-//						holeBounds.width += 2 * BUFFER;
-//						holeBounds.height += 2 * BUFFER;
-//						g2.draw( holeBounds );
-//					}
-//					if( potentialDragSourceBounds != null ) {
-//						g2.setColor( java.awt.Color.GREEN );
-//						g2.draw( potentialDragSourceBounds );
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
-//
-//	public void showStencilOver( edu.cmu.cs.dennisc.alice.ide.editors.common.PotentiallyDraggablePane potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-//		edu.cmu.cs.dennisc.alice.ide.editors.code.CodeEditor codeEditor = getCodeEditorInFocus();
-//		if( codeEditor != null ) {
-//			this.holes = codeEditor.findAllPotentialAcceptors( type );
-//			this.potentialDragSource = potentialDragSource;
-//			//java.awt.Rectangle bounds = codeEditor.getBounds();
-//			//bounds = javax.swing.SwingUtilities.convertRectangle( codeEditor, bounds, layeredPane );
-//			//this.stencil.setBounds( bounds );
-//			javax.swing.JLayeredPane layeredPane = this.getLayeredPane();
-//			if( this.stencil != null ) {
-//				//pass
-//			} else {
-//				this.stencil = new ComponentStencil();
-//			}
-//			this.stencil.setBounds( layeredPane.getBounds() );
-//			layeredPane.add( this.stencil, null );
-//			layeredPane.setLayer( this.stencil, javax.swing.JLayeredPane.POPUP_LAYER - 1 );
-//			this.stencil.repaint();
-//		}
-//	}
-//	public void hideStencil() {
-//		javax.swing.JLayeredPane layeredPane = this.getLayeredPane();
-//		if( this.stencil != null && this.stencil.getParent() == layeredPane ) {
-//			layeredPane.remove( this.stencil );
-//			layeredPane.repaint();
-//			this.holes = null;
-//			this.potentialDragSource = null;
-//		}
-//	}
-//
-//	public void handleDragStarted( edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor dropReceptor ) {
-//		this.potentialDragSource = null;
-//		if( this.stencil != null && this.holes != null ) {
-//			this.stencil.repaint();
-//		}
-//	}
-//	public void handleDragEntered( edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor dropReceptor ) {
-//		this.currentDropReceptorComponent = dropReceptor.getAWTComponent();
-//		if( this.stencil != null && this.holes != null ) {
-//			this.stencil.repaint();
-//		}
-//	}
-//	public void handleDragExited( edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor dropReceptor ) {
-//		this.currentDropReceptorComponent = null;
-//		if( this.stencil != null && this.holes != null ) {
-//			this.stencil.repaint();
-//		}
-//	}
-//	public void handleDragStopped( edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor dropReceptor ) {
-//	}
+private java.util.List< alice.ide.ast.DropReceptor > dropReceptors = new java.util.LinkedList< alice.ide.ast.DropReceptor >();
+	protected abstract alice.ide.codeeditor.CodeEditor getCodeEditorInFocus();
 
+	private ComponentStencil stencil;
+	private java.util.List< ? extends java.awt.Component > holes = null;
+	private alice.ide.ast.PotentiallyDraggablePane potentialDragSource;
+	private java.awt.Component currentDropReceptorComponent;
+
+	protected boolean isFauxStencilDesired() {
+		return this.isDragInProgress;
+		//return true;
+	}
+
+	class ComponentStencil extends javax.swing.JPanel {
+		public ComponentStencil() {
+			setOpaque( false );
+		}
+		@Override
+		protected void paintComponent( java.awt.Graphics g ) {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			if( IDE.this.holes != null ) {
+				//java.awt.geom.Area area = new java.awt.geom.Area( g2.getClipBounds() );
+				java.awt.geom.Area area = new java.awt.geom.Area( new java.awt.Rectangle( 0, 0, getWidth(), getHeight() ) );
+				synchronized( IDE.this.holes ) {
+					if( IDE.this.currentDropReceptorComponent != null ) {
+						this.setForeground( new java.awt.Color( 0, 0, 127, 95 ) );
+					} else {
+						this.setForeground( new java.awt.Color( 0, 0, 127, 127 ) );
+					}
+
+					java.awt.Rectangle potentialDragSourceBounds;
+					if( IDE.this.potentialDragSource != null ) {
+						potentialDragSourceBounds = IDE.this.potentialDragSource.getBounds();
+						potentialDragSourceBounds = javax.swing.SwingUtilities.convertRectangle( IDE.this.potentialDragSource.getParent(), potentialDragSourceBounds, this );
+					} else {
+						potentialDragSourceBounds = null;
+					}
+
+					if( isFauxStencilDesired() ) {
+						for( java.awt.Component component : IDE.this.holes ) {
+							java.awt.Rectangle holeBounds = component.getBounds();
+							holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent(), holeBounds, this );
+							area.subtract( new java.awt.geom.Area( holeBounds ) );
+						}
+
+						if( potentialDragSourceBounds != null ) {
+							area.subtract( new java.awt.geom.Area( potentialDragSourceBounds ) );
+						}
+						g2.fill( area );
+					}
+
+					g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
+					final int BUFFER = 6;
+					for( java.awt.Component component : IDE.this.holes ) {
+						if( IDE.this.currentDropReceptorComponent == component ) {
+							g2.setColor( java.awt.Color.GREEN );
+						} else {
+							g2.setColor( java.awt.Color.BLUE );
+						}
+						java.awt.Rectangle holeBounds = component.getBounds();
+						holeBounds = javax.swing.SwingUtilities.convertRectangle( component, holeBounds, this );
+						holeBounds.x -= BUFFER;
+						holeBounds.y -= BUFFER;
+						holeBounds.width += 2 * BUFFER;
+						holeBounds.height += 2 * BUFFER;
+						g2.draw( holeBounds );
+					}
+					if( potentialDragSourceBounds != null ) {
+						g2.setColor( java.awt.Color.GREEN );
+						g2.draw( potentialDragSourceBounds );
+					}
+				}
+			}
+		}
+	}
+
+	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
+
+	public void showStencilOver( alice.ide.ast.PotentiallyDraggablePane potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
+		if( codeEditor != null ) {
+			this.holes = codeEditor.findAllPotentialAcceptors( type );
+			this.potentialDragSource = potentialDragSource;
+			//java.awt.Rectangle bounds = codeEditor.getBounds();
+			//bounds = javax.swing.SwingUtilities.convertRectangle( codeEditor, bounds, layeredPane );
+			//this.stencil.setBounds( bounds );
+			javax.swing.JLayeredPane layeredPane = this.getLayeredPane();
+			if( this.stencil != null ) {
+				//pass
+			} else {
+				this.stencil = new ComponentStencil();
+			}
+			this.stencil.setBounds( layeredPane.getBounds() );
+			layeredPane.add( this.stencil, null );
+			layeredPane.setLayer( this.stencil, javax.swing.JLayeredPane.POPUP_LAYER - 1 );
+			this.stencil.repaint();
+		}
+	}
+	public void hideStencil() {
+		javax.swing.JLayeredPane layeredPane = this.getLayeredPane();
+		if( this.stencil != null && this.stencil.getParent() == layeredPane ) {
+			layeredPane.remove( this.stencil );
+			layeredPane.repaint();
+			this.holes = null;
+			this.potentialDragSource = null;
+		}
+	}
+
+	public void handleDragStarted( alice.ide.ast.DropReceptor dropReceptor ) {
+		this.potentialDragSource = null;
+		if( this.stencil != null && this.holes != null ) {
+			this.stencil.repaint();
+		}
+	}
+	public void handleDragEntered( alice.ide.ast.DropReceptor dropReceptor ) {
+		this.currentDropReceptorComponent = dropReceptor.getAWTComponent();
+		if( this.stencil != null && this.holes != null ) {
+			this.stencil.repaint();
+		}
+	}
+	public void handleDragExited( alice.ide.ast.DropReceptor dropReceptor ) {
+		this.currentDropReceptorComponent = null;
+		if( this.stencil != null && this.holes != null ) {
+			this.stencil.repaint();
+		}
+	}
+	public void handleDragStopped( alice.ide.ast.DropReceptor dropReceptor ) {
+	}
+
+
+	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
+	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
 	private java.io.File file = null;
 	private edu.cmu.cs.dennisc.alice.Project project = null;
+	
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = null;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField fieldSelection = null;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTransient transientSelection = null;
 
 	private java.util.List< alice.ide.event.IDEListener > ideListeners = new java.util.LinkedList< alice.ide.event.IDEListener >();
-	//private java.util.List< edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor > dropReceptors = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor >();
 	private alice.ide.event.IDEListener[] ideListenerArray = null;
 
 	public abstract edu.cmu.cs.dennisc.alice.ast.Node createCopy( edu.cmu.cs.dennisc.alice.ast.Node original );
+
+	private zoot.ActionOperation runOperation = this.createRunOperation();
+	private zoot.ActionOperation exitOperation = this.createExitOperation();
+	protected abstract zoot.ActionOperation createRunOperation();
+	protected zoot.ActionOperation createExitOperation() {
+		return new alice.ide.operations.file.ExitOperation();
+	}
+	public final zoot.ActionOperation getRunOperation() {
+		return this.runOperation;
+	}
+	public final zoot.ActionOperation getExitOperation() {
+		return this.exitOperation;
+	}
 
 	private boolean isDragInProgress = false;
 
@@ -321,33 +355,35 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 	
-	public void handleQuit( java.util.EventObject e ) {
-		//IDE.this.performIfAppropriate( IDE.this.exitOperation, e );
+	public void performIfAppropriate( zoot.ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
+		zoot.ZManager.performIfAppropriate( actionOperation, e, isCancelWorthwhile );
 	}
-	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	protected abstract void handleWindowClosing();
+	
+	@Override
+	protected void handleQuit( java.util.EventObject e ) {
+		this.performIfAppropriate( this.exitOperation, e, true );
+	}
+//	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
+//	protected abstract void handleWindowClosing();
 
-//	public java.util.List< ? extends edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor > getPotentialDropReceptors( edu.cmu.cs.dennisc.alice.ide.editors.common.PotentiallyDraggablePane source ) {
-//		if( source instanceof edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance ) {
-//			edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance expressionLikeSubstance = (edu.cmu.cs.dennisc.alice.ide.editors.common.ExpressionLikeSubstance)source;
-//			return getCodeEditorInFocus().findAllPotentialAcceptors( expressionLikeSubstance.getExpressionType() );
-//		} else {
-//			java.util.List< edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor >();
-//			edu.cmu.cs.dennisc.alice.ide.editors.code.CodeEditor codeEditor = this.getCodeEditorInFocus();
-//			if( codeEditor != null ) {
-//				rv.add( codeEditor );
-//			}
-//			//			for( edu.cmu.cs.dennisc.alice.ide.editors.common.DropReceptor dropReceptor : this.dropReceptors ) {
-//			//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
-//			//					rv.add( dropReceptor );
-//			//				}
-//			//			}
-//			return rv;
-//		}
-//	}
-
-	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
-	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
+	public java.util.List< ? extends alice.ide.ast.DropReceptor > getPotentialDropReceptors( alice.ide.ast.PotentiallyDraggablePane source ) {
+		if( source instanceof alice.ide.ast.ExpressionLikeSubstance ) {
+			alice.ide.ast.ExpressionLikeSubstance expressionLikeSubstance = (alice.ide.ast.ExpressionLikeSubstance)source;
+			return getCodeEditorInFocus().findAllPotentialAcceptors( expressionLikeSubstance.getExpressionType() );
+		} else {
+			java.util.List< alice.ide.ast.DropReceptor > rv = new java.util.LinkedList< alice.ide.ast.DropReceptor >();
+			alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
+			if( codeEditor != null ) {
+				rv.add( codeEditor );
+			}
+			//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
+			//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
+			//					rv.add( dropReceptor );
+			//				}
+			//			}
+			return rv;
+		}
+	}
 
 	public abstract void createProjectFromBootstrap();
 	public abstract void promptUserForStatement( java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
@@ -370,17 +406,6 @@ public abstract class IDE extends zoot.ZFrame {
 		return this.vmForSceneEditor;
 	}
 
-	private zoot.ActionOperation runOperation;
-	private zoot.ActionOperation exitOperation;
-
-	protected abstract zoot.ActionOperation createRunOperation();
-	protected abstract zoot.ActionOperation createExitOperation();
-	public final zoot.ActionOperation getRunOperation() {
-		return this.runOperation;
-	}
-	public final zoot.ActionOperation getExitOperation() {
-		return this.exitOperation;
-	}
 
 	public void addIDEListener( alice.ide.event.IDEListener l ) {
 		synchronized( this.ideListeners ) {
@@ -487,27 +512,6 @@ public abstract class IDE extends zoot.ZFrame {
 				l.focusedCodeChanged( e );
 			}
 		}
-	}
-
-	public String getInstanceTextForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, boolean isOutOfScopeTagDesired ) {
-		String text;
-		if( field != null ) {
-			text = field.getName();
-			edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = getFocusedCode();
-			if( focusedCode != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType scopeType = focusedCode.getDeclaringType();
-				if( field.getValueType() == scopeType ) {
-					text = "this (a.k.a. " + text + ")";
-				} else if( field.getDeclaringType() == scopeType ) {
-					text = "this." + text;
-				} else if( isOutOfScopeTagDesired ) {
-					text = "out of scope: " + text;
-				}
-			}
-		} else {
-			text = null;
-		}
-		return text;
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getFocusedCode() {
@@ -800,14 +804,36 @@ public abstract class IDE extends zoot.ZFrame {
 	public boolean isFieldInScope( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return createInstanceExpression( field ) != null;
 	}
-//	public boolean isDragInProgress() {
-//		return this.isDragInProgress;
-//	}
-//	public void setDragInProgress( boolean isDragInProgress ) {
-//		this.isDragInProgress = isDragInProgress;
-//		this.currentDropReceptorComponent = null;
-//	}
+	public boolean isDragInProgress() {
+		return this.isDragInProgress;
+	}
+	public void setDragInProgress( boolean isDragInProgress ) {
+		this.isDragInProgress = isDragInProgress;
+		this.currentDropReceptorComponent = null;
+	}
 	
+	public String getInstanceTextForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, boolean isOutOfScopeTagDesired ) {
+		String text;
+		if( field != null ) {
+			text = field.getName();
+			edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = getFocusedCode();
+			if( focusedCode != null ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType scopeType = focusedCode.getDeclaringType();
+				if( field.getValueType() == scopeType ) {
+					text = "this (a.k.a. " + text + ")";
+				} else if( field.getDeclaringType() == scopeType ) {
+					text = "this." + text;
+				} else if( isOutOfScopeTagDesired ) {
+					text = "out of scope: " + text;
+				}
+			}
+		} else {
+			text = null;
+		}
+		return text;
+	}
+
+
 	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
 //
 //
@@ -851,10 +877,10 @@ public abstract class IDE extends zoot.ZFrame {
 //		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 //			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 //			ensureNodeVisible( node );
-//			edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane rv = edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane.lookup( statement );
+//			alice.ide.codeeditor.AbstractStatementPane rv = alice.ide.codeeditor.AbstractStatementPane.lookup( statement );
 //			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 //				public void run() {
-//					edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane pane = edu.cmu.cs.dennisc.alice.ide.editors.code.AbstractStatementPane.lookup( statement );
+//					alice.ide.codeeditor.AbstractStatementPane pane = alice.ide.codeeditor.AbstractStatementPane.lookup( statement );
 //					if( pane != null ) {
 //						pane.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( pane ) );
 //					}
@@ -873,13 +899,13 @@ public abstract class IDE extends zoot.ZFrame {
 		IDE ide = new IDE() {
 
 			@Override
-			public Node createCopy( Node original ) {
+			protected alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 				// TODO Auto-generated method stub
 				return null;
 			}
-
+			
 			@Override
-			protected ActionOperation createExitOperation() {
+			public Node createCopy( Node original ) {
 				// TODO Auto-generated method stub
 				return null;
 			}
@@ -908,11 +934,6 @@ public abstract class IDE extends zoot.ZFrame {
 				return null;
 			}
 
-			@Override
-			protected void handleWindowClosing() {
-				// TODO Auto-generated method stub
-				
-			}
 
 			@Override
 			protected void handleWindowOpened( WindowEvent e ) {

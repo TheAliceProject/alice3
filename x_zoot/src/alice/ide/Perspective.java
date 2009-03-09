@@ -29,40 +29,24 @@ public class Perspective extends Component {
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private javax.swing.JSplitPane left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
 	private javax.swing.JSplitPane right = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
-	private alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
-	private alice.ide.sceneeditor.SceneEditor sceneEditor = this.createSceneEditor(); 
-	private alice.ide.classmemberseditor.ClassMembersEditor classMembersEditor = this.createClassMembersEditor(); 
-	private zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane( null );
-	private zoot.ZLabel feedback = new zoot.ZLabel();
 
-	protected alice.ide.sceneeditor.SceneEditor createSceneEditor() {
-		return new alice.ide.sceneeditor.SceneEditor();
-	}
-	protected alice.ide.listenerseditor.ListenersEditor createListenersEditor() {
-		return new alice.ide.listenerseditor.ListenersEditor();
-	}
-	protected alice.ide.classmemberseditor.ClassMembersEditor createClassMembersEditor() {
-		return new alice.ide.classmemberseditor.ClassMembersEditor();
-	}
-	
 	public Perspective() {
 		this.root.setLeftComponent( this.left );
 		this.root.setRightComponent( this.right );
-		this.left.setTopComponent( this.sceneEditor );
-		this.left.setBottomComponent( this.classMembersEditor );
-		this.right.setTopComponent( this.listenersEditor );
-		this.right.setBottomComponent( this.tabbedPane );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( this.root, java.awt.BorderLayout.CENTER );
-		this.add( this.feedback, java.awt.BorderLayout.SOUTH );
+		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
+		this.add( this.root );
 	}
 	
-	public void activate( java.awt.Container container ) {
-		assert container.getComponentCount() == 0;
-		container.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
-		container.add( this );
+	public void activate( java.awt.Component sceneEditor, java.awt.Component membersEditor, java.awt.Component listenersEditor, java.awt.Component tabbedPane ) {
+		this.left.setTopComponent( sceneEditor );
+		this.left.setBottomComponent( membersEditor );
+		this.right.setTopComponent( listenersEditor );
+		this.right.setBottomComponent( tabbedPane );
 	}
 	public void deactivate( java.awt.Container container ) {
-		container.remove( this );
+		this.left.setTopComponent( null );
+		this.left.setBottomComponent( null );
+		this.right.setTopComponent( null );
+		this.right.setBottomComponent( null );
 	}
 }

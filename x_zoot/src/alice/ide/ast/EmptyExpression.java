@@ -20,13 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package alice.ide;
+package alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractOperation extends zoot.AbstractOperation {
-	protected alice.ide.IDE getIDE() {
-		return alice.ide.IDE.getSingleton();
+public class EmptyExpression extends edu.cmu.cs.dennisc.alice.ast.Expression {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	public EmptyExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		this.type = type;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
+		return this.type;
 	}
 }

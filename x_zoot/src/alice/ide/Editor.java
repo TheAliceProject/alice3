@@ -25,5 +25,5 @@ package alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Editor extends Viewer {
+public abstract class Editor<E> extends Viewer<E> {
 }

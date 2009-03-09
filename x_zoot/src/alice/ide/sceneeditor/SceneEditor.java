@@ -25,19 +25,20 @@ package alice.ide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class SceneEditor extends alice.ide.Editor {
+public class SceneEditor extends alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> {
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private zoot.ZTree tree = new zoot.ZTree();
-	private javax.swing.JPanel lookingGlass = new javax.swing.JPanel();
+	private javax.swing.JPanel lookingGlass = new javax.swing.JPanel() {
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return new java.awt.Dimension( 320, 240 );
+		}
+	};
 	public SceneEditor() {
 		this.lookingGlass.setBackground( java.awt.Color.RED );
 		this.root.setLeftComponent( this.tree );
 		this.root.setRightComponent( this.lookingGlass );
 		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
 		this.add( this.root );
-	}
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return new java.awt.Dimension( 100, 100 );
 	}
 }

@@ -27,7 +27,7 @@ package zoot;
  */
 public abstract class AbstractActionOperation extends AbstractOperation implements ActionOperation {
 	@Override
-	protected void handleActionPerformed(java.awt.event.ActionEvent e) {
+	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
 		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_WORTHWHILE );
 	}
 }

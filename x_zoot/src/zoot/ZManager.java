@@ -50,6 +50,7 @@ public class ZManager {
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
 	public static void performIfAppropriate( ActionOperation actionOperation, final java.util.EventObject e, final boolean isCancelWorthwhile ) {
+		assert actionOperation != null;
 		ActionContext context = new ActionContext() {
 			private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
 			private boolean isCommitted = false;

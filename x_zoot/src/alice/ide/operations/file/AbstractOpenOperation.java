@@ -25,7 +25,7 @@ package alice.ide.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractOpenOperation extends AbstractOperation {
+public abstract class AbstractOpenOperation extends AbstractClearanceActionOperation {
 	protected abstract boolean isNew();
 	protected zoot.Operation getSelectProjectToOpenOperation() {
 		throw new RuntimeException( "todo" );
