@@ -73,6 +73,11 @@ public abstract class IDE extends zoot.ZFrame {
 
 		this.promptForLicenseAgreements();
 
+		
+		this.addIDEListener( this.sceneEditor );
+		this.addIDEListener( this.membersEditor );
+		this.addIDEListener( this.listenersEditor );
+		
 		Perspective perspective = new Perspective();
 		perspective.activate( this.sceneEditor, this.membersEditor, this.listenersEditor, this.tabbedPane );
 		this.getContentPane().setLayout( new java.awt.BorderLayout() );
@@ -972,6 +977,7 @@ private java.util.List< alice.ide.ast.DropReceptor > dropReceptors = new java.ut
 			}
 			
 		};
+		ide.loadProjectFrom( "/program files/alice/3.beta.0019/application/projects/templates/GrassyProject.a3p" );
 		ide.setSize(  1000, 1000 );
 		ide.setVisible( true );
 	}

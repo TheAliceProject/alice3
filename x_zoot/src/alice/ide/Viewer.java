@@ -25,7 +25,7 @@ package alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Viewer< E > extends Component {
+public abstract class Viewer< E > extends Component implements alice.ide.event.IDEListener {
 	private E model;
 
 	public E getModel() {
