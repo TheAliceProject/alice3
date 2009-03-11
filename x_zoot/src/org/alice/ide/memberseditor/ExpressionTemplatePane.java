@@ -20,36 +20,25 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
-
-import org.alice.ide.IDE;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZFrame extends javax.swing.JFrame {
-	public ZFrame() {
-		this.setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
-		this.addWindowListener( new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				ZFrame.this.handleWindowOpened( e );
-			}
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				ZFrame.this.handleQuit( e );
-			}
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
+public abstract class ExpressionTemplatePane extends org.alice.ide.codeeditor.AccessiblePane {
+	@Override
+	protected boolean isActuallyPotentiallyActive() {
+		return super.isActuallyPotentiallyActive() && getIDE().isSelectedFieldInScope();
 	}
-	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	//protected abstract void handleWindowClosing();
-	protected abstract void handleQuit( java.util.EventObject e );
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		super.paint( g );
+		if( getIDE().isSelectedFieldInScope() ) {
+			//pass
+		} else {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			g2.setPaint( org.alice.ide.lookandfeel.PaintUtilities.getDisabledTexturePaint() );
+			this.fillBounds( g2 );
+		}
+	}
 }

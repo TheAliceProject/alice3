@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn_generated"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/x_ide_i18n"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

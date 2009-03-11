@@ -20,36 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.ide.codeeditor;
 
-import org.alice.ide.IDE;
-
+//todo
+//class CodeTitlePane extends alice.ide.ast.PotentiallyDraggablePane {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZFrame extends javax.swing.JFrame {
-	public ZFrame() {
-		this.setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
-		this.addWindowListener( new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				ZFrame.this.handleWindowOpened( e );
-			}
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				ZFrame.this.handleQuit( e );
-			}
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
+class CodeTitlePane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
+	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		this.code = code;
+		this.add( new org.alice.ide.ast.TypePane( this.code.getDeclaringType() ) );
+		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+		this.add( new org.alice.ide.ast.NodeNameLabel( this.code ) );
 	}
-	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	//protected abstract void handleWindowClosing();
-	protected abstract void handleQuit( java.util.EventObject e );
+	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
+		return this.code;
+	}
 }
+

@@ -20,36 +20,26 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
-
-import org.alice.ide.IDE;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZFrame extends javax.swing.JFrame {
-	public ZFrame() {
-		this.setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
-		this.addWindowListener( new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				ZFrame.this.handleWindowOpened( e );
-			}
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				ZFrame.this.handleQuit( e );
-			}
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
+public class EmptyParameterPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
+	public EmptyParameterPane( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+		String name = parameter.getName();
+		if( name != null ) {
+			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( name + ": " ) );
+		}
+		this.add( new org.alice.ide.codeeditor.EmptyExpressionPane( parameter.getValueType() ) );
+		this.setBackground( java.awt.Color.WHITE );
+		this.setOpaque( true );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 4, 2, 4 ) );
 	}
-	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	//protected abstract void handleWindowClosing();
-	protected abstract void handleQuit( java.util.EventObject e );
+	@Override
+	protected void paintBorder( java.awt.Graphics g ) {
+		//super.paintBorder( g );
+		g.setColor( java.awt.Color.LIGHT_GRAY );
+		g.drawRect( 0,0,getWidth()-1, getHeight()-1 );
+	}
 }

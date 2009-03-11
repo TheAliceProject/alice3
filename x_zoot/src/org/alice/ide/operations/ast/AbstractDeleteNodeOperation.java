@@ -20,36 +20,34 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
-
-import org.alice.ide.IDE;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZFrame extends javax.swing.JFrame {
-	public ZFrame() {
-		this.setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
-		this.addWindowListener( new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				ZFrame.this.handleWindowOpened( e );
-			}
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				ZFrame.this.handleQuit( e );
-			}
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
+public abstract class AbstractDeleteNodeOperation extends org.alice.ide.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.Node node;
+	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
+	private int index;
+	public AbstractDeleteNodeOperation( edu.cmu.cs.dennisc.alice.ast.Node node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
+		this.node = node;
+		this.owner = owner;
+		this.putValue( javax.swing.Action.NAME, "delete" );
 	}
-	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	//protected abstract void handleWindowClosing();
-	protected abstract void handleQuit( java.util.EventObject e );
+	protected abstract boolean isClearToDelete();
+	public void perform( zoot.ActionContext actionContext ) {
+		if( this.isClearToDelete() ) {
+			this.index = this.owner.indexOf( this.node );
+			this.redo();
+			actionContext.commit();
+		} else {
+			actionContext.cancel();
+		}
+	}
+	public final void redo() {
+		this.owner.remove( this.index );
+	}
+	public final void undo() {
+		this.owner.add( this.index, this.node );
+	}
 }
