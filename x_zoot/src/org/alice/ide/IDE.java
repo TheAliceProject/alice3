@@ -693,6 +693,22 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 	//		String baseName = "edu.cmu.cs.dennisc.alice.ast.Colors";
 	//		return java.util.ResourceBundle.getBundle( baseName, locale );
 	//	}
+	
+	private static java.awt.Color toColor( String s ) {
+		java.awt.Color rv;
+		//String s = resourceBundle.getString( key );
+		if( s.startsWith( "0x" ) ) {
+			int i = Integer.parseInt( s.substring( 2 ), 16 );
+			rv = new java.awt.Color( i );
+		} else {
+			String[] rgbStrings = s.split( " " );
+			int r = Integer.parseInt( rgbStrings[ 0 ] );
+			int g = Integer.parseInt( rgbStrings[ 1 ] );
+			int b = Integer.parseInt( rgbStrings[ 2 ] );
+			rv = new java.awt.Color( r, g, b );
+		}
+		return rv;
+	}
 
 	public static java.awt.Color getColorForASTClass( Class< ? > cls ) {
 		//		java.util.ResourceBundle resourceBundle = getResourceBundleForASTColors( javax.swing.JComponent.getDefaultLocale() );
@@ -714,20 +730,7 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 		//			}
 		//		} while( true );
 		//		
-		java.awt.Color rv;
-		String s = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Colors", javax.swing.JComponent.getDefaultLocale() );
-		//String s = resourceBundle.getString( key );
-		if( s.startsWith( "0x" ) ) {
-			int i = Integer.parseInt( s.substring( 2 ), 16 );
-			rv = new java.awt.Color( i );
-		} else {
-			String[] rgbStrings = s.split( " " );
-			int r = Integer.parseInt( rgbStrings[ 0 ] );
-			int g = Integer.parseInt( rgbStrings[ 1 ] );
-			int b = Integer.parseInt( rgbStrings[ 2 ] );
-			rv = new java.awt.Color( r, g, b );
-		}
-		return rv;
+		return toColor( edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Colors", javax.swing.JComponent.getDefaultLocale() ) );
 	}
 	public static java.awt.Color getColorForASTInstance( edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		if( node != null ) {
@@ -956,5 +959,36 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 		ide.loadProjectFrom( "/program files/alice/3.beta.0027/application/projects/templates/GrassyProject.a3p" );
 		ide.setSize(  1000, 1000 );
 		ide.setVisible( true );
+	}
+
+	
+	public static java.awt.Color getColorFor( String key ) {
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.Colors", javax.swing.JComponent.getDefaultLocale() );
+		String s = resourceBundle.getString( key );
+		return toColor( s );
+	}
+	public static java.awt.Color getProcedureColor() {
+		return new java.awt.Color( 0xedc484 );
+	}
+	public static java.awt.Color getFunctionColor() {
+		return new java.awt.Color( 0xb4ccaf );
+	}
+	public static java.awt.Color getConstructorColor() {
+		return getFunctionColor();
+	}
+	public static java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice ) {
+		if( codeDeclaredInAlice instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)codeDeclaredInAlice;
+			if( methodDeclaredInAlice.isProcedure() ) {
+				return getProcedureColor();
+			} else {
+				return getFunctionColor();
+			}
+		} else {
+			return getConstructorColor();
+		}
+	}
+	public static java.awt.Color getFieldColor() {
+		return new java.awt.Color( 0x85abc9 );
 	}
 }

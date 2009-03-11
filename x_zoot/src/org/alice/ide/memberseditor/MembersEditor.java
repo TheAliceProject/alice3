@@ -24,14 +24,15 @@ package org.alice.ide.memberseditor;
 
 abstract class MembersTab extends javax.swing.JPanel {
 	public MembersTab() {
-		this.setBackground( org.alice.ide.lookandfeel.PaintUtilities.getColorFor( this.getKey() ) );
+		this.setBackground( org.alice.ide.IDE.getColorFor( this.getKey() ) );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
 	protected abstract String getKey();
 	public final String getTitle() {
-		return org.alice.ide.lookandfeel.PaintUtilities.getTextFor( this.getKey() );
+		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.memberseditor.TabTitles", javax.swing.JComponent.getDefaultLocale() );
+		return resourceBundle.getString( this.getKey() );
 	}
 	
 }
@@ -42,20 +43,20 @@ abstract class MethodsTab extends MembersTab {
 class ProceduresTab extends MethodsTab {
 	@Override
 	protected String getKey() {
-		return "procedures";
+		return "procedure";
 	}
 	
 }
 class FunctionsTab extends MethodsTab {
 	@Override
 	protected String getKey() {
-		return "functions";
+		return "function";
 	}
 }
 class FieldsTab extends MembersTab {
 	@Override
 	protected String getKey() {
-		return "fields";
+		return "field";
 	}
 }
 

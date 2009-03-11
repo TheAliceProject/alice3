@@ -180,7 +180,7 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane i
 		this.code = code;
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setBackground( org.alice.ide.lookandfeel.PaintUtilities.getCodeDeclaredInAliceColor( this.code ) );
+		this.setBackground( getIDE().getCodeDeclaredInAliceColor( this.code ) );
 		this.refresh();
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {

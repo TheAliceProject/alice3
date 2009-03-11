@@ -45,37 +45,4 @@ public class PaintUtilities {
 		}
 		return PaintUtilities.disabledTexturePaint;
 	}
-
-
-	public static java.awt.Color getColorFor( String key ) {
-		return getProcedureColor();
-	}
-	public static String getTextFor( String key ) {
-		return key;
-	}
-	
-	public static java.awt.Color getProcedureColor() {
-		return new java.awt.Color( 0xedc484 );
-	}
-	public static java.awt.Color getFunctionColor() {
-		return new java.awt.Color( 0xb4ccaf );
-	}
-	public static java.awt.Color getConstructorColor() {
-		return getFunctionColor();
-	}
-	public static java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice ) {
-		if( codeDeclaredInAlice instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)codeDeclaredInAlice;
-			if( methodDeclaredInAlice.isProcedure() ) {
-				return getProcedureColor();
-			} else {
-				return getFunctionColor();
-			}
-		} else {
-			return getConstructorColor();
-		}
-	}
-	public static java.awt.Color getFieldColor() {
-		return new java.awt.Color( 0x85abc9 );
-	}
 }
