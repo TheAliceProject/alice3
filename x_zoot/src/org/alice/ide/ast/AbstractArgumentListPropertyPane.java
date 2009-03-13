@@ -20,23 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
+
+import org.alice.ide.codeeditor.ExpressionPane;
+import org.alice.ide.codeeditor.ExpressionPropertyPane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyExpressionPane extends org.alice.ide.ast.ExpressionLikeSubstance {
-	private EmptyExpression emptyExpression;
-	public EmptyExpressionPane( EmptyExpression emptyExpression ) {
-		this.emptyExpression = emptyExpression;
-		this.add( new org.alice.ide.ast.Label( "???" ) );
-		this.setBackground( new java.awt.Color( 127, 127, 191 ) );
-	}
-	public EmptyExpressionPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this( new EmptyExpression( type ) );
+public abstract class AbstractArgumentListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > {
+	public AbstractArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.emptyExpression.getType();
+	protected java.awt.Component createInterstitial( int i, final int N ) {
+		if( i < N - 1 ) {
+			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
+		} else {
+			return null;
+		}
 	}
 }

@@ -20,18 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyExpression extends edu.cmu.cs.dennisc.alice.ast.Expression {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
-	public EmptyExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this.type = type;
+public abstract class AbstractSingleSelectionOperation<E> extends AbstractOperation implements SingleSelectionOperation< E >, javax.swing.event.TreeSelectionListener {
+	private static Object getLastPathComponent( javax.swing.tree.TreePath path ) { 
+		if( path != null ) {
+			return path.getLastPathComponent();
+		} else {
+			return null;
+		}
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
-		return this.type;
+	public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
+		javax.swing.tree.TreePath prevTreePath = e.getOldLeadSelectionPath();
+		javax.swing.tree.TreePath nextTreePath = e.getNewLeadSelectionPath();
+		Object prevSelection = getLastPathComponent( prevTreePath );
+		Object nextSelection = getLastPathComponent( nextTreePath );
+		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_FUTILE, prevSelection, nextSelection );
 	}
 }

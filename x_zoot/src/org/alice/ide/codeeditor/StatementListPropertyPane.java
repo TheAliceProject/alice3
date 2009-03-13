@@ -22,10 +22,12 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.AbstractListPropertyPane;
+
 /**
  * @author Dennis Cosgrove
  */
-class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
+public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
 	public static final int INTRASTICIAL_PAD = 4;
 	public StatementListPropertyPane( final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
 		super( javax.swing.BoxLayout.PAGE_AXIS, property );

@@ -20,20 +20,20 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.memberseditor;
 
+import org.alice.ide.codeeditor.ExpressionPropertyPane;
 
-public class Template {
-	private static final java.util.regex.Pattern NEW_LINE_PATTERN = java.util.regex.Pattern.compile( "\n" );
-	private Line[] lines = null;
-	public Template( String s ) {
-		String[] array = NEW_LINE_PATTERN.split( s );
-		this.lines = new Line[ array.length ];
-		for( int i = 0; i < array.length; i++ ) {
-			this.lines[ i ] = new Line( array[ i ] );
-		}
+/**
+ * @author Dennis Cosgrove
+ */
+public class Factory extends org.alice.ide.ast.Factory {
+	@Override
+	protected javax.swing.JComponent createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+		return new ArgumentListPropertyPane( argumentListProperty );
 	}
-	public Line[] getLines() {
-		return this.lines;
+	@Override
+	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		return new ExpressionPropertyPane( expressionProperty, false );
 	}
 }

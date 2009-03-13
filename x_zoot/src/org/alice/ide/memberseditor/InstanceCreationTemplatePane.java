@@ -37,7 +37,7 @@ public abstract class InstanceCreationTemplatePane extends MemberExpressionTempl
 		this.add( new org.alice.ide.ast.TypePane( constructor.getDeclaringType() ) );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : constructor.getParameters() ) {
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			this.add( new org.alice.ide.codeeditor.EmptyExpressionPane( parameter.getValueType() ) );
+			this.add( new org.alice.ide.ast.EmptyExpressionPane( parameter.getValueType() ) );
 		}
 		this.add( javax.swing.Box.createHorizontalGlue() );
 	}

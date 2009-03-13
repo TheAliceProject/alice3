@@ -20,23 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
-
-import org.alice.ide.ast.AbstractPropertyPane;
+package org.alice.ide.inputpanes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > > extends AbstractPropertyPane< E > {
-	public NodePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
+public abstract class CreateDeclarationPane<E> extends NameInputPane<E> {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
+	public CreateDeclarationPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+		this.ownerType = ownerType;
 	}
-	public NodePropertyPane( E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
-	}
-	@Override
-	protected void refresh() {
-		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( getProperty().getValue() ) );
+	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+		return this.ownerType;
 	}
 }

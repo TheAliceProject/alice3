@@ -20,23 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
-
-import org.alice.ide.ast.AbstractPropertyPane;
+package org.alice.ide.inputpanes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > > extends AbstractPropertyPane< E > {
-	public NodePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
-	}
-	public NodePropertyPane( E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+public class RenameNodePane extends NameInputPane<String> {
+	private edu.cmu.cs.dennisc.alice.ast.Node node;
+	public RenameNodePane( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+		this.node = node;
 	}
 	@Override
-	protected void refresh() {
-		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( getProperty().getValue() ) );
+	protected String getActualInputValue() {
+		return this.getName();
 	}
 }

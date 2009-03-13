@@ -26,7 +26,10 @@ package swing;
  * @author Dennis Cosgrove
  */
 public class LineAxisPane extends BoxPane {
-	public LineAxisPane() {
+	public LineAxisPane( java.awt.Component... components ) {
 		super( javax.swing.BoxLayout.LINE_AXIS );
+		for( java.awt.Component component : components ) {
+			this.add( component );
+		}
 	}
 }

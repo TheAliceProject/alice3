@@ -35,7 +35,7 @@ public abstract class SetterTemplatePane extends MemberStatementTemplatePane {
 		this.add( new zoot.ZLabel( "." ) );
 		this.add( this.getNameLabel() );
 		this.add( new org.alice.ide.codeeditor.GetsPane( true ) );
-		this.add( new org.alice.ide.codeeditor.EmptyExpressionPane( field.getValueType() ) );
+		this.add( new org.alice.ide.ast.EmptyExpressionPane( field.getValueType() ) );
 		this.add( javax.swing.Box.createHorizontalGlue() );
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {

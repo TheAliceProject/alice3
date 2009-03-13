@@ -22,10 +22,12 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.AbstractListPropertyPane;
+
 /**
  * @author Dennis Cosgrove
  */
-class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty > {
+public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty > {
 	public ExpressionListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty property ) {
 		super( javax.swing.BoxLayout.LINE_AXIS, property );
 	}

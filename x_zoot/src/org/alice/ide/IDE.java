@@ -52,7 +52,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private org.alice.ide.sceneeditor.SceneEditor sceneEditor = this.createSceneEditor(); 
 	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor(); 
 	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
-	private zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane( null );
+	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane = this.createEditorsTabbedPane();
 	private zoot.ZLabel feedback = new zoot.ZLabel();
 
 	protected org.alice.ide.sceneeditor.SceneEditor createSceneEditor() {
@@ -63,6 +63,9 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
 		return new org.alice.ide.memberseditor.MembersEditor();
+	}
+	protected org.alice.ide.editorstabbedpane.EditorsTabbedPane createEditorsTabbedPane() {
+		return new org.alice.ide.editorstabbedpane.EditorsTabbedPane();
 	}
 	
 	public IDE() {
@@ -77,9 +80,10 @@ public abstract class IDE extends zoot.ZFrame {
 		this.addIDEListener( this.sceneEditor );
 		this.addIDEListener( this.membersEditor );
 		this.addIDEListener( this.listenersEditor );
+		this.addIDEListener( this.editorsTabbedPane );
 		
 		Perspective perspective = new Perspective();
-		perspective.activate( this.sceneEditor, this.membersEditor, this.listenersEditor, this.tabbedPane );
+		perspective.activate( this.sceneEditor, this.membersEditor, this.listenersEditor, this.editorsTabbedPane );
 		this.getContentPane().setLayout( new java.awt.BorderLayout() );
 		this.getContentPane().add( perspective, java.awt.BorderLayout.CENTER );
 		this.getContentPane().add( this.feedback, java.awt.BorderLayout.SOUTH );
@@ -105,6 +109,30 @@ public abstract class IDE extends zoot.ZFrame {
 
 		//this.setLocale( new java.util.Locale( "en", "US", "java" ) );
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
+	}
+	
+	private Factory factory = this.createFactory();
+	public Factory getFactory() {
+		return this.factory;
+	}
+	protected Factory createFactory() {
+		return new Factory();
+	}
+
+	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
+	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
+		return this.templatesFactory;
+	}
+	protected org.alice.ide.memberseditor.Factory createTemplatesFactory() {
+		return new org.alice.ide.memberseditor.Factory();
+	}
+
+	private org.alice.ide.codeeditor.Factory codeFactory = this.createCodeFactory();
+	public org.alice.ide.codeeditor.Factory getCodeFactory() {
+		return this.codeFactory;
+	}
+	protected org.alice.ide.codeeditor.Factory createCodeFactory() {
+		return new org.alice.ide.codeeditor.Factory();
 	}
 	
 	protected org.alice.ide.lookandfeel.StatementClassBorderFactory createStatementBorderFactory() {
@@ -819,8 +847,6 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 
 
 	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
-//
-//
 //	private static <E extends edu.cmu.cs.dennisc.alice.ast.Node> E getAncestor( edu.cmu.cs.dennisc.alice.ast.Node node, Class<E> cls ) {
 //		edu.cmu.cs.dennisc.alice.ast.Node ancestor = node.getParent();
 //		while( ancestor != null ) {
@@ -880,6 +906,7 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 //	}
 
 	public static void main( String[] args ) {
+		//edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
 		IDE ide = new IDE() {
 
 			@Override

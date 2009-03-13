@@ -20,23 +20,25 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
-
-import org.alice.ide.ast.AbstractPropertyPane;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > > extends AbstractPropertyPane< E > {
-	public NodePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
+public class CreateProcedureOperation extends org.alice.ide.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+	public CreateProcedureOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		this.type = type;
+		this.putValue( javax.swing.Action.NAME, "create new procedure..." );
 	}
-	public NodePropertyPane( E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
-	}
-	@Override
-	protected void refresh() {
-		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( getProperty().getValue() ) );
+	public void perform( zoot.ActionContext actionContext ) {
+		org.alice.ide.inputpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.inputpanes.CreateProcedurePane( this.type );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createProcedurePane.showInJDialog( getIDE() );
+		if( method != null ) {
+			this.type.methods.add( method );
+			actionContext.commit();
+		} else {
+			actionContext.cancel();
+		}
 	}
 }

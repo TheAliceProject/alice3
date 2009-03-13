@@ -20,23 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
-
-import org.alice.ide.ast.AbstractPropertyPane;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > > extends AbstractPropertyPane< E > {
-	public NodePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
+public class CreateFieldOperation extends org.alice.ide.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+	public CreateFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		this.type = type;
+		this.putValue( javax.swing.Action.NAME, "create new property..." );
 	}
-	public NodePropertyPane( E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
-	}
-	@Override
-	protected void refresh() {
-		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( getProperty().getValue() ) );
+	public void perform( zoot.ActionContext actionContext ) {
+		String name = javax.swing.JOptionPane.showInputDialog( "name" );
+		if( name != null && name.length() > 0 ) {
+			//this.prevValue = this.localDeclaredInAlice.name.getValue();
+			actionContext.commit();
+		} else {
+			actionContext.cancel();
+		}
 	}
 }

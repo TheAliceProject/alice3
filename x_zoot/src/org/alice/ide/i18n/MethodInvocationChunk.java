@@ -20,23 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.i18n;
 
-import org.alice.ide.ast.AbstractPropertyPane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > > extends AbstractPropertyPane< E > {
-	public NodePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
+public class MethodInvocationChunk extends Chunk {
+	private String methodName;
+	public MethodInvocationChunk( String methodNamePlusParens ) {
+		this.methodName = methodNamePlusParens.substring( 0, methodNamePlusParens.length()-2 );
 	}
-	public NodePropertyPane( E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+	public String getMethodName() {
+		return this.methodName;
 	}
 	@Override
-	protected void refresh() {
-		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( getProperty().getValue() ) );
+	protected java.lang.StringBuffer updateRepr( java.lang.StringBuffer rv ) {
+		rv.append( "methodName=" );
+		rv.append( this.methodName );
+		return rv;
 	}
 }

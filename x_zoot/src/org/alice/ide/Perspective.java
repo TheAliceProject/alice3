@@ -33,6 +33,8 @@ public class Perspective extends Component {
 	public Perspective() {
 		this.root.setLeftComponent( this.left );
 		this.root.setRightComponent( this.right );
+		this.root.setDividerLocation( 320 );
+		this.left.setDividerLocation( 240 );
 		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
 		this.add( this.root );
 	}

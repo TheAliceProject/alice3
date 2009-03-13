@@ -22,16 +22,18 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.AbstractListPropertyPane;
+
 /**
  * @author Dennis Cosgrove
  */
-class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
+public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
 	public DefaultNodeListPropertyPane( edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
 		super( javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
 	protected javax.swing.JComponent createComponent( Object instance ) {
-		return new TemplatePane( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
+		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
 	}
 }
 

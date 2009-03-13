@@ -20,12 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property.InstanceProperty< ? > > extends edu.cmu.cs.dennisc.moot.ZBoxPane {
+public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property.InstanceProperty< ? > > extends edu.cmu.cs.dennisc.moot.ZBoxPane {
 	private E property;
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {

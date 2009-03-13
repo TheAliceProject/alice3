@@ -20,26 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-class LinePane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
-	public LinePane( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner, Line line ) {
-//		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-//			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)owner;
-//			this.add( new FieldAccessPane( fieldAccess ) );
-//		} else {
-			this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( line.getIndentCount()*16, 0 ) ) );
-			for( Chunk chunk : line.getChunks() ) {
-				javax.swing.JComponent component = chunk.createComponent( owner );
-				if( component != null ) {
-					this.add( component );
-				} else {
-					throw new RuntimeException( chunk.toString() );
-				}
-			}
-//		}
+public abstract class AbstractSingleSelectionOperation<E> extends zoot.AbstractSingleSelectionOperation<E> {
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
 	}
 }

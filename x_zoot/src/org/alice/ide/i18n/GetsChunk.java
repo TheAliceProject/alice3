@@ -20,26 +20,26 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.i18n;
+
+import org.alice.ide.codeeditor.GetsPane;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class TextChunk extends Chunk {
-	private String text;
-	public TextChunk( String text ) {
-		this.text = text;
+public class GetsChunk extends Chunk {
+	private boolean isTowardLeading;
+	public GetsChunk( boolean isTowardLeading ) {
+		this.isTowardLeading = isTowardLeading;
 	}
-	@Override
-	public javax.swing.JComponent createComponent( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		//Label rv = new Label( "<html><h1>" + this.text + "</h1></html>" );
-		zoot.ZLabel rv = new zoot.ZLabel( this.text );
-		return rv;
+	public boolean isTowardLeading() {
+		return this.isTowardLeading;
 	}
 	@Override
 	protected java.lang.StringBuffer updateRepr( java.lang.StringBuffer rv ) {
-		rv.append( "text=" );
-		rv.append( this.text );
+		rv.append( "isTowardLeading=" );
+		rv.append( this.isTowardLeading );
 		return rv;
 	}
 }

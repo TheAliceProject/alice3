@@ -20,23 +20,25 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide;
 
-import org.alice.ide.ast.AbstractPropertyPane;
+import org.alice.ide.ast.AbstractArgumentListPropertyPane;
+import org.alice.ide.codeeditor.ConstantPane;
+import org.alice.ide.codeeditor.DefaultListPropertyPane;
+import org.alice.ide.codeeditor.DefaultNodeListPropertyPane;
+import org.alice.ide.codeeditor.ExpressionListPropertyPane;
+import org.alice.ide.codeeditor.ExpressionPropertyPane;
+import org.alice.ide.codeeditor.InstancePropertyPane;
+import org.alice.ide.codeeditor.NodePropertyPane;
+import org.alice.ide.codeeditor.StatementListPropertyPane;
+import org.alice.ide.codeeditor.TypedDeclarationPane;
+import org.alice.ide.codeeditor.VariablePane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > > extends AbstractPropertyPane< E > {
-	public NodePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
-	}
-	public NodePropertyPane( E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
-	}
-	@Override
-	protected void refresh() {
-		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( getProperty().getValue() ) );
+public class Factory {
+	public javax.swing.JComponent create( java.awt.Container container, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return new org.alice.ide.ast.TypePane( type );
 	}
 }

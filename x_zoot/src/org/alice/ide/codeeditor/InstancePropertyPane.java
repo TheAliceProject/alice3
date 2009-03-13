@@ -22,12 +22,12 @@
  */
 package org.alice.ide.codeeditor;
 
-import zoot.ZLabel;
+import org.alice.ide.ast.AbstractPropertyPane;
 
 /**
  * @author Dennis Cosgrove
  */
-class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty<?> > {
+public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty<?> > {
 	public InstancePropertyPane() {
 		super( javax.swing.BoxLayout.LINE_AXIS );
 	}

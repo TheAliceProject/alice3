@@ -22,6 +22,84 @@
  */
 package zoot;
 
+abstract class AbstractContext implements Context { 
+	private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
+	private boolean isCommitted = false;
+	private boolean isCancelled = false;
+	private java.util.EventObject e;
+	private boolean isCancelWorthwhile;
+	public AbstractContext( java.util.EventObject e, boolean isCancelWorthwhile ) {
+		this.e = e;
+		this.isCancelWorthwhile = isCancelWorthwhile;
+	}
+	public boolean isCommitted() {
+		return this.isCommitted;
+	}
+	public boolean isCancelled() {
+		return this.isCancelled;
+	}
+	public boolean isPending() {
+		return ( this.isCommitted() || this.isCancelled() ) == false;
+	}
+	public void commit() {
+		assert this.isPending();
+		this.isCommitted = true;
+	}
+	public void cancel() {
+		assert this.isPending();
+		this.isCancelled = true;
+	}
+	public boolean isCancelWorthwhile() {
+		return isCancelWorthwhile;
+	}
+	public <E extends Object> E get( Object key, Class<E> cls ) {
+		Object rv = this.get( key );
+		if( rv != null ) {
+			assert cls.isAssignableFrom( rv.getClass() );
+			return (E)rv;
+		} else {
+			return null;
+		}
+	}
+	public Object get( Object key ) {
+		return this.map.get( key );
+	}
+	public void put( Object key, Object value ) {
+		this.map.put( key, value );
+	}
+	public java.util.EventObject getEvent() {
+		return e;
+	}
+	public Context perform( Operation operation, java.util.EventObject o ) {
+		return null;
+	}
+}
+class MyActionContext extends AbstractContext implements ActionContext {
+	public MyActionContext( java.util.EventObject e, boolean isCancelWorthwhile ) {
+		super( e, isCancelWorthwhile );
+	}
+}
+class MySingleSelectionContext<E> extends AbstractContext implements SingleSelectionContext<E> {
+	private E previousSelection;
+	private E nextSelection;
+//	private boolean isPreviousSelectionValid;
+	public MySingleSelectionContext( java.util.EventObject e, boolean isCancelWorthwhile, E previousSelection, E nextSelection ) {
+		super( e, isCancelWorthwhile );
+		this.previousSelection = previousSelection;
+		this.nextSelection = nextSelection;
+//		this.isPreviousSelectionValid = true;
+	}
+	public E getPreviousSelection() {
+		return this.previousSelection;
+	}
+	public E getNextSelection() {
+		return this.nextSelection;
+	}
+//	public boolean isPreviousSelectionValid() {
+//		return this.isPreviousSelectionValid;
+//	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -47,57 +125,12 @@ public class ZManager {
 //			}
 //		}
 //	}
+	
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
-	public static void performIfAppropriate( ActionOperation actionOperation, final java.util.EventObject e, final boolean isCancelWorthwhile ) {
+	public static void performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
-		ActionContext context = new ActionContext() {
-			private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
-			private boolean isCommitted = false;
-			private boolean isCancelled = false;
-			public boolean isCommitted() {
-				return this.isCommitted;
-			}
-			public boolean isCancelled() {
-				return this.isCancelled;
-			}
-			public boolean isPending() {
-				return ( this.isCommitted() || this.isCancelled() ) == false;
-			}
-			public void commit() {
-				assert this.isPending();
-				this.isCommitted = true;
-			}
-			public void cancel() {
-				assert this.isPending();
-				this.isCancelled = true;
-			}
-			public boolean isCancelWorthwhile() {
-				return isCancelWorthwhile;
-			}
-			public <E extends Object> E get( Object key, Class<E> cls ) {
-				Object rv = this.get( key );
-				if( rv != null ) {
-					assert cls.isAssignableFrom( rv.getClass() );
-					return (E)rv;
-				} else {
-					return null;
-				}
-			}
-			public Object get( Object key ) {
-				return this.map.get( key );
-			}
-			public void put( Object key, Object value ) {
-				this.map.put( key, value );
-			}
-			public java.util.EventObject getEvent() {
-				return e;
-			}
-			public Context perform( Operation operation, java.util.EventObject o ) {
-				return null;
-			}
-			
-		};
+		ActionContext context = new MyActionContext( e, isCancelWorthwhile );
 		actionOperation.perform( context );
 		
 //		if( operation instanceof CancellableOperation ) {
@@ -117,5 +150,10 @@ public class ZManager {
 //		}
 	}
 	
+	public static void performIfAppropriate( SingleSelectionOperation< ? > singleSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
+		assert singleSelectionOperation != null;
+		SingleSelectionContext context = new MySingleSelectionContext( e, isCancelWorthwhile, previousSelection, nextSelection );
+		singleSelectionOperation.performSelectionChange( context );
+	}
 	//public static ZMenu createMenu( StateOperation< java.util.ArrayList< E > > stateOperation )
 }

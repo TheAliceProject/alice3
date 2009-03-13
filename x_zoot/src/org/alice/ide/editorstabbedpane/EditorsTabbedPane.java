@@ -20,16 +20,38 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.listenerseditor;
+package org.alice.ide.editorstabbedpane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ListenersEditor extends org.alice.ide.Editor implements org.alice.ide.event.IDEListener {
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return new java.awt.Dimension( 0, 0 );
+public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide.event.IDEListener {
+	public EditorsTabbedPane() {
+		super( null );
 	}
+	
+	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( java.awt.Component component ) {
+		if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
+			org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
+			return codeEditor;
+		} else {
+			return null;
+		}
+	}
+	private void edit( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		for( java.awt.Component component : this.getComponents() ) {
+			org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( component );
+			if( codeEditor != null ) {
+				if( codeEditor.getCode() == code ) {
+					this.setSelectedComponent( component );
+					return;
+				}
+			}
+		}
+		org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
+		this.addTab( "todo: code title", codeEditor );
+	}
+	
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
 	}
 	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
@@ -44,6 +66,7 @@ public class ListenersEditor extends org.alice.ide.Editor implements org.alice.i
 	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
 	}
 	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+		this.edit( (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)e.getNextValue() );
 	}
 
 

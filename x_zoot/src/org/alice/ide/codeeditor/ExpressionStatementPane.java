@@ -25,7 +25,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class ExpressionStatementPane extends AbstractStatementPane {
+public class ExpressionStatementPane extends AbstractStatementPane {
 	private static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createNextMethodInvocation( edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextMethod, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation ) {
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
 		rv.expression.setValue( prevMethodInvocation.expression.getValue() );
@@ -60,7 +60,7 @@ class ExpressionStatementPane extends AbstractStatementPane {
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
 			this.add( new AssignmentExpressionPane( (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
 		} else {
-			this.add( new TemplatePane( expressionStatement.expression.getValue() ) );
+			this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( expressionStatement.expression.getValue() ) );
 			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) { 
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();

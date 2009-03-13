@@ -25,5 +25,20 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZTree extends javax.swing.JTree {
+public class ZTree<E> extends javax.swing.JTree {
+//	private SingleSelectionOperation< E > selectionOperation;
+//
+//	public ZTree() {
+//		this.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
+//			public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
+//				if( ZTree.this.selectionOperation != null ) {
+//					boolean isCancelWorthwhile = false;
+//					ZManager.performIfAppropriate( ZTree.this.selectionOperation, e, isCancelWorthwhile );
+//				}
+//			}
+//		} );
+//	}
+//	public void setSelectionOperation( SingleSelectionOperation< E > selectionOperation ) {
+//		this.selectionOperation = selectionOperation;
+//	}
 }

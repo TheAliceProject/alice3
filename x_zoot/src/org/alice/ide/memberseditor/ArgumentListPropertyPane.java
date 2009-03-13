@@ -20,24 +20,29 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GetsChunk extends Chunk {
-	private boolean isTowardLeading;
-	public GetsChunk( boolean isTowardLeading ) {
-		this.isTowardLeading = isTowardLeading;
+public class ArgumentListPropertyPane extends org.alice.ide.ast.AbstractArgumentListPropertyPane {
+	public ArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+		super( property );
 	}
 	@Override
-	public javax.swing.JComponent createComponent( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return new GetsPane( this.isTowardLeading );
-	}
-	@Override
-	protected java.lang.StringBuffer updateRepr( java.lang.StringBuffer rv ) {
-		rv.append( "isTowardLeading=" );
-		rv.append( this.isTowardLeading );
+	protected javax.swing.JComponent createComponent( Object instance ) {
+		swing.LineAxisPane rv = new swing.LineAxisPane();
+		rv.setOpaque( true );
+		rv.setBackground( java.awt.Color.WHITE );
+		rv.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
+		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
+		
+		String parameterName = argument.parameter.getValue().getName();
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
+		if( parameterName != null && parameterName.length() > 0 ) {
+			rv.add( new zoot.ZLabel( parameterName + ": " ) );
+		}
+		rv.add( new org.alice.ide.ast.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
 		return rv;
 	}
 }

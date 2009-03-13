@@ -25,7 +25,7 @@ package org.alice.ide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
 	
 	private static final String CAMERA_NAVIGATION_DISTANCE_KEY = AbstractSceneEditor.class.getName() + ".CAMERA_NAVIGATION_DISTANCE";
@@ -113,13 +113,36 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 		}
 		setSceneField( fieldInAlice );
 	}
-	@Override
+	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
+	}
+	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
+	}
+
+	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
+	}
+	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
+	}
+
+
+	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+	}
+	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+	}
+
+
+	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
+	}
 	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		super.projectOpened( e );
 		edu.cmu.cs.dennisc.alice.Project project = e.getNextValue();
 		this.setProgramType( project.getProgramType() );
 		this.revalidate();
 		this.repaint();
+	}
+
+
+	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
+	}
+	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
 	}
 	
 	public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {

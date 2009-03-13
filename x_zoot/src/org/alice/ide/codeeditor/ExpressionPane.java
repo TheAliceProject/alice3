@@ -29,7 +29,7 @@ public class ExpressionPane extends org.alice.ide.ast.ExpressionLikeSubstance  {
 	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		this.expression = expression;
-		this.add( new TemplatePane( this.expression ) );
+		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( this.expression ) );
 		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
 	}
 	@Override

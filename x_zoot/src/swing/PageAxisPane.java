@@ -26,7 +26,10 @@ package swing;
  * @author Dennis Cosgrove
  */
 public class PageAxisPane extends BoxPane {
-	public PageAxisPane() {
+	public PageAxisPane( java.awt.Component... components ) {
 		super( javax.swing.BoxLayout.PAGE_AXIS );
+		for( java.awt.Component component : components ) {
+			this.add( component );
+		}
 	}
 }

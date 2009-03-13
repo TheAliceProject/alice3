@@ -31,7 +31,7 @@ public class EmptyParameterPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 		if( name != null ) {
 			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( name + ": " ) );
 		}
-		this.add( new org.alice.ide.codeeditor.EmptyExpressionPane( parameter.getValueType() ) );
+		this.add( new org.alice.ide.ast.EmptyExpressionPane( parameter.getValueType() ) );
 		this.setBackground( java.awt.Color.WHITE );
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 4, 2, 4 ) );

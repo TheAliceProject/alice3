@@ -20,23 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
-
-import org.alice.ide.ast.AbstractPropertyPane;
+package org.alice.ide.inputpanes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > > extends AbstractPropertyPane< E > {
-	public NodePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
+abstract class RowsInputPane< E > extends edu.cmu.cs.dennisc.swing.InputPane< E > { 
+	public RowsInputPane() {
+		java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
+		javax.swing.JPanel panel = new javax.swing.JPanel();
+		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( panel, componentRows, 12, 12 );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( panel, java.awt.BorderLayout.NORTH );
+		this.add( javax.swing.Box.createGlue(), java.awt.BorderLayout.CENTER );
+
+		int inset = 8;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
 	}
-	public NodePropertyPane( E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
-	}
-	@Override
-	protected void refresh() {
-		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( getProperty().getValue() ) );
+	protected java.util.List< java.awt.Component[] > createComponentRows() {
+		return new java.util.LinkedList< java.awt.Component[] >();
 	}
 }

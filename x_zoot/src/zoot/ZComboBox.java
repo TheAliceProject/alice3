@@ -20,33 +20,10 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TemplatePane extends edu.cmu.cs.dennisc.moot.ZPageAxisPane {
-	//public TemplatePane() {
-	//}
-	public TemplatePane( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		setTo( owner );
-	}
-	public void setTo( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		this.removeAll();
-		if( owner != null ) {
-			Class< ? > cls = owner.getClass();
-			String value = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Templates" );
-			Template template = new Template( value );
-			for( Line line : template.getLines() ) {
-				this.add( new LinePane( owner, line ) );
-			}
-		} else {
-			zoot.ZLabel label = new zoot.ZLabel( "null" );
-			label.setOpaque( true );
-			label.setBackground( java.awt.Color.RED );
-			this.add( label );
-		}
-		this.revalidate();
-		this.repaint();
-	}
+public class ZComboBox extends javax.swing.JComboBox {
 }

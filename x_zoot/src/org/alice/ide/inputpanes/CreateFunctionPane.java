@@ -20,11 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.inputpanes;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Chunk extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingToString {
-	public abstract javax.swing.JComponent createComponent( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner );
+public class CreateFunctionPane extends CreateTypedDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> {
+	public CreateFunctionPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+		super( ownerType );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
+		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getName(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	}
 }

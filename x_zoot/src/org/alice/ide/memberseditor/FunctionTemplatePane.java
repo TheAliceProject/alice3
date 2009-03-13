@@ -34,7 +34,7 @@ public abstract class FunctionTemplatePane extends MemberExpressionTemplatePane 
 		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls = edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class;
 		this.setBackground( org.alice.ide.IDE.getColorForASTClass( cls ) );
 		if( this.instanceOrTypeExpression != null ) {
-			this.add( new org.alice.ide.codeeditor.TemplatePane( instanceOrTypeExpression ) );
+			this.add( org.alice.ide.IDE.getSingleton().getTemplatesFactory().createComponent( instanceOrTypeExpression ) );
 		} else {
 			this.add( this.getInstanceOrTypeExpressionPane() );
 		}

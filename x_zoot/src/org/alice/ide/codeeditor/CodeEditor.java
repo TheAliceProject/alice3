@@ -148,7 +148,7 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements org.alice.ide.event.IDEListener, org.alice.ide.ast.DropReceptor {
+public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements org.alice.ide.event.IDEListener, org.alice.ide.ast.DropReceptor {
 	public void fieldSelectionChanged( FieldSelectionEvent e ) {
 	}
 	public void fieldSelectionChanging( FieldSelectionEvent e ) {
@@ -222,7 +222,9 @@ public abstract class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane i
 		//		} );
 	}
 	
-	protected abstract javax.swing.JComponent createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code );
+	protected javax.swing.JComponent createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		return new zoot.ZLabel( "TODO: createParametersPane" );
+	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
 		return this.code;

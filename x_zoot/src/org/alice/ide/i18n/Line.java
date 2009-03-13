@@ -20,7 +20,8 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.i18n;
+
 
 
 /**
@@ -32,9 +33,10 @@ public class Line {
 	private static final java.util.regex.Pattern TAG_PATTERN = java.util.regex.Pattern.compile( PREFIX + "[A-Za-z_0-9()]*" + POSTFIX );
 	
 	private int indentCount;
-	private java.util.List< Chunk > chunks = new java.util.LinkedList< Chunk >();
+	private Chunk[] array;
 
 	public Line( String s ) {
+		java.util.List< Chunk > chunks = new java.util.LinkedList< Chunk >();
 		this.indentCount = 0;
 		for( byte b : s.getBytes() ) {
 			if( b == '\t' ) {
@@ -69,11 +71,13 @@ public class Line {
 		if( iEnd < s.length() ) {
 			chunks.add( new TextChunk( s.substring( iEnd ) ) );
 		}
+		this.array = new Chunk[ chunks.size() ];
+		chunks.toArray( this.array );
 	}
 	public int getIndentCount() {
 		return this.indentCount;
 	}
-	public Iterable< Chunk > getChunks() {
-		return this.chunks;
+	public Chunk[] getChunks() {
+		return this.array;
 	}
 }

@@ -26,15 +26,15 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public interface SingleSelectionOperation<E> extends Operation {
-	public void performSelectionChange( SingleSelectionContext context );
+	public void performSelectionChange( SingleSelectionContext<E> context );
 	
-	public E getSelection();
-	public void setSelection( E selection );
-	public E[] getCandidates();
-	public void setCandidates( E[] candidates );
-
-	public void addSelectionChangeListener( javax.swing.event.ChangeListener l );
-	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l );
-	public void addCandidatesChangeListener( javax.swing.event.ChangeListener l );
-	public void removeCandidatesChangeListener( javax.swing.event.ChangeListener l );
+//	public E getSelection();
+//	public void setSelection( E selection );
+//	public E[] getCandidates();
+//	public void setCandidates( E[] candidates );
+//
+//	public void addSelectionChangeListener( javax.swing.event.ChangeListener l );
+//	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l );
+//	public void addCandidatesChangeListener( javax.swing.event.ChangeListener l );
+//	public void removeCandidatesChangeListener( javax.swing.event.ChangeListener l );
 }

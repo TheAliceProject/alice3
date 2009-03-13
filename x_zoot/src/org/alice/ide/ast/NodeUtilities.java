@@ -56,6 +56,16 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.WhileLoop createIncompleteWhileLoop() {
 		return createWhileLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
+		rv.expression.setValue( expression );
+		rv.method.setValue( method );
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, new EmptyExpression( parameter.getDesiredValueType() ) );
+			rv.arguments.add( argument );
+		}
+		return rv;
+	}
 	
 	public static org.alice.ide.codeeditor.AbstractStatementPane createPane( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		return org.alice.ide.codeeditor.AbstractStatementPane.createPane( statement, null );

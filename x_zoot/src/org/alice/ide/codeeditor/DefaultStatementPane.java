@@ -25,9 +25,9 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class DefaultStatementPane extends AbstractStatementPane {
+public class DefaultStatementPane extends AbstractStatementPane {
 	public DefaultStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( statement, owner );
-		this.add( new TemplatePane( statement ) );
+		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( statement ) );
 	}
 }

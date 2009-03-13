@@ -22,6 +22,8 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.AbstractPropertyPane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -51,8 +53,8 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 			} else {
 				if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 					component = new FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-				} else if( expression instanceof EmptyExpression ) {
-					component = new EmptyExpressionPane( (EmptyExpression)expression );
+				} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
+					component = new org.alice.ide.ast.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
 				} else {
 					component = new ExpressionPane( expression );
 				}

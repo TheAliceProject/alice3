@@ -25,7 +25,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Viewer< E > extends Component implements org.alice.ide.event.IDEListener {
+public abstract class Viewer< E > extends Component {
 	private E model;
 
 	public E getModel() {
@@ -33,33 +33,5 @@ public abstract class Viewer< E > extends Component implements org.alice.ide.eve
 	}
 	public void setModel( E model ) {
 		this.model = model;
-	}
-	
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-	}
-
-
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-
-
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-
-
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
 	}
 }

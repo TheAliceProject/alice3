@@ -80,22 +80,17 @@ class Tree extends zoot.ZTree {
 	public Tree() {
 		this.setModel( this.model );
 		this.setCellRenderer( new TreeCellRenderer() );
+		this.addTreeSelectionListener( new org.alice.ide.operations.ast.FieldSelectionOperation() );
 	}
-	
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class SceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> {
+public class SceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener {
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private Tree tree = new Tree();
-	private javax.swing.JPanel lookingGlass = new javax.swing.JPanel() {
-		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return new java.awt.Dimension( 320, 240 );
-		}
-	};
+	private javax.swing.JPanel lookingGlass = new javax.swing.JPanel();
 	public SceneEditor() {
 		this.lookingGlass.setBackground( java.awt.Color.RED );
 		this.root.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
@@ -103,11 +98,35 @@ public class SceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.a
 		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
 		this.add( this.root );
 	}
-	@Override
+	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
+	}
+	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
+	}
+
+	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
+	}
+	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
+	}
+
+
+	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+	}
+	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+	}
+
+
+	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
+	}
 	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		super.projectOpened( e );
 		edu.cmu.cs.dennisc.alice.ast.AbstractType programType = this.getIDE().getProject().getProgramType();
 		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = programType.getDeclaredFields().get( 0 );
 		tree.setModel( new TreeModel( sceneField ) );
 	}
+
+
+	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
+	}
+	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
+	}
+	
 }

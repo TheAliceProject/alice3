@@ -22,10 +22,12 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.AbstractListPropertyPane;
+
 /**
  * @author Dennis Cosgrove
  */
-class DefaultListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.property.ListProperty<?> > {
+public class DefaultListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.property.ListProperty<?> > {
 	public DefaultListPropertyPane( edu.cmu.cs.dennisc.property.ListProperty<?> property ) {
 		super( javax.swing.BoxLayout.LINE_AXIS, property );
 	}

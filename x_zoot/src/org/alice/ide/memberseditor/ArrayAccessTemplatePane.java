@@ -34,7 +34,7 @@ public class ArrayAccessTemplatePane extends MemberExpressionTemplatePane {
 		this.add( new zoot.ZLabel( "." ) );
 		this.add( this.getNameLabel() );
 		this.add( new zoot.ZLabel( "[" ) );
-		this.add( new org.alice.ide.codeeditor.EmptyExpressionPane( this.getExpressionType() ) );
+		this.add( new org.alice.ide.ast.EmptyExpressionPane( this.getExpressionType() ) );
 		this.add( new zoot.ZLabel( "]" ) );
 		this.add( javax.swing.Box.createHorizontalGlue() );
 	}

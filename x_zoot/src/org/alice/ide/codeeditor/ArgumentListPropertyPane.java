@@ -25,17 +25,20 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class ArgumentListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > {
+public class ArgumentListPropertyPane extends org.alice.ide.ast.AbstractArgumentListPropertyPane {
 	public ArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+		super( property );
 	}
-	@Override
-	protected java.awt.Component createInterstitial( int i, final int N ) {
-		if( i < N - 1 ) {
-			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
+	protected boolean isNameDesired( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+		boolean rv;
+		if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod ) {
+			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod parameterDeclaredInJavaMethod = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod)parameter;
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava methodDeclaredInJava = parameterDeclaredInJavaMethod.getMethod();
+			rv = methodDeclaredInJava.isParameterInShortestChainedMethod( parameterDeclaredInJavaMethod ) == false;
 		} else {
-			return null;
+			rv = true;
 		}
+		return rv;
 	}
 	@Override
 	protected javax.swing.JComponent createComponent( Object instance ) {
@@ -45,14 +48,7 @@ class ArgumentListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.denn
 			prefixPane = null;
 		} else {
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = argument.parameter.getValue();
-			boolean isNameDesired;
-			if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod ) {
-				edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod parameterDeclaredInJavaMethod = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod)parameter;
-				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava methodDeclaredInJava = parameterDeclaredInJavaMethod.getMethod();
-				isNameDesired = methodDeclaredInJava.isParameterInShortestChainedMethod( parameterDeclaredInJavaMethod ) == false;
-			} else {
-				isNameDesired = true;
-			}
+			boolean isNameDesired = this.isNameDesired( parameter );
 			if( isNameDesired ) {
 				prefixPane = new org.alice.ide.ast.NodeNameLabel( argument.parameter.getValue() );
 			} else {
