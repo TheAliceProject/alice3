@@ -87,7 +87,7 @@ public class SpringUtilities {
 //		constraints.setConstraint( javax.swing.SpringLayout.SOUTH, ySpring );
 //		return layout;
 //	}
-	public static java.awt.Container springItUpANotch( java.awt.Container rv, java.util.ArrayList<java.awt.Component[]> componentRows, int xPad, int yPad ) {
+	public static java.awt.Container springItUpANotch( java.awt.Container rv, java.util.List<java.awt.Component[]> componentRows, int xPad, int yPad ) {
 		assert componentRows != null;
 		int rowCount = componentRows.size();
 		assert rowCount > 0;

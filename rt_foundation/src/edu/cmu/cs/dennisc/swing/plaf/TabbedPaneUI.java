@@ -220,10 +220,10 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		//g.setColor( this.darkShadow );
 		g.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 90 ) );
 		java.awt.Rectangle bounds = g.getClipBounds();
-		bounds.x -= 100;
-		bounds.x = Math.max( bounds.x, 0 );
-		bounds.width += 200;
-		g.setClip( bounds.x, bounds.y, bounds.width, bounds.height );
+//		bounds.x -= 100;
+//		bounds.x = Math.max( bounds.x, 0 );
+//		bounds.width += 200;
+//		g.setClip( bounds.x, bounds.y, bounds.width, bounds.height );
 		g.fillRect( bounds.x, bounds.y, bounds.width, bounds.height );
 		super.paintTabArea( g, tabPlacement, selectedIndex );
 	}

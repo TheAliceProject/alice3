@@ -42,7 +42,7 @@ public abstract class AbstractMember extends AbstractAccessibleDeclaration {
 		}
 	}
 	
-	protected AbstractMember getShortestInChain() {
+	public AbstractMember getShortestInChain() {
 		AbstractMember next = this.getNextShorterInChain();
 		if( next != null ) {
 			return next.getShortestInChain();
@@ -50,7 +50,7 @@ public abstract class AbstractMember extends AbstractAccessibleDeclaration {
 			return this;
 		}
 	}
-	protected AbstractMember getLongestInChain() {
+	public AbstractMember getLongestInChain() {
 		AbstractMember next = this.getNextLongerInChain();
 		if( next != null ) {
 			return next.getLongestInChain();
@@ -59,5 +59,5 @@ public abstract class AbstractMember extends AbstractAccessibleDeclaration {
 		}
 	}
 	public abstract AbstractMember getNextLongerInChain();
-	public abstract AbstractMember getNextShorterInChain();	
+	public abstract AbstractMember getNextShorterInChain();		
 }
