@@ -65,6 +65,9 @@ abstract class MembersTab extends swing.PageAxisPane {
 		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
 		if( rv != null ) {
 			//pass
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: optimize refresh for ", type );
+			rv.refresh();
 		} else {
 			rv = this.createTypeMembersPane( type );
 			this.mapTypeToPane.put( type, rv );

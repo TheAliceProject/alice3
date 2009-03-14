@@ -25,20 +25,13 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateAndAddProcedureOperation extends org.alice.ide.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+public class CreateAndAddProcedureOperation extends AbstractCreateAndAddMethodOperation {
 	public CreateAndAddProcedureOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		this.type = type;
+		super( type );
 		this.putValue( javax.swing.Action.NAME, "create new procedure..." );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		org.alice.ide.inputpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.inputpanes.CreateProcedurePane( this.type );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createProcedurePane.showInJDialog( getIDE() );
-		if( method != null ) {
-			this.type.methods.add( method );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
+	@Override
+	protected org.alice.ide.inputpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return new org.alice.ide.inputpanes.CreateProcedurePane( type );
 	}
 }

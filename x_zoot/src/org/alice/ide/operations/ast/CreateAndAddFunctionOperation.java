@@ -25,29 +25,13 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateAndAddFunctionOperation extends org.alice.ide.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+public class CreateAndAddFunctionOperation extends AbstractCreateAndAddMethodOperation {
 	public CreateAndAddFunctionOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		this.type = type;
+		super( type );
 		this.putValue( javax.swing.Action.NAME, "create new function..." );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		org.alice.ide.inputpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.inputpanes.CreateFunctionPane( this.type );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createFunctionPane.showInJDialog( getIDE() );
-		if( method != null ) {
-			this.type.methods.add( method );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
-
-//		org.alice.ide.inputpanes.CreateTypedDeclarationPane createTypedDeclarationPane = new org.alice.ide.inputpanes.CreateTypedDeclarationPane( this.type );
-//		String name = createTypedDeclarationPane.showInJDialog( getIDE() );
-//		if( name != null && name.length() > 0 ) {
-//			//this.prevValue = this.localDeclaredInAlice.name.getValue();
-//			actionContext.commit();
-//		} else {
-//			actionContext.cancel();
-//		}
+	@Override
+	protected org.alice.ide.inputpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return new org.alice.ide.inputpanes.CreateFunctionPane( type );
 	}
 }

@@ -32,17 +32,46 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private zoot.ZButton createAndAddMemberButton;
 	private zoot.ZButton editConstructorButton;
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener () {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
+		}
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
+			AbstractTypeMembersPane.this.refresh();
+		}
+
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
+		}
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
+		}
+
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
+		}
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
+		}
+
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
+		}
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
+		}
+	};
+	private org.alice.ide.ast.TypePane typePane;
 	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
+		this.typePane = getIDE().getFactory().createTypePane( this.type );
 		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			this.createAndAddMemberButton = this.createCreateAndAddMemberButton( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type );
-			this.editConstructorButton = this.createEditConstructorButton( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type );
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
+			this.createAndAddMemberButton = this.createCreateAndAddMemberButton( typeInAlice );
+			this.editConstructorButton = this.createEditConstructorButton( typeInAlice );
+			for( edu.cmu.cs.dennisc.property.ListProperty listProperty : this.getListPropertiesToListenTo( typeInAlice ) ) {
+				listProperty.addListPropertyListener( this.listPropertyAdapter );
+			}
 		} else {
 			this.createAndAddMemberButton = null;
 			this.editConstructorButton = null;
 		}
 		this.refresh();
 	}
+	protected abstract edu.cmu.cs.dennisc.property.ListProperty< ? >[] getListPropertiesToListenTo( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	private static boolean isInclusionDesired( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)member;
@@ -70,9 +99,8 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	protected abstract zoot.ZButton createCreateAndAddMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected abstract zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
-		javax.swing.JComponent component = getIDE().getFactory().create( this, this.type );
-		this.add( component );
-
+		this.removeAll();
+		this.add( this.typePane );
 		swing.PageAxisPane page = new swing.PageAxisPane();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {
@@ -105,5 +133,7 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 		}
 		this.add( new swing.LineAxisPane( javax.swing.Box.createHorizontalStrut( INDENT ), page ) );
 		this.add( javax.swing.Box.createVerticalStrut( TYPE_PAD ) );
+		this.revalidate();
+		this.repaint();
 	}
 }

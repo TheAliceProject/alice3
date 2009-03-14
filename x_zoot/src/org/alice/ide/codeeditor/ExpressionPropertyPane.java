@@ -55,8 +55,10 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 					component = new FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
 				} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
 					component = new org.alice.ide.ast.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
-				} else {
+				} else if( expression != null ){
 					component = new ExpressionPane( expression );
+				} else {
+					component = new zoot.ZLabel( "todo: handle null" );
 				}
 				if( this.isDropDownPotentiallyDesired ) {
 					edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property = this.getProperty();

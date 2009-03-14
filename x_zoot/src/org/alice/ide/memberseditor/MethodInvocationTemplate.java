@@ -37,6 +37,7 @@ abstract class Template extends DragSourcePane {
 	public java.awt.Dimension getMaximumSize() {
 		return getPreferredSize();
 	}
+	public abstract void setExpression( edu.cmu.cs.dennisc.alice.ast.Expression expression );
 }
 
 /**
@@ -54,6 +55,7 @@ abstract class MethodInvocationTemplate<E> extends Template {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
+	@Override
 	public void setExpression( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		//		if( expression != null ) {
 		//			if( expression.equals( this.methodInvocation.expression.getValue() ) ) {

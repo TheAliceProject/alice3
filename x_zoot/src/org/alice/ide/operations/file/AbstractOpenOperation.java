@@ -27,7 +27,7 @@ package org.alice.ide.operations.file;
  */
 public abstract class AbstractOpenOperation extends AbstractClearanceActionOperation {
 	protected abstract boolean isNew();
-	protected zoot.Operation getSelectProjectToOpenOperation() {
+	protected zoot.ActionOperation getSelectProjectToOpenOperation() {
 		throw new RuntimeException( "todo" );
 	}
 	
@@ -36,7 +36,7 @@ public abstract class AbstractOpenOperation extends AbstractClearanceActionOpera
 			//pass
 		} else {
 			java.util.EventObject e = null;
-			zoot.Context checkContext = context.perform( this.getClearToProcedeWithChangedProjectOperation(), e );
+			zoot.Context checkContext = context.perform( this.getClearToProcedeWithChangedProjectOperation(), e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 			if( checkContext.isCommitted() ) {
 				//pass
 			} else {
@@ -46,7 +46,7 @@ public abstract class AbstractOpenOperation extends AbstractClearanceActionOpera
 		if( context.isCancelled() ) {
 			//pass
 		} else {
-			zoot.Context selectContext = context.perform( this.getSelectProjectToOpenOperation(), null );
+			zoot.Context selectContext = context.perform( this.getSelectProjectToOpenOperation(), null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 			if( selectContext.isCommitted() ) {
 				final Object FILE_KEY = "FILE_KEY";
 				java.io.File file = selectContext.get( FILE_KEY, java.io.File.class );

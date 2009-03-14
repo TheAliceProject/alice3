@@ -22,23 +22,13 @@
  */
 package org.alice.ide;
 
-import org.alice.ide.ast.AbstractArgumentListPropertyPane;
-import org.alice.ide.codeeditor.ConstantPane;
-import org.alice.ide.codeeditor.DefaultListPropertyPane;
-import org.alice.ide.codeeditor.DefaultNodeListPropertyPane;
-import org.alice.ide.codeeditor.ExpressionListPropertyPane;
-import org.alice.ide.codeeditor.ExpressionPropertyPane;
-import org.alice.ide.codeeditor.InstancePropertyPane;
-import org.alice.ide.codeeditor.NodePropertyPane;
-import org.alice.ide.codeeditor.StatementListPropertyPane;
-import org.alice.ide.codeeditor.TypedDeclarationPane;
-import org.alice.ide.codeeditor.VariablePane;
-
 /**
  * @author Dennis Cosgrove
  */
 public class Factory {
-	public javax.swing.JComponent create( java.awt.Container container, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public org.alice.ide.ast.TypePane createTypePane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return new org.alice.ide.ast.TypePane( type );
+	}
+	public void releaseTypePane( org.alice.ide.ast.TypePane type, org.alice.ide.ast.TypePane typePane ) {
 	}
 }

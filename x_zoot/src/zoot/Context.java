@@ -35,5 +35,6 @@ public interface Context {
 	public void commit();
 	public void cancel();
 	public boolean isCancelWorthwhile();
-	public Context perform( Operation operation, java.util.EventObject o );
+	public ActionContext perform( ActionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile );
+	public SingleSelectionContext perform( SingleSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection );
 }

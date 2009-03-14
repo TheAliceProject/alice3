@@ -28,21 +28,6 @@ package org.alice.ide.inputpanes;
 abstract class NameInputPane<E> extends RowsInputPane< E > {
 	private javax.swing.JTextField textField;
 
-	public NameInputPane() {
-		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-			}
-			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-			}
-			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-			}
-		} );
-		this.textField.addActionListener( new java.awt.event.ActionListener() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-			}
-		} );
-	}
-
 	public void setAndSelectNameText( String text ) {
 		if( text != null ) {
 			this.textField.setText( text );
@@ -62,6 +47,19 @@ abstract class NameInputPane<E> extends RowsInputPane< E > {
 		zoot.ZLabel label = new zoot.ZLabel();
 		label.setText( "name:" );
 		this.textField = new javax.swing.JTextField( 10 );
+		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+			}
+			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+			}
+			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+			}
+		} );
+//		javax.swing.text.Keymap keymap = this.textField.getKeymap();
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( keymap );
+//		javax.swing.KeyStroke enterKeyStroke = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ENTER, 0, false );
+//		keymap.removeKeyStrokeBinding( enterKeyStroke );
+//		this.textField.setKeymap( keymap );
 		rv.add( new java.awt.Component[] { label, this.textField } );
 		return rv;
 	}

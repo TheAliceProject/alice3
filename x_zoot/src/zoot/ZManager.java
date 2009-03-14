@@ -70,8 +70,11 @@ abstract class AbstractContext implements Context {
 	public java.util.EventObject getEvent() {
 		return e;
 	}
-	public Context perform( Operation operation, java.util.EventObject o ) {
-		return null;
+	public ActionContext perform( ActionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile ) {
+		return ZManager.performIfAppropriate( operation, o, isCancelWorthwhile );
+	}
+	public SingleSelectionContext perform( SingleSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection ) {
+		return ZManager.performIfAppropriate( operation, o, isCancelWorthwhile, prevSelection, nextSelection );
 	}
 }
 class MyActionContext extends AbstractContext implements ActionContext {
@@ -128,11 +131,11 @@ public class ZManager {
 	
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
-	public static void performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
+	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
-		ActionContext context = new MyActionContext( e, isCancelWorthwhile );
-		actionOperation.perform( context );
-		
+		ActionContext rv = new MyActionContext( e, isCancelWorthwhile );
+		actionOperation.perform( rv );
+		return rv;
 //		if( operation instanceof CancellableOperation ) {
 //			CancellableOperation cancellableOperation = (CancellableOperation)operation;
 //			final java.util.List< java.util.EventObject > preparationUpdates = new java.util.LinkedList< java.util.EventObject >();
@@ -150,10 +153,11 @@ public class ZManager {
 //		}
 	}
 	
-	public static void performIfAppropriate( SingleSelectionOperation< ? > singleSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
+	public static SingleSelectionContext performIfAppropriate( SingleSelectionOperation< ? > singleSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
 		assert singleSelectionOperation != null;
-		SingleSelectionContext context = new MySingleSelectionContext( e, isCancelWorthwhile, previousSelection, nextSelection );
-		singleSelectionOperation.performSelectionChange( context );
+		SingleSelectionContext rv = new MySingleSelectionContext( e, isCancelWorthwhile, previousSelection, nextSelection );
+		singleSelectionOperation.performSelectionChange( rv );
+		return rv;
 	}
 	//public static ZMenu createMenu( StateOperation< java.util.ArrayList< E > > stateOperation )
 }

@@ -31,7 +31,7 @@ public class ExitOperation extends AbstractClearanceActionOperation {
 			//pass
 		} else {
 			java.util.EventObject e = null;
-			zoot.Context checkContext = actionContext.perform( this.getClearToProcedeWithChangedProjectOperation(), e );
+			zoot.Context checkContext = actionContext.perform( this.getClearToProcedeWithChangedProjectOperation(), e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 			if( checkContext.isCommitted() ) {
 				//pass
 			} else {
