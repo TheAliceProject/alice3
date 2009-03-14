@@ -20,34 +20,33 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AccessiblePane extends org.alice.ide.ast.ExpressionLikeSubstance {
-	@Override
-	protected boolean isActuallyPotentiallyActive() {
-		return getIDE().isDragInProgress() == false;
+class ProcedureBorder implements javax.swing.border.Border {
+	private static final int KNURL_WIDTH = 8;
+	private static final int INSET = 4;
+	private static final int TOP = INSET;
+	private static final int LEFT = INSET + KNURL_WIDTH + 2;
+	private static final int BOTTOM = INSET;
+	private static final int RIGHT = INSET;
+	private java.awt.Insets insets = new java.awt.Insets( TOP, LEFT, BOTTOM, RIGHT );
+
+	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
+		return this.insets;
 	}
-	@Override
-	protected boolean isActuallyPotentiallySelectable() {
+	public boolean isBorderOpaque() {
 		return false;
 	}
-	@Override
-	protected boolean isActuallyPotentiallyDraggable() {
-		return true;
+	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		g.setColor( c.getBackground() );
+		g.fillRoundRect( x, y, width - 1, height - 1, 16, 16 );
+		g.setColor( java.awt.Color.BLACK );
+		edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, x + 2, y + 2, KNURL_WIDTH, height - 2 );
+		g.setColor( c.getForeground() );
+		g.drawRoundRect( x, y, width - 1, height - 1, 16, 16 );
 	}
-	
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			getIDE().showStencilOver( this, getExpressionType() );
-		} else {
-			getIDE().hideStencil();
-		}
-	}
-	
-	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e );
 }

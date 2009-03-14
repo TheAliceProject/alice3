@@ -50,6 +50,7 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 		}
 		org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
 		this.addTab( "todo: code title", codeEditor );
+		this.setSelectedComponent( codeEditor );
 	}
 	
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {

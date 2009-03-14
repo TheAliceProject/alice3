@@ -37,7 +37,7 @@ public class ThisPane extends AccessiblePane {
 		return type;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DropAndDropEvent e ) {
+	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
 	}
 }

@@ -542,12 +542,12 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 	public void dragDropped( final PotentiallyDraggablePane source, final java.awt.event.MouseEvent e ) {
 		if( source instanceof org.alice.ide.memberseditor.StatementTemplatePane ) {
 			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Statement, Object > {
-				private org.alice.ide.ast.DropAndDropEvent dragAndDropEvent;
+				private org.alice.ide.ast.DragAndDropEvent dragAndDropEvent;
 				private StatementListPropertyPane statementListPropertyPane;
 				private int index;
 
 				public Worker() {
-					this.dragAndDropEvent = new org.alice.ide.ast.DropAndDropEvent( source, CodeEditor.this, e );
+					this.dragAndDropEvent = new org.alice.ide.ast.DragAndDropEvent( source, CodeEditor.this, e );
 					this.statementListPropertyPane = CodeEditor.this.currentUnder;
 					this.index = this.statementListPropertyPane.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, e.getPoint(), this.statementListPropertyPane ) );
 				}

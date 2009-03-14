@@ -20,28 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.ast;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DropAndDropEvent extends edu.cmu.cs.dennisc.pattern.event.Event<PotentiallyDraggablePane> {
-	private java.awt.event.MouseEvent eDrag;
-	private DropReceptor dropReceptor;
-	private java.awt.event.MouseEvent eDrop;
-	public DropAndDropEvent( PotentiallyDraggablePane source, DropReceptor dropReceptor, java.awt.event.MouseEvent eDrop ) {
-		super( source );
-		this.eDrag = source.getMousePressedEvent();
-		this.dropReceptor = dropReceptor;
-		this.eDrop = eDrop;
-	}
-	public java.awt.event.MouseEvent getStartingMouseEvent() {
-		return this.eDrag;
-	}
-	public DropReceptor getDropReceptor() {
-		return this.dropReceptor;
-	}
-	public java.awt.event.MouseEvent getEndingMouseEvent() {
-		return this.eDrop;
+class ProcedureInvocationTemplate extends MethodInvocationTemplate< edu.cmu.cs.dennisc.alice.ast.ExpressionStatement > {
+	private static ProcedureBorder singletonBorder = new ProcedureBorder();
+
+	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( method );
+		setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class ) );
+		setForeground( java.awt.Color.GRAY );
+		setBorder( ProcedureInvocationTemplate.singletonBorder );
 	}
 }

@@ -20,34 +20,32 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AccessiblePane extends org.alice.ide.ast.ExpressionLikeSubstance {
-	@Override
-	protected boolean isActuallyPotentiallyActive() {
-		return getIDE().isDragInProgress() == false;
+class TypeFunctionsPane extends AbstractTypeMethodsPane {
+	public TypeFunctionsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		super( type );
 	}
 	@Override
-	protected boolean isActuallyPotentiallySelectable() {
-		return false;
+	protected zoot.ZButton createCreateAndAddMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddFunctionOperation( type ) );
 	}
 	@Override
-	protected boolean isActuallyPotentiallyDraggable() {
-		return true;
+	protected zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return new zoot.ZButton( new org.alice.ide.operations.ast.FocusCodeOperation( type.getDeclaredConstructor() ) );
 	}
-	
 	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			getIDE().showStencilOver( this, getExpressionType() );
-		} else {
-			getIDE().hideStencil();
-		}
+	protected javax.swing.JComponent createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		MethodInvocationTemplate rv = new FunctionInvocationTemplate( method );
+		rv.setExpression( getIDE().createInstanceExpression() );
+		return rv;
+		//		return new zoot.ZLabel( method.toString() );
 	}
-	
-	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e );
+	@Override
+	protected javax.swing.JComponent createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		return null;
+	}
 }

@@ -25,21 +25,26 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyParameterPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
-	public EmptyParameterPane( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
-		String name = parameter.getName();
-		if( name != null ) {
-			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( name + ": " ) );
-		}
-		this.add( new org.alice.ide.ast.EmptyExpressionPane( parameter.getValueType() ) );
-		this.setBackground( java.awt.Color.WHITE );
-		this.setOpaque( true );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 4, 2, 4 ) );
+class TypeProceduresPane extends AbstractTypeMethodsPane {
+	public TypeProceduresPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		super( type );
 	}
 	@Override
-	protected void paintBorder( java.awt.Graphics g ) {
-		//super.paintBorder( g );
-		g.setColor( java.awt.Color.LIGHT_GRAY );
-		g.drawRect( 0,0,getWidth()-1, getHeight()-1 );
+	protected zoot.ZButton createCreateAndAddMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddProcedureOperation( type ) );
+	}
+	@Override
+	protected zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return null;
+	}
+	@Override
+	protected javax.swing.JComponent createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		return null;
+	}
+	@Override
+	protected javax.swing.JComponent createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		MethodInvocationTemplate rv = new ProcedureInvocationTemplate( method );
+		rv.setExpression( getIDE().createInstanceExpression() );
+		return rv;
 	}
 }

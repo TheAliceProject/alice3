@@ -25,29 +25,20 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class GetterTemplatePane extends MemberExpressionTemplatePane {
-	public GetterTemplatePane( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( field );
-		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls = edu.cmu.cs.dennisc.alice.ast.FieldAccess.class;
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( cls ) );
-		this.add( this.getInstanceOrTypeExpressionPane() );
-		this.add( new zoot.ZLabel( "." ) );
-		this.add( this.getNameLabel() );
-		this.add( javax.swing.Box.createHorizontalGlue() );
-	}
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
-		return (edu.cmu.cs.dennisc.alice.ast.AbstractField)this.getMember();
+class TypeFieldsPane extends AbstractTypeMembersPane {
+	public TypeFieldsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		super( type );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return getField().getValueType();
+	protected zoot.ZButton createCreateAndAddMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddFieldOperation( type ) );
 	}
-	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DropAndDropEvent e ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldAccess rv = new edu.cmu.cs.dennisc.alice.ast.FieldAccess();
-		rv.expression.setValue( getIDE().createInstanceExpression() );
-		rv.field.setValue( this.getField() );
-		return rv;
+	protected zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return null;
+	}
+	@Override
+	protected java.awt.Component[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+		return null;
 	}
 }

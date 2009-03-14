@@ -20,25 +20,28 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends AccessiblePane {
-	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		this.variable = variable;
-		//this.add( new alice.ide.ast.NodeNameLabel( variable ) );
-		this.add( new org.alice.ide.ast.LocalNameLabel( variable ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+public class DragAndDropEvent extends edu.cmu.cs.dennisc.pattern.event.Event<PotentiallyDraggablePane> {
+	private java.awt.event.MouseEvent eDrag;
+	private DropReceptor dropReceptor;
+	private java.awt.event.MouseEvent eDrop;
+	public DragAndDropEvent( PotentiallyDraggablePane source, DropReceptor dropReceptor, java.awt.event.MouseEvent eDrop ) {
+		super( source );
+		this.eDrag = source.getMousePressedEvent();
+		this.dropReceptor = dropReceptor;
+		this.eDrop = eDrop;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.variable.valueType.getValue();
+	public java.awt.event.MouseEvent getStartingMouseEvent() {
+		return this.eDrag;
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e ) {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+	public DropReceptor getDropReceptor() {
+		return this.dropReceptor;
+	}
+	public java.awt.event.MouseEvent getEndingMouseEvent() {
+		return this.eDrop;
 	}
 }

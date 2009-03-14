@@ -30,7 +30,13 @@ public class FocusCodeOperation extends org.alice.ide.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode;
 	public FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
 		this.nextCode = nextCode;
-		this.putValue( javax.swing.Action.NAME, "edit" );
+		String name;
+		if( nextCode instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
+			name = "edit constructor";
+		} else {
+			name = "edit";
+		}
+		this.putValue( javax.swing.Action.NAME, name );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		this.prevCode = getIDE().getFocusedCode();

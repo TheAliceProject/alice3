@@ -25,20 +25,14 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionTemplatePane extends org.alice.ide.codeeditor.AccessiblePane {
-	@Override
-	protected boolean isActuallyPotentiallyActive() {
-		return super.isActuallyPotentiallyActive() && getIDE().isSelectedFieldInScope();
-	}
-	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
-		if( getIDE().isSelectedFieldInScope() ) {
-			//pass
-		} else {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setPaint( org.alice.ide.lookandfeel.PaintUtilities.getDisabledTexturePaint() );
-			this.fillBounds( g2 );
-		}
+class FunctionInvocationTemplate extends MethodInvocationTemplate< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+	private static FunctionBorder singletonBorder = new FunctionBorder();
+
+	public FunctionInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( method );
+		setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) );
+		setForeground( java.awt.Color.GRAY );
+		setBorder( FunctionInvocationTemplate.singletonBorder );
 	}
 }
+

@@ -72,11 +72,11 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements org.
 	}
 	public void dragDropped( final org.alice.ide.ast.PotentiallyDraggablePane source, final java.awt.event.MouseEvent e ) {
 		class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression, Object > {
-			private org.alice.ide.ast.DropAndDropEvent dragAndDropEvent;
+			private org.alice.ide.ast.DragAndDropEvent dragAndDropEvent;
 			private StatementListPropertyPane statementListPropertyPane;
 
 			public Worker() {
-				this.dragAndDropEvent = new org.alice.ide.ast.DropAndDropEvent( source, ExpressionPropertyDropDownPane.this, e );
+				this.dragAndDropEvent = new org.alice.ide.ast.DragAndDropEvent( source, ExpressionPropertyDropDownPane.this, e );
 			}
 			@Override
 			protected edu.cmu.cs.dennisc.alice.ast.Expression doInBackground() throws java.lang.Exception {
