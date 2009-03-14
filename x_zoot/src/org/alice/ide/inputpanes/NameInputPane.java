@@ -50,7 +50,9 @@ abstract class NameInputPane<E> extends RowsInputPane< E > {
 		}
 	}
 
-	public String getName() {
+	protected abstract boolean isNameAcceptable( String name );
+
+	public String getNameText() {
 		return this.textField.getText();
 	}
 

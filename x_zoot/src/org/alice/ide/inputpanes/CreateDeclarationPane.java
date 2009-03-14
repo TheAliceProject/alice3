@@ -26,11 +26,4 @@ package org.alice.ide.inputpanes;
  * @author Dennis Cosgrove
  */
 public abstract class CreateDeclarationPane<E> extends NameInputPane<E> {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public CreateDeclarationPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
-	}
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
-		return this.ownerType;
-	}
 }

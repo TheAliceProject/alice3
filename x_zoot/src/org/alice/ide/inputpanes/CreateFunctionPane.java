@@ -26,11 +26,17 @@ package org.alice.ide.inputpanes;
  * @author Dennis Cosgrove
  */
 public class CreateFunctionPane extends CreateTypedDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	public CreateFunctionPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		super( ownerType );
+		this.ownerType = ownerType;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getName(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getNameText(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	}
+	@Override
+	protected boolean isNameAcceptable( java.lang.String name ) {
+		//todo: check methods for collision
+		return true;
 	}
 }

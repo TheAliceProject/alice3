@@ -111,6 +111,10 @@ public abstract class IDE extends zoot.ZFrame {
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
 	}
 	
+	public boolean isJava() {
+		return getLocale().getVariant().equals( "java" );
+	}
+
 	private Factory factory = this.createFactory();
 	public Factory getFactory() {
 		return this.factory;

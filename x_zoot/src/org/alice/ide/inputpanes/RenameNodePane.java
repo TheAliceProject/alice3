@@ -32,6 +32,12 @@ public class RenameNodePane extends NameInputPane<String> {
 	}
 	@Override
 	protected String getActualInputValue() {
-		return this.getName();
+		return this.getNameText();
+	}
+	
+	@Override
+	protected boolean isNameAcceptable( java.lang.String name ) {
+		//todo: make this class abstract and check the appropraite siblings in each subclass
+		return true;
 	}
 }

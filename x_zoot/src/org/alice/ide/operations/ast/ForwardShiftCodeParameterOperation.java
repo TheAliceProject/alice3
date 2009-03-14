@@ -20,24 +20,22 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.inputpanes;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateProcedurePane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
+public class ForwardShiftCodeParameterOperation extends AbstractShiftCodeParameterOperation {
+	public ForwardShiftCodeParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( code, parameter );
+		this.putValue( javax.swing.Action.NAME, "shift forward" );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getNameText(), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	public void perform( zoot.ActionContext actionContext ) {
+		javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo" );
+		actionContext.cancel();
 	}
-	
-	@Override
-	protected boolean isNameAcceptable( java.lang.String name ) {
-		//todo: check methods for collision
-		return true;
-	}
+//	def redo( self ):
+//		self._shift( self._index-1 )
+//	def undo( self ):
+//		self._shift( self._index-1 )
 }

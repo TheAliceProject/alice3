@@ -20,24 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.inputpanes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateFieldOperation extends org.alice.ide.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public CreateFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		this.type = type;
-		this.putValue( javax.swing.Action.NAME, "create new property..." );
+public class CreateParameterPane extends CreateTypedDeclarationPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
+	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode;
+	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode ) {
+		this.ownerCode = ownerCode;
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		String name = javax.swing.JOptionPane.showInputDialog( "name" );
-		if( name != null && name.length() > 0 ) {
-			//this.prevValue = this.localDeclaredInAlice.name.getValue();
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
+		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getNameText(), this.getValueType() );
+	}
+	@Override
+	protected boolean isNameAcceptable( java.lang.String name ) {
+		//todo: check parameters for collision
+		return true;
 	}
 }

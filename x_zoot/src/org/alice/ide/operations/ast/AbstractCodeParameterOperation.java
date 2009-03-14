@@ -20,24 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.inputpanes;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateProcedurePane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
+public abstract class AbstractCodeParameterOperation extends AbstractCodeOperation {
+	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
+	public AbstractCodeParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( code );
+		this.parameter = parameter;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getNameText(), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
-	}
-	
-	@Override
-	protected boolean isNameAcceptable( java.lang.String name ) {
-		//todo: check methods for collision
-		return true;
+	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getParameter() {
+		return this.parameter;
 	}
 }

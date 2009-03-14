@@ -289,7 +289,7 @@ class ProceduresTab extends MethodsTab {
 	}
 	@Override
 	protected zoot.ZButton createCreateMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateProcedureOperation( type ) );
+		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddProcedureOperation( type ) );
 	}
 	@Override
 	protected javax.swing.JComponent createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
@@ -321,7 +321,7 @@ class FunctionsTab extends MethodsTab {
 
 	@Override
 	protected zoot.ZButton createCreateMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateFunctionOperation( type ) );
+		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddFunctionOperation( type ) );
 	}
 
 	@Override
@@ -348,7 +348,7 @@ class FieldsTab extends MembersTab {
 	}
 	@Override
 	protected zoot.ZButton createCreateMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateFieldOperation( type ) );
+		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddFieldOperation( type ) );
 	}
 	@Override
 	protected java.awt.Component[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {

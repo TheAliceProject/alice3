@@ -29,6 +29,98 @@ import org.alice.ide.event.LocaleEvent;
 import org.alice.ide.event.ProjectOpenEvent;
 import org.alice.ide.event.TransientSelectionEvent;
 
+import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
+import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+
+class TypedParameterPane extends TypedDeclarationPane {
+	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
+	public TypedParameterPane( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( new java.awt.Component[] { new org.alice.ide.ast.TypePane( parameter.getValueType() ), new ParameterPane( parameter ) } );
+		this.parameter = parameter;
+	}
+	@Override
+	protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
+//		N = self._code.parameters.size()
+//		index = self._code.parameters.indexOf( self._parameter )
+//		operations = []
+//		operations.append( ecc.dennisc.alice.ide.operations.ast.RenameParameterOperation( self._parameter, self._code ) )
+//		if index > 0:
+//			operations.append( ShiftForwardParameterOperation( self._parameter, self._code ) )
+//		if index < N-1:
+//			operations.append( ShiftBackwardParameterOperation( self._parameter, self._code ) )
+//		operations.append( DeleteParameterOperation( self._parameter, self._code ) )
+//		popup = alice.ide.MenuUtilities.createJPopupMenu( operations )
+//		popup.show( e.getSource(), e.getX(), e.getY() )
+	}
+}
+
+class ParametersPane extends org.alice.ide.ast.AbstractListPropertyPane< NodeListProperty< ParameterDeclaredInAlice >> {
+	public ParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
+	}
+	
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
+
+	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
+		return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)getProperty().getOwner();
+	}
+
+	@Override
+	protected javax.swing.JComponent createComponent( Object parameter ) {
+		return new TypedParameterPane( /*getProperty(),*/ (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter );
+	}
+	@Override
+	protected void addPrefixComponents() {
+		//super.addPrefixComponents();
+		if( getIDE().isJava() ) {
+			this.add( new zoot.ZLabel( "( " ) );
+		} else {
+			int n = this.getProperty().size();
+			String text;
+			switch( n ) {
+			case 0:
+				text = " ";
+				break;
+			case 1:
+				text = " with parameter: ";
+				break;
+			default:
+				text = " with parameters: ";
+			}
+			zoot.ZLabel label = new zoot.ZLabel( text );
+			label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
+			this.add( label );
+			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+		}
+	}
+	@Override
+	protected java.awt.Component createInterstitial( int i, int N ) {
+		if( i<N-1 ) {
+			return new zoot.ZLabel( ", " );
+		} else {
+			return javax.swing.Box.createHorizontalStrut( 8 );
+		}
+	}
+	@Override
+	protected void addPostfixComponents() {
+		super.addPostfixComponents();
+		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = getCode();
+
+		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+			if( method.isSignatureLocked.getValue() ) {
+				//pass
+			} else {
+				this.add( new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddParameterOperation( code ) ) );
+			}
+		}
+		if( getIDE().isJava() ) {
+			this.add( new zoot.ZLabel( " )" ) );
+		}
+	}
+}
 /**
  * @author Dennis Cosgrove
  */
@@ -223,7 +315,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 	}
 	
 	protected javax.swing.JComponent createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		return new zoot.ZLabel( "TODO: createParametersPane" );
+		return new ParametersPane( code );
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {

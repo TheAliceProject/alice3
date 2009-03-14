@@ -39,9 +39,6 @@ class TypeComboBox extends zoot.ZComboBox {
  */
 public abstract class CreateTypedDeclarationPane<E> extends CreateDeclarationPane<E> {
 	private TypeComboBox typeComboBox;
-	public CreateTypedDeclarationPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		super( ownerType );
-	}
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		return (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem();
 	}

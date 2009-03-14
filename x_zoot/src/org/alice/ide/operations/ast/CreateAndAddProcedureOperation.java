@@ -20,24 +20,25 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.inputpanes;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateProcedurePane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
+public class CreateAndAddProcedureOperation extends org.alice.ide.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+	public CreateAndAddProcedureOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		this.type = type;
+		this.putValue( javax.swing.Action.NAME, "create new procedure..." );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getNameText(), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
-	}
-	
-	@Override
-	protected boolean isNameAcceptable( java.lang.String name ) {
-		//todo: check methods for collision
-		return true;
+	public void perform( zoot.ActionContext actionContext ) {
+		org.alice.ide.inputpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.inputpanes.CreateProcedurePane( this.type );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createProcedurePane.showInJDialog( getIDE() );
+		if( method != null ) {
+			this.type.methods.add( method );
+			actionContext.commit();
+		} else {
+			actionContext.cancel();
+		}
 	}
 }

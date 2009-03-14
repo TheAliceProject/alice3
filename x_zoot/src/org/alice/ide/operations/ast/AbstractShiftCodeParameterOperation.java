@@ -25,20 +25,26 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateProcedureOperation extends org.alice.ide.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public CreateProcedureOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		this.type = type;
-		this.putValue( javax.swing.Action.NAME, "create new procedure..." );
+public abstract class AbstractShiftCodeParameterOperation extends AbstractCodeParameterOperation {
+	public AbstractShiftCodeParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( code, parameter );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		org.alice.ide.inputpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.inputpanes.CreateProcedurePane( this.type );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createProcedurePane.showInJDialog( getIDE() );
-		if( method != null ) {
-			this.type.methods.add( method );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
-	}
+//	def prepare( self, e, observer ):
+//		return alice.ide.Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY
+//	def perform( self ):
+//		self._index = self._code.parameters.indexOf( self._paramteter )
+//		self._invocations = self.getIDE().getInvocations( self._code )
+//		self.redo()
+//
+//	def _shift( self, aIndex ):
+//		bIndex = aIndex + 1
+//		aParam = self._code.parameters.get( aIndex )
+//		bParam = self._code.parameters.get( bIndex )
+//		self._code.parameters.set( aIndex, [bParam, aParam] )
+//		for invocation in self._invocations:
+//			aArg = invocation.arguments.get( aIndex )
+//			bArg = invocation.arguments.get( bIndex )
+//			assert aArg.parameter.getValue() == aParam 
+//			assert bArg.parameter.getValue() == bParam 
+//			invocation.arguments.set( aIndex, [bArg, aArg] )
 }
