@@ -26,6 +26,13 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSingleSelectionOperation<E> extends AbstractOperation implements SingleSelectionOperation< E >, javax.swing.event.TreeSelectionListener {
+	private javax.swing.SingleSelectionModel singleSelectionModelForConfiguringSwingComponents = new javax.swing.DefaultSingleSelectionModel() {
+	};
+
+	public javax.swing.SingleSelectionModel getSingleSelectionModelForConfiguringSwingComponents() {
+		return this.singleSelectionModelForConfiguringSwingComponents;
+	};
+
 	private static Object getLastPathComponent( javax.swing.tree.TreePath path ) { 
 		if( path != null ) {
 			return path.getLastPathComponent();

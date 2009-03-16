@@ -38,6 +38,15 @@ public class FieldSelectionOperation extends org.alice.ide.AbstractSingleSelecti
 		this.redo();
 		singleSelectionContext.commit();
 	}
+	public String getText( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		throw new RuntimeException( "todo" );
+	}
+	public javax.swing.Icon getIcon( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		throw new RuntimeException( "todo" );
+	}
+	public edu.cmu.cs.dennisc.alice.ast.AbstractField[] getCandidates() {
+		throw new RuntimeException( "todo" );
+	}
 	public void redo() {
 		getIDE().setFieldSelection( this.nextField );
 	}

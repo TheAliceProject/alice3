@@ -20,26 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.ide.operations.window;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface SingleSelectionOperation<E> extends Operation {
-	public void performSelectionChange( SingleSelectionContext<E> context );
-	
-	public javax.swing.SingleSelectionModel getSingleSelectionModelForConfiguringSwingComponents();
-
-	public String getText( E e );
-	public javax.swing.Icon getIcon( E e );
-	
-//	public E getSelection();
-//	public void setSelection( E selection );
-	public E[] getCandidates();
-//	public void setCandidates( E[] candidates );
-//
-//	public void addSelectionChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l );
-//	public void addCandidatesChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeCandidatesChangeListener( javax.swing.event.ChangeListener l );
+public class ToggleExpandContractSceneEditorOperation extends org.alice.ide.AbstractActionOperation {
+	public ToggleExpandContractSceneEditorOperation() {
+		this.putValue( javax.swing.Action.NAME, "Expand/Contract Scene Editor" );
+		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
+	}
+	public void perform( zoot.ActionContext actionContext ) {
+		this.getIDE().toggleExpandContactOfSceneEditor();
+		actionContext.commit();
+	}
 }

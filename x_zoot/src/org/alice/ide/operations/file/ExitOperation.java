@@ -26,6 +26,9 @@ package org.alice.ide.operations.file;
  * @author Dennis Cosgrove
  */
 public class ExitOperation extends AbstractClearanceActionOperation {
+	public ExitOperation() {
+		this.putValue( javax.swing.Action.NAME, "Exit" );
+	}
 	public void perform( zoot.ActionContext actionContext ) {
 		if( this.getIDE().isProjectUpToDateWithFile() ) {
 			//pass

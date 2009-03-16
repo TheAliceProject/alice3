@@ -45,12 +45,13 @@ public abstract class IDE extends zoot.ZFrame {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
 	}
+
 	public static IDE getSingleton() {
 		return IDE.singleton;
 	}
-	
-	private org.alice.ide.sceneeditor.SceneEditor sceneEditor = this.createSceneEditor(); 
-	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor(); 
+
+	private org.alice.ide.sceneeditor.SceneEditor sceneEditor = this.createSceneEditor();
+	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor();
 	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
 	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane = this.createEditorsTabbedPane();
 	private zoot.ZLabel feedback = new zoot.ZLabel();
@@ -67,8 +68,9 @@ public abstract class IDE extends zoot.ZFrame {
 	protected org.alice.ide.editorstabbedpane.EditorsTabbedPane createEditorsTabbedPane() {
 		return new org.alice.ide.editorstabbedpane.EditorsTabbedPane();
 	}
-	
+
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
+
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -77,28 +79,26 @@ public abstract class IDE extends zoot.ZFrame {
 
 		this.promptForLicenseAgreements();
 
-		
 		this.addIDEListener( this.sceneEditor );
 		this.addIDEListener( this.membersEditor );
 		this.addIDEListener( this.listenersEditor );
 		this.addIDEListener( this.editorsTabbedPane );
-		
+
 		Perspective perspective = new Perspective();
 		perspective.activate( this.sceneEditor, this.membersEditor, this.listenersEditor, this.editorsTabbedPane );
 		this.getContentPane().setLayout( new java.awt.BorderLayout() );
 		this.getContentPane().add( perspective, java.awt.BorderLayout.CENTER );
 		this.getContentPane().add( this.feedback, java.awt.BorderLayout.SOUTH );
-		
+
 		org.alice.ide.ast.ExpressionLikeSubstance.setBorderFactory( this.createExpressionBorderFactory() );
 		org.alice.ide.ast.ExpressionLikeSubstance.setRenderer( this.createExpressionRenderer() );
 
 		org.alice.ide.ast.StatementLikeSubstance.setBorderFactory( this.createStatementBorderFactory() );
 		org.alice.ide.ast.StatementLikeSubstance.setRenderer( this.createStatementRenderer() );
-		
+
 		org.alice.ide.codeeditor.DropDownPane.setBorderFactory( this.createDropDownBorderFactory() );
 		org.alice.ide.codeeditor.DropDownPane.setRenderer( this.createDropDownRenderer() );
 
-		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
 		this.vmForSceneEditor = createVirtualMachineForSceneEditor();
@@ -106,13 +106,14 @@ public abstract class IDE extends zoot.ZFrame {
 		this.runOperation = this.createRunOperation();
 		this.exitOperation = this.createExitOperation();
 
-		
 		getContentPane().addMouseWheelListener( new edu.cmu.cs.dennisc.swing.plaf.metal.FontMouseWheelAdapter() );
 
 		//this.setLocale( new java.util.Locale( "en", "US", "java" ) );
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
-		
+
 		this.expressionFillerInners = this.addExpressionFillerInners( new java.util.LinkedList< org.alice.ide.cascade.fillerinners.ExpressionFillerInner >() );
+		javax.swing.JMenuBar menuBar = this.createMenuBar();
+		this.setJMenuBar( menuBar );
 	}
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
 		rv.add( new org.alice.ide.cascade.fillerinners.NumberFillerInner() );
@@ -121,11 +122,76 @@ public abstract class IDE extends zoot.ZFrame {
 		rv.add( new org.alice.ide.cascade.fillerinners.StringFillerInner() );
 		return rv;
 	}
+
+	protected javax.swing.JMenuBar createMenuBar() {
+		javax.swing.JMenuBar rv = new javax.swing.JMenuBar();
+
+		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, 
+				this.exitOperation 
+		);
+		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, 
+				new org.alice.ide.operations.edit.UndoOperation(), 
+				new org.alice.ide.operations.edit.RedoOperation(),
+				zoot.ZManager.MENU_SEPARATOR,
+				new org.alice.ide.operations.edit.CutOperation(),
+				new org.alice.ide.operations.edit.CopyOperation(),
+				new org.alice.ide.operations.edit.PasteOperation() 
+		);
+		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R,
+				this.runOperation
+		);
+		
+		class LocaleSingleSelectionOperation extends AbstractSingleSelectionOperation< java.util.Locale > {
+			private java.util.Locale[] candidates = {
+					new java.util.Locale( "en", "US" ),
+					new java.util.Locale( "en", "US", "complex" ),
+					new java.util.Locale( "en", "US", "java" )
+			};
+			public LocaleSingleSelectionOperation() {
+				this.getSingleSelectionModelForConfiguringSwingComponents().setSelectedIndex( 0 );
+			}
+			public String getText( java.util.Locale locale ) {
+				return locale.getDisplayName();
+			}
+			public javax.swing.Icon getIcon( java.util.Locale locale ) {
+				return null;
+			}
+			
+			public void performSelectionChange( zoot.SingleSelectionContext< java.util.Locale > context ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "performSelectionChange:", context );
+				context.cancel();
+			}
+			public java.util.Locale[] getCandidates() {
+				return this.candidates;
+			}
+		}
+		
+		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L,
+				new LocaleSingleSelectionOperation()
+		);
+		
+		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W,
+				new org.alice.ide.operations.window.ToggleExpandContractSceneEditorOperation()
+		);
+		windowMenu.add( setLocaleMenu );
+		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, 
+				new org.alice.ide.operations.help.HelpOperation(), 
+				new org.alice.ide.operations.help.AboutOperation() 
+		);
+		rv.add( fileMenu );
+		rv.add( editMenu );
+		rv.add( runMenu );
+		rv.add( windowMenu );
+		rv.add( helpMenu );
+		return rv;
+	}
+
 	public boolean isJava() {
 		return getLocale().getVariant().equals( "java" );
 	}
 
 	private Factory factory = this.createFactory();
+
 	public Factory getFactory() {
 		return this.factory;
 	}
@@ -134,6 +200,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
+
 	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
 		return this.templatesFactory;
 	}
@@ -142,13 +209,14 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	private org.alice.ide.codeeditor.Factory codeFactory = this.createCodeFactory();
+
 	public org.alice.ide.codeeditor.Factory getCodeFactory() {
 		return this.codeFactory;
 	}
 	protected org.alice.ide.codeeditor.Factory createCodeFactory() {
 		return new org.alice.ide.codeeditor.Factory();
 	}
-	
+
 	protected org.alice.ide.lookandfeel.StatementClassBorderFactory createStatementBorderFactory() {
 		return new org.alice.ide.lookandfeel.KnurlBorderFactory();
 	}
@@ -169,7 +237,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	public abstract java.io.File getApplicationRootDirectory();
-	
+
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
 		rv.append( "Please Submit Bug Report: " );
 		this.updateTitlePrefix( rv );
@@ -208,7 +276,8 @@ public abstract class IDE extends zoot.ZFrame {
 		this.setTitle( sb.toString() );
 	}
 
-private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new java.util.LinkedList< org.alice.ide.ast.DropReceptor >();
+	private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new java.util.LinkedList< org.alice.ide.ast.DropReceptor >();
+
 	protected abstract org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus();
 
 	private ComponentStencil stencil;
@@ -337,13 +406,12 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 	public void handleDragStopped( org.alice.ide.ast.DropReceptor dropReceptor ) {
 	}
 
-
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
 	private java.io.File file = null;
 	private edu.cmu.cs.dennisc.alice.Project project = null;
-	
+
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = null;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField fieldSelection = null;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractTransient transientSelection = null;
@@ -355,7 +423,10 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 
 	private zoot.ActionOperation runOperation = this.createRunOperation();
 	private zoot.ActionOperation exitOperation = this.createExitOperation();
-	protected abstract zoot.ActionOperation createRunOperation();
+
+	protected zoot.ActionOperation createRunOperation() {
+		return new org.alice.ide.operations.run.RunOperation();
+	}
 	protected zoot.ActionOperation createExitOperation() {
 		return new org.alice.ide.operations.file.ExitOperation();
 	}
@@ -392,24 +463,26 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
 		try {
 			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.alice.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 3): Alice 3", edu.cmu.cs.dennisc.alice.License.TEXT, "Alice" );
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.wustl.cse.lookingglass.apis.walkandtouch.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 3): Looking Glass Walk & Touch API", edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "the Looking Glass Walk & Touch API" );
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 3 of 3): The Sims (TM) 2 Art Assets", edu.cmu.cs.dennisc.nebulous.License.TEXT, "The Sims (TM) 2 Art Assets" );
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.wustl.cse.lookingglass.apis.walkandtouch.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 3): Looking Glass Walk & Touch API",
+					edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "the Looking Glass Walk & Touch API" );
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 3 of 3): The Sims (TM) 2 Art Assets",
+					edu.cmu.cs.dennisc.nebulous.License.TEXT, "The Sims (TM) 2 Art Assets" );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			javax.swing.JOptionPane.showMessageDialog( this, "You must accept the license agreements in order to use Alice 3, the Looking Glass Walk & Touch API, and The Sims (TM) 2 Art Assets.  Exiting." );
 			System.exit( -1 );
 		}
 	}
-	
+
 	public void performIfAppropriate( zoot.ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		zoot.ZManager.performIfAppropriate( actionOperation, e, isCancelWorthwhile );
 	}
-	
+
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
 		this.performIfAppropriate( this.exitOperation, e, true );
 	}
-//	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-//	protected abstract void handleWindowClosing();
+	//	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
+	//	protected abstract void handleWindowClosing();
 
 	public java.util.List< ? extends org.alice.ide.ast.DropReceptor > getPotentialDropReceptors( org.alice.ide.ast.PotentiallyDraggablePane source ) {
 		if( source instanceof org.alice.ide.ast.ExpressionLikeSubstance ) {
@@ -430,133 +503,133 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 		}
 	}
 
-//	def addSeparatorIfNecessary( self, blank, text, isNecessary ):
-//		if isNecessary:
-//			blank.addSeparator( text )
-//		return False
-//
-//	def addFillInAndPossiblyPartFills( self, blank, expression, type, type2 ):
-//		blank.addChild( SimpleExpressionFillIn( expression ) )
-//		if type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel ):
-//			if type2.isAssignableFrom( org.alice.apis.moveandturn.Model ):
-//				typeInJava = type.getFirstTypeEncounteredDeclaredInJava()
-//				clsInJava = typeInJava.getCls()
-//				try:
-//					paramType = clsInJava.Part
-//				except:
-//					paramType = None
-//			else:
-//				paramType = None
-//			if paramType:
-//				getPartMethod = typeInJava.getDeclaredMethod( "getPart", [ paramType ] )
-//				
-//				#todo
-//				
-//				blank.addChild( MethodInvocationFillIn( getPartMethod, expression ) )
-//
-//	def _addExpressionBonusFillInsForType( self, blank, type ):
-//		codeInFocus = self.getFocusedCode()
-//		if codeInFocus:
-//			isNecessary = True
-//			selectedType = codeInFocus.getDeclaringType()
-//			if type.isAssignableFrom( selectedType ):
-//				isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-//				#blank.addChild( SimpleExpressionFillIn( alice.ast.ThisExpression() ) )
-//				self.addFillInAndPossiblyPartFills( blank, alice.ast.ThisExpression(), selectedType, type )
-//			for field in selectedType.fields.iterator():
-//				fieldType = field.valueType.getValue()
-//				if type.isAssignableFrom( fieldType ):
-//					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-//					expression = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
-//					self.addFillInAndPossiblyPartFills( blank, expression, fieldType, type )
-//				if fieldType.isArray():
-//					fieldComponentType = fieldType.getComponentType()
-//					if type.isAssignableFrom( fieldComponentType ):
-//						isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-//						expression = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
-//						blank.addChild( ecc.dennisc.alice.ide.cascade.ArrayAccessFillIn( fieldType, expression ) )
-//					if type.isAssignableFrom( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ):
-//						isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-//						fieldAccess = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
-//						arrayLength = alice.ast.ArrayLength( fieldAccess )
-//						blank.addChild( ecc.dennisc.alice.ide.cascade.SimpleExpressionFillIn( arrayLength ) )
-//					
-//			#acceptableParameters = []
-//			for parameter in codeInFocus.getParameters():
-//				if type.isAssignableFrom( parameter.getValueType() ):
-//					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-//					self.addFillInAndPossiblyPartFills( blank, alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type )
-//			for variable in ecc.dennisc.alice.ast.getVariables( codeInFocus ):
-//				if type.isAssignableFrom( variable.valueType.getValue() ):
-//					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-//					self.addFillInAndPossiblyPartFills( blank, alice.ast.VariableAccess( variable ), variable.valueType.getValue(), type )
-//			for constant in ecc.dennisc.alice.ast.getConstants( codeInFocus ):
-//				if type.isAssignableFrom( constant.valueType.getValue() ):
-//					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
-//					self.addFillInAndPossiblyPartFills( blank, alice.ast.ConstantAccess( constant ), constant.valueType.getValue(), type )
-//			if isNecessary:
-//				pass
-//			else:
-//				blank.addSeparator()
-//
-//	def addSampleValueFillIns( self, blank, fillerInner ):
-//		fillerInner.addFillIns( blank )
-//		
-//	def addFillIns( self, blank, type ):
-//		if type is alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.AngleInRevolutions ):
-//			type = alice.ast.TypeDeclaredInJava.get( java.lang.Number )
-//			fillInType = alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.AngleInRevolutions )
-//		elif type is alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Portion ):
-//			type = alice.ast.TypeDeclaredInJava.get( java.lang.Number )
-//			fillInType = alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Portion )
-//		else:
-//			if type is alice.ast.TypeDeclaredInJava.get( java.lang.Object ):
-//				fillInType = alice.ast.TypeDeclaredInJava.get( java.lang.String )
-//			elif type is alice.ast.TypeDeclaredInJava.get( java.lang.Double ):
-//				type = alice.ast.TypeDeclaredInJava.get( java.lang.Number )
-//				fillInType = alice.ast.TypeDeclaredInJava.get( java.lang.Number )
-//			else:
-//				fillInType = type
-//		if self.__dict__.has_key( "_prevExpression" ):
-//			if self._prevExpression.getType().isAssignableTo( type ):
-//				blank.addChild( ecc.dennisc.alice.ide.cascade.PrevExpressionFillIn( self._prevExpression ) )
-//				blank.addSeparator()
-//				#self.addFillInAndPossiblyPartFills( blank, self._prevExpression, self._prevExpression.getType() )
-//
-//		if type.isAssignableTo( java.lang.Enum ):
-//			self.addSampleValueFillIns( blank, ecc.dennisc.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( type ) )
-//		else:
-//			for fillerInner in self._fillerInners:
-//				if fillerInner.isAssignableTo( fillInType ):
-//					self.addSampleValueFillIns( blank, fillerInner )
-//					break
-//#					if type is alice.ast.TypeDeclaredInJava.get( java.lang.Object ):
-//#						class MyMenuFillIn( edu.cmu.cs.dennisc.cascade.MenuFillIn ):
-//#							def __init__(self, fillerInner ):
-//#								edu.cmu.cs.dennisc.cascade.MenuFillIn.__init__( self, fillerInner._type.getName() )
-//#								self._fillerInner = fillerInner
-//#							def addChildrenToBlank(self, blank):
-//#								self._fillerInner.addFillIns( blank )
-//#						blank.addChild( MyMenuFillIn( fillerInner ) )
-//#					else:
-//#						self.addSampleValueFillIns( blank, fillerInner )
-//					
-//
-//		self._addExpressionBonusFillInsForType( blank, type )
-//
-//		if type.isArray():
-//			prevArray = None
-//			#todo
-//#			if self.__dict__.has_key( "_prevExpression" ):
-//#				if True: #todo? self._prevExpression.getType().isAssignableTo( type ):
-//#					prevArray = self._prevExpression
-//			blank.addChild( ecc.dennisc.alice.ide.cascade.CustomArrayFillIn( prevArray ) )
-//
-//		if blank.getChildren().size():
-//			pass
-//		else:
-//			message = "sorry.  no fillins found for " + type.getName() + ". canceling."
-//			blank.addChild( edu.cmu.cs.dennisc.cascade.CancelFillIn( message ) )
+	//	def addSeparatorIfNecessary( self, blank, text, isNecessary ):
+	//		if isNecessary:
+	//			blank.addSeparator( text )
+	//		return False
+	//
+	//	def addFillInAndPossiblyPartFills( self, blank, expression, type, type2 ):
+	//		blank.addChild( SimpleExpressionFillIn( expression ) )
+	//		if type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel ):
+	//			if type2.isAssignableFrom( org.alice.apis.moveandturn.Model ):
+	//				typeInJava = type.getFirstTypeEncounteredDeclaredInJava()
+	//				clsInJava = typeInJava.getCls()
+	//				try:
+	//					paramType = clsInJava.Part
+	//				except:
+	//					paramType = None
+	//			else:
+	//				paramType = None
+	//			if paramType:
+	//				getPartMethod = typeInJava.getDeclaredMethod( "getPart", [ paramType ] )
+	//				
+	//				#todo
+	//				
+	//				blank.addChild( MethodInvocationFillIn( getPartMethod, expression ) )
+	//
+	//	def _addExpressionBonusFillInsForType( self, blank, type ):
+	//		codeInFocus = self.getFocusedCode()
+	//		if codeInFocus:
+	//			isNecessary = True
+	//			selectedType = codeInFocus.getDeclaringType()
+	//			if type.isAssignableFrom( selectedType ):
+	//				isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
+	//				#blank.addChild( SimpleExpressionFillIn( alice.ast.ThisExpression() ) )
+	//				self.addFillInAndPossiblyPartFills( blank, alice.ast.ThisExpression(), selectedType, type )
+	//			for field in selectedType.fields.iterator():
+	//				fieldType = field.valueType.getValue()
+	//				if type.isAssignableFrom( fieldType ):
+	//					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
+	//					expression = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
+	//					self.addFillInAndPossiblyPartFills( blank, expression, fieldType, type )
+	//				if fieldType.isArray():
+	//					fieldComponentType = fieldType.getComponentType()
+	//					if type.isAssignableFrom( fieldComponentType ):
+	//						isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
+	//						expression = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
+	//						blank.addChild( ecc.dennisc.alice.ide.cascade.ArrayAccessFillIn( fieldType, expression ) )
+	//					if type.isAssignableFrom( alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ):
+	//						isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
+	//						fieldAccess = alice.ast.FieldAccess( alice.ast.ThisExpression(), field )
+	//						arrayLength = alice.ast.ArrayLength( fieldAccess )
+	//						blank.addChild( ecc.dennisc.alice.ide.cascade.SimpleExpressionFillIn( arrayLength ) )
+	//					
+	//			#acceptableParameters = []
+	//			for parameter in codeInFocus.getParameters():
+	//				if type.isAssignableFrom( parameter.getValueType() ):
+	//					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
+	//					self.addFillInAndPossiblyPartFills( blank, alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type )
+	//			for variable in ecc.dennisc.alice.ast.getVariables( codeInFocus ):
+	//				if type.isAssignableFrom( variable.valueType.getValue() ):
+	//					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
+	//					self.addFillInAndPossiblyPartFills( blank, alice.ast.VariableAccess( variable ), variable.valueType.getValue(), type )
+	//			for constant in ecc.dennisc.alice.ast.getConstants( codeInFocus ):
+	//				if type.isAssignableFrom( constant.valueType.getValue() ):
+	//					isNecessary = self.addSeparatorIfNecessary( blank, "in scope", isNecessary )
+	//					self.addFillInAndPossiblyPartFills( blank, alice.ast.ConstantAccess( constant ), constant.valueType.getValue(), type )
+	//			if isNecessary:
+	//				pass
+	//			else:
+	//				blank.addSeparator()
+	//
+	//	def addSampleValueFillIns( self, blank, fillerInner ):
+	//		fillerInner.addFillIns( blank )
+	//		
+	//	def addFillIns( self, blank, type ):
+	//		if type is alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.AngleInRevolutions ):
+	//			type = alice.ast.TypeDeclaredInJava.get( java.lang.Number )
+	//			fillInType = alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.AngleInRevolutions )
+	//		elif type is alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Portion ):
+	//			type = alice.ast.TypeDeclaredInJava.get( java.lang.Number )
+	//			fillInType = alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Portion )
+	//		else:
+	//			if type is alice.ast.TypeDeclaredInJava.get( java.lang.Object ):
+	//				fillInType = alice.ast.TypeDeclaredInJava.get( java.lang.String )
+	//			elif type is alice.ast.TypeDeclaredInJava.get( java.lang.Double ):
+	//				type = alice.ast.TypeDeclaredInJava.get( java.lang.Number )
+	//				fillInType = alice.ast.TypeDeclaredInJava.get( java.lang.Number )
+	//			else:
+	//				fillInType = type
+	//		if self.__dict__.has_key( "_prevExpression" ):
+	//			if self._prevExpression.getType().isAssignableTo( type ):
+	//				blank.addChild( ecc.dennisc.alice.ide.cascade.PrevExpressionFillIn( self._prevExpression ) )
+	//				blank.addSeparator()
+	//				#self.addFillInAndPossiblyPartFills( blank, self._prevExpression, self._prevExpression.getType() )
+	//
+	//		if type.isAssignableTo( java.lang.Enum ):
+	//			self.addSampleValueFillIns( blank, ecc.dennisc.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( type ) )
+	//		else:
+	//			for fillerInner in self._fillerInners:
+	//				if fillerInner.isAssignableTo( fillInType ):
+	//					self.addSampleValueFillIns( blank, fillerInner )
+	//					break
+	//#					if type is alice.ast.TypeDeclaredInJava.get( java.lang.Object ):
+	//#						class MyMenuFillIn( edu.cmu.cs.dennisc.cascade.MenuFillIn ):
+	//#							def __init__(self, fillerInner ):
+	//#								edu.cmu.cs.dennisc.cascade.MenuFillIn.__init__( self, fillerInner._type.getName() )
+	//#								self._fillerInner = fillerInner
+	//#							def addChildrenToBlank(self, blank):
+	//#								self._fillerInner.addFillIns( blank )
+	//#						blank.addChild( MyMenuFillIn( fillerInner ) )
+	//#					else:
+	//#						self.addSampleValueFillIns( blank, fillerInner )
+	//					
+	//
+	//		self._addExpressionBonusFillInsForType( blank, type )
+	//
+	//		if type.isArray():
+	//			prevArray = None
+	//			#todo
+	//#			if self.__dict__.has_key( "_prevExpression" ):
+	//#				if True: #todo? self._prevExpression.getType().isAssignableTo( type ):
+	//#					prevArray = self._prevExpression
+	//			blank.addChild( ecc.dennisc.alice.ide.cascade.CustomArrayFillIn( prevArray ) )
+	//
+	//		if blank.getChildren().size():
+	//			pass
+	//		else:
+	//			message = "sorry.  no fillins found for " + type.getName() + ". canceling."
+	//			blank.addChild( edu.cmu.cs.dennisc.cascade.CancelFillIn( message ) )
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, AbstractType type ) {
 		for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
 			if( expressionFillerInner.isAssignableTo( type ) ) {
@@ -566,14 +639,16 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 	}
 	public abstract void createProjectFromBootstrap();
 	public abstract void promptUserForStatement( java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
-	
-	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = null; 
+
+	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = null;
+
 	private edu.cmu.cs.dennisc.cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		this.prevExpression = prevExpression;
 		return new org.alice.ide.cascade.ExpressionBlank( type );
-		
+
 	}
-	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, java.awt.event.MouseEvent e,
+			edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
@@ -594,7 +669,6 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 	public final edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVirtualMachineForSceneEditor() {
 		return this.vmForSceneEditor;
 	}
-
 
 	public void addIDEListener( org.alice.ide.event.IDEListener l ) {
 		synchronized( this.ideListeners ) {
@@ -793,32 +867,32 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 		this.updateTitle();
 	}
 
-//	protected void addToHistory( Operation operation ) {
-//		this.history.push( operation );
-//		updateTitle();
-//	}
-//	protected void handlePreparedOperation( Operation operation, java.util.EventObject e, java.util.List< java.util.EventObject > preparationUpdates, Operation.PreparationResult preparationResult ) {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handlePreparedOperation", operation, preparationResult );
-//		if( preparationResult != null ) {
-//			if( preparationResult == Operation.PreparationResult.CANCEL ) {
-//				//pass
-//			} else {
-//				operation.perform();
-//				if( preparationResult == Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY ) {
-//					addToHistory( operation );
-//				}
-//			}
-//		}
-//	}
-//	public void performIfAppropriate( Operation operation, java.util.EventObject e ) {
-//		final java.util.List< java.util.EventObject > preparationUpdates = new java.util.LinkedList< java.util.EventObject >();
-//		Operation.PreparationResult preparationResult = operation.prepare( e, new Operation.PreparationObserver() {
-//			public void update( java.util.EventObject e ) {
-//				preparationUpdates.add( e );
-//			}
-//		} );
-//		handlePreparedOperation( operation, e, preparationUpdates, preparationResult );
-//	}
+	//	protected void addToHistory( Operation operation ) {
+	//		this.history.push( operation );
+	//		updateTitle();
+	//	}
+	//	protected void handlePreparedOperation( Operation operation, java.util.EventObject e, java.util.List< java.util.EventObject > preparationUpdates, Operation.PreparationResult preparationResult ) {
+	//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handlePreparedOperation", operation, preparationResult );
+	//		if( preparationResult != null ) {
+	//			if( preparationResult == Operation.PreparationResult.CANCEL ) {
+	//				//pass
+	//			} else {
+	//				operation.perform();
+	//				if( preparationResult == Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY ) {
+	//					addToHistory( operation );
+	//				}
+	//			}
+	//		}
+	//	}
+	//	public void performIfAppropriate( Operation operation, java.util.EventObject e ) {
+	//		final java.util.List< java.util.EventObject > preparationUpdates = new java.util.LinkedList< java.util.EventObject >();
+	//		Operation.PreparationResult preparationResult = operation.prepare( e, new Operation.PreparationObserver() {
+	//			public void update( java.util.EventObject e ) {
+	//				preparationUpdates.add( e );
+	//			}
+	//		} );
+	//		handlePreparedOperation( operation, e, preparationUpdates, preparationResult );
+	//	}
 
 	private void updateHistoryLengthAtLastFileOperation() {
 		//this.history.clear();
@@ -840,8 +914,8 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 					IDE.this.setFocusedCode( runMethod );
 					java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
 					final int N = fields.size();
-					int i = N-1;
-					while( i>=0 ) {
+					int i = N - 1;
+					while( i >= 0 ) {
 						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fields.get( i );
 						if( field.getValueType().isArray() ) {
 							//pass
@@ -849,7 +923,7 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 							IDE.this.setFieldSelection( field );
 							break;
 						}
-						i --;
+						i--;
 					}
 				}
 			}
@@ -877,7 +951,7 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 	//		String baseName = "edu.cmu.cs.dennisc.alice.ast.Colors";
 	//		return java.util.ResourceBundle.getBundle( baseName, locale );
 	//	}
-	
+
 	private static java.awt.Color toColor( String s ) {
 		java.awt.Color rv;
 		//String s = resourceBundle.getString( key );
@@ -923,7 +997,6 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 			return java.awt.Color.RED;
 		}
 	}
-
 
 	@Deprecated
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
@@ -979,6 +1052,10 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 		this.isDragInProgress = isDragInProgress;
 		this.currentDropReceptorComponent = null;
 	}
+
+	public void toggleExpandContactOfSceneEditor() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: toggleExpandContactOfSceneEditor" );
+	}
 	
 	public String getInstanceTextForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, boolean isOutOfScopeTagDesired ) {
 		String text;
@@ -1001,67 +1078,66 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 		return text;
 	}
 
-
 	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
-//	private static <E extends edu.cmu.cs.dennisc.alice.ast.Node> E getAncestor( edu.cmu.cs.dennisc.alice.ast.Node node, Class<E> cls ) {
-//		edu.cmu.cs.dennisc.alice.ast.Node ancestor = node.getParent();
-//		while( ancestor != null ) {
-//			if( cls.isAssignableFrom( ancestor.getClass() ) ) {
-//				break;
-//			} else {
-//				ancestor = ancestor.getParent();
-//			}
-//		}
-//		return (E)ancestor;
-//	}
-//	
-//	protected void ensureNodeVisible( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode = getAncestor( node, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
-//		if( nextFocusedCode != null ) {
-//			this.setFocusedCode( nextFocusedCode );
-//		}
-//	}
-//	private edu.cmu.cs.dennisc.alice.ast.Node getNodeForUUID( java.util.UUID uuid ) {
-//		edu.cmu.cs.dennisc.alice.ast.Node rv = mapUUIDToNode.get( uuid );
-//		if( rv != null ) {
-//			//pass
-//		} else {
-//			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getProgramType();
-//			type.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
-//				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-//					if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
-//						edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)crawlable;
-//						mapUUIDToNode.put( node.getUUID(), node );
-//					}
-//				}
-//			}, true );
-//			rv = mapUUIDToNode.get( uuid );
-//		}
-//		return rv;
-//	}
-//	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-//		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
-//			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
-//			ensureNodeVisible( node );
-//			alice.ide.codeeditor.AbstractStatementPane rv = alice.ide.codeeditor.AbstractStatementPane.lookup( statement );
-//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//				public void run() {
-//					alice.ide.codeeditor.AbstractStatementPane pane = alice.ide.codeeditor.AbstractStatementPane.lookup( statement );
-//					if( pane != null ) {
-//						pane.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( pane ) );
-//					}
-//				}
-//			} );
-//			return rv;
-//		} else {
-//			return null;
-//		}
-//	}
-//	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
-//		return getComponentForNode( getNodeForUUID( uuid ) );
-//	}
 
-	
+	//	private static <E extends edu.cmu.cs.dennisc.alice.ast.Node> E getAncestor( edu.cmu.cs.dennisc.alice.ast.Node node, Class<E> cls ) {
+	//		edu.cmu.cs.dennisc.alice.ast.Node ancestor = node.getParent();
+	//		while( ancestor != null ) {
+	//			if( cls.isAssignableFrom( ancestor.getClass() ) ) {
+	//				break;
+	//			} else {
+	//				ancestor = ancestor.getParent();
+	//			}
+	//		}
+	//		return (E)ancestor;
+	//	}
+	//	
+	//	protected void ensureNodeVisible( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+	//		edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode = getAncestor( node, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+	//		if( nextFocusedCode != null ) {
+	//			this.setFocusedCode( nextFocusedCode );
+	//		}
+	//	}
+	//	private edu.cmu.cs.dennisc.alice.ast.Node getNodeForUUID( java.util.UUID uuid ) {
+	//		edu.cmu.cs.dennisc.alice.ast.Node rv = mapUUIDToNode.get( uuid );
+	//		if( rv != null ) {
+	//			//pass
+	//		} else {
+	//			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getProgramType();
+	//			type.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+	//				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+	//					if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+	//						edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)crawlable;
+	//						mapUUIDToNode.put( node.getUUID(), node );
+	//					}
+	//				}
+	//			}, true );
+	//			rv = mapUUIDToNode.get( uuid );
+	//		}
+	//		return rv;
+	//	}
+	//	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+	//		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
+	//			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
+	//			ensureNodeVisible( node );
+	//			alice.ide.codeeditor.AbstractStatementPane rv = alice.ide.codeeditor.AbstractStatementPane.lookup( statement );
+	//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+	//				public void run() {
+	//					alice.ide.codeeditor.AbstractStatementPane pane = alice.ide.codeeditor.AbstractStatementPane.lookup( statement );
+	//					if( pane != null ) {
+	//						pane.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( pane ) );
+	//					}
+	//				}
+	//			} );
+	//			return rv;
+	//		} else {
+	//			return null;
+	//		}
+	//	}
+	//	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
+	//		return getComponentForNode( getNodeForUUID( uuid ) );
+	//	}
+
 	public static java.awt.Color getColorFor( String key ) {
 		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.Colors", javax.swing.JComponent.getDefaultLocale() );
 		String s = resourceBundle.getString( key );
@@ -1101,7 +1177,7 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 				// TODO Auto-generated method stub
 				return null;
 			}
-			
+
 			@Override
 			public Node createCopy( Node original ) {
 				// TODO Auto-generated method stub
@@ -1111,19 +1187,13 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 			@Override
 			public void createProjectFromBootstrap() {
 				// TODO Auto-generated method stub
-				
-			}
 
-			@Override
-			protected ActionOperation createRunOperation() {
-				// TODO Auto-generated method stub
-				return null;
 			}
 
 			@Override
 			protected void generateCodeForSceneSetUp() {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
@@ -1132,40 +1202,39 @@ private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new jav
 				return null;
 			}
 
-
 			@Override
 			protected void handleWindowOpened( WindowEvent e ) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			protected void preserveProjectProperties() {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void promptUserForMore( AbstractParameter parameter, MouseEvent e, TaskObserver< Expression > taskObserver ) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void promptUserForStatement( MouseEvent e, TaskObserver< Statement > taskObserver ) {
 				// TODO Auto-generated method stub
-				
+
 			}
 
 			@Override
 			public void unsetPreviousExpression() {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 		};
-		ide.loadProjectFrom( new java.io.File(  edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
-		ide.setSize(  1000, 1000 );
+		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
+		ide.setSize( 1000, 1000 );
 		ide.setVisible( true );
 	}
 }

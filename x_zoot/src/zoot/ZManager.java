@@ -168,4 +168,65 @@ public class ZManager {
 		return rv;
 	}
 	//public static ZMenu createMenu( StateOperation< java.util.ArrayList< E > > stateOperation )
+
+
+//	private static void setHeavyWeight( javax.swing.JPopupMenu popup ) {
+//		popup.setLightWeightPopupEnabled( false );
+//	}
+
+	public static javax.swing.JMenu createMenu( String name, int mnemonic, SingleSelectionOperation singleSelectionOperation ) {
+		javax.swing.JMenu rv = new javax.swing.JMenu( name );
+		rv.setMnemonic( mnemonic );
+		rv.getPopupMenu().setSelectionModel( singleSelectionOperation.getSingleSelectionModelForConfiguringSwingComponents() );
+		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
+		for( Object o : singleSelectionOperation.getCandidates() ) {
+			javax.swing.JRadioButtonMenuItem item = new javax.swing.JRadioButtonMenuItem();
+			item.setText( singleSelectionOperation.getText( o ) );
+			item.setIcon( singleSelectionOperation.getIcon( o ) );
+			item.getModel().setGroup( group );
+			rv.add( item );
+		}
+		//todo?
+		//setHeavyWeight( rv.getPopupMenu() );
+		return rv;
+	}
+	
+	public static ActionOperation MENU_SEPARATOR = null;
+	public static javax.swing.JMenu createMenu( String name, int mnemonic, ActionOperation... actionOperations ) {
+		javax.swing.JMenu rv = new javax.swing.JMenu( name );
+		rv.setMnemonic( mnemonic );
+		for( ActionOperation actionOperation : actionOperations ) {
+			if( actionOperation == MENU_SEPARATOR ) {
+				rv.addSeparator();
+			} else {
+				rv.add( new ZMenuItem( actionOperation ) );
+			}
+		}
+		//todo?
+		//setHeavyWeight( rv.getPopupMenu() );
+		return rv;
+	}
+	public static javax.swing.JMenu createMenu( String name, int mnemonic, java.util.Collection< ActionOperation > actionOperations ) {
+		ActionOperation[] array = new ActionOperation[ actionOperations.size() ];
+		actionOperations.toArray( array );
+		return createMenu( name, mnemonic, array );
+	}
+	public static javax.swing.JPopupMenu createPopupMenu( ActionOperation... actionOperations ) {
+		javax.swing.JPopupMenu rv = new javax.swing.JPopupMenu();
+		for( ActionOperation actionOperation : actionOperations ) {
+			if( actionOperation == MENU_SEPARATOR ) {
+				rv.addSeparator();
+			} else {
+				rv.add( new ZMenuItem( actionOperation ) );
+			}
+		}
+		//todo?
+		//setHeavyWeight( rv );
+		return rv;
+	}
+	public static javax.swing.JPopupMenu createPopupMenu( java.util.Collection< ActionOperation > actionOperations ) {
+		ActionOperation[] array = new ActionOperation[ actionOperations.size() ];
+		actionOperations.toArray( array );
+		return createPopupMenu( array );
+	}
 }

@@ -20,26 +20,27 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.ide.operations.edit;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface SingleSelectionOperation<E> extends Operation {
-	public void performSelectionChange( SingleSelectionContext<E> context );
-	
-	public javax.swing.SingleSelectionModel getSingleSelectionModelForConfiguringSwingComponents();
-
-	public String getText( E e );
-	public javax.swing.Icon getIcon( E e );
-	
-//	public E getSelection();
-//	public void setSelection( E selection );
-	public E[] getCandidates();
-//	public void setCandidates( E[] candidates );
-//
-//	public void addSelectionChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l );
-//	public void addCandidatesChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeCandidatesChangeListener( javax.swing.event.ChangeListener l );
+public class CopyOperation extends org.alice.ide.AbstractActionOperation {
+	public CopyOperation() {
+		this.putValue( javax.swing.Action.NAME, "Copy" );
+		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+	}
+	public void perform( zoot.ActionContext actionContext ) {
+		String title = "Copy coming soon";
+		String message = "Copy is not yet implemented.  Apologies.";
+		message += "\n\nNOTE: one can copy by dragging with the ";
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			message += "Alt";
+		} else {
+			message += "Control";
+		}
+		message += " key pressed.";
+		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE );
+		actionContext.cancel();
+	}
 }
