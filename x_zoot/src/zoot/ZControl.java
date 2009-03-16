@@ -23,8 +23,8 @@
 package zoot;
 
 public abstract class ZControl extends javax.swing.JComponent {
-	private ActionOperation clickOperation;
-	private ActionOperation doubleClickOperation;
+	private ActionOperation leftButtonPressOperation;
+	private ActionOperation leftButtonDoubleClickOperation;
 	private ActionOperation popupOperation;
 	private ActionOperation dragOperation;
 
@@ -67,6 +67,11 @@ public abstract class ZControl extends javax.swing.JComponent {
 	
 	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
 		this.setPressed( true );
+		if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+			if( this.leftButtonPressOperation != null ) {
+				ZManager.performIfAppropriate( this.leftButtonPressOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
+			}
+		}
 	}
 	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		this.setPressed( false );
@@ -92,17 +97,17 @@ public abstract class ZControl extends javax.swing.JComponent {
 	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
 	}
 	
-	public ActionOperation getClickOperation() {
-		return this.clickOperation;
+	public ActionOperation getLeftButtonPressOperation() {
+		return this.leftButtonPressOperation;
 	}
-	public void setClickOperation( ActionOperation clickOperation ) {
-		this.clickOperation = clickOperation;
+	public void setLeftButtonPressOperation( ActionOperation leftButtonPressOperation ) {
+		this.leftButtonPressOperation = leftButtonPressOperation;
 	}
-	public ActionOperation getDoubleClickOperation() {
-		return this.doubleClickOperation;
+	public ActionOperation getLeftButtonDoubleClickOperation() {
+		return this.leftButtonDoubleClickOperation;
 	}
-	public void setDoubleClickOperation( ActionOperation doubleClickOperation ) {
-		this.doubleClickOperation = doubleClickOperation;
+	public void setLeftButtonDoubleClickOperation( ActionOperation leftButtonDoubleClickOperation ) {
+		this.leftButtonDoubleClickOperation = leftButtonDoubleClickOperation;
 	}
 	public ActionOperation getPopupOperation() {
 		return this.popupOperation;

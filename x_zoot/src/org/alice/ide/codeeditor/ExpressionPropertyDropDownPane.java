@@ -23,9 +23,6 @@
 package org.alice.ide.codeeditor;
 
 import org.alice.ide.ast.AccessiblePane;
-import org.alice.ide.ast.DragAndDropEvent;
-import org.alice.ide.ast.DropReceptor;
-import org.alice.ide.ast.ExpressionLikeSubstance;
 import org.alice.ide.ast.PotentiallyDraggablePane;
 import org.alice.ide.ast.StatementListPropertyPane;
 
@@ -33,10 +30,17 @@ import org.alice.ide.ast.StatementListPropertyPane;
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyDropDownPane extends DropDownPane implements org.alice.ide.ast.DropReceptor {
+	class FillInExpressionOperation extends zoot.AbstractActionOperation {
+		public void perform( zoot.ActionContext actionContext ) {
+			ExpressionPropertyDropDownPane.this.handleLeftMousePress( (java.awt.event.MouseEvent)actionContext.getEvent() );
+		}
+	}
+
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 	public ExpressionPropertyDropDownPane( javax.swing.JComponent component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, javax.swing.JComponent prefixPane ) {
 		super( prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
+		this.setLeftButtonPressOperation( new FillInExpressionOperation() );
 	}
 	public ExpressionPropertyDropDownPane( javax.swing.JComponent component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		this( component, expressionProperty, null );
@@ -48,9 +52,10 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements org.
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getDesiredType() {
 		return this.expressionProperty.getExpressionType();
 	}
+
+
 	@Override
 	protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleLeftMousePress:", e );
 		super.handleLeftMousePress( e );
 		getIDE().promptUserForExpression( this.getDesiredType(), this.expressionProperty.getValue(), e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
@@ -65,6 +70,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements org.
 			}			
 		} );
 	}
+	
 	public boolean isPotentiallyAcceptingOf( org.alice.ide.ast.PotentiallyDraggablePane source ) {
 		return source instanceof org.alice.ide.ast.ExpressionLikeSubstance;
 	}

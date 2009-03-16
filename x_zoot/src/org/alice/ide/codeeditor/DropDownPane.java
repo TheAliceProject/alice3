@@ -25,7 +25,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DropDownPane extends org.alice.ide.ast.Control< Object > {
+public abstract class DropDownPane extends org.alice.ide.RenderedControl {
 //	private static final int AFFORDANCE_SIZE = 9; 
 //	private static final int INSET = 2; 
 //	private static final int LEFT = INSET; 
@@ -41,7 +41,7 @@ public abstract class DropDownPane extends org.alice.ide.ast.Control< Object > {
 		DropDownPane.renderer = renderer;
 	}
 	public DropDownPane( javax.swing.JComponent prefixPane, javax.swing.JComponent mainComponent, javax.swing.JComponent postfixPane ) {
-		super( javax.swing.BoxLayout.LINE_AXIS );
+		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 		if( DropDownPane.borderFactory != null ) {
 			this.setBorder( DropDownPane.borderFactory.createBorder( null, this ) );
 		} else {
@@ -71,10 +71,10 @@ public abstract class DropDownPane extends org.alice.ide.ast.Control< Object > {
 
 	private javax.swing.JComponent mainComponent;
 	
-	@Override
-	protected boolean isActuallyPotentiallySelectable() {
-		return false;
-	}
+//	@Override
+//	protected boolean isActuallyPotentiallySelectable() {
+//		return false;
+//	}
 //	@Override
 //	public boolean isSelected() {
 //		return false;
