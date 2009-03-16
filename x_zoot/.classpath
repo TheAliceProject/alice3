@@ -14,5 +14,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn_generated"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/x_ide_i18n"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ide_i18n"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_generated_depended_upon"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_private"/>
+	<classpathentry kind="lib" path="C:/Program Files/Alice/3.beta.0027/application/lg_walkandtouch.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
