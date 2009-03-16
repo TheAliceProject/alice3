@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class Blank extends Node {
-	private edu.cmu.cs.dennisc.task.TaskObserver< Object > taskObserver;
+	private edu.cmu.cs.dennisc.task.TaskObserver taskObserver;
 	private FillIn selectedFillIn;
 
 	@Override
@@ -63,7 +63,7 @@ public abstract class Blank extends Node {
 	public void addSeparator( String text ) {
 		this.addChild( new SeparatorFillIn( text ) );
 	}
-	public void showPopupMenu( java.awt.Component invoker, int x, int y, final edu.cmu.cs.dennisc.task.TaskObserver< Object > taskObserver ) {
+	public void showPopupMenu( java.awt.Component invoker, int x, int y, final edu.cmu.cs.dennisc.task.TaskObserver< ? extends Object > taskObserver ) {
 		this.taskObserver = taskObserver;
 		final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 		

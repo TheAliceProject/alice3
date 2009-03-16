@@ -84,6 +84,9 @@ public final class ReflectionUtilities {
 	public static <T> T newInstance( Class< T > cls, Class<?>[] parameterClses, Object... arguments ) {
 		return newInstance( getConstructor( cls, parameterClses ), arguments );
 	}
+	public static <T> T newInstanceForArguments( Class< T > cls, Object... arguments ) {
+		return newInstance( getConstructorForArguments( cls, arguments ), arguments );
+	}
 	public static <T> T newInstance( Class< T > cls ) {
 		try {
 			return cls.newInstance();
@@ -145,6 +148,39 @@ public final class ReflectionUtilities {
 	public static <T> java.lang.reflect.Constructor< T > getDeclaredConstructor( Class< T > cls, Class<?>... parameterClses ) {
 		try {
 			return cls.getDeclaredConstructor( parameterClses );
+		} catch( NoSuchMethodException nsme ) {
+			throw new RuntimeException( cls.getName(), nsme );
+		}
+	}
+	
+	private static <T> java.lang.reflect.Constructor< T > getConstructorForArguments( java.lang.reflect.Constructor< T >[] constructors, Object... arguments ) throws NoSuchMethodException {
+		java.lang.reflect.Constructor< T > rv = null;
+		for( java.lang.reflect.Constructor< T > constructor : constructors ) {
+			Class< ? >[] parameterClses = constructor.getParameterTypes();
+			if( parameterClses.length == arguments.length ) {
+				if( rv != null ) {
+					throw new RuntimeException( "more than one constructor matches arguments" );
+				} else {
+					rv = constructor;
+				}
+			}
+		}
+		if( rv != null ) {
+			return rv;
+		} else {
+			throw new NoSuchMethodException();
+		}
+	}
+	public static <T> java.lang.reflect.Constructor< T > getConstructorForArguments( Class< T > cls, Object... arguments ) {
+		try {
+			return getConstructorForArguments( cls.getConstructors(), arguments );
+		} catch( NoSuchMethodException nsme ) {
+			throw new RuntimeException( cls.getName(), nsme );
+		}
+	}
+	public static <T> java.lang.reflect.Constructor< T > getDeclaredConstructorForArguments( Class< T > cls, Object... arguments ) {
+		try {
+			return getConstructorForArguments( cls.getDeclaredConstructors(), arguments );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( cls.getName(), nsme );
 		}
