@@ -136,9 +136,13 @@ public class ImageUtilities {
 				}
 				return rv;
 			} catch( java.io.FileNotFoundException fnfe ) {
-				throw new RuntimeException( fnfe );
+				throw new RuntimeException( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ), fnfe );
 			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( ioe );
+				throw new RuntimeException( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ), ioe );
+			} catch( RuntimeException re ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ) );
+				edu.cmu.cs.dennisc.print.PrintUtilities.accessPrintStream().flush();
+				throw re;
 			}
 		} else {
 			throw new RuntimeException( "Could not find codec for extension: " + extension );
