@@ -129,6 +129,14 @@ public class ZManager {
 //		}
 //	}
 	
+	private static boolean isDragInProgress = false;
+	public static boolean isDragInProgress() {
+		return ZManager.isDragInProgress;
+	}
+	public static void setDragInProgress( boolean isDragInProgress ) {
+		ZManager.isDragInProgress = isDragInProgress;
+	}
+	
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
 	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {

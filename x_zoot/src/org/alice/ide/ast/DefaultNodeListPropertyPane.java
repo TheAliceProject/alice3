@@ -20,25 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantPane extends AccessiblePane {
-	private edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
-	public ConstantPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
-		this.constant = constant;
-		//this.add( new alice.ide.ast.NodeNameLabel( constant ) );
-		this.add( new org.alice.ide.ast.LocalNameLabel( constant ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
+public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
+	public DefaultNodeListPropertyPane( edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.constant.valueType.getValue();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( this.constant );
+	protected javax.swing.JComponent createComponent( Object instance ) {
+		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
 	}
 }
+

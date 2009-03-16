@@ -22,6 +22,8 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.AbstractStatementPane;
+
 /**
  * @author Dennis Cosgrove
  */

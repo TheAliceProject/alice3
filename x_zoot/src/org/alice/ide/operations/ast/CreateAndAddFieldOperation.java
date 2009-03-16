@@ -26,9 +26,9 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class CreateAndAddFieldOperation extends org.alice.ide.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public CreateAndAddFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		this.type = type;
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
+	public CreateAndAddFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+		this.ownerType = ownerType;
 		this.putValue( javax.swing.Action.NAME, "create new property..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {

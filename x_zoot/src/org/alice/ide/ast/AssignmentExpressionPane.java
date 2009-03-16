@@ -20,7 +20,9 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
+
+import org.alice.ide.codeeditor.ExpressionPropertyPane;
 
 /**
  * @author Dennis Cosgrove
@@ -45,7 +47,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisP
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
 			org.alice.ide.ast.NodeNameLabel nameLabel = new org.alice.ide.ast.NodeNameLabel( fieldAccess.field.getValue() );
-			nameLabel.scaleFont( 1.5f );
+			nameLabel.setFontToScaledFont( 1.5f );
 			if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
 				parent.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
 				parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( " . " ) );
@@ -62,7 +64,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisP
 			edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess = (edu.cmu.cs.dennisc.alice.ast.ParameterAccess)expression;
 			parent.add( new ParameterPane( parameterAccess.parameter.getValue() ) );
 		} else {
-			parent.add( new org.alice.ide.ast.Label( "TODO" ) );
+			parent.add( new zoot.ZLabel( "TODO" ) );
 		}
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
@@ -73,10 +75,8 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisP
 		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
 			parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( " = " ) );
 		} else {
-			parent.add( new org.alice.ide.codeeditor.GetsPane( true ) );
+			parent.add( new org.alice.ide.ast.GetsPane( true ) );
 		}
 		parent.add( new ExpressionPropertyPane( this.assignmentExpression.rightHandSide, true ) );
-		
-		
 	}
 }

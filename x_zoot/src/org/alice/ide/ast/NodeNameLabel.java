@@ -25,7 +25,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeNameLabel extends Label {
+public class NodeNameLabel extends zoot.ZLabel {
 	private edu.cmu.cs.dennisc.alice.ast.Node node;
 
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {

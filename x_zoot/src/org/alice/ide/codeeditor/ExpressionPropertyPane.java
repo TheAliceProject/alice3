@@ -23,6 +23,11 @@
 package org.alice.ide.codeeditor;
 
 import org.alice.ide.ast.AbstractPropertyPane;
+import org.alice.ide.ast.EmptyExpression;
+import org.alice.ide.ast.EmptyExpressionPane;
+import org.alice.ide.ast.ExpressionPane;
+import org.alice.ide.ast.FieldAccessPane;
+import org.alice.ide.ast.TypeExpressionPane;
 
 /**
  * @author Dennis Cosgrove

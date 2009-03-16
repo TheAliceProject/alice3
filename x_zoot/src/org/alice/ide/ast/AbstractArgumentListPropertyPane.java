@@ -22,8 +22,6 @@
  */
 package org.alice.ide.ast;
 
-import org.alice.ide.codeeditor.ExpressionPane;
-import org.alice.ide.codeeditor.ExpressionPropertyPane;
 
 /**
  * @author Dennis Cosgrove

@@ -20,20 +20,25 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPane extends org.alice.ide.ast.ExpressionLikeSubstance  {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		this.expression = expression;
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( this.expression ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
+public class VariablePane extends AccessiblePane {
+	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
+	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		this.variable = variable;
+		//this.add( new alice.ide.ast.NodeNameLabel( variable ) );
+		this.add( new org.alice.ide.ast.LocalNameLabel( variable ) );
+		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.expression.getType();
+		return this.variable.valueType.getValue();
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e ) {
+		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
 	}
 }

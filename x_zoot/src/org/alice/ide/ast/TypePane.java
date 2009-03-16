@@ -26,7 +26,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypePane extends org.alice.ide.codeeditor.TypeExpressionPane {
+public class TypePane extends org.alice.ide.ast.TypeExpressionPane {
 	public TypePane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ) );
 	}

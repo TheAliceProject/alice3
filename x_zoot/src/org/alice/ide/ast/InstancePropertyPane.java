@@ -20,20 +20,22 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
 
-import org.alice.ide.ast.AbstractListPropertyPane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
-	public DefaultNodeListPropertyPane( edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
+public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty<?> > {
+	public InstancePropertyPane() {
+		super( javax.swing.BoxLayout.LINE_AXIS );
+	}
+	public InstancePropertyPane( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		super( javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
-	protected javax.swing.JComponent createComponent( Object instance ) {
-		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
+	protected void refresh() {
+		this.removeAll();
+		this.add( new zoot.ZLabel( getProperty().getValue().toString() ) );
 	}
 }
-

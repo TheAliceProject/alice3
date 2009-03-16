@@ -20,34 +20,27 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AccessiblePane extends org.alice.ide.ast.ExpressionLikeSubstance {
-	@Override
-	protected boolean isActuallyPotentiallyActive() {
-		return getIDE().isDragInProgress() == false;
+public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty > {
+	public ExpressionListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty property ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
-	protected boolean isActuallyPotentiallySelectable() {
-		return false;
-	}
-	@Override
-	protected boolean isActuallyPotentiallyDraggable() {
-		return true;
-	}
-	
-	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			getIDE().showStencilOver( this, getExpressionType() );
+	protected java.awt.Component createInterstitial( int i, final int N ) {
+		if( i < N - 1 ) {
+			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
 		} else {
-			getIDE().hideStencil();
+			return null;
 		}
 	}
-	
-	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e );
+	@Override
+	protected javax.swing.JComponent createComponent( Object instance ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)instance;
+		return new ExpressionPane( expression );
+	}
 }

@@ -53,7 +53,7 @@ public class KnurlBorderFactory implements StatementClassBorderFactory {
 	private KnurlBorder sharedInstance = new KnurlBorder();
 	public javax.swing.border.Border createBorder( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls, java.awt.Component component ) {
 		assert statementCls != null;
-		if( component instanceof org.alice.ide.ast.EmptyStatementListAfforance ) {
+		if( component instanceof org.alice.ide.codeeditor.EmptyStatementListAfforance ) {
 			return javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 );
 		} else {
 			return this.sharedInstance;

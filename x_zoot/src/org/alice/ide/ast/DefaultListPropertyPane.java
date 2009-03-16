@@ -22,33 +22,17 @@
  */
 package org.alice.ide.ast;
 
+
 /**
  * @author Dennis Cosgrove
  */
-public class Label extends javax.swing.JLabel {
-	public Label() {
-		this( "" );
+public class DefaultListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.property.ListProperty<?> > {
+	public DefaultListPropertyPane( edu.cmu.cs.dennisc.property.ListProperty<?> property ) {
+		super( javax.swing.BoxLayout.LINE_AXIS, property );
 	}
-	public Label( String text ) {
-		this( text, 1.0f );
-	}
-	public Label( String text, float scaleFactor ) {
-		this.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
-		this.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
-		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-		this.setText( text );
-		this.scaleFont( scaleFactor );
-	}
-	public void scaleFont( float scaleFactor ) {
-		java.awt.Font font = this.getFont();
-		font = font.deriveFont( font.getSize() * scaleFactor  );
-		this.setFont( font );
-	}
-
-	public void italicizeFont() {
-		java.awt.Font font = this.getFont();
-		font = font.deriveFont( java.awt.Font.ITALIC );
-		this.setFont( font );
+	@Override
+	protected javax.swing.JComponent createComponent( Object instance ) {
+		return new zoot.ZLabel( instance.toString() );
 	}
 }
+

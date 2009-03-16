@@ -20,24 +20,20 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterPane extends AccessiblePane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
-	public ParameterPane( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
-		this.parameter = parameter;
-		this.add( new org.alice.ide.ast.NodeNameLabel( this.parameter ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
+public class ExpressionPane extends org.alice.ide.ast.ExpressionLikeSubstance  {
+	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		this.expression = expression;
+		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( this.expression ) );
+		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return parameter.getValueType();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e ) {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
+		return this.expression.getType();
 	}
 }

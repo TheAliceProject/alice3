@@ -22,7 +22,7 @@
  */
 package org.alice.ide.i18n;
 
-import org.alice.ide.codeeditor.GetsPane;
+import org.alice.ide.ast.GetsPane;
 
 
 /**

@@ -23,16 +23,16 @@
 package org.alice.ide.i18n;
 
 import org.alice.ide.ast.AbstractArgumentListPropertyPane;
-import org.alice.ide.codeeditor.ConstantPane;
-import org.alice.ide.codeeditor.DefaultListPropertyPane;
-import org.alice.ide.codeeditor.DefaultNodeListPropertyPane;
-import org.alice.ide.codeeditor.ExpressionListPropertyPane;
+import org.alice.ide.ast.ConstantPane;
+import org.alice.ide.ast.DefaultListPropertyPane;
+import org.alice.ide.ast.DefaultNodeListPropertyPane;
+import org.alice.ide.ast.ExpressionListPropertyPane;
+import org.alice.ide.ast.InstancePropertyPane;
+import org.alice.ide.ast.NodePropertyPane;
+import org.alice.ide.ast.StatementListPropertyPane;
+import org.alice.ide.ast.TypedDeclarationPane;
+import org.alice.ide.ast.VariablePane;
 import org.alice.ide.codeeditor.ExpressionPropertyPane;
-import org.alice.ide.codeeditor.InstancePropertyPane;
-import org.alice.ide.codeeditor.NodePropertyPane;
-import org.alice.ide.codeeditor.StatementListPropertyPane;
-import org.alice.ide.codeeditor.TypedDeclarationPane;
-import org.alice.ide.codeeditor.VariablePane;
 
 /**
  * @author Dennis Cosgrove

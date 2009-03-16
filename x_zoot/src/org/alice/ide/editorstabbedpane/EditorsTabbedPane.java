@@ -49,7 +49,8 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 			}
 		}
 		org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
-		this.addTab( "todo: code title", codeEditor );
+		//this.addTab( "todo: code title", codeEditor );
+		this.add( codeEditor );
 		this.setSelectedComponent( codeEditor );
 	}
 	

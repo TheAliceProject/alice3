@@ -20,23 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
-
-import org.alice.ide.ast.AbstractPropertyPane;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > > extends AbstractPropertyPane< E > {
-	public NodePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
-	}
-	public NodePropertyPane( E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+public class ThisPane extends AccessiblePane {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	public ThisPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		this.type = type;
+		this.add( new edu.cmu.cs.dennisc.moot.ZLabel( "this" ) );
+		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override
-	protected void refresh() {
-		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( getProperty().getValue() ) );
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+		return type;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e ) {
+		return new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
 	}
 }

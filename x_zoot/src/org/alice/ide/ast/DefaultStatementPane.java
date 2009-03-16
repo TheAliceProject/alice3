@@ -20,28 +20,14 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
-
-import org.alice.ide.ast.AbstractListPropertyPane;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty > {
-	public ExpressionListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
-	}
-	@Override
-	protected java.awt.Component createInterstitial( int i, final int N ) {
-		if( i < N - 1 ) {
-			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
-		} else {
-			return null;
-		}
-	}
-	@Override
-	protected javax.swing.JComponent createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)instance;
-		return new ExpressionPane( expression );
+public class DefaultStatementPane extends AbstractStatementPane {
+	public DefaultStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+		super( statement, owner );
+		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( statement ) );
 	}
 }

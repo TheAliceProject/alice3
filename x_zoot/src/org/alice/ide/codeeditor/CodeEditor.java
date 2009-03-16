@@ -22,7 +22,12 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.AbstractStatementPane;
+import org.alice.ide.ast.ParameterPane;
 import org.alice.ide.ast.PotentiallyDraggablePane;
+import org.alice.ide.ast.StatementListPropertyPane;
+import org.alice.ide.ast.ThisPane;
+import org.alice.ide.ast.TypedDeclarationPane;
 import org.alice.ide.event.FieldSelectionEvent;
 import org.alice.ide.event.FocusedCodeChangeEvent;
 import org.alice.ide.event.LocaleEvent;
@@ -139,8 +144,8 @@ class MethodHeaderPane extends AbstractCodeHeaderPane {
 		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
 			this.add( new org.alice.ide.ast.TypePane( methodDeclaredInAlice.getReturnType() ) );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			org.alice.ide.ast.Label nameLabel = new org.alice.ide.ast.NodeNameLabel( methodDeclaredInAlice );
-			nameLabel.scaleFont( 2.0f );
+			zoot.ZLabel nameLabel = new org.alice.ide.ast.NodeNameLabel( methodDeclaredInAlice );
+			nameLabel.setFontToScaledFont( 2.0f );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( nameLabel );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
@@ -162,8 +167,8 @@ class MethodHeaderPane extends AbstractCodeHeaderPane {
 			zoot.ZLabel label = new zoot.ZLabel( sb.toString() );
 			label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 			this.add( label );
-			org.alice.ide.ast.Label nameLabel = new org.alice.ide.ast.NodeNameLabel( methodDeclaredInAlice );
-			nameLabel.scaleFont( 2.0f );
+			zoot.ZLabel nameLabel = new org.alice.ide.ast.NodeNameLabel( methodDeclaredInAlice );
+			nameLabel.setFontToScaledFont( 2.0f );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( nameLabel );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
@@ -182,11 +187,11 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 			this.add( new org.alice.ide.ast.TypePane( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( "()" ) );
 		} else {
-			this.add( new org.alice.ide.ast.Label( "declare " ) );
-			org.alice.ide.ast.Label label = new org.alice.ide.ast.Label( "constructor" );
-			label.scaleFont( 1.5f );
+			this.add( new zoot.ZLabel( "declare " ) );
+			zoot.ZLabel label = new zoot.ZLabel( "constructor" );
+			label.setFontToScaledFont( 1.5f );
 			this.add( label );
-			this.add( new org.alice.ide.ast.Label( " on class " ) );
+			this.add( new zoot.ZLabel( " on class " ) );
 			this.add( new org.alice.ide.ast.TypePane( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.add( parametersPane );
 		}
@@ -312,6 +317,19 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		//				}
 		//			}
 		//		} );
+	}
+	
+	@Override
+	public java.lang.String getName() {
+		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.code;
+			return method.getName();
+		} else if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.code;
+			return "constructor";
+		} else {
+			return super.getName();
+		}
 	}
 	
 	protected javax.swing.JComponent createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {

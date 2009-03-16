@@ -29,8 +29,8 @@ public class EmptyStatementListAfforance extends org.alice.ide.ast.StatementLike
 	public EmptyStatementListAfforance() {
 		super( edu.cmu.cs.dennisc.alice.ast.Statement.class );
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
-		org.alice.ide.ast.Label label = new org.alice.ide.ast.Label( "drop statement here" );
-		label.setFont( label.getFont().deriveFont( java.awt.Font.ITALIC ) );
+		zoot.ZLabel label = new zoot.ZLabel( "drop statement here" );
+		label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.EXTRA_LIGHT );
 		this.add( label );
 		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
 		this.setBackground( new java.awt.Color( 63, 63, 63, 63 ) );

@@ -20,25 +20,37 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
+
+import org.alice.ide.codeeditor.ExpressionPropertyPane;
 
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends AccessiblePane {
-	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
-	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
-		this.variable = variable;
-		//this.add( new alice.ide.ast.NodeNameLabel( variable ) );
-		this.add( new org.alice.ide.ast.LocalNameLabel( variable ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+public class FieldAccessPane extends org.alice.ide.ast.ExpressionLikeSubstance {
+	private edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess;
+
+	public FieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+		this.fieldAccess = fieldAccess;
+		boolean isExpressionDesired;
+		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+			isExpressionDesired = "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() );
+		} else {
+			isExpressionDesired = true;
+		}
+		if( isExpressionDesired ) {
+			this.add( new ExpressionPropertyPane( this.fieldAccess.expression, false ) );
+			this.add( new zoot.ZLabel( ".") );
+		}
+		this.add( new org.alice.ide.ast.NodeNameLabel( this.fieldAccess.field.getValue() ) );
+		this.setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.variable.valueType.getValue();
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e ) {
-		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
+		if( this.fieldAccess != null ) {
+			return this.fieldAccess.field.getValue().getValueType();
+		} else {
+			return null;
+		}
 	}
 }

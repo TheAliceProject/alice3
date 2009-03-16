@@ -22,23 +22,13 @@
  */
 package org.alice.ide.ast;
 
-import org.alice.ide.codeeditor.ConstantPane;
-import org.alice.ide.codeeditor.DefaultListPropertyPane;
-import org.alice.ide.codeeditor.DefaultNodeListPropertyPane;
-import org.alice.ide.codeeditor.ExpressionListPropertyPane;
-import org.alice.ide.codeeditor.ExpressionPropertyPane;
-import org.alice.ide.codeeditor.InstancePropertyPane;
-import org.alice.ide.codeeditor.NodePropertyPane;
-import org.alice.ide.codeeditor.StatementListPropertyPane;
-import org.alice.ide.codeeditor.TypedDeclarationPane;
-import org.alice.ide.codeeditor.VariablePane;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class Factory {
 	protected java.awt.Component createComponent( org.alice.ide.i18n.GetsChunk getsChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return new org.alice.ide.codeeditor.GetsPane( getsChunk.isTowardLeading() );
+		return new org.alice.ide.ast.GetsPane( getsChunk.isTowardLeading() );
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		return new zoot.ZLabel( textChunk.getText() );
@@ -136,7 +126,7 @@ public abstract class Factory {
 			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)owner;
 			org.alice.ide.ast.NodeNameLabel label = new org.alice.ide.ast.NodeNameLabel( node );
 			if( node instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
-				label.scaleFont( 1.5f );
+				label.setFontToScaledFont( 1.5f );
 			}
 			rv = label;
 		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument && methodName.equals( "getParameterNameText" ) ) {

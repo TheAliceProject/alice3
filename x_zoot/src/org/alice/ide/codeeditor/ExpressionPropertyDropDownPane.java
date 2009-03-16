@@ -22,7 +22,12 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.AccessiblePane;
+import org.alice.ide.ast.DragAndDropEvent;
+import org.alice.ide.ast.DropReceptor;
+import org.alice.ide.ast.ExpressionLikeSubstance;
 import org.alice.ide.ast.PotentiallyDraggablePane;
+import org.alice.ide.ast.StatementListPropertyPane;
 
 /**
  * @author Dennis Cosgrove

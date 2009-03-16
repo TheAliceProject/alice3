@@ -22,6 +22,7 @@
  */
 package org.alice.ide.codeeditor;
 
+
 /**
  * @author Dennis Cosgrove
  */

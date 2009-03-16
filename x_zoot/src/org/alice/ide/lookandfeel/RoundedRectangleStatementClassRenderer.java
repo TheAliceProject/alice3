@@ -56,7 +56,7 @@ public class RoundedRectangleStatementClassRenderer implements StatementClassRen
 			fillBounds( context, c, g2, x, y, width, height );
 		}
 		edu.cmu.cs.dennisc.awt.BevelState bevelState;
-		if( c instanceof org.alice.ide.ast.EmptyStatementListAfforance ) {
+		if( c instanceof org.alice.ide.codeeditor.EmptyStatementListAfforance ) {
 			bevelState = edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
 		} else {
 			bevelState = this.getBevelState(isActive, isPressed, isSelected);

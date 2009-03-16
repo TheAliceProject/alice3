@@ -20,14 +20,34 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultStatementPane extends AbstractStatementPane {
-	public DefaultStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
-		super( statement, owner );
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( statement ) );
+public abstract class AccessiblePane extends org.alice.ide.ast.ExpressionLikeSubstance {
+	@Override
+	protected boolean isActuallyPotentiallyActive() {
+		return getIDE().isDragInProgress() == false;
 	}
+	@Override
+	protected boolean isActuallyPotentiallySelectable() {
+		return false;
+	}
+	@Override
+	protected boolean isActuallyPotentiallyDraggable() {
+		return true;
+	}
+	
+	@Override
+	public void setActive( boolean isActive ) {
+		super.setActive( isActive );
+		if( isActive ) {
+			getIDE().showStencilOver( this, getExpressionType() );
+		} else {
+			getIDE().hideStencil();
+		}
+	}
+	
+	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e );
 }
