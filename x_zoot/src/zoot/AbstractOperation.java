@@ -26,20 +26,4 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOperation implements Operation {
-	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			AbstractOperation.this.handleActionPerformed( e );
-		}
-	};
-
-	public javax.swing.Action getActionForConfiguringSwingComponents() {
-		return this.actionForConfiguringSwingComponents;
-	}
-	protected void putValue( String key, Object value ) {
-		this.actionForConfiguringSwingComponents.putValue( key, value );
-	}
-	//protected abstract void handleActionPerformed( java.awt.event.ActionEvent e );
-	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		throw new RuntimeException( "todo" );
-	}
 }

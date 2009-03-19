@@ -26,10 +26,10 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public class ZMenuItem extends javax.swing.JMenuItem {
-	private Operation actionOperation;
-	public ZMenuItem( Operation actionOperation ) {
+	private ActionOperation actionOperation;
+	public ZMenuItem( ActionOperation actionOperation ) {
 		this.actionOperation = actionOperation;
-		this.setAction( this.actionOperation.getActionForConfiguringSwingComponents() );
+		this.setAction( this.actionOperation.getActionForConfiguringSwing() );
 	}
 	protected Operation getActionOperation() {
 		return this.actionOperation;

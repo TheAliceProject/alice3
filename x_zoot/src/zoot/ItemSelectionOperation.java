@@ -25,8 +25,12 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface SingleSelectionContext<E> extends Context {
-//	public boolean isPreviousSelectionValid();
-	public E getPreviousSelection();
-	public E getNextSelection();
+public interface ItemSelectionOperation<E> extends Operation {
+	public void performSelectionChange( ItemSelectionContext<E> context );
+	public javax.swing.Action getActionForConfiguringSwing( int index );
+	public javax.swing.ListModel getListModel();
+	public void addSelectionChangeListener( javax.swing.event.ChangeListener l );
+	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l );
+//	public void addCandidatesChangeListener( javax.swing.event.ChangeListener l );
+//	public void removeCandidatesChangeListener( javax.swing.event.ChangeListener l );
 }

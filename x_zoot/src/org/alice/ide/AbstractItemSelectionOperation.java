@@ -20,26 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface SingleSelectionOperation<E> extends Operation {
-	public void performSelectionChange( SingleSelectionContext<E> context );
-	
-	public javax.swing.SingleSelectionModel getSingleSelectionModelForConfiguringSwingComponents();
-
-	public String getText( E e );
-	public javax.swing.Icon getIcon( E e );
-	
-//	public E getSelection();
-//	public void setSelection( E selection );
-	public E[] getCandidates();
-//	public void setCandidates( E[] candidates );
-//
-//	public void addSelectionChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l );
-//	public void addCandidatesChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeCandidatesChangeListener( javax.swing.event.ChangeListener l );
+public abstract class AbstractItemSelectionOperation<E> extends zoot.AbstractItemSelectionOperation<E> {
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
 }

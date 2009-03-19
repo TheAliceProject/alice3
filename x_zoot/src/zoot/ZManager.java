@@ -73,7 +73,7 @@ abstract class AbstractContext implements Context {
 	public ActionContext perform( ActionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile ) {
 		return ZManager.performIfAppropriate( operation, o, isCancelWorthwhile );
 	}
-	public SingleSelectionContext perform( SingleSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection ) {
+	public ItemSelectionContext perform( ItemSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection ) {
 		return ZManager.performIfAppropriate( operation, o, isCancelWorthwhile, prevSelection, nextSelection );
 	}
 }
@@ -82,7 +82,7 @@ class MyActionContext extends AbstractContext implements ActionContext {
 		super( e, isCancelWorthwhile );
 	}
 }
-class MySingleSelectionContext<E> extends AbstractContext implements SingleSelectionContext<E> {
+class MySingleSelectionContext<E> extends AbstractContext implements ItemSelectionContext<E> {
 	private E previousSelection;
 	private E nextSelection;
 //	private boolean isPreviousSelectionValid;
@@ -161,9 +161,9 @@ public class ZManager {
 //		}
 	}
 	
-	public static SingleSelectionContext performIfAppropriate( SingleSelectionOperation< ? > singleSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
+	public static ItemSelectionContext performIfAppropriate( ItemSelectionOperation< ? > singleSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
 		assert singleSelectionOperation != null;
-		SingleSelectionContext rv = new MySingleSelectionContext( e, isCancelWorthwhile, previousSelection, nextSelection );
+		ItemSelectionContext rv = new MySingleSelectionContext( e, isCancelWorthwhile, previousSelection, nextSelection );
 		singleSelectionOperation.performSelectionChange( rv );
 		return rv;
 	}
@@ -174,15 +174,16 @@ public class ZManager {
 //		popup.setLightWeightPopupEnabled( false );
 //	}
 
-	public static javax.swing.JMenu createMenu( String name, int mnemonic, SingleSelectionOperation singleSelectionOperation ) {
+	public static javax.swing.JMenu createMenu( String name, int mnemonic, ItemSelectionOperation itemSelectionOperation ) {
 		javax.swing.JMenu rv = new javax.swing.JMenu( name );
 		rv.setMnemonic( mnemonic );
-		rv.getPopupMenu().setSelectionModel( singleSelectionOperation.getSingleSelectionModelForConfiguringSwingComponents() );
+		//rv.getPopupMenu().setSelectionModel( singleSelectionOperation.getSingleSelectionModelForConfiguringSwingComponents() );
 		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
-		for( Object o : singleSelectionOperation.getCandidates() ) {
-			javax.swing.JRadioButtonMenuItem item = new javax.swing.JRadioButtonMenuItem();
-			item.setText( singleSelectionOperation.getText( o ) );
-			item.setIcon( singleSelectionOperation.getIcon( o ) );
+		javax.swing.ListModel listModel = itemSelectionOperation.getListModel();
+		int N = listModel.getSize();
+		for( int i=0; i<N; i++ ) {
+			javax.swing.Action actionI = itemSelectionOperation.getActionForConfiguringSwing( i );
+			javax.swing.JRadioButtonMenuItem item = new javax.swing.JRadioButtonMenuItem( actionI );
 			item.getModel().setGroup( group );
 			rv.add( item );
 		}

@@ -26,6 +26,7 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public interface StateOperation<E> extends Operation {
+	public javax.swing.Action getActionForConfiguringSwing();
 	public void performStateChange( StateContext stateContext );
 
 	public E getState();

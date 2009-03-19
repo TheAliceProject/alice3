@@ -26,7 +26,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
-import zoot.ActionOperation;
 import edu.cmu.cs.dennisc.alice.ast.AbstractParameter;
 import edu.cmu.cs.dennisc.alice.ast.AbstractType;
 import edu.cmu.cs.dennisc.alice.ast.Expression;
@@ -141,33 +140,41 @@ public abstract class IDE extends zoot.ZFrame {
 				this.runOperation
 		);
 		
-		class LocaleSingleSelectionOperation extends AbstractSingleSelectionOperation< java.util.Locale > {
-			private java.util.Locale[] candidates = {
-					new java.util.Locale( "en", "US" ),
-					new java.util.Locale( "en", "US", "complex" ),
-					new java.util.Locale( "en", "US", "java" )
+		class LocaleItemSelectionOperation extends AbstractItemSelectionOperation< java.util.Locale > {
+			private javax.swing.ListModel listModel = new javax.swing.AbstractListModel() {
+				private java.util.Locale[] candidates = {
+						new java.util.Locale( "en", "US" ),
+						new java.util.Locale( "en", "US", "complex" ),
+						new java.util.Locale( "en", "US", "java" )
+				};
+				public Object getElementAt( int index ) {
+					return this.candidates[ index ];
+				}
+				public int getSize() {
+					return this.candidates.length;
+				}
 			};
-			public LocaleSingleSelectionOperation() {
-				this.getSingleSelectionModelForConfiguringSwingComponents().setSelectedIndex( 0 );
+			public LocaleItemSelectionOperation() {
+				//this.getSingleSelectionModelForConfiguringSwingComponents().setSelectedIndex( 0 );
 			}
-			public String getText( java.util.Locale locale ) {
-				return locale.getDisplayName();
+			public javax.swing.ListModel getListModel() {
+				return this.listModel;
 			}
-			public javax.swing.Icon getIcon( java.util.Locale locale ) {
-				return null;
-			}
+//			public String getText( java.util.Locale locale ) {
+//				return locale.getDisplayName();
+//			}
+//			public javax.swing.Icon getIcon( java.util.Locale locale ) {
+//				return null;
+//			}
 			
-			public void performSelectionChange( zoot.SingleSelectionContext< java.util.Locale > context ) {
+			public void performSelectionChange( zoot.ItemSelectionContext< java.util.Locale > context ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "performSelectionChange:", context );
 				context.cancel();
-			}
-			public java.util.Locale[] getCandidates() {
-				return this.candidates;
 			}
 		}
 		
 		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L,
-				new LocaleSingleSelectionOperation()
+				new LocaleItemSelectionOperation()
 		);
 		
 		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W,

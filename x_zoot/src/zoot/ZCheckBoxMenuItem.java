@@ -29,7 +29,7 @@ public class ZCheckBoxMenuItem extends javax.swing.JCheckBoxMenuItem {
 	private StateOperation< Boolean > stateOperation;
 	public ZCheckBoxMenuItem( StateOperation< Boolean > stateOperation ) {
 		this.stateOperation = stateOperation;
-		this.setAction( this.stateOperation.getActionForConfiguringSwingComponents() );
+		this.setAction( this.stateOperation.getActionForConfiguringSwing() );
 	}
 	protected StateOperation< Boolean > getStateOperation() {
 		return this.stateOperation;

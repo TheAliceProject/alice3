@@ -25,10 +25,11 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldSelectionOperation extends org.alice.ide.AbstractSingleSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > {
+public class FieldSelectionOperation extends org.alice.ide.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > {
+	private javax.swing.ListModel listModel = new javax.swing.DefaultListModel();
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField nextField;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField prevField;
-	public void performSelectionChange( zoot.SingleSelectionContext< edu.cmu.cs.dennisc.alice.ast.AbstractField > singleSelectionContext ) {
+	public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.AbstractField > singleSelectionContext ) {
 //		if( singleSelectionContext.isPreviousSelectionValid() ) {
 			this.prevField = singleSelectionContext.getPreviousSelection();
 //		} else {
@@ -38,14 +39,9 @@ public class FieldSelectionOperation extends org.alice.ide.AbstractSingleSelecti
 		this.redo();
 		singleSelectionContext.commit();
 	}
-	public String getText( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		throw new RuntimeException( "todo" );
-	}
-	public javax.swing.Icon getIcon( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		throw new RuntimeException( "todo" );
-	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractField[] getCandidates() {
-		throw new RuntimeException( "todo" );
+	
+	public javax.swing.ListModel getListModel() {
+		return this.listModel;
 	}
 	public void redo() {
 		getIDE().setFieldSelection( this.nextField );

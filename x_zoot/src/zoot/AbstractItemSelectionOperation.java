@@ -25,14 +25,7 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSingleSelectionOperation<E> extends AbstractOperation implements SingleSelectionOperation< E >, javax.swing.event.TreeSelectionListener {
-	private javax.swing.SingleSelectionModel singleSelectionModelForConfiguringSwingComponents = new javax.swing.DefaultSingleSelectionModel() {
-	};
-
-	public javax.swing.SingleSelectionModel getSingleSelectionModelForConfiguringSwingComponents() {
-		return this.singleSelectionModelForConfiguringSwingComponents;
-	};
-
+public abstract class AbstractItemSelectionOperation<E> extends AbstractOperation implements ItemSelectionOperation< E >, javax.swing.event.TreeSelectionListener {
 	private static Object getLastPathComponent( javax.swing.tree.TreePath path ) { 
 		if( path != null ) {
 			return path.getLastPathComponent();
@@ -46,5 +39,20 @@ public abstract class AbstractSingleSelectionOperation<E> extends AbstractOperat
 		Object prevSelection = getLastPathComponent( prevTreePath );
 		Object nextSelection = getLastPathComponent( nextTreePath );
 		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_FUTILE, prevSelection, nextSelection );
+	}
+	public javax.swing.Action getActionForConfiguringSwing( final int index ) {
+		class Action extends javax.swing.AbstractAction {
+			public Action() {
+				this.putValue( NAME, "[" + index + "]" );
+			}
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
+			}
+		}
+		return new Action();
+	}
+	public void addSelectionChangeListener( javax.swing.event.ChangeListener l ) {
+	}
+	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l ) {
 	}
 }

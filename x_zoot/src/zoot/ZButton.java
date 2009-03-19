@@ -26,12 +26,12 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public class ZButton extends javax.swing.JButton {
-	private Operation actionOperation;
-	public ZButton( Operation actionOperation ) {
+	private ActionOperation actionOperation;
+	public ZButton( ActionOperation actionOperation ) {
 		this.actionOperation = actionOperation;
-		this.setAction( this.actionOperation.getActionForConfiguringSwingComponents() );
+		this.setAction( this.actionOperation.getActionForConfiguringSwing() );
 	}
-	protected Operation getActionOperation() {
+	protected ActionOperation getActionOperation() {
 		return this.actionOperation;
 	}
 }

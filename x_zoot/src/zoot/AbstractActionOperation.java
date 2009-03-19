@@ -26,7 +26,18 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractActionOperation extends AbstractOperation implements ActionOperation {
-	@Override
+	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			AbstractActionOperation.this.handleActionPerformed( e );
+		}
+	};
+
+	public javax.swing.Action getActionForConfiguringSwing() {
+		return this.actionForConfiguringSwingComponents;
+	}
+	protected void putValue( String key, Object value ) {
+		this.actionForConfiguringSwingComponents.putValue( key, value );
+	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
 		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_WORTHWHILE );
 	}

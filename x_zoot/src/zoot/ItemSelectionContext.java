@@ -20,13 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSingleSelectionOperation<E> extends zoot.AbstractSingleSelectionOperation<E> {
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
+public interface ItemSelectionContext<E> extends Context {
+//	public boolean isPreviousSelectionValid();
+	public E getPreviousSelection();
+	public E getNextSelection();
 }

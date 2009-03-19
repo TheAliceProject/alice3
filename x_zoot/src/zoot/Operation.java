@@ -26,5 +26,4 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public interface Operation {
-	public javax.swing.Action getActionForConfiguringSwingComponents();
 }
