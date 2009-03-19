@@ -22,41 +22,53 @@
  */
 package org.alice.ide.ast;
 
+import org.alice.ide.dnd.PotentiallyDraggableComponent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionLikeSubstance extends PotentiallyDraggablePane {
-	private static org.alice.ide.lookandfeel.ExpressionTypeBorderFactory borderFactory = null;
-	private static org.alice.ide.lookandfeel.ExpressionTypeRenderer renderer = null;
-	public static void setBorderFactory( org.alice.ide.lookandfeel.ExpressionTypeBorderFactory borderFactory ) {
-		ExpressionLikeSubstance.borderFactory = borderFactory;
-	}
-	public static void setRenderer( org.alice.ide.lookandfeel.ExpressionTypeRenderer renderer ) {
-		ExpressionLikeSubstance.renderer = renderer;
-	}
-
-//	private static final int INSET = 2;
-//	private static final int DOCKING_BAY_INSET_LEFT = 8;
+public abstract class ExpressionLikeSubstance extends PotentiallyDraggableComponent {
+	private static final int INSET = 2; 
+	private static final int DOCKING_BAY_INSET_LEFT = 8; 
 	public ExpressionLikeSubstance() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
-		if( ExpressionLikeSubstance.borderFactory != null ) {
-			//todo
-			//this.setBorder( ExpressionLikeSubstance.borderFactory.createBorder( getExpressionType() ) );
-			this.setBorder( ExpressionLikeSubstance.borderFactory.createBorder( null, this ) );
-		} else {
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		}
-		//this.setBorder( javax.swing.BorderFactory.createMatteBorder( INSET+4, INSET+DOCKING_BAY_INSET_LEFT+4, INSET+4, INSET+4, edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR ) );
+		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+	}
+	@Override
+	protected int getInsetTop() {
+		return ExpressionLikeSubstance.INSET + 2;
+	}
+	@Override
+	protected int getInsetLeft() {
+		return ExpressionLikeSubstance.INSET + 4 + DOCKING_BAY_INSET_LEFT;
+	}
+	@Override
+	protected int getInsetBottom() {
+		return ExpressionLikeSubstance.INSET + 2;
+	}
+	@Override
+	protected int getInsetRight() {
+		return ExpressionLikeSubstance.INSET;
+	}
+	@Override
+	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.fillRoundRect( x, y, width - 1, height - 1, 16, 16 );
+	}
+	@Override
+	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.setColor( this.getBackground() );
+		fillBounds( g2 );
+	}
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.setColor( this.getForeground() );
+		g2.drawRoundRect( x, y, width - 1, height - 1, 16, 16 );
 	}
 
 	@Override
-	protected org.alice.ide.lookandfeel.ExpressionTypeRenderer getRenderer() {
-		return ExpressionLikeSubstance.renderer;
+	protected void fillBounds( java.awt.Graphics2D g2 ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: fillBounds " );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getContext() {
-		return getExpressionType();
-	}
+	
 	
 	public abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType();
 //	@Override
@@ -73,14 +85,14 @@ public abstract class ExpressionLikeSubstance extends PotentiallyDraggablePane {
 //	}
 
 	//todo
-	@Override
-	protected boolean isActuallyPotentiallyActive() {
-		return false;
-	}
-	//todo
-	@Override
-	protected boolean isActuallyPotentiallySelectable() {
-		return false;
-	}
+//	@Override
+//	protected boolean isActuallyPotentiallyActive() {
+//		return false;
+//	}
+//	//todo
+//	@Override
+//	protected boolean isActuallyPotentiallySelectable() {
+//		return false;
+//	}
 }
 

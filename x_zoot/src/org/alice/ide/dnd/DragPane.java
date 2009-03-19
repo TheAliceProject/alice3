@@ -20,200 +20,45 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.ast;
+package org.alice.ide.dnd;
+
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class Proxy extends javax.swing.JPanel {
-	private static java.awt.image.BufferedImage image;
-	private static java.awt.image.BufferedImage getOffscreenImage( int width, int height ) {
-		if( image == null || image.getWidth() != width || image.getHeight() != height ) {
-			image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
-			//image = getGraphicsConfiguration().createCompatibleImage( width, height, java.awt.Transparency.TRANSLUCENT );
-		}
-		return image;
-	}
-	private PotentiallyDraggablePane potentiallyDraggableAffordance;
-	boolean isOverDropAcceptor = false;
-	boolean isCopyDesired = false;
-
-	public Proxy( PotentiallyDraggablePane potentiallyDraggableAffordance ) {
-		this.potentiallyDraggableAffordance = potentiallyDraggableAffordance;
-		this.setOpaque( false );
-	}
-	
-	protected PotentiallyDraggablePane getPotentiallyDraggablePane() {
-		return this.potentiallyDraggableAffordance;
-	}
-
-	//todo: just use getWidth() and getHeight()?
-	protected abstract int getProxyWidth();
-	protected abstract int getProxyHeight();
-	
-	protected abstract void paintProxy( java.awt.Graphics2D g2 );
-	protected abstract float getAlpha();
-	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
-		int width = this.getProxyWidth();
-		int height = this.getProxyHeight();
-		if( width > 0 && height > 0 ) {
-			java.awt.image.BufferedImage image = Proxy.getOffscreenImage( width, height );
-			//todo: synchronize
-			//if( LayeredPaneProxy.image == null || LayeredPaneProxy.image.getWidth() < width || LayeredPaneProxy.image.getHeight() < height ) {
-			java.awt.Graphics2D g2Image = (java.awt.Graphics2D)image.getGraphics();
-			this.paintProxy( g2Image );
-			g2Image.dispose();
-
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			
-			java.awt.Composite prevComposite = g2.getComposite();
-
-			//g2.setComposite( java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.CLEAR, 0.0f ) );
-			//g2.clearRect( 0, 0, width, height );
-			float alpha = this.getAlpha();
-			if( alpha < 0.99f ) {
-				g2.setComposite( java.awt.AlphaComposite.getInstance( java.awt.AlphaComposite.SRC_OVER, this.getAlpha() ) );
-			}
-			//java.awt.Color bgColor = new java.awt.Color( 0, 0, 0, 0 );
-			//g2.drawImage( LayeredPaneimage, 0, 0, width, height, 0, 0, width, height, bgColor, this );
-			g2.drawImage( image, 0, 0, width, height, this );
-			g2.dispose();
-			g2.setComposite( prevComposite );
-		}
-	}
-
-	public boolean isOverDropAcceptor() {
-		return this.isOverDropAcceptor;
-	}
-	public void setOverDropAcceptor( boolean isOverDropAcceptor ) {
-		if( this.isOverDropAcceptor != isOverDropAcceptor ) {
-			this.isOverDropAcceptor = isOverDropAcceptor;
-			this.repaint();
-		}
-	}
-	public boolean isCopyDesired() {
-		return this.isCopyDesired;
-	}
-	public void setCopyDesired( boolean isCopyDesired ) {
-		if( this.isCopyDesired != isCopyDesired ) {
-			this.isCopyDesired = isCopyDesired;
-			this.repaint();
-		}
-	}
-}
-/**
- * @author Dennis Cosgrove
- */
-class DragProxy extends Proxy {
-	public DragProxy( PotentiallyDraggablePane potentiallyDraggableAffordance ) {
-		super( potentiallyDraggableAffordance );
-	}
-	@Override
-	protected int getProxyWidth() {
-		return this.getPotentiallyDraggablePane().getDragWidth();
-	}
-	@Override
-	protected int getProxyHeight() {
-		return this.getPotentiallyDraggablePane().getDragHeight();
-	}
-	@Override
-	protected float getAlpha() {
-		if( this.isOverDropAcceptor() ) {
-			return 0.5f;
-		} else {
-			return 1.0f;
-		}
-	}
-	@Override
-	protected void paintProxy( java.awt.Graphics2D g2 ) {
-		this.getPotentiallyDraggablePane().paintDrag( g2, this.isOverDropAcceptor(), this.isCopyDesired() );
-	}
-}
-/**
- * @author Dennis Cosgrove
- */
-class DropProxy extends Proxy {
-	public DropProxy( PotentiallyDraggablePane potentiallyDraggableAffordance ) {
-		super( potentiallyDraggableAffordance );
-	}
-	@Override
-	protected int getProxyWidth() {
-		return this.getPotentiallyDraggablePane().getDropWidth();
-	}
-	@Override
-	protected int getProxyHeight() {
-		return this.getPotentiallyDraggablePane().getDropHeight();
-	}
-	@Override
-	protected float getAlpha() {
-		return 0.75f;
-	}
-	@Override
-	protected void paintProxy( java.awt.Graphics2D g2 ) {
-		this.getPotentiallyDraggablePane().paintDrop( g2, this.isOverDropAcceptor(), this.isCopyDesired() );
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-class DropReceptorInfo {
-	private DropReceptor dropReceptor;
-	private java.awt.Rectangle bounds;
-	public DropReceptorInfo( DropReceptor dropReceptor, java.awt.Rectangle bounds ) {
-		this.dropReceptor = dropReceptor;
-		this.bounds = bounds;
-	}
-	public boolean contains( int x, int y ) {
-		return this.bounds.contains( x, y );
-	}
-	public boolean intersects( java.awt.Rectangle rectangle ) {
-		return this.bounds.intersects( rectangle );
-	}
-	public DropReceptor getDropReceptor() {
-		return this.dropReceptor;
-	}
-	public void setDropReceptor( DropReceptor dropReceptor ) {
-		this.dropReceptor = dropReceptor;
-	}
-	public java.awt.Rectangle getBounds() {
-		return this.bounds;
-	}
-	public void setBounds( java.awt.Rectangle bounds ) {
-		this.bounds = bounds;
-	}
-}
-/**
- * @author Dennis Cosgrove
- */
-public abstract class PotentiallyDraggablePane<E> extends Control<E> {
+public abstract class DragPane extends org.alice.ide.AbstractControl {
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
 	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor = null;
+	private PotentiallyDraggableComponent draggableComponent = null;
 	
-	public PotentiallyDraggablePane( int axis ) {
-		super( axis );
+	public DragPane( PotentiallyDraggableComponent< ? > draggableComponent ) {
+		this.draggableComponent = draggableComponent;
+		//this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
+		
+		this.add( this.draggableComponent );
 		this.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
 			}
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
 			}
 			public void componentResized( java.awt.event.ComponentEvent e ) {
-				PotentiallyDraggablePane.this.updateProxySizes();
+				DragPane.this.updateProxySizes();
 			}
 			public void componentShown( java.awt.event.ComponentEvent e ) {
 			}
 		} );
 		this.updateProxySizes();
 	}
-	
-	@Override
-	protected boolean isSelectionMouseListeningDesired() {
-		return super.isSelectionMouseListeningDesired() || isActuallyPotentiallyDraggable();
+	public PotentiallyDraggableComponent getDraggableComponent() {
+		return this.draggableComponent;
 	}
+//	@Override
+//	protected boolean isSelectionMouseListeningDesired() {
+//		return super.isSelectionMouseListeningDesired() || isActuallyPotentiallyDraggable();
+//	}
 	protected boolean isActuallyPotentiallyDraggable() {
 		return false;
 	}
@@ -231,10 +76,10 @@ public abstract class PotentiallyDraggablePane<E> extends Control<E> {
 	private void updateProxySizes() {
 		if( isActuallyPotentiallyDraggable() ) {
 			if( this.dragProxy != null ) {
-				dragProxy.setSize( this.getDragWidth(), this.getDragHeight() );
+				dragProxy.setSize( this.draggableComponent.getDragWidth(), this.draggableComponent.getDragHeight() );
 			}
 			if( this.dropProxy != null ) {
-				dropProxy.setSize( this.getDropWidth(), this.getDropHeight() );
+				dropProxy.setSize( this.draggableComponent.getDropWidth(), this.draggableComponent.getDropHeight() );
 			}
 		}
 	}
@@ -271,12 +116,12 @@ public abstract class PotentiallyDraggablePane<E> extends Control<E> {
 			if( this.dragProxy != null ) {
 				//pass
 			} else {
-				this.dragProxy = new DragProxy( this );
+				this.dragProxy = new DragProxy( this.draggableComponent );
 			}
 			if( this.dropProxy != null ) {
 				//pass
 			} else {
-				this.dropProxy = new DropProxy( this );
+				this.dropProxy = new DropProxy( this.draggableComponent );
 			}
 			this.updateProxySizes();
 			this.updateProxyPosition( e );
@@ -400,65 +245,7 @@ public abstract class PotentiallyDraggablePane<E> extends Control<E> {
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	}
 
-	private static java.awt.TexturePaint copyTexturePaint = null;
-
-	private static java.awt.TexturePaint getCopyTexturePaint() {
-		if( PotentiallyDraggablePane.copyTexturePaint != null ) {
-			//pass
-		} else {
-			int width = 8;
-			int height = 8;
-			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-			java.awt.Graphics g = image.getGraphics();
-			g.setColor( new java.awt.Color( 0, 0, 255, 96 ) );
-			g.drawLine( 2, 4, 6, 4 );
-			g.drawLine( 4, 2, 4, 6 );
-			g.dispose();
-			PotentiallyDraggablePane.copyTexturePaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
-		}
-		return PotentiallyDraggablePane.copyTexturePaint;
-	}
 	
-	private final int DROP_SHADOW_SIZE = 6;
-	public int getDragWidth() {
-		return getDropWidth() + DROP_SHADOW_SIZE;
-	}
-	public int getDragHeight() {
-		return getDropHeight() + DROP_SHADOW_SIZE;
-	}
-	public int getDropWidth() {
-		return this.getWidth();
-	}
-	public int getDropHeight() {
-		return this.getHeight();
-	}
-	
-	public void paintDrag( java.awt.Graphics2D g2, boolean isOverDragAccepter, boolean isCopyDesired ) {
-		java.awt.Paint prevPaint = g2.getPaint();
-		
-		g2.setPaint( new java.awt.Color( 0,0,0,64 ) );
-		g2.translate( DROP_SHADOW_SIZE, DROP_SHADOW_SIZE );
-		this.fillBounds( g2 );
-		g2.translate( -DROP_SHADOW_SIZE, -DROP_SHADOW_SIZE );
-		g2.setPaint( prevPaint );
-		print( g2 );
-//		if( isOverDragAccepter ) {
-//			//pass
-//		} else {
-//			g2.setPaint( new java.awt.Color( 127, 127, 127, 127 ) );
-//			this.createBoundsShape().fill( g2 );
-//		}
-		if( isCopyDesired ) {
-			g2.setPaint( PotentiallyDraggablePane.getCopyTexturePaint() );
-			this.fillBounds( g2 );
-		}
-	}
-	public void paintDrop( java.awt.Graphics2D g2, boolean isOverDragAccepter, boolean isCopyDesired ) {
-		print( g2 );
-		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
-		this.fillBounds( g2 );
-	}
-
 	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, java.awt.Component asSeenBy, Integer heightToAlignLeftCenterOn ) {
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
 		p = javax.swing.SwingUtilities.convertPoint( asSeenBy, p, layeredPane );

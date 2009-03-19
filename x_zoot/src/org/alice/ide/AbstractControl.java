@@ -20,10 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.lookandfeel;
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface DropDownBorderFactory extends edu.cmu.cs.dennisc.moot.BorderFactory< Object > {
+public abstract class AbstractControl extends zoot.ZControl {
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
 }

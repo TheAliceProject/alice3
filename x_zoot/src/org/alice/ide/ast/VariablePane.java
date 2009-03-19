@@ -38,7 +38,7 @@ public class VariablePane extends AccessiblePane {
 		return this.variable.valueType.getValue();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e ) {
+	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.dnd.DragAndDropEvent e ) {
 		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
 	}
 }

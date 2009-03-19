@@ -134,14 +134,14 @@ public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 		this.updateLabel();
 	}
 
-	@Override
-	protected boolean isActuallyPotentiallyActive() {
-		return true;
-	}
-	@Override
-	protected boolean isActuallyPotentiallySelectable() {
-		return false;
-	}
+//	@Override
+//	protected boolean isActuallyPotentiallyActive() {
+//		return true;
+//	}
+//	@Override
+//	protected boolean isActuallyPotentiallySelectable() {
+//		return false;
+//	}
 	@Override
 	protected boolean isActuallyPotentiallyDraggable() {
 		return false;

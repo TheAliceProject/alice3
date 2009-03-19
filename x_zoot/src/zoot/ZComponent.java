@@ -20,10 +20,27 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.lookandfeel;
+package zoot;
 
-/**
- * @author Dennis Cosgrove
- */
-public interface StatementClassBorderFactory extends edu.cmu.cs.dennisc.moot.BorderFactory< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > > {
+public abstract class ZComponent extends swing.Pane {
+	public ZComponent() {
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
+	}
+	
+	protected abstract int getInsetTop();
+	protected abstract int getInsetLeft();
+	protected abstract int getInsetBottom();
+	protected abstract int getInsetRight();
+
+	protected abstract void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		this.paintPrologue( g2, 0, 0, getWidth(), getHeight() );
+		super.paint( g );
+		this.paintEpilogue( g2, 0, 0, getWidth(), getHeight() );
+	}
 }

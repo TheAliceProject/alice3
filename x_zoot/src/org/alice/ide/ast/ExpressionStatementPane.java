@@ -71,23 +71,23 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
 					this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 					this.add( new DropDownPane( null, new zoot.ZLabel( "more" ), null ) {
-						@Override
-						protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
-							super.handleLeftMousePress( e );
-							java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
-							edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-							getIDE().promptUserForMore( lastParameter, e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-								public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
-									expressionStatement.expression.setValue( ExpressionStatementPane.createNextMethodInvocation( nextLongerMethod, e, methodInvocation ) );
-									ExpressionStatementPane.this.refresh();
-									//getIDE().unsetPreviousExpression();
-									getIDE().markChanged( "more menu" );
-								}
-								public void handleCancelation() {
-									getIDE().unsetPreviousExpression();
-								}			
-							} );
-						}
+//						@Override
+//						protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
+//							super.handleLeftMousePress( e );
+//							java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
+//							edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+//							getIDE().promptUserForMore( lastParameter, e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+//								public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
+//									expressionStatement.expression.setValue( ExpressionStatementPane.createNextMethodInvocation( nextLongerMethod, e, methodInvocation ) );
+//									ExpressionStatementPane.this.refresh();
+//									//getIDE().unsetPreviousExpression();
+//									getIDE().markChanged( "more menu" );
+//								}
+//								public void handleCancelation() {
+//									getIDE().unsetPreviousExpression();
+//								}			
+//							} );
+//						}
 					} );
 					this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 				}
@@ -112,14 +112,14 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		return null;
 	}
 	
-	@Override
-	protected void handleControlClick( java.awt.event.MouseEvent e) {
-		//super.handleControlClick();
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
-		if( methodDeclaredInAlice != null ) {
-			getIDE().performIfAppropriate( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ), e, true );
-		}
-	}
+//	@Override
+//	protected void handleControlClick( java.awt.event.MouseEvent e) {
+//		//super.handleControlClick();
+//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
+//		if( methodDeclaredInAlice != null ) {
+//			getIDE().performIfAppropriate( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ), e, true );
+//		}
+//	}
 	
 	protected edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getExpressionStatement() {
 		return (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.getStatement();

@@ -25,7 +25,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class GetsPane extends edu.cmu.cs.dennisc.moot.ZPane {
+public class GetsPane extends swing.Pane {
 	private boolean isTowardLeadingEdge;
 	private int length;
 

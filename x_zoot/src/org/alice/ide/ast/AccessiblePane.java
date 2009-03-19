@@ -26,14 +26,14 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AccessiblePane extends org.alice.ide.ast.ExpressionLikeSubstance {
-	@Override
-	protected boolean isActuallyPotentiallyActive() {
-		return getIDE().isDragInProgress() == false;
-	}
-	@Override
-	protected boolean isActuallyPotentiallySelectable() {
-		return false;
-	}
+//	@Override
+//	protected boolean isActuallyPotentiallyActive() {
+//		return getIDE().isDragInProgress() == false;
+//	}
+//	@Override
+//	protected boolean isActuallyPotentiallySelectable() {
+//		return false;
+//	}
 	@Override
 	protected boolean isActuallyPotentiallyDraggable() {
 		return true;
@@ -49,5 +49,5 @@ public abstract class AccessiblePane extends org.alice.ide.ast.ExpressionLikeSub
 		}
 	}
 	
-	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.ast.DragAndDropEvent e );
+	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.dnd.DragAndDropEvent e );
 }

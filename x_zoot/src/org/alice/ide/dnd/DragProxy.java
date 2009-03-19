@@ -20,19 +20,32 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.lookandfeel;
-
+package org.alice.ide.dnd;
 /**
  * @author Dennis Cosgrove
  */
-public class ArrowDropDownBorderFactory implements DropDownBorderFactory {
-	public static final int AFFORDANCE_SIZE = 9; 
-	private static final int INSET = 2; 
-	private static final int LEFT = INSET; 
-	private static final int TOP = INSET; 
-	private static final int RIGHT = INSET + AFFORDANCE_SIZE; 
-	private static final int BOTTOM = INSET;
-	public javax.swing.border.Border createBorder( java.lang.Object context, java.awt.Component component ) {
-		return javax.swing.BorderFactory.createEmptyBorder( TOP, LEFT, BOTTOM, RIGHT );
+class DragProxy extends Proxy {
+	public DragProxy( PotentiallyDraggableComponent potentiallyDraggableAffordance ) {
+		super( potentiallyDraggableAffordance );
+	}
+	@Override
+	protected int getProxyWidth() {
+		return this.getPotentiallyDraggablePane().getDragWidth();
+	}
+	@Override
+	protected int getProxyHeight() {
+		return this.getPotentiallyDraggablePane().getDragHeight();
+	}
+	@Override
+	protected float getAlpha() {
+		if( this.isOverDropAcceptor() ) {
+			return 0.5f;
+		} else {
+			return 1.0f;
+		}
+	}
+	@Override
+	protected void paintProxy( java.awt.Graphics2D g2 ) {
+		this.getPotentiallyDraggablePane().paintDrag( g2, this.isOverDropAcceptor(), this.isCopyDesired() );
 	}
 }

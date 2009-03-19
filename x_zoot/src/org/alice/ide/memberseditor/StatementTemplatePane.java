@@ -26,5 +26,5 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public interface StatementTemplatePane {
-	public edu.cmu.cs.dennisc.alice.ast.Statement createStatement( org.alice.ide.ast.DragAndDropEvent e );
+	public edu.cmu.cs.dennisc.alice.ast.Statement createStatement( org.alice.ide.dnd.DragAndDropEvent e );
 }

@@ -26,12 +26,9 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 class ProcedureInvocationTemplate extends MethodInvocationTemplate< edu.cmu.cs.dennisc.alice.ast.ExpressionStatement > {
-	private static ProcedureBorder singletonBorder = new ProcedureBorder();
-
 	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( method );
 		setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class ) );
 		setForeground( java.awt.Color.GRAY );
-		setBorder( ProcedureInvocationTemplate.singletonBorder );
 	}
 }

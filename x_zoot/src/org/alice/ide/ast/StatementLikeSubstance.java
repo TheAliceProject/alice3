@@ -22,13 +22,12 @@
  */
 package org.alice.ide.ast;
 
+import org.alice.ide.dnd.PotentiallyDraggableComponent;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementLikeSubstance extends PotentiallyDraggablePane< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement> > {
-	private static org.alice.ide.lookandfeel.StatementClassBorderFactory borderFactory = null;
-	private static org.alice.ide.lookandfeel.StatementClassRenderer renderer = null;
-
+public abstract class StatementLikeSubstance extends PotentiallyDraggableComponent< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement> > {
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls;
 	
 	protected static Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getClassFor( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
@@ -38,47 +37,70 @@ public abstract class StatementLikeSubstance extends PotentiallyDraggablePane< C
 			return edu.cmu.cs.dennisc.alice.ast.Statement.class;
 		}
 	}
-	
-	public static void setBorderFactory( org.alice.ide.lookandfeel.StatementClassBorderFactory borderFactory ) {
-		StatementLikeSubstance.borderFactory = borderFactory;
-	}
-	public static void setRenderer( org.alice.ide.lookandfeel.StatementClassRenderer renderer ) {
-		StatementLikeSubstance.renderer = renderer;
-	}
-	
 	public StatementLikeSubstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
-		super( javax.swing.BoxLayout.LINE_AXIS );
 		this.statementCls = statementCls;
-		if( StatementLikeSubstance.borderFactory != null ) {
-			this.setBorder( StatementLikeSubstance.borderFactory.createBorder( this.statementCls, this ) );
-		} else {
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+	}
+	private static final int INSET = 4;
+	private static final int KNURL_WIDTH = 8;
+	@Override
+	protected int getInsetTop() {
+		return StatementLikeSubstance.INSET;
+	}
+	@Override
+	protected int getInsetLeft() {
+		int rv = StatementLikeSubstance.INSET + 2;
+		if( this.isKnurlDesired() ) {
+			rv += KNURL_WIDTH;
+		}
+		return rv;
+	}
+	@Override
+	protected int getInsetBottom() {
+		return StatementLikeSubstance.INSET;
+	}
+	@Override
+	protected int getInsetRight() {
+		return StatementLikeSubstance.INSET;
+	}
+	@Override
+	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.fillRoundRect( x, y, width - 1, height - 1, 16, 16 );
+	}
+	@Override
+	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.setColor( this.getBackground() );
+		fillBounds( g2 );
+	}
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.setColor( this.getForeground() );
+		g2.drawRoundRect( x, y, width - 1, height - 1, 16, 16 );
+		
+		if( isKnurlDesired() ) {
+			g2.setColor( java.awt.Color.BLACK );
+			edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, x + 2, y + 2, KNURL_WIDTH, height - 2 );
 		}
 	}
 	
-	@Override
-	protected org.alice.ide.lookandfeel.StatementClassRenderer getRenderer() {
-		return StatementLikeSubstance.renderer;
+	protected boolean isKnurlDesired() {
+		return true;
 	}
-	
+	@Override
+	public boolean contains( int x, int y ) {
+		if( isKnurlDesired() ) {
+			return super.contains( x, y );
+		} else {
+			return false;
+		}
+	}
+
 	
 //	@Override
 //	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
 //		return new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( new java.awt.geom.RoundRectangle2D.Float( 1.5f, 1.5f, (float)getWidth()-3, (float)getHeight()-3, 8.0f, 8.0f ) );
 //	}
 
-	//todo: remove
-	@Deprecated
-	protected boolean isKnurlDesired() {
-		return true;
-	}
-
-	
-	@Override
-	protected Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getContext() {
-		return this.statementCls;
-	}
-	
 ////	//todo: remove
 //	@Override
 //	protected void paintBorder( java.awt.Graphics g ) {

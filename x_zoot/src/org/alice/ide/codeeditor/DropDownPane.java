@@ -22,31 +22,20 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.ast.StatementLikeSubstance;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DropDownPane extends org.alice.ide.RenderedControl {
+public abstract class DropDownPane extends org.alice.ide.AbstractControl {
 //	private static final int AFFORDANCE_SIZE = 9; 
 //	private static final int INSET = 2; 
 //	private static final int LEFT = INSET; 
 //	private static final int TOP = INSET; 
 //	private static final int RIGHT = INSET + AFFORDANCE_SIZE; 
 //	private static final int BOTTOM = INSET;
-	private static org.alice.ide.lookandfeel.DropDownBorderFactory borderFactory = null;
-	private static org.alice.ide.lookandfeel.DropDownRenderer renderer = null;
-	public static void setBorderFactory( org.alice.ide.lookandfeel.DropDownBorderFactory borderFactory ) {
-		DropDownPane.borderFactory = borderFactory;
-	}
-	public static void setRenderer( org.alice.ide.lookandfeel.DropDownRenderer renderer ) {
-		DropDownPane.renderer = renderer;
-	}
 	public DropDownPane( javax.swing.JComponent prefixPane, javax.swing.JComponent mainComponent, javax.swing.JComponent postfixPane ) {
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-		if( DropDownPane.borderFactory != null ) {
-			this.setBorder( DropDownPane.borderFactory.createBorder( null, this ) );
-		} else {
-			this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		}
 		//this.setBorder( javax.swing.BorderFactory.createMatteBorder( TOP, LEFT, BOTTOM, RIGHT, edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR ) );
 		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
 		//this.setOpaque( true );
@@ -60,15 +49,6 @@ public abstract class DropDownPane extends org.alice.ide.RenderedControl {
 		}
 	}
 	
-	@Override
-	protected edu.cmu.cs.dennisc.moot.Renderer<Object> getRenderer() {
-		return DropDownPane.renderer;
-	}
-	@Override
-	protected Object getContext() {
-		return null;
-	}
-
 	private javax.swing.JComponent mainComponent;
 	
 //	@Override
@@ -79,6 +59,40 @@ public abstract class DropDownPane extends org.alice.ide.RenderedControl {
 //	public boolean isSelected() {
 //		return false;
 //	}
+	
+	private static final int INSET = 2;
+	private static final int AFFORDANCE_SIZE = 9;
+	@Override
+	protected int getInsetTop() {
+		return DropDownPane.INSET;
+	}
+	@Override
+	protected int getInsetLeft() {
+		return DropDownPane.INSET;
+	}
+	@Override
+	protected int getInsetBottom() {
+		return DropDownPane.INSET;
+	}
+	@Override
+	protected int getInsetRight() {
+		return DropDownPane.INSET + DropDownPane.AFFORDANCE_SIZE;
+	}
+	@Override
+	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.fillRect( x, y, width - 1, height - 1 );
+	}
+	@Override
+	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		g2.setColor( this.getBackground() );
+		fillBounds( g2, x, y, width, height );
+	}
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+//		g2.setColor( this.getForeground() );
+//		g2.drawRoundRect( x, y, width - 1, height - 1, 16, 16 );
+	}
+	
 
 	public javax.swing.JComponent getMainComponent() {
 		return this.mainComponent;

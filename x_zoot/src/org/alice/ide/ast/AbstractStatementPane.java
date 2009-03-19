@@ -83,17 +83,17 @@ public abstract class AbstractStatementPane extends org.alice.ide.ast.StatementL
 		rv.add(  new org.alice.ide.operations.ast.DeleteStatementOperation( this.statement, this.owner ) );
 		return rv;
 	}
-	@Override
-	protected void handleRightMousePress( java.awt.event.MouseEvent e ) {
-		super.handleRightMousePress( e );
-		java.util.List< org.alice.ide.AbstractActionOperation > operations = new java.util.LinkedList< org.alice.ide.AbstractActionOperation >();
-		this.updateOperationsListForAltMenu( operations );
-		if( operations.size() > 0 ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: popup menu" );
-//			javax.swing.JPopupMenu popupMenu = getIDE().createJPopupMenu( operations );
-//			popupMenu.show( this, e.getX(), e.getY() );
-		}
-	}
+//	@Override
+//	protected void handleRightMousePress( java.awt.event.MouseEvent e ) {
+//		super.handleRightMousePress( e );
+//		java.util.List< org.alice.ide.AbstractActionOperation > operations = new java.util.LinkedList< org.alice.ide.AbstractActionOperation >();
+//		this.updateOperationsListForAltMenu( operations );
+//		if( operations.size() > 0 ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: popup menu" );
+////			javax.swing.JPopupMenu popupMenu = getIDE().createJPopupMenu( operations );
+////			popupMenu.show( this, e.getX(), e.getY() );
+//		}
+//	}
 
 	private static java.awt.TexturePaint disabledTexturePaint = null;
 

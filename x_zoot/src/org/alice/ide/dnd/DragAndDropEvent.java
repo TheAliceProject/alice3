@@ -20,10 +20,29 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.lookandfeel;
+package org.alice.ide.dnd;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ExpressionTypeBorderFactory extends edu.cmu.cs.dennisc.moot.BorderFactory< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public class DragAndDropEvent extends edu.cmu.cs.dennisc.pattern.event.Event<DragPane> {
+	private java.awt.event.MouseEvent eDrag;
+	private DropReceptor dropReceptor;
+	private java.awt.event.MouseEvent eDrop;
+	public DragAndDropEvent( DragPane source, DropReceptor dropReceptor, java.awt.event.MouseEvent eDrop ) {
+		super( source );
+		this.eDrag = source.getMousePressedEvent();
+		this.dropReceptor = dropReceptor;
+		this.eDrop = eDrop;
+	}
+	public java.awt.event.MouseEvent getStartingMouseEvent() {
+		return this.eDrag;
+	}
+	public DropReceptor getDropReceptor() {
+		return this.dropReceptor;
+	}
+	public java.awt.event.MouseEvent getEndingMouseEvent() {
+		return this.eDrop;
+	}
 }

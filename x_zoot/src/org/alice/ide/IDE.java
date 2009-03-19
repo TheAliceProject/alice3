@@ -89,15 +89,6 @@ public abstract class IDE extends zoot.ZFrame {
 		this.getContentPane().add( perspective, java.awt.BorderLayout.CENTER );
 		this.getContentPane().add( this.feedback, java.awt.BorderLayout.SOUTH );
 
-		org.alice.ide.ast.ExpressionLikeSubstance.setBorderFactory( this.createExpressionBorderFactory() );
-		org.alice.ide.ast.ExpressionLikeSubstance.setRenderer( this.createExpressionRenderer() );
-
-		org.alice.ide.ast.StatementLikeSubstance.setBorderFactory( this.createStatementBorderFactory() );
-		org.alice.ide.ast.StatementLikeSubstance.setRenderer( this.createStatementRenderer() );
-
-		org.alice.ide.codeeditor.DropDownPane.setBorderFactory( this.createDropDownBorderFactory() );
-		org.alice.ide.codeeditor.DropDownPane.setRenderer( this.createDropDownRenderer() );
-
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
 		this.vmForSceneEditor = createVirtualMachineForSceneEditor();
@@ -224,25 +215,6 @@ public abstract class IDE extends zoot.ZFrame {
 		return new org.alice.ide.codeeditor.Factory();
 	}
 
-	protected org.alice.ide.lookandfeel.StatementClassBorderFactory createStatementBorderFactory() {
-		return new org.alice.ide.lookandfeel.KnurlBorderFactory();
-	}
-	protected org.alice.ide.lookandfeel.StatementClassRenderer createStatementRenderer() {
-		return new org.alice.ide.lookandfeel.RoundedRectangleStatementClassRenderer();
-	}
-	protected org.alice.ide.lookandfeel.ExpressionTypeBorderFactory createExpressionBorderFactory() {
-		return new org.alice.ide.lookandfeel.BallAndSocketBorderFactory();
-	}
-	protected org.alice.ide.lookandfeel.ExpressionTypeRenderer createExpressionRenderer() {
-		return new org.alice.ide.lookandfeel.BallAndSocketExpressionTypeRenderer();
-	}
-	protected org.alice.ide.lookandfeel.DropDownBorderFactory createDropDownBorderFactory() {
-		return new org.alice.ide.lookandfeel.ArrowDropDownBorderFactory();
-	}
-	protected org.alice.ide.lookandfeel.DropDownRenderer createDropDownRenderer() {
-		return new org.alice.ide.lookandfeel.ArrowDropDownRenderer();
-	}
-
 	public abstract java.io.File getApplicationRootDirectory();
 
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
@@ -283,13 +255,13 @@ public abstract class IDE extends zoot.ZFrame {
 		this.setTitle( sb.toString() );
 	}
 
-	private java.util.List< org.alice.ide.ast.DropReceptor > dropReceptors = new java.util.LinkedList< org.alice.ide.ast.DropReceptor >();
+	private java.util.List< org.alice.ide.dnd.DropReceptor > dropReceptors = new java.util.LinkedList< org.alice.ide.dnd.DropReceptor >();
 
 	protected abstract org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus();
 
 	private ComponentStencil stencil;
 	private java.util.List< ? extends java.awt.Component > holes = null;
-	private org.alice.ide.ast.PotentiallyDraggablePane potentialDragSource;
+	private org.alice.ide.dnd.PotentiallyDraggableComponent potentialDragSource;
 	private java.awt.Component currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
@@ -362,7 +334,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
 
-	public void showStencilOver( org.alice.ide.ast.PotentiallyDraggablePane potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void showStencilOver( org.alice.ide.dnd.PotentiallyDraggableComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = codeEditor.findAllPotentialAcceptors( type );
@@ -392,25 +364,25 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 
-	public void handleDragStarted( org.alice.ide.ast.DropReceptor dropReceptor ) {
+	public void handleDragStarted( org.alice.ide.dnd.DropReceptor dropReceptor ) {
 		this.potentialDragSource = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 	}
-	public void handleDragEntered( org.alice.ide.ast.DropReceptor dropReceptor ) {
+	public void handleDragEntered( org.alice.ide.dnd.DropReceptor dropReceptor ) {
 		this.currentDropReceptorComponent = dropReceptor.getAWTComponent();
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 	}
-	public void handleDragExited( org.alice.ide.ast.DropReceptor dropReceptor ) {
+	public void handleDragExited( org.alice.ide.dnd.DropReceptor dropReceptor ) {
 		this.currentDropReceptorComponent = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 	}
-	public void handleDragStopped( org.alice.ide.ast.DropReceptor dropReceptor ) {
+	public void handleDragStopped( org.alice.ide.dnd.DropReceptor dropReceptor ) {
 	}
 
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
@@ -491,12 +463,12 @@ public abstract class IDE extends zoot.ZFrame {
 	//	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	//	protected abstract void handleWindowClosing();
 
-	public java.util.List< ? extends org.alice.ide.ast.DropReceptor > getPotentialDropReceptors( org.alice.ide.ast.PotentiallyDraggablePane source ) {
-		if( source instanceof org.alice.ide.ast.ExpressionLikeSubstance ) {
-			org.alice.ide.ast.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.ast.ExpressionLikeSubstance)source;
+	public java.util.List< ? extends org.alice.ide.dnd.DropReceptor > getPotentialDropReceptors( org.alice.ide.dnd.DragPane source ) {
+		if( source.getDraggableComponent() instanceof org.alice.ide.ast.ExpressionLikeSubstance ) {
+			org.alice.ide.ast.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.ast.ExpressionLikeSubstance)source.getDraggableComponent();
 			return getCodeEditorInFocus().findAllPotentialAcceptors( expressionLikeSubstance.getExpressionType() );
 		} else {
-			java.util.List< org.alice.ide.ast.DropReceptor > rv = new java.util.LinkedList< org.alice.ide.ast.DropReceptor >();
+			java.util.List< org.alice.ide.dnd.DropReceptor > rv = new java.util.LinkedList< org.alice.ide.dnd.DropReceptor >();
 			org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
 			if( codeEditor != null ) {
 				rv.add( codeEditor );

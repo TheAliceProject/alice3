@@ -22,7 +22,7 @@
  */
 package zoot;
 
-public abstract class ZControl extends javax.swing.JComponent {
+public abstract class ZControl extends ZComponent {
 	private ActionOperation leftButtonPressOperation;
 	private ActionOperation leftButtonDoubleClickOperation;
 	private ActionOperation popupOperation;
@@ -57,15 +57,22 @@ public abstract class ZControl extends javax.swing.JComponent {
 			ZControl.this.handleMouseDragged( e );
 		}
 	};
+
 	public ZControl() {
 		this.addListeners();
 	}
-	
+
 	protected void addListeners() {
 		this.addMouseListener( this.mouseAdapter );
 	}
-	
+
+	private java.awt.event.MouseEvent mousePressedEvent = null;
+
+	public java.awt.event.MouseEvent getMousePressedEvent() {
+		return this.mousePressedEvent;
+	}
 	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
+		this.mousePressedEvent = e;
 		this.setPressed( true );
 		if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
 			if( this.leftButtonPressOperation != null ) {
@@ -92,11 +99,37 @@ public abstract class ZControl extends javax.swing.JComponent {
 			this.setActive( false );
 		}
 	}
+
 	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
 	}
-	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
-	}
 	
+	private float clickThreshold = 5.0f;
+
+	public float getClickThreshold() {
+		return this.clickThreshold;
+	}
+	public void setClickThreshold( float clickThreshold ) {
+		this.clickThreshold = clickThreshold;
+	}
+
+	private boolean isWithinClickThreshold = false;
+
+	protected boolean isWithinClickThreshold() {
+		return this.isWithinClickThreshold;
+	}
+	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
+		this.isWithinClickThreshold = false;
+	}
+	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
+		if( this.isWithinClickThreshold ) {
+			int dx = e.getX() - this.mousePressedEvent.getX();
+			int dy = e.getY() - this.mousePressedEvent.getY();
+			if( dx * dx + dy * dy > this.clickThreshold * this.clickThreshold ) {
+				handleMouseDraggedOutsideOfClickThreshold( e );
+			}
+		}
+	}
+
 	public ActionOperation getLeftButtonPressOperation() {
 		return this.leftButtonPressOperation;
 	}
@@ -140,6 +173,7 @@ public abstract class ZControl extends javax.swing.JComponent {
 			this.repaint();
 		}
 	}
+
 }
 ///**
 // * @author Dennis Cosgrove

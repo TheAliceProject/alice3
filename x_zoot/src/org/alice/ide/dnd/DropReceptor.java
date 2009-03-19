@@ -20,11 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.lookandfeel;
+package org.alice.ide.dnd;
 
 
 /**
  * @author Dennis Cosgrove
  */
-public interface ExpressionTypeRenderer extends edu.cmu.cs.dennisc.moot.Renderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public interface DropReceptor {
+	public boolean isPotentiallyAcceptingOf( DragPane source );
+	public java.awt.Component getAWTComponent();
+	public void dragStarted( DragPane source, java.awt.event.MouseEvent e );
+	public void dragEntered( DragPane source, java.awt.event.MouseEvent e );
+	public void dragUpdated( DragPane source, java.awt.event.MouseEvent e );
+	
+	//todo: Dropped or Exited but not both?
+	public void dragDropped( DragPane source, java.awt.event.MouseEvent e );
+	public void dragExited( DragPane source, java.awt.event.MouseEvent e, boolean isDropRecipient );
+	
+	
+	public void dragStopped( DragPane source, java.awt.event.MouseEvent e );
 }
