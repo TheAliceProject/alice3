@@ -22,6 +22,8 @@
  */
 
 package org.alice;
+import javax.swing.JPanel;
+
 import org.alice.apis.moveandturn.DirectionalLight;
 import org.alice.apis.moveandturn.Program;
 import org.alice.apis.moveandturn.Scene;
@@ -31,18 +33,12 @@ import org.alice.apis.moveandturn.gallery.animals.Chicken;
 import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.PickHint;
+import org.alice.interact.PointOfViewManager;
+import org.alice.interact.PointsOfViewPanel;
 
-import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.alice.ast.ThisExpression;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Sphere;
-import edu.cmu.cs.dennisc.scenegraph.Torus;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import edu.cmu.cs.dennisc.scenegraph.Visual;
-import edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes;
-import edu.cmu.cs.dennisc.scenegraph.util.Jack;
 import edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter;
 
 
@@ -71,6 +67,8 @@ public class SceneEditor extends Program {
 	org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 	org.alice.interact.CreateASimDragAdapter simDragAdapter = new org.alice.interact.CreateASimDragAdapter();
 	CameraNavigationDragAdapter cameraNavigationDragAdapter = new CameraNavigationDragAdapter();
+	
+	PointOfViewManager pointOfViewManager = new PointOfViewManager();
 
 	@Override
 	protected void initialize() {
@@ -114,6 +112,12 @@ public class SceneEditor extends Program {
 		sunLight.turn(TurnDirection.FORWARD, 0.25);
 		simDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 		
+		this.pointOfViewManager.setCamera(camera.getSGPerspectiveCamera());
+		PointsOfViewPanel povPanel = new PointsOfViewPanel(this.pointOfViewManager);
+		
+		this.add(povPanel, java.awt.BorderLayout.SOUTH);
+		
+		
 		simDragAdapter.setSelectedObject( chicken.getSGTransformable() );
 		
 		//cameraNavigationDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
@@ -122,6 +126,7 @@ public class SceneEditor extends Program {
 	@Override
 	protected void run() {
 		globalDragAdapter.setAnimator( this.getAnimator() );
+		this.pointOfViewManager.setOnscreenLookingGlass(globalDragAdapter.getOnscreenLookingGlass());
 	}
 
 	
