@@ -27,12 +27,6 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public abstract class Factory {
-	protected java.awt.Component createComponent( org.alice.ide.i18n.GetsChunk getsChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return new org.alice.ide.ast.GetsPane( getsChunk.isTowardLeading() );
-	}
-	protected java.awt.Component createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return new zoot.ZLabel( textChunk.getText() );
-	}
 	static java.util.Map< Object, String > operatorMap = new java.util.HashMap< Object, String >();
 	static {
 		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.PLUS, "+" );
@@ -45,13 +39,21 @@ public abstract class Factory {
 		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER, ">" );
 		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER_EQUALS, ">=" );
 	}
+
 	
+	protected java.awt.Component createGetsComponent( boolean isTowardLeading ) { 
+		return new org.alice.ide.ast.GetsPane( isTowardLeading );
+	}
+	protected java.awt.Component createTextComponent( String text ) { 
+		return new zoot.ZLabel( text );
+	}
 	protected abstract javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty );
 	protected abstract javax.swing.JComponent createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
-	
-	protected java.awt.Component createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		boolean isBonusSpecified = propertyChunk.isBonusSpecified();
-		String propertyName = propertyChunk.getPropertyName();
+	protected java.awt.Component createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property, boolean isBonusSpecified ) {
+		//todo:
+		String propertyName = property.getName();
+		//
+		
 		javax.swing.JComponent rv;
 		if( isBonusSpecified ) {
 			class LocalTypedDeclarationPane extends TypedDeclarationPane {
@@ -68,12 +70,12 @@ public abstract class Factory {
 			}
 			
 			if( propertyName.equals( "variable" ) ) {
-				edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)owner.getInstancePropertyNamed( propertyName ).getValue();
+				edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)property.getValue();
 				rv = new LocalTypedDeclarationPane( variableDeclaredInAlice );
 				rv.add( new org.alice.ide.ast.TypePane( variableDeclaredInAlice.valueType.getValue() ) );
 				rv.add( new VariablePane( variableDeclaredInAlice ) );
 			} else if( propertyName.equals( "constant" ) ) {
-				edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constantDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)owner.getInstancePropertyNamed( propertyName ).getValue();
+				edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constantDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue();
 				rv = new LocalTypedDeclarationPane( constantDeclaredInAlice );
 				rv.add( new org.alice.ide.ast.TypePane( constantDeclaredInAlice.valueType.getValue() ) );
 				rv.add( new ConstantPane( constantDeclaredInAlice ) );
@@ -81,7 +83,6 @@ public abstract class Factory {
 				rv = new edu.cmu.cs.dennisc.moot.ZLabel( "TODO: " + propertyName );
 			}
 		} else {
-			edu.cmu.cs.dennisc.property.InstanceProperty< ? > property = owner.getInstancePropertyNamed( propertyName );
 			rv = null;
 			if( "operator".equals( propertyName ) ) {
 				String value = Factory.operatorMap.get( property.getValue() );
@@ -118,6 +119,19 @@ public abstract class Factory {
 			}
 		}
 		return rv;
+	}
+	
+	protected java.awt.Component createComponent( org.alice.ide.i18n.GetsChunk getsChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		return this.createGetsComponent( getsChunk.isTowardLeading() );
+	}
+	protected java.awt.Component createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		return new zoot.ZLabel( textChunk.getText() );
+	}	
+	protected java.awt.Component createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		boolean isBonusSpecified = propertyChunk.isBonusSpecified();
+		String propertyName = propertyChunk.getPropertyName();
+		edu.cmu.cs.dennisc.property.InstanceProperty< ? > property = owner.getInstancePropertyNamed( propertyName );
+		return createPropertyComponent( property, isBonusSpecified );
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		String methodName = methodInvocationChunk.getMethodName();

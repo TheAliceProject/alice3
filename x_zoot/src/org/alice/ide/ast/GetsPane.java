@@ -30,7 +30,6 @@ public class GetsPane extends swing.Pane {
 	private int length;
 
 	private GetsPane( boolean isTowardLeadingEdge, int length ) {
-		//this.setLocale( new java.util.Locale( "ar" ) );
 		this.isTowardLeadingEdge = isTowardLeadingEdge;
 		this.length = length;
 		this.setBackground( java.awt.Color.YELLOW );
