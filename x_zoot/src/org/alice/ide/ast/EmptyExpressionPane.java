@@ -39,4 +39,8 @@ public class EmptyExpressionPane extends ExpressionLikeSubstance {
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 		return this.emptyExpression.getType();
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
+		return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+	}
 }

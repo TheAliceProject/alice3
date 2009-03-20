@@ -35,7 +35,6 @@ public class EmptyStatementListAfforance extends org.alice.ide.ast.StatementLike
 		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
 		this.setBackground( new java.awt.Color( 63, 63, 63, 63 ) );
 	}
-	
 	@Override
 	protected boolean isKnurlDesired() {
 		return false;

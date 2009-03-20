@@ -20,31 +20,35 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.ast;
+package zoot.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Control<E> extends edu.cmu.cs.dennisc.moot.ZRenderedControl<E> {
-	public Control( int axis ) {
-		super( axis );
+public class ControlAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
+	private zoot.ZControl control;
+	public ControlAdapter( zoot.ZControl control ) {
+		this.control = control;
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	public void mousePressed( java.awt.event.MouseEvent e ) {
+		this.control.handleMousePressed( e );
 	}
-	//protected abstract edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape();
-	protected void fillBounds( java.awt.Graphics2D g2 ) {
-		edu.cmu.cs.dennisc.moot.Renderer renderer = this.getRenderer();
-		if( renderer!=null ) {
-			renderer.fillBounds( this.getContext(), this, g2, 0, 0, getWidth(), getHeight() );
-		}
+	public void mouseReleased( java.awt.event.MouseEvent e ) {
+		this.control.handleMouseReleased( e );
 	}
-	@Override
-	protected boolean isActuallyPotentiallyActive() {
-		return super.isActuallyPotentiallyActive() && getIDE().isDragInProgress()==false;
+	public void mouseClicked( java.awt.event.MouseEvent e ) {
+		this.control.handleMouseClicked( e );
 	}
-//	@Override
-//	protected boolean isActuallyPotentiallySelectable() {
-//		return super.isActuallyPotentiallySelectable() && getIDE().isDragInProgress()==false;
-//	}
+	public void mouseEntered( java.awt.event.MouseEvent e ) {
+		this.control.handleMouseEntered( e );
+	}
+	public void mouseExited( java.awt.event.MouseEvent e ) {
+		this.control.handleMouseExited( e );
+	}
+	public void mouseMoved( java.awt.event.MouseEvent e ) {
+		this.control.handleMouseMoved( e );
+	}
+	public void mouseDragged( java.awt.event.MouseEvent e ) {
+		this.control.handleMouseDragged( e );
+	}
 }

@@ -39,8 +39,15 @@ public abstract class ZComponent extends swing.Pane {
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		this.paintPrologue( g2, 0, 0, getWidth(), getHeight() );
+		java.awt.Color prev = g2.getColor();
+		try {
+			g2.setColor( this.getBackground() );
+			this.paintPrologue( g2, 0, 0, getWidth(), getHeight() );
+		} finally {
+			g2.setColor( prev );
+		}
 		super.paint( g );
+		g2.setColor( this.getForeground() );
 		this.paintEpilogue( g2, 0, 0, getWidth(), getHeight() );
 	}
 }

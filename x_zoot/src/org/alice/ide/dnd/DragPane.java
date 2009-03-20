@@ -195,7 +195,7 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 		return rv;
 	}
 	@Override
-	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
+	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		super.handleMouseDragged( e );
 		if( isActuallyPotentiallyDraggable() ) {
 			if( this.isWithinClickThreshold() ) {
@@ -222,7 +222,7 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 		}
 	}
 	@Override
-	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
+	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
 			if( getIDE().isDragInProgress() ) {
 				getIDE().setDragInProgress( false );

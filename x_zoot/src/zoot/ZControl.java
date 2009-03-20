@@ -32,46 +32,14 @@ public abstract class ZControl extends ZComponent {
 	private boolean isPressed = false;
 	//private boolean isSelected = false;
 
-	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
-		public void mousePressed( java.awt.event.MouseEvent e ) {
-			ZControl.this.handleMousePressed( e );
-		}
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
-			ZControl.this.handleMouseReleased( e );
-		}
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
-			ZControl.this.handleMouseClicked( e );
-		}
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
-			ZControl.this.handleMouseEntered( e );
-		}
-		public void mouseExited( java.awt.event.MouseEvent e ) {
-			ZControl.this.handleMouseExited( e );
-		}
-	};
-	private java.awt.event.MouseMotionListener mouseMotionAdapter = new java.awt.event.MouseMotionListener() {
-		public void mouseMoved( java.awt.event.MouseEvent e ) {
-			ZControl.this.handleMouseMoved( e );
-		}
-		public void mouseDragged( java.awt.event.MouseEvent e ) {
-			ZControl.this.handleMouseDragged( e );
-		}
-	};
-
-	public ZControl() {
-		this.addListeners();
-	}
-
-	protected void addListeners() {
-		this.addMouseListener( this.mouseAdapter );
-	}
 
 	private java.awt.event.MouseEvent mousePressedEvent = null;
 
 	public java.awt.event.MouseEvent getMousePressedEvent() {
 		return this.mousePressedEvent;
 	}
-	protected void handleMousePressed( java.awt.event.MouseEvent e ) {
+
+	public void handleMousePressed( java.awt.event.MouseEvent e ) {
 		this.mousePressedEvent = e;
 		this.setPressed( true );
 		if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
@@ -80,19 +48,19 @@ public abstract class ZControl extends ZComponent {
 			}
 		}
 	}
-	protected void handleMouseReleased( java.awt.event.MouseEvent e ) {
+	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		this.setPressed( false );
 	}
-	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
+	public void handleMouseClicked( java.awt.event.MouseEvent e ) {
 	}
-	protected void handleMouseEntered( java.awt.event.MouseEvent e ) {
+	public void handleMouseEntered( java.awt.event.MouseEvent e ) {
 		if( ZManager.isDragInProgress() ) {
 			//pass
 		} else {
 			this.setActive( true );
 		}
 	}
-	protected void handleMouseExited( java.awt.event.MouseEvent e ) {
+	public void handleMouseExited( java.awt.event.MouseEvent e ) {
 		if( ZManager.isDragInProgress() ) {
 			//pass
 		} else {
@@ -100,27 +68,24 @@ public abstract class ZControl extends ZComponent {
 		}
 	}
 
-	protected void handleMouseMoved( java.awt.event.MouseEvent e ) {
+	public void handleMouseMoved( java.awt.event.MouseEvent e ) {
 	}
-	
-	private float clickThreshold = 5.0f;
 
+	private float clickThreshold = 5.0f;
 	public float getClickThreshold() {
 		return this.clickThreshold;
 	}
 	public void setClickThreshold( float clickThreshold ) {
 		this.clickThreshold = clickThreshold;
 	}
-
 	private boolean isWithinClickThreshold = false;
-
 	protected boolean isWithinClickThreshold() {
 		return this.isWithinClickThreshold;
 	}
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		this.isWithinClickThreshold = false;
 	}
-	protected void handleMouseDragged( java.awt.event.MouseEvent e ) {
+	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		if( this.isWithinClickThreshold ) {
 			int dx = e.getX() - this.mousePressedEvent.getX();
 			int dy = e.getY() - this.mousePressedEvent.getY();
