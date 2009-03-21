@@ -25,7 +25,13 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class DragSourcePane extends javax.swing.JPanel {
+abstract class DragSourcePane extends zoot.ZDragComponent {
+	public DragSourcePane() {
+		super( org.alice.ide.IDE.getSingleton().getDragAndDropOperation() );
+	}
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
 }
 
 
@@ -52,18 +58,26 @@ abstract class MethodInvocationTemplate<E> extends Template {
 		//this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+
+	protected edu.cmu.cs.dennisc.alice.ast.MethodInvocation getMethodInvocation() {
+		return this.methodInvocation;
 	}
+	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() { 
+		return this.getMethodInvocation();
+	}
+		
 	@Override
 	public void setExpression( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		//		if( expression != null ) {
 		//			if( expression.equals( this.methodInvocation.expression.getValue() ) ) {
 		//				//pass
 		//			} else {
-		this.removeAll();
 		this.methodInvocation.expression.setValue( expression );
-		this.add( org.alice.ide.IDE.getSingleton().getTemplatesFactory().createComponent( this.methodInvocation ) );
+
+		this.removeAll();
+		java.awt.Component subject = org.alice.ide.IDE.getSingleton().getTemplatesFactory().createComponent( this.getNode() );
+		this.setSubject( subject );
+		this.add( subject );
 		//			}
 		//		} else {
 		//			this.removeAll();

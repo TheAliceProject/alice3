@@ -142,10 +142,10 @@ public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 //	protected boolean isActuallyPotentiallySelectable() {
 //		return false;
 //	}
-	@Override
-	protected boolean isActuallyPotentiallyDraggable() {
-		return false;
-	}
+//	@Override
+//	protected boolean isActuallyPotentiallyDraggable() {
+//		return false;
+//	}
 	
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = getIDE();

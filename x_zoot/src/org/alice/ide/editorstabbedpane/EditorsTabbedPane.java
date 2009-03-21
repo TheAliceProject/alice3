@@ -27,7 +27,12 @@ package org.alice.ide.editorstabbedpane;
  */
 public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide.event.IDEListener {
 	public EditorsTabbedPane() {
-		super( null );
+		this.setTabCloseOperation( new org.alice.ide.AbstractActionOperation() {
+			public void perform( zoot.ActionContext actionContext ) {
+				EditorsTabbedPane.this.remove( EditorsTabbedPane.this.getSelectedIndex() );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle tab close" );
+			}
+		} );
 	}
 	
 	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( java.awt.Component component ) {
@@ -39,10 +44,15 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 		}
 	}
 	private void edit( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( code );
 		for( java.awt.Component component : this.getComponents() ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( component );
 			org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( component );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( codeEditor );
 			if( codeEditor != null ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( codeEditor.getCode() );
 				if( codeEditor.getCode() == code ) {
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "found: " + code );
 					this.setSelectedComponent( component );
 					return;
 				}

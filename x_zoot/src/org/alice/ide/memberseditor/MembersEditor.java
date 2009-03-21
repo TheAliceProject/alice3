@@ -124,7 +124,6 @@ class FieldsTab extends MembersTab {
 class TabbedPane extends zoot.ZTabbedPane {
 	private MembersTab[] membersTabs = { new ProceduresTab(), new FunctionsTab(), new FieldsTab() };
 	public TabbedPane() {
-		super( null );
 		for( MembersTab membersTab : membersTabs ) {
 			this.addMembersTab( membersTab );
 		}

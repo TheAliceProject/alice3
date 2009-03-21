@@ -20,35 +20,10 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide;
-
-import edu.cmu.cs.dennisc.moot.Renderer;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RenderedControl<E> extends zoot.ZControl {
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-	protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleLeftMousePress:", e );
-	}	
-	protected abstract Renderer< E > getRenderer();
-	protected abstract E getContext();
-	
-	
-	@Override
-	public void paint( java.awt.Graphics g ) {
-		boolean isSelected = false;
-		Renderer< E > renderer = this.getRenderer();
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		if( renderer != null ) {
-			renderer.paintPrologue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), isActive(), isPressed(), isSelected );
-		}
-		super.paint( g );
-		if( renderer != null ) {
-			renderer.paintEpilogue( getContext(), this, g2, 0, 0, getWidth(), getHeight(), isActive(), isPressed(), isSelected );
-		}
-	}
+public interface DragAndDropContext extends Context {
 }

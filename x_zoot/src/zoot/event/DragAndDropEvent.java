@@ -20,17 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.dnd;
-
+package zoot.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DragAndDropEvent extends edu.cmu.cs.dennisc.pattern.event.Event<DragPane> {
+public class DragAndDropEvent extends edu.cmu.cs.dennisc.pattern.event.Event< zoot.ZDragComponent > {
 	private java.awt.event.MouseEvent eDrag;
-	private DropReceptor dropReceptor;
+	private zoot.DropReceptor dropReceptor;
 	private java.awt.event.MouseEvent eDrop;
-	public DragAndDropEvent( DragPane source, DropReceptor dropReceptor, java.awt.event.MouseEvent eDrop ) {
+
+	public DragAndDropEvent( zoot.ZDragComponent source, zoot.DropReceptor dropReceptor, java.awt.event.MouseEvent eDrop ) {
 		super( source );
 		this.eDrag = source.getMousePressedEvent();
 		this.dropReceptor = dropReceptor;
@@ -39,7 +39,7 @@ public class DragAndDropEvent extends edu.cmu.cs.dennisc.pattern.event.Event<Dra
 	public java.awt.event.MouseEvent getStartingMouseEvent() {
 		return this.eDrag;
 	}
-	public DropReceptor getDropReceptor() {
+	public zoot.DropReceptor getDropReceptor() {
 		return this.dropReceptor;
 	}
 	public java.awt.event.MouseEvent getEndingMouseEvent() {

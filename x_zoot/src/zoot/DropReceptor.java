@@ -20,28 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.dnd;
+package zoot;
+
+
 /**
  * @author Dennis Cosgrove
  */
-class DropProxy extends Proxy {
-	public DropProxy( PotentiallyDraggableComponent potentiallyDraggableAffordance ) {
-		super( potentiallyDraggableAffordance );
-	}
-	@Override
-	protected int getProxyWidth() {
-		return this.getPotentiallyDraggablePane().getDropWidth();
-	}
-	@Override
-	protected int getProxyHeight() {
-		return this.getPotentiallyDraggablePane().getDropHeight();
-	}
-	@Override
-	protected float getAlpha() {
-		return 0.75f;
-	}
-	@Override
-	protected void paintProxy( java.awt.Graphics2D g2 ) {
-		this.getPotentiallyDraggablePane().paintDrop( g2, this.isOverDropAcceptor(), this.isCopyDesired() );
-	}
+public interface DropReceptor {
+	public boolean isPotentiallyAcceptingOf( ZDragComponent source );
+	public java.awt.Component getAWTComponent();
+	public void dragStarted( ZDragComponent source, java.awt.event.MouseEvent e );
+	public void dragEntered( ZDragComponent source, java.awt.event.MouseEvent e );
+	public void dragUpdated( ZDragComponent source, java.awt.event.MouseEvent e );
+	
+	//todo: Dropped or Exited but not both?
+	public void dragDropped( ZDragComponent source, java.awt.event.MouseEvent e );
+	public void dragExited( ZDragComponent source, java.awt.event.MouseEvent e, boolean isDropRecipient );
+	
+	
+	public void dragStopped( ZDragComponent source, java.awt.event.MouseEvent e );
 }

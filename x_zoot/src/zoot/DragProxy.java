@@ -20,40 +20,41 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.dnd;
-
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PotentiallyDraggableComponent<E> extends org.alice.ide.AbstractControl {
-	protected boolean isActuallyPotentiallyDraggable() {
-		return false;
+class DragProxy extends Proxy {
+	public DragProxy( java.awt.Component subject ) {
+		super( subject );
 	}
 	private final int DROP_SHADOW_SIZE = 6;
-	public int getDragWidth() {
-		return getDropWidth() + DROP_SHADOW_SIZE;
+	@Override
+	public int getProxyWidth() {
+		return super.getProxyWidth() + DROP_SHADOW_SIZE;
 	}
-	public int getDragHeight() {
-		return getDropHeight() + DROP_SHADOW_SIZE;
+	@Override
+	public int getProxyHeight() {
+		return super.getProxyHeight() + DROP_SHADOW_SIZE;
 	}
-	public int getDropWidth() {
-		return this.getWidth();
-	}
-	public int getDropHeight() {
-		return this.getHeight();
+	@Override
+	protected float getAlpha() {
+		if( this.isOverDropAcceptor() ) {
+			return 0.5f;
+		} else {
+			return 1.0f;
+		}
 	}
 	
-	protected void fillBounds( java.awt.Graphics2D g2 ) {
-		fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
-	}
-
 	
-	public void paintDrag( java.awt.Graphics2D g2, boolean isOverDragAccepter, boolean isCopyDesired ) {
+	@Override
+	protected void paintProxy( java.awt.Graphics2D g2 ) {
 		java.awt.Paint prevPaint = g2.getPaint();
 		g2.setPaint( new java.awt.Color( 0,0,0,64 ) );
+		//todo?
 		g2.translate( DROP_SHADOW_SIZE, DROP_SHADOW_SIZE );
-		this.fillBounds( g2 );
+		fillBounds( g2 );
 		g2.translate( -DROP_SHADOW_SIZE, -DROP_SHADOW_SIZE );
 		g2.setPaint( prevPaint );
 		print( g2 );
@@ -65,13 +66,7 @@ public abstract class PotentiallyDraggableComponent<E> extends org.alice.ide.Abs
 //		}
 		if( isCopyDesired ) {
 			g2.setPaint( org.alice.ide.lookandfeel.PaintUtilities.getCopyTexturePaint() );
-			this.fillBounds( g2 );
+			fillBounds( g2 );
 		}
 	}
-	public void paintDrop( java.awt.Graphics2D g2, boolean isOverDragAccepter, boolean isCopyDesired ) {
-		print( g2 );
-		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
-		this.fillBounds( g2 );
-	}
-
 }

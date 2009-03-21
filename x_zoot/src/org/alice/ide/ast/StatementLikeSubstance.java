@@ -22,12 +22,10 @@
  */
 package org.alice.ide.ast;
 
-import org.alice.ide.dnd.PotentiallyDraggableComponent;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementLikeSubstance extends PotentiallyDraggableComponent< Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement> > {
+public abstract class StatementLikeSubstance extends org.alice.ide.AbstractControl {
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls;
 	
 	protected static Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getClassFor( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
@@ -70,7 +68,7 @@ public abstract class StatementLikeSubstance extends PotentiallyDraggableCompone
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		g2.setColor( this.getBackground() );
-		fillBounds( g2 );
+		fillBounds( g2, x, y, width, height );
 	}
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {

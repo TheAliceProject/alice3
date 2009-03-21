@@ -128,8 +128,8 @@ public abstract class AbstractStatementPane extends org.alice.ide.ast.StatementL
 		}
 	}
 	
-	@Override
-	protected boolean isActuallyPotentiallyDraggable() {
-		return true;
-	}
+//	@Override
+//	protected boolean isActuallyPotentiallyDraggable() {
+//		return true;
+//	}
 }

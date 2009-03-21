@@ -29,4 +29,7 @@ public abstract class AbstractControl extends zoot.ZControl {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
+	public void fillBounds( java.awt.Graphics2D g2 ) {
+		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
+	}
 }

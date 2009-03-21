@@ -20,8 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.dnd;
-
+package zoot;
 
 /**
  * @author Dennis Cosgrove
@@ -35,22 +34,39 @@ abstract class Proxy extends javax.swing.JPanel {
 		}
 		return image;
 	}
-	private PotentiallyDraggableComponent potentiallyDraggableAffordance;
+	private java.awt.Component subject;
 	boolean isOverDropAcceptor = false;
 	boolean isCopyDesired = false;
 
-	public Proxy( PotentiallyDraggableComponent potentiallyDraggableAffordance ) {
-		this.potentiallyDraggableAffordance = potentiallyDraggableAffordance;
+	public Proxy( java.awt.Component subject ) {
+		this.subject = subject;
 		this.setOpaque( false );
 	}
 	
-	protected PotentiallyDraggableComponent getPotentiallyDraggablePane() {
-		return this.potentiallyDraggableAffordance;
+	protected java.awt.Component getSubject() {
+		return this.subject;
 	}
 
-	//todo: just use getWidth() and getHeight()?
-	protected abstract int getProxyWidth();
-	protected abstract int getProxyHeight();
+	public int getProxyWidth() {
+		return this.subject.getWidth();
+	}
+	public int getProxyHeight() {
+		return this.subject.getHeight();
+	}
+	
+	protected void fillBounds( java.awt.Graphics2D g2 ) {
+		java.awt.Component subject = this.getSubject();
+		int x = 0;
+		int y = 0;
+		int width = subject.getWidth();
+		int height = subject.getHeight();
+		if( subject instanceof ZComponent ) {
+			ZComponent component = (ZComponent)subject;
+			component.fillBounds( g2, x, y, width, height );
+		} else {
+			g2.fillRect( x, y, width, height );
+		}
+	}
 	
 	protected abstract void paintProxy( java.awt.Graphics2D g2 );
 	protected abstract float getAlpha();
@@ -102,5 +118,12 @@ abstract class Proxy extends javax.swing.JPanel {
 			this.isCopyDesired = isCopyDesired;
 			this.repaint();
 		}
+	}
+
+	public int getDropWidth() {
+		return this.getWidth();
+	}
+	public int getDropHeight() {
+		return this.getHeight();
 	}
 }

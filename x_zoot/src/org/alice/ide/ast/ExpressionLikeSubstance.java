@@ -25,7 +25,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionLikeSubstance extends org.alice.ide.dnd.PotentiallyDraggableComponent {
+public abstract class ExpressionLikeSubstance extends org.alice.ide.AbstractControl {
 	private static final int INSET = 2;
 	private static final int DOCKING_BAY_INSET_LEFT = 8;
 
@@ -51,14 +51,17 @@ public abstract class ExpressionLikeSubstance extends org.alice.ide.dnd.Potentia
 
 	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape( int x, int y, int width, int height ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getExpressionType();
-		java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
 		if( type != null ) {
-			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
+//			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 		} else {
 			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
 		}
-		edu.cmu.cs.dennisc.awt.BeveledShape rv = edu.cmu.cs.dennisc.alice.ui.BeveledShapeForType.createBeveledShapeFor( type, shape, ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, Math.min( height * 0.5f, 16.0f ) );
-		return rv;
+//		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE ) {
+//			return null;
+//		} else {
+			java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
+			return edu.cmu.cs.dennisc.alice.ui.BeveledShapeForType.createBeveledShapeFor( type, shape, ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, Math.min( height * 0.5f, 16.0f ) );
+//		}
 	}
 	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
 		if( this.isActive() ) {

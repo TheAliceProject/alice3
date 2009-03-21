@@ -20,32 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.dnd;
+package zoot;
+
 /**
  * @author Dennis Cosgrove
  */
-class DragProxy extends Proxy {
-	public DragProxy( PotentiallyDraggableComponent potentiallyDraggableAffordance ) {
-		super( potentiallyDraggableAffordance );
-	}
-	@Override
-	protected int getProxyWidth() {
-		return this.getPotentiallyDraggablePane().getDragWidth();
-	}
-	@Override
-	protected int getProxyHeight() {
-		return this.getPotentiallyDraggablePane().getDragHeight();
+class DropProxy extends Proxy {
+	public DropProxy( java.awt.Component subject ) {
+		super( subject );
 	}
 	@Override
 	protected float getAlpha() {
-		if( this.isOverDropAcceptor() ) {
-			return 0.5f;
-		} else {
-			return 1.0f;
-		}
+		return 0.75f;
 	}
 	@Override
 	protected void paintProxy( java.awt.Graphics2D g2 ) {
-		this.getPotentiallyDraggablePane().paintDrag( g2, this.isOverDropAcceptor(), this.isCopyDesired() );
+		print( g2 );
+		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
+		fillBounds( g2 );
 	}
 }

@@ -22,8 +22,6 @@
  */
 package org.alice.ide.memberseditor;
 
-import org.alice.ide.codeeditor.ExpressionPropertyPane;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -34,6 +32,6 @@ public class Factory extends org.alice.ide.ast.Factory {
 	}
 	@Override
 	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return new ExpressionPropertyPane( expressionProperty, false );
+		return new org.alice.ide.codeeditor.ExpressionPropertyPane( expressionProperty, false );
 	}
 }

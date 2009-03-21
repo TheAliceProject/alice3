@@ -29,6 +29,8 @@ public interface ItemSelectionOperation<E> extends Operation {
 	public void performSelectionChange( ItemSelectionContext<E> context );
 	public javax.swing.Action getActionForConfiguringSwing( int index );
 	public javax.swing.ListModel getListModel();
+	
+	//todo: remove
 	public void addSelectionChangeListener( javax.swing.event.ChangeListener l );
 	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l );
 //	public void addCandidatesChangeListener( javax.swing.event.ChangeListener l );

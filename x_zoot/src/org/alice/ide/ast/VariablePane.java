@@ -29,7 +29,6 @@ public class VariablePane extends AccessiblePane {
 	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
 	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
 		this.variable = variable;
-		//this.add( new alice.ide.ast.NodeNameLabel( variable ) );
 		this.add( new org.alice.ide.ast.LocalNameLabel( variable ) );
 		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
 	}
@@ -38,7 +37,7 @@ public class VariablePane extends AccessiblePane {
 		return this.variable.valueType.getValue();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.dnd.DragAndDropEvent e ) {
+	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression( zoot.event.DragAndDropEvent e ) {
 		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
 	}
 }

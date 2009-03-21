@@ -20,41 +20,50 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.dnd;
+package zoot;
 
-
-/**
- * @author Dennis Cosgrove
- */
-public abstract class DragPane extends org.alice.ide.AbstractControl {
+public abstract class ZDragComponent extends ZControl {
+	private java.awt.Component subject;
+	private DragAndDropOperation dragAndDropOperation;
+	
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
 	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor = null;
-	private PotentiallyDraggableComponent draggableComponent = null;
 	
-	public DragPane( PotentiallyDraggableComponent< ? > draggableComponent ) {
-		this.draggableComponent = draggableComponent;
+	public ZDragComponent( /*ZComponent subject,*/ DragAndDropOperation dragAndDropOperation ) {
+//		this.subject = subject;
+		this.dragAndDropOperation = dragAndDropOperation;
 		//this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		
-		this.add( this.draggableComponent );
+//		this.add( this.subject );
 		this.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
 			}
 			public void componentMoved( java.awt.event.ComponentEvent e ) {
 			}
 			public void componentResized( java.awt.event.ComponentEvent e ) {
-				DragPane.this.updateProxySizes();
+				ZDragComponent.this.updateProxySizes();
 			}
 			public void componentShown( java.awt.event.ComponentEvent e ) {
 			}
 		} );
 		this.updateProxySizes();
 	}
-	public PotentiallyDraggableComponent getDraggableComponent() {
-		return this.draggableComponent;
+	
+	
+	
+	public java.awt.Component getSubject() {
+		return this.subject;
 	}
+	public void setSubject( java.awt.Component subject ) {
+		this.subject = subject;
+	}
+	public DragAndDropOperation getDragAndDropOperation() {
+		return this.dragAndDropOperation;
+	}
+
 //	@Override
 //	protected boolean isSelectionMouseListeningDesired() {
 //		return super.isSelectionMouseListeningDesired() || isActuallyPotentiallyDraggable();
@@ -76,10 +85,10 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 	private void updateProxySizes() {
 		if( isActuallyPotentiallyDraggable() ) {
 			if( this.dragProxy != null ) {
-				dragProxy.setSize( this.draggableComponent.getDragWidth(), this.draggableComponent.getDragHeight() );
+				dragProxy.setSize( dragProxy.getProxyWidth(), dragProxy.getProxyHeight() );
 			}
 			if( this.dropProxy != null ) {
-				dropProxy.setSize( this.draggableComponent.getDropWidth(), this.draggableComponent.getDropHeight() );
+				dropProxy.setSize( dropProxy.getProxyWidth(), dropProxy.getProxyHeight() );
 			}
 		}
 	}
@@ -112,16 +121,16 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		super.handleMouseDraggedOutsideOfClickThreshold( e );
 		if( isActuallyPotentiallyDraggable() ) {
-			getIDE().setDragInProgress( true );
+			ZManager.setDragInProgress( true );
 			if( this.dragProxy != null ) {
 				//pass
 			} else {
-				this.dragProxy = new DragProxy( this.draggableComponent );
+				this.dragProxy = new DragProxy( this.subject );
 			}
 			if( this.dropProxy != null ) {
 				//pass
 			} else {
-				this.dropProxy = new DropProxy( this.draggableComponent );
+				this.dropProxy = new DropProxy( this.subject );
 			}
 			this.updateProxySizes();
 			this.updateProxyPosition( e );
@@ -130,7 +139,7 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 			javax.swing.JLayeredPane layeredPane = getLayeredPane();
 			layeredPane.add( this.dragProxy, new Integer( 1 ) );
 			layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
-			java.util.List< ? extends DropReceptor > potentialDropReceptors = getIDE().getPotentialDropReceptors( this );
+			java.util.List< ? extends DropReceptor > potentialDropReceptors = this.dragAndDropOperation.getPotentialDropReceptors( this );
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
 			int i=0;
 			for( DropReceptor dropReceptor : potentialDropReceptors ) {
@@ -144,7 +153,7 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 				//todo: pass original mouse pressed event?
 				dropReceptorInfo.getDropReceptor().dragStarted( this, e );
 			}
-			getIDE().handleDragStarted( this.currentDropReceptor );
+			this.dragAndDropOperation.handleDragStarted( this.currentDropReceptor );
 			this.currentDropReceptor = null;
 		}
 	}
@@ -205,13 +214,13 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 				DropReceptor nextDropReceptor = getDropReceptorUnder( e );
 				if( this.currentDropReceptor != nextDropReceptor ) {
 					if( this.currentDropReceptor != null ) {
-						getIDE().handleDragExited( this.currentDropReceptor );
+						this.dragAndDropOperation.handleDragExited( this.currentDropReceptor );
 						this.currentDropReceptor.dragExited( this, e, false );
 					}
 					this.currentDropReceptor = nextDropReceptor;
 					if( this.currentDropReceptor != null ) {
 						this.currentDropReceptor.dragEntered( this, e );
-						getIDE().handleDragEntered( this.currentDropReceptor );
+						this.dragAndDropOperation.handleDragEntered( this.currentDropReceptor );
 					}
 				}
 				this.dragProxy.setOverDropAcceptor( this.currentDropReceptor != null );
@@ -224,8 +233,8 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 	@Override
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
-			if( getIDE().isDragInProgress() ) {
-				getIDE().setDragInProgress( false );
+			if( ZManager.isDragInProgress() ) {
+				ZManager.setDragInProgress( false );
 				this.setActive( this.contains( e.getPoint() ) );
 				javax.swing.JLayeredPane layeredPane = getLayeredPane();
 				java.awt.Rectangle bounds = this.dragProxy.getBounds();
@@ -239,7 +248,7 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 				for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
 					dropReceptorInfo.getDropReceptor().dragStopped( this, e );
 				}
-				getIDE().handleDragStopped( this.currentDropReceptor );
+				this.dragAndDropOperation.handleDragStopped( this.currentDropReceptor );
 			}
 		}
 		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
@@ -279,4 +288,31 @@ public abstract class DragPane extends org.alice.ide.AbstractControl {
 			}
 		}
 	}
+	
+	@Override
+	protected int getInsetTop() {
+		return 0;
+	}
+	@Override
+	protected int getInsetLeft() {
+		return 0;
+	}
+	@Override
+	protected int getInsetBottom() {
+		return 0;
+	}
+	@Override
+	protected int getInsetRight() {
+		return 0;
+	}
+	@Override
+	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	}
+	@Override
+	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	}
+	@Override
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	}
+	
 }

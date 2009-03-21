@@ -34,20 +34,21 @@ public abstract class AccessiblePane extends org.alice.ide.ast.ExpressionLikeSub
 //	protected boolean isActuallyPotentiallySelectable() {
 //		return false;
 //	}
-	@Override
-	protected boolean isActuallyPotentiallyDraggable() {
-		return true;
-	}
+//	@Override
+//	protected boolean isActuallyPotentiallyDraggable() {
+//		return true;
+//	}
 	
 	@Override
 	public void setActive( boolean isActive ) {
 		super.setActive( isActive );
 		if( isActive ) {
-			getIDE().showStencilOver( this, getExpressionType() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle AccessiblePane setActive " );
+			//getIDE().showStencilOver( this, getExpressionType() );
 		} else {
 			getIDE().hideStencil();
 		}
 	}
 	
-	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.ide.dnd.DragAndDropEvent e );
+	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( zoot.event.DragAndDropEvent e );
 }

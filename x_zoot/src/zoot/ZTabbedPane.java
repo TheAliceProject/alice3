@@ -46,12 +46,27 @@ class ZTabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
  */
 public class ZTabbedPane extends javax.swing.JTabbedPane {
 	private ActionOperation tabCloseOperation;
+	private ItemSelectionOperation tabSelectionOperation;
 
-	public ZTabbedPane( ActionOperation tabCloseOperation ) {
-		this.tabCloseOperation = tabCloseOperation;
+	public ZTabbedPane() {
 		this.setTabLayoutPolicy( javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT );
 		this.setUI( new ZTabbedPaneUI( this ) );
 	}
+
+	public ActionOperation getTabCloseOperation() {
+		return this.tabCloseOperation;
+	}
+	public void setTabCloseOperation( ActionOperation tabCloseOperation ) {
+		this.tabCloseOperation = tabCloseOperation;
+	}
+
+	public ItemSelectionOperation getTabSelectionOperation() {
+		return this.tabSelectionOperation;
+	}
+	public void setTabSelectionOperation( ItemSelectionOperation tabSelectionOperation ) {
+		this.tabSelectionOperation = tabSelectionOperation;
+	}
+	
 	public boolean isCloseButtonDesiredAt( int index ) {
 		return this.tabCloseOperation != null;
 	}
@@ -91,12 +106,13 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 			}
 		};
 		javax.swing.JFrame frame = new javax.swing.JFrame();
-		ZTabbedPane tabbedPane = new ZTabbedPane( tabCloseOperation ) {
+		ZTabbedPane tabbedPane = new ZTabbedPane() {
 			@Override
 			public boolean isCloseButtonDesiredAt(int index) {
 				return index % 2 == 1;
 			}
 		};
+		tabbedPane.setTabCloseOperation( tabCloseOperation );
 		String[] tabTitles = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 		for( String tabTitle : tabTitles ) {
 			tabbedPane.addTab( tabTitle, new MonthPane( tabTitle ) );

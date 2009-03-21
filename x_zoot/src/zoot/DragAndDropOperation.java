@@ -20,34 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.dnd;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-class DropReceptorInfo {
-	private DropReceptor dropReceptor;
-	private java.awt.Rectangle bounds;
-	public DropReceptorInfo( DropReceptor dropReceptor, java.awt.Rectangle bounds ) {
-		this.dropReceptor = dropReceptor;
-		this.bounds = bounds;
-	}
-	public boolean contains( int x, int y ) {
-		return this.bounds.contains( x, y );
-	}
-	public boolean intersects( java.awt.Rectangle rectangle ) {
-		return this.bounds.intersects( rectangle );
-	}
-	public DropReceptor getDropReceptor() {
-		return this.dropReceptor;
-	}
-	public void setDropReceptor( DropReceptor dropReceptor ) {
-		this.dropReceptor = dropReceptor;
-	}
-	public java.awt.Rectangle getBounds() {
-		return this.bounds;
-	}
-	public void setBounds( java.awt.Rectangle bounds ) {
-		this.bounds = bounds;
-	}
+public interface DragAndDropOperation extends Operation {
+	//todo
+	public java.util.List< ? extends DropReceptor > getPotentialDropReceptors( ZDragComponent source );
+	public void handleDragStarted( DropReceptor dropReceptor );
+	public void handleDragEntered( DropReceptor dropReceptor );
+	public void handleDragExited( DropReceptor dropReceptor );
+	public void handleDragStopped( DropReceptor dropReceptor );
 }

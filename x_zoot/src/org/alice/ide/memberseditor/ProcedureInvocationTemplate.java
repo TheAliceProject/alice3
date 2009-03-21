@@ -31,4 +31,8 @@ class ProcedureInvocationTemplate extends MethodInvocationTemplate< edu.cmu.cs.d
 		setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class ) );
 		setForeground( java.awt.Color.GRAY );
 	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() {
+//		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( super.getMethodInvocation() );
+//	}
 }

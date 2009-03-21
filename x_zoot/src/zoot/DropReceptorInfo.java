@@ -20,23 +20,35 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.dnd;
+package zoot;
 
 
 /**
  * @author Dennis Cosgrove
  */
-public interface DropReceptor {
-	public boolean isPotentiallyAcceptingOf( DragPane source );
-	public java.awt.Component getAWTComponent();
-	public void dragStarted( DragPane source, java.awt.event.MouseEvent e );
-	public void dragEntered( DragPane source, java.awt.event.MouseEvent e );
-	public void dragUpdated( DragPane source, java.awt.event.MouseEvent e );
-	
-	//todo: Dropped or Exited but not both?
-	public void dragDropped( DragPane source, java.awt.event.MouseEvent e );
-	public void dragExited( DragPane source, java.awt.event.MouseEvent e, boolean isDropRecipient );
-	
-	
-	public void dragStopped( DragPane source, java.awt.event.MouseEvent e );
+class DropReceptorInfo {
+	private DropReceptor dropReceptor;
+	private java.awt.Rectangle bounds;
+	public DropReceptorInfo( DropReceptor dropReceptor, java.awt.Rectangle bounds ) {
+		this.dropReceptor = dropReceptor;
+		this.bounds = bounds;
+	}
+	public boolean contains( int x, int y ) {
+		return this.bounds.contains( x, y );
+	}
+	public boolean intersects( java.awt.Rectangle rectangle ) {
+		return this.bounds.intersects( rectangle );
+	}
+	public DropReceptor getDropReceptor() {
+		return this.dropReceptor;
+	}
+	public void setDropReceptor( DropReceptor dropReceptor ) {
+		this.dropReceptor = dropReceptor;
+	}
+	public java.awt.Rectangle getBounds() {
+		return this.bounds;
+	}
+	public void setBounds( java.awt.Rectangle bounds ) {
+		this.bounds = bounds;
+	}
 }
