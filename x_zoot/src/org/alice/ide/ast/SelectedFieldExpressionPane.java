@@ -22,34 +22,37 @@
  */
 package org.alice.ide.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public class FieldAccessPane extends org.alice.ide.ast.ExpressionLikeSubstance {
-	private edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess;
-
-	public FieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
-		this.fieldAccess = fieldAccess;
-		boolean isExpressionDesired;
-		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-			isExpressionDesired = "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() );
-		} else {
-			isExpressionDesired = true;
-		}
-		if( isExpressionDesired ) {
-			this.add( new ExpressionPropertyPane( getIDE().getCodeFactory(), this.fieldAccess.expression, false ) );
-			this.add( new zoot.ZLabel( ".") );
-		}
-		this.add( new org.alice.ide.ast.NodeNameLabel( this.fieldAccess.field.getValue() ) );
-		this.setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
+public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
+	private org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression;
+	private zoot.ZLabel label = new zoot.ZLabel();
+	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
+		this.add( this.label );
+		this.selectedFieldExpression = selectedFieldExpression;
+		this.updateLabel();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		if( this.fieldAccess != null ) {
-			return this.fieldAccess.field.getValue().getValueType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = getIDE().getFieldSelection();
+		if( field != null ) {
+			return field.getValueType();
 		} else {
 			return null;
 		}
+	}
+	public void updateLabel() {
+		org.alice.ide.IDE ide = getIDE();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = ide.getFieldSelection();
+		this.label.setText( getIDE().getInstanceTextForField( field, true ) );
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = ide.createInstanceExpression();
+		java.awt.Color color;
+		if( expression != null ) {
+			color = getIDE().getColorForASTInstance( expression );
+		} else {
+			color = java.awt.Color.LIGHT_GRAY;
+		}
+		this.setBackground( color );
 	}
 }

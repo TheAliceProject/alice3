@@ -20,15 +20,10 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package org.alice.ide.ast;
 
-import org.alice.ide.ast.AbstractPropertyPane;
-import org.alice.ide.ast.EmptyExpression;
-import org.alice.ide.ast.EmptyExpressionPane;
-import org.alice.ide.ast.ExpressionPane;
-import org.alice.ide.ast.Factory;
-import org.alice.ide.ast.FieldAccessPane;
-import org.alice.ide.ast.TypeExpressionPane;
+import org.alice.ide.codeeditor.ArgumentExpressionPropertyDropDownPane;
+import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
 
 /**
  * @author Dennis Cosgrove
@@ -60,7 +55,9 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 				if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 					component = new FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
 				} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
-					component = new org.alice.ide.ast.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
+					component = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
+				} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
+					component = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
 				} else if( expression != null ){
 					component = new ExpressionPane( this.getFactory(), expression );
 				} else {

@@ -65,7 +65,7 @@ abstract class MethodInvocationTemplate<E> extends Template {
 	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation;
 
 	public MethodInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		this.methodInvocation = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( null, method );
+		this.methodInvocation = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method );
 		this.setOpaque( false );
 		//this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );

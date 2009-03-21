@@ -27,12 +27,12 @@ import org.alice.ide.ast.ConstantPane;
 import org.alice.ide.ast.DefaultListPropertyPane;
 import org.alice.ide.ast.DefaultNodeListPropertyPane;
 import org.alice.ide.ast.ExpressionListPropertyPane;
+import org.alice.ide.ast.ExpressionPropertyPane;
 import org.alice.ide.ast.InstancePropertyPane;
 import org.alice.ide.ast.NodePropertyPane;
 import org.alice.ide.ast.StatementListPropertyPane;
 import org.alice.ide.ast.TypedDeclarationPane;
 import org.alice.ide.ast.VariablePane;
-import org.alice.ide.codeeditor.ExpressionPropertyPane;
 
 /**
  * @author Dennis Cosgrove
