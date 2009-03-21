@@ -31,6 +31,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	private static java.util.Map< Class<?>, Class<?>> s_mapPrimitiveToWrapper;
 	static {
 		s_mapPrimitiveToWrapper = new java.util.HashMap< Class<?>, Class<?>>();
+		s_mapPrimitiveToWrapper.put( java.lang.Void.TYPE, java.lang.Void.class );
 		s_mapPrimitiveToWrapper.put( java.lang.Boolean.TYPE, java.lang.Boolean.class );
 		s_mapPrimitiveToWrapper.put( java.lang.Byte.TYPE, java.lang.Byte.class );
 		s_mapPrimitiveToWrapper.put( java.lang.Character.TYPE, java.lang.Character.class );
