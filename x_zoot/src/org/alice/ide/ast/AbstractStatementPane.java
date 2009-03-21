@@ -48,7 +48,6 @@ public abstract class AbstractStatementPane extends org.alice.ide.ast.StatementL
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
 		} );
-		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( this.statement ) );
 	}
 
 	@Override
