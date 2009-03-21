@@ -22,25 +22,21 @@
  */
 package org.alice.ide.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty > {
-	public ExpressionListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+
+class LocalDeclarationPane extends TypedDeclarationPane {
+	private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
+
+	public LocalDeclarationPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
+		this.localDeclaredInAlice = localDeclaredInAlice;
+		this.add( new org.alice.ide.ast.TypePane( this.localDeclaredInAlice.valueType.getValue() ) );
 	}
 	@Override
-	protected java.awt.Component createInterstitial( int i, final int N ) {
-		if( i < N - 1 ) {
-			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
-		} else {
-			return null;
-		}
-	}
-	@Override
-	protected javax.swing.JComponent createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)instance;
-		return new ExpressionPane( this.getFactory(), expression );
+	protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: popup menu" );
+		//javax.swing.JPopupMenu popupMenu = getIDE().createJPopupMenu( new alice.ide.operations.ast.RenameLocalDeclarationOperation( this.localDeclaredInAlice ) );
+		//popupMenu.show( e.getComponent(), e.getX(), e.getY() );
 	}
 }

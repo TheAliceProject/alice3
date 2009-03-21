@@ -1154,7 +1154,7 @@ public abstract class IDE extends zoot.ZFrame implements zoot.DragAndDropOperati
 	}
 
 	public static void main( String[] args ) {
-		//edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
+		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
 		IDE ide = new IDE() {
 
 			@Override

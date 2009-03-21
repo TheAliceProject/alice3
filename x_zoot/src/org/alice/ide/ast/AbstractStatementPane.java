@@ -28,30 +28,17 @@ import org.alice.ide.codeeditor.CommentPane;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStatementPane extends org.alice.ide.ast.StatementLikeSubstance {
-	private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.Statement, AbstractStatementPane > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.Statement, AbstractStatementPane >();
-	public static AbstractStatementPane lookup( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		return AbstractStatementPane.map.get( statement );
-	}
-	
-	public static AbstractStatementPane createPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
-		AbstractStatementPane rv;
-		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
-			rv = new ExpressionStatementPane( (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement, statementListProperty );
-		} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
-			rv = new CommentPane( (edu.cmu.cs.dennisc.alice.ast.Comment)statement, statementListProperty );
-		} else {
-			rv = new DefaultStatementPane( statement, statementListProperty );
-		}
-		return rv;
+	private Factory factory;
+	public Factory getFactory() {
+		return this.factory;
 	}
 	
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
-	public AbstractStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+	public AbstractStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( org.alice.ide.ast.StatementLikeSubstance.getClassFor(statement) );
+		this.factory = factory;
 		this.statement = statement;
-		
-		AbstractStatementPane.map.put( this.statement, this );
 		
 		this.owner = owner;
 		this.statement.isEnabled.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -63,6 +50,17 @@ public abstract class AbstractStatementPane extends org.alice.ide.ast.StatementL
 		} );
 		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( this.statement ) );
 	}
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.factory.getStatementMap().put( this.statement, this );
+	}
+	@Override
+	public void removeNotify() {
+		super.removeNotify();
+		this.factory.getStatementMap().remove( this.statement );
+	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
 		return this.statement;
@@ -70,6 +68,8 @@ public abstract class AbstractStatementPane extends org.alice.ide.ast.StatementL
 	public edu.cmu.cs.dennisc.alice.ast.StatementListProperty getOwner() {
 		return this.owner;
 	}
+	
+	//todo?
 	protected java.util.List< org.alice.ide.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.AbstractActionOperation > rv ) {
 		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
 			//pass
@@ -80,7 +80,9 @@ public abstract class AbstractStatementPane extends org.alice.ide.ast.StatementL
 				rv.add(  new org.alice.ide.operations.ast.EnableStatementOperation( this.statement ) );
 			}
 		}
-		rv.add(  new org.alice.ide.operations.ast.DeleteStatementOperation( this.statement, this.owner ) );
+		if( this.owner != null ) {
+			rv.add(  new org.alice.ide.operations.ast.DeleteStatementOperation( this.statement, this.owner ) );
+		}
 		return rv;
 	}
 //	@Override

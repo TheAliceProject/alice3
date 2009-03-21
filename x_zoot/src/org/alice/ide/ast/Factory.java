@@ -47,47 +47,36 @@ public abstract class Factory {
 	protected java.awt.Component createTextComponent( String text ) { 
 		return new zoot.ZLabel( text );
 	}
-	protected abstract javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty );
-	protected abstract javax.swing.JComponent createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
+	protected abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty );
+	protected abstract java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
+	
+	protected java.awt.Component createVariableDeclarationPane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice ) {
+		return new VariableDeclarationPane( variableDeclaredInAlice );
+	}
+	protected java.awt.Component createConstantDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constantDeclaredInAlice ) {
+		return new ConstantDeclarationPane( constantDeclaredInAlice );
+	}
+	
 	protected java.awt.Component createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property, boolean isBonusSpecified ) {
 		//todo:
 		String propertyName = property.getName();
 		//
 		
-		javax.swing.JComponent rv;
+		java.awt.Component rv;
 		if( isBonusSpecified ) {
-			class LocalTypedDeclarationPane extends TypedDeclarationPane {
-				private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
-				public LocalTypedDeclarationPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
-					this.localDeclaredInAlice = localDeclaredInAlice;
-				}
-				@Override
-				protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: popup menu" );
-					//javax.swing.JPopupMenu popupMenu = getIDE().createJPopupMenu( new alice.ide.operations.ast.RenameLocalDeclarationOperation( this.localDeclaredInAlice ) );
-					//popupMenu.show( e.getComponent(), e.getX(), e.getY() );
-				}
-			}
-			
-			if( propertyName.equals( "variable" ) ) {
-				edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)property.getValue();
-				rv = new LocalTypedDeclarationPane( variableDeclaredInAlice );
-				rv.add( new org.alice.ide.ast.TypePane( variableDeclaredInAlice.valueType.getValue() ) );
-				rv.add( new VariablePane( variableDeclaredInAlice ) );
-			} else if( propertyName.equals( "constant" ) ) {
-				edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constantDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue();
-				rv = new LocalTypedDeclarationPane( constantDeclaredInAlice );
-				rv.add( new org.alice.ide.ast.TypePane( constantDeclaredInAlice.valueType.getValue() ) );
-				rv.add( new ConstantPane( constantDeclaredInAlice ) );
+			if( "variable".equals( propertyName ) ) {
+				rv = this.createVariableDeclarationPane( (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)property.getValue() );
+			} else if( "constant".equals( propertyName ) ) {
+				rv = this.createConstantDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = new edu.cmu.cs.dennisc.moot.ZLabel( "TODO: " + propertyName );
+				rv = new zoot.ZLabel( "TODO: handle bonus specified: " + propertyName );
 			}
 		} else {
 			rv = null;
 			if( "operator".equals( propertyName ) ) {
 				String value = Factory.operatorMap.get( property.getValue() );
 				if( value != null ) {
-					edu.cmu.cs.dennisc.moot.ZLabel label = new edu.cmu.cs.dennisc.moot.ZLabel( value );
+					zoot.ZLabel label = new zoot.ZLabel( value );
 					label.setFontToScaledFont( 2.0f );
 					rv = label;
 				}
@@ -95,26 +84,28 @@ public abstract class Factory {
 			if( rv != null ) {
 				//pass
 			} else {
-				if( property instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionProperty ) {
-					rv = this.createExpressionPropertyPane( (edu.cmu.cs.dennisc.alice.ast.ExpressionProperty)property );
-				} else if( property instanceof edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > ) {
-					rv = new NodePropertyPane( (edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? >)property );
+				if( property instanceof edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > ) {
+					if( property instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionProperty ) {
+						rv = this.createExpressionPropertyPane( (edu.cmu.cs.dennisc.alice.ast.ExpressionProperty)property );
+					} else {
+						rv = new NodePropertyPane( this, (edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? >)property );
+					}
 				} else if( property instanceof edu.cmu.cs.dennisc.property.ListProperty< ? > ) {
 					if( property instanceof edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? > ) {
 						if( property instanceof edu.cmu.cs.dennisc.alice.ast.StatementListProperty ) {
-							rv = new StatementListPropertyPane( (edu.cmu.cs.dennisc.alice.ast.StatementListProperty)property );
+							rv = new StatementListPropertyPane( this, (edu.cmu.cs.dennisc.alice.ast.StatementListProperty)property );
 						} else if( property instanceof edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty ) {
 							rv = this.createArgumentListPropertyPane( (edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty)property );
 						} else if( property instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty ) {
-							rv = new ExpressionListPropertyPane( (edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty)property );
+							rv = new ExpressionListPropertyPane( this, (edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty)property );
 						} else {
-							rv = new DefaultNodeListPropertyPane( (edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? >)property );
+							rv = new DefaultNodeListPropertyPane( this, (edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? >)property );
 						}
 					} else {
-						rv = new DefaultListPropertyPane( (edu.cmu.cs.dennisc.property.ListProperty< ? >)property );
+						rv = new DefaultListPropertyPane( this, (edu.cmu.cs.dennisc.property.ListProperty< ? >)property );
 					}
 				} else {
-					rv = new InstancePropertyPane( property );
+					rv = new InstancePropertyPane( this, property );
 				}
 			}
 		}
@@ -222,5 +213,28 @@ public abstract class Factory {
 		String value = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Templates" );
 		org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
 		return createComponent( page, owner );
+	}
+	
+
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Statement, AbstractStatementPane > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.Statement, AbstractStatementPane >();
+	public java.util.Map< edu.cmu.cs.dennisc.alice.ast.Statement, AbstractStatementPane > getStatementMap() {
+		return this.map;
+	}
+	public AbstractStatementPane lookup( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		return this.map.get( statement );
+	}
+	public org.alice.ide.ast.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
+		org.alice.ide.ast.AbstractStatementPane rv;
+		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
+			rv = new org.alice.ide.ast.ExpressionStatementPane( this, (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement, statementListProperty );
+		} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
+			rv = new org.alice.ide.codeeditor.CommentPane( this, (edu.cmu.cs.dennisc.alice.ast.Comment)statement, statementListProperty );
+		} else {
+			rv = new org.alice.ide.ast.DefaultStatementPane( this, statement, statementListProperty );
+		}
+		return rv;
+	}
+	public final org.alice.ide.ast.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		return this.createStatementPane( statement, null );
 	}
 }

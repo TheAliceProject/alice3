@@ -27,8 +27,8 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends org.alice.ide.ast.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
-		super( property );
+	public ArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+		super( factory, property );
 	}
 	protected boolean isNameDesired( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
 		boolean rv;
@@ -56,6 +56,6 @@ public class ArgumentListPropertyPane extends org.alice.ide.ast.AbstractArgument
 				prefixPane = null;
 			}
 		}
-		return new ExpressionPropertyPane( argument.expression, true, prefixPane );
+		return new ExpressionPropertyPane( this.getFactory(), argument.expression, true, prefixPane );
 	}
 }

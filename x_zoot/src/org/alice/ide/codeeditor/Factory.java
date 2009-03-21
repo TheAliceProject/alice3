@@ -29,10 +29,10 @@ package org.alice.ide.codeeditor;
 public class Factory extends org.alice.ide.ast.Factory {
 	@Override
 	protected javax.swing.JComponent createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
-		return new ArgumentListPropertyPane( argumentListProperty );
+		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
 	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return new ExpressionPropertyPane( expressionProperty, true );
+		return new ExpressionPropertyPane( this, expressionProperty, true );
 	}
 }

@@ -27,8 +27,8 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractArgumentListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > {
-	public AbstractArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+	public AbstractArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
 	protected java.awt.Component createInterstitial( int i, final int N ) {

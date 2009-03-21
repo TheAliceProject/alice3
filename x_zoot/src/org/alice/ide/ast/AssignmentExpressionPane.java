@@ -29,7 +29,7 @@ import org.alice.ide.codeeditor.ExpressionPropertyPane;
  */
 public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane  {
 	private edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression;
-	public AssignmentExpressionPane( edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression ) {
+	public AssignmentExpressionPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression ) {
 		this.assignmentExpression = assignmentExpression;
 		edu.cmu.cs.dennisc.alice.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
 		
@@ -49,11 +49,11 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisP
 			org.alice.ide.ast.NodeNameLabel nameLabel = new org.alice.ide.ast.NodeNameLabel( fieldAccess.field.getValue() );
 			nameLabel.setFontToScaledFont( 1.5f );
 			if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
-				parent.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
+				parent.add( new ExpressionPropertyPane( factory, fieldAccess.expression, true ) );
 				parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( " . " ) );
 				parent.add( nameLabel );
 			} else {
-				parent.add( new ExpressionPropertyPane( fieldAccess.expression, true ) );
+				parent.add( new ExpressionPropertyPane( factory, fieldAccess.expression, true ) );
 			}
 			parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( " . " ) );
 			parent.add( nameLabel );
@@ -69,7 +69,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisP
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
 			parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( "[ " ) );
-			parent.add( new ExpressionPropertyPane( arrayAccess.index, true ) );
+			parent.add( new ExpressionPropertyPane( factory, arrayAccess.index, true ) );
 			parent.add( new edu.cmu.cs.dennisc.moot.ZLabel( " ]" ) );
 		}
 		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
@@ -77,6 +77,6 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisP
 		} else {
 			parent.add( new org.alice.ide.ast.GetsPane( true ) );
 		}
-		parent.add( new ExpressionPropertyPane( this.assignmentExpression.rightHandSide, true ) );
+		parent.add( new ExpressionPropertyPane( factory, this.assignmentExpression.rightHandSide, true ) );
 	}
 }

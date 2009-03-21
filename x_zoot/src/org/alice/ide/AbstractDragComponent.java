@@ -20,27 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.ast;
-
+package org.alice.ide;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty > {
-	public ExpressionListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+public abstract class AbstractDragComponent extends zoot.ZDragComponent {
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
 	}
-	@Override
-	protected java.awt.Component createInterstitial( int i, final int N ) {
-		if( i < N - 1 ) {
-			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
-		} else {
-			return null;
-		}
-	}
-	@Override
-	protected javax.swing.JComponent createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)instance;
-		return new ExpressionPane( this.getFactory(), expression );
+	public void fillBounds( java.awt.Graphics2D g2 ) {
+		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
 	}
 }

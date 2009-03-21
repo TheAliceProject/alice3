@@ -26,6 +26,7 @@ import org.alice.ide.ast.AbstractPropertyPane;
 import org.alice.ide.ast.EmptyExpression;
 import org.alice.ide.ast.EmptyExpressionPane;
 import org.alice.ide.ast.ExpressionPane;
+import org.alice.ide.ast.Factory;
 import org.alice.ide.ast.FieldAccessPane;
 import org.alice.ide.ast.TypeExpressionPane;
 
@@ -37,14 +38,14 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 	//      null value indicates no need to refresh yet
 	private Boolean isDropDownPotentiallyDesired = null;
 	private javax.swing.JComponent prefixPane;
-	public ExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired, javax.swing.JComponent prefixPane ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired, javax.swing.JComponent prefixPane ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 		this.isDropDownPotentiallyDesired = isDropDownPotentiallyDesired;
 		this.prefixPane = prefixPane;
 		this.refresh();
 	}
-	public ExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired ) {
-		this( property, isDropDownPotentiallyDesired, null );
+	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired ) {
+		this( factory, property, isDropDownPotentiallyDesired, null );
 	}
 	
 	@Override
@@ -61,7 +62,7 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 				} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
 					component = new org.alice.ide.ast.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
 				} else if( expression != null ){
-					component = new ExpressionPane( expression );
+					component = new ExpressionPane( this.getFactory(), expression );
 				} else {
 					component = new zoot.ZLabel( "todo: handle null" );
 				}

@@ -66,8 +66,4 @@ public class NodeUtilities {
 		}
 		return rv;
 	}
-	
-	public static org.alice.ide.ast.AbstractStatementPane createPane( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		return org.alice.ide.ast.AbstractStatementPane.createPane( statement, null );
-	}
 }

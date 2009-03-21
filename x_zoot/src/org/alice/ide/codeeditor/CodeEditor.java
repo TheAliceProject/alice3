@@ -23,6 +23,7 @@
 package org.alice.ide.codeeditor;
 
 import org.alice.ide.ast.AbstractStatementPane;
+import org.alice.ide.ast.Factory;
 import org.alice.ide.ast.ParameterPane;
 import org.alice.ide.ast.StatementListPropertyPane;
 import org.alice.ide.ast.ThisPane;
@@ -59,8 +60,8 @@ class TypedParameterPane extends TypedDeclarationPane {
 }
 
 class ParametersPane extends org.alice.ide.ast.AbstractListPropertyPane< NodeListProperty< ParameterDeclaredInAlice >> {
-	public ParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
+	public ParametersPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
 	}
 	
 	protected org.alice.ide.IDE getIDE() {
@@ -324,7 +325,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.code;
 			return method.getName();
 		} else if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.code;
+			//edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.code;
 			return "constructor";
 		} else {
 			return super.getName();
@@ -332,7 +333,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 	}
 	
 	protected javax.swing.JComponent createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		return new ParametersPane( code );
+		return new ParametersPane( this.getIDE().getCodeFactory(), code );
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
@@ -360,7 +361,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		this.add( new InstanceLine( this.code ) );
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
 		
-		StatementListPropertyPane bodyPane = new StatementListPropertyPane( code.getBodyProperty().getValue().statements ) {
+		StatementListPropertyPane bodyPane = new StatementListPropertyPane( this.getIDE().getCodeFactory(), code.getBodyProperty().getValue().statements ) {
 			@Override
 			protected boolean isMaximumSizeClampedToPreferredSize() {
 				return false;

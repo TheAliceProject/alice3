@@ -41,8 +41,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		rv.arguments.add( new edu.cmu.cs.dennisc.alice.ast.Argument( parameters.get( N-1 ), expression ) );
 		return rv;
 	}
-	public ExpressionStatementPane( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
-		super( expressionStatement, owner );
+	public ExpressionStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+		super( factory, expressionStatement, owner );
 		this.refresh();
 //		this.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
 //			public void mouseDragged( java.awt.event.MouseEvent e ) {
@@ -60,36 +60,41 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
-			this.add( new AssignmentExpressionPane( (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
+			this.add( new AssignmentExpressionPane( this.getFactory(), (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
 		} else {
-			this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( expressionStatement.expression.getValue() ) );
+			this.add( this.getFactory().createComponent( expressionStatement.expression.getValue() ) );
 			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) { 
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
-				edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
-				if( nextLonger != null ) {
-					final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
-					this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-					this.add( new DropDownPane( null, new zoot.ZLabel( "more" ), null ) {
-//						@Override
-//						protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
-//							super.handleLeftMousePress( e );
-//							java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
-//							edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-//							getIDE().promptUserForMore( lastParameter, e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-//								public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
-//									expressionStatement.expression.setValue( ExpressionStatementPane.createNextMethodInvocation( nextLongerMethod, e, methodInvocation ) );
-//									ExpressionStatementPane.this.refresh();
-//									//getIDE().unsetPreviousExpression();
-//									getIDE().markChanged( "more menu" );
-//								}
-//								public void handleCancelation() {
-//									getIDE().unsetPreviousExpression();
-//								}			
-//							} );
-//						}
-					} );
-					this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+				
+				
+				//todo:
+				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
+					if( nextLonger != null ) {
+						final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
+						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+						this.add( new DropDownPane( null, new zoot.ZLabel( "more" ), null ) {
+//							@Override
+//							protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
+//								super.handleLeftMousePress( e );
+//								java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
+//								edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+//								getIDE().promptUserForMore( lastParameter, e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+//									public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
+//										expressionStatement.expression.setValue( ExpressionStatementPane.createNextMethodInvocation( nextLongerMethod, e, methodInvocation ) );
+//										ExpressionStatementPane.this.refresh();
+//										//getIDE().unsetPreviousExpression();
+//										getIDE().markChanged( "more menu" );
+//									}
+//									public void handleCancelation() {
+//										getIDE().unsetPreviousExpression();
+//									}			
+//								} );
+//							}
+						} );
+						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+					}
 				}
 			}
 		}

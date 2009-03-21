@@ -27,12 +27,12 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
-	public DefaultNodeListPropertyPane( edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+	public DefaultNodeListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
 	protected javax.swing.JComponent createComponent( Object instance ) {
-		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
+		return (javax.swing.JComponent)this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
 	}
 }
 

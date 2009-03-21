@@ -26,13 +26,21 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 class FunctionInvocationTemplate extends MethodInvocationTemplate< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
-//	private static FunctionBorder singletonBorder = new FunctionBorder();
-//
+	//	private static FunctionBorder singletonBorder = new FunctionBorder();
+	//
 	public FunctionInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( method );
 		setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) );
 		setForeground( java.awt.Color.GRAY );
-//		setBorder( FunctionInvocationTemplate.singletonBorder );
+		//		setBorder( FunctionInvocationTemplate.singletonBorder );
+	}
+	@Override
+	protected java.awt.Component createSubjectComponent( Factory factory ) {
+		return new org.alice.ide.ast.ExpressionPane( factory, this.getMethodInvocation() ) {
+			@Override
+			protected boolean isKnurlDesired() {
+				return true;
+			}
+		};
 	}
 }
-

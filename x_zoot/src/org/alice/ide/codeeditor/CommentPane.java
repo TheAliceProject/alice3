@@ -23,6 +23,7 @@
 package org.alice.ide.codeeditor;
 
 import org.alice.ide.ast.AbstractStatementPane;
+import org.alice.ide.ast.Factory;
 
 /**
  * @author Dennis Cosgrove
@@ -125,8 +126,8 @@ class CommentLine extends javax.swing.JTextArea {
  * @author Dennis Cosgrove
  */
 public class CommentPane extends AbstractStatementPane {
-	public CommentPane( edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
-		super( comment, owner );
+	public CommentPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+		super( factory, comment, owner );
 		edu.cmu.cs.dennisc.moot.ZLabel label = new edu.cmu.cs.dennisc.moot.ZLabel( "comment:" );
 		label.setFontToDerivedFont( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
 		this.add( label );

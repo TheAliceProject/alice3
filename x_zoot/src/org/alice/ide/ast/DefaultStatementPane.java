@@ -26,8 +26,8 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class DefaultStatementPane extends AbstractStatementPane {
-	public DefaultStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
-		super( statement, owner );
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( statement ) );
+	public DefaultStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+		super( factory, statement, owner );
+		this.add( factory.createComponent( statement ) );
 	}
 }

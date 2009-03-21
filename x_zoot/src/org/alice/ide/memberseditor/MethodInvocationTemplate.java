@@ -27,7 +27,7 @@ package org.alice.ide.memberseditor;
  */
 abstract class DragSourcePane extends zoot.ZDragComponent {
 	public DragSourcePane() {
-		super( org.alice.ide.IDE.getSingleton().getDragAndDropOperation() );
+		this.setDragAndDropOperation( org.alice.ide.IDE.getSingleton().getDragAndDropOperation() );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
@@ -43,7 +43,19 @@ abstract class Template extends DragSourcePane {
 	public java.awt.Dimension getMaximumSize() {
 		return getPreferredSize();
 	}
-	public abstract void setExpression( edu.cmu.cs.dennisc.alice.ast.Expression expression );
+	@Override
+	public java.awt.Component getSubject() {
+		return this.getComponent( 0 );
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Node getNode();
+	protected abstract java.awt.Component createSubjectComponent( Factory factory );
+	public void setExpression( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		//java.awt.Component nodeComponent = getIDE().getTemplatesFactory().createComponent( this.getNode() );
+		java.awt.Component subject = createSubjectComponent( getIDE().getTemplatesFactory() );
+		this.removeAll();
+		//this.setSubject( subject );
+		this.add( subject );
+	}
 }
 
 /**
@@ -59,28 +71,17 @@ abstract class MethodInvocationTemplate<E> extends Template {
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 	}
 
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.Node getNode() {
+		return this.getMethodInvocation();
+	}
 	protected edu.cmu.cs.dennisc.alice.ast.MethodInvocation getMethodInvocation() {
 		return this.methodInvocation;
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() { 
-		return this.getMethodInvocation();
-	}
-		
+	
 	@Override
 	public void setExpression( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		//		if( expression != null ) {
-		//			if( expression.equals( this.methodInvocation.expression.getValue() ) ) {
-		//				//pass
-		//			} else {
 		this.methodInvocation.expression.setValue( expression );
-
-		this.removeAll();
-		java.awt.Component subject = org.alice.ide.IDE.getSingleton().getTemplatesFactory().createComponent( this.getNode() );
-		this.setSubject( subject );
-		this.add( subject );
-		//			}
-		//		} else {
-		//			this.removeAll();
-		//		}
+		super.setExpression( expression );
 	}
 }

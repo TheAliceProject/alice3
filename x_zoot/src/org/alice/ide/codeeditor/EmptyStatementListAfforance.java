@@ -39,5 +39,8 @@ public class EmptyStatementListAfforance extends org.alice.ide.ast.StatementLike
 	protected boolean isKnurlDesired() {
 		return false;
 	}
-	
+	@Override
+	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
+		return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+	}
 }

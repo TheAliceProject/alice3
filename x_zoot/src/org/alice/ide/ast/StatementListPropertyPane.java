@@ -29,8 +29,8 @@ import org.alice.ide.codeeditor.EmptyStatementListAfforance;
  */
 public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
 	public static final int INTRASTICIAL_PAD = 4;
-	public StatementListPropertyPane( final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
-		super( javax.swing.BoxLayout.PAGE_AXIS, property );
+	public StatementListPropertyPane( Factory factory, final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
+		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );
 		
 		int pad;
 		if( property.getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
@@ -41,6 +41,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		this.setLayout( new edu.cmu.cs.dennisc.swing.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, pad ) );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 12, 16 ) );
+		
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
 //				final alice.ide.IDE ide = alice.ide.IDE.getSingleton();
@@ -74,7 +75,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	@Override
 	protected javax.swing.JComponent createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)instance;
-		return AbstractStatementPane.createPane( statement, getProperty() );
+		return this.getFactory().createStatementPane( statement, getProperty() );
 	}
 	@Override
 	protected void refresh() {

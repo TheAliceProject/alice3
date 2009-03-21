@@ -25,7 +25,7 @@ package org.alice.ide.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionLikeSubstance extends org.alice.ide.AbstractControl {
+public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	private static final int INSET = 2;
 	private static final int DOCKING_BAY_INSET_LEFT = 8;
 
@@ -36,10 +36,16 @@ public abstract class ExpressionLikeSubstance extends org.alice.ide.AbstractCont
 	protected int getInsetTop() {
 		return ExpressionLikeSubstance.INSET + 2;
 	}
+	
 	@Override
-	protected int getInsetLeft() {
-		return ExpressionLikeSubstance.INSET + 4 + DOCKING_BAY_INSET_LEFT;
+	protected int getDockInsetLeft() {
+		return DOCKING_BAY_INSET_LEFT + 2;
 	}
+	@Override
+	protected int getInternalInsetLeft() {
+		return ExpressionLikeSubstance.INSET + 2;
+	}
+	
 	@Override
 	protected int getInsetBottom() {
 		return ExpressionLikeSubstance.INSET + 2;
@@ -63,18 +69,6 @@ public abstract class ExpressionLikeSubstance extends org.alice.ide.AbstractCont
 			return edu.cmu.cs.dennisc.alice.ui.BeveledShapeForType.createBeveledShapeFor( type, shape, ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, Math.min( height * 0.5f, 16.0f ) );
 //		}
 	}
-	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
-		if( this.isActive() ) {
-			if( this.isPressed() ) {
-				return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
-			} else {
-				return edu.cmu.cs.dennisc.awt.BevelState.RAISED;
-			}
-		} else {
-			return edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
-		}
-	}
-
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
@@ -86,8 +80,10 @@ public abstract class ExpressionLikeSubstance extends org.alice.ide.AbstractCont
 		edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
 		beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
 	}
+	
 	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+	protected boolean isKnurlDesired() {
+		return false;
 	}
 
 	public abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType();

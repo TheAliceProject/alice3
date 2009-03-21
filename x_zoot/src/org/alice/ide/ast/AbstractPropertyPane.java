@@ -26,6 +26,7 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property.InstanceProperty< ? > > extends edu.cmu.cs.dennisc.moot.ZBoxPane {
+	private Factory factory;
 	private E property;
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging(edu.cmu.cs.dennisc.property.event.PropertyEvent e) {
@@ -34,13 +35,19 @@ public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property
 			AbstractPropertyPane.this.refresh();
 		};
 	};
-	public AbstractPropertyPane( int direction ) {
+	public AbstractPropertyPane( Factory factory, int direction ) {
 		super( direction );
+		this.factory = factory;
 	}
-	public AbstractPropertyPane( int direction, E property ) {
-		super( direction );
+	public AbstractPropertyPane( Factory factory, int direction, E property ) {
+		this( factory, direction );
 		this.setProperty( property );
 	}
+	
+	protected Factory getFactory() {
+		return this.factory;
+	}
+	
 	public E getProperty() {
 		return this.property;
 	}

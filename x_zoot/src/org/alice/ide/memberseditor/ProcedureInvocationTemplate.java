@@ -25,14 +25,8 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-class ProcedureInvocationTemplate extends MethodInvocationTemplate< edu.cmu.cs.dennisc.alice.ast.ExpressionStatement > {
+class ProcedureInvocationTemplate extends org.alice.ide.ast.StatementLikeSubstance {
 	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		super( method );
-		setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class ) );
-		setForeground( java.awt.Color.GRAY );
+		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() {
-//		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( super.getMethodInvocation() );
-//	}
 }

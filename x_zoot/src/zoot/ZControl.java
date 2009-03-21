@@ -26,13 +26,35 @@ public abstract class ZControl extends ZComponent {
 	private ActionOperation leftButtonPressOperation;
 	private ActionOperation leftButtonDoubleClickOperation;
 	private ActionOperation popupOperation;
-	private ActionOperation dragOperation;
 
 	private boolean isActive = false;
 	private boolean isPressed = false;
 	//private boolean isSelected = false;
 
+	private zoot.event.ControlAdapter controlAdapter = null;
+	protected boolean isMouseListeningDesired() { 
+		return this.leftButtonPressOperation != null || this.leftButtonDoubleClickOperation != null || this.popupOperation != null;
+	}
 
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		if( isMouseListeningDesired() ) {
+			this.controlAdapter = new zoot.event.ControlAdapter( this );
+			this.addMouseListener( this.controlAdapter );
+			this.addMouseMotionListener( this.controlAdapter );
+		}
+	}
+	@Override
+	public void removeNotify() {
+		super.removeNotify();
+		if( this.controlAdapter != null ) {
+			this.removeMouseListener( this.controlAdapter );
+			this.removeMouseMotionListener( this.controlAdapter );
+			this.controlAdapter = null;
+		}
+	}
+	
 	private java.awt.event.MouseEvent mousePressedEvent = null;
 
 	public java.awt.event.MouseEvent getMousePressedEvent() {
@@ -113,13 +135,6 @@ public abstract class ZControl extends ZComponent {
 	public void setPopupOperation( ActionOperation popupOperation ) {
 		this.popupOperation = popupOperation;
 	}
-	public ActionOperation getDragOperation() {
-		return this.dragOperation;
-	}
-	public void setDragOperation( ActionOperation dragOperation ) {
-		this.dragOperation = dragOperation;
-	}
-
 	public boolean isActive() {
 		return this.isActive;
 	}

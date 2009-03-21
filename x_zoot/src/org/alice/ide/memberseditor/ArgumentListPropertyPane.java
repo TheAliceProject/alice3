@@ -26,8 +26,8 @@ package org.alice.ide.memberseditor;
  * @author Dennis Cosgrove
  */
 public class ArgumentListPropertyPane extends org.alice.ide.ast.AbstractArgumentListPropertyPane {
-	public ArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
-		super( property );
+	public ArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+		super( factory, property );
 	}
 	@Override
 	protected javax.swing.JComponent createComponent( Object instance ) {

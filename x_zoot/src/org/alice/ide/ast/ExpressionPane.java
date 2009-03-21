@@ -27,9 +27,9 @@ package org.alice.ide.ast;
  */
 public class ExpressionPane extends org.alice.ide.ast.ExpressionLikeSubstance  {
 	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public ExpressionPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		this.expression = expression;
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( this.expression ) );
+		this.add( factory.createComponent( this.expression ) );
 		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
 	}
 	@Override

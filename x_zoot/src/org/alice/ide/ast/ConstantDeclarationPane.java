@@ -22,25 +22,13 @@
  */
 package org.alice.ide.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty > {
-	public ExpressionListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
-	}
-	@Override
-	protected java.awt.Component createInterstitial( int i, final int N ) {
-		if( i < N - 1 ) {
-			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
-		} else {
-			return null;
-		}
-	}
-	@Override
-	protected javax.swing.JComponent createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)instance;
-		return new ExpressionPane( this.getFactory(), expression );
+
+class ConstantDeclarationPane extends LocalDeclarationPane {
+	public ConstantDeclarationPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constantDeclaredInAlice ) {
+		super( constantDeclaredInAlice );
+		this.add( new ConstantPane( constantDeclaredInAlice ) );
 	}
 }

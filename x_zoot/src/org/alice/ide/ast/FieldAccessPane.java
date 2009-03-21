@@ -39,7 +39,7 @@ public class FieldAccessPane extends org.alice.ide.ast.ExpressionLikeSubstance {
 			isExpressionDesired = true;
 		}
 		if( isExpressionDesired ) {
-			this.add( new ExpressionPropertyPane( this.fieldAccess.expression, false ) );
+			this.add( new ExpressionPropertyPane( getIDE().getCodeFactory(), this.fieldAccess.expression, false ) );
 			this.add( new zoot.ZLabel( ".") );
 		}
 		this.add( new org.alice.ide.ast.NodeNameLabel( this.fieldAccess.field.getValue() ) );

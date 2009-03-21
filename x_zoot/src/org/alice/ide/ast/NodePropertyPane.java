@@ -22,20 +22,19 @@
  */
 package org.alice.ide.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > > extends AbstractPropertyPane< E > {
-	public NodePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
+public class NodePropertyPane<E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? >> extends AbstractPropertyPane< E > {
+	public NodePropertyPane( Factory factory ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS );
 	}
-	public NodePropertyPane( E property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+	public NodePropertyPane( Factory factory, E property ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
 	protected void refresh() {
 		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createComponent( getProperty().getValue() ) );
+		this.add( this.getFactory().createComponent( getProperty().getValue() ) );
 	}
 }

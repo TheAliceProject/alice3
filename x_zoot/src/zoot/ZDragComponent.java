@@ -23,7 +23,7 @@
 package zoot;
 
 public abstract class ZDragComponent extends ZControl {
-	private java.awt.Component subject;
+//	private java.awt.Component subject;
 	private DragAndDropOperation dragAndDropOperation;
 	
 	private DragProxy dragProxy = null;
@@ -31,9 +31,7 @@ public abstract class ZDragComponent extends ZControl {
 	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	private DropReceptor currentDropReceptor = null;
 	
-	public ZDragComponent( /*ZComponent subject,*/ DragAndDropOperation dragAndDropOperation ) {
-//		this.subject = subject;
-		this.dragAndDropOperation = dragAndDropOperation;
+	public ZDragComponent() {
 		//this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		
@@ -53,15 +51,23 @@ public abstract class ZDragComponent extends ZControl {
 	}
 	
 	
+
+	@Override
+	protected boolean isMouseListeningDesired() { 
+		return super.isMouseListeningDesired() || this.dragAndDropOperation != null;
+	}
 	
 	public java.awt.Component getSubject() {
-		return this.subject;
+		return this;
 	}
-	public void setSubject( java.awt.Component subject ) {
-		this.subject = subject;
-	}
+//	public void setSubject( java.awt.Component subject ) {
+//		this.subject = subject;
+//	}
 	public DragAndDropOperation getDragAndDropOperation() {
 		return this.dragAndDropOperation;
+	}
+	public void setDragAndDropOperation( DragAndDropOperation dragAndDropOperation ) {
+		this.dragAndDropOperation = dragAndDropOperation;
 	}
 
 //	@Override
@@ -122,15 +128,16 @@ public abstract class ZDragComponent extends ZControl {
 		super.handleMouseDraggedOutsideOfClickThreshold( e );
 		if( isActuallyPotentiallyDraggable() ) {
 			ZManager.setDragInProgress( true );
+			java.awt.Component subject = this.getSubject();
 			if( this.dragProxy != null ) {
 				//pass
 			} else {
-				this.dragProxy = new DragProxy( this.subject );
+				this.dragProxy = new DragProxy( subject );
 			}
 			if( this.dropProxy != null ) {
 				//pass
 			} else {
-				this.dropProxy = new DropProxy( this.subject );
+				this.dropProxy = new DropProxy( subject );
 			}
 			this.updateProxySizes();
 			this.updateProxyPosition( e );

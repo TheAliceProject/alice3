@@ -27,8 +27,8 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.property.ListProperty > extends AbstractPropertyPane< E > {
-	public AbstractListPropertyPane( int axis, E property ) {
-		super( axis, property );
+	public AbstractListPropertyPane( Factory factory, int axis, E property ) {
+		super( factory, axis, property );
 		property.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.ListPropertyListener< E >() {
 
 			public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {

@@ -27,8 +27,8 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class DefaultListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.property.ListProperty<?> > {
-	public DefaultListPropertyPane( edu.cmu.cs.dennisc.property.ListProperty<?> property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+	public DefaultListPropertyPane( Factory factory, edu.cmu.cs.dennisc.property.ListProperty<?> property ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
 	protected javax.swing.JComponent createComponent( Object instance ) {

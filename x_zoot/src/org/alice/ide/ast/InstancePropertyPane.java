@@ -22,16 +22,15 @@
  */
 package org.alice.ide.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
-public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty<?> > {
-	public InstancePropertyPane() {
-		super( javax.swing.BoxLayout.LINE_AXIS );
+public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty< ? > > {
+	public InstancePropertyPane( Factory factory ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS );
 	}
-	public InstancePropertyPane( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
-		super( javax.swing.BoxLayout.LINE_AXIS, property );
+	public InstancePropertyPane( Factory factory, edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
 	protected void refresh() {

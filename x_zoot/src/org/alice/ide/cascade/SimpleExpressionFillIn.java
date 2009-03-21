@@ -36,7 +36,7 @@ public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expr
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			rv = new org.alice.ide.ast.FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
 		} else {
-			rv = new org.alice.ide.ast.ExpressionPane( expression );
+			rv = new org.alice.ide.ast.ExpressionPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), expression );
 		}
 		return rv;
 	}
