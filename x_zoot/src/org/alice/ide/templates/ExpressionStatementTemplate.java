@@ -32,7 +32,11 @@ public abstract class ExpressionStatementTemplate extends StatementTemplate {
 		this.expression = expression;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createEmptyStatement() {
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createIncompleteStatement() {
 		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( this.expression );
+	}
+	@Override
+	protected java.awt.Component getComponent() {
+		return this.getEmptyStatementPane();
 	}
 }

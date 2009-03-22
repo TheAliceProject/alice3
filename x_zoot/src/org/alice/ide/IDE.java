@@ -61,6 +61,7 @@ public abstract class IDE extends zoot.ZFrame implements zoot.DragAndDropOperati
 	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor();
 	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
 	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane = this.createEditorsTabbedPane();
+	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = this.createUbiquitousPane();
 	private zoot.ZLabel feedback = new zoot.ZLabel();
 
 	protected org.alice.ide.sceneeditor.SceneEditor createSceneEditor() {
@@ -74,6 +75,9 @@ public abstract class IDE extends zoot.ZFrame implements zoot.DragAndDropOperati
 	}
 	protected org.alice.ide.editorstabbedpane.EditorsTabbedPane createEditorsTabbedPane() {
 		return new org.alice.ide.editorstabbedpane.EditorsTabbedPane();
+	}
+	protected org.alice.ide.ubiquitouspane.UbiquitousPane createUbiquitousPane() {
+		return new org.alice.ide.ubiquitouspane.UbiquitousPane();
 	}
 
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
@@ -92,7 +96,7 @@ public abstract class IDE extends zoot.ZFrame implements zoot.DragAndDropOperati
 		this.addIDEListener( this.editorsTabbedPane );
 
 		Perspective perspective = new Perspective();
-		perspective.activate( this.sceneEditor, this.membersEditor, this.listenersEditor, this.editorsTabbedPane );
+		perspective.activate( this.sceneEditor, this.membersEditor, this.ubiquitousPane, this.listenersEditor, this.editorsTabbedPane );
 		this.getContentPane().setLayout( new java.awt.BorderLayout() );
 		this.getContentPane().add( perspective, java.awt.BorderLayout.CENTER );
 		this.getContentPane().add( this.feedback, java.awt.BorderLayout.SOUTH );

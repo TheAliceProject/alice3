@@ -25,8 +25,12 @@ package org.alice.ide.ubiquitouspane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractStatementWithBodyTemplate extends AbstractStatementTemplate {
-	public AbstractStatementWithBodyTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		super( cls );
+public class CountLoopTemplate extends AbstractStatementTemplate {
+	public CountLoopTemplate() {
+		super( edu.cmu.cs.dennisc.alice.ast.CountLoop.class );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createIncompleteStatement() {
+		return org.alice.ide.ast.NodeUtilities.createIncompleteCountLoop();
 	}
 }

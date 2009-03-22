@@ -25,12 +25,12 @@ package org.alice.ide.ubiquitouspane;
 /**
  * @author Dennis Cosgrove
  */
-public class DoInOrderTemplate extends AbstractStatementWithBodyTemplate {
+public class DoInOrderTemplate extends AbstractStatementTemplate {
 	public DoInOrderTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createEmptyStatement() {
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createIncompleteStatement() {
 		return org.alice.ide.ast.NodeUtilities.createDoInOrder();
 	}
 }

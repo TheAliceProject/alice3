@@ -27,6 +27,7 @@ package org.alice.ide.templates;
  */
 public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeSubstance {
 	private edu.cmu.cs.dennisc.alice.ast.Statement emptyStatement;
+	private java.awt.Component emptyStatementPane;
 
 	public StatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		super( cls );
@@ -45,7 +46,14 @@ public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeS
 	//			}
 	//		};
 	//	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createEmptyStatement();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createIncompleteStatement();
+	protected edu.cmu.cs.dennisc.alice.ast.Statement getEmptyStatement() {
+		return this.emptyStatement;
+	}
+	protected java.awt.Component getEmptyStatementPane() {
+		return this.emptyStatementPane;
+	}
+	protected abstract java.awt.Component getComponent();
 	protected zoot.DragAndDropOperation createDragAndDropOperation() {
 		return new org.alice.ide.operations.AbstractDragAndDropOperation() {
 			@Override
@@ -64,8 +72,9 @@ public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeS
 		if( this.emptyStatement != null ) {
 			//pass
 		} else {
-			this.emptyStatement = this.createEmptyStatement();
-			this.add( getIDE().getTemplatesFactory().createComponent( this.emptyStatement ) );
+			this.emptyStatement = this.createIncompleteStatement();
+			this.emptyStatementPane = getIDE().getTemplatesFactory().createStatementPane( this.emptyStatement );
+			this.add( this.getComponent() );
 		}
 		this.setDragAndDropOperation( this.dragAndDropOperation );
 		super.addNotify();

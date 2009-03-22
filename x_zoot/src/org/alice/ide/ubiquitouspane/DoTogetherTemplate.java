@@ -25,13 +25,12 @@ package org.alice.ide.ubiquitouspane;
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends swing.LineAxisPane {
-	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
-	private DoTogetherTemplate doTogetherTemplate = new DoTogetherTemplate();
-	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
-	public UbiquitousPane() {
-		this.add( this.doInOrderTemplate );
-		this.add( this.countLoopTemplate );
-		this.add( this.doTogetherTemplate );
+public class DoTogetherTemplate extends AbstractStatementTemplate {
+	public DoTogetherTemplate() {
+		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createIncompleteStatement() {
+		return org.alice.ide.ast.NodeUtilities.createDoTogether();
 	}
 }

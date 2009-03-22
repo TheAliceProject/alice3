@@ -22,14 +22,112 @@
  */
 package org.alice.ide.ubiquitouspane;
 
+///**
+// * @author Dennis Cosgrove
+// */
+//class UbiquitousStatementToolTip extends javax.swing.JToolTip {
+//	private java.awt.Component emptyStatementPane;
+//	private java.awt.image.BufferedImage image;
+//	private javax.swing.Icon icon;
+//
+//	UbiquitousStatementToolTip( java.awt.Component emptyStatementPane ) {
+//		this.emptyStatementPane = emptyStatementPane;
+////		this.setOpaque( false );
+////		this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+//	}
+//	@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		return this.emptyStatementPane.getPreferredSize();
+//	}
+//	@Override
+//	protected void paintComponent( java.awt.Graphics g ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "UbiquitousStatementToolTip", g );
+//		if( this.icon != null ) {
+//			//pass
+//		} else {
+//			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( this.emptyStatementPane );
+//			this.icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( this.emptyStatementPane, org.alice.ide.IDE.getSingleton().getContentPane() );
+//		}
+//		java.awt.Rectangle bounds = g.getClipBounds();
+//		g.clearRect( bounds.x, bounds.y, bounds.width, bounds.height );
+//		this.icon.paintIcon( this, g, 0, 0 );
+////		if( image != null && image.getWidth() == this.getWidth() && image.getHeight() == this.getHeight() ) {
+////			//pass
+////		} else {
+////			image = new java.awt.image.BufferedImage( getWidth(), getHeight(), java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
+////		}
+////
+////		java.awt.Graphics gImage = image.getGraphics();
+////		gImage.setColor( this.emptyStatementPane.getBackground() );
+////		this.emptyStatementPane.print( gImage );
+////		//this.emptyStatementPane.paint( gImage );
+////		gImage.dispose();
+////		g.drawImage( image, 0, 0, this );
+//	}
+//}
+//
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStatementTemplate extends org.alice.ide.templates.StatementTemplate {
-	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls;
+	private zoot.ZLabel label = new zoot.ZLabel();
+//	private UbiquitousStatementToolTip toolTip;
+	private edu.cmu.cs.dennisc.swing.IconToolTip iconToolTip;
 	public AbstractStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		super( null );
-		this.cls = cls;
+		super( cls );
+		String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates" );
+		//text = "label: " + text;
+		this.label.setText( text );
+		this.setToolTipText( "" );
 	}
+	@Override
+	public javax.swing.JToolTip createToolTip() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "createToolTip" );
+//		if( this.toolTip != null ) {
+//			//pass
+//		} else {
+//			this.toolTip = new UbiquitousStatementToolTip( this.getEmptyStatementPane() );
+//		}
+//		return this.toolTip;
+//		return new UbiquitousStatementToolTip( this.getEmptyStatementPane() );
+		if( this.iconToolTip != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( this.getEmptyStatementPane() );
+//			((javax.swing.JComponent)this.getEmptyStatementPane()).revalidate();
+			javax.swing.Icon icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( this.getEmptyStatementPane(), this.getIDE().getContentPane() );
+			this.iconToolTip = new edu.cmu.cs.dennisc.swing.IconToolTip( icon );
+		}
+		return this.iconToolTip;
+	}
+	@Override
+	protected java.awt.Component getComponent() {
+		return this.label;
+	}
+//	@Override
+//	public java.awt.Dimension getMinimumSize() {
+//		java.awt.Dimension rv = super.getMinimumSize();
+//		rv.width = 24;
+//		return rv;
+//	}
+//		@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		java.awt.Dimension rv = this.label.getPreferredSize();
+//		javax.swing.border.Border border = this.getBorder();
+//		java.awt.Insets insets = border.getBorderInsets( this );
+//		rv.width += insets.left;
+//		rv.width += insets.right;
+//		rv.height += insets.top;
+//		rv.height += insets.bottom;
+//		return rv;
+//	}
+//	@Override
+//	protected void paintChildren( java.awt.Graphics g ) {
+//		javax.swing.border.Border border = this.getBorder();
+//		java.awt.Insets insets = border.getBorderInsets( this );
+//		g.translate( insets.left, insets.top );
+//		this.label.paint( g );
+//		g.translate( -insets.left, -insets.top );
+//	}
 	
 }

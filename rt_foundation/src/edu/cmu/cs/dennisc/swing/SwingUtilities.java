@@ -27,7 +27,7 @@ package edu.cmu.cs.dennisc.swing;
  */
 public class SwingUtilities {
 	public static void doLayout( java.awt.Component c ) {
-		//c.doLayout();
+//		c.doLayout();
 		if( c instanceof java.awt.Container ) {
 			java.awt.Container container = (java.awt.Container)c;
 			for( java.awt.Component component : container.getComponents() ) {

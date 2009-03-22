@@ -39,10 +39,10 @@ public class Perspective extends Component {
 		this.add( this.root );
 	}
 	
-	public void activate( java.awt.Component sceneEditor, java.awt.Component membersEditor, java.awt.Component listenersEditor, java.awt.Component tabbedPane ) {
+	public void activate( java.awt.Component sceneEditor, java.awt.Component membersEditor, java.awt.Component ubiquitousPane, java.awt.Component listenersEditor, java.awt.Component tabbedPane ) {
 		this.left.setTopComponent( sceneEditor );
 		this.left.setBottomComponent( membersEditor );
-		this.right.setTopComponent( listenersEditor );
+		this.right.setTopComponent( ubiquitousPane );
 		this.right.setBottomComponent( tabbedPane );
 	}
 	public void deactivate( java.awt.Container container ) {
