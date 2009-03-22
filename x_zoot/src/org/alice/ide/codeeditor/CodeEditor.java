@@ -433,7 +433,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 	//		getIDE().removeDropReceptor( this );
 	//	}
 	public boolean isPotentiallyAcceptingOf( zoot.ZDragComponent source ) {
-		if( source instanceof org.alice.ide.templates.StatementTemplatePane ) {
+		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
 			return false;
@@ -558,7 +558,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 
 	}
 	public void dragDropped( final zoot.ZDragComponent source, final java.awt.event.MouseEvent e ) {
-		if( source instanceof org.alice.ide.templates.StatementTemplatePane ) {
+		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Statement, Object > {
 				private zoot.event.DragAndDropEvent dragAndDropEvent;
 				private StatementListPropertyPane statementListPropertyPane;
@@ -572,8 +572,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 				@Override
 				protected edu.cmu.cs.dennisc.alice.ast.Statement doInBackground() throws java.lang.Exception {
 					zoot.ZDragComponent potentiallyDraggablePane = this.dragAndDropEvent.getTypedSource();
-					if( potentiallyDraggablePane instanceof org.alice.ide.templates.StatementTemplatePane ) {
-						org.alice.ide.templates.StatementTemplatePane statementTemplatePane = (org.alice.ide.templates.StatementTemplatePane)potentiallyDraggablePane;
+					if( potentiallyDraggablePane instanceof org.alice.ide.templates.StatementTemplate ) {
+						org.alice.ide.templates.StatementTemplate statementTemplatePane = (org.alice.ide.templates.StatementTemplate)potentiallyDraggablePane;
 //						try {
 
 						

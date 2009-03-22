@@ -25,10 +25,14 @@ package org.alice.ide.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
-	//private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method ) );
-		//this.method = method;
+public abstract class ExpressionStatementTemplate extends StatementTemplate {
+	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+	public ExpressionStatementTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
+		this.expression = expression;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createEmptyStatement() {
+		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( this.expression );
 	}
 }

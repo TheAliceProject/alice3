@@ -17,7 +17,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_generated_depended_upon"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_private"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch_gallery_generated"/>
+	<classpathentry kind="lib" path="C:/Program Files/Alice/3.beta.0026/application/lg_walkandtouch.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

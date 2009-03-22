@@ -23,10 +23,6 @@
 package zoot;
 
 public abstract class ZComponent extends swing.Pane {
-	public ZComponent() {
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
-	}
-	
 	protected abstract int getInsetTop();
 	protected abstract int getInsetLeft();
 	protected abstract int getInsetBottom();
@@ -36,6 +32,11 @@ public abstract class ZComponent extends swing.Pane {
 	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 	
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
+	}
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;

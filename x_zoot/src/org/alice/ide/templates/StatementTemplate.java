@@ -25,13 +25,11 @@ package org.alice.ide.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementTemplatePane extends org.alice.ide.ast.StatementLikeSubstance {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
+public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeSubstance {
+	private edu.cmu.cs.dennisc.alice.ast.Statement emptyStatement;
 
-	public StatementTemplatePane( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
-		this.node = node;
-		this.add( getIDE().getTemplatesFactory().createComponent( this.node ) );
+	public StatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+		super( cls );
 	}
 
 	protected zoot.DragAndDropOperation dragAndDropOperation;
@@ -47,6 +45,7 @@ public abstract class StatementTemplatePane extends org.alice.ide.ast.StatementL
 	//			}
 	//		};
 	//	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createEmptyStatement();
 	protected zoot.DragAndDropOperation createDragAndDropOperation() {
 		return new org.alice.ide.operations.AbstractDragAndDropOperation() {
 			@Override
@@ -62,6 +61,12 @@ public abstract class StatementTemplatePane extends org.alice.ide.ast.StatementL
 		} else {
 			this.dragAndDropOperation = this.createDragAndDropOperation();
 		}
+		if( this.emptyStatement != null ) {
+			//pass
+		} else {
+			this.emptyStatement = this.createEmptyStatement();
+			this.add( getIDE().getTemplatesFactory().createComponent( this.emptyStatement ) );
+		}
 		this.setDragAndDropOperation( this.dragAndDropOperation );
 		super.addNotify();
 	}
@@ -71,7 +76,7 @@ public abstract class StatementTemplatePane extends org.alice.ide.ast.StatementL
 		this.setPopupOperation( null );
 	}
 
-	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() {
-		return this.node;
-	}
+//	protected edu.cmu.cs.dennisc.alice.ast.Statement getEmptyStatement() {
+//		return this.emptyStatement;
+//	}
 }

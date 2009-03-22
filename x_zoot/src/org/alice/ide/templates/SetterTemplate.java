@@ -25,10 +25,10 @@ package org.alice.ide.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class SetterTemplate extends StatementTemplatePane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+public class SetterTemplate extends ExpressionStatementTemplate {
+	//private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field ) );
-		this.field = field;
+		//this.field = field;
 	}
 }

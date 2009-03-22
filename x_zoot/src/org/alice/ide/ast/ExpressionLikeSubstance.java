@@ -32,27 +32,53 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	public ExpressionLikeSubstance() {
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 	}
+	
+	private boolean isVoid() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = getExpressionType();
+		return type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
+	}
+	
 	@Override
 	protected int getInsetTop() {
-		return ExpressionLikeSubstance.INSET + 2;
+		if( this.isVoid() ) {
+			return 0;
+		} else {
+			return ExpressionLikeSubstance.INSET + 2;
+		}
 	}
 	
 	@Override
 	protected int getDockInsetLeft() {
-		return DOCKING_BAY_INSET_LEFT + 2;
+		if( this.isVoid() ) {
+			return 0;
+		} else {
+			return DOCKING_BAY_INSET_LEFT + 2;
+		}
 	}
 	@Override
 	protected int getInternalInsetLeft() {
-		return ExpressionLikeSubstance.INSET + 2;
+		if( this.isVoid() ) {
+			return 0;
+		} else {
+			return ExpressionLikeSubstance.INSET + 2;
+		}
 	}
 	
 	@Override
 	protected int getInsetBottom() {
-		return ExpressionLikeSubstance.INSET + 2;
+		if( this.isVoid() ) {
+			return 0;
+		} else {
+			return ExpressionLikeSubstance.INSET + 2;
+		}
 	}
 	@Override
 	protected int getInsetRight() {
-		return ExpressionLikeSubstance.INSET;
+		if( this.isVoid() ) {
+			return 0;
+		} else {
+			return ExpressionLikeSubstance.INSET;
+		}
 	}
 
 	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape( int x, int y, int width, int height ) {
@@ -76,9 +102,13 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
-		edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
-		beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
+		if( this.isVoid() ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
+			edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
+			beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
+		}
 	}
 	
 	@Override
