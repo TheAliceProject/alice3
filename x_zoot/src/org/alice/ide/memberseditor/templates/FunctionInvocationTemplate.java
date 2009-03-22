@@ -20,15 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.templates;
+package org.alice.ide.memberseditor.templates;
+
+import org.alice.ide.templates.ExpressionTemplate;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetterTemplate extends ExpressionStatementTemplate {
-	//private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field ) );
-		//this.field = field;
+public class FunctionInvocationTemplate extends ExpressionTemplate {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
+	public FunctionInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		super( org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method ) );
+		this.method = method;
 	}
 }

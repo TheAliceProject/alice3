@@ -20,17 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.ubiquitouspane;
+package org.alice.ide.memberseditor.templates;
+
+import org.alice.ide.templates.ExpressionTemplate;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CountLoopTemplate extends AbstractStatementTemplate {
-	public CountLoopTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.CountLoop.class );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createIncompleteStatement() {
-		return org.alice.ide.ast.NodeUtilities.createIncompleteCountLoop();
+public class GetterTemplate extends ExpressionTemplate {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	public GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
+		this.field = field;
 	}
 }

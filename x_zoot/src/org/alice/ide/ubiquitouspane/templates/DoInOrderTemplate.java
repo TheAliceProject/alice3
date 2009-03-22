@@ -20,17 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.ubiquitouspane;
+package org.alice.ide.ubiquitouspane.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogetherTemplate extends AbstractStatementTemplate {
-	public DoTogetherTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createIncompleteStatement() {
-		return org.alice.ide.ast.NodeUtilities.createDoTogether();
+public class DoInOrderTemplate extends UbiquitousStatementTemplate {
+	public DoInOrderTemplate() {
+		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, org.alice.ide.ast.NodeUtilities.createDoInOrder() );
 	}
 }

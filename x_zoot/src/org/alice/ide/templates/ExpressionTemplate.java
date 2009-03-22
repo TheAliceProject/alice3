@@ -25,10 +25,22 @@ package org.alice.ide.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class GetterTemplate extends ExpressionTemplatePane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
-		this.field = field;
+public abstract class ExpressionTemplate extends org.alice.ide.ast.ExpressionLikeSubstance {
+	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+	public ExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		this.expression = expression;
+		this.add( getIDE().getTemplatesFactory().createComponent( this.expression ) );
+		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
+	}
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getExpression() {
+		return this.expression;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+		return this.expression.getType();
+	}
+	@Override
+	protected boolean isPressed() {
+		return false;
 	}
 }

@@ -20,7 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.ubiquitouspane;
+package org.alice.ide.ubiquitouspane.templates;
 
 ///**
 // * @author Dennis Cosgrove
@@ -69,15 +69,25 @@ package org.alice.ide.ubiquitouspane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractStatementTemplate extends org.alice.ide.templates.StatementTemplate {
+public abstract class UbiquitousStatementTemplate extends org.alice.ide.templates.StatementTemplate {
 	private zoot.ZLabel label = new zoot.ZLabel();
+	private edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement;
+	private java.awt.Component incompleteStatementPane;
+	protected edu.cmu.cs.dennisc.alice.ast.Statement getIncompleteStatement() {
+		return this.incompleteStatement;
+	}
+	protected java.awt.Component getIncompleteStatementPane() {
+		return this.incompleteStatementPane;
+	}
 //	private UbiquitousStatementToolTip toolTip;
 	private edu.cmu.cs.dennisc.swing.IconToolTip iconToolTip;
-	public AbstractStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
+	public UbiquitousStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
 		super( cls );
+		this.incompleteStatement = incompleteStatement;
 		String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates" );
 		//text = "label: " + text;
 		this.label.setText( text );
+		this.add( this.label );
 		this.setToolTipText( "" );
 	}
 	@Override
@@ -93,17 +103,23 @@ public abstract class AbstractStatementTemplate extends org.alice.ide.templates.
 		if( this.iconToolTip != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( this.getEmptyStatementPane() );
+			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( this.incompleteStatementPane );
 //			((javax.swing.JComponent)this.getEmptyStatementPane()).revalidate();
-			javax.swing.Icon icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( this.getEmptyStatementPane(), this.getIDE().getContentPane() );
+			javax.swing.Icon icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( this.incompleteStatementPane, this );
 			this.iconToolTip = new edu.cmu.cs.dennisc.swing.IconToolTip( icon );
 		}
 		return this.iconToolTip;
 	}
 	@Override
-	protected java.awt.Component getComponent() {
-		return this.label;
+	public void addNotify() {
+		if( this.incompleteStatementPane != null ) {
+			//pass
+		} else {
+			this.incompleteStatementPane = getIDE().getTemplatesFactory().createStatementPane( this.incompleteStatement );
+		}
+		super.addNotify();
 	}
+	
 //	@Override
 //	public java.awt.Dimension getMinimumSize() {
 //		java.awt.Dimension rv = super.getMinimumSize();

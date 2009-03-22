@@ -20,15 +20,28 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.templates;
+package org.alice.ide.memberseditor.templates;
+
+import org.alice.ide.templates.StatementTemplate;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
-	//private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method ) );
-		//this.method = method;
+public abstract class ExpressionStatementTemplate extends StatementTemplate {
+	private edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression;
+	private java.awt.Component incompleteExpressionPane;
+	public ExpressionStatementTemplate( edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression ) {
+		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
+		this.incompleteExpression = incompleteExpression;
+	}
+	@Override
+	public void addNotify() {
+		if( this.incompleteExpressionPane != null ) {
+			//pass
+		} else {
+			this.incompleteExpressionPane = getIDE().getTemplatesFactory().createComponent( this.incompleteExpression );
+			this.add( this.incompleteExpressionPane );
+		}
+		super.addNotify();
 	}
 }

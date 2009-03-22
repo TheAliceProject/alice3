@@ -47,11 +47,11 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 			java.util.List< java.awt.Component > components = new java.util.LinkedList< java.awt.Component >();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
-			components.add( new org.alice.ide.templates.GetterTemplate( field ) );
+			components.add( new org.alice.ide.memberseditor.templates.GetterTemplate( field ) );
 			if( field.isFinal() ) {
 				//pass
 			} else {
-				components.add( new org.alice.ide.templates.SetterTemplate( field ) );
+				components.add( new org.alice.ide.memberseditor.templates.SetterTemplate( field ) );
 			}
 			rv = new java.awt.Component[ components.size() ];
 			components.toArray( rv );

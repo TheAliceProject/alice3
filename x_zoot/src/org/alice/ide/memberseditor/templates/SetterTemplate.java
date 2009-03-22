@@ -20,27 +20,15 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.templates;
+package org.alice.ide.memberseditor.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionTemplatePane extends org.alice.ide.ast.ExpressionLikeSubstance {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionTemplatePane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		this.expression = expression;
-		this.add( getIDE().getTemplatesFactory().createComponent( this.expression ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
-	}
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getExpression() {
-		return this.expression;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.expression.getType();
-	}
-	@Override
-	protected boolean isPressed() {
-		return false;
+public class SetterTemplate extends ExpressionStatementTemplate {
+	//private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field ) );
+		//this.field = field;
 	}
 }

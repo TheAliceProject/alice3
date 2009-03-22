@@ -20,23 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.templates;
+package org.alice.ide.ubiquitouspane.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionStatementTemplate extends StatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionStatementTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
-		this.expression = expression;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createIncompleteStatement() {
-		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( this.expression );
-	}
-	@Override
-	protected java.awt.Component getComponent() {
-		return this.getEmptyStatementPane();
+public class DoTogetherTemplate extends UbiquitousStatementTemplate {
+	public DoTogetherTemplate() {
+		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class, org.alice.ide.ast.NodeUtilities.createDoTogether() );
 	}
 }

@@ -22,6 +22,10 @@
  */
 package org.alice.ide.ubiquitouspane;
 
+import org.alice.ide.ubiquitouspane.templates.CountLoopTemplate;
+import org.alice.ide.ubiquitouspane.templates.DoInOrderTemplate;
+import org.alice.ide.ubiquitouspane.templates.DoTogetherTemplate;
+
 /**
  * @author Dennis Cosgrove
  */

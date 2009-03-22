@@ -47,6 +47,6 @@ class TypeProceduresPane extends AbstractTypeMethodsPane {
 	}
 	@Override
 	protected javax.swing.JComponent createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		return new org.alice.ide.templates.ProcedureInvocationTemplate( method );
+		return new org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate( method );
 	}
 }
