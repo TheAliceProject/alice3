@@ -43,9 +43,7 @@ class TypeFunctionsPane extends AbstractTypeMethodsPane {
 	}
 	@Override
 	protected javax.swing.JComponent createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		FunctionInvocationTemplate rv = new FunctionInvocationTemplate( method );
-		//rv.setExpression( getIDE().createInstanceExpression() );
-		return rv;
+		return new org.alice.ide.templates.FunctionInvocationTemplate( method );
 	}
 	@Override
 	protected javax.swing.JComponent createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {

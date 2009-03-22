@@ -20,12 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.memberseditor;
+package org.alice.ide.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-class GetterTemplate extends ExpressionTemplatePane {
+public class GetterTemplate extends ExpressionTemplatePane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
