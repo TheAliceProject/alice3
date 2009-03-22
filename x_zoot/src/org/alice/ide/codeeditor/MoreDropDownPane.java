@@ -20,29 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations;
+package org.alice.ide.codeeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDragAndDropOperation extends zoot.AbstractDragAndDropOperation {
-	protected abstract zoot.ActionOperation createDropOperation(); 
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+public class MoreDropDownPane extends DropDownPane {
+	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
+	public MoreDropDownPane( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
+		super( null, new zoot.ZLabel( "more"), null );
+		this.expressionStatement = expressionStatement;
+		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInMoreOperation( this.expressionStatement ) );
 	}
-	public java.util.List< ? extends zoot.DropReceptor > getPotentialDropReceptors( zoot.ZDragComponent source ) {
-		return getIDE().getPotentialDropReceptors( source );
-	}
-	public void handleDragEntered( zoot.DropReceptor dropReceptor ) {
-		getIDE().handleDragEntered( dropReceptor );
-	}
-	public void handleDragExited( zoot.DropReceptor dropReceptor ) {
-		getIDE().handleDragExited( dropReceptor );
-	}
-	public void handleDragStarted( zoot.DropReceptor dropReceptor ) {
-		getIDE().handleDragExited( dropReceptor );
-	}
-	public void handleDragStopped( zoot.DropReceptor dropReceptor ) {
-		getIDE().handleDragExited( dropReceptor );
+	public edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getMethod() {
+		return this.expressionStatement;
 	}
 }

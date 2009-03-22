@@ -48,7 +48,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	
 	@Override
 	protected int getDockInsetLeft() {
-		return 0;
+		return 2;
 	}
 	@Override
 	protected int getInternalInsetLeft() {
@@ -70,8 +70,8 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	}
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		edu.cmu.cs.dennisc.awt.BeveledRoundRectangle beveledRoundRectangle = new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( x, y, width-1, height-1, 8, 8 );
-		beveledRoundRectangle.paint( g2, this.getBevelState(), 1.0f, 1.0f, 1.0f );
+		edu.cmu.cs.dennisc.awt.BeveledRoundRectangle beveledRoundRectangle = new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( x+1, y+1, width-3, height-3, 8, 8 );
+		beveledRoundRectangle.paint( g2, this.getBevelState(), 3.0f, 1.0f, 1.0f );
 	}
 	
 //	@Override

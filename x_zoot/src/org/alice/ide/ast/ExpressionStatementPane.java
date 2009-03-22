@@ -22,27 +22,19 @@
  */
 package org.alice.ide.ast;
 
-import org.alice.ide.codeeditor.DropDownPane;
-
 /**
  * @author Dennis Cosgrove
  */
 public class ExpressionStatementPane extends AbstractStatementPane {
-	private static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createNextMethodInvocation( edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextMethod, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
-		rv.expression.setValue( prevMethodInvocation.expression.getValue() );
-		rv.method.setValue( nextMethod );
-		
-		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextMethod.getParameters();
-		final int N = parameters.size();
-		for( int i=0; i<N-1; i++ ) {
-			rv.arguments.add( new edu.cmu.cs.dennisc.alice.ast.Argument( parameters.get( i ), prevMethodInvocation.arguments.get( i ).expression.getValue() ) );
-		}
-		rv.arguments.add( new edu.cmu.cs.dennisc.alice.ast.Argument( parameters.get( N-1 ), expression ) );
-		return rv;
-	}
 	public ExpressionStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, expressionStatement, owner );
+		expressionStatement.expression.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				ExpressionStatementPane.this.refresh();
+			}
+		} );
 		this.refresh();
 //		this.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
 //			public void mouseDragged( java.awt.event.MouseEvent e ) {
@@ -74,33 +66,15 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					if( nextLonger != null ) {
 						final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
 						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-						this.add( new DropDownPane( null, new zoot.ZLabel( "more" ), null ) {
-//							@Override
-//							protected void handleLeftMousePress( java.awt.event.MouseEvent e ) {
-//								super.handleLeftMousePress( e );
-//								java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
-//								edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-//								getIDE().promptUserForMore( lastParameter, e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-//									public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
-//										expressionStatement.expression.setValue( ExpressionStatementPane.createNextMethodInvocation( nextLongerMethod, e, methodInvocation ) );
-//										ExpressionStatementPane.this.refresh();
-//										//getIDE().unsetPreviousExpression();
-//										getIDE().markChanged( "more menu" );
-//									}
-//									public void handleCancelation() {
-//										getIDE().unsetPreviousExpression();
-//									}			
-//								} );
-//							}
-						} );
-						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+						this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
 					}
 				}
 			}
 		}
-		if( "java".equals( getIDE().getLocale().getVariant() ) ) {
+		if( getIDE().isJava() ) {
 			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( ";" ) );
 		}
+		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		ExpressionStatementPane.this.revalidate();
 		ExpressionStatementPane.this.repaint();
 	}

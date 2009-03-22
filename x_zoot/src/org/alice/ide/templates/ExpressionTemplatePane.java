@@ -39,4 +39,8 @@ public abstract class ExpressionTemplatePane extends org.alice.ide.ast.Expressio
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 		return this.expression.getType();
 	}
+	@Override
+	protected boolean isPressed() {
+		return false;
+	}
 }

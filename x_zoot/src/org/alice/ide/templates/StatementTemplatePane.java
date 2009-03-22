@@ -27,11 +27,50 @@ package org.alice.ide.templates;
  */
 public abstract class StatementTemplatePane extends org.alice.ide.ast.StatementLikeSubstance {
 	private edu.cmu.cs.dennisc.alice.ast.Node node;
+
 	public StatementTemplatePane( edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 		this.node = node;
 		this.add( getIDE().getTemplatesFactory().createComponent( this.node ) );
 	}
+
+	protected zoot.DragAndDropOperation dragAndDropOperation;
+
+	@Override
+	protected boolean isPressed() {
+		return false;
+	}
+	//	protected zoot.ActionOperation createPopupOperation() {
+	//		return new zoot.AbstractActionOperation() {
+	//			public void perform( zoot.ActionContext actionContext ) {
+	//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle popupOperation" );
+	//			}
+	//		};
+	//	}
+	protected zoot.DragAndDropOperation createDragAndDropOperation() {
+		return new org.alice.ide.operations.AbstractDragAndDropOperation() {
+			@Override
+			protected zoot.ActionOperation createDropOperation() {
+				return null;
+			}
+		};
+	}
+	@Override
+	public void addNotify() {
+		if( this.dragAndDropOperation != null ) {
+			//pass
+		} else {
+			this.dragAndDropOperation = this.createDragAndDropOperation();
+		}
+		this.setDragAndDropOperation( this.dragAndDropOperation );
+		super.addNotify();
+	}
+	@Override
+	public void removeNotify() {
+		super.removeNotify();
+		this.setPopupOperation( null );
+	}
+
 	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() {
 		return this.node;
 	}

@@ -43,9 +43,9 @@ public abstract class AbstractStatementPane extends org.alice.ide.ast.StatementL
 		this.owner = owner;
 		this.statement.isEnabled.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				AbstractStatementPane.this.repaint();
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				AbstractStatementPane.this.repaint();
 			}
 		} );
 	}

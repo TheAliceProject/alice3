@@ -29,28 +29,11 @@ import org.alice.ide.ast.StatementListPropertyPane;
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot.DropReceptor {
-	class FillInExpressionOperation extends zoot.AbstractActionOperation {
-		public void perform( zoot.ActionContext actionContext ) {
-//			getIDE().promptUserForExpression( this.getDesiredType(), this.expressionProperty.getValue(), e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-//				public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
-//					ExpressionPropertyDropDownPane.this.expressionProperty.setValue( e );
-//					ExpressionPropertyDropDownPane.this.revalidate();
-//					ExpressionPropertyDropDownPane.this.repaint();
-//					getIDE().unsetPreviousExpression();
-//					getIDE().markChanged( "expression menu" );
-//				}
-//				public void handleCancelation() {
-//					getIDE().unsetPreviousExpression();
-//				}			
-//			} );
-		}
-	}
-
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 	public ExpressionPropertyDropDownPane( javax.swing.JComponent component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, javax.swing.JComponent prefixPane ) {
 		super( prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
-		this.setLeftButtonPressOperation( new FillInExpressionOperation() );
+		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionPropertyOperation( this.expressionProperty ) );
 	}
 	public ExpressionPropertyDropDownPane( javax.swing.JComponent component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		this( component, expressionProperty, null );

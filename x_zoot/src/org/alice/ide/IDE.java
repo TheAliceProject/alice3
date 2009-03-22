@@ -639,7 +639,10 @@ public abstract class IDE extends zoot.ZFrame implements zoot.DragAndDropOperati
 		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-	public abstract void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver );
+	public void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( parameter.getValueType(), null );
+		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
+	}
 	public abstract void unsetPreviousExpression();
 
 	public edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {
@@ -1197,12 +1200,6 @@ public abstract class IDE extends zoot.ZFrame implements zoot.DragAndDropOperati
 
 			@Override
 			protected void preserveProjectProperties() {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void promptUserForMore( AbstractParameter parameter, MouseEvent e, TaskObserver< Expression > taskObserver ) {
 				// TODO Auto-generated method stub
 
 			}
