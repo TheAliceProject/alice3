@@ -25,7 +25,7 @@ package org.alice.ide.operations.edit;
 /**
  * @author Dennis Cosgrove
  */
-public class UndoOperation extends org.alice.ide.AbstractActionOperation {
+public class UndoOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public UndoOperation() {
 		this.putValue( javax.swing.Action.NAME, "Undo" );
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Z, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );

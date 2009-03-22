@@ -25,7 +25,7 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class HelpOperation extends org.alice.ide.AbstractActionOperation {
+public class HelpOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public HelpOperation() {
 		this.putValue( javax.swing.Action.NAME, "Help..." );
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );

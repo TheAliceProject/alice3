@@ -27,7 +27,7 @@ package org.alice.ide.editorstabbedpane;
  */
 public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide.event.IDEListener {
 	public EditorsTabbedPane() {
-		this.setTabCloseOperation( new org.alice.ide.AbstractActionOperation() {
+		this.setTabCloseOperation( new org.alice.ide.operations.AbstractActionOperation() {
 			public void perform( zoot.ActionContext actionContext ) {
 				EditorsTabbedPane.this.remove( EditorsTabbedPane.this.getSelectedIndex() );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle tab close" );

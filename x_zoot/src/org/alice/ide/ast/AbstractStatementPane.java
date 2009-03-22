@@ -69,7 +69,7 @@ public abstract class AbstractStatementPane extends org.alice.ide.ast.StatementL
 	}
 	
 	//todo?
-	protected java.util.List< org.alice.ide.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.AbstractActionOperation > rv ) {
+	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
 		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
 			//pass
 		} else {

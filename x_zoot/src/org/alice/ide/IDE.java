@@ -26,6 +26,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 
+import org.alice.ide.operations.AbstractItemSelectionOperation;
+
 import edu.cmu.cs.dennisc.alice.ast.AbstractParameter;
 import edu.cmu.cs.dennisc.alice.ast.AbstractType;
 import edu.cmu.cs.dennisc.alice.ast.Expression;

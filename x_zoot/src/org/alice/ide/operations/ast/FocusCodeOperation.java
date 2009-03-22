@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FocusCodeOperation extends org.alice.ide.AbstractActionOperation {
+public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode;
 	public FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {

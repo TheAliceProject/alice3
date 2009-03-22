@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class RenameLocalDeclarationOperation extends org.alice.ide.AbstractActionOperation {
+public class RenameLocalDeclarationOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
 	private String prevValue;
 	private String nextValue;

@@ -20,13 +20,15 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractItemSelectionOperation<E> extends zoot.AbstractItemSelectionOperation<E> {
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+class SetterTemplate extends StatementTemplatePane {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field ) );
+		this.field = field;
 	}
 }

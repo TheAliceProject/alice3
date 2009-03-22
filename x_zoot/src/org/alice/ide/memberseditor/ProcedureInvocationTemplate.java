@@ -25,11 +25,10 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-class ProcedureInvocationTemplate extends org.alice.ide.ast.StatementLikeSubstance {
-	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation;
+class ProcedureInvocationTemplate extends StatementTemplatePane {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
-		this.methodInvocation = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method );
-		this.add( getIDE().getTemplatesFactory().createComponent( this.methodInvocation ) );
+		super( org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method ) );
+		this.method = method;
 	}
 }

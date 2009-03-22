@@ -20,18 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.window;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ToggleExpandContractSceneEditorOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public ToggleExpandContractSceneEditorOperation() {
-		this.putValue( javax.swing.Action.NAME, "Expand/Contract Scene Editor" );
-		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
-	}
+public abstract class AbstractFillInExpressionsOperation extends org.alice.ide.operations.AbstractActionOperation {
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType[] getExpressionTypes();
 	public void perform( zoot.ActionContext actionContext ) {
-		this.getIDE().toggleExpandContactOfSceneEditor();
-		actionContext.commit();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType[] types = this.getExpressionTypes();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: AbstractFillInExpressionsOperation " );
+		//getIDE().promptUserForExpressions( types );
 	}
 }

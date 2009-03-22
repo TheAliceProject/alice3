@@ -25,7 +25,7 @@ package org.alice.ide.operations.edit;
 /**
  * @author Dennis Cosgrove
  */
-public class RedoOperation extends org.alice.ide.AbstractActionOperation {
+public class RedoOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public RedoOperation() {
 		this.putValue( javax.swing.Action.NAME, "Redo" );
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );

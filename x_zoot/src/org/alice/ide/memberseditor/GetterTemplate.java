@@ -20,18 +20,15 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.window;
+package org.alice.ide.memberseditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ToggleExpandContractSceneEditorOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public ToggleExpandContractSceneEditorOperation() {
-		this.putValue( javax.swing.Action.NAME, "Expand/Contract Scene Editor" );
-		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
-	}
-	public void perform( zoot.ActionContext actionContext ) {
-		this.getIDE().toggleExpandContactOfSceneEditor();
-		actionContext.commit();
+class GetterTemplate extends ExpressionTemplatePane {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	public GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
+		this.field = field;
 	}
 }

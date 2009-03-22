@@ -25,6 +25,14 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public interface StatementTemplatePane {
-	public edu.cmu.cs.dennisc.alice.ast.Statement createStatement( zoot.event.DragAndDropEvent e );
+public abstract class StatementTemplatePane extends org.alice.ide.ast.StatementLikeSubstance {
+	private edu.cmu.cs.dennisc.alice.ast.Node node;
+	public StatementTemplatePane( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
+		this.node = node;
+		this.add( getIDE().getTemplatesFactory().createComponent( this.node ) );
+	}
+	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() {
+		return this.node;
+	}
 }

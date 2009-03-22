@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeleteNodeOperation extends org.alice.ide.AbstractActionOperation {
+public abstract class AbstractDeleteNodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.Node node;
 	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
 	private int index;

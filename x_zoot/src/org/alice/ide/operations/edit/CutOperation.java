@@ -25,7 +25,7 @@ package org.alice.ide.operations.edit;
 /**
  * @author Dennis Cosgrove
  */
-public class CutOperation extends org.alice.ide.AbstractActionOperation {
+public class CutOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public CutOperation() {
 		this.putValue( javax.swing.Action.NAME, "Cut" );
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );

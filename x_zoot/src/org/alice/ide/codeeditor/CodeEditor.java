@@ -575,8 +575,15 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 					if( potentiallyDraggablePane instanceof org.alice.ide.memberseditor.StatementTemplatePane ) {
 						org.alice.ide.memberseditor.StatementTemplatePane statementTemplatePane = (org.alice.ide.memberseditor.StatementTemplatePane)potentiallyDraggablePane;
 //						try {
-							edu.cmu.cs.dennisc.alice.ast.Statement statement = statementTemplatePane.createStatement( this.dragAndDropEvent );
-							return statement;
+
+						
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle drop" );
+							return null;
+//							edu.cmu.cs.dennisc.alice.ast.Statement statement = statementTemplatePane.createStatement( this.dragAndDropEvent );
+//							return statement;
+
+							
+							
 //						} catch( Throwable t ) {
 //							this.cancel( true );
 //							throw new RuntimeException( t );

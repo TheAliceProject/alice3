@@ -25,7 +25,7 @@ package org.alice.ide.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractClearanceActionOperation extends org.alice.ide.AbstractActionOperation {
+public abstract class AbstractClearanceActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	protected zoot.ActionOperation getClearToProcedeWithChangedProjectOperation() {
 		throw new RuntimeException( "todo" );
 	}

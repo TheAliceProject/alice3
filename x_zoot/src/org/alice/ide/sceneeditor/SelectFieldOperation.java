@@ -25,7 +25,7 @@ package org.alice.ide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class SelectFieldOperation extends org.alice.ide.AbstractActionOperation {
+public class SelectFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField prev;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField next;
 

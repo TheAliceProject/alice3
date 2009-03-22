@@ -25,7 +25,7 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class AboutOperation extends org.alice.ide.AbstractActionOperation {
+public class AboutOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public AboutOperation() {
 		this.putValue( javax.swing.Action.NAME, "About..." );
 		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_A );

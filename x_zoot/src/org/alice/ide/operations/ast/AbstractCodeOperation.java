@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCodeOperation extends org.alice.ide.AbstractActionOperation {
+public abstract class AbstractCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
 	public AbstractCodeOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		this.code = code;

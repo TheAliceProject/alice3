@@ -25,7 +25,7 @@ package org.alice.ide.operations.edit;
 /**
  * @author Dennis Cosgrove
  */
-public class CopyOperation extends org.alice.ide.AbstractActionOperation {
+public class CopyOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public CopyOperation() {
 		this.putValue( javax.swing.Action.NAME, "Copy" );
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );

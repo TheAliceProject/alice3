@@ -20,7 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide;
+package org.alice.ide.operations;
 
 /**
  * @author Dennis Cosgrove

@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldSelectionOperation extends org.alice.ide.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > {
+public class FieldSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > {
 	private javax.swing.ListModel listModel = new javax.swing.DefaultListModel();
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField nextField;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField prevField;

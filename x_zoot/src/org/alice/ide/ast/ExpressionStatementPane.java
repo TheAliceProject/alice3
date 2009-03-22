@@ -131,7 +131,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	}
 	
 	@Override
-	protected java.util.List< org.alice.ide.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.AbstractActionOperation > rv ) {
+	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
 		rv = super.updateOperationsListForAltMenu( rv );
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
 		if( methodDeclaredInAlice != null ) {
