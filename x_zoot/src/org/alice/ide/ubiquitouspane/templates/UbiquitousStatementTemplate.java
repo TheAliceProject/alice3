@@ -80,7 +80,8 @@ public abstract class UbiquitousStatementTemplate extends org.alice.ide.template
 		return this.incompleteStatementPane;
 	}
 //	private UbiquitousStatementToolTip toolTip;
-	private edu.cmu.cs.dennisc.swing.IconToolTip iconToolTip;
+	//private edu.cmu.cs.dennisc.swing.IconToolTip toolTip;
+	private zoot.ZToolTip toolTip;
 	public UbiquitousStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
 		super( cls );
 		this.incompleteStatement = incompleteStatement;
@@ -100,15 +101,16 @@ public abstract class UbiquitousStatementTemplate extends org.alice.ide.template
 //		}
 //		return this.toolTip;
 //		return new UbiquitousStatementToolTip( this.getEmptyStatementPane() );
-		if( this.iconToolTip != null ) {
+		if( this.toolTip != null ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( this.incompleteStatementPane );
 //			((javax.swing.JComponent)this.getEmptyStatementPane()).revalidate();
-			javax.swing.Icon icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( this.incompleteStatementPane, this );
-			this.iconToolTip = new edu.cmu.cs.dennisc.swing.IconToolTip( icon );
+//			javax.swing.Icon icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( this.incompleteStatementPane, this );
+//			this.toolTip = new edu.cmu.cs.dennisc.swing.IconToolTip( icon );
+			this.toolTip = new zoot.ZToolTip( this.incompleteStatementPane );
 		}
-		return this.iconToolTip;
+		return this.toolTip;
 	}
 	@Override
 	public void addNotify() {
