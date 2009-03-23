@@ -62,6 +62,7 @@ public abstract class ZControl extends ZComponent {
 	}
 
 	public void handleMousePressed( java.awt.event.MouseEvent e ) {
+		this.isWithinClickThreshold = true;
 		this.mousePressedEvent = e;
 		this.setPressed( true );
 		if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {

@@ -79,6 +79,11 @@ public abstract class UbiquitousStatementTemplate extends org.alice.ide.template
 	protected java.awt.Component getIncompleteStatementPane() {
 		return this.incompleteStatementPane;
 	}
+	
+	@Override
+	public java.awt.Component getSubject() {
+		return this.getIncompleteStatementPane();
+	}
 //	private UbiquitousStatementToolTip toolTip;
 	//private edu.cmu.cs.dennisc.swing.IconToolTip toolTip;
 	private zoot.ZToolTip toolTip;
@@ -94,17 +99,11 @@ public abstract class UbiquitousStatementTemplate extends org.alice.ide.template
 	@Override
 	public javax.swing.JToolTip createToolTip() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "createToolTip" );
-//		if( this.toolTip != null ) {
-//			//pass
-//		} else {
-//			this.toolTip = new UbiquitousStatementToolTip( this.getEmptyStatementPane() );
-//		}
-//		return this.toolTip;
-//		return new UbiquitousStatementToolTip( this.getEmptyStatementPane() );
 		if( this.toolTip != null ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( this.incompleteStatementPane );
+//			this.toolTip = new UbiquitousStatementToolTip( this.getEmptyStatementPane() );
 //			((javax.swing.JComponent)this.getEmptyStatementPane()).revalidate();
 //			javax.swing.Icon icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( this.incompleteStatementPane, this );
 //			this.toolTip = new edu.cmu.cs.dennisc.swing.IconToolTip( icon );
@@ -122,12 +121,12 @@ public abstract class UbiquitousStatementTemplate extends org.alice.ide.template
 		super.addNotify();
 	}
 	
-//	@Override
-//	public java.awt.Dimension getMinimumSize() {
-//		java.awt.Dimension rv = super.getMinimumSize();
-//		rv.width = 24;
-//		return rv;
-//	}
+	@Override
+	public java.awt.Dimension getMinimumSize() {
+		java.awt.Dimension rv = super.getMinimumSize();
+		rv.width = Math.min( rv.width, 24 );
+		return rv;
+	}
 //		@Override
 //	public java.awt.Dimension getPreferredSize() {
 //		java.awt.Dimension rv = this.label.getPreferredSize();

@@ -48,7 +48,11 @@ public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeS
 		return new org.alice.ide.operations.AbstractDragAndDropOperation() {
 			@Override
 			protected zoot.ActionOperation createDropOperation() {
-				return null;
+				return new zoot.AbstractActionOperation() {
+					public void perform( zoot.ActionContext actionContext ) {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
+					}
+				};
 			}
 		};
 	}

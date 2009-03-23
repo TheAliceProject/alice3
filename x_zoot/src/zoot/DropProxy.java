@@ -35,7 +35,7 @@ class DropProxy extends Proxy {
 	}
 	@Override
 	protected void paintProxy( java.awt.Graphics2D g2 ) {
-		print( g2 );
+		this.getSubject().print( g2 );
 		g2.setColor( new java.awt.Color( 0, 0, 0, 127 ) );
 		fillBounds( g2 );
 	}
