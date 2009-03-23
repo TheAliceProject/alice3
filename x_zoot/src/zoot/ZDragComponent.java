@@ -28,8 +28,6 @@ public abstract class ZDragComponent extends ZControl {
 	
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
-	private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
-	private DropReceptor currentDropReceptor = null;
 	
 	public ZDragComponent() {
 		this.addComponentListener( new java.awt.event.ComponentListener() {
@@ -127,6 +125,124 @@ public abstract class ZDragComponent extends ZControl {
 			}
 		}
 	}
+	
+	class DefaultDragAndDropContext extends AbstractContext implements DragAndDropContext {
+		private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+		private DropReceptor currentDropReceptor;
+		private java.awt.event.MouseEvent currentMouseEvent;
+		public DefaultDragAndDropContext( java.awt.event.MouseEvent e, java.util.List< ? extends DropReceptor > potentialDropReceptors ) {
+			super( e, ZManager.CANCEL_IS_WORTHWHILE );
+			this.setCurrentMouseEvent( e );
+			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
+			int i=0;
+			for( DropReceptor dropReceptor : potentialDropReceptors ) {
+				java.awt.Component dropComponent = dropReceptor.getAWTComponent();
+				java.awt.Rectangle bounds = dropComponent.getBounds();
+				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getParent(), bounds, this.getDragSource() );
+				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
+				i++;
+			}
+			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+				//todo: pass original mouse pressed event?
+				dropReceptorInfo.getDropReceptor().dragStarted( this.getDragSource(), this.getCurrentMouseEvent() );
+			}
+		}
+		public ZDragComponent getDragSource() {
+			return (ZDragComponent)getEvent().getSource();
+		}
+		public java.awt.event.MouseEvent getCurrentMouseEvent() {
+			return this.currentMouseEvent;
+		}
+		public void setCurrentMouseEvent( java.awt.event.MouseEvent currentMouseEvent ) {
+			this.currentMouseEvent = currentMouseEvent;
+		}
+		public DropReceptor getCurrentDropReceptor() {
+			return this.currentDropReceptor;
+		}
+		public void setCurrentDropReceptor( DropReceptor currentDropReceptor ) {
+			this.currentDropReceptor = currentDropReceptor;
+		}
+		private DropReceptor getDropReceptorUnder( int x, int y ) {
+			DropReceptor rv = null;
+			int prevHeight = Integer.MAX_VALUE;
+			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+				if( dropReceptorInfo.contains( x, y ) ) {
+					 int nextHeight = dropReceptorInfo.getBounds().height;
+					 if( nextHeight < prevHeight ) {
+						 rv = dropReceptorInfo.getDropReceptor();
+						 prevHeight = nextHeight;
+					 }
+				}
+			}
+			return rv;
+		}
+		private DropReceptor getDropReceptorUnder( java.awt.Rectangle bounds ) {
+			DropReceptor rv = null;
+			int prevHeight = Integer.MAX_VALUE;
+			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+				if( dropReceptorInfo.intersects( bounds ) ) {
+					 int nextHeight = dropReceptorInfo.getBounds().height;
+					 if( nextHeight < prevHeight ) {
+						 rv = dropReceptorInfo.getDropReceptor();
+						 prevHeight = nextHeight;
+					 }
+				}
+			}
+			return rv;
+		}
+		protected DropReceptor getDropReceptorUnder( java.awt.event.MouseEvent e ) {
+			DropReceptor rv = getDropReceptorUnder( e.getX(), e.getY() );
+			if( rv != null ) {
+				//pass
+			} else {
+				if( ZDragComponent.this.dragProxy != null ) {
+					java.awt.Rectangle dragBounds = ZDragComponent.this.dragProxy.getBounds();
+					dragBounds = javax.swing.SwingUtilities.convertRectangle( ZDragComponent.this.dragProxy.getParent(), dragBounds, this.getDragSource() );
+					int x = dragBounds.x;
+					int y = dragBounds.y + dragBounds.height/2;
+					rv = getDropReceptorUnder( x, y );
+					if( rv != null ) {
+						//pass
+					} else {
+						rv = getDropReceptorUnder( dragBounds );
+					}
+				}
+			}
+			return rv;
+		}
+		public void handleMouseDragged( java.awt.event.MouseEvent e ) {
+			DropReceptor nextDropReceptor = getDropReceptorUnder( e );
+			if( this.currentDropReceptor != nextDropReceptor ) {
+				if( this.currentDropReceptor != null ) {
+					ZDragComponent.this.dragAndDropOperation.handleDragExitedDropReceptor( this );
+					this.currentDropReceptor.dragExited( this.getDragSource(), e, false );
+				}
+				this.currentDropReceptor = nextDropReceptor;
+				if( this.currentDropReceptor != null ) {
+					this.currentDropReceptor.dragEntered( this.getDragSource(), e );
+					ZDragComponent.this.dragAndDropOperation.handleDragEnteredDropReceptor( this );
+				}
+			}
+			if( ZDragComponent.this.dragProxy != null ) {
+				ZDragComponent.this.dragProxy.setOverDropAcceptor( this.currentDropReceptor != null );
+			}
+			if( this.currentDropReceptor != null ) {
+				this.currentDropReceptor.dragUpdated( this.getDragSource(), e );
+			}
+		}
+		public void handleMouseReleased( java.awt.event.MouseEvent e ) {
+			if( this.currentDropReceptor != null ) {
+				this.currentDropReceptor.dragDropped( this.getDragSource(), e, ZDragComponent.this.dragAndDropOperation.getDropOperation() );
+				this.currentDropReceptor.dragExited( this.getDragSource(), e, true );
+			}
+			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+				dropReceptorInfo.getDropReceptor().dragStopped( this.getDragSource(), e );
+			}
+			ZDragComponent.this.dragAndDropOperation.handleDragStopped( this );
+			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+		}
+	}
+	private DefaultDragAndDropContext dragAndDropContext;
 		
 	@Override
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
@@ -140,101 +256,22 @@ public abstract class ZDragComponent extends ZControl {
 			javax.swing.JLayeredPane layeredPane = getLayeredPane();
 			layeredPane.add( this.dragProxy, new Integer( 1 ) );
 			layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
-			java.util.List< ? extends DropReceptor > potentialDropReceptors = this.dragAndDropOperation.getPotentialDropReceptors( this );
-			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
-			int i=0;
-			for( DropReceptor dropReceptor : potentialDropReceptors ) {
-				java.awt.Component dropComponent = dropReceptor.getAWTComponent();
-				java.awt.Rectangle bounds = dropComponent.getBounds();
-				bounds = javax.swing.SwingUtilities.convertRectangle( dropComponent.getParent(), bounds, this );
-				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
-				i++;
-			}
-			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-				//todo: pass original mouse pressed event?
-				dropReceptorInfo.getDropReceptor().dragStarted( this, e );
-			}
-			this.dragAndDropOperation.handleDragStarted( this.currentDropReceptor );
-			this.currentDropReceptor = null;
+			
+			this.dragAndDropContext = new DefaultDragAndDropContext( this.getMousePressedEvent(), this.dragAndDropOperation.createListOfPotentialDropReceptors( this ) );
+			
+//			this.dragAndDropOperation.handleDragStarted( this.currentDropReceptor );
 		}
-	}
-	private DropReceptor getDropReceptorUnder( int x, int y ) {
-		DropReceptor rv = null;
-		int prevHeight = Integer.MAX_VALUE;
-		for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-			if( dropReceptorInfo.contains( x, y ) ) {
-				 int nextHeight = dropReceptorInfo.getBounds().height;
-				 if( nextHeight < prevHeight ) {
-					 rv = dropReceptorInfo.getDropReceptor();
-					 prevHeight = nextHeight;
-				 }
-			}
-		}
-		return rv;
-	}
-	private DropReceptor getDropReceptorUnder( java.awt.Rectangle bounds ) {
-		DropReceptor rv = null;
-		int prevHeight = Integer.MAX_VALUE;
-		for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-			if( dropReceptorInfo.intersects( bounds ) ) {
-				 int nextHeight = dropReceptorInfo.getBounds().height;
-				 if( nextHeight < prevHeight ) {
-					 rv = dropReceptorInfo.getDropReceptor();
-					 prevHeight = nextHeight;
-				 }
-			}
-		}
-		return rv;
-	}
-	protected DropReceptor getDropReceptorUnder( java.awt.event.MouseEvent e ) {
-		DropReceptor rv = getDropReceptorUnder( e.getX(), e.getY() );
-		if( rv != null ) {
-			//pass
-		} else {
-			if( this.dragProxy != null ) {
-				java.awt.Rectangle dragBounds = this.dragProxy.getBounds();
-				dragBounds = javax.swing.SwingUtilities.convertRectangle( this.dragProxy.getParent(), dragBounds, this );
-				int x = dragBounds.x;
-				int y = dragBounds.y + dragBounds.height/2;
-				rv = getDropReceptorUnder( x, y );
-				if( rv != null ) {
-					//pass
-				} else {
-					rv = getDropReceptorUnder( dragBounds );
-				}
-			}
-		}
-		return rv;
 	}
 	@Override
 	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		super.handleMouseDragged( e );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleMouseDragged", e );
 		if( isActuallyPotentiallyDraggable() ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
 			if( this.isWithinClickThreshold() ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "isWithinClickThreshold == false" );
 				this.updateProxyPosition( e );
-				DropReceptor nextDropReceptor = getDropReceptorUnder( e );
-				if( this.currentDropReceptor != nextDropReceptor ) {
-					if( this.currentDropReceptor != null ) {
-						this.dragAndDropOperation.handleDragExited( this.currentDropReceptor );
-						this.currentDropReceptor.dragExited( this, e, false );
-					}
-					this.currentDropReceptor = nextDropReceptor;
-					if( this.currentDropReceptor != null ) {
-						this.currentDropReceptor.dragEntered( this, e );
-						this.dragAndDropOperation.handleDragEntered( this.currentDropReceptor );
-					}
-				}
-				if( this.dragProxy != null ) {
-					this.dragProxy.setOverDropAcceptor( this.currentDropReceptor != null );
-				}
-				if( this.currentDropReceptor != null ) {
-					this.currentDropReceptor.dragUpdated( this, e );
-				}
+				this.dragAndDropContext.handleMouseDragged( e );
 			}
 		}
 	}
@@ -249,17 +286,9 @@ public abstract class ZDragComponent extends ZControl {
 				layeredPane.remove( this.dragProxy );
 				layeredPane.repaint( bounds );
 				
-				if( this.currentDropReceptor != null ) {
-					this.currentDropReceptor.dragDropped( this, e );
-					this.currentDropReceptor.dragExited( this, e, true );
-				}
-				for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
-					dropReceptorInfo.getDropReceptor().dragStopped( this, e );
-				}
-				this.dragAndDropOperation.handleDragStopped( this.currentDropReceptor );
+				this.dragAndDropContext.handleMouseReleased( e );
 			}
 		}
-		this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 	}
 
 	

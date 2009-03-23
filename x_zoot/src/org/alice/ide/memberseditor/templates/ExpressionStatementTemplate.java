@@ -44,4 +44,16 @@ public abstract class ExpressionStatementTemplate extends StatementTemplate {
 		}
 		super.addNotify();
 	}
+	
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
+	@Override
+	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( expressions );
+		if( expression != null ) {
+			return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( createExpression( expressions ) );
+		} else {
+			return null;
+		}
+	}
+	
 }

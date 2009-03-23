@@ -25,6 +25,8 @@ package org.alice.ide.codeeditor;
 import org.alice.ide.ast.AccessiblePane;
 import org.alice.ide.ast.StatementListPropertyPane;
 
+import zoot.ActionOperation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -57,7 +59,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 	}
 	public void dragUpdated( zoot.ZDragComponent source, java.awt.event.MouseEvent e ) {
 	}
-	public void dragDropped( final zoot.ZDragComponent source, final java.awt.event.MouseEvent e ) {
+	public void dragDropped( final zoot.ZDragComponent source, final java.awt.event.MouseEvent e, final ActionOperation dropOperation ) {
 		class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression, Object > {
 			private zoot.event.DragAndDropEvent dragAndDropEvent;
 			private StatementListPropertyPane statementListPropertyPane;

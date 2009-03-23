@@ -31,4 +31,12 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		super( org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method ) );
 		//this.method = method;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+		return null;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return null;
+	}
 }

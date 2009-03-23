@@ -34,7 +34,7 @@ public interface DropReceptor {
 	public void dragUpdated( ZDragComponent source, java.awt.event.MouseEvent e );
 	
 	//todo: Dropped or Exited but not both?
-	public void dragDropped( ZDragComponent source, java.awt.event.MouseEvent e );
+	public void dragDropped( ZDragComponent source, java.awt.event.MouseEvent e, ActionOperation dropOperation );
 	public void dragExited( ZDragComponent source, java.awt.event.MouseEvent e, boolean isDropRecipient );
 	
 	

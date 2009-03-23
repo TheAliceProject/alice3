@@ -26,10 +26,10 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public interface DragAndDropOperation extends Operation {
-	//todo
-	public java.util.List< ? extends DropReceptor > getPotentialDropReceptors( ZDragComponent source );
-	public void handleDragStarted( DropReceptor dropReceptor );
-	public void handleDragEntered( DropReceptor dropReceptor );
-	public void handleDragExited( DropReceptor dropReceptor );
-	public void handleDragStopped( DropReceptor dropReceptor );
+	public java.util.List< ? extends DropReceptor > createListOfPotentialDropReceptors( ZDragComponent dragSource );
+	public void handleDragStarted( DragAndDropContext dragAndDropContext );
+	public void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
+	public void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
+	public void handleDragStopped( DragAndDropContext dragAndDropContext );
+	public ActionOperation getDropOperation();
 }

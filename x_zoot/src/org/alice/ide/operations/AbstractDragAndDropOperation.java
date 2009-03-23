@@ -22,27 +22,34 @@
  */
 package org.alice.ide.operations;
 
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDragAndDropOperation extends zoot.AbstractDragAndDropOperation {
-	protected abstract zoot.ActionOperation createDropOperation(); 
+	private zoot.ActionOperation dropOperation = this.createDropOperation();  
+	
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends zoot.DropReceptor > getPotentialDropReceptors( zoot.ZDragComponent source ) {
-		return getIDE().getPotentialDropReceptors( source );
+	public java.util.List< ? extends zoot.DropReceptor > createListOfPotentialDropReceptors( zoot.ZDragComponent dragSource ) {
+		return getIDE().createListOfPotentialDropReceptors( dragSource );
 	}
-	public void handleDragEntered( zoot.DropReceptor dropReceptor ) {
-		getIDE().handleDragEntered( dropReceptor );
+	public void handleDragStarted( zoot.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragStarted( dragAndDropContext );
 	}
-	public void handleDragExited( zoot.DropReceptor dropReceptor ) {
-		getIDE().handleDragExited( dropReceptor );
+	public void handleDragEnteredDropReceptor( zoot.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
 	}
-	public void handleDragStarted( zoot.DropReceptor dropReceptor ) {
-		getIDE().handleDragExited( dropReceptor );
+	public void handleDragExitedDropReceptor( zoot.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
 	}
-	public void handleDragStopped( zoot.DropReceptor dropReceptor ) {
-		getIDE().handleDragExited( dropReceptor );
+	public void handleDragStopped( zoot.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragStopped( dragAndDropContext );
+	}
+	protected abstract zoot.ActionOperation createDropOperation(); 
+	
+	public zoot.ActionOperation getDropOperation() {
+		return this.dropOperation;
 	}
 }

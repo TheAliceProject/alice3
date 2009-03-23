@@ -34,6 +34,8 @@ import org.alice.ide.event.LocaleEvent;
 import org.alice.ide.event.ProjectOpenEvent;
 import org.alice.ide.event.TransientSelectionEvent;
 
+import zoot.ActionOperation;
+
 import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
 import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 
@@ -415,7 +417,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends ExpressionPropertyDropDownPane > findAllPotentialAcceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return edu.cmu.cs.dennisc.awt.ComponentUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 				return expressionPropertyDropDownPane.getExpressionProperty().getExpressionType().isAssignableFrom( type );
@@ -502,19 +504,24 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 			if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 				//pass
 			} else {
-				if( source.getSubject() instanceof AbstractStatementPane ) {
-					AbstractStatementPane abstractStatementPane = (AbstractStatementPane)source.getSubject();
-					edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
-					edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
-					edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
-	
-					int prevIndex = prevOwner.indexOf( statement );
-					int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
-	
-					if( prevOwner == nextOwner ) {
-						if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
-							source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), source, null );
-							isDropProxyAlreadyUpdated = true;
+				java.awt.Component subject = source.getSubject();
+				if( subject instanceof AbstractStatementPane ) {
+					AbstractStatementPane abstractStatementPane = (AbstractStatementPane)subject;
+					if( source instanceof org.alice.ide.templates.StatementTemplate ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
+						edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
+						edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
+		
+						int prevIndex = prevOwner.indexOf( statement );
+						int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
+		
+						if( prevOwner == nextOwner ) {
+							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
+								source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), source, null );
+								isDropProxyAlreadyUpdated = true;
+							}
 						}
 					}
 				}
@@ -557,7 +564,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		this.repaint();
 
 	}
-	public void dragDropped( final zoot.ZDragComponent source, final java.awt.event.MouseEvent e ) {
+	public void dragDropped( final zoot.ZDragComponent source, final java.awt.event.MouseEvent e, final ActionOperation dropOperation ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Statement, Object > {
 				private zoot.event.DragAndDropEvent dragAndDropEvent;
@@ -573,14 +580,13 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 				protected edu.cmu.cs.dennisc.alice.ast.Statement doInBackground() throws java.lang.Exception {
 					zoot.ZDragComponent potentiallyDraggablePane = this.dragAndDropEvent.getTypedSource();
 					if( potentiallyDraggablePane instanceof org.alice.ide.templates.StatementTemplate ) {
-						org.alice.ide.templates.StatementTemplate statementTemplatePane = (org.alice.ide.templates.StatementTemplate)potentiallyDraggablePane;
+						org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)potentiallyDraggablePane;
 //						try {
 
-						
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle drop" );
-							return null;
-//							edu.cmu.cs.dennisc.alice.ast.Statement statement = statementTemplatePane.createStatement( this.dragAndDropEvent );
-//							return statement;
+//							zoot.ZManager.performIfAppropriate( dropOperation, e, zoot.ZManager.CANCEL_IS_WORTHWHILE );						
+//							return null;
+							edu.cmu.cs.dennisc.alice.ast.Statement statement = statementTemplate.createStatement( this.dragAndDropEvent );
+							return statement;
 
 							
 							

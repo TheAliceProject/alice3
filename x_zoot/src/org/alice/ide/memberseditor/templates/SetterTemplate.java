@@ -26,9 +26,19 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 public class SetterTemplate extends ExpressionStatementTemplate {
-	//private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field ) );
-		//this.field = field;
+		this.field = field;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { this.field.getValueType() };
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field );
+		rv.rightHandSide.setValue( expressions[ 0 ] );
+		return rv;
 	}
 }

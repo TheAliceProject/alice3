@@ -26,4 +26,6 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public interface DragAndDropContext extends Context {
+	public ZDragComponent getDragSource();
+	public DropReceptor getCurrentDropReceptor();
 }

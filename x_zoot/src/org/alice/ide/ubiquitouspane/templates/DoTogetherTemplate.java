@@ -29,4 +29,12 @@ public class DoTogetherTemplate extends UbiquitousStatementTemplate {
 	public DoTogetherTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class, org.alice.ide.ast.NodeUtilities.createDoTogether() );
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+		return null;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createDoTogether();
+	}
 }

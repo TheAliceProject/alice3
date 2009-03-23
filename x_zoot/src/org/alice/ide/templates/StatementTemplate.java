@@ -22,17 +22,25 @@
  */
 package org.alice.ide.templates;
 
+class StatementTemplateDragAndDropOperation extends org.alice.ide.operations.AbstractDragAndDropOperation {
+	@Override
+	protected zoot.ActionOperation createDropOperation() {
+		return new zoot.AbstractActionOperation() {
+			public void perform( zoot.ActionContext actionContext ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
+			}
+		};
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeSubstance {
-
 	public StatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		super( cls );
 	}
-
 	protected zoot.DragAndDropOperation dragAndDropOperation;
-
 	@Override
 	protected boolean isPressed() {
 		return false;
@@ -45,16 +53,7 @@ public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeS
 	//		};
 	//	}
 	protected zoot.DragAndDropOperation createDragAndDropOperation() {
-		return new org.alice.ide.operations.AbstractDragAndDropOperation() {
-			@Override
-			protected zoot.ActionOperation createDropOperation() {
-				return new zoot.AbstractActionOperation() {
-					public void perform( zoot.ActionContext actionContext ) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
-					}
-				};
-			}
-		};
+		return new StatementTemplateDragAndDropOperation();
 	}
 	@Override
 	public void addNotify() {
@@ -72,7 +71,30 @@ public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeS
 		this.setPopupOperation( null );
 	}
 
-//	protected edu.cmu.cs.dennisc.alice.ast.Statement getEmptyStatement() {
-//		return this.emptyStatement;
-//	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes();
+	protected edu.cmu.cs.dennisc.alice.ast.Expression[] promptUserForExpressions( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.AbstractType... types ) {
+		edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver = new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
+			public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression[] expressions) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( expressions );
+			};
+			public void handleCancelation() {
+			}
+		};
+		getIDE().promptUserForExpressions( types, e.getEndingMouseEvent(), taskObserver );
+		return null;
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
+	public final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( zoot.event.DragAndDropEvent e ) { 
+		edu.cmu.cs.dennisc.alice.ast.AbstractType[] types = getBlankExpressionTypes();
+		if( types != null && types.length > 0 ) {
+			edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = promptUserForExpressions( e, types );
+			if( expressions != null ) {
+				return createStatement( expressions );
+			} else {
+				return null;
+			}
+		} else {
+			return createStatement();
+		}
+	}
 }
