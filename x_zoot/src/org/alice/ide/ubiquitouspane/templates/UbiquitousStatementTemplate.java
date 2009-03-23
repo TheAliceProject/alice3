@@ -102,7 +102,7 @@ public abstract class UbiquitousStatementTemplate extends org.alice.ide.template
 		if( this.toolTip != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( this.incompleteStatementPane );
+//			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( this.incompleteStatementPane );
 //			this.toolTip = new UbiquitousStatementToolTip( this.getEmptyStatementPane() );
 //			((javax.swing.JComponent)this.getEmptyStatementPane()).revalidate();
 //			javax.swing.Icon icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( this.incompleteStatementPane, this );
@@ -117,6 +117,7 @@ public abstract class UbiquitousStatementTemplate extends org.alice.ide.template
 			//pass
 		} else {
 			this.incompleteStatementPane = getIDE().getTemplatesFactory().createStatementPane( this.incompleteStatement );
+			this.getIDE().addToConcealedBin( this.incompleteStatementPane );
 		}
 		super.addNotify();
 	}

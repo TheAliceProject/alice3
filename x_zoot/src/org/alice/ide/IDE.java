@@ -28,9 +28,7 @@ import java.io.File;
 
 import org.alice.ide.operations.AbstractItemSelectionOperation;
 
-import edu.cmu.cs.dennisc.alice.ast.AbstractParameter;
 import edu.cmu.cs.dennisc.alice.ast.AbstractType;
-import edu.cmu.cs.dennisc.alice.ast.Expression;
 import edu.cmu.cs.dennisc.alice.ast.Node;
 import edu.cmu.cs.dennisc.alice.ast.Statement;
 import edu.cmu.cs.dennisc.task.TaskObserver;
@@ -57,6 +55,7 @@ public abstract class IDE extends zoot.ZFrame implements zoot.DragAndDropOperati
 		return this;
 	}
 
+	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
 	private org.alice.ide.sceneeditor.SceneEditor sceneEditor = this.createSceneEditor();
 	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor();
 	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
@@ -100,6 +99,7 @@ public abstract class IDE extends zoot.ZFrame implements zoot.DragAndDropOperati
 		this.getContentPane().setLayout( new java.awt.BorderLayout() );
 		this.getContentPane().add( perspective, java.awt.BorderLayout.CENTER );
 		this.getContentPane().add( this.feedback, java.awt.BorderLayout.SOUTH );
+		this.getContentPane().add( this.concealedBin, java.awt.BorderLayout.EAST );
 
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
@@ -123,6 +123,11 @@ public abstract class IDE extends zoot.ZFrame implements zoot.DragAndDropOperati
 		rv.add( new org.alice.ide.cascade.fillerinners.BooleanFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.StringFillerInner() );
 		return rv;
+	}
+	
+	public void addToConcealedBin( java.awt.Component component ) {
+		this.concealedBin.add( component );
+		this.concealedBin.revalidate();
 	}
 
 	protected javax.swing.JMenuBar createMenuBar() {
