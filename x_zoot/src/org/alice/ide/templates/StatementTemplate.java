@@ -72,29 +72,27 @@ public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeS
 	}
 
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes();
-	protected edu.cmu.cs.dennisc.alice.ast.Expression[] promptUserForExpressions( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.AbstractType... types ) {
-		edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver = new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
-			public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression[] expressions) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( expressions );
-			};
-			public void handleCancelation() {
+	protected edu.cmu.cs.dennisc.alice.ast.Expression[] promptUserForExpressions( final zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.alice.ast.AbstractType... types ) {
+		edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
+			@Override
+			public void run() {
+				getIDE().promptUserForExpressions( types, e.getEndingMouseEvent(), this );
 			}
 		};
-		getIDE().promptUserForExpressions( types, e.getEndingMouseEvent(), taskObserver );
-		return null;
+		return taskObserver.getResult();
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
-	public final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( zoot.event.DragAndDropEvent e ) { 
+	public final void createStatement( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) { 
 		edu.cmu.cs.dennisc.alice.ast.AbstractType[] types = getBlankExpressionTypes();
 		if( types != null && types.length > 0 ) {
 			edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = promptUserForExpressions( e, types );
 			if( expressions != null ) {
-				return createStatement( expressions );
+				taskObserver.handleCompletion( createStatement( expressions ) );
 			} else {
-				return null;
+				taskObserver.handleCancelation();
 			}
 		} else {
-			return createStatement();
+			taskObserver.handleCompletion( createStatement() );
 		}
 	}
 }

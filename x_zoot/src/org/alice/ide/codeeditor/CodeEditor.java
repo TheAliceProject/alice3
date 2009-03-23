@@ -441,7 +441,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 			return false;
 		}
 	}
-	public void dragStarted( zoot.ZDragComponent source, java.awt.event.MouseEvent e ) {
+	public void dragStarted( zoot.DragAndDropContext dragAndDropContext ) {
 	}
 
 	private java.awt.Rectangle getBoundsFor( StatementListPropertyPane statementListPropertyPane ) {
@@ -452,7 +452,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		return rv;
 	}
 
-	public void dragEntered( zoot.ZDragComponent source, java.awt.event.MouseEvent e ) {
+	public void dragEntered( zoot.DragAndDropContext dragAndDropContext ) {
+		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
 	}
@@ -493,8 +494,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		}
 		return rv;
 	}
-	public void dragUpdated( zoot.ZDragComponent source, java.awt.event.MouseEvent eSource ) {
-
+	public void dragUpdated( zoot.DragAndDropContext dragAndDropContext ) {
+		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		java.awt.event.MouseEvent eThis = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( source, eSource, this );
 		StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eThis, this.statementListPropertyPaneInfos );
 		this.currentUnder = nextUnder;
@@ -564,64 +566,59 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		this.repaint();
 
 	}
-	public void dragDropped( final zoot.ZDragComponent source, final java.awt.event.MouseEvent e, final ActionOperation dropOperation ) {
+	public void dragDropped( zoot.DragAndDropContext dragAndDropContext ) {
+		final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
+		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
+		final int index = statementListPropertyPane.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), statementListPropertyPane ) );
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
-			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Statement, Object > {
-				private zoot.event.DragAndDropEvent dragAndDropEvent;
-				private StatementListPropertyPane statementListPropertyPane;
-				private int index;
-
-				public Worker() {
-					this.dragAndDropEvent = new zoot.event.DragAndDropEvent( source, CodeEditor.this, e );
-					this.statementListPropertyPane = CodeEditor.this.currentUnder;
-					this.index = this.statementListPropertyPane.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, e.getPoint(), this.statementListPropertyPane ) );
-				}
-				@Override
-				protected edu.cmu.cs.dennisc.alice.ast.Statement doInBackground() throws java.lang.Exception {
-					zoot.ZDragComponent potentiallyDraggablePane = this.dragAndDropEvent.getTypedSource();
-					if( potentiallyDraggablePane instanceof org.alice.ide.templates.StatementTemplate ) {
-						org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)potentiallyDraggablePane;
-//						try {
-
-//							zoot.ZManager.performIfAppropriate( dropOperation, e, zoot.ZManager.CANCEL_IS_WORTHWHILE );						
-//							return null;
-							edu.cmu.cs.dennisc.alice.ast.Statement statement = statementTemplate.createStatement( this.dragAndDropEvent );
-							return statement;
-
-							
-							
-//						} catch( Throwable t ) {
-//							this.cancel( true );
-//							throw new RuntimeException( t );
-//						}
-					} else {
-						return null;
-					}
-				}
-				@Override
-				protected void done() {
-					try {
-						edu.cmu.cs.dennisc.alice.ast.Statement statement = this.get();
-						if( statement != null ) {
-							this.statementListPropertyPane.getProperty().add( this.index, statement );
-							getIDE().markChanged( "drop statement template" );
-							CodeEditor.this.refresh();
-						} else {
-							//todo?
-						}
-					} catch( InterruptedException ie ) {
-						throw new RuntimeException( ie );
-					} catch( java.util.concurrent.ExecutionException ee ) {
-						throw new RuntimeException( ee );
-					} finally {
-						source.hideDropProxyIfNecessary();
-					}
-				}
-			}
-			//this.codeDeclarationInAlice.getBodyProperty().getValue().statements.add( expressionStatement );
 			if( this.currentUnder != null ) {
-				Worker worker = new Worker();
-				worker.execute();
+				final zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
+				class DropOperation extends org.alice.ide.operations.AbstractActionOperation {
+					class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Statement, Object > {
+						@Override
+						protected edu.cmu.cs.dennisc.alice.ast.Statement doInBackground() throws java.lang.Exception {
+							zoot.ZDragComponent dragComponent = dragAndDropEvent.getTypedSource();
+							if( dragComponent instanceof org.alice.ide.templates.StatementTemplate ) {
+								final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)dragComponent;
+								edu.cmu.cs.dennisc.task.BlockingTaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement>() {
+									@Override
+									public void run() {
+										statementTemplate.createStatement( dragAndDropEvent, this );
+									}
+								};
+								return taskObserver.getResult();
+							} else {
+								return null;
+							}
+						}
+						@Override
+						protected void done() {
+							try {
+								edu.cmu.cs.dennisc.alice.ast.Statement statement = this.get();
+								if( statement != null ) {
+									statementListPropertyPane.getProperty().add( index, statement );
+									getIDE().markChanged( "drop statement template" );
+									CodeEditor.this.refresh();
+								} else {
+									//todo?
+								}
+							} catch( InterruptedException ie ) {
+								throw new RuntimeException( ie );
+							} catch( java.util.concurrent.ExecutionException ee ) {
+								throw new RuntimeException( ee );
+							} finally {
+								source.hideDropProxyIfNecessary();
+							}
+						}
+					}
+					
+					public void perform( zoot.ActionContext actionContext ) {
+						Worker worker = new Worker();
+						actionContext.execute( worker );
+					}
+				}
+				dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 			} else {
 				source.hideDropProxyIfNecessary();
 			}
@@ -634,9 +631,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 				edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
 
 				int prevIndex = prevOwner.indexOf( statement );
-				int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, e.getPoint(), this.currentUnder ) );
+				int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
 
-				if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
+				if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 					nextOwner.add( nextIndex, (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement ) );
 				} else {
 					if( prevOwner == nextOwner ) {
@@ -660,7 +657,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 			}
 		}
 	}
-	public void dragExited( zoot.ZDragComponent source, java.awt.event.MouseEvent e, boolean isDropRecipient ) {
+	public void dragExited( zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
+		final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		this.statementListPropertyPaneInfos = null;
 		this.currentUnder = null;
 		this.repaint();
@@ -670,7 +668,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 			source.hideDropProxyIfNecessary();
 		}
 	}
-	public void dragStopped( zoot.ZDragComponent source, java.awt.event.MouseEvent e ) {
+	public void dragStopped( zoot.DragAndDropContext dragAndDropContext ) {
 	}
 
 //	@Override

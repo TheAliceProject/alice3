@@ -37,4 +37,5 @@ public interface Context {
 	public boolean isCancelWorthwhile();
 	public ActionContext perform( ActionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile );
 	public ItemSelectionContext perform( ItemSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection );
+	public void execute( org.jdesktop.swingworker.SwingWorker< ?, ? > worker );
 }

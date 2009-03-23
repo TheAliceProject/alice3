@@ -31,5 +31,4 @@ public interface DragAndDropOperation extends Operation {
 	public void handleDragEnteredDropReceptor( DragAndDropContext dragAndDropContext );
 	public void handleDragExitedDropReceptor( DragAndDropContext dragAndDropContext );
 	public void handleDragStopped( DragAndDropContext dragAndDropContext );
-	public ActionOperation getDropOperation();
 }

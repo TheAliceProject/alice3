@@ -29,14 +29,14 @@ package zoot;
 public interface DropReceptor {
 	public boolean isPotentiallyAcceptingOf( ZDragComponent source );
 	public java.awt.Component getAWTComponent();
-	public void dragStarted( ZDragComponent source, java.awt.event.MouseEvent e );
-	public void dragEntered( ZDragComponent source, java.awt.event.MouseEvent e );
-	public void dragUpdated( ZDragComponent source, java.awt.event.MouseEvent e );
+	public void dragStarted( DragAndDropContext dragAndDropContext );
+	public void dragEntered( DragAndDropContext dragAndDropContext );
+	public void dragUpdated( DragAndDropContext dragAndDropContext );
 	
 	//todo: Dropped or Exited but not both?
-	public void dragDropped( ZDragComponent source, java.awt.event.MouseEvent e, ActionOperation dropOperation );
-	public void dragExited( ZDragComponent source, java.awt.event.MouseEvent e, boolean isDropRecipient );
+	public void dragDropped( DragAndDropContext dragAndDropContext );
+	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
 	
 	
-	public void dragStopped( ZDragComponent source, java.awt.event.MouseEvent e );
+	public void dragStopped( DragAndDropContext dragAndDropContext );
 }

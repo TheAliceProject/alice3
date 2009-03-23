@@ -76,6 +76,9 @@ abstract class AbstractContext implements Context {
 	public ItemSelectionContext perform( ItemSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection ) {
 		return ZManager.performIfAppropriate( operation, o, isCancelWorthwhile, prevSelection, nextSelection );
 	}
+	public void execute( org.jdesktop.swingworker.SwingWorker< ?, ? > worker ) {
+		worker.execute();
+	}
 }
 class MyActionContext extends AbstractContext implements ActionContext {
 	public MyActionContext( java.util.EventObject e, boolean isCancelWorthwhile ) {

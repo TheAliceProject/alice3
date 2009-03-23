@@ -22,11 +22,6 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.ast.AccessiblePane;
-import org.alice.ide.ast.StatementListPropertyPane;
-
-import zoot.ActionOperation;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -52,26 +47,27 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 	public boolean isPotentiallyAcceptingOf( zoot.ZDragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.ast.ExpressionLikeSubstance;
 	}
-	public void dragStarted( zoot.ZDragComponent source, java.awt.event.MouseEvent e ) {
+	public void dragStarted( zoot.DragAndDropContext dragAndDropContext ) {
 	}
-	public void dragEntered( zoot.ZDragComponent source, java.awt.event.MouseEvent e ) {
+	public void dragEntered( zoot.DragAndDropContext dragAndDropContext ) {
+		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height );
 	}
-	public void dragUpdated( zoot.ZDragComponent source, java.awt.event.MouseEvent e ) {
+	public void dragUpdated( zoot.DragAndDropContext dragAndDropContext ) {
 	}
-	public void dragDropped( final zoot.ZDragComponent source, final java.awt.event.MouseEvent e, final ActionOperation dropOperation ) {
+	public void dragDropped( zoot.DragAndDropContext dragAndDropContext ) {
+		final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression, Object > {
 			private zoot.event.DragAndDropEvent dragAndDropEvent;
-			private StatementListPropertyPane statementListPropertyPane;
-
 			public Worker() {
-				this.dragAndDropEvent = new zoot.event.DragAndDropEvent( source, ExpressionPropertyDropDownPane.this, e );
+				this.dragAndDropEvent = new zoot.event.DragAndDropEvent( source, ExpressionPropertyDropDownPane.this, eSource );
 			}
 			@Override
 			protected edu.cmu.cs.dennisc.alice.ast.Expression doInBackground() throws java.lang.Exception {
 				zoot.ZDragComponent source = this.dragAndDropEvent.getTypedSource();
-				if( source.getSubject() instanceof AccessiblePane ) {
-					AccessiblePane accessiblePane = (AccessiblePane)source.getSubject();
+				if( source.getSubject() instanceof org.alice.ide.ast.AccessiblePane ) {
+					org.alice.ide.ast.AccessiblePane accessiblePane = (org.alice.ide.ast.AccessiblePane)source.getSubject();
 //					try {
 						edu.cmu.cs.dennisc.alice.ast.Expression expression = accessiblePane.createExpression( this.dragAndDropEvent );
 						return expression;
@@ -105,10 +101,11 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 		Worker worker = new Worker();
 		worker.execute();
 	}
-	public void dragExited( zoot.ZDragComponent source, java.awt.event.MouseEvent e, boolean isDropRecipient ) {
+	public void dragExited( zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
+		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		source.hideDropProxyIfNecessary();
 	}
-	public void dragStopped( zoot.ZDragComponent source, java.awt.event.MouseEvent e ) {
+	public void dragStopped( zoot.DragAndDropContext dragAndDropContext ) {
 	}
 	public java.awt.Component getAWTComponent() {
 		return this;
