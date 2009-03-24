@@ -20,28 +20,34 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.cascade.customfillin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NumberFillerInner extends AbstractNumberFillerInner {
-	public NumberFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
+abstract class CustomPane<E> extends swing.Pane implements zoot.InputValidator {
+	private zoot.ZTextField textField = new zoot.ZTextField();
+	public CustomPane() {
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( new zoot.ZLabel( "value: " ), java.awt.BorderLayout.WEST );
+		this.add( this.textField, java.awt.BorderLayout.CENTER );
 	}
-	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, 0.0 );
-		this.addExpressionFillIn( blank, 0.25 );
-		this.addExpressionFillIn( blank, 0.5 );
-		this.addExpressionFillIn( blank, 1.0 );
-		this.addExpressionFillIn( blank, 2.0 );
-		this.addExpressionFillIn( blank, 5.0 );
-		this.addExpressionFillIn( blank, 10.0 );
-		this.addExpressionFillIn( blank, 100.0 );
-		blank.addSeparator();
-		blank.addChild( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
-		blank.addSeparator();
-//		self._addArithmeticFillIns( blank, ecc.dennisc.alice.ast.getType( java.lang.Double ), ecc.dennisc.alice.ast.getType( java.lang.Number ) )
+	protected abstract E valueOf( String text );
+	public boolean isInputValid() {
+		try {
+			this.valueOf( this.textField.getText() );
+			return true;
+		} catch( RuntimeException re ) {
+			return false;
+		}
 	}
+	protected final E getActualInputValue() {
+		return this.valueOf( this.textField.getText() );
+	}
+	
+	public zoot.ZTextField getTextField() {
+		return this.textField;
+	}
+
 }
+

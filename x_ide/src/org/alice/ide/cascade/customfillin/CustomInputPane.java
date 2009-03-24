@@ -20,28 +20,32 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.cascade.customfillin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NumberFillerInner extends AbstractNumberFillerInner {
-	public NumberFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
+public class CustomInputPane<E> extends zoot.ZInputPane< E > {
+	private CustomPane< E > chooser;
+	public CustomInputPane( CustomPane< E > chooser ) {
+		this.chooser = chooser;
+		this.chooser.getTextField().getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+				CustomInputPane.this.updateOKButton();
+			}
+			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+				CustomInputPane.this.updateOKButton();
+			}
+			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+				CustomInputPane.this.updateOKButton();
+			}
+		} );
+		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
+		this.add( this.chooser );
+		this.addOKButtonValidator( this.chooser );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, 0.0 );
-		this.addExpressionFillIn( blank, 0.25 );
-		this.addExpressionFillIn( blank, 0.5 );
-		this.addExpressionFillIn( blank, 1.0 );
-		this.addExpressionFillIn( blank, 2.0 );
-		this.addExpressionFillIn( blank, 5.0 );
-		this.addExpressionFillIn( blank, 10.0 );
-		this.addExpressionFillIn( blank, 100.0 );
-		blank.addSeparator();
-		blank.addChild( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
-		blank.addSeparator();
-//		self._addArithmeticFillIns( blank, ecc.dennisc.alice.ast.getType( java.lang.Double ), ecc.dennisc.alice.ast.getType( java.lang.Number ) )
+	protected E getActualInputValue() {
+		return this.chooser.getActualInputValue();
 	}
 }

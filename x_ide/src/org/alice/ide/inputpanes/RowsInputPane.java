@@ -25,7 +25,7 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-abstract class RowsInputPane< E > extends zoot.ZInputPane< E > { 
+public abstract class RowsInputPane< E > extends zoot.ZInputPane< E > { 
 	public RowsInputPane() {
 		java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
 		javax.swing.JPanel panel = new javax.swing.JPanel();

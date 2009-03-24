@@ -41,8 +41,9 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		this.addExpressionFillIn( blank, 7 );
 		this.addExpressionFillIn( blank, 8 );
 		this.addExpressionFillIn( blank, 9 );
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.CustomIntegerFillIn() )
-//		blank.addSeparator()
+		blank.addSeparator();
+		blank.addChild( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
+		blank.addSeparator();
 //		self._addArithmeticFillIns( blank, self._type, self._type )
 	}
 }

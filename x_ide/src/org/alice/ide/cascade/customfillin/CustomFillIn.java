@@ -20,28 +20,34 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.ide.cascade.customfillin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class NumberFillerInner extends AbstractNumberFillerInner {
-	public NumberFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
-	}
+public abstract class CustomFillIn<E> extends edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	protected abstract CustomPane createCustomPane();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( E value );
+
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, 0.0 );
-		this.addExpressionFillIn( blank, 0.25 );
-		this.addExpressionFillIn( blank, 0.5 );
-		this.addExpressionFillIn( blank, 1.0 );
-		this.addExpressionFillIn( blank, 2.0 );
-		this.addExpressionFillIn( blank, 5.0 );
-		this.addExpressionFillIn( blank, 10.0 );
-		this.addExpressionFillIn( blank, 100.0 );
-		blank.addSeparator();
-		blank.addChild( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
-		blank.addSeparator();
-//		self._addArithmeticFillIns( blank, ecc.dennisc.alice.ast.getType( java.lang.Double ), ecc.dennisc.alice.ast.getType( java.lang.Number ) )
+	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
+		java.awt.Component owner = org.alice.ide.IDE.getSingleton();
+		CustomPane customPane = this.createCustomPane();
+		zoot.ZInputPane< E > inputPane = new CustomInputPane( customPane );
+		E value = inputPane.showInJDialog( owner );
+		if( value != null ) {
+			return this.createExpression( value );
+		} else {
+			throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );
+		}
+	}
+
+	@Override
+	protected void addChildren() {
+	}
+	protected abstract String getMenuProxyText();
+	@Override
+	protected javax.swing.JComponent createMenuProxy() {
+		return new javax.swing.JLabel( this.getMenuProxyText() );
 	}
 }

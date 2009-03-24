@@ -27,15 +27,15 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public abstract class ZInputPane<E> extends javax.swing.JPanel {
-	private java.util.List< edu.cmu.cs.dennisc.pattern.Validator > m_validators = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.Validator >();
+	private java.util.List< InputValidator > m_validators = new java.util.LinkedList< InputValidator >();
 	private ZButton m_okButton;
 	
 	private javax.swing.JDialog m_dialog;
 
 	public ZInputPane() {
 	}
-	public ZInputPane( edu.cmu.cs.dennisc.pattern.Validator... validators ) {
-		for( edu.cmu.cs.dennisc.pattern.Validator validator : validators ) {
+	public ZInputPane( InputValidator... validators ) {
+		for( InputValidator validator : validators ) {
 			m_validators.add( validator );
 		}
 	}
@@ -58,25 +58,25 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 		} );
 	}
 
-	public void addOKButtonValidator( edu.cmu.cs.dennisc.pattern.Validator validator ) {
+	public void addOKButtonValidator( InputValidator validator ) {
 		synchronized( m_validators ) {
 			m_validators.add( validator );
 		}
 	}
-	public void removeOKButtonValidator( edu.cmu.cs.dennisc.pattern.Validator validator ) {
+	public void removeOKButtonValidator( InputValidator validator ) {
 		synchronized( m_validators ) {
 			m_validators.remove( validator );
 		}
 	}
-	public Iterable< edu.cmu.cs.dennisc.pattern.Validator > getOKButtonValidators() {
+	public Iterable< InputValidator > getOKButtonValidators() {
 		synchronized( m_validators ) {
 			return m_validators;
 		}
 	}
 	public boolean isOKButtonValid() {
 		synchronized( m_validators ) {
-			for( edu.cmu.cs.dennisc.pattern.Validator validator : m_validators ) {
-				if( validator.isValid() ) {
+			for( InputValidator validator : m_validators ) {
+				if( validator.isInputValid() ) {
 					//pass
 				} else {
 					return false;

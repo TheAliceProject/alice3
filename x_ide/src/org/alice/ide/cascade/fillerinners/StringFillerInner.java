@@ -32,9 +32,9 @@ public class StringFillerInner extends AbstractNumberFillerInner {
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		this.addExpressionFillIn( blank, "hello" );
-//		blank.addSeparator()
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.CustomStringFillIn() )
-//		blank.addSeparator()
+		blank.addSeparator();
+		blank.addChild( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
+		blank.addSeparator();
 //		blank.addChild( ecc.dennisc.alice.ide.cascade.StringConcatenationFillIn() )
 	}
 }
