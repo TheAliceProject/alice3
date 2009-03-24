@@ -36,14 +36,15 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 	@Override
 	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
 		java.awt.Dimension rv = super.preferredLayoutSize( target );
+		final int N = target.getComponentCount();
 		switch( this.axis ) {
 		case Y_AXIS:
 		case PAGE_AXIS:
-			rv.height += this.pad;
+			rv.height += N*this.pad;
 			break;
 		case X_AXIS:
 		case LINE_AXIS:
-			rv.width += this.pad;
+			rv.width += N*this.pad;
 			break;
 		}
 		return rv;
@@ -51,7 +52,8 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 	@Override
 	public void layoutContainer( java.awt.Container target ) {
 		super.layoutContainer( target );
-		for( int i=0; i<target.getComponentCount(); i++ ) {
+		final int N = target.getComponentCount();
+		for( int i=0; i<N; i++ ) {
 			java.awt.Component componentI = target.getComponent( i );
 			java.awt.Point p = componentI.getLocation();
 			//todo: handle right to left
