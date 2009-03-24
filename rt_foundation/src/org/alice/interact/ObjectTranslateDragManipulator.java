@@ -24,6 +24,8 @@ package org.alice.interact;
 
 import java.awt.Point;
 
+import org.alice.interact.event.ManipulationEvent;
+
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
@@ -37,7 +39,7 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 /**
  * @author David Culyba
  */
-public class ObjectTranslateDragManipulator extends DragManipulator implements CameraInformedManipulator {
+public class ObjectTranslateDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
 
 	protected static final double BAD_ANGLE_THRESHOLD = 2.0d*Math.PI * (8.0d/360.0d);
 	protected static final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
@@ -62,6 +64,16 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 
 	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
 		this.onscreenLookingGlass = onscreenLookingGlass;
+	}
+	
+	@Override
+	protected void initializeEventMessages()
+	{
+		this.manipulationEvents.clear();
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.FORWARD, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.BACKWARD, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
 	}
 	
 	protected Point3 getPositionForPlane( Plane movementPlane, Ray pickRay )
@@ -162,7 +174,7 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	}
 	
 	@Override
-	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) && this.manipulatedTransformable != null)
 		{
 			if (!this.hasMoved)
@@ -175,6 +187,22 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 			}
 				
 			Point3 newPosition = getPositionBasedonOnMouseLocation( currentInput.getMouseLocation() );
+			//Send manipulation events
+			Vector3 movementDif = Vector3.createSubtraction( newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation);
+			movementDif.normalize();
+			for (ManipulationEvent event : this.manipulationEvents)
+			{
+				double dot = Vector3.calculateDotProduct( event.getMovementDescription().direction.getVector(), movementDif );
+				if (dot > 0.1d)
+				{
+					this.dragAdapter.triggerManipulationEvent( event, true );
+				}
+				else if ( dot < -.07d)
+				{
+					this.dragAdapter.triggerManipulationEvent( event, false );
+				}
+			}
+			
 			if (newPosition != null)
 			{
 				this.manipulatedTransformable.setTranslationOnly( newPosition, AsSeenBy.SCENE );
@@ -183,7 +211,7 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	}
 
 	@Override
-	public void endManipulator( InputState endInput, InputState previousInput  ) {
+	public void doEndManipulator( InputState endInput, InputState previousInput  ) {
 		if (this.dragAdapter != null)
 		{
 			this.dragAdapter.setActivateTransformable( this.manipulatedTransformable, false );
@@ -192,10 +220,11 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	}
 
 	@Override
-	public void startManipulator( InputState startInput ) {
+	public void doStartManipulator( InputState startInput ) {
 		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();	
 		if (this.manipulatedTransformable != null)
 		{
+			this.initializeEventMessages();
 			this.initialMouseLocation.setLocation( startInput.getMouseLocation() ); 
 			this.hasMoved = false;
 			this.initialObjectPosition.set( this.manipulatedTransformable.getAbsoluteTransformation().translation );
@@ -218,7 +247,7 @@ public class ObjectTranslateDragManipulator extends DragManipulator implements C
 	}
 
 	@Override
-	public void timeUpdateManipulator( double time, InputState currentInput ) {
+	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
 		// TODO Auto-generated method stub
 		
 	}

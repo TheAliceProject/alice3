@@ -55,14 +55,14 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 	protected Transformable standUpReference = new Transformable();
 	protected boolean applyAlongAxis = false;
 	
-	public LinearScaleHandle( Vector3 dragAxis, Color4f color )
+	public LinearScaleHandle( MovementDirection dragDirection, Color4f color )
 	{
-		this( dragAxis, color, false );
+		this( dragDirection, color, false );
 	}
 	
-	public LinearScaleHandle( Vector3 dragAxis, Color4f color, boolean applyAlongAxis )
+	public LinearScaleHandle( MovementDirection dragDirection, Color4f color, boolean applyAlongAxis )
 	{
-		super( dragAxis );
+		super( dragDirection );
 		this.baseColor = color;
 		this.applyAlongAxis = applyAlongAxis;
 		this.initializeAppearance();
@@ -74,6 +74,13 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 		this.baseColor = handle.baseColor;
 		this.applyAlongAxis = handle.applyAlongAxis;
 		this.initializeAppearance();
+	}
+	
+	@Override
+	public LinearScaleHandle clone()
+	{
+		LinearScaleHandle newHandle = new LinearScaleHandle(this);
+		return newHandle;
 	}
 	
 	public boolean applyAlongAxis()

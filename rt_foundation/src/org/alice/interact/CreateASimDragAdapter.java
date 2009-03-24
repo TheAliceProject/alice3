@@ -40,29 +40,29 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 	protected void setUpControls() {
 		MovementKey[] movementKeys = {
 				//Up
-				new MovementKey(KeyEvent.VK_PAGE_UP, new Point3(0, 1, 0), MovementType.STOOD_UP, .35d),
-				new MovementKey(KeyEvent.VK_UP, new Point3(0, 1, 0), MovementType.STOOD_UP, .35d),
+				new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), .35d),
+				new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), .35d),
 				//Down
-				new MovementKey(KeyEvent.VK_PAGE_DOWN, new Point3(0, -1, 0), MovementType.STOOD_UP, .35d),
-				new MovementKey(KeyEvent.VK_DOWN, new Point3(0, -1, 0), MovementType.STOOD_UP, .35d),
+				new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), .35d),
+				new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), .35d),
 		};
 		
 		MovementKey[] zoomKeys = {
 				//Zoom out
-				new MovementKey(KeyEvent.VK_MINUS, new Point3(0, 0, 1), MovementType.LOCAL),
-				new MovementKey(KeyEvent.VK_SUBTRACT, new Point3(0, 0, 1), MovementType.LOCAL),
+				new MovementKey(KeyEvent.VK_MINUS, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
+				new MovementKey(KeyEvent.VK_SUBTRACT, new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
 				//Zoom in
-				new MovementKey(KeyEvent.VK_EQUALS, new Point3(0, 0, -1), MovementType.LOCAL),
-				new MovementKey(KeyEvent.VK_ADD, new Point3(0, 0, -1), MovementType.LOCAL),
+				new MovementKey(KeyEvent.VK_EQUALS, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
+				new MovementKey(KeyEvent.VK_ADD, new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
 		};
 		
 		MovementKey[] turnKeys = {
 				//Left
-				new MovementKey(KeyEvent.VK_OPEN_BRACKET, new Vector3(0, 1, 0), MovementType.LOCAL, -25.0d),
-				new MovementKey(KeyEvent.VK_LEFT, new Vector3(0, 1, 0), MovementType.LOCAL, -25.0d),
+				new MovementKey(KeyEvent.VK_OPEN_BRACKET, new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), -25.0d),
+				new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), -25.0d),
 				//Right
-				new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new Vector3(0, 1, 0), MovementType.LOCAL, 25.0d),
-				new MovementKey(KeyEvent.VK_RIGHT, new Vector3(0, 1, 0), MovementType.LOCAL, 25.0d),
+				new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), 25.0d),
+				new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), 25.0d),
 		};
 		
 		CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator( movementKeys );

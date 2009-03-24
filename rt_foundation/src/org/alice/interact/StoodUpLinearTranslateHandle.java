@@ -43,9 +43,9 @@ public class StoodUpLinearTranslateHandle extends LinearTranslateHandle implemen
 
 	protected Transformable standUpReference = new Transformable();
 	
-	public StoodUpLinearTranslateHandle( Vector3 dragAxis, Color4f color )
+	public StoodUpLinearTranslateHandle( MovementDirection dragDirection, Color4f color )
 	{
-		super( dragAxis, color );
+		super( dragDirection, color );
 	}
 
 	@Override

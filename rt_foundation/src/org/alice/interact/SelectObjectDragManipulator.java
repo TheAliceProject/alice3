@@ -27,7 +27,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public class SelectObjectDragManipulator extends DragManipulator {
+public class SelectObjectDragManipulator extends AbstractManipulator {
 
 	protected GlobalDragAdapter globalDragAdapter;
 	
@@ -37,19 +37,19 @@ public class SelectObjectDragManipulator extends DragManipulator {
 	}
 	
 	@Override
-	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void endManipulator( InputState endInput, InputState previousInput ) {
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void startManipulator( InputState startInput ) {
+	public void doStartManipulator( InputState startInput ) {
 		PickHint clickedObjectType = PickCondition.getPickType( startInput.getClickPickResult() );
 		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
 		{
@@ -71,7 +71,7 @@ public class SelectObjectDragManipulator extends DragManipulator {
 	}
 
 	@Override
-	public void timeUpdateManipulator( double time, InputState currentInput ) {
+	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
 		// TODO Auto-generated method stub
 
 	}

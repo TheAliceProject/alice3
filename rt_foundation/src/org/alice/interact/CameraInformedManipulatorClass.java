@@ -25,7 +25,7 @@ package org.alice.interact;
 /**
  * @author David Culyba
  */
-public abstract class CameraInformedManipulatorClass extends DragManipulator{
+public abstract class CameraInformedManipulatorClass extends AbstractManipulator{
 
 	protected edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = null;
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;

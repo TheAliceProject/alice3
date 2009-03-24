@@ -28,7 +28,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 /**
  * @author David Culyba
  */
-public abstract class CameraManipulator extends DragManipulator implements CameraInformedManipulator {
+public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
 
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	

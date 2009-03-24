@@ -34,7 +34,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.BoundingBoxDecorator;
 /**
  * @author David Culyba
  */
-public class TranslateKeyManipulator extends DragManipulator {
+public class TranslateKeyManipulator extends AbstractManipulator {
 	
 	protected static double MOVEMENT_RATE = 5.0d;
 	protected static double CLICK_TIME = .1d;
@@ -100,8 +100,8 @@ public class TranslateKeyManipulator extends DragManipulator {
 		{
 			if (input.isKeyDown( this.directionKeys[i].keyValue ))
 			{				
-				Point3 multipliedPoint = Point3.createMultiplication( this.directionKeys[i].direction, this.directionKeys[i].directionMultiplier );
-				moveDirs[this.directionKeys[i].movementType.getIndex()].add( multipliedPoint );
+				Point3 multipliedPoint = Point3.createMultiplication( this.directionKeys[i].movementDescription.direction.getVector(), this.directionKeys[i].directionMultiplier );
+				moveDirs[this.directionKeys[i].movementDescription.type.getIndex()].add( multipliedPoint );
 			}	
 		}
 		return moveDirs;
@@ -153,7 +153,7 @@ public class TranslateKeyManipulator extends DragManipulator {
 	}
 	
 	@Override
-	public void endManipulator( InputState endInput, InputState previousInput ) {
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		double currentTime = System.currentTimeMillis() * .001d;
 		if (currentTime - this.startTime < CLICK_TIME)
 		{
@@ -174,7 +174,7 @@ public class TranslateKeyManipulator extends DragManipulator {
 	}
 
 	@Override
-	public void startManipulator( InputState startInput ) {
+	public void doStartManipulator( InputState startInput ) {
 		if (this.manipulatedTransformable != null)
 		{
 			this.hasStarted = true;
@@ -184,11 +184,11 @@ public class TranslateKeyManipulator extends DragManipulator {
 	}
 
 	@Override
-	public void dataUpdateManipulator( InputState currentInput, InputState previousInput  ) {
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput  ) {
 	}
 
 	@Override
-	public void timeUpdateManipulator( double dTime, InputState currentInput ) {
+	public void doTimeUpdateManipulator( double dTime, InputState currentInput ) {
 		if (this.manipulatedTransformable != null && this.hasStarted)
 		{
 			Point3[] translateDirections = getMoveDirection(currentInput);

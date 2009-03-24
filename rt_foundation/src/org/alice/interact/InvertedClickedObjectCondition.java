@@ -22,24 +22,17 @@
  */
 package org.alice.interact;
 
+
 /**
  * @author David Culyba
  */
-public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
+public class InvertedClickedObjectCondition extends ClickedObjectCondition {
 
-	
-	public ObjectRotateKeyManipulator( MovementKey[] directionKeys )
+	public InvertedClickedObjectCondition( PickHint acceptableType )
 	{
-		super(directionKeys);
+		super(acceptableType);
+		this.isNot = true;
 	}
-	
-	@Override
-	public void doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
-		if (this.manipulatedTransformable != null)
-		{
-			super.doStartManipulator( startInput );
-		}
-	}
+
 	
 }

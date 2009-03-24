@@ -50,7 +50,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 	}
 	
 	@Override
-	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		int xChange = currentInput.getMouseLocation().x - previousInput.getMouseLocation().x;
 		int yChange = currentInput.getMouseLocation().y - previousInput.getMouseLocation().y;
 		
@@ -72,13 +72,13 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 	}
 
 	@Override
-	public void endManipulator( InputState endInput, InputState previousInput ) {
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void startManipulator( InputState startInput ) {
+	public void doStartManipulator( InputState startInput ) {
 		Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward;
 		cameraForward.multiply( -1.0d );
 		Point3 pickPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
@@ -90,7 +90,7 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 	}
 
 	@Override
-	public void timeUpdateManipulator( double time, InputState currentInput ) {
+	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
 		// TODO Auto-generated method stub
 		
 	}

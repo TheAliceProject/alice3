@@ -23,14 +23,22 @@
 
 package org.alice.interact;
 
+import java.util.Vector;
+
+import org.alice.interact.event.ManipulationEvent;
+import org.alice.interact.event.ManipulationEventManager;
+import org.alice.interact.event.ManipulationListener;
+
 /**
  * @author David Culyba
  */
-public abstract class DragManipulator {
+public abstract class AbstractManipulator {
 	
 	protected edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable = null;
 	protected boolean hasStarted = false;
 	protected GlobalDragAdapter dragAdapter;
+	
+	protected Vector< ManipulationEvent > manipulationEvents = new Vector< ManipulationEvent >();
 	
 	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
 	{
@@ -47,13 +55,48 @@ public abstract class DragManipulator {
 		this.dragAdapter = dragAdapter;
 	}
 	
-	public abstract void startManipulator( InputState startInput );
 	
-	public abstract void dataUpdateManipulator( InputState currentInput, InputState previousInput );
+	protected void initializeEventMessages()
+	{
+		this.manipulationEvents.clear();
+	}
 	
-	public abstract void timeUpdateManipulator( double dTime, InputState currentInput );
+	public void triggerAllDeactivateEvents()
+	{
+		for (int i=0; i<this.manipulationEvents.size(); i++)
+		{
+			this.dragAdapter.triggerManipulationEvent( this.manipulationEvents.get( i ), false );
+		}
+	}
 	
-	public abstract void endManipulator( InputState endInput, InputState previousInput  );
+	public void startManipulator( InputState startInput )
+	{
+		doStartManipulator( startInput );
+	}
+	
+	public void dataUpdateManipulator(InputState currentInput, InputState previousInput  )
+	{
+		doDataUpdateManipulator( currentInput, previousInput );
+	}
+	
+	public void timeUpdateManipulator( double dTime, InputState currentInput )
+	{
+		doTimeUpdateManipulator( dTime, currentInput );
+	}
+	
+	public void endManipulator(InputState endInput, InputState previousInput  )
+	{
+		doEndManipulator( endInput, previousInput );
+		triggerAllDeactivateEvents();
+	}
+	
+	public abstract void doStartManipulator( InputState startInput );
+	
+	public abstract void doDataUpdateManipulator( InputState currentInput, InputState previousInput );
+	
+	public abstract void doTimeUpdateManipulator( double dTime, InputState currentInput );
+	
+	public abstract void doEndManipulator( InputState endInput, InputState previousInput  );
 	
 
 }

@@ -29,9 +29,9 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public class ObjectGlobalHandleDragManipulator extends DragManipulator implements CameraInformedManipulator {
+public class ObjectGlobalHandleDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
 
-	protected DragManipulator activeManipulator;
+	protected AbstractManipulator activeManipulator;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	protected ManipulationHandle activeHandle = null;
 	
@@ -40,19 +40,19 @@ public class ObjectGlobalHandleDragManipulator extends DragManipulator implement
 	}
 	
 	@Override
-	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		if (this.activeManipulator != null)
 		{
-			this.activeManipulator.dataUpdateManipulator( currentInput, previousInput );
+			this.activeManipulator.doDataUpdateManipulator( currentInput, previousInput );
 		}
 
 	}
 
 	@Override
-	public void endManipulator( InputState endInput, InputState previousInput ) {
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		if (this.activeManipulator != null)
 		{
-			this.activeManipulator.endManipulator( endInput, previousInput );
+			this.activeManipulator.doEndManipulator( endInput, previousInput );
 		}
 		if (activeHandle != null)
 		{
@@ -61,7 +61,7 @@ public class ObjectGlobalHandleDragManipulator extends DragManipulator implement
 	}
 
 	@Override
-	public void startManipulator( InputState startInput ) {
+	public void doStartManipulator( InputState startInput ) {
 		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
 		if (clickedHandle instanceof ManipulationHandle)
 		{
@@ -87,16 +87,16 @@ public class ObjectGlobalHandleDragManipulator extends DragManipulator implement
 				CameraInformedManipulator cIM = (CameraInformedManipulator)this.activeManipulator;
 				cIM.setOnscreenLookingGlass( this.onscreenLookingGlass );
 			}
-			this.activeManipulator.startManipulator( startInput );
+			this.activeManipulator.doStartManipulator( startInput );
 		}
 
 	}
 
 	@Override
-	public void timeUpdateManipulator( double time, InputState currentInput ) {
+	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
 		if (this.activeManipulator != null)
 		{
-			this.activeManipulator.timeUpdateManipulator( time, currentInput );
+			this.activeManipulator.doTimeUpdateManipulator( time, currentInput );
 		}
 
 	}

@@ -106,6 +106,13 @@ public class RotationRingHandle extends ManipulationHandle{
 		this.handleOffset.set( handle.handleOffset );
 	}
 	
+	@Override
+	public RotationRingHandle clone()
+	{
+		RotationRingHandle newHandle = new RotationRingHandle(this);
+		return newHandle;
+	}
+	
 	protected void setPositionRelativeToObjectSize( Composite object )
 	{
 		if (manipulatedObject != null)

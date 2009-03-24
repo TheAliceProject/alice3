@@ -38,6 +38,7 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 	protected static final double MIN_LENGTH = .4d;
 	
 	protected double offsetPadding = 0.0d;
+	protected MovementDirection dragDirection;
 	protected Vector3 dragAxis;
 	protected double distanceFromOrigin;
 
@@ -45,14 +46,14 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 	
 	public LinearDragHandle( )
 	{
-		this( Vector3.accessPositiveYAxis());
+		this( MovementDirection.UP );
 	}
 	
-	public LinearDragHandle( Vector3 dragAxis )
+	public LinearDragHandle( MovementDirection dragDirection )
 	{
 		super();
-		this.dragAxis = new Vector3(dragAxis);
-		this.dragAxis.normalize();
+		this.dragDirection = dragDirection;
+		this.dragAxis = new Vector3(this.dragDirection.getVector());
 		this.localTransformation.setValue( this.getTransformationForAxis( this.dragAxis ) );
 		this.distanceFromOrigin = 0.0d;
 		createShape();
@@ -60,12 +61,12 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 	
 	public LinearDragHandle( LinearDragHandle handle)
 	{
-		this(handle.dragAxis);
+		this(handle.dragDirection);
 		this.initFromHandle( handle );
 		this.distanceFromOrigin = handle.distanceFromOrigin;
 		this.offsetPadding = handle.offsetPadding;
 	}
-
+	
 	protected abstract void createShape();
 	
 	@Override

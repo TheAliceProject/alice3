@@ -30,31 +30,19 @@ import edu.cmu.cs.dennisc.math.Tuple3;
  */
 public class MovementKey {
 
-	public Tuple3 direction;
+	public MovementDescription movementDescription;
 	public double directionMultiplier;
 	public int keyValue;
-	public MovementType movementType;
 	
-	public MovementKey( int keyValue, Tuple3 direction )
+	public MovementKey( int keyValue, MovementDescription description )
 	{
-		this(keyValue, direction, MovementType.STOOD_UP);
+		this(keyValue, description, 1.0d);
 	}
 	
-	public MovementKey( int keyValue, Tuple3 direction, MovementType movementType )
-	{
-		this(keyValue, direction, movementType, 1.0d);
-	}
-	
-	public MovementKey( int keyValue, Tuple3 direction, double directionMultiplier )
-	{
-		this(keyValue, direction, MovementType.STOOD_UP, directionMultiplier);
-	}
-	
-	public MovementKey( int keyValue, Tuple3 direction, MovementType movementType, double directionMultiplier )
+	public MovementKey( int keyValue, MovementDescription description, double directionMultiplier )
 	{
 		this.keyValue = keyValue;
-		this.direction = direction;
-		this.movementType = movementType;
+		this.movementDescription = description;
 		this.directionMultiplier = directionMultiplier;
 	}
 }

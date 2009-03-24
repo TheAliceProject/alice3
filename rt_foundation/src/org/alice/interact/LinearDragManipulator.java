@@ -36,7 +36,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public class LinearDragManipulator extends DragManipulator implements CameraInformedManipulator {
+public class LinearDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
 
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
@@ -111,7 +111,7 @@ public class LinearDragManipulator extends DragManipulator implements CameraInfo
 	}
 	
 	@Override
-	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
 		{
 			double currentDistance = getDistanceAlongAxisBasedOnMouse( currentInput.getMouseLocation() );
@@ -122,13 +122,13 @@ public class LinearDragManipulator extends DragManipulator implements CameraInfo
 	}
 
 	@Override
-	public void endManipulator( InputState endInput, InputState previousInput ) {
+	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void startManipulator( InputState startInput ) {
+	public void doStartManipulator( InputState startInput ) {
 		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
 		if (clickedHandle instanceof LinearDragHandle)
 		{
@@ -160,7 +160,7 @@ public class LinearDragManipulator extends DragManipulator implements CameraInfo
 	}
 
 	@Override
-	public void timeUpdateManipulator( double time, InputState currentInput ) {
+	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
 		// TODO Auto-generated method stub
 
 	}

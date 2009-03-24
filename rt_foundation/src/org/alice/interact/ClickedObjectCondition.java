@@ -25,21 +25,36 @@ package org.alice.interact;
 /**
  * @author David Culyba
  */
-public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
-
+public class ClickedObjectCondition extends InputCondition {
 	
-	public ObjectRotateKeyManipulator( MovementKey[] directionKeys )
+	PickHint acceptableType = PickHint.EVERYTHING;
+	
+	protected boolean isNot = false;
+	
+	public ClickedObjectCondition( PickHint acceptableType )
 	{
-		super(directionKeys);
+		this.acceptableType = acceptableType;
 	}
+	
 	
 	@Override
-	public void doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
-		if (this.manipulatedTransformable != null)
+	protected boolean testState( InputState state )
+	{
+		boolean isValid = this.acceptableType.intersects( PickCondition.getPickType( state.getClickPickedTransformable(true) ) );
+		if (isNot)
 		{
-			super.doStartManipulator( startInput );
+			return !isValid;
+		}
+		else 
+		{
+			return isValid; 
 		}
 	}
-	
+
+	@Override
+	public boolean stateChanged( InputState currentState, InputState previousState ) {
+		return ( testState( currentState ) != testState( previousState ));
+	}
+
+
 }

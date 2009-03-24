@@ -103,6 +103,11 @@ public abstract class TargetBasedAnimation< E > extends AbstractAnimation {
 	protected abstract E interpolate( E v0, E v1, double deltaSinceLastUpdate );
 	protected abstract E newE( E other );
 	
+	public void forceValueUpdate()
+	{
+		this.updateValue( this.currentValue );
+	}
+	
 	@Override
 	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, AnimationObserver animationObserver ) {
 		

@@ -37,7 +37,7 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 /**
  * @author David Culyba
  */
-public class SimsObjectRotateDragManipulator extends DragManipulator implements CameraInformedManipulator {
+public class SimsObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
 	protected static final double MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER = .025d;
 	
 	protected Vector3 rotateAxis;
@@ -83,14 +83,14 @@ public class SimsObjectRotateDragManipulator extends DragManipulator implements 
 	}
 	
 	@Override
-	public void startManipulator( InputState startInput ) 
+	public void doStartManipulator( InputState startInput ) 
 	{
 		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
 		this.initManipulator( startInput );
 	}
 	
 	@Override
-	public void dataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
 		{
 			Angle currentAngle = getRotationBasedOnMouse( currentInput.getMouseLocation() );
@@ -105,12 +105,12 @@ public class SimsObjectRotateDragManipulator extends DragManipulator implements 
 	}
 	
 	@Override
-	public void endManipulator( InputState endInput, InputState previousInput )
+	public void doEndManipulator( InputState endInput, InputState previousInput )
 	{
 	}
 	
 	@Override
-	public void timeUpdateManipulator( double time, InputState currentInput ) {
+	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
 		// TODO Auto-generated method stub
 
 	}

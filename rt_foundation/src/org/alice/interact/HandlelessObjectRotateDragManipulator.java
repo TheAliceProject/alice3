@@ -38,7 +38,7 @@ public class HandlelessObjectRotateDragManipulator extends ObjectRotateDragManip
 	}
 	
 	@Override
-	public void startManipulator( InputState startInput ) 
+	public void doStartManipulator( InputState startInput ) 
 	{
 		this.manipulatedTransformable = startInput.getClickPickedTransformable( true );
 		//Make sure the object we're working with is selected
@@ -52,9 +52,9 @@ public class HandlelessObjectRotateDragManipulator extends ObjectRotateDragManip
 	}
 	
 	@Override
-	public void endManipulator( InputState endInput, InputState previousInput )
+	public void doEndManipulator( InputState endInput, InputState previousInput )
 	{
-		super.endManipulator( endInput, previousInput );
+		super.doEndManipulator( endInput, previousInput );
 		if (this.rotationHandle != null)
 		{
 			this.dragAdapter.setActivateHandle( this.rotationHandle, false );

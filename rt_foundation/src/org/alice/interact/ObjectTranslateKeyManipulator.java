@@ -33,11 +33,11 @@ public class ObjectTranslateKeyManipulator extends TranslateKeyManipulator {
 	}
 	
 	@Override
-	public void startManipulator( InputState startInput ) {
+	public void doStartManipulator( InputState startInput ) {
 		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
 		if (this.manipulatedTransformable != null)
 		{
-			super.startManipulator( startInput );
+			super.doStartManipulator( startInput );
 		}
 	}
 	

@@ -22,24 +22,43 @@
  */
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.math.Vector3;
+
 /**
  * @author David Culyba
  */
-public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
-
+public enum MovementDirection {
 	
-	public ObjectRotateKeyManipulator( MovementKey[] directionKeys )
+	FORWARD(0.0d, 0.0d, -1.0d),
+	BACKWARD(0.0d, 0.0d, 1.0d),
+	LEFT(-1.0d, 0.0d, 0.0d),
+	RIGHT(1.0d, 0.0d, 0.0d),
+	UP(0.0d, 1.0d, 0.0d),
+	DOWN(0.0d, -1.0d, 0.0d),
+	RESIZE(-1.0d, 1.0d, 0.0d),
+	;
+	
+	
+	private Vector3 directionVector;
+	private MovementDirection(double x, double y, double z)
 	{
-		super(directionKeys);
+		this.directionVector = new Vector3(x,y,z);
+		this.directionVector.normalize();
 	}
 	
-	@Override
-	public void doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
-		if (this.manipulatedTransformable != null)
+	public Vector3 getVector()
+	{
+		return this.directionVector;
+	}
+	
+	public boolean hasDirection( Vector3 vector )
+	{
+		double dot = Vector3.calculateDotProduct( this.directionVector, vector );
+		if (dot > 0.0d)
 		{
-			super.doStartManipulator( startInput );
+			return true;
 		}
+		return false;
 	}
-	
+
 }

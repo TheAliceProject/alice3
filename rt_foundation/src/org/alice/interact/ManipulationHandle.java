@@ -22,6 +22,9 @@
  */
 package org.alice.interact;
 
+import org.alice.interact.event.ManipulationEvent;
+import org.alice.interact.event.ManipulationListener;
+
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -36,18 +39,15 @@ import edu.cmu.cs.dennisc.scenegraph.Visual;
 /**
  * @author David Culyba
  */
-public abstract class ManipulationHandle extends Transformable {
+public abstract class ManipulationHandle extends Transformable implements ManipulationListener, Cloneable{
 
 	protected Visual sgVisual = new Visual();
 	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
 	protected Transformable manipulatedObject;
 	protected Animator animator;
 	
-	protected int isVisible = 0;
-	protected int isActive = 0;
-	protected int isRollover = 0;
-	protected int isMuted = 1;
-	protected int isFaded = 0;
+	protected HandleState currentState = new HandleState();
+	protected HandleState previousState = new HandleState();
 	
 	protected java.util.BitSet groupMembership = new java.util.BitSet();
 	
@@ -66,14 +66,13 @@ public abstract class ManipulationHandle extends Transformable {
 		}
 	}
 	
+	@Override
+	public abstract ManipulationHandle clone();
+	
 	protected void initFromHandle( ManipulationHandle handle )
 	{
 		this.manipulatedObject = handle.manipulatedObject;
-		this.isActive = handle.isActive;
-		this.isFaded = handle.isFaded;
-		this.isMuted = handle.isMuted;
-		this.isRollover = handle.isRollover;
-		this.isVisible = handle.isVisible;
+		this.currentState.setState( handle.currentState );
 		this.groupMembership.clear();
 		this.groupMembership.or( handle.groupMembership );
 		this.localTransformation.setValue( new edu.cmu.cs.dennisc.math.AffineMatrix4x4(handle.localTransformation.getValue()) );
@@ -148,6 +147,11 @@ public abstract class ManipulationHandle extends Transformable {
 		this.groupMembership.set( groupIndex );
 	}
 	
+	public void addToGroup( HandleGroup group )
+	{
+		this.groupMembership.set(  group.getIndex() );
+	}
+	
 	public void setGroupMembership( java.util.BitSet groupMembership)
 	{
 		this.groupMembership.clear();
@@ -213,27 +217,78 @@ public abstract class ManipulationHandle extends Transformable {
 		}
 	}
 	
+	public void activate(ManipulationEvent event)
+	{
+		if (!this.isActive())
+		{
+			this.previousState.setState(this.currentState);
+			this.setActive(true);
+			if (!this.isVisible())
+			{
+				this.setVisible( true );
+			}
+			if (this.opacityAnimation != null)
+			{		
+				double desiredOpacity = this.getDesiredOpacity();				
+				this.opacityAnimation.setTarget( desiredOpacity );
+				this.opacityAnimation.setCurrentValue( desiredOpacity );
+				this.opacityAnimation.forceValueUpdate();
+			}
+		}
+	}
+	
+	public void deactivate(ManipulationEvent event)
+	{
+		if (this.isActive())
+		{
+			this.setActive(false);
+			this.setState(this.previousState);
+			if (this.opacityAnimation != null)
+			{		
+				this.opacityAnimation.setTarget( this.getDesiredOpacity() );
+				this.opacityAnimation.setCurrentValue( this.getDesiredOpacity() );
+				this.opacityAnimation.forceValueUpdate();
+			}
+		}
+	}
+	
+	public void setState( HandleState state )
+	{
+	
+		if (this.currentState.isVisible() != state.isVisible() )
+		{
+			this.setVisible(state.isVisible());
+		}
+		if (this.currentState.isActive() != state.isActive() )
+		{
+			this.setActive(state.isActive());
+		}
+		if (this.currentState.isRollover() != state.isRollover() )
+		{
+			this.setRollover(state.isRollover());
+		}
+		if (this.currentState.isMuted() != state.isMuted() )
+		{
+			this.setMuted(state.isMuted());
+		}
+		if (this.currentState.isFaded() != state.isFaded() )
+		{
+			this.setFaded(state.isFaded());
+		}
+	}
+	
 	/**
 	 * @return the isVisible
 	 */
 	public boolean isVisible() {
-		return isVisible != 0;
+		return this.currentState.isVisible();
 	}
 
 	/**
 	 * @param isVisible the isVisible to set
 	 */
 	public void setVisible( boolean isVisible ) {
-		int visibleValue = isVisible ? 1 : -1;
-		this.isVisible += visibleValue;
-		
-		//visibility setting trumps faded and resets it
-		this.isFaded = 0;
-		
-		if (this.isVisible < 0)
-		{
-			System.err.println("Visible went below 0: "+this.isVisible);
-		}
+		this.currentState.setVisible( isVisible );
 		this.updateVisibleState();
 	}
 
@@ -241,7 +296,7 @@ public abstract class ManipulationHandle extends Transformable {
 	 * @return the isFaded
 	 */
 	public boolean isFaded() {
-		return isFaded != 0;
+		return this.currentState.isFaded();
 	}
 
 	/**
@@ -249,12 +304,7 @@ public abstract class ManipulationHandle extends Transformable {
 	 */
 	public void setFaded( boolean isFaded ) {
 		boolean wasFaded = this.isFaded();
-		int fadedValue = isFaded ? 1 : -1;
-		this.isFaded += fadedValue;
-		if (this.isFaded < 0)
-		{
-			System.err.println("Faded went below 0: "+this.isFaded);
-		}
+		this.currentState.setFaded( isFaded );
 		if (!this.isFaded() && wasFaded)
 		{
 			resizeToObject( this.getManipulatedObject() );
@@ -266,19 +316,14 @@ public abstract class ManipulationHandle extends Transformable {
 	 * @return the isActive
 	 */
 	public boolean isActive() {
-		return isActive != 0;
+		return this.currentState.isActive();
 	}
-
+	
 	/**
 	 * @param isActive the isActive to set
 	 */
 	public void setActive( boolean isActive ) {
-		int activeValue = isActive ? 1 : -1;
-		this.isActive += activeValue;
-		if (this.isActive < 0)
-		{
-			System.err.println("Active went below 0: "+this.isActive);
-		}
+		this.currentState.setActive(isActive);
 		this.updateVisibleState();
 	}
 
@@ -286,19 +331,14 @@ public abstract class ManipulationHandle extends Transformable {
 	 * @return the isRollover
 	 */
 	public boolean isRollover() {
-		return isRollover != 0;
+		return this.currentState.isRollover();
 	}
 
 	/**
 	 * @param isRollover the isRollover to set
 	 */
 	public void setRollover( boolean isRollover ) {
-		int rolloverValue = isRollover ? 1 : -1;
-		this.isRollover += rolloverValue;
-		if (this.isRollover < 0)
-		{
-			System.err.println("Rollover went below 0: "+this.isRollover);
-		}
+		this.currentState.setRollover(isRollover);
 		this.updateVisibleState();
 	}
 
@@ -306,19 +346,14 @@ public abstract class ManipulationHandle extends Transformable {
 	 * @return the isMuted
 	 */
 	public boolean isMuted() {
-		return isMuted != 0;
+		return this.currentState.isMuted();
 	}
 
 	/**
 	 * @param isMuted the isMuted to set
 	 */
 	public void setMuted( boolean isMuted ) {
-		int mutedValue = isMuted ? 1 : -1;
-		this.isMuted += mutedValue;
-		if (this.isMuted < 0)
-		{
-			System.err.println("Muted went below 0: "+this.isMuted);
-		}	
+		this.currentState.setMuted(isMuted);
 		this.updateVisibleState();
 	}
 
@@ -354,13 +389,13 @@ public abstract class ManipulationHandle extends Transformable {
 	
 	protected double getDesiredOpacity()
 	{
-		if (!this.isVisible() || this.isFaded())
-		{
-			return 0.0d;
-		}
-		else if (this.isActive()) //Visible and Active
+		if (this.isActive()) //Active trumps everything
 		{
 			return 1.0d;
+		}
+		else if (!this.isVisible() || (this.isFaded()))
+		{
+			return 0.0d;
 		}
 		else if (this.isRollover()) //Visible and Rollover
 		{
@@ -372,7 +407,7 @@ public abstract class ManipulationHandle extends Transformable {
 		}
 		else //Visible and not Muted, not Active, and not Rollover
 		{
-			return .6d;
+			return 1.0d;
 		}
 	}
 	

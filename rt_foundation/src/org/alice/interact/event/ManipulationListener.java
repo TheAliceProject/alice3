@@ -20,26 +20,14 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact;
+package org.alice.interact.event;
 
 /**
  * @author David Culyba
  */
-public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
+public interface ManipulationListener {
 
-	
-	public ObjectRotateKeyManipulator( MovementKey[] directionKeys )
-	{
-		super(directionKeys);
-	}
-	
-	@Override
-	public void doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
-		if (this.manipulatedTransformable != null)
-		{
-			super.doStartManipulator( startInput );
-		}
-	}
+	public void activate(ManipulationEvent event);
+	public void deactivate(ManipulationEvent event);
 	
 }

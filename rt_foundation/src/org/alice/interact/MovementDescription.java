@@ -25,21 +25,35 @@ package org.alice.interact;
 /**
  * @author David Culyba
  */
-public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
-
+public class MovementDescription {
+	public MovementType type;
+	public MovementDirection direction;
 	
-	public ObjectRotateKeyManipulator( MovementKey[] directionKeys )
+	public MovementDescription( MovementDirection direction )
 	{
-		super(directionKeys);
+		this(direction, MovementType.STOOD_UP);
+	}
+	
+	public MovementDescription( MovementDirection direction, MovementType type )
+	{
+		this.type = type;
+		this.direction = direction;
 	}
 	
 	@Override
-	public void doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
-		if (this.manipulatedTransformable != null)
+	public boolean equals( Object o )
+	{
+		if (o instanceof MovementDescription)
 		{
-			super.doStartManipulator( startInput );
+			return (((MovementDescription)o).direction == this.direction) && (((MovementDescription)o).type == this.type);
 		}
+		return false;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return "Movement Type: "+this.type+", Direction: "+this.direction;
 	}
 	
 }

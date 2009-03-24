@@ -34,10 +34,10 @@ public class ManipulatorConditionSet {
 		CHANGED,
 	}
 	
-	private DragManipulator manipulator;
+	private AbstractManipulator manipulator;
 	private java.util.Vector< InputCondition > inputConditions = new java.util.Vector< InputCondition >();
 	
-	public ManipulatorConditionSet( DragManipulator manipulator )
+	public ManipulatorConditionSet( AbstractManipulator manipulator )
 	{
 		this.manipulator = manipulator;
 	}
@@ -47,7 +47,7 @@ public class ManipulatorConditionSet {
 		this.inputConditions.add( inputCondition );
 	}
 	
-	public DragManipulator getManipulator()
+	public AbstractManipulator getManipulator()
 	{
 		return this.manipulator;
 	}

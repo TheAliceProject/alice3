@@ -20,26 +20,61 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact;
+package org.alice.interact.event;
+
+import org.alice.interact.MovementDescription;
+
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
-public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
-
+public class ManipulationEvent {
 	
-	public ObjectRotateKeyManipulator( MovementKey[] directionKeys )
+	public enum EventType
 	{
-		super(directionKeys);
+		Translate,
+		Scale,
+		Rotate,
+	}
+	
+	private EventType type;
+	private MovementDescription movementDescription;
+	private Transformable target;
+	
+	
+	public ManipulationEvent( EventType type, MovementDescription movementDescription, Transformable target )
+	{
+		this.type = type;
+		this.movementDescription = movementDescription;
+		this.target = target;
 	}
 	
 	@Override
-	public void doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
-		if (this.manipulatedTransformable != null)
-		{
-			super.doStartManipulator( startInput );
-		}
+	public String toString()
+	{
+		return this.type + ":["+this.movementDescription.toString()+"(" + this.target+")]";
 	}
-	
+
+	/**
+	 * @return the target
+	 */
+	public Transformable getTarget() {
+		return target;
+	}
+
+	/**
+	 * @return the type
+	 */
+	public EventType getType() {
+		return type;
+	}
+
+	/**
+	 * @return the movementDescription
+	 */
+	public MovementDescription getMovementDescription() {
+		return movementDescription;
+	}
+	 
 }

@@ -22,26 +22,14 @@
  */
 
 package org.alice.interact;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.util.List;
-
 import org.alice.interact.ModifierMask.ModifierKey;
-import org.alice.interact.event.SelectionEvent;
-import org.alice.interact.event.SelectionListener;
 
 
-import edu.cmu.cs.dennisc.animation.Animator;
+
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import edu.cmu.cs.dennisc.ui.DragStyle;
-import edu.cmu.cs.dennisc.ui.UndoRedoManager;
-import edu.cmu.cs.dennisc.ui.lookingglass.OnscreenLookingGlassDragAdapter;
 
 /**
  * @author David Culyba
@@ -55,23 +43,23 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				//Forward
 //				new MovementKey(KeyEvent.VK_UP, new Point3(0, 0, -1)),
 //				new MovementKey(KeyEvent.VK_NUMPAD8, new Point3(0, 0, -1)),
-				new MovementKey(KeyEvent.VK_W, new Point3(0, 0, -1)),
+				new MovementKey(KeyEvent.VK_W, new MovementDescription(MovementDirection.FORWARD)),
 				//Backward
 //				new MovementKey(KeyEvent.VK_DOWN, new Point3(0, 0, 1)),
 //				new MovementKey(KeyEvent.VK_NUMPAD2, new Point3(0, 0, 1)),
-				new MovementKey(KeyEvent.VK_S, new Point3(0, 0, 1)),
+				new MovementKey(KeyEvent.VK_S, new MovementDescription(MovementDirection.BACKWARD)),
 				//Left
 //				new MovementKey(KeyEvent.VK_LEFT, new Point3(-1, 0, 0)),
 //				new MovementKey(KeyEvent.VK_NUMPAD4, new Point3(-1, 0, 0)),
-				new MovementKey(KeyEvent.VK_A, new Point3(-1, 0, 0)),
+				new MovementKey(KeyEvent.VK_A, new MovementDescription(MovementDirection.LEFT)),
 				//Right
 //				new MovementKey(KeyEvent.VK_RIGHT, new Point3(1, 0, 0)),
 //				new MovementKey(KeyEvent.VK_NUMPAD6, new Point3(1, 0, 0)),
-				new MovementKey(KeyEvent.VK_D, new Point3(1, 0, 0)),
+				new MovementKey(KeyEvent.VK_D,  new MovementDescription(MovementDirection.RIGHT)),
 				//Up
-				new MovementKey(KeyEvent.VK_PAGE_UP, new Point3(0, 1, 0), MovementType.LOCAL, .5d),
+				new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.LOCAL), .5d),
 				//Down
-				new MovementKey(KeyEvent.VK_PAGE_DOWN, new Point3(0, -1, 0), MovementType.LOCAL, .5d),
+				new MovementKey(KeyEvent.VK_PAGE_DOWN, new MovementDescription(MovementDirection.DOWN, MovementType.LOCAL), .5d),
 				//Up Left
 //				new MovementKey(KeyEvent.VK_NUMPAD7, new Point3(-1, 0, -1)),
 //				//Up Right
@@ -84,18 +72,18 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		
 		MovementKey[] zoomKeys = {
 				//Zoom out
-				new MovementKey(KeyEvent.VK_MINUS, new Point3(0, 0, 1), MovementType.LOCAL),
-				new MovementKey(KeyEvent.VK_SUBTRACT, new Point3(0, 0, 1), MovementType.LOCAL),
+				new MovementKey(KeyEvent.VK_MINUS,  new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
+				new MovementKey(KeyEvent.VK_SUBTRACT,  new MovementDescription(MovementDirection.BACKWARD, MovementType.LOCAL)),
 				//Zoom in
-				new MovementKey(KeyEvent.VK_EQUALS, new Point3(0, 0, -1), MovementType.LOCAL),
-				new MovementKey(KeyEvent.VK_ADD, new Point3(0, 0, -1), MovementType.LOCAL),
+				new MovementKey(KeyEvent.VK_EQUALS,  new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
+				new MovementKey(KeyEvent.VK_ADD,  new MovementDescription(MovementDirection.FORWARD, MovementType.LOCAL)),
 		};
 		
 		MovementKey[] turnKeys = {
 				//Left
-				new MovementKey(KeyEvent.VK_OPEN_BRACKET, new Vector3(0, 1, 0), MovementType.LOCAL, 2.0d),
+				new MovementKey(KeyEvent.VK_OPEN_BRACKET,  new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), 2.0d),
 				//Right
-				new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new Vector3(0, 1, 0), MovementType.LOCAL, -2.0d),
+				new MovementKey(KeyEvent.VK_CLOSE_BRACKET,  new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), -2.0d),
 		};
 		
 		ModifierMask noModifiers = new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN );
@@ -171,72 +159,96 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		this.handleSets.add( new HandleSet( java.awt.event.KeyEvent.VK_3, HandleGroup.ROTATION) );
 		this.handleSets.add( new HandleSet( java.awt.event.KeyEvent.VK_2, HandleGroup.TRANSLATION) );
 		this.handleSets.add( new HandleSet( java.awt.event.KeyEvent.VK_1, HandleGroup.DEFAULT) );
-		this.currentHandleSet = this.handleSets.lastElement();
 		
-		RotationRingHandle rotateAboutYAxis = new StoodUpRotationRingHandle(Vector3.accessPositiveYAxis(), RotationRingHandle.HandlePosition.BOTTOM );
-		RotationRingHandle rotateAboutYAxis2 = new StoodUpRotationRingHandle(Vector3.accessPositiveYAxis(), RotationRingHandle.HandlePosition.BOTTOM );
+		
+		ManipulationHandleIndirection rotateAboutYAxis = new ManipulationHandleIndirection(new StoodUpRotationRingHandle(Vector3.accessPositiveYAxis(), RotationRingHandle.HandlePosition.BOTTOM ));
 		rotateAboutYAxis.addToGroups( HandleGroup.ROTATION, HandleGroup.DEFAULT, HandleGroup.STOOD_UP);
-		rotateAboutYAxis2.addToGroups( HandleGroup.ROTATION, HandleGroup.DEFAULT, HandleGroup.STOOD_UP);
-		currentManipulationHandles.add( rotateAboutYAxis );
-		nextManipulationHandles.add( rotateAboutYAxis2 );
+		this.manipulationEventManager.addManipulationListener( rotateAboutYAxis, 
+																new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP),
+																PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( rotateAboutYAxis, 
+																new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP),
+																PickHint.MOVEABLE_OBJECTS );
+		this.manipulationHandles.add( rotateAboutYAxis );
 		
-		RotationRingHandle rotateAboutXAxis = new RotationRingHandle(Vector3.accessPositiveXAxis());
-		RotationRingHandle rotateAboutXAxis2 = new RotationRingHandle(Vector3.accessPositiveXAxis());
+		ManipulationHandleIndirection rotateAboutXAxis = new ManipulationHandleIndirection( new RotationRingHandle(Vector3.accessPositiveXAxis()) );
 		rotateAboutXAxis.addToGroups( HandleGroup.ROTATION );
-		rotateAboutXAxis2.addToGroups( HandleGroup.ROTATION );
+		this.manipulationHandles.add( rotateAboutXAxis );
 		
-		currentManipulationHandles.add( rotateAboutXAxis );
-		nextManipulationHandles.add( rotateAboutXAxis2 );
-		
-		RotationRingHandle rotateAboutZAxis = new RotationRingHandle(Vector3.accessPositiveZAxis());
-		RotationRingHandle rotateAboutZAxis2 = new RotationRingHandle(Vector3.accessPositiveZAxis());
+		ManipulationHandleIndirection rotateAboutZAxis = new ManipulationHandleIndirection(new RotationRingHandle(Vector3.accessPositiveZAxis()));
 		rotateAboutZAxis.addToGroups( HandleGroup.ROTATION );
-		rotateAboutZAxis2.addToGroups( HandleGroup.ROTATION );
-		currentManipulationHandles.add( rotateAboutZAxis );
-		nextManipulationHandles.add( rotateAboutZAxis2 );
+		this.manipulationHandles.add( rotateAboutZAxis );
 		
-		LinearTranslateHandle translateYAxis = new StoodUpLinearTranslateHandle(Vector3.accessPositiveYAxis(), Color4f.GREEN);
+		ManipulationHandleIndirection translateYAxis = new ManipulationHandleIndirection(new StoodUpLinearTranslateHandle(MovementDirection.UP, Color4f.GREEN));
 		translateYAxis.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP);
-		currentManipulationHandles.add( translateYAxis );
-		LinearTranslateHandle translateYAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessPositiveYAxis(), Color4f.GREEN);
-		translateYAxis2.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
-		nextManipulationHandles.add( translateYAxis2 );
+		this.manipulationEventManager.addManipulationListener( translateYAxis, 
+				new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( translateYAxis, 
+				new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( translateYAxis, 
+				new MovementDescription(MovementDirection.DOWN, MovementType.ABSOLUTE),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( translateYAxis, 
+				new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationHandles.add(translateYAxis);
 		
-		LinearTranslateHandle translateXAxis = new StoodUpLinearTranslateHandle(Vector3.accessNegativeXAxis(), Color4f.RED);
-		translateXAxis.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
-		currentManipulationHandles.add( translateXAxis );
-		LinearTranslateHandle translateXAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessNegativeXAxis(), Color4f.RED);
-		translateXAxis2.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
-		nextManipulationHandles.add( translateXAxis2 );
+		ManipulationHandleIndirection translateXAxisRight = new ManipulationHandleIndirection(new StoodUpLinearTranslateHandle(MovementDirection.RIGHT, Color4f.RED));
+		ManipulationHandleIndirection translateXAxisLeft = new ManipulationHandleIndirection(new StoodUpLinearTranslateHandle(MovementDirection.LEFT, Color4f.RED));	
+		//Add the left handle to the group to be shown by the system
+		translateXAxisLeft.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
+		this.manipulationEventManager.addManipulationListener( translateXAxisLeft, 
+				new MovementDescription(MovementDirection.LEFT, MovementType.STOOD_UP),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( translateXAxisRight, 
+				new MovementDescription(MovementDirection.RIGHT, MovementType.STOOD_UP),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( translateXAxisLeft, 
+				new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( translateXAxisRight, 
+				new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationHandles.add( translateXAxisRight );
+		this.manipulationHandles.add( translateXAxisLeft );
 		
-		LinearTranslateHandle translateZAxis = new StoodUpLinearTranslateHandle(Vector3.accessNegativeZAxis(), Color4f.BLUE);
-		translateZAxis.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
-		currentManipulationHandles.add( translateZAxis );
-		LinearTranslateHandle translateZAxis2 = new StoodUpLinearTranslateHandle(Vector3.accessNegativeZAxis(), Color4f.BLUE);
-		translateZAxis2.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
-		nextManipulationHandles.add( translateZAxis2 );
+		ManipulationHandleIndirection translateForward = new ManipulationHandleIndirection(new StoodUpLinearTranslateHandle(MovementDirection.FORWARD, Color4f.BLUE));
+		ManipulationHandleIndirection translateBackward = new ManipulationHandleIndirection(new StoodUpLinearTranslateHandle(MovementDirection.BACKWARD, Color4f.BLUE));
+		translateForward.addToGroups( HandleGroup.TRANSLATION, HandleGroup.STOOD_UP );
+		this.manipulationEventManager.addManipulationListener( translateBackward, 
+				new MovementDescription(MovementDirection.BACKWARD, MovementType.STOOD_UP),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( translateForward, 
+				new MovementDescription(MovementDirection.FORWARD, MovementType.STOOD_UP),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( translateBackward, 
+				new MovementDescription(MovementDirection.BACKWARD, MovementType.ABSOLUTE),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationEventManager.addManipulationListener( translateForward, 
+				new MovementDescription(MovementDirection.FORWARD, MovementType.ABSOLUTE),
+				PickHint.MOVEABLE_OBJECTS );
+		this.manipulationHandles.add( translateForward );
+		this.manipulationHandles.add( translateBackward );
 		
-		Vector3 uniformScaleDirection = new Vector3(-1.0d, 1.0d, 0.0d);
-		uniformScaleDirection.normalize();
-		LinearScaleHandle scaleAxis = new LinearScaleHandle(uniformScaleDirection, Color4f.PINK);
+		ManipulationHandleIndirection scaleAxis = new ManipulationHandleIndirection(new LinearScaleHandle(MovementDirection.RESIZE, Color4f.PINK));
 		scaleAxis.addToGroups( HandleGroup.RESIZE );
-		currentManipulationHandles.add( scaleAxis );
-		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxis) );
+		this.manipulationHandles.add( scaleAxis );
 		
-		LinearScaleHandle scaleAxisX = new LinearScaleHandle(Vector3.accessNegativeXAxis(), Color4f.MAGENTA, true);
+		ManipulationHandleIndirection scaleAxisX = new ManipulationHandleIndirection(new LinearScaleHandle(MovementDirection.RIGHT, Color4f.MAGENTA, true));
 		scaleAxisX.addToGroups( HandleGroup.RESIZE );
-		currentManipulationHandles.add( scaleAxisX );
-		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxisX) );
+		this.manipulationHandles.add( scaleAxisX );
 		
-		LinearScaleHandle scaleAxisY = new LinearScaleHandle(Vector3.accessPositiveYAxis(), Color4f.YELLOW, true);
+		ManipulationHandleIndirection scaleAxisY = new ManipulationHandleIndirection(new LinearScaleHandle(MovementDirection.UP, Color4f.YELLOW, true));
 		scaleAxisY.addToGroups( HandleGroup.RESIZE );
-		currentManipulationHandles.add( scaleAxisY );
-		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxisY) );
+		this.manipulationHandles.add( scaleAxisY );
 		
-		LinearScaleHandle scaleAxisZ = new LinearScaleHandle(Vector3.accessNegativeZAxis(), Color4f.CYAN, true);
+		ManipulationHandleIndirection scaleAxisZ = new ManipulationHandleIndirection(new LinearScaleHandle(MovementDirection.FORWARD, Color4f.CYAN, true));
 		scaleAxisZ.addToGroups( HandleGroup.RESIZE );
-		currentManipulationHandles.add( scaleAxisZ );
-		nextManipulationHandles.add(  new LinearScaleHandle(scaleAxisZ) );
+		this.manipulationHandles.add( scaleAxisZ );
+		
+		this.setHandleGroup( this.handleSets.lastElement() );
 	}
 	
 	
