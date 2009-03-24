@@ -105,6 +105,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 		this.runOperation = this.createRunOperation();
 		this.exitOperation = this.createExitOperation();
+		this.saveOperation = this.createSaveOperation();
 
 		getContentPane().addMouseWheelListener( new edu.cmu.cs.dennisc.swing.plaf.metal.FontMouseWheelAdapter() );
 
@@ -142,10 +143,43 @@ public abstract class IDE extends zoot.ZFrame {
 		this.concealedBin.revalidate();
 	}
 
+	private zoot.ActionOperation clearToProcedeWithChangedProjectOperation = new zoot.AbstractActionOperation() {
+		public void perform( zoot.ActionContext actionContext ) {
+			int option = javax.swing.JOptionPane.showConfirmDialog( IDE.this, "Your program has been modified.  Would you like to save it?", "Save changed project?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
+			if( option == javax.swing.JOptionPane.YES_OPTION ) {
+				zoot.ActionContext saveActionContext = actionContext.perform( IDE.this.saveOperation, null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+				if( saveActionContext.isCommitted() ) {
+					actionContext.commit();
+				} else {
+					actionContext.cancel();
+				}
+			} else if( option == javax.swing.JOptionPane.NO_OPTION ) {
+				actionContext.commit();
+			} else {
+				actionContext.cancel();
+			}
+		}
+	};
+
+	public zoot.ActionOperation getClearToProcedeWithChangedProjectOperation() {
+		return this.clearToProcedeWithChangedProjectOperation;
+	}
+
+	private zoot.ActionOperation selectProjectToOpenOperation = new zoot.AbstractActionOperation() {
+		public void perform( zoot.ActionContext actionContext ) {
+			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane();
+			openProjectPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
+			java.io.File file = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
+		}
+	};
+	public zoot.ActionOperation getSelectProjectToOpenOperation() {
+		return this.selectProjectToOpenOperation;
+	}
+
 	protected javax.swing.JMenuBar createMenuBar() {
 		javax.swing.JMenuBar rv = new javax.swing.JMenuBar();
 
-		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, this.exitOperation );
+		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, new org.alice.ide.operations.file.NewProjectOperation(), new org.alice.ide.operations.file.OpenProjectOperation(), this.saveOperation, new org.alice.ide.operations.file.SaveAsProjectOperation(), zoot.ZManager.MENU_SEPARATOR, zoot.ZManager.MENU_SEPARATOR, this.exitOperation );
 		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, new org.alice.ide.operations.edit.UndoOperation(), new org.alice.ide.operations.edit.RedoOperation(), zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.edit.CutOperation(),
 				new org.alice.ide.operations.edit.CopyOperation(), new org.alice.ide.operations.edit.PasteOperation() );
 		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, this.runOperation );
@@ -227,8 +261,20 @@ public abstract class IDE extends zoot.ZFrame {
 		return new org.alice.ide.codeeditor.Factory();
 	}
 
+	private java.io.File applicationDirectory = null;
 	public java.io.File getApplicationRootDirectory() {
-		throw new RuntimeException( "todo" );
+		if( this.applicationDirectory != null ) {
+			//pass
+		} else {
+			this.applicationDirectory = new java.io.File( java.lang.System.getProperty( "user.dir" ), "application" );
+			if( this.applicationDirectory.exists() ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getApplicationRootDirectory()" );
+				this.applicationDirectory = new java.io.File( "/program files/alice/3.beta.0027/application" );
+			}
+		}
+		return this.applicationDirectory;
 	}
 
 	protected StringBuffer updateBugReportSubmissionTitle( StringBuffer rv ) {
@@ -420,6 +466,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private zoot.ActionOperation runOperation = this.createRunOperation();
 	private zoot.ActionOperation exitOperation = this.createExitOperation();
+	private zoot.ActionOperation saveOperation = this.createSaveOperation();
 
 	protected zoot.ActionOperation createRunOperation() {
 		return new org.alice.ide.operations.run.RunOperation();
@@ -427,11 +474,17 @@ public abstract class IDE extends zoot.ZFrame {
 	protected zoot.ActionOperation createExitOperation() {
 		return new org.alice.ide.operations.file.ExitOperation();
 	}
+	protected zoot.ActionOperation createSaveOperation() {
+		return new org.alice.ide.operations.file.SaveProjectOperation();
+	}
 	public final zoot.ActionOperation getRunOperation() {
 		return this.runOperation;
 	}
 	public final zoot.ActionOperation getExitOperation() {
 		return this.exitOperation;
+	}
+	public final zoot.ActionOperation getSaveOperation() {
+		return this.saveOperation;
 	}
 
 	private boolean isDragInProgress = false;

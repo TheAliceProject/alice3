@@ -25,28 +25,28 @@ package org.alice.ide.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractOpenOperation extends AbstractClearanceActionOperation {
+public abstract class AbstractOpenProjectOperation extends AbstractClearanceActionOperation {
 	protected abstract boolean isNew();
 	protected zoot.ActionOperation getSelectProjectToOpenOperation() {
-		throw new RuntimeException( "todo" );
+		return this.getIDE().getSelectProjectToOpenOperation();
 	}
 	
-	public void perform( zoot.Context context ) {
+	public void perform( zoot.ActionContext actionContext ) {
 		if( this.getIDE().isProjectUpToDateWithFile() ) {
 			//pass
 		} else {
 			java.util.EventObject e = null;
-			zoot.Context checkContext = context.perform( this.getClearToProcedeWithChangedProjectOperation(), e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			zoot.Context checkContext = actionContext.perform( this.getClearToProcedeWithChangedProjectOperation(), e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 			if( checkContext.isCommitted() ) {
 				//pass
 			} else {
-				context.cancel();
+				actionContext.cancel();
 			}
 		}
-		if( context.isCancelled() ) {
+		if( actionContext.isCancelled() ) {
 			//pass
 		} else {
-			zoot.Context selectContext = context.perform( this.getSelectProjectToOpenOperation(), null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			zoot.Context selectContext = actionContext.perform( this.getSelectProjectToOpenOperation(), null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 			if( selectContext.isCommitted() ) {
 				final Object FILE_KEY = "FILE_KEY";
 				java.io.File file = selectContext.get( FILE_KEY, java.io.File.class );
@@ -55,9 +55,9 @@ public abstract class AbstractOpenOperation extends AbstractClearanceActionOpera
 				} else {
 					this.getIDE().createProjectFromBootstrap();
 				}
-				context.commit();
+				actionContext.commit();
 			} else {
-				context.cancel();
+				actionContext.cancel();
 			}
 		}
 	}

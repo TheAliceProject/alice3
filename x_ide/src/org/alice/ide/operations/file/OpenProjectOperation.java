@@ -25,8 +25,15 @@ package org.alice.ide.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractClearanceActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	protected zoot.ActionOperation getClearToProcedeWithChangedProjectOperation() {
-		return getIDE().getClearToProcedeWithChangedProjectOperation();
+public class OpenProjectOperation extends AbstractOpenProjectOperation {
+	public OpenProjectOperation() {
+		this.putValue( javax.swing.Action.NAME, "Open..." );
+		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_O, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_O );
 	}
+	@Override
+	protected boolean isNew() {
+		return false;
+	}
+	
 }

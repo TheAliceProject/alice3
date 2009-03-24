@@ -25,8 +25,17 @@ package org.alice.ide.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractClearanceActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	protected zoot.ActionOperation getClearToProcedeWithChangedProjectOperation() {
-		return getIDE().getClearToProcedeWithChangedProjectOperation();
+public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation {
+	@Override
+	protected java.io.File getDefaultDirectory() {
+		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory();
+	}
+	@Override
+	protected java.lang.String getExtension() {
+		return edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION;
+	}
+	@Override
+	protected void save( java.io.File file ) {
+		this.getIDE().saveProjectTo( file );
 	}
 }
