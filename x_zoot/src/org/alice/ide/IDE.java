@@ -136,7 +136,11 @@ public abstract class IDE extends zoot.ZFrame {
 		rv.add( new org.alice.ide.cascade.fillerinners.IntegerFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.BooleanFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.StringFillerInner() );
+		
+		
 		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );
+		
+		
 		return rv;
 	}
 	

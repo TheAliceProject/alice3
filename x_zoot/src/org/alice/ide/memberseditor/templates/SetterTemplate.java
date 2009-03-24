@@ -37,8 +37,12 @@ public class SetterTemplate extends ExpressionStatementTemplate {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field );
-		rv.rightHandSide.setValue( expressions[ 0 ] );
+		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
+			this.field.getValueType(), 
+			new edu.cmu.cs.dennisc.alice.ast.FieldAccess( getIDE().createInstanceExpression(), this.field ),
+			edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN,
+			expressions[ 0 ] 
+		);
 		return rv;
 	}
 }
