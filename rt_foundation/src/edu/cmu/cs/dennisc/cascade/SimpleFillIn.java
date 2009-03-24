@@ -40,8 +40,13 @@ public class SimpleFillIn< E > extends FillIn< E > {
 	public E getValue() {
 		return this.getModel();
 	}
+	
+	protected String getMenuProxyText() {
+		return this.model.toString(); 
+	}
+	
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		return new javax.swing.JLabel( this.model.toString() );
+		return new javax.swing.JLabel( this.getMenuProxyText() );
 	}
 }
