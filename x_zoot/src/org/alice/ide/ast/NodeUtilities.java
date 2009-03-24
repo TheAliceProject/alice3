@@ -100,4 +100,26 @@ public class NodeUtilities {
 		return rv;
 	}
 	
+	public static edu.cmu.cs.dennisc.alice.ast.AbstractType[] getDesiredParameterValueTypes( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType[] rv = new edu.cmu.cs.dennisc.alice.ast.AbstractType[ parameters.size() ];
+		int i = 0;
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : parameters ) {
+			rv[ i ] = parameter.getDesiredValueType();
+			i++;
+		}
+		return rv;
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
+		rv.expression.setValue( instanceExpression );
+		int i = 0;
+		for( edu.cmu.cs.dennisc.alice.ast.Argument argument : rv.arguments ) {
+			argument.expression.setValue( argumentExpressions[ i ] );
+			i ++;
+		}
+		return rv;
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
+		return completeMethodInvocation( rv, org.alice.ide.IDE.getSingleton().createInstanceExpression(), argumentExpressions );
+	}
 }

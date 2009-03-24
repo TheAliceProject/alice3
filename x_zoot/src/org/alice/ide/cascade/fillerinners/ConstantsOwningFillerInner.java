@@ -20,25 +20,29 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
-	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method ) );
-		this.method = method;
+public class ConstantsOwningFillerInner extends ExpressionFillerInner {
+	public ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+	}
+	public ConstantsOwningFillerInner( Class<?> cls ) {
+		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( this.method );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method );
-		org.alice.ide.ast.NodeUtilities.completeMethodInvocation( rv, expressions );
-		return rv;
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getType();
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractField > constants = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractField >();
+ 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
+ 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
+ 				constants.add( field );
+ 			}
+ 		}
+ 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField constant : constants ) {
+ 			this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), constant );
+ 		}
 	}
 }

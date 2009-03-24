@@ -34,8 +34,6 @@ import org.alice.ide.event.LocaleEvent;
 import org.alice.ide.event.ProjectOpenEvent;
 import org.alice.ide.event.TransientSelectionEvent;
 
-import zoot.ActionOperation;
-
 import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
 import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 
@@ -572,50 +570,69 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		final int index = statementListPropertyPane.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), statementListPropertyPane ) );
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
+			final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
 			if( this.currentUnder != null ) {
 				final zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
 				class DropOperation extends org.alice.ide.operations.AbstractActionOperation {
-					class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Statement, Object > {
-						@Override
-						protected edu.cmu.cs.dennisc.alice.ast.Statement doInBackground() throws java.lang.Exception {
-							zoot.ZDragComponent dragComponent = dragAndDropEvent.getTypedSource();
-							if( dragComponent instanceof org.alice.ide.templates.StatementTemplate ) {
-								final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)dragComponent;
-								edu.cmu.cs.dennisc.task.BlockingTaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement>() {
-									@Override
-									public void run() {
-										statementTemplate.createStatement( dragAndDropEvent, this );
-									}
-								};
-								return taskObserver.getResult();
-							} else {
-								return null;
-							}
-						}
-						@Override
-						protected void done() {
-							try {
-								edu.cmu.cs.dennisc.alice.ast.Statement statement = this.get();
+					public void perform( final zoot.ActionContext actionContext ) {
+						edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver = new edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement>() {
+							public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 								if( statement != null ) {
 									statementListPropertyPane.getProperty().add( index, statement );
 									getIDE().markChanged( "drop statement template" );
 									CodeEditor.this.refresh();
+									actionContext.commit();
+									source.hideDropProxyIfNecessary();
 								} else {
-									//todo?
+									this.handleCancelation();
 								}
-							} catch( InterruptedException ie ) {
-								throw new RuntimeException( ie );
-							} catch( java.util.concurrent.ExecutionException ee ) {
-								throw new RuntimeException( ee );
-							} finally {
+							}
+							public void handleCancelation() {
+								actionContext.cancel();
 								source.hideDropProxyIfNecessary();
 							}
-						}
-					}
-					
-					public void perform( zoot.ActionContext actionContext ) {
-						Worker worker = new Worker();
-						actionContext.execute( worker );
+						};
+						actionContext.setTaskObserver( taskObserver );
+						statementTemplate.createStatement( dragAndDropEvent, taskObserver );
+
+//					class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Statement, Object > {
+//						@Override
+//						protected edu.cmu.cs.dennisc.alice.ast.Statement doInBackground() throws java.lang.Exception {
+//							zoot.ZDragComponent dragComponent = dragAndDropEvent.getTypedSource();
+//							if( dragComponent instanceof org.alice.ide.templates.StatementTemplate ) {
+//								edu.cmu.cs.dennisc.task.BlockingTaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement>() {
+//									@Override
+//									public void run() {
+//										statementTemplate.createStatement( dragAndDropEvent, this );
+//									}
+//								};
+//								return taskObserver.getResult();
+//							} else {
+//								return null;
+//							}
+//						}
+//						@Override
+//						protected void done() {
+//							try {
+//								edu.cmu.cs.dennisc.alice.ast.Statement statement = this.get();
+//								if( statement != null ) {
+//									statementListPropertyPane.getProperty().add( index, statement );
+//									getIDE().markChanged( "drop statement template" );
+//									CodeEditor.this.refresh();
+//								} else {
+//									//todo?
+//								}
+//							} catch( InterruptedException ie ) {
+//								throw new RuntimeException( ie );
+//							} catch( java.util.concurrent.ExecutionException ee ) {
+//								throw new RuntimeException( ee );
+//							} finally {
+//								source.hideDropProxyIfNecessary();
+//							}
+//						}
+//					}
+//						Worker worker = new Worker();
+//						actionContext.execute( worker );
 					}
 				}
 				dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );

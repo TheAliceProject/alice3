@@ -117,11 +117,26 @@ public abstract class IDE extends zoot.ZFrame {
 		javax.swing.JMenuBar menuBar = this.createMenuBar();
 		this.setJMenuBar( menuBar );
 	}
+	
+	
+	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = new java.util.HashMap< Class<? extends Enum>, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner >();
+	private org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > cls ) {
+		org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner rv = map.get( cls );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( cls );
+			map.put( cls, rv );
+		}
+		return rv;
+	}
+	
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
 		rv.add( new org.alice.ide.cascade.fillerinners.NumberFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.IntegerFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.BooleanFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.StringFillerInner() );
+		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );
 		return rv;
 	}
 	
@@ -640,6 +655,15 @@ public abstract class IDE extends zoot.ZFrame {
 			if( expressionFillerInner.isAssignableTo( type ) ) {
 				expressionFillerInner.addFillIns( blank );
 			}
+		}
+		if( type.isAssignableTo( Enum.class ) ) {
+			org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class<? extends Enum>)type.getFirstClassEncounteredDeclaredInJava() );
+			constantsOwningFillerInner.addFillIns( blank );
+		}
+		if( blank.getChildren().size() > 0 ) {
+			//pass
+		} else {
+			blank.addChild( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "sorry.  no fillins found for " + type.getName() + ". canceling." ) );
 		}
 	}
 	public void createProjectFromBootstrap() {

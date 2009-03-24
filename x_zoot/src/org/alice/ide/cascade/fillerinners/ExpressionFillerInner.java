@@ -33,6 +33,9 @@ public abstract class ExpressionFillerInner {
 		this.cls = cls;
 	}
 
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
+		return this.type;
+	}
 	public boolean isAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return this.type.isAssignableTo( type );
 	}

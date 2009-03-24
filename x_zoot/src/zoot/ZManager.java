@@ -22,12 +22,13 @@
  */
 package zoot;
 
-abstract class AbstractContext implements Context { 
+abstract class AbstractContext implements Context {
 	private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
 	private boolean isCommitted = false;
 	private boolean isCancelled = false;
 	private java.util.EventObject e;
 	private boolean isCancelWorthwhile;
+
 	public AbstractContext( java.util.EventObject e, boolean isCancelWorthwhile ) {
 		this.e = e;
 		this.isCancelWorthwhile = isCancelWorthwhile;
@@ -39,7 +40,7 @@ abstract class AbstractContext implements Context {
 		return this.isCancelled;
 	}
 	public boolean isPending() {
-		return ( this.isCommitted() || this.isCancelled() ) == false;
+		return (this.isCommitted() || this.isCancelled()) == false;
 	}
 	public void commit() {
 		assert this.isPending();
@@ -49,10 +50,12 @@ abstract class AbstractContext implements Context {
 		assert this.isPending();
 		this.isCancelled = true;
 	}
+	public void setTaskObserver( edu.cmu.cs.dennisc.task.TaskObserver< ? > taskObserver ) {
+	}
 	public boolean isCancelWorthwhile() {
 		return isCancelWorthwhile;
 	}
-	public <E extends Object> E get( Object key, Class<E> cls ) {
+	public <E extends Object> E get( Object key, Class< E > cls ) {
 		Object rv = this.get( key );
 		if( rv != null ) {
 			assert cls.isAssignableFrom( rv.getClass() );
@@ -80,20 +83,23 @@ abstract class AbstractContext implements Context {
 		worker.execute();
 	}
 }
+
 class MyActionContext extends AbstractContext implements ActionContext {
 	public MyActionContext( java.util.EventObject e, boolean isCancelWorthwhile ) {
 		super( e, isCancelWorthwhile );
 	}
 }
-class MySingleSelectionContext<E> extends AbstractContext implements ItemSelectionContext<E> {
+
+class MySingleSelectionContext<E> extends AbstractContext implements ItemSelectionContext< E > {
 	private E previousSelection;
 	private E nextSelection;
-//	private boolean isPreviousSelectionValid;
+
+	//	private boolean isPreviousSelectionValid;
 	public MySingleSelectionContext( java.util.EventObject e, boolean isCancelWorthwhile, E previousSelection, E nextSelection ) {
 		super( e, isCancelWorthwhile );
 		this.previousSelection = previousSelection;
 		this.nextSelection = nextSelection;
-//		this.isPreviousSelectionValid = true;
+		//		this.isPreviousSelectionValid = true;
 	}
 	public E getPreviousSelection() {
 		return this.previousSelection;
@@ -101,9 +107,9 @@ class MySingleSelectionContext<E> extends AbstractContext implements ItemSelecti
 	public E getNextSelection() {
 		return this.nextSelection;
 	}
-//	public boolean isPreviousSelectionValid() {
-//		return this.isPreviousSelectionValid;
-//	}
+	//	public boolean isPreviousSelectionValid() {
+	//		return this.isPreviousSelectionValid;
+	//	}
 }
 
 /**
@@ -112,58 +118,62 @@ class MySingleSelectionContext<E> extends AbstractContext implements ItemSelecti
 public class ZManager {
 	static {
 	}
-//	public static void setHandler( Handler handler ) {
-//	}
+
+	//	public static void setHandler( Handler handler ) {
+	//	}
 	public static void handleTabSelection( ZTabbedPane tabbedPane, int index ) {
 	}
-//	private static void addToHistory( Operation operation ) {
-//	}
-//	private static void handlePreparedOperation( CancellableOperation operation, java.util.EventObject e, java.util.List< java.util.EventObject > preparationUpdates, CancellableOperation.PreparationResult preparationResult ) {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "ZManager.handlePreparedOperation", operation, preparationResult );
-//		if( preparationResult != null ) {
-//			if( preparationResult == CancellableOperation.PreparationResult.CANCEL ) {
-//				//pass
-//			} else {
-//				operation.perform();
-//				if( preparationResult == CancellableOperation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY ) {
-//					//addToHistory( operation );
-//				}
-//			}
-//		}
-//	}
-	
+
+	//	private static void addToHistory( Operation operation ) {
+	//	}
+	//	private static void handlePreparedOperation( CancellableOperation operation, java.util.EventObject e, java.util.List< java.util.EventObject > preparationUpdates, CancellableOperation.PreparationResult preparationResult ) {
+	//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "ZManager.handlePreparedOperation", operation, preparationResult );
+	//		if( preparationResult != null ) {
+	//			if( preparationResult == CancellableOperation.PreparationResult.CANCEL ) {
+	//				//pass
+	//			} else {
+	//				operation.perform();
+	//				if( preparationResult == CancellableOperation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY ) {
+	//					//addToHistory( operation );
+	//				}
+	//			}
+	//		}
+	//	}
+
 	private static boolean isDragInProgress = false;
+
 	public static boolean isDragInProgress() {
 		return ZManager.isDragInProgress;
 	}
 	public static void setDragInProgress( boolean isDragInProgress ) {
 		ZManager.isDragInProgress = isDragInProgress;
 	}
-	
+
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
+
 	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
 		ActionContext rv = new MyActionContext( e, isCancelWorthwhile );
 		actionOperation.perform( rv );
 		return rv;
-//		if( operation instanceof CancellableOperation ) {
-//			CancellableOperation cancellableOperation = (CancellableOperation)operation;
-//			final java.util.List< java.util.EventObject > preparationUpdates = new java.util.LinkedList< java.util.EventObject >();
-//			CancellableOperation.PreparationResult preparationResult = cancellableOperation.prepare( e, new CancellableOperation.PreparationObserver() {
-//				public void update( java.util.EventObject e ) {
-//					preparationUpdates.add( e );
-//				}
-//			} );
-//			handlePreparedOperation( cancellableOperation, e, preparationUpdates, preparationResult );
-//		} else {
-//			if( operation instanceof ResponseOperation ) {
-//				((ResponseOperation)operation).respond( e );
-//			}
-//			operation.perform();
-//		}
+		//		if( operation instanceof CancellableOperation ) {
+		//			CancellableOperation cancellableOperation = (CancellableOperation)operation;
+		//			final java.util.List< java.util.EventObject > preparationUpdates = new java.util.LinkedList< java.util.EventObject >();
+		//			CancellableOperation.PreparationResult preparationResult = cancellableOperation.prepare( e, new CancellableOperation.PreparationObserver() {
+		//				public void update( java.util.EventObject e ) {
+		//					preparationUpdates.add( e );
+		//				}
+		//			} );
+		//			handlePreparedOperation( cancellableOperation, e, preparationUpdates, preparationResult );
+		//		} else {
+		//			if( operation instanceof ResponseOperation ) {
+		//				((ResponseOperation)operation).respond( e );
+		//			}
+		//			operation.perform();
+		//		}
 	}
-	
+
 	public static ItemSelectionContext performIfAppropriate( ItemSelectionOperation< ? > singleSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
 		assert singleSelectionOperation != null;
 		ItemSelectionContext rv = new MySingleSelectionContext( e, isCancelWorthwhile, previousSelection, nextSelection );
@@ -172,10 +182,9 @@ public class ZManager {
 	}
 	//public static ZMenu createMenu( StateOperation< java.util.ArrayList< E > > stateOperation )
 
-
-//	private static void setHeavyWeight( javax.swing.JPopupMenu popup ) {
-//		popup.setLightWeightPopupEnabled( false );
-//	}
+	//	private static void setHeavyWeight( javax.swing.JPopupMenu popup ) {
+	//		popup.setLightWeightPopupEnabled( false );
+	//	}
 
 	public static javax.swing.JMenu createMenu( String name, int mnemonic, ItemSelectionOperation itemSelectionOperation ) {
 		javax.swing.JMenu rv = new javax.swing.JMenu( name );
@@ -184,7 +193,7 @@ public class ZManager {
 		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
 		javax.swing.ListModel listModel = itemSelectionOperation.getListModel();
 		int N = listModel.getSize();
-		for( int i=0; i<N; i++ ) {
+		for( int i = 0; i < N; i++ ) {
 			javax.swing.Action actionI = itemSelectionOperation.getActionForConfiguringSwing( i );
 			javax.swing.JRadioButtonMenuItem item = new javax.swing.JRadioButtonMenuItem( actionI );
 			item.getModel().setGroup( group );
@@ -194,8 +203,9 @@ public class ZManager {
 		//setHeavyWeight( rv.getPopupMenu() );
 		return rv;
 	}
-	
+
 	public static ActionOperation MENU_SEPARATOR = null;
+
 	public static javax.swing.JMenu createMenu( String name, int mnemonic, ActionOperation... actionOperations ) {
 		javax.swing.JMenu rv = new javax.swing.JMenu( name );
 		rv.setMnemonic( mnemonic );

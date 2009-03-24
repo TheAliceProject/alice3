@@ -32,8 +32,10 @@ public interface Context {
 	public void put( Object key, Object value );
 	public boolean isCommitted();
 	public boolean isCancelled();
+	public boolean isPending();
 	public void commit();
 	public void cancel();
+	public void setTaskObserver( edu.cmu.cs.dennisc.task.TaskObserver< ? > taskObserver );
 	public boolean isCancelWorthwhile();
 	public ActionContext perform( ActionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile );
 	public ItemSelectionContext perform( ItemSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection );

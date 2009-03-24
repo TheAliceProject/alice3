@@ -35,6 +35,8 @@ public class CountLoopTemplate extends UbiquitousStatementTemplate {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createIncompleteCountLoop();
+		edu.cmu.cs.dennisc.alice.ast.CountLoop rv = org.alice.ide.ast.NodeUtilities.createIncompleteCountLoop();
+		rv.count.setValue( expressions[ 0 ] );
+		return rv;
 	}
 }
