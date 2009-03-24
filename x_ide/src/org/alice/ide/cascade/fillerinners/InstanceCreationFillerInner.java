@@ -25,17 +25,12 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanFillerInner extends ExpressionFillerInner {
-	public BooleanFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.BooleanLiteral.class );
+public abstract class InstanceCreationFillerInner extends ExpressionFillerInner {
+	public InstanceCreationFillerInner( Class<?> cls ) {
+		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class );
 	}
-	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, true );
-		this.addExpressionFillIn( blank, false );
-//		blank.addSeparator()
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.ConditionalInfixExpressionFillIn() )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Real Number)", java.lang.Double ) )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Integer)", java.lang.Integer ) )
+
+	protected void addInstanceCreationExpressionFillIn( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		this.addExpressionFillIn( blank, constructor, new edu.cmu.cs.dennisc.alice.ast.Argument[] { new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, expression ) } );
 	}
 }

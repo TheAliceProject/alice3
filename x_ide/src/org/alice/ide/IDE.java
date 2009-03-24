@@ -629,6 +629,12 @@ public abstract class IDE extends zoot.ZFrame {
 	//			message = "sorry.  no fillins found for " + type.getName() + ". canceling."
 	//			blank.addChild( edu.cmu.cs.dennisc.cascade.CancelFillIn( message ) )
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		
+		//todo
+		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
+			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;
+		}
+		
 		for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
 			if( expressionFillerInner.isAssignableTo( type ) ) {
 				expressionFillerInner.addFillIns( blank );

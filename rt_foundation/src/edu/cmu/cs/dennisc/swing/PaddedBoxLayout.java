@@ -34,6 +34,21 @@ public class PaddedBoxLayout extends javax.swing.BoxLayout {
 		this.pad = pad;
 	}
 	@Override
+	public java.awt.Dimension preferredLayoutSize( java.awt.Container target ) {
+		java.awt.Dimension rv = super.preferredLayoutSize( target );
+		switch( this.axis ) {
+		case Y_AXIS:
+		case PAGE_AXIS:
+			rv.height += this.pad;
+			break;
+		case X_AXIS:
+		case LINE_AXIS:
+			rv.width += this.pad;
+			break;
+		}
+		return rv;
+	}
+	@Override
 	public void layoutContainer( java.awt.Container target ) {
 		super.layoutContainer( target );
 		for( int i=0; i<target.getComponentCount(); i++ ) {

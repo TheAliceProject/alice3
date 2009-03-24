@@ -396,8 +396,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		};
 		bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
 		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
-//		bodyPane.setOpaque( true );
-//		bodyPane.setBackground( java.awt.Color.RED );
+		//bodyPane.setOpaque( false );
+		//bodyPane.setBackground( java.awt.Color.RED );
 
 		edu.cmu.cs.dennisc.moot.ZPane pane = new edu.cmu.cs.dennisc.moot.ZPane() {
 			@Override
@@ -407,7 +407,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		};
 		pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		pane.add( bodyPane );
-		this.add( pane );
+		this.add( new javax.swing.JScrollPane( pane ) );
 
 		this.revalidate();
 		this.repaint();
