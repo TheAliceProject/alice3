@@ -22,17 +22,6 @@
  */
 package org.alice.ide;
 
-//import java.awt.event.MouseEvent;
-//import java.awt.event.WindowEvent;
-//import java.io.File;
-//
-//import org.alice.ide.operations.AbstractItemSelectionOperation;
-//
-//import edu.cmu.cs.dennisc.alice.ast.AbstractType;
-//import edu.cmu.cs.dennisc.alice.ast.Node;
-//import edu.cmu.cs.dennisc.alice.ast.Statement;
-//import edu.cmu.cs.dennisc.task.TaskObserver;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -136,11 +125,6 @@ public abstract class IDE extends zoot.ZFrame {
 		rv.add( new org.alice.ide.cascade.fillerinners.IntegerFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.BooleanFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.StringFillerInner() );
-		
-		
-		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );
-		
-		
 		return rv;
 	}
 	
@@ -209,8 +193,8 @@ public abstract class IDE extends zoot.ZFrame {
 		);
 		windowMenu.add( setLocaleMenu );
 		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, 
-				new org.alice.ide.operations.help.HelpOperation(), 
-				new org.alice.ide.operations.help.AboutOperation() 
+				new org.alice.ide.operations.help.HelpOperation(),
+				this.createAboutOperation()
 		);
 		rv.add( fileMenu );
 		rv.add( editMenu );
@@ -219,6 +203,8 @@ public abstract class IDE extends zoot.ZFrame {
 		rv.add( helpMenu );
 		return rv;
 	}
+	
+	protected abstract zoot.ActionOperation createAboutOperation();
 
 	public boolean isJava() {
 		return getLocale().getVariant().equals( "java" );
@@ -480,19 +466,7 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 		return this.ideListenerArray;
 	}
-	protected void promptForLicenseAgreements() {
-		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
-		try {
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.alice.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 3): Alice 3", edu.cmu.cs.dennisc.alice.License.TEXT, "Alice" );
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.wustl.cse.lookingglass.apis.walkandtouch.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 3): Looking Glass Walk & Touch API",
-					edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "the Looking Glass Walk & Touch API" );
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 3 of 3): The Sims (TM) 2 Art Assets",
-					edu.cmu.cs.dennisc.nebulous.License.TEXT, "The Sims (TM) 2 Art Assets" );
-		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			javax.swing.JOptionPane.showMessageDialog( this, "You must accept the license agreements in order to use Alice 3, the Looking Glass Walk & Touch API, and The Sims (TM) 2 Art Assets.  Exiting." );
-			System.exit( -1 );
-		}
-	}
+	protected abstract void promptForLicenseAgreements();
 
 	public void performIfAppropriate( zoot.ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		zoot.ZManager.performIfAppropriate( actionOperation, e, isCancelWorthwhile );
@@ -1218,14 +1192,5 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	public static java.awt.Color getFieldColor() {
 		return new java.awt.Color( 0x85abc9 );
-	}
-
-	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
-		IDE ide = new IDE() {
-		};
-		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
-		ide.setSize( 1000, 1000 );
-		ide.setVisible( true );
 	}
 }
