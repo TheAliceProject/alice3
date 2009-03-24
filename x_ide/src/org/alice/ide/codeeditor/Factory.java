@@ -37,4 +37,10 @@ public class Factory extends org.alice.ide.ast.Factory {
 	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		return new ExpressionPropertyPane( this, expressionProperty, true );
 	}
+	@Override
+	public org.alice.ide.ast.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
+		org.alice.ide.ast.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
+		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
+		return abstractStatementPane;
+	}
 }

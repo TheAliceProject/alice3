@@ -26,9 +26,7 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDragAndDropOperation extends zoot.AbstractDragAndDropOperation {
-	private zoot.ActionOperation dropOperation = this.createDropOperation();  
-	
+public class DefaultDragAndDropOperation extends zoot.AbstractDragAndDropOperation {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -46,10 +44,5 @@ public abstract class AbstractDragAndDropOperation extends zoot.AbstractDragAndD
 	}
 	public void handleDragStopped( zoot.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragStopped( dragAndDropContext );
-	}
-	protected abstract zoot.ActionOperation createDropOperation(); 
-	
-	public zoot.ActionOperation getDropOperation() {
-		return this.dropOperation;
 	}
 }

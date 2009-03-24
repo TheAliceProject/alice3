@@ -22,18 +22,16 @@
  */
 package org.alice.ide.templates;
 
-import org.alice.ide.codeeditor.CodeEditor;
-
-class StatementTemplateDragAndDropOperation extends org.alice.ide.operations.AbstractDragAndDropOperation {
-	@Override
-	protected zoot.ActionOperation createDropOperation() {
-		return new zoot.AbstractActionOperation() {
-			public void perform( zoot.ActionContext actionContext ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
-			}
-		};
-	}
-}
+//class StatementTemplateDragAndDropOperation extends org.alice.ide.operations.DefaultDragAndDropOperation {
+////	@Override
+////	protected zoot.ActionOperation createDropOperation() {
+////		return new zoot.AbstractActionOperation() {
+////			public void perform( zoot.ActionContext actionContext ) {
+////				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
+////			}
+////		};
+////	}
+//}
 
 /**
  * @author Dennis Cosgrove
@@ -57,7 +55,7 @@ public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeS
 	//		};
 	//	}
 	protected zoot.DragAndDropOperation createDragAndDropOperation() {
-		return new StatementTemplateDragAndDropOperation();
+		return new org.alice.ide.operations.DefaultDragAndDropOperation();
 	}
 	@Override
 	public void addNotify() {
