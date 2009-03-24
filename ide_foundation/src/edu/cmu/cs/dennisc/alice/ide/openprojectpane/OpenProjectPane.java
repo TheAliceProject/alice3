@@ -445,6 +445,7 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.swing.InputPane< java.io
 		for( TabPane tabPane : tabPanes ) { 
 			tabPane.setInputPane( this );
 			javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tabPane );
+			scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 			scrollPane.setOpaque( false );
 			scrollPane.setBackground( tabPane.getBackground() );
 			scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
