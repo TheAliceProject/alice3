@@ -25,7 +25,7 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionBlank extends edu.cmu.cs.dennisc.cascade.Blank {
+public class ExpressionBlank extends cascade.Blank {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;

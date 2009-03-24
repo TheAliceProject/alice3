@@ -30,7 +30,7 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
 		super( type, cls );
 	}
 	
-//	protected void addArithmetic( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType, operandType ) {
+//	protected void addArithmetic( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType, operandType ) {
 //		blank.addChild( ecc.dennisc.alice.ide.cascade.ArithmeticInfixExpressionFillIn( valueType, operandType ) )
 //	}
 }

@@ -31,12 +31,28 @@ public abstract class ZComponent extends swing.Pane {
 	protected abstract void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height );
 	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+
+	public ZComponent() {
+		this.setBorder( null );
+	}
+	
+	private void updateBorderIfNecessary() {
+		if( this.getBorder() == null ) {
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
+		}
+	}
+	@Override
+	public void doLayout() {
+		this.updateBorderIfNecessary();
+		super.doLayout();
+	}
 	
 	@Override
 	public void addNotify() {
+		this.updateBorderIfNecessary();
 		super.addNotify();
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
 	}
+
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;

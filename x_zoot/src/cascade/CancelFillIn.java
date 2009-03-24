@@ -20,22 +20,25 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanFillerInner extends ExpressionFillerInner {
-	public BooleanFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.BooleanLiteral.class );
+public class CancelFillIn extends FillIn< Object > {
+	private edu.cmu.cs.dennisc.moot.ZLabel label = new edu.cmu.cs.dennisc.moot.ZLabel();
+	public CancelFillIn( String text ) {
+		this.label.setText( text );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, true );
-		this.addExpressionFillIn( blank, false );
-//		blank.addSeparator()
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.ConditionalInfixExpressionFillIn() )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Real Number)", java.lang.Double ) )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Integer)", java.lang.Integer ) )
+	protected void addChildren() {
+	}
+	@Override
+	public Object getValue() {
+		throw new CancelException( this.label.getText() );
+	}
+	@Override
+	protected javax.swing.JComponent createMenuProxy() {
+		return this.label;
 	}
 }

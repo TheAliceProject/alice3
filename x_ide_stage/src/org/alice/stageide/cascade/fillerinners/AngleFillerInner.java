@@ -30,7 +30,7 @@ public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.Instanc
 		super( org.alice.apis.moveandturn.AngleInRevolutions.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+	public void addFillIns( cascade.Blank blank ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getType();
 		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = type.getDeclaredConstructor( new Class<?>[] { Number.class } );
 		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );

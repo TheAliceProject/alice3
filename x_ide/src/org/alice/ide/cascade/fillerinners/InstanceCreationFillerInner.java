@@ -30,7 +30,7 @@ public abstract class InstanceCreationFillerInner extends ExpressionFillerInner 
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class );
 	}
 
-	protected void addInstanceCreationExpressionFillIn( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	protected void addInstanceCreationExpressionFillIn( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		this.addExpressionFillIn( blank, constructor, new edu.cmu.cs.dennisc.alice.ast.Argument[] { new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, expression ) } );
 	}
 }

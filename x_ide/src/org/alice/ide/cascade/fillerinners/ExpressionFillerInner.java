@@ -40,11 +40,11 @@ public abstract class ExpressionFillerInner {
 		return this.type.isAssignableTo( type );
 	}
 
-	protected void addExpressionFillIn( edu.cmu.cs.dennisc.cascade.Blank blank, Object... args ) {
+	protected void addExpressionFillIn( cascade.Blank blank, Object... args ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstanceForArguments( this.cls, args );
-		blank.addChild( new org.alice.ide.cascade.SimpleExpressionFillIn( expression ) ); 
+		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( expression ) ); 
 	}
 	
-	public abstract void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank );
+	public abstract void addFillIns( cascade.Blank blank );
 
 }

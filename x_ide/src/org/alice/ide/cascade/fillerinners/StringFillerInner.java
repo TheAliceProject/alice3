@@ -30,10 +30,10 @@ public class StringFillerInner extends AbstractNumberFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), edu.cmu.cs.dennisc.alice.ast.StringLiteral.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+	public void addFillIns( cascade.Blank blank ) {
 		this.addExpressionFillIn( blank, "hello" );
 		blank.addSeparator();
-		blank.addChild( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
+		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
 		blank.addSeparator();
 //		blank.addChild( ecc.dennisc.alice.ide.cascade.StringConcatenationFillIn() )
 	}

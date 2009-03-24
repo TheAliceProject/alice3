@@ -25,7 +25,7 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomFillIn<E> extends edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class CustomFillIn<E> extends cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	protected abstract CustomPane createCustomPane();
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( E value );
 
@@ -38,7 +38,7 @@ public abstract class CustomFillIn<E> extends edu.cmu.cs.dennisc.cascade.FillIn<
 		if( value != null ) {
 			return this.createExpression( value );
 		} else {
-			throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );
+			throw new cascade.CancelException( "" );
 		}
 	}
 

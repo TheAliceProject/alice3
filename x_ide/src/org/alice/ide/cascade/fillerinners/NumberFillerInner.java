@@ -30,7 +30,7 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+	public void addFillIns( cascade.Blank blank ) {
 		this.addExpressionFillIn( blank, 0.0 );
 		this.addExpressionFillIn( blank, 0.25 );
 		this.addExpressionFillIn( blank, 0.5 );
@@ -40,7 +40,7 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		this.addExpressionFillIn( blank, 10.0 );
 		this.addExpressionFillIn( blank, 100.0 );
 		blank.addSeparator();
-		blank.addChild( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
+		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
 		blank.addSeparator();
 //		self._addArithmeticFillIns( blank, ecc.dennisc.alice.ast.getType( java.lang.Double ), ecc.dennisc.alice.ast.getType( java.lang.Number ) )
 	}

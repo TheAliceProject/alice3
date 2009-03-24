@@ -41,6 +41,7 @@ public abstract class ExpressionStatementTemplate extends StatementTemplate {
 		} else {
 			this.incompleteExpressionPane = getIDE().getTemplatesFactory().createComponent( this.incompleteExpression );
 			this.add( this.incompleteExpressionPane );
+			this.revalidate();
 		}
 		super.addNotify();
 	}

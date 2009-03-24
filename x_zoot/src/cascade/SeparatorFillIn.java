@@ -20,22 +20,36 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanFillerInner extends ExpressionFillerInner {
-	public BooleanFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.BooleanLiteral.class );
+public class SeparatorFillIn extends FillIn< Object > {
+	private edu.cmu.cs.dennisc.moot.ZLineAxisPane pane;
+	public SeparatorFillIn() {
+		this( null );
+	}
+	public SeparatorFillIn( String text ) {
+		if( text != null ) {
+			javax.swing.JLabel label = new javax.swing.JLabel( text );
+			label.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
+			this.pane = new edu.cmu.cs.dennisc.moot.ZLineAxisPane();
+			this.pane.add( label );
+		} else {
+			this.pane = null;
+		}
+	}
+	
+	@Override
+	protected javax.swing.JComponent getMenuItem() {
+		return this.pane;
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, true );
-		this.addExpressionFillIn( blank, false );
-//		blank.addSeparator()
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.ConditionalInfixExpressionFillIn() )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Real Number)", java.lang.Double ) )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Integer)", java.lang.Integer ) )
+	protected void addChildren() {
+	}
+	@Override
+	public Object getValue() {
+		return null;
 	}
 }

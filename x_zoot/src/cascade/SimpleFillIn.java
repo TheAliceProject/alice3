@@ -20,22 +20,33 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanFillerInner extends ExpressionFillerInner {
-	public BooleanFillerInner() {
-		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.BooleanLiteral.class );
+public class SimpleFillIn< E > extends FillIn< E > {
+	private E model;
+	public SimpleFillIn( E model ) {
+		this.model = model;
+	}
+	public E getModel() {
+		return this.model;
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, true );
-		this.addExpressionFillIn( blank, false );
-//		blank.addSeparator()
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.ConditionalInfixExpressionFillIn() )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Real Number)", java.lang.Double ) )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Integer)", java.lang.Integer ) )
+	protected void addChildren() {
+	}
+	@Override
+	public E getValue() {
+		return this.getModel();
+	}
+	
+	protected String getMenuProxyText() {
+		return this.model.toString(); 
+	}
+	
+	@Override
+	protected javax.swing.JComponent createMenuProxy() {
+		return new javax.swing.JLabel( this.getMenuProxyText() );
 	}
 }

@@ -30,7 +30,7 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.IntegerLiteral.class );
 	}
 	@Override
-	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+	public void addFillIns( cascade.Blank blank ) {
 		this.addExpressionFillIn( blank, 0 );
 		this.addExpressionFillIn( blank, 1 );
 		this.addExpressionFillIn( blank, 2 );
@@ -42,7 +42,7 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		this.addExpressionFillIn( blank, 8 );
 		this.addExpressionFillIn( blank, 9 );
 		blank.addSeparator();
-		blank.addChild( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
+		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
 		blank.addSeparator();
 //		self._addArithmeticFillIns( blank, self._type, self._type )
 	}

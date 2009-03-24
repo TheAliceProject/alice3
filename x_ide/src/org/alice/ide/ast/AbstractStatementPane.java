@@ -22,8 +22,6 @@
  */
 package org.alice.ide.ast;
 
-import org.alice.ide.codeeditor.CommentPane;
-
 /**
  * @author Dennis Cosgrove
  */

@@ -31,5 +31,7 @@ public class LineAxisPane extends BoxPane {
 		for( java.awt.Component component : components ) {
 			this.add( component );
 		}
+		this.revalidate();
+		this.doLayout();
 	}
 }
