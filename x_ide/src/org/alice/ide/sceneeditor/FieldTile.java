@@ -201,7 +201,7 @@ public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 			//pass
 		} else {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setPaint( org.alice.ide.lookandfeel.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( zoot.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

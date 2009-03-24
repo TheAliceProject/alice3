@@ -22,8 +22,6 @@
  */
 package zoot;
 
-import org.alice.ide.IDE;
-
 /**
  * @author Dennis Cosgrove
  */

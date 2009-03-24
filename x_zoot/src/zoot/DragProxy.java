@@ -67,7 +67,7 @@ class DragProxy extends Proxy {
 //			this.createBoundsShape().fill( g2 );
 //		}
 		if( isCopyDesired ) {
-			g2.setPaint( org.alice.ide.lookandfeel.PaintUtilities.getCopyTexturePaint() );
+			g2.setPaint( PaintUtilities.getCopyTexturePaint() );
 			fillBounds( g2 );
 		}
 	}
