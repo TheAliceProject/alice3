@@ -1,6 +1,6 @@
 package stencil;
 
-class Proxy extends javax.swing.JComponent {
+public class Proxy extends javax.swing.JComponent {
 //	@Override
 //	protected void paintComponent( java.awt.Graphics g ) {
 //		super.paintComponent( g );
