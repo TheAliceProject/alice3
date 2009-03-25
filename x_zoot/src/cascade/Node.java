@@ -127,37 +127,19 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 				menu.addMenuListener( this  );
 				this.menuItem = menu;
 			}
-			this.menuItem.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+			//this.menuItem.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 			this.isMenuItemIconUpToDate = false;
 		}
 		
 		if( this.isMenuItemIconUpToDate() ) {
 			//pass
 		} else {
-//			if( this.menuItem instanceof zoot.ZMenuItem ) {
-//				((zoot.ZMenuItem)this.menuItem).setSubject( this.getMenuProxy() );
-//			} else if( this.menuItem instanceof zoot.ZMenu ) {
-				//((zoot.ZMenu)this.menuItem).setSubject( this.getMenuProxy() );
-				//final java.awt.Container container = edu.cmu.cs.dennisc.alice.ide.IDE.getSingleton().getContentPane();
-				java.awt.Container container = this.menuItem;
-				javax.swing.JComponent component = this.getMenuProxy();
-//				if( component instanceof javax.swing.JLabel ) {
-//					javax.swing.JLabel label = (javax.swing.JLabel)component;
-//					this.menuItem.setIcon( label.getIcon() );
-//					this.menuItem.setText( label.getText() );
-//				} else {
-				
-					//component = new swing.LineAxisPane( new swing.LineAxisPane( new javax.swing.JButton( "hello" ), new javax.swing.JButton( "goodbye" ) ), new swing.LineAxisPane( new javax.swing.JButton( "aloha" ), new javax.swing.JButton( "and aloha" ) ) );
-					//component.revalidate();
-					//component.doLayout();
-					//edu.cmu.cs.dennisc.swing.SwingUtilities.invalidateTree( component );
-					//edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( component );
-					component.doLayout();
-					this.menuItem.setIcon( edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component, container ) );
-					this.menuItem.setText( null );
-//				}
-//			}
-			
+			java.awt.Container container = this.menuItem;
+			javax.swing.JComponent component = this.getMenuProxy();
+			//component.doLayout();
+			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( component );
+			this.menuItem.setIcon( edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component, container ) );
+			this.menuItem.setText( "" );
 			setMenuItemIconUpToDate( true );
 		}
 		return this.menuItem;

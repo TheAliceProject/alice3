@@ -20,21 +20,15 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package swing;
+package org.alice.ide.cascade;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LineAxisPane extends BoxPane {
-	public LineAxisPane( java.awt.Component... components ) {
-		super( javax.swing.BoxLayout.LINE_AXIS );
-		for( java.awt.Component component : components ) {
-			this.add( component );
-			component.doLayout();
-		}
-		if( components.length > 0 ) {
-//			this.revalidate();
-			this.doLayout();
-		}
+public class ParameterBlank extends ExpressionBlank {
+	//private edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
+	public ParameterBlank( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
+		super( parameter.getDesiredValueType() );
+//		this.parameter = parameter;
 	}
 }

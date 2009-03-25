@@ -22,6 +22,7 @@
  */
 package org.alice.ide.cascade.fillerinners;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -42,6 +43,46 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
 		blank.addSeparator();
-//		self._addArithmeticFillIns( blank, ecc.dennisc.alice.ast.getType( java.lang.Double ), ecc.dennisc.alice.ast.getType( java.lang.Number ) )
+		blank.addFillIn( new cascade.MenuFillIn( "Random" ) {
+			@Override
+			protected void addChildrenToBlank(cascade.Blank blank) {
+				addNodeChildForMathMethod( blank, "random" );
+			}
+		} );
+		blank.addSeparator();
+		blank.addFillIn( new cascade.MenuFillIn( "Math" ) {
+			@Override
+			protected void addChildrenToBlank(cascade.Blank blank) {
+//				addNodeChildForMathMethod( blank, "random" );
+//				blank.addSeparator();
+				addNodeChildForMathMethod( blank, "abs", java.lang.Double.TYPE );
+				addNodeChildForMathMethod( blank, "rint", java.lang.Double.TYPE );
+				addNodeChildForMathMethod( blank, "ceil", java.lang.Double.TYPE );
+				addNodeChildForMathMethod( blank, "floor", java.lang.Double.TYPE );
+				blank.addSeparator();
+				addNodeChildForMathMethod( blank, "min", java.lang.Double.TYPE, java.lang.Double.TYPE );
+				addNodeChildForMathMethod( blank, "max", java.lang.Double.TYPE, java.lang.Double.TYPE );
+				blank.addSeparator();
+				addNodeChildForMathMethod( blank, "sqrt", java.lang.Double.TYPE );
+				addNodeChildForMathMethod( blank, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE );
+				blank.addSeparator();
+				addNodeChildForMathMethod( blank, "exp", java.lang.Double.TYPE );
+				addNodeChildForMathMethod( blank, "log", java.lang.Double.TYPE );
+				blank.addSeparator();
+				blank.addFillIn( new cascade.MenuFillIn( "Trigonometry" ) {
+					@Override
+					protected void addChildrenToBlank( cascade.Blank blank ) {
+						addNodeChildForMathMethod( blank, "sin", java.lang.Double.TYPE );
+						addNodeChildForMathMethod( blank, "cos", java.lang.Double.TYPE );
+						addNodeChildForMathMethod( blank, "tan", java.lang.Double.TYPE );
+						addNodeChildForMathMethod( blank, "asin", java.lang.Double.TYPE );
+						addNodeChildForMathMethod( blank, "acos", java.lang.Double.TYPE );
+						addNodeChildForMathMethod( blank, "atan", java.lang.Double.TYPE );
+						addNodeChildForMathMethod( blank, "atan2", java.lang.Double.TYPE, java.lang.Double.TYPE );
+					}
+				} );
+			}
+		} );
+		//		self._addArithmeticFillIns( blank, ecc.dennisc.alice.ast.getType( java.lang.Double ), ecc.dennisc.alice.ast.getType( java.lang.Number ) )
 	}
 }

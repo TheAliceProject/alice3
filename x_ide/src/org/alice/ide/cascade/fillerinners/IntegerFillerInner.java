@@ -45,5 +45,14 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
 		blank.addSeparator();
 //		self._addArithmeticFillIns( blank, self._type, self._type )
+		blank.addFillIn( new cascade.MenuFillIn( "Math" ) {
+			@Override
+			protected void addChildrenToBlank(cascade.Blank blank) {
+				addNodeChildForMathMethod( blank, "abs", java.lang.Integer.TYPE );
+				blank.addSeparator();
+				addNodeChildForMathMethod( blank, "min", java.lang.Integer.TYPE, java.lang.Integer.TYPE );
+				addNodeChildForMathMethod( blank, "max", java.lang.Integer.TYPE, java.lang.Integer.TYPE );
+			}
+		} );
 	}
 }

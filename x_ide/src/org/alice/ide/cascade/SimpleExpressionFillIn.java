@@ -29,6 +29,9 @@ public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expr
 	public SimpleExpressionFillIn( E model ) {
 		super( model );
 	}
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
 		javax.swing.JComponent rv;

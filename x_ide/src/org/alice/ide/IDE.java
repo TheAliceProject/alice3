@@ -673,6 +673,13 @@ public abstract class IDE extends zoot.ZFrame {
 	//			blank.addChild( cascade.CancelFillIn( message ) )
 	public void addFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 
+		if( this.prevExpression != null ) {
+			if( this.prevExpression.getType().isAssignableTo( type ) ) {
+				blank.addFillIn( new org.alice.ide.cascade.PrevExpressionFillIn( this.prevExpression ) );
+				blank.addSeparator();
+			}
+			
+		}
 		//todo
 		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
 			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;

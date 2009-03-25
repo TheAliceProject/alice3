@@ -29,6 +29,12 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
 	public AbstractNumberFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls ) {
 		super( type, cls );
 	}
+	private static final edu.cmu.cs.dennisc.alice.ast.TypeExpression MATH_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( java.lang.Math.class );
+	protected static void addNodeChildForMathMethod( cascade.Blank blank, String methodName, Class... parameterClses ) {
+		org.alice.ide.cascade.MethodInvocationFillIn methodInvocationFillIn = new org.alice.ide.cascade.MethodInvocationFillIn( MATH_TYPE_EXPRESSION, MATH_TYPE_EXPRESSION.value.getValue().getDeclaredMethod( methodName, parameterClses ) );
+		blank.addFillIn( methodInvocationFillIn );
+	}
+	
 	
 //	protected void addArithmetic( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType, operandType ) {
 //		blank.addChild( ecc.dennisc.alice.ide.cascade.ArithmeticInfixExpressionFillIn( valueType, operandType ) )

@@ -56,7 +56,7 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.WhileLoop createIncompleteWhileLoop() {
 		return createWhileLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
 		rv.expression.setValue( expression );
 		rv.method.setValue( method );
@@ -121,5 +121,12 @@ public class NodeUtilities {
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
 		return completeMethodInvocation( rv, org.alice.ide.IDE.getSingleton().createInstanceExpression(), argumentExpressions );
+	}
+	
+	public static edu.cmu.cs.dennisc.alice.ast.TypeExpression createTypeExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.TypeExpression createTypeExpression( Class<?> cls ) {
+		return createTypeExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
 }
