@@ -57,7 +57,8 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement, Void > {
 			@Override
 			protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement doInBackground() throws java.lang.Exception {
-				org.alice.ide.inputpanes.CreateLocalPane createLocalPane = new org.alice.ide.inputpanes.CreateLocalPane();
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: CreateLocalPane context " );
+				org.alice.ide.inputpanes.CreateLocalPane createLocalPane = new org.alice.ide.inputpanes.CreateLocalPane( null );
 				return createLocalPane.showInJDialog( getIDE() );
 			}
 			@Override

@@ -26,8 +26,13 @@ package org.alice.ide.inputpanes;
  * @author Dennis Cosgrove
  */
 public class CreateLocalPane extends CreateTypedDeclarationWithInitializerPane<edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement> {
+	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
+	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
+		this.block = block;
+	}
 	@Override
 	protected boolean isNameAcceptable( String name ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isNameAcceptable", name );
 		return false;
 	}
 	@Override
@@ -69,7 +74,7 @@ public class CreateLocalPane extends CreateTypedDeclarationWithInitializerPane<e
 			protected void promptForLicenseAgreements() {
 			}
 		};
-		CreateLocalPane createLocalPane = new CreateLocalPane();
+		CreateLocalPane createLocalPane = new CreateLocalPane( null );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( createLocalPane.showInJDialog( ide ) );
 	}
 }
