@@ -25,8 +25,8 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class PrevExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends SimpleExpressionFillIn< E > {
-	public PrevExpressionFillIn( E model ) {
+public class PreviousExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends SimpleExpressionFillIn< E > {
+	public PreviousExpressionFillIn( E model ) {
 		super( model );
 	}
 	@Override

@@ -671,11 +671,15 @@ public abstract class IDE extends zoot.ZFrame {
 	//		else:
 	//			message = "sorry.  no fillins found for " + type.getName() + ". canceling."
 	//			blank.addChild( cascade.CancelFillIn( message ) )
+	
+	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		return this.previousExpression;
+	}
 	public void addFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 
-		if( this.prevExpression != null ) {
-			if( this.prevExpression.getType().isAssignableTo( type ) ) {
-				blank.addFillIn( new org.alice.ide.cascade.PrevExpressionFillIn( this.prevExpression ) );
+		if( this.previousExpression != null ) {
+			if( this.previousExpression.getType().isAssignableTo( type ) ) {
+				blank.addFillIn( new org.alice.ide.cascade.PreviousExpressionFillIn( this.previousExpression ) );
 				blank.addSeparator();
 			}
 			
@@ -708,10 +712,10 @@ public abstract class IDE extends zoot.ZFrame {
 	//		throw new RuntimeException( "todo" );
 	//	}
 
-	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = null;
+	private edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = null;
 
 	private cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
-		this.prevExpression = prevExpression;
+		this.previousExpression = prevExpression;
 		return new org.alice.ide.cascade.ExpressionBlank( type );
 	}
 	private cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType[] types ) {
@@ -750,7 +754,7 @@ public abstract class IDE extends zoot.ZFrame {
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
 	public void unsetPreviousExpression() {
-		this.prevExpression = null;
+		this.previousExpression = null;
 	}
 
 	public edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {

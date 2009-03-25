@@ -26,6 +26,13 @@ package org.alice.ide.cascade.customfillin;
  * @author Dennis Cosgrove
  */
 public class CustomFloatPane extends CustomPane< Float > {
+	public CustomFloatPane() {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getIDE().getPreviousExpression();
+		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FloatLiteral ) {
+			edu.cmu.cs.dennisc.alice.ast.FloatLiteral floatLiteral = (edu.cmu.cs.dennisc.alice.ast.FloatLiteral)previousExpression;
+			this.setAndSelectText( Float.toString( floatLiteral.value.getValue() ) );
+		}
+	}
 	@Override
 	protected Float valueOf( String text ) {
 		return Float.valueOf( text );

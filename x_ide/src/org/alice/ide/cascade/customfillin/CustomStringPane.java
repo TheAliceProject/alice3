@@ -27,6 +27,13 @@ package org.alice.ide.cascade.customfillin;
  * @author Dennis Cosgrove
  */
 public class CustomStringPane extends CustomPane< String > {
+	public CustomStringPane() {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getIDE().getPreviousExpression();
+		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.StringLiteral ) {
+			edu.cmu.cs.dennisc.alice.ast.StringLiteral stringLiteral = (edu.cmu.cs.dennisc.alice.ast.StringLiteral)previousExpression;
+			this.setAndSelectText( stringLiteral.value.getValue() );
+		}
+	}
 	@Override
 	protected String valueOf( String text ) {
 		return text;

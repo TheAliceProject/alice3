@@ -32,6 +32,15 @@ abstract class CustomPane<E> extends swing.Pane implements zoot.InputValidator {
 		this.add( new zoot.ZLabel( "value: " ), java.awt.BorderLayout.WEST );
 		this.add( this.textField, java.awt.BorderLayout.CENTER );
 	}
+	
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
+	
+	public void setAndSelectText( String text ) {
+		this.textField.setText( text );
+		this.textField.selectAll();
+	}
 	protected abstract E valueOf( String text );
 	public boolean isInputValid() {
 		try {

@@ -26,6 +26,14 @@ package org.alice.ide.cascade.customfillin;
  * @author Dennis Cosgrove
  */
 public class CustomDoublePane extends CustomPane< Double > {
+	public CustomDoublePane() {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getIDE().getPreviousExpression();
+		//todo: handle other numbers
+		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
+			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
+			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
+		}
+	}
 	@Override
 	protected Double valueOf( String text ) {
 		return Double.valueOf( text );
