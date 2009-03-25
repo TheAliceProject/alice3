@@ -45,13 +45,22 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
 		blank.addSeparator();
 //		self._addArithmeticFillIns( blank, self._type, self._type )
+		blank.addFillIn( new cascade.MenuFillIn( "Random" ) {
+			@Override
+			protected void addChildrenToBlank(cascade.Blank blank) {
+				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFrom0UpToButExcludingN", java.lang.Integer.class );
+				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntFromAUpToButExcludingB", java.lang.Integer.class, java.lang.Integer.class );
+				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntFromAUpToAndIncludingB", java.lang.Integer.class, java.lang.Integer.class );
+			}
+		} );
+		blank.addSeparator();
 		blank.addFillIn( new cascade.MenuFillIn( "Math" ) {
 			@Override
 			protected void addChildrenToBlank(cascade.Blank blank) {
-				addNodeChildForMathMethod( blank, "abs", java.lang.Integer.TYPE );
+				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", java.lang.Integer.TYPE );
 				blank.addSeparator();
-				addNodeChildForMathMethod( blank, "min", java.lang.Integer.TYPE, java.lang.Integer.TYPE );
-				addNodeChildForMathMethod( blank, "max", java.lang.Integer.TYPE, java.lang.Integer.TYPE );
+				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", java.lang.Integer.TYPE, java.lang.Integer.TYPE );
+				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "max", java.lang.Integer.TYPE, java.lang.Integer.TYPE );
 			}
 		} );
 	}
