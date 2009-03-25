@@ -33,6 +33,13 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 	public void addFillIns( cascade.Blank blank ) {
 		this.addExpressionFillIn( blank, true );
 		this.addExpressionFillIn( blank, false );
+		blank.addSeparator();
+		blank.addFillIn( new cascade.MenuFillIn( "Random" ) {
+			@Override
+			protected void addChildrenToBlank(cascade.Blank blank) {
+				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextBoolean" );
+			}
+		} );
 //		blank.addSeparator()
 //		blank.addChild( ecc.dennisc.alice.ide.cascade.ConditionalInfixExpressionFillIn() )
 //		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Real Number)", java.lang.Double ) )

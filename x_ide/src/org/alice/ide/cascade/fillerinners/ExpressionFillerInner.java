@@ -26,6 +26,15 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillerInner {
+	protected static final edu.cmu.cs.dennisc.alice.ast.TypeExpression RANDOM_UTILITIES_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( org.alice.random.RandomUtilities.class );
+	protected static void addNodeChildForMethod( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, String methodName, Class... parameterClses ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = typeExpression.value.getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
+		assert method != null : methodName;
+		org.alice.ide.cascade.MethodInvocationFillIn methodInvocationFillIn = new org.alice.ide.cascade.MethodInvocationFillIn( typeExpression, method );
+		blank.addFillIn( methodInvocationFillIn );
+	}
+
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls;
 	public ExpressionFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls ) {

@@ -26,6 +26,7 @@ package edu.cmu.cs.dennisc.random;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 public class RandomUtilities {
 	private static java.util.Random s_random = new java.util.Random();
 
@@ -35,19 +36,26 @@ public class RandomUtilities {
 	public static void setSeed( long seed ) {
 		s_random.setSeed( seed );
 	}
-	public static int nextInt( int n ) {
+	public static Integer nextIntegerFrom0UpToButExcludingN( Integer n ) {
 		return s_random.nextInt( n );
 	}
+	public static Integer nextIntFromAUpToButExcludingB( Integer a, Integer b ) {
+		assert a < b;
+		int n = b-a;
+		return a + nextIntegerFrom0UpToButExcludingN( n );
+	}
+	public static Integer nextIntFromAUpToAndIncludingB( Integer a, Integer b ) {
+		return nextIntFromAUpToButExcludingB( a, b+1 );
+	}
 	public static boolean nextBoolean() {
-		//return nextInt( 2 ) == 1;
 		return s_random.nextBoolean();
 	}
 
-	public static double nextDouble() {
+	public static Double nextDouble() {
 		return s_random.nextDouble();
 	}
-	public static double nextDoubleInRange( double min, double max ) {
-		return min + (nextDouble() * (max - min));
+	public static Double nextDoubleInRange( Number min, Number max ) {
+		return min.doubleValue() + (nextDouble() * (max.doubleValue() - min.doubleValue()));
 	}
 
 	public static <E extends Object> E getRandomValueFrom( E[] array ) {
