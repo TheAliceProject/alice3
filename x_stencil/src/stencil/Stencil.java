@@ -1,5 +1,7 @@
 package stencil;
 
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+
 //import java.awt.Dimension;
 //import java.awt.Rectangle;
 //
@@ -65,7 +67,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		return rv;
 	}
 	
-	private static javax.swing.JScrollPane findFirstScrollPaneAncestor( java.awt.Component descendant ) {
+	protected static javax.swing.JScrollPane findFirstScrollPaneAncestor( java.awt.Component descendant ) {
 		return edu.cmu.cs.dennisc.awt.ComponentUtilities.findFirstAncestor( descendant, false, javax.swing.JScrollPane.class );
 	}
 
@@ -294,11 +296,10 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 
 	private final boolean PADDING_DESIRED = true;
 	private final boolean PADDING_NOT_DESIRED = false;
-	private java.awt.Rectangle calculateBoundsFor( HoleGroup holeGroup, boolean isPaddingDesired ) {
+	protected java.awt.Rectangle calculateBoundsFor( HoleGroup holeGroup, boolean isPaddingDesired ) {
 		java.awt.Rectangle rv = null;
 		for( Hole hole : holeGroup.getHoles() ) {
 			java.awt.Rectangle rectHole = hole.getProxy().getBounds();
-			
 			javax.swing.JScrollPane scrollPane = findFirstScrollPaneAncestor( hole.getComponent() );
 			if( scrollPane != null ) {
 				javax.swing.JViewport viewport = scrollPane.getViewport();
