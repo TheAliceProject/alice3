@@ -25,63 +25,31 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate implements UbiquitousStatementTemplate {
-	private zoot.ZLabel label = new zoot.ZLabel();
-	private edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement;
-	private java.awt.Component incompleteStatementPane;
-	private javax.swing.JToolTip toolTip;
-	
-	public javax.swing.JComponent getJComponent() {
-		return this;
-	}
-	
-	protected edu.cmu.cs.dennisc.alice.ast.Statement getIncompleteStatement() {
-		return this.incompleteStatement;
-	}
-	protected java.awt.Component getIncompleteStatementPane() {
-		return this.incompleteStatementPane;
-	}
-	
-	@Override
-	public java.awt.Component getSubject() {
-		return this.getIncompleteStatementPane();
-	}
+public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
+	private UbiquitousStatementImplementor implementor;
 	public CascadingUbiquitousStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
 		super( cls );
-		this.incompleteStatement = incompleteStatement;
-		String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates" );
-		//text = "label: " + text;
-		this.label.setText( text );
-		this.add( this.label );
+		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
+		this.add( this.implementor.getLabel() );
 		this.setToolTipText( "" );
 	}
-	public void setToolTip( javax.swing.JToolTip toolTip ) {
-		this.toolTip = toolTip;
+	@Override
+	public java.awt.Component getSubject() {
+		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
 	public javax.swing.JToolTip createToolTip() {
-		if( this.toolTip != null ) {
-			//pass
-		} else {
-			this.toolTip = new zoot.ZToolTip( this.incompleteStatementPane );
-		}
-		return this.toolTip;
+		return this.implementor.getToolTip();
 	}
 	@Override
 	public void addNotify() {
-		if( this.incompleteStatementPane != null ) {
-			//pass
-		} else {
-			this.incompleteStatementPane = getIDE().getTemplatesFactory().createStatementPane( this.incompleteStatement );
-			this.getIDE().addToConcealedBin( this.incompleteStatementPane );
-		}
+		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
 		super.addNotify();
 	}
 	
 	@Override
 	public java.awt.Dimension getMinimumSize() {
-		java.awt.Dimension rv = super.getMinimumSize();
-		rv.width = Math.min( rv.width, 24 );
-		return rv;
+		return this.implementor.adjustMinimumSize( super.getMinimumSize() );
 	}
+
 }

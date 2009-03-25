@@ -25,37 +25,33 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTemplate implements UbiquitousStatementTemplate {
-	private javax.swing.JToolTip toolTip;
+public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTemplate {
+	private UbiquitousStatementImplementor implementor;
 	public DeclareLocalTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
+		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
+		this.add( this.implementor.getLabel() );
+		this.setToolTipText( "" );
 	}
-	
 	@Override
 	public java.awt.Component getSubject() {
-		return this.toolTip.getComponent( 0 );
-	}
-
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		if( this.toolTip != null ) {
-			//pass
-		} else {
-			UbiquitousStatementUtilities.adorn( this, org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
-		}
-	}
-	
-	public javax.swing.JComponent getJComponent() {
-		return this;
-	}
-	public void setToolTip( javax.swing.JToolTip toolTip ) {
-		this.toolTip = toolTip;
+		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
 	public javax.swing.JToolTip createToolTip() {
-		return this.toolTip;
+		return this.implementor.getToolTip();
 	}
+	@Override
+	public void addNotify() {
+		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
+		super.addNotify();
+	}
+	
+	@Override
+	public java.awt.Dimension getMinimumSize() {
+		return this.implementor.adjustMinimumSize( super.getMinimumSize() );
+	}
+
 	@Override
 	public void createStatement( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
 		taskObserver.handleCancelation();
