@@ -25,16 +25,18 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogetherTemplate extends CascadingUbiquitousStatementTemplate {
-	public DoTogetherTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class, org.alice.ide.ast.NodeUtilities.createDoTogether() );
+public class ForEachInArrayLoopTemplate extends CascadingUbiquitousStatementTemplate {
+	public ForEachInArrayLoopTemplate() {
+		super( edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop.class, org.alice.ide.ast.NodeUtilities.createIncompleteForEachInArrayLoop() );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return null;
+		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) };
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createDoTogether();
+		edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop rv = org.alice.ide.ast.NodeUtilities.createIncompleteForEachInArrayLoop();
+		rv.array.setValue( expressions[ 0 ] );
+		return rv;
 	}
 }

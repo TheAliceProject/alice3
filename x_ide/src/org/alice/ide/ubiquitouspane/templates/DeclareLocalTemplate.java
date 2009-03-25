@@ -25,16 +25,39 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogetherTemplate extends CascadingUbiquitousStatementTemplate {
-	public DoTogetherTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class, org.alice.ide.ast.NodeUtilities.createDoTogether() );
+public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTemplate implements UbiquitousStatementTemplate {
+	private javax.swing.JToolTip toolTip;
+	public DeclareLocalTemplate() {
+		super( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
+	}
+	
+	@Override
+	public java.awt.Component getSubject() {
+		return this.toolTip.getComponent( 0 );
+	}
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		if( this.toolTip != null ) {
+			//pass
+		} else {
+			UbiquitousStatementUtilities.adorn( this, org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
+		}
+	}
+	
+	public javax.swing.JComponent getJComponent() {
+		return this;
+	}
+	public void setToolTip( javax.swing.JToolTip toolTip ) {
+		this.toolTip = toolTip;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return null;
+	public javax.swing.JToolTip createToolTip() {
+		return this.toolTip;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createDoTogether();
+	public void createStatement( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
+		taskObserver.handleCancelation();
 	}
 }

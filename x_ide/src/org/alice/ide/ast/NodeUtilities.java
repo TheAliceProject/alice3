@@ -36,6 +36,17 @@ public class NodeUtilities {
 		return new edu.cmu.cs.dennisc.alice.ast.Comment();
 	}
 	
+	public static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createVariableDeclarationStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.Expression initializerExpression ) {
+		return new edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement(
+				variable,
+				initializerExpression 
+		);
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createIncompleteVariableDeclarationStatement() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
+		return createVariableDeclarationStatement( new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( "???", type ), new org.alice.ide.ast.EmptyExpression( type ) );
+	}
+
 	public static edu.cmu.cs.dennisc.alice.ast.CountLoop createCountLoop( edu.cmu.cs.dennisc.alice.ast.Expression count ) {
 		return new edu.cmu.cs.dennisc.alice.ast.CountLoop(
 				new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( null, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ),
@@ -55,6 +66,31 @@ public class NodeUtilities {
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.WhileLoop createIncompleteWhileLoop() {
 		return createWhileLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ConditionalStatement createConditionalStatement( edu.cmu.cs.dennisc.alice.ast.Expression conditional ) {
+		return new edu.cmu.cs.dennisc.alice.ast.ConditionalStatement(
+				new edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair[] {
+						new edu.cmu.cs.dennisc.alice.ast.BooleanExpressionBodyPair( 
+								conditional, 
+								new edu.cmu.cs.dennisc.alice.ast.BlockStatement()
+						)
+				}, 
+				new edu.cmu.cs.dennisc.alice.ast.BlockStatement() 
+		);
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ConditionalStatement createIncompleteConditionalStatement() {
+		return createConditionalStatement( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createForEachInArrayLoop( edu.cmu.cs.dennisc.alice.ast.Expression arrayExpression ) {
+		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
+		return new edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop(
+				variable,
+				arrayExpression, 
+				new edu.cmu.cs.dennisc.alice.ast.BlockStatement() 
+		);
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createIncompleteForEachInArrayLoop() {
+		return createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) ) );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();

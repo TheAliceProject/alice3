@@ -22,12 +22,10 @@
  */
 package org.alice.ide.memberseditor.templates;
 
-import org.alice.ide.templates.StatementTemplate;
-
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionStatementTemplate extends StatementTemplate {
+public abstract class ExpressionStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression;
 	private java.awt.Component incompleteExpressionPane;
 	public ExpressionStatementTemplate( edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression ) {

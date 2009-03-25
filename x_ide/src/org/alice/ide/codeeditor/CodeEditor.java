@@ -408,6 +408,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 		pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		pane.add( bodyPane );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( pane );
+		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 		scrollPane.setBorder( null );
 		scrollPane.setOpaque( false );
 		this.add( scrollPane );

@@ -22,20 +22,26 @@
  */
 package org.alice.ide.ubiquitouspane;
 
-import org.alice.ide.ubiquitouspane.templates.CountLoopTemplate;
-import org.alice.ide.ubiquitouspane.templates.DoInOrderTemplate;
-import org.alice.ide.ubiquitouspane.templates.DoTogetherTemplate;
+import org.alice.ide.ubiquitouspane.templates.*;
 
 /**
  * @author Dennis Cosgrove
  */
 public class UbiquitousPane extends swing.LineAxisPane {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
-	private DoTogetherTemplate doTogetherTemplate = new DoTogetherTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
+	private WhileLoopTemplate whileLoopTemplate = new WhileLoopTemplate();
+	private ForEachInArrayLoopTemplate forEachInArrayLoopTemplate = new ForEachInArrayLoopTemplate();
+	private ConditionalStatementTemplate conditionalStatementTemplate = new ConditionalStatementTemplate();
+	private DoTogetherTemplate doTogetherTemplate = new DoTogetherTemplate();
+	private DeclareLocalTemplate declareLocalTemplate = new DeclareLocalTemplate();
 	public UbiquitousPane() {
 		this.add( this.doInOrderTemplate );
 		this.add( this.countLoopTemplate );
+		this.add( this.whileLoopTemplate );
+		this.add( this.forEachInArrayLoopTemplate );
+		this.add( this.conditionalStatementTemplate );
 		this.add( this.doTogetherTemplate );
+		this.add( this.declareLocalTemplate );
 	}
 }

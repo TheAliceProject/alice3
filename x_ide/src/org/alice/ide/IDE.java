@@ -52,6 +52,33 @@ public abstract class IDE extends zoot.ZFrame {
 	//		return this;
 	//	}
 
+	private Factory factory = this.createFactory();
+
+	public Factory getFactory() {
+		return this.factory;
+	}
+	protected Factory createFactory() {
+		return new Factory();
+	}
+
+	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
+
+	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
+		return this.templatesFactory;
+	}
+	protected org.alice.ide.memberseditor.Factory createTemplatesFactory() {
+		return new org.alice.ide.memberseditor.Factory();
+	}
+
+	private org.alice.ide.codeeditor.Factory codeFactory = this.createCodeFactory();
+
+	public org.alice.ide.codeeditor.Factory getCodeFactory() {
+		return this.codeFactory;
+	}
+	protected org.alice.ide.codeeditor.Factory createCodeFactory() {
+		return new org.alice.ide.codeeditor.Factory();
+	}
+
 	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
 	private org.alice.ide.sceneeditor.SceneEditor sceneEditor = this.createSceneEditor();
 	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor();
@@ -232,33 +259,6 @@ public abstract class IDE extends zoot.ZFrame {
 
 	public boolean isJava() {
 		return getLocale().getVariant().equals( "java" );
-	}
-
-	private Factory factory = this.createFactory();
-
-	public Factory getFactory() {
-		return this.factory;
-	}
-	protected Factory createFactory() {
-		return new Factory();
-	}
-
-	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
-
-	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
-		return this.templatesFactory;
-	}
-	protected org.alice.ide.memberseditor.Factory createTemplatesFactory() {
-		return new org.alice.ide.memberseditor.Factory();
-	}
-
-	private org.alice.ide.codeeditor.Factory codeFactory = this.createCodeFactory();
-
-	public org.alice.ide.codeeditor.Factory getCodeFactory() {
-		return this.codeFactory;
-	}
-	protected org.alice.ide.codeeditor.Factory createCodeFactory() {
-		return new org.alice.ide.codeeditor.Factory();
 	}
 
 	private java.io.File applicationDirectory = null;

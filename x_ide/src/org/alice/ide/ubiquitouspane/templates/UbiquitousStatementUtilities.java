@@ -25,16 +25,21 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogetherTemplate extends CascadingUbiquitousStatementTemplate {
-	public DoTogetherTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class, org.alice.ide.ast.NodeUtilities.createDoTogether() );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return null;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createDoTogether();
+public class UbiquitousStatementUtilities {
+	public static void adorn( UbiquitousStatementTemplate ubiquitousStatementTemplate, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
+		javax.swing.JComponent component = ubiquitousStatementTemplate.getJComponent();
+		Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls = ubiquitousStatementTemplate.getStatementCls();
+		String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates" );
+		//text = "label: " + text;
+		zoot.ZLabel label = new zoot.ZLabel();
+		label.setText( text );
+		component.add( label );
+		component.setToolTipText( "" );
+		
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		javax.swing.JComponent incompleteStatementPane = ide.getTemplatesFactory().createStatementPane( incompleteStatement );
+		ide.addToConcealedBin( incompleteStatementPane );
+
+		ubiquitousStatementTemplate.setToolTip( new zoot.ZToolTip( incompleteStatementPane ) );
 	}
 }

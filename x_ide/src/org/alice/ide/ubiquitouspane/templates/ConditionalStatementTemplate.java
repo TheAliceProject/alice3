@@ -25,16 +25,18 @@ package org.alice.ide.ubiquitouspane.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class DoTogetherTemplate extends CascadingUbiquitousStatementTemplate {
-	public DoTogetherTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.DoTogether.class, org.alice.ide.ast.NodeUtilities.createDoTogether() );
+public class ConditionalStatementTemplate extends CascadingUbiquitousStatementTemplate {
+	public ConditionalStatementTemplate() {
+		super( edu.cmu.cs.dennisc.alice.ast.ConditionalStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteConditionalStatement() );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return null;
+		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE };
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createDoTogether();
+		edu.cmu.cs.dennisc.alice.ast.ConditionalStatement rv = org.alice.ide.ast.NodeUtilities.createIncompleteConditionalStatement();
+		rv.booleanExpressionBodyPairs.get( 0 ).expression.setValue( expressions[ 0 ] );
+		return rv;
 	}
 }

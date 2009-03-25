@@ -40,6 +40,10 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 		this.setBackground( getIDE().getColorForASTClass( this.statementCls ) );
 	}
+	
+	public Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementCls() {
+		return this.statementCls;
+	}
 	private static final int INSET = 4;
 	@Override
 	protected int getInsetTop() {

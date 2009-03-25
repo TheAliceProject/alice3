@@ -22,17 +22,6 @@
  */
 package org.alice.ide.templates;
 
-//class StatementTemplateDragAndDropOperation extends org.alice.ide.operations.DefaultDragAndDropOperation {
-////	@Override
-////	protected zoot.ActionOperation createDropOperation() {
-////		return new zoot.AbstractActionOperation() {
-////			public void perform( zoot.ActionContext actionContext ) {
-////				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
-////			}
-////		};
-////	}
-//}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -41,6 +30,7 @@ public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeS
 		super( cls );
 	}
 
+	public abstract void createStatement( final zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
 	protected zoot.DragAndDropOperation dragAndDropOperation;
 
 	@Override
@@ -71,51 +61,5 @@ public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeS
 	public void removeNotify() {
 		super.removeNotify();
 		this.setPopupOperation( null );
-	}
-
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
-	public final void createStatement( final zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType[] types = getBlankExpressionTypes();
-		if( types != null && types.length > 0 ) {
-			class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression[], Object > {
-				@Override
-				protected edu.cmu.cs.dennisc.alice.ast.Expression[] doInBackground() throws java.lang.Exception {
-					edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > expressionsTaskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
-						@Override
-						public void run() {
-							getIDE().promptUserForExpressions( types, e.getEndingMouseEvent(), this );
-						}
-					};
-					return expressionsTaskObserver.getResult();
-				}
-				@Override
-				protected void done() {
-					try {
-						edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = this.get();
-						if( expressions != null ) {
-							taskObserver.handleCompletion( createStatement( expressions ) );
-						} else {
-							taskObserver.handleCancelation();
-						}
-					} catch( InterruptedException ie ) {
-						taskObserver.handleCancelation();
-						throw new RuntimeException( ie );
-					} catch( java.util.concurrent.ExecutionException ee ) {
-						taskObserver.handleCancelation();
-						throw new RuntimeException( ee );
-					}
-				}
-			}
-			Worker worker = new Worker();
-			worker.execute();
-		} else {
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					edu.cmu.cs.dennisc.alice.ast.Statement statement = createStatement();
-					taskObserver.handleCompletion( statement );
-				}
-			} );
-		}
 	}
 }
