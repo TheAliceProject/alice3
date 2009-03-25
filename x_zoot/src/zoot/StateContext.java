@@ -25,8 +25,7 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface StateContext extends Context {
-	public boolean isPreviousValueValid();
-	public Object getPreviousValue();
-	public Object getNextValue();
+public interface StateContext< E > extends Context {
+	public E getPreviousValue();
+	public E getNextValue();
 }

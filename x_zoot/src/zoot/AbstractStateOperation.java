@@ -25,12 +25,24 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface StateOperation<E> extends Operation {
-	public javax.swing.Action getActionForConfiguringSwing();
-	public void performStateChange( StateContext stateContext );
-
-//	public E getState();
-//	public void setState( E state );
-//	public void addStateChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeStateChangeListener( javax.swing.event.ChangeListener l );
+public abstract class AbstractStateOperation<E> extends AbstractOperation implements StateOperation< E > {
+	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			AbstractStateOperation.this.handleActionPerformed( e );
+		}
+	};
+	public javax.swing.Action getActionForConfiguringSwing() {
+		return this.actionForConfiguringSwingComponents;
+	}
+	protected void putValue( String key, Object value ) {
+		this.actionForConfiguringSwingComponents.putValue( key, value );
+	}
+	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
+		//todo: make cance worthwhile?
+		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_FUTILE, null, null );
+	}
+//	public void addStateChangeListener( javax.swing.event.ChangeListener l ) {
+//	}
+//	public void removeStateChangeListener( javax.swing.event.ChangeListener l ) {
+//	}
 }

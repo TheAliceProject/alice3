@@ -25,12 +25,13 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface StateOperation<E> extends Operation {
-	public javax.swing.Action getActionForConfiguringSwing();
-	public void performStateChange( StateContext stateContext );
-
-//	public E getState();
-//	public void setState( E state );
-//	public void addStateChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeStateChangeListener( javax.swing.event.ChangeListener l );
+public class ZCheckBox extends javax.swing.JCheckBox {
+	private StateOperation< Boolean > stateOperation;
+	public ZCheckBox( StateOperation< Boolean > stateOperation ) {
+		this.stateOperation = stateOperation;
+		this.setAction( this.stateOperation.getActionForConfiguringSwing() );
+	}
+	protected StateOperation< Boolean > getStateOperation() {
+		return this.stateOperation;
+	}
 }

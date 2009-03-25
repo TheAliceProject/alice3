@@ -90,6 +90,22 @@ class MyActionContext extends AbstractContext implements ActionContext {
 	}
 }
 
+class MyStateContext<E> extends AbstractContext implements StateContext {
+	private E previousValue;
+	private E nextValue;
+	public MyStateContext( java.util.EventObject e, boolean isCancelWorthwhile, E previousValue, E nextValue ) {
+		super( e, isCancelWorthwhile );
+		this.previousValue = previousValue;
+		this.nextValue = nextValue;
+	}
+	public E getPreviousValue() {
+		return this.previousValue;
+	}
+	public E getNextValue() {
+		return this.nextValue;
+	}
+}
+
 class MySingleSelectionContext<E> extends AbstractContext implements ItemSelectionContext< E > {
 	private E previousSelection;
 	private E nextSelection;
@@ -152,6 +168,13 @@ public class ZManager {
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
 
+	public static StateContext performIfAppropriate( StateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousValue, Object nextValue ) {
+		assert stateOperation != null;
+		StateContext rv = new MyStateContext( e, isCancelWorthwhile, previousValue, nextValue );
+		stateOperation.performStateChange( rv );
+		return rv;
+	}
+	
 	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
 		ActionContext rv = new MyActionContext( e, isCancelWorthwhile );
