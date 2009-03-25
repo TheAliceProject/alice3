@@ -156,6 +156,7 @@ public class ZManager {
 	//		}
 	//	}
 
+
 	private static boolean isDragInProgress = false;
 
 	public static boolean isDragInProgress() {

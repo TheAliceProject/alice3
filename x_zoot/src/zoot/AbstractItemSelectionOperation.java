@@ -25,21 +25,7 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractItemSelectionOperation<E> extends AbstractOperation implements ItemSelectionOperation< E >, javax.swing.event.TreeSelectionListener {
-	private static Object getLastPathComponent( javax.swing.tree.TreePath path ) { 
-		if( path != null ) {
-			return path.getLastPathComponent();
-		} else {
-			return null;
-		}
-	}
-	public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
-		javax.swing.tree.TreePath prevTreePath = e.getOldLeadSelectionPath();
-		javax.swing.tree.TreePath nextTreePath = e.getNewLeadSelectionPath();
-		Object prevSelection = getLastPathComponent( prevTreePath );
-		Object nextSelection = getLastPathComponent( nextTreePath );
-		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_FUTILE, prevSelection, nextSelection );
-	}
+public abstract class AbstractItemSelectionOperation<E> extends AbstractOperation implements ItemSelectionOperation< E > {
 	public javax.swing.Action getActionForConfiguringSwing( final int index ) {
 		class Action extends javax.swing.AbstractAction {
 			public Action() {

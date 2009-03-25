@@ -78,9 +78,9 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 class Tree extends zoot.ZTree {
 	private TreeModel model = new TreeModel( null ); 
 	public Tree() {
+		super( new org.alice.ide.operations.ast.FieldSelectionOperation() );
 		this.setModel( this.model );
 		this.setCellRenderer( new TreeCellRenderer() );
-		this.addTreeSelectionListener( new org.alice.ide.operations.ast.FieldSelectionOperation() );
 	}
 }
 

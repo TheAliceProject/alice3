@@ -26,19 +26,27 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public class ZTree<E> extends javax.swing.JTree {
-//	private SingleSelectionOperation< E > selectionOperation;
-//
-//	public ZTree() {
-//		this.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
-//			public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
-//				if( ZTree.this.selectionOperation != null ) {
-//					boolean isCancelWorthwhile = false;
-//					ZManager.performIfAppropriate( ZTree.this.selectionOperation, e, isCancelWorthwhile );
-//				}
-//			}
-//		} );
-//	}
-//	public void setSelectionOperation( SingleSelectionOperation< E > selectionOperation ) {
-//		this.selectionOperation = selectionOperation;
-//	}
+	private static Object getLastPathComponent( javax.swing.tree.TreePath path ) { 
+		if( path != null ) {
+			return path.getLastPathComponent();
+		} else {
+			return null;
+		}
+	}
+	private ItemSelectionOperation< E > itemSelectionOperation;
+	public ZTree( ItemSelectionOperation< E > itemSelectionOperation ) {
+		this.itemSelectionOperation = itemSelectionOperation;
+		this.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
+			public void valueChanged( javax.swing.event.TreeSelectionEvent e ) {
+				javax.swing.tree.TreePath prevTreePath = e.getOldLeadSelectionPath();
+				javax.swing.tree.TreePath nextTreePath = e.getNewLeadSelectionPath();
+				Object prevSelection = getLastPathComponent( prevTreePath );
+				Object nextSelection = getLastPathComponent( nextTreePath );
+				ZManager.performIfAppropriate( ZTree.this.itemSelectionOperation, e, ZManager.CANCEL_IS_FUTILE, prevSelection, nextSelection );
+			}
+		} );
+	}
+	protected ItemSelectionOperation< E > getItemSelectionOperation() {
+		return this.itemSelectionOperation;
+	}
 }

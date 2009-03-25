@@ -22,14 +22,6 @@
  */
 package org.alice.ide;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowEvent;
-import java.io.File;
-
-import edu.cmu.cs.dennisc.alice.ast.Node;
-import edu.cmu.cs.dennisc.alice.ast.Statement;
-import edu.cmu.cs.dennisc.task.TaskObserver;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -88,6 +80,20 @@ public abstract class IDE extends zoot.ZFrame {
 
 	//	private zoot.ZLabel feedback = new zoot.ZLabel();
 
+	
+	private javax.swing.ComboBoxModel typeComboBoxModel;
+	public javax.swing.ComboBoxModel getTypeComboBoxModel() {
+		if( this.typeComboBoxModel != null ) {
+			//pass
+		} else {
+			java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >();
+			types.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
+			types.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
+			types.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
+			typeComboBoxModel = new javax.swing.DefaultComboBoxModel( types );
+		}
+		return this.typeComboBoxModel;
+	}
 	protected org.alice.ide.sceneeditor.SceneEditor createSceneEditor() {
 		return new org.alice.ide.sceneeditor.SceneEditor();
 	}
