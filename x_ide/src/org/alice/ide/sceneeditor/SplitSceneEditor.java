@@ -98,14 +98,15 @@ class LookingGlass extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	}
 }
 
+//todo
 /**
  * @author Dennis Cosgrove
  */
-public class SceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener {
+public class SplitSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener {
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private Tree tree = new Tree();
 	private LookingGlass lookingGlass = new LookingGlass();
-	public SceneEditor() {
+	public SplitSceneEditor() {
 		this.root.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
 		this.root.setRightComponent( this.lookingGlass );
 		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );

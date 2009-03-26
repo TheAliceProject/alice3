@@ -71,6 +71,12 @@ public class CreateLocalPane extends CreateTypedDeclarationWithInitializerPane<e
 			@Override
 			protected void promptForLicenseAgreements() {
 			}
+			@Override
+			protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
+				return new org.alice.ide.sceneeditor.AbstractSceneEditor() {
+					
+				};
+			}
 		};
 		CreateLocalPane createLocalPane = new CreateLocalPane( null );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( createLocalPane.showInJDialog( ide ) );

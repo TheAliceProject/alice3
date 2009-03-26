@@ -15,6 +15,10 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
+	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
+		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();
+	}
+	@Override
 	protected zoot.ActionOperation createAboutOperation() {
 		return new org.alice.stageide.operations.help.AboutOperation();
 	}

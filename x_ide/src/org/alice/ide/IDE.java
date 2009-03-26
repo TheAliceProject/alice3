@@ -72,7 +72,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
-	private org.alice.ide.sceneeditor.SceneEditor sceneEditor = this.createSceneEditor();
+	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = this.createSceneEditor();
 	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor();
 	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
 	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane = this.createEditorsTabbedPane();
@@ -94,9 +94,7 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 		return this.typeComboBoxModel;
 	}
-	protected org.alice.ide.sceneeditor.SceneEditor createSceneEditor() {
-		return new org.alice.ide.sceneeditor.SceneEditor();
-	}
+	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
 	protected org.alice.ide.listenerseditor.ListenersEditor createListenersEditor() {
 		return new org.alice.ide.listenerseditor.ListenersEditor();
 	}
@@ -1304,6 +1302,12 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 			@Override
 			protected void promptForLicenseAgreements() {
+			}
+			@Override
+			protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
+				return new org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor() {
+					
+				};
 			}
 		};
 		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );

@@ -76,7 +76,8 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 
 	public ControlsForOverlayPane() {
 		this.setNorthWestComponent( this.rootFieldTile );
-		org.alice.ide.IDE.getSingleton().addIDEListener( this.ideAdapter );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addIDEListener" );
+		//org.alice.ide.IDE.getSingleton().addIDEListener( this.ideAdapter );
 		this.setOpaque( false );
 	}
 	public ControlsForOverlayPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
