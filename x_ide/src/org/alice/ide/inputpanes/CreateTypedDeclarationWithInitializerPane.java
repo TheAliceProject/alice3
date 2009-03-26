@@ -54,7 +54,6 @@ class ItemInitializerPane extends AbstractInitializerPane {
 		this.setBackground( java.awt.Color.GREEN );
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 		org.alice.ide.ast.ExpressionPropertyPane expressionPropertyPane = new org.alice.ide.ast.ExpressionPropertyPane( getIDE().getCodeFactory(), this.bogusNode.expression, true );
-		expressionPropertyPane.setAlignmentX( 0.0f );
 		this.add( expressionPropertyPane );
 	}
 	@Override
