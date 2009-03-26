@@ -26,4 +26,8 @@ package org.alice.ide.inputpanes;
  * @author Dennis Cosgrove
  */
 public abstract class CreateDeclarationPane<E> extends NameInputPane<E> {
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+	}
 }

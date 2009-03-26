@@ -132,9 +132,7 @@ class SuggestiveTextArea extends javax.swing.JTextArea {
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		java.awt.Dimension rv = super.getPreferredSize();
-		rv.height = Math.max( rv.height, 64 );
-		return rv;
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 64 );
 	}
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {

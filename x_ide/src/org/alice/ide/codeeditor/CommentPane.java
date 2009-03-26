@@ -116,9 +116,7 @@ class CommentLine extends javax.swing.JTextArea {
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		java.awt.Dimension rv = super.getPreferredSize();
-		rv.width = Math.max( rv.width, 256 );
-		return rv;
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 256 );
 	}
 }
 

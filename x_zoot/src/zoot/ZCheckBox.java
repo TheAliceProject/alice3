@@ -30,6 +30,26 @@ public class ZCheckBox extends javax.swing.JCheckBox {
 	public ZCheckBox( StateOperation< Boolean > stateOperation ) {
 		this.stateOperation = stateOperation;
 		this.setAction( this.stateOperation.getActionForConfiguringSwing() );
+//		this.addChangeListener( new javax.swing.event.ChangeListener() {
+//			public void stateChanged(javax.swing.event.ChangeEvent e) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+//				//ZManager.performIfAppropriate( ZCheckBox.this.stateOperation, e, ZManager.CANCEL_IS_FUTILE, ZCheckBox.this.stateOperation.getState(), ZCheckBox.this.isSelected() );
+//			}
+//		} );
+		this.addItemListener( new java.awt.event.ItemListener() {
+			public void itemStateChanged( java.awt.event.ItemEvent e ) {
+				boolean prev;
+				boolean next;
+				if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+					prev = false;
+					next = true;
+				} else {
+					prev = true;
+					next = false;
+				}
+				ZManager.performIfAppropriate( ZCheckBox.this.stateOperation, e, ZManager.CANCEL_IS_FUTILE, prev, next );
+			}
+		} );
 	}
 	protected StateOperation< Boolean > getStateOperation() {
 		return this.stateOperation;

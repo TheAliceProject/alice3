@@ -33,16 +33,16 @@ public class CreateLocalPane extends CreateTypedDeclarationWithInitializerPane<e
 	@Override
 	protected boolean isNameAcceptable( String name ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isNameAcceptable", name );
-		return false;
+		return true;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
 		String name = this.getNameText();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getValueType();
-		boolean isContant = this.isConstant();
+		boolean isConstant = this.isConstant();
 		edu.cmu.cs.dennisc.alice.ast.Expression initializer = this.getInitializer();
 		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement rv;
-		if( isContant ) {
+		if( isConstant ) {
 			edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant = new edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice(
 					name,
 					type

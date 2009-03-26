@@ -20,17 +20,26 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package edu.cmu.cs.dennisc.awt;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface StateOperation<E> extends Operation {
-	public javax.swing.Action getActionForConfiguringSwing();
-	public void performStateChange( StateContext<E> stateContext );
-	public E getState();
-	//public void setState( E state );
-	
-//	public void addStateChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeStateChangeListener( javax.swing.event.ChangeListener l );
+public class DimensionUtilties {
+	public static java.awt.Dimension constrainToMinimumWidth( java.awt.Dimension rv, int minimumWidth ) {
+		rv.width = Math.max( rv.width, minimumWidth );
+		return rv;
+	}
+	public static java.awt.Dimension constrainToMinimumHeight( java.awt.Dimension rv, int minimumHeight ) {
+		rv.height = Math.max( rv.height, minimumHeight );
+		return rv;
+	}
+	public static java.awt.Dimension constrainToMaximumWidth( java.awt.Dimension rv, int maximumWidth ) {
+		rv.width = Math.min( rv.width, maximumWidth );
+		return rv;
+	}
+	public static java.awt.Dimension constrainToMaximumHeight( java.awt.Dimension rv, int maximumHeight ) {
+		rv.height = Math.min( rv.height, maximumHeight );
+		return rv;
+	}
 }

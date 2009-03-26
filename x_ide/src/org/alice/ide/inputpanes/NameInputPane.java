@@ -40,6 +40,10 @@ abstract class NameInputPane<E> extends RowsInputPane< E > {
 	public String getNameText() {
 		return this.textField.getText();
 	}
+	
+	protected void handleNameTextChange( String nameText ) {
+		updateOKButton();
+	}
 
 	@Override
 	protected java.util.List< java.awt.Component[] > createComponentRows() {
@@ -48,11 +52,22 @@ abstract class NameInputPane<E> extends RowsInputPane< E > {
 		label.setText( "name:" );
 		this.textField = new javax.swing.JTextField( 10 );
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
+				javax.swing.text.Document document = e.getDocument();
+				try {
+					handleNameTextChange( document.getText( 0, document.getLength() ) );
+				} catch( javax.swing.text.BadLocationException ble ) {
+					throw new RuntimeException( ble );
+				}
+			}
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+				this.handleUpdate( e );
 			}
 			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+				this.handleUpdate( e );
 			}
 			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+				this.handleUpdate( e );
 			}
 		} );
 //		javax.swing.text.Keymap keymap = this.textField.getKeymap();

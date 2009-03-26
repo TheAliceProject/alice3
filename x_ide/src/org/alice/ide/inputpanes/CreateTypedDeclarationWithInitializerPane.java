@@ -22,16 +22,46 @@
  */
 package org.alice.ide.inputpanes;
 
+class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
+	edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expression = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
+		@Override
+		public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
+		}
+	};
+	
+	public edu.cmu.cs.dennisc.alice.ast.Expression createCopyOfExpressionValue() {
+		return (edu.cmu.cs.dennisc.alice.ast.Expression)org.alice.ide.IDE.getSingleton().createCopy( this.expression.getValue() );
+	}
+}
+
 abstract class AbstractInitializerPane extends javax.swing.JPanel {
 	public abstract edu.cmu.cs.dennisc.alice.ast.Expression getInitializer();
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
 }
+
+
 class ItemInitializerPane extends AbstractInitializerPane {
+	private BogusNode bogusNode = new BogusNode();
+	public ItemInitializerPane() {
+		this.setBackground( java.awt.Color.GREEN );
+		this.add( new org.alice.ide.ast.ExpressionPropertyPane( getIDE().getCodeFactory(), this.bogusNode.expression, true ) );
+	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-		return null;
+		return this.bogusNode.createCopyOfExpressionValue();
 	}
 }
 class ArrayInitializerPane extends AbstractInitializerPane {
+	public ArrayInitializerPane() {
+		this.setBackground( java.awt.Color.BLUE );
+	}
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 240 );
+	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
 		return null;
@@ -43,7 +73,7 @@ class InitializerPane extends javax.swing.JPanel {
 	private static final String ARRAY_KEY = "ARRAY_KEY";
 	private java.awt.CardLayout cardLayout = new java.awt.CardLayout();
 	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane();
-	private ItemInitializerPane arrayInitializerPane = new ItemInitializerPane();
+	private ArrayInitializerPane arrayInitializerPane = new ArrayInitializerPane();
 	public InitializerPane() {
 		this.setLayout( this.cardLayout );
 		this.add( this.itemInitializerPane, ITEM_KEY );
@@ -57,29 +87,25 @@ class InitializerPane extends javax.swing.JPanel {
 			return this.arrayInitializerPane;
 		}
 	}
-	
+	public void handleIsArrayChange( boolean isArray ) {
+		String key;
+		if( isArray ) {
+			key = ARRAY_KEY;
+		} else {
+			key = ITEM_KEY;
+		}
+		this.cardLayout.show( this, key );
+	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
 		return getCurrentCard().getInitializer();
 	}
-}
-
-class IsConstantStateOperation extends zoot.AbstractStateOperation< Boolean > {
-	public IsConstantStateOperation() {
-		this.putValue( javax.swing.Action.NAME, "is constant" );
-	}
-//	public Boolean getState() {
-//		return null;
-//	}
-//	public void setState( Boolean state ) {
-//	}
-	public void performStateChange( zoot.StateContext stateContext ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( stateContext );
-	}
-}
-
-class IsConstantCheckBox extends zoot.ZCheckBox {
-	public IsConstantCheckBox() {
-		super( new IsConstantStateOperation() );
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		if( this.itemInitializerPane.isVisible() ) {
+			return this.itemInitializerPane.getPreferredSize();
+		} else {
+			return this.arrayInitializerPane.getPreferredSize();
+		}
 	}
 }
 
@@ -88,12 +114,31 @@ class IsConstantCheckBox extends zoot.ZCheckBox {
  */
 public abstract class CreateTypedDeclarationWithInitializerPane<E> extends CreateTypedDeclarationPane<E> {
 	private InitializerPane initializerPane;
-	private IsConstantCheckBox isConstantCheckBox;
+	class IsConstantStateOperation extends zoot.AbstractStateOperation< Boolean > {
+		public IsConstantStateOperation() {
+			super( false );
+			this.putValue( javax.swing.Action.NAME, "is constant" );
+		}
+		@Override
+		protected void handleStateChange( zoot.StateContext< Boolean > stateContext ) {
+			CreateTypedDeclarationWithInitializerPane.this.handleIsConstantChange( stateContext.getNextValue() );
+		}
+	}
+	@Override
+	protected void handleIsArrayChange( boolean isArray ) {
+		super.handleIsArrayChange( isArray );
+		this.initializerPane.handleIsArrayChange( isArray );
+		this.updateSizeIfNecessary();
+	}
+	private zoot.ZCheckBox isConstantCheckBox;
+	protected void handleIsConstantChange( boolean isArray ) {
+	}
+
 	@Override
 	protected java.util.List< java.awt.Component[] > createComponentRows() {
 		zoot.ZLabel label = new zoot.ZLabel( "initializer:" );
 		this.initializerPane = new InitializerPane();
-		this.isConstantCheckBox = new IsConstantCheckBox();
+		this.isConstantCheckBox = new zoot.ZCheckBox( new IsConstantStateOperation() );
 		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
 		rv.add( new java.awt.Component[] { label, this.initializerPane } );
 		rv.add( new java.awt.Component[] { new javax.swing.JLabel(), this.isConstantCheckBox } );

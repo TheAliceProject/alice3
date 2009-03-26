@@ -26,9 +26,20 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractStateOperation<E> extends AbstractOperation implements StateOperation< E > {
+	private E state;
+	public AbstractStateOperation( E initialState ) {
+		this.state = initialState;
+	}
+	public E getState() {
+		return this.state;
+	}
+	protected abstract void handleStateChange( zoot.StateContext< E > stateContext );
+	public final void performStateChange( zoot.StateContext< E > stateContext ) {
+		this.state = stateContext.getNextValue();
+		this.handleStateChange( stateContext );
+	}
 	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			AbstractStateOperation.this.handleActionPerformed( e );
 		}
 	};
 	public javax.swing.Action getActionForConfiguringSwing() {
@@ -36,10 +47,6 @@ public abstract class AbstractStateOperation<E> extends AbstractOperation implem
 	}
 	protected void putValue( String key, Object value ) {
 		this.actionForConfiguringSwingComponents.putValue( key, value );
-	}
-	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		//todo: make cance worthwhile?
-		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_FUTILE, null, null );
 	}
 //	public void addStateChangeListener( javax.swing.event.ChangeListener l ) {
 //	}

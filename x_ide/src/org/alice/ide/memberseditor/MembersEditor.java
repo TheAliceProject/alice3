@@ -152,10 +152,6 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
 		this.add( this.tabbedPane );
 	}
-	//	@Override
-	//	public java.awt.Dimension getPreferredSize() {
-	//		return new java.awt.Dimension( 100, 100 );
-	//	}
 
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
 	}
