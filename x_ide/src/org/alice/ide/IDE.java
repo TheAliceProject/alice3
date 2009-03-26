@@ -868,6 +868,10 @@ public abstract class IDE extends zoot.ZFrame {
 			javax.swing.JOptionPane.showMessageDialog( this, sb.toString(), "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE );
 		}
 	}
+	
+	public void revert() {
+		this.loadProjectFrom( this.getFile() );
+	}
 
 	protected void fireMethodFocusChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
 		synchronized( this.ideListeners ) {
