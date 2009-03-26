@@ -43,21 +43,19 @@ public class CreateLocalPane extends CreateTypedDeclarationWithInitializerPane<e
 		edu.cmu.cs.dennisc.alice.ast.Expression initializer = this.getInitializer();
 		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement rv;
 		if( isConstant ) {
-			edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant = new edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice(
-					name,
-					type
-			);
 			rv = new edu.cmu.cs.dennisc.alice.ast.ConstantDeclarationStatement(
-					constant,
+					new edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice(
+							name,
+							type
+					),
 					initializer
 			);
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice(
-					name,
-					type
-			);
 			rv = new edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement(
-					variable,
+					new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice(
+							name,
+							type
+					),
 					initializer
 			);
 		}
