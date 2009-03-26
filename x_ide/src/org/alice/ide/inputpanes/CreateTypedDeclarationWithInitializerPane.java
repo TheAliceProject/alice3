@@ -40,7 +40,7 @@ class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 	}
 }
 
-abstract class AbstractInitializerPane extends javax.swing.JPanel {
+abstract class AbstractInitializerPane extends swing.Pane {
 	public abstract edu.cmu.cs.dennisc.alice.ast.Expression getInitializer();
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
@@ -52,7 +52,10 @@ class ItemInitializerPane extends AbstractInitializerPane {
 	private BogusNode bogusNode = new BogusNode();
 	public ItemInitializerPane() {
 		this.setBackground( java.awt.Color.GREEN );
-		this.add( new org.alice.ide.ast.ExpressionPropertyPane( getIDE().getCodeFactory(), this.bogusNode.expression, true ) );
+		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+		org.alice.ide.ast.ExpressionPropertyPane expressionPropertyPane = new org.alice.ide.ast.ExpressionPropertyPane( getIDE().getCodeFactory(), this.bogusNode.expression, true );
+		expressionPropertyPane.setAlignmentX( 0.0f );
+		this.add( expressionPropertyPane );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
@@ -62,6 +65,7 @@ class ItemInitializerPane extends AbstractInitializerPane {
 class ArrayInitializerPane extends AbstractInitializerPane {
 	public ArrayInitializerPane() {
 		this.setBackground( java.awt.Color.BLUE );
+		this.setOpaque( true );
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
