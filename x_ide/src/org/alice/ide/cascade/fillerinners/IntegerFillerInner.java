@@ -48,9 +48,9 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		blank.addFillIn( new cascade.MenuFillIn( "Random" ) {
 			@Override
 			protected void addChildrenToBlank(cascade.Blank blank) {
-				//addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFrom0UpToButExcludingN", java.lang.Integer.class );
-				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToButExcludingB", java.lang.Integer.class, java.lang.Integer.class );
-				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToAndIncludingB", java.lang.Integer.class, java.lang.Integer.class );
+				//addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFrom0ToNExclusive", java.lang.Integer.class );
+				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBExclusive", java.lang.Integer.class, java.lang.Integer.class );
+				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBInclusive", java.lang.Integer.class, java.lang.Integer.class );
 			}
 		} );
 		blank.addSeparator();

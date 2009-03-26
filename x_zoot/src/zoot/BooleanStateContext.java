@@ -25,7 +25,7 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface StateContext< E > extends Context {
-	public E getPreviousValue();
-	public E getNextValue();
+public interface BooleanStateContext extends Context {
+	public Boolean getPreviousValue();
+	public Boolean getNextValue();
 }

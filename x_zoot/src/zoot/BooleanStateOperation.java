@@ -25,14 +25,8 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZCheckBoxMenuItem extends javax.swing.JCheckBoxMenuItem {
-	private BooleanStateOperation operation;
-	public ZCheckBoxMenuItem( BooleanStateOperation operation ) {
-		this.operation = operation;
-		this.setAction( this.operation.getActionForConfiguringSwing() );
-		this.setModel( this.operation.getButtonModelForConfiguringSwing() );
-	}
-	protected BooleanStateOperation getStateOperation() {
-		return this.operation;
-	}
+public interface BooleanStateOperation extends Operation {
+	public javax.swing.Action getActionForConfiguringSwing();
+	public javax.swing.ButtonModel getButtonModelForConfiguringSwing();
+	public void performStateChange( BooleanStateContext booleanStateContext );
 }

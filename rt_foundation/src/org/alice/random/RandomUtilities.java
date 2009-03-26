@@ -36,16 +36,16 @@ public class RandomUtilities {
 	public static void setSeed( long seed ) {
 		s_random.setSeed( seed );
 	}
-	public static Integer nextIntegerFrom0ToButExcludingN( Integer n ) {
+	public static Integer nextIntegerFrom0ToNExclusive( Integer n ) {
 		return s_random.nextInt( n );
 	}
-	public static Integer nextIntegerFromAToButExcludingB( Integer a, Integer b ) {
+	public static Integer nextIntegerFromAToBExclusive( Integer a, Integer b ) {
 		assert a < b;
 		int n = b-a;
-		return a + nextIntegerFrom0ToButExcludingN( n );
+		return a + nextIntegerFrom0ToNExclusive( n );
 	}
-	public static Integer nextIntegerFromAToAndIncludingB( Integer a, Integer b ) {
-		return nextIntegerFromAToButExcludingB( a, b+1 );
+	public static Integer nextIntegerFromAToBInclusive( Integer a, Integer b ) {
+		return nextIntegerFromAToBExclusive( a, b+1 );
 	}
 	public static boolean nextBoolean() {
 		return s_random.nextBoolean();

@@ -122,14 +122,14 @@ class InitializerPane extends javax.swing.JPanel {
  */
 public abstract class CreateTypedDeclarationWithInitializerPane<E> extends CreateTypedDeclarationPane<E> {
 	private InitializerPane initializerPane;
-	class IsConstantStateOperation extends zoot.AbstractStateOperation< Boolean > {
+	class IsConstantStateOperation extends zoot.AbstractBooleanStateOperation {
 		public IsConstantStateOperation() {
 			super( false );
+			//this.getButtonModelForConfiguringSwing().setActionCommand( "is constant" );
 			this.putValue( javax.swing.Action.NAME, "is constant" );
 		}
-		@Override
-		protected void handleStateChange( zoot.StateContext< Boolean > stateContext ) {
-			CreateTypedDeclarationWithInitializerPane.this.handleIsConstantChange( stateContext.getNextValue() );
+		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+			CreateTypedDeclarationWithInitializerPane.this.handleIsConstantChange( booleanStateContext.getNextValue() );
 		}
 	}
 	@Override

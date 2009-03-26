@@ -112,6 +112,33 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
 
+	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
+	
+	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
+		return this.isSceneEditorExpandedOperation;
+	}
+	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
+		if( isSceneEditorExpanded ) {
+			this.root.setLeftComponent( this.left );
+			this.left.setTopComponent( this.sceneEditor );
+			this.left.setBottomComponent( null );
+			this.root.setRightComponent( null );
+		} else {
+			this.root.setLeftComponent( this.left );
+			this.root.setRightComponent( this.right );
+			this.root.setDividerLocation( 400 );
+			this.left.setDividerLocation( 300 );
+			this.left.setTopComponent( this.sceneEditor );
+			this.left.setBottomComponent( this.membersEditor );
+			this.right.setTopComponent( this.ubiquitousPane );
+			this.right.setBottomComponent( this.editorsTabbedPane );
+		}
+	}
+	
+	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+	private javax.swing.JSplitPane left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
+	private javax.swing.JSplitPane right = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
+	
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -125,10 +152,12 @@ public abstract class IDE extends zoot.ZFrame {
 		this.addIDEListener( this.listenersEditor );
 		this.addIDEListener( this.editorsTabbedPane );
 
-		Perspective perspective = new Perspective();
-		perspective.activate( this.sceneEditor, this.membersEditor, this.ubiquitousPane, this.listenersEditor, this.editorsTabbedPane );
+		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
+		this.add( this.root );
+
+		this.setSceneEditorExpanded( false );
 		this.getContentPane().setLayout( new java.awt.BorderLayout() );
-		this.getContentPane().add( perspective, java.awt.BorderLayout.CENTER );
+		this.getContentPane().add( this.root, java.awt.BorderLayout.CENTER );
 		//		this.getContentPane().add( this.feedback, java.awt.BorderLayout.SOUTH );
 		this.getContentPane().add( this.concealedBin, java.awt.BorderLayout.EAST );
 
@@ -218,22 +247,17 @@ public abstract class IDE extends zoot.ZFrame {
 		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, this.runOperation );
 
 		class LocaleItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< java.util.Locale > {
-			private javax.swing.ListModel listModel = new javax.swing.AbstractListModel() {
-				private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "complex" ), new java.util.Locale( "en", "US", "java" ) };
-
-				public Object getElementAt( int index ) {
-					return this.candidates[ index ];
-				}
-				public int getSize() {
-					return this.candidates.length;
-				}
-			};
-
 			public LocaleItemSelectionOperation() {
-				//this.getSingleSelectionModelForConfiguringSwingComponents().setSelectedIndex( 0 );
-			}
-			public javax.swing.ListModel getListModel() {
-				return this.listModel;
+				super( new javax.swing.AbstractListModel() {
+					private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "complex" ), new java.util.Locale( "en", "US", "java" ) };
+
+					public Object getElementAt( int index ) {
+						return this.candidates[ index ];
+					}
+					public int getSize() {
+						return this.candidates.length;
+					}
+				}, 0 );
 			}
 			//			public String getText( java.util.Locale locale ) {
 			//				return locale.getDisplayName();
@@ -242,7 +266,17 @@ public abstract class IDE extends zoot.ZFrame {
 			//				return null;
 			//			}
 
+			@Override
+			protected String getNameFor( int index, java.util.Locale locale ) {
+				if( locale != null ) {
+					return locale.getDisplayName();
+				} else {
+					return "null";
+				}
+			}
+
 			public void performSelectionChange( zoot.ItemSelectionContext< java.util.Locale > context ) {
+				IDE.this.setLocale( context.getNextSelection() );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "performSelectionChange:", context );
 				context.cancel();
 			}
@@ -250,7 +284,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
 
-		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, new org.alice.ide.operations.window.ToggleExpandContractSceneEditorOperation() );
+		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation );
 		windowMenu.add( setLocaleMenu );
 		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), this.createAboutOperation() );
 		rv.add( fileMenu );
@@ -1150,9 +1184,6 @@ public abstract class IDE extends zoot.ZFrame {
 		this.currentDropReceptorComponent = null;
 	}
 
-	public void toggleExpandContactOfSceneEditor() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: toggleExpandContactOfSceneEditor" );
-	}
 
 	public String getInstanceTextForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, boolean isOutOfScopeTagDesired ) {
 		String text;

@@ -31,7 +31,6 @@ public abstract class AbstractActionOperation extends AbstractOperation implemen
 			AbstractActionOperation.this.handleActionPerformed( e );
 		}
 	};
-
 	public javax.swing.Action getActionForConfiguringSwing() {
 		return this.actionForConfiguringSwingComponents;
 	}

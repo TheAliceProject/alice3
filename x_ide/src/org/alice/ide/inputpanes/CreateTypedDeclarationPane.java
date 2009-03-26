@@ -68,15 +68,14 @@ class TypeComboBox extends zoot.ZComboBox {
  * @author Dennis Cosgrove
  */
 public abstract class CreateTypedDeclarationPane<E> extends CreateDeclarationPane<E> {
-	class IsArrayStateOperation extends zoot.AbstractStateOperation< Boolean > {
+	class IsArrayStateOperation extends zoot.AbstractBooleanStateOperation {
 		public IsArrayStateOperation() {
 			super( false );
+			//this.getButtonModelForConfiguringSwing().setActionCommand( "is array" );
 			this.putValue( javax.swing.Action.NAME, "is array" );
 		}
-		@Override
-		protected void handleStateChange( zoot.StateContext< Boolean > stateContext ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( stateContext );
-			handleIsArrayChange( stateContext.getNextValue() );
+		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+			handleIsArrayChange( booleanStateContext.getNextValue() );
 		}
 	}
 	protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {

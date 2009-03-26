@@ -26,19 +26,61 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractItemSelectionOperation<E> extends AbstractOperation implements ItemSelectionOperation< E > {
-	public javax.swing.Action getActionForConfiguringSwing( final int index ) {
-		class Action extends javax.swing.AbstractAction {
-			public Action() {
-				this.putValue( NAME, "[" + index + "]" );
+	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+	private javax.swing.Action[] actions;
+	private javax.swing.ButtonModel[] buttonModels;
+	private javax.swing.ListModel listModel;
+	public AbstractItemSelectionOperation( javax.swing.ListModel listModel, int initialItemSelectionIndex ) {
+		this.listModel = listModel;
+		int N = this.listModel.getSize();
+		this.actions = new javax.swing.Action[ N ];
+		this.buttonModels = new javax.swing.ButtonModel[ N ];
+		for( int i=0; i<N; i++ ) {
+			class Action extends javax.swing.AbstractAction {
+				public Action( int i, E item ) {
+					this.putValue( NAME, getNameFor( i, item ) );
+				}
+				public void actionPerformed( java.awt.event.ActionEvent e ) {
+				}
 			}
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
-			}
+			final E item = (E)this.listModel.getElementAt( i );
+			this.actions[ i ] = new Action( i, item ); 
+			this.buttonModels[ i ] = new javax.swing.JToggleButton.ToggleButtonModel();
+			this.buttonModels[ i ].setGroup( buttonGroup );
+			this.buttonModels[ i ].addItemListener( new java.awt.event.ItemListener() {
+				public void itemStateChanged( java.awt.event.ItemEvent e ) {
+					if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+						ZManager.performIfAppropriate( AbstractItemSelectionOperation.this, e, ZManager.CANCEL_IS_FUTILE, null, item );
+					}
+				}
+			} );
 		}
-		return new Action();
+		if( initialItemSelectionIndex >= 0 ) {
+			this.buttonModels[ initialItemSelectionIndex ].setSelected( true );
+		}
+		
+		
 	}
-	public void addSelectionChangeListener( javax.swing.event.ChangeListener l ) {
+	
+	protected String getNameFor( int index, E item ) {
+		if( item != null ) {
+			return item.toString();
+		} else {
+			return "null";
+		}
 	}
-	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l ) {
+	
+	public javax.swing.Action getActionForConfiguringSwing( int index ) {
+		return this.actions[ index ];
 	}
+	public javax.swing.ButtonModel getButtonModelForConfiguringSwing( int index ) {
+		return this.buttonModels[ index ];
+	}
+	public javax.swing.ListModel getListModel() {
+		return this.listModel;
+	}
+//	public void addSelectionChangeListener( javax.swing.event.ChangeListener l ) {
+//	}
+//	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l ) {
+//	}
 }

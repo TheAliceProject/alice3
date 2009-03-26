@@ -25,31 +25,39 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractStateOperation<E> extends AbstractOperation implements StateOperation< E > {
-	private E state;
-	public AbstractStateOperation( E initialState ) {
-		this.state = initialState;
-	}
-	public E getState() {
-		return this.state;
-	}
-	protected abstract void handleStateChange( zoot.StateContext< E > stateContext );
-	public final void performStateChange( zoot.StateContext< E > stateContext ) {
-		this.state = stateContext.getNextValue();
-		this.handleStateChange( stateContext );
-	}
+public abstract class AbstractBooleanStateOperation extends AbstractOperation implements BooleanStateOperation {
+	private javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
+	public AbstractBooleanStateOperation( Boolean initialState ) {
+		this.buttonModel.setSelected( initialState );
+		this.buttonModel.addItemListener( new java.awt.event.ItemListener() {
+			public void itemStateChanged( java.awt.event.ItemEvent e ) {
+				boolean prev;
+				boolean next;
+				if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+					prev = false;
+					next = true;
+				} else {
+					prev = true;
+					next = false;
+				}
+				ZManager.performIfAppropriate( AbstractBooleanStateOperation.this, e, ZManager.CANCEL_IS_FUTILE, prev, next );
+			}
+		} );
+	}
+	public Boolean getState() {
+		return this.buttonModel.isSelected();
+	}
+	public javax.swing.ButtonModel getButtonModelForConfiguringSwing() {
+		return this.buttonModel;
+	}
 	public javax.swing.Action getActionForConfiguringSwing() {
 		return this.actionForConfiguringSwingComponents;
 	}
 	protected void putValue( String key, Object value ) {
 		this.actionForConfiguringSwingComponents.putValue( key, value );
 	}
-//	public void addStateChangeListener( javax.swing.event.ChangeListener l ) {
-//	}
-//	public void removeStateChangeListener( javax.swing.event.ChangeListener l ) {
-//	}
 }

@@ -90,18 +90,35 @@ class MyActionContext extends AbstractContext implements ActionContext {
 	}
 }
 
-class MyStateContext<E> extends AbstractContext implements StateContext {
-	private E previousValue;
-	private E nextValue;
-	public MyStateContext( java.util.EventObject e, boolean isCancelWorthwhile, E previousValue, E nextValue ) {
+//class MyStateContext<E> extends AbstractContext implements StateContext {
+//	private E previousValue;
+//	private E nextValue;
+//	public MyStateContext( java.util.EventObject e, boolean isCancelWorthwhile, E previousValue, E nextValue ) {
+//		super( e, isCancelWorthwhile );
+//		this.previousValue = previousValue;
+//		this.nextValue = nextValue;
+//	}
+//	public E getPreviousValue() {
+//		return this.previousValue;
+//	}
+//	public E getNextValue() {
+//		return this.nextValue;
+//	}
+//}
+
+class MyBooleanStateContext extends AbstractContext implements BooleanStateContext {
+	private Boolean previousValue;
+	private Boolean nextValue;
+
+	public MyBooleanStateContext( java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
 		super( e, isCancelWorthwhile );
 		this.previousValue = previousValue;
 		this.nextValue = nextValue;
 	}
-	public E getPreviousValue() {
+	public Boolean getPreviousValue() {
 		return this.previousValue;
 	}
-	public E getNextValue() {
+	public Boolean getNextValue() {
 		return this.nextValue;
 	}
 }
@@ -169,9 +186,9 @@ public class ZManager {
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
 
-	public static StateContext performIfAppropriate( StateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousValue, Object nextValue ) {
+	public static BooleanStateContext performIfAppropriate( BooleanStateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
 		assert stateOperation != null;
-		StateContext rv = new MyStateContext( e, isCancelWorthwhile, previousValue, nextValue );
+		BooleanStateContext rv = new MyBooleanStateContext( e, isCancelWorthwhile, previousValue, nextValue );
 		stateOperation.performStateChange( rv );
 		return rv;
 	}
@@ -214,14 +231,16 @@ public class ZManager {
 		javax.swing.JMenu rv = new javax.swing.JMenu( name );
 		rv.setMnemonic( mnemonic );
 		//rv.getPopupMenu().setSelectionModel( singleSelectionOperation.getSingleSelectionModelForConfiguringSwingComponents() );
-		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
+//		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
 		javax.swing.ListModel listModel = itemSelectionOperation.getListModel();
 		int N = listModel.getSize();
 		for( int i = 0; i < N; i++ ) {
 			javax.swing.Action actionI = itemSelectionOperation.getActionForConfiguringSwing( i );
-			javax.swing.JRadioButtonMenuItem item = new javax.swing.JRadioButtonMenuItem( actionI );
-			item.getModel().setGroup( group );
-			rv.add( item );
+			javax.swing.ButtonModel buttonModelI = itemSelectionOperation.getButtonModelForConfiguringSwing( i );
+			javax.swing.JRadioButtonMenuItem itemI = new javax.swing.JRadioButtonMenuItem( actionI );
+			itemI.setModel( buttonModelI );
+//			buttonModelI.setGroup( group );
+			rv.add( itemI );
 		}
 		//todo?
 		//setHeavyWeight( rv.getPopupMenu() );
@@ -230,14 +249,22 @@ public class ZManager {
 
 	public static ActionOperation MENU_SEPARATOR = null;
 
-	public static javax.swing.JMenu createMenu( String name, int mnemonic, ActionOperation... actionOperations ) {
+	public static javax.swing.JMenu createMenu( String name, int mnemonic, Operation... operations ) {
 		javax.swing.JMenu rv = new javax.swing.JMenu( name );
 		rv.setMnemonic( mnemonic );
-		for( ActionOperation actionOperation : actionOperations ) {
-			if( actionOperation == MENU_SEPARATOR ) {
+		for( Operation operation : operations ) {
+			if( operation == MENU_SEPARATOR ) {
 				rv.addSeparator();
 			} else {
-				rv.add( new ZMenuItem( actionOperation ) );
+				if( operation instanceof ActionOperation ) {
+					ActionOperation actionOperation = (ActionOperation)operation;
+					rv.add( new ZMenuItem( actionOperation ) );
+				} else if( operation instanceof BooleanStateOperation ) {
+					BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
+					rv.add( new ZCheckBoxMenuItem( booleanStateOperation ) );
+				} else {
+					//todo
+				}
 			}
 		}
 		//todo?

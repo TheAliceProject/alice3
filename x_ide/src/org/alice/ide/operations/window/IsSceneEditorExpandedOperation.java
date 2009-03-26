@@ -20,17 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.ide.operations.window;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface StateOperation<E> extends Operation {
-	public javax.swing.Action getActionForConfiguringSwing();
-	public void performStateChange( StateContext<E> stateContext );
-	public E getState();
-	//public void setState( E state );
-	
-//	public void addStateChangeListener( javax.swing.event.ChangeListener l );
-//	public void removeStateChangeListener( javax.swing.event.ChangeListener l );
+public class IsSceneEditorExpandedOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+	public IsSceneEditorExpandedOperation( Boolean initialValue ) {
+		super( initialValue );
+		this.putValue( javax.swing.Action.NAME, "Is Scene Editor Expanded" );
+		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
+	}
+	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+		this.getIDE().setSceneEditorExpanded( booleanStateContext.getNextValue() );
+		booleanStateContext.commit();
+	}
 }

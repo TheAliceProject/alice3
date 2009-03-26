@@ -78,9 +78,23 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 class Tree extends zoot.ZTree {
 	private TreeModel model = new TreeModel( null ); 
 	public Tree() {
-		super( new org.alice.ide.operations.ast.FieldSelectionOperation() );
+		super( new org.alice.ide.operations.ast.FieldSelectionOperation( new javax.swing.DefaultListModel(), -1 ) );
 		this.setModel( this.model );
 		this.setCellRenderer( new TreeCellRenderer() );
+	}
+}
+
+class LookingGlass extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
+	private zoot.ZCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
+	public LookingGlass() {
+		this.setBackground( java.awt.Color.RED );
+	}
+	@Override
+	public void addNotify() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		this.isSceneEditorExpandedCheckBox = new zoot.ZCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
+		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
+		super.addNotify();
 	}
 }
 
@@ -90,9 +104,8 @@ class Tree extends zoot.ZTree {
 public class SceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener {
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private Tree tree = new Tree();
-	private javax.swing.JPanel lookingGlass = new javax.swing.JPanel();
+	private LookingGlass lookingGlass = new LookingGlass();
 	public SceneEditor() {
-		this.lookingGlass.setBackground( java.awt.Color.RED );
 		this.root.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
 		this.root.setRightComponent( this.lookingGlass );
 		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
