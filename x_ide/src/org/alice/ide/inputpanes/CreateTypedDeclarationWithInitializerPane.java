@@ -23,13 +23,18 @@
 package org.alice.ide.inputpanes;
 
 class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expression = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 		@Override
 		public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
+			return BogusNode.this.expressionType;
 		}
 	};
 	
+	public void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType ) {
+		this.expressionType = expressionType;
+		this.expression.setValue( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() );
+	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression createCopyOfExpressionValue() {
 		return (edu.cmu.cs.dennisc.alice.ast.Expression)org.alice.ide.IDE.getSingleton().createCopy( this.expression.getValue() );
 	}

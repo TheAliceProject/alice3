@@ -79,6 +79,8 @@ public abstract class CreateTypedDeclarationPane<E> extends CreateDeclarationPan
 			handleIsArrayChange( stateContext.getNextValue() );
 		}
 	}
+	protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	}
 	protected void handleIsArrayChange( boolean isArray ) {
 		updateOKButton();
 	}

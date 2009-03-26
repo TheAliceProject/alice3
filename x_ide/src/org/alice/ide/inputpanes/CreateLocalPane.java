@@ -76,5 +76,6 @@ public class CreateLocalPane extends CreateTypedDeclarationWithInitializerPane<e
 		};
 		CreateLocalPane createLocalPane = new CreateLocalPane( null );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( createLocalPane.showInJDialog( ide ) );
+		System.exit( 0 );
 	}
 }
