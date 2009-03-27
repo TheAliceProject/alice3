@@ -22,8 +22,45 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.ast.ExpressionPropertyPane;
-
+class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
+	public DeleteStatementActionOperation( org.alice.ide.ast.AbstractStatementPane abstractStatementPane ) {
+		this.putValue( javax.swing.Action.NAME, "delete" );
+		this.statement = abstractStatementPane.getStatement();
+		this.property = abstractStatementPane.getOwner();
+	}
+	public void perform( zoot.ActionContext actionContext ) {
+		int i = this.property.indexOf( this.statement );
+		if( i >= 0 ) {
+			this.property.remove( i );
+		} else {
+			throw new RuntimeException();
+		}
+	}
+}
+class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		super( statement.isEnabled.getValue() );
+		this.statement = statement;
+		this.putValue( javax.swing.Action.NAME, "is enabled" );
+		//update();
+	}
+//	private void update() {
+//		String text;
+//		if( this.statement.isEnabled.getValue() ) {
+//			text = "disable";
+//		} else {
+//			text = "enable";
+//		}
+//		this.putValue( javax.swing.Action.NAME, text );
+//	}
+	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+		this.statement.isEnabled.setValue( booleanStateContext.getNextValue() );
+//		this.update();
+	}
+}
 
 /**
  * @author Dennis Cosgrove
@@ -35,12 +72,22 @@ public class Factory extends org.alice.ide.ast.Factory {
 	}
 	@Override
 	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return new ExpressionPropertyPane( this, expressionProperty, true );
+		return new org.alice.ide.ast.ExpressionPropertyPane( this, expressionProperty, true );
 	}
 	@Override
 	public org.alice.ide.ast.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.ast.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
 		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
+		abstractStatementPane.setPopupOperation( new zoot.DefaultPopupActionOperation( this.createPopupOperations( abstractStatementPane ) ) );
 		return abstractStatementPane;
 	}
+	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv, org.alice.ide.ast.AbstractStatementPane abstractStatementPane ) {
+		rv.add( new DeleteStatementActionOperation( abstractStatementPane ) );
+		rv.add( new StatementEnabledStateOperation( abstractStatementPane.getStatement() ) );
+		return rv;
+	}
+	private java.util.List< zoot.Operation > createPopupOperations( org.alice.ide.ast.AbstractStatementPane abstractStatementPane ) {
+		return this.updatePopupOperations( new java.util.LinkedList< zoot.Operation >(), abstractStatementPane );
+	}
+	
 }

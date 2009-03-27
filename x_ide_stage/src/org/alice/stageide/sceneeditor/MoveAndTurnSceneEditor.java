@@ -49,10 +49,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		new Thread() {
 			@Override
 			public void run() {
-				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
-				while( onscreenLookingGlass == null ) {
-					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+				while( true ) {
 					onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
+					if( onscreenLookingGlass != null ) {
+						break;
+					} else {
+						edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+					}
 				}
 				MoveAndTurnSceneEditor.this.cardPane = new edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass );
 				MoveAndTurnSceneEditor.this.add( MoveAndTurnSceneEditor.this.cardPane, java.awt.BorderLayout.CENTER );

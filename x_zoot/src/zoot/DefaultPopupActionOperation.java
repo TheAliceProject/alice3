@@ -20,20 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.gallerybrowser;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FauxGalleryBrowser extends AbstractGalleryBrowser {
-	public FauxGalleryBrowser() {
-		super( new java.io.File( "/" ) );
+public class DefaultPopupActionOperation extends zoot.AbstractActionOperation {
+	private java.util.List< zoot.Operation > operations;
+	public DefaultPopupActionOperation( java.util.List< zoot.Operation > operations ) {
+		this.operations = operations;
 	}
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 256 );
-	}
-	@Override
-	protected void handleFileActivation( java.io.File file ) {
+	public void perform( zoot.ActionContext actionContext ) {
+		javax.swing.JPopupMenu popupMenu = zoot.ZManager.createPopupMenu( this.operations );
+		java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( actionContext.getEvent(), java.awt.event.MouseEvent.class );
+		popupMenu.show( me.getComponent(), me.getX(), me.getY() );
 	}
 }

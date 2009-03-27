@@ -249,6 +249,18 @@ public class ZManager {
 
 	public static ActionOperation MENU_SEPARATOR = null;
 
+	private static javax.swing.JMenuItem createMenuItem( Operation operation ) {
+		if( operation instanceof ActionOperation ) {
+			ActionOperation actionOperation = (ActionOperation)operation;
+			return new ZMenuItem( actionOperation );
+		} else if( operation instanceof BooleanStateOperation ) {
+			BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
+			return new ZCheckBoxMenuItem( booleanStateOperation );
+		} else {
+			throw new RuntimeException();
+		}
+	}
+	
 	public static javax.swing.JMenu createMenu( String name, int mnemonic, Operation... operations ) {
 		javax.swing.JMenu rv = new javax.swing.JMenu( name );
 		rv.setMnemonic( mnemonic );
@@ -256,42 +268,34 @@ public class ZManager {
 			if( operation == MENU_SEPARATOR ) {
 				rv.addSeparator();
 			} else {
-				if( operation instanceof ActionOperation ) {
-					ActionOperation actionOperation = (ActionOperation)operation;
-					rv.add( new ZMenuItem( actionOperation ) );
-				} else if( operation instanceof BooleanStateOperation ) {
-					BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
-					rv.add( new ZCheckBoxMenuItem( booleanStateOperation ) );
-				} else {
-					//todo
-				}
+				rv.add( createMenuItem( operation ) );
 			}
 		}
 		//todo?
 		//setHeavyWeight( rv.getPopupMenu() );
 		return rv;
 	}
-	public static javax.swing.JMenu createMenu( String name, int mnemonic, java.util.Collection< ActionOperation > actionOperations ) {
-		ActionOperation[] array = new ActionOperation[ actionOperations.size() ];
-		actionOperations.toArray( array );
+	public static javax.swing.JMenu createMenu( String name, int mnemonic, java.util.Collection< ? extends Operation > operations ) {
+		Operation[] array = new Operation[ operations.size() ];
+		operations.toArray( array );
 		return createMenu( name, mnemonic, array );
 	}
-	public static javax.swing.JPopupMenu createPopupMenu( ActionOperation... actionOperations ) {
+	public static javax.swing.JPopupMenu createPopupMenu( Operation... operations ) {
 		javax.swing.JPopupMenu rv = new javax.swing.JPopupMenu();
-		for( ActionOperation actionOperation : actionOperations ) {
-			if( actionOperation == MENU_SEPARATOR ) {
+		for( Operation operation : operations ) {
+			if( operation == MENU_SEPARATOR ) {
 				rv.addSeparator();
 			} else {
-				rv.add( new ZMenuItem( actionOperation ) );
+				rv.add( createMenuItem( operation ) );
 			}
 		}
 		//todo?
 		//setHeavyWeight( rv );
 		return rv;
 	}
-	public static javax.swing.JPopupMenu createPopupMenu( java.util.Collection< ActionOperation > actionOperations ) {
-		ActionOperation[] array = new ActionOperation[ actionOperations.size() ];
-		actionOperations.toArray( array );
+	public static javax.swing.JPopupMenu createPopupMenu( java.util.Collection< ? extends Operation > operations ) {
+		Operation[] array = new Operation[ operations.size() ];
+		operations.toArray( array );
 		return createPopupMenu( array );
 	}
 }
