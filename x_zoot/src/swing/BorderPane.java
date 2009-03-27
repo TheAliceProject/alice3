@@ -27,6 +27,9 @@ package swing;
  */
 public class BorderPane extends Pane {
 	public BorderPane() {
-		setLayout( new java.awt.BorderLayout() );
+		this( 0, 0 );
+	}
+	public BorderPane( int hgap, int vgap ) {
+		setLayout( new java.awt.BorderLayout( hgap, vgap ) );
 	}
 }

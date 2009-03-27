@@ -22,6 +22,46 @@
  */
 package org.alice.ide.gallerybrowser;
 
+class SingleOrDoubleClickListUI extends javax.swing.plaf.basic.BasicListUI {
+	@Override
+	protected javax.swing.event.MouseInputListener createMouseInputListener() {
+		return new javax.swing.event.MouseInputListener() {
+			private long tPrevious = System.currentTimeMillis();
+			public void mouseClicked( java.awt.event.MouseEvent e ) {
+			}
+			public void mouseEntered( java.awt.event.MouseEvent e ) {
+			}
+			public void mouseExited( java.awt.event.MouseEvent e ) {
+			}
+			public void mousePressed( java.awt.event.MouseEvent e ) {
+				long tCurrent = e.getWhen();
+				long tDelta = tCurrent - tPrevious;
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( tDelta );
+				if( /*e.getClickCount() == 1 &&*/ tDelta > 400 ) {
+					int row = SingleOrDoubleClickListUI.this.locationToIndex( list, e.getPoint() );
+	                list.setValueIsAdjusting( true );
+	                list.setSelectionInterval(row, row);
+					tPrevious = tCurrent;
+				}
+			}
+			public void mouseReleased( java.awt.event.MouseEvent e ) {
+                list.setValueIsAdjusting( false );
+			}
+			public void mouseMoved( java.awt.event.MouseEvent e ) {
+			}
+			public void mouseDragged( java.awt.event.MouseEvent e ) {
+			}
+		};
+	}
+}
+
+class SingleOrDoubleClickList extends javax.swing.JList {
+	@Override
+	public void updateUI() {
+		this.setUI( new SingleOrDoubleClickListUI() );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -65,30 +105,49 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPa
 			return rv;
 		}
 	}
-	private javax.swing.JList list = new javax.swing.JList();
+	private SingleOrDoubleClickList list = new SingleOrDoubleClickList();
 	private ThumbnailSnapshotListCellRenderer thumbnailSnapshotListCellRenderer = new ThumbnailSnapshotListCellRenderer();
 
 	public ThumbnailsPane() {
 		this.list.setCellRenderer( this.thumbnailSnapshotListCellRenderer );
 		this.list.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
 		this.list.setVisibleRowCount( 1 );
-		this.list.addMouseListener( new java.awt.event.MouseListener() {
-			public void mouseClicked( java.awt.event.MouseEvent e ) {
-				if( e.getClickCount() == 2 ) {
+//		this.list.addMouseListener( new java.awt.event.MouseListener() {
+//			private long tPrevious = System.currentTimeMillis();
+//			public void mouseClicked( java.awt.event.MouseEvent e ) {
+//				long tCurrent = e.getWhen();
+//				long tDelta = tCurrent - tPrevious;
+//				//edu.cmu.cs.dennisc.print.PrintUtilities.println( tDelta );
+//				if( /*e.getClickCount() == 1 &&*/ tDelta > 400 ) {
+//					java.io.File file = (java.io.File)ThumbnailsPane.this.list.getSelectedValue();
+//					if( file != null ) {
+//						ThumbnailsPane.this.handleFileActivation( file );
+//					}
+//					tPrevious = tCurrent;
+//				}
+//				ThumbnailsPane.this.list.clearSelection();
+//			}
+//			public void mouseEntered( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseExited( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mousePressed( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseReleased( java.awt.event.MouseEvent e ) {
+//			}
+//		} );
+		this.list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getValueIsAdjusting() );
+				if( e.getValueIsAdjusting() ) {
+					//pass
+				} else {
 					java.io.File file = (java.io.File)ThumbnailsPane.this.list.getSelectedValue();
 					if( file != null ) {
 						ThumbnailsPane.this.handleFileActivation( file );
+						ThumbnailsPane.this.list.clearSelection();
 					}
-					ThumbnailsPane.this.list.clearSelection();
 				}
-			}
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
-			}
-			public void mouseExited( java.awt.event.MouseEvent e ) {
-			}
-			public void mousePressed( java.awt.event.MouseEvent e ) {
-			}
-			public void mouseReleased( java.awt.event.MouseEvent e ) {
 			}
 		} );
 		this.list.addKeyListener( new java.awt.event.KeyListener() {

@@ -27,7 +27,7 @@ package org.alice.ide.gallerybrowser;
  */
 public class FauxGalleryBrowser extends AbstractGalleryBrowser {
 	public FauxGalleryBrowser() {
-		super( new java.io.File( "/" ) );
+		this.initialize( new java.io.File( "/" ) );
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {

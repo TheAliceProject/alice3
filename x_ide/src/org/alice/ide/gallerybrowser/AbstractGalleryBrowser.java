@@ -27,9 +27,11 @@ package org.alice.ide.gallerybrowser;
  */
 public abstract class AbstractGalleryBrowser extends org.alice.ide.Viewer< Void > {
 	private AssetsPane assetsPane;
-	public AbstractGalleryBrowser( java.io.File rootDirectory ) {
+	protected void initialize( java.io.File rootDirectory ) {
 		this.assetsPane = this.createAssetsPane( rootDirectory );
-		this.setLayout( new java.awt.BorderLayout() );
+		final int GAP = 4;
+		this.setLayout( new java.awt.BorderLayout( GAP*2, 0 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( GAP, GAP, GAP, GAP ) );
 		this.add( this.assetsPane, java.awt.BorderLayout.CENTER );
 	}
 	protected AssetsPane createAssetsPane( java.io.File rootDirectory ) {

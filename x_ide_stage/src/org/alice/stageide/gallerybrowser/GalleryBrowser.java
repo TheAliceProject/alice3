@@ -70,8 +70,8 @@ class CreateTextbookInstance extends CreateInstanceFromFileActionOperation {
 public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGalleryBrowser {
 	private java.util.Map<String, String> map;
 	public GalleryBrowser( java.io.File thumbnailRoot, java.util.Map<String, String> map ) {
-		super( thumbnailRoot );
 		this.map = map;
+		this.initialize( thumbnailRoot );
 		zoot.ZButton createPersonButton = new zoot.ZButton( new CreatePersonActionOperation() );
 		zoot.ZButton createTextButton = new zoot.ZButton( new CreateTextActionOperation() );
 		zoot.ZButton createMyInstanceButton = new zoot.ZButton( new CreateMyInstance() );
@@ -83,9 +83,11 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		fromFilePane.add( createTextbookInstanceButton );
 		
 		swing.BorderPane buttonPane = new swing.BorderPane();
-		buttonPane.add( createTextButton, java.awt.BorderLayout.NORTH );
-		buttonPane.add( fromFilePane, java.awt.BorderLayout.SOUTH );
+		buttonPane.add( fromFilePane, java.awt.BorderLayout.NORTH );
+		buttonPane.add( createTextButton, java.awt.BorderLayout.SOUTH );
 		
+		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.setBackground( new java.awt.Color( 220, 220, 255 ) );
 		this.add( createPersonButton, java.awt.BorderLayout.WEST );
 		this.add( buttonPane, java.awt.BorderLayout.EAST );
 	}
@@ -100,6 +102,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	}
 	@Override
 	protected void handleFileActivation( java.io.File file ) {
+		javax.swing.JOptionPane.showMessageDialog( null, "imagine adding " + file.getName() + " now." );
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
