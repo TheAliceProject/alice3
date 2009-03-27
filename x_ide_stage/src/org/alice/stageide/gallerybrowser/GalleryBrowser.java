@@ -22,8 +22,6 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-import org.alice.stageide.personeditor.PersonEditor;
-
 class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public CreatePersonActionOperation() {
 		this.putValue( javax.swing.Action.NAME, "Create Person..." );
@@ -40,7 +38,7 @@ class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActio
 			}
 		};
 		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
-		frame.getContentPane().add( new PersonEditor() );
+		frame.getContentPane().add( new org.alice.stageide.personeditor.PersonEditor() );
 		frame.setVisible( true );
 	}
 }
