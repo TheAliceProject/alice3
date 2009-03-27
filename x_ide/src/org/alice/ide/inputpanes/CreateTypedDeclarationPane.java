@@ -25,24 +25,7 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-abstract class ListCellRenderer<E> extends javax.swing.DefaultListCellRenderer {
-	protected abstract javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus );
-	@Override
-	public final java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-		java.awt.Component rv = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-		if( rv instanceof javax.swing.JLabel ) {
-			getListCellRendererComponent( (javax.swing.JLabel)rv, list, (E)value, index, isSelected, cellHasFocus );
-		} else {
-			//todo
-		}
-		return rv;
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-class TypeListCellRenderer extends ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+class TypeListCellRenderer extends swing.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( value != null ) {

@@ -22,11 +22,26 @@
  */
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.stageide.personeditor.PersonEditor;
+
 class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public CreatePersonActionOperation() {
 		this.putValue( javax.swing.Action.NAME, "Create Person..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo CreatePersonActionOperation" );
+		zoot.ZFrame frame = new zoot.ZFrame() {
+			@Override
+			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+			}
+			@Override
+			protected void handleQuit( java.util.EventObject e ) {
+				this.dispose();
+			}
+		};
+		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
+		frame.getContentPane().add( new PersonEditor() );
+		frame.setVisible( true );
 	}
 }
 class CreateTextActionOperation extends org.alice.ide.operations.AbstractActionOperation {
