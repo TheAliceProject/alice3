@@ -20,17 +20,10 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.stageide.operations.ast;
+package org.alice.ide.sceneeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PlaceOnTopOfGroundActionOperation extends AbstractFieldTileActionOperation {
-	public PlaceOnTopOfGroundActionOperation( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
-		super( fieldTile );
-		this.putValue( javax.swing.Action.NAME, "place on top of ground" );
-	}
-	public void perform( zoot.ActionContext actionContext ) {
-		this.getMoveAndTurnSceneEditor().placeOnTopOfGround( this.getFieldTile().getField() );
-	}
+public class FauxSceneEditor extends AbstractInstantiatingSceneEditor {
 }

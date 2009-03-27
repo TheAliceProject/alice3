@@ -22,17 +22,15 @@
  */
 package org.alice.stageide.operations.ast;
 
-import org.alice.ide.operations.ast.AbstractFieldActionOperation;
-
 /**
  * @author Dennis Cosgrove
  */
-public class OrientToUprightActionOperation extends AbstractFieldActionOperation {
-	public OrientToUprightActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( field );
+public class OrientToUprightActionOperation extends AbstractFieldTileActionOperation {
+	public OrientToUprightActionOperation( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
+		super( fieldTile );
+		this.putValue( javax.swing.Action.NAME, "orient to upright" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "OrientToUprightActionOperation" );
-		//getIDE().getSceneEditor().orientToUpright( this.getField() );
+		this.getMoveAndTurnSceneEditor().orientToUpright( this.getFieldTile().getField() );
 	}
 }

@@ -69,6 +69,10 @@ public abstract class ZControl extends ZComponent {
 			if( this.leftButtonPressOperation != null ) {
 				ZManager.performIfAppropriate( this.leftButtonPressOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
 			}
+		} else if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
+			if( this.popupOperation != null ) {
+				ZManager.performIfAppropriate( this.popupOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
+			}
 		}
 	}
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {

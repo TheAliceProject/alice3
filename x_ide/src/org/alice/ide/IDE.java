@@ -73,6 +73,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = this.createSceneEditor();
+	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser = this.createGalleryBrowser();
 	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor();
 	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
 	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane = this.createEditorsTabbedPane();
@@ -95,6 +96,7 @@ public abstract class IDE extends zoot.ZFrame {
 		return this.typeComboBoxModel;
 	}
 	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
+	protected abstract org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser();
 	protected org.alice.ide.listenerseditor.ListenersEditor createListenersEditor() {
 		return new org.alice.ide.listenerseditor.ListenersEditor();
 	}
@@ -119,7 +121,7 @@ public abstract class IDE extends zoot.ZFrame {
 		if( isSceneEditorExpanded ) {
 			this.root.setLeftComponent( this.left );
 			this.left.setTopComponent( this.sceneEditor );
-			this.left.setBottomComponent( null );
+			this.left.setBottomComponent( this.galleryBrowser );
 			this.root.setRightComponent( null );
 		} else {
 			this.root.setLeftComponent( this.left );
@@ -177,8 +179,8 @@ public abstract class IDE extends zoot.ZFrame {
 		this.setJMenuBar( menuBar );
 	}
 
-	private void initialize() {
-		
+	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
+		return this.sceneEditor;
 	}
 	
 	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = new java.util.HashMap< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner >();
@@ -234,6 +236,7 @@ public abstract class IDE extends zoot.ZFrame {
 			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane();
 			openProjectPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
 			java.io.File file = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle file ", file );
 		}
 	};
 	public zoot.ActionOperation getSelectProjectToOpenOperation() {
@@ -961,7 +964,6 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	public void setFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField fieldSelection ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "setFieldSelection", fieldSelection );
 		org.alice.ide.event.FieldSelectionEvent e = new org.alice.ide.event.FieldSelectionEvent( this, this.fieldSelection, fieldSelection );
 		fireFieldSelectionChanging( e );
 		this.fieldSelection = fieldSelection;
@@ -1310,9 +1312,11 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 			@Override
 			protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-				return new org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor() {
-					
-				};
+				return new org.alice.ide.sceneeditor.FauxSceneEditor();
+			}
+			@Override
+			protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
+				return new org.alice.ide.gallerybrowser.FauxGalleryBrowser();
 			}
 		};
 		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );

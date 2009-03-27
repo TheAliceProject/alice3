@@ -20,7 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.sceneeditor;
+package org.alice.stageide.sceneeditor;
 
 /**
  * @author Dennis Cosgrove
@@ -38,11 +38,15 @@ class MyLabelThatDoesntLockOverlay extends javax.swing.JButton {
 }
 
 class FieldTilePopupOperation extends org.alice.ide.operations.ast.AbstractFieldActionOperation {
-	public FieldTilePopupOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private java.util.List< zoot.ActionOperation > actionOperations;
+	public FieldTilePopupOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field, java.util.List< zoot.ActionOperation > actionOperations ) {
 		super( field );
+		this.actionOperations = actionOperations;
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this );
+		javax.swing.JPopupMenu popupMenu = zoot.ZManager.createPopupMenu( this.actionOperations );
+		java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( actionContext.getEvent(), java.awt.event.MouseEvent.class );
+		popupMenu.show( me.getComponent(), me.getX(), me.getY() );
 	}
 }
 
@@ -63,13 +67,22 @@ public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 	}
 	public FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( null );
-		this.popupOperation = new FieldTilePopupOperation( null );
+		this.popupOperation = new FieldTilePopupOperation( null, this.createPopupOperations() );
 		this.setLeftButtonPressOperation( this.selectOperation );
 		this.setPopupOperation( this.popupOperation );
 		this.setField( field );
 		if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field).name.addPropertyListener( new NamePropertyAdapter() );
 		}
+	}
+	
+	protected java.util.List< zoot.ActionOperation > updatePopupOperations( java.util.List< zoot.ActionOperation > rv ) {
+		rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( this ) );
+		rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( this ) );
+		return rv;
+	}
+	private java.util.List< zoot.ActionOperation > createPopupOperations() {
+		return this.updatePopupOperations( new java.util.LinkedList< zoot.ActionOperation >() );
 	}
 	@Override
 	protected boolean isCullingContainsDesired() {
@@ -95,7 +108,6 @@ public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = getIDE();
 		java.awt.Color color;
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.field );
 		if( this.field == ide.getFieldSelection() ) {
 			//color = ide.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 			color = java.awt.Color.YELLOW;

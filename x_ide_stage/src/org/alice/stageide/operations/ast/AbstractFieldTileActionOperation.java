@@ -25,12 +25,19 @@ package org.alice.stageide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class PlaceOnTopOfGroundActionOperation extends AbstractFieldTileActionOperation {
-	public PlaceOnTopOfGroundActionOperation( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
-		super( fieldTile );
-		this.putValue( javax.swing.Action.NAME, "place on top of ground" );
+public abstract class AbstractFieldTileActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private org.alice.stageide.sceneeditor.FieldTile fieldTile;
+	public AbstractFieldTileActionOperation( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
+		this.fieldTile = fieldTile;
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		this.getMoveAndTurnSceneEditor().placeOnTopOfGround( this.getFieldTile().getField() );
+	public org.alice.stageide.sceneeditor.FieldTile getFieldTile() {
+		return this.fieldTile;
 	}
+	public void setFieldTile( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
+		this.fieldTile = fieldTile;
+	}
+	protected org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
+		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( getIDE().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
+	}
+
 }

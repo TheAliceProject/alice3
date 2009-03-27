@@ -20,17 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.stageide.operations.ast;
+package org.alice.ide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PlaceOnTopOfGroundActionOperation extends AbstractFieldTileActionOperation {
-	public PlaceOnTopOfGroundActionOperation( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
-		super( fieldTile );
-		this.putValue( javax.swing.Action.NAME, "place on top of ground" );
+public class FauxGalleryBrowser extends AbstractGalleryBrowser {
+	public FauxGalleryBrowser() {
+		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
+		this.add( new zoot.ZLabel( "imagine a gallery browser here" ) );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		this.getMoveAndTurnSceneEditor().placeOnTopOfGround( this.getFieldTile().getField() );
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 256 );
 	}
 }

@@ -73,9 +73,11 @@ public class CreateLocalPane extends CreateTypedDeclarationWithInitializerPane<e
 			}
 			@Override
 			protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-				return new org.alice.ide.sceneeditor.AbstractSceneEditor() {
-					
-				};
+				return new org.alice.ide.sceneeditor.FauxSceneEditor();
+			}
+			@Override
+			protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
+				return new org.alice.ide.gallerybrowser.FauxGalleryBrowser();
 			}
 		};
 		CreateLocalPane createLocalPane = new CreateLocalPane( null );

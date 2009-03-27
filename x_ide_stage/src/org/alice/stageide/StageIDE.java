@@ -23,6 +23,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.operations.help.AboutOperation();
 	}
 	@Override
+	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
+		java.io.File thumbnailRoot = new java.io.File( org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails" );
+		return new org.alice.stageide.gallerybrowser.GalleryBrowser( thumbnailRoot );
+	}
+	@Override
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
 		super.addExpressionFillerInners( rv );
 		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );

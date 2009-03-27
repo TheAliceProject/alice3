@@ -141,7 +141,7 @@ class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 class MethodHeaderPane extends AbstractCodeHeaderPane {
 	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, javax.swing.JComponent parametersPane ) {
 		super( methodDeclaredInAlice );
-		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.add( new org.alice.ide.ast.TypePane( methodDeclaredInAlice.getReturnType() ) );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			zoot.ZLabel nameLabel = new org.alice.ide.ast.NodeNameLabel( methodDeclaredInAlice );
@@ -356,12 +356,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 			} else {
 				throw new RuntimeException();
 			}
-			
-			//edu.cmu.cs.dennisc.moot.ZPageAxisPane headerPane = new edu.cmu.cs.dennisc.moot.ZPageAxisPane();
-			this.add( header );
-			this.add( new InstanceLine( this.code ) );
-			this.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			
+						
 			StatementListPropertyPane bodyPane = new StatementListPropertyPane( this.getIDE().getCodeFactory(), code.getBodyProperty().getValue().statements ) {
 				@Override
 				protected boolean isMaximumSizeClampedToPreferredSize() {
@@ -381,7 +376,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 					g.setColor( java.awt.Color.GRAY );
 					g.drawRoundRect( x, y, width, height, arcWidth, arcHeight );
 
-					if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+					if( getIDE().isJava() ) {
 						//pass
 					} else {
 						java.awt.FontMetrics fm = g.getFontMetrics();
@@ -397,21 +392,16 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 			};
 			bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
 			bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
-			//bodyPane.setOpaque( false );
-			//bodyPane.setBackground( java.awt.Color.RED );
-
-			edu.cmu.cs.dennisc.moot.ZPane pane = new edu.cmu.cs.dennisc.moot.ZPane() {
-				@Override
-				protected boolean isMaximumSizeClampedToPreferredSize() {
-					return false;
-				}
-			};
-			pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
-			pane.add( bodyPane );
-			javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( pane );
+			
+			
+			javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( bodyPane );
 			scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 			scrollPane.setBorder( null );
 			scrollPane.setOpaque( false );
+			scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
+			this.add( header );
+			this.add( new InstanceLine( this.code ) );
+			this.add( javax.swing.Box.createVerticalStrut( 8 ) );
 			this.add( scrollPane );
 		}
 		this.revalidate();
