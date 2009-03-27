@@ -22,77 +22,6 @@
  */
 package org.alice.stageide.personeditor;
 
-class LookingGlass extends javax.swing.JPanel {
-	public LookingGlass() {
-		setBackground( java.awt.Color.BLACK );
-	}
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 600 );
-	}
-}
-
-abstract class ConstantsList<E> extends zoot.ZList< E > {
-	E[] constants;
-	
-	@Override
-	public void addNotify() {
-		if( constants != null ) {
-			//pass
-		} else {
-			this.constants = this.createConstants();
-			setListData( this.constants );
-		}
-		super.addNotify();
-	}
-
-	protected abstract E[] createConstants();
-	public void randomize() {
-		final int N = this.getModel().getSize();
-		int i;
-		if( N > 0 ) {
-			i = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
-		} else {
-			i = -1;
-		}
-		this.setSelectedIndex( i );
-	}
-	public E getSelectedTypedValue() {
-		return (E)this.getSelectedValue();
-	}
-}
-
-class EnumConstantsList< E extends Enum > extends ConstantsList< E > {
-	private Class< E > cls;
-	public EnumConstantsList( Class< E > cls ) {
-		this.cls = cls;
-	}
-	@Override
-	protected E[] createConstants() {
-		return cls.getEnumConstants();
-	}
-}
-
-abstract class ArrayOfEnumConstantsList<E extends Enum> extends ConstantsList< E > {
-	public ArrayOfEnumConstantsList() {
-		this.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
-		this.setVisibleRowCount( -1 );
-	}
-	protected abstract Class<E>[] createArrayOfClses();
-	protected abstract E[] toArray( java.util.List< E > list );
-	@Override
-	protected E[] createConstants() {
-		java.util.List< E > list = new java.util.LinkedList< E >();
-		Class<E>[] arrayOfClses = this.createArrayOfClses();
-		for( Class<E> cls : arrayOfClses ) {
-			for( E e : cls.getEnumConstants() ) {
-				list.add( e );
-			}
-		}
-		return toArray( list );
-	}
-}
-
 abstract class IngredientListCellRenderer< E > extends swing.ListCellRenderer< E > {
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
 	protected abstract String getSubPath();
@@ -144,100 +73,157 @@ class HairListCellRenderer extends IngredientListCellRenderer {
 	}
 }
 
-class LifeStageList extends EnumConstantsList< org.alice.apis.stage.LifeStage > {
-	public LifeStageList() {
-		super( org.alice.apis.stage.LifeStage.class );
+class LookingGlass extends javax.swing.JPanel {
+	public LookingGlass() {
+		setBackground( java.awt.Color.BLACK );
 	}
-}
-class GenderList extends EnumConstantsList< org.alice.apis.stage.Gender > {
-	public GenderList() {
-		super( org.alice.apis.stage.Gender.class );
-	}
-}
-class BaseSkinToneList extends EnumConstantsList< org.alice.apis.stage.BaseSkinTone > {
-	public BaseSkinToneList() {
-		super( org.alice.apis.stage.BaseSkinTone.class );
-	}
-}
-class BaseEyeColorList extends EnumConstantsList< org.alice.apis.stage.BaseEyeColor > {
-	public BaseEyeColorList() {
-		super( org.alice.apis.stage.BaseEyeColor.class );
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 600 );
 	}
 }
 
-abstract class AbstractLifeStageGenderCardPane extends swing.CardPane {
-	private java.util.Map< String, ConstantsList > map = new java.util.HashMap< String, ConstantsList >();
+class ArrayListModel extends javax.swing.AbstractListModel {
+	private Object[] values;
+	public ArrayListModel( Object... values ) {
+		this.values = values;
+	}
+	public Object getElementAt( int index ) {
+		return this.values[ index ];
+	}
+	public int getSize() {
+		return this.values.length;
+	}
+	
+}
+
+class EnumConstantsListModel extends ArrayListModel { 
+	public EnumConstantsListModel( Class<? extends Enum> cls ) {
+		super( cls.getEnumConstants() );
+	}
+}
+
+abstract class ArrayOfEnumConstantsListModel extends ArrayListModel {
+	static Object[] to( Class<?>[] clses ) {
+		java.util.List< Enum > list = new java.util.LinkedList< Enum >();
+		for( Class<?> cls : clses ) {
+			Class< ? extends Enum > enumCls = (Class< ? extends Enum >)cls;
+			for( Enum e : enumCls.getEnumConstants() ) {
+				list.add( e );
+			}
+		}
+		return list.toArray();
+	}
+	public ArrayOfEnumConstantsListModel( Class<?>[] clses ) {
+		super( to( clses ) );
+	}
+}
+
+abstract class AbstractList<E> extends zoot.ZList< E > {
+	public AbstractList( javax.swing.ListModel listModel ) {
+		this.setModel( listModel );
+	}
+	public void randomize() {
+		final int N = this.getModel().getSize();
+		int i;
+		if( N > 0 ) {
+			i = org.alice.random.RandomUtilities.nextIntegerFrom0ToNExclusive( N );
+		} else {
+			i = -1;
+		}
+		this.setSelectedIndex( i );
+	}
+	public E getSelectedTypedValue() {
+		return (E)this.getSelectedValue();
+	}
+}
+
+abstract class ArrayOfEnumConstantsList<E extends Enum> extends AbstractList< E > {
+	public ArrayOfEnumConstantsList( javax.swing.ListModel listModel ) {
+		super( listModel );
+		this.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
+		this.setVisibleRowCount( -1 );
+	}
+}
+
+class LifeStageList extends AbstractList< org.alice.apis.stage.LifeStage > {
+	public LifeStageList() {
+		super( new EnumConstantsListModel( org.alice.apis.stage.LifeStage.class ) );
+	}
+}
+class GenderList extends AbstractList< org.alice.apis.stage.Gender > {
+	public GenderList() {
+		super( new EnumConstantsListModel( org.alice.apis.stage.Gender.class ) );
+	}
+}
+class BaseSkinToneList extends AbstractList< org.alice.apis.stage.BaseSkinTone > {
+	public BaseSkinToneList() {
+		super( new EnumConstantsListModel( org.alice.apis.stage.BaseSkinTone.class ) );
+	}
+}
+class BaseEyeColorList extends AbstractList< org.alice.apis.stage.BaseEyeColor > {
+	public BaseEyeColorList() {
+		super( new EnumConstantsListModel( org.alice.apis.stage.BaseEyeColor.class ) );
+	}
+}
+class HairColorList extends AbstractList< org.alice.apis.stage.BaseEyeColor > {
+	public HairColorList() {
+		super( new ArrayListModel( "BLACK", "BROWN", "RED", "BLOND", "GREY" ) );
+	}
+}
+
+abstract class AbstractLifeStageGenderArrayOfEnumConstantsList extends ArrayOfEnumConstantsList {
+	private java.util.Map< String, javax.swing.ListModel > map = new java.util.HashMap< String, javax.swing.ListModel >();
 	private static String getKey( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
 		return lifeStage.name() + " " + gender.name();
+	}
+	public AbstractLifeStageGenderArrayOfEnumConstantsList() {
+		super( new javax.swing.DefaultListModel() );
 	}
 	public void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
 		assert lifeStage != null;
 		assert gender != null;
 		String key = getKey( lifeStage, gender );
-		ConstantsList constantsList = this.map.get( key );
-		if( constantsList != null ) {
+		javax.swing.ListModel listModel = this.map.get( key );
+		if( listModel != null ) {
 			//pass
 		} else {
-			constantsList = this.createList( lifeStage, gender );
-			this.map.put( key, constantsList );
-			this.add( constantsList, key );
+			listModel = this.createListModel( lifeStage, gender );
+			this.map.put( key, listModel );
+			this.setModel( listModel );
 		}
 	}
-	protected abstract ConstantsList createList( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );
+	protected abstract javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );
 }
 
-class FullBodyOutfitList extends ArrayOfEnumConstantsList {
-	private org.alice.apis.stage.LifeStage lifeStage;
-	private org.alice.apis.stage.Gender gender;
-	public FullBodyOutfitList( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+class FullBodyOutfitListModel extends ArrayOfEnumConstantsListModel {
+	public FullBodyOutfitListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+		super( org.alice.apis.stage.IngredientUtilities.get( lifeStage.getFullBodyOutfitInterface( gender ) ) );
+	}
+}
+class HairListModel extends ArrayOfEnumConstantsListModel {
+	public HairListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+		super( org.alice.apis.stage.IngredientUtilities.get( lifeStage.getHairInterface( gender ) ) );
+	}
+}
+
+class FullBodyOutfitList extends AbstractLifeStageGenderArrayOfEnumConstantsList {
+	public FullBodyOutfitList() {
 		this.setCellRenderer( new FullBodyOutfitListCellRenderer() );
-		this.lifeStage = lifeStage;
-		this.gender = gender;
 	}
 	@Override
-	protected Class[] createArrayOfClses() {
-		return org.alice.apis.stage.IngredientUtilities.get( this.lifeStage.getFullBodyOutfitInterface( this.gender ) );
+	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+		return new FullBodyOutfitListModel( lifeStage, gender );
 	}
-	@Override
-	protected Enum[] toArray( java.util.List list ) {
-		Enum[] rv = new Enum[ list.size() ];
-		list.toArray( rv );
-		return rv;
-	}
+	
 }
-
-
-class FullBodyOutfitPane extends AbstractLifeStageGenderCardPane {
-	@Override
-	protected ConstantsList createList( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		return new FullBodyOutfitList( lifeStage, gender );
-	}
-}
-
-class HairList extends ArrayOfEnumConstantsList {
-	private org.alice.apis.stage.LifeStage lifeStage;
-	private org.alice.apis.stage.Gender gender;
-	public HairList( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+class HairList extends AbstractLifeStageGenderArrayOfEnumConstantsList {
+	public HairList() {
 		this.setCellRenderer( new HairListCellRenderer() );
-		this.lifeStage = lifeStage;
-		this.gender = gender;
 	}
 	@Override
-	protected Class[] createArrayOfClses() {
-		return org.alice.apis.stage.IngredientUtilities.get( this.lifeStage.getHairInterface( this.gender ) );
-	}
-	@Override
-	protected Enum[] toArray( java.util.List list ) {
-		Enum[] rv = new Enum[ list.size() ];
-		list.toArray( rv );
-		return rv;
-	}
-}
-
-class HairPane extends AbstractLifeStageGenderCardPane {
-	@Override
-	protected ConstantsList createList( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		return new HairList( lifeStage, gender );
+	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+		return new HairListModel( lifeStage, gender );
 	}
 }
 
@@ -265,40 +251,6 @@ class FitnessLevelPane extends swing.BorderPane {
 	}
 }
 
-//class FullBodyOutfitList extends EnumConstantsList< org.alice.apis.stage.FullBodyOutfit > {
-//public FullBodyOutfitList() {
-//	super( org.alice.apis.stage.FullBodyOutfit.class );
-//}
-//}
-
-//class IngredientsPane extends swing.Pane {
-//	private LifeStageList lifeStageList = new LifeStageList();
-//	private GenderList genderList = new GenderList();
-//	private BaseSkinToneList baseSkinToneList = new BaseSkinToneList();
-//	private BaseEyeColorList baseEyeColorList = new BaseEyeColorList();
-//	private FullBodyOutfitPane fullBodyOutfitPane = new FullBodyOutfitPane();
-//	private HairPane hairPane = new HairPane();
-//	public IngredientsPane() {
-//		setBackground( java.awt.Color.RED );
-//		int xPad = 4;
-//		int yPad = 4;
-//		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this, this.createComponentRows(), xPad, yPad );
-//	}
-//	private static zoot.ZLabel createLabel( String text ) {
-//		zoot.ZLabel rv = new zoot.ZLabel( text );
-//		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
-//		return rv;
-//	}
-//	private java.util.List< java.awt.Component[] > createComponentRows() {
-//		java.util.List< java.awt.Component[] > rv = new java.util.LinkedList< java.awt.Component[] >();
-//		rv.add( new java.awt.Component[] { createLabel( "life stage:" ), lifeStageList } );
-//		rv.add( new java.awt.Component[] { createLabel( "gender:" ), genderList } );
-//		rv.add( new java.awt.Component[] { createLabel( "skin tone:" ), baseSkinToneList } );
-//		rv.add( new java.awt.Component[] { createLabel( "eye color:" ), baseEyeColorList } );
-//		return rv;
-//	}
-//}
-
 class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private IngredientsPane ingredientsPane;
 	public RandomPersonActionOperation( IngredientsPane ingredientsPane ) {
@@ -311,28 +263,26 @@ class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActio
 	}
 }
 
-
 class IngredientsPane extends swing.GridBagPane {
 	private LifeStageList lifeStageList = new LifeStageList();
 	private GenderList genderList = new GenderList();
 	private FitnessLevelPane fitnessLevelPane = new FitnessLevelPane();
 	private BaseSkinToneList baseSkinToneList = new BaseSkinToneList();
 	private BaseEyeColorList baseEyeColorList = new BaseEyeColorList();
-	private HairPane hairPane = new HairPane();
-	private FullBodyOutfitPane fullBodyOutfitPane = new FullBodyOutfitPane();
+	private HairColorList hairColorList = new HairColorList();
+	private HairList hairList = new HairList();
+	private FullBodyOutfitList fullBodyOutfitList = new FullBodyOutfitList();
 	public IngredientsPane() {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackground( new java.awt.Color( 220, 220, 255 ) );
 		this.setOpaque( true );
-
-		
 //		lifeStageList.setSelectedValue( org.alice.apis.stage.LifeStage.ADULT, true );
 //		this.randomize();
 //		this.hairPane.handleEpicChange( lifeStageList.getSelectedTypedValue(), genderList.getSelectedTypedValue() );
 //		this.fullBodyOutfitPane.handleEpicChange( lifeStageList.getSelectedTypedValue(), genderList.getSelectedTypedValue() );
 //		genderList.setSelectedValue( org.alice.apis.stage.Gender.FEMALE, true );
-		this.hairPane.handleEpicChange( org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.Gender.FEMALE );
-		this.fullBodyOutfitPane.handleEpicChange( org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.Gender.FEMALE );
+		this.hairList.handleEpicChange( org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.Gender.FEMALE );
+		this.fullBodyOutfitList.handleEpicChange( org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.Gender.FEMALE );
 		
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
@@ -340,12 +290,12 @@ class IngredientsPane extends swing.GridBagPane {
 		gbc.weightx = 1.0;
 		
 		final int INSET_TOP = 12;
-		final int INSET_LEFT = 8;
+		final int INSET_LEFT = 2;
 
-		this.add( new zoot.ZLabel( "life stage" ), gbc );
-		this.add( this.lifeStageList, gbc );
+//		this.add( new zoot.ZLabel( "life stage" ), gbc );
+//		this.add( this.lifeStageList, gbc );
 		
-		gbc.insets.top = INSET_TOP;
+//		gbc.insets.top = INSET_TOP;
 		this.add( new zoot.ZLabel( "gender" ), gbc );
 		gbc.insets.top = 0;
 		this.add( this.genderList, gbc );
@@ -360,34 +310,42 @@ class IngredientsPane extends swing.GridBagPane {
 		gbc.insets.top = 0;
 		this.add( this.fitnessLevelPane, gbc );
 
-		gbc.insets.top = INSET_TOP;
-		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
 		gbc.weightx = 0.0;
+		gbc.insets.top = INSET_TOP;
+		gbc.gridwidth = 1;
 		this.add( new zoot.ZLabel( "eye color" ), gbc );
+		gbc.insets.left = INSET_LEFT*8;
+		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+		this.add( new zoot.ZLabel( "hair" ), gbc );
+		gbc.insets.left = INSET_LEFT;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gbc.weightx = 1.0;
-		gbc.insets.left = INSET_LEFT;
-		this.add( new zoot.ZLabel( "hair" ), gbc );
+		this.add( new zoot.ZLabel( "" ), gbc );
 		gbc.insets.left = 0;
+		gbc.weightx = 0.0;
 
 		
 		gbc.weighty = 1.0;
 		gbc.insets.top = 0;
-		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
-		gbc.weightx = 0.0;
+		gbc.gridwidth = 1;
 		this.add( this.baseEyeColorList, gbc );
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.weightx = 0.0;
+		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
+		gbc.insets.left = INSET_LEFT*8;
+		this.add( this.hairColorList, gbc );
 		gbc.insets.left = INSET_LEFT;
-		this.add( new javax.swing.JScrollPane( this.hairPane ), gbc ); 
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0;
+		javax.swing.JScrollPane hairScrollPane = new javax.swing.JScrollPane( this.hairList );
+		hairScrollPane.setBorder( null );
+		this.add( hairScrollPane, gbc ); 
 		gbc.insets.left = 0;
 
 		gbc.weighty = 0.0;
 		gbc.insets.top = INSET_TOP;
 		this.add( new zoot.ZLabel( "full body outfit" ), gbc );
 		gbc.insets.top = 0;
-		gbc.weighty = 4.0;
-		this.add( new javax.swing.JScrollPane( this.fullBodyOutfitPane ), gbc ); 
+		gbc.weighty = 6.0;
+		this.add( new javax.swing.JScrollPane( this.fullBodyOutfitList ), gbc ); 
 	}
 	
 	public void randomize() {
