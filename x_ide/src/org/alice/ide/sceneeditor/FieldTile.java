@@ -31,41 +31,20 @@ class MyLabelThatDoesntLockOverlay extends javax.swing.JButton {
 		this.setOpaque( false );
 		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
 	}
-	@Override
-	public boolean contains( int x, int y ) {
-		return false;
-	}
+//	@Override
+//	public boolean contains( int x, int y ) {
+//		return false;
+//	}
 }
 
-//class MyLabelThatDoesntLockOverlay extends javax.swing.JComponent {
-//	private String text = "";
-//	public MyLabelThatDoesntLockOverlay() {
-//		this.setOpaque( true );
-//	}
-//	public String getText() {
-//		return this.text;
-//	}
-//	public void setText( String text ) {
-//		this.text = text;
-//		this.repaint();
-//	}
-//	
-//	@Override
-//	public java.awt.Dimension getPreferredSize() {
-//		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
-//		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
-//		return new java.awt.Dimension( (int)( bounds.getWidth()+0.5 ), (int)( bounds.getHeight()+0.5 ) );
-//	}
-//	
-//	@Override
-//	protected void paintComponent( java.awt.Graphics g ) {
-//		//super.paintComponent( g );
-//		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
-//		g.drawString( this.text, (int)bounds.getX(), (int)bounds.getY() );
-//	}
-//}
-
-
+class FieldTilePopupOperation extends org.alice.ide.operations.ast.AbstractFieldActionOperation {
+	public FieldTilePopupOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( field );
+	}
+	public void perform( zoot.ActionContext actionContext ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( this );
+	}
+}
 
 /**
  * @author Dennis Cosgrove
@@ -73,7 +52,8 @@ class MyLabelThatDoesntLockOverlay extends javax.swing.JButton {
 public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 	private MyLabelThatDoesntLockOverlay label = new MyLabelThatDoesntLockOverlay();
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-
+	private org.alice.ide.operations.ast.SelectFieldActionOperation selectOperation;
+	private FieldTilePopupOperation popupOperation;
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
@@ -81,43 +61,20 @@ public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 			FieldTile.this.updateLabel();
 		}
 	}
-	public FieldTile() {
-		this( null );
-	}
 	public FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( null );
+		this.popupOperation = new FieldTilePopupOperation( null );
+		this.setLeftButtonPressOperation( this.selectOperation );
+		this.setPopupOperation( this.popupOperation );
 		this.setField( field );
 		if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field).name.addPropertyListener( new NamePropertyAdapter() );
 		}
-//		this.add( this.label );
-		if( this.isFieldTileSelectionSelectionDesired() ) {
-			this.addMouseListener( new java.awt.event.MouseListener() {
-				public void mouseClicked( java.awt.event.MouseEvent e ) {
-				}
-				public void mousePressed( java.awt.event.MouseEvent e ) {
-					if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
-						getIDE().performIfAppropriate( new SelectFieldOperation( FieldTile.this.field ), e, true );
-					}
-				}
-				public void mouseReleased( java.awt.event.MouseEvent e ) {
-				} 
-				public void mouseEntered( java.awt.event.MouseEvent e ) {
-				}
-				public void mouseExited( java.awt.event.MouseEvent e ) {
-				}
-			} );
-//			this.label.addActionListener( new java.awt.event.ActionListener() {
-//				public void actionPerformed( java.awt.event.ActionEvent e ) {
-//					getIDE().performIfAppropriate( new SelectFieldOperation( FieldTile.this.field ), e );
-//				}
-//			} );
-		}
 	}
-	
-	protected boolean isFieldTileSelectionSelectionDesired() {
-		return true;
+	@Override
+	protected boolean isCullingContainsDesired() {
+		return false;
 	}
-	
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 		if( this.field != null ) {
@@ -131,25 +88,14 @@ public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 	}
 	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.field = field;
+		this.selectOperation.setField( this.field );
+		this.popupOperation.setField( this.field );
 		this.updateLabel();
 	}
-
-//	@Override
-//	protected boolean isActuallyPotentiallyActive() {
-//		return true;
-//	}
-//	@Override
-//	protected boolean isActuallyPotentiallySelectable() {
-//		return false;
-//	}
-//	@Override
-//	protected boolean isActuallyPotentiallyDraggable() {
-//		return false;
-//	}
-	
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = getIDE();
 		java.awt.Color color;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.field );
 		if( this.field == ide.getFieldSelection() ) {
 			//color = ide.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 			color = java.awt.Color.YELLOW;

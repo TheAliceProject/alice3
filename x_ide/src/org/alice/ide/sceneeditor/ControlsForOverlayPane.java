@@ -53,37 +53,38 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 			ControlsForOverlayPane.this.refreshFields();
 		}
 	};
-
-	private org.alice.ide.event.IDEAdapter ideAdapter = new org.alice.ide.event.IDEAdapter() {
-		@Override
-		public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-			ControlsForOverlayPane.this.refreshFields();
-		}
-		@Override
-		public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-			//edu.cmu.cs.dennisc.alice.ast.AbstractType type = e.getNextValue().getDeclaringType();
-			synchronized( rootFieldTile ) {
-				rootFieldTile.updateLabel();
-				for( FieldTile fieldTile : ControlsForOverlayPane.this.declaredFieldTiles ) {
-					fieldTile.updateLabel();
-				}
-			}
-		}
-	};
-
 	private FieldTile rootFieldTile = createFieldTile( null );
 	private java.util.List< FieldTile > declaredFieldTiles = new java.util.LinkedList< FieldTile >();
-
-	public ControlsForOverlayPane() {
-		this.setNorthWestComponent( this.rootFieldTile );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addIDEListener" );
-		//org.alice.ide.IDE.getSingleton().addIDEListener( this.ideAdapter );
-		this.setOpaque( false );
-	}
+	private zoot.ZCheckBoxMenuItem isSceneEditorExpandedCheckBox;
+	
 	public ControlsForOverlayPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
-		this();
+		this.setNorthWestComponent( this.rootFieldTile );
+		this.setOpaque( false );
 		this.setRootField( rootField );
 	}
+	
+	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
+		this.refreshFields();
+	}
+	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+		//edu.cmu.cs.dennisc.alice.ast.AbstractType type = e.getNextValue().getDeclaringType();
+//		synchronized( rootFieldTile ) {
+			rootFieldTile.updateLabel();
+			for( FieldTile fieldTile : ControlsForOverlayPane.this.declaredFieldTiles ) {
+				fieldTile.updateLabel();
+			}
+//		}
+	}
+
+	@Override
+	public void addNotify() {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		ide.addIDEListener( this.ideAdapter );
+		this.isSceneEditorExpandedCheckBox = new zoot.ZCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
+		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
+		super.addNotify();
+	}
+	
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
 		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)getRootField().valueType.getValue();

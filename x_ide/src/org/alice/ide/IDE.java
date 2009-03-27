@@ -177,6 +177,10 @@ public abstract class IDE extends zoot.ZFrame {
 		this.setJMenuBar( menuBar );
 	}
 
+	private void initialize() {
+		
+	}
+	
 	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = new java.util.HashMap< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner >();
 
 	private org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > cls ) {
@@ -957,6 +961,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	public void setFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField fieldSelection ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "setFieldSelection", fieldSelection );
 		org.alice.ide.event.FieldSelectionEvent e = new org.alice.ide.event.FieldSelectionEvent( this, this.fieldSelection, fieldSelection );
 		fireFieldSelectionChanging( e );
 		this.fieldSelection = fieldSelection;

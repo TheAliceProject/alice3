@@ -29,16 +29,14 @@ import org.alice.apis.moveandturn.gallery.environments.grounds.MoonSurface;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SandyGround;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SeaSurface;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SnowyGround;
-import org.alice.interact.GlobalDragAdapter;
 
 /**
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor {
-
 	private Program program = this.createProgram();
 	private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
-	private org.alice.ide.sceneeditor.ControlsForOverlayPane controlsForOverlayPane = this.createControlsForOverlayPane();
+	private org.alice.ide.sceneeditor.ControlsForOverlayPane controlsForOverlayPane;
 	private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
@@ -64,6 +62,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				while( animator == null ) {
 					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
 					animator = MoveAndTurnSceneEditor.this.program.getAnimator();
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println( animator );
 				}
 				MoveAndTurnSceneEditor.this.globalDragAdapter.setAnimator( animator );
 				MoveAndTurnSceneEditor.this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
@@ -76,6 +75,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}.start();
 	}
+	
 
 	private void handleSelection( org.alice.interact.event.SelectionEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
@@ -164,9 +164,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					}
 				}
 			}
-			
 		}
-	
+		this.controlsForOverlayPane.focusedCodeChanged( e );
 	}
 	public void handleExpandContractChange( boolean isExpanded ) {
 		this.isExpanded = isExpanded;
@@ -209,7 +208,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	protected org.alice.ide.sceneeditor.ControlsForOverlayPane createControlsForOverlayPane() {
-		return new org.alice.ide.sceneeditor.ControlsForOverlayPane();
+		return new org.alice.ide.sceneeditor.ControlsForOverlayPane( null );
 	}
 	protected Program createProgram() {
 		return new Program( this );
@@ -217,10 +216,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	protected Program getProgram() {
 		return this.program;
 	}
+	private org.alice.ide.sceneeditor.ControlsForOverlayPane getControlsForOverlayPane() {
+		if( this.controlsForOverlayPane != null ) {
+			//pass
+		} else {
+			this.controlsForOverlayPane = this.createControlsForOverlayPane();
+		}
+		return this.controlsForOverlayPane;
+	}
 	public void initializeLightweightOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass lightweightOnscreenLookingGlass ) {
 		javax.swing.JPanel panel = lightweightOnscreenLookingGlass.getJPanel();
 		panel.setLayout( new java.awt.BorderLayout() );
-		panel.add( this.controlsForOverlayPane );
+		panel.add( this.getControlsForOverlayPane() );
 	}
 
 	@Override
@@ -236,6 +243,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
 			this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
 		}
+		this.controlsForOverlayPane.fieldSelectionChanged( e );
 	}
 	
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
@@ -249,9 +257,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.getVM().invokeEntryPoint( method, rv );
 		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
 		this.program.setScene( scene );
-		this.controlsForOverlayPane.setRootField( sceneField );
+		this.getControlsForOverlayPane().setRootField( sceneField );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( sceneField );
 		return rv;
 	}
+	
+//	@Override
+//	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
+//		super.setSceneField( sceneField );
+//		this.controlsForOverlayPane.setRootField( sceneField );
+//	}
 
 	public void setDragInProgress( boolean isDragInProgress ) {
 		if( isDragInProgress ) {
@@ -289,30 +304,165 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.cameraNavigationDragAdapter.setEnabled( this.isCameraNavigationDragAdapterEnabledStack.pop() );
 	}
 
-	public static void main( String[] args ) {
+//	def performOrientToUpright(self, field):
+//		instanceInJava = self.getInstanceInJavaForField( field )
+//		instanceInJava.orientToUpright()
+//		
+//	def performPlaceOnTopOfGround(self, field):
+//		instanceInJava = self.getInstanceInJavaForField( field )
+//		asSeenBy = org.alice.apis.moveandturn.AsSeenBy.SCENE
+//		bb = instanceInJava.getAxisAlignedMinimumBoundingBox()
+//		position = instanceInJava.getPosition( asSeenBy )
+//		position.y = -bb.minimum.y
+//		instanceInJava.moveTo( instanceInJava.acquireStandIn( asSeenBy, position ) )
+//	
+//	def getScene(self):
+//		return self.getSceneInstanceInJava()
+//	
+//	def getSceneType( self ):
+//		return self.getSceneField().getValueType()
+//
+//	def _isFieldNameFree( self, name ):
+//		sceneType = self.getSceneType()
+//		if sceneType:
+//			for field in sceneType.fields.iterator():
+//				if field.getName() == name:
+//					return False
+//		return True 
+//
+//	def _getAvailableFieldName( self, superClassBaseName ):
+//		name = superClassBaseName[ 0 ].lower() + superClassBaseName[ 1: ]
+//		rv = name
+//		i = 2
+//		while not self._isFieldNameFree( rv ):
+//			rv = name + `i`
+//			i += 1
+//		return rv
+//
+//	def _handleCreateInstance( self, type ):
+//		#todo
+//		t = type.getFirstTypeEncounteredDeclaredInJava()
+//		cls = t.getCls()
+//		clsName = cls.__name__
+//		thumbnailsRoot = self._api._getGalleryThumbnailsRoot()
+//		
+//		prefixList = []
+//		prefixList.append( "org.alice.apis.moveandturn.gallery" )
+//		prefixList.append( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery" )
+//		for prefix in prefixList:
+//			if clsName.startswith( prefix ):
+//				file = java.io.File( thumbnailsRoot, prefix + clsName[ len( prefix ): ].replace( ".", "/" ) + ".png" )
+//
+//		inputPane = ecc.dennisc.alice.ide.moveandturn.editors.gallery.CreateInstancePane( self, file, thumbnailsRoot, type )
+//		owner = alice.ide.IDE.getSingleton()
+//		instance = inputPane.showInJDialog( owner, "Create Instance", True )
+//		if instance:
+//			self.addInstance( instance )
+//
+//#	def _select(self, nextField ):
+//#		prevField = self._currSelectedField
+//#		operation = self._createSelectionOperation( nextField, prevField )
+//#		event = None
+//#		alice.ide.IDE.getSingleton().performIfAppropriate( operation, event )
+//
+//	def addASTFieldFor( self, instance ):
+//		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
+//		name = instanceInJava.getName()
+//		#programType = alice.ast.TypeDeclaredInJava.get( nameable.__class__ )
+//		type = instance.getType()
+//		astField = alice.ast.FieldDeclaredInAlice( name, type, alice.ast.InstanceCreation( type.getDeclaredConstructor( [] ), [] ) )
+//		astField.finalVolatileOrNeither.setValue( alice.ast.FieldModifierFinalVolatileOrNeither.FINAL )
+//		astField.access.setValue( alice.ast.Access.PRIVATE )
+//		self.getSceneType().fields.add( [ astField ] )
+//
+//		self.putInstanceForField( astField, instance )
+//		self.getIDE().setFieldSelection( astField )
+//#		self._select( astField )
+//
+//	def addInstance( self, instance ):
+//		self.addASTFieldFor( instance )
+//		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
+//		if isinstance( instanceInJava, apis.moveandturn.Model ):
+//			camera = self.getScene().findFirstMatch( apis.moveandturn.AbstractCamera )
+//			if camera:
+//				java.lang.Thread( ecc.dennisc.lang.ApplyRunnable( self._getGoodLookAtShowInstanceAndReturnCamera, ( camera, instanceInJava, ) ) ).start()
+//			else:
+//				self.getScene().addComponent( instanceInJava )
+//		else:
+//			self.getScene().addComponent( instanceInJava )
+//		alice.ide.IDE.getSingleton().markChanged( "scene program addInstance" )
+//
 
-		org.alice.ide.IDE ide = new org.alice.ide.IDE() {
-			@Override
-			protected zoot.ActionOperation createAboutOperation() {
-				return null;
-			}
-			@Override
-			protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-				return new MoveAndTurnSceneEditor();
-			}
-			@Override
-			protected void promptForLicenseAgreements() {
-			}
-		};
+//	def createScene( self, sceneField ):
+//		program = self.getProgram()
+//		if program:
+//			lg = program.getOnscreenLookingGlass()
+//			lg.clearCameras()
+//			program.setScene( None )
+//
+//		sceneInstance = org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.createScene( self, sceneField )
+//		if sceneInstance:
+//			self.restoreProjectProperties()
+//		return sceneInstance
+//
+//	def getSceneAutomaticSetUpMethod( self ):
+//		return self.getSceneType().getDeclaredMethod( "performSceneEditorGeneratedSetUp", [] )
+//
+//	def getFilledInSceneAutomaticSetUpMethod( self, fillerInner ):
+//		rv = self.getSceneAutomaticSetUpMethod()
+//		map = {}
+//		for key in self.mapFieldToInstance.keySet():
+//			map[ key ] = self.mapFieldToInstance.get( key )
+//		fillerInner.fillInSceneAutomaticSetUpMethod( rv, self.getSceneField(), map )
+//		return rv
+//
+//	def generateCodeForSceneSetUp( self, setUpMethodGenerator ):
+//		self.getFilledInSceneAutomaticSetUpMethod( setUpMethodGenerator )
+//
+//	def _createSelectionOperation(self, nextField, prevField ):
+//		return BogusSelectionOperation( nextField, prevField )
+//
+//	def _getGoodLookAtShowInstanceAndReturnCamera( self, camera, instance ):
+//		self.pushAndSetCameraNavigationDragAdapterEnabled( False )
+//		try:
+//			instance.setOpacity( 0.0, apis.moveandturn.Composite.RIGHT_NOW )
+//			pov = camera.getPointOfView( self.getScene() )
+//			camera.getGoodLookAt( instance, 0.5 )
+//			self.getScene().addComponent( instance )
+//			instance.setOpacity( 1.0 )
+//			camera.moveAndOrientTo( self.getScene().createOffsetStandIn( pov.getInternal() ), 0.5 ) 
+//		finally:
+//			self.popCameraNavigationDragAdapterEnabled()
+//
+//	def handleDelete(self, node):
+//		instance = self.mapFieldToInstance.get( node )
+//		if instance:
+//			self.getScene().removeComponent( ecc.dennisc.alice.vm.getInstanceInJava( instance ) )
 
-		MoveAndTurnSceneEditor moveAndTurnSceneEditor = new MoveAndTurnSceneEditor();
-
-		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
-
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		frame.getContentPane().add( moveAndTurnSceneEditor );
-		frame.setSize( 1024, 768 );
-		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-		frame.setVisible( true );
-	}
+//	public static void main( String[] args ) {
+//
+//		org.alice.ide.IDE ide = new org.alice.ide.IDE() {
+//			@Override
+//			protected zoot.ActionOperation createAboutOperation() {
+//				return null;
+//			}
+//			@Override
+//			protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
+//				return new MoveAndTurnSceneEditor();
+//			}
+//			@Override
+//			protected void promptForLicenseAgreements() {
+//			}
+//		};
+//
+//		MoveAndTurnSceneEditor moveAndTurnSceneEditor = new MoveAndTurnSceneEditor();
+//
+//		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
+//
+//		javax.swing.JFrame frame = new javax.swing.JFrame();
+//		frame.getContentPane().add( moveAndTurnSceneEditor );
+//		frame.setSize( 1024, 768 );
+//		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
+//		frame.setVisible( true );
+//	}
 }

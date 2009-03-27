@@ -25,27 +25,11 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField nextField;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField prevField;
-	public FieldSelectionOperation( javax.swing.ListModel listModel, int i ) {
-		super( listModel, i );
+public class SelectFieldActionOperation extends AbstractFieldActionOperation {
+	public SelectFieldActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( field );
 	}
-	public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.AbstractField > singleSelectionContext ) {
-//		if( singleSelectionContext.isPreviousSelectionValid() ) {
-			this.prevField = singleSelectionContext.getPreviousSelection();
-//		} else {
-//			//todo?
-//		}
-		this.nextField = singleSelectionContext.getNextSelection();
-		this.redo();
-		singleSelectionContext.commit();
-	}
-	
-	public void redo() {
-		getIDE().setFieldSelection( this.nextField );
-	}
-	public void undo() {
-		getIDE().setFieldSelection( this.prevField );
+	public void perform( zoot.ActionContext actionContext ) {
+		getIDE().setFieldSelection( this.getField() );
 	}
 }

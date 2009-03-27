@@ -46,7 +46,7 @@ class ZTabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
  */
 public class ZTabbedPane extends javax.swing.JTabbedPane {
 	private ActionOperation tabCloseOperation;
-	private ItemSelectionOperation tabSelectionOperation;
+//	private ItemSelectionOperation tabSelectionOperation;
 
 	public ZTabbedPane() {
 		this.setTabLayoutPolicy( javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT );
@@ -60,12 +60,12 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		this.tabCloseOperation = tabCloseOperation;
 	}
 
-	public ItemSelectionOperation getTabSelectionOperation() {
-		return this.tabSelectionOperation;
-	}
-	public void setTabSelectionOperation( ItemSelectionOperation tabSelectionOperation ) {
-		this.tabSelectionOperation = tabSelectionOperation;
-	}
+//	public ItemSelectionOperation getTabSelectionOperation() {
+//		return this.tabSelectionOperation;
+//	}
+//	public void setTabSelectionOperation( ItemSelectionOperation tabSelectionOperation ) {
+//		this.tabSelectionOperation = tabSelectionOperation;
+//	}
 	
 	public boolean isCloseButtonDesiredAt( int index ) {
 		return this.tabCloseOperation != null;

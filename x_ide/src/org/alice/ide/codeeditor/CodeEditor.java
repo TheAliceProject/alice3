@@ -344,75 +344,76 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 	}
 	private void refresh() {
 		this.removeAll();
-		javax.swing.JComponent parametersPane = createParametersPane( this.code );
-		javax.swing.JComponent header;
-		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-			header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane );
-		} else if( code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)code;
-			header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane );
-		} else {
-			throw new RuntimeException();
-		}
-		
-		//edu.cmu.cs.dennisc.moot.ZPageAxisPane headerPane = new edu.cmu.cs.dennisc.moot.ZPageAxisPane();
-		this.add( header );
-		this.add( new InstanceLine( this.code ) );
-		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
-		
-		StatementListPropertyPane bodyPane = new StatementListPropertyPane( this.getIDE().getCodeFactory(), code.getBodyProperty().getValue().statements ) {
-			@Override
-			protected boolean isMaximumSizeClampedToPreferredSize() {
-				return false;
+		if( this.code != null ) {
+			javax.swing.JComponent parametersPane = createParametersPane( this.code );
+			javax.swing.JComponent header;
+			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane );
+			} else if( code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
+				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)code;
+				header = new ConstructorHeaderPane( constructorDeclaredInAlice, parametersPane );
+			} else {
+				throw new RuntimeException();
 			}
-			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
-				super.paintComponent( g );
-				int x = 0;
-				int y = 0;
-				int width = this.getWidth() -1;
-				int height = this.getHeight() -1;
-				int arcWidth = 8;
-				int arcHeight = 8;
-				g.setColor( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class ) );
-				g.fillRoundRect( x, y, width, height, arcWidth, arcHeight );
-				g.setColor( java.awt.Color.GRAY );
-				g.drawRoundRect( x, y, width, height, arcWidth, arcHeight );
-
-				if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
-					//pass
-				} else {
-					java.awt.FontMetrics fm = g.getFontMetrics();
-				    int ascent = fm.getMaxAscent ();
-				    int descent= fm.getMaxDescent ();
-				    
-					g.setColor( java.awt.Color.BLACK );
-				    x = 4;
-				    y = 4;
-					g.drawString( "do in order", x, y + ascent-descent );
+			
+			//edu.cmu.cs.dennisc.moot.ZPageAxisPane headerPane = new edu.cmu.cs.dennisc.moot.ZPageAxisPane();
+			this.add( header );
+			this.add( new InstanceLine( this.code ) );
+			this.add( javax.swing.Box.createVerticalStrut( 8 ) );
+			
+			StatementListPropertyPane bodyPane = new StatementListPropertyPane( this.getIDE().getCodeFactory(), code.getBodyProperty().getValue().statements ) {
+				@Override
+				protected boolean isMaximumSizeClampedToPreferredSize() {
+					return false;
 				}
-			}
-		};
-		bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
-		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
-		//bodyPane.setOpaque( false );
-		//bodyPane.setBackground( java.awt.Color.RED );
+				@Override
+				protected void paintComponent( java.awt.Graphics g ) {
+					super.paintComponent( g );
+					int x = 0;
+					int y = 0;
+					int width = this.getWidth() -1;
+					int height = this.getHeight() -1;
+					int arcWidth = 8;
+					int arcHeight = 8;
+					g.setColor( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class ) );
+					g.fillRoundRect( x, y, width, height, arcWidth, arcHeight );
+					g.setColor( java.awt.Color.GRAY );
+					g.drawRoundRect( x, y, width, height, arcWidth, arcHeight );
 
-		edu.cmu.cs.dennisc.moot.ZPane pane = new edu.cmu.cs.dennisc.moot.ZPane() {
-			@Override
-			protected boolean isMaximumSizeClampedToPreferredSize() {
-				return false;
-			}
-		};
-		pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		pane.add( bodyPane );
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( pane );
-		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
-		scrollPane.setBorder( null );
-		scrollPane.setOpaque( false );
-		this.add( scrollPane );
+					if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+						//pass
+					} else {
+						java.awt.FontMetrics fm = g.getFontMetrics();
+					    int ascent = fm.getMaxAscent ();
+					    int descent= fm.getMaxDescent ();
+					    
+						g.setColor( java.awt.Color.BLACK );
+					    x = 4;
+					    y = 4;
+						g.drawString( "do in order", x, y + ascent-descent );
+					}
+				}
+			};
+			bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
+			bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
+			//bodyPane.setOpaque( false );
+			//bodyPane.setBackground( java.awt.Color.RED );
 
+			edu.cmu.cs.dennisc.moot.ZPane pane = new edu.cmu.cs.dennisc.moot.ZPane() {
+				@Override
+				protected boolean isMaximumSizeClampedToPreferredSize() {
+					return false;
+				}
+			};
+			pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
+			pane.add( bodyPane );
+			javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( pane );
+			scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
+			scrollPane.setBorder( null );
+			scrollPane.setOpaque( false );
+			this.add( scrollPane );
+		}
 		this.revalidate();
 		this.repaint();
 	}

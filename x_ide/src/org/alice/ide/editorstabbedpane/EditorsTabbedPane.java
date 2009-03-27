@@ -33,6 +33,18 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle tab close" );
 			}
 		} );
+		this.addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( EditorsTabbedPane.this.getSelectedComponent() );
+				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice nextFocusedCode;
+				if( codeEditor != null ) {
+					nextFocusedCode = codeEditor.getCode();
+				} else {
+					nextFocusedCode = null;
+				}
+				org.alice.ide.IDE.getSingleton().setFocusedCode( (edu.cmu.cs.dennisc.alice.ast.AbstractCode)nextFocusedCode );
+			}
+		} );
 	}
 	
 	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( java.awt.Component component ) {
@@ -62,6 +74,10 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 		//this.addTab( "todo: code title", codeEditor );
 		this.add( codeEditor );
 		this.setSelectedComponent( codeEditor );
+	}
+	@Override
+	public boolean isCloseButtonDesiredAt( int index ) {
+		return index > 0;
 	}
 	
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
