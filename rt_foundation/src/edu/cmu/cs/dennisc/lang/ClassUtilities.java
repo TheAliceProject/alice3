@@ -36,4 +36,7 @@ public class ClassUtilities {
 		}
 		return rv;
 	}
+	public static Class<?> forName( String className ) {
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( className );
+	}
 }

@@ -87,6 +87,9 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.moot.ZLineAxisPane 
 		setCurrentDirectory( rootDirectory );
 	}
 
+	public java.io.File getRootDirectory() {
+		return this.rootDirectory;
+	}
 	public void setFolderIconSmall( javax.swing.Icon folderIconSmall ) {
 		this.folderIconSmall = folderIconSmall;
 		this.fileIconSmall = new javax.swing.Icon() {

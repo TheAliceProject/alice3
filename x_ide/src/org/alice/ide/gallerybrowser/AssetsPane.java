@@ -58,6 +58,9 @@ public abstract class AssetsPane extends edu.cmu.cs.dennisc.moot.ZPane {
 			}
 		};
 	}
+	public PathControl getPathControl() {
+		return this.pathControl;
+	}
 	
 	protected ThumbnailsPane createThumbnailsPane() {
 		return new ThumbnailsPane() {

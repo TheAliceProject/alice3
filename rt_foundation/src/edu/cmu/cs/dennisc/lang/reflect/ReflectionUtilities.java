@@ -41,7 +41,7 @@ public final class ReflectionUtilities {
 	private ReflectionUtilities() {
 	}
 	
-	//todo: move?
+	@Deprecated
 	public static Class< ? > getClassForName( String className ) {
 		assert className != null;
 		assert className.length() > 0;

@@ -56,6 +56,11 @@ public abstract class AbstractGalleryBrowser extends org.alice.ide.Viewer< Void 
 			}
 		};
 	}
+	
+	protected java.io.File getRootDirectory() {
+		return this.assetsPane.getPathControl().getRootDirectory();
+	}
+	
 	protected abstract void handleFileActivation( java.io.File file );
 	protected String getAdornedTextFor( String name, boolean isDirectory, boolean isRequestedByPath ) {
 		String rv;
