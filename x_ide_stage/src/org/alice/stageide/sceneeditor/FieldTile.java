@@ -107,15 +107,15 @@ public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 	}
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = getIDE();
-		java.awt.Color color;
+		java.awt.Color color = ide.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 		if( this.field == ide.getFieldSelection() ) {
-			//color = ide.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+			//color = color.brighter();
 			color = java.awt.Color.YELLOW;
 		} else {
 			if( ide.isFieldInScope( this.field ) ) {
-				color = java.awt.Color.WHITE;
+				color = new java.awt.Color( color.getRed(), color.getGreen(), color.getBlue(), 191 );
 			} else {
-				color = java.awt.Color.GRAY;
+				color = new java.awt.Color( 127, 127, 127, 191 );
 			}
 		}
 		return color;
@@ -146,6 +146,11 @@ public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
 		return rv;
 	}
 	
+	@Override
+	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
+		return edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
+	}
+		
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
