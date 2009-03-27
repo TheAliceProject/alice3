@@ -55,7 +55,10 @@ class CreateTextbookInstance extends CreateInstanceFromFileActionOperation {
  * @author Dennis Cosgrove
  */
 public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGalleryBrowser {
-	public GalleryBrowser( java.io.File thumbnailRoot ) {
+	private java.util.Map<String, String> map;
+	public GalleryBrowser( java.io.File thumbnailRoot, java.util.Map<String, String> map ) {
+		super( thumbnailRoot );
+		this.map = map;
 		zoot.ZButton createPersonButton = new zoot.ZButton( new CreatePersonActionOperation() );
 		zoot.ZButton createTextButton = new zoot.ZButton( new CreateTextActionOperation() );
 		zoot.ZButton createMyInstanceButton = new zoot.ZButton( new CreateMyInstance() );
@@ -70,16 +73,20 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		buttonPane.add( createTextButton, java.awt.BorderLayout.NORTH );
 		buttonPane.add( fromFilePane, java.awt.BorderLayout.SOUTH );
 		
-		GalleryPane galleryPane = new GalleryPane( thumbnailRoot ) {
-			@Override
-			protected void handleFileActivation( java.io.File file ) {
-			}
-		};
-		
-		this.setLayout( new java.awt.BorderLayout() );
 		this.add( createPersonButton, java.awt.BorderLayout.WEST );
-		this.add( galleryPane, java.awt.BorderLayout.CENTER );
 		this.add( buttonPane, java.awt.BorderLayout.EAST );
+	}
+	@Override
+	protected String getAdornedTextFor( String name, boolean isDirectory, boolean isRequestedByPath ) {
+		if( this.map != null ) {
+			if( this.map.containsKey( name ) ) {
+				name = this.map.get( name );
+			}
+		}
+		return super.getAdornedTextFor( name, isDirectory, isRequestedByPath );
+	}
+	@Override
+	protected void handleFileActivation( java.io.File file ) {
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
@@ -98,7 +105,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 			}
 		};
 		frame.setSize( new java.awt.Dimension( 1024, 256 ) );
-		frame.getContentPane().add( new GalleryBrowser( thumbnailRoot ) );
+		frame.getContentPane().add( new GalleryBrowser( thumbnailRoot, null ) );
 		frame.setVisible( true );
 	}
 }

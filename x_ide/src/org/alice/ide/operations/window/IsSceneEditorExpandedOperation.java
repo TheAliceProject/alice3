@@ -29,7 +29,7 @@ public class IsSceneEditorExpandedOperation extends org.alice.ide.operations.Abs
 	public IsSceneEditorExpandedOperation( Boolean initialValue ) {
 		super( initialValue );
 		this.putValue( javax.swing.Action.NAME, "Is Scene Editor Expanded" );
-		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
+		//this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
 	}
 	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
 		this.getIDE().setSceneEditorExpanded( booleanStateContext.getNextValue() );

@@ -22,10 +22,21 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected zoot.ActionOperation createAboutOperation() {
 		return new org.alice.stageide.operations.help.AboutOperation();
 	}
+	
+	protected java.util.Map<String, String> createGalleryThumbnailsMap() {
+		java.util.Map<String, String> rv = new java.util.HashMap< String, String >();
+		rv.put( "thumbnails", "gallery" );
+		rv.put( "org.alice.apis.moveandturn.gallery", "Generic Alice Models" );
+		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters", "Looking Glass Characters" );
+		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes", "Looking Glass Scenery" );
+		return rv;
+	}
+	
 	@Override
 	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
 		java.io.File thumbnailRoot = new java.io.File( org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails" );
-		return new org.alice.stageide.gallerybrowser.GalleryBrowser( thumbnailRoot );
+		java.util.Map<String, String> map = this.createGalleryThumbnailsMap();
+		return new org.alice.stageide.gallerybrowser.GalleryBrowser( thumbnailRoot, map );
 	}
 	@Override
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {

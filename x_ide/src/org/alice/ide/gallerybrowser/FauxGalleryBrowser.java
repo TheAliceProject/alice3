@@ -27,11 +27,15 @@ package org.alice.ide.gallerybrowser;
  */
 public class FauxGalleryBrowser extends AbstractGalleryBrowser {
 	public FauxGalleryBrowser() {
+		super( null );
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.add( new zoot.ZLabel( "imagine a gallery browser here" ) );
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 256 );
+	}
+	@Override
+	protected void handleFileActivation( java.io.File file ) {
 	}
 }

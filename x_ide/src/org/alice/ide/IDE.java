@@ -123,6 +123,7 @@ public abstract class IDE extends zoot.ZFrame {
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.galleryBrowser );
 			this.root.setRightComponent( null );
+			this.left.setDividerLocation( this.getHeight()-300 );
 		} else {
 			this.root.setLeftComponent( this.left );
 			this.root.setRightComponent( this.right );
