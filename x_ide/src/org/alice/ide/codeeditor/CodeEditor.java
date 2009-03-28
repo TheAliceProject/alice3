@@ -680,30 +680,30 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 	}
 	public void dragStopped( zoot.DragAndDropContext dragAndDropContext ) {
 	}
-	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
-		if( CodeEditor.this.statementListPropertyPaneInfos != null ) {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : this.statementListPropertyPaneInfos ) {
-				if( statementListPropertyPaneInfo != null ) {
-					java.awt.Color color;
-					if( this.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
-						color = new java.awt.Color( 0, 0, 0, 127 );
-					} else {
-						color = null;
-						//color = new java.awt.Color( 255, 0, 0, 31 );
-					}
-					if( color != null ) {
-						java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
-						bounds = javax.swing.SwingUtilities.convertRectangle( this.getAsSeenBy(), bounds, this );
-						g2.setColor( color );
-						g2.fill( bounds );
-						g2.setColor( new java.awt.Color( 255, 255, 0, 255 ) );
-						g2.draw( bounds );
-					}
-				}
-			}
-		}
-	}
+//	@Override
+//	public void paint( java.awt.Graphics g ) {
+//		super.paint( g );
+//		if( CodeEditor.this.statementListPropertyPaneInfos != null ) {
+//			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+//			for( StatementListPropertyPaneInfo statementListPropertyPaneInfo : this.statementListPropertyPaneInfos ) {
+//				if( statementListPropertyPaneInfo != null ) {
+//					java.awt.Color color;
+//					if( this.currentUnder == statementListPropertyPaneInfo.getStatementListPropertyPane() ) {
+//						color = new java.awt.Color( 0, 0, 0, 127 );
+//					} else {
+//						color = null;
+//						//color = new java.awt.Color( 255, 0, 0, 31 );
+//					}
+//					if( color != null ) {
+//						java.awt.Rectangle bounds = statementListPropertyPaneInfo.getBounds();
+//						bounds = javax.swing.SwingUtilities.convertRectangle( this.getAsSeenBy(), bounds, this );
+//						g2.setColor( color );
+//						g2.fill( bounds );
+//						g2.setColor( new java.awt.Color( 255, 255, 0, 255 ) );
+//						g2.draw( bounds );
+//					}
+//				}
+//			}
+//		}
+//	}
 }

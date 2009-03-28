@@ -62,11 +62,11 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	
 	@Override
 	protected int getInsetBottom() {
-		return StatementLikeSubstance.INSET * 2;
+		return StatementLikeSubstance.INSET + 2;
 	}
 	@Override
 	protected int getInsetRight() {
-		return StatementLikeSubstance.INSET;
+		return StatementLikeSubstance.INSET + 4;
 	}
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
