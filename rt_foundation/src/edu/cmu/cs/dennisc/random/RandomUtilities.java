@@ -74,8 +74,11 @@ public class RandomUtilities {
 
 	public static <E extends Enum< ? >> E getRandomEnumConstant( Class< E > cls ) {
 		E[] enumConstants = cls.getEnumConstants();
-		assert enumConstants.length > 0 : cls;
-		int index = s_random.nextInt( enumConstants.length );
-		return enumConstants[ index ];
+		if( enumConstants.length > 0 ) {
+			int index = s_random.nextInt( enumConstants.length );
+			return enumConstants[ index ];
+		} else {
+			return null;
+		}
 	}
 }
