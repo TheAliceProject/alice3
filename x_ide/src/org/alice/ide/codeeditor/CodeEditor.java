@@ -402,7 +402,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 //				}
 			}
 			RootStatementListPropertyPane bodyPane = new RootStatementListPropertyPane();
-//			bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
+			bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
 			bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
 			
 			

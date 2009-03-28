@@ -26,15 +26,19 @@ package edu.cmu.cs.dennisc.swing;
  * @author Dennis Cosgrove
  */
 public class BorderFactory {
-	private static java.util.Map< java.awt.Insets, javax.swing.border.Border > outlinedBorderMap = new java.util.HashMap< java.awt.Insets, javax.swing.border.Border >();
+	private static edu.cmu.cs.dennisc.map.MapToMap< java.awt.Insets, java.awt.Color, javax.swing.border.Border > outlinedBorderMap = new edu.cmu.cs.dennisc.map.MapToMap< java.awt.Insets, java.awt.Color, javax.swing.border.Border >();
 	public static javax.swing.border.Border createOutlinedBorder( int top, int left, int bottom, int right, java.awt.Color color ) {
+//		return javax.swing.BorderFactory.createCompoundBorder( 
+//				javax.swing.BorderFactory.createLineBorder( color ), 
+//				javax.swing.BorderFactory.createEmptyBorder( top, left, bottom, right ) 
+//		);
 		java.awt.Insets insets = new java.awt.Insets( top, left, bottom, right );
-		javax.swing.border.Border rv = BorderFactory.outlinedBorderMap.get( insets );
+		javax.swing.border.Border rv = BorderFactory.outlinedBorderMap.get( insets, color );
 		if( rv != null ) {
 			//pass
 		} else {
 			rv = new edu.cmu.cs.dennisc.swing.border.OutlinedBorder( insets, color );
-			BorderFactory.outlinedBorderMap.put( insets, rv );
+			BorderFactory.outlinedBorderMap.put( insets, color, rv );
 		}
 		return rv; 
 	}
