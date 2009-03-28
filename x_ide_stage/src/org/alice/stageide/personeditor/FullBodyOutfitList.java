@@ -25,12 +25,16 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class FullBodyOutfitList extends AbstractLifeStageGenderArrayOfEnumConstantsList<Enum> {
+class FullBodyOutfitList extends AbstractArrayOfEnumConstantsList<Enum> {
 	public FullBodyOutfitList() {
 		this.setCellRenderer( new FullBodyOutfitListCellRenderer() );
 	}
 	@Override
-	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+	protected String getKey( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
+		return lifeStage.name() + " " + gender.name();
+	}
+	@Override
+	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
 		return new FullBodyOutfitListModel( lifeStage, gender );
 	}
 	@Override

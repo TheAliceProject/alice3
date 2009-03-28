@@ -27,6 +27,6 @@ package org.alice.stageide.personeditor;
  */
 class FullBodyOutfitListModel extends ArrayOfEnumConstantsListModel {
 	public FullBodyOutfitListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		super( org.alice.apis.stage.IngredientUtilities.get( lifeStage.getFullBodyOutfitInterface( gender ) ) );
+		super( org.alice.apis.stage.IngredientUtilities.get( lifeStage.getFullBodyOutfitInterface( gender ) ), null );
 	}
 }

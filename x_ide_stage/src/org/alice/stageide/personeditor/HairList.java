@@ -25,13 +25,17 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class HairList extends AbstractLifeStageGenderArrayOfEnumConstantsList<Enum> {
+class HairList extends AbstractArrayOfEnumConstantsList<Enum> {
 	public HairList() {
 		this.setCellRenderer( new HairListCellRenderer() );
 	}
 	@Override
-	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		return new HairListModel( lifeStage, gender );
+	protected String getKey( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
+		return lifeStage.name() + " " + gender.name() + " " + hairColor;
+	}
+	@Override
+	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
+		return new HairListModel( lifeStage, gender, hairColor );
 	}
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<Enum> context ) {

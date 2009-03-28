@@ -26,7 +26,11 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 class HairListModel extends ArrayOfEnumConstantsListModel {
-	public HairListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		super( org.alice.apis.stage.IngredientUtilities.get( lifeStage.getHairInterface( gender ) ) );
+	public HairListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, final String hairColor ) {
+		super( org.alice.apis.stage.IngredientUtilities.get( lifeStage.getHairInterface( gender ) ), new edu.cmu.cs.dennisc.pattern.Criterion< Enum >() {
+			public boolean accept( java.lang.Enum e ) {
+				return e.name().equals( hairColor );
+			}
+		} );
 	}
 }

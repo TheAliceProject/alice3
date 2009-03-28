@@ -30,6 +30,7 @@ public class PersonEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice
 	private PersonViewer personViewer = PersonViewer.getSingleton();
 	private IngredientsPane ingredientsPane = new IngredientsPane();
 	public PersonEditor() {
+		this.personViewer.setIngredientsPane( this.ingredientsPane );
 		javax.swing.JPanel container = new javax.swing.JPanel();
 		this.splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, container, this.ingredientsPane );
 		this.splitPane.setDividerLocation( 400 );

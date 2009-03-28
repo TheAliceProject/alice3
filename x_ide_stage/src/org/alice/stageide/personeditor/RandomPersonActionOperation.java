@@ -26,13 +26,11 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private IngredientsPane ingredientsPane;
-	public RandomPersonActionOperation( IngredientsPane ingredientsPane ) {
-		this.ingredientsPane = ingredientsPane;
-		this.putValue( javax.swing.Action.NAME, "random" );
+	public RandomPersonActionOperation() {
+		this.putValue( javax.swing.Action.NAME, "generate random selection" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		this.ingredientsPane.randomize();
+		PersonViewer.getSingleton().randomize();
 		actionContext.commit();
 	}
 }

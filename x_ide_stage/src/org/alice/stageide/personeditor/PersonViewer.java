@@ -29,7 +29,7 @@ import org.alice.apis.stage.*;
  */
 public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	static PersonViewer singleton = null;
-	
+
 	public static PersonViewer getSingleton() {
 		if( PersonViewer.singleton != null ) {
 			//pass
@@ -38,11 +38,11 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 		return PersonViewer.singleton;
 	}
-	
-	
+
+	private IngredientsPane ingredientsPane;
 	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
 	private edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person > mapToMap = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person >();
-	private LifeStage lifeStage = LifeStage.ADULT;
+	private LifeStage lifeStage = null;
 	private Gender gender = null;
 	private BaseSkinTone baseSkinTone = null;
 	private BaseEyeColor baseEyeColor = null;
@@ -53,23 +53,81 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private PersonViewer() {
 		this.mapToMap.put( LifeStage.ADULT, Gender.FEMALE, new FemaleAdult() );
 		this.mapToMap.put( LifeStage.ADULT, Gender.MALE, new MaleAdult() );
-//		this.setLifeStage( LifeStage.ADULT );
-//		this.setGender( Gender.FEMALE );
-//		this.setBaseSkinTone( baseSkinTone.getRandom() );
-//		this.setFullBodyOutfit( FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE );
-//		this.setHair( FemaleAdultHairGetFabulous.RED );
-//		this.setFitnessLevel( FitnessLevel.NORMAL );
+		this.randomize();
+		//		this.setLifeStage( LifeStage.ADULT );
+		//		this.setGender( Gender.FEMALE );
+		//		this.setBaseSkinTone( baseSkinTone.getRandom() );
+		//		this.setFullBodyOutfit( FemaleAdultFullBodyOutfitAmbulanceDriver.BLUE );
+		//		this.setHair( FemaleAdultHairGetFabulous.RED );
+		//		this.setFitnessLevel( FitnessLevel.NORMAL );
 	}
+	public IngredientsPane getIngredientsPane() {
+		return this.ingredientsPane;
+	}
+	public void setIngredientsPane( IngredientsPane ingredientsPane ) {
+		this.ingredientsPane = ingredientsPane;
+		if( this.ingredientsPane != null ) {
+			this.ingredientsPane.refresh();
+		}
+	}
+	private void updatePerson() {
+		if( this.lifeStage != null && this.gender != null ) {
+			Person person = this.mapToMap.get( this.lifeStage, this.gender );
+			if( person != null ) {
+				this.dragAdapter.setSelectedObject( person.getSGTransformable() );
+				if( this.baseSkinTone != null ) {
+					person.setSkinTone( this.baseSkinTone );
+					if( this.fitnessLevel != null ) {
+						person.setFitnessLevel( this.fitnessLevel );
+						if( this.fullBodyOutfit != null ) {
+							person.setOutfit( this.fullBodyOutfit );
+						}
+					}
+				}
+				if( this.baseEyeColor != null ) {
+					person.setEyeColor( this.baseEyeColor );
+				}
+				if( this.hair != null ) {
+					person.setHair( this.hair );
+				}
+				this.setModel( person );
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePerson", this.lifeStage, this.gender );
+			}
+			if( this.ingredientsPane != null ) {
+				this.ingredientsPane.refresh();
+			}
+		}
+	}
+
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.getCamera().moveTo( this.getScene().createOffsetStandIn( -1, 2, -7 ), 0.0 );
 		this.getCamera().pointAt( this.getScene().createOffsetStandIn( 0, 1.5, 0 ), 0.0 );
 		//this._sunLight.turn( apis.moveandturn.TurnDirection.FORWARD, org.alice.apis.moveandturn.AngleInRevolutions( 0.125 ) );
-
 		this.dragAdapter.setOnscreenLookingGlass( this.getOnscreenLookingGlass() );
+		this.updatePerson();
 	}
 
+	public void randomize() {
+		boolean isUpdateDesired = this.lifeStage != null;
+		//this.lifeStage = LifeStage.getRandom();
+		this.lifeStage = LifeStage.ADULT;
+		this.gender = Gender.getRandom();
+		this.baseSkinTone = BaseSkinTone.getRandom();
+		this.baseEyeColor = BaseEyeColor.getRandom();
+		this.fullBodyOutfit = IngredientUtilities.getRandomEnumConstant( this.lifeStage.getFullBodyOutfitInterface( this.gender ) );
+		this.hair = IngredientUtilities.getRandomEnumConstant( this.lifeStage.getHairInterface( this.gender ) );
+		//this.fitnessLevel = FitnessLevel.getRandom();
+		this.fitnessLevel = FitnessLevel.NORMAL;
+		if( isUpdateDesired ) {
+			this.updatePerson();
+		}
+	}
+	public LifeStage getLifeStage() {
+		return this.lifeStage;
+	}
 	public void setLifeStage( LifeStage lifeStage ) {
 		if( this.lifeStage == lifeStage ) {
 			//pass
@@ -77,6 +135,10 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			this.lifeStage = lifeStage;
 			this.updatePerson();
 		}
+	}
+
+	public Gender getGender() {
+		return this.gender;
 	}
 	public void setGender( Gender gender ) {
 		if( this.gender == gender ) {
@@ -86,6 +148,9 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			this.updatePerson();
 		}
 	}
+	public BaseEyeColor getBaseEyeColor() {
+		return this.baseEyeColor;
+	}
 	public void setBaseEyeColor( BaseEyeColor baseEyeColor ) {
 		if( this.baseEyeColor == baseEyeColor ) {
 			//pass
@@ -93,6 +158,9 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			this.baseEyeColor = baseEyeColor;
 			this.updatePerson();
 		}
+	}
+	public BaseSkinTone getBaseSkinTone() {
+		return this.baseSkinTone;
 	}
 	public void setBaseSkinTone( BaseSkinTone baseSkinTone ) {
 		if( this.baseSkinTone == baseSkinTone ) {
@@ -102,6 +170,9 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			this.updatePerson();
 		}
 	}
+	public FullBodyOutfit getFullBodyOutfit() {
+		return this.fullBodyOutfit;
+	}
 	public void setFullBodyOutfit( FullBodyOutfit fullBodyOutfit ) {
 		if( this.fullBodyOutfit == fullBodyOutfit ) {
 			//pass
@@ -110,6 +181,12 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			this.updatePerson();
 		}
 	}
+	
+	
+	
+	public Hair getHair() {
+		return this.hair;
+	}
 	public void setHair( Hair hair ) {
 		if( this.hair == hair ) {
 			//pass
@@ -117,6 +194,25 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			this.hair = hair;
 			this.updatePerson();
 		}
+	}
+	
+	public String getHairColor() {
+		return this.hair.toString();
+	}
+	public void setHairColor( String hairColor ) {
+		if( this.hair != null ) {
+			Class<Enum> cls = (Class<Enum>)this.hair.getClass();
+			for( Enum e : cls.getEnumConstants() ) {
+				if( e.name().equals( hairColor ) ) {
+					this.setHair( (Hair)e );
+					break;
+				}
+			}
+		}
+	}
+	
+	public FitnessLevel getFitnessLevel() {
+		return this.fitnessLevel;
 	}
 	public void setFitnessLevel( FitnessLevel fitnessLevel ) {
 		if( this.fitnessLevel == fitnessLevel ) {
@@ -127,28 +223,6 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
-	private void updatePerson() {
-		if( this.lifeStage != null && this.gender != null ) {
-			Person person = this.mapToMap.get( this.lifeStage, this.gender );
-			this.dragAdapter.setSelectedObject( person.getSGTransformable() );
-			if( this.baseSkinTone != null ) {
-				person.setSkinTone( this.baseSkinTone );
-				if( this.fitnessLevel != null ) {
-					person.setFitnessLevel( this.fitnessLevel );
-					if( this.fullBodyOutfit != null ) {
-						person.setOutfit( this.fullBodyOutfit );
-					}
-				}
-			}
-			if( this.baseEyeColor != null ) {
-				person.setEyeColor( this.baseEyeColor );
-			}
-			if( this.hair != null ) {
-				person.setHair( this.hair );
-			}
-			this.setModel( person );
-		}
-	}
 	//	def initialize( self ):
 	//		ecc.dennisc.alice.ide.moveandturn.editors.ModelViewer.initialize( self )
 	//		#self._scene.setAmbientLightBrightness( 1.0 )

@@ -25,26 +25,28 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractLifeStageGenderArrayOfEnumConstantsList<E extends Enum> extends ArrayOfEnumConstantsList<E> {
+abstract class AbstractArrayOfEnumConstantsList<E extends Enum> extends ArrayOfEnumConstantsList<E> {
 	private java.util.Map< String, javax.swing.ListModel > map = new java.util.HashMap< String, javax.swing.ListModel >();
-	private static String getKey( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		return lifeStage.name() + " " + gender.name();
-	}
-	public AbstractLifeStageGenderArrayOfEnumConstantsList() {
+	protected abstract String getKey( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor );
+	public AbstractArrayOfEnumConstantsList() {
 		super( new javax.swing.DefaultListModel() );
 	}
-	public void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+	public void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor  ) {
 		assert lifeStage != null;
 		assert gender != null;
-		String key = getKey( lifeStage, gender );
+		String key = getKey( lifeStage, gender, hairColor );
 		javax.swing.ListModel listModel = this.map.get( key );
 		if( listModel != null ) {
 			//pass
 		} else {
-			listModel = this.createListModel( lifeStage, gender );
+			listModel = this.createListModel( lifeStage, gender, hairColor );
 			this.map.put( key, listModel );
+		}
+		if( this.getModel() == listModel ) {
+			//pass
+		} else {
 			this.setModel( listModel );
 		}
 	}
-	protected abstract javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );
+	protected abstract javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor );
 }

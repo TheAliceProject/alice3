@@ -31,7 +31,7 @@ class HairColorList extends AbstractList< String > {
 	}
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<String> context ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: HairColorList", context );
+		PersonViewer.getSingleton().setHairColor( (String)context.getNextSelection() );
 		context.cancel();
 	}
 }

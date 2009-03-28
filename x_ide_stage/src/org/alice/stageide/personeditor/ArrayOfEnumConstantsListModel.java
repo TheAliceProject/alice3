@@ -26,18 +26,20 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class ArrayOfEnumConstantsListModel extends ArrayListModel {
-	static Object[] to( Class<?>[] clses ) {
+	static Object[] to( Class<?>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<Enum> criterion ) {
 		java.util.List< Enum > list = new java.util.LinkedList< Enum >();
 		for( Class<?> cls : clses ) {
 			Class< ? extends Enum > enumCls = (Class< ? extends Enum >)cls;
 			for( Enum e : enumCls.getEnumConstants() ) {
-				list.add( e );
+				if( criterion == null || criterion.accept( e ) ) {
+					list.add( e );
+				}
 			}
 		}
 		return list.toArray();
 	}
-	public ArrayOfEnumConstantsListModel( Class<?>[] clses ) {
-		super( to( clses ) );
+	public ArrayOfEnumConstantsListModel( Class<?>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<Enum> criterion ) {
+		super( to( clses, criterion ) );
 	}
 }
 

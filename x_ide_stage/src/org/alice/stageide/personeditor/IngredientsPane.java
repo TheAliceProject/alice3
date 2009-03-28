@@ -34,18 +34,12 @@ class IngredientsPane extends swing.GridBagPane {
 	private HairColorList hairColorList = new HairColorList();
 	private HairList hairList = new HairList();
 	private FullBodyOutfitList fullBodyOutfitList = new FullBodyOutfitList();
+	private zoot.ZButton randomizeButton = new zoot.ZButton( new RandomPersonActionOperation() );
 	public IngredientsPane() {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackground( new java.awt.Color( 220, 220, 255 ) );
 		this.setOpaque( true );
-		lifeStageList.setSelectedValue( org.alice.apis.stage.LifeStage.ADULT, true );
-//		this.randomize();
-//		this.hairPane.handleEpicChange( lifeStageList.getSelectedTypedValue(), genderList.getSelectedTypedValue() );
-//		this.fullBodyOutfitPane.handleEpicChange( lifeStageList.getSelectedTypedValue(), genderList.getSelectedTypedValue() );
-//		genderList.setSelectedValue( org.alice.apis.stage.Gender.FEMALE, true );
-		this.hairList.handleEpicChange( org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.Gender.FEMALE );
-		this.fullBodyOutfitList.handleEpicChange( org.alice.apis.stage.LifeStage.ADULT, org.alice.apis.stage.Gender.FEMALE );
-		
+
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -54,9 +48,11 @@ class IngredientsPane extends swing.GridBagPane {
 		final int INSET_TOP = 12;
 		final int INSET_LEFT = 2;
 
-		this.add( new zoot.ZLabel( "life stage" ), gbc );
-		this.add( this.lifeStageList, gbc );
+//		this.add( new zoot.ZLabel( "life stage" ), gbc );
+//		this.add( this.lifeStageList, gbc );
 		
+		this.add( this.randomizeButton, gbc );
+
 		gbc.insets.top = INSET_TOP;
 		this.add( new zoot.ZLabel( "gender" ), gbc );
 		gbc.insets.top = 0;
@@ -110,10 +106,37 @@ class IngredientsPane extends swing.GridBagPane {
 		this.add( new javax.swing.JScrollPane( this.fullBodyOutfitList ), gbc ); 
 	}
 	
-	public void randomize() {
-		this.genderList.randomize();
-		this.baseSkinToneList.randomize();
-		this.baseEyeColorList.randomize();
-		//this.fitnessLevelPane.randomize();
+	public void refresh() {
+		final boolean shouldScroll = true;
+		final PersonViewer personViewer = PersonViewer.getSingleton();
+		org.alice.apis.stage.LifeStage lifeStage = personViewer.getLifeStage();
+		org.alice.apis.stage.Gender gender = personViewer.getGender();
+		org.alice.apis.stage.Hair hair = personViewer.getHair();
+		if( hair != null ) {
+			String hairColor = hair.toString();
+			this.lifeStageList.setSelectedValue( lifeStage, shouldScroll );
+			this.genderList.setSelectedValue( gender, shouldScroll );
+			this.fullBodyOutfitList.handleEpicChange( lifeStage, gender, hairColor );
+			this.hairList.handleEpicChange( lifeStage, gender, hairColor );
+			this.hairList.setSelectedValue( hair, shouldScroll );
+			this.hairColorList.setSelectedValue( hairColor, shouldScroll );
+			
+			this.fullBodyOutfitList.setSelectedValue( personViewer.getFullBodyOutfit(), shouldScroll );
+			this.baseSkinToneList.setSelectedValue( personViewer.getBaseSkinTone(), shouldScroll );
+			this.baseEyeColorList.setSelectedValue( personViewer.getBaseEyeColor(), shouldScroll );
+			
+//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//				public void run() {
+//				}
+//			} );
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hair is null" );
+		}
 	}
+//	public void randomize() {
+//		this.genderList.randomize();
+//		this.baseSkinToneList.randomize();
+//		this.baseEyeColorList.randomize();
+//		//this.fitnessLevelPane.randomize();
+//	}
 }
