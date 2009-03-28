@@ -126,7 +126,13 @@ class CommentLine extends javax.swing.JTextArea {
 public class CommentPane extends AbstractStatementPane {
 	public CommentPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, comment, owner );
-		edu.cmu.cs.dennisc.moot.ZLabel label = new edu.cmu.cs.dennisc.moot.ZLabel( "comment:" );
+		String text;
+		if( getIDE().isJava() ) {
+			text = "//";
+		} else {
+			text = "comment";
+		}
+		zoot.ZLabel label = new zoot.ZLabel( text );
 		label.setFontToDerivedFont( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
 		this.add( label );
 		this.add( new CommentLine( comment ) );

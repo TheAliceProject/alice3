@@ -44,7 +44,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	public Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementCls() {
 		return this.statementCls;
 	}
-	private static final int INSET = 4;
+	private static final int INSET = 2;
 	@Override
 	protected int getInsetTop() {
 		return StatementLikeSubstance.INSET;
@@ -62,7 +62,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	
 	@Override
 	protected int getInsetBottom() {
-		return StatementLikeSubstance.INSET;
+		return StatementLikeSubstance.INSET * 2;
 	}
 	@Override
 	protected int getInsetRight() {

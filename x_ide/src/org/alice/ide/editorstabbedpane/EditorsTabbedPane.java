@@ -36,17 +36,17 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 		this.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( EditorsTabbedPane.this.getSelectedComponent() );
-				edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice nextFocusedCode;
+				edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode;
 				if( codeEditor != null ) {
 					nextFocusedCode = codeEditor.getCode();
 				} else {
 					nextFocusedCode = null;
 				}
-				org.alice.ide.IDE.getSingleton().setFocusedCode( (edu.cmu.cs.dennisc.alice.ast.AbstractCode)nextFocusedCode );
+				org.alice.ide.IDE.getSingleton().setFocusedCode( nextFocusedCode );
 			}
 		} );
 	}
-	
+
 	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( java.awt.Component component ) {
 		if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
@@ -55,31 +55,30 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 			return null;
 		}
 	}
-	private void edit( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( code );
+	private void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		assert code != null;
 		for( java.awt.Component component : this.getComponents() ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( component );
 			org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( component );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( codeEditor );
 			if( codeEditor != null ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( codeEditor.getCode() );
 				if( codeEditor.getCode() == code ) {
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "found: " + code );
 					this.setSelectedComponent( component );
 					return;
 				}
 			}
 		}
-		org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
-		//this.addTab( "todo: code title", codeEditor );
-		this.add( codeEditor );
-		this.setSelectedComponent( codeEditor );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
+				EditorsTabbedPane.this.addTab( code.getName(), codeEditor );
+				EditorsTabbedPane.this.setSelectedComponent( codeEditor );
+			}
+		} );
 	}
-	@Override
-	public boolean isCloseButtonDesiredAt( int index ) {
-		return index > 0;
-	}
-	
+//	@Override
+//	public boolean isCloseButtonDesiredAt( int index ) {
+//		return index > 0;
+//	}
+
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
 	}
 	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
@@ -90,19 +89,20 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
 	}
 
-
 	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
 	}
 	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		this.edit( (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)e.getNextValue() );
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
+		if( code != null ) {
+			this.edit( e.getNextValue() );
+		}
 	}
 
-
 	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
+		this.removeAll();
 	}
 	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
 	}
-
 
 	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
 	}

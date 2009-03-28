@@ -22,6 +22,8 @@
  */
 package zoot;
 
+import javax.swing.UIManager;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -50,9 +52,15 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 
 	public ZTabbedPane() {
 		this.setTabLayoutPolicy( javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT );
-		this.setUI( new ZTabbedPaneUI( this ) );
+		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 90 ) );
+		//this.setOpaque( false );
 	}
 
+	@Override
+	public void updateUI() {
+		javax.swing.UIManager.put("TabbedPane.contentAreaColor", new java.awt.Color( 63, 63, 81 ) );
+		this.setUI( new ZTabbedPaneUI( this ) );
+	}
 	public ActionOperation getTabCloseOperation() {
 		return this.tabCloseOperation;
 	}
@@ -109,7 +117,7 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		ZTabbedPane tabbedPane = new ZTabbedPane() {
 			@Override
 			public boolean isCloseButtonDesiredAt(int index) {
-				return index % 2 == 1;
+				return index % 2 == 0;
 			}
 		};
 		tabbedPane.setTabCloseOperation( tabCloseOperation );
@@ -117,6 +125,7 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		for( String tabTitle : tabTitles ) {
 			tabbedPane.addTab( tabTitle, new MonthPane( tabTitle ) );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "addTab", tabbedPane.getTabCount() );
+			break;
 		}
 		frame.getContentPane().add( tabbedPane );
 		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );

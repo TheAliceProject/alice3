@@ -50,7 +50,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
 		StageIDE ide = new StageIDE();
 		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
-		ide.setSize( 1280, 1024 );
+		ide.setSize( 1280, 800 );
 		ide.setVisible( true );
 	}
 

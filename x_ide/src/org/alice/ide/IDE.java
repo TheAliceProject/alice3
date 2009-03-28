@@ -25,7 +25,6 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-
 public abstract class IDE extends zoot.ZFrame {
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static IDE singleton;
@@ -237,7 +236,12 @@ public abstract class IDE extends zoot.ZFrame {
 			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane();
 			openProjectPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
 			java.io.File file = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle file ", file );
+			if( file != null ) {
+				actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
+				actionContext.commit();
+			} else {
+				actionContext.cancel();
+			}
 		}
 	};
 	public zoot.ActionOperation getSelectProjectToOpenOperation() {
@@ -247,10 +251,33 @@ public abstract class IDE extends zoot.ZFrame {
 	protected javax.swing.JMenuBar createMenuBar() {
 		javax.swing.JMenuBar rv = new javax.swing.JMenuBar();
 
-		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, new org.alice.ide.operations.file.NewProjectOperation(), new org.alice.ide.operations.file.OpenProjectOperation(), this.saveOperation, new org.alice.ide.operations.file.SaveAsProjectOperation(), zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.file.RevertProjectOperation(), zoot.ZManager.MENU_SEPARATOR, this.exitOperation );
-		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, new org.alice.ide.operations.edit.UndoOperation(), new org.alice.ide.operations.edit.RedoOperation(), zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.edit.CutOperation(),
-				new org.alice.ide.operations.edit.CopyOperation(), new org.alice.ide.operations.edit.PasteOperation() );
-		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, this.runOperation );
+		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( 
+				"File", 
+				java.awt.event.KeyEvent.VK_F, 
+				new org.alice.ide.operations.file.NewProjectOperation(), 
+				new org.alice.ide.operations.file.OpenProjectOperation(), 
+				this.saveOperation, 
+				new org.alice.ide.operations.file.SaveAsProjectOperation(), 
+				zoot.ZManager.MENU_SEPARATOR, 
+				new org.alice.ide.operations.file.RevertProjectOperation(), 
+				zoot.ZManager.MENU_SEPARATOR, 
+				this.exitOperation 
+		);
+		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( 
+				"Edit", 
+				java.awt.event.KeyEvent.VK_E, 
+				new org.alice.ide.operations.edit.UndoOperation(), 
+				new org.alice.ide.operations.edit.RedoOperation(), 
+				zoot.ZManager.MENU_SEPARATOR, 
+				new org.alice.ide.operations.edit.CutOperation(),
+				new org.alice.ide.operations.edit.CopyOperation(), 
+				new org.alice.ide.operations.edit.PasteOperation() 
+		);
+		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( 
+				"Run", 
+				java.awt.event.KeyEvent.VK_R, 
+				this.runOperation 
+		);
 
 		class LocaleItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< java.util.Locale > {
 			public LocaleItemSelectionOperation() {
@@ -265,13 +292,6 @@ public abstract class IDE extends zoot.ZFrame {
 					}
 				}, 0 );
 			}
-			//			public String getText( java.util.Locale locale ) {
-			//				return locale.getDisplayName();
-			//			}
-			//			public javax.swing.Icon getIcon( java.util.Locale locale ) {
-			//				return null;
-			//			}
-
 			@Override
 			protected String getNameFor( int index, java.util.Locale locale ) {
 				if( locale != null ) {
@@ -280,7 +300,6 @@ public abstract class IDE extends zoot.ZFrame {
 					return "null";
 				}
 			}
-
 			public void performSelectionChange( zoot.ItemSelectionContext< java.util.Locale > context ) {
 				IDE.this.setLocale( context.getNextSelection() );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "performSelectionChange:", context );
@@ -288,11 +307,24 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		}
 
-		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
+		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( 
+				"Set Locale", 
+				java.awt.event.KeyEvent.VK_L, 
+				new LocaleItemSelectionOperation() 
+		);
 
-		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation );
+		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( 
+				"Window", 
+				java.awt.event.KeyEvent.VK_W, 
+				this.isSceneEditorExpandedOperation 
+		);
 		windowMenu.add( setLocaleMenu );
-		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), this.createAboutOperation() );
+		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( 
+				"Help", 
+				java.awt.event.KeyEvent.VK_H, 
+				new org.alice.ide.operations.help.HelpOperation(), 
+				this.createAboutOperation() 
+		);
 		rv.add( fileMenu );
 		rv.add( editMenu );
 		rv.add( runMenu );
@@ -1286,16 +1318,18 @@ public abstract class IDE extends zoot.ZFrame {
 	public static java.awt.Color getConstructorColor() {
 		return getFunctionColor();
 	}
-	public static java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice ) {
-		if( codeDeclaredInAlice instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)codeDeclaredInAlice;
+	public static java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
 			if( methodDeclaredInAlice.isProcedure() ) {
 				return getProcedureColor();
 			} else {
 				return getFunctionColor();
 			}
-		} else {
+		} else if( code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
 			return getConstructorColor();
+		} else {
+			return java.awt.Color.GRAY;
 		}
 	}
 	public static java.awt.Color getFieldColor() {

@@ -218,12 +218,9 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	@Override
 	protected void paintTabArea( java.awt.Graphics g, int tabPlacement, int selectedIndex ) {
 		//g.setColor( this.darkShadow );
-		g.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 90 ) );
+		java.awt.Color color = javax.swing.UIManager.getColor("TabbedPane.contentAreaColor");
+		g.setColor( color );
 		java.awt.Rectangle bounds = g.getClipBounds();
-//		bounds.x -= 100;
-//		bounds.x = Math.max( bounds.x, 0 );
-//		bounds.width += 200;
-//		g.setClip( bounds.x, bounds.y, bounds.width, bounds.height );
 		g.fillRect( bounds.x, bounds.y, bounds.width, bounds.height );
 		super.paintTabArea( g, tabPlacement, selectedIndex );
 	}
@@ -344,9 +341,12 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	@Override
 	protected void paintContentBorderBottomEdge( java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h ) {
 	}
-	//	@Override
-	//	protected void paintContentBorderLeftEdge( java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h ) {
-	//	}
+	@Override
+	protected void paintContentBorderLeftEdge( java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h ) {
+		if( this.tabPane.getTabCount() > 0 ) {
+			super.paintContentBorderLeftEdge( g, tabPlacement, selectedIndex, x, y, w, h );
+		}
+	}
 	@Override
 	protected void paintContentBorderRightEdge( java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h ) {
 	}

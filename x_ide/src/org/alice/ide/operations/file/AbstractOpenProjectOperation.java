@@ -26,11 +26,11 @@ package org.alice.ide.operations.file;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOpenProjectOperation extends AbstractClearanceActionOperation {
+	public static final Object FILE_KEY = "FILE_KEY";
 	protected abstract boolean isNew();
 	protected zoot.ActionOperation getSelectProjectToOpenOperation() {
 		return this.getIDE().getSelectProjectToOpenOperation();
 	}
-	
 	public void perform( zoot.ActionContext actionContext ) {
 		if( this.getIDE().isProjectUpToDateWithFile() ) {
 			//pass
@@ -46,10 +46,9 @@ public abstract class AbstractOpenProjectOperation extends AbstractClearanceActi
 		if( actionContext.isCancelled() ) {
 			//pass
 		} else {
-			zoot.Context selectContext = actionContext.perform( this.getSelectProjectToOpenOperation(), null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
-			if( selectContext.isCommitted() ) {
-				final Object FILE_KEY = "FILE_KEY";
-				java.io.File file = selectContext.get( FILE_KEY, java.io.File.class );
+			zoot.ActionContext selectProjectContext = actionContext.perform( this.getSelectProjectToOpenOperation(), null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			if( selectProjectContext.isCommitted() ) {
+				java.io.File file = selectProjectContext.get( FILE_KEY, java.io.File.class );
 				if( file != null ) {
 					this.getIDE().loadProjectFrom( file );
 				} else {

@@ -39,7 +39,6 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 			pad = INTRASTICIAL_PAD;
 		}
 		this.setLayout( new edu.cmu.cs.dennisc.swing.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, pad ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 12, 16 ) );
 		
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
@@ -71,17 +70,34 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 //			}
 //		} );
 	}
+	
+	public java.awt.Rectangle getDropBounds() {
+		java.awt.Rectangle rv = javax.swing.SwingUtilities.getLocalBounds( this );
+		final int DELTA = this.getFont().getSize() + 4;
+		rv.y -= DELTA;
+		rv.height += DELTA;
+		return rv;
+	}
+
+	
 	@Override
 	protected javax.swing.JComponent createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)instance;
 		return this.getFactory().createStatementPane( statement, getProperty() );
 	}
+	
 	@Override
 	protected void refresh() {
 		super.refresh();
+		int bottom;
 		if( this.getComponentCount() == 0 ) {
 			this.add( new EmptyStatementListAfforance() );
+			bottom = 0;
+		} else {
+			bottom = 4;
 		}
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, bottom, 16 ) );
+		repaint();
 	}
 	public boolean isFigurativelyEmpty() {
 		return this.getComponent( 0 ) instanceof EmptyStatementListAfforance;
