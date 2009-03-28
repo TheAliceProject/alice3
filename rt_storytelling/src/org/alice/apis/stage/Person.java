@@ -263,7 +263,7 @@ public abstract class Person extends Model {
 	public Outfit getOutfit() {
 		return m_outfit;
 	}
-	protected void setOutfit( Outfit outfit ) {
+	public void setOutfit( Outfit outfit ) {
 		assert outfit != null;
 		m_outfit = outfit;
 		m_nebPerson.setOutfit( outfit );
