@@ -27,7 +27,7 @@ package org.alice.ide.cascade.customfillin;
  */
 public class CustomFloatPane extends CustomPane< Float > {
 	public CustomFloatPane() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getIDE().getPreviousExpression();
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FloatLiteral ) {
 			edu.cmu.cs.dennisc.alice.ast.FloatLiteral floatLiteral = (edu.cmu.cs.dennisc.alice.ast.FloatLiteral)previousExpression;
 			this.setAndSelectText( Float.toString( floatLiteral.value.getValue() ) );

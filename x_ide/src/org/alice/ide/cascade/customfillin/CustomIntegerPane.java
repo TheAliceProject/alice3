@@ -27,7 +27,7 @@ package org.alice.ide.cascade.customfillin;
  */
 class CustomIntegerPane extends CustomPane< Integer > {
 	public CustomIntegerPane() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getIDE().getPreviousExpression();
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.IntegerLiteral ) {
 			edu.cmu.cs.dennisc.alice.ast.IntegerLiteral integerLiteral = (edu.cmu.cs.dennisc.alice.ast.IntegerLiteral)previousExpression;
 			this.setAndSelectText( Integer.toString( integerLiteral.value.getValue() ) );

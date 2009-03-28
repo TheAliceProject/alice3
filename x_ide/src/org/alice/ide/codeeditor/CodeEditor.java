@@ -469,7 +469,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 			if( source != null && source.isAncestorOf( statementListPropertyPane ) ) {
 				continue;
 			}
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( statementListPropertyPane );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( statementListPropertyPane );
 			java.awt.Rectangle bounds = javax.swing.SwingUtilities.convertRectangle( statementListPropertyPane, statementListPropertyPane.getDropBounds(), this.getAsSeenBy() );
 			bounds.x = 0;
 			bounds.width = this.getAsSeenBy().getWidth() - bounds.x;

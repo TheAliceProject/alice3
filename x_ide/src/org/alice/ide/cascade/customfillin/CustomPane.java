@@ -26,16 +26,30 @@ package org.alice.ide.cascade.customfillin;
  * @author Dennis Cosgrove
  */
 abstract class CustomPane<E> extends swing.Pane implements zoot.InputValidator {
+	private zoot.ZLabel label = new zoot.ZLabel();
 	private zoot.ZTextField textField = new zoot.ZTextField();
 	public CustomPane() {
+		this.setLabelText( "value:" );
 		this.setLayout( new java.awt.BorderLayout() );
-		this.add( new zoot.ZLabel( "value: " ), java.awt.BorderLayout.WEST );
+		this.add( this.label, java.awt.BorderLayout.WEST );
 		this.add( this.textField, java.awt.BorderLayout.CENTER );
 	}
-	
+	public void setLabelText( String labelText ) {
+		this.label.setText( labelText );
+	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		org.alice.ide.IDE ide = this.getIDE();
+		if( ide != null ) {
+			return ide.getPreviousExpression();
+		} else {
+			return null;
+		}
+	}
+	
+
 	
 	public void setAndSelectText( String text ) {
 		this.textField.setText( text );
