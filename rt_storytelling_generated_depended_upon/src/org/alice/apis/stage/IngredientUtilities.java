@@ -200,7 +200,7 @@ public abstract class IngredientUtilities {
 		s_map.put( 
 			FemaleAdultHair.class,
 			new Class/*< ? extends FemaleAdultHair >*/[] {
-				FemaleAdultHairBeanie.class ,
+//				FemaleAdultHairBeanie.class ,
 				FemaleAdultHairBraids.class ,
 				FemaleAdultHairCornRowsLong.class ,
 				FemaleAdultHairDreadlockShort.class ,
@@ -210,7 +210,7 @@ public abstract class IngredientUtilities {
 				FemaleAdultHairRosettes.class ,
 				FemaleAdultHairShocked.class ,
 				FemaleAdultHairShortSlick.class , 
-				FemaleAdultHairBald.class
+//				FemaleAdultHairBald.class
 			}
 		);
 	}
@@ -223,7 +223,12 @@ public abstract class IngredientUtilities {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( (Class<E>[])get( cls ) );
 	}
 	public static <E extends Ingredient> E getRandomEnumConstant( Class< E > cls ) {
-		Class enumCls = getRandomClass( cls );
-		return (E)edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( enumCls );
+		while( true ) {
+			Class enumCls = getRandomClass( cls );
+			E rv = (E)edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( enumCls );
+			if( rv != null ) {
+				return rv;
+			}
+		}
 	}
 }
