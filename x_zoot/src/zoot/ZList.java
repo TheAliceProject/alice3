@@ -25,5 +25,31 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZList< E > extends javax.swing.JList {
+public class ZList<E> extends javax.swing.JList {
+	private ItemSelectionOperation itemSelectionOperation;
+	private javax.swing.event.ListSelectionListener listSelectionAdapter = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			if( e.getValueIsAdjusting() ) {
+				//pass
+			} else {
+				if( ZList.this.itemSelectionOperation != null ) {
+					ZManager.performIfAppropriate( ZList.this.itemSelectionOperation, e, ZManager.CANCEL_IS_FUTILE, null, ZList.this.getSelectedValue() );
+				}
+			}
+		}
+	};
+	public ItemSelectionOperation getItemSelectionOperation() {
+		return this.itemSelectionOperation;
+	}
+	public void setItemSelectionOperation( ItemSelectionOperation itemSelectionOperation ) {
+		if( this.itemSelectionOperation != null ) {
+			this.removeListSelectionListener( this.listSelectionAdapter );
+			this.setModel( new javax.swing.DefaultListModel() );
+		}
+		this.itemSelectionOperation = itemSelectionOperation;
+		if( this.itemSelectionOperation != null ) {
+			this.setModel( this.itemSelectionOperation.getListModel() );
+			this.addListSelectionListener( this.listSelectionAdapter );
+		}
+	}
 }

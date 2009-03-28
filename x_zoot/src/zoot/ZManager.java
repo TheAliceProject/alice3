@@ -215,10 +215,10 @@ public class ZManager {
 		//		}
 	}
 
-	public static ItemSelectionContext performIfAppropriate( ItemSelectionOperation< ? > singleSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
-		assert singleSelectionOperation != null;
+	public static ItemSelectionContext performIfAppropriate( ItemSelectionOperation< ? > itemSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
+		assert itemSelectionOperation != null;
 		ItemSelectionContext rv = new MySingleSelectionContext( e, isCancelWorthwhile, previousSelection, nextSelection );
-		singleSelectionOperation.performSelectionChange( rv );
+		itemSelectionOperation.performSelectionChange( rv );
 		return rv;
 	}
 	//public static ZMenu createMenu( StateOperation< java.util.ArrayList< E > > stateOperation )

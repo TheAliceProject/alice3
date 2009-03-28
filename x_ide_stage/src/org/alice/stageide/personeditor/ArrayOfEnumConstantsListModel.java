@@ -25,31 +25,19 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
-	private javax.swing.JSplitPane splitPane;
-	private PersonViewer personViewer = PersonViewer.getSingleton();
-	private IngredientsPane ingredientsPane = new IngredientsPane();
-	public PersonEditor() {
-		javax.swing.JPanel container = new javax.swing.JPanel();
-		this.splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, container, this.ingredientsPane );
-		this.splitPane.setDividerLocation( 400 );
-		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		this.add( this.splitPane );
-		
-		personViewer.showInAWTContainer( container, new String[] {} );
+abstract class ArrayOfEnumConstantsListModel extends ArrayListModel {
+	static Object[] to( Class<?>[] clses ) {
+		java.util.List< Enum > list = new java.util.LinkedList< Enum >();
+		for( Class<?> cls : clses ) {
+			Class< ? extends Enum > enumCls = (Class< ? extends Enum >)cls;
+			for( Enum e : enumCls.getEnumConstants() ) {
+				list.add( e );
+			}
+		}
+		return list.toArray();
 	}
-	public static void main( String[] args ) {
-		zoot.ZFrame frame = new zoot.ZFrame() {
-			@Override
-			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-			}
-			@Override
-			protected void handleQuit( java.util.EventObject e ) {
-				System.exit( 0 );
-			}
-		};
-		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
-		frame.getContentPane().add( new PersonEditor() );
-		frame.setVisible( true );
+	public ArrayOfEnumConstantsListModel( Class<?>[] clses ) {
+		super( to( clses ) );
 	}
 }
+

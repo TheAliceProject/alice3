@@ -26,27 +26,52 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 	private javax.swing.JTextField _textVC;
 	private javax.swing.JTextField _instanceNameVC;
 	private javax.swing.JTextField _classNameVC;
-	private javax.swing.JCheckBox _constrainInstanceNameToTextVC;
+	private zoot.ZCheckBox _constrainInstanceNameToTextVC;
 	private javax.swing.JCheckBox _constrainClassNameToInstanceNameVC;
 	private org.alice.stageide.fontchooser.FontChooser _fontChooser;
 	private org.alice.ide.cascade.customfillin.CustomDoublePane _letterHeightChooser;
+	
+	
+	class ConstrainInstanceNameToTextBooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+		public ConstrainInstanceNameToTextBooleanStateOperation() {
+			super( false );
+			this.putValue( javax.swing.Action.NAME, "constrain to text" );
+		}
+		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+			CreateTextPane.this._instanceNameVC.setEditable( booleanStateContext.getNextValue() == false );
+			booleanStateContext.commit();
+		}
+	}
+	class ConstrainClassNameToInstanceNameBooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+		public ConstrainClassNameToInstanceNameBooleanStateOperation() {
+			super( false );
+			this.putValue( javax.swing.Action.NAME, "constrain to instance" );
+		}
+		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+			CreateTextPane.this._classNameVC.setEditable( booleanStateContext.getNextValue() == false );
+			booleanStateContext.commit();
+		}
+	}
+	private static zoot.ZLabel createLabel( String text ) {
+		zoot.ZLabel rv = new zoot.ZLabel( text );
+		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
+		return rv;
+	}
 	public CreateTextPane() {
 //		def __init__( this, selected, siblings ):
 		final int inset = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder(inset, inset, inset, inset ) );
 
-		this._textVC = new javax.swing.JTextField();
+		this._textVC = new javax.swing.JTextField( 10 );
 		//this._textVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this._handleTextChange ) );
 		this._instanceNameVC = new javax.swing.JTextField();
 		//this._instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this._handleInstanceNameChange ) );
 		this._classNameVC = new javax.swing.JTextField();
 		//this._classNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this._handleClassNameChange ) );
 
-		this._constrainInstanceNameToTextVC = new javax.swing.JCheckBox( "constrain to text" );
-		//this._constrainInstanceNameToTextVC.addItemListener( ecc.dennisc.swing.event.ItemAdapter( this._handleInstanceNameContraintChange ) );
+		this._constrainInstanceNameToTextVC = new zoot.ZCheckBox( new ConstrainInstanceNameToTextBooleanStateOperation() );
 		this._constrainInstanceNameToTextVC.setSelected( true );
-		this._constrainClassNameToInstanceNameVC = new javax.swing.JCheckBox( "constrain to instance" );
-		//this._constrainClassNameToInstanceNameVC.addItemListener( ecc.dennisc.swing.event.ItemAdapter( this._handleClassNameContraintChange ) );
+		this._constrainClassNameToInstanceNameVC = new zoot.ZCheckBox( new ConstrainClassNameToInstanceNameBooleanStateOperation() );
 		this._constrainClassNameToInstanceNameVC.setSelected( true );
 
 		this._letterHeightChooser = new org.alice.ide.cascade.customfillin.CustomDoublePane();
@@ -72,7 +97,7 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 		
 		gbc.gridy = 0;
 		gbc.weightx = 0.0;
-		this.add( new javax.swing.JLabel( "text:" ), gbc );
+		this.add( CreateTextPane.createLabel( "text:" ), gbc );
 		gbc.weightx = 1.0;
 		this.add( this._textVC, gbc );
 		gbc.weightx = 0.0;
@@ -81,7 +106,7 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 		
 		gbc.gridy = 1;
 		gbc.weightx = 0.0;
-		this.add( new javax.swing.JLabel( "instance:" ), gbc );
+		this.add( CreateTextPane.createLabel( "instance:" ), gbc );
 		gbc.weightx = 1.0;
 		this.add( this._instanceNameVC, gbc );
 		gbc.weightx = 0.0;
@@ -90,7 +115,7 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 
 		gbc.gridy = 2;
 		gbc.weightx = 0.0;
-		this.add( new javax.swing.JLabel( "class:" ), gbc );
+		this.add( CreateTextPane.createLabel( "class:" ), gbc );
 		gbc.weightx = 1.0;
 		this.add( this._classNameVC, gbc );
 		gbc.weightx = 0.0;
@@ -115,12 +140,6 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 //		#todo: check siblings
 //		return ecc.dennisc.alice.vm.isValidIdentifier( instanceName ) and ecc.dennisc.alice.vm.isValidIdentifier( className )
 //	
-//	def _handleInstanceNameContraintChange( this, e ):
-//		this._instanceNameVC.setEditable( not e.getSource().isSelected() )
-//
-//	def _handleClassNameContraintChange( this, e ):
-//		this._classNameVC.setEditable( not e.getSource().isSelected() )
-//
 //	def _handleTextChange( this, text ):
 //		text = this._textVC.getText()
 //		if this._constrainInstanceNameToTextVC.isSelected():
@@ -136,19 +155,6 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 //		this.updateOKButton()
 //	def _handleClassNameChange( this, text ):
 //		this.updateOKButton()
-//		
-//	def getActualInputValue( this ):
-//		typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Text )
-//		className = this._classNameVC.getText();
-//		constructors = [ alice.ast.ConstructorDeclaredInAlice( [], alice.ast.BlockStatement( [] ) ) ]
-//		type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice( className, None, typeDeclaredInJava, constructors, [], [] )
-//		rv = getSceneEditor().createInstance( type )
-//		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( rv )
-//		instanceInJava.setName( this._instanceNameVC.getText() )
-//		instanceInJava.setValue( this._textVC.getText() )
-//		instanceInJava.setFont( org.alice.apis.moveandturn.Font( this._fontChooser.getFont() ) )
-//		instanceInJava.setLetterHeight( this._letterHeightChooser.getActualInputValue() )
-//		return rv}
 
 	@Override
 	protected org.alice.apis.moveandturn.Text getActualInputValue() {
