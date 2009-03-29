@@ -25,7 +25,7 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-abstract class NameInputPane<E> extends RowsInputPane< E > {
+public abstract class NameInputPane<E> extends RowsInputPane< E > {
 	private javax.swing.JTextField textField;
 
 	public void setAndSelectNameText( String text ) {
