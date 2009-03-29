@@ -79,17 +79,33 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 					person.setSkinTone( this.baseSkinTone );
 					if( this.fitnessLevel != null ) {
 						person.setFitnessLevel( this.fitnessLevel );
-						if( this.fullBodyOutfit != null ) {
-							person.setOutfit( this.fullBodyOutfit );
+						if( this.fullBodyOutfit != null && IngredientUtilities.isApplicable( this.fullBodyOutfit, this.lifeStage, this.gender ) ) {
+							//pass
+						} else {
+							Outfit outfit = person.getOutfit();
+							if( outfit instanceof FullBodyOutfit ) {
+								this.fullBodyOutfit = ( FullBodyOutfit )outfit;
+							} else {
+								this.fullBodyOutfit = IngredientUtilities.getRandomEnumConstant( this.lifeStage.getFullBodyOutfitInterface( this.gender ) );
+							}
 						}
+						person.setOutfit( this.fullBodyOutfit );
 					}
 				}
 				if( this.baseEyeColor != null ) {
 					person.setEyeColor( this.baseEyeColor );
 				}
-				if( this.hair != null ) {
-					person.setHair( this.hair );
+				if( this.hair != null && IngredientUtilities.isApplicable( this.hair, this.lifeStage, this.gender ) ) {
+					//pass
+				} else {
+					Hair hair = person.getHair();
+					if( hair != null ) {
+						this.hair = hair;
+					} else {
+						this.hair = IngredientUtilities.getRandomEnumConstant( this.lifeStage.getHairInterface( this.gender ) );
+					}
 				}
+				person.setHair( this.hair );
 				this.setModel( person );
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePerson", this.lifeStage, this.gender );
@@ -223,6 +239,9 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
+	public static void main( String[] args ) {
+		PersonEditor.main( args );
+	}
 	//	def initialize( self ):
 	//		ecc.dennisc.alice.ide.moveandturn.editors.ModelViewer.initialize( self )
 	//		#self._scene.setAmbientLightBrightness( 1.0 )

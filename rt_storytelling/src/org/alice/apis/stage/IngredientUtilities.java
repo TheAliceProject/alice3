@@ -36,7 +36,7 @@ public abstract class IngredientUtilities {
 				//MaleAdultHairCurlyWild.class ,
 				MaleAdultHairDreadlockLong.class ,
 				MaleAdultHairGibs.class ,
-				MaleAdultHairHatFedora.class ,
+				//MaleAdultHairHatFedora.class ,
 				MaleAdultHairHatFedoraCasual.class ,
 				MaleAdultHairMulletLong.class ,
 				MaleAdultHairPeak.class ,
@@ -46,7 +46,7 @@ public abstract class IngredientUtilities {
 				MaleAdultHairShortCombed.class ,
 				MaleAdultHairShortSpikey.class ,
 				MaleAdultHairTopHat.class , 
-				MaleAdultHairBald.class
+				//MaleAdultHairBald.class
 			}
 		);
 		s_map.put( 
@@ -230,5 +230,20 @@ public abstract class IngredientUtilities {
 				return rv;
 			}
 		}
+	}
+	
+	public static boolean isApplicable( FullBodyOutfit outfit, LifeStage lifeStage, Gender gender ) {
+		assert outfit != null;
+		assert lifeStage != null;
+		assert gender != null;
+		Class<? extends FullBodyOutfit> cls = lifeStage.getFullBodyOutfitInterface( gender );
+		return cls.isAssignableFrom( outfit.getClass() );
+	}
+	public static boolean isApplicable( Hair hair, LifeStage lifeStage, Gender gender ) {
+		assert hair != null;
+		assert lifeStage != null;
+		assert gender != null;
+		Class<? extends Hair> cls = lifeStage.getHairInterface( gender );
+		return cls.isAssignableFrom( hair.getClass() );
 	}
 }

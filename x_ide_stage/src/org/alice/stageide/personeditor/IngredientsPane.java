@@ -71,32 +71,34 @@ class IngredientsPane extends swing.GridBagPane {
 		gbc.weightx = 0.0;
 		gbc.insets.top = INSET_TOP;
 		gbc.gridwidth = 1;
-		this.add( new zoot.ZLabel( "eye color" ), gbc );
-		gbc.insets.left = INSET_LEFT*8;
-		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
 		this.add( new zoot.ZLabel( "hair" ), gbc );
 		gbc.insets.left = INSET_LEFT;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
 		gbc.weightx = 1.0;
 		this.add( new zoot.ZLabel( "" ), gbc );
-		gbc.insets.left = 0;
+		gbc.insets.left = INSET_LEFT*8;
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gbc.weightx = 0.0;
+		this.add( new zoot.ZLabel( "eye color" ), gbc );
+		gbc.insets.left = 0;
 
 		
 		gbc.weighty = 1.0;
 		gbc.insets.top = 0;
 		gbc.gridwidth = 1;
-		this.add( this.baseEyeColorList, gbc );
-		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
-		gbc.insets.left = INSET_LEFT*8;
 		this.add( this.hairColorList, gbc );
+		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
 		gbc.insets.left = INSET_LEFT;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gbc.weightx = 1.0;
 		javax.swing.JScrollPane hairScrollPane = new javax.swing.JScrollPane( this.hairList );
 		hairScrollPane.setBorder( null );
-		this.add( hairScrollPane, gbc ); 
+		this.add( hairScrollPane, gbc );
+		gbc.insets.left = INSET_LEFT*8;
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.weightx = 0.0;
+		this.add( this.baseEyeColorList, gbc ); 
 		gbc.insets.left = 0;
+		gbc.weightx = 1.0;
 
 		gbc.weighty = 0.0;
 		gbc.insets.top = INSET_TOP;
