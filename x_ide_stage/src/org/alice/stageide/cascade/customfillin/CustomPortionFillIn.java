@@ -20,29 +20,31 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.stageide.cascade.customfillin;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetterTemplate extends ExpressionStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field ) );
-		this.field = field;
+public class CustomPortionFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< org.alice.apis.moveandturn.Portion > {
+	@Override
+	protected String getMenuProxyText() {
+		return "Custom Portion...";
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { this.field.getDesiredValueType() };
+	protected org.alice.ide.cascade.customfillin.CustomPane createCustomPane() {
+		return new CustomPortionPane();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
-			this.field.getValueType(), 
-			new edu.cmu.cs.dennisc.alice.ast.FieldAccess( getIDE().createInstanceExpression(), this.field ),
-			edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN,
-			expressions[ 0 ] 
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Portion value ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Portion.class );
+		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = type.getDeclaredConstructor( Number.class );
+		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
+		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor,
+				new edu.cmu.cs.dennisc.alice.ast.Argument(
+						parameter, 
+						new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value.getValue() )
+				)
 		);
-		return rv;
 	}
 }

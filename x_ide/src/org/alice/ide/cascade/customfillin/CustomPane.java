@@ -25,7 +25,7 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-abstract class CustomPane<E> extends swing.Pane implements zoot.InputValidator {
+public abstract class CustomPane<E> extends swing.Pane implements zoot.InputValidator {
 	private zoot.ZLabel label = new zoot.ZLabel();
 	private zoot.ZTextField textField = new zoot.ZTextField();
 	public CustomPane() {

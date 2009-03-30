@@ -25,9 +25,9 @@ package org.alice.stageide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
-	public AngleFillerInner() {
-		super( org.alice.apis.moveandturn.AngleInRevolutions.class );
+public class PortionFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
+	public PortionFillerInner() {
+		super( org.alice.apis.moveandturn.Portion.class );
 	}
 	@Override
 	public void addFillIns( cascade.Blank blank ) {
@@ -35,13 +35,18 @@ public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.Instanc
 		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = type.getDeclaredConstructor( Number.class );
 		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
 
-		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.125 ) );
-		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.25 ) );
+		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 ) );
+		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.1 ) );
+		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.2 ) );
+		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.3 ) );
+		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.4 ) );
 		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.5 ) );
+		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.6 ) );
+		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.7 ) );
+		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.8 ) );
+		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.9 ) );
 		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 ) );
-		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 2.0 ) );
-		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 4.0 ) );
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAngleFillIn() );
+		blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomPortionFillIn() );
 	}
 }

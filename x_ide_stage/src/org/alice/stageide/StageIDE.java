@@ -43,7 +43,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		super.addExpressionFillerInners( rv );
 		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );
 		rv.add( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
-		//rv.add( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
 		return rv;
 	}
 	public static void main( String[] args ) {

@@ -20,29 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.stageide.cascade.customfillin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SetterTemplate extends ExpressionStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field ) );
-		this.field = field;
+public class CustomPortionPane extends org.alice.ide.cascade.customfillin.CustomPane< org.alice.apis.moveandturn.Portion > {
+	public CustomPortionPane() {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+		//todo: handle other numbers
+		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
+			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
+			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
+		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { this.field.getDesiredValueType() };
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
-			this.field.getValueType(), 
-			new edu.cmu.cs.dennisc.alice.ast.FieldAccess( getIDE().createInstanceExpression(), this.field ),
-			edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN,
-			expressions[ 0 ] 
-		);
-		return rv;
+	protected org.alice.apis.moveandturn.Portion valueOf( String text ) {
+		double value = Double.valueOf( text );
+		return new org.alice.apis.moveandturn.Portion( value );
 	}
 }
