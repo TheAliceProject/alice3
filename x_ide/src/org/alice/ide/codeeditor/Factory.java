@@ -25,7 +25,7 @@ package org.alice.ide.codeeditor;
 class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
-	public DeleteStatementActionOperation( org.alice.ide.ast.AbstractStatementPane abstractStatementPane ) {
+	public DeleteStatementActionOperation( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		this.putValue( javax.swing.Action.NAME, "delete" );
 		this.statement = abstractStatementPane.getStatement();
 		this.property = abstractStatementPane.getOwner();
@@ -65,28 +65,28 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.ast.Factory {
+public class Factory extends org.alice.ide.common.Factory {
 	@Override
 	protected javax.swing.JComponent createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
 	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return new org.alice.ide.ast.ExpressionPropertyPane( this, expressionProperty, true );
+		return new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty, true );
 	}
 	@Override
-	public org.alice.ide.ast.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
-		org.alice.ide.ast.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
+	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
+		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
 		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
 		abstractStatementPane.setPopupOperation( new zoot.DefaultPopupActionOperation( this.createPopupOperations( abstractStatementPane ) ) );
 		return abstractStatementPane;
 	}
-	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv, org.alice.ide.ast.AbstractStatementPane abstractStatementPane ) {
+	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		rv.add( new DeleteStatementActionOperation( abstractStatementPane ) );
 		rv.add( new StatementEnabledStateOperation( abstractStatementPane.getStatement() ) );
 		return rv;
 	}
-	private java.util.List< zoot.Operation > createPopupOperations( org.alice.ide.ast.AbstractStatementPane abstractStatementPane ) {
+	private java.util.List< zoot.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		return this.updatePopupOperations( new java.util.LinkedList< zoot.Operation >(), abstractStatementPane );
 	}
 	

@@ -100,7 +100,7 @@ class TypeBorder implements javax.swing.border.Border {
 	}
 }
 
-class TypeComponent extends org.alice.ide.ast.NodeNameLabel {
+class TypeComponent extends org.alice.ide.common.NodeNameLabel {
 	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super( type );
 		this.setBorder( TypeBorder.getSingletonFor( type ) );

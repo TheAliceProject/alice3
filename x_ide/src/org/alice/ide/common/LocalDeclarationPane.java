@@ -20,27 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade;
+package org.alice.ide.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends cascade.SimpleFillIn< E > {
-	public SimpleExpressionFillIn( E model ) {
-		super( model );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+
+class LocalDeclarationPane extends TypedDeclarationPane {
+	private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
+
+	public LocalDeclarationPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
+		this.localDeclaredInAlice = localDeclaredInAlice;
+		this.add( new org.alice.ide.common.TypePane( this.localDeclaredInAlice.valueType.getValue() ) );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JComponent rv;
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getModel();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			rv = new org.alice.ide.common.FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-		} else {
-			rv = new org.alice.ide.common.ExpressionPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), expression );
-		}
-		return rv;
+	protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: popup menu" );
+		//javax.swing.JPopupMenu popupMenu = getIDE().createJPopupMenu( new alice.ide.operations.ast.RenameLocalDeclarationOperation( this.localDeclaredInAlice ) );
+		//popupMenu.show( e.getComponent(), e.getX(), e.getY() );
 	}
 }

@@ -22,8 +22,8 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.ast.AbstractStatementPane;
-import org.alice.ide.ast.Factory;
+import org.alice.ide.common.AbstractStatementPane;
+import org.alice.ide.common.Factory;
 
 /**
  * @author Dennis Cosgrove

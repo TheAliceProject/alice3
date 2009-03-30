@@ -142,14 +142,17 @@ public abstract class IDE extends zoot.ZFrame {
 			this.left.setDividerLocation( 300 );
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.membersEditor );
-			this.right.setTopComponent( this.ubiquitousPane );
-			this.right.setBottomComponent( this.editorsTabbedPane );
+			if( this.right.getComponentCount() == 0 ) {
+				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.NORTH );
+				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
+			}
 		}
 	}
 	
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private javax.swing.JSplitPane left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
-	private javax.swing.JSplitPane right = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
+	//private javax.swing.JSplitPane right = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
+	private swing.BorderPane right = new swing.BorderPane();
 	
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
@@ -616,8 +619,8 @@ public abstract class IDE extends zoot.ZFrame {
 	//	protected abstract void handleWindowClosing();
 
 	public java.util.List< ? extends zoot.DropReceptor > createListOfPotentialDropReceptors( zoot.ZDragComponent source ) {
-		if( source.getSubject() instanceof org.alice.ide.ast.ExpressionLikeSubstance ) {
-			org.alice.ide.ast.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.ast.ExpressionLikeSubstance)source.getSubject();
+		if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
+			org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
 			return getCodeEditorInFocus().createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
 		} else {
 			java.util.List< zoot.DropReceptor > rv = new java.util.LinkedList< zoot.DropReceptor >();

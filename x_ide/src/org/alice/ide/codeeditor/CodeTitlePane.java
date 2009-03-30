@@ -31,9 +31,9 @@ class CodeTitlePane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;
-		this.add( new org.alice.ide.ast.TypePane( this.code.getDeclaringType() ) );
+		this.add( new org.alice.ide.common.TypePane( this.code.getDeclaringType() ) );
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.add( new org.alice.ide.ast.NodeNameLabel( this.code ) );
+		this.add( new org.alice.ide.common.NodeNameLabel( this.code ) );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;

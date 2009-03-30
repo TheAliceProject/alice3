@@ -25,7 +25,7 @@ package org.alice.ide.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class StatementTemplate extends org.alice.ide.ast.StatementLikeSubstance {
+public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
 	public StatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
 		super( cls );
 	}

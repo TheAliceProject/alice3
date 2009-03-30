@@ -20,27 +20,29 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade;
+package org.alice.ide.common;
+
+import org.alice.ide.ast.EmptyExpression;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends cascade.SimpleFillIn< E > {
-	public SimpleExpressionFillIn( E model ) {
-		super( model );
+public class EmptyExpressionPane extends ExpressionLikeSubstance {
+	private EmptyExpression emptyExpression;
+	public EmptyExpressionPane( EmptyExpression emptyExpression ) {
+		this.emptyExpression = emptyExpression;
+		this.add( new zoot.ZLabel( "???" ) );
+		this.setBackground( new java.awt.Color( 127, 127, 191 ) );
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	public EmptyExpressionPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		this( new EmptyExpression( type ) );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JComponent rv;
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getModel();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			rv = new org.alice.ide.common.FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-		} else {
-			rv = new org.alice.ide.common.ExpressionPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), expression );
-		}
-		return rv;
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+		return this.emptyExpression.getType();
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
+		return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
 	}
 }

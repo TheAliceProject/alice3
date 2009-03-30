@@ -20,27 +20,22 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade;
+package org.alice.ide.common;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends cascade.SimpleFillIn< E > {
-	public SimpleExpressionFillIn( E model ) {
-		super( model );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+public abstract class AbstractArgumentListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty > {
+	public AbstractArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JComponent rv;
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getModel();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			rv = new org.alice.ide.common.FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+	protected java.awt.Component createInterstitial( int i, final int N ) {
+		if( i < N - 1 ) {
+			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
 		} else {
-			rv = new org.alice.ide.common.ExpressionPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), expression );
+			return null;
 		}
-		return rv;
 	}
 }

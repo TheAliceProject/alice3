@@ -22,13 +22,13 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.ast.ExpressionPropertyPane;
+import org.alice.ide.common.ExpressionPropertyPane;
 
 
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentListPropertyPane extends org.alice.ide.ast.AbstractArgumentListPropertyPane {
+public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
 	public ArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
 		super( factory, property );
 	}
@@ -53,7 +53,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.ast.AbstractArgument
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = argument.parameter.getValue();
 			boolean isNameDesired = this.isNameDesired( parameter );
 			if( isNameDesired ) {
-				prefixPane = new org.alice.ide.ast.NodeNameLabel( argument.parameter.getValue() );
+				prefixPane = new org.alice.ide.common.NodeNameLabel( argument.parameter.getValue() );
 			} else {
 				prefixPane = null;
 			}

@@ -25,7 +25,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class ArgumentListPropertyPane extends org.alice.ide.ast.AbstractArgumentListPropertyPane {
+public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
 	public ArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
 		super( factory, property );
 	}
@@ -42,7 +42,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.ast.AbstractArgument
 		if( parameterName != null && parameterName.length() > 0 ) {
 			rv.add( new zoot.ZLabel( parameterName + ": " ) );
 		}
-		rv.add( new org.alice.ide.ast.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
+		rv.add( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
 		return rv;
 	}
 }

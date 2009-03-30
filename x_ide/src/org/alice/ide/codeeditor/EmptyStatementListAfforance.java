@@ -25,7 +25,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class EmptyStatementListAfforance extends org.alice.ide.ast.StatementLikeSubstance {
+public class EmptyStatementListAfforance extends org.alice.ide.common.StatementLikeSubstance {
 	public EmptyStatementListAfforance() {
 		super( edu.cmu.cs.dennisc.alice.ast.Statement.class );
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );

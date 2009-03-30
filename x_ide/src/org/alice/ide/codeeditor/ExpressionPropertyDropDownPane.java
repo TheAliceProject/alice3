@@ -45,7 +45,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 
 
 	public boolean isPotentiallyAcceptingOf( zoot.ZDragComponent source ) {
-		return source.getSubject() instanceof org.alice.ide.ast.ExpressionLikeSubstance;
+		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}
 	public void dragStarted( zoot.DragAndDropContext dragAndDropContext ) {
 	}
@@ -66,8 +66,8 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 			@Override
 			protected edu.cmu.cs.dennisc.alice.ast.Expression doInBackground() throws java.lang.Exception {
 				zoot.ZDragComponent source = this.dragAndDropEvent.getTypedSource();
-				if( source.getSubject() instanceof org.alice.ide.ast.AccessiblePane ) {
-					org.alice.ide.ast.AccessiblePane accessiblePane = (org.alice.ide.ast.AccessiblePane)source.getSubject();
+				if( source.getSubject() instanceof org.alice.ide.common.AccessiblePane ) {
+					org.alice.ide.common.AccessiblePane accessiblePane = (org.alice.ide.common.AccessiblePane)source.getSubject();
 //					try {
 						edu.cmu.cs.dennisc.alice.ast.Expression expression = accessiblePane.createExpression( this.dragAndDropEvent );
 						return expression;

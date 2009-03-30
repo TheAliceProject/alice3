@@ -20,27 +20,36 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.templates;
+package org.alice.ide.common;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionLikeSubstance {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		this.expression = expression;
-		this.add( getIDE().getTemplatesFactory().createComponent( this.expression ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
-	}
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getExpression() {
-		return this.expression;
+public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstance {
+	private edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess;
+
+	public FieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+		this.fieldAccess = fieldAccess;
+		boolean isExpressionDesired;
+		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+			isExpressionDesired = "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() );
+		} else {
+			isExpressionDesired = true;
+		}
+		if( isExpressionDesired ) {
+			this.add( new ExpressionPropertyPane( getIDE().getCodeFactory(), this.fieldAccess.expression, false ) );
+			this.add( new zoot.ZLabel( ".") );
+		}
+		this.add( new org.alice.ide.common.NodeNameLabel( this.fieldAccess.field.getValue() ) );
+		this.setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.expression.getType();
-	}
-	@Override
-	protected boolean isPressed() {
-		return false;
+		if( this.fieldAccess != null ) {
+			return this.fieldAccess.field.getValue().getValueType();
+		} else {
+			return null;
+		}
 	}
 }

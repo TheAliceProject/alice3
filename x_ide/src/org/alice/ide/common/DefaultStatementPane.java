@@ -20,27 +20,14 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade;
+package org.alice.ide.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends cascade.SimpleFillIn< E > {
-	public SimpleExpressionFillIn( E model ) {
-		super( model );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JComponent rv;
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getModel();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			rv = new org.alice.ide.common.FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-		} else {
-			rv = new org.alice.ide.common.ExpressionPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), expression );
-		}
-		return rv;
+public class DefaultStatementPane extends AbstractStatementPane {
+	public DefaultStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+		super( factory, statement, owner );
+		this.add( factory.createComponent( statement ) );
 	}
 }

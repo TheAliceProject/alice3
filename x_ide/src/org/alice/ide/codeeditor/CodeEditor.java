@@ -22,12 +22,12 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.ast.AbstractStatementPane;
-import org.alice.ide.ast.Factory;
-import org.alice.ide.ast.ParameterPane;
-import org.alice.ide.ast.StatementListPropertyPane;
-import org.alice.ide.ast.ThisPane;
-import org.alice.ide.ast.TypedDeclarationPane;
+import org.alice.ide.common.AbstractStatementPane;
+import org.alice.ide.common.Factory;
+import org.alice.ide.common.ParameterPane;
+import org.alice.ide.common.StatementListPropertyPane;
+import org.alice.ide.common.ThisPane;
+import org.alice.ide.common.TypedDeclarationPane;
 import org.alice.ide.event.FieldSelectionEvent;
 import org.alice.ide.event.FocusedCodeChangeEvent;
 import org.alice.ide.event.LocaleEvent;
@@ -40,7 +40,7 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 class TypedParameterPane extends TypedDeclarationPane {
 	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
 	public TypedParameterPane( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( new java.awt.Component[] { new org.alice.ide.ast.TypePane( parameter.getValueType() ), new ParameterPane( parameter ) } );
+		super( new java.awt.Component[] { new org.alice.ide.common.TypePane( parameter.getValueType() ), new ParameterPane( parameter ) } );
 		this.parameter = parameter;
 	}
 	@Override
@@ -59,7 +59,7 @@ class TypedParameterPane extends TypedDeclarationPane {
 	}
 }
 
-class ParametersPane extends org.alice.ide.ast.AbstractListPropertyPane< NodeListProperty< ParameterDeclaredInAlice >> {
+class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< ParameterDeclaredInAlice >> {
 	public ParametersPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
 	}
@@ -142,9 +142,9 @@ class MethodHeaderPane extends AbstractCodeHeaderPane {
 	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, javax.swing.JComponent parametersPane ) {
 		super( methodDeclaredInAlice );
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			this.add( new org.alice.ide.ast.TypePane( methodDeclaredInAlice.getReturnType() ) );
+			this.add( new org.alice.ide.common.TypePane( methodDeclaredInAlice.getReturnType() ) );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			zoot.ZLabel nameLabel = new org.alice.ide.ast.NodeNameLabel( methodDeclaredInAlice );
+			zoot.ZLabel nameLabel = new org.alice.ide.common.NodeNameLabel( methodDeclaredInAlice );
 			nameLabel.setFontToScaledFont( 2.0f );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( nameLabel );
@@ -161,13 +161,13 @@ class MethodHeaderPane extends AbstractCodeHeaderPane {
 			if( methodDeclaredInAlice.isProcedure() ) {
 				sb.append( "procedure " );
 			} else {
-				this.add( new org.alice.ide.ast.TypePane( methodDeclaredInAlice.getReturnType() ) );
+				this.add( new org.alice.ide.common.TypePane( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( "function " );
 			}
 			zoot.ZLabel label = new zoot.ZLabel( sb.toString() );
 			label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 			this.add( label );
-			zoot.ZLabel nameLabel = new org.alice.ide.ast.NodeNameLabel( methodDeclaredInAlice );
+			zoot.ZLabel nameLabel = new org.alice.ide.common.NodeNameLabel( methodDeclaredInAlice );
 			nameLabel.setFontToScaledFont( 2.0f );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( nameLabel );
@@ -184,7 +184,7 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, javax.swing.JComponent parametersPane ) {
 		super( constructorDeclaredInAlice );
 		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
-			this.add( new org.alice.ide.ast.TypePane( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.add( new org.alice.ide.common.TypePane( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( "()" ) );
 		} else {
 			this.add( new zoot.ZLabel( "declare " ) );
@@ -192,7 +192,7 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 			label.setFontToScaledFont( 1.5f );
 			this.add( label );
 			this.add( new zoot.ZLabel( " on class " ) );
-			this.add( new org.alice.ide.ast.TypePane( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.add( new org.alice.ide.common.TypePane( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.add( parametersPane );
 		}
 	}
@@ -206,7 +206,7 @@ class InstanceLine extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
 		zoot.ZLabel a = new zoot.ZLabel( "current instance of " );
 		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 		this.add( a );
-		this.add( new org.alice.ide.ast.TypePane( code.getDeclaringType() ) );
+		this.add( new org.alice.ide.common.TypePane( code.getDeclaringType() ) );
 		zoot.ZLabel b = new zoot.ZLabel( " is referred to as: " );
 		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 		this.add( b );

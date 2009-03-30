@@ -40,7 +40,7 @@ class MyLabelThatDoesntLockOverlay extends javax.swing.JButton {
 /**
  * @author Dennis Cosgrove
  */
-public class FieldTile extends org.alice.ide.ast.ExpressionLikeSubstance {
+public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	private MyLabelThatDoesntLockOverlay label = new MyLabelThatDoesntLockOverlay();
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private org.alice.ide.operations.ast.SelectFieldActionOperation selectOperation;

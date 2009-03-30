@@ -20,27 +20,39 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.templates;
+package org.alice.ide.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionLikeSubstance {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		this.expression = expression;
-		this.add( getIDE().getTemplatesFactory().createComponent( this.expression ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
-	}
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getExpression() {
-		return this.expression;
+public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
+	private org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression;
+	private zoot.ZLabel label = new zoot.ZLabel();
+	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
+		this.add( this.label );
+		this.selectedFieldExpression = selectedFieldExpression;
+		this.updateLabel();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.expression.getType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = getIDE().getFieldSelection();
+		if( field != null ) {
+			return field.getValueType();
+		} else {
+			return null;
+		}
 	}
-	@Override
-	protected boolean isPressed() {
-		return false;
+	public void updateLabel() {
+		org.alice.ide.IDE ide = getIDE();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = ide.getFieldSelection();
+		this.label.setText( getIDE().getInstanceTextForField( field, true ) );
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = ide.createInstanceExpression();
+		java.awt.Color color;
+		if( expression != null ) {
+			color = getIDE().getColorForASTInstance( expression );
+		} else {
+			color = java.awt.Color.LIGHT_GRAY;
+		}
+		this.setBackground( color );
 	}
 }

@@ -54,7 +54,7 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		}
 	};
-	private org.alice.ide.ast.TypePane typePane;
+	private org.alice.ide.common.TypePane typePane;
 	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
 		this.typePane = getIDE().getFactory().createTypePane( this.type );

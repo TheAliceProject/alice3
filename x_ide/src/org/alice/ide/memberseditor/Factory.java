@@ -25,13 +25,13 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-public class Factory extends org.alice.ide.ast.Factory {
+public class Factory extends org.alice.ide.common.Factory {
 	@Override
 	protected javax.swing.JComponent createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
 	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return new org.alice.ide.ast.ExpressionPropertyPane( this, expressionProperty, false );
+		return new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty, false );
 	}
 }

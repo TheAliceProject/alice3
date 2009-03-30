@@ -20,27 +20,35 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade;
+package org.alice.ide.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends cascade.SimpleFillIn< E > {
-	public SimpleExpressionFillIn( E model ) {
-		super( model );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
+public abstract class AccessiblePane extends org.alice.ide.common.ExpressionLikeSubstance {
+//	@Override
+//	protected boolean isActuallyPotentiallyActive() {
+//		return getIDE().isDragInProgress() == false;
+//	}
+//	@Override
+//	protected boolean isActuallyPotentiallySelectable() {
+//		return false;
+//	}
+//	@Override
+//	protected boolean isActuallyPotentiallyDraggable() {
+//		return true;
+//	}
+	
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JComponent rv;
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getModel();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			rv = new org.alice.ide.common.FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+	public void setActive( boolean isActive ) {
+		super.setActive( isActive );
+		if( isActive ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle AccessiblePane setActive " );
+			//getIDE().showStencilOver( this, getExpressionType() );
 		} else {
-			rv = new org.alice.ide.common.ExpressionPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), expression );
+			getIDE().hideStencil();
 		}
-		return rv;
 	}
+	
+	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( zoot.event.DragAndDropEvent e );
 }
