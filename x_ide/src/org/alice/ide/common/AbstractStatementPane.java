@@ -34,7 +34,7 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
 	public AbstractStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
-		super( org.alice.ide.common.StatementLikeSubstance.getClassFor(statement) );
+		super( org.alice.ide.common.StatementLikeSubstance.getClassFor(statement), javax.swing.BoxLayout.LINE_AXIS );
 		this.factory = factory;
 		this.statement = statement;
 		

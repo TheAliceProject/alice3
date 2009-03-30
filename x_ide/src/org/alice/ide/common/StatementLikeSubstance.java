@@ -35,9 +35,9 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 			return edu.cmu.cs.dennisc.alice.ast.Statement.class;
 		}
 	}
-	public StatementLikeSubstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls ) {
+	public StatementLikeSubstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls, int axis ) {
 		this.statementCls = statementCls;
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+		this.setLayout( new javax.swing.BoxLayout( this, axis ) );
 		this.setBackground( getIDE().getColorForASTClass( this.statementCls ) );
 	}
 	

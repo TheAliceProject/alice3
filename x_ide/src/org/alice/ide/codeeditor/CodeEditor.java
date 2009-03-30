@@ -369,43 +369,57 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 				protected boolean isMaximumSizeClampedToPreferredSize() {
 					return false;
 				}
-				@Override
-				protected void paintComponent( java.awt.Graphics g ) {
-					super.paintComponent( g );
-					int x = 0;
-					int y = 0;
-					int width = this.getWidth() -1;
-					int height = this.getHeight() -1;
-					int arcWidth = 8;
-					int arcHeight = 8;
-					g.setColor( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class ) );
-					g.fillRoundRect( x, y, width, height, arcWidth, arcHeight );
-					g.setColor( java.awt.Color.GRAY );
-					g.drawRoundRect( x, y, width, height, arcWidth, arcHeight );
-
-					if( getIDE().isJava() ) {
-						//pass
-					} else {
-						java.awt.FontMetrics fm = g.getFontMetrics();
-					    int ascent = fm.getMaxAscent ();
-					    int descent= fm.getMaxDescent ();
-					    
-						g.setColor( java.awt.Color.BLACK );
-					    x = 4;
-					    y = 4;
-						g.drawString( "do in order", x, y + ascent-descent );
-					}
-				}
 //				@Override
-//				public java.awt.Rectangle getDropBounds() {
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( super.getDropBounds() );
-//					return this.getParent().getBounds();
+//				protected void paintComponent( java.awt.Graphics g ) {
+//					super.paintComponent( g );
+//					int x = 0;
+//					int y = 0;
+//					int width = this.getWidth() -1;
+//					int height = this.getHeight() -1;
+//					int arcWidth = 8;
+//					int arcHeight = 8;
+//					g.setColor( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class ) );
+//					g.fillRoundRect( x, y, width, height, arcWidth, arcHeight );
+//					g.setColor( java.awt.Color.GRAY );
+//					g.drawRoundRect( x, y, width, height, arcWidth, arcHeight );
+//
+////					if( getIDE().isJava() ) {
+////						//pass
+////					} else {
+////						java.awt.FontMetrics fm = g.getFontMetrics();
+////					    int ascent = fm.getMaxAscent ();
+////					    int descent= fm.getMaxDescent ();
+////					    
+////						g.setColor( java.awt.Color.BLACK );
+////					    x = 4;
+////					    y = 4;
+////						g.drawString( "do in order", x, y + ascent-descent );
+////					}
 //				}
 			}
-			RootStatementListPropertyPane bodyPane = new RootStatementListPropertyPane();
-			bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
-			bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
+//			RootStatementListPropertyPane bodyPane = new RootStatementListPropertyPane();
+			//bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
+			//bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
 			
+			class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
+				public BodyPane() {
+					super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
+					this.setLayout( new java.awt.BorderLayout() );
+					this.setOpaque( false );
+					this.add( new zoot.ZLabel( "do in order" ), java.awt.BorderLayout.NORTH );
+					this.add( new RootStatementListPropertyPane(), java.awt.BorderLayout.CENTER );
+					this.add( javax.swing.Box.createHorizontalStrut( 8 ), java.awt.BorderLayout.WEST );
+				}
+				@Override
+				protected boolean isKnurlDesired() {
+					return false;
+				}
+				@Override
+				protected boolean isCullingContainsDesired() {
+					return false;
+				}
+			}
+			BodyPane bodyPane = new BodyPane();
 			
 //			javax.swing.JPanel panel = new javax.swing.JPanel();
 //			panel.setLayout( new java.awt.GridLayout() );
@@ -416,6 +430,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 			this.scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 			this.scrollPane.setBorder( null );
 			this.scrollPane.setOpaque( false );
+			this.scrollPane.getViewport().setOpaque( false );
+			//this.scrollPane.setBackground( java.awt.Color.RED );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 			this.add( header );
 			this.add( new InstanceLine( this.code ) );

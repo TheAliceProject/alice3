@@ -27,7 +27,7 @@ package org.alice.ide.templates;
  */
 public abstract class StatementTemplate extends org.alice.ide.common.StatementLikeSubstance {
 	public StatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls ) {
-		super( cls );
+		super( cls, javax.swing.BoxLayout.LINE_AXIS );
 	}
 
 	public abstract void createStatement( final zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
