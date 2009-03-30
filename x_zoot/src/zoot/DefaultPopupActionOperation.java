@@ -25,14 +25,13 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultPopupActionOperation extends zoot.AbstractActionOperation {
+public class DefaultPopupActionOperation extends AbstractPopupActionOperation {
 	private java.util.List< zoot.Operation > operations;
 	public DefaultPopupActionOperation( java.util.List< zoot.Operation > operations ) {
 		this.operations = operations;
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		javax.swing.JPopupMenu popupMenu = zoot.ZManager.createPopupMenu( this.operations );
-		java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( actionContext.getEvent(), java.awt.event.MouseEvent.class );
-		popupMenu.show( me.getComponent(), me.getX(), me.getY() );
+	@Override
+	protected java.util.List<Operation> getOperations() {
+		return this.operations;
 	}
 }

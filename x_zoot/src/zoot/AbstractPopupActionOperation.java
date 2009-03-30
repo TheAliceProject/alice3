@@ -20,24 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-
-class LocalDeclarationPane extends TypedDeclarationPane {
-	private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
-
-	public LocalDeclarationPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
-		this.localDeclaredInAlice = localDeclaredInAlice;
-		this.add( new org.alice.ide.common.TypePane( this.localDeclaredInAlice.valueType.getValue() ) );
-	}
-	
-	@Override
-	protected java.util.List< zoot.Operation > getPopupOperations() {
-		java.util.LinkedList< zoot.Operation > rv = new java.util.LinkedList< zoot.Operation >();
-		rv.add( new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( this.localDeclaredInAlice ) );
-		return rv;
+public abstract class AbstractPopupActionOperation extends zoot.AbstractActionOperation {
+	protected abstract java.util.List< zoot.Operation > getOperations();
+	public void perform( zoot.ActionContext actionContext ) {
+		javax.swing.JPopupMenu popupMenu = zoot.ZManager.createPopupMenu( this.getOperations() );
+		java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( actionContext.getEvent(), java.awt.event.MouseEvent.class );
+		popupMenu.show( me.getComponent(), me.getX(), me.getY() );
 	}
 }

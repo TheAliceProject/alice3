@@ -44,7 +44,7 @@ class TypedParameterPane extends TypedDeclarationPane {
 		this.parameter = parameter;
 	}
 	@Override
-	protected void handleAltTriggered( java.awt.event.MouseEvent e ) {
+	protected java.util.List< zoot.Operation > getPopupOperations() {
 //		N = self._code.parameters.size()
 //		index = self._code.parameters.indexOf( self._parameter )
 //		operations = []
@@ -54,8 +54,9 @@ class TypedParameterPane extends TypedDeclarationPane {
 //		if index < N-1:
 //			operations.append( ShiftBackwardParameterOperation( self._parameter, self._code ) )
 //		operations.append( DeleteParameterOperation( self._parameter, self._code ) )
-//		popup = alice.ide.MenuUtilities.createJPopupMenu( operations )
-//		popup.show( e.getSource(), e.getX(), e.getY() )
+		java.util.LinkedList< zoot.Operation > rv = new java.util.LinkedList< zoot.Operation >();
+		//rv.add( new org.alice.ide.operations.ast.RenameParameterOperation( this.parameter ) );
+		return rv;
 	}
 }
 

@@ -22,35 +22,48 @@
  */
 package org.alice.ide.common;
 
+import java.awt.event.MouseEvent;
+
+import zoot.ZManager;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane  {
-	private edu.cmu.cs.dennisc.awt.event.AltTriggerMouseAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.AltTriggerMouseAdapter() {
+public abstract class TypedDeclarationPane extends swing.LineAxisPane  {
+	class PopupOperation extends zoot.AbstractPopupActionOperation {
 		@Override
-		protected void altTriggered( java.awt.event.MouseEvent e ) {
-			TypedDeclarationPane.this.handleAltTriggered( e );
+		protected java.util.List< zoot.Operation > getOperations() {
+			return TypedDeclarationPane.this.getPopupOperations();
 		}
-	};
+	}
+	private PopupOperation popupOperation = new PopupOperation();
 	public TypedDeclarationPane( java.awt.Component... components ) {
+		super( components );
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setForeground( java.awt.Color.GRAY );
-		this.addMouseListener( this.mouseAdapter );
-		for( java.awt.Component component : components ) {
-			this.add( component );
-		}
+		this.addMouseListener( new java.awt.event.MouseListener() {
+			public void mousePressed( MouseEvent e ) {
+				if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
+					if( TypedDeclarationPane.this.popupOperation != null ) {
+						ZManager.performIfAppropriate( TypedDeclarationPane.this.popupOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
+					}
+				}
+			}
+			public void mouseReleased( MouseEvent e ) {
+			}
+			public void mouseClicked( MouseEvent e ) {
+			}
+			public void mouseEntered( MouseEvent e ) {
+			}
+			public void mouseExited( MouseEvent e ) {
+			}
+		} );
 	}
-	@Override
-	public java.awt.Component add( java.awt.Component component ) {
-		java.awt.Component rv = super.add( component );
-		component.addMouseListener( this.mouseAdapter );
-		return rv;
-	}
+	protected abstract java.util.List< zoot.Operation > getPopupOperations();
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
 		g.drawRect( 0, 0, this.getWidth()-1, this.getHeight()-1);
 	}
-	protected abstract void handleAltTriggered( java.awt.event.MouseEvent e );
 }
