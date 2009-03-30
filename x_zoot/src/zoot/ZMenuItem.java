@@ -65,7 +65,7 @@ package zoot;
  */
 public class ZMenuItem extends javax.swing.JMenuItem {
 	private ActionOperation actionOperation;
-	private java.awt.Component subject;
+//	private java.awt.Component subject;
 
 	public ZMenuItem( ActionOperation actionOperation ) {
 		setActionOperation( actionOperation );

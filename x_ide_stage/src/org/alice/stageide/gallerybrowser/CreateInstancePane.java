@@ -22,6 +22,7 @@
  */
 package org.alice.stageide.gallerybrowser;
 
+@Deprecated
 public class CreateInstancePane extends zoot.ZInputPane< Object > {
 	private java.io.File rootDirectory;
 	private java.io.File file;

@@ -87,6 +87,17 @@ public class SpringUtilities {
 //		constraints.setConstraint( javax.swing.SpringLayout.SOUTH, ySpring );
 //		return layout;
 //	}
+	
+	public static java.awt.Component[] createRow( java.awt.Component... rv ) {
+		for( int i=0; i<rv.length; i++ ) {
+			if( rv[ i ] != null ) {
+				//pass
+			} else {
+				rv[ i ] = javax.swing.Box.createGlue();
+			}
+		}
+		return rv;
+	}
 	public static java.awt.Container springItUpANotch( java.awt.Container rv, java.util.List<java.awt.Component[]> componentRows, int xPad, int yPad ) {
 		assert componentRows != null;
 		int rowCount = componentRows.size();

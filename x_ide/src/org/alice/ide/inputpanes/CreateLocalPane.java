@@ -63,23 +63,7 @@ public class CreateLocalPane extends CreateTypedDeclarationWithInitializerPane<e
 	}
 
 	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.IDE() {
-			@Override
-			protected zoot.ActionOperation createAboutOperation() {
-				return null;
-			}
-			@Override
-			protected void promptForLicenseAgreements() {
-			}
-			@Override
-			protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-				return new org.alice.ide.sceneeditor.FauxSceneEditor();
-			}
-			@Override
-			protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
-				return new org.alice.ide.gallerybrowser.FauxGalleryBrowser();
-			}
-		};
+		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		CreateLocalPane createLocalPane = new CreateLocalPane( null );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( createLocalPane.showInJDialog( ide ) );
 		System.exit( 0 );

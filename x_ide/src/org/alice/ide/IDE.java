@@ -70,6 +70,18 @@ public abstract class IDE extends zoot.ZFrame {
 		return new org.alice.ide.codeeditor.Factory();
 	}
 
+	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check for existing type" );
+		if( false ) {
+			//todo
+		} else {
+			String name = "My" + superType.getName();
+			rv = org.alice.ide.ast.NodeUtilities.createType( name, superType ); 
+		}
+		return rv;
+	}
+	
 	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = this.createSceneEditor();
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser = this.createGalleryBrowser();

@@ -26,6 +26,15 @@ package org.alice.ide.ast;
  * @author Dennis Cosgrove
  */
 public class NodeUtilities {
+	public static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice createType( String name, edu.cmu.cs.dennisc.alice.ast.AbstractType superType ) {
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = new edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice();
+		constructor.body.setValue( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice();
+		rv.name.setValue( name );
+		rv.superType.setValue( superType );
+		rv.constructors.add( constructor );
+		return rv;
+	}
 	public static edu.cmu.cs.dennisc.alice.ast.DoInOrder createDoInOrder() {
 		return new edu.cmu.cs.dennisc.alice.ast.DoInOrder( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
 	}

@@ -468,19 +468,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 //	public static void main( String[] args ) {
 //
-//		org.alice.ide.IDE ide = new org.alice.ide.IDE() {
-//			@Override
-//			protected zoot.ActionOperation createAboutOperation() {
-//				return null;
-//			}
-//			@Override
-//			protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-//				return new MoveAndTurnSceneEditor();
-//			}
-//			@Override
-//			protected void promptForLicenseAgreements() {
-//			}
-//		};
+//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 //
 //		MoveAndTurnSceneEditor moveAndTurnSceneEditor = new MoveAndTurnSceneEditor();
 //

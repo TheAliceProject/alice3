@@ -22,6 +22,8 @@
  */
 package org.alice.stageide.gallerybrowser;
 
+import org.alice.ide.gallerybrowser.AbstractGalleryBrowser;
+
 class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public CreatePersonActionOperation() {
 		this.putValue( javax.swing.Action.NAME, "Create Person..." );
@@ -81,12 +83,20 @@ class GalleryFileActionOperation extends org.alice.ide.operations.AbstractAction
 		this.file = file;
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( actionContext );
-		CreateInstancePane createInstancePane = new CreateInstancePane( this.rootDirectory, file, null );
-		Object instance = createInstancePane.showInJDialog( getIDE(), "Create Instance", true );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
+		CreateFieldPane createFieldPane = new CreateFieldPane( this.file, type );
+		Object instance = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
 		if( instance != null ) {
 			//getSceneEditor().addInstance( instance )
 		}
+		
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( actionContext );
+//		CreateInstancePane createInstancePane = new CreateInstancePane( this.rootDirectory, file, null );
+//		Object instance = createInstancePane.showInJDialog( getIDE(), "Create Instance", true );
+//		if( instance != null ) {
+//			//getSceneEditor().addInstance( instance )
+//		}
 	}
 }
 
@@ -103,6 +113,12 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		zoot.ZButton createMyInstanceButton = new zoot.ZButton( new CreateMyInstance() );
 		zoot.ZButton createTextbookInstanceButton = new zoot.ZButton( new CreateTextbookInstance() );
 
+		java.io.InputStream is = GalleryBrowser.class.getResourceAsStream( "images/create_person.png" );
+		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is );
+		createPersonButton.setIcon( new javax.swing.ImageIcon( image ) );
+		createPersonButton.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
+		createPersonButton.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
+		
 		swing.Pane fromFilePane = new swing.Pane();
 		fromFilePane.setLayout( new java.awt.GridLayout( 2, 1, 0, 4 ) );
 		fromFilePane.add( createMyInstanceButton );
