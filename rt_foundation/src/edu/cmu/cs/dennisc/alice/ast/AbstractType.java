@@ -91,6 +91,9 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	public abstract boolean isArray();
 	public abstract AbstractType getComponentType();
 	
+	public AbstractConstructor getDeclaredConstructor() {
+		return getDeclaredConstructor( new AbstractType[] {} );
+	}
 	public AbstractConstructor getDeclaredConstructor( AbstractType... parameterTypes ) {
 		AbstractConstructor rv = null;
 		for( AbstractConstructor constructor : getDeclaredConstructors() ) {
@@ -111,7 +114,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 		}
 		return rv;
 	}
-	public AbstractConstructor getDeclaredConstructor( Class<?>[] parameterClses ) {
+	public AbstractConstructor getDeclaredConstructor( Class<?>... parameterClses ) {
 		return getDeclaredConstructor( TypeDeclaredInJava.get( parameterClses ) );
 	}
 	public AbstractMethod getDeclaredMethod( String name, AbstractType... parameterTypes ) {
