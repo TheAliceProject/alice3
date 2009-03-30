@@ -86,8 +86,8 @@ public abstract class AbstractManipulator {
 	
 	public void endManipulator(InputState endInput, InputState previousInput  )
 	{
-		doEndManipulator( endInput, previousInput );
 		triggerAllDeactivateEvents();
+		doEndManipulator( endInput, previousInput );
 	}
 	
 	public abstract void doStartManipulator( InputState startInput );

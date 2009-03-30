@@ -24,36 +24,42 @@ package org.alice.interact;
 
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
-public abstract class LinearDragHandle extends ManipulationHandle {
+public abstract class LinearDragHandle extends ManipulationHandle implements PropertyListener{
 	
 	protected static final double MIN_LENGTH = .4d;
 	
 	protected double offsetPadding = 0.0d;
-	protected MovementDirection dragDirection;
+	protected MovementDescription dragDescription;
 	protected Vector3 dragAxis;
 	protected double distanceFromOrigin;
+	protected Transformable standUpReference = new Transformable();
 
 	protected DoubleTargetBasedAnimation lengthAnimation;
 	
 	public LinearDragHandle( )
 	{
-		this( MovementDirection.UP );
+		this( new MovementDescription( MovementDirection.UP, MovementType.ABSOLUTE) );
 	}
 	
-	public LinearDragHandle( MovementDirection dragDirection )
+	public LinearDragHandle( MovementDescription dragDescription )
 	{
 		super();
-		this.dragDirection = dragDirection;
-		this.dragAxis = new Vector3(this.dragDirection.getVector());
+		this.dragDescription = dragDescription;
+		this.dragAxis = new Vector3(this.dragDescription.direction.getVector());
 		this.localTransformation.setValue( this.getTransformationForAxis( this.dragAxis ) );
 		this.distanceFromOrigin = 0.0d;
 		createShape();
@@ -61,10 +67,15 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 	
 	public LinearDragHandle( LinearDragHandle handle)
 	{
-		this(handle.dragDirection);
+		this(handle.dragDescription);
 		this.initFromHandle( handle );
 		this.distanceFromOrigin = handle.distanceFromOrigin;
 		this.offsetPadding = handle.offsetPadding;
+	}
+	
+	public MovementDescription getMovementDescription()
+	{
+		return this.dragDescription;
 	}
 	
 	protected abstract void createShape();
@@ -105,38 +116,59 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 				Vector3 extents[] = { new Vector3(boundingBox.getMaximum()), new Vector3(boundingBox.getMinimum()) };
 				for (int i=0; i<extents.length; i++)
 				{
-					if (Math.signum( extents[i].x ) == Math.signum( this.dragAxis.x ))
-						if ( Math.abs(extents[i].x) > Math.abs(desiredHandleValues.x) )
-							desiredHandleValues.x = extents[i].x;
-					
-					if (Math.signum( extents[i].y ) == Math.signum( this.dragAxis.y ))
-						if ( Math.abs(extents[i].y) > Math.abs(desiredHandleValues.y) )
-							desiredHandleValues.y = extents[i].y;
-					
-					if (Math.signum( extents[i].z ) == Math.signum( this.dragAxis.z ))
-						if ( Math.abs(extents[i].z) > Math.abs(desiredHandleValues.z) )
-							desiredHandleValues.z = extents[i].z;
+					double axisDot = Vector3.calculateDotProduct( this.dragAxis, extents[i] );
+					if (axisDot > 0.0d)
+					{
+						desiredHandleValues.add( Vector3.createMultiplication( extents[i], this.dragAxis ) );
+					}
+//					if (Math.signum( extents[i].x ) == Math.signum( this.dragAxis.x ))
+//						if ( Math.abs(extents[i].x) > Math.abs(desiredHandleValues.x) )
+//							desiredHandleValues.x = extents[i].x;
+//					
+//					if (Math.signum( extents[i].y ) == Math.signum( this.dragAxis.y ))
+//						if ( Math.abs(extents[i].y) > Math.abs(desiredHandleValues.y) )
+//							desiredHandleValues.y = extents[i].y;
+//					
+//					if (Math.signum( extents[i].z ) == Math.signum( this.dragAxis.z ))
+//						if ( Math.abs(extents[i].z) > Math.abs(desiredHandleValues.z) )
+//							desiredHandleValues.z = extents[i].z;
 				}
 				
-				double xLength = desiredHandleValues.x / this.dragAxis.x;
-				if (Double.isNaN( xLength ))
-					xLength = 0.0d;
-				double yLength = desiredHandleValues.y / this.dragAxis.y;
-				if (Double.isNaN( yLength ))
-					yLength = 0.0d;
-				double zLength = desiredHandleValues.z / this.dragAxis.z;
-				if (Double.isNaN( zLength ))
-					zLength = 0.0d;
-				
-				double length = Math.max( xLength, Math.max( yLength, zLength ) );
-				if (length < MIN_LENGTH)
-				{
-					length = MIN_LENGTH;
-				}
-				return length;
+//				double xLength = desiredHandleValues.x / this.dragAxis.x;
+//				if (Double.isNaN( xLength ))
+//					xLength = 0.0d;
+//				double yLength = desiredHandleValues.y / this.dragAxis.y;
+//				if (Double.isNaN( yLength ))
+//					yLength = 0.0d;
+//				double zLength = desiredHandleValues.z / this.dragAxis.z;
+//				if (Double.isNaN( zLength ))
+//					zLength = 0.0d;
+//				
+//				double length = Math.max( xLength, Math.max( yLength, zLength ) );
+//				if (length < MIN_LENGTH)
+//				{
+//					length = MIN_LENGTH;
+//				}
+				return desiredHandleValues.calculateMagnitude();
 			}
 		}
 		return 0.0d;
+	}
+	
+	@Override
+	public void setManipulatedObject( Transformable manipulatedObject ) {
+		if (this.manipulatedObject != manipulatedObject)
+		{
+			if (this.manipulatedObject != null)
+			{
+				this.manipulatedObject.localTransformation.removePropertyListener( this );
+			}
+			super.setManipulatedObject( manipulatedObject );
+			if (this.manipulatedObject != null)
+			{
+				this.manipulatedObject.localTransformation.addPropertyListener( this );
+			}
+		}
 	}
 	
 	public double getCurrentHandleLength()
@@ -160,14 +192,42 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 		return this.dragAxis;
 	}
 
-
+	@Override
+	public ReferenceFrame getReferenceFrame()
+	{
+		if (this.manipulatedObject != null)
+		{
+			if (this.dragDescription.type == MovementType.STOOD_UP)
+			{
+				this.standUpReference.setParent( this.manipulatedObject );
+				this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
+				this.standUpReference.setAxesOnlyToStandUp();
+				return this.standUpReference;
+			}
+			else if (this.dragDescription.type == MovementType.ABSOLUTE)
+			{
+				this.standUpReference.setParent( this.manipulatedObject.getRoot() );
+				AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
+				location.translation.set( this.manipulatedObject.getTranslation( AsSeenBy.SCENE ) );
+				this.standUpReference.localTransformation.setValue( location );
+				return this.standUpReference;
+			}
+			else
+			{
+				return this.manipulatedObject;
+			}
+		}
+		return this;
+	}
+	
 	@Override
 	public void positionRelativeToObject( Composite object )
 	{
 		if (object != null)
 		{
 			Vector3 translation = Vector3.createMultiplication( this.dragAxis, this.distanceFromOrigin + this.offsetPadding );
-			this.setTranslationOnly( translation, object );
+			this.setTransformation( this.getTransformationForAxis( this.dragAxis ), this.getReferenceFrame() );
+			this.setTranslationOnly( translation, this.getReferenceFrame() );
 		}
 	}
 
@@ -184,6 +244,15 @@ public abstract class LinearDragHandle extends ManipulationHandle {
 				this.lengthAnimation.setTarget( this.distanceFromOrigin );
 			}
 		}
+	}
+	
+	public void propertyChanged( PropertyEvent e ) {
+		this.positionRelativeToObject( this.getManipulatedObject() );		
+	}
+
+	public void propertyChanging( PropertyEvent e ) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

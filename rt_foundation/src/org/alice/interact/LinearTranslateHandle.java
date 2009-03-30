@@ -39,9 +39,9 @@ public class LinearTranslateHandle extends LinearDragHandle {
 	protected Arrow arrow;
 	
 	
-	public LinearTranslateHandle( MovementDirection dragDirection, Color4f color )
+	public LinearTranslateHandle( MovementDescription dragDescription, Color4f color )
 	{
-		super( dragDirection );
+		super( dragDescription );
 		this.baseColor = color;
 		this.initializeAppearance();
 	}

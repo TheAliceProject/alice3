@@ -28,6 +28,7 @@ import org.alice.interact.event.ManipulationListener;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -287,7 +288,7 @@ public abstract class ManipulationHandle extends Transformable implements Manipu
 	/**
 	 * @param isVisible the isVisible to set
 	 */
-	public void setVisible( boolean isVisible ) {
+	public void setVisible( boolean isVisible ) {	
 		this.currentState.setVisible( isVisible );
 		this.updateVisibleState();
 	}
@@ -415,12 +416,16 @@ public abstract class ManipulationHandle extends Transformable implements Manipu
 	{
 		double upDot = Vector3.calculateDotProduct( axis, Vector3.accessPositiveYAxis() );
 		AffineMatrix4x4 transform = new AffineMatrix4x4();
-		if ( upDot != 1.0d)
+		if ( Math.abs( upDot ) != 1.0d )
 		{
 			Vector3 rightAxis = Vector3.createCrossProduct( axis, Vector3.accessPositiveYAxis() );
 			Vector3 upAxis = axis;
 			Vector3 backwardAxis = Vector3.createCrossProduct( rightAxis, upAxis );
 			transform.orientation.set( rightAxis, upAxis, backwardAxis );
+		}
+		else if (upDot == -1.0d)
+		{
+			transform.applyRotationAboutXAxis( new AngleInRadians(Math.PI));
 		}
 		return transform;
 	}

@@ -24,6 +24,8 @@ package org.alice.interact;
 
 import java.awt.Point;
 
+import org.alice.interact.event.ManipulationEvent;
+
 import edu.cmu.cs.dennisc.math.EpsilonUtilities;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -36,7 +38,13 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
  */
 public class ObjectUpDownDragManipulator extends ObjectTranslateDragManipulator {
 
-	
+	@Override
+	protected void initializeEventMessages()
+	{
+		this.manipulationEvents.clear();
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
+		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.DOWN, MovementType.ABSOLUTE), this.manipulatedTransformable ) );
+	}
 	
 	@Override
 	protected Plane createPickPlane( Point3 clickPoint )

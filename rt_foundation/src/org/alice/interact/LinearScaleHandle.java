@@ -55,14 +55,14 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 	protected Transformable standUpReference = new Transformable();
 	protected boolean applyAlongAxis = false;
 	
-	public LinearScaleHandle( MovementDirection dragDirection, Color4f color )
+	public LinearScaleHandle( MovementDescription dragDescription, Color4f color )
 	{
-		this( dragDirection, color, false );
+		this( dragDescription, color, false );
 	}
 	
-	public LinearScaleHandle( MovementDirection dragDirection, Color4f color, boolean applyAlongAxis )
+	public LinearScaleHandle( MovementDescription dragDescription, Color4f color, boolean applyAlongAxis )
 	{
-		super( dragDirection );
+		super( dragDescription );
 		this.baseColor = color;
 		this.applyAlongAxis = applyAlongAxis;
 		this.initializeAppearance();
@@ -98,9 +98,9 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 	public void setManipulatedObject( Transformable manipulatedObject ) {
 		if (this.manipulatedObject != manipulatedObject)
 		{
-			
 			if (this.manipulatedObject != null)
 			{
+				this.manipulatedObject.localTransformation.removePropertyListener( this );
 				Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
 				if (visualElement != null)
 					visualElement.scale.removePropertyListener( this );
@@ -108,9 +108,11 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 			super.setManipulatedObject( manipulatedObject );
 			if (this.manipulatedObject != null)
 			{
+				this.manipulatedObject.localTransformation.addPropertyListener( this );
 				Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
 				if (visualElement != null)
 					visualElement.scale.addPropertyListener( this );
+				
 			}
 		}
 	}
@@ -122,15 +124,6 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 		Vector3 handleOffset = new Vector3(this.dragAxis);
 		handleOffset.multiply( this.getHandleLength(this.manipulatedObject) );
 		this.setTranslationOnly( handleOffset, this.getReferenceFrame() );
-	}
-
-	public void propertyChanged( PropertyEvent e ) {
-		this.positionRelativeToObject( this.getManipulatedObject() );		
-	}
-	
-	public void propertyChanging( PropertyEvent e ) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override

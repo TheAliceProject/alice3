@@ -47,6 +47,15 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		}
 
 	}
+	
+	@Override
+	public void triggerAllDeactivateEvents()
+	{
+		if (this.activeManipulator != null)
+		{
+			this.activeManipulator.triggerAllDeactivateEvents();
+		}
+	}
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
@@ -82,6 +91,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		}
 		if (this.activeManipulator != null)
 		{
+			this.activeManipulator.setDragAdapter( this.dragAdapter );
 			if (this.activeManipulator instanceof CameraInformedManipulator)
 			{
 				CameraInformedManipulator cIM = (CameraInformedManipulator)this.activeManipulator;

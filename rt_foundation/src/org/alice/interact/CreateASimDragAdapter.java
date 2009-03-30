@@ -58,11 +58,11 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 		
 		MovementKey[] turnKeys = {
 				//Left
-				new MovementKey(KeyEvent.VK_OPEN_BRACKET, new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), -25.0d),
-				new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.LEFT, MovementType.LOCAL), -25.0d),
+				new MovementKey(KeyEvent.VK_OPEN_BRACKET, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), -25.0d),
+				new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), -25.0d),
 				//Right
-				new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), 25.0d),
-				new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.RIGHT, MovementType.LOCAL), 25.0d),
+				new MovementKey(KeyEvent.VK_CLOSE_BRACKET, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), 25.0d),
+				new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.UP, MovementType.ABSOLUTE), 25.0d),
 		};
 		
 		CameraTranslateKeyManipulator cameraTranslateManip = new CameraTranslateKeyManipulator( movementKeys );

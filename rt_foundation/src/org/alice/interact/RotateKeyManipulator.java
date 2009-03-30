@@ -82,7 +82,8 @@ public class RotateKeyManipulator extends AbstractManipulator {
 			if (input.isKeyDown( this.rotationKeys[i].keyValue ))
 			{
 				int typeIndex = this.rotationKeys[i].movementDescription.type.getIndex();
-				int axisIndex = this.rotateAxes.indexOf( this.rotationKeys[i].movementDescription.type );
+				int axisIndex = this.rotateAxes.indexOf( this.rotationKeys[i].movementDescription.direction );
+				
 				rotateDirs[axisIndex][typeIndex] += this.rotationKeys[i].directionMultiplier;
 			}	
 		}

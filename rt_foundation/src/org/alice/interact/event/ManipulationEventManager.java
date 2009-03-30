@@ -37,19 +37,22 @@ public class ManipulationEventManager {
 	private class DescriptionAndTargetCriteria
 	{
 		public MovementDescription description;
+		public ManipulationEvent.EventType eventType;
 		public PickHint targetCriteria;
 		
-		public DescriptionAndTargetCriteria( MovementDescription description, PickHint targetCriteria)
+		public DescriptionAndTargetCriteria( ManipulationEvent.EventType eventType, MovementDescription description, PickHint targetCriteria)
 		{
+			this.eventType = eventType;
 			this.description = description;
 			this.targetCriteria = targetCriteria;
 		}
 		
 		public boolean matches( ManipulationEvent event )
 		{
+			boolean isValidEventType = event.getType() == this.eventType;
 			boolean isValidTarget = this.targetCriteria.intersects( PickCondition.getPickType( event.getTarget() ) );
 			boolean isValidMovement = event.getMovementDescription().equals(this.description);
-			return isValidTarget && isValidMovement;
+			return isValidEventType && isValidTarget && isValidMovement;
 		}
 		
 		@Override
@@ -105,10 +108,10 @@ public class ManipulationEventManager {
 	
 	private List< ListenerAndConditions > manipulationListeners = new java.util.LinkedList< ListenerAndConditions >();
 
-	public void addManipulationListener( ManipulationListener listener, MovementDescription movementDescription, PickHint targetCriteria)
+	public void addManipulationListener( ManipulationListener listener, ManipulationEvent.EventType eventType, MovementDescription movementDescription, PickHint targetCriteria)
 	{
 		synchronized( this.manipulationListeners ) {
-			DescriptionAndTargetCriteria condition = new DescriptionAndTargetCriteria(movementDescription, targetCriteria);
+			DescriptionAndTargetCriteria condition = new DescriptionAndTargetCriteria(eventType, movementDescription, targetCriteria);
 			int listenerIndex = this.manipulationListeners.indexOf( listener );
 			if ( listenerIndex > -1 )
 			{

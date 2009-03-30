@@ -51,6 +51,35 @@ public enum MovementDirection {
 		return this.directionVector;
 	}
 	
+	public MovementDirection getOpposite()
+	{
+		if (this == FORWARD)
+		{
+			return BACKWARD;
+		}
+		else if (this == BACKWARD)
+		{
+			return FORWARD;
+		}
+		else if (this == UP)
+		{
+			return DOWN;
+		}
+		else if (this == DOWN)
+		{
+			return UP;
+		}
+		else if (this == LEFT)
+		{
+			return RIGHT;
+		}
+		else if (this == RIGHT)
+		{
+			return LEFT;
+		}
+		return this;
+	}
+	
 	public boolean hasDirection( Vector3 vector )
 	{
 		double dot = Vector3.calculateDotProduct( this.directionVector, vector );
