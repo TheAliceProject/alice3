@@ -589,7 +589,6 @@ public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements
 	}
 	public void dragDropped( zoot.DragAndDropContext dragAndDropContext ) {
 		final java.awt.Point viewPosition = this.scrollPane.getViewport().getViewPosition();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "orginal view position: ", viewPosition );
 		final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;

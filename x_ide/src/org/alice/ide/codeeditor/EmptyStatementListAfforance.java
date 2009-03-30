@@ -28,7 +28,7 @@ package org.alice.ide.codeeditor;
 public class EmptyStatementListAfforance extends org.alice.ide.common.StatementLikeSubstance {
 	public EmptyStatementListAfforance() {
 		super( edu.cmu.cs.dennisc.alice.ast.Statement.class, javax.swing.BoxLayout.LINE_AXIS );
-		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
 		zoot.ZLabel label = new zoot.ZLabel( "drop statement here" );
 		label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.EXTRA_LIGHT );
 		this.add( label );
