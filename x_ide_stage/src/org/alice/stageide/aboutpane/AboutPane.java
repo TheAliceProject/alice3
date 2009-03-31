@@ -79,7 +79,7 @@ class ViewEULAsPane extends javax.swing.JPanel {
 /**
  * @author Dennis Cosgrove
  */
-public class AboutPane extends edu.cmu.cs.dennisc.moot.ZPageAxisPane {
+public class AboutPane extends swing.PageAxisPane {
 	public AboutPane() {
 		this.add( this.createLabel( "current version: " + edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() ) );
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
