@@ -43,10 +43,9 @@ class InstanceNameTextField extends javax.swing.JTextField {
 	}
 }
 
-class RowsSpringPane extends swing.Pane {
+abstract class RowsSpringPane extends swing.Pane {
 	@Override
 	public void addNotify() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "addNotify" );
 		if( getLayout() instanceof javax.swing.SpringLayout ) {
 			//pass
 		} else {
@@ -55,8 +54,9 @@ class RowsSpringPane extends swing.Pane {
 		}
 		super.addNotify();
 	}
-	protected java.util.List< java.awt.Component[] > createComponentRows() {
-		return new java.util.LinkedList< java.awt.Component[] >();
+	protected abstract java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv );
+	private java.util.List< java.awt.Component[] > createComponentRows() {
+		return addComponentRows( new java.util.LinkedList< java.awt.Component[] >() );
 	}
 }
 
@@ -76,10 +76,7 @@ public class CreateFieldPane extends zoot.ZInputPane< edu.cmu.cs.dennisc.alice.a
 	}
 	class MyRowsPane extends RowsSpringPane {
 		@Override
-		protected java.util.List< java.awt.Component[] > createComponentRows() {
-			java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-
-			
+		protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 			//GalleryIcon galleryIcon = new GalleryIcon( CreateFieldPane.this.file );
 			
 			swing.LineAxisPane declarationLine = new swing.LineAxisPane( 
