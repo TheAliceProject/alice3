@@ -93,15 +93,53 @@ public abstract class IDE extends zoot.ZFrame {
 	//	private zoot.ZLabel feedback = new zoot.ZLabel();
 
 	
+	
+	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		//todo:
+		return new org.alice.ide.common.TypeComponent( type );
+	}
+	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return null;
+	}
+	public javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return new org.alice.ide.common.TypeIcon( type );
+	}
+	
+	
 	private javax.swing.ComboBoxModel typeComboBoxModel;
+	
+	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addJavaTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ) );
+		return rv;
+	}
+	
+	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addAliceTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = this.getSceneType();
+		if( sceneType != null ) {
+			rv.add( sceneType );
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType valueType = field.getValueType();
+				if( valueType.isDeclaredInAlice() ) {
+					if( rv.contains( rv ) ) {
+						//pass
+					} else {
+						rv.add( valueType );
+					}
+				}
+			}
+		}
+		return rv;
+	}	
 	public javax.swing.ComboBoxModel getTypeComboBoxModel() {
 		if( this.typeComboBoxModel != null ) {
 			//pass
 		} else {
 			java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >();
-			types.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
-			types.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
-			types.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
+			this.addJavaTypes( types );
+			this.addAliceTypes( types );
 			typeComboBoxModel = new javax.swing.DefaultComboBoxModel( types );
 		}
 		return this.typeComboBoxModel;
@@ -1184,16 +1222,30 @@ public abstract class IDE extends zoot.ZFrame {
 
 	@Deprecated
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
-		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)getProject().getProgramType();
+		edu.cmu.cs.dennisc.alice.Project project = getProject();
+		if( project != null ) {
+			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType();
+		} else {
+			return null;
+		}
 	}
 	@Deprecated
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
-		return getProgramType().fields.get( 0 );
-
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = getProgramType();
+		if( programType != null ) {
+			return programType.fields.get( 0 );
+		} else {
+			return null;
+		}
 	}
 	@Deprecated
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneType() {
-		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)getSceneField().getDeclaringType();
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getSceneType() {
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = getSceneField();
+		if( sceneField != null ) {
+			return sceneField.getValueType();
+		} else {
+			return null;
+		}
 	}
 	public boolean isInScope() {
 		//todo?

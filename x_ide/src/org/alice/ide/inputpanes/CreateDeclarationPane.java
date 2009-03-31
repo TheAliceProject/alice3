@@ -25,7 +25,86 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CreateDeclarationPane<E> extends NameInputPane<E> {
+class InstanceNameTextField extends javax.swing.JTextField {
+	public InstanceNameTextField() {
+		this.setFont( this.getFont().deriveFont( 18.0f ) );
+	}
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
+	}
+	@Override
+	public java.awt.Dimension getMaximumSize() {
+		return this.getPreferredSize();
+	}
+}
+
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
+	protected static zoot.ZLabel createLabel( String s ) {
+		zoot.ZLabel rv = new zoot.ZLabel( s );
+		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
+		return rv;
+	}
+
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
+
+	private java.awt.Component pane;
+	private InstanceNameTextField instanceNameTextField = new InstanceNameTextField();
+	protected abstract java.awt.Component[] createDeclarationRow();
+	protected abstract java.awt.Component[] createValueTypeRow();
+	protected final java.awt.Component[] createNameRow() {
+		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "name:" ), this.instanceNameTextField );
+	}
+	protected abstract java.awt.Component[] createInitializerRow();
+	public CreateDeclarationPane() {
+		final int INSET = 16;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+	}
+	
+	protected String getDeclarationName() {
+		return this.instanceNameTextField.getText();
+	}
+	
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		if( this.pane != null ) {
+			//pass
+		} else {
+			this.setLayout( new java.awt.BorderLayout() );
+			this.add( this.createRowsSpringPane(), java.awt.BorderLayout.CENTER );
+		}
+	}
+	private java.awt.Component createRowsSpringPane() {
+		final java.awt.Component[] declarationRow = createDeclarationRow();
+		final java.awt.Component[] valueTypeRow = createValueTypeRow();
+		final java.awt.Component[] nameRow = createNameRow();
+		final java.awt.Component[] initializerRow = createInitializerRow();
+		return new swing.RowsSpringPane() {
+			@Override
+			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
+				if( declarationRow != null ) {
+					rv.add( declarationRow );
+					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 10 ), null ) );
+				}
+				if( valueTypeRow != null ) {
+					rv.add( valueTypeRow );
+				}
+				if( nameRow != null ) {
+					rv.add( nameRow );
+				}
+				if( initializerRow != null ) {
+					rv.add( initializerRow );
+				}
+				return rv;
+			}
+		};
+	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );

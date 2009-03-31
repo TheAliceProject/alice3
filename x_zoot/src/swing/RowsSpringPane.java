@@ -20,25 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package swing;
 
-/**
- * @author Dennis Cosgrove
- */
-public class CreateAndAddFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public CreateAndAddFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
-		this.putValue( javax.swing.Action.NAME, "create new property..." );
-	}
-	public void perform( zoot.ActionContext actionContext ) {
-		org.alice.ide.inputpanes.CreateFieldPane createMethodPane = new org.alice.ide.inputpanes.CreateFieldPane( this.ownerType );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createMethodPane.showInJDialog( getIDE() );
-		if( field != null ) {
-			this.ownerType.fields.add( field );
-			actionContext.commit();
+public abstract class RowsSpringPane extends swing.Pane {
+	@Override
+	public void addNotify() {
+		if( getLayout() instanceof javax.swing.SpringLayout ) {
+			//pass
 		} else {
-			actionContext.cancel();
+			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
+			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this, componentRows, 12, 12 );
 		}
+		super.addNotify();
+	}
+	protected abstract java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv );
+	private java.util.List< java.awt.Component[] > createComponentRows() {
+		return addComponentRows( new java.util.LinkedList< java.awt.Component[] >() );
 	}
 }

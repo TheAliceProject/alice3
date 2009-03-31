@@ -25,34 +25,20 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode;
-	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode ) {
-		this.ownerCode = ownerCode;
+public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+	public AbstractCreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		super( declaringType );
+		this.setBackground( getIDE().getFieldColor() );
 	}
 	@Override
-	protected java.awt.Component[] createDeclarationRow() {
-		return null;
+	protected final String getDeclarationText() {
+		return "Property";
 	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression getInitializer();
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType();
 	@Override
-	protected java.awt.Component[] createInitializerRow() {
+	protected final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
 		return null;
 	}
-	@Override
-	protected java.awt.Component[] createValueTypeRow() {
-		return null;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
-		return null;
-	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
-//		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getNameText(), this.getValueType() );
-//	}
-//	@Override
-//	protected boolean isNameAcceptable( java.lang.String name ) {
-//		//todo: check parameters for collision
-//		return true;
-//	}
 }

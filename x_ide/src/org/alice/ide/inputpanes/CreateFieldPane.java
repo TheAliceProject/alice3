@@ -25,15 +25,42 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateFieldPane extends CreateTypedDeclarationWithInitializerPane<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> {
-	@Override
-	protected boolean isNameAcceptable( java.lang.String name ) {
-		//todo
-		return true;
+public class CreateFieldPane extends AbstractCreateFieldPane {
+	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		super( declaringType );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		return null;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+		return null;
+	}
+
+	@Override
+	protected java.awt.Component[] createValueTypeRow() {
+		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "value class:" ), new TypePane() );
+	}
+	@Override
+	protected java.awt.Component[] createInitializerRow() {
+		return null;
+	}
+//	@Override
+//	protected java.util.List< java.awt.Component[] > createComponentRows() {
+//		zoot.ZLabel label = new zoot.ZLabel( "initializer:" );
+//		this.initializerPane = new InitializerPane();
+//		this.isConstantCheckBox = new zoot.ZCheckBox( new IsConstantStateOperation() );
+//		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
+//		rv.add( new java.awt.Component[] { label, this.initializerPane } );
+//		rv.add( new java.awt.Component[] { new javax.swing.JLabel(), this.isConstantCheckBox } );
+//		return rv;
+//	}
+//	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+//		return this.initializerPane.getInitializer();
+//	}
+//	
+//	protected boolean isConstant() {
+//		return this.isConstantCheckBox.isSelected();
+//	}
 }

@@ -25,19 +25,22 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateProcedurePane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
+public class CreateProcedurePane extends CreateMethodPane {
+	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		super( declaringType );
+		this.setBackground( getIDE().getProcedureColor() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getNameText(), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE, new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	protected String getDeclarationText() {
+		return "Procedure";
 	}
-	
 	@Override
-	protected boolean isNameAcceptable( java.lang.String name ) {
-		//todo: check methods for collision
-		return true;
+	protected java.awt.Component[] createValueTypeRow() {
+		return null;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnValueType() {
+		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 }
+

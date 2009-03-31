@@ -88,7 +88,7 @@ class GalleryFileActionOperation extends org.alice.ide.operations.AbstractAction
 
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
-		CreateFieldPane createFieldPane = new CreateFieldPane( declaringType, this.file, type );
+		CreateFieldFromGalleryPane createFieldPane = new CreateFieldFromGalleryPane( declaringType, type, this.file );
 		Object instance = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
 		if( instance != null ) {
 			//getSceneEditor().addInstance( instance )

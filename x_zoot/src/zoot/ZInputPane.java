@@ -180,6 +180,7 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 		ZButton cancelButton = new ZButton( new CancelOperation() );
 
 		javax.swing.JPanel panel = new javax.swing.JPanel();
+		panel.setBackground( this.getBackground() );
 		panel.add( okButton );
 		panel.add( cancelButton );
 

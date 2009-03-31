@@ -25,32 +25,7 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-class TypeListCellRenderer extends swing.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
-	@Override
-	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			rv.setText( value.getName() );
-		} else {
-			rv.setText( "null" );
-		}
-		return rv;
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-class TypeComboBox extends zoot.ZComboBox {
-	public TypeComboBox() {
-		this.setModel( org.alice.ide.IDE.getSingleton().getTypeComboBoxModel() );
-		this.setRenderer( new TypeListCellRenderer() );
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-public abstract class CreateTypedDeclarationPane<E> extends CreateDeclarationPane<E> {
+class TypePane extends swing.LineAxisPane {
 	class IsArrayStateOperation extends zoot.AbstractBooleanStateOperation {
 		public IsArrayStateOperation() {
 			super( false );
@@ -64,21 +39,19 @@ public abstract class CreateTypedDeclarationPane<E> extends CreateDeclarationPan
 	protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 	}
 	protected void handleIsArrayChange( boolean isArray ) {
-		updateOKButton();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: updateOKButton()" );
+		//updateOKButton();
 	}
-	private TypeComboBox typeComboBox;
+	private org.alice.ide.common.TypeComboBox typeComboBox;
 	private zoot.ZCheckBox isArrayCheckBox;
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		return (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem();
 	}
-	@Override
-	protected java.util.List< java.awt.Component[] > createComponentRows() {
-		zoot.ZLabel label = new zoot.ZLabel( "type:" );
-		this.typeComboBox = new TypeComboBox();
+	public TypePane() {
+		this.typeComboBox = new org.alice.ide.common.TypeComboBox();
 		this.isArrayCheckBox = new zoot.ZCheckBox( new IsArrayStateOperation() );
-		swing.LineAxisPane linePane = new swing.LineAxisPane( this.typeComboBox, this.isArrayCheckBox );
-		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-		rv.add( new java.awt.Component[] { label, linePane } );
-		return rv;
+		this.isArrayCheckBox.setOpaque( false );
+		this.add( this.typeComboBox );
+		this.add( this.isArrayCheckBox );
 	}
 }

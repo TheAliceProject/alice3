@@ -25,47 +25,63 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateLocalPane extends CreateTypedDeclarationWithInitializerPane<edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement> {
+public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement> {
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
 	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		this.block = block;
 	}
 	@Override
-	protected boolean isNameAcceptable( String name ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isNameAcceptable", name );
-		return true;
+	protected java.awt.Component[] createDeclarationRow() {
+		return null;
+	}
+	@Override
+	protected java.awt.Component[] createInitializerRow() {
+		return null;
+	}
+	@Override
+	protected java.awt.Component[] createValueTypeRow() {
+		return null;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
-		String name = this.getNameText();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getValueType();
-		boolean isConstant = this.isConstant();
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = this.getInitializer();
-		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement rv;
-		if( isConstant ) {
-			rv = new edu.cmu.cs.dennisc.alice.ast.ConstantDeclarationStatement(
-					new edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice(
-							name,
-							type
-					),
-					initializer
-			);
-		} else {
-			rv = new edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement(
-					new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice(
-							name,
-							type
-					),
-					initializer
-			);
-		}
-		return rv;
+		return null;
 	}
-
-	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		CreateLocalPane createLocalPane = new CreateLocalPane( null );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( createLocalPane.showInJDialog( ide ) );
-		System.exit( 0 );
-	}
+//	@Override
+//	protected boolean isNameAcceptable( String name ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isNameAcceptable", name );
+//		return true;
+//	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
+//		String name = this.getNameText();
+//		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getValueType();
+//		boolean isConstant = this.isConstant();
+//		edu.cmu.cs.dennisc.alice.ast.Expression initializer = this.getInitializer();
+//		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement rv;
+//		if( isConstant ) {
+//			rv = new edu.cmu.cs.dennisc.alice.ast.ConstantDeclarationStatement(
+//					new edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice(
+//							name,
+//							type
+//					),
+//					initializer
+//			);
+//		} else {
+//			rv = new edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement(
+//					new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice(
+//							name,
+//							type
+//					),
+//					initializer
+//			);
+//		}
+//		return rv;
+//	}
+//
+//	public static void main( String[] args ) {
+//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+//		CreateLocalPane createLocalPane = new CreateLocalPane( null );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( createLocalPane.showInJDialog( ide ) );
+//		System.exit( 0 );
+//	}
 }

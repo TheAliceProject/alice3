@@ -76,6 +76,9 @@ class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 }
 
+/**
+ * @author Dennis Cosgrove
+ */
 class InitializerPane extends javax.swing.JPanel {
 	private static final String ITEM_KEY = "ITEM_KEY";
 	private static final String ARRAY_KEY = "ARRAY_KEY";
@@ -117,47 +120,3 @@ class InitializerPane extends javax.swing.JPanel {
 	}
 }
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class CreateTypedDeclarationWithInitializerPane<E> extends CreateTypedDeclarationPane<E> {
-	private InitializerPane initializerPane;
-	class IsConstantStateOperation extends zoot.AbstractBooleanStateOperation {
-		public IsConstantStateOperation() {
-			super( false );
-			//this.getButtonModelForConfiguringSwing().setActionCommand( "is constant" );
-			this.putValue( javax.swing.Action.NAME, "is constant" );
-		}
-		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-			CreateTypedDeclarationWithInitializerPane.this.handleIsConstantChange( booleanStateContext.getNextValue() );
-		}
-	}
-	@Override
-	protected void handleIsArrayChange( boolean isArray ) {
-		super.handleIsArrayChange( isArray );
-		this.initializerPane.handleIsArrayChange( isArray );
-		this.updateSizeIfNecessary();
-	}
-	private zoot.ZCheckBox isConstantCheckBox;
-	protected void handleIsConstantChange( boolean isArray ) {
-	}
-
-	@Override
-	protected java.util.List< java.awt.Component[] > createComponentRows() {
-		zoot.ZLabel label = new zoot.ZLabel( "initializer:" );
-		this.initializerPane = new InitializerPane();
-		this.isConstantCheckBox = new zoot.ZCheckBox( new IsConstantStateOperation() );
-		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-		rv.add( new java.awt.Component[] { label, this.initializerPane } );
-		rv.add( new java.awt.Component[] { new javax.swing.JLabel(), this.isConstantCheckBox } );
-		return rv;
-	}
-	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-		return this.initializerPane.getInitializer();
-	}
-	
-	protected boolean isConstant() {
-		return this.isConstantCheckBox.isSelected();
-	}
-	
-}

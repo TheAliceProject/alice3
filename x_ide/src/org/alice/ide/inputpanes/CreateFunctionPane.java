@@ -25,18 +25,22 @@ package org.alice.ide.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateFunctionPane extends CreateTypedDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public CreateFunctionPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
+public class CreateFunctionPane extends CreateMethodPane {
+	private TypePane typePane = new TypePane();
+	public CreateFunctionPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		super( declaringType );
+		this.setBackground( getIDE().getFunctionColor() );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getNameText(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	protected String getDeclarationText() {
+		return "Function";
 	}
 	@Override
-	protected boolean isNameAcceptable( java.lang.String name ) {
-		//todo: check methods for collision
-		return true;
+	protected java.awt.Component[] createValueTypeRow() {
+		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "return value class:" ), this.typePane );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnValueType() {
+		return this.typePane.getValueType();
 	}
 }
