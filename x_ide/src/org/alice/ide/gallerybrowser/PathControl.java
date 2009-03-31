@@ -25,31 +25,33 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PathControl extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
-	class DirectoryControl extends edu.cmu.cs.dennisc.moot.ZPane {
+public abstract class PathControl extends swing.LineAxisPane {
+	class DirectoryControl extends swing.BorderPane {
 		private static final int ARROW_SIZE = 10;
-		class SelectDirectoryActionOperation extends edu.cmu.cs.dennisc.moot.AbstractActionOperation {
+		class SelectDirectoryActionOperation extends zoot.AbstractActionOperation {
 			public SelectDirectoryActionOperation() {
 				this.putValue( javax.swing.Action.NAME, PathControl.this.getTextFor( DirectoryControl.this.file ) );
 			}
-			public void perform() {
+			public void perform( zoot.ActionContext actionContext ) {
 				PathControl.this.handleSelectDirectory( DirectoryControl.this.file );
+				actionContext.commit();
 			}
 		}
-		class SelectChildDirectoryActionOperation extends edu.cmu.cs.dennisc.moot.AbstractActionOperation /*implements edu.cmu.cs.dennisc.moot.ResponseOperation*/ {
+		class SelectChildDirectoryActionOperation extends zoot.AbstractActionOperation /*implements zoot.ResponseOperation*/ {
 			//public void respond( java.util.EventObject e ) {
 			//}
-			public void perform() {
+			public void perform( zoot.ActionContext actionContext ) {
 				DirectoryControl.this.handleSelectChildDirectory();
+				actionContext.commit();
 			}
 		}
-		private edu.cmu.cs.dennisc.moot.ZButton selectButton;
-		private edu.cmu.cs.dennisc.moot.ZButton selectChildButton;
+		private zoot.ZButton selectButton;
+		private zoot.ZButton selectChildButton;
 		private java.io.File file;
 		public DirectoryControl( java.io.File file ) {
 			this.file = file;
-			this.selectButton = new edu.cmu.cs.dennisc.moot.ZButton( new SelectDirectoryActionOperation() );
-			this.selectChildButton = new edu.cmu.cs.dennisc.moot.ZButton( new SelectChildDirectoryActionOperation() ) {
+			this.selectButton = new zoot.ZButton( new SelectDirectoryActionOperation() );
+			this.selectChildButton = new zoot.ZButton( new SelectChildDirectoryActionOperation() ) {
 				@Override
 				protected void paintComponent(java.awt.Graphics g) {
 					super.paintComponent( g );
@@ -69,7 +71,6 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.moot.ZLineAxisPane 
 				}
 			};
 			//selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-			this.setLayout( new java.awt.BorderLayout() );
 			this.add( this.selectButton, java.awt.BorderLayout.CENTER );
 			this.add( this.selectChildButton, java.awt.BorderLayout.EAST );
 		}
@@ -136,7 +137,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.moot.ZLineAxisPane 
 		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
 		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
 
-		class SelectFileActionOperation extends edu.cmu.cs.dennisc.moot.AbstractActionOperation {
+		class SelectFileActionOperation extends zoot.AbstractActionOperation {
 			private java.io.File file;
 			public SelectFileActionOperation( java.io.File file ) {
 				this.file = file;
@@ -149,23 +150,24 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.moot.ZLineAxisPane 
 				}
 				this.putValue( javax.swing.Action.SMALL_ICON, icon );
 			}
-			public void perform() {
+			public void perform( zoot.ActionContext actionContext ) {
 				if( this.file.isDirectory() ) {
 					PathControl.this.handleSelectDirectory( this.file );
 				} else {
 					PathControl.this.handleSelectFile( this.file );
 				}
+				actionContext.commit();
 			}
 		}
 
 		javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 		for( java.io.File file : packages ) {
 			SelectFileActionOperation operation = new SelectFileActionOperation( file );
-			popupMenu.add( operation.getActionForConfiguringSwingComponents() );
+			popupMenu.add( operation.getActionForConfiguringSwing() );
 		}
 		for( java.io.File file : classes ) {
 			SelectFileActionOperation operation = new SelectFileActionOperation( file );
-			popupMenu.add( operation.getActionForConfiguringSwingComponents() );
+			popupMenu.add( operation.getActionForConfiguringSwing() );
 		}
 		popupMenu.show( invoker, 0, invoker.getHeight() );
 	}

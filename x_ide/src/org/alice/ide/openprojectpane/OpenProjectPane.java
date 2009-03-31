@@ -428,7 +428,7 @@ class FileSystemPane extends TabPane {
  */
 public class OpenProjectPane extends edu.cmu.cs.dennisc.swing.InputPane< java.io.File > {
 	//private javax.swing.JTabbedPane tabbedPane = new javax.swing.JTabbedPane();
-	private edu.cmu.cs.dennisc.moot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.moot.ZTabbedPane( null );
+	private zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane();
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private FileSystemPane fileSystemPane = new FileSystemPane();
 	private TemplatesPane templatesPane = new TemplatesPane();

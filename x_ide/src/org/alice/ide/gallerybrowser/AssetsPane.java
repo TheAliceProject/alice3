@@ -25,7 +25,7 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AssetsPane extends edu.cmu.cs.dennisc.moot.ZPane {
+public abstract class AssetsPane extends swing.BorderPane {
 	private ThumbnailsPane thumbnailsPane;
 	private PathControl pathControl;
 
@@ -34,7 +34,6 @@ public abstract class AssetsPane extends edu.cmu.cs.dennisc.moot.ZPane {
 		this.thumbnailsPane.setFolderIcon( folderIcon );
 		this.pathControl = this.createPathControl( rootDirectory );
 		this.pathControl.setFolderIconSmall( folderIconSmall );
-		this.setLayout( new java.awt.BorderLayout() );
 		this.add( this.pathControl, java.awt.BorderLayout.NORTH );
 		this.add( this.thumbnailsPane, java.awt.BorderLayout.CENTER );
 	}

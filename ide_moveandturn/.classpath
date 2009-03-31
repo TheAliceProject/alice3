@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ide_foundation"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn_generated"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_deprecated"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

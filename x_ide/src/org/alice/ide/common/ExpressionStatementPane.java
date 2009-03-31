@@ -72,7 +72,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( ";" ) );
+			this.add( new zoot.ZLabel( ";" ) );
 		}
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		ExpressionStatementPane.this.revalidate();

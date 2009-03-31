@@ -92,7 +92,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 //			return null;
 //		} else {
 			java.awt.geom.RoundRectangle2D.Float shape = new java.awt.geom.RoundRectangle2D.Float( INSET + ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, INSET, (float)width - 2 * INSET - ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, (float)height - 2 * INSET, 8, 8 );
-			return edu.cmu.cs.dennisc.alice.ui.BeveledShapeForType.createBeveledShapeFor( type, shape, ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, Math.min( height * 0.5f, 16.0f ) );
+			return BeveledShapeForType.createBeveledShapeFor( type, shape, ExpressionLikeSubstance.DOCKING_BAY_INSET_LEFT, Math.min( height * 0.5f, 16.0f ) );
 //		}
 	}
 	@Override

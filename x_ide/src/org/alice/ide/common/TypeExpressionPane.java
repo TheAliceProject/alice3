@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeExpressionPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane  {
+public class TypeExpressionPane extends swing.LineAxisPane  {
 	private edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression;
 	private static final int X_INSET = 10;
 	public TypeExpressionPane( edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression ) {

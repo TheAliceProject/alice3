@@ -33,7 +33,7 @@ public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cm
 	@Override
 	protected java.awt.Component createInterstitial( int i, final int N ) {
 		if( i < N - 1 ) {
-			return new edu.cmu.cs.dennisc.moot.ZLabel( ", " );
+			return new zoot.ZLabel( ", " );
 		} else {
 			return null;
 		}

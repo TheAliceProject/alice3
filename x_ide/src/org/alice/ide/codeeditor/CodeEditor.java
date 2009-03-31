@@ -130,7 +130,7 @@ class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< Node
 /**
  * @author Dennis Cosgrove
  */
-class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
+class AbstractCodeHeaderPane extends swing.LineAxisPane {
 	public AbstractCodeHeaderPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice ) {
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 0, 4 ) );
 	}
@@ -151,7 +151,7 @@ class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.add( nameLabel );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( parametersPane );
-			//this.add( new edu.cmu.cs.dennisc.moot.ZLabel( " {" ) );
+			//this.add( new zoot.ZLabel( " {" ) );
 		} else {
 			StringBuffer sb = new StringBuffer();
 //			if( methodDeclaredInAlice.isOverride() ) {
@@ -186,7 +186,7 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 		super( constructorDeclaredInAlice );
 		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
 			this.add( new org.alice.ide.common.TypePane( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( new edu.cmu.cs.dennisc.moot.ZLabel( "()" ) );
+			this.add( new zoot.ZLabel( "()" ) );
 		} else {
 			this.add( new zoot.ZLabel( "declare " ) );
 			zoot.ZLabel label = new zoot.ZLabel( "constructor" );
@@ -202,7 +202,7 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 /**
  * @author Dennis Cosgrove
  */
-class InstanceLine extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
+class InstanceLine extends swing.LineAxisPane {
 	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		zoot.ZLabel a = new zoot.ZLabel( "current instance of " );
 		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
@@ -246,7 +246,7 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.moot.ZPageAxisPane implements org.alice.ide.event.IDEListener, zoot.DropReceptor {
+public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.event.IDEListener, zoot.DropReceptor {
 	public void fieldSelectionChanged( FieldSelectionEvent e ) {
 	}
 	public void fieldSelectionChanging( FieldSelectionEvent e ) {

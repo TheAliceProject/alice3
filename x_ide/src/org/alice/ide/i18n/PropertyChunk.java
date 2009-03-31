@@ -59,7 +59,7 @@ public class PropertyChunk extends Chunk {
 //	} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
 //		rv = new ConstantPane( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)owner );
 //	} else {
-//		rv = new edu.cmu.cs.dennisc.moot.ZLabel( "should never happen" );
+//		rv = new zoot.ZLabel( "should never happen" );
 //	}
 	@Override
 	protected java.lang.StringBuffer updateRepr( java.lang.StringBuffer rv ) {

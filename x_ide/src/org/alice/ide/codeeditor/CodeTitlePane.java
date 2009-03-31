@@ -27,7 +27,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class CodeTitlePane extends edu.cmu.cs.dennisc.moot.ZLineAxisPane {
+class CodeTitlePane extends swing.LineAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;

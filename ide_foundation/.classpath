@@ -14,5 +14,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_generated_depended_upon"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_private"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_deprecated"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
