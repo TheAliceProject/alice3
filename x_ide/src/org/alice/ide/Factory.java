@@ -26,9 +26,9 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public class Factory {
-	public org.alice.ide.common.TypePane createTypePane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return new org.alice.ide.common.TypePane( type );
+	public org.alice.ide.common.TypeComponent createTypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return new org.alice.ide.common.TypeComponent( type );
 	}
-	public void releaseTypePane( org.alice.ide.common.TypePane type, org.alice.ide.common.TypePane typePane ) {
+	public void releaseTypeComponent( org.alice.ide.common.TypeComponent type, org.alice.ide.common.TypeComponent typeComponent ) {
 	}
 }

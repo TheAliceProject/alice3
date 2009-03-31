@@ -31,7 +31,7 @@ class CodeTitlePane extends swing.LineAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;
-		this.add( new org.alice.ide.common.TypePane( this.code.getDeclaringType() ) );
+		this.add( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		this.add( new org.alice.ide.common.NodeNameLabel( this.code ) );
 	}

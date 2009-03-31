@@ -83,9 +83,12 @@ class GalleryFileActionOperation extends org.alice.ide.operations.AbstractAction
 		this.file = file;
 	}
 	public void perform( zoot.ActionContext actionContext ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getTypeDeclaredInAliceFor( declaringTypeDeclaredInJava );
+
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
-		CreateFieldPane createFieldPane = new CreateFieldPane( this.file, type );
+		CreateFieldPane createFieldPane = new CreateFieldPane( declaringType, this.file, type );
 		Object instance = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
 		if( instance != null ) {
 			//getSceneEditor().addInstance( instance )

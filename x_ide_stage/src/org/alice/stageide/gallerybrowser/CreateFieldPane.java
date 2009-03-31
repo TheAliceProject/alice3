@@ -22,96 +22,6 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-class TypeBorder implements javax.swing.border.Border {
-	private static final int X_INSET = 10;
-	private static final int Y_INSET = 4;
-	private static java.awt.Insets insets = new java.awt.Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
-	private static java.awt.Color FILL_COLOR = org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.TypeExpression.class );
-	private static java.awt.Color FILL_BRIGHTER_COLOR = FILL_COLOR.brighter();
-	private static java.awt.Color FILL_DARKER_COLOR = FILL_COLOR.darker();
-
-	private static java.awt.Color OUTLINE_COLOR = java.awt.Color.GRAY;
-	private static TypeBorder singletonForDeclaredInAlice = new TypeBorder( true );
-	private static TypeBorder singletonForDeclaredInJava = new TypeBorder( false );
-
-	public static TypeBorder getSingletonFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			return TypeBorder.singletonForDeclaredInAlice;
-		} else {
-			return TypeBorder.singletonForDeclaredInJava;
-		}
-	}
-	private boolean isDeclaredInAlice;
-	private TypeBorder( boolean isDeclaredInAlice ) {
-		this.isDeclaredInAlice = isDeclaredInAlice;
-	}
-
-	private int yPrevious = -1;
-	private int heightPrevious = -1;
-	private java.awt.GradientPaint paintPrevious = null;
-	private java.awt.Paint getFillPaint( int x, int y, int width, int height ) {
-		if( y==this.yPrevious && height==this.heightPrevious ) {
-			//pass
-		} else {
-			this.yPrevious = y;
-			this.heightPrevious = height;
-			if( isDeclaredInAlice ) {
-				this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR );
-			} else {
-				this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR );
-			}
-		}
-		return this.paintPrevious;
-	}
-
-	public java.awt.Insets getBorderInsets( java.awt.Component c ) {
-		return TypeBorder.insets;
-	}
-	public boolean isBorderOpaque() {
-		return false;
-	}
-	private static java.awt.Shape createShape( int x, int y, int width, int height ) {
-		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
-		int x0 = x;
-		int x1 = x0 + width - 1;
-		int xA = x0 + X_INSET;
-		int xB = x1 - X_INSET;
-
-		int y0 = y;
-		int y1 = y0 + height - 1;
-		int yC = (y0 + y1) / 2;
-
-		rv.moveTo( xA, y0 );
-		rv.lineTo( xB, y0 );
-		rv.lineTo( x1, yC );
-		rv.lineTo( xB, y1 );
-		rv.lineTo( xA, y1 );
-		rv.lineTo( x0, yC );
-		rv.lineTo( xA, y0 );
-		return rv;
-	}
-	public void paintBorder( java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height ) {
-		java.awt.Shape shape = TypeBorder.createShape( x, y, width, height );
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		g2.setPaint( getFillPaint( x, y, width, height ) );
-		g2.fill( shape );
-		g2.setPaint( OUTLINE_COLOR );
-		g2.draw( shape );
-	}
-}
-
-class TypeComponent extends org.alice.ide.common.NodeNameLabel {
-	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		super( type );
-		this.setBorder( TypeBorder.getSingletonFor( type ) );
-	}
-	@Override
-	public void paint( java.awt.Graphics g ) {
-		this.paintBorder( g );
-		this.paintComponent( g );
-	}
-}
-
 class GalleryIcon extends javax.swing.JLabel {
 	public GalleryIcon( java.io.File file ) {
 		this.setIcon( new javax.swing.ImageIcon( file.getAbsolutePath() ) );
@@ -168,37 +78,56 @@ class ClassInfoPane extends RowsPane {
 	protected java.util.List< java.awt.Component[] > createComponentRows() {
 		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
 
-		java.awt.Component component;
+		java.awt.Component component = new org.alice.ide.common.TypeComponent( this.type );
 		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			zoot.ZLabel label = new zoot.ZLabel( " which extends " );
 			label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT );
-			component = new swing.LineAxisPane( new TypeComponent( this.type ), label, new TypeComponent( this.type.getSuperType() ) );
-		} else {
-			component = new TypeComponent( this.type );
+			component = new swing.LineAxisPane( component, label, new org.alice.ide.common.TypeComponent( this.type.getSuperType() ) );
 		}
+		
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();;
+		java.awt.Component initializer = ide.getCodeFactory().createComponent( org.alice.ide.ast.NodeUtilities.createInstanceCreation( type ) );
+		
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, null ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "create new instance of class:" ), component ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "instance name:" ), new InstanceNameTextField() ) );
+		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "value class:" ), component ) );
+		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "name:" ), new InstanceNameTextField() ) );
+		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "initializer:" ), initializer ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, null ) );
 		return rv;
 	}
 }
 
+class FieldInfoPane extends swing.LineAxisPane {
+	public FieldInfoPane( edu.cmu.cs.dennisc.alice.ast.AbstractType declaringType ) {
+		this.add( new zoot.ZLabel( "declare " ) );
+		this.add( new org.alice.ide.common.TypeComponent( declaringType ) );
+		this.add( new zoot.ZLabel( " property" ) );
+	}
+}
+
+
+
 /**
  * @author Dennis Cosgrove
  */
 public class CreateFieldPane extends zoot.ZInputPane< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType declaringType;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private java.io.File file;
 
-	public CreateFieldPane( java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		this.declaringType = declaringType;
 		this.type = type;
 		this.file = file;
+		FieldInfoPane fieldInfoPane = new FieldInfoPane( this.declaringType );
 		GalleryIcon galleryIcon = new GalleryIcon( this.file );
 		ClassInfoPane classInfoPane = new ClassInfoPane( type );
 		this.setLayout( new java.awt.BorderLayout() );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 0, 0, 16 ) );
+		
+		final int INSET = 16;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 		this.add( galleryIcon, java.awt.BorderLayout.WEST );
+		this.add( fieldInfoPane, java.awt.BorderLayout.NORTH );
 		this.add( classInfoPane, java.awt.BorderLayout.CENTER );
 	}
 	@Override
@@ -209,10 +138,15 @@ public class CreateFieldPane extends zoot.ZInputPane< edu.cmu.cs.dennisc.alice.a
 
 	public static void main( String[] args ) {
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getTypeDeclaredInAliceFor( declaringTypeDeclaredInJava );
+
 		java.io.File file = new java.io.File( "C:/Program Files/LookingGlass/0.alpha.0000/gallery/thumbnails/edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters/adults/Coach.png" );
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = ide.getTypeDeclaredInAliceFor( typeDeclaredInJava );
-		CreateFieldPane createFieldPane = new CreateFieldPane( file, type );
+
+
+		CreateFieldPane createFieldPane = new CreateFieldPane( declaringType, file, type );
 		createFieldPane.showInJDialog( ide, "Create New Instance", true );
 		System.exit( 0 );
 	}

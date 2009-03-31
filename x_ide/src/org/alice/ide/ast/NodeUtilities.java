@@ -175,4 +175,13 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.TypeExpression createTypeExpression( Class<?> cls ) {
 		return createTypeExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
+	
+	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		edu.cmu.cs.dennisc.alice.ast.InstanceCreation rv = new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( type.getDeclaredConstructor() );
+		return rv;
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( Class<?> cls ) {
+		return createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	}
+	
 }

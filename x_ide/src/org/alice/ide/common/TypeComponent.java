@@ -22,16 +22,19 @@
  */
 package org.alice.ide.common;
 
-//todo:
 /**
  * @author Dennis Cosgrove
  */
-public class TypePane extends org.alice.ide.common.TypeExpressionPane {
-	public TypePane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		super( new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ) );
+public class TypeComponent extends org.alice.ide.common.NodeNameLabel {
+	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		super( type );
+		this.setToolTipText( "class: " + type.getName() );
+		this.setBorder( TypeBorder.getSingletonFor( type ) );
 	}
-//	@Override
-//	protected boolean isClassPrefixDesired() {
-//		return true;
-//	}
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		this.paintBorder( g );
+		this.paintComponent( g );
+	}
 }
+

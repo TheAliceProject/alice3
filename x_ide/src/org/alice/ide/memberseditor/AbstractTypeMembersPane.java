@@ -54,10 +54,10 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		}
 	};
-	private org.alice.ide.common.TypePane typePane;
+	private org.alice.ide.common.TypeComponent typeComponent;
 	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
-		this.typePane = getIDE().getFactory().createTypePane( this.type );
+		this.typeComponent = getIDE().getFactory().createTypeComponent( this.type );
 		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
 			this.createAndAddMemberButton = this.createCreateAndAddMemberButton( typeInAlice );
@@ -100,7 +100,7 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	protected abstract zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
 		this.removeAll();
-		this.add( this.typePane );
+		this.add( this.typeComponent );
 		swing.PageAxisPane page = new swing.PageAxisPane();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {

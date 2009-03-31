@@ -51,7 +51,7 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 			javax.swing.JComponent component;
 			edu.cmu.cs.dennisc.alice.ast.Expression expression = getProperty().getValue();
 			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-				component = new TypeExpressionPane( (edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression );
+				component = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
 			} else {
 				if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 					component = new FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
