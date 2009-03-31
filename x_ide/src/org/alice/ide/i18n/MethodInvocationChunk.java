@@ -35,7 +35,7 @@ public class MethodInvocationChunk extends Chunk {
 		return this.methodName;
 	}
 	@Override
-	protected java.lang.StringBuffer updateRepr( java.lang.StringBuffer rv ) {
+	protected StringBuffer updateRepr( StringBuffer rv ) {
 		rv.append( "methodName=" );
 		rv.append( this.methodName );
 		return rv;

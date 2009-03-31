@@ -137,6 +137,9 @@ public abstract class Factory {
 		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument && methodName.equals( "getParameterNameText" ) ) {
 			edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)owner;
 			rv = new org.alice.ide.common.NodeNameLabel( argument.parameter.getValue() );
+		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.AbstractConstructor && methodName.equals( "getDeclaringType" ) ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = (edu.cmu.cs.dennisc.alice.ast.AbstractConstructor)owner;
+			rv = new org.alice.ide.common.TypeComponent( constructor.getDeclaringType() );
 		} else {
 			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
 			Object o = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
@@ -236,5 +239,8 @@ public abstract class Factory {
 	}
 	public final org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		return this.createStatementPane( statement, null );
+	}
+	public org.alice.ide.common.ExpressionPane createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		return new ExpressionPane( this, expression );
 	}
 }

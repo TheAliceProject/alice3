@@ -25,8 +25,7 @@ package org.alice.stageide.gallerybrowser;
 class GalleryIcon extends javax.swing.JLabel {
 	public GalleryIcon( java.io.File file ) {
 		this.setIcon( new javax.swing.ImageIcon( file.getAbsolutePath() ) );
-//		this.setOpaque( true );
-//		this.setBackground( java.awt.Color.RED );
+		this.setVerticalAlignment( CENTER );
 	}
 	@Override
 	public java.awt.Dimension getMaximumSize() {
@@ -44,7 +43,7 @@ class InstanceNameTextField extends javax.swing.JTextField {
 	}
 }
 
-class RowsPane extends swing.Pane {
+class RowsSpringPane extends swing.Pane {
 	@Override
 	public void addNotify() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "addNotify" );
@@ -61,51 +60,6 @@ class RowsPane extends swing.Pane {
 	}
 }
 
-class ClassInfoPane extends RowsPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
-
-	public ClassInfoPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this.type = type;
-//		this.setOpaque( true );
-//		this.setBackground( java.awt.Color.BLUE );
-	}
-	private static zoot.ZLabel createLabel( String s ) {
-		zoot.ZLabel rv = new zoot.ZLabel( s );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
-		return rv;
-	}
-	@Override
-	protected java.util.List< java.awt.Component[] > createComponentRows() {
-		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-
-		java.awt.Component component = new org.alice.ide.common.TypeComponent( this.type );
-		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			zoot.ZLabel label = new zoot.ZLabel( " which extends " );
-			label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT );
-			component = new swing.LineAxisPane( component, label, new org.alice.ide.common.TypeComponent( this.type.getSuperType() ) );
-		}
-		
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();;
-		java.awt.Component initializer = ide.getCodeFactory().createComponent( org.alice.ide.ast.NodeUtilities.createInstanceCreation( type ) );
-		
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, null ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "value class:" ), component ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "name:" ), new InstanceNameTextField() ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "initializer:" ), initializer ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, null ) );
-		return rv;
-	}
-}
-
-class FieldInfoPane extends swing.LineAxisPane {
-	public FieldInfoPane( edu.cmu.cs.dennisc.alice.ast.AbstractType declaringType ) {
-		this.add( new zoot.ZLabel( "declare " ) );
-		this.add( new org.alice.ide.common.TypeComponent( declaringType ) );
-		this.add( new zoot.ZLabel( " property" ) );
-	}
-}
-
-
 
 /**
  * @author Dennis Cosgrove
@@ -115,21 +69,59 @@ public class CreateFieldPane extends zoot.ZInputPane< edu.cmu.cs.dennisc.alice.a
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private java.io.File file;
 
+	private static zoot.ZLabel createLabel( String s ) {
+		zoot.ZLabel rv = new zoot.ZLabel( s );
+		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
+		return rv;
+	}
+	class MyRowsPane extends RowsSpringPane {
+		@Override
+		protected java.util.List< java.awt.Component[] > createComponentRows() {
+			java.util.List< java.awt.Component[] > rv = super.createComponentRows();
+
+			
+			//GalleryIcon galleryIcon = new GalleryIcon( CreateFieldPane.this.file );
+			
+			swing.LineAxisPane declarationLine = new swing.LineAxisPane( 
+					new zoot.ZLabel( "declare " ), 
+					new org.alice.ide.common.TypeComponent( CreateFieldPane.this.declaringType ), 
+					new zoot.ZLabel( " property:" ) 
+			);
+			swing.LineAxisPane valueTypeLine = new swing.LineAxisPane();
+			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldPane.this.type ) );
+			if( CreateFieldPane.this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+				valueTypeLine.add( new zoot.ZLabel( " which extends ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
+				valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldPane.this.type.getSuperType() ) );
+//				valueTypeLine.add( new zoot.ZLabel( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
+			}
+			
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();;
+			java.awt.Component initializer = ide.getCodeFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createInstanceCreation( type ) );
+			
+//			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "declare property:" ), lineAxisPane ) );
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( declarationLine, null ) );
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 10 ), null ) );
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "value class:" ), valueTypeLine ) );
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "name:" ), new InstanceNameTextField() ) );
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "initializer:" ), initializer ) );
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 10 ), null ) );
+			return rv;
+		}
+	}
+
 	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.declaringType = declaringType;
 		this.type = type;
 		this.file = file;
-		FieldInfoPane fieldInfoPane = new FieldInfoPane( this.declaringType );
 		GalleryIcon galleryIcon = new GalleryIcon( this.file );
-		ClassInfoPane classInfoPane = new ClassInfoPane( type );
+		MyRowsPane classInfoPane = new MyRowsPane();
 		this.setLayout( new java.awt.BorderLayout() );
-		
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.add( galleryIcon, java.awt.BorderLayout.WEST );
-		this.add( fieldInfoPane, java.awt.BorderLayout.NORTH );
+		this.add( galleryIcon, java.awt.BorderLayout.EAST );
 		this.add( classInfoPane, java.awt.BorderLayout.CENTER );
 	}
+	
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
@@ -147,7 +139,7 @@ public class CreateFieldPane extends zoot.ZInputPane< edu.cmu.cs.dennisc.alice.a
 
 
 		CreateFieldPane createFieldPane = new CreateFieldPane( declaringType, file, type );
-		createFieldPane.showInJDialog( ide, "Create New Instance", true );
+		createFieldPane.showInJDialog( ide, "Declare Property", true );
 		System.exit( 0 );
 	}
 }
