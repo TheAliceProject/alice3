@@ -33,11 +33,11 @@ class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 			return BogusNode.this.expressionType;
 		}
 	};
-	
+
 	public BogusNode() {
 		this.expression.setValue( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() );
 	}
-	
+
 	public void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType ) {
 		this.expressionType = expressionType;
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
@@ -69,12 +69,12 @@ abstract class AbstractInitializerPane extends swing.Pane {
 	}
 }
 
-
 /**
  * @author Dennis Cosgrove
  */
 abstract class ItemInitializerPane extends AbstractInitializerPane {
 	private BogusNode bogusNode = new BogusNode();
+
 	public ItemInitializerPane() {
 		//this.setBackground( java.awt.Color.GREEN );
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
@@ -98,7 +98,6 @@ abstract class ItemInitializerPane extends AbstractInitializerPane {
 	}
 }
 
-
 class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public AddItemOperation() {
 		this.putValue( javax.swing.Action.NAME, "add" );
@@ -106,6 +105,7 @@ class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation 
 	public void perform( zoot.ActionContext actionContext ) {
 	}
 }
+
 class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public RemoveItemOperation() {
 		this.putValue( javax.swing.Action.NAME, "remove" );
@@ -113,6 +113,7 @@ class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperati
 	public void perform( zoot.ActionContext actionContext ) {
 	}
 }
+
 class MoveItemUpOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public MoveItemUpOperation() {
 		this.putValue( javax.swing.Action.NAME, "move up" );
@@ -120,6 +121,7 @@ class MoveItemUpOperation extends org.alice.ide.operations.AbstractActionOperati
 	public void perform( zoot.ActionContext actionContext ) {
 	}
 }
+
 class MoveItemDownOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public MoveItemDownOperation() {
 		this.putValue( javax.swing.Action.NAME, "move down" );
@@ -133,6 +135,7 @@ class ButtonPane extends swing.GridBagPane {
 	private zoot.ZButton removeButton = new zoot.ZButton( new RemoveItemOperation() );
 	private zoot.ZButton moveUpButton = new zoot.ZButton( new MoveItemUpOperation() );
 	private zoot.ZButton moveDownButton = new zoot.ZButton( new MoveItemDownOperation() );
+
 	public ButtonPane() {
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
@@ -143,35 +146,85 @@ class ButtonPane extends swing.GridBagPane {
 		this.add( this.moveUpButton, gbc );
 		gbc.insets.top = 0;
 		this.add( this.moveDownButton, gbc );
-//		if this.isRenameDesired():
-//			gbc.insets.top = 16
-//			this.add( this.renameButton, gbc );
-//			gbc.insets.top = 0;
+		//		if this.isRenameDesired():
+		//			gbc.insets.top = 16
+		//			this.add( this.renameButton, gbc );
+		//			gbc.insets.top = 0;
 		gbc.weighty = 1.0;
 		this.add( javax.swing.Box.createGlue(), gbc );
-//		this.add( new zoot.ZButton( new AddItemOperation() ) );
-//		this.add( new zoot.ZButton( new RemoveItemOperation() ) );
-//		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-//		this.add( new zoot.ZButton( new MoveItemUpOperation() ) );
-//		this.add( new zoot.ZButton( new MoveItemDownOperation() ) );
-//		this.add( javax.swing.Box.createHorizontalGlue() );
+		//		this.add( new zoot.ZButton( new AddItemOperation() ) );
+		//		this.add( new zoot.ZButton( new RemoveItemOperation() ) );
+		//		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+		//		this.add( new zoot.ZButton( new MoveItemUpOperation() ) );
+		//		this.add( new zoot.ZButton( new MoveItemDownOperation() ) );
+		//		this.add( javax.swing.Box.createHorizontalGlue() );
 	}
 }
 
-
-class FauxItem extends swing.LineAxisPane {
+class FauxItem extends swing.BorderPane {
 	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane() {
 		@Override
 		protected void handleInitializerChange() {
 		}
 	};
+	private boolean isSelected = false;
+
 	public FauxItem( int index ) {
-		this.add( new zoot.ZLabel( "[ " + index + " ] " ) );
-		this.add( this.itemInitializerPane );
+		super( 8, 0 );
+		this.add( new zoot.ZLabel( "[ " + index + " ] " ), java.awt.BorderLayout.WEST );
+		this.add( new swing.LineAxisPane( this.itemInitializerPane, new javax.swing.JLabel() ), java.awt.BorderLayout.CENTER );
+		//this.add( javax.swing.Box.createGlue() );
+		this.addMouseListener( new java.awt.event.MouseListener() {
+			public void mouseEntered( java.awt.event.MouseEvent e ) {
+			}
+			public void mouseExited( java.awt.event.MouseEvent e ) {
+			}
+			public void mousePressed( java.awt.event.MouseEvent e ) {
+				FauxItem.this.setSelected( !FauxItem.this.isSelected() );
+			}
+			public void mouseReleased( java.awt.event.MouseEvent e ) {
+			}
+			public void mouseClicked( java.awt.event.MouseEvent e ) {
+			}
+		} );
+		//todo
+		//		this.setLeftButtonPressOperation( new org.alice.ide.operations.AbstractActionOperation() {
+		//			public void perform( zoot.ActionContext actionContext ) {
+		//				FauxItem.this.setSelected( !FauxItem.this.isSelected() );
+		//			}
+		//		} );
 	}
 	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.itemInitializerPane.handleTypeChange( type.getComponentType() );
 	}
+	public boolean isSelected() {
+		return this.isSelected;
+	}
+	public void setSelected( boolean isSelected ) {
+		this.isSelected = isSelected;
+		this.repaint();
+	}
+	@Override
+	protected void paintComponent( java.awt.Graphics g ) {
+		//super.paintComponent( g );
+		java.awt.Color color;
+		if( this.isSelected ) {
+			color = java.awt.Color.BLUE;
+		} else {
+			color = java.awt.Color.RED;
+		}
+		g.setColor( color );
+		g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+	}
+
+//	@Override
+//	public java.awt.Color getBackground() {
+//		if( this.isSelected() ) {
+//			return java.awt.Color.BLUE;
+//		} else {
+//			return super.getBackground();
+//		}
+//	}
 }
 
 class FauxList extends swing.PageAxisPane {
@@ -188,7 +241,7 @@ class FauxList extends swing.PageAxisPane {
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 240 );
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
 	}
 }
 
@@ -197,6 +250,7 @@ class FauxList extends swing.PageAxisPane {
  */
 abstract class ArrayInitializerPane extends AbstractInitializerPane {
 	private FauxList fauxList = new FauxList();
+
 	public ArrayInitializerPane() {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.add( new ButtonPane(), java.awt.BorderLayout.EAST );
@@ -232,6 +286,7 @@ public abstract class InitializerPane extends swing.CardPane {
 			InitializerPane.this.handleInitializerChange();
 		}
 	};
+
 	public InitializerPane() {
 		this.add( this.itemInitializerPane, ITEM_KEY );
 		this.add( this.arrayInitializerPane, ARRAY_KEY );
@@ -253,7 +308,7 @@ public abstract class InitializerPane extends swing.CardPane {
 		}
 		this.show( key );
 	}
-	
+
 	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( type != null ) {
 			this.handleIsArrayChange( type.isArray() );
@@ -277,4 +332,3 @@ public abstract class InitializerPane extends swing.CardPane {
 	}
 	protected abstract void handleInitializerChange();
 }
-
