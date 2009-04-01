@@ -36,7 +36,7 @@ class GalleryIcon extends javax.swing.JLabel {
 /**
  * @author Dennis Cosgrove
  */
-public class CreateFieldFromGalleryPane extends org.alice.ide.inputpanes.AbstractCreateFieldPane {
+public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationpanes.AbstractCreateFieldPane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType valueType;
 	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
 
@@ -96,11 +96,11 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.inputpanes.Abstrac
 
 		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, type, file );
 		createFieldFromGalleryPane.showInJDialog( ide );
-		org.alice.ide.inputpanes.CreateFieldPane createFieldPane = new org.alice.ide.inputpanes.CreateFieldPane( declaringType );
+		org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( declaringType );
 		createFieldPane.showInJDialog( ide );
-		org.alice.ide.inputpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.inputpanes.CreateProcedurePane( declaringType );
+		org.alice.ide.createdeclarationpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.createdeclarationpanes.CreateProcedurePane( declaringType );
 		createProcedurePane.showInJDialog( ide );
-		org.alice.ide.inputpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.inputpanes.CreateFunctionPane( declaringType );
+		org.alice.ide.createdeclarationpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
 		createFunctionPane.showInJDialog( ide );
 		System.exit( 0 );
 	}
