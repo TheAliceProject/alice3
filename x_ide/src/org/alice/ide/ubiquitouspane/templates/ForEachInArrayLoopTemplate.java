@@ -35,8 +35,6 @@ public class ForEachInArrayLoopTemplate extends CascadingUbiquitousStatementTemp
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop rv = org.alice.ide.ast.NodeUtilities.createIncompleteForEachInArrayLoop();
-		rv.array.setValue( expressions[ 0 ] );
-		return rv;
+		return org.alice.ide.ast.NodeUtilities.createForEachInArrayLoop( expressions[ 0 ] );
 	}
 }

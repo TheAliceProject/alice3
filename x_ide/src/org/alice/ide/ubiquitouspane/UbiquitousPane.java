@@ -34,6 +34,7 @@ public class UbiquitousPane extends swing.LineAxisPane {
 	private ForEachInArrayLoopTemplate forEachInArrayLoopTemplate = new ForEachInArrayLoopTemplate();
 	private ConditionalStatementTemplate conditionalStatementTemplate = new ConditionalStatementTemplate();
 	private DoTogetherTemplate doTogetherTemplate = new DoTogetherTemplate();
+	private EachInArrayTogetherTemplate eachInArrayTogetherTemplate = new EachInArrayTogetherTemplate();
 	private DeclareLocalTemplate declareLocalTemplate = new DeclareLocalTemplate();
 	private CommentTemplate commentTemplate = new CommentTemplate();
 	public UbiquitousPane() {
@@ -43,6 +44,7 @@ public class UbiquitousPane extends swing.LineAxisPane {
 		this.add( this.forEachInArrayLoopTemplate );
 		this.add( this.conditionalStatementTemplate );
 		this.add( this.doTogetherTemplate );
+		this.add( this.eachInArrayTogetherTemplate );
 		this.add( this.declareLocalTemplate );
 		this.add( this.commentTemplate );
 	}

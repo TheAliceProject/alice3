@@ -104,16 +104,16 @@ public class NodeUtilities {
 		return createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) ) );
 	}
 
-	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createEachInArrayTogether( edu.cmu.cs.dennisc.alice.ast.Expression arrayExpression ) {
+	public static edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether createEachInArrayTogether( edu.cmu.cs.dennisc.alice.ast.Expression arrayExpression ) {
 		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
-		return new edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop(
+		return new edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether(
 				variable,
 				arrayExpression, 
 				new edu.cmu.cs.dennisc.alice.ast.BlockStatement() 
 		);
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createIncompleteEachInArrayTogether() {
-		return createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) ) );
+	public static edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether createIncompleteEachInArrayTogether() {
+		return createEachInArrayTogether( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) ) );
 	}
 	
 	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {

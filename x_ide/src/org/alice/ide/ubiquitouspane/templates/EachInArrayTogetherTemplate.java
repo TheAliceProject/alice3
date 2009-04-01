@@ -35,9 +35,6 @@ public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementTem
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-//		edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether rv = org.alice.ide.ast.NodeUtilities.createIncompleteEachInArrayTogether();
-//		rv.array.setValue( expressions[ 0 ] );
-//		return rv;
-		return null;
+		return org.alice.ide.ast.NodeUtilities.createEachInArrayTogether( expressions[ 0 ] );
 	}
 }
