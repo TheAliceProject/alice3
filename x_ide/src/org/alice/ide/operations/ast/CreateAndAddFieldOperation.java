@@ -32,7 +32,7 @@ public class CreateAndAddFieldOperation extends org.alice.ide.operations.Abstrac
 		this.putValue( javax.swing.Action.NAME, "create new property..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		org.alice.ide.inputpanes.CreateFieldPane createMethodPane = new org.alice.ide.inputpanes.CreateFieldPane( this.ownerType );
+		org.alice.ide.createdeclarationpanes.CreateFieldPane createMethodPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( this.ownerType );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createMethodPane.showInJDialog( getIDE() );
 		if( field != null ) {
 			this.ownerType.fields.add( field );

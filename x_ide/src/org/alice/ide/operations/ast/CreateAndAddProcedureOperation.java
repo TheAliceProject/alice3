@@ -31,7 +31,7 @@ public class CreateAndAddProcedureOperation extends AbstractCreateAndAddMethodOp
 		this.putValue( javax.swing.Action.NAME, "create new procedure..." );
 	}
 	@Override
-	protected org.alice.ide.inputpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new org.alice.ide.inputpanes.CreateProcedurePane( type );
+	protected org.alice.ide.createdeclarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return new org.alice.ide.createdeclarationpanes.CreateProcedurePane( type );
 	}
 }

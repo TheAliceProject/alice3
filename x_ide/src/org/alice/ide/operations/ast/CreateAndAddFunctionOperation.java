@@ -31,7 +31,7 @@ public class CreateAndAddFunctionOperation extends AbstractCreateAndAddMethodOpe
 		this.putValue( javax.swing.Action.NAME, "create new function..." );
 	}
 	@Override
-	protected org.alice.ide.inputpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new org.alice.ide.inputpanes.CreateFunctionPane( type );
+	protected org.alice.ide.createdeclarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return new org.alice.ide.createdeclarationpanes.CreateFunctionPane( type );
 	}
 }

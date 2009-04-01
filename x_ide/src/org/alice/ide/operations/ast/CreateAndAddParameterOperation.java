@@ -32,7 +32,7 @@ public class CreateAndAddParameterOperation extends AbstractCodeOperation {
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = this.getCode();
-		org.alice.ide.inputpanes.CreateParameterPane createParameterPane = new org.alice.ide.inputpanes.CreateParameterPane( code );
+		org.alice.ide.createdeclarationpanes.CreateParameterPane createParameterPane = new org.alice.ide.createdeclarationpanes.CreateParameterPane( code );
 		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createParameterPane.showInJDialog( getIDE() );
 		if( parameter != null ) {
 			this.getCode().getParamtersProperty().add( parameter );

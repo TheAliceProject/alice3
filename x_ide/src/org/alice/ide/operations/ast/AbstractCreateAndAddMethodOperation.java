@@ -22,7 +22,7 @@
  */
 package org.alice.ide.operations.ast;
 
-import org.alice.ide.inputpanes.CreateDeclarationPane;
+import org.alice.ide.createdeclarationpanes.CreateDeclarationPane;
 
 /**
  * @author Dennis Cosgrove
