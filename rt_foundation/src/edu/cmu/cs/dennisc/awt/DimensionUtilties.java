@@ -34,12 +34,22 @@ public class DimensionUtilties {
 		rv.height = Math.max( rv.height, minimumHeight );
 		return rv;
 	}
+	public static java.awt.Dimension constrainToMinimumSize( java.awt.Dimension rv, int minimumWidth, int minimumHeight ) {
+		rv = constrainToMinimumWidth( rv, minimumWidth );
+		rv = constrainToMinimumHeight( rv, minimumHeight );
+		return rv;
+	}
 	public static java.awt.Dimension constrainToMaximumWidth( java.awt.Dimension rv, int maximumWidth ) {
 		rv.width = Math.min( rv.width, maximumWidth );
 		return rv;
 	}
 	public static java.awt.Dimension constrainToMaximumHeight( java.awt.Dimension rv, int maximumHeight ) {
 		rv.height = Math.min( rv.height, maximumHeight );
+		return rv;
+	}
+	public static java.awt.Dimension constrainToMaximumSize( java.awt.Dimension rv, int maximumWidth, int maximumHeight ) {
+		rv = constrainToMaximumWidth( rv, maximumWidth );
+		rv = constrainToMaximumHeight( rv, maximumHeight );
 		return rv;
 	}
 }

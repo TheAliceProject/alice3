@@ -161,16 +161,16 @@ class ButtonPane extends swing.GridBagPane {
 	}
 }
 
-class FauxItem extends swing.BorderPane {
+class FauxItem extends javax.swing.AbstractButton {
 	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane() {
 		@Override
 		protected void handleInitializerChange() {
 		}
 	};
-	private boolean isSelected = false;
-
 	public FauxItem( int index ) {
-		super( 8, 0 );
+		this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
+		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
 		this.add( new zoot.ZLabel( "[ " + index + " ] " ), java.awt.BorderLayout.WEST );
 		this.add( new swing.LineAxisPane( this.itemInitializerPane, new javax.swing.JLabel() ), java.awt.BorderLayout.CENTER );
 		//this.add( javax.swing.Box.createGlue() );
@@ -181,6 +181,7 @@ class FauxItem extends swing.BorderPane {
 			}
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 				FauxItem.this.setSelected( !FauxItem.this.isSelected() );
+				FauxItem.this.repaint();
 			}
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
 			}
@@ -197,24 +198,14 @@ class FauxItem extends swing.BorderPane {
 	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.itemInitializerPane.handleTypeChange( type.getComponentType() );
 	}
-	public boolean isSelected() {
-		return this.isSelected;
-	}
-	public void setSelected( boolean isSelected ) {
-		this.isSelected = isSelected;
-		this.repaint();
-	}
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		//super.paintComponent( g );
-		java.awt.Color color;
-		if( this.isSelected ) {
-			color = java.awt.Color.BLUE;
-		} else {
-			color = java.awt.Color.RED;
+		if( this.getModel().isSelected() ) {
+			java.awt.Color color = new java.awt.Color( 191, 191, 255 );
+			g.setColor( color );
+			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 		}
-		g.setColor( color );
-		g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 	}
 
 //	@Override
@@ -227,16 +218,33 @@ class FauxItem extends swing.BorderPane {
 //	}
 }
 
-class FauxList extends swing.PageAxisPane {
+class FauxList extends swing.GridBagPane {
+	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	public FauxList() {
+		buttonGroup.add( new FauxItem( 0 ) );
+		buttonGroup.add( new FauxItem( 1 ) );
+		buttonGroup.add( new FauxItem( 2 ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.add( new FauxItem( 0 ) );
-		this.add( new FauxItem( 1 ) );
-		this.add( new FauxItem( 2 ) );
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		gbc.weightx = 1.0;
+		java.util.Enumeration< javax.swing.AbstractButton > e = this.buttonGroup.getElements();
+		while( e.hasMoreElements() ) {
+			javax.swing.AbstractButton button = e.nextElement();
+			this.add( button, gbc );
+		}
+		gbc.weighty = 1.0;
+		this.add( new javax.swing.JLabel(), gbc );
 	}
 	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		for( java.awt.Component component : this.getComponents() ) {
-			((FauxItem)component).handleTypeChange( type );
+		java.util.Enumeration< javax.swing.AbstractButton > e = this.buttonGroup.getElements();
+		while( e.hasMoreElements() ) {
+			javax.swing.AbstractButton button = e.nextElement();
+			if( button instanceof FauxItem ) {
+				FauxItem fauxItem = (FauxItem)button;
+				fauxItem.handleTypeChange( type );
+			}
 		}
 	}
 	@Override
