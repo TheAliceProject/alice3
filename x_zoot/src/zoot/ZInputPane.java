@@ -193,15 +193,8 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 
 		this.revalidate();
 		dialog.pack();
-
-		dialog.pack();
-		//todo:
-		java.awt.Dimension size = dialog.getSize();
-		//size.width = Math.max( size.width, 480 );
-		//size.height = Math.max( size.height, 360 );
-		size.width += 8;
-		size.height += 8;
-		dialog.setSize( size );
+		
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, root );
 
 		assert m_dialog == null;
 		m_dialog = dialog;
