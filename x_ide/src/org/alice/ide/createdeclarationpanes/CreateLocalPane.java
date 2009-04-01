@@ -31,6 +31,10 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		this.block = block;
 	}
 	@Override
+	protected java.awt.Component createIsFinalComponent() {
+		return null;
+	}
+	@Override
 	protected java.awt.Component[] createDeclarationRow() {
 		return null;
 	}

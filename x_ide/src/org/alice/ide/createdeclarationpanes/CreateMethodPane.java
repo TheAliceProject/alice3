@@ -37,6 +37,11 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 	protected java.awt.Component createInitializerComponent() {
 		return null;
 	}
+	@Override
+	protected java.awt.Component createIsFinalComponent() {
+		return null;
+	}
+	
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnValueType();
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {

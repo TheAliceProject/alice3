@@ -26,4 +26,28 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public class ZComboBox extends javax.swing.JComboBox {
+	private ItemSelectionOperation itemSelectionOperation;
+	private java.awt.event.ItemListener itemAdapter = new java.awt.event.ItemListener() {
+		public void itemStateChanged( java.awt.event.ItemEvent e ) {
+			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+				if( ZComboBox.this.itemSelectionOperation != null ) {
+					ZManager.performIfAppropriate( ZComboBox.this.itemSelectionOperation, e, ZManager.CANCEL_IS_FUTILE, null, ZComboBox.this.getSelectedItem() );
+				}
+			}
+		}
+	};
+	public ItemSelectionOperation getItemSelectionOperation() {
+		return this.itemSelectionOperation;
+	}
+	public void setItemSelectionOperation( ItemSelectionOperation itemSelectionOperation ) {
+		if( this.itemSelectionOperation != null ) {
+			this.removeItemListener( this.itemAdapter );
+			this.setModel( new javax.swing.DefaultComboBoxModel() );
+		}
+		this.itemSelectionOperation = itemSelectionOperation;
+		if( this.itemSelectionOperation != null ) {
+			this.setModel( this.itemSelectionOperation.getComboBoxModel() );
+			this.addItemListener( this.itemAdapter );
+		}
+	}
 }

@@ -27,10 +27,24 @@ package org.alice.ide.createdeclarationpanes;
  */
 public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
 	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode;
-	private TypePane typePane = new TypePane();
+	private TypePane typePane = new TypePane() {
+		@Override
+		protected void handleComponentTypeChange(edu.cmu.cs.dennisc.alice.ast.AbstractType type) {
+			//pass
+		}
+		@Override
+		protected void handleIsArrayChange(boolean isArray) {
+			//pass
+		}
+	};
+	
 	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode ) {
 		this.ownerCode = ownerCode;
 		this.setBackground( getIDE().getFieldColor() );
+	}
+	@Override
+	protected java.awt.Component createIsFinalComponent() {
+		return null;
 	}
 	@Override
 	protected java.awt.Component createValueTypeComponent() {

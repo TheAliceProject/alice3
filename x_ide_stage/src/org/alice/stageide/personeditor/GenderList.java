@@ -27,7 +27,7 @@ package org.alice.stageide.personeditor;
  */
 class GenderList extends AbstractList< org.alice.apis.stage.Gender > {
 	public GenderList() {
-		super( new EnumConstantsListModel( org.alice.apis.stage.Gender.class ) );
+		super( new EnumConstantsComboBoxModel( org.alice.apis.stage.Gender.class ) );
 	}
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<org.alice.apis.stage.Gender> context ) {

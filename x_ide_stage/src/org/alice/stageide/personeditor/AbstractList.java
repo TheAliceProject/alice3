@@ -27,16 +27,16 @@ package org.alice.stageide.personeditor;
  */
 abstract class AbstractList<E> extends zoot.ZList< E > {
 	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
-		public ItemSelectionOperation( javax.swing.ListModel listModel ) {
-			super( listModel, -1 );
+		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
+			super( comboBoxModel, -1 );
 		}
 		public void performSelectionChange( zoot.ItemSelectionContext<E> context ) {
 			AbstractList.this.handlePerformSelectionChange( context );
 		}
 	}
 
-	public AbstractList( javax.swing.ListModel listModel ) {
-		this.setItemSelectionOperation( new ItemSelectionOperation( listModel ) );
+	public AbstractList( javax.swing.ComboBoxModel comboBoxModel ) {
+		this.setItemSelectionOperation( new ItemSelectionOperation( comboBoxModel ) );
 	}
 	public void randomize() {
 		final int N = this.getModel().getSize();

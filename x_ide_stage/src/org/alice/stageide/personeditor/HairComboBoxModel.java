@@ -25,21 +25,12 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class ArrayOfEnumConstantsListModel extends ArrayListModel {
-	static Object[] to( Class<?>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<Enum> criterion ) {
-		java.util.List< Enum > list = new java.util.LinkedList< Enum >();
-		for( Class<?> cls : clses ) {
-			Class< ? extends Enum > enumCls = (Class< ? extends Enum >)cls;
-			for( Enum e : enumCls.getEnumConstants() ) {
-				if( criterion == null || criterion.accept( e ) ) {
-					list.add( e );
-				}
+class HairComboBoxModel extends ArrayOfEnumConstantsComboBoxModel {
+	public HairComboBoxModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, final String hairColor ) {
+		super( org.alice.apis.stage.IngredientUtilities.get( lifeStage.getHairInterface( gender ) ), new edu.cmu.cs.dennisc.pattern.Criterion< Enum >() {
+			public boolean accept( java.lang.Enum e ) {
+				return e.name().equals( hairColor );
 			}
-		}
-		return list.toArray();
-	}
-	public ArrayOfEnumConstantsListModel( Class<?>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<Enum> criterion ) {
-		super( to( clses, criterion ) );
+		} );
 	}
 }
-

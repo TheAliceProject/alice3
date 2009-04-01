@@ -25,7 +25,7 @@ package org.alice.ide.createdeclarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-class TypePane extends swing.LineAxisPane {
+public abstract class TypePane extends swing.LineAxisPane {
 	class IsArrayStateOperation extends zoot.AbstractBooleanStateOperation {
 		public IsArrayStateOperation() {
 			super( false );
@@ -36,19 +36,26 @@ class TypePane extends swing.LineAxisPane {
 			handleIsArrayChange( booleanStateContext.getNextValue() );
 		}
 	}
-	protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-	}
-	protected void handleIsArrayChange( boolean isArray ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: updateOKButton()" );
-		//updateOKButton();
-	}
+	protected abstract void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type );
+	protected abstract void handleIsArrayChange( boolean isArray );
 	private org.alice.ide.common.TypeComboBox typeComboBox;
 	private zoot.ZCheckBox isArrayCheckBox;
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
-		return (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem();
+		if( rv != null ) {
+			if( this.isArrayCheckBox.isSelected() ) {
+				rv = rv.getArrayType();
+			}
+		}
+		return rv;
 	}
 	public TypePane() {
-		this.typeComboBox = new org.alice.ide.common.TypeComboBox();
+		this.typeComboBox = new org.alice.ide.common.TypeComboBox() {
+			@Override
+			protected void handleTypeChange() {
+				TypePane.this.handleComponentTypeChange( (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.getSelectedItem() );
+			}
+		};
 		this.isArrayCheckBox = new zoot.ZCheckBox( new IsArrayStateOperation() );
 		this.isArrayCheckBox.setOpaque( false );
 		this.add( this.typeComboBox );

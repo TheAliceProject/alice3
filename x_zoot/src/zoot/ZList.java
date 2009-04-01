@@ -48,7 +48,7 @@ public class ZList<E> extends javax.swing.JList {
 		}
 		this.itemSelectionOperation = itemSelectionOperation;
 		if( this.itemSelectionOperation != null ) {
-			this.setModel( this.itemSelectionOperation.getListModel() );
+			this.setModel( this.itemSelectionOperation.getComboBoxModel() );
 			this.addListSelectionListener( this.listSelectionAdapter );
 		}
 	}

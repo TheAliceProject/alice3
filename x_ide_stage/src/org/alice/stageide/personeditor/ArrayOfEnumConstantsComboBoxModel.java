@@ -25,8 +25,21 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class EnumConstantsListModel extends ArrayListModel { 
-	public EnumConstantsListModel( Class<? extends Enum> cls ) {
-		super( cls.getEnumConstants() );
+abstract class ArrayOfEnumConstantsComboBoxModel extends ArrayComboBoxModel {
+	static Object[] to( Class<?>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<Enum> criterion ) {
+		java.util.List< Enum > list = new java.util.LinkedList< Enum >();
+		for( Class<?> cls : clses ) {
+			Class< ? extends Enum > enumCls = (Class< ? extends Enum >)cls;
+			for( Enum e : enumCls.getEnumConstants() ) {
+				if( criterion == null || criterion.accept( e ) ) {
+					list.add( e );
+				}
+			}
+		}
+		return list.toArray();
+	}
+	public ArrayOfEnumConstantsComboBoxModel( Class<?>[] clses, edu.cmu.cs.dennisc.pattern.Criterion<Enum> criterion ) {
+		super( to( clses, criterion ) );
 	}
 }
+

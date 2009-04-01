@@ -30,7 +30,7 @@ public interface ItemSelectionOperation<E> extends Operation {
 	public javax.swing.Action getActionForConfiguringSwing( int index );
 	public javax.swing.ButtonModel getButtonModelForConfiguringSwing( int index );
 //	public javax.swing.ButtonGroup getButtonGroup();
-	public javax.swing.ListModel getListModel();
+	public javax.swing.ComboBoxModel getComboBoxModel();
 	
 	//todo: remove
 //	public void addSelectionChangeListener( javax.swing.event.ChangeListener l );

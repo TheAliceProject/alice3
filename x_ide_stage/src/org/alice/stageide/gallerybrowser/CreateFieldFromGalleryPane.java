@@ -43,10 +43,21 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 	private GalleryIcon galleryIcon;
 	private java.io.File file;
 
-	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType, java.io.File file ) {
+	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file ) {
 		super( declaringType );
-		this.valueType = valueType;
 		this.file = file;
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = getTypeFromGalleryFile( file );
+		assert typeDeclaredInJava != null : file;
+		this.valueType = getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
+	}
+	
+	@Override
+	protected boolean getIsFinalEnabled() {
+		return false;
+	}
+	@Override
+	protected boolean getIsFinalInitialValue() {
+		return true;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
@@ -70,7 +81,7 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 	}
 	@Override
 	protected java.awt.Component createInitializerComponent() {
-		return getIDE().getCodeFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType ) );
+		return new swing.LineAxisPane( getIDE().getCodeFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType ) ) );
 	}
 		
 	@Override
@@ -83,17 +94,48 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 			this.add( this.galleryIcon, java.awt.BorderLayout.EAST );
 		}
 	}
+	
+	private static java.util.Set< String > prefixSet = new java.util.HashSet< String >();
+	static {
+		prefixSet = new java.util.HashSet< String >();
+		prefixSet.add( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters" );
+		prefixSet.add( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes" );
+		prefixSet.add( "org.alice.apis.moveandturn.gallery" );
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava getTypeFromGalleryFile( java.io.File file ) {
+		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file );
+		int index = -1;
+		for( String prefix : prefixSet ) {
+			int i = path.indexOf( prefix );
+			if( i >= 0 ) {
+				index = i;
+				break;
+			}
+		}
+		if( index >= 0 ) {
+			String s = path.substring( index, path.length()-4 );
+			s = s.replace( '\\', '/' );
+			s = s.replace( '/', '.' );
+			Class<?> cls = edu.cmu.cs.dennisc.lang.ClassUtilities.forName( s );
+			if( cls != null ) {
+				return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
 	public static void main( String[] args ) {
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getTypeDeclaredInAliceFor( declaringTypeDeclaredInJava );
 
-		java.io.File file = new java.io.File( "C:/Program Files/LookingGlass/0.alpha.0000/gallery/thumbnails/edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters/adults/Coach.png" );
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = ide.getTypeDeclaredInAliceFor( typeDeclaredInJava );
+		java.io.File file = new java.io.File( "C:/Program Files/LookingGlass/0.alpha.0000/gallery/thumbnails/edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters/adults/Lunchlady.png" );
+		//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
 
 
-//		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, type, file );
+//		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, file );
 //		createFieldFromGalleryPane.showInJDialog( ide );
 		org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( declaringType );
 		createFieldPane.showInJDialog( ide );

@@ -35,7 +35,7 @@ class HairList extends AbstractArrayOfEnumConstantsList<Enum> {
 	}
 	@Override
 	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
-		return new HairListModel( lifeStage, gender, hairColor );
+		return new HairComboBoxModel( lifeStage, gender, hairColor );
 	}
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<Enum> context ) {

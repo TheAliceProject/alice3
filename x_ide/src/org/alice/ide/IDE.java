@@ -332,18 +332,24 @@ public abstract class IDE extends zoot.ZFrame {
 				this.runOperation 
 		);
 
+		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel  {
+			private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "complex" ), new java.util.Locale( "en", "US", "java" ) };
+			public Object getElementAt( int index ) {
+				return this.candidates[ index ];
+			}
+			public int getSize() {
+				return this.candidates.length;
+			}
+			public Object getSelectedItem() {
+				return null;
+			}
+			public void setSelectedItem( Object locale ) {
+			}
+		}
+
 		class LocaleItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< java.util.Locale > {
 			public LocaleItemSelectionOperation() {
-				super( new javax.swing.AbstractListModel() {
-					private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "complex" ), new java.util.Locale( "en", "US", "java" ) };
-
-					public Object getElementAt( int index ) {
-						return this.candidates[ index ];
-					}
-					public int getSize() {
-						return this.candidates.length;
-					}
-				}, 0 );
+				super( new LocaleComboBoxModel(), 0 );
 			}
 			@Override
 			protected String getNameFor( int index, java.util.Locale locale ) {
@@ -807,33 +813,38 @@ public abstract class IDE extends zoot.ZFrame {
 		return this.previousExpression;
 	}
 	public void addFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-
-		if( this.previousExpression != null ) {
-			if( this.previousExpression.getType().isAssignableTo( type ) ) {
-				blank.addFillIn( new org.alice.ide.cascade.PreviousExpressionFillIn( this.previousExpression ) );
-				blank.addSeparator();
+		if( type != null ) {
+			if( this.previousExpression != null ) {
+				if( this.previousExpression.getType().isAssignableTo( type ) ) {
+					blank.addFillIn( new org.alice.ide.cascade.PreviousExpressionFillIn( this.previousExpression ) );
+					blank.addSeparator();
+				}
+				
 			}
-			
-		}
-		//todo
-		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
-			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;
-		}
-
-		for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
-			if( expressionFillerInner.isAssignableTo( type ) ) {
-				expressionFillerInner.addFillIns( blank );
+			//todo
+			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
+				type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;
 			}
-		}
-		if( type.isAssignableTo( Enum.class ) ) {
-			org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)type.getFirstClassEncounteredDeclaredInJava() );
-			constantsOwningFillerInner.addFillIns( blank );
-		}
-		if( blank.getChildren().size() > 0 ) {
-			//pass
+
+			for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
+				if( expressionFillerInner.isAssignableTo( type ) ) {
+					expressionFillerInner.addFillIns( blank );
+				}
+			}
+			if( type.isAssignableTo( Enum.class ) ) {
+				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)type.getFirstClassEncounteredDeclaredInJava() );
+				constantsOwningFillerInner.addFillIns( blank );
+			}
+			if( blank.getChildren().size() > 0 ) {
+				//pass
+			} else {
+				blank.addFillIn( new cascade.CancelFillIn( "sorry.  no fillins found for " + type.getName() + ". canceling." ) );
+			}
 		} else {
-			blank.addFillIn( new cascade.CancelFillIn( "sorry.  no fillins found for " + type.getName() + ". canceling." ) );
+			//todo:
+			blank.addFillIn( new cascade.CancelFillIn( "value type must be filled in first" ) );
 		}
+		
 	}
 	public void createProjectFromBootstrap() {
 		throw new RuntimeException( "todo" );
@@ -1239,10 +1250,10 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 	@Deprecated
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getSceneType() {
+	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneType() {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = getSceneField();
 		if( sceneField != null ) {
-			return sceneField.getValueType();
+			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
 		} else {
 			return null;
 		}

@@ -26,10 +26,43 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateFieldPane extends AbstractCreateFieldPane {
-	private TypePane typePane = new TypePane();
-	private InitializerPane initializerPane = new InitializerPane();
+	private TypePane typePane = new TypePane() {
+		@Override
+		protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+			CreateFieldPane.this.handleTypeChange();
+		}
+		@Override
+		protected void handleIsArrayChange( boolean isArray ) {
+			CreateFieldPane.this.handleTypeChange();
+		}
+	};
+	private InitializerPane initializerPane = new InitializerPane() {
+		@Override
+		protected void handleInitializerChange() {
+			CreateFieldPane.this.handleInitializerChange();
+		}
+	};
 	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
+	}
+	private void handleTypeChange() {
+		this.initializerPane.handleTypeChange( this.typePane.getValueType() );
+		this.updateSizeIfNecessary();
+		this.updateOKButton();
+	}
+	private void handleInitializerChange() {
+		this.updateSizeIfNecessary();
+		this.updateOKButton();
+	}
+	
+	
+	@Override
+	protected boolean getIsFinalEnabled() {
+		return true;
+	}
+	@Override
+	protected boolean getIsFinalInitialValue() {
+		return false;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {

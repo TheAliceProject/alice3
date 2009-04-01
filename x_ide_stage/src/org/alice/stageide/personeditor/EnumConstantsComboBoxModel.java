@@ -25,16 +25,8 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class ArrayListModel extends javax.swing.AbstractListModel {
-	private Object[] values;
-	public ArrayListModel( Object... values ) {
-		this.values = values;
+class EnumConstantsComboBoxModel extends ArrayComboBoxModel { 
+	public EnumConstantsComboBoxModel( Class<? extends Enum> cls ) {
+		super( cls.getEnumConstants() );
 	}
-	public Object getElementAt( int index ) {
-		return this.values[ index ];
-	}
-	public int getSize() {
-		return this.values.length;
-	}
-	
 }

@@ -29,7 +29,7 @@ abstract class AbstractArrayOfEnumConstantsList<E extends Enum> extends ArrayOfE
 	private java.util.Map< String, javax.swing.ListModel > map = new java.util.HashMap< String, javax.swing.ListModel >();
 	protected abstract String getKey( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor );
 	public AbstractArrayOfEnumConstantsList() {
-		super( new javax.swing.DefaultListModel() );
+		super( new javax.swing.DefaultComboBoxModel() );
 	}
 	public void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor  ) {
 		assert lifeStage != null;

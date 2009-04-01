@@ -232,8 +232,8 @@ public class ZManager {
 		rv.setMnemonic( mnemonic );
 		//rv.getPopupMenu().setSelectionModel( singleSelectionOperation.getSingleSelectionModelForConfiguringSwingComponents() );
 //		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
-		javax.swing.ListModel listModel = itemSelectionOperation.getListModel();
-		int N = listModel.getSize();
+		javax.swing.ComboBoxModel comboBoxModel = itemSelectionOperation.getComboBoxModel();
+		int N = comboBoxModel.getSize();
 		for( int i = 0; i < N; i++ ) {
 			javax.swing.Action actionI = itemSelectionOperation.getActionForConfiguringSwing( i );
 			javax.swing.ButtonModel buttonModelI = itemSelectionOperation.getButtonModelForConfiguringSwing( i );

@@ -62,7 +62,19 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 	private java.awt.Component pane;
 	private InstanceNameTextField instanceNameTextField = new InstanceNameTextField();
 	protected abstract java.awt.Component[] createDeclarationRow();
+	protected abstract java.awt.Component createIsFinalComponent();
 	protected abstract java.awt.Component createValueTypeComponent();
+
+	
+	protected final java.awt.Component[] createIsFinalRow() {
+		java.awt.Component component = this.createIsFinalComponent();
+		if( component != null ) {
+			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "is final:" ), component );
+		} else {
+			return null;
+		}
+	}
+
 	protected String getValueTypeText() {
 		return "value type:";
 	}
@@ -108,12 +120,16 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 		final java.awt.Component[] valueTypeRow = createValueTypeRow();
 		final java.awt.Component[] nameRow = createNameRow();
 		final java.awt.Component[] initializerRow = createInitializerRow();
+		final java.awt.Component[] isFinalRow = createIsFinalRow();
 		return new swing.RowsSpringPane() {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				if( declarationRow != null ) {
 					rv.add( declarationRow );
 					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 10 ), null ) );
+				}
+				if( isFinalRow != null ) {
+					rv.add( isFinalRow );
 				}
 				if( valueTypeRow != null ) {
 					rv.add( valueTypeRow );

@@ -26,8 +26,8 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class ArrayOfEnumConstantsList<E extends Enum> extends AbstractList< E > {
-	public ArrayOfEnumConstantsList( javax.swing.ListModel listModel ) {
-		super( listModel );
+	public ArrayOfEnumConstantsList( javax.swing.ComboBoxModel comboBoxModel ) {
+		super( comboBoxModel );
 		this.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
 		this.setVisibleRowCount( -1 );
 	}

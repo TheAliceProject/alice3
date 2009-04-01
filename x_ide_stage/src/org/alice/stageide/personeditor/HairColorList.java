@@ -27,7 +27,7 @@ package org.alice.stageide.personeditor;
  */
 class HairColorList extends AbstractList< String > {
 	public HairColorList() {
-		super( new ArrayListModel( "BLACK", "BROWN", "RED", "BLOND", "GREY" ) );
+		super( new ArrayComboBoxModel( "BLACK", "BROWN", "RED", "BLOND", "GREY" ) );
 	}
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<String> context ) {

@@ -35,7 +35,7 @@ class FullBodyOutfitList extends AbstractArrayOfEnumConstantsList<Enum> {
 	}
 	@Override
 	protected javax.swing.ListModel createListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
-		return new FullBodyOutfitListModel( lifeStage, gender );
+		return new FullBodyOutfitComboBoxModel( lifeStage, gender );
 	}
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<Enum> context ) {

@@ -45,12 +45,23 @@ class TypeListCellRenderer extends swing.ListCellRenderer< edu.cmu.cs.dennisc.al
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComboBox extends zoot.ZComboBox {
+public abstract class TypeComboBox extends zoot.ZComboBox {
 	public TypeComboBox() {
 		javax.swing.ComboBoxModel model = org.alice.ide.IDE.getSingleton().getTypeComboBoxModel();
-		this.setModel( model );
+		model.setSelectedItem( null );
+		
+		this.setItemSelectionOperation( new org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType >( model, -1 ) {
+			public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.AbstractType > context ) {
+				TypeComboBox.this.handleTypeChange();
+			}
+		} );
+		//this.setModel( model );
+		
+		
 		this.setRenderer( new TypeListCellRenderer() );
 		this.setMaximumRowCount( model.getSize() );
 		this.setSelectedIndex( -1 );
 	}
+	
+	protected abstract void handleTypeChange();
 }

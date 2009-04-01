@@ -25,12 +25,22 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class HairListModel extends ArrayOfEnumConstantsListModel {
-	public HairListModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, final String hairColor ) {
-		super( org.alice.apis.stage.IngredientUtilities.get( lifeStage.getHairInterface( gender ) ), new edu.cmu.cs.dennisc.pattern.Criterion< Enum >() {
-			public boolean accept( java.lang.Enum e ) {
-				return e.name().equals( hairColor );
-			}
-		} );
+class ArrayComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+	private Object[] values;
+	private Object selectedItem;
+	public ArrayComboBoxModel( Object... values ) {
+		this.values = values;
+	}
+	public Object getElementAt( int index ) {
+		return this.values[ index ];
+	}
+	public int getSize() {
+		return this.values.length;
+	}
+	public Object getSelectedItem() {
+		return this.selectedItem;
+	}
+	public void setSelectedItem( Object selectedItem ) {
+		this.selectedItem = selectedItem;
 	}
 }

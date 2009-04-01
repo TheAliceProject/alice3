@@ -29,10 +29,10 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	private javax.swing.Action[] actions;
 	private javax.swing.ButtonModel[] buttonModels;
-	private javax.swing.ListModel listModel;
-	public AbstractItemSelectionOperation( javax.swing.ListModel listModel, int initialItemSelectionIndex ) {
-		this.listModel = listModel;
-		int N = this.listModel.getSize();
+	private javax.swing.ComboBoxModel comboBoxModel;
+	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel, int initialItemSelectionIndex ) {
+		this.comboBoxModel = comboBoxModel;
+		int N = this.comboBoxModel.getSize();
 		this.actions = new javax.swing.Action[ N ];
 		this.buttonModels = new javax.swing.ButtonModel[ N ];
 		for( int i=0; i<N; i++ ) {
@@ -43,7 +43,7 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 				public void actionPerformed( java.awt.event.ActionEvent e ) {
 				}
 			}
-			final E item = (E)this.listModel.getElementAt( i );
+			final E item = (E)this.comboBoxModel.getElementAt( i );
 			this.actions[ i ] = new Action( i, item ); 
 			this.buttonModels[ i ] = new javax.swing.JToggleButton.ToggleButtonModel();
 			this.buttonModels[ i ].setGroup( buttonGroup );
@@ -76,8 +76,8 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	public javax.swing.ButtonModel getButtonModelForConfiguringSwing( int index ) {
 		return this.buttonModels[ index ];
 	}
-	public javax.swing.ListModel getListModel() {
-		return this.listModel;
+	public javax.swing.ComboBoxModel getComboBoxModel() {
+		return this.comboBoxModel;
 	}
 //	public void addSelectionChangeListener( javax.swing.event.ChangeListener l ) {
 //	}

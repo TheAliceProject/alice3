@@ -26,7 +26,16 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateFunctionPane extends CreateMethodPane {
-	private TypePane typePane = new TypePane();
+	private TypePane typePane = new TypePane() {
+		@Override
+		protected void handleComponentTypeChange(edu.cmu.cs.dennisc.alice.ast.AbstractType type) {
+			//pass
+		}
+		@Override
+		protected void handleIsArrayChange(boolean isArray) {
+			//pass
+		}
+	};
 	public CreateFunctionPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
 		this.setBackground( getIDE().getFunctionColor() );

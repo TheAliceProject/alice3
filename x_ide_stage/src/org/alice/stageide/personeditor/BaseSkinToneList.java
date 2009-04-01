@@ -27,7 +27,7 @@ package org.alice.stageide.personeditor;
  */
 class BaseSkinToneList extends AbstractList< org.alice.apis.stage.BaseSkinTone > {
 	public BaseSkinToneList() {
-		super( new EnumConstantsListModel( org.alice.apis.stage.BaseSkinTone.class ) );
+		super( new EnumConstantsComboBoxModel( org.alice.apis.stage.BaseSkinTone.class ) );
 	}
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<org.alice.apis.stage.BaseSkinTone> context ) {

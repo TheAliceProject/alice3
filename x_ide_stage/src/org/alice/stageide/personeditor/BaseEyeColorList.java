@@ -27,7 +27,7 @@ package org.alice.stageide.personeditor;
  */
 class BaseEyeColorList extends AbstractList< org.alice.apis.stage.BaseEyeColor > {
 	public BaseEyeColorList() {
-		super( new EnumConstantsListModel( org.alice.apis.stage.BaseEyeColor.class ) );
+		super( new EnumConstantsComboBoxModel( org.alice.apis.stage.BaseEyeColor.class ) );
 	}
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<org.alice.apis.stage.BaseEyeColor> context ) {
