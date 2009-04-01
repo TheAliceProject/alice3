@@ -158,8 +158,33 @@ class ButtonPane extends swing.GridBagPane {
 	}
 }
 
-class Pane extends swing.PageAxisPane {
-	public Pane() {
+
+class FauxItem extends swing.LineAxisPane {
+	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane() {
+		@Override
+		protected void handleInitializerChange() {
+		}
+	};
+	public FauxItem( int index ) {
+		this.add( new zoot.ZLabel( "[ " + index + " ] " ) );
+		this.add( this.itemInitializerPane );
+	}
+	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		this.itemInitializerPane.handleTypeChange( type.getComponentType() );
+	}
+}
+
+class FauxList extends swing.PageAxisPane {
+	public FauxList() {
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.add( new FauxItem( 0 ) );
+		this.add( new FauxItem( 1 ) );
+		this.add( new FauxItem( 2 ) );
+	}
+	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		for( java.awt.Component component : this.getComponents() ) {
+			((FauxItem)component).handleTypeChange( type );
+		}
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
@@ -171,15 +196,17 @@ class Pane extends swing.PageAxisPane {
  * @author Dennis Cosgrove
  */
 abstract class ArrayInitializerPane extends AbstractInitializerPane {
+	private FauxList fauxList = new FauxList();
 	public ArrayInitializerPane() {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.add( new ButtonPane(), java.awt.BorderLayout.EAST );
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( new Pane() );
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.fauxList );
 		scrollPane.setBorder( null );
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 	}
 	@Override
 	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		this.fauxList.handleTypeChange( type );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {

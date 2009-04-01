@@ -52,7 +52,7 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 	public CreateDeclarationPane() {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.setAlignmentX( CENTER_ALIGNMENT );
+		//this.setAlignmentX( CENTER_ALIGNMENT );
 	}
 	
 	protected org.alice.ide.IDE getIDE() {
@@ -126,7 +126,7 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				if( declarationRow != null ) {
 					rv.add( declarationRow );
-					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 10 ), null ) );
+					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( 10, 0 ) ), null ) );
 				}
 				if( isFinalRow != null ) {
 					rv.add( isFinalRow );
@@ -140,7 +140,7 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 				if( initializerRow != null ) {
 					rv.add( initializerRow );
 				}
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, null ) );
+//				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, null ) );
 				return rv;
 			}
 		};
