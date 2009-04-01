@@ -57,7 +57,7 @@ public abstract class CreateDeclarationWithDeclaringTypePane<E> extends CreateDe
 	}
 	
 	@Override
-	protected java.lang.String getTitleDefault() {
+	protected String getTitleDefault() {
 		return "Declare " + this.getDeclarationText();
 	}
 }

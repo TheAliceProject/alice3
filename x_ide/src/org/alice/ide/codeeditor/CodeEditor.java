@@ -626,7 +626,11 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 								}
 							};
 							actionContext.setTaskObserver( taskObserver );
-							statementTemplate.createStatement( dragAndDropEvent, taskObserver );
+							edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
+							if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
+								edu.cmu.cs.dennisc.alice.ast.BlockStatement block = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
+								statementTemplate.createStatement( dragAndDropEvent, block, taskObserver );
+							}
 						}
 					}
 					dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );

@@ -598,7 +598,17 @@ public abstract class IDE extends zoot.ZFrame {
 	private org.alice.ide.event.IDEListener[] ideListenerArray = null;
 
 	public edu.cmu.cs.dennisc.alice.ast.Node createCopy( edu.cmu.cs.dennisc.alice.ast.Node original ) {
-		return null;
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice root = this.getProgramType();
+		java.util.Set< edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > abstractDeclarations = root.createDeclarationSet();
+		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
+		java.util.Map< Integer, edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > map = edu.cmu.cs.dennisc.alice.ast.Node.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
+		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
+		edu.cmu.cs.dennisc.alice.ast.Node dst = edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), map );
+		if( original.equals( dst ) ) {
+			return dst;
+		} else {
+			throw new RuntimeException( "copy not equivalent to original" );
+		}
 	}
 
 	private zoot.ActionOperation runOperation = this.createRunOperation();
@@ -1412,6 +1422,12 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	public static java.awt.Color getFieldColor() {
 		return new java.awt.Color( 0x85abc9 );
+	}
+	public static java.awt.Color getLocalColor() {
+		return getFieldColor();
+	}
+	public static java.awt.Color getParameterColor() {
+		return getFieldColor();
 	}
 	public static void main( String[] args ) {
 		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );

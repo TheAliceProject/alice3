@@ -40,7 +40,7 @@ public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennis
 	
 	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode ) {
 		this.ownerCode = ownerCode;
-		this.setBackground( getIDE().getFieldColor() );
+		this.setBackground( org.alice.ide.IDE.getParameterColor() );
 	}
 	@Override
 	protected java.awt.Component createIsFinalComponent() {

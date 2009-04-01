@@ -130,7 +130,7 @@ public class CommentPane extends AbstractStatementPane {
 		if( getIDE().isJava() ) {
 			text = "//";
 		} else {
-			text = "comment";
+			text = "comment: ";
 		}
 		zoot.ZLabel label = new zoot.ZLabel( text );
 		label.setFontToDerivedFont( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
