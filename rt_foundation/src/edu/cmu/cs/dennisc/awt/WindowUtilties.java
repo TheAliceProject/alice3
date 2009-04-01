@@ -27,17 +27,18 @@ package edu.cmu.cs.dennisc.awt;
  */
 public class WindowUtilties {
 	public static void setLocationOnScreenToCenteredWithin( java.awt.Window window, java.awt.Component root ) {
+		int x = 0;
+		int y = 0;
 		if( root != null ) {
 			java.awt.Dimension sizeDialog = window.getSize();
 			java.awt.Dimension sizeRoot = root.getSize();
-			java.awt.Point locationRoot = root.getLocationOnScreen();
-			
-			int x0 = locationRoot.x + ( sizeRoot.width - sizeDialog.width )/ 2;
-			int y0 = locationRoot.y + ( sizeRoot.height - sizeDialog.height )/ 2;
-			
-			window.setLocation( x0, y0 );
-		} else {
-			window.setLocation( 0, 0 );
+			if( root.isValid() ) {
+				java.awt.Point locationRoot = root.getLocationOnScreen();
+				
+				x = locationRoot.x + ( sizeRoot.width - sizeDialog.width )/ 2;
+				y = locationRoot.y + ( sizeRoot.height - sizeDialog.height )/ 2;
+			}
 		}
+		window.setLocation( x, y );
 	}
 }

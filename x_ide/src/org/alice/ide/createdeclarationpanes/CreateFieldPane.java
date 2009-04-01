@@ -26,6 +26,8 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateFieldPane extends AbstractCreateFieldPane {
+	private TypePane typePane = new TypePane();
+	private InitializerPane initializerPane = new InitializerPane();
 	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
 	}
@@ -40,11 +42,11 @@ public class CreateFieldPane extends AbstractCreateFieldPane {
 
 	@Override
 	protected java.awt.Component[] createValueTypeRow() {
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "value class:" ), new TypePane() );
+		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "value class:" ), this.typePane );
 	}
 	@Override
 	protected java.awt.Component[] createInitializerRow() {
-		return null;
+		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "initializer:" ), this.initializerPane );
 	}
 //	@Override
 //	protected java.util.List< java.awt.Component[] > createComponentRows() {

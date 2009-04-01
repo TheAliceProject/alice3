@@ -118,5 +118,9 @@ class InitializerPane extends javax.swing.JPanel {
 			return this.arrayInitializerPane.getPreferredSize();
 		}
 	}
+	@Override
+	public java.awt.Dimension getMaximumSize() {
+		return this.getPreferredSize();
+	}
 }
 
