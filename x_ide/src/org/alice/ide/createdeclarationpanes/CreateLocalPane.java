@@ -35,11 +35,11 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		return null;
 	}
 	@Override
-	protected java.awt.Component[] createInitializerRow() {
+	protected java.awt.Component createInitializerComponent() {
 		return null;
 	}
 	@Override
-	protected java.awt.Component[] createValueTypeRow() {
+	protected java.awt.Component createValueTypeComponent() {
 		return null;
 	}
 	@Override

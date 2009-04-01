@@ -30,9 +30,9 @@ public class WindowUtilties {
 		int x = 0;
 		int y = 0;
 		if( root != null ) {
-			java.awt.Dimension sizeDialog = window.getSize();
-			java.awt.Dimension sizeRoot = root.getSize();
-			if( root.isValid() ) {
+			if( root.isShowing() ) {
+				java.awt.Dimension sizeDialog = window.getSize();
+				java.awt.Dimension sizeRoot = root.getSize();
 				java.awt.Point locationRoot = root.getLocationOnScreen();
 				
 				x = locationRoot.x + ( sizeRoot.width - sizeDialog.width )/ 2;

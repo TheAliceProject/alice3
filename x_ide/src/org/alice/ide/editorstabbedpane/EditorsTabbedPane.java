@@ -74,10 +74,10 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 			}
 		} );
 	}
-//	@Override
-//	public boolean isCloseButtonDesiredAt( int index ) {
-//		return index > 0;
-//	}
+	@Override
+	public boolean isCloseButtonDesiredAt( int index ) {
+		return index > 0;
+	}
 
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
 	}

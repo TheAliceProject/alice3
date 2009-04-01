@@ -93,7 +93,7 @@ public class SpringUtilities {
 			if( rv[ i ] != null ) {
 				//pass
 			} else {
-				rv[ i ] = javax.swing.Box.createGlue();
+				rv[ i ] = javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 0 ) );
 			}
 		}
 		return rv;

@@ -36,8 +36,12 @@ public class CreateFunctionPane extends CreateMethodPane {
 		return "Function";
 	}
 	@Override
-	protected java.awt.Component[] createValueTypeRow() {
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "return value class:" ), this.typePane );
+	protected java.awt.Component createValueTypeComponent() {
+		return this.typePane;
+	}
+	@Override
+	protected java.lang.String getValueTypeText() {
+		return "return value type:";
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnValueType() {

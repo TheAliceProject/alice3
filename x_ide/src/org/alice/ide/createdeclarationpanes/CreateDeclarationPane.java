@@ -49,6 +49,12 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 		return rv;
 	}
 
+	public CreateDeclarationPane() {
+		final int INSET = 16;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+		this.setAlignmentX( CENTER_ALIGNMENT );
+	}
+	
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -56,14 +62,31 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 	private java.awt.Component pane;
 	private InstanceNameTextField instanceNameTextField = new InstanceNameTextField();
 	protected abstract java.awt.Component[] createDeclarationRow();
-	protected abstract java.awt.Component[] createValueTypeRow();
+	protected abstract java.awt.Component createValueTypeComponent();
+	protected String getValueTypeText() {
+		return "value type:";
+	}
+	
+	protected final java.awt.Component[] createValueTypeRow() {
+		java.awt.Component component = this.createValueTypeComponent();
+		if( component != null ) {
+			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( this.getValueTypeText() ), component );
+		} else {
+			return null;
+		}
+	}
+
 	protected final java.awt.Component[] createNameRow() {
 		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "name:" ), this.instanceNameTextField );
 	}
-	protected abstract java.awt.Component[] createInitializerRow();
-	public CreateDeclarationPane() {
-		final int INSET = 16;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+	protected abstract java.awt.Component createInitializerComponent();
+	protected final java.awt.Component[] createInitializerRow() {
+		java.awt.Component component = this.createInitializerComponent();
+		if( component != null ) {
+			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "initializer:" ), component );
+		} else {
+			return null;
+		}
 	}
 	
 	protected String getDeclarationName() {
@@ -101,6 +124,7 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 				if( initializerRow != null ) {
 					rv.add( initializerRow );
 				}
+				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, null ) );
 				return rv;
 			}
 		};

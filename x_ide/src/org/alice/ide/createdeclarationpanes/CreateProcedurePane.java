@@ -35,7 +35,7 @@ public class CreateProcedurePane extends CreateMethodPane {
 		return "Procedure";
 	}
 	@Override
-	protected java.awt.Component[] createValueTypeRow() {
+	protected java.awt.Component createValueTypeComponent() {
 		return null;
 	}
 	@Override

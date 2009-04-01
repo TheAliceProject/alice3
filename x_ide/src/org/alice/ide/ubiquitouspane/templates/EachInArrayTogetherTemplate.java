@@ -20,41 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.createdeclarationpanes;
+package org.alice.ide.ubiquitouspane.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode;
-	private TypePane typePane = new TypePane();
-	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode ) {
-		this.ownerCode = ownerCode;
-		this.setBackground( getIDE().getFieldColor() );
+public class EachInArrayTogetherTemplate extends CascadingUbiquitousStatementTemplate {
+	public EachInArrayTogetherTemplate() {
+		super( edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, org.alice.ide.ast.NodeUtilities.createIncompleteEachInArrayTogether() );
 	}
 	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		return this.typePane;
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) };
 	}
 	@Override
-	protected java.lang.String getValueTypeText() {
-		return "value type:";
-	}
-	@Override
-	protected java.awt.Component[] createDeclarationRow() {
+	protected edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+//		edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether rv = org.alice.ide.ast.NodeUtilities.createIncompleteEachInArrayTogether();
+//		rv.array.setValue( expressions[ 0 ] );
+//		return rv;
 		return null;
-	}
-	@Override
-	protected java.awt.Component createInitializerComponent() {
-		return null;
-	}
-	@Override
-	protected String getTitleDefault() {
-		return "Declare Parameter";
-	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.typePane.getValueType() );
 	}
 }

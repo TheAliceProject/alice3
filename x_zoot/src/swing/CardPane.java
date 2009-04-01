@@ -29,4 +29,7 @@ public class CardPane extends Pane {
 	public CardPane() {
 		setLayout( new java.awt.CardLayout() );
 	}
+	public void show( String key ) {
+		((java.awt.CardLayout)this.getLayout()).show( this, key );
+	}
 }

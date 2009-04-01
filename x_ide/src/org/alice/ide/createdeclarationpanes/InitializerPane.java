@@ -79,17 +79,15 @@ class ArrayInitializerPane extends AbstractInitializerPane {
 /**
  * @author Dennis Cosgrove
  */
-class InitializerPane extends javax.swing.JPanel {
+class InitializerPane extends swing.CardPane {
 	private static final String ITEM_KEY = "ITEM_KEY";
 	private static final String ARRAY_KEY = "ARRAY_KEY";
-	private java.awt.CardLayout cardLayout = new java.awt.CardLayout();
 	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane();
 	private ArrayInitializerPane arrayInitializerPane = new ArrayInitializerPane();
 	public InitializerPane() {
-		this.setLayout( this.cardLayout );
 		this.add( this.itemInitializerPane, ITEM_KEY );
 		this.add( this.arrayInitializerPane, ARRAY_KEY );
-		this.cardLayout.show( this, ITEM_KEY );
+		this.show( ITEM_KEY );
 	}
 	private AbstractInitializerPane getCurrentCard() {
 		if( this.itemInitializerPane.isVisible() ) {
@@ -105,7 +103,7 @@ class InitializerPane extends javax.swing.JPanel {
 		} else {
 			key = ITEM_KEY;
 		}
-		this.cardLayout.show( this, key );
+		this.show( key );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
 		return getCurrentCard().getInitializer();

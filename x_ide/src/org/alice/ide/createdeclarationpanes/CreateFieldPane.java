@@ -41,12 +41,12 @@ public class CreateFieldPane extends AbstractCreateFieldPane {
 	}
 
 	@Override
-	protected java.awt.Component[] createValueTypeRow() {
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "value class:" ), this.typePane );
+	protected java.awt.Component createValueTypeComponent() {
+		return this.typePane;
 	}
 	@Override
-	protected java.awt.Component[] createInitializerRow() {
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "initializer:" ), this.initializerPane );
+	protected java.awt.Component createInitializerComponent() {
+		return this.initializerPane;
 	}
 //	@Override
 //	protected java.util.List< java.awt.Component[] > createComponentRows() {

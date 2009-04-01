@@ -91,6 +91,7 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.ConditionalStatement createIncompleteConditionalStatement() {
 		return createConditionalStatement( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
 	}
+
 	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createForEachInArrayLoop( edu.cmu.cs.dennisc.alice.ast.Expression arrayExpression ) {
 		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
 		return new edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop(
@@ -102,6 +103,19 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createIncompleteForEachInArrayLoop() {
 		return createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) ) );
 	}
+
+	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createEachInArrayTogether( edu.cmu.cs.dennisc.alice.ast.Expression arrayExpression ) {
+		edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( null, arrayExpression.getType().getComponentType() );
+		return new edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop(
+				variable,
+				arrayExpression, 
+				new edu.cmu.cs.dennisc.alice.ast.BlockStatement() 
+		);
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop createIncompleteEachInArrayTogether() {
+		return createForEachInArrayLoop( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object[].class ) ) );
+	}
+	
 	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
 		rv.expression.setValue( expression );

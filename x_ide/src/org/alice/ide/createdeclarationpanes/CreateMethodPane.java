@@ -34,7 +34,7 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 		return "Procedure";
 	}
 	@Override
-	protected java.awt.Component[] createInitializerRow() {
+	protected java.awt.Component createInitializerComponent() {
 		return null;
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnValueType();

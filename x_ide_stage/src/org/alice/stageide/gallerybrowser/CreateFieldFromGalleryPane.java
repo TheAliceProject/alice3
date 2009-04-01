@@ -58,7 +58,7 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 	}
 
 	@Override
-	protected java.awt.Component[] createValueTypeRow() {
+	protected java.awt.Component createValueTypeComponent() {
 		swing.LineAxisPane valueTypeLine = new swing.LineAxisPane();
 		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldFromGalleryPane.this.valueType ) );
 		if( CreateFieldFromGalleryPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
@@ -66,12 +66,11 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldFromGalleryPane.this.valueType.getSuperType() ) );
 //			valueTypeLine.add( new zoot.ZLabel( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
 		}
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "value class:" ), valueTypeLine );
+		return valueTypeLine;
 	}
 	@Override
-	protected java.awt.Component[] createInitializerRow() {
-		java.awt.Component initializer = getIDE().getCodeFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType ) );
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "initializer:" ), initializer );
+	protected java.awt.Component createInitializerComponent() {
+		return getIDE().getCodeFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType ) );
 	}
 		
 	@Override
@@ -94,14 +93,14 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = ide.getTypeDeclaredInAliceFor( typeDeclaredInJava );
 
 
-		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, type, file );
-		createFieldFromGalleryPane.showInJDialog( ide );
+//		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, type, file );
+//		createFieldFromGalleryPane.showInJDialog( ide );
 		org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( declaringType );
 		createFieldPane.showInJDialog( ide );
-		org.alice.ide.createdeclarationpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.createdeclarationpanes.CreateProcedurePane( declaringType );
-		createProcedurePane.showInJDialog( ide );
-		org.alice.ide.createdeclarationpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
-		createFunctionPane.showInJDialog( ide );
+//		org.alice.ide.createdeclarationpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.createdeclarationpanes.CreateProcedurePane( declaringType );
+//		createProcedurePane.showInJDialog( ide );
+//		org.alice.ide.createdeclarationpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
+//		createFunctionPane.showInJDialog( ide );
 		System.exit( 0 );
 	}
 }
