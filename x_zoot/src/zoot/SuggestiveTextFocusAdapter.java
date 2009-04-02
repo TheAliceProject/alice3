@@ -20,22 +20,27 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class CodeTitlePane extends swing.LineAxisPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
-	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		this.code = code;
-		this.add( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.add( new org.alice.ide.common.NodeNameLabel( this.code ) );
+class SuggestiveTextFocusAdapter implements java.awt.event.FocusListener {
+	private javax.swing.text.JTextComponent textComponent;
+
+	public SuggestiveTextFocusAdapter( javax.swing.text.JTextComponent textComponent ) {
+		this.textComponent = textComponent;
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
-		return this.code;
+	public void focusGained( java.awt.event.FocusEvent arg0 ) {
+		if( this.textComponent.getText().length() == 0 ) {
+			this.textComponent.repaint();
+		}
+		//this.textComponent.setBackground( new java.awt.Color( 230, 230, 255 ) );
+	}
+	public void focusLost( java.awt.event.FocusEvent arg0 ) {
+		if( this.textComponent.getText().length() == 0 ) {
+			this.textComponent.repaint();
+		}
+		//this.textComponent.setBackground( java.awt.Color.WHITE );
 	}
 }
-

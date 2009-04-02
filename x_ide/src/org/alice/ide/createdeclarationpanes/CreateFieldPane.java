@@ -26,76 +26,19 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateFieldPane extends AbstractCreateFieldPane {
-	private TypePane typePane = new TypePane() {
-		@Override
-		protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-			CreateFieldPane.this.handleTypeChange();
-		}
-		@Override
-		protected void handleIsArrayChange( boolean isArray ) {
-			CreateFieldPane.this.handleTypeChange();
-		}
-	};
-	private InitializerPane initializerPane = new InitializerPane() {
-		@Override
-		protected void handleInitializerChange() {
-			CreateFieldPane.this.handleInitializerChange();
-		}
-	};
 	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
 	}
-	private void handleTypeChange() {
-		this.initializerPane.handleTypeChange( this.typePane.getValueType() );
-		this.updateSizeIfNecessary();
-		this.updateOKButton();
-	}
-	private void handleInitializerChange() {
-		this.updateSizeIfNecessary();
-		this.updateOKButton();
-	}
-	
-	
 	@Override
-	protected boolean getIsFinalEnabled() {
+	protected boolean isEditableValueTypeComponentDesired() {
 		return true;
 	}
 	@Override
-	protected boolean getIsFinalInitialValue() {
-		return false;
+	protected boolean isEditableInitializerComponentDesired() {
+		return true;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
-		return null;
+	protected boolean isIsReassignableComponentDesired() {
+		return true;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-		return null;
-	}
-
-	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		return this.typePane;
-	}
-	@Override
-	protected java.awt.Component createInitializerComponent() {
-		return this.initializerPane;
-	}
-//	@Override
-//	protected java.util.List< java.awt.Component[] > createComponentRows() {
-//		zoot.ZLabel label = new zoot.ZLabel( "initializer:" );
-//		this.initializerPane = new InitializerPane();
-//		this.isConstantCheckBox = new zoot.ZCheckBox( new IsConstantStateOperation() );
-//		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-//		rv.add( new java.awt.Component[] { label, this.initializerPane } );
-//		rv.add( new java.awt.Component[] { new javax.swing.JLabel(), this.isConstantCheckBox } );
-//		return rv;
-//	}
-//	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-//		return this.initializerPane.getInitializer();
-//	}
-//	
-//	protected boolean isConstant() {
-//		return this.isConstantCheckBox.isSelected();
-//	}
 }

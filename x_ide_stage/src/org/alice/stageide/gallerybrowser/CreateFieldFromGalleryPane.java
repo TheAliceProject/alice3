@@ -52,14 +52,6 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 	}
 	
 	@Override
-	protected boolean getIsFinalEnabled() {
-		return false;
-	}
-	@Override
-	protected boolean getIsFinalInitialValue() {
-		return true;
-	}
-	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		return this.valueType;
 	}
@@ -68,6 +60,29 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 		return this.initializer;
 	}
 
+	@Override
+	protected boolean isEditableValueTypeComponentDesired() {
+		return false;
+	}
+	
+	@Override
+	protected boolean isEditableInitializerComponentDesired() {
+		return false;
+	}
+	
+	@Override
+	protected boolean isIsReassignableComponentDesired() {
+		return true;
+	}
+	@Override
+	protected boolean isIsReassignableComponentEnabled() {
+		return false;
+	}
+	@Override
+	protected boolean getIsReassignableInitialState() {
+		return false;
+	}
+	
 	@Override
 	protected java.awt.Component createValueTypeComponent() {
 		swing.LineAxisPane valueTypeLine = new swing.LineAxisPane();
@@ -135,91 +150,16 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 		//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
 
 
-//		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, file );
-//		createFieldFromGalleryPane.showInJDialog( ide );
+		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, file );
 		org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( declaringType );
-		createFieldPane.showInJDialog( ide );
-//		org.alice.ide.createdeclarationpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.createdeclarationpanes.CreateProcedurePane( declaringType );
-//		createProcedurePane.showInJDialog( ide );
-//		org.alice.ide.createdeclarationpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
-//		createFunctionPane.showInJDialog( ide );
+		org.alice.ide.createdeclarationpanes.CreateLocalPane createLocalPane = new org.alice.ide.createdeclarationpanes.CreateLocalPane( null );
+		org.alice.ide.createdeclarationpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.createdeclarationpanes.CreateProcedurePane( declaringType );
+		org.alice.ide.createdeclarationpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
+//		createFieldFromGalleryPane.showInJDialog( ide );
+//		createFieldPane.showInJDialog( ide );
+//		createLocalPane.showInJDialog( ide );
+		createProcedurePane.showInJDialog( ide );
+		createFunctionPane.showInJDialog( ide );
 		System.exit( 0 );
 	}
 }
-
-//public class CreateFieldPane extends zoot.ZInputPane< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractType declaringType;
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
-//	private java.io.File file;
-//
-//	private static zoot.ZLabel createLabel( String s ) {
-//		zoot.ZLabel rv = new zoot.ZLabel( s );
-//		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
-//		return rv;
-//	}
-//	class MyRowsPane extends swing.RowsSpringPane {
-//		@Override
-//		protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-//			//GalleryIcon galleryIcon = new GalleryIcon( CreateFieldPane.this.file );
-//			
-//			swing.LineAxisPane declarationLine = new swing.LineAxisPane( 
-//					new zoot.ZLabel( "declare " ), 
-//					new org.alice.ide.common.TypeComponent( CreateFieldPane.this.declaringType ), 
-//					new zoot.ZLabel( " property:" ) 
-//			);
-//			swing.LineAxisPane valueTypeLine = new swing.LineAxisPane();
-//			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldPane.this.type ) );
-//			if( CreateFieldPane.this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-//				valueTypeLine.add( new zoot.ZLabel( " which extends ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
-//				valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldPane.this.type.getSuperType() ) );
-////				valueTypeLine.add( new zoot.ZLabel( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
-//			}
-//			
-//			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();;
-//			java.awt.Component initializer = ide.getCodeFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createInstanceCreation( type ) );
-//			
-////			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "declare property:" ), lineAxisPane ) );
-//			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( declarationLine, null ) );
-//			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 10 ), null ) );
-//			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "value class:" ), valueTypeLine ) );
-//			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "name:" ), new InstanceNameTextField() ) );
-//			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "initializer:" ), initializer ) );
-//			//rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 10 ), null ) );
-//			return rv;
-//		}
-//	}
-//
-//	public CreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-//		this.declaringType = declaringType;
-//		this.type = type;
-//		this.file = file;
-//		GalleryIcon galleryIcon = new GalleryIcon( this.file );
-//		MyRowsPane classInfoPane = new MyRowsPane();
-//		this.setLayout( new java.awt.BorderLayout() );
-//		final int INSET = 16;
-//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-//		this.add( galleryIcon, java.awt.BorderLayout.EAST );
-//		this.add( classInfoPane, java.awt.BorderLayout.CENTER );
-//	}
-//	
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo" );
-//		return null;
-//	}
-//
-//	public static void main( String[] args ) {
-//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getTypeDeclaredInAliceFor( declaringTypeDeclaredInJava );
-//
-//		java.io.File file = new java.io.File( "C:/Program Files/LookingGlass/0.alpha.0000/gallery/thumbnails/edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters/adults/Coach.png" );
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = ide.getTypeDeclaredInAliceFor( typeDeclaredInJava );
-//
-//
-//		CreateFieldPane createFieldPane = new CreateFieldPane( declaringType, file, type );
-//		createFieldPane.showInJDialog( ide, "Declare Property", true );
-//		System.exit( 0 );
-//	}
-//}

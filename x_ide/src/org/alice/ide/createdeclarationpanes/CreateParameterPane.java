@@ -27,28 +27,21 @@ package org.alice.ide.createdeclarationpanes;
  */
 public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
 	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode;
-	private TypePane typePane = new TypePane() {
-		@Override
-		protected void handleComponentTypeChange(edu.cmu.cs.dennisc.alice.ast.AbstractType type) {
-			//pass
-		}
-		@Override
-		protected void handleIsArrayChange(boolean isArray) {
-			//pass
-		}
-	};
-	
 	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode ) {
 		this.ownerCode = ownerCode;
 		this.setBackground( org.alice.ide.IDE.getParameterColor() );
 	}
 	@Override
-	protected java.awt.Component createIsFinalComponent() {
-		return null;
+	protected boolean isEditableInitializerComponentDesired() {
+		return false;
 	}
 	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		return this.typePane;
+	protected boolean isIsReassignableComponentDesired() {
+		return false;
+	}
+	@Override
+	protected boolean isEditableValueTypeComponentDesired() {
+		return true;
 	}
 	@Override
 	protected java.lang.String getValueTypeText() {
@@ -63,16 +56,15 @@ public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennis
 		return null;
 	}
 	@Override
-	protected java.awt.Component createPreviewComponent() {
-		return null;
+	protected java.awt.Component createPreviewSubComponent() {
+		return new javax.swing.JLabel( "TODO" );
 	}
 	@Override
 	protected String getTitleDefault() {
 		return "Declare Parameter";
 	}
-	
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.typePane.getValueType() );
+		return new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( this.getDeclarationName(), this.getValueType() );
 	}
 }

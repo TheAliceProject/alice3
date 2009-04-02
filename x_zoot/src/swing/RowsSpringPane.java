@@ -23,13 +23,19 @@
 package swing;
 
 public abstract class RowsSpringPane extends swing.Pane {
+	private int xPad;
+	private int yPad;
+	public RowsSpringPane( int xPad, int yPad ) {
+		this.xPad = xPad;
+		this.yPad = yPad;
+	}
 	@Override
 	public void addNotify() {
 		if( getLayout() instanceof javax.swing.SpringLayout ) {
 			//pass
 		} else {
 			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
-			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this, componentRows, 12, 12 );
+			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
 		}
 		super.addNotify();
 	}

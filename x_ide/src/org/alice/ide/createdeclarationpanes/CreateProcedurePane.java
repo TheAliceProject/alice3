@@ -28,18 +28,18 @@ package org.alice.ide.createdeclarationpanes;
 public class CreateProcedurePane extends CreateMethodPane {
 	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
-		this.setBackground( getIDE().getProcedureColor() );
+		this.setBackground( org.alice.ide.IDE.getProcedureColor() );
 	}
 	@Override
 	protected String getDeclarationText() {
 		return "Procedure";
 	}
 	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		return null;
+	protected boolean isEditableValueTypeComponentDesired() {
+		return false;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnValueType() {
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
 }

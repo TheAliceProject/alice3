@@ -20,22 +20,31 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class CodeTitlePane extends swing.LineAxisPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
-	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		this.code = code;
-		this.add( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.add( new org.alice.ide.common.NodeNameLabel( this.code ) );
+public class ZSuggestiveTextField extends javax.swing.JTextField {
+	private String textForBlankCondition;
+
+	public ZSuggestiveTextField( String text, String textForBlankCondition ) {
+		super( text );
+		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
+		this.textForBlankCondition = textForBlankCondition;
+		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
+		//setToolTipText( this.textForBlankCondition );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
-		return this.code;
+	@Override
+	public java.awt.Dimension getMaximumSize() {
+		java.awt.Dimension rv = super.getMaximumSize();
+		java.awt.Dimension preferred = getPreferredSize();
+		rv.height = preferred.height;
+		return rv;
+	}
+	@Override
+	protected void paintComponent( java.awt.Graphics g ) {
+		super.paintComponent( g );
+		SuggestiveTextUtilties.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 	}
 }
-

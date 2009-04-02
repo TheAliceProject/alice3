@@ -56,12 +56,7 @@ public abstract class CreateDeclarationWithDeclaringTypePane<E> extends CreateDe
 		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent( this.declaringType ), new swing.LineAxisPane( new org.alice.ide.common.TypeComponent( declaringType ) ) );
 	}
 	
-	@Override
-	protected java.awt.Component createPreviewComponent() {
-		return null;
-	}
 
-	
 	@Override
 	protected String getTitleDefault() {
 		return "Declare " + this.getDeclarationText();

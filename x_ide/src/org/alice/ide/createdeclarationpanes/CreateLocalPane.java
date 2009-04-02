@@ -26,71 +26,20 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement> {
-	class IsFinalStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
-		public IsFinalStateOperation( boolean initialValue ) {
-			super( initialValue );
-			//this.putValue( javax.swing.Action.NAME, "is constant" );
-		}
-		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-			CreateLocalPane.this.updateDeclarationTextLabel();
-			CreateLocalPane.this.updatePreview();
-			booleanStateContext.commit();
-		}
+	
+	@Override
+	protected boolean isEditableValueTypeComponentDesired() {
+		return true;
 	}
-
-	class PreviewPane extends swing.BorderPane {
-		public void refresh() {
-			this.removeAll();
-			edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = CreateLocalPane.this.getActualInputValue();
-			//localDeclarationStatement.isEnabled.setValue( false );
-			org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( localDeclarationStatement );
-			pane.setLeftButtonPressOperation( null );
-			pane.setDragAndDropOperation( null );
-			this.add( pane, java.awt.BorderLayout.CENTER );
-		}
-		@Override
-		public boolean contains( int x, int y ) {
-			return false;
-		}
+	@Override
+	protected boolean isIsReassignableComponentDesired() {
+		return true;
 	}
 	
-	private PreviewPane previewPane = new PreviewPane();
-	private void updatePreview() {
-		this.previewPane.refresh();
-	}
 	
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
-	private TypePane typePane = new TypePane() {
-		@Override
-		protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-			CreateLocalPane.this.handleTypeChange();
-		}
-		@Override
-		protected void handleIsArrayChange( boolean isArray ) {
-			CreateLocalPane.this.handleTypeChange();
-		}
-	};
-	private InitializerPane initializerPane = new InitializerPane() {
-		@Override
-		protected void handleInitializerChange() {
-			CreateLocalPane.this.handleInitializerChange();
-		}
-	};
 	private zoot.ZLabel declarationTextLabel = this.createDeclarationTextLabel();
-	private zoot.ZCheckBox isFinalCheckBox = new zoot.ZCheckBox( new IsFinalStateOperation( false ) );
-	
-	private void handleTypeChange() {
-		this.initializerPane.handleTypeChange( this.typePane.getValueType() );
-		this.updateSizeIfNecessary();
-		this.updatePreview();
-		this.updateOKButton();
-	}
-	private void handleInitializerChange() {
-		this.updateSizeIfNecessary();
-		this.updatePreview();
-		this.updateOKButton();
-	}
-	
+		
 	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		assert block != null;
 		this.block = block;
@@ -98,41 +47,23 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	}
 
 	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.previewPane.refresh();
+	protected java.awt.Component createPreviewSubComponent() {
+		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = this.getActualInputValue();
+		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( localDeclarationStatement );
+//		pane.setLeftButtonPressOperation( null );
+//		pane.setDragAndDropOperation( null );
+		return pane;
 	}
+	
 	@Override
-	protected java.awt.Component createPreviewComponent() {
-		return this.previewPane;
-	}
-	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		return this.typePane;
-	}
-	@Override
-	protected java.awt.Component createInitializerComponent() {
-		return this.initializerPane;
+	protected boolean isEditableInitializerComponentDesired() {
+		return true;
 	}
 
-	@Override
-	protected java.awt.Component createIsFinalComponent() {
-		//this.isFinalCheckBox = new zoot.ZCheckBox( new IsFinalStateOperation( false ) );
-		this.isFinalCheckBox.setOpaque( false );
-		this.isFinalCheckBox.setEnabled( true );
-		return this.isFinalCheckBox;
-	}
 	private zoot.ZLabel createDeclarationTextLabel() {
-		zoot.ZLabel rv = new zoot.ZLabel();
+		zoot.ZLabel rv = new zoot.ZLabel( "Local" );
 		rv.setFontToScaledFont( 1.2f );
 		return rv;
-	}
-	private void updateDeclarationTextLabel() {
-		if( this.isFinalCheckBox.isSelected() ) {
-			this.declarationTextLabel.setText( "Constant" );
-		} else {
-			this.declarationTextLabel.setText( "Variable" );
-		}
 	}
 	private java.awt.Component createMethodTextComponent() {
 		String name;
@@ -148,7 +79,6 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	}
 	@Override
 	protected final java.awt.Component[] createDeclarationRow() {
-		this.updateDeclarationTextLabel();
 		class DeclarationComponent extends swing.LineAxisPane {
 			public DeclarationComponent() {
 				super(
@@ -166,9 +96,9 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
 		String name = this.getDeclarationName();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.typePane.getValueType();
-		boolean isFinal = this.isFinalCheckBox.isSelected();
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = this.initializerPane.getInitializer();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getValueType();
+		boolean isFinal = this.isReassignable() == false;
+		edu.cmu.cs.dennisc.alice.ast.Expression initializer = this.getInitializer();
 		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement rv;
 		if( isFinal ) {
 			rv = new edu.cmu.cs.dennisc.alice.ast.ConstantDeclarationStatement(
@@ -188,12 +118,5 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 			);
 		}
 		return rv;
-	}
-
-	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		CreateLocalPane createLocalPane = new CreateLocalPane( null );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( createLocalPane.showInJDialog( ide ) );
-		System.exit( 0 );
 	}
 }

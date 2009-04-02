@@ -26,28 +26,6 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
-	class IsFinalStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
-		public IsFinalStateOperation( boolean initialValue ) {
-			super( initialValue );
-			//this.putValue( javax.swing.Action.NAME, "is constant" );
-		}
-		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-			booleanStateContext.commit();
-		}
-	}
-	private zoot.ZCheckBox isFinalCheckBox;
-	
-	protected abstract boolean getIsFinalInitialValue();
-	protected abstract boolean getIsFinalEnabled();
-	
-	@Override
-	protected java.awt.Component createIsFinalComponent() {
-		this.isFinalCheckBox = new zoot.ZCheckBox( new IsFinalStateOperation( this.getIsFinalInitialValue() ) );
-		this.isFinalCheckBox.setOpaque( false );
-		this.isFinalCheckBox.setEnabled( this.getIsFinalEnabled() );
-		return this.isFinalCheckBox;
-	}
-	
 	public AbstractCreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
 		this.setBackground( getIDE().getFieldColor() );
@@ -56,12 +34,20 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 	protected final String getDeclarationText() {
 		return "Property";
 	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression getInitializer();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType();
+	@Override
+	protected java.awt.Component createPreviewSubComponent() {
+		return new javax.swing.JLabel( "TODO" );
+	}
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( this.getDeclarationName(), this.getValueType(), this.getInitializer() );
-		rv.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+		edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither value;
+		if( this.isReassignable() ) {
+			value = edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.NEITHER;
+		} else {
+			value = edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL;
+		}
+		rv.finalVolatileOrNeither.setValue( value );
 		return rv;
 	}
 }

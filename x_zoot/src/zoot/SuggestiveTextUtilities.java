@@ -20,22 +20,29 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.codeeditor;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class CodeTitlePane extends swing.LineAxisPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
-	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		this.code = code;
-		this.add( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.add( new org.alice.ide.common.NodeNameLabel( this.code ) );
-	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
-		return this.code;
+class SuggestiveTextUtilties {
+	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
+		String text = textComponent.getText();
+		if( text.length() > 0 ) {
+			//pass
+		} else {
+			java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
+			g.setFont( font );
+			int grayscale = 160;
+			//			int grayscale;
+			//			if( textComponent.isFocusOwner() ) {
+			//				grayscale = 160;
+			//			} else {
+			//				grayscale = 100;
+			//			}
+			g.setColor( new java.awt.Color( grayscale, grayscale, grayscale ) );
+			java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
+			g.drawString( textForBlankCondition, 4, (int)bounds.getHeight() + 0 );
+		}
 	}
 }
-

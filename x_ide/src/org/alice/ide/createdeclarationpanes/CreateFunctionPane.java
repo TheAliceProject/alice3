@@ -26,34 +26,20 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateFunctionPane extends CreateMethodPane {
-	private TypePane typePane = new TypePane() {
-		@Override
-		protected void handleComponentTypeChange(edu.cmu.cs.dennisc.alice.ast.AbstractType type) {
-			//pass
-		}
-		@Override
-		protected void handleIsArrayChange(boolean isArray) {
-			//pass
-		}
-	};
 	public CreateFunctionPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
-		this.setBackground( getIDE().getFunctionColor() );
+		this.setBackground( org.alice.ide.IDE.getFunctionColor() );
 	}
 	@Override
 	protected String getDeclarationText() {
 		return "Function";
 	}
 	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		return this.typePane;
+	protected boolean isEditableValueTypeComponentDesired() {
+		return true;
 	}
 	@Override
 	protected java.lang.String getValueTypeText() {
 		return "return value type:";
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnValueType() {
-		return this.typePane.getValueType();
 	}
 }

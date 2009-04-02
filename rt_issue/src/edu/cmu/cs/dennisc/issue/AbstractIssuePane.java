@@ -25,6 +25,7 @@ package edu.cmu.cs.dennisc.issue;
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 class FocusAdapter implements java.awt.event.FocusListener {
 	private javax.swing.text.JTextComponent textComponent;
 
@@ -48,6 +49,7 @@ class FocusAdapter implements java.awt.event.FocusListener {
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 class SuggestiveTextUtilties {
 	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
 		String text = textComponent.getText();
@@ -73,6 +75,7 @@ class SuggestiveTextUtilties {
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 class SuggestiveTextField extends javax.swing.JTextField {
 	private String textForBlankCondition;
 
@@ -100,6 +103,7 @@ class SuggestiveTextField extends javax.swing.JTextField {
 /**
  * @author Dennis Cosgrove
  */
+@Deprecated
 class SuggestiveTextArea extends javax.swing.JTextArea {
 	private String textForBlankCondition;
 

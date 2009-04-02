@@ -25,17 +25,15 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class CodeTitlePane extends swing.LineAxisPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
-	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		this.code = code;
-		this.add( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.add( new org.alice.ide.common.NodeNameLabel( this.code ) );
-	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
-		return this.code;
+class InstanceLine extends swing.LineAxisPane {
+	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		zoot.ZLabel a = new zoot.ZLabel( "current instance of " );
+		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
+		this.add( a );
+		this.add( new org.alice.ide.common.TypeComponent( code.getDeclaringType() ) );
+		zoot.ZLabel b = new zoot.ZLabel( " is referred to as: " );
+		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
+		this.add( b );
+		this.add( new org.alice.ide.common.ThisPane( code.getDeclaringType() ) );
 	}
 }
-

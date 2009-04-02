@@ -25,17 +25,20 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class CodeTitlePane extends swing.LineAxisPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
-	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		this.code = code;
-		this.add( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.add( new org.alice.ide.common.NodeNameLabel( this.code ) );
-	}
-	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
-		return this.code;
+class ConstructorHeaderPane extends AbstractCodeHeaderPane {
+	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, javax.swing.JComponent parametersPane ) {
+		super( constructorDeclaredInAlice );
+		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.add( new zoot.ZLabel( "()" ) );
+		} else {
+			this.add( new zoot.ZLabel( "declare " ) );
+			zoot.ZLabel label = new zoot.ZLabel( "constructor" );
+			label.setFontToScaledFont( 1.5f );
+			this.add( label );
+			this.add( new zoot.ZLabel( " on class " ) );
+			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.add( parametersPane );
+		}
 	}
 }
-

@@ -38,13 +38,21 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 		return null;
 	}
 	@Override
-	protected java.awt.Component createIsFinalComponent() {
-		return null;
+	protected boolean isIsReassignableComponentDesired() {
+		return false;
 	}
 	
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnValueType();
+	@Override
+	protected boolean isEditableInitializerComponentDesired() {
+		return false;
+	}
+	@Override
+	protected java.awt.Component createPreviewSubComponent() {
+		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null );
+	}
+	
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
-		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getDeclarationName(), this.getReturnValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getDeclarationName(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
 	}
 }

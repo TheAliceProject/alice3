@@ -33,8 +33,4 @@ public class LocalNameLabel extends NodeNameLabel {
 	protected String getTextForNullName() {
 		return ((edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice)getNode()).getValidName();
 	}
-	@Override
-	protected java.lang.String getTextForBlankName() {
-		return "<unset>";
-	}
 }

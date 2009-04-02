@@ -22,198 +22,12 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.common.AbstractStatementPane;
-import org.alice.ide.common.Factory;
-import org.alice.ide.common.ParameterPane;
 import org.alice.ide.common.StatementListPropertyPane;
-import org.alice.ide.common.ThisPane;
-import org.alice.ide.common.TypedDeclarationPane;
 import org.alice.ide.event.FieldSelectionEvent;
 import org.alice.ide.event.FocusedCodeChangeEvent;
 import org.alice.ide.event.LocaleEvent;
 import org.alice.ide.event.ProjectOpenEvent;
 import org.alice.ide.event.TransientSelectionEvent;
-
-import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
-import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
-
-class TypedParameterPane extends TypedDeclarationPane {
-	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	public TypedParameterPane( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( new java.awt.Component[] { new org.alice.ide.common.TypeComponent( parameter.getValueType() ), new ParameterPane( parameter ) } );
-		this.parameter = parameter;
-	}
-	@Override
-	protected java.util.List< zoot.Operation > getPopupOperations() {
-//		N = self._code.parameters.size()
-//		index = self._code.parameters.indexOf( self._parameter )
-//		operations = []
-//		operations.append( ecc.dennisc.alice.ide.operations.ast.RenameParameterOperation( self._parameter, self._code ) )
-//		if index > 0:
-//			operations.append( ShiftForwardParameterOperation( self._parameter, self._code ) )
-//		if index < N-1:
-//			operations.append( ShiftBackwardParameterOperation( self._parameter, self._code ) )
-//		operations.append( DeleteParameterOperation( self._parameter, self._code ) )
-		java.util.LinkedList< zoot.Operation > rv = new java.util.LinkedList< zoot.Operation >();
-		//rv.add( new org.alice.ide.operations.ast.RenameParameterOperation( this.parameter ) );
-		return rv;
-	}
-}
-
-class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< ParameterDeclaredInAlice >> {
-	public ParametersPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
-	}
-	
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-
-	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
-		return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)getProperty().getOwner();
-	}
-
-	@Override
-	protected javax.swing.JComponent createComponent( Object parameter ) {
-		return new TypedParameterPane( /*getProperty(),*/ (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter );
-	}
-	@Override
-	protected void addPrefixComponents() {
-		//super.addPrefixComponents();
-		if( getIDE().isJava() ) {
-			this.add( new zoot.ZLabel( "( " ) );
-		} else {
-			int n = this.getProperty().size();
-			String text;
-			switch( n ) {
-			case 0:
-				text = " ";
-				break;
-			case 1:
-				text = " with parameter: ";
-				break;
-			default:
-				text = " with parameters: ";
-			}
-			zoot.ZLabel label = new zoot.ZLabel( text );
-			label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
-			this.add( label );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		}
-	}
-	@Override
-	protected java.awt.Component createInterstitial( int i, int N ) {
-		if( i<N-1 ) {
-			return new zoot.ZLabel( ", " );
-		} else {
-			return javax.swing.Box.createHorizontalStrut( 8 );
-		}
-	}
-	@Override
-	protected void addPostfixComponents() {
-		super.addPostfixComponents();
-		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = getCode();
-
-		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
-			if( method.isSignatureLocked.getValue() ) {
-				//pass
-			} else {
-				this.add( new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddParameterOperation( code ) ) );
-			}
-		}
-		if( getIDE().isJava() ) {
-			this.add( new zoot.ZLabel( " )" ) );
-		}
-	}
-}
-/**
- * @author Dennis Cosgrove
- */
-class AbstractCodeHeaderPane extends swing.LineAxisPane {
-	public AbstractCodeHeaderPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice ) {
-		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 0, 4 ) );
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-class MethodHeaderPane extends AbstractCodeHeaderPane {
-	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, javax.swing.JComponent parametersPane ) {
-		super( methodDeclaredInAlice );
-		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			zoot.ZLabel nameLabel = new org.alice.ide.common.NodeNameLabel( methodDeclaredInAlice );
-			nameLabel.setFontToScaledFont( 2.0f );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			this.add( nameLabel );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			this.add( parametersPane );
-			//this.add( new zoot.ZLabel( " {" ) );
-		} else {
-			StringBuffer sb = new StringBuffer();
-//			if( methodDeclaredInAlice.isOverride() ) {
-//				sb.append( "override " );
-//			} else {
-//				//pass
-//			}
-			if( methodDeclaredInAlice.isProcedure() ) {
-				sb.append( "procedure " );
-			} else {
-				this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
-				sb.append( "function " );
-			}
-			zoot.ZLabel label = new zoot.ZLabel( sb.toString() );
-			label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
-			this.add( label );
-			zoot.ZLabel nameLabel = new org.alice.ide.common.NodeNameLabel( methodDeclaredInAlice );
-			nameLabel.setFontToScaledFont( 2.0f );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			this.add( nameLabel );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			this.add( parametersPane );
-		}
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-class ConstructorHeaderPane extends AbstractCodeHeaderPane {
-	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, javax.swing.JComponent parametersPane ) {
-		super( constructorDeclaredInAlice );
-		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
-			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( new zoot.ZLabel( "()" ) );
-		} else {
-			this.add( new zoot.ZLabel( "declare " ) );
-			zoot.ZLabel label = new zoot.ZLabel( "constructor" );
-			label.setFontToScaledFont( 1.5f );
-			this.add( label );
-			this.add( new zoot.ZLabel( " on class " ) );
-			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( parametersPane );
-		}
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
-class InstanceLine extends swing.LineAxisPane {
-	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		zoot.ZLabel a = new zoot.ZLabel( "current instance of " );
-		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
-		this.add( a );
-		this.add( new org.alice.ide.common.TypeComponent( code.getDeclaringType() ) );
-		zoot.ZLabel b = new zoot.ZLabel( " is referred to as: " );
-		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
-		this.add( b );
-		this.add( new ThisPane( code.getDeclaringType() ) );
-	}
-}
 
 /**
  * @author Dennis Cosgrove
@@ -528,8 +342,8 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 				//pass
 			} else {
 				java.awt.Component subject = source.getSubject();
-				if( subject instanceof AbstractStatementPane ) {
-					AbstractStatementPane abstractStatementPane = (AbstractStatementPane)subject;
+				if( subject instanceof org.alice.ide.common.AbstractStatementPane ) {
+					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)subject;
 					if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 						//pass
 					} else {
@@ -637,10 +451,10 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 				} else {
 					source.hideDropProxyIfNecessary();
 				}
-			} else if( source.getSubject() instanceof AbstractStatementPane ) {
+			} else if( source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
 				source.hideDropProxyIfNecessary();
 				if( this.currentUnder != null ) {
-					AbstractStatementPane abstractStatementPane = (AbstractStatementPane)source.getSubject();
+					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
 					edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 					edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
 					edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();

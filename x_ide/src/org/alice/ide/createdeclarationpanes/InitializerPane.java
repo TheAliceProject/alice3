@@ -89,9 +89,9 @@ abstract class ItemInitializerPane extends AbstractInitializerPane {
 		this.add( expressionPropertyPane );
 		this.bogusNode.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				ItemInitializerPane.this.handleInitializerChange();
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				ItemInitializerPane.this.handleInitializerChange();
 			}
 		} );
 	}
