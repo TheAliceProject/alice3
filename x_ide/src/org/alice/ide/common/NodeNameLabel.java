@@ -68,6 +68,9 @@ public class NodeNameLabel extends zoot.ZLabel {
 	protected String getTextForNullName() {
 		return org.alice.ide.IDE.getSingleton().getTextForNull();
 	}
+	protected String getTextForBlankName() {
+		return "";
+	}
 	private void updateText() {
 		String text;
 		if( this.node != null ) {
@@ -79,6 +82,11 @@ public class NodeNameLabel extends zoot.ZLabel {
 			//pass
 		} else {
 			text = this.getTextForNullName();
+		}
+		if( text.length() > 0 ) {
+			//pass
+		} else {
+			text = this.getTextForBlankName();
 		}
 		this.setText( text );
 		this.repaint();

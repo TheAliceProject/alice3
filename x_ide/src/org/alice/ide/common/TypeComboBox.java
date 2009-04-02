@@ -28,16 +28,19 @@ package org.alice.ide.common;
 class TypeListCellRenderer extends swing.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType value, int index, boolean isSelected, boolean cellHasFocus ) {
-		if( value != null ) {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			rv.setText( ide.getTextFor( value ) );
-			rv.setIcon( ide.getIconFor( value ) );
-//			rv.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
-		} else {
-			rv.setText( null );
-			rv.setIcon( null );
-//			rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-		}
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		rv.setText( ide.getTextFor( value ) );
+		rv.setIcon( ide.getIconFor( value ) );
+//		if( value != null ) {
+//			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//			rv.setText( ide.getTextFor( value ) );
+//			rv.setIcon( ide.getIconFor( value ) );
+////			rv.setHorizontalTextPosition( javax.swing.SwingConstants.TRAILING );
+//		} else {
+//			rv.setText( null );
+//			rv.setIcon( null );
+////			rv.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+//		}
 		return rv;
 	}
 }

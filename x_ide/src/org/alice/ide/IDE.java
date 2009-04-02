@@ -43,15 +43,6 @@ public abstract class IDE extends zoot.ZFrame {
 	//		return this;
 	//	}
 
-	private Factory factory = this.createFactory();
-
-	public Factory getFactory() {
-		return this.factory;
-	}
-	protected Factory createFactory() {
-		return new Factory();
-	}
-
 	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
 
 	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {

@@ -57,7 +57,7 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	private org.alice.ide.common.TypeComponent typeComponent;
 	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
-		this.typeComponent = getIDE().getFactory().createTypeComponent( this.type );
+		this.typeComponent = new org.alice.ide.common.TypeComponent( this.type );
 		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
 			this.createAndAddMemberButton = this.createCreateAndAddMemberButton( typeInAlice );
