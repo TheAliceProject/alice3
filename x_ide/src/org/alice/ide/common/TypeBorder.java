@@ -33,35 +33,50 @@ class TypeBorder implements javax.swing.border.Border {
 	private static java.awt.Color FILL_BRIGHTER_COLOR = FILL_COLOR.brighter();
 	private static java.awt.Color FILL_DARKER_COLOR = FILL_COLOR.darker();
 
+	private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
+	private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
+	
 	private static java.awt.Color OUTLINE_COLOR = java.awt.Color.GRAY;
 	private static TypeBorder singletonForDeclaredInAlice = new TypeBorder( true );
 	private static TypeBorder singletonForDeclaredInJava = new TypeBorder( false );
+	private static TypeBorder singletonForNull = new TypeBorder( null );
 
 	public static TypeBorder getSingletonFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			return TypeBorder.singletonForDeclaredInAlice;
+		if( type != null ) {
+			if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+				return TypeBorder.singletonForDeclaredInAlice;
+			} else {
+				return TypeBorder.singletonForDeclaredInJava;
+			}
 		} else {
-			return TypeBorder.singletonForDeclaredInJava;
+			return TypeBorder.singletonForNull;
 		}
 	}
-	private boolean isDeclaredInAlice;
-	private TypeBorder( boolean isDeclaredInAlice ) {
+	private Boolean isDeclaredInAlice;
+	private TypeBorder( Boolean isDeclaredInAlice ) {
 		this.isDeclaredInAlice = isDeclaredInAlice;
 	}
 
 	private int yPrevious = -1;
 	private int heightPrevious = -1;
-	private java.awt.GradientPaint paintPrevious = null;
+	private java.awt.Paint paintPrevious = null;
 	private java.awt.Paint getFillPaint( int x, int y, int width, int height ) {
 		if( y==this.yPrevious && height==this.heightPrevious ) {
 			//pass
 		} else {
 			this.yPrevious = y;
 			this.heightPrevious = height;
-			if( isDeclaredInAlice ) {
-				this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR );
+			if( isDeclaredInAlice != null ) {
+				if( isDeclaredInAlice ) {
+					this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_BRIGHTER_COLOR );
+				} else {
+					this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR );
+				}
 			} else {
-				this.paintPrevious = new java.awt.GradientPaint( 0, y, FILL_COLOR, 0, y + height, FILL_DARKER_COLOR );
+				//this.paintPrevious = new java.awt.GradientPaint( 0, y, NULL_COLOR, 0, y + height, NULL_DARKER_COLOR );;
+				//this.paintPrevious = java.awt.Color.GRAY;
+				//this.paintPrevious = java.awt.Color.RED.darker();
+				this.paintPrevious = java.awt.Color.RED;
 			}
 		}
 		return this.paintPrevious;

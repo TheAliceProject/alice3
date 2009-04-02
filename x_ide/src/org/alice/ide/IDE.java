@@ -70,6 +70,15 @@ public abstract class IDE extends zoot.ZFrame {
 		return new org.alice.ide.codeeditor.Factory();
 	}
 
+	private org.alice.ide.preview.Factory previewFactory = this.createPreviewFactory();
+
+	public org.alice.ide.preview.Factory getPreviewFactory() {
+		return this.previewFactory;
+	}
+	protected org.alice.ide.preview.Factory createPreviewFactory() {
+		return new org.alice.ide.preview.Factory();
+	}
+
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv;
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check for existing type" );
@@ -396,6 +405,13 @@ public abstract class IDE extends zoot.ZFrame {
 
 	public boolean isJava() {
 		return getLocale().getVariant().equals( "java" );
+	}
+	public String getTextForNull() {
+		if( isJava() ) {
+			return "null";
+		} else {
+			return "<unset>";
+		}
 	}
 
 	private java.io.File applicationDirectory = null;

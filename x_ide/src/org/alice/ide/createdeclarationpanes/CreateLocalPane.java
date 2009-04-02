@@ -26,6 +26,39 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement> {
+	class IsFinalStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+		public IsFinalStateOperation( boolean initialValue ) {
+			super( initialValue );
+			//this.putValue( javax.swing.Action.NAME, "is constant" );
+		}
+		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+			CreateLocalPane.this.updateDeclarationTextLabel();
+			CreateLocalPane.this.updatePreview();
+			booleanStateContext.commit();
+		}
+	}
+
+	class PreviewPane extends swing.BorderPane {
+		public void refresh() {
+			this.removeAll();
+			edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = CreateLocalPane.this.getActualInputValue();
+			//localDeclarationStatement.isEnabled.setValue( false );
+			org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( localDeclarationStatement );
+			pane.setLeftButtonPressOperation( null );
+			pane.setDragAndDropOperation( null );
+			this.add( pane, java.awt.BorderLayout.CENTER );
+		}
+		@Override
+		public boolean contains( int x, int y ) {
+			return false;
+		}
+	}
+	
+	private PreviewPane previewPane = new PreviewPane();
+	private void updatePreview() {
+		this.previewPane.refresh();
+	}
+	
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
 	private TypePane typePane = new TypePane() {
 		@Override
@@ -43,15 +76,18 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 			CreateLocalPane.this.handleInitializerChange();
 		}
 	};
-	private zoot.ZCheckBox isFinalCheckBox;
+	private zoot.ZLabel declarationTextLabel = this.createDeclarationTextLabel();
+	private zoot.ZCheckBox isFinalCheckBox = new zoot.ZCheckBox( new IsFinalStateOperation( false ) );
 	
 	private void handleTypeChange() {
 		this.initializerPane.handleTypeChange( this.typePane.getValueType() );
 		this.updateSizeIfNecessary();
+		this.updatePreview();
 		this.updateOKButton();
 	}
 	private void handleInitializerChange() {
 		this.updateSizeIfNecessary();
+		this.updatePreview();
 		this.updateOKButton();
 	}
 	
@@ -60,7 +96,16 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		this.block = block;
 		this.setBackground( org.alice.ide.IDE.getLocalColor() );
 	}
-	
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.previewPane.refresh();
+	}
+	@Override
+	protected java.awt.Component createPreviewComponent() {
+		return this.previewPane;
+	}
 	@Override
 	protected java.awt.Component createValueTypeComponent() {
 		return this.typePane;
@@ -72,30 +117,44 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 
 	@Override
 	protected java.awt.Component createIsFinalComponent() {
-		this.isFinalCheckBox = new zoot.ZCheckBox( new IsFinalStateOperation( false ) );
+		//this.isFinalCheckBox = new zoot.ZCheckBox( new IsFinalStateOperation( false ) );
 		this.isFinalCheckBox.setOpaque( false );
 		this.isFinalCheckBox.setEnabled( true );
 		return this.isFinalCheckBox;
 	}
-	private java.awt.Component createDeclarationTextComponent() {
-		zoot.ZLabel rv = new zoot.ZLabel( "Local" );
+	private zoot.ZLabel createDeclarationTextLabel() {
+		zoot.ZLabel rv = new zoot.ZLabel();
 		rv.setFontToScaledFont( 1.2f );
 		return rv;
 	}
+	private void updateDeclarationTextLabel() {
+		if( this.isFinalCheckBox.isSelected() ) {
+			this.declarationTextLabel.setText( "Constant" );
+		} else {
+			this.declarationTextLabel.setText( "Variable" );
+		}
+	}
 	private java.awt.Component createMethodTextComponent() {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.block.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
-		zoot.ZLabel rv = new zoot.ZLabel( method.getName() );
+		String name;
+		if( this.block != null ) {
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.block.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+			name = method.getName();
+		} else {
+			name = "unknown";
+		}
+		zoot.ZLabel rv = new zoot.ZLabel( name );
 		rv.setFontToScaledFont( 1.2f );
 		return rv;
 	}
 	@Override
 	protected final java.awt.Component[] createDeclarationRow() {
+		this.updateDeclarationTextLabel();
 		class DeclarationComponent extends swing.LineAxisPane {
 			public DeclarationComponent() {
 				super(
 						javax.swing.Box.createHorizontalGlue(),
 						new zoot.ZLabel( "declare ", zoot.font.ZTextPosture.OBLIQUE ), 
-						CreateLocalPane.this.createDeclarationTextComponent(), 
+						CreateLocalPane.this.declarationTextLabel, 
 						new zoot.ZLabel( " for method:", zoot.font.ZTextPosture.OBLIQUE ) 
 				);
 				this.setAlignmentX( RIGHT_ALIGNMENT );

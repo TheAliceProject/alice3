@@ -53,7 +53,14 @@ class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		this.expression.setValue( expression );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression createCopyOfExpressionValue() {
-		return (edu.cmu.cs.dennisc.alice.ast.Expression)org.alice.ide.IDE.getSingleton().createCopy( this.expression.getValue() );
+		edu.cmu.cs.dennisc.alice.ast.Expression src = this.expression.getValue();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: create copy" );
+		return src;
+//		if( src != null ) {
+//			return (edu.cmu.cs.dennisc.alice.ast.Expression)org.alice.ide.IDE.getSingleton().createCopy( src );
+//		} else {
+//			return null;
+//		}
 	}
 }
 

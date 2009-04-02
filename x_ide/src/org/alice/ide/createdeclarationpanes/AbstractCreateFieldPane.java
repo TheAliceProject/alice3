@@ -22,19 +22,19 @@
  */
 package org.alice.ide.createdeclarationpanes;
 
-class IsFinalStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
-	public IsFinalStateOperation( boolean initialValue ) {
-		super( initialValue );
-		//this.putValue( javax.swing.Action.NAME, "is constant" );
-	}
-	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-		booleanStateContext.cancel();
-	}
-}
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+	class IsFinalStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+		public IsFinalStateOperation( boolean initialValue ) {
+			super( initialValue );
+			//this.putValue( javax.swing.Action.NAME, "is constant" );
+		}
+		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+			booleanStateContext.commit();
+		}
+	}
 	private zoot.ZCheckBox isFinalCheckBox;
 	
 	protected abstract boolean getIsFinalInitialValue();

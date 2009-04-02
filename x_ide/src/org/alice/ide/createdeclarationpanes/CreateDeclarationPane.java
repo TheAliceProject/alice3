@@ -101,6 +101,16 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 		}
 	}
 	
+	protected abstract java.awt.Component createPreviewComponent();
+	protected final java.awt.Component[] createPreviewRow() {
+		java.awt.Component component = this.createPreviewComponent();
+		if( component != null ) {
+			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "preview:" ), component );
+		} else {
+			return null;
+		}
+	}
+
 	protected String getDeclarationName() {
 		return this.instanceNameTextField.getText();
 	}
@@ -117,16 +127,25 @@ public abstract class CreateDeclarationPane<E>  extends zoot.ZInputPane< E > {
 	}
 	private java.awt.Component createRowsSpringPane() {
 		final java.awt.Component[] declarationRow = createDeclarationRow();
+		final java.awt.Component[] previewRow = createPreviewRow();
+		final java.awt.Component[] isFinalRow = createIsFinalRow();
 		final java.awt.Component[] valueTypeRow = createValueTypeRow();
 		final java.awt.Component[] nameRow = createNameRow();
 		final java.awt.Component[] initializerRow = createInitializerRow();
-		final java.awt.Component[] isFinalRow = createIsFinalRow();
 		return new swing.RowsSpringPane() {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
+				int pad = 0;
 				if( declarationRow != null ) {
 					rv.add( declarationRow );
-					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( 10, 0 ) ), null ) );
+					pad += 10;
+				}
+				if( previewRow != null ) {
+					rv.add( previewRow );
+					pad += 10;
+				}
+				if( pad > 0 ) {
+					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( pad, 0 ) ), null ) );
 				}
 				if( isFinalRow != null ) {
 					rv.add( isFinalRow );

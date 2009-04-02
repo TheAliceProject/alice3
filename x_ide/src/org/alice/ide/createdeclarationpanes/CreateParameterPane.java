@@ -63,6 +63,10 @@ public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennis
 		return null;
 	}
 	@Override
+	protected java.awt.Component createPreviewComponent() {
+		return null;
+	}
+	@Override
 	protected String getTitleDefault() {
 		return "Declare Parameter";
 	}

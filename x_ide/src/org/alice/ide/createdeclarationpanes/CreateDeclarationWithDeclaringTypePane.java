@@ -57,6 +57,12 @@ public abstract class CreateDeclarationWithDeclaringTypePane<E> extends CreateDe
 	}
 	
 	@Override
+	protected java.awt.Component createPreviewComponent() {
+		return null;
+	}
+
+	
+	@Override
 	protected String getTitleDefault() {
 		return "Declare " + this.getDeclarationText();
 	}

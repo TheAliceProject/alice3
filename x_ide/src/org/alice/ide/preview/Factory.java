@@ -20,28 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
+package org.alice.ide.preview;
 
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComponent extends org.alice.ide.common.NodeNameLabel {
-	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		super( type );
-		String typeName;
-		
-		if( type != null ) {
-			typeName = type.getName();
-		} else {
-			typeName = "<unset>";
-		}
-		this.setToolTipText( "class: " + typeName );
-		this.setBorder( TypeBorder.getSingletonFor( type ) );
+public class Factory extends org.alice.ide.common.Factory {
+	@Override
+	protected java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+		return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		this.paintBorder( g );
-		this.paintComponent( g );
+	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		return new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty, false );
 	}
 }
-
