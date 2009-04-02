@@ -37,24 +37,24 @@ public abstract class CreateDeclarationWithDeclaringTypePane<E> extends CreateDe
 		rv.setFontToScaledFont( 1.2f );
 		return rv;
 	}
-	@Override
-	protected final java.awt.Component[] createDeclarationRow() {
-		class DeclarationComponent extends swing.LineAxisPane {
-			public DeclarationComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType declaringType ) {
-				super(
-						javax.swing.Box.createHorizontalGlue(),
-						new zoot.ZLabel( "declare ", zoot.font.ZTextPosture.OBLIQUE ), 
-						CreateDeclarationWithDeclaringTypePane.this.createDeclarationTextComponent(), 
-						new zoot.ZLabel( " on class:", zoot.font.ZTextPosture.OBLIQUE ) 
-						//new org.alice.ide.common.TypeComponent( declaringType )
-//						new zoot.ZLabel( ": " ) 
-				);
-				this.setAlignmentX( RIGHT_ALIGNMENT );
-			}
-		}
-		//return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent( this.declaringType ), null );
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent( this.declaringType ), new swing.LineAxisPane( new org.alice.ide.common.TypeComponent( declaringType ) ) );
-	}
+//	@Override
+//	protected final java.awt.Component[] createDeclarationRow() {
+//		class DeclarationComponent extends swing.LineAxisPane {
+//			public DeclarationComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType declaringType ) {
+//				super(
+//						javax.swing.Box.createHorizontalGlue(),
+//						new zoot.ZLabel( "declare ", zoot.font.ZTextPosture.OBLIQUE ), 
+//						CreateDeclarationWithDeclaringTypePane.this.createDeclarationTextComponent(), 
+//						new zoot.ZLabel( " on class:", zoot.font.ZTextPosture.OBLIQUE ) 
+//						//new org.alice.ide.common.TypeComponent( declaringType )
+////						new zoot.ZLabel( ": " ) 
+//				);
+//				this.setAlignmentX( RIGHT_ALIGNMENT );
+//			}
+//		}
+//		//return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent( this.declaringType ), null );
+//		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent( this.declaringType ), new swing.LineAxisPane( new org.alice.ide.common.TypeComponent( declaringType ) ) );
+//	}
 	
 
 	@Override

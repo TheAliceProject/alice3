@@ -89,7 +89,7 @@ public abstract class CreateDeclarationPane<E> extends zoot.ZInputPane< E > {
 	class PreviewPane extends swing.BorderPane {
 		public void refresh() {
 			this.removeAll();
-			this.add( CreateDeclarationPane.this.createPreviewSubComponent(), java.awt.BorderLayout.CENTER );
+			this.add( CreateDeclarationPane.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
 			this.revalidate();
 			this.repaint();
 		}
@@ -166,8 +166,6 @@ public abstract class CreateDeclarationPane<E> extends zoot.ZInputPane< E > {
 			throw new RuntimeException( "override" );
 		}
 	}
-
-	protected abstract java.awt.Component[] createDeclarationRow();
 
 	protected abstract boolean isIsReassignableComponentDesired();
 	protected boolean isIsReassignableComponentEnabled() {
@@ -249,7 +247,7 @@ public abstract class CreateDeclarationPane<E> extends zoot.ZInputPane< E > {
 	private java.awt.Component spacer;
 
 	private java.awt.Component createRowsSpringPane() {
-		final java.awt.Component[] declarationRow = createDeclarationRow();
+//		final java.awt.Component[] declarationRow = createDeclarationRow();
 		final java.awt.Component[] previewRow = createPreviewRow();
 		final java.awt.Component[] isReassignableRow = createIsReassignableRow();
 		final java.awt.Component[] valueTypeRow = createValueTypeRow();

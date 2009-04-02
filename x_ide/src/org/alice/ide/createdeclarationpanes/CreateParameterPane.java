@@ -47,17 +47,17 @@ public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennis
 	protected java.lang.String getValueTypeText() {
 		return "value type:";
 	}
-	@Override
-	protected java.awt.Component[] createDeclarationRow() {
-		return null;
-	}
+//	@Override
+//	protected java.awt.Component[] createDeclarationRow() {
+//		return null;
+//	}
 	@Override
 	protected java.awt.Component createInitializerComponent() {
 		return null;
 	}
 	@Override
 	protected java.awt.Component createPreviewSubComponent() {
-		return new javax.swing.JLabel( "TODO" );
+		return new org.alice.ide.codeeditor.TypedParameterPane( this.getActualInputValue() );
 	}
 	@Override
 	protected String getTitleDefault() {

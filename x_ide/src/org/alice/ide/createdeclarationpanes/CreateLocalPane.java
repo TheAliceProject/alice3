@@ -77,22 +77,22 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		rv.setFontToScaledFont( 1.2f );
 		return rv;
 	}
-	@Override
-	protected final java.awt.Component[] createDeclarationRow() {
-		class DeclarationComponent extends swing.LineAxisPane {
-			public DeclarationComponent() {
-				super(
-						javax.swing.Box.createHorizontalGlue(),
-						new zoot.ZLabel( "declare ", zoot.font.ZTextPosture.OBLIQUE ), 
-						CreateLocalPane.this.declarationTextLabel, 
-						new zoot.ZLabel( " for method:", zoot.font.ZTextPosture.OBLIQUE ) 
-				);
-				this.setAlignmentX( RIGHT_ALIGNMENT );
-			}
-		}
-		//return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent( this.declaringType ), null );
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent(), this.createMethodTextComponent() );
-	}
+//	@Override
+//	protected final java.awt.Component[] createDeclarationRow() {
+//		class DeclarationComponent extends swing.LineAxisPane {
+//			public DeclarationComponent() {
+//				super(
+//						javax.swing.Box.createHorizontalGlue(),
+//						new zoot.ZLabel( "declare ", zoot.font.ZTextPosture.OBLIQUE ), 
+//						CreateLocalPane.this.declarationTextLabel, 
+//						new zoot.ZLabel( " for method:", zoot.font.ZTextPosture.OBLIQUE ) 
+//				);
+//				this.setAlignmentX( RIGHT_ALIGNMENT );
+//			}
+//		}
+//		//return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent( this.declaringType ), null );
+//		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent(), this.createMethodTextComponent() );
+//	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
 		String name = this.getDeclarationName();

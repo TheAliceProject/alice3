@@ -25,7 +25,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class TypedParameterPane extends org.alice.ide.common.TypedDeclarationPane {
+public class TypedParameterPane extends org.alice.ide.common.TypedDeclarationPane {
 	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
 	public TypedParameterPane( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		super( new java.awt.Component[] { new org.alice.ide.common.TypeComponent( parameter.getValueType() ), new org.alice.ide.common.ParameterPane( parameter ) } );

@@ -28,7 +28,7 @@ package org.alice.ide.createdeclarationpanes;
 public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	public AbstractCreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
-		this.setBackground( getIDE().getFieldColor() );
+		this.setBackground( org.alice.ide.IDE.getFieldColor() );
 	}
 	@Override
 	protected final String getDeclarationText() {
