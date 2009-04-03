@@ -25,12 +25,7 @@ package org.alice.ide.createdeclarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CreateDeclarationPane<E> extends zoot.ZInputPane< E > {
-	protected static zoot.ZLabel createLabel( String s ) {
-		zoot.ZLabel rv = new zoot.ZLabel( s );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
-		return rv;
-	}
+public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.PreviewInputPane< E > {
 	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public IsReassignableStateOperation( boolean initialValue ) {
 			super( initialValue );
@@ -85,58 +80,11 @@ public abstract class CreateDeclarationPane<E> extends zoot.ZInputPane< E > {
 			CreateDeclarationPane.this.handleInitializerChange();
 		}
 	}
-
-	class PreviewPane extends swing.BorderPane {
-		public void refresh() {
-			this.removeAll();
-			this.add( CreateDeclarationPane.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
-			this.revalidate();
-			this.repaint();
-		}
-		@Override
-		public boolean contains( int x, int y ) {
-			return false;
-		}
-	}
-	private void updatePreview() {
-		this.previewPane.refresh();
-	}
-	protected abstract java.awt.Component createPreviewSubComponent();
-	protected final boolean isPreviewComponentDesired() {
-		return true;
-	}
-	protected final java.awt.Component createPreviewComponent() {
-		if( this.isPreviewComponentDesired() ) {
-			this.previewPane = new PreviewPane();
-		} else {
-			this.previewPane = null;
-		}
-		return this.previewPane;
-	}
-	protected final java.awt.Component[] createPreviewRow() {
-		java.awt.Component component = this.createPreviewComponent();
-		if( component != null ) {
-			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "preview:" ), component );
-		} else {
-			return null;
-		}
-	}
-
-	
-	private java.awt.Component pane;
-	private PreviewPane previewPane;
 	private zoot.ZCheckBox isReassignableCheckBox;
 	private TypePane typePane;
 	private DeclarationNameTextField declarationNameTextField = new DeclarationNameTextField();
 	private InitializerPane initializerPane;
 
-	public CreateDeclarationPane() {
-		final int INSET = 16;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
@@ -243,53 +191,28 @@ public abstract class CreateDeclarationPane<E> extends zoot.ZInputPane< E > {
 		}
 	}
 
-
-	private java.awt.Component spacer;
-
-	private java.awt.Component createRowsSpringPane() {
-//		final java.awt.Component[] declarationRow = createDeclarationRow();
-		final java.awt.Component[] previewRow = createPreviewRow();
+	@Override
+	protected java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
 		final java.awt.Component[] isReassignableRow = createIsReassignableRow();
 		final java.awt.Component[] valueTypeRow = createValueTypeRow();
 		final java.awt.Component[] nameRow = createNameRow();
 		final java.awt.Component[] initializerRow = createInitializerRow();
-		this.spacer = javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) );
-		this.repaint();
-		return new swing.RowsSpringPane( 16, 4 ) {
-			@Override
-			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-//				assert declarationRow != null;
-//				rv.add( declarationRow );
-				assert previewRow != null;
-				rv.add( previewRow );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( CreateDeclarationPane.this.spacer, null ) );
-				if( isReassignableRow != null ) {
-					rv.add( isReassignableRow );
-				}
-				if( valueTypeRow != null ) {
-					rv.add( valueTypeRow );
-				}
-				if( nameRow != null ) {
-					rv.add( nameRow );
-				}
-				if( initializerRow != null ) {
-					rv.add( initializerRow );
-				}
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, null ) );
-				return rv;
-			}
-		};
+		if( isReassignableRow != null ) {
+			rv.add( isReassignableRow );
+		}
+		if( valueTypeRow != null ) {
+			rv.add( valueTypeRow );
+		}
+		if( nameRow != null ) {
+			rv.add( nameRow );
+		}
+		if( initializerRow != null ) {
+			rv.add( initializerRow );
+		}
+		return rv;
 	}
 	@Override
 	public void addNotify() {
-		if( this.pane != null ) {
-			//pass
-		} else {
-			this.setLayout( new java.awt.BorderLayout() );
-			this.add( this.createRowsSpringPane(), java.awt.BorderLayout.CENTER );
-			this.previewPane.refresh();
-			this.updateOKButton();
-		}
 		super.addNotify();
 		this.declarationNameTextField.requestFocus();
 	}
@@ -332,19 +255,4 @@ public abstract class CreateDeclarationPane<E> extends zoot.ZInputPane< E > {
 	public boolean isOKButtonValid() {
 		return super.isOKButtonValid() && this.isDeclarationNameValid() && this.isValueTypeValid();
 	}
-
-	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
-		if( this.spacer != null ) {
-			int y = this.spacer.getY() + this.spacer.getHeight();
-			java.awt.Insets insets = this.getInsets();
-			g.setColor( java.awt.Color.GRAY );
-			g.drawLine( insets.left, y, this.getWidth()-insets.right, y );
-		}
-	}
-//	@Override
-//	public void paint( java.awt.Graphics g ) {
-//		super.paint( g );
-//	}
 }
