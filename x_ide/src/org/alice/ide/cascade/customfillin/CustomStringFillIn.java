@@ -25,17 +25,17 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomStringFillIn extends CustomFillIn< String > {
+public class CustomStringFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.StringLiteral, String > {
 	@Override
 	protected java.lang.String getMenuProxyText() {
 		return "Custom String...";
 	}
 	@Override
-	protected org.alice.ide.cascade.customfillin.CustomPane createCustomPane() {
-		return new CustomStringPane();
+	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+		return new org.alice.ide.choosers.StringChooser();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( String value ) {
+	protected edu.cmu.cs.dennisc.alice.ast.StringLiteral createExpression( String value ) {
 		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( value );
 	}
 }

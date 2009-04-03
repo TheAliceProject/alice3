@@ -22,30 +22,37 @@
  */
 package org.alice.ide.cascade.customfillin;
 
+import org.alice.ide.choosers.ValueChooser;
+
 /**
  * @author Dennis Cosgrove
  */
-public class CustomInputPane<E> extends zoot.ZInputPane< E > {
-	private CustomPane< E > chooser;
-	public CustomInputPane( CustomPane< E > chooser ) {
+public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends org.alice.ide.preview.PreviewInputPane< E > {
+	private CustomFillIn< E, F > fillIn;
+	private ValueChooser< F > chooser;
+	public CustomInputPane( CustomFillIn< E, F > fillIn, ValueChooser< F > chooser ) {
+		this.fillIn = fillIn;
 		this.chooser = chooser;
-		this.chooser.getTextField().getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
-			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-				CustomInputPane.this.updateOKButton();
-			}
-			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-				CustomInputPane.this.updateOKButton();
-			}
-			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-				CustomInputPane.this.updateOKButton();
-			}
-		} );
-		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		this.add( this.chooser );
-		this.addOKButtonValidator( this.chooser );
+		this.chooser.setInputPane( this );
+	}
+	@Override
+	protected java.awt.Component createPreviewSubComponent() {
+		edu.cmu.cs.dennisc.alice.ast.Expression expression;
+		try {
+			expression = this.getActualInputValue();
+		} catch( RuntimeException re ) {
+			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+		}
+		return getIDE().getPreviewFactory().createExpressionPane( expression );
+	}
+	@Override
+	protected java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
+		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( this.chooser.getLabelText() ), this.chooser.getComponent() ) );
+		return rv;
 	}
 	@Override
 	protected E getActualInputValue() {
-		return this.chooser.getActualInputValue();
+		F value = this.chooser.getValue();
+		return this.fillIn.createExpression( value );
 	}
 }

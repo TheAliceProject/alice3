@@ -20,13 +20,14 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.customfillin;
+package org.alice.ide.choosers;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomDoubleLiteralPane extends CustomExpressionPane< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral > {
-	public CustomDoubleLiteralPane() {
+public class DoubleChooser extends AbstractNumberChooser< Double > {
+	public DoubleChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		//todo: handle other numbers
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
@@ -35,7 +36,7 @@ public class CustomDoubleLiteralPane extends CustomExpressionPane< edu.cmu.cs.de
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.DoubleLiteral valueOf( String text ) {
-		return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( Double.valueOf( text ) );
+	protected Double valueOf( String text ) {
+		return Double.valueOf( text );
 	}
 }

@@ -22,21 +22,23 @@
  */
 package org.alice.ide.cascade.customfillin;
 
+import org.alice.ide.choosers.ValueChooser;
+
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomFillIn<E> extends cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression > {
-	protected abstract CustomPane createCustomPane();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( E value );
+public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends cascade.FillIn< E > {
+	protected abstract ValueChooser createCustomPane();
+	protected abstract E createExpression( F value );
 
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression getValue() {
+	public E getValue() {
 		java.awt.Component owner = org.alice.ide.IDE.getSingleton();
-		CustomPane customPane = this.createCustomPane();
-		zoot.ZInputPane< E > inputPane = new CustomInputPane( customPane );
+		ValueChooser customPane = this.createCustomPane();
+		zoot.ZInputPane< E > inputPane = new CustomInputPane( this, customPane );
 		E value = inputPane.showInJDialog( owner );
 		if( value != null ) {
-			return this.createExpression( value );
+			return value;
 		} else {
 			throw new cascade.CancelException( "" );
 		}

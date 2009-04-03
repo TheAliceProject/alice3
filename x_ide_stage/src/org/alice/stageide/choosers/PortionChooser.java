@@ -20,22 +20,34 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.customfillin;
+package org.alice.stageide.choosers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomFloatFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.FloatLiteral, Float > {
-	@Override
-	protected java.lang.String getMenuProxyText() {
-		return "Custom (Single Precision) Real Number...";
+public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.Portion > {
+	private javax.swing.JSlider slider = new javax.swing.JSlider( 0, 100, 100 );
+	public PortionChooser() {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+		//todo: handle previous expression
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
-		return new org.alice.ide.choosers.FloatChooser();
+	public void setInputPane( final zoot.ZInputPane< ? > inputPane ) {
+		super.setInputPane( inputPane );
+		this.slider.addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				inputPane.updateOKButton();
+			}
+		} );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FloatLiteral createExpression( Float value ) {
-		return new edu.cmu.cs.dennisc.alice.ast.FloatLiteral( value );
+	public java.awt.Component getComponent() {
+		return this.slider;
+	}
+	public org.alice.apis.moveandturn.Portion getValue() {
+		double value = this.slider.getValue() / 100.0;
+		return new org.alice.apis.moveandturn.Portion( value );
+	}
+	public boolean isInputValid() {
+		return true;
 	}
 }

@@ -20,23 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.stageide.cascade.customfillin;
+package org.alice.ide.choosers;
 
+
+//todo: better name
 /**
  * @author Dennis Cosgrove
  */
-public class CustomAnglePane extends org.alice.ide.cascade.customfillin.CustomPane< org.alice.apis.moveandturn.Angle > {
-	public CustomAnglePane() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		//todo: handle other numbers
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
-			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
-		}
-	}
-	@Override
-	protected org.alice.apis.moveandturn.Angle valueOf( String text ) {
-		double value = Double.valueOf( text );
-		return new org.alice.apis.moveandturn.AngleInRevolutions( value );
-	}
+public interface ValueChooser<E> {
+	public void setInputPane( zoot.ZInputPane< ? > inputPane );
+	public String getLabelText();
+	public java.awt.Component getComponent();
+	public E getValue();
 }
+

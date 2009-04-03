@@ -20,22 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.customfillin;
+package org.alice.ide.choosers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomFloatFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.FloatLiteral, Float > {
-	@Override
-	protected java.lang.String getMenuProxyText() {
-		return "Custom (Single Precision) Real Number...";
+public class StringChooser extends AbstractChooserWithTextField< String > {
+	public StringChooser() {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.StringLiteral ) {
+			edu.cmu.cs.dennisc.alice.ast.StringLiteral stringLiteral = (edu.cmu.cs.dennisc.alice.ast.StringLiteral)previousExpression;
+			this.setAndSelectText( stringLiteral.value.getValue() );
+		}
 	}
 	@Override
-	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
-		return new org.alice.ide.choosers.FloatChooser();
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FloatLiteral createExpression( Float value ) {
-		return new edu.cmu.cs.dennisc.alice.ast.FloatLiteral( value );
+	protected String valueOf( String text ) {
+		return text;
 	}
 }

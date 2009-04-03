@@ -20,22 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.customfillin;
+package org.alice.ide.choosers;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomDoublePane extends CustomPane< Double > {
-	public CustomDoublePane() {
+abstract class AbstractNumberChooser< E extends Number > extends AbstractChooserWithTextField< E > {
+	public AbstractNumberChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		//todo: handle other numbers
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)previousExpression;
-			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
+		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.IntegerLiteral ) {
+			edu.cmu.cs.dennisc.alice.ast.IntegerLiteral integerLiteral = (edu.cmu.cs.dennisc.alice.ast.IntegerLiteral)previousExpression;
+			this.setAndSelectText( Integer.toString( integerLiteral.value.getValue() ) );
 		}
-	}
-	@Override
-	protected Double valueOf( String text ) {
-		return Double.valueOf( text );
 	}
 }

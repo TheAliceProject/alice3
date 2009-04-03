@@ -61,8 +61,10 @@ public abstract class PreviewInputPane<E> extends zoot.ZInputPane< E > {
 		return org.alice.ide.IDE.getSingleton();
 	}
 	protected abstract java.awt.Component createPreviewSubComponent();
-	protected void updatePreview() {
-		this.previewPane.refresh();
+	private void updatePreview() {
+		if( this.previewPane != null ) {
+			this.previewPane.refresh();
+		}
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
@@ -101,6 +103,12 @@ public abstract class PreviewInputPane<E> extends zoot.ZInputPane< E > {
 		this.updateOKButton();
 	}
 
+	@Override
+	public void updateOKButton() {
+		super.updateOKButton();
+		this.updatePreview();
+		this.updateSizeIfNecessary();
+	}
 
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {

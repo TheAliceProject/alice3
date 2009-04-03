@@ -20,21 +20,27 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.customfillin;
+package org.alice.ide.choosers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomFloatPane extends CustomPane< Float > {
-	public CustomFloatPane() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.FloatLiteral ) {
-			edu.cmu.cs.dennisc.alice.ast.FloatLiteral floatLiteral = (edu.cmu.cs.dennisc.alice.ast.FloatLiteral)previousExpression;
-			this.setAndSelectText( Float.toString( floatLiteral.value.getValue() ) );
+public abstract class AbstractChooser<E> implements ValueChooser< E >, zoot.InputValidator {
+	public java.lang.String getLabelText() {
+		return "value:";
+	}
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
+		org.alice.ide.IDE ide = this.getIDE();
+		if( ide != null ) {
+			return ide.getPreviousExpression();
+		} else {
+			return null;
 		}
 	}
-	@Override
-	protected Float valueOf( String text ) {
-		return Float.valueOf( text );
+	public void setInputPane( final zoot.ZInputPane< ? > inputPane ) {
+		inputPane.addOKButtonValidator( this );
 	}
 }

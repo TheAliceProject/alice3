@@ -20,13 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.stageide.cascade.customfillin;
+package org.alice.stageide.choosers;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomPortionPane extends org.alice.ide.cascade.customfillin.CustomPane< org.alice.apis.moveandturn.Portion > {
-	public CustomPortionPane() {
+public class AngleChooser extends org.alice.ide.choosers.AbstractChooserWithTextField< org.alice.apis.moveandturn.Angle > {
+	public AngleChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		//todo: handle other numbers
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
@@ -35,8 +35,8 @@ public class CustomPortionPane extends org.alice.ide.cascade.customfillin.Custom
 		}
 	}
 	@Override
-	protected org.alice.apis.moveandturn.Portion valueOf( String text ) {
+	protected org.alice.apis.moveandturn.Angle valueOf( String text ) {
 		double value = Double.valueOf( text );
-		return new org.alice.apis.moveandturn.Portion( value );
+		return new org.alice.apis.moveandturn.AngleInRevolutions( value );
 	}
 }

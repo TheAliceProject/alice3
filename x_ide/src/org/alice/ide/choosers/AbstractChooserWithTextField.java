@@ -20,42 +20,26 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.customfillin;
+package org.alice.ide.choosers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomPane<E> extends swing.Pane implements zoot.InputValidator {
-	private zoot.ZLabel label = new zoot.ZLabel();
-	private zoot.ZTextField textField = new zoot.ZTextField();
-	public CustomPane() {
-		this.setLabelText( "value:" );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( this.label, java.awt.BorderLayout.WEST );
-		this.add( this.textField, java.awt.BorderLayout.CENTER );
-	}
-	public void setLabelText( String labelText ) {
-		this.label.setText( labelText );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		org.alice.ide.IDE ide = this.getIDE();
-		if( ide != null ) {
-			return ide.getPreviousExpression();
-		} else {
-			return null;
+public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E> {
+	private zoot.ZSuggestiveTextField textField = new zoot.ZSuggestiveTextField( "", "<unset>" ) {
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
 		}
-	}
-	
+	};
 
-	
-	public void setAndSelectText( String text ) {
-		this.textField.setText( text );
-		this.textField.selectAll();
+	public java.awt.Component getComponent() {
+		return this.textField;
 	}
 	protected abstract E valueOf( String text );
+	public final E getValue() {
+		return this.valueOf( this.textField.getText() );
+	}
 	public boolean isInputValid() {
 		try {
 			this.valueOf( this.textField.getText() );
@@ -64,13 +48,24 @@ public abstract class CustomPane<E> extends swing.Pane implements zoot.InputVali
 			return false;
 		}
 	}
-	protected final E getActualInputValue() {
-		return this.valueOf( this.textField.getText() );
-	}
-	
-	public zoot.ZTextField getTextField() {
-		return this.textField;
-	}
 
+	public void setAndSelectText( String text ) {
+		this.textField.setText( text );
+		this.textField.selectAll();
+	}
+	@Override
+	public void setInputPane( final zoot.ZInputPane< ? > inputPane ) {
+		super.setInputPane( inputPane );
+		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
+			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+				inputPane.updateOKButton();
+			}
+			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+				inputPane.updateOKButton();
+			}
+			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+				inputPane.updateOKButton();
+			}
+		} );
+	}
 }
-

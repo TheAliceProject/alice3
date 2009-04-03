@@ -22,21 +22,23 @@
  */
 package org.alice.stageide.cascade.customfillin;
 
+import org.alice.stageide.choosers.AngleChooser;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public class CustomAngleFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< org.alice.apis.moveandturn.Angle > {
+public class CustomAngleFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, org.alice.apis.moveandturn.Angle > {
 	@Override
 	protected String getMenuProxyText() {
 		return "Custom Angle...";
 	}
 	@Override
-	protected org.alice.ide.cascade.customfillin.CustomPane createCustomPane() {
-		return new CustomAnglePane();
+	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+		return new AngleChooser();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Angle value ) {
+	protected edu.cmu.cs.dennisc.alice.ast.InstanceCreation createExpression( org.alice.apis.moveandturn.Angle value ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.AngleInRevolutions.class );
 		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = type.getDeclaredConstructor( Number.class );
 		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );

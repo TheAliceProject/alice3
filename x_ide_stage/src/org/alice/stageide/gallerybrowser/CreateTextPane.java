@@ -29,7 +29,7 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 	private zoot.ZCheckBox _constrainInstanceNameToTextVC;
 	private javax.swing.JCheckBox _constrainClassNameToInstanceNameVC;
 	private org.alice.stageide.fontchooser.FontChooser _fontChooser;
-	private org.alice.ide.cascade.customfillin.CustomDoublePane _letterHeightChooser;
+	private org.alice.ide.choosers.DoubleChooser _letterHeightChooser;
 	
 	
 	class ConstrainInstanceNameToTextBooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
@@ -74,11 +74,12 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 		this._constrainClassNameToInstanceNameVC = new zoot.ZCheckBox( new ConstrainClassNameToInstanceNameBooleanStateOperation() );
 		this._constrainClassNameToInstanceNameVC.setSelected( true );
 
-		this._letterHeightChooser = new org.alice.ide.cascade.customfillin.CustomDoublePane();
-		this._letterHeightChooser.setLabelText( "letter height (in meters):" );
-		this._letterHeightChooser.setAndSelectText( "1.0" );
-		//this._letterHeightChooser.setInputPane( this );
-		this.addOKButtonValidator( this._letterHeightChooser );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: letter height chooser" );
+//		this._letterHeightChooser = new org.alice.ide.choosers.DoubleChooser();
+//		this._letterHeightChooser.setLabelText( "letter height (in meters):" );
+//		this._letterHeightChooser.setAndSelectText( "1.0" );
+//		//this._letterHeightChooser.setInputPane( this );
+//		this.addOKButtonValidator( this._letterHeightChooser );
 
 		this._fontChooser = new org.alice.stageide.fontchooser.FontChooser();
 
@@ -87,7 +88,7 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 		javax.swing.border.Border titledBorder = javax.swing.BorderFactory.createTitledBorder( etchedBorder, "Font" );
 		fontPane.setBorder( titledBorder );
 		fontPane.setLayout( new java.awt.BorderLayout() );
-		fontPane.add( this._letterHeightChooser, java.awt.BorderLayout.NORTH );
+		//fontPane.add( this._letterHeightChooser, java.awt.BorderLayout.NORTH );
 		fontPane.add( this._fontChooser, java.awt.BorderLayout.CENTER );
 
 		this.setLayout( new java.awt.GridBagLayout() );

@@ -218,28 +218,20 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	}
 
 	protected void handleIsReassignableChange( zoot.BooleanStateContext booleanStateContext ) {
-		this.updatePreview();
-		this.updateSizeIfNecessary();
+		this.updateOKButton();
 	}
 	protected void handleDeclarationNameUpdate( javax.swing.event.DocumentEvent e ) {
-		this.updatePreview();
 		this.updateOKButton();
-		this.updateSizeIfNecessary();
 	}
 	private void handleTypeChange() {
 		if( this.initializerPane != null ) {
 			this.initializerPane.handleTypeChange( this.typePane.getValueType() );
 		}
-		this.updatePreview();
 		this.updateOKButton();
-		this.updateSizeIfNecessary();
 	}
 	private void handleInitializerChange() {
-		this.updatePreview();
 		this.updateOKButton();
-		this.updateSizeIfNecessary();
 	}
-
 
 	protected boolean isDeclarationNameValid() {
 		return this.declarationNameTextField.getText().length() > 0;

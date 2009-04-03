@@ -25,17 +25,17 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomDoubleFillIn extends CustomFillIn< Double > {
+public class CustomDoubleFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral, Double > {
 	@Override
 	protected java.lang.String getMenuProxyText() {
 		return "Custom Real Number...";
 	}
 	@Override
-	protected org.alice.ide.cascade.customfillin.CustomPane createCustomPane() {
-		return new CustomDoublePane();
+	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+		return new org.alice.ide.choosers.DoubleChooser();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( Double value ) {
+	protected edu.cmu.cs.dennisc.alice.ast.DoubleLiteral createExpression( Double value ) {
 		return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value );
 	}
 }
