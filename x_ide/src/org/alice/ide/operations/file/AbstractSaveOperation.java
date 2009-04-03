@@ -26,32 +26,23 @@ package org.alice.ide.operations.file;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractSaveOperation extends AbstractClearanceActionOperation {
-	protected abstract boolean isPromptNecessary();
+	protected abstract boolean isPromptNecessary( java.io.File file );
 	protected abstract java.io.File getDefaultDirectory();
 	protected abstract String getExtension();
 	protected abstract void save( java.io.File file );
 	public void perform( zoot.ActionContext actionContext ) {
-		if( this.isPromptNecessary() ) {
-			java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( this.getIDE(), this.getDefaultDirectory(), this.getExtension(), true );
-			if( file != null ) {
-				this.save( file );
-				actionContext.commit();
-			} else {
-				actionContext.cancel();
-			}
+		java.io.File filePrevious = this.getIDE().getFile();
+		java.io.File fileNext = this.getIDE().getFile();
+		if( this.isPromptNecessary( filePrevious ) ) {
+			fileNext = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( this.getIDE(), this.getDefaultDirectory(), this.getExtension(), true );
+		} else {
+			fileNext = filePrevious;
 		}
-//		if self._isPromptNecessary():
-//			#owner = e.getSource()
-//			owner = self.getIDE()
-//			#self._file = ecc.dennisc.swing.showFileSaveAsDialog( owner, self._getDefaultDirectory(), self._getExtension() )
-//			self._file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( owner, self._getDefaultDirectory(), self._getExtension(), True )
-//			if self._file:
-//				return alice.ide.Operation.PreparationResult.PERFORM
-//			else:
-//				return alice.ide.Operation.PreparationResult.CANCEL
-//		else:
-//			return alice.ide.Operation.PreparationResult.PERFORM
-//
-//		self.getIDE().saveProjectTo( self._file )
+		if( fileNext != null ) {
+			this.save( fileNext );
+			actionContext.commit();
+		} else {
+			actionContext.cancel();
+		}
 	}
 }

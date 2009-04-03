@@ -32,7 +32,7 @@ public class SaveAsProjectOperation extends AbstractSaveProjectOperation {
 		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_A );
 	}
 	@Override
-	protected boolean isPromptNecessary() {
+	protected boolean isPromptNecessary( java.io.File file ) {
 		return true;
 	}
 }
