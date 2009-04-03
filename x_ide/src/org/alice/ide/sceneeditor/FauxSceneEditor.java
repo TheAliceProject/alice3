@@ -26,4 +26,16 @@ package org.alice.ide.sceneeditor;
  * @author Dennis Cosgrove
  */
 public class FauxSceneEditor extends AbstractInstantiatingSceneEditor {
+	@Override
+	public void generateCodeForSetUp() {
+		throw new RuntimeException();
+	}
+	@Override
+	public void preserveProjectProperties() {
+		throw new RuntimeException();
+	}
+	@Override
+	public void restoreProjectProperties() {
+		//pass
+	}
 }

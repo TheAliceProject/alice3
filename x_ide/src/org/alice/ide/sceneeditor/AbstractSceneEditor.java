@@ -77,7 +77,10 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: preserveCameraNavigationProperties: cameraNavigationDragAdapter == null" );
 		}
 	}
-	
+
+	public abstract void generateCodeForSetUp();
+	public abstract void preserveProjectProperties();
+	public abstract void restoreProjectProperties();
 	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {
 		return getIDE().getVirtualMachineForSceneEditor();
 	}

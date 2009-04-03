@@ -291,9 +291,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return this.getVM().createInstanceEntryPoint( type );
 	}
 
+	@Override
+	public void generateCodeForSetUp() {
+		throw new RuntimeException();
+	}
+	@Override
 	public void preserveProjectProperties() {
 		this.preserveCameraNavigationProperties( this.cameraNavigationDragAdapter );
 	}
+	@Override
 	public void restoreProjectProperties() {
 		this.restoreCameraNavigationProperties( this.cameraNavigationDragAdapter );
 	}

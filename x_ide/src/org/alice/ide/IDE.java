@@ -1168,6 +1168,7 @@ public abstract class IDE extends zoot.ZFrame {
 	public void loadProjectFrom( java.io.File file ) {
 		this.mapUUIDToNode.clear();
 		this.updateHistoryLengthAtLastFileOperation();
+		this.restoreProjectProperties();
 		setFile( file );
 		//todo: find a better solution to concurrent modification exception
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -1198,10 +1199,13 @@ public abstract class IDE extends zoot.ZFrame {
 		loadProjectFrom( new java.io.File( path ) );
 	}
 	protected void generateCodeForSceneSetUp() {
-		throw new RuntimeException( "todo" );
+		this.sceneEditor.generateCodeForSetUp();;
 	}
 	protected void preserveProjectProperties() {
-		throw new RuntimeException( "todo" );
+		this.sceneEditor.preserveProjectProperties();;
+	}
+	protected void restoreProjectProperties() {
+		this.sceneEditor.restoreProjectProperties();;
 	}
 	public void saveProjectTo( java.io.File file ) {
 		edu.cmu.cs.dennisc.alice.Project project = getProject();
