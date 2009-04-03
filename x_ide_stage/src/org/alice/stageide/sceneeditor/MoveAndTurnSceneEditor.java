@@ -79,7 +79,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}.start();
 	}
-	
 
 	private void handleSelection( org.alice.interact.event.SelectionEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
@@ -91,6 +90,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 
 	private boolean isExpanded = false;
+
 	private void updateSceneBasedOnScope() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
 		if( code != null ) {
@@ -112,25 +112,25 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				} catch( Throwable t ) {
 					//pass
 				}
-//				Object sceneInstanceInJava = this.getInstanceInJavaForField( sceneField );
-//				if( sceneInstanceInJava instanceof org.alice.apis.moveandturn.Scene ) {
-//					org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)sceneInstanceInJava;
-//					if( isSceneScope ) {
-//						scene.setAtmosphereColor( new org.alice.apis.moveandturn.Color( 0.75f, 0.75f, 1.0f ), org.alice.apis.moveandturn.Scene.RIGHT_NOW );
-//					} else {
-//						scene.setAtmosphereColor( org.alice.apis.moveandturn.Color.BLACK, org.alice.apis.moveandturn.Scene.RIGHT_NOW );
-//					}
-//				}
+				//				Object sceneInstanceInJava = this.getInstanceInJavaForField( sceneField );
+				//				if( sceneInstanceInJava instanceof org.alice.apis.moveandturn.Scene ) {
+				//					org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)sceneInstanceInJava;
+				//					if( isSceneScope ) {
+				//						scene.setAtmosphereColor( new org.alice.apis.moveandturn.Color( 0.75f, 0.75f, 1.0f ), org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+				//					} else {
+				//						scene.setAtmosphereColor( org.alice.apis.moveandturn.Color.BLACK, org.alice.apis.moveandturn.Scene.RIGHT_NOW );
+				//					}
+				//				}
 				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : fields ) {
 					Object instanceInJava = this.getInstanceInJavaForField( field );
 					if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
 						org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;
 						if( isSceneScope || type.isAssignableTo( model.getClass() ) ) {
 							model.setColor( org.alice.apis.moveandturn.Color.WHITE, org.alice.apis.moveandturn.Model.RIGHT_NOW );
-//							model.setOpacity( 1.0f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+							//							model.setOpacity( 1.0f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
 						} else {
 							model.setColor( new org.alice.apis.moveandturn.Color( 0.25, 0.25, 0.25 ), org.alice.apis.moveandturn.Model.RIGHT_NOW );
-//							model.setOpacity( 0.125f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
+							//							model.setOpacity( 0.125f, org.alice.apis.moveandturn.Model.RIGHT_NOW );
 						}
 					}
 				}
@@ -145,7 +145,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
 		if( code != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
-			
+
 			edu.cmu.cs.dennisc.alice.ast.AbstractField selectedField = this.getIDE().getFieldSelection();
 			if( selectedField != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = selectedField.getValueType();
@@ -175,8 +175,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.isExpanded = isExpanded;
 		this.updateSceneBasedOnScope();
 	}
-	
-	
+
 	private static boolean isGround( org.alice.apis.moveandturn.Model model ) {
 		Class[] clses = { Ground.class, GrassyGround.class, DirtGround.class, MoonSurface.class, SandyGround.class, SeaSurface.class, SnowyGround.class };
 		for( Class< ? extends org.alice.apis.moveandturn.PolygonalModel > cls : clses ) {
@@ -249,9 +248,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		this.controlsForOverlayPane.fieldSelectionChanged( e );
 	}
-	
+
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
-	
 
 	@Override
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
@@ -265,12 +263,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( sceneField );
 		return rv;
 	}
-	
-//	@Override
-//	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
-//		super.setSceneField( sceneField );
-//		this.controlsForOverlayPane.setRootField( sceneField );
-//	}
+
+	//	@Override
+	//	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
+	//		super.setSceneField( sceneField );
+	//		this.controlsForOverlayPane.setRootField( sceneField );
+	//	}
 
 	public void setDragInProgress( boolean isDragInProgress ) {
 		if( isDragInProgress ) {
@@ -291,9 +289,80 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return this.getVM().createInstanceEntryPoint( type );
 	}
 
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression( boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression thisExpression = new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
+		if( isThis ) {
+			return thisExpression;
+		} else {
+			return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( thisExpression, field );
+		}
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( Double d ) {
+		return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( d );
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( String s ) {
+		return new edu.cmu.cs.dennisc.alice.ast.StringLiteral( s );
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Color color ) {
+		return new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Font font ) {
+		return new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.PointOfView pointOfView ) {
+		return new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+	}
+	
+	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class<?> declarationCls, String methodName, Class<?> parameterCls, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterCls );
+		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
+	}
+	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		Object instance = this.getInstanceInJavaForField( field );
+		if( instance instanceof org.alice.apis.moveandturn.Element ) {
+			org.alice.apis.moveandturn.Element element = (org.alice.apis.moveandturn.Element)instance;
+			bodyStatementsProperty.add( createStatement( edu.cmu.cs.dennisc.pattern.AbstractElement.class, "setName", String.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( element.getName() ) ) );
+			if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
+				org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)element;
+				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( transformable.getLocalPointOfView() ) ) );
+				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Composite.class, "addComponent", org.alice.apis.moveandturn.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ) ) );
+				if( instance instanceof org.alice.apis.moveandturn.Model ) {
+					org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)transformable;
+					//todo: handle size
+					if( instance instanceof org.alice.apis.moveandturn.Text ) {
+						org.alice.apis.moveandturn.Text text = (org.alice.apis.moveandturn.Text)model;
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setValue", String.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text.getValue() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setFont", org.alice.apis.moveandturn.Font.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text.getFont() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setLetterHeight", Number.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text.getLetterHeight() ) ) );
+						//todo: handle size
+					}
+				}
+			} else if( instance instanceof org.alice.apis.moveandturn.Scene ) {
+				org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)element;
+				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Scene.class, "setAtmosphereColor", org.alice.apis.moveandturn.Color.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( scene.getAtmosphereColor() ) ) );
+			}
+		}
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( field );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( instance );
+	}
+
 	@Override
 	public void generateCodeForSetUp() {
-		throw new RuntimeException();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( "performSceneEditorGeneratedSetUp" );
+		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+			edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
+			bodyStatementsProperty.clear();
+			bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( "DO NOT EDIT.  This code is automatically generated." ) );
+			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+				this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
+			}
+		} else {
+			throw new RuntimeException();
+		}
 	}
 	@Override
 	public void preserveProjectProperties() {
@@ -313,7 +382,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	protected void popCameraNavigationDragAdapterEnabled() {
 		this.cameraNavigationDragAdapter.setEnabled( this.isCameraNavigationDragAdapterEnabledStack.pop() );
 	}
-	
+
 	public void orientToUpright( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		org.alice.apis.moveandturn.AbstractTransformable transformable = this.getInstanceInJavaForField( field, org.alice.apis.moveandturn.AbstractTransformable.class );
 		if( transformable != null ) {
@@ -337,153 +406,153 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-//	def performOrientToUpright(self, field):
-//		instanceInJava = self.getInstanceInJavaForField( field )
-//		instanceInJava.orientToUpright()
-//		
-//	def performPlaceOnTopOfGround(self, field):
-//		instanceInJava = self.getInstanceInJavaForField( field )
-//		asSeenBy = org.alice.apis.moveandturn.AsSeenBy.SCENE
-//		bb = instanceInJava.getAxisAlignedMinimumBoundingBox()
-//		position = instanceInJava.getPosition( asSeenBy )
-//		position.y = -bb.minimum.y
-//		instanceInJava.moveTo( instanceInJava.acquireStandIn( asSeenBy, position ) )
-//	
-//	def getScene(self):
-//		return self.getSceneInstanceInJava()
-//	
-//	def getSceneType( self ):
-//		return self.getSceneField().getValueType()
-//
-//	def _isFieldNameFree( self, name ):
-//		sceneType = self.getSceneType()
-//		if sceneType:
-//			for field in sceneType.fields.iterator():
-//				if field.getName() == name:
-//					return False
-//		return True 
-//
-//	def _getAvailableFieldName( self, superClassBaseName ):
-//		name = superClassBaseName[ 0 ].lower() + superClassBaseName[ 1: ]
-//		rv = name
-//		i = 2
-//		while not self._isFieldNameFree( rv ):
-//			rv = name + `i`
-//			i += 1
-//		return rv
-//
-//	def _handleCreateInstance( self, type ):
-//		#todo
-//		t = type.getFirstTypeEncounteredDeclaredInJava()
-//		cls = t.getCls()
-//		clsName = cls.__name__
-//		thumbnailsRoot = self._api._getGalleryThumbnailsRoot()
-//		
-//		prefixList = []
-//		prefixList.append( "org.alice.apis.moveandturn.gallery" )
-//		prefixList.append( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery" )
-//		for prefix in prefixList:
-//			if clsName.startswith( prefix ):
-//				file = java.io.File( thumbnailsRoot, prefix + clsName[ len( prefix ): ].replace( ".", "/" ) + ".png" )
-//
-//		inputPane = ecc.dennisc.alice.ide.moveandturn.editors.gallery.CreateInstancePane( self, file, thumbnailsRoot, type )
-//		owner = alice.ide.IDE.getSingleton()
-//		instance = inputPane.showInJDialog( owner, "Create Instance", True )
-//		if instance:
-//			self.addInstance( instance )
-//
-//#	def _select(self, nextField ):
-//#		prevField = self._currSelectedField
-//#		operation = self._createSelectionOperation( nextField, prevField )
-//#		event = None
-//#		alice.ide.IDE.getSingleton().performIfAppropriate( operation, event )
-//
-//	def addASTFieldFor( self, instance ):
-//		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
-//		name = instanceInJava.getName()
-//		#programType = alice.ast.TypeDeclaredInJava.get( nameable.__class__ )
-//		type = instance.getType()
-//		astField = alice.ast.FieldDeclaredInAlice( name, type, alice.ast.InstanceCreation( type.getDeclaredConstructor( [] ), [] ) )
-//		astField.finalVolatileOrNeither.setValue( alice.ast.FieldModifierFinalVolatileOrNeither.FINAL )
-//		astField.access.setValue( alice.ast.Access.PRIVATE )
-//		self.getSceneType().fields.add( [ astField ] )
-//
-//		self.putInstanceForField( astField, instance )
-//		self.getIDE().setFieldSelection( astField )
-//#		self._select( astField )
-//
-//	def addInstance( self, instance ):
-//		self.addASTFieldFor( instance )
-//		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
-//		if isinstance( instanceInJava, apis.moveandturn.Model ):
-//			camera = self.getScene().findFirstMatch( apis.moveandturn.AbstractCamera )
-//			if camera:
-//				java.lang.Thread( ecc.dennisc.lang.ApplyRunnable( self._getGoodLookAtShowInstanceAndReturnCamera, ( camera, instanceInJava, ) ) ).start()
-//			else:
-//				self.getScene().addComponent( instanceInJava )
-//		else:
-//			self.getScene().addComponent( instanceInJava )
-//		alice.ide.IDE.getSingleton().markChanged( "scene program addInstance" )
-//
+	//	def performOrientToUpright(self, field):
+	//		instanceInJava = self.getInstanceInJavaForField( field )
+	//		instanceInJava.orientToUpright()
+	//		
+	//	def performPlaceOnTopOfGround(self, field):
+	//		instanceInJava = self.getInstanceInJavaForField( field )
+	//		asSeenBy = org.alice.apis.moveandturn.AsSeenBy.SCENE
+	//		bb = instanceInJava.getAxisAlignedMinimumBoundingBox()
+	//		position = instanceInJava.getPosition( asSeenBy )
+	//		position.y = -bb.minimum.y
+	//		instanceInJava.moveTo( instanceInJava.acquireStandIn( asSeenBy, position ) )
+	//	
+	//	def getScene(self):
+	//		return self.getSceneInstanceInJava()
+	//	
+	//	def getSceneType( self ):
+	//		return self.getSceneField().getValueType()
+	//
+	//	def _isFieldNameFree( self, name ):
+	//		sceneType = self.getSceneType()
+	//		if sceneType:
+	//			for field in sceneType.fields.iterator():
+	//				if field.getName() == name:
+	//					return False
+	//		return True 
+	//
+	//	def _getAvailableFieldName( self, superClassBaseName ):
+	//		name = superClassBaseName[ 0 ].lower() + superClassBaseName[ 1: ]
+	//		rv = name
+	//		i = 2
+	//		while not self._isFieldNameFree( rv ):
+	//			rv = name + `i`
+	//			i += 1
+	//		return rv
+	//
+	//	def _handleCreateInstance( self, type ):
+	//		#todo
+	//		t = type.getFirstTypeEncounteredDeclaredInJava()
+	//		cls = t.getCls()
+	//		clsName = cls.__name__
+	//		thumbnailsRoot = self._api._getGalleryThumbnailsRoot()
+	//		
+	//		prefixList = []
+	//		prefixList.append( "org.alice.apis.moveandturn.gallery" )
+	//		prefixList.append( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery" )
+	//		for prefix in prefixList:
+	//			if clsName.startswith( prefix ):
+	//				file = java.io.File( thumbnailsRoot, prefix + clsName[ len( prefix ): ].replace( ".", "/" ) + ".png" )
+	//
+	//		inputPane = ecc.dennisc.alice.ide.moveandturn.editors.gallery.CreateInstancePane( self, file, thumbnailsRoot, type )
+	//		owner = alice.ide.IDE.getSingleton()
+	//		instance = inputPane.showInJDialog( owner, "Create Instance", True )
+	//		if instance:
+	//			self.addInstance( instance )
+	//
+	//#	def _select(self, nextField ):
+	//#		prevField = self._currSelectedField
+	//#		operation = self._createSelectionOperation( nextField, prevField )
+	//#		event = None
+	//#		alice.ide.IDE.getSingleton().performIfAppropriate( operation, event )
+	//
+	//	def addASTFieldFor( self, instance ):
+	//		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
+	//		name = instanceInJava.getName()
+	//		#programType = alice.ast.TypeDeclaredInJava.get( nameable.__class__ )
+	//		type = instance.getType()
+	//		astField = alice.ast.FieldDeclaredInAlice( name, type, alice.ast.InstanceCreation( type.getDeclaredConstructor( [] ), [] ) )
+	//		astField.finalVolatileOrNeither.setValue( alice.ast.FieldModifierFinalVolatileOrNeither.FINAL )
+	//		astField.access.setValue( alice.ast.Access.PRIVATE )
+	//		self.getSceneType().fields.add( [ astField ] )
+	//
+	//		self.putInstanceForField( astField, instance )
+	//		self.getIDE().setFieldSelection( astField )
+	//#		self._select( astField )
+	//
+	//	def addInstance( self, instance ):
+	//		self.addASTFieldFor( instance )
+	//		instanceInJava = ecc.dennisc.alice.vm.getInstanceInJava( instance )
+	//		if isinstance( instanceInJava, apis.moveandturn.Model ):
+	//			camera = self.getScene().findFirstMatch( apis.moveandturn.AbstractCamera )
+	//			if camera:
+	//				java.lang.Thread( ecc.dennisc.lang.ApplyRunnable( self._getGoodLookAtShowInstanceAndReturnCamera, ( camera, instanceInJava, ) ) ).start()
+	//			else:
+	//				self.getScene().addComponent( instanceInJava )
+	//		else:
+	//			self.getScene().addComponent( instanceInJava )
+	//		alice.ide.IDE.getSingleton().markChanged( "scene program addInstance" )
+	//
 
-//	def createScene( self, sceneField ):
-//		program = self.getProgram()
-//		if program:
-//			lg = program.getOnscreenLookingGlass()
-//			lg.clearCameras()
-//			program.setScene( None )
-//
-//		sceneInstance = org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.createScene( self, sceneField )
-//		if sceneInstance:
-//			self.restoreProjectProperties()
-//		return sceneInstance
-//
-//	def getSceneAutomaticSetUpMethod( self ):
-//		return self.getSceneType().getDeclaredMethod( "performSceneEditorGeneratedSetUp", [] )
-//
-//	def getFilledInSceneAutomaticSetUpMethod( self, fillerInner ):
-//		rv = self.getSceneAutomaticSetUpMethod()
-//		map = {}
-//		for key in self.mapFieldToInstance.keySet():
-//			map[ key ] = self.mapFieldToInstance.get( key )
-//		fillerInner.fillInSceneAutomaticSetUpMethod( rv, self.getSceneField(), map )
-//		return rv
-//
-//	def generateCodeForSceneSetUp( self, setUpMethodGenerator ):
-//		self.getFilledInSceneAutomaticSetUpMethod( setUpMethodGenerator )
-//
-//	def _createSelectionOperation(self, nextField, prevField ):
-//		return BogusSelectionOperation( nextField, prevField )
-//
-//	def _getGoodLookAtShowInstanceAndReturnCamera( self, camera, instance ):
-//		self.pushAndSetCameraNavigationDragAdapterEnabled( False )
-//		try:
-//			instance.setOpacity( 0.0, apis.moveandturn.Composite.RIGHT_NOW )
-//			pov = camera.getPointOfView( self.getScene() )
-//			camera.getGoodLookAt( instance, 0.5 )
-//			self.getScene().addComponent( instance )
-//			instance.setOpacity( 1.0 )
-//			camera.moveAndOrientTo( self.getScene().createOffsetStandIn( pov.getInternal() ), 0.5 ) 
-//		finally:
-//			self.popCameraNavigationDragAdapterEnabled()
-//
-//	def handleDelete(self, node):
-//		instance = self.mapFieldToInstance.get( node )
-//		if instance:
-//			self.getScene().removeComponent( ecc.dennisc.alice.vm.getInstanceInJava( instance ) )
+	//	def createScene( self, sceneField ):
+	//		program = self.getProgram()
+	//		if program:
+	//			lg = program.getOnscreenLookingGlass()
+	//			lg.clearCameras()
+	//			program.setScene( None )
+	//
+	//		sceneInstance = org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.createScene( self, sceneField )
+	//		if sceneInstance:
+	//			self.restoreProjectProperties()
+	//		return sceneInstance
+	//
+	//	def getSceneAutomaticSetUpMethod( self ):
+	//		return self.getSceneType().getDeclaredMethod( "performSceneEditorGeneratedSetUp", [] )
+	//
+	//	def getFilledInSceneAutomaticSetUpMethod( self, fillerInner ):
+	//		rv = self.getSceneAutomaticSetUpMethod()
+	//		map = {}
+	//		for key in self.mapFieldToInstance.keySet():
+	//			map[ key ] = self.mapFieldToInstance.get( key )
+	//		fillerInner.fillInSceneAutomaticSetUpMethod( rv, self.getSceneField(), map )
+	//		return rv
+	//
+	//	def generateCodeForSceneSetUp( self, setUpMethodGenerator ):
+	//		self.getFilledInSceneAutomaticSetUpMethod( setUpMethodGenerator )
+	//
+	//	def _createSelectionOperation(self, nextField, prevField ):
+	//		return BogusSelectionOperation( nextField, prevField )
+	//
+	//	def _getGoodLookAtShowInstanceAndReturnCamera( self, camera, instance ):
+	//		self.pushAndSetCameraNavigationDragAdapterEnabled( False )
+	//		try:
+	//			instance.setOpacity( 0.0, apis.moveandturn.Composite.RIGHT_NOW )
+	//			pov = camera.getPointOfView( self.getScene() )
+	//			camera.getGoodLookAt( instance, 0.5 )
+	//			self.getScene().addComponent( instance )
+	//			instance.setOpacity( 1.0 )
+	//			camera.moveAndOrientTo( self.getScene().createOffsetStandIn( pov.getInternal() ), 0.5 ) 
+	//		finally:
+	//			self.popCameraNavigationDragAdapterEnabled()
+	//
+	//	def handleDelete(self, node):
+	//		instance = self.mapFieldToInstance.get( node )
+	//		if instance:
+	//			self.getScene().removeComponent( ecc.dennisc.alice.vm.getInstanceInJava( instance ) )
 
-//	public static void main( String[] args ) {
-//
-//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-//
-//		MoveAndTurnSceneEditor moveAndTurnSceneEditor = new MoveAndTurnSceneEditor();
-//
-//		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
-//
-//		javax.swing.JFrame frame = new javax.swing.JFrame();
-//		frame.getContentPane().add( moveAndTurnSceneEditor );
-//		frame.setSize( 1024, 768 );
-//		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-//		frame.setVisible( true );
-//	}
+	//	public static void main( String[] args ) {
+	//
+	//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+	//
+	//		MoveAndTurnSceneEditor moveAndTurnSceneEditor = new MoveAndTurnSceneEditor();
+	//
+	//		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
+	//
+	//		javax.swing.JFrame frame = new javax.swing.JFrame();
+	//		frame.getContentPane().add( moveAndTurnSceneEditor );
+	//		frame.setSize( 1024, 768 );
+	//		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
+	//		frame.setVisible( true );
+	//	}
 }

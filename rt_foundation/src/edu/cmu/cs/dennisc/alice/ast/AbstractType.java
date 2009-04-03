@@ -117,6 +117,9 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	public AbstractConstructor getDeclaredConstructor( Class<?>... parameterClses ) {
 		return getDeclaredConstructor( TypeDeclaredInJava.get( parameterClses ) );
 	}
+	public AbstractMethod getDeclaredMethod( String name ) {
+		return getDeclaredMethod( name, new AbstractType[] {} );
+	}
 	public AbstractMethod getDeclaredMethod( String name, AbstractType... parameterTypes ) {
 		AbstractMethod rv = null;
 		for( AbstractMethod method : getDeclaredMethods() ) {
@@ -143,7 +146,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 		}
 		return rv;
 	}
-	public AbstractMethod getDeclaredMethod( String name, Class<?>[] parameterClses ) {
+	public AbstractMethod getDeclaredMethod( String name, Class<?>... parameterClses ) {
 		return getDeclaredMethod( name, TypeDeclaredInJava.get( parameterClses ) );
 	}
 

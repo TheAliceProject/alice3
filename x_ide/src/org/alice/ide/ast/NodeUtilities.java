@@ -170,7 +170,7 @@ public class NodeUtilities {
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
+	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
 		rv.expression.setValue( instanceExpression );
 		int i = 0;
 		for( edu.cmu.cs.dennisc.alice.ast.Argument argument : rv.arguments ) {
@@ -179,10 +179,25 @@ public class NodeUtilities {
 		}
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions ) {
+	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation completeMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
 		return completeMethodInvocation( rv, org.alice.ide.IDE.getSingleton().createInstanceExpression(), argumentExpressions );
 	}
 	
+	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createMethodInvocation( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation();
+		rv.expression.setValue( instanceExpression );
+		rv.method.setValue( method );
+		int i = 0;
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : method.getParameters() ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, argumentExpressions[ i ] );
+			rv.arguments.add( argument );
+			i++;
+		}
+		return rv;
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createMethodInvocationStatement( edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
+		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( createMethodInvocation( instanceExpression, method, argumentExpressions ) );
+	}
 	public static edu.cmu.cs.dennisc.alice.ast.TypeExpression createTypeExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type );
 	}
@@ -196,6 +211,11 @@ public class NodeUtilities {
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( Class<?> cls ) {
 		return createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+	}
+	
+	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {
+		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
+		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getMethod( mthd );
 	}
 	
 }
