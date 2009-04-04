@@ -22,6 +22,8 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.common.StatementListPropertyPane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -58,48 +60,33 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 	public void dragDropped( zoot.DragAndDropContext dragAndDropContext ) {
 		final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-		class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.Expression, Object > {
-			private zoot.event.DragAndDropEvent dragAndDropEvent;
-			public Worker() {
-				this.dragAndDropEvent = new zoot.event.DragAndDropEvent( source, ExpressionPropertyDropDownPane.this, eSource );
-			}
-			@Override
-			protected edu.cmu.cs.dennisc.alice.ast.Expression doInBackground() throws java.lang.Exception {
-				zoot.ZDragComponent source = this.dragAndDropEvent.getTypedSource();
-				if( source.getSubject() instanceof org.alice.ide.common.AccessiblePane ) {
-					org.alice.ide.common.AccessiblePane accessiblePane = (org.alice.ide.common.AccessiblePane)source.getSubject();
-//					try {
-						edu.cmu.cs.dennisc.alice.ast.Expression expression = accessiblePane.createExpression( this.dragAndDropEvent );
-						return expression;
-//					} catch( Throwable t ) {
-//						this.cancel( true );
-//						throw new RuntimeException( t );
-//					}
-				} else {
-					return null;
+		if( source.getSubject() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
+			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source.getSubject();
+			final zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( source, ExpressionPropertyDropDownPane.this, eSource );
+			class DropOperation extends org.alice.ide.operations.AbstractActionOperation {
+				public void perform( final zoot.ActionContext actionContext ) {
+					edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver = new edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression>() {
+						public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+							if( expression != null ) {
+								ExpressionPropertyDropDownPane.this.expressionProperty.setValue( expression );
+								source.hideDropProxyIfNecessary();
+							} else {
+								this.handleCancelation();
+							}
+						}
+						public void handleCancelation() {
+							actionContext.cancel();
+							source.hideDropProxyIfNecessary();
+						}
+					};
+					actionContext.setTaskObserver( taskObserver );
+					expressionCreatorPane.createExpression( dragAndDropEvent, ExpressionPropertyDropDownPane.this.expressionProperty, taskObserver );
 				}
 			}
-			@Override
-			protected void done() {
-				try {
-					edu.cmu.cs.dennisc.alice.ast.Expression expression = this.get();
-					if( expression != null ) {
-						ExpressionPropertyDropDownPane.this.expressionProperty.setValue( expression );
-						getIDE().markChanged( "expression dropped" );
-					} else {
-						//todo?
-					}
-				} catch( InterruptedException ie ) {
-					throw new RuntimeException( ie );
-				} catch( java.util.concurrent.ExecutionException ee ) {
-					throw new RuntimeException( ee );
-				} finally {
-					source.hideDropProxyIfNecessary();
-				}
-			}
+			dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+		} else {
+			source.hideDropProxyIfNecessary();
 		}
-		Worker worker = new Worker();
-		worker.execute();
 	}
 	public void dragExited( zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
 		zoot.ZDragComponent source = dragAndDropContext.getDragSource();

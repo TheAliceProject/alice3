@@ -129,17 +129,17 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncompleteMethodInvocation( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		return NodeUtilities.createIncompleteMethodInvocation( new SelectedFieldExpression( method.getDeclaringType() ), method );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.FieldAccess createIncompleteFieldAccess( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private static edu.cmu.cs.dennisc.alice.ast.FieldAccess createFieldAccess( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldAccess rv = new edu.cmu.cs.dennisc.alice.ast.FieldAccess();
 		rv.expression.setValue( expression );
 		rv.field.setValue( field );
 		return rv;
 	}
-	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createIncompleteFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		return NodeUtilities.createIncompleteFieldAccess( new SelectedFieldExpression( field.getDeclaringType() ), field );
+	public static edu.cmu.cs.dennisc.alice.ast.FieldAccess createFieldAccess( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		return NodeUtilities.createFieldAccess( new SelectedFieldExpression( field.getDeclaringType() ), field );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.AssignmentExpression createIncompleteAssignmentExpression( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = NodeUtilities.createIncompleteFieldAccess( expression, field );
+		edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = NodeUtilities.createFieldAccess( expression, field );
 		edu.cmu.cs.dennisc.alice.ast.AbstractType valueType = field.getValueType();
 		return new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( valueType, fieldAccess, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, new EmptyExpression( valueType ) );
 	}

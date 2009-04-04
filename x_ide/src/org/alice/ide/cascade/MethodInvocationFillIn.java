@@ -50,9 +50,7 @@ public class MethodInvocationFillIn extends cascade.FillIn< edu.cmu.cs.dennisc.a
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation incompleteMethodInvocation = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.expression, this.method );
-		return new org.alice.ide.templates.ExpressionTemplate( incompleteMethodInvocation ) {
-			
-		};
+		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( incompleteMethodInvocation );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getValue() {

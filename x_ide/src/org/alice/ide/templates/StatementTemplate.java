@@ -31,7 +31,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	}
 
 	public abstract void createStatement( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
-	protected zoot.DragAndDropOperation dragAndDropOperation;
+	private zoot.DragAndDropOperation dragAndDropOperation;
 
 	@Override
 	protected boolean isPressed() {

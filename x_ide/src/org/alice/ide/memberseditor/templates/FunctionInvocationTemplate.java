@@ -22,15 +22,23 @@
  */
 package org.alice.ide.memberseditor.templates;
 
-import org.alice.ide.templates.ExpressionTemplate;
-
 /**
  * @author Dennis Cosgrove
  */
-public class FunctionInvocationTemplate extends ExpressionTemplate {
+public class FunctionInvocationTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 	public FunctionInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		super( org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method ) );
 		this.method = method;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( this.method );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( method );
+		org.alice.ide.ast.NodeUtilities.completeMethodInvocation( rv, expressions );
+		return rv;
 	}
 }

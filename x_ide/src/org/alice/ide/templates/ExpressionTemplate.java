@@ -25,12 +25,18 @@ package org.alice.ide.templates;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionLikeSubstance {
+public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
 	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	public ExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		this.expression = expression;
 		this.add( getIDE().getTemplatesFactory().createComponent( this.expression ) );
 		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
+		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
+		this.setPopupOperation( new org.alice.ide.operations.AbstractActionOperation() {
+			public void perform( zoot.ActionContext actionContext ) {
+				actionContext.cancel();
+			}
+		} );
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.Expression getExpression() {
 		return this.expression;
@@ -42,5 +48,9 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	@Override
 	protected boolean isPressed() {
 		return false;
+	}
+	@Override
+	protected boolean isKnurlDesired() {
+		return true;
 	}
 }

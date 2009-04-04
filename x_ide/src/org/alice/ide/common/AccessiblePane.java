@@ -25,30 +25,10 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AccessiblePane extends org.alice.ide.common.ExpressionLikeSubstance {
-//	@Override
-//	protected boolean isActuallyPotentiallyActive() {
-//		return getIDE().isDragInProgress() == false;
-//	}
-//	@Override
-//	protected boolean isActuallyPotentiallySelectable() {
-//		return false;
-//	}
-//	@Override
-//	protected boolean isActuallyPotentiallyDraggable() {
-//		return true;
-//	}
-	
+public abstract class AccessiblePane extends ExpressionCreatorPane {
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression();
 	@Override
-	public void setActive( boolean isActive ) {
-		super.setActive( isActive );
-		if( isActive ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle AccessiblePane setActive " );
-			//getIDE().showStencilOver( this, getExpressionType() );
-		} else {
-			getIDE().hideStencil();
-		}
+	public void createExpression( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+		taskObserver.handleCompletion( this.createExpression() );
 	}
-	
-	public abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( zoot.event.DragAndDropEvent e );
 }

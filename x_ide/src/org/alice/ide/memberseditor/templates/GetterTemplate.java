@@ -22,15 +22,23 @@
  */
 package org.alice.ide.memberseditor.templates;
 
-import org.alice.ide.templates.ExpressionTemplate;
-
 /**
  * @author Dennis Cosgrove
  */
-public class GetterTemplate extends ExpressionTemplate {
+public class GetterTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+	private static final edu.cmu.cs.dennisc.alice.ast.AbstractType[] ZERO_LENGTH_TYPE_ARRAY = new edu.cmu.cs.dennisc.alice.ast.AbstractType[] {};  
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
+		super( org.alice.ide.ast.NodeUtilities.createFieldAccess( field ) );
 		this.field = field;
 	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
+		return ZERO_LENGTH_TYPE_ARRAY;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
+		return org.alice.ide.ast.NodeUtilities.createFieldAccess( field );
+	}
+	
 }

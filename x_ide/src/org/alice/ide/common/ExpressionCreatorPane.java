@@ -25,19 +25,30 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ParameterPane extends AccessiblePane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter;
-	public ParameterPane( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter ) {
-		this.parameter = parameter;
-		this.add( new org.alice.ide.common.NodeNameLabel( this.parameter ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
-	}
+public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
+//	@Override
+//	protected boolean isActuallyPotentiallyActive() {
+//		return getIDE().isDragInProgress() == false;
+//	}
+//	@Override
+//	protected boolean isActuallyPotentiallySelectable() {
+//		return false;
+//	}
+//	@Override
+//	protected boolean isActuallyPotentiallyDraggable() {
+//		return true;
+//	}
+	
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return parameter.getValueType();
+	public void setActive( boolean isActive ) {
+		super.setActive( isActive );
+		if( isActive ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle AccessiblePane setActive " );
+			getIDE().showStencilOver( this, getExpressionType() );
+		} else {
+			getIDE().hideStencil();
+		}
 	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
-		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
-	}
+	
+	public abstract void createExpression( final zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver );
 }
