@@ -123,6 +123,12 @@ class MyBooleanStateContext extends AbstractContext implements BooleanStateConte
 	}
 }
 
+class MyBoundedRangeContext extends AbstractContext implements BoundedRangeContext {
+	public MyBoundedRangeContext( java.util.EventObject e, boolean isCancelWorthwhile ) {
+		super( e, isCancelWorthwhile );
+	}
+}
+
 class MySingleSelectionContext<E> extends AbstractContext implements ItemSelectionContext< E > {
 	private E previousSelection;
 	private E nextSelection;
@@ -192,7 +198,19 @@ public class ZManager {
 		stateOperation.performStateChange( rv );
 		return rv;
 	}
-	
+
+//	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e ) throws java.beans.PropertyVetoException {
+//		assert boundedRangeOperation != null;
+//		BoundedRangeContext rv = new MyBoundedRangeContext( e, CANCEL_IS_WORTHWHILE );
+//		boundedRangeOperation.perform( rv );
+//		return rv;
+//	}	
+	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
+		assert boundedRangeOperation != null;
+		BoundedRangeContext rv = new MyBoundedRangeContext( e, isCancelWorthwhile );
+		boundedRangeOperation.perform( rv );
+		return rv;
+	}	
 	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
 		ActionContext rv = new MyActionContext( e, isCancelWorthwhile );

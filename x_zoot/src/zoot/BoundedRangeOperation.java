@@ -20,32 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.choosers;
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooser<E> implements ValueChooser< E >, zoot.InputValidator {
-	private zoot.ZInputPane< ? > inputPane;
-	public java.lang.String getLabelText() {
-		return "value:";
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
-		org.alice.ide.IDE ide = this.getIDE();
-		if( ide != null ) {
-			return ide.getPreviousExpression();
-		} else {
-			return null;
-		}
-	}
-	public zoot.ZInputPane< ? > getInputPane() {
-		return this.inputPane;
-	}
-	public void setInputPane( zoot.ZInputPane< ? > inputPane ) {
-		this.inputPane = inputPane;
-		this.inputPane.addOKButtonValidator( this );
-	}
+public interface BoundedRangeOperation extends Operation {
+	public javax.swing.BoundedRangeModel getBoundedRangeModelForConfiguringSwing();
+	public void perform( BoundedRangeContext boundedRangeContext );
 }

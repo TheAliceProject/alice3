@@ -79,8 +79,4 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	public javax.swing.ComboBoxModel getComboBoxModel() {
 		return this.comboBoxModel;
 	}
-//	public void addSelectionChangeListener( javax.swing.event.ChangeListener l ) {
-//	}
-//	public void removeSelectionChangeListener( javax.swing.event.ChangeListener l ) {
-//	}
 }

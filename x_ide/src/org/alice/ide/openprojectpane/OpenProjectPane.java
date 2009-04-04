@@ -452,6 +452,8 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.swing.InputPane< java.io
 			this.mapTabPaneToScrollPane.put( tabPane, scrollPane );
 			this.tabbedPane.addTab( tabPane.getTabTitleText(), tabPane.getTabTitleIcon(), scrollPane );
 		}
+//		this.tabbedPane.addVetoableChangeListener( new java.beans.VetoableChangeListener() {
+//			public void vetoableChange( java.beans.PropertyChangeEvent evt ) throws java.beans.PropertyVetoException {
 		this.tabbedPane.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				OpenProjectPane.this.updateOKButton();

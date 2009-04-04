@@ -33,6 +33,9 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle tab close" );
 			}
 		} );
+		
+//		this.addVetoableChangeListener( new java.beans.VetoableChangeListener() {
+//			public void vetoableChange( java.beans.PropertyChangeEvent e ) throws java.beans.PropertyVetoException {
 		this.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( EditorsTabbedPane.this.getSelectedComponent() );

@@ -20,36 +20,28 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.stageide.choosers;
-
-
+package zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.Portion > {
-	class PortionOperation extends zoot.AbstractBoundedRangeOperation {
-		public void perform( zoot.BoundedRangeContext boundedRangeContext ) {
-			zoot.ZInputPane< ? > inputPane = PortionChooser.this.getInputPane();
-			if( inputPane != null ) {
-				inputPane.updateOKButton();
+public class ZSlider extends javax.swing.JSlider {
+	private BoundedRangeOperation boundedRangeOperation;
+	public ZSlider( BoundedRangeOperation boundedRangeOperation ) {
+		this.boundedRangeOperation = boundedRangeOperation;
+		this.setModel( this.boundedRangeOperation.getBoundedRangeModelForConfiguringSwing() );
+//		this.addVetoableChangeListener( new java.beans.VetoableChangeListener() {
+//			public void vetoableChange( java.beans.PropertyChangeEvent e ) throws java.beans.PropertyVetoException {
+//				ZManager.performIfAppropriate( ZSlider.this.boundedRangeOperation, e );
+//			}
+//		} );
+		this.addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				ZManager.performIfAppropriate( ZSlider.this.boundedRangeOperation, e, ZManager.CANCEL_IS_FUTILE );
 			}
-			boundedRangeContext.commit();
-		}
+		} );
 	}
-	private zoot.ZSlider slider = new zoot.ZSlider( new PortionOperation() );
-	public PortionChooser() {
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		this.slider.getBoundedRangeOperation().getBoundedRangeModelForConfiguringSwing().setValue( 100 );
-	}
-	public java.awt.Component getComponent() {
-		return this.slider;
-	}
-	public org.alice.apis.moveandturn.Portion getValue() {
-		double value = this.slider.getValue() / 100.0;
-		return new org.alice.apis.moveandturn.Portion( value );
-	}
-	public boolean isInputValid() {
-		return true;
+	public BoundedRangeOperation getBoundedRangeOperation() {
+		return this.boundedRangeOperation;
 	}
 }

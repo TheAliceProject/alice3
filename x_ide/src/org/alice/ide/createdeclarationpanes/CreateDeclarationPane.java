@@ -124,7 +124,16 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	}
 	protected final java.awt.Component createIsReassignableComponent() {
 		if( isIsReassignableComponentDesired() ) {
-			this.isReassignableCheckBox = new zoot.ZCheckBox( new IsReassignableStateOperation( this.getIsReassignableInitialState() ) );
+			this.isReassignableCheckBox = new zoot.ZCheckBox( new IsReassignableStateOperation( this.getIsReassignableInitialState() ) ) {
+				@Override
+				public String getText() {
+					if( this.isSelected() ) {
+						return "yes";
+					} else {
+						return "no";
+					}
+				}
+			};
 			this.isReassignableCheckBox.setEnabled( this.isIsReassignableComponentEnabled() );
 			this.isReassignableCheckBox.setOpaque( false );
 		} else {
