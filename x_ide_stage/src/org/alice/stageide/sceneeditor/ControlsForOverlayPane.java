@@ -149,6 +149,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 	private FieldTile rootFieldTile = createFieldTile( null );
 	private java.util.List< FieldTile > declaredFieldTiles = new java.util.LinkedList< FieldTile >();
 	private IsExpandedCheckBox isSceneEditorExpandedCheckBox;
+	private zoot.ZButton runButton;
 
 	public ControlsForOverlayPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
 		this.setNorthWestComponent( this.rootFieldTile );
@@ -171,10 +172,17 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 
 	@Override
 	public void addNotify() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		//		ide.addIDEListener( this.ideAdapter );
-		this.isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
-		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
+		if( this.isSceneEditorExpandedCheckBox != null ) {
+			//pass
+		} else {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			//		ide.addIDEListener( this.ideAdapter );
+			
+			this.isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
+			this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
+			this.runButton = new zoot.ZButton( ide.getRunOperation() );
+			this.setNorthEastComponent( this.runButton );
+		}
 		super.addNotify();
 	}
 

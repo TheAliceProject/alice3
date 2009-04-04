@@ -1,5 +1,25 @@
 package org.alice.stageide;
 
+class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Program {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType;
+	private edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice sceneInstance;
+	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm;
+	public MoveAndTurnRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
+		this.sceneType = sceneType;
+		this.vm = vm;
+	}
+	@Override
+	protected void initialize() {
+		this.sceneInstance = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)this.vm.createInstanceEntryPoint( this.sceneType );
+		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)this.sceneInstance.getInstanceInJava();
+		this.setScene( scene );
+	}
+	@Override
+	protected void run() {
+		this.vm.invokeEntryPoint( this.sceneType.getDeclaredMethod( "run" ), this.sceneInstance );
+	}
+}
+
 public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected void promptForLicenseAgreements() {
@@ -14,10 +34,13 @@ public class StageIDE extends org.alice.ide.IDE {
 			System.exit( -1 );
 		}
 	}
-	
+
 	@Override
-	public void handleRun() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleRun()" );
+	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
+		vm.setEntryPointType( this.getProgramType() );
+		MoveAndTurnRuntimeProgram rtProgram = new MoveAndTurnRuntimeProgram( sceneType, vm );
+		rtProgram.showInJDialog( this, true, new String[]{} );
 	}
 	@Override
 	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
@@ -27,16 +50,18 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected zoot.ActionOperation createAboutOperation() {
 		return new org.alice.stageide.operations.help.AboutOperation();
 	}
-	
-	protected java.util.Map<String, String> createGalleryThumbnailsMap() {
-		java.util.Map<String, String> rv = new java.util.HashMap< String, String >();
+
+	protected java.util.Map< String, String > createGalleryThumbnailsMap() {
+		java.util.Map< String, String > rv = new java.util.HashMap< String, String >();
 		rv.put( "thumbnails", "gallery" );
 		rv.put( "org.alice.apis.moveandturn.gallery", "Generic Alice Models" );
 		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters", "Looking Glass Characters" );
 		rv.put( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes", "Looking Glass Scenery" );
 		return rv;
 	}
-	java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractType, String> mapTypeToText;
+
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, String > mapTypeToText;
+
 	@Override
 	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( mapTypeToText != null ) {
@@ -62,11 +87,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) );
 		return rv;
 	}
-	
+
 	@Override
 	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
 		java.io.File thumbnailRoot = new java.io.File( org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails" );
-		java.util.Map<String, String> map = this.createGalleryThumbnailsMap();
+		java.util.Map< String, String > map = this.createGalleryThumbnailsMap();
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser( thumbnailRoot, map );
 	}
 	@Override

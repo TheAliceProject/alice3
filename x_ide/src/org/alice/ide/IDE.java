@@ -641,7 +641,11 @@ public abstract class IDE extends zoot.ZFrame {
 		return this.saveOperation;
 	}
 
-	public abstract void handleRun();
+	public abstract void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
+	public final void handleRun( zoot.ActionContext context ) {
+		this.generateCodeForSceneSetUp();
+		this.handleRun( context, this.getSceneType() );
+	}
 	private boolean isDragInProgress = false;
 
 	private edu.cmu.cs.dennisc.alice.ast.Comment commentThatWantsFocus = null;

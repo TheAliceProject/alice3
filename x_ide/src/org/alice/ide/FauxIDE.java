@@ -42,7 +42,7 @@ public class FauxIDE extends IDE {
 		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser();
 	}
 	@Override
-	public void handleRun() {
+	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		javax.swing.JOptionPane.showMessageDialog( this, "imagine the program running here..." );
 	}
 }
