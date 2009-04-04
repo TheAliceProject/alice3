@@ -641,6 +641,7 @@ public abstract class IDE extends zoot.ZFrame {
 		return this.saveOperation;
 	}
 
+	public abstract void handleRun();
 	private boolean isDragInProgress = false;
 
 	private edu.cmu.cs.dennisc.alice.ast.Comment commentThatWantsFocus = null;
@@ -1442,23 +1443,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	public static void main( String[] args ) {
 		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
-		IDE ide = new IDE() {
-			@Override
-			protected zoot.ActionOperation createAboutOperation() {
-				return null;
-			}
-			@Override
-			protected void promptForLicenseAgreements() {
-			}
-			@Override
-			protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-				return new org.alice.ide.sceneeditor.FauxSceneEditor();
-			}
-			@Override
-			protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
-				return new org.alice.ide.gallerybrowser.FauxGalleryBrowser();
-			}
-		};
+		IDE ide = new FauxIDE();
 		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
 		ide.setSize( 1000, 1000 );
 		ide.setVisible( true );

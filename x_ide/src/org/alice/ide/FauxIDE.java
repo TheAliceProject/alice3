@@ -41,4 +41,8 @@ public class FauxIDE extends IDE {
 	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
 		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser();
 	}
+	@Override
+	public void handleRun() {
+		javax.swing.JOptionPane.showMessageDialog( this, "imagine the program running here..." );
+	}
 }

@@ -14,6 +14,11 @@ public class StageIDE extends org.alice.ide.IDE {
 			System.exit( -1 );
 		}
 	}
+	
+	@Override
+	public void handleRun() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleRun()" );
+	}
 	@Override
 	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
 		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();

@@ -66,7 +66,7 @@ public class RunOperation extends org.alice.ide.operations.AbstractActionOperati
 		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_R );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), "imagine the program running here..." );
+		this.getIDE().handleRun();
 		actionContext.commit();
 	}
 }
