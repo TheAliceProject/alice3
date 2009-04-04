@@ -205,9 +205,18 @@ public class NodeUtilities {
 		return createTypeExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	
-	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		edu.cmu.cs.dennisc.alice.ast.InstanceCreation rv = new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( type.getDeclaredConstructor() );
+	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
+		edu.cmu.cs.dennisc.alice.ast.InstanceCreation rv = new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor );
+		int i = 0;
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : constructor.getParameters() ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, argumentExpressions[ i ] );
+			rv.arguments.add( argument );
+			i++;
+		}
 		return rv;
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return createInstanceCreation( type.getDeclaredConstructor() );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( Class<?> cls ) {
 		return createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );

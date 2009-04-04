@@ -30,7 +30,6 @@ public class ZCheckBox extends javax.swing.JCheckBox {
 	public ZCheckBox( BooleanStateOperation operation ) {
 		this.operation = operation;
 		this.setAction( this.operation.getActionForConfiguringSwing() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getModel() );
 		this.setModel( this.operation.getButtonModelForConfiguringSwing() );
 	}
 	protected BooleanStateOperation getStateOperation() {
