@@ -56,11 +56,11 @@ class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		edu.cmu.cs.dennisc.alice.ast.Expression src = this.expression.getValue();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: create copy" );
 		return src;
-//		if( src != null ) {
-//			return (edu.cmu.cs.dennisc.alice.ast.Expression)org.alice.ide.IDE.getSingleton().createCopy( src );
-//		} else {
-//			return null;
-//		}
+		//		if( src != null ) {
+		//			return (edu.cmu.cs.dennisc.alice.ast.Expression)org.alice.ide.IDE.getSingleton().createCopy( src );
+		//		} else {
+		//			return null;
+		//		}
 	}
 }
 
@@ -103,70 +103,28 @@ abstract class ItemInitializerPane extends AbstractInitializerPane {
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
 		return this.bogusNode.createCopyOfExpressionValue();
 	}
-}
-
-class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public AddItemOperation() {
-		this.putValue( javax.swing.Action.NAME, "add" );
-	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void setInitializer( edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
+		this.bogusNode.expression.setValue( initializer );
 	}
 }
 
-class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public RemoveItemOperation() {
-		this.putValue( javax.swing.Action.NAME, "remove" );
-	}
-	public void perform( zoot.ActionContext actionContext ) {
-	}
-}
-
-class MoveItemUpOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public MoveItemUpOperation() {
-		this.putValue( javax.swing.Action.NAME, "move up" );
-	}
-	public void perform( zoot.ActionContext actionContext ) {
-	}
-}
-
-class MoveItemDownOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public MoveItemDownOperation() {
-		this.putValue( javax.swing.Action.NAME, "move down" );
-	}
-	public void perform( zoot.ActionContext actionContext ) {
-	}
-}
-
-class ButtonPane extends swing.GridBagPane {
-	private zoot.ZButton addButton = new zoot.ZButton( new AddItemOperation() );
-	private zoot.ZButton removeButton = new zoot.ZButton( new RemoveItemOperation() );
-	private zoot.ZButton moveUpButton = new zoot.ZButton( new MoveItemUpOperation() );
-	private zoot.ZButton moveDownButton = new zoot.ZButton( new MoveItemDownOperation() );
-
-	public ButtonPane() {
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		this.add( this.addButton, gbc );
-		this.add( this.removeButton, gbc );
-		gbc.insets.top = 8;
-		this.add( this.moveUpButton, gbc );
-		gbc.insets.top = 0;
-		this.add( this.moveDownButton, gbc );
-		//		if this.isRenameDesired():
-		//			gbc.insets.top = 16
-		//			this.add( this.renameButton, gbc );
-		//			gbc.insets.top = 0;
-		gbc.weighty = 1.0;
-		this.add( javax.swing.Box.createGlue(), gbc );
-		//		this.add( new zoot.ZButton( new AddItemOperation() ) );
-		//		this.add( new zoot.ZButton( new RemoveItemOperation() ) );
-		//		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		//		this.add( new zoot.ZButton( new MoveItemUpOperation() ) );
-		//		this.add( new zoot.ZButton( new MoveItemDownOperation() ) );
-		//		this.add( javax.swing.Box.createHorizontalGlue() );
-	}
-}
+//
+//class ButtonPane extends swing.GridBagPane {
+//
+//	public ButtonPane() {
+//		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+//		gbc.fill = java.awt.GridBagConstraints.BOTH;
+//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+//		this.add( this.addButton, gbc );
+//		this.add( this.removeButton, gbc );
+//		gbc.insets.top = 8;
+//		this.add( this.moveUpButton, gbc );
+//		gbc.insets.top = 0;
+//		this.add( this.moveDownButton, gbc );
+//		gbc.weighty = 1.0;
+//		this.add( javax.swing.Box.createGlue(), gbc );
+//	}
+//}
 
 class FauxItem extends javax.swing.AbstractButton {
 	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane() {
@@ -174,7 +132,9 @@ class FauxItem extends javax.swing.AbstractButton {
 		protected void handleInitializerChange() {
 		}
 	};
-	public FauxItem( int index ) {
+
+	public FauxItem( int index, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
+		this.itemInitializerPane.setInitializer( initializer );
 		this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
@@ -215,71 +175,182 @@ class FauxItem extends javax.swing.AbstractButton {
 		}
 	}
 
-//	@Override
-//	public java.awt.Color getBackground() {
-//		if( this.isSelected() ) {
-//			return java.awt.Color.BLUE;
-//		} else {
-//			return super.getBackground();
-//		}
-//	}
+	//	@Override
+	//	public java.awt.Color getBackground() {
+	//		if( this.isSelected() ) {
+	//			return java.awt.Color.BLUE;
+	//		} else {
+	//			return super.getBackground();
+	//		}
+	//	}
 }
 
-class FauxList extends swing.GridBagPane {
-	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
-	public FauxList() {
-		buttonGroup.add( new FauxItem( 0 ) );
-		buttonGroup.add( new FauxItem( 1 ) );
-		buttonGroup.add( new FauxItem( 2 ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		gbc.weightx = 1.0;
-		java.util.Enumeration< javax.swing.AbstractButton > e = this.buttonGroup.getElements();
-		while( e.hasMoreElements() ) {
-			javax.swing.AbstractButton button = e.nextElement();
-			this.add( button, gbc );
-		}
-		gbc.weighty = 1.0;
-		this.add( new javax.swing.JLabel(), gbc );
-	}
-	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		java.util.Enumeration< javax.swing.AbstractButton > e = this.buttonGroup.getElements();
-		while( e.hasMoreElements() ) {
-			javax.swing.AbstractButton button = e.nextElement();
-			if( button instanceof FauxItem ) {
-				FauxItem fauxItem = (FauxItem)button;
-				fauxItem.handleTypeChange( type );
-			}
-		}
-	}
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
-	}
-}
+//class FauxList extends swing.GridBagPane {
+//	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
+//	public FauxList() {
+//		buttonGroup.add( new FauxItem( 0 ) );
+//		buttonGroup.add( new FauxItem( 1 ) );
+//		buttonGroup.add( new FauxItem( 2 ) );
+//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+//		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+//		gbc.fill = java.awt.GridBagConstraints.BOTH;
+//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+//		gbc.weightx = 1.0;
+//		java.util.Enumeration< javax.swing.AbstractButton > e = this.buttonGroup.getElements();
+//		while( e.hasMoreElements() ) {
+//			javax.swing.AbstractButton button = e.nextElement();
+//			this.add( button, gbc );
+//		}
+//		gbc.weighty = 1.0;
+//		this.add( new javax.swing.JLabel(), gbc );
+//	}
+//	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+//		java.util.Enumeration< javax.swing.AbstractButton > e = this.buttonGroup.getElements();
+//		while( e.hasMoreElements() ) {
+//			javax.swing.AbstractButton button = e.nextElement();
+//			if( button instanceof FauxItem ) {
+//				FauxItem fauxItem = (FauxItem)button;
+//				fauxItem.handleTypeChange( type );
+//			}
+//		}
+//	}
+//	@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
+//	}
+//}
 
 /**
  * @author Dennis Cosgrove
  */
 abstract class ArrayInitializerPane extends AbstractInitializerPane {
-	private FauxList fauxList = new FauxList();
+	class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
+		public AddItemOperation() {
+			this.putValue( javax.swing.Action.NAME, "add" );
+		}
+		public void perform( zoot.ActionContext actionContext ) {
+			ArrayInitializerPane.this.getDefaultComboBoxModel().addElement( ArrayInitializerPane.this.createDefaultInitializer() );
+		}
+	}
 
+	class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
+		public RemoveItemOperation() {
+			this.putValue( javax.swing.Action.NAME, "remove" );
+		}
+		public void perform( zoot.ActionContext actionContext ) {
+		}
+	}
+
+	class MoveItemUpOperation extends org.alice.ide.operations.AbstractActionOperation {
+		public MoveItemUpOperation() {
+			this.putValue( javax.swing.Action.NAME, "move up" );
+		}
+		public void perform( zoot.ActionContext actionContext ) {
+		}
+	}
+
+	class MoveItemDownOperation extends org.alice.ide.operations.AbstractActionOperation {
+		public MoveItemDownOperation() {
+			this.putValue( javax.swing.Action.NAME, "move down" );
+		}
+		public void perform( zoot.ActionContext actionContext ) {
+		}
+	}
+
+	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
+		public ItemSelectionOperation() {
+			super( new javax.swing.DefaultComboBoxModel() );
+		}
+		public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( context );
+		}
+	}
+
+	private zoot.ZButton addButton = new zoot.ZButton( new AddItemOperation() );
+	private zoot.ZButton removeButton = new zoot.ZButton( new RemoveItemOperation() );
+	private zoot.ZButton moveUpButton = new zoot.ZButton( new MoveItemUpOperation() );
+	private zoot.ZButton moveDownButton = new zoot.ZButton( new MoveItemDownOperation() );
+
+	class ExpressionList extends zoot.ZList< edu.cmu.cs.dennisc.alice.ast.Expression > {
+		public ExpressionList() {
+			super( new ItemSelectionOperation() );
+		}
+		@Override
+		public void updateUI() {
+			setUI( new edu.cmu.cs.dennisc.swing.plaf.ListUI< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+				@Override
+				protected javax.swing.AbstractButton createComponentFor( int index, edu.cmu.cs.dennisc.alice.ast.Expression e ) {
+					return new FauxItem( index, e );
+				}
+			} );
+		}
+	}
+
+	private ExpressionList list = new ExpressionList();
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType;
+
+	private edu.cmu.cs.dennisc.alice.ast.Expression createDefaultInitializer() {
+		if( this.arrayType != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType componentType = this.arrayType.getComponentType();
+			if( componentType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) {
+				return new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( false );
+			} else if( componentType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
+				return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 );
+			} else if( componentType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) {
+				return new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 0 );
+			} else {
+				return new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+			}
+		} else {
+			return null;
+		}
+	}
+
+	private javax.swing.DefaultComboBoxModel getDefaultComboBoxModel() {
+		return (javax.swing.DefaultComboBoxModel)this.list.getModel();
+	}
 	public ArrayInitializerPane() {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
-		this.add( new ButtonPane(), java.awt.BorderLayout.EAST );
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.fauxList );
+
+		swing.GridBagPane buttonPane = new swing.GridBagPane();
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		gbc.fill = java.awt.GridBagConstraints.BOTH;
+		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+		buttonPane.add( this.addButton, gbc );
+		buttonPane.add( this.removeButton, gbc );
+		gbc.insets.top = 8;
+		buttonPane.add( this.moveUpButton, gbc );
+		gbc.insets.top = 0;
+		buttonPane.add( this.moveDownButton, gbc );
+		gbc.weighty = 1.0;
+		buttonPane.add( javax.swing.Box.createGlue(), gbc );
+
+		this.add( buttonPane, java.awt.BorderLayout.EAST );
+
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list ) {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
+			}
+		};
 		scrollPane.setBorder( null );
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 	}
 	@Override
-	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this.fauxList.handleTypeChange( type );
+	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType ) {
+		this.arrayType = arrayType;
+		//this.list.handleTypeChange( type );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleTypeChange", this.arrayType );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-		return null;
+		javax.swing.ListModel model = this.list.getModel();
+		final int N = model.getSize();
+		edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
+		for( int i=0; i<N; i++ ) {
+			expressions[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)model.getElementAt( i );
+		}
+		return new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation( this.arrayType, new Integer[] { expressions.length }, expressions );
 	}
 }
 

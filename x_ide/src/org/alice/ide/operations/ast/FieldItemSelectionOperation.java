@@ -28,8 +28,8 @@ package org.alice.ide.operations.ast;
 public class FieldItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField nextField;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField prevField;
-	public FieldItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel, int i ) {
-		super( comboBoxModel, i );
+	public FieldItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
+		super( comboBoxModel );
 	}
 	public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.AbstractField > singleSelectionContext ) {
 //		if( singleSelectionContext.isPreviousSelectionValid() ) {

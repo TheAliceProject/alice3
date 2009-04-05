@@ -26,8 +26,8 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractItemSelectionOperation<E> extends zoot.AbstractItemSelectionOperation<E> {
-	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel, int initialItemSelectionIndex ) {
-		super( comboBoxModel, initialItemSelectionIndex );
+	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
+		super( comboBoxModel );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

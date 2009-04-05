@@ -30,11 +30,12 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	private javax.swing.Action[] actions;
 	private javax.swing.ButtonModel[] buttonModels;
 	private javax.swing.ComboBoxModel comboBoxModel;
-	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel, int initialItemSelectionIndex ) {
+	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
 		this.comboBoxModel = comboBoxModel;
 		int N = this.comboBoxModel.getSize();
 		this.actions = new javax.swing.Action[ N ];
 		this.buttonModels = new javax.swing.ButtonModel[ N ];
+		E selectedItem = (E)comboBoxModel.getSelectedItem();
 		for( int i=0; i<N; i++ ) {
 			class Action extends javax.swing.AbstractAction {
 				public Action( int i, E item ) {
@@ -47,6 +48,9 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 			this.actions[ i ] = new Action( i, item ); 
 			this.buttonModels[ i ] = new javax.swing.JToggleButton.ToggleButtonModel();
 			this.buttonModels[ i ].setGroup( buttonGroup );
+			if( item == selectedItem ) {
+				this.buttonModels[ i ].setSelected( true );
+			}
 			this.buttonModels[ i ].addItemListener( new java.awt.event.ItemListener() {
 				public void itemStateChanged( java.awt.event.ItemEvent e ) {
 					if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
@@ -55,11 +59,6 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 				}
 			} );
 		}
-		if( initialItemSelectionIndex >= 0 ) {
-			this.buttonModels[ initialItemSelectionIndex ].setSelected( true );
-		}
-		
-		
 	}
 	
 	protected String getNameFor( int index, E item ) {

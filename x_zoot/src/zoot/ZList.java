@@ -26,9 +26,18 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public class ZList<E> extends javax.swing.JList {
+	public ZList() {
+	}
+	public ZList( ItemSelectionOperation itemSelectionOperation ) {
+		super( itemSelectionOperation.getComboBoxModel() );
+		this.itemSelectionOperation = itemSelectionOperation;
+		this.addListSelectionListener( this.listSelectionAdapter );
+		this.updateSelection();
+	}
 	private ItemSelectionOperation itemSelectionOperation;
 	private javax.swing.event.ListSelectionListener listSelectionAdapter = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "valueChanged", e );
 			if( e.getValueIsAdjusting() ) {
 				//pass
 			} else {
@@ -38,6 +47,14 @@ public class ZList<E> extends javax.swing.JList {
 			}
 		}
 	};
+	private void updateSelection() {
+		if( this.itemSelectionOperation != null ) {
+			javax.swing.ComboBoxModel comboBoxModel = this.itemSelectionOperation.getComboBoxModel();
+			this.setSelectedValue( comboBoxModel.getSelectedItem(), true );
+		} else {
+			this.setSelectedIndex( -1 );
+		}
+	}
 	public ItemSelectionOperation getItemSelectionOperation() {
 		return this.itemSelectionOperation;
 	}
@@ -50,6 +67,7 @@ public class ZList<E> extends javax.swing.JList {
 		if( this.itemSelectionOperation != null ) {
 			this.setModel( this.itemSelectionOperation.getComboBoxModel() );
 			this.addListSelectionListener( this.listSelectionAdapter );
+			this.updateSelection();
 		}
 	}
 }

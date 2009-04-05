@@ -28,7 +28,7 @@ package org.alice.stageide.personeditor;
 abstract class AbstractList<E> extends zoot.ZList< E > {
 	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
 		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-			super( comboBoxModel, -1 );
+			super( comboBoxModel );
 		}
 		public void performSelectionChange( zoot.ItemSelectionContext<E> context ) {
 			AbstractList.this.handlePerformSelectionChange( context );

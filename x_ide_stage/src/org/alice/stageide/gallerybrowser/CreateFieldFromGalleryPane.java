@@ -157,9 +157,9 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 		org.alice.ide.createdeclarationpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
 //		createFieldFromGalleryPane.showInJDialog( ide );
 //		createFieldPane.showInJDialog( ide );
-//		createLocalPane.showInJDialog( ide );
-		createProcedurePane.showInJDialog( ide );
-		createFunctionPane.showInJDialog( ide );
+		createLocalPane.showInJDialog( ide );
+//		createProcedurePane.showInJDialog( ide );
+//		createFunctionPane.showInJDialog( ide );
 		System.exit( 0 );
 	}
 }

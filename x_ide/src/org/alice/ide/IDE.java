@@ -334,6 +334,10 @@ public abstract class IDE extends zoot.ZFrame {
 
 		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel  {
 			private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "complex" ), new java.util.Locale( "en", "US", "java" ) };
+			private int selectedIndex;
+			public LocaleComboBoxModel() {
+				this.selectedIndex = 0;
+			}
 			public Object getElementAt( int index ) {
 				return this.candidates[ index ];
 			}
@@ -341,15 +345,31 @@ public abstract class IDE extends zoot.ZFrame {
 				return this.candidates.length;
 			}
 			public Object getSelectedItem() {
-				return null;
+				if( 0 <= this.selectedIndex && this.selectedIndex < this.candidates.length ) {
+					return this.candidates[ this.selectedIndex ];
+				} else {
+					return null;
+				}
 			}
-			public void setSelectedItem( Object locale ) {
+			public void setSelectedItem( Object selectedItem ) {
+				int index = -1;
+				if( selectedItem != null ) {
+					int i = 0;
+					for( java.util.Locale locale : this.candidates ) {
+						if( selectedItem.equals( locale ) ) {
+							index = i;
+							break;
+						}
+						i++;
+					}
+				}
+				this.selectedIndex = index;
 			}
 		}
 
 		class LocaleItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< java.util.Locale > {
 			public LocaleItemSelectionOperation() {
-				super( new LocaleComboBoxModel(), 0 );
+				super( new LocaleComboBoxModel() );
 			}
 			@Override
 			protected String getNameFor( int index, java.util.Locale locale ) {
