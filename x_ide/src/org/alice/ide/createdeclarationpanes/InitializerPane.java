@@ -262,10 +262,20 @@ abstract class ArrayInitializerPane extends AbstractInitializerPane {
 			super( new javax.swing.DefaultComboBoxModel() );
 		}
 		public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( context );
+			ArrayInitializerPane.this.handleSelectionChange( context );
 		}
 	}
 
+	private void updateButtons() {
+		int index = this.list.getSelectedIndex();
+		final int N = this.list.getModel().getSize();
+		this.removeButton.setEnabled( index != -1 );
+		this.moveUpButton.setEnabled( index > 0 );
+		this.moveDownButton.setEnabled( index >= 0 && index < N-1 );
+	}
+	private void handleSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		this.updateButtons();
+	}
 	private zoot.ZButton addButton = new zoot.ZButton( new AddItemOperation() );
 	private zoot.ZButton removeButton = new zoot.ZButton( new RemoveItemOperation() );
 	private zoot.ZButton moveUpButton = new zoot.ZButton( new MoveItemUpOperation() );
@@ -311,7 +321,8 @@ abstract class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 	public ArrayInitializerPane() {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
-
+		this.updateButtons();
+		
 		swing.GridBagPane buttonPane = new swing.GridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;

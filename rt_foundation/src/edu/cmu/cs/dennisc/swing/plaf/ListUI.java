@@ -45,7 +45,7 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 	};
 	protected abstract javax.swing.AbstractButton createComponentFor( int index, E e );
 	
-	private void add( int i ) {
+	private void add( final int i ) {
 		if( this.list != null ) {
 			final E value = (E)model.getElementAt( i );
 			javax.swing.AbstractButton button = this.createComponentFor( i, value );
@@ -53,7 +53,8 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 				public void itemStateChanged( java.awt.event.ItemEvent e ) {
 					if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 						if( ListUI.this.list != null ) {
-							ListUI.this.list.setSelectedValue( value, true );
+							javax.swing.ListSelectionModel model = ListUI.this.list.getSelectionModel();
+							model.setSelectionInterval( i, i );
 							edu.cmu.cs.dennisc.print.PrintUtilities.println( "itemStateChanged", value );
 						}
 					}
