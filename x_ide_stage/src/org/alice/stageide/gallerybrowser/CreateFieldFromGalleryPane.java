@@ -25,7 +25,7 @@ package org.alice.stageide.gallerybrowser;
 class GalleryIcon extends javax.swing.JLabel {
 	public GalleryIcon( java.io.File file ) {
 		this.setIcon( new javax.swing.ImageIcon( file.getAbsolutePath() ) );
-		this.setVerticalAlignment( CENTER );
+		this.setVerticalAlignment( BOTTOM );
 	}
 	@Override
 	public java.awt.Dimension getMaximumSize() {
@@ -49,6 +49,12 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = getTypeFromGalleryFile( file );
 		assert typeDeclaredInJava != null : file;
 		this.valueType = getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
+		this.initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType );
+	}
+	
+
+	public Object createInstanceInJava() {
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.valueType.getFirstClassEncounteredDeclaredInJava() );
 	}
 	
 	@Override
@@ -72,7 +78,11 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 	
 	@Override
 	protected boolean isIsReassignableComponentDesired() {
-		return true;
+		return false;
+	}
+	@Override
+	protected boolean isReassignable() {
+		return false;
 	}
 	@Override
 	protected boolean isIsReassignableComponentEnabled() {
@@ -96,7 +106,7 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 	}
 	@Override
 	protected java.awt.Component createInitializerComponent() {
-		return new swing.LineAxisPane( getIDE().getCodeFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType ) ) );
+		return new swing.LineAxisPane( getIDE().getCodeFactory().createExpressionPane( this.getInitializer() ) );
 	}
 		
 	@Override
@@ -141,6 +151,8 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 			return null;
 		}
 	}
+	
+	
 	public static void main( String[] args ) {
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
@@ -155,9 +167,9 @@ public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationp
 		org.alice.ide.createdeclarationpanes.CreateLocalPane createLocalPane = new org.alice.ide.createdeclarationpanes.CreateLocalPane( null );
 		org.alice.ide.createdeclarationpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.createdeclarationpanes.CreateProcedurePane( declaringType );
 		org.alice.ide.createdeclarationpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
-//		createFieldFromGalleryPane.showInJDialog( ide );
+		createFieldFromGalleryPane.showInJDialog( ide );
 //		createFieldPane.showInJDialog( ide );
-		createLocalPane.showInJDialog( ide );
+//		createLocalPane.showInJDialog( ide );
 //		createProcedurePane.showInJDialog( ide );
 //		createFunctionPane.showInJDialog( ide );
 		System.exit( 0 );

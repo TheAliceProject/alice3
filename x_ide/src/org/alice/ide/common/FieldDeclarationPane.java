@@ -20,25 +20,30 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.sceneeditor;
+package org.alice.ide.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FauxSceneEditor extends AbstractInstantiatingSceneEditor {
-	@Override
-	public void generateCodeForSetUp() {
-		throw new RuntimeException();
-	}
-	@Override
-	public void preserveProjectProperties() {
-		throw new RuntimeException();
-	}
-	@Override
-	public void restoreProjectProperties() {
-		//pass
-	}
-	@Override
-	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
+public class FieldDeclarationPane extends swing.LineAxisPane {
+	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		String text;
+		if( field.isFinal() ) {
+			text = "permanently set ";
+		} else {
+			text = "initialize ";
+		}
+		this.add( new zoot.ZLabel( text ) );
+		this.add( new TypeComponent( field.getValueType() ) );
+		org.alice.ide.common.NodeNameLabel nameLabel = new org.alice.ide.common.NodeNameLabel( field );
+		nameLabel.setFontToScaledFont( 1.5f );
+		this.add( nameLabel );
+		this.add( new org.alice.ide.common.GetsPane( true ) );
+		
+		//todo
+		boolean isDropDownPotentiallyDesired = factory instanceof org.alice.ide.memberseditor.Factory;
+		
+		
+		this.add( new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer, isDropDownPotentiallyDesired ) );
 	}
 }

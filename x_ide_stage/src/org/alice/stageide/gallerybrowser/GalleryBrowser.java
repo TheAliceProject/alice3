@@ -22,26 +22,139 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-import org.alice.ide.gallerybrowser.AbstractGalleryBrowser;
+class PersonEditorInputPane extends zoot.ZInputPane< org.alice.apis.stage.Person > {
+	private org.alice.stageide.personeditor.PersonEditor personEditor = new org.alice.stageide.personeditor.PersonEditor(); 
+	public PersonEditorInputPane() {
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( this.personEditor, java.awt.BorderLayout.CENTER );
+	}
+	@Override
+	protected org.alice.apis.stage.Person getActualInputValue() {
+		return this.personEditor.getPerson();
+	}
+}
+
+/**
+ * @author Dennis Cosgrove
+ */
+class CreateFieldFromPersonPane extends org.alice.ide.createdeclarationpanes.AbstractCreateFieldPane {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType valueType;
+	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
+
+	private GalleryIcon galleryIcon;
+	private org.alice.apis.stage.Person person;
+
+	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.stage.Person person ) {
+		super( declaringType );
+		this.person = person;
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( person.getClass() );
+		this.valueType = getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
+		this.initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType );
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+		return this.valueType;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+		return this.initializer;
+	}
+
+	@Override
+	protected boolean isEditableValueTypeComponentDesired() {
+		return false;
+	}
+	
+	@Override
+	protected boolean isEditableInitializerComponentDesired() {
+		return false;
+	}
+	
+	@Override
+	protected boolean isIsReassignableComponentDesired() {
+		return false;
+	}
+	@Override
+	protected boolean isReassignable() {
+		return false;
+	}
+	@Override
+	protected boolean isIsReassignableComponentEnabled() {
+		return false;
+	}
+	@Override
+	protected boolean getIsReassignableInitialState() {
+		return false;
+	}
+	
+	@Override
+	protected java.awt.Component createValueTypeComponent() {
+		swing.LineAxisPane valueTypeLine = new swing.LineAxisPane();
+		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldFromPersonPane.this.valueType ) );
+		if( CreateFieldFromPersonPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+			valueTypeLine.add( new zoot.ZLabel( " which extends ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
+			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldFromPersonPane.this.valueType.getSuperType() ) );
+//			valueTypeLine.add( new zoot.ZLabel( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
+		}
+		return valueTypeLine;
+	}
+	@Override
+	protected java.awt.Component createInitializerComponent() {
+		return new swing.LineAxisPane( getIDE().getCodeFactory().createExpressionPane( this.getInitializer() ) );
+	}
+		
+//	@Override
+//	public void addNotify() {
+//		super.addNotify();
+//		if( this.galleryIcon != null ) {
+//			//pass
+//		} else {
+//			this.galleryIcon = new GalleryIcon( this.file );
+//			this.add( this.galleryIcon, java.awt.BorderLayout.EAST );
+//		}
+//	}
+//	
+}
 
 class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public CreatePersonActionOperation() {
 		this.putValue( javax.swing.Action.NAME, "Create Person..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo CreatePersonActionOperation" );
-		zoot.ZFrame frame = new zoot.ZFrame() {
-			@Override
-			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "perform", actionContext );
+		PersonEditorInputPane personEditorInputPane = new PersonEditorInputPane();
+		org.alice.apis.stage.Person person = personEditorInputPane.showInJDialog( this.getIDE() );
+		if( person != null ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
+			CreateFieldFromPersonPane createFieldFromPersonPane = new CreateFieldFromPersonPane( declaringType, person );
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.showInJDialog( this.getIDE() );
+			if( field != null ) {
+				getIDE().getSceneEditor().handleFieldCreation( declaringType, field, person );
 			}
-			@Override
-			protected void handleQuit( java.util.EventObject e ) {
-				this.dispose();
-			}
-		};
-		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
-		frame.getContentPane().add( new org.alice.stageide.personeditor.PersonEditor() );
-		frame.setVisible( true );
+		}
+		
+//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
+//		CreateFieldFromGalleryPane createFieldPane = new CreateFieldFromGalleryPane( declaringType, this.file );
+//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
+//		if( field != null ) {
+//			//declaringType.fields.add( field );
+//			
+//			getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
+//		}
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo CreatePersonActionOperation" );
+//		zoot.ZFrame frame = new zoot.ZFrame() {
+//			@Override
+//			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+//			}
+//			@Override
+//			protected void handleQuit( java.util.EventObject e ) {
+//				this.dispose();
+//			}
+//		};
+//		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
+//		frame.getContentPane().add( new org.alice.stageide.personeditor.PersonEditor() );
+//		frame.setVisible( true );
 	}
 }
 class CreateTextActionOperation extends org.alice.ide.operations.AbstractActionOperation {
@@ -88,9 +201,11 @@ class GalleryFileActionOperation extends org.alice.ide.operations.AbstractAction
 
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
 		CreateFieldFromGalleryPane createFieldPane = new CreateFieldFromGalleryPane( declaringType, this.file );
-		Object instance = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
-		if( instance != null ) {
-			//getSceneEditor().addInstance( instance )
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
+		if( field != null ) {
+			//declaringType.fields.add( field );
+			
+			getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
 		}
 		
 //		edu.cmu.cs.dennisc.print.PrintUtilities.println( actionContext );

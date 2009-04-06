@@ -80,6 +80,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}.start();
 	}
 
+	@Override
+	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
+		org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
+		declaringType.fields.add( field );
+		this.putInstanceForField( field, transformable );
+		this.getIDE().setFieldSelection( field );
+		this.program.getScene().addComponent( transformable );
+	}
+	
 	private void handleSelection( org.alice.interact.event.SelectionEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
 		org.alice.apis.moveandturn.Element element = org.alice.apis.moveandturn.Element.getElement( sgTransformable );
@@ -418,11 +427,19 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 								createExpression(org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING)
 						) );
 					}
-					if( instance instanceof org.alice.apis.moveandturn.Text ) {
+					if( model instanceof org.alice.apis.moveandturn.Text ) {
 						org.alice.apis.moveandturn.Text text = (org.alice.apis.moveandturn.Text)model;
 						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setValue", String.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text.getValue() ) ) );
 						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setFont", org.alice.apis.moveandturn.Font.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text.getFont() ) ) );
 						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setLetterHeight", Number.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text.getLetterHeight() ) ) );
+					} else if( model instanceof org.alice.apis.stage.Person ) {
+						org.alice.apis.stage.Person person = (org.alice.apis.stage.Person)model;
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setHair", org.alice.apis.stage.Hair.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( (Enum)person.getHair() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setEyeColor", org.alice.apis.stage.EyeColor.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( (Enum)person.getEyeColor() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setSkinTone", org.alice.apis.stage.SkinTone.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( (Enum)person.getSkinTone() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setOutfit", org.alice.apis.stage.Outfit.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( (Enum)person.getOutfit() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setFitnessLevel", org.alice.apis.stage.FitnessLevel.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( person.getFitnessLevel() ) ) );
+						
 					}
 				}
 			} else if( instance instanceof org.alice.apis.moveandturn.Scene ) {

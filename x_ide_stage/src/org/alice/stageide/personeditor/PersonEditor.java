@@ -25,7 +25,8 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Person > {
+//public class PersonEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 	private javax.swing.JSplitPane splitPane;
 	private PersonViewer personViewer = PersonViewer.getSingleton();
 	private IngredientsPane ingredientsPane = new IngredientsPane();
@@ -39,6 +40,32 @@ public class PersonEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice
 		
 		personViewer.showInAWTContainer( container, new String[] {} );
 	}
+	
+	public org.alice.apis.stage.Person getPerson() {
+		org.alice.apis.stage.Person rv;
+		if( this.personViewer.getLifeStage() == org.alice.apis.stage.LifeStage.ADULT ) {
+			if( this.personViewer.getGender() == org.alice.apis.stage.Gender.FEMALE ) {
+				rv = new org.alice.apis.stage.FemaleAdult();
+			} else {
+				rv = new org.alice.apis.stage.MaleAdult();
+			}
+			
+			rv.setHair( this.personViewer.getHair() );
+			rv.setSkinTone( this.personViewer.getBaseSkinTone() );
+			rv.setEyeColor( this.personViewer.getBaseEyeColor() );
+			rv.setFitnessLevel( this.personViewer.getFitnessLevel() );
+			rv.setOutfit( this.personViewer.getFullBodyOutfit() );
+		} else {
+			rv = null;
+		}
+		
+		return rv;
+	}
+	@Override
+		public java.awt.Dimension getPreferredSize() {
+			return new java.awt.Dimension( 1024, 700 );
+		}
+	
 	public static void main( String[] args ) {
 		zoot.ZFrame frame = new zoot.ZFrame() {
 			@Override

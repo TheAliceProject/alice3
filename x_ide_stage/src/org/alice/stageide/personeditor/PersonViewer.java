@@ -70,6 +70,15 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			this.ingredientsPane.refresh();
 		}
 	}
+	
+	public org.alice.apis.stage.Person getPerson() {
+		if( this.lifeStage != null && this.gender != null ) {
+			return this.mapToMap.get( this.lifeStage, this.gender );
+		} else {
+			return null;
+		}
+	}
+
 	private void updatePerson() {
 		if( this.lifeStage != null && this.gender != null ) {
 			Person person = this.mapToMap.get( this.lifeStage, this.gender );

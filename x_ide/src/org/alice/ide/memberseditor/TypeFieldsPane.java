@@ -47,6 +47,9 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 			java.util.List< java.awt.Component > components = new java.util.LinkedList< java.awt.Component >();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
+			if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+				components.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
+			}
 			components.add( new org.alice.ide.memberseditor.templates.GetterTemplate( field ) );
 			if( field.isFinal() ) {
 				//pass

@@ -36,7 +36,7 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 	}
 	@Override
 	protected java.awt.Component createPreviewSubComponent() {
-		return new javax.swing.JLabel( "TODO" );
+		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getPreviewFactory(), this.getActualInputValue() );
 	}
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getActualInputValue() {
@@ -48,6 +48,7 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 			value = edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL;
 		}
 		rv.finalVolatileOrNeither.setValue( value );
+		rv.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
 		return rv;
 	}
 }
