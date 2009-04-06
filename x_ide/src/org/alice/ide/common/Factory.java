@@ -57,19 +57,27 @@ public abstract class Factory {
 		return new ConstantDeclarationPane( constantDeclaredInAlice );
 	}
 	
-	protected java.awt.Component createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property, boolean isBonusSpecified ) {
+	protected java.awt.Component createPropertyComponent( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property, int underscoreCount ) {
 		//todo:
 		String propertyName = property.getName();
 		//
 		
 		java.awt.Component rv;
-		if( isBonusSpecified ) {
+		if( underscoreCount == 2 ) {
 			if( "variable".equals( propertyName ) ) {
 				rv = this.createVariableDeclarationPane( (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)property.getValue() );
 			} else if( "constant".equals( propertyName ) ) {
 				rv = this.createConstantDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = new zoot.ZLabel( "TODO: handle bonus specified: " + propertyName );
+				rv = new zoot.ZLabel( "TODO: handle underscore count 2: " + propertyName );
+			}
+		} else if( underscoreCount == 1 ) {
+			if( "variable".equals( propertyName ) ) {
+				rv = new VariablePane( (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)property.getValue() );
+			} else if( "constant".equals( propertyName ) ) {
+				rv = new ConstantPane( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
+			} else {
+				rv = new zoot.ZLabel( "TODO: handle underscore count 1: " + propertyName );
 			}
 		} else {
 			rv = null;
@@ -107,6 +115,7 @@ public abstract class Factory {
 				} else {
 					rv = new InstancePropertyPane( this, property );
 				}
+				assert rv != null;
 			}
 		}
 		return rv;
@@ -119,10 +128,10 @@ public abstract class Factory {
 		return new zoot.ZLabel( textChunk.getText() );
 	}	
 	protected java.awt.Component createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		boolean isBonusSpecified = propertyChunk.isBonusSpecified();
+		int underscoreCount = propertyChunk.getUnderscoreCount();
 		String propertyName = propertyChunk.getPropertyName();
 		edu.cmu.cs.dennisc.property.InstanceProperty< ? > property = owner.getInstancePropertyNamed( propertyName );
-		return createPropertyComponent( property, isBonusSpecified );
+		return createPropertyComponent( property, underscoreCount );
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		String methodName = methodInvocationChunk.getMethodName();

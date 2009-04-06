@@ -22,34 +22,25 @@
  */
 package org.alice.ide.i18n;
 
-import org.alice.ide.common.AbstractArgumentListPropertyPane;
-import org.alice.ide.common.ConstantPane;
-import org.alice.ide.common.DefaultListPropertyPane;
-import org.alice.ide.common.DefaultNodeListPropertyPane;
-import org.alice.ide.common.ExpressionListPropertyPane;
-import org.alice.ide.common.ExpressionPropertyPane;
-import org.alice.ide.common.InstancePropertyPane;
-import org.alice.ide.common.NodePropertyPane;
-import org.alice.ide.common.StatementListPropertyPane;
-import org.alice.ide.common.TypedDeclarationPane;
-import org.alice.ide.common.VariablePane;
-
 /**
  * @author Dennis Cosgrove
  */
 public class PropertyChunk extends Chunk {
 	private String propertyName;
-	private boolean isBonusSpecified;
+	private int underscoreCount;
 	public PropertyChunk( String propertyName ) {
-		this.isBonusSpecified = propertyName.startsWith( "_" ) && propertyName.endsWith( "_" );
-		if( this.isBonusSpecified ) {
-			this.propertyName = propertyName.substring( 1, propertyName.length()-1 );
+		
+		if( propertyName.startsWith( "__" ) && propertyName.endsWith( "__" ) ) {
+			this.underscoreCount = 2;
+		} else if( propertyName.startsWith( "_" ) && propertyName.endsWith( "_" ) ) {
+			this.underscoreCount = 1;
 		} else {
-			this.propertyName = propertyName;
+			this.underscoreCount = 0;
 		}
+		this.propertyName = propertyName.substring( this.underscoreCount, propertyName.length()-this.underscoreCount );
 	}
-	public boolean isBonusSpecified() {
-		return this.isBonusSpecified;
+	public int getUnderscoreCount() {
+		return this.underscoreCount;
 	}
 	public String getPropertyName() {
 		return this.propertyName;
