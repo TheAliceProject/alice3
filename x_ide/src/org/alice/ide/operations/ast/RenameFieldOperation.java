@@ -20,21 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultPopupActionOperation extends AbstractPopupActionOperation {
-	private java.util.List< zoot.Operation > operations;
-	public DefaultPopupActionOperation( java.util.List< zoot.Operation > operations ) {
-		this.operations = operations;
-	}
-	public DefaultPopupActionOperation( zoot.Operation... operations ) {
-		this( edu.cmu.cs.dennisc.util.CollectionUtilities.createArrayList( operations ) );
-	}
-	@Override
-	protected java.util.List<Operation> getOperations() {
-		return this.operations;
+public class RenameFieldOperation extends RenameNodeOperation{
+	public RenameFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		super( field.name );
 	}
 }

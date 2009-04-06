@@ -20,21 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.ide.memberseditor.templates;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultPopupActionOperation extends AbstractPopupActionOperation {
-	private java.util.List< zoot.Operation > operations;
-	public DefaultPopupActionOperation( java.util.List< zoot.Operation > operations ) {
-		this.operations = operations;
-	}
-	public DefaultPopupActionOperation( zoot.Operation... operations ) {
-		this( edu.cmu.cs.dennisc.util.CollectionUtilities.createArrayList( operations ) );
-	}
-	@Override
-	protected java.util.List<Operation> getOperations() {
-		return this.operations;
+public class FieldPopupOperation extends zoot.DefaultPopupActionOperation {
+	public FieldPopupOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice methodInAlice ) {
+		super( 
+			new org.alice.ide.operations.ast.DeleteFieldOperation( methodInAlice ),
+			new org.alice.ide.operations.ast.RenameFieldOperation( methodInAlice )
+		);
 	}
 }

@@ -20,21 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultPopupActionOperation extends AbstractPopupActionOperation {
-	private java.util.List< zoot.Operation > operations;
-	public DefaultPopupActionOperation( java.util.List< zoot.Operation > operations ) {
-		this.operations = operations;
-	}
-	public DefaultPopupActionOperation( zoot.Operation... operations ) {
-		this( edu.cmu.cs.dennisc.util.CollectionUtilities.createArrayList( operations ) );
+public class DeleteMethodOperation extends AbstractDeleteNodeOperation {
+	public DeleteMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		super( method, ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)method.getDeclaringType()).methods );
 	}
 	@Override
-	protected java.util.List<Operation> getOperations() {
-		return this.operations;
+	protected boolean isClearToDelete() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isClearToDelete" );
+		return true;
 	}
 }

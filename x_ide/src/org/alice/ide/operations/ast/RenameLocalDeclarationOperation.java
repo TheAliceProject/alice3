@@ -25,29 +25,10 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class RenameLocalDeclarationOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class RenameLocalDeclarationOperation extends RenameNodeOperation {
 	private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
-	private String prevValue;
-	private String nextValue;
 	public RenameLocalDeclarationOperation( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
+		super( localDeclaredInAlice.name );
 		this.localDeclaredInAlice = localDeclaredInAlice;
-		this.putValue( javax.swing.Action.NAME, "rename..." );
-	}
-	public void perform( zoot.ActionContext actionContext ) {
-		this.nextValue = javax.swing.JOptionPane.showInputDialog( "name" );
-		if( nextValue != null && nextValue.length() > 0 ) {
-			this.prevValue = this.localDeclaredInAlice.name.getValue();
-			this.redo();
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
-	}
-
-	public void redo() {
-		this.localDeclaredInAlice.name.setValue( this.nextValue );
-	}
-	public void undo() {
-		this.localDeclaredInAlice.name.setValue( this.prevValue );
 	}
 }

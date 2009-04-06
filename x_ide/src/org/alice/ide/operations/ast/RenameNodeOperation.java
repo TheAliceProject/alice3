@@ -20,21 +20,34 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultPopupActionOperation extends AbstractPopupActionOperation {
-	private java.util.List< zoot.Operation > operations;
-	public DefaultPopupActionOperation( java.util.List< zoot.Operation > operations ) {
-		this.operations = operations;
+public abstract class RenameNodeOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
+	private String prevValue;
+	private String nextValue;
+	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty ) {
+		this.nameProperty = nameProperty;
+		this.putValue( javax.swing.Action.NAME, "rename..." );
 	}
-	public DefaultPopupActionOperation( zoot.Operation... operations ) {
-		this( edu.cmu.cs.dennisc.util.CollectionUtilities.createArrayList( operations ) );
+	public void perform( zoot.ActionContext actionContext ) {
+		this.nextValue = javax.swing.JOptionPane.showInputDialog( "name" );
+		if( nextValue != null && nextValue.length() > 0 ) {
+			this.prevValue = nameProperty.getValue();
+			this.redo();
+			actionContext.commit();
+		} else {
+			actionContext.cancel();
+		}
 	}
-	@Override
-	protected java.util.List<Operation> getOperations() {
-		return this.operations;
+
+	public void redo() {
+		this.nameProperty.setValue( this.nextValue );
+	}
+	public void undo() {
+		this.nameProperty.setValue( this.prevValue );
 	}
 }

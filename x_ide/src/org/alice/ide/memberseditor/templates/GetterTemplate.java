@@ -31,6 +31,10 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 	public GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( org.alice.ide.ast.NodeUtilities.createFieldAccess( field ) );
 		this.field = field;
+		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
+			this.setPopupOperation( new FieldPopupOperation( fieldInAlice ) );
+		}
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
