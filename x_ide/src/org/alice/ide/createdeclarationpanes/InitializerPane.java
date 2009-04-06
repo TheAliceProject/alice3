@@ -112,15 +112,18 @@ class FauxItem extends javax.swing.AbstractButton {
 	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane() {
 		@Override
 		protected void handleInitializerChange() {
+			this.revalidate();
+			this.repaint();
 		}
 	};
-
+	private zoot.ZLabel label = new zoot.ZLabel();
 	public FauxItem( int index, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
+		this.setIndex( index );
 		this.itemInitializerPane.setInitializer( initializer );
 		this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-		this.add( new zoot.ZLabel( "[ " + index + " ] " ), java.awt.BorderLayout.WEST );
+		this.add( this.label, java.awt.BorderLayout.WEST );
 		this.add( new swing.LineAxisPane( this.itemInitializerPane, new javax.swing.JLabel() ), java.awt.BorderLayout.CENTER );
 		//this.add( javax.swing.Box.createGlue() );
 		this.addMouseListener( new java.awt.event.MouseListener() {
@@ -144,8 +147,11 @@ class FauxItem extends javax.swing.AbstractButton {
 		//			}
 		//		} );
 	}
-	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this.itemInitializerPane.handleTypeChange( type.getComponentType() );
+	public void setIndex( int index ) {
+		this.label.setText( "[ " + index + " ]" );
+	}
+	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType componentType ) {
+		this.itemInitializerPane.handleTypeChange( componentType );
 	}
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
@@ -218,26 +224,32 @@ abstract class ArrayInitializerPane extends AbstractInitializerPane {
 		}
 	}
 
-	class MoveItemUpOperation extends org.alice.ide.operations.AbstractActionOperation {
+	abstract class AbstractMoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
+		protected void swapWithNext( int index ) {
+			if( index >= 0 ) {
+				javax.swing.DefaultComboBoxModel defaultComboBoxModel = ArrayInitializerPane.this.getDefaultComboBoxModel();
+				Object prev = defaultComboBoxModel.getElementAt( index );
+				defaultComboBoxModel.removeElementAt( index );
+				defaultComboBoxModel.insertElementAt( prev, index+1 );
+			}
+		}
+	}
+	
+	class MoveItemUpOperation extends AbstractMoveItemOperation {
 		public MoveItemUpOperation() {
 			this.putValue( javax.swing.Action.NAME, "move up" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
-			int index = ArrayInitializerPane.this.list.getSelectedIndex();
-			if( index >= 0 ) {
-				javax.swing.DefaultComboBoxModel defaultComboBoxModel = ArrayInitializerPane.this.getDefaultComboBoxModel();
-				Object prev = defaultComboBoxModel.getElementAt( index-1 );
-				defaultComboBoxModel.removeElementAt( index-1 );
-				defaultComboBoxModel.insertElementAt( prev, index );
-			}
+			this.swapWithNext( ArrayInitializerPane.this.list.getSelectedIndex()-1 );
 		}
 	}
 
-	class MoveItemDownOperation extends org.alice.ide.operations.AbstractActionOperation {
+	class MoveItemDownOperation extends AbstractMoveItemOperation {
 		public MoveItemDownOperation() {
 			this.putValue( javax.swing.Action.NAME, "move down" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
+			this.swapWithNext( ArrayInitializerPane.this.list.getSelectedIndex() );
 		}
 	}
 
@@ -274,7 +286,14 @@ abstract class ArrayInitializerPane extends AbstractInitializerPane {
 			setUI( new edu.cmu.cs.dennisc.swing.plaf.ListUI< edu.cmu.cs.dennisc.alice.ast.Expression >() {
 				@Override
 				protected javax.swing.AbstractButton createComponentFor( int index, edu.cmu.cs.dennisc.alice.ast.Expression e ) {
-					return new FauxItem( index, e );
+					FauxItem rv = new FauxItem( index, e );
+					rv.handleTypeChange( ArrayInitializerPane.this.arrayType.getComponentType() );
+					return rv;
+				}
+				@Override
+				protected void updateIndex( javax.swing.AbstractButton button, int index ) {
+					FauxItem fauxItem = (FauxItem)button;
+					fauxItem.setIndex( index );
 				}
 			} );
 		}
@@ -333,8 +352,11 @@ abstract class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 	@Override
 	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType ) {
+		
 		this.arrayType = arrayType;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleTypeChange (array)", this.arrayType );
 		edu.cmu.cs.dennisc.alice.ast.AbstractType componentType = this.arrayType.getComponentType();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleTypeChange (component)", componentType );
 		//this.list.handleTypeChange( type );
 		for( java.awt.Component component : this.list.getComponents() ) {
 			if( component instanceof FauxItem ) {

@@ -43,8 +43,33 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 			}
 		}
 	};
-	protected abstract javax.swing.AbstractButton createComponentFor( int index, E e );
+	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			
+		}
+	};
+	private java.beans.PropertyChangeListener propertyListener = new java.beans.PropertyChangeListener() {
+		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+			if( "model".equals( e.getPropertyName() ) ) {
+				ListUI.this.refresh();
+			}
+		}
+	};
 	
+	protected abstract javax.swing.AbstractButton createComponentFor( int index, E e );
+	protected abstract void updateIndex( javax.swing.AbstractButton button, int index );
+	
+	private void updateIndices() {
+		this.list.revalidate();
+		this.list.repaint();
+		int i=0;
+		java.util.Enumeration< javax.swing.AbstractButton > e = this.group.getElements();
+		while( e.hasMoreElements() ) {
+			javax.swing.AbstractButton b = e.nextElement();
+			this.updateIndex( b, i );
+			i++;
+		}
+	}
 	private void add( final int i ) {
 		if( this.list != null ) {
 			final E value = (E)model.getElementAt( i );
@@ -55,15 +80,13 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 						if( ListUI.this.list != null ) {
 							javax.swing.ListSelectionModel model = ListUI.this.list.getSelectionModel();
 							model.setSelectionInterval( i, i );
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "itemStateChanged", value );
 						}
 					}
 				}
 			} );
 			this.group.add( button );
 			this.list.add( button, this.gbc, i );
-			this.list.revalidate();
-			this.list.repaint();
+			this.updateIndices();
 		}
 	}
 	private void remove( int i ) {
@@ -71,12 +94,20 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 			javax.swing.AbstractButton button = (javax.swing.AbstractButton)this.list.getComponent( i );
 			this.group.remove( button );
 			this.list.remove( button );
-			this.list.revalidate();
-			this.list.repaint();
+			this.updateIndices();
 		}
 	}
 	private void refresh() {
 		if( this.list != null ) {
+			if( this.model != this.list.getModel() ) {
+				if( this.model != null ) {
+					this.model.removeListDataListener( this.listDataAdapter );
+				}
+				this.model = this.list.getModel();
+				if( this.model != null ) {
+					this.model.addListDataListener( this.listDataAdapter );
+				}
+			}
 			this.list.removeAll();
 			this.group = new javax.swing.ButtonGroup();
 			final int N = this.model.getSize();
@@ -101,14 +132,13 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 		this.gbc.fill = java.awt.GridBagConstraints.BOTH;
 		this.gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		this.gbc.weightx = 1.0;
-		this.model = this.list.getModel();
-		this.model.addListDataListener( this.listDataAdapter );
 		this.refresh();
 	}
 	
 	@Override
 	public void uninstallUI( javax.swing.JComponent c ) {
 		this.model.removeListDataListener( this.listDataAdapter );
+		this.model = null;
 		this.group = null;
 		this.gbc = null;
 		this.list.setLayout( null );

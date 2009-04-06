@@ -884,7 +884,7 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		} else {
 			//todo:
-			blank.addFillIn( new cascade.CancelFillIn( "value type must be filled in first" ) );
+			blank.addFillIn( new cascade.CancelFillIn( "type is <unset>.  canceling." ) );
 		}
 		
 	}
