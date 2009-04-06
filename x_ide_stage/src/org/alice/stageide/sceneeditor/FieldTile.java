@@ -64,8 +64,13 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	}
 	
 	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv ) {
-		rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( this ) );
-		rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( this ) );
+//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
+//		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
+//		rv.add( new org.alice.ide.operations.ast.DeleteFieldOperation( fieldInAlice ) );
+//		if( this.field.getValueType().isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
+			rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( this ) );
+			rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( this ) );
+//		}
 		return rv;
 	}
 	private java.util.List< zoot.Operation > createPopupOperations() {

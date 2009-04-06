@@ -20,17 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodPopupOperation extends zoot.DefaultPopupActionOperation {
-	public MethodPopupOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice ) {
-		super( 
-			new org.alice.ide.operations.ast.RenameMethodOperation( methodInAlice ),
-			new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ),
-			new org.alice.ide.operations.ast.FocusCodeOperation( methodInAlice )
-		);
+public class RenameParameterOperation extends RenameNodeOperation {
+	public RenameParameterOperation( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( parameter.name );
 	}
 }

@@ -20,17 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.memberseditor.templates;
+package org.alice.ide.common;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MethodPopupOperation extends zoot.DefaultPopupActionOperation {
-	public MethodPopupOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice ) {
-		super( 
-			new org.alice.ide.operations.ast.RenameMethodOperation( methodInAlice ),
-			new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ),
-			new org.alice.ide.operations.ast.FocusCodeOperation( methodInAlice )
-		);
+public abstract class LocalPane extends AccessiblePane {
+	public LocalPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+		this.add( new org.alice.ide.common.LocalNameLabel( local ) );
+		this.setPopupOperation( new zoot.DefaultPopupActionOperation(
+				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
+		) );
 	}
 }

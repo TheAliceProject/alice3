@@ -25,11 +25,11 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class VariablePane extends AccessiblePane {
+public class VariablePane extends LocalPane {
 	private edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable;
 	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		super( variable );
 		this.variable = variable;
-		this.add( new org.alice.ide.common.LocalNameLabel( variable ) );
 		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
 	}
 	@Override

@@ -26,9 +26,7 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class RenameLocalDeclarationOperation extends RenameNodeOperation {
-	private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
 	public RenameLocalDeclarationOperation( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
 		super( localDeclaredInAlice.name );
-		this.localDeclaredInAlice = localDeclaredInAlice;
 	}
 }

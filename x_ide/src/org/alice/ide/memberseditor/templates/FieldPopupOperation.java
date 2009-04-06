@@ -28,8 +28,8 @@ package org.alice.ide.memberseditor.templates;
 public class FieldPopupOperation extends zoot.DefaultPopupActionOperation {
 	public FieldPopupOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice methodInAlice ) {
 		super( 
-			new org.alice.ide.operations.ast.DeleteFieldOperation( methodInAlice ),
-			new org.alice.ide.operations.ast.RenameFieldOperation( methodInAlice )
+			new org.alice.ide.operations.ast.RenameFieldOperation( methodInAlice ),
+			new org.alice.ide.operations.ast.DeleteFieldOperation( methodInAlice )
 		);
 	}
 }

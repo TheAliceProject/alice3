@@ -25,12 +25,11 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantPane extends AccessiblePane {
+public class ConstantPane extends LocalPane {
 	private edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant;
 	public ConstantPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
+		super( constant );
 		this.constant = constant;
-		//this.add( new alice.ide.ast.NodeNameLabel( constant ) );
-		this.add( new org.alice.ide.common.LocalNameLabel( constant ) );
 		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
 	}
 	@Override

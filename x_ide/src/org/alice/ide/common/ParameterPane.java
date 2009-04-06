@@ -31,6 +31,11 @@ public class ParameterPane extends AccessiblePane {
 		this.parameter = parameter;
 		this.add( new org.alice.ide.common.NodeNameLabel( this.parameter ) );
 		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
+		if( this.parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice ) {
+			this.setPopupOperation( new zoot.DefaultPopupActionOperation(
+					new org.alice.ide.operations.ast.RenameParameterOperation( (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter )
+			) );
+		}
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
