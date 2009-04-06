@@ -877,6 +877,11 @@ public abstract class IDE extends zoot.ZFrame {
 				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)type.getFirstClassEncounteredDeclaredInJava() );
 				constantsOwningFillerInner.addFillIns( blank );
 			}
+			
+			if( type.isArray() ) {
+				blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );
+			}
+			
 			if( blank.getChildren().size() > 0 ) {
 				//pass
 			} else {

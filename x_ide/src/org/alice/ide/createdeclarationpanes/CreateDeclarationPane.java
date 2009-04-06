@@ -22,6 +22,8 @@
  */
 package org.alice.ide.createdeclarationpanes;
 
+import org.alice.ide.initializer.InitializerPane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -37,6 +39,9 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 		}
 	}
 	class MyTypePane extends TypePane {
+		public MyTypePane() {
+			super( false, true );
+		}
 		@Override
 		protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 			CreateDeclarationPane.this.handleTypeChange();

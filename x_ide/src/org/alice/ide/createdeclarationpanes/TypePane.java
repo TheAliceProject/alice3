@@ -49,7 +49,7 @@ public abstract class TypePane extends swing.LineAxisPane {
 		}
 		return rv;
 	}
-	public TypePane() {
+	public TypePane( boolean isArrayCheckBoxSelected, boolean isArrayCheckBoxEnabled ) {
 		this.typeComboBox = new org.alice.ide.common.TypeComboBox() {
 			@Override
 			protected void handleTypeChange() {
@@ -58,6 +58,8 @@ public abstract class TypePane extends swing.LineAxisPane {
 		};
 		this.isArrayCheckBox = new zoot.ZCheckBox( new IsArrayStateOperation() );
 		this.isArrayCheckBox.setOpaque( false );
+		this.isArrayCheckBox.setSelected( isArrayCheckBoxSelected );
+		this.isArrayCheckBox.setEnabled( isArrayCheckBoxEnabled );
 		this.add( this.typeComboBox );
 		this.add( this.isArrayCheckBox );
 	}

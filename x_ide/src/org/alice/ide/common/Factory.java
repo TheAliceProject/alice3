@@ -84,8 +84,8 @@ public abstract class Factory {
 			if( "operator".equals( propertyName ) ) {
 				String value = Factory.operatorMap.get( property.getValue() );
 				if( value != null ) {
-					zoot.ZLabel label = new zoot.ZLabel( value );
-					label.setFontToScaledFont( 2.0f );
+					zoot.ZLabel label = new zoot.ZLabel( value, zoot.font.ZTextWeight.BOLD );
+					label.setFontToScaledFont( 1.5f );
 					rv = label;
 				}
 			}

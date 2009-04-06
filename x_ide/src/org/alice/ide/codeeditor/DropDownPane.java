@@ -55,7 +55,7 @@ public abstract class DropDownPane extends org.alice.ide.AbstractControl {
 //		return false;
 //	}
 	
-	private static final int INSET = 2;
+	private static final int INSET = 1;
 	private static final int AFFORDANCE_SIZE = 9;
 	@Override
 	protected int getInsetTop() {
