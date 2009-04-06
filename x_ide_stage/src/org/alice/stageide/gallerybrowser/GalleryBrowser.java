@@ -37,84 +37,10 @@ class PersonEditorInputPane extends zoot.ZInputPane< org.alice.apis.stage.Person
 /**
  * @author Dennis Cosgrove
  */
-class CreateFieldFromPersonPane extends org.alice.ide.createdeclarationpanes.AbstractCreateFieldPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType valueType;
-	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
-
-	private GalleryIcon galleryIcon;
-	private org.alice.apis.stage.Person person;
-
+class CreateFieldFromPersonPane extends CreateLargelyPredeterminedFieldPane {
 	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.stage.Person person ) {
-		super( declaringType );
-		this.person = person;
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( person.getClass() );
-		this.valueType = getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
-		this.initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType );
+		super( declaringType, person.getClass() );
 	}
-	
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
-		return this.valueType;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-		return this.initializer;
-	}
-
-	@Override
-	protected boolean isEditableValueTypeComponentDesired() {
-		return false;
-	}
-	
-	@Override
-	protected boolean isEditableInitializerComponentDesired() {
-		return false;
-	}
-	
-	@Override
-	protected boolean isIsReassignableComponentDesired() {
-		return false;
-	}
-	@Override
-	protected boolean isReassignable() {
-		return false;
-	}
-	@Override
-	protected boolean isIsReassignableComponentEnabled() {
-		return false;
-	}
-	@Override
-	protected boolean getIsReassignableInitialState() {
-		return false;
-	}
-	
-	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		swing.LineAxisPane valueTypeLine = new swing.LineAxisPane();
-		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldFromPersonPane.this.valueType ) );
-		if( CreateFieldFromPersonPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			valueTypeLine.add( new zoot.ZLabel( " which extends ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
-			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldFromPersonPane.this.valueType.getSuperType() ) );
-//			valueTypeLine.add( new zoot.ZLabel( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
-		}
-		return valueTypeLine;
-	}
-	@Override
-	protected java.awt.Component createInitializerComponent() {
-		return new swing.LineAxisPane( getIDE().getCodeFactory().createExpressionPane( this.getInitializer() ) );
-	}
-		
-//	@Override
-//	public void addNotify() {
-//		super.addNotify();
-//		if( this.galleryIcon != null ) {
-//			//pass
-//		} else {
-//			this.galleryIcon = new GalleryIcon( this.file );
-//			this.add( this.galleryIcon, java.awt.BorderLayout.EAST );
-//		}
-//	}
-//	
 }
 
 class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {

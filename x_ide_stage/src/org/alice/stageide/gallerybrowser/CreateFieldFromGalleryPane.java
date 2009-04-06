@@ -36,79 +36,20 @@ class GalleryIcon extends javax.swing.JLabel {
 /**
  * @author Dennis Cosgrove
  */
-public class CreateFieldFromGalleryPane extends org.alice.ide.createdeclarationpanes.AbstractCreateFieldPane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType valueType;
-	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
-
+public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldPane {
 	private GalleryIcon galleryIcon;
 	private java.io.File file;
 
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file ) {
-		super( declaringType );
+		super( declaringType, getTypeFromGalleryFile( file ).getCls() );
 		this.file = file;
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = getTypeFromGalleryFile( file );
-		assert typeDeclaredInJava != null : file;
-		this.valueType = getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
-		this.initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType );
 	}
 	
 
 	public Object createInstanceInJava() {
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.valueType.getFirstClassEncounteredDeclaredInJava() );
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstClassEncounteredDeclaredInJava() );
 	}
 	
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
-		return this.valueType;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-		return this.initializer;
-	}
-
-	@Override
-	protected boolean isEditableValueTypeComponentDesired() {
-		return false;
-	}
-	
-	@Override
-	protected boolean isEditableInitializerComponentDesired() {
-		return false;
-	}
-	
-	@Override
-	protected boolean isIsReassignableComponentDesired() {
-		return false;
-	}
-	@Override
-	protected boolean isReassignable() {
-		return false;
-	}
-	@Override
-	protected boolean isIsReassignableComponentEnabled() {
-		return false;
-	}
-	@Override
-	protected boolean getIsReassignableInitialState() {
-		return false;
-	}
-	
-	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		swing.LineAxisPane valueTypeLine = new swing.LineAxisPane();
-		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldFromGalleryPane.this.valueType ) );
-		if( CreateFieldFromGalleryPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			valueTypeLine.add( new zoot.ZLabel( " which extends ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
-			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateFieldFromGalleryPane.this.valueType.getSuperType() ) );
-//			valueTypeLine.add( new zoot.ZLabel( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
-		}
-		return valueTypeLine;
-	}
-	@Override
-	protected java.awt.Component createInitializerComponent() {
-		return new swing.LineAxisPane( getIDE().getCodeFactory().createExpressionPane( this.getInitializer() ) );
-	}
-		
 	@Override
 	public void addNotify() {
 		super.addNotify();
