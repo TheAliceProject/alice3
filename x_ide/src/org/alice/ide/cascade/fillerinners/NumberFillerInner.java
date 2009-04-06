@@ -54,21 +54,33 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		blank.addFillIn( new cascade.MenuFillIn( "Math" ) {
 			@Override
 			protected void addChildrenToBlank(cascade.Blank blank) {
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", java.lang.Double.TYPE );
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "rint", java.lang.Double.TYPE );
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "ceil", java.lang.Double.TYPE );
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "floor", java.lang.Double.TYPE );
-				blank.addSeparator();
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", java.lang.Double.TYPE, java.lang.Double.TYPE );
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "max", java.lang.Double.TYPE, java.lang.Double.TYPE );
-				blank.addSeparator();
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "sqrt", java.lang.Double.TYPE );
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE );
-				blank.addSeparator();
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "exp", java.lang.Double.TYPE );
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "log", java.lang.Double.TYPE );
-				blank.addSeparator();
-				blank.addFillIn( new cascade.MenuFillIn( "Trigonometry" ) {
+				//blank.addSeparator();
+				blank.addFillIn( new cascade.MenuFillIn( "min, max" ) {
+					@Override
+					protected void addChildrenToBlank( cascade.Blank blank ) {
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", java.lang.Double.TYPE, java.lang.Double.TYPE );
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "max", java.lang.Double.TYPE, java.lang.Double.TYPE );
+					}
+				} );
+				blank.addFillIn( new cascade.MenuFillIn( "absolute value, round, ceiling, floor" ) {
+					@Override
+					protected void addChildrenToBlank( cascade.Blank blank ) {
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", java.lang.Double.TYPE );
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "rint", java.lang.Double.TYPE );
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "ceil", java.lang.Double.TYPE );
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "floor", java.lang.Double.TYPE );
+					}
+				} );
+				//blank.addSeparator();
+				blank.addFillIn( new cascade.MenuFillIn( "sqrt, pow" ) {
+					@Override
+					protected void addChildrenToBlank( cascade.Blank blank ) {
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "sqrt", java.lang.Double.TYPE );
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE );
+					}
+				} );
+				//blank.addSeparator();
+				blank.addFillIn( new cascade.MenuFillIn( "sin, cos, tan, asin, acos, atan, atan2, PI" ) {
 					@Override
 					protected void addChildrenToBlank( cascade.Blank blank ) {
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "sin", java.lang.Double.TYPE );
@@ -78,6 +90,16 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "acos", java.lang.Double.TYPE );
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "atan", java.lang.Double.TYPE );
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "atan2", java.lang.Double.TYPE, java.lang.Double.TYPE );
+						addNodeChildForField( blank, MATH_TYPE_EXPRESSION, java.lang.Double.TYPE, "PI" );
+					}
+				} );
+				//blank.addSeparator();
+				blank.addFillIn( new cascade.MenuFillIn( "exp, log, E" ) {
+					@Override
+					protected void addChildrenToBlank( cascade.Blank blank ) {
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "exp", java.lang.Double.TYPE );
+						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "log", java.lang.Double.TYPE );
+						addNodeChildForField( blank, MATH_TYPE_EXPRESSION, java.lang.Double.TYPE, "E" );
 					}
 				} );
 			}

@@ -34,6 +34,12 @@ public abstract class ExpressionFillerInner {
 		org.alice.ide.cascade.MethodInvocationFillIn methodInvocationFillIn = new org.alice.ide.cascade.MethodInvocationFillIn( typeExpression, method );
 		blank.addFillIn( methodInvocationFillIn );
 	}
+	protected static void addNodeChildForField( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, Class<?> valueCls, String fieldName ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = typeExpression.value.getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( valueCls, fieldName );
+		assert field != null : fieldName;
+		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( new edu.cmu.cs.dennisc.alice.ast.FieldAccess( typeExpression, field ) ) );
+	}
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls;
