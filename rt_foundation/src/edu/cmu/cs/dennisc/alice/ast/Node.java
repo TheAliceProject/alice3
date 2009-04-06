@@ -470,6 +470,10 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		}
 		return rv;
 	}
+	
+	protected void handleMissingProperty( String propertyName, Object value ) {
+		throw new RuntimeException( propertyName );
+	}
 
 	protected final void decodeNode( Decoder decoder, org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
@@ -478,9 +482,14 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 			assert xmlNode instanceof org.w3c.dom.Element : xmlNode;
 			org.w3c.dom.Element xmlProperty = (org.w3c.dom.Element)xmlNode;
 			if( xmlProperty.getTagName().equals( "property" ) ) {
-				edu.cmu.cs.dennisc.property.Property property = this.getPropertyNamed( xmlProperty.getAttribute( "name" ) );
+				String propertyName = xmlProperty.getAttribute( "name" );
+				edu.cmu.cs.dennisc.property.Property property = this.getPropertyNamed( propertyName );
 				Object value = decoder.decodeValue( (org.w3c.dom.Element)xmlProperty.getFirstChild(), map );
-				property.setValue( this, value );
+				if( property != null ) {
+					property.setValue( this, value );
+				} else {
+					this.handleMissingProperty( propertyName, value );
+				}
 			}
 		}
 		postDecode();

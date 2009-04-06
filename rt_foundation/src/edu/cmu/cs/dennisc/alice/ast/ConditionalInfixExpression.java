@@ -58,4 +58,10 @@ public class ConditionalInfixExpression extends InfixExpression< ConditionalInfi
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
 		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
+	@Override
+	protected void handleMissingProperty( String propertyName, Object value ) {
+		assert propertyName.equals( "expressionType" );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( propertyName, value );
+	}
+	
 }

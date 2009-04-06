@@ -257,4 +257,14 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
 		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
+	@Override
+	protected void handleMissingProperty( String propertyName, Object value ) {
+		assert propertyName.equals( "expressionType" );
+		if( value == TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
+			value = TypeDeclaredInJava.get( Number.class );
+		}
+		this.leftOperandType.setValue( (AbstractType)value );
+		this.rightOperandType.setValue( (AbstractType)value );
+	}
+	
 }
