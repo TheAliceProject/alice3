@@ -29,6 +29,12 @@ public abstract class Blank extends Node {
 	private edu.cmu.cs.dennisc.task.TaskObserver taskObserver;
 	private FillIn selectedFillIn;
 
+	public FillIn getFillInAt( int index ) {
+		return (FillIn)getChildren().get( index );
+	}
+	public FillIn getParentFillIn() {
+		return (FillIn)getParent();
+	}
 	
 	public void addFillIn( cascade.FillIn fillIn ) {
 		super.addChild( fillIn );

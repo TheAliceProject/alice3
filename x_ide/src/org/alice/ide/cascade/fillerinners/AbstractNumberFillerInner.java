@@ -30,7 +30,4 @@ public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
 		super( type, cls );
 	}
 	protected static final edu.cmu.cs.dennisc.alice.ast.TypeExpression MATH_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( java.lang.Math.class );
-//	protected void addArithmetic( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType, operandType ) {
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.ArithmeticInfixExpressionFillIn( valueType, operandType ) )
-//	}
 }

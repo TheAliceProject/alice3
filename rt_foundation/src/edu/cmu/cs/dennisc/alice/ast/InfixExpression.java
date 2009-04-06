@@ -25,37 +25,27 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConditionalInfixExpression extends InfixExpression< ConditionalInfixExpression.Operator > {
-	public enum Operator {
-		AND() { 
-			@Override
-			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
-				return leftOperand && rightOperand;
-			}			
-		},
-		OR() { 
-			@Override
-			public Boolean operate( Boolean leftOperand, Boolean rightOperand ) {
-				return leftOperand || rightOperand;
-			}			
-		};
-		public abstract Boolean operate( Boolean leftOperand, Boolean rightOperand );
+public abstract class InfixExpression< E > extends Expression {
+	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType getExpressionType() {
+			return InfixExpression.this.getLeftOperandType();
+		}
+	};
+	public edu.cmu.cs.dennisc.property.InstanceProperty< E > operator = new edu.cmu.cs.dennisc.property.InstanceProperty< E >( this, null );
+	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
+		@Override
+		public AbstractType getExpressionType() {
+			return InfixExpression.this.getRightOperandType();
+		}
+	};
+	public InfixExpression() {
 	}
-	public ConditionalInfixExpression() {
+	public InfixExpression( Expression leftOperand, E operator, Expression rightOperand ) {
+		this.leftOperand.setValue( leftOperand );
+		this.operator.setValue( operator );
+		this.rightOperand.setValue( rightOperand );
 	}
-	public ConditionalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand ) {
-		super( leftOperand, operator, rightOperand );
-	}
-	@Override
-	protected AbstractType getLeftOperandType() {
-		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
-	}
-	@Override
-	protected AbstractType getRightOperandType() {
-		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
-		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
-	}
+	protected abstract AbstractType getLeftOperandType();
+	protected abstract AbstractType getRightOperandType();
 }

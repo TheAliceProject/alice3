@@ -35,6 +35,13 @@ public abstract class FillIn< E > extends Node {
 		return this.getNextNode() == null;
 	}
 	
+	public Blank getBlankAt( int index ) {
+		return (Blank)getChildren().get( index );
+	}
+	public Blank getParentBlank() {
+		return (Blank)getParent();
+	}
+	
 	@Override
 	protected Node getNextNode() {
 		java.util.List< Node > children = this.getChildren();

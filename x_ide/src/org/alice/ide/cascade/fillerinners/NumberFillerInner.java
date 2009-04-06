@@ -54,7 +54,8 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		blank.addFillIn( new cascade.MenuFillIn( "Math" ) {
 			@Override
 			protected void addChildrenToBlank(cascade.Blank blank) {
-				//blank.addSeparator();
+				blank.addFillIn( new org.alice.ide.cascade.ArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, java.lang.Number.class ) );
+				blank.addSeparator();
 				blank.addFillIn( new cascade.MenuFillIn( "min, max" ) {
 					@Override
 					protected void addChildrenToBlank( cascade.Blank blank ) {

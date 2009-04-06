@@ -40,9 +40,16 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextBoolean" );
 			}
 		} );
-//		blank.addSeparator()
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.ConditionalInfixExpressionFillIn() )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Real Number)", java.lang.Double ) )
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.RelationalInfixExpressionFillIn( "relational expressions { ==, !=, <, <=, >=, > } (Integer)", java.lang.Integer ) )
+		blank.addSeparator();
+		blank.addFillIn( new org.alice.ide.cascade.ConditionalExpressionFillIn() );
+		blank.addSeparator();
+		blank.addFillIn( new cascade.MenuFillIn( "relational { ==, !=, <, <=, >=, > }" ) {
+			@Override
+			protected void addChildrenToBlank(cascade.Blank blank) {
+				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Real Number", Number.class ) );
+				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Integer", Integer.class ) );
+			}
+		} );
+		blank.addSeparator();
 	}
 }

@@ -25,7 +25,7 @@ package org.alice.ide.cascade.fillerinners;
 /**
  * @author Dennis Cosgrove
  */
-public class StringFillerInner extends AbstractNumberFillerInner {
+public class StringFillerInner extends ExpressionFillerInner {
 	public StringFillerInner() {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), edu.cmu.cs.dennisc.alice.ast.StringLiteral.class );
 	}

@@ -25,7 +25,8 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ArithmeticInfixExpression extends Expression {
+public class ArithmeticInfixExpression extends InfixExpression< ArithmeticInfixExpression.Operator > {
+	public DeclarationProperty<AbstractType> expressionType = new DeclarationProperty<AbstractType>( this );
 	public enum Operator {
 		PLUS() { 
 			@Override
@@ -176,23 +177,10 @@ public class ArithmeticInfixExpression extends Expression {
 		};
 		public abstract Number operate( Number leftOperand, Number rightOperand );
 	}
-	public DeclarationProperty<AbstractType> expressionType = new DeclarationProperty<AbstractType>( this );
-	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType getExpressionType() {
-			return ArithmeticInfixExpression.this.expressionType.getValue();
-		}
-	};
-	public edu.cmu.cs.dennisc.property.InstanceProperty< Operator > operator = new edu.cmu.cs.dennisc.property.InstanceProperty< Operator >( this, null );
-	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType getExpressionType() {
-			return ArithmeticInfixExpression.this.expressionType.getValue();
-		}
-	};
 	public ArithmeticInfixExpression() {
 	}
-	public ArithmeticInfixExpression( AbstractType expressionType, Expression leftOperand, Operator operator, Expression rightOperand ) {
+	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType expressionType ) {
+		super( leftOperand, operator, rightOperand );
 		//todo
 		assert 
 			TypeDeclaredInJava.get( Number.class ).isAssignableFrom( expressionType ) 
@@ -201,9 +189,17 @@ public class ArithmeticInfixExpression extends Expression {
 			|| 
 			TypeDeclaredInJava.get( Integer.TYPE ).isAssignableFrom( expressionType );
 		this.expressionType.setValue( expressionType );
-		this.leftOperand.setValue( leftOperand );
-		this.operator.setValue( operator );
-		this.rightOperand.setValue( rightOperand );
+	}
+	public ArithmeticInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, Class<?> expressionCls ) {
+		this( leftOperand, operator, rightOperand, TypeDeclaredInJava.get( expressionCls ) );
+	}
+	@Override
+	protected AbstractType getLeftOperandType() {
+		return this.expressionType.getValue();
+	}
+	@Override
+	protected AbstractType getRightOperandType() {
+		return this.expressionType.getValue();
 	}
 	@Override
 	public AbstractType getType() {

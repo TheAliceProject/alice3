@@ -35,16 +35,15 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		this.addExpressionFillIn( blank, 1 );
 		this.addExpressionFillIn( blank, 2 );
 		this.addExpressionFillIn( blank, 3 );
-		this.addExpressionFillIn( blank, 4 );
-		this.addExpressionFillIn( blank, 5 );
-		this.addExpressionFillIn( blank, 6 );
-		this.addExpressionFillIn( blank, 7 );
-		this.addExpressionFillIn( blank, 8 );
-		this.addExpressionFillIn( blank, 9 );
+//		this.addExpressionFillIn( blank, 4 );
+//		this.addExpressionFillIn( blank, 5 );
+//		this.addExpressionFillIn( blank, 6 );
+//		this.addExpressionFillIn( blank, 7 );
+//		this.addExpressionFillIn( blank, 8 );
+//		this.addExpressionFillIn( blank, 9 );
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
 		blank.addSeparator();
-//		self._addArithmeticFillIns( blank, self._type, self._type )
 		blank.addFillIn( new cascade.MenuFillIn( "Random" ) {
 			@Override
 			protected void addChildrenToBlank(cascade.Blank blank) {
@@ -57,6 +56,8 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		blank.addFillIn( new cascade.MenuFillIn( "Math" ) {
 			@Override
 			protected void addChildrenToBlank(cascade.Blank blank) {
+				blank.addFillIn( new org.alice.ide.cascade.ArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, java.lang.Integer.class ) );
+				blank.addSeparator();
 				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", java.lang.Integer.TYPE );
 				blank.addSeparator();
 				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", java.lang.Integer.TYPE, java.lang.Integer.TYPE );

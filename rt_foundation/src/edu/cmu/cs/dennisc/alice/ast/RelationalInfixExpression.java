@@ -22,10 +22,12 @@
  */
 package edu.cmu.cs.dennisc.alice.ast;
 
+import edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator;
+
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalInfixExpression extends Expression {
+public class RelationalInfixExpression extends InfixExpression< RelationalInfixExpression.Operator > {
 	private static boolean isNumberComparisonDesired( Object leftOperand, Object rightOperand ) {
 		return leftOperand instanceof Number && rightOperand instanceof Number;
 	}
@@ -233,37 +235,26 @@ public class RelationalInfixExpression extends Expression {
 			}
 		};
 		public abstract Boolean operate( Object leftOperand, Object rightOperand );
-		
 	}
-	public DeclarationProperty<AbstractType> expressionType = new DeclarationProperty<AbstractType>( this );
-	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType getExpressionType() {
-			return RelationalInfixExpression.this.expressionType.getValue();
-		}
-	};
-	public edu.cmu.cs.dennisc.property.InstanceProperty< Operator > operator = new edu.cmu.cs.dennisc.property.InstanceProperty< Operator >( this, null );
-	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
-		@Override
-		public AbstractType getExpressionType() {
-			return RelationalInfixExpression.this.expressionType.getValue();
-		}
-	};
+	public DeclarationProperty<AbstractType> leftOperandType = new DeclarationProperty<AbstractType>( this );
+	public DeclarationProperty<AbstractType> rightOperandType = new DeclarationProperty<AbstractType>( this );
 	public RelationalInfixExpression() {
 	}
-	public RelationalInfixExpression( AbstractType expressionType, Expression leftOperand, Operator operator, Expression rightOperand ) {
-		if( operator == Operator.EQUALS || operator == Operator.NOT_EQUALS ) {
-			//pass
-		} else {
-			assert TypeDeclaredInJava.get( Number.class ).isAssignableFrom( expressionType ) || TypeDeclaredInJava.get( Character.class ).isAssignableFrom( expressionType ) ;
-		}
-		this.expressionType.setValue( expressionType );
-		this.leftOperand.setValue( leftOperand );
-		this.operator.setValue( operator );
-		this.rightOperand.setValue( rightOperand );
+	public RelationalInfixExpression( Expression leftOperand, Operator operator, Expression rightOperand, AbstractType leftOperandType, AbstractType rightOperandType ) {
+		super( leftOperand, operator, rightOperand );
+		this.leftOperandType.setValue( leftOperandType );
+		this.rightOperandType.setValue( rightOperandType );
 	}
 	@Override
-	public AbstractType getType() {
-		return TypeDeclaredInJava.get( Boolean.class );
+	protected AbstractType getLeftOperandType() {
+		return this.leftOperandType.getValue();
+	}
+	@Override
+	protected AbstractType getRightOperandType() {
+		return this.rightOperandType.getValue();
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
+		return TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
 }
