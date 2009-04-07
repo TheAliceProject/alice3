@@ -25,16 +25,9 @@ package org.alice.stageide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractFieldTileActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private org.alice.stageide.sceneeditor.FieldTile fieldTile;
-	public AbstractFieldTileActionOperation( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
-		this.fieldTile = fieldTile;
-	}
-	public org.alice.stageide.sceneeditor.FieldTile getFieldTile() {
-		return this.fieldTile;
-	}
-	public void setFieldTile( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
-		this.fieldTile = fieldTile;
+public abstract class AbstractFieldTileActionOperation extends org.alice.ide.operations.ast.AbstractFieldActionOperation {
+	public AbstractFieldTileActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( field );
 	}
 	protected org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
 		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( getIDE().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );

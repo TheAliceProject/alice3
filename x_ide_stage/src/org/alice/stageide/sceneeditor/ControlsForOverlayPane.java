@@ -119,9 +119,7 @@ class IsExpandedCheckBox extends zoot.ZCheckBox {
  * @author Dennis Cosgrove
  */
 public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
-
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
-
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
@@ -146,13 +144,13 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 			ControlsForOverlayPane.this.refreshFields();
 		}
 	};
-	private FieldTile rootFieldTile = createFieldTile( null );
-	private java.util.List< FieldTile > declaredFieldTiles = new java.util.LinkedList< FieldTile >();
+	
+	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
+	private java.util.List< FieldTile > fieldTiles = new java.util.LinkedList< FieldTile >();
 	private IsExpandedCheckBox isSceneEditorExpandedCheckBox;
 	private zoot.ZButton runButton;
 
 	public ControlsForOverlayPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
-		this.setNorthWestComponent( this.rootFieldTile );
 		this.setOpaque( false );
 		this.setRootField( rootField );
 	}
@@ -161,13 +159,9 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 		this.refreshFields();
 	}
 	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		//edu.cmu.cs.dennisc.alice.ast.AbstractType type = e.getNextValue().getDeclaringType();
-		//		synchronized( rootFieldTile ) {
-		rootFieldTile.updateLabel();
-		for( FieldTile fieldTile : ControlsForOverlayPane.this.declaredFieldTiles ) {
+		for( FieldTile fieldTile : this.fieldTiles ) {
 			fieldTile.updateLabel();
 		}
-		//		}
 	}
 
 	@Override
@@ -187,47 +181,49 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
-		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)getRootField().valueType.getValue();
+		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
 	}
 	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getRootField() {
-		return (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.rootFieldTile.getField();
+		return this.rootField;
 	}
 	public void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
-		if( this.getRootField() != null ) {
+		if( this.rootField != null ) {
 			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
 		}
-		this.rootFieldTile.setField( rootField );
+		this.rootField = rootField;
 		if( this.getRootField() != null ) {
 			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
 		}
 		this.refreshFields();
 	}
 	protected FieldTile createFieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		assert field != null;
 		return new FieldTile( field );
 	}
 	private void refreshFields() {
-		synchronized( this.rootFieldTile ) {
-			javax.swing.SpringLayout springLayout = this.getSpringLayout();
-			for( FieldTile fieldTile : this.declaredFieldTiles ) {
-				springLayout.removeLayoutComponent( fieldTile );
-				this.remove( fieldTile );
-			}
-			this.declaredFieldTiles.clear();
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField = this.getRootField();
-			this.rootFieldTile.updateLabel();
-			java.awt.Component prev = this.rootFieldTile;
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		for( FieldTile fieldTile : this.fieldTiles ) {
+			springLayout.removeLayoutComponent( fieldTile );
+			this.remove( fieldTile );
+		}
+		this.fieldTiles.clear();
+		if( this.rootField != null ) {
+			FieldTile rootFieldTile = this.createFieldTile( this.rootField );
+			this.setNorthWestComponent( rootFieldTile );
+			this.fieldTiles.add( rootFieldTile );
+			java.awt.Component prev = rootFieldTile;
 			if( rootField != null ) {
 				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
 					FieldTile fieldTile = createFieldTile( field );
 					this.add( fieldTile );
-					this.declaredFieldTiles.add( fieldTile );
-					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 2, javax.swing.SpringLayout.SOUTH, prev );
-					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile, 10, javax.swing.SpringLayout.WEST, this.rootFieldTile );
+					this.fieldTiles.add( fieldTile );
+					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 1, javax.swing.SpringLayout.SOUTH, prev );
+					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile, 10, javax.swing.SpringLayout.WEST, rootFieldTile );
 					prev = fieldTile;
 				}
 			}
-			revalidate();
-			repaint();
 		}
+		revalidate();
+		repaint();
 	}
 }

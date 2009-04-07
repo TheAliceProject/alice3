@@ -26,11 +26,11 @@ package org.alice.stageide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class OrientToUprightActionOperation extends AbstractFieldTileActionOperation {
-	public OrientToUprightActionOperation( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
-		super( fieldTile );
+	public OrientToUprightActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( field );
 		this.putValue( javax.swing.Action.NAME, "orient to upright" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		this.getMoveAndTurnSceneEditor().orientToUpright( this.getFieldTile().getField() );
+		this.getMoveAndTurnSceneEditor().orientToUpright( this.getField() );
 	}
 }

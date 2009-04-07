@@ -53,24 +53,26 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		}
 	}
 	public FieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( null );
+		assert field != null;
+		this.field = field;
+		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( this.field );
 		this.popupOperation = new zoot.DefaultPopupActionOperation( this.createPopupOperations() );
 		this.setLeftButtonPressOperation( this.selectOperation );
 		this.setPopupOperation( this.popupOperation );
-		this.setField( field );
-		if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field).name.addPropertyListener( new NamePropertyAdapter() );
 		}
+		this.updateLabel();
 	}
 	
 	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv ) {
-//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
-//		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
-//		rv.add( new org.alice.ide.operations.ast.DeleteFieldOperation( fieldInAlice ) );
-//		if( this.field.getValueType().isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
-			rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( this ) );
-			rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( this ) );
-//		}
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
+		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
+		rv.add( new org.alice.ide.operations.ast.DeleteFieldOperation( fieldInAlice ) );
+		if( fieldInAlice.getValueType().isAssignableTo( org.alice.apis.moveandturn.Model.class ) ) {
+			rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ) );
+			rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
+		}
 		return rv;
 	}
 	private java.util.List< zoot.Operation > createPopupOperations() {
@@ -91,11 +93,10 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
 		return this.field;
 	}
-	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		this.field = field;
-		this.selectOperation.setField( this.field );
-		this.updateLabel();
-	}
+//	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		this.field = field;
+//		this.updateLabel();
+//	}
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = getIDE();
 		java.awt.Color color = ide.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );

@@ -33,7 +33,7 @@ public abstract class AbstractFieldActionOperation extends org.alice.ide.operati
 	public edu.cmu.cs.dennisc.alice.ast.AbstractField getField() {
 		return this.field;
 	}
-	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		this.field = field;
-	}
+//	public void setField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		this.field = field;
+//	}
 }

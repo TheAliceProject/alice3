@@ -26,11 +26,11 @@ package org.alice.stageide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class PlaceOnTopOfGroundActionOperation extends AbstractFieldTileActionOperation {
-	public PlaceOnTopOfGroundActionOperation( org.alice.stageide.sceneeditor.FieldTile fieldTile ) {
-		super( fieldTile );
+	public PlaceOnTopOfGroundActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( field );
 		this.putValue( javax.swing.Action.NAME, "place on top of ground" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		this.getMoveAndTurnSceneEditor().placeOnTopOfGround( this.getFieldTile().getField() );
+		this.getMoveAndTurnSceneEditor().placeOnTopOfGround( this.getField() );
 	}
 }
