@@ -34,7 +34,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		swing.LineAxisPane rv = new swing.LineAxisPane();
 		rv.setOpaque( true );
 		rv.setBackground( java.awt.Color.WHITE );
-		rv.setBorder( edu.cmu.cs.dennisc.swing.BorderFactory.createOutlinedBorder( 2, 4, 2, 4, java.awt.Color.LIGHT_GRAY ) );
+		rv.setBorder( edu.cmu.cs.dennisc.swing.BorderFactory.createOutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
 		
 		String parameterName = argument.parameter.getValue().getName();

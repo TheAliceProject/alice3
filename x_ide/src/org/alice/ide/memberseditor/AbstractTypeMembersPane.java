@@ -27,7 +27,6 @@ package org.alice.ide.memberseditor;
  */
 abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	private static final int INDENT = 16;
-	private static final int TYPE_PAD = 8;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private zoot.ZButton createAndAddMemberButton;
@@ -107,7 +106,7 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 				java.awt.Component[] templates = this.createTemplates( field );
 				if( templates != null ) {
 					for( java.awt.Component template : templates ) {
-						page.add( javax.swing.Box.createVerticalStrut( 2 ) );
+						page.add( javax.swing.Box.createVerticalStrut( 1 ) );
 						page.add( template );
 					}
 				}
@@ -119,7 +118,7 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 				java.awt.Component[] templates = this.createTemplates( method );
 				if( templates != null ) {
 					for( java.awt.Component template : templates ) {
-						page.add( javax.swing.Box.createVerticalStrut( 2 ) );
+						page.add( javax.swing.Box.createVerticalStrut( 1 ) );
 						page.add( template );
 					}
 				}
@@ -131,8 +130,14 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 		if( this.editConstructorButton != null ) {
 			page.add( this.editConstructorButton );
 		}
-		this.add( new swing.LineAxisPane( javax.swing.Box.createHorizontalStrut( INDENT ), page ) );
-		this.add( javax.swing.Box.createVerticalStrut( TYPE_PAD ) );
+		int pad;
+		if( page.getComponentCount() > 0 ) {
+			this.add( new swing.LineAxisPane( javax.swing.Box.createHorizontalStrut( INDENT ), page ) );
+			pad = 8;
+		} else {
+			pad = 2;
+		}
+		this.add( javax.swing.Box.createVerticalStrut( pad ) );
 		this.revalidate();
 		this.repaint();
 	}
