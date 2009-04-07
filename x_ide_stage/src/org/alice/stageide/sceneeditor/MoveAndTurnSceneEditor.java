@@ -60,7 +60,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				}
 				MoveAndTurnSceneEditor.this.cardPane = new edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass );
 				MoveAndTurnSceneEditor.this.add( MoveAndTurnSceneEditor.this.cardPane, java.awt.BorderLayout.CENTER );
-				MoveAndTurnSceneEditor.this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 				MoveAndTurnSceneEditor.this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 				edu.cmu.cs.dennisc.animation.Animator animator = MoveAndTurnSceneEditor.this.program.getAnimator();
 				while( animator == null ) {
@@ -285,6 +284,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	@Override
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
+		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.program.getOnscreenLookingGlass();
+		if( onscreenLookingGlass.getCameraCount() > 0 ) {
+			onscreenLookingGlass.clearCameras();
+			this.program.setScene( null );
+		}
 		Object rv = super.createScene( sceneField );
 		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( "performSetUp" );
@@ -292,9 +296,21 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
 		this.program.setScene( scene );
 		this.getControlsForOverlayPane().setRootField( sceneField );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( sceneField );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "createScene", sceneField );
+		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 		return rv;
 	}
+	//	def createScene( self, sceneField ):
+	//		program = self.getProgram()
+	//		if program:
+	//			lg = program.getOnscreenLookingGlass()
+	//			lg.clearCameras()
+	//			program.setScene( None )
+	//
+	//		sceneInstance = org.alice.apis.moveandturn.ide.editors.scene.MoveAndTurnSceneEditor.createScene( self, sceneField )
+	//		if sceneInstance:
+	//			self.restoreProjectProperties()
+	//		return sceneInstance
 
 	//	@Override
 	//	protected void setSceneField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
