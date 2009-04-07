@@ -29,8 +29,8 @@ package org.alice.ide.choosers;
  */
 public interface ValueChooser<E> {
 	public void setInputPane( zoot.ZInputPane< ? > inputPane );
-	public String getLabelText();
-	public java.awt.Component getComponent();
+	public String[] getLabelTexts();
+	public java.awt.Component[] getComponents();
 	public E getValue();
 }
 

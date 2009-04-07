@@ -45,17 +45,21 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 			ArrayChooser.this.getInputPane().updateOKButton();
 		}
 	};
-	private swing.BorderPane pane = new swing.BorderPane();
+	private static final String[] LABEL_TEXTS = { "type:", "value:" };
+	private java.awt.Component[] components = { this.myTypePane, this.arrayInitializerPane };
+	
 	public ArrayChooser() {
-		this.pane.add( this.myTypePane, java.awt.BorderLayout.NORTH );
-		this.pane.add( this.arrayInitializerPane, java.awt.BorderLayout.CENTER );
 		this.arrayInitializerPane.handleTypeChange( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) );
 	}
 	public boolean isInputValid() {
 		return true;
 	}
-	public java.awt.Component getComponent() {
-		return this.pane;
+	@Override
+	public java.lang.String[] getLabelTexts() {
+		return LABEL_TEXTS;
+	}
+	public java.awt.Component[] getComponents() {
+		return this.components;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation getValue() {
 		return (edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation)this.arrayInitializerPane.getInitializer();

@@ -38,12 +38,13 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 		}
 	}
 	private zoot.ZSlider slider = new zoot.ZSlider( new PortionOperation() );
+	private java.awt.Component[] components = {this.slider};
 	public PortionChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		this.slider.getBoundedRangeOperation().getBoundedRangeModelForConfiguringSwing().setValue( 100 );
 	}
-	public java.awt.Component getComponent() {
-		return this.slider;
+	public java.awt.Component[] getComponents() {
+		return this.components;
 	}
 	public org.alice.apis.moveandturn.Portion getValue() {
 		double value = this.slider.getValue() / 100.0;

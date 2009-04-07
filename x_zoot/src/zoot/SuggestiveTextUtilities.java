@@ -33,7 +33,7 @@ class SuggestiveTextUtilties {
 		} else {
 			java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
 			g.setFont( font );
-			int grayscale = 160;
+			int grayscale = 200;
 			//			int grayscale;
 			//			if( textComponent.isFocusOwner() ) {
 			//				grayscale = 160;

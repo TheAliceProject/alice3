@@ -47,7 +47,12 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 	}
 	@Override
 	protected java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( this.chooser.getLabelText() ), this.chooser.getComponent() ) );
+		String[] labelTexts = this.chooser.getLabelTexts();
+		java.awt.Component[] components = this.chooser.getComponents();
+		final int N = labelTexts.length;
+		for( int i=0; i<N; i++ ) {
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( labelTexts[ i ] ), components[ i ] ) );
+		}
 		return rv;
 	}
 	@Override

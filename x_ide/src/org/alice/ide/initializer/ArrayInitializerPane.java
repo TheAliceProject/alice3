@@ -103,6 +103,8 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 	class ExpressionList extends zoot.ZList< edu.cmu.cs.dennisc.alice.ast.Expression > {
 		public ExpressionList() {
 			super( new ItemSelectionOperation() );
+			this.setOpaque( true );
+			this.setBackground( java.awt.Color.WHITE );
 		}
 		@Override
 		public void updateUI() {

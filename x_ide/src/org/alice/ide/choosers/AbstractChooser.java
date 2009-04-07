@@ -26,10 +26,8 @@ package org.alice.ide.choosers;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractChooser<E> implements ValueChooser< E >, zoot.InputValidator {
+	private static final String[] LABEL_TEXTS = { "value:" };
 	private zoot.ZInputPane< ? > inputPane;
-	public java.lang.String getLabelText() {
-		return "value:";
-	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -40,6 +38,9 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, zoot.Inpu
 		} else {
 			return null;
 		}
+	}
+	public String[] getLabelTexts() {
+		return LABEL_TEXTS;
 	}
 	public zoot.ZInputPane< ? > getInputPane() {
 		return this.inputPane;
