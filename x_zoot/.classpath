@@ -5,17 +5,12 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_foundation"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_issue"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/x_ide_private"/>
-	<classpathentry kind="lib" path="/jar_jaf/activation.jar"/>
-	<classpathentry kind="lib" path="/jar_mail/mail.jar"/>
-	<classpathentry kind="lib" path="/jar_mail/lib/smtp.jar"/>
-	<classpathentry kind="lib" path="/jar_rpc/xmlrpc-client-1.1.jar"/>
-	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn_generated"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/x_ide_i18n"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_generated_depended_upon"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_private"/>
-	<classpathentry kind="lib" path="C:/Program Files/Alice/3.beta.0026/application/lg_walkandtouch.jar"/>
+	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
