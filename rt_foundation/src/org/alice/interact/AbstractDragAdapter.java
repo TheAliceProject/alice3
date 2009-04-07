@@ -36,18 +36,13 @@ import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.event.SelectionListener;
 import org.alice.interact.handle.HandleManager;
 import org.alice.interact.handle.HandleSet;
-import org.alice.interact.handle.HandleState;
 import org.alice.interact.handle.ManipulationHandle;
-import org.alice.interact.handle.ManipulationHandle3D;
-import org.alice.interact.handle.ManipulationHandleIndirection;
-import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
 
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
-import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
