@@ -77,11 +77,11 @@ public abstract class IDE extends zoot.ZFrame {
 			//todo
 		} else {
 			String name = "My" + superType.getName();
-			rv = org.alice.ide.ast.NodeUtilities.createType( name, superType ); 
+			rv = org.alice.ide.ast.NodeUtilities.createType( name, superType );
 		}
 		return rv;
 	}
-	
+
 	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = this.createSceneEditor();
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser = this.createGalleryBrowser();
@@ -92,8 +92,6 @@ public abstract class IDE extends zoot.ZFrame {
 
 	//	private zoot.ZLabel feedback = new zoot.ZLabel();
 
-	
-	
 	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		//todo:
 		return new org.alice.ide.common.TypeComponent( type );
@@ -104,10 +102,9 @@ public abstract class IDE extends zoot.ZFrame {
 	public javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return new org.alice.ide.common.TypeIcon( type );
 	}
-	
-	
+
 	private javax.swing.ComboBoxModel typeComboBoxModel;
-	
+
 	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addJavaTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
@@ -115,7 +112,7 @@ public abstract class IDE extends zoot.ZFrame {
 		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ) );
 		return rv;
 	}
-	
+
 	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addAliceTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = this.getSceneType();
 		if( sceneType != null ) {
@@ -132,7 +129,7 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		}
 		return rv;
-	}	
+	}
 	public javax.swing.ComboBoxModel getTypeComboBoxModel() {
 		if( this.typeComboBoxModel != null ) {
 			//pass
@@ -162,7 +159,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
 
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
-	
+
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;
 	}
@@ -172,7 +169,7 @@ public abstract class IDE extends zoot.ZFrame {
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.galleryBrowser );
 			this.root.setRightComponent( null );
-			this.left.setDividerLocation( this.getHeight()-300 );
+			this.left.setDividerLocation( this.getHeight() - 300 );
 		} else {
 			this.root.setLeftComponent( this.left );
 			this.root.setRightComponent( this.right );
@@ -186,12 +183,12 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		}
 	}
-	
+
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private javax.swing.JSplitPane left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
 	//private javax.swing.JSplitPane right = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
 	private swing.BorderPane right = new swing.BorderPane();
-	
+
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -235,7 +232,7 @@ public abstract class IDE extends zoot.ZFrame {
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
 		return this.sceneEditor;
 	}
-	
+
 	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = new java.util.HashMap< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner >();
 
 	private org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > cls ) {
@@ -297,6 +294,7 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		}
 	};
+
 	public zoot.ActionOperation getSelectProjectToOpenOperation() {
 		return this.selectProjectToOpenOperation;
 	}
@@ -304,37 +302,16 @@ public abstract class IDE extends zoot.ZFrame {
 	protected javax.swing.JMenuBar createMenuBar() {
 		javax.swing.JMenuBar rv = new javax.swing.JMenuBar();
 
-		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( 
-				"File", 
-				java.awt.event.KeyEvent.VK_F, 
-				new org.alice.ide.operations.file.NewProjectOperation(), 
-				new org.alice.ide.operations.file.OpenProjectOperation(), 
-				this.saveOperation, 
-				new org.alice.ide.operations.file.SaveAsProjectOperation(), 
-				zoot.ZManager.MENU_SEPARATOR, 
-				new org.alice.ide.operations.file.RevertProjectOperation(), 
-				zoot.ZManager.MENU_SEPARATOR, 
-				this.exitOperation 
-		);
-		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( 
-				"Edit", 
-				java.awt.event.KeyEvent.VK_E, 
-				new org.alice.ide.operations.edit.UndoOperation(), 
-				new org.alice.ide.operations.edit.RedoOperation(), 
-				zoot.ZManager.MENU_SEPARATOR, 
-				new org.alice.ide.operations.edit.CutOperation(),
-				new org.alice.ide.operations.edit.CopyOperation(), 
-				new org.alice.ide.operations.edit.PasteOperation() 
-		);
-		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( 
-				"Run", 
-				java.awt.event.KeyEvent.VK_R, 
-				this.runOperation 
-		);
+		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, new org.alice.ide.operations.file.NewProjectOperation(), new org.alice.ide.operations.file.OpenProjectOperation(), this.saveOperation, new org.alice.ide.operations.file.SaveAsProjectOperation(),
+				zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.file.RevertProjectOperation(), zoot.ZManager.MENU_SEPARATOR, this.exitOperation );
+		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, new org.alice.ide.operations.edit.UndoOperation(), new org.alice.ide.operations.edit.RedoOperation(), zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.edit.CutOperation(),
+				new org.alice.ide.operations.edit.CopyOperation(), new org.alice.ide.operations.edit.PasteOperation() );
+		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, this.runOperation );
 
-		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel  {
+		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 			private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "complex" ), new java.util.Locale( "en", "US", "java" ) };
 			private int selectedIndex;
+
 			public LocaleComboBoxModel() {
 				this.selectedIndex = 0;
 			}
@@ -386,24 +363,11 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		}
 
-		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( 
-				"Set Locale", 
-				java.awt.event.KeyEvent.VK_L, 
-				new LocaleItemSelectionOperation() 
-		);
+		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
 
-		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( 
-				"Window", 
-				java.awt.event.KeyEvent.VK_W, 
-				this.isSceneEditorExpandedOperation 
-		);
+		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation );
 		windowMenu.add( setLocaleMenu );
-		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( 
-				"Help", 
-				java.awt.event.KeyEvent.VK_H, 
-				new org.alice.ide.operations.help.HelpOperation(), 
-				this.createAboutOperation() 
-		);
+		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), this.createAboutOperation() );
 		rv.add( fileMenu );
 		rv.add( editMenu );
 		rv.add( runMenu );
@@ -426,6 +390,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	private java.io.File applicationDirectory = null;
+
 	public java.io.File getApplicationRootDirectory() {
 		if( this.applicationDirectory != null ) {
 			//pass
@@ -666,6 +631,7 @@ public abstract class IDE extends zoot.ZFrame {
 		this.generateCodeForSceneSetUp();
 		this.handleRun( context, this.getSceneType() );
 	}
+
 	private boolean isDragInProgress = false;
 
 	private edu.cmu.cs.dennisc.alice.ast.Comment commentThatWantsFocus = null;
@@ -850,7 +816,98 @@ public abstract class IDE extends zoot.ZFrame {
 	//		else:
 	//			message = "sorry.  no fillins found for " + type.getName() + ". canceling."
 	//			blank.addChild( cascade.CancelFillIn( message ) )
+
+	private boolean addSeparatorIfNecessary( cascade.Blank blank, String text, boolean isNecessary ) {
+		if( isNecessary ) {
+			blank.addSeparator( text );
+		}
+		return false;
+	}
+	protected void addFillInAndPossiblyPartFills( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
+		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
+		//			if type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel ):
+		//				if type2.isAssignableFrom( org.alice.apis.moveandturn.Model ):
+		//					typeInJava = type.getFirstTypeEncounteredDeclaredInJava()
+		//					clsInJava = typeInJava.getCls()
+		//					try:
+		//						paramType = clsInJava.Part
+		//					except:
+		//						paramType = None
+		//				else:
+		//					paramType = None
+		//				if paramType:
+		//					getPartMethod = typeInJava.getDeclaredMethod( "getPart", [ paramType ] )
+		//					
+		//					#todo
+		//					
+		//					
+		//					blank.addChild( MethodInvocationFillIn( getPartMethod, expression ) )
+	}
+	private static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > getVariables( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >();
+		return rv;
+	}
+	private static Iterable< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > getConstants( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice >();
+		return rv;
+	}
 	
+	protected void addExpressionBonusFillInsForType( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
+		if( codeInFocus != null ) {
+			boolean isNecessary = true;
+			edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = codeInFocus.getDeclaringType();
+			if( type.isAssignableFrom( selectedType ) ) {
+				isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+				this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
+			}
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : selectedType.getDeclaredFields() ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = field.getValueType();
+				if( type.isAssignableFrom( fieldType ) ) {
+					isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+					edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
+					this.addFillInAndPossiblyPartFills( blank, fieldAccess, fieldType, type );
+				}
+				if( fieldType.isArray() ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractType fieldComponentType = fieldType.getComponentType();
+					if( type.isAssignableFrom( fieldComponentType ) ) {
+						isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
+						//blank.addFillIn( new ArrayAccessFillIn( fieldType, fieldAccess ) );
+					}
+					if( type.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) ) {
+						isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
+						edu.cmu.cs.dennisc.alice.ast.ArrayLength arrayLength = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
+						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn<edu.cmu.cs.dennisc.alice.ast.ArrayLength>( arrayLength ) );
+					}
+				}
+			}
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
+				if( type.isAssignableFrom( parameter.getValueType() ) ) {
+					isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
+				}
+			}
+			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : getVariables( codeInFocus ) ) {
+				if( type.isAssignableFrom( variable.valueType.getValue() ) ) {
+					isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ), variable.valueType.getValue(), type );
+				}
+			}
+			for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : getConstants( codeInFocus ) ) {
+				if( type.isAssignableFrom( constant.valueType.getValue() ) ) {
+					isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant ), constant.valueType.getValue(), type );
+				}
+			}
+			if( isNecessary ) {
+				//pass
+			} else {
+				blank.addSeparator();
+			}
+		}
+	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return this.previousExpression;
 	}
@@ -861,7 +918,7 @@ public abstract class IDE extends zoot.ZFrame {
 					blank.addFillIn( new org.alice.ide.cascade.PreviousExpressionFillIn( this.previousExpression ) );
 					blank.addSeparator();
 				}
-				
+
 			}
 			//todo
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
@@ -877,11 +934,12 @@ public abstract class IDE extends zoot.ZFrame {
 				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)type.getFirstClassEncounteredDeclaredInJava() );
 				constantsOwningFillerInner.addFillIns( blank );
 			}
-			
+
+			this.addExpressionBonusFillInsForType( blank, type );
 			if( type.isArray() ) {
 				blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );
 			}
-			
+
 			if( blank.getChildren().size() > 0 ) {
 				//pass
 			} else {
@@ -891,7 +949,7 @@ public abstract class IDE extends zoot.ZFrame {
 			//todo:
 			blank.addFillIn( new cascade.CancelFillIn( "type is <unset>.  canceling." ) );
 		}
-		
+
 	}
 	public void createProjectFromBootstrap() {
 		throw new RuntimeException( "todo" );
@@ -1051,7 +1109,7 @@ public abstract class IDE extends zoot.ZFrame {
 			javax.swing.JOptionPane.showMessageDialog( this, sb.toString(), "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE );
 		}
 	}
-	
+
 	public void revert() {
 		this.loadProjectFrom( this.getFile() );
 	}
@@ -1229,13 +1287,16 @@ public abstract class IDE extends zoot.ZFrame {
 		loadProjectFrom( new java.io.File( path ) );
 	}
 	protected void generateCodeForSceneSetUp() {
-		this.sceneEditor.generateCodeForSetUp();;
+		this.sceneEditor.generateCodeForSetUp();
+		;
 	}
 	protected void preserveProjectProperties() {
-		this.sceneEditor.preserveProjectProperties();;
+		this.sceneEditor.preserveProjectProperties();
+		;
 	}
 	protected void restoreProjectProperties() {
-		this.sceneEditor.restoreProjectProperties();;
+		this.sceneEditor.restoreProjectProperties();
+		;
 	}
 	public void saveProjectTo( java.io.File file ) {
 		edu.cmu.cs.dennisc.alice.Project project = getProject();
@@ -1350,7 +1411,6 @@ public abstract class IDE extends zoot.ZFrame {
 		this.isDragInProgress = isDragInProgress;
 		this.currentDropReceptorComponent = null;
 	}
-
 
 	public String getInstanceTextForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, boolean isOutOfScopeTagDesired ) {
 		String text;
