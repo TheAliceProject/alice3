@@ -67,10 +67,17 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	
 	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
 		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
-		rv.add( new org.alice.ide.operations.ast.DeleteFieldOperation( fieldInAlice ) );
-		if( fieldInAlice.getValueType().isAssignableTo( org.alice.apis.moveandturn.Model.class ) ) {
-			rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ) );
+		if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+			if( fieldType.isAssignableTo( org.alice.apis.moveandturn.AbstractCamera.class ) ) {
+				//pass
+			} else {
+				rv.add( new org.alice.ide.operations.ast.DeleteFieldOperation( fieldInAlice ) );
+				rv.add( new org.alice.stageide.operations.ast.OrientToUprightActionOperation( fieldInAlice ) );
+			}
+		}
+		if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Model.class ) ) {
 			rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
 		}
 		return rv;

@@ -30,6 +30,10 @@ import org.alice.apis.moveandturn.gallery.environments.grounds.SandyGround;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SeaSurface;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SnowyGround;
 
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -282,6 +286,36 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = null;
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void clearing(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> e) {
+		}
+		public void removing( RemoveListPropertyEvent< FieldDeclaredInAlice > e ) {
+			MoveAndTurnSceneEditor.this.handleRemoved( e );
+		}
+		public void removed( RemoveListPropertyEvent< FieldDeclaredInAlice > e ) {
+		}
+		public void set( SetListPropertyEvent< FieldDeclaredInAlice > e ) {
+		}
+		public void setting( SetListPropertyEvent< FieldDeclaredInAlice > e ) {
+		};
+	};
+	
+	private void handleRemoved( RemoveListPropertyEvent< FieldDeclaredInAlice > e ) {
+		for( FieldDeclaredInAlice fieldDeclaredInAlice : e.getElements() ) {
+			org.alice.apis.moveandturn.Transformable transformable = this.getInstanceInJavaForField( fieldDeclaredInAlice, org.alice.apis.moveandturn.Transformable.class );
+			if( transformable != null ) {
+				this.program.getScene().removeComponent( transformable );
+			}
+		}
+	}
+	
 	@Override
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.program.getOnscreenLookingGlass();
@@ -289,8 +323,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			onscreenLookingGlass.clearCameras();
 			this.program.setScene( null );
 		}
+		if( this.sceneType != null ) {
+			this.sceneType.fields.removeListPropertyListener( this.listPropertyAdapter );
+		}
+		
 		Object rv = super.createScene( sceneField );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+		this.sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
+		if( this.sceneType != null ) {
+			this.sceneType.fields.addListPropertyListener( this.listPropertyAdapter );
+		}
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( "performSetUp" );
 		this.getVM().invokeEntryPoint( method, rv );
 		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
