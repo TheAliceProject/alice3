@@ -22,6 +22,8 @@
  */
 package org.alice.interact;
 
+import org.alice.interact.handle.HandleSet;
+
 import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
@@ -49,6 +51,28 @@ public enum MovementDirection {
 	public Vector3 getVector()
 	{
 		return this.directionVector;
+	}
+	
+	public HandleSet.HandleGroup getHandleGroup()
+	{
+		if (this == FORWARD || this == BACKWARD)
+		{
+			return HandleSet.HandleGroup.Z_AXIS;
+		}
+		else if (this == UP || this == DOWN)
+		{
+			return HandleSet.HandleGroup.Y_AXIS;
+		}
+		else if (this == LEFT || this == RIGHT)
+		{
+			return HandleSet.HandleGroup.X_AXIS;
+		}
+		else if ( this == RESIZE )
+		{
+			return HandleSet.HandleGroup.RESIZE_AXIS;
+		}
+		return null;
+
 	}
 	
 	public MovementDirection getOpposite()

@@ -20,13 +20,33 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
+package org.alice.interact.manipulator;
 
+import org.alice.interact.InputState;
+import org.alice.interact.MovementKey;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public class ObjectRotateKeyManipulator extends RotateKeyManipulator {
+
+	
+	public ObjectRotateKeyManipulator( MovementKey[] directionKeys )
+	{
+		super(directionKeys);
+	}
+	
+	@Override
+	public boolean doStartManipulator( InputState startInput ) {
+		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
+		if (this.manipulatedTransformable != null)
+		{
+			return super.doStartManipulator( startInput );
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 }

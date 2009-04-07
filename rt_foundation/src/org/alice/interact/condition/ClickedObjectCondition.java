@@ -20,13 +20,44 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
+package org.alice.interact.condition;
 
+import org.alice.interact.InputState;
+import org.alice.interact.PickHint;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public class ClickedObjectCondition extends InputCondition {
+	
+	PickHint acceptableType = PickHint.EVERYTHING;
+	
+	protected boolean isNot = false;
+	
+	public ClickedObjectCondition( PickHint acceptableType )
+	{
+		this.acceptableType = acceptableType;
+	}
+	
+	
+	@Override
+	protected boolean testState( InputState state )
+	{
+		boolean isValid = this.acceptableType.intersects( PickCondition.getPickType( state.getClickPickedTransformable(true) ) );
+		if (isNot)
+		{
+			return !isValid;
+		}
+		else 
+		{
+			return isValid; 
+		}
+	}
+
+	@Override
+	public boolean stateChanged( InputState currentState, InputState previousState ) {
+		return ( testState( currentState ) != testState( previousState ));
+	}
+
+
 }

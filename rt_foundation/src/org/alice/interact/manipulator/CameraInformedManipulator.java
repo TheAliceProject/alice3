@@ -20,13 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
+package org.alice.interact.manipulator;
 
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public interface CameraInformedManipulator {
+	
+	public AbstractCamera getCamera();
+	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass );
+	
 }

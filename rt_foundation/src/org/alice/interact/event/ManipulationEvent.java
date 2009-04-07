@@ -22,7 +22,8 @@
  */
 package org.alice.interact.event;
 
-import org.alice.interact.MovementDescription;
+import org.alice.interact.InputState;
+import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -41,13 +42,14 @@ public class ManipulationEvent {
 	private EventType type;
 	private MovementDescription movementDescription;
 	private Transformable target;
+	private InputState inputState;
 	
-	
-	public ManipulationEvent( EventType type, MovementDescription movementDescription, Transformable target )
+	public ManipulationEvent( EventType type, MovementDescription movementDescription, Transformable target)
 	{
 		this.type = type;
 		this.movementDescription = movementDescription;
 		this.target = target;
+		this.inputState = null;
 	}
 	
 	@Override
@@ -55,7 +57,7 @@ public class ManipulationEvent {
 	{
 		return this.type + ":["+this.movementDescription.toString()+"(" + this.target+")]";
 	}
-
+	
 	/**
 	 * @return the target
 	 */
@@ -76,5 +78,17 @@ public class ManipulationEvent {
 	public MovementDescription getMovementDescription() {
 		return movementDescription;
 	}
-	 
+
+	/**
+	 * @return the inputState
+	 */
+	public InputState getInputState() {
+		return inputState;
+	}
+	
+	public void setInputState( InputState inputState )
+	{
+		this.inputState = inputState;
+	}
+	
 }

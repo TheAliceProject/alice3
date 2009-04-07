@@ -20,13 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
+package org.alice.interact.condition;
 
+import org.alice.interact.PickHint;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public class InvertedSelectedObjectCondition extends SelectedObjectCondition {
+
+	public InvertedSelectedObjectCondition( PickHint acceptableType )
+	{
+		this(acceptableType, ObjectSwitchBehavior.END_ON_SWITCH);
+	}
+	
+	public InvertedSelectedObjectCondition( PickHint acceptableType, ObjectSwitchBehavior switchBehavior )
+	{
+		super(acceptableType, switchBehavior);
+		this.isNot = true;
+	}
+	
 }

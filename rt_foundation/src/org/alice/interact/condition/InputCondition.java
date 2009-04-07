@@ -20,13 +20,48 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
+package org.alice.interact.condition;
 
+import org.alice.interact.InputState;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public abstract class InputCondition {
+	
+	public boolean isRunning( InputState currentState, InputState previousState ) {
+		if (testState(currentState) && testState(previousState))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public boolean justEnded( InputState currentState, InputState previousState ) {
+		if (!testState(currentState) && testState(previousState))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public boolean justStarted( InputState currentState, InputState previousState ) {
+		if (testState(currentState) && !testState(previousState))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public boolean stateChanged( InputState currentState, InputState previousState ) {
+		if (testState(currentState) != testState(previousState))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	protected abstract boolean testState( InputState state );
+	
 }
+

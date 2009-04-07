@@ -22,16 +22,27 @@
  */
 
 package org.alice.interact;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.List;
 
+import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventManager;
 import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.event.SelectionListener;
+import org.alice.interact.handle.HandleManager;
+import org.alice.interact.handle.HandleSet;
+import org.alice.interact.handle.HandleState;
+import org.alice.interact.handle.ManipulationHandle;
+import org.alice.interact.handle.ManipulationHandle3D;
+import org.alice.interact.handle.ManipulationHandleIndirection;
+import org.alice.interact.handle.RotationRingHandle;
+import org.alice.interact.manipulator.AbstractManipulator;
+import org.alice.interact.manipulator.CameraInformedManipulator;
 
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -51,22 +62,20 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 	protected edu.cmu.cs.dennisc.animation.Animator animator;
-	private java.awt.Component awtComponent = null;
+	private java.awt.Component lookingGlassComponent = null;
 	
 	protected InputState currentInputState = new InputState();
 	protected InputState previousInputState = new InputState(); 
 	private double timePrev = Double.NaN;
 	private boolean hasSetCameraTransformables = false;
 	
-	protected java.util.Vector<HandleSet> handleSets = new java.util.Vector<HandleSet>();
-	protected HandleSet currentHandleSet = null;
+	protected java.util.Map<Integer, HandleSet> keyToHandleSetMap = new java.util.HashMap<Integer, HandleSet>();
 	
-	protected java.util.Vector< ManipulationHandleIndirection > manipulationHandles = new java.util.Vector< ManipulationHandleIndirection >();
-	//protected java.util.Vector< ManipulationHandle > nextManipulationHandles = new java.util.Vector< ManipulationHandle >();
-	
+	protected HandleManager handleManager = new HandleManager();
 	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
 	
 	private Transformable selectedObject = null;
+	
 	
 	private List< SelectionListener > selectionListeners = new java.util.LinkedList< SelectionListener >(); 
 	public void addPropertyListener( SelectionListener selectionListener ) {
@@ -97,34 +106,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			}
 		}
 	}
-
-	
-	protected class HandleSet
-	{
-		private java.util.BitSet handleGroups = new java.util.BitSet();
-		private int keyID;
-		
-		public HandleSet( int keyID, HandleGroup...groups)
-		{
-			this.keyID = keyID;
-			for (int i=0; i<groups.length; i++)
-			{
-				this.handleGroups.set( groups[i].getIndex() );
-			}
-		}
-		
-		public int getKeyID()
-		{
-			return this.keyID;
-		}
-		
-		public java.util.BitSet getBitSet()
-		{
-			return this.handleGroups;
-		}
-		
-	}
-	
 	
 	public AbstractDragAdapter()
 	{
@@ -135,6 +116,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	public void triggerManipulationEvent( ManipulationEvent event, boolean isActivate )
 	{
+		event.setInputState( this.currentInputState );
 		this.manipulationEventManager.triggerEvent( event, isActivate );
 	}
 	
@@ -157,14 +139,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	}
 	
 	protected java.awt.Component getAWTComponent() {
-		return this.awtComponent;
+		return this.lookingGlassComponent;
 	}
 	public void setAWTComponent( java.awt.Component awtComponent ) {
-		if( this.awtComponent != null ) {
-			removeListeners( this.awtComponent  );
+		if( this.lookingGlassComponent != null ) {
+			removeListeners( this.lookingGlassComponent  );
 		}
-		this.awtComponent  = awtComponent;
-		if( this.awtComponent  != null ) {
+		this.lookingGlassComponent  = awtComponent;
+		if( this.lookingGlassComponent  != null ) {
 			addListeners( awtComponent );
 		}
 	}
@@ -172,10 +154,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public void setAnimator( Animator animator )
 	{
 		this.animator = animator;
-		for (int i=0; i<this.manipulationHandles.size(); i++)
-		{
-			this.manipulationHandles.get( i ).setAnimator( this.animator );
-		}
+		this.handleManager.setAnimator(animator);
 	}
 	
 	public void setSelectedObject(Transformable selected)
@@ -183,10 +162,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		if (this.selectedObject != selected)
 		{
 			this.fireSelecting( new SelectionEvent(this, selected) );
-			for (int i=0; i<this.manipulationHandles.size(); i++)
-			{
-				this.manipulationHandles.get( i ).setManipulatedObject( selected );
-			}
+			this.handleManager.setSelectedObject( selected );
 			this.currentInputState.setCurrentlySelectedObject( selected ); 
 			selectedObject = selected;
 			this.fireSelected( new SelectionEvent(this, selected) );
@@ -194,91 +170,19 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void setHandleGroup( HandleSet handleGroup )
+	public void setHandleSet( HandleSet handleSet )
 	{
-		this.currentHandleSet = handleGroup;
-		for (int i=0; i<this.manipulationHandles.size(); i++)
-		{
-			this.manipulationHandles.get( i ).setCurrentHandleSet( handleGroup );
-		}
+		this.handleManager.setHandleSet( handleSet );
 	}
 	
-	public RotationRingHandle getCurrentRotationRingForAxis( Vector3 rotationAxis, Transformable object )
+	public void pushHandleSet( HandleSet handleSet )
 	{
-		for (int i=0; i<this.manipulationHandles.size(); i++)
-		{
-			if (this.manipulationHandles.get( i ).getCurrentHandle() instanceof RotationRingHandle)
-			{
-				RotationRingHandle rotationRing = (RotationRingHandle)this.manipulationHandles.get( i ).getCurrentHandle();
-				if (rotationRing.getRotationAxis().equals( rotationAxis ) && rotationRing.getManipulatedObject() == object)
-				{
-					return rotationRing;
-				}
-			}
-			else if (this.manipulationHandles.get( i ).getNextHandle() instanceof RotationRingHandle)
-			{
-				RotationRingHandle rotationRing = (RotationRingHandle)this.manipulationHandles.get( i ).getNextHandle();
-				if (rotationRing.getRotationAxis().equals( rotationAxis ) && rotationRing.getManipulatedObject() == object)
-				{
-					return rotationRing;
-				}
-			}
-		}
-		return null;
+		this.handleManager.pushNewHandleSet( handleSet );
 	}
 	
-	public void setActivateHandle( ManipulationHandle handle, boolean isActive )
+	public HandleSet popHandleSet()
 	{
-		if (handle != null)
-		{
-			//handle.setActive( isActive );
-			for (int i=0; i<this.manipulationHandles.size(); i++)
-			{
-				ManipulationHandle currentHandle = this.manipulationHandles.get( i ).getCurrentHandle();
-				if ( currentHandle != handle )
-				{
-					if (isActive) //Fade out all the other visible handles
-					{
-						if (currentHandle.isVisible())
-						{
-							currentHandle.setFaded( true );
-						}
-					}
-					else // unfade all handles
-					{
-						if (currentHandle.isFaded())
-						{
-							currentHandle.setFaded( false );
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public void setActivateTransformable( Transformable transformable, boolean isActive )
-	{
-		if (transformable != null)
-		{
-			for (int i=0; i<this.manipulationHandles.size(); i++)
-			{
-				ManipulationHandle currentHandle = this.manipulationHandles.get( i ).getCurrentHandle();
-				if (isActive) //Fade out all the other visible handles
-				{
-					if (currentHandle.isVisible())
-					{
-						currentHandle.setFaded( true );
-					}
-				}
-				else // unfade all handles
-				{
-					if (currentHandle.isFaded())
-					{
-						currentHandle.setFaded( false );
-					}
-				}
-			}
-		}
+		return this.handleManager.popHandleSet();
 	}
 	
 	protected void handleStateChange()
@@ -328,15 +232,15 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 		
 		
-		if (this.currentInputState.getRolloverPickObject() != this.previousInputState.getRolloverPickObject())
+		if (this.currentInputState.getRolloverPickTransformable() != this.previousInputState.getRolloverPickTransformable())
 		{
-			if (this.currentInputState.getRolloverPickObject() instanceof ManipulationHandle)
+			if (this.currentInputState.getRolloverPickTransformable() instanceof ManipulationHandle)
 			{
-				((ManipulationHandle)this.currentInputState.getRolloverPickObject()).setRollover( true );
+				this.handleManager.setHandleRollover( ((ManipulationHandle)this.currentInputState.getRolloverPickTransformable()), true );
 			}
-			if (this.previousInputState.getRolloverPickObject() instanceof ManipulationHandle)
+			if (this.previousInputState.getRolloverPickTransformable() instanceof ManipulationHandle)
 			{
-				((ManipulationHandle)this.previousInputState.getRolloverPickObject()).setRollover( false );
+				this.handleManager.setHandleRollover( ((ManipulationHandle)this.previousInputState.getRolloverPickTransformable()), false );
 			}
 		}
 		
@@ -427,11 +331,34 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		component.removeMouseWheelListener( this );
 	}
 	
+	private ManipulationHandle getHandleForComponent( Component c)
+	{
+		if (c == null)
+		{
+			return null;
+		}
+		else if (c instanceof ManipulationHandle)
+		{
+			return (ManipulationHandle)c;
+		}
+		else
+		{
+			return getHandleForComponent(c.getParent());
+		}
+	}
+	
 	public void mousePressed( java.awt.event.MouseEvent e ) {
 		this.currentInputState.setMouseState( e.getButton(), true );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DOWN );
-		this.currentInputState.setClickPickResult( pickIntoScene( e.getPoint() ) );
+		if (e.getComponent() == this.lookingGlassComponent)
+		{
+			this.currentInputState.setClickPickResult( pickIntoScene( e.getPoint() ) );
+		}
+		else
+		{
+			this.currentInputState.setClickHandle( this.getHandleForComponent( e.getComponent() ) );
+		}
 		this.handleStateChange();
 	}
 	
@@ -462,22 +389,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	public void mouseMoved( java.awt.event.MouseEvent e ) {
 		this.currentInputState.setMouseLocation( e.getPoint() );
-		this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
-		
-		PickHint rolloverObjectType = PickCondition.getPickType( this.currentInputState.getRolloverPickResult() );
-		if ( rolloverObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
+		if (e.getComponent() == this.lookingGlassComponent)
 		{
-			this.currentInputState.setRolloverPickObject( this.currentInputState.getRolloverPickedTransformable(true) );
-		}
-		else if (rolloverObjectType.intersects( PickHint.HANDLES) )
-		{
-			this.currentInputState.setRolloverPickObject(this.currentInputState.getRolloverPickedTransformable(true));
+			this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
 		}
 		else
 		{
-			this.currentInputState.setRolloverPickObject( null );
+			this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
 		}
-		
 		this.handleStateChange();
 	}
 	
@@ -492,12 +411,10 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setKeyState( e.getKeyCode(), true );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_DOWN );
 		
-		for (int i=0; i<this.handleSets.size(); i++)
+		HandleSet toSet = this.keyToHandleSetMap.get( e.getKeyCode() );
+		if (toSet != null)
 		{
-			if (this.handleSets.get( i ).getKeyID() == e.getKeyCode())
-			{
-				this.setHandleGroup( this.handleSets.get( i ) );
-			}
+			this.setHandleSet( toSet );
 		}
 		handleStateChange();
 		

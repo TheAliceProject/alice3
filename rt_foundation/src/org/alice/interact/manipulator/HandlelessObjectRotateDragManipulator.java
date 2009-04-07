@@ -20,29 +20,56 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact;
+package org.alice.interact.manipulator;
 
-import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.InputState;
 
+import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
  * @author David Culyba
  */
-public class MovementKey {
+public class HandlelessObjectRotateDragManipulator extends ObjectRotateDragManipulator {
 
-	public MovementDescription movementDescription;
-	public double directionMultiplier;
-	public int keyValue;
+	protected Vector3 rotateAxis;
 	
-	public MovementKey( int keyValue, MovementDescription description )
+	public HandlelessObjectRotateDragManipulator( Vector3 rotateAxis )
 	{
-		this(keyValue, description, 1.0d);
+		this.rotateAxis = rotateAxis;
 	}
 	
-	public MovementKey( int keyValue, MovementDescription description, double directionMultiplier )
+	@Override
+	public boolean doStartManipulator( InputState startInput ) 
 	{
-		this.keyValue = keyValue;
-		this.movementDescription = description;
-		this.directionMultiplier = directionMultiplier;
+		this.manipulatedTransformable = startInput.getClickPickedTransformable( true );
+		if (this.manipulatedTransformable != null)
+		{
+			//Make sure the object we're working with is selected
+			this.dragAdapter.setSelectedObject( this.manipulatedTransformable );
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
+	
+	@Override
+	public void doEndManipulator( InputState endInput, InputState previousInput )
+	{
+		super.doEndManipulator( endInput, previousInput );
+	}
+	
+	@Override
+	protected void hideCursor()
+	{
+		//We don't hide the cursor on this guy
+	}
+	
+	@Override
+	protected void showCursor()
+	{
+		//No hiding means now showing too
+	}
+	
 }

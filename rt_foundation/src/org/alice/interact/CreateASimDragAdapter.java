@@ -24,7 +24,14 @@ package org.alice.interact;
 
 import java.awt.event.KeyEvent;
 
-import org.alice.interact.ModifierMask.ModifierKey;
+import org.alice.interact.condition.KeyPressCondition;
+import org.alice.interact.condition.ManipulatorConditionSet;
+import org.alice.interact.condition.MouseDragCondition;
+import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.condition.PickCondition;
+import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
+import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
+import org.alice.interact.manipulator.SimsObjectRotateDragManipulator;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;

@@ -20,13 +20,41 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
+package org.alice.interact.manipulator;
 
+
+import org.alice.interact.handle.HandleSet;
+
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
+
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	
+	public AbstractCamera getCamera()
+	{
+		if( this.onscreenLookingGlass != null )
+		{
+			return onscreenLookingGlass.getCameraAt( 0 );
+		} 
+		return null;
+	}
+
+	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
+		this.onscreenLookingGlass = onscreenLookingGlass;
+	}
+	
+	@Override
+	//We don't want to change the handle set when moving the camera
+	protected HandleSet getHandleSetToEnable()
+	{
+		return null;
+	}
+	
+	
+	
 }

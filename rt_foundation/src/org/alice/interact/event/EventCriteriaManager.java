@@ -22,11 +22,42 @@
  */
 package org.alice.interact.event;
 
+import java.util.List;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public class EventCriteriaManager {
+
+	private List< ManipulationEventCriteria > manipulationConditions = new java.util.LinkedList< ManipulationEventCriteria >();
+
+	public void addCondition( ManipulationEventCriteria condition )
+	{
+		synchronized( this.manipulationConditions ) {
+			if ( !this.manipulationConditions.contains( condition ) )
+			{
+				this.manipulationConditions.add( condition );
+			}
+		}
+	}
+	
+	public void removeCondition( ManipulationEventCriteria condition )
+	{
+		synchronized( this.manipulationConditions ) {
+			this.manipulationConditions.remove( condition );
+		}
+	}
+	
+	public boolean matches( ManipulationEvent event )
+	{
+		for (ManipulationEventCriteria condition : this.manipulationConditions)
+		{
+			if (condition.matches( event ))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

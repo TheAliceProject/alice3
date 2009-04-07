@@ -20,13 +20,52 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
-
+package org.alice.interact.handle;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public enum HandleRenderState {
+		JUST_VISIBLE,
+		VISIBLE_BUT_SIBLING_IS_ACTIVE,
+		VISIBLE_AND_ACTIVE,
+		NOT_VISIBLE,
+		VISIBLE_AND_ROLLOVER;
+		
+		public static HandleRenderState getStateForHandle(ManipulationHandle handle)
+		{
+			boolean isSiblingActive = false;
+			if (handle.getHandleManager() != null)
+			{
+				isSiblingActive = handle.getHandleManager().isASiblingActive( handle );
+			}
+			HandleState handleState = handle.getHandleStateCopy();
+			if (handleState.isActive())
+			{
+				return HandleRenderState.VISIBLE_AND_ACTIVE;
+			}
+			else if (handleState.isRollover())
+			{
+				return HandleRenderState.VISIBLE_AND_ROLLOVER;
+			}
+			else if (handle.isAlwaysVisible())
+			{
+				return JUST_VISIBLE;
+			}
+			else if (handleState.isVisible())
+			{
+				if (isSiblingActive)
+				{
+					return VISIBLE_BUT_SIBLING_IS_ACTIVE;
+				}
+				else
+				{
+					return JUST_VISIBLE;
+				}
+			}
+			else
+			{
+				return NOT_VISIBLE;
+			}
+		}
 }

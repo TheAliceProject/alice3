@@ -22,11 +22,38 @@
  */
 package org.alice.interact.event;
 
+import org.alice.interact.PickHint;
+import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.condition.PickCondition;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public class ManipulationEventCriteria {
+	
+	public MovementDescription description;
+	public ManipulationEvent.EventType eventType;
+	public PickHint targetCriteria;
+	
+	public ManipulationEventCriteria( ManipulationEvent.EventType eventType, MovementDescription description, PickHint targetCriteria)
+	{
+		this.eventType = eventType;
+		this.description = description;
+		this.targetCriteria = targetCriteria;
+	}
+	
+	public boolean matches( ManipulationEvent event )
+	{
+		boolean isValidEventType = event.getType() == this.eventType;
+		boolean isValidTarget = this.targetCriteria.intersects( PickCondition.getPickType( event.getTarget() ) );
+		boolean isValidMovement = event.getMovementDescription().equals(this.description);
+		return isValidEventType && isValidTarget && isValidMovement;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.description.toString() + ", "+ this.targetCriteria; 
+	}
+
 }

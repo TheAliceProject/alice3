@@ -20,13 +20,40 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
+package org.alice.interact.manipulator;
 
+import org.alice.interact.MovementKey;
+
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public class CameraRotateKeyManipulator extends RotateKeyManipulator implements CameraInformedManipulator {
+
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	
+	public CameraRotateKeyManipulator( MovementKey[] directionKeys )
+	{
+		super(directionKeys);
+	}
+	
+	public AbstractCamera getCamera()
+	{
+		if( this.onscreenLookingGlass != null )
+		{
+			return onscreenLookingGlass.getCameraAt( 0 );
+		} 
+		return null;
+	}
+
+	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
+		this.onscreenLookingGlass = onscreenLookingGlass;
+		if (this.getCamera() != null)
+		{
+			this.manipulatedTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)getCamera().getParent();
+		}
+	}
+
 }

@@ -20,13 +20,38 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
+package org.alice.interact.condition;
 
+import org.alice.interact.InputState;
+import org.alice.interact.ModifierMask;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public class ModifierSensitiveCondition extends InputCondition {
+
+	protected ModifierMask modifierMask = null;
+	
+	public ModifierSensitiveCondition()
+	{
+		this.modifierMask = null;
+	}
+	
+	public ModifierSensitiveCondition( ModifierMask modifierMask )
+	{
+		this.modifierMask = modifierMask;
+	}
+	
+	@Override
+	protected boolean testState( InputState state ) {
+		if (this.modifierMask != null)
+		{
+			return this.modifierMask.test( state );
+		}
+		else
+		{
+			return true;
+		}
+	}
+
 }

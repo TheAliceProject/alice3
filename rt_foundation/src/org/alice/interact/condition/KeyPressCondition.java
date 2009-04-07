@@ -20,13 +20,42 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.interact.event;
+package org.alice.interact.condition;
 
+import java.awt.event.KeyEvent;
+
+import org.alice.interact.InputState;
+import org.alice.interact.ModifierMask;
 
 /**
  * @author David Culyba
  */
-public interface SelectionListener {
-	public void selecting( SelectionEvent e );
-	public void selected( SelectionEvent e );
+public class KeyPressCondition extends ModifierSensitiveCondition {
+
+	protected int keyValue = 0;
+	
+	
+	public KeyPressCondition( int keyValue )
+	{
+		this( keyValue, null );
+	}
+	
+	public KeyPressCondition( int keyValue, ModifierMask modifierMask )
+	{
+		super(modifierMask);
+		this.keyValue = keyValue;
+	}
+	
+	@Override
+	protected boolean testState( InputState state )
+	{
+		return (super.testState( state ) && state.isKeyDown( this.keyValue));
+	}
+	
+	@Override
+	public String toString()
+	{
+		return KeyEvent.getKeyText( this.keyValue );
+	}
+
 }

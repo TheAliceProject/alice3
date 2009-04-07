@@ -22,6 +22,9 @@
  */
 package org.alice.interact;
 
+import org.alice.interact.condition.PickCondition;
+import org.alice.interact.handle.ManipulationHandle;
+
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -52,8 +55,31 @@ public class InputState {
 	private InputEventType currentInputEventType = InputEventType.NULL_EVENT;
 	private PickResult clickPickResult = null;
 	private PickResult rolloverPickResult = null;
-	private Transformable rolloverPickObject = null;
+	private Transformable rolloverPickTransformable = null;
+	private Transformable clickPickTransformable = null;
 	private Transformable currentlySelectedObject = null;
+	private ManipulationHandle clickHandle = null;
+	private ManipulationHandle rolloverHandle = null;
+	
+	
+
+
+	public ManipulationHandle getRolloverHandle() {
+		return this.rolloverHandle;
+	}
+
+
+	public void setRolloverHandle( ManipulationHandle rolloverHandle ) {
+		this.rolloverHandle = rolloverHandle;
+	}
+
+	public ManipulationHandle getClickHandle() {
+		return this.clickHandle;
+	}
+
+	public void setClickHandle( ManipulationHandle clickHandle ) {
+		this.clickHandle = clickHandle;
+	}
 
 	/**
 	 * @return the currentlySelectedObject
@@ -135,6 +161,28 @@ public class InputState {
 	public void setClickPickResult( edu.cmu.cs.dennisc.lookingglass.PickResult pickResult )
 	{
 		this.clickPickResult = pickResult;
+		Transformable picked = this.getClickPickedTransformable( true );
+		PickHint clickedObjectType = PickCondition.getPickType( this.rolloverPickResult );
+		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
+		{
+			this.setClickPickTransformable( picked );
+		}
+		else if (clickedObjectType.intersects( PickHint.HANDLES) )
+		{
+			this.setClickPickTransformable(picked);
+		}
+		else
+		{
+			this.setClickPickTransformable( null );
+		}
+		if (picked instanceof ManipulationHandle)
+		{
+			this.clickHandle = (ManipulationHandle)picked;
+		}
+		else
+		{
+			this.clickHandle = null;
+		}
 	}
 	
 	public edu.cmu.cs.dennisc.lookingglass.PickResult getClickPickResult()
@@ -148,14 +196,44 @@ public class InputState {
 
 	public void setRolloverPickResult( PickResult rolloverPickResult ) {
 		this.rolloverPickResult = rolloverPickResult;
+		Transformable picked = this.getRolloverPickedTransformable( true );
+		PickHint rolloverObjectType = PickCondition.getPickType( this.rolloverPickResult );
+		if ( rolloverObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
+		{
+			this.setRolloverPickTransformable( picked );
+		}
+		else if (rolloverObjectType.intersects( PickHint.HANDLES) )
+		{
+			this.setRolloverPickTransformable(picked);
+		}
+		else
+		{
+			this.setRolloverPickTransformable( null );
+		}
+		if (picked instanceof ManipulationHandle)
+		{
+			this.rolloverHandle = (ManipulationHandle)picked;
+		}
+		else
+		{
+			this.rolloverHandle = null;
+		}
 	}
 
-	public Transformable getRolloverPickObject() {
-		return this.rolloverPickObject;
+	public Transformable getRolloverPickTransformable() {
+		return this.rolloverPickTransformable;
 	}
 
-	public void setRolloverPickObject( Transformable rolloverPickObject ) {
-		this.rolloverPickObject = rolloverPickObject;
+	public void setRolloverPickTransformable( Transformable rolloverPickTransformable ) {
+		this.rolloverPickTransformable = rolloverPickTransformable;
+	}
+	
+	public Transformable getClickPickTransformable() {
+		return this.clickPickTransformable;
+	}
+
+	public void setClickPickTransformable( Transformable clickPickTransformable ) {
+		this.clickPickTransformable = clickPickTransformable;
 	}
 
 	protected Component getFirstClassFromComponent( Component object )
@@ -219,9 +297,12 @@ public class InputState {
 		this.currentMouseWheelState = sourceState.currentMouseWheelState;
 		this.currentInputEventType = sourceState.currentInputEventType;
 		this.clickPickResult = sourceState.clickPickResult;
+		this.clickPickTransformable = sourceState.clickPickTransformable;
 		this.currentlySelectedObject = sourceState.currentlySelectedObject;
-		this.rolloverPickObject = sourceState.rolloverPickObject;
+		this.rolloverPickTransformable = sourceState.rolloverPickTransformable;
 		this.rolloverPickResult = sourceState.rolloverPickResult;
+		this.rolloverHandle = sourceState.rolloverHandle;
+		this.clickHandle = sourceState.clickHandle;
 	}
 	
 	@Override
