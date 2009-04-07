@@ -60,18 +60,18 @@ public abstract class NodeLikeSubstance extends org.alice.ide.AbstractDragCompon
 		//todo: check for dragOperation
 		return true;
 	}
-	protected boolean isCullingContainsDesired() {
-		return isKnurlDesired() == false;
-	}
+//	protected boolean isCullingContainsDesired() {
+//		return isKnurlDesired() == false;
+//	}
 	
-	@Override
-	public boolean contains( int x, int y ) {
-		if( isCullingContainsDesired() ) {
-			return false;
-		} else {
-			return super.contains( x, y );
-		}
-	}
+//	@Override
+//	public boolean contains( int x, int y ) {
+//		if( isCullingContainsDesired() ) {
+//			return false;
+//		} else {
+//			return super.contains( x, y );
+//		}
+//	}
 
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {

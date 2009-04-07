@@ -46,7 +46,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		return rv;
 	}
 	@Override
-	protected javax.swing.JComponent createComponent( Object instance ) {
+	protected java.awt.Component createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
 		javax.swing.JComponent prefixPane;
 		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
@@ -60,6 +60,6 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 				prefixPane = null;
 			}
 		}
-		return new org.alice.ide.common.ExpressionPropertyPane( this.getFactory(), argument.expression, true, prefixPane );
+		return this.getFactory().createExpressionPropertyPane( argument.expression, true, prefixPane );
 	}
 }

@@ -36,6 +36,24 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
+	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		if( super.isDropDownDesiredFor( expression ) ) {
+			edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
+			if( parent instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+				edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)parent;
+				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+				if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
+					if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+						return false;
+					}
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+	@Override
 	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
 		vm.setEntryPointType( this.getProgramType() );

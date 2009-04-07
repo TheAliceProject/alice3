@@ -38,8 +38,8 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 			isExpressionDesired = true;
 		}
 		if( isExpressionDesired ) {
-			this.add( new ExpressionPropertyPane( getIDE().getCodeFactory(), this.fieldAccess.expression, false ) );
-			this.add( new zoot.ZLabel( ".") );
+			this.add( getIDE().getCodeFactory().createExpressionPropertyPane( this.fieldAccess.expression, false, null ) );
+			//this.add( new zoot.ZLabel( ".") );
 		}
 		this.add( new org.alice.ide.common.NodeNameLabel( this.fieldAccess.field.getValue() ) );
 		this.setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );

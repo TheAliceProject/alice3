@@ -26,7 +26,8 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public abstract class DropDownPane extends org.alice.ide.AbstractControl {
-	public DropDownPane( javax.swing.JComponent prefixPane, javax.swing.JComponent mainComponent, javax.swing.JComponent postfixPane ) {
+	private java.awt.Component mainComponent;
+	public DropDownPane( java.awt.Component prefixPane, java.awt.Component mainComponent, java.awt.Component postfixPane ) {
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 		//this.setBorder( javax.swing.BorderFactory.createMatteBorder( TOP, LEFT, BOTTOM, RIGHT, edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR ) );
 		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
@@ -44,7 +45,6 @@ public abstract class DropDownPane extends org.alice.ide.AbstractControl {
 		this.addMouseMotionListener( controlAdapter );
 	}
 	
-	private javax.swing.JComponent mainComponent;
 	
 //	@Override
 //	protected boolean isActuallyPotentiallySelectable() {
@@ -126,7 +126,7 @@ public abstract class DropDownPane extends org.alice.ide.AbstractControl {
 	}
 	
 
-	public javax.swing.JComponent getMainComponent() {
+	public java.awt.Component getMainComponent() {
 		return this.mainComponent;
 	}
 //	@Override

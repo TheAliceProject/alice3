@@ -22,20 +22,15 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.common.StatementListPropertyPane;
-
 /**
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyDropDownPane( javax.swing.JComponent component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, javax.swing.JComponent prefixPane ) {
+	public ExpressionPropertyDropDownPane( java.awt.Component prefixPane, java.awt.Component component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		super( prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionPropertyOperation( this.expressionProperty ) );
-	}
-	public ExpressionPropertyDropDownPane( javax.swing.JComponent component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		this( component, expressionProperty, null );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;

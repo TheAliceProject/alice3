@@ -31,7 +31,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty, false );
+	protected java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		return this.createExpressionPane( expressionProperty.getValue() );
+		//		return new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty, false, null );
 	}
 }

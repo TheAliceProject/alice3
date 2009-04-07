@@ -29,7 +29,7 @@ package org.alice.ide.codeeditor;
 public class ArgumentExpressionPropertyDropDownPane extends ExpressionPropertyDropDownPane {
 	private edu.cmu.cs.dennisc.alice.ast.Argument argument;
 	public ArgumentExpressionPropertyDropDownPane( javax.swing.JComponent component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, javax.swing.JComponent prefixPane, edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
-		super( component, expressionProperty, prefixPane );
+		super( prefixPane, component, expressionProperty );
 		this.argument = argument;
 	}
 	@Override

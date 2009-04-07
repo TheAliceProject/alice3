@@ -60,7 +60,7 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 			
 		} );
 	}
-	protected abstract javax.swing.JComponent createComponent( Object instance );
+	protected abstract java.awt.Component createComponent( Object instance );
 	protected void addPrefixComponents() {
 	}
 	protected void addPostfixComponents() {
@@ -77,7 +77,7 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 		final int N = getProperty().size();
 		int i = 0;
 		for( Object o : getProperty() ) {
-			javax.swing.JComponent component;
+			java.awt.Component component;
 			if( o != null ) {
 				component = this.createComponent( o );
 			} else {

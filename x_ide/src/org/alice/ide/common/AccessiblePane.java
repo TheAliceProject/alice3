@@ -34,8 +34,8 @@ public abstract class AccessiblePane extends ExpressionCreatorPane {
 	public void createExpression( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		taskObserver.handleCompletion( this.createExpression() );
 	}
-	@Override
-	protected boolean isCullingContainsDesired() {
-		return false;
-	}
+//	@Override
+//	protected boolean isCullingContainsDesired() {
+//		return false;
+//	}
 }

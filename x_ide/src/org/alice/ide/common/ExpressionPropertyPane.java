@@ -22,63 +22,57 @@
  */
 package org.alice.ide.common;
 
-import org.alice.ide.ast.EmptyExpression;
-import org.alice.ide.codeeditor.ArgumentExpressionPropertyDropDownPane;
-import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
-
 /**
  * @author Dennis Cosgrove
  */
 public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.alice.ast.ExpressionProperty > {
-	//note: refresh will be called before this field is assigned
-	//      null value indicates no need to refresh yet
-	private Boolean isDropDownPotentiallyDesired = null;
-	private javax.swing.JComponent prefixPane;
-	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired, javax.swing.JComponent prefixPane ) {
+//	private javax.swing.JComponent prefixPane;
+
+	//	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired, javax.swing.JComponent prefixPane ) {
+	//		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+	//		this.prefixPane = prefixPane;
+	//		this.refresh();
+	//	}
+	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
-		this.isDropDownPotentiallyDesired = isDropDownPotentiallyDesired;
-		this.prefixPane = prefixPane;
 		this.refresh();
 	}
-	public ExpressionPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired ) {
-		this( factory, property, isDropDownPotentiallyDesired, null );
-	}
-	
+
 	@Override
 	protected void refresh() {
-		if( this.isDropDownPotentiallyDesired != null ) {
-			this.removeAll();
-			javax.swing.JComponent component;
-			edu.cmu.cs.dennisc.alice.ast.Expression expression = getProperty().getValue();
-			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-				component = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
-			} else {
-				if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-					component = new FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-				} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
-					component = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
-				} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
-					component = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
-				} else if( expression != null ){
-					component = new ExpressionPane( this.getFactory(), expression );
-				} else {
-					component = new zoot.ZLabel( "todo: handle null" );
-				}
-				if( this.isDropDownPotentiallyDesired ) {
-					edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property = this.getProperty();
-					edu.cmu.cs.dennisc.property.PropertyOwner owner = property.getOwner();	
-					if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument ) {
-						edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)owner;
-						component = new ArgumentExpressionPropertyDropDownPane( component, this.getProperty(), this.prefixPane, argument );
-					} else {
-						component = new ExpressionPropertyDropDownPane( component, this.getProperty(), this.prefixPane );
-					}
-				}
-			}
-			this.add( component );
-		}
+		//		if( this.isDropDownPotentiallyDesired != null ) {
+		this.removeAll();
+//		javax.swing.JComponent component;
+//		edu.cmu.cs.dennisc.alice.ast.Expression expression = getProperty().getValue();
+//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+//			component = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+//		} else {
+//			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+//				component = new FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+//			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
+//				component = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
+//			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
+//				component = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
+//			} else if( expression != null ) {
+//				component = new ExpressionPane( this.getFactory(), expression );
+//			} else {
+//				component = new zoot.ZLabel( "todo: handle null" );
+//			}
+//			//				if( this.isDropDownPotentiallyDesired ) {
+//			//					edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property = this.getProperty();
+//			//					edu.cmu.cs.dennisc.property.PropertyOwner owner = property.getOwner();	
+//			//					if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument ) {
+//			//						edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)owner;
+//			//						component = new ArgumentExpressionPropertyDropDownPane( component, this.getProperty(), this.prefixPane, argument );
+//			//					} else {
+//			//						component = new ExpressionPropertyDropDownPane( component, this.getProperty(), this.prefixPane );
+//			//					}
+//			//				}
+//		}
+//		this.add( component );
+////				}
+		this.add( this.getFactory().createExpressionPane( getProperty().getValue() ) );
 		this.revalidate();
 		this.repaint();
 	}
 }
-

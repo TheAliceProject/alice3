@@ -85,10 +85,10 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	private java.util.List< zoot.Operation > createPopupOperations() {
 		return this.updatePopupOperations( new java.util.LinkedList< zoot.Operation >() );
 	}
-	@Override
-	protected boolean isCullingContainsDesired() {
-		return false;
-	}
+//	@Override
+//	protected boolean isCullingContainsDesired() {
+//		return false;
+//	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 		if( this.field != null ) {

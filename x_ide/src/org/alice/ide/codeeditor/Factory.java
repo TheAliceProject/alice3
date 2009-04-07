@@ -25,6 +25,7 @@ package org.alice.ide.codeeditor;
 class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
+
 	public DeleteStatementActionOperation( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		this.putValue( javax.swing.Action.NAME, "delete" );
 		this.statement = abstractStatementPane.getStatement();
@@ -39,26 +40,28 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		}
 	}
 }
+
 class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( statement.isEnabled.getValue() );
 		this.statement = statement;
 		this.putValue( javax.swing.Action.NAME, "is enabled" );
 		//update();
 	}
-//	private void update() {
-//		String text;
-//		if( this.statement.isEnabled.getValue() ) {
-//			text = "disable";
-//		} else {
-//			text = "enable";
-//		}
-//		this.putValue( javax.swing.Action.NAME, text );
-//	}
+	//	private void update() {
+	//		String text;
+	//		if( this.statement.isEnabled.getValue() ) {
+	//			text = "disable";
+	//		} else {
+	//			text = "enable";
+	//		}
+	//		this.putValue( javax.swing.Action.NAME, text );
+	//	}
 	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
 		this.statement.isEnabled.setValue( booleanStateContext.getNextValue() );
-//		this.update();
+		//		this.update();
 	}
 }
 
@@ -67,12 +70,16 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
  */
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
-	protected javax.swing.JComponent createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+	protected java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	protected javax.swing.JComponent createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		return new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty, true );
+	protected java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		java.awt.Component rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expressionProperty.getValue() ) )  {
+			rv = new ExpressionPropertyDropDownPane( null, rv, expressionProperty );
+		}
+		return rv;
 	}
 	@Override
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
@@ -89,5 +96,5 @@ public class Factory extends org.alice.ide.common.Factory {
 	private java.util.List< zoot.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		return this.updatePopupOperations( new java.util.LinkedList< zoot.Operation >(), abstractStatementPane );
 	}
-	
+
 }

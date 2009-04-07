@@ -49,6 +49,11 @@ public abstract class Factory {
 	}
 	protected abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty );
 	protected abstract java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
+
+	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired, java.awt.Component prefixPane ) {
+		return this.createExpressionPropertyPane( property );
+		//return new ExpressionPropertyPane( this, property, isDropDownPotentiallyDesired, prefixPane );
+	}
 	
 	protected java.awt.Component createVariableDeclarationPane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice ) {
 		return new VariableDeclarationPane( variableDeclaredInAlice );
@@ -135,7 +140,7 @@ public abstract class Factory {
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		String methodName = methodInvocationChunk.getMethodName();
-		javax.swing.JComponent rv;
+		java.awt.Component rv;
 		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Node && methodName.equals( "getName" ) ) {
 			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)owner;
 			org.alice.ide.common.NodeNameLabel label = new org.alice.ide.common.NodeNameLabel( node );
@@ -249,7 +254,25 @@ public abstract class Factory {
 	public final org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		return this.createStatementPane( statement, null );
 	}
-	public org.alice.ide.common.ExpressionPane createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		return new ExpressionPane( this, expression );
+	public java.awt.Component createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		java.awt.Component rv;
+		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+			rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+		} else {
+			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+				rv = new FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
+				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
+			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
+				rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
+			} else if( expression != null ) {
+				rv = new ExpressionPane( this, expression );
+			} else {
+				rv = new zoot.ZLabel( "todo: handle null" );
+			}
+		}
+		return rv;
 	}
+	
+
 }

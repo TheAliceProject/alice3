@@ -228,10 +228,10 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 				protected boolean isKnurlDesired() {
 					return false;
 				}
-				@Override
-				protected boolean isCullingContainsDesired() {
-					return false;
-				}
+//				@Override
+//				protected boolean isCullingContainsDesired() {
+//					return false;
+//				}
 			}
 			BodyPane bodyPane = new BodyPane();
 			

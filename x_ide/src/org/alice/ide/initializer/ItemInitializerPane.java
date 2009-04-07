@@ -31,8 +31,7 @@ abstract class ItemInitializerPane extends AbstractInitializerPane {
 	public ItemInitializerPane() {
 		//this.setBackground( java.awt.Color.GREEN );
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-		org.alice.ide.common.ExpressionPropertyPane expressionPropertyPane = new org.alice.ide.common.ExpressionPropertyPane( getIDE().getCodeFactory(), this.bogusNode.expression, true );
-		this.add( expressionPropertyPane );
+		this.add( getIDE().getCodeFactory().createExpressionPropertyPane( this.bogusNode.expression, true, null ) );
 		this.bogusNode.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}

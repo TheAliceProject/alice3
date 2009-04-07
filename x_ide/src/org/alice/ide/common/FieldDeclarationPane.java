@@ -43,7 +43,6 @@ public class FieldDeclarationPane extends swing.LineAxisPane {
 		//todo
 		boolean isDropDownPotentiallyDesired = factory instanceof org.alice.ide.memberseditor.Factory;
 		
-		
-		this.add( new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer, isDropDownPotentiallyDesired ) );
+		this.add( factory.createExpressionPropertyPane( field.initializer, isDropDownPotentiallyDesired, null ) );
 	}
 }
