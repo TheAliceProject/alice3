@@ -22,6 +22,22 @@
  */
 package org.alice.ide;
 
+class IsInstanceCrawler< E > implements edu.cmu.cs.dennisc.pattern.Crawler {
+	private Class<E> cls;
+	private java.util.List< E > list = new java.util.LinkedList< E >();
+	public IsInstanceCrawler( Class<E> cls ) {
+		this.cls = cls;
+	}
+	public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+		if( this.cls.isAssignableFrom( crawlable.getClass() ) ) {
+			this.list.add( (E)crawlable );
+		}
+	}
+	public java.util.List<E> getList() {
+		return this.list;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -844,12 +860,14 @@ public abstract class IDE extends zoot.ZFrame {
 		//					blank.addChild( MethodInvocationFillIn( getPartMethod, expression ) )
 	}
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > getVariables( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >();
-		return rv;
+		IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > crawler = new IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice.class );
+		codeInFocus.crawl( crawler, false );
+		return crawler.getList();
 	}
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > getConstants( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice >();
-		return rv;
+		IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > crawler = new IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice.class );
+		codeInFocus.crawl( crawler, false );
+		return crawler.getList();
 	}
 	
 	protected void addExpressionBonusFillInsForType( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
