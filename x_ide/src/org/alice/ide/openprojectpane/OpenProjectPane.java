@@ -466,6 +466,7 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.swing.InputPane< java.io
 		java.awt.Component selectedComponent = this.tabbedPane.getSelectedComponent();
 		if( selectedComponent instanceof javax.swing.JScrollPane ) {
 			javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)selectedComponent;
+			scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 			java.awt.Component view = scrollPane.getViewport().getView();
 			if( view instanceof TabPane ) {
 				return (TabPane)view;
