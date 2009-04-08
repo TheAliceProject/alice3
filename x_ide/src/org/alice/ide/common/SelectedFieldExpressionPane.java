@@ -46,13 +46,14 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		org.alice.ide.IDE ide = getIDE();
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = ide.getFieldSelection();
 		this.label.setText( getIDE().getInstanceTextForField( field, true ) );
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = ide.createInstanceExpression();
-		java.awt.Color color;
-		if( expression != null ) {
-			color = getIDE().getColorForASTInstance( expression );
-		} else {
-			color = java.awt.Color.LIGHT_GRAY;
-		}
-		this.setBackground( color );
+		//java.awt.Color color;
+		//if( this.selectedFieldExpression != null ) {
+		//	color = getIDE().getColorForASTInstance( this.selectedFieldExpression );
+		//} else {
+		//	color = java.awt.Color.LIGHT_GRAY;
+		//}
+		//color = java.awt.Color.MAGENTA;
+		//this.setBackground( color );
+		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 }

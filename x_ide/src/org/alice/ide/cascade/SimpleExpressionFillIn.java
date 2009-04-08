@@ -35,12 +35,13 @@ public class SimpleExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expr
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
 		javax.swing.JComponent rv;
+		org.alice.ide.common.Factory factory = getIDE().getPreviewFactory();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.getModel();
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			rv = new org.alice.ide.common.FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-		} else {
-			rv = new org.alice.ide.common.ExpressionPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), expression );
-		}
+//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+//			rv = new org.alice.ide.common.FieldAccessPane( factory, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+//		} else {
+			rv = (javax.swing.JComponent)factory.createExpressionPane( expression );
+//		}
 		return rv;
 	}
 }

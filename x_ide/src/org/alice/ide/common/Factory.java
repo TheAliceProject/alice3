@@ -226,10 +226,26 @@ public abstract class Factory {
 		}
 	}
 	public java.awt.Component createComponent( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		Class< ? > cls = owner.getClass();
-		String value = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Templates" );
-		org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
-		return createComponent( page, owner );
+		java.awt.Component rv;
+		if( owner != null ) {
+//			if( owner instanceof org.alice.ide.ast.EmptyExpression ) {
+//				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)owner );
+//			} else if( owner instanceof org.alice.ide.ast.SelectedFieldExpression ) {
+//				rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)owner );
+//			} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+//				rv = new FieldAccessPane( this, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)owner );
+//			} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+//				rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)owner).value.getValue() );
+//			} else {
+				Class< ? > cls = owner.getClass();
+				String value = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Templates" );
+				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
+				rv = createComponent( page, owner );
+//			}
+		} else {
+			rv = new zoot.ZLabel( "todo: handle null" );
+		}
+		return rv;
 	}
 	
 
@@ -254,25 +270,33 @@ public abstract class Factory {
 	public final org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		return this.createStatementPane( statement, null );
 	}
+//	public final java.awt.Component createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+//		return new ExpressionPane( this, expression );
+//	}
+	
 	public java.awt.Component createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+//		java.awt.Component rv;
+//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+//			rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+////		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+////			rv = new FieldAccessPane( this, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+//		} else {
+//			rv = new ExpressionPane( this, expression );
+//		}
 		java.awt.Component rv;
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+		if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
+			rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
+		} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
+			rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
+		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
+			rv = new AssignmentExpressionPane( this, (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression );
+		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+			rv = new FieldAccessPane( this, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
 			rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
 		} else {
-			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-				rv = new FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
-				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
-			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
-				rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
-			} else if( expression != null ) {
-				rv = new ExpressionPane( this, expression );
-			} else {
-				rv = new zoot.ZLabel( "todo: handle null" );
-			}
+			rv = new ExpressionPane( expression, this.createComponent( expression ) );
 		}
 		return rv;
 	}
-	
-
 }

@@ -37,7 +37,7 @@ public abstract class ExpressionStatementTemplate extends org.alice.ide.template
 		if( this.incompleteExpressionPane != null ) {
 			//pass
 		} else {
-			this.incompleteExpressionPane = getIDE().getTemplatesFactory().createComponent( this.incompleteExpression );
+			this.incompleteExpressionPane = getIDE().getTemplatesFactory().createExpressionPane( this.incompleteExpression );
 			this.add( this.incompleteExpressionPane );
 			this.revalidate();
 		}

@@ -85,6 +85,6 @@ abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.created
 	}
 	@Override
 	protected java.awt.Component createInitializerComponent() {
-		return new swing.LineAxisPane( getIDE().getCodeFactory().createExpressionPane( this.getInitializer() ) );
+		return new swing.LineAxisPane( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
 	}
 }

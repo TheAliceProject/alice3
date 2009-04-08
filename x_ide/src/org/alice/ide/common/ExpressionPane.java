@@ -27,13 +27,18 @@ package org.alice.ide.common;
  */
 public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance  {
 	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, java.awt.Component component ) {
 		this.expression = expression;
-		this.add( factory.createComponent( this.expression ) );
+		this.add( component );
 		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
+		//this.setBackground( java.awt.Color.GREEN );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.expression.getType();
+		if( this.expression != null ) {
+			return this.expression.getType();
+		} else {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
+		}
 	}
 }

@@ -39,8 +39,8 @@ public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cm
 		}
 	}
 	@Override
-	protected javax.swing.JComponent createComponent( Object instance ) {
+	protected java.awt.Component createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)instance;
-		return new ExpressionPane( this.getFactory(), expression );
+		return this.getFactory().createExpressionPane( expression );
 	}
 }

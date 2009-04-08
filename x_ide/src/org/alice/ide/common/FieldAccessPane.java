@@ -29,7 +29,7 @@ package org.alice.ide.common;
 public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstance {
 	private edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess;
 
-	public FieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+	public FieldAccessPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		this.fieldAccess = fieldAccess;
 		boolean isExpressionDesired;
 		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
@@ -38,10 +38,13 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 			isExpressionDesired = true;
 		}
 		if( isExpressionDesired ) {
-			this.add( getIDE().getCodeFactory().createExpressionPropertyPane( this.fieldAccess.expression, false, null ) );
-			//this.add( new zoot.ZLabel( ".") );
+			this.add( factory.createExpressionPropertyPane( this.fieldAccess.expression, false, null ) );
+			this.add( new zoot.ZLabel( ".") );
 		}
-		this.add( new org.alice.ide.common.NodeNameLabel( this.fieldAccess.field.getValue() ) );
+		org.alice.ide.common.NodeNameLabel nodeNameLabel = new org.alice.ide.common.NodeNameLabel( this.fieldAccess.field.getValue() );
+		nodeNameLabel.setFontToScaledFont( 1.2f );
+		nodeNameLabel.setFontToDerivedFont(  zoot.font.ZTextWeight.BOLD );
+		this.add( nodeNameLabel );
 		this.setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override
