@@ -22,36 +22,39 @@
  */
 package org.alice.ide.choosers;
 
-
 /**
  * @author Dennis Cosgrove
  */
 public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
-	class MyTypePane extends org.alice.ide.createdeclarationpanes.TypePane {
-		public MyTypePane() {
-			super( true, false );
-		}
-		@Override
-		protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-			ArrayChooser.this.arrayInitializerPane.handleTypeChange( type.getArrayType() );
-		}
-		@Override
-		protected void handleIsArrayChange( boolean isArray ) {
-		}
-	}
+//	class MyTypePane extends org.alice.ide.createdeclarationpanes.TypePane {
+//		public MyTypePane() {
+//			super( true, false );
+//		}
+//		@Override
+//		protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+//			ArrayChooser.this.arrayInitializerPane.handleTypeChange( type.getArrayType() );
+//		}
+//		@Override
+//		protected void handleIsArrayChange( boolean isArray ) {
+//		}
+//	}
 	private edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation();
-	private MyTypePane myTypePane = new MyTypePane();
-	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( arrayInstanceCreation ) {
-		@Override
-		protected void handleInitializerChange() {
-			ArrayChooser.this.getInputPane().updateOKButton();
-		}
-	};
+	private org.alice.ide.createdeclarationpanes.TypePane myTypePane = new org.alice.ide.createdeclarationpanes.TypePane( arrayInstanceCreation.arrayType, true, false );
+	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( arrayInstanceCreation );
 	private static final String[] LABEL_TEXTS = { "type:", "value:" };
 	private java.awt.Component[] components = { this.myTypePane, this.arrayInitializerPane };
 	
 	public ArrayChooser() {
-		this.arrayInitializerPane.handleTypeChange( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) );
+		//this.arrayInitializerPane.handleTypeChange( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) );
+		this.arrayInstanceCreation.expressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+			@Override
+			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+			}
+			@Override
+			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+				ArrayChooser.this.getInputPane().updateOKButton();
+			}
+		} );
 	}
 	public boolean isInputValid() {
 		return true;
@@ -64,7 +67,6 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		return this.components;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation getValue() {
-		//return (edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation)this.arrayInitializerPane.getInitializer();
 		return this.arrayInstanceCreation;
 	}
 	

@@ -20,16 +20,45 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.initializer;
+package edu.cmu.cs.dennisc.property.event;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractInitializerPane extends swing.Pane {
-	public abstract edu.cmu.cs.dennisc.alice.ast.Expression getInitializer();
-//	public abstract void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type );
-//	protected abstract void handleInitializerChange();
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+public abstract class SimplifiedListPropertyAdapter<E> implements ListPropertyListener<E> {
+
+	protected abstract void changing( ListPropertyEvent<E> e );
+	protected abstract void changed( ListPropertyEvent<E> e );
+	
+	public final void adding( AddListPropertyEvent< E > e ) {
+		this.changing( e );
 	}
+	public final void added( AddListPropertyEvent< E > e ) {
+		this.changed( e );
+	}
+
+
+	public final void clearing( ClearListPropertyEvent< E > e ) {
+		this.changing( e );
+	}
+	public final void cleared( ClearListPropertyEvent< E > e ) {
+		this.changed( e );
+	}
+
+
+	public final void removing( RemoveListPropertyEvent< E > e ) {
+		this.changing( e );
+	}
+	public final void removed( RemoveListPropertyEvent< E > e ) {
+		this.changed( e );
+	}
+
+
+	public final void setting( SetListPropertyEvent< E > e ) {
+		this.changing( e );
+	}
+	public final void set( SetListPropertyEvent< E > e ) {
+		this.changed( e );
+	}
+
 }

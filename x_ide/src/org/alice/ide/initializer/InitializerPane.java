@@ -25,35 +25,26 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InitializerPane extends swing.CardPane {
+public class InitializerPane extends swing.CardPane {
 	private static final String ITEM_KEY = "ITEM_KEY";
 	private static final String ARRAY_KEY = "ARRAY_KEY";
-	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane() {
-		@Override
-		protected void handleInitializerChange() {
-			InitializerPane.this.handleInitializerChange();
-		}
-	};
-	private edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation();
-	private ArrayInitializerPane arrayInitializerPane = new ArrayInitializerPane( arrayInstanceCreation ) {
-		@Override
-		protected void handleInitializerChange() {
-			InitializerPane.this.handleInitializerChange();
-		}
-	};
-
-	public InitializerPane() {
+	private BogusNode bogusNode;
+	private ItemInitializerPane itemInitializerPane;
+	private ArrayInitializerPane arrayInitializerPane;
+	public InitializerPane( BogusNode bogusNode ) {
+		this.itemInitializerPane = new ItemInitializerPane( bogusNode.componentExpression );
+		this.arrayInitializerPane = new ArrayInitializerPane( bogusNode.arrayExpressions );
 		this.add( this.itemInitializerPane, ITEM_KEY );
 		this.add( this.arrayInitializerPane, ARRAY_KEY );
 		this.show( ITEM_KEY );
 	}
-	private AbstractInitializerPane getCurrentCard() {
-		if( this.itemInitializerPane.isVisible() ) {
-			return this.itemInitializerPane;
-		} else {
-			return this.arrayInitializerPane;
-		}
-	}
+//	private java.awt.Component getCurrentCard() {
+//		if( this.itemInitializerPane.isVisible() ) {
+//			return this.itemInitializerPane;
+//		} else {
+//			return this.arrayInitializerPane;
+//		}
+//	}
 	private void handleIsArrayChange( boolean isArray ) {
 		String key;
 		if( isArray ) {
@@ -67,11 +58,17 @@ public abstract class InitializerPane extends swing.CardPane {
 	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( type != null ) {
 			this.handleIsArrayChange( type.isArray() );
-			this.getCurrentCard().handleTypeChange( type );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleTypeChange" );
+			//this.getCurrentCard().handleTypeChange( type );
 		}
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-		return getCurrentCard().getInitializer();
+		if( this.itemInitializerPane.isVisible() ) {
+			return this.bogusNode.componentExpression.getValue();
+		} else {
+			
+			return this.bogusNode.arrayExpressions.getValue();
+		}
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
@@ -85,5 +82,4 @@ public abstract class InitializerPane extends swing.CardPane {
 	public java.awt.Dimension getMaximumSize() {
 		return this.getPreferredSize();
 	}
-	protected abstract void handleInitializerChange();
 }

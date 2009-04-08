@@ -26,17 +26,18 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 class FauxItem extends javax.swing.AbstractButton {
-	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane() {
-		@Override
-		protected void handleInitializerChange() {
-			this.revalidate();
-			this.repaint();
-		}
+	private BogusNode bogusNode = new BogusNode();
+	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane( bogusNode.expression ) {
+//		@Override
+//		protected void handleInitializerChange() {
+//			this.revalidate();
+//			this.repaint();
+//		}
 	};
 	private zoot.ZLabel label = new zoot.ZLabel();
 	public FauxItem( int index, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
 		this.setIndex( index );
-		this.itemInitializerPane.setInitializer( initializer );
+		bogusNode.expression.setValue( initializer );
 		this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
@@ -68,7 +69,8 @@ class FauxItem extends javax.swing.AbstractButton {
 		this.label.setText( "[ " + index + " ]" );
 	}
 	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType componentType ) {
-		this.itemInitializerPane.handleTypeChange( componentType );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleTypeChange" );
+		//this.itemInitializerPane.handleTypeChange( componentType );
 	}
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {

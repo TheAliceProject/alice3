@@ -25,30 +25,8 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-abstract class ItemInitializerPane extends AbstractInitializerPane {
-	private BogusNode bogusNode = new BogusNode();
-
-	public ItemInitializerPane() {
-		//this.setBackground( java.awt.Color.GREEN );
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-		this.add( getIDE().getCodeFactory().createExpressionPropertyPane( this.bogusNode.expression, true, null ) );
-		this.bogusNode.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			}
-			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				ItemInitializerPane.this.handleInitializerChange();
-			}
-		} );
-	}
-	@Override
-	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this.bogusNode.handleComponentTypeChange( type );
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-		return this.bogusNode.createCopyOfExpressionValue();
-	}
-	public void setInitializer( edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
-		this.bogusNode.expression.setValue( initializer );
+public class ItemInitializerPane extends org.alice.ide.codeeditor.ExpressionPropertyDropDownPane {
+	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
+		super( null, new org.alice.ide.common.ExpressionPropertyPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), initializerProperty ), initializerProperty );
 	}
 }

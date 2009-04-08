@@ -38,19 +38,6 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 			booleanStateContext.commit();
 		}
 	}
-	class MyTypePane extends TypePane {
-		public MyTypePane() {
-			super( false, true );
-		}
-		@Override
-		protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-			CreateDeclarationPane.this.handleTypeChange();
-		}
-		@Override
-		protected void handleIsArrayChange( boolean isArray ) {
-			CreateDeclarationPane.this.handleTypeChange();
-		}
-	}
 	class DeclarationNameTextField extends zoot.ZSuggestiveTextField {
 		public DeclarationNameTextField() {
 			super( "", "<unset>" );
@@ -79,17 +66,46 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 			CreateDeclarationPane.this.handleDeclarationNameUpdate( e );
 		}
 	}
-	class MyInitializerPane extends InitializerPane {
-		@Override
-		protected void handleInitializerChange() {
-			CreateDeclarationPane.this.handleInitializerChange();
-		}
-	}
+
+	private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( null, false );
 	private zoot.ZCheckBox isReassignableCheckBox;
 	private TypePane typePane;
 	private DeclarationNameTextField declarationNameTextField = new DeclarationNameTextField();
 	private InitializerPane initializerPane;
 
+	
+	public CreateDeclarationPane() {
+		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				CreateDeclarationPane.this.updateOKButton();
+			}
+		} );
+		bogusNode.isArray.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				CreateDeclarationPane.this.updateOKButton();
+			}
+		} );
+		bogusNode.componentExpression.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				CreateDeclarationPane.this.updateOKButton();
+			}
+		} );
+		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+			@Override
+			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+			}
+			@Override
+			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+				CreateDeclarationPane.this.updateOKButton();
+			}
+		} );
+	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
@@ -152,7 +168,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	protected abstract boolean isEditableValueTypeComponentDesired();
 	protected java.awt.Component createValueTypeComponent() {
 		if( this.isEditableValueTypeComponentDesired() ) {
-			this.typePane = new MyTypePane();
+			this.typePane = new TypePane( bogusNode.componentType, false, true );
 		} else {
 			this.typePane = null;
 		}
@@ -190,7 +206,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	protected abstract boolean isEditableInitializerComponentDesired();
 	protected java.awt.Component createInitializerComponent() {
 		if( this.isEditableInitializerComponentDesired() ) {
-			this.initializerPane = new MyInitializerPane();
+			this.initializerPane = new InitializerPane( bogusNode );
 		} else {
 			this.initializerPane = null;
 		}
@@ -237,16 +253,6 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	protected void handleDeclarationNameUpdate( javax.swing.event.DocumentEvent e ) {
 		this.updateOKButton();
 	}
-	private void handleTypeChange() {
-		if( this.initializerPane != null ) {
-			this.initializerPane.handleTypeChange( this.typePane.getValueType() );
-		}
-		this.updateOKButton();
-	}
-	private void handleInitializerChange() {
-		this.updateOKButton();
-	}
-
 	protected boolean isDeclarationNameValid() {
 		return this.declarationNameTextField.getText().length() > 0;
 	}

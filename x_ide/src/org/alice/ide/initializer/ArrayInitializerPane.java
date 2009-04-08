@@ -82,7 +82,7 @@ class ListPropertyComboBoxModel<E> extends javax.swing.AbstractListModel impleme
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ArrayInitializerPane extends AbstractInitializerPane {
+public class ArrayInitializerPane extends AbstractInitializerPane {
 	class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public AddItemOperation() {
 			this.putValue( javax.swing.Action.NAME, "add" );
@@ -99,19 +99,14 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 		public void perform( zoot.ActionContext actionContext ) {
 			int index = ArrayInitializerPane.this.list.getSelectedIndex();
 			if( index >= 0 ) {
-				ArrayInitializerPane.this.getDefaultComboBoxModel().removeElementAt( index );
+				ArrayInitializerPane.this.arrayInstanceCreation.expressions.remove( index );
 			}
 		}
 	}
 
 	abstract class AbstractMoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		protected void swapWithNext( int index ) {
-			if( index >= 0 ) {
-				javax.swing.DefaultComboBoxModel defaultComboBoxModel = ArrayInitializerPane.this.getDefaultComboBoxModel();
-				Object prev = defaultComboBoxModel.getElementAt( index );
-				defaultComboBoxModel.removeElementAt( index );
-				defaultComboBoxModel.insertElementAt( prev, index+1 );
-			}
+			ArrayInitializerPane.this.swapWithNext( index );
 		}
 	}
 	
@@ -142,25 +137,6 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 		}
 	}
 
-	private void updateButtons() {
-		int index = this.list.getSelectedIndex();
-		final int N = this.list.getModel().getSize();
-		this.removeButton.setEnabled( index != -1 );
-		this.moveUpButton.setEnabled( index > 0 );
-		this.moveDownButton.setEnabled( index >= 0 && index < N-1 );
-	}
-	private void handleSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
-		this.updateButtons();
-	}
-	
-	private edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation;
-
-	private zoot.ZButton addButton = new zoot.ZButton( new AddItemOperation() );
-	private zoot.ZButton removeButton = new zoot.ZButton( new RemoveItemOperation() );
-	private zoot.ZButton moveUpButton = new zoot.ZButton( new MoveItemUpOperation() );
-	private zoot.ZButton moveDownButton = new zoot.ZButton( new MoveItemDownOperation() );
-
-	
 	class ExpressionList extends zoot.ZList< edu.cmu.cs.dennisc.alice.ast.Expression > {
 		public ExpressionList( zoot.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > itemSelectionOperation ) {
 			super( itemSelectionOperation );
@@ -173,7 +149,10 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 				@Override
 				protected javax.swing.AbstractButton createComponentFor( int index, edu.cmu.cs.dennisc.alice.ast.Expression e ) {
 					FauxItem rv = new FauxItem( index, e );
-					rv.handleTypeChange( ArrayInitializerPane.this.arrayType.getComponentType() );
+					edu.cmu.cs.dennisc.alice.ast.AbstractType type = ArrayInitializerPane.this.arrayInstanceCreation.arrayType.getValue();
+					if( type != null && type.isArray() ) {
+						rv.handleTypeChange( type.getComponentType() );
+					}
 					return rv;
 				}
 				@Override
@@ -186,34 +165,20 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 
 	private ExpressionList list;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType;
+	private edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation;
 
-	private edu.cmu.cs.dennisc.alice.ast.Expression createDefaultInitializer() {
-		if( this.arrayType != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType componentType = this.arrayType.getComponentType();
-			if( componentType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) {
-				return new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( false );
-			} else if( componentType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
-				return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 );
-			} else if( componentType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) {
-				return new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 0 );
-			} else {
-				return new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
-			}
-		} else {
-			return null;
-		}
-	}
+	private zoot.ZButton addButton = new zoot.ZButton( new AddItemOperation() );
+	private zoot.ZButton removeButton = new zoot.ZButton( new RemoveItemOperation() );
+	private zoot.ZButton moveUpButton = new zoot.ZButton( new MoveItemUpOperation() );
+	private zoot.ZButton moveDownButton = new zoot.ZButton( new MoveItemDownOperation() );
 
-	private javax.swing.DefaultComboBoxModel getDefaultComboBoxModel() {
-		return (javax.swing.DefaultComboBoxModel)this.list.getModel();
-	}
 	public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation ) {
 		this.arrayInstanceCreation = arrayInstanceCreation;
 		this.arrayInstanceCreation.arrayType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				ArrayInitializerPane.this.handleTypeChange( e );
 			}
 		} );
 		ListPropertyComboBoxModel< edu.cmu.cs.dennisc.alice.ast.Expression > comboBoxModel = new ListPropertyComboBoxModel< edu.cmu.cs.dennisc.alice.ast.Expression >( arrayInstanceCreation.expressions );
@@ -245,30 +210,72 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 		scrollPane.setBorder( null );
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 	}
-	@Override
-	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType ) {
-		
-		this.arrayType = arrayType;
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleTypeChange (array)", this.arrayType );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType componentType = this.arrayType.getComponentType();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleTypeChange (component)", componentType );
-		//this.list.handleTypeChange( type );
-		for( java.awt.Component component : this.list.getComponents() ) {
-			if( component instanceof FauxItem ) {
-				FauxItem fauxItem = (FauxItem)component;
-				fauxItem.handleTypeChange( componentType );
+
+	private edu.cmu.cs.dennisc.alice.ast.Expression createDefaultInitializer() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.arrayInstanceCreation.arrayType.getValue();
+		if( type != null && type.isArray() ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType componentType = type.getComponentType();
+			if( componentType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) {
+				return new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( false );
+			} else if( componentType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
+				return new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 );
+			} else if( componentType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) {
+				return new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 0 );
+			} else {
+				return new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
 			}
+		} else {
+			return null;
+		}
+	}
+
+	private void updateButtons() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.arrayInstanceCreation.arrayType.getValue();
+		boolean isTypeValid = type != null && type.isArray();
+		this.addButton.setEnabled( isTypeValid );
+		int index = this.list.getSelectedIndex();
+		final int N = this.list.getModel().getSize();
+		this.removeButton.setEnabled( isTypeValid && index != -1 );
+		this.moveUpButton.setEnabled( isTypeValid && index > 0 );
+		this.moveDownButton.setEnabled( isTypeValid && index >= 0 && index < N-1 );
+	}
+	private void handleSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+		this.updateButtons();
+	}
+	private void swapWithNext( int index ) {
+		if( index >= 0 ) {
+			edu.cmu.cs.dennisc.alice.ast.Expression expression0 = this.arrayInstanceCreation.expressions.get( index );
+			edu.cmu.cs.dennisc.alice.ast.Expression expression1 = this.arrayInstanceCreation.expressions.get( index+1 );
+			this.arrayInstanceCreation.expressions.set( index, expression1, expression0 );
+		}
+	}
+	public void handleTypeChange( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.arrayInstanceCreation.arrayType.getValue();
+		boolean isTypeValid = type != null && type.isArray();
+		if( isTypeValid ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType componentType = type.getComponentType();
+			for( java.awt.Component component : this.list.getComponents() ) {
+				if( component instanceof FauxItem ) {
+					FauxItem fauxItem = (FauxItem)component;
+					fauxItem.handleTypeChange( componentType );
+				}
+			}
+			this.updateButtons();
 		}
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
-		javax.swing.ListModel model = this.list.getModel();
-		final int N = model.getSize();
-		edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
-		for( int i=0; i<N; i++ ) {
-			expressions[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)model.getElementAt( i );
-		}
-		return new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation( this.arrayType, new Integer[] { expressions.length }, expressions );
+		return this.arrayInstanceCreation;
 	}
+//	@Override
+//	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+//		javax.swing.ListModel model = this.list.getModel();
+//		final int N = model.getSize();
+//		edu.cmu.cs.dennisc.alice.ast.Expression[] expressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
+//		for( int i=0; i<N; i++ ) {
+//			expressions[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)model.getElementAt( i );
+//		}
+//		return new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation( this.arrayType, new Integer[] { expressions.length }, expressions );
+//	}
 }
 
