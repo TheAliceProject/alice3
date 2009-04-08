@@ -33,13 +33,17 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		this.fieldAccess = fieldAccess;
 		boolean isExpressionDesired;
 		if( this.fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-			isExpressionDesired = "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() );
+			isExpressionDesired = getIDE().isJava();
 		} else {
 			isExpressionDesired = true;
 		}
 		if( isExpressionDesired ) {
 			this.add( factory.createExpressionPropertyPane( this.fieldAccess.expression, false, null ) );
-			this.add( new zoot.ZLabel( ".") );
+			if( getIDE().isJava() ) {
+				//pass
+			} else {
+				this.add( new zoot.ZLabel( ".") );
+			}
 		}
 		org.alice.ide.common.NodeNameLabel nodeNameLabel = new org.alice.ide.common.NodeNameLabel( this.fieldAccess.field.getValue() );
 		nodeNameLabel.setFontToScaledFont( 1.2f );
