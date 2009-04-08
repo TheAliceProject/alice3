@@ -22,6 +22,7 @@
  */
 package org.alice.ide.choosers;
 
+
 /**
  * @author Dennis Cosgrove
  */
@@ -38,8 +39,9 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		protected void handleIsArrayChange( boolean isArray ) {
 		}
 	}
+	private edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation();
 	private MyTypePane myTypePane = new MyTypePane();
-	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane() {
+	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( arrayInstanceCreation ) {
 		@Override
 		protected void handleInitializerChange() {
 			ArrayChooser.this.getInputPane().updateOKButton();
@@ -62,6 +64,13 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		return this.components;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation getValue() {
-		return (edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation)this.arrayInitializerPane.getInitializer();
+		//return (edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation)this.arrayInitializerPane.getInitializer();
+		return this.arrayInstanceCreation;
+	}
+	
+	public static void main( String[] args ) {
+		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+		org.alice.ide.cascade.customfillin.CustomArrayFillIn customArrayFillIn = new org.alice.ide.cascade.customfillin.CustomArrayFillIn();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( customArrayFillIn.getValue() );
 	}
 }

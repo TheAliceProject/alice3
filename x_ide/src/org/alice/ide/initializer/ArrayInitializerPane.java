@@ -22,6 +22,63 @@
  */
 package org.alice.ide.initializer;
 
+class ListPropertyComboBoxModel<E> extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+	private edu.cmu.cs.dennisc.property.ListProperty< E > listProperty;
+	private Object selectedItem;
+	public ListPropertyComboBoxModel( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
+		this.listProperty = listProperty;
+		this.listProperty.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.ListPropertyListener< E >() {
+
+			private int n;
+			
+			public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
+			}
+			public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
+				int i = e.getStartIndex();
+				ListPropertyComboBoxModel.this.fireIntervalAdded( e.getSource(), i, i+e.getElements().size()-1 );
+			}
+
+
+			public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
+				n = e.getTypedSource().size();
+			}
+			public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
+				ListPropertyComboBoxModel.this.fireContentsChanged( e.getSource(), 0, n );
+			}
+
+
+			public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
+			}
+			public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
+				int i = e.getStartIndex();
+				ListPropertyComboBoxModel.this.fireIntervalRemoved( e.getSource(), i, i+e.getElements().size()-1 );
+			}
+
+
+			public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
+				n = e.getTypedSource().size();
+			}
+			public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
+				int i = e.getStartIndex();
+				ListPropertyComboBoxModel.this.fireContentsChanged( e.getSource(), i, i+e.getElements().size()-1 );
+			}
+			
+		} );
+	}
+	public Object getElementAt( int index ) {
+		return this.listProperty.get( index );
+	}
+	public int getSize() {
+		return this.listProperty.size();
+	}
+	public Object getSelectedItem() {
+		return this.selectedItem;
+	}
+	public void setSelectedItem( Object selectedItem ) {
+		this.selectedItem = selectedItem;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -31,7 +88,7 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 			this.putValue( javax.swing.Action.NAME, "add" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
-			ArrayInitializerPane.this.getDefaultComboBoxModel().addElement( ArrayInitializerPane.this.createDefaultInitializer() );
+			ArrayInitializerPane.this.arrayInstanceCreation.expressions.add( ArrayInitializerPane.this.createDefaultInitializer() );
 		}
 	}
 
@@ -77,8 +134,8 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 
 	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
-		public ItemSelectionOperation() {
-			super( new javax.swing.DefaultComboBoxModel() );
+		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
+			super( comboBoxModel );
 		}
 		public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 			ArrayInitializerPane.this.handleSelectionChange( context );
@@ -95,14 +152,18 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 	private void handleSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
 		this.updateButtons();
 	}
+	
+	private edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation;
+
 	private zoot.ZButton addButton = new zoot.ZButton( new AddItemOperation() );
 	private zoot.ZButton removeButton = new zoot.ZButton( new RemoveItemOperation() );
 	private zoot.ZButton moveUpButton = new zoot.ZButton( new MoveItemUpOperation() );
 	private zoot.ZButton moveDownButton = new zoot.ZButton( new MoveItemDownOperation() );
 
+	
 	class ExpressionList extends zoot.ZList< edu.cmu.cs.dennisc.alice.ast.Expression > {
-		public ExpressionList() {
-			super( new ItemSelectionOperation() );
+		public ExpressionList( zoot.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > itemSelectionOperation ) {
+			super( itemSelectionOperation );
 			this.setOpaque( true );
 			this.setBackground( java.awt.Color.WHITE );
 		}
@@ -124,7 +185,7 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 		}
 	}
 
-	private ExpressionList list = new ExpressionList();
+	private ExpressionList list;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType;
 
 	private edu.cmu.cs.dennisc.alice.ast.Expression createDefaultInitializer() {
@@ -147,7 +208,16 @@ public abstract class ArrayInitializerPane extends AbstractInitializerPane {
 	private javax.swing.DefaultComboBoxModel getDefaultComboBoxModel() {
 		return (javax.swing.DefaultComboBoxModel)this.list.getModel();
 	}
-	public ArrayInitializerPane() {
+	public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation ) {
+		this.arrayInstanceCreation = arrayInstanceCreation;
+		this.arrayInstanceCreation.arrayType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+		} );
+		ListPropertyComboBoxModel< edu.cmu.cs.dennisc.alice.ast.Expression > comboBoxModel = new ListPropertyComboBoxModel< edu.cmu.cs.dennisc.alice.ast.Expression >( arrayInstanceCreation.expressions );
+		this.list = new ExpressionList( new ItemSelectionOperation( comboBoxModel ) );
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.updateButtons();
 		

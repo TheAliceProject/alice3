@@ -34,7 +34,8 @@ public abstract class InitializerPane extends swing.CardPane {
 			InitializerPane.this.handleInitializerChange();
 		}
 	};
-	private ArrayInitializerPane arrayInitializerPane = new ArrayInitializerPane() {
+	private edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation();
+	private ArrayInitializerPane arrayInitializerPane = new ArrayInitializerPane( arrayInstanceCreation ) {
 		@Override
 		protected void handleInitializerChange() {
 			InitializerPane.this.handleInitializerChange();
