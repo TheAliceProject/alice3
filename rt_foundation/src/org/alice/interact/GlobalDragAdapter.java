@@ -162,7 +162,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		mouseUpDownTranslateObject.addCondition( moveableObjectWithShift );
 		this.manipulators.add( mouseUpDownTranslateObject );
 		
-		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(Vector3.accessPositiveYAxis()) );
+		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(MovementDirection.UP) );
 		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierKey.CONTROL ));
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.manipulators.add( mouseRotateObjectLeftRight );

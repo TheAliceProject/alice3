@@ -31,7 +31,7 @@ import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.manipulator.CameraTranslateKeyManipulator;
 import org.alice.interact.manipulator.ObjectRotateKeyManipulator;
-import org.alice.interact.manipulator.SimsObjectRotateDragManipulator;
+import org.alice.interact.manipulator.HandlelessObjectRotateDragManipulator;
 
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
@@ -93,7 +93,7 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 		}
 		this.manipulators.add( objectRotate );
 		
-		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new SimsObjectRotateDragManipulator(Vector3.accessPositiveYAxis()) );
+		ManipulatorConditionSet mouseRotateObjectLeftRight = new ManipulatorConditionSet( new HandlelessObjectRotateDragManipulator(MovementDirection.UP) );
 		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.EVERYTHING));
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.manipulators.add( mouseRotateObjectLeftRight );

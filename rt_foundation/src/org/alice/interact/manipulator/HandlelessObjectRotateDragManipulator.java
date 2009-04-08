@@ -22,30 +22,78 @@
  */
 package org.alice.interact.manipulator;
 
-import org.alice.interact.InputState;
+import java.awt.Point;
 
+import org.alice.interact.InputState;
+import org.alice.interact.MovementDirection;
+import org.alice.interact.PlaneUtilities;
+import org.alice.interact.handle.HandleSet;
+
+import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
+import edu.cmu.cs.dennisc.math.AngleUtilities;
+import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba
  */
-public class HandlelessObjectRotateDragManipulator extends ObjectRotateDragManipulator {
-
-	protected Vector3 rotateAxis;
+public class HandlelessObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
+	protected static final double MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER = .025d;
 	
-	public HandlelessObjectRotateDragManipulator( Vector3 rotateAxis )
+	protected Vector3 rotateAxis;
+	protected MovementDirection rotateAxisDirection;
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	
+	protected Point initialPoint;
+	protected Vector3 absoluteRotationAxis;
+	
+	
+	public AbstractCamera getCamera()
 	{
-		this.rotateAxis = rotateAxis;
+		if( this.onscreenLookingGlass != null )
+		{
+			return onscreenLookingGlass.getCameraAt( 0 );
+		} 
+		return null;
+	}
+
+	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
+		this.onscreenLookingGlass = onscreenLookingGlass;
+	}
+	
+	public HandlelessObjectRotateDragManipulator( MovementDirection rotateAxisDirection )
+	{
+		this.rotateAxisDirection = rotateAxisDirection;
+		this.rotateAxis = this.rotateAxisDirection.getVector();
+	}
+	
+	protected Angle getRotationBasedOnMouse( Point mouseLocation )
+	{
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), mouseLocation.x, mouseLocation.y );
+		if (pickRay != null)
+		{
+			int xDif = mouseLocation.x - this.initialPoint.x;
+			return new AngleInRadians(xDif * MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER);
+		}
+		return null;
+	}
+	
+	protected void initManipulator( InputState startInput )
+	{
+		this.absoluteRotationAxis = this.manipulatedTransformable.getAbsoluteTransformation().createTransformed( this.rotateAxis );
+		this.initialPoint = new Point(startInput.getMouseLocation());
 	}
 	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) 
 	{
-		this.manipulatedTransformable = startInput.getClickPickedTransformable( true );
+		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
 		if (this.manipulatedTransformable != null)
 		{
-			//Make sure the object we're working with is selected
-			this.dragAdapter.setSelectedObject( this.manipulatedTransformable );
+			this.initManipulator( startInput );
 			return true;
 		}
 		else
@@ -55,21 +103,33 @@ public class HandlelessObjectRotateDragManipulator extends ObjectRotateDragManip
 	}
 	
 	@Override
+	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
+		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
+		{
+			Angle currentAngle = getRotationBasedOnMouse( currentInput.getMouseLocation() );
+			Angle previousAngle = getRotationBasedOnMouse( previousInput.getMouseLocation() );
+			if (currentAngle != null && previousAngle != null)
+			{
+				Angle angleDif = AngleUtilities.createSubtraction( currentAngle, previousAngle );
+				this.manipulatedTransformable.applyRotationAboutArbitraryAxis( this.rotateAxis, angleDif, this.manipulatedTransformable );
+			}
+		}
+
+	}
+	
+	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput )
 	{
-		super.doEndManipulator( endInput, previousInput );
 	}
 	
 	@Override
-	protected void hideCursor()
-	{
-		//We don't hide the cursor on this guy
+	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
+		// TODO Auto-generated method stub
+
 	}
-	
+
 	@Override
-	protected void showCursor()
-	{
-		//No hiding means now showing too
+	protected HandleSet getHandleSetToEnable() {
+		return new HandleSet(this.rotateAxisDirection.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.ROTATION);
 	}
-	
 }
