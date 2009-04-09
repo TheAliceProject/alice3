@@ -29,7 +29,7 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 	private static final edu.cmu.cs.dennisc.alice.ast.AbstractType[] ZERO_LENGTH_TYPE_ARRAY = new edu.cmu.cs.dennisc.alice.ast.AbstractType[] {};  
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.ast.NodeUtilities.createFieldAccess( field ) );
+		super( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
@@ -42,7 +42,7 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createFieldAccess( field );
+		return org.alice.ide.ast.NodeUtilities.createFieldAccess( this.getIDE().createInstanceExpression(), field );
 	}
 	
 }

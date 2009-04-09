@@ -58,7 +58,12 @@ public class Decoder {
 		} else {
 			String tagName = xmlValue.getTagName();
 			if( tagName.equals( "node" ) ) {
-				rv = decode( xmlValue, map );
+				try {
+					rv = decode( xmlValue, map );
+				} catch( RuntimeException re ) {
+					re.printStackTrace();
+					rv = new NullLiteral();
+				}
 			} else if( tagName.equals( "collection" ) ) {
 				java.util.Collection collection = (java.util.Collection)newInstance( xmlValue );
 				org.w3c.dom.NodeList nodeList = xmlValue.getChildNodes();
