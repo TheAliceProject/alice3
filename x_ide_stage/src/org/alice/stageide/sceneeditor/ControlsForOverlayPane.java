@@ -184,8 +184,11 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 		}
 	}
 
-	//	public void setExpanded( boolean isExpaned ) {
-	//	}
+	public void setExpanded( boolean isExpaned ) {
+		if( this.cameraNavigatorWidget != null ) {
+			this.cameraNavigatorWidget.setExpanded( isExpaned );
+		}
+	}
 
 	@Override
 	public void addNotify() {
@@ -201,6 +204,13 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 			this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 			this.setNorthEastComponent( this.runButton );
 			this.setSouthComponent( this.cameraNavigatorWidget );
+			
+			this.setExpanded( this.isSceneEditorExpandedCheckBox.isSelected() );
+			this.isSceneEditorExpandedCheckBox.addItemListener( new java.awt.event.ItemListener() {
+				public void itemStateChanged( java.awt.event.ItemEvent e ) {
+					ControlsForOverlayPane.this.setExpanded( e.getStateChange() == java.awt.event.ItemEvent.SELECTED );
+				}
+			} );
 		}
 		super.addNotify();
 	}
