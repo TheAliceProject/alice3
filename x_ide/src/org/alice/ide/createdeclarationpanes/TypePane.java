@@ -28,62 +28,64 @@ package org.alice.ide.createdeclarationpanes;
 import edu.cmu.cs.dennisc.alice.ast.AbstractType;
 import edu.cmu.cs.dennisc.alice.ast.DeclarationProperty;
 
-public class TypePane extends swing.LineAxisPane {
-	class IsArrayStateOperation extends zoot.AbstractBooleanStateOperation {
-		public IsArrayStateOperation( Boolean initialState ) {
-			super( initialState );
-			this.putValue( javax.swing.Action.NAME, "is array" );
-		}
-		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-			handleIsArrayChange( booleanStateContext.getNextValue() );
-		}
+class IsArrayStateOperation extends zoot.AbstractBooleanStateOperation {
+	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
+	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
+		super( isArrayProperty.getValue() );
+		this.isArrayProperty = isArrayProperty;
+		this.putValue( javax.swing.Action.NAME, "is array" );
 	}
+	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+		this.isArrayProperty.setValue( booleanStateContext.getNextValue() );
+	}
+}
+
+public class TypePane extends swing.LineAxisPane {
 	private DeclarationProperty< AbstractType > typeProperty;
 	private org.alice.ide.common.TypeComboBox typeComboBox;
 	private zoot.ZCheckBox isArrayCheckBox;
 
-	public TypePane( DeclarationProperty< AbstractType > typeProperty, boolean isArrayCheckBoxSelectedIfTypeValueIsNull, boolean isArrayCheckBoxEnabled ) {
+	public TypePane( DeclarationProperty< AbstractType > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isArrayCheckBoxEnabled ) {
 		assert typeProperty != null;
 		this.typeProperty = typeProperty;
 		AbstractType type = this.typeProperty.getValue();
 		AbstractType componentType;
-		boolean isArrayCheckBoxSelected;
+//		boolean isArrayCheckBoxSelected;
 		if( type != null ) {
 			if( type.isArray() ) {
 				componentType = type.getComponentType();
-				isArrayCheckBoxSelected = true;
+//				isArrayCheckBoxSelected = true;
 			} else {
 				componentType = type;
-				isArrayCheckBoxSelected = false;
+//				isArrayCheckBoxSelected = false;
 			}
 		} else {
 			componentType = null;
-			isArrayCheckBoxSelected = isArrayCheckBoxSelectedIfTypeValueIsNull;
+//			isArrayCheckBoxSelected = isArrayCheckBoxSelectedIfTypeValueIsNull;
 		}
 		//todo: listen to changes on typeProperty
 		this.typeComboBox = new org.alice.ide.common.TypeComboBox( componentType ) {
 			@Override
 			protected void handleTypeChange() {
-				TypePane.this.handleComponentTypeChange( (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.getSelectedItem() );
+				TypePane.this.updateTypeProperty();
 			}
 		};
 		
-		this.isArrayCheckBox = new zoot.ZCheckBox( new IsArrayStateOperation( isArrayCheckBoxSelected ) );
+		isArrayProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				TypePane.this.updateTypeProperty();
+			}
+		} );
+		
+		this.isArrayCheckBox = new zoot.ZCheckBox( new IsArrayStateOperation( isArrayProperty ) );
 		this.isArrayCheckBox.setOpaque( false );
 		this.isArrayCheckBox.setEnabled( isArrayCheckBoxEnabled );
 		this.add( this.typeComboBox );
 		this.add( this.isArrayCheckBox );
 	}
 
-//	private edu.cmu.cs.dennisc.alice.ast.AbstractType getArrayTypeIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType componentType ) {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = componentType;
-//		if( rv != null ) {
-//			if( this.isArrayCheckBox.isSelected() ) {
-//				rv = rv.getArrayType();
-//			}
-//		}
-//		return rv;
-//	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem();
 		if( rv != null ) {
@@ -94,13 +96,6 @@ public class TypePane extends swing.LineAxisPane {
 		return rv;
 	}
 	private void updateTypeProperty() {
-//		this.typeProperty.setValue( this.getArrayTypeIfAppropriate( (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem() ) );
 		this.typeProperty.setValue( (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem() );
-	}
-	private void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this.updateTypeProperty();
-	}
-	private void handleIsArrayChange( boolean isArray ) {
-		this.updateTypeProperty();
 	}
 }

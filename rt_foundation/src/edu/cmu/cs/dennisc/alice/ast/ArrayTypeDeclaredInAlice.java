@@ -55,6 +55,15 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 	}
 	
 	@Override
+	public String getName() {
+		StringBuffer sb = new StringBuffer();
+		sb.append( m_leafType.getName() );
+		for( int i=0; i<m_dimensionCount; i++ ) {
+			sb.append( "[]" );
+		}
+		return sb.toString();
+	}
+	@Override
 	public boolean isArray() {
 		return true;
 	}

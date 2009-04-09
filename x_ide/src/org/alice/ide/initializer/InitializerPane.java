@@ -33,6 +33,20 @@ public class InitializerPane extends swing.CardPane {
 	private ArrayInitializerPane arrayInitializerPane;
 	public InitializerPane( BogusNode bogusNode ) {
 		this.bogusNode = bogusNode;
+		this.bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				arrayInitializerPane.handleTypeChange( InitializerPane.this.bogusNode.componentType.getValue().getArrayType() );
+			}
+		} );
+		this.bogusNode.isArray.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				handleIsArrayChange( InitializerPane.this.bogusNode.isArray.getValue() );
+			}
+		} );
 		this.itemInitializerPane = new ItemInitializerPane( this.bogusNode.componentExpression );
 		this.arrayInitializerPane = new ArrayInitializerPane( this.bogusNode.arrayExpressions );
 		this.add( this.itemInitializerPane, ITEM_KEY );
@@ -56,13 +70,13 @@ public class InitializerPane extends swing.CardPane {
 		this.show( key );
 	}
 
-	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		if( type != null ) {
-			this.handleIsArrayChange( type.isArray() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleTypeChange" );
-			//this.getCurrentCard().handleTypeChange( type );
-		}
-	}
+//	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+//		if( type != null ) {
+//			this.handleIsArrayChange( type.isArray() );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleTypeChange" );
+//			//this.getCurrentCard().handleTypeChange( type );
+//		}
+//	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
 		if( this.itemInitializerPane.isVisible() ) {
 			return this.bogusNode.componentExpression.getValue();

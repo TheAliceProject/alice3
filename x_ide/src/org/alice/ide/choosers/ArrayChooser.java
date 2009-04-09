@@ -27,7 +27,7 @@ package org.alice.ide.choosers;
  */
 public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
 	private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( null, false );
-	private org.alice.ide.createdeclarationpanes.TypePane myTypePane = new org.alice.ide.createdeclarationpanes.TypePane( bogusNode.componentType, true, false );
+	private org.alice.ide.createdeclarationpanes.TypePane myTypePane = new org.alice.ide.createdeclarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, false );
 	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.arrayExpressions );
 	private static final String[] LABEL_TEXTS = { "type:", "value:" };
 	private java.awt.Component[] components = { this.myTypePane, this.arrayInitializerPane };

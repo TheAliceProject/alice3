@@ -79,21 +79,21 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				CreateDeclarationPane.this.updateOKButton();
+				CreateDeclarationPane.this.handleChange();
 			}
 		} );
 		bogusNode.isArray.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				CreateDeclarationPane.this.updateOKButton();
+				CreateDeclarationPane.this.handleChange();
 			}
 		} );
 		bogusNode.componentExpression.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				CreateDeclarationPane.this.updateOKButton();
+				CreateDeclarationPane.this.handleChange();
 			}
 		} );
 		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
@@ -102,10 +102,19 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 			}
 			@Override
 			protected void changed( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
+				CreateDeclarationPane.this.handleChange();
+			}
+		} );
+	}
+	
+	private void handleChange() {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
 				CreateDeclarationPane.this.updateOKButton();
 			}
 		} );
 	}
+	
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
@@ -168,7 +177,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	protected abstract boolean isEditableValueTypeComponentDesired();
 	protected java.awt.Component createValueTypeComponent() {
 		if( this.isEditableValueTypeComponentDesired() ) {
-			this.typePane = new TypePane( bogusNode.componentType, false, true );
+			this.typePane = new TypePane( bogusNode.componentType, bogusNode.isArray, true );
 		} else {
 			this.typePane = null;
 		}
