@@ -22,7 +22,9 @@
  */
 package org.alice.interact.condition;
 
+import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
+import org.alice.interact.handle.ManipulationHandle;
 
 
 /**
@@ -85,6 +87,24 @@ public class PickCondition {
 		}
 	}
 	
+	public boolean evaluateObject( InputState input )
+	{
+		boolean result = false;
+		if (input.getClickHandle() != null)
+		{
+			result = this.pickHint.intersects( input.getClickHandle().getPickHint() );
+		}
+		else
+		{
+			result = this.pickHint.intersects( getPickType( input.getClickPickResult() ) );
+		}
+		if (isNot)
+		{
+			result = !result;
+		}
+		return result;
+	}
+	
 	public boolean evaluateObject(edu.cmu.cs.dennisc.lookingglass.PickResult pickObject)
 	{
 		boolean result = this.pickHint.intersects( getPickType( pickObject ) );
@@ -104,6 +124,18 @@ public class PickCondition {
 		else
 		{
 			return this.evaluateObject( pickObject ) && this.nextCondition.evalutateChain( pickObject ) ;
+		}
+	}
+	
+	public boolean evalutateChain(InputState input)
+	{
+		if ( this.nextCondition == null )
+		{
+			return this.evaluateObject( input );
+		}
+		else
+		{
+			return this.evaluateObject( input ) && this.nextCondition.evalutateChain( input ) ;
 		}
 	}
 	

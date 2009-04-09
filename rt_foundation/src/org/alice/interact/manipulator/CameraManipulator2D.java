@@ -22,48 +22,19 @@
  */
 package org.alice.interact.manipulator;
 
-
-import org.alice.interact.handle.HandleSet;
-
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.interact.handle.ManipulationHandle2D;
 
 /**
  * @author David Culyba
  */
-public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
+public abstract class CameraManipulator2D extends CameraManipulator {
 
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	protected ManipulationHandle2D handle;
 	
-	public AbstractCamera getCamera()
+	public CameraManipulator2D( ManipulationHandle2D handle )
 	{
-		if( this.onscreenLookingGlass != null )
-		{
-			return onscreenLookingGlass.getCameraAt( 0 );
-		} 
-		return null;
+		this.handle = handle;
 	}
+	
 
-	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
-		if (this.onscreenLookingGlass != null && this.getCamera() != null)
-		{
-			AbstractCamera camera = this.getCamera();
-			if (camera.getParent() instanceof Transformable)
-			{
-				this.manipulatedTransformable = (Transformable)camera.getParent();
-			}
-		}
-	}
-	
-	@Override
-	//We don't want to change the handle set when moving the camera
-	protected HandleSet getHandleSetToEnable()
-	{
-		return null;
-	}
-	
-	
-	
 }

@@ -50,7 +50,9 @@ public class HandleSet extends BitSet
 		Y_AXIS(10),
 		Z_AXIS(11),
 		RESIZE_AXIS(12),
-		X_AND_Z_AXIS(13);
+		X_AND_Z_AXIS(13),
+		X_AND_Y_AXIS(14),
+		CAMERA(15);
 		
 		private int index;
 		

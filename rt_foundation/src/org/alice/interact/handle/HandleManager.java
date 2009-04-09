@@ -67,11 +67,11 @@ public class HandleManager implements ManipulationListener{
 			{
 				if (handle.isMemberOf( this.getCurrentHandleSet() ))
 				{
-					handle.setVisible( true );
+					handle.setHandleVisible( true );
 				}
 				else
 				{
-					handle.setVisible( false );
+					handle.setHandleVisible( false );
 				}
 			}
 		}
@@ -186,7 +186,7 @@ public class HandleManager implements ManipulationListener{
 	
 	public void setHandleRollover(ManipulationHandle handle, boolean isRollover)
 	{
-		handle.setRollover( isRollover );
+		handle.setHandleRollover( isRollover );
 	}
 	
 	public void activate( ManipulationEvent event ) {

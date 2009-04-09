@@ -32,6 +32,7 @@ import java.util.List;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventManager;
+import org.alice.interact.event.ManipulationListener;
 import org.alice.interact.event.SelectionEvent;
 import org.alice.interact.event.SelectionListener;
 import org.alice.interact.handle.HandleManager;
@@ -63,6 +64,8 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected InputState previousInputState = new InputState(); 
 	private double timePrev = Double.NaN;
 	private boolean hasSetCameraTransformables = false;
+	
+	private Component currentRolloverComponent = null;
 	
 	protected java.util.Map<Integer, HandleSet> keyToHandleSetMap = new java.util.HashMap<Integer, HandleSet>();
 	
@@ -227,15 +230,13 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 		
 		
-		if (this.currentInputState.getRolloverPickTransformable() != this.previousInputState.getRolloverPickTransformable())
+		if (this.currentInputState.getRolloverHandle() != this.previousInputState.getRolloverHandle())
 		{
-			if (this.currentInputState.getRolloverPickTransformable() instanceof ManipulationHandle)
-			{
-				this.handleManager.setHandleRollover( ((ManipulationHandle)this.currentInputState.getRolloverPickTransformable()), true );
+			if (this.currentInputState.getRolloverHandle() != null){
+				this.handleManager.setHandleRollover( this.currentInputState.getRolloverHandle(), true );
 			}
-			if (this.previousInputState.getRolloverPickTransformable() instanceof ManipulationHandle)
-			{
-				this.handleManager.setHandleRollover( ((ManipulationHandle)this.previousInputState.getRolloverPickTransformable()), false );
+			if (this.previousInputState.getRolloverHandle() != null){
+				this.handleManager.setHandleRollover( this.previousInputState.getRolloverHandle(), false );
 			}
 		}
 		
@@ -312,20 +313,35 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 
-	protected void addListeners( java.awt.Component component ) {
+	public void addListeners( java.awt.Component component ) {
 		component.addMouseListener( this );
 		component.addMouseMotionListener( this );
 		component.addKeyListener( this );
 		component.addMouseWheelListener( this );
 	}
 
-	protected void removeListeners( java.awt.Component component ) {
+	public void removeListeners( java.awt.Component component ) {
 		component.removeMouseListener( this );
 		component.removeMouseMotionListener( this );
 		component.removeKeyListener( this );
 		component.removeMouseWheelListener( this );
 	}
 	
+	public void addManipulationListener( ManipulationListener listener )
+	{
+		this.manipulationEventManager.addManipulationListener( listener );
+	}
+	
+	public void removeManipulationListener( ManipulationListener listener )
+	{
+		this.manipulationEventManager.removeManipulationListener( listener );
+	}
+	
+	public void addHandle(ManipulationHandle handle)
+	{
+		this.handleManager.addHandle( handle );
+	}
+
 	private ManipulationHandle getHandleForComponent( Component c)
 	{
 		if (c == null)
@@ -361,6 +377,15 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setMouseState( e.getButton(), false );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_UP );
+		
+		if (this.currentRolloverComponent == this.lookingGlassComponent)
+		{
+			this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+		}
+		else
+		{
+			this.currentInputState.setRolloverHandle( this.getHandleForComponent( this.currentRolloverComponent ));
+		}
 		this.handleStateChange();
 	}
 	
@@ -428,12 +453,31 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	}
 
 	public void mouseEntered( MouseEvent e ) {
-		// TODO Auto-generated method stub
-		
+		this.currentRolloverComponent = e.getComponent();
+		if (!this.currentInputState.isAnyMouseButtonDown())
+		{
+			this.currentInputState.setMouseLocation( e.getPoint() );
+			if (e.getComponent() == this.lookingGlassComponent)
+			{
+				this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+			}
+			else
+			{
+				this.currentInputState.setRolloverHandle( this.getHandleForComponent( e.getComponent() ));
+			}
+			this.handleStateChange();
+		}
 	}
 
 	public void mouseExited( MouseEvent e ) {
-		// TODO Auto-generated method stub
+		this.currentRolloverComponent = null;
+		if (!this.currentInputState.isAnyMouseButtonDown())
+		{
+			this.currentInputState.setMouseLocation( e.getPoint() );
+			this.currentInputState.setRolloverHandle( null );
+			this.currentInputState.setRolloverPickResult( null );
+			this.handleStateChange();
+		}
 		
 	}
 

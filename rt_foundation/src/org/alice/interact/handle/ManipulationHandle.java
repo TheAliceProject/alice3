@@ -23,6 +23,7 @@
 package org.alice.interact.handle;
 
 import org.alice.interact.InputState;
+import org.alice.interact.PickHint;
 import org.alice.interact.manipulator.AbstractManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -57,11 +58,11 @@ public interface ManipulationHandle extends Cloneable {
 	
 	public void setAnimator( Animator animator );
 	
-	public void setRollover(boolean rollover);
+	public void setHandleRollover(boolean rollover);
 	
-	public void setVisible(boolean visible);
+	public void setHandleVisible(boolean visible);
 	
-	public void setActive(boolean active);
+	public void setHandleActive(boolean active);
 	
 	public boolean isRenderable();
 	
@@ -72,4 +73,6 @@ public interface ManipulationHandle extends Cloneable {
 	public AbstractManipulator getManipulation( InputState input );
 	
 	public void setManipulation( AbstractManipulator manipulation );
+	
+	public PickHint getPickHint();
 }

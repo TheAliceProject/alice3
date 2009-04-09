@@ -26,6 +26,7 @@ import org.alice.interact.ColorTargetBasedAnimation;
 import org.alice.interact.DoubleTargetBasedAnimation;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
+import org.alice.interact.condition.PickCondition;
 import org.alice.interact.event.EventCriteriaManager;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
@@ -262,12 +263,12 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	public void activate(ManipulationEvent event)
 	{
-		this.setActive( true );
+		this.setHandleActive( true );
 	}
 	
 	public void deactivate(ManipulationEvent event)
 	{
-		this.setActive( false );
+		this.setHandleActive( false );
 	}
 	
 	protected Color4f getBaseColor()
@@ -355,20 +356,25 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	}
 
 	
-	public void setActive( boolean active ) {
+	public void setHandleActive( boolean active ) {
 		this.state.setActive(active);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 		
 	}
 
-	public void setRollover( boolean rollover ) {
+	public void setHandleRollover( boolean rollover ) {
 		this.state.setRollover(rollover);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 		
 	}
 
-	public void setVisible( boolean visible ) {
+	public void setHandleVisible( boolean visible ) {
 		this.state.setVisible(visible);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
+	}
+	
+	public PickHint getPickHint()
+	{
+		return PickCondition.getPickType( this );
 	}
 }

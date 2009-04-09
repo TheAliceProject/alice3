@@ -23,6 +23,7 @@
 package org.alice.interact.handle;
 
 import org.alice.interact.InputState;
+import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.event.EventCriteriaManager;
@@ -70,15 +71,15 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		if (this.currentHandle.getManipulatedObject() != manipulatedObject)
 		{
 			HandleState currentHandleState = this.currentHandle.getHandleStateCopy();
-			this.currentHandle.setVisible( false );
-			this.currentHandle.setActive( false );
-			this.currentHandle.setRollover( false );
+			this.currentHandle.setHandleVisible( false );
+			this.currentHandle.setHandleActive( false );
+			this.currentHandle.setHandleRollover( false );
 			this.nextHandle.setSelectedObject( manipulatedObject );
 			
 			//If the handle was previously part of the active group (i.e. the state was not GROUP_NOT_VISIBLE)
 			//then make the next handle marked as part of the active group.
 			//Do not copy more state than this in case there is rollover or other active stateness lingering
-			this.nextHandle.setVisible( currentHandleState.isVisible() );
+			this.nextHandle.setHandleVisible( currentHandleState.isVisible() );
 			ManipulationHandle tempHandle = this.currentHandle;
 			this.currentHandle = this.nextHandle;
 			this.nextHandle = tempHandle;
@@ -187,8 +188,8 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		return this.currentHandle.isRenderable();
 	}
 
-	public void setActive( boolean active ) {
-		this.currentHandle.setActive( active );
+	public void setHandleActive( boolean active ) {
+		this.currentHandle.setHandleActive( active );
 	}
 
 	public void setHandleManager( HandleManager handleManager ) {
@@ -198,13 +199,17 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		
 	}
 
-	public void setRollover( boolean rollover ) {
-		this.currentHandle.setRollover( rollover );
+	public void setHandleRollover( boolean rollover ) {
+		this.currentHandle.setHandleRollover( rollover );
 	}
 
-	public void setVisible( boolean visible ) {
-		this.currentHandle.setVisible( visible );
+	public void setHandleVisible( boolean visible ) {
+		this.currentHandle.setHandleVisible( visible );
 		
+	}
+
+	public PickHint getPickHint() {
+		return this.currentHandle.getPickHint();
 	}
 
 	

@@ -23,12 +23,14 @@
 
 package org.alice.interact.manipulator;
 
+import java.util.List;
 import java.util.Vector;
 
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
+
 
 /**
  * @author David Culyba
@@ -39,7 +41,7 @@ public abstract class AbstractManipulator {
 	private boolean hasStarted = false;
 	protected GlobalDragAdapter dragAdapter;
 	
-	protected Vector< ManipulationEvent > manipulationEvents = new Vector< ManipulationEvent >();
+	protected List< ManipulationEvent > manipulationEvents = new Vector< ManipulationEvent >();
 	
 	public void setManipulatedTransformable( edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable)
 	{
@@ -61,6 +63,12 @@ public abstract class AbstractManipulator {
 	protected void initializeEventMessages()
 	{
 		this.manipulationEvents.clear();
+	}
+	
+	public List< ManipulationEvent > getManipulationEvents()
+	{
+		this.initializeEventMessages();
+		return this.manipulationEvents;
 	}
 	
 	public void triggerAllDeactivateEvents()
@@ -102,7 +110,6 @@ public abstract class AbstractManipulator {
 	
 	public void endManipulator(InputState endInput, InputState previousInput  )
 	{
-		triggerAllDeactivateEvents();
 		doEndManipulator( endInput, previousInput );
 		if (this.hasStarted)
 		{
@@ -113,6 +120,7 @@ public abstract class AbstractManipulator {
 				this.dragAdapter.popHandleSet();
 			}
 		}
+		triggerAllDeactivateEvents();
 		
 	}
 	

@@ -23,13 +23,12 @@
 package org.alice.interact.manipulator;
 
 import org.alice.interact.InputState;
-import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
-import org.alice.interact.handle.ManipulationHandle3D;
+import org.alice.interact.handle.ManipulationHandle;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+
 
 /**
  * @author David Culyba
@@ -38,7 +37,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
 	protected AbstractManipulator activeManipulator;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
-	protected ManipulationHandle3D activeHandle = null;
+	protected ManipulationHandle activeHandle = null;
 	
 	public ObjectGlobalHandleDragManipulator()
 	{
@@ -76,27 +75,22 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
-		if (clickedHandle instanceof ManipulationHandle3D)
+		this.activeHandle = startInput.getClickHandle();
+		if (this.activeHandle != null)
 		{
-			this.activeHandle = ((ManipulationHandle3D)clickedHandle);
-		//	this.dragAdapter.setActivateHandle( this.activeHandle, true );
-		}
-		this.activeManipulator = this.activeHandle.getManipulation( startInput );
-		if (this.activeManipulator != null)
-		{
-			this.activeManipulator.setDragAdapter( this.dragAdapter );
-			if (this.activeManipulator instanceof CameraInformedManipulator)
+			this.activeManipulator = this.activeHandle.getManipulation( startInput );
+			if (this.activeManipulator != null)
 			{
-				CameraInformedManipulator cIM = (CameraInformedManipulator)this.activeManipulator;
-				cIM.setOnscreenLookingGlass( this.onscreenLookingGlass );
+				this.activeManipulator.setDragAdapter( this.dragAdapter );
+				if (this.activeManipulator instanceof CameraInformedManipulator)
+				{
+					CameraInformedManipulator cIM = (CameraInformedManipulator)this.activeManipulator;
+					cIM.setOnscreenLookingGlass( this.onscreenLookingGlass );
+				}
+				return this.activeManipulator.doStartManipulator( startInput );
 			}
-			return this.activeManipulator.doStartManipulator( startInput );
 		}
-		else
-		{
-			return false;
-		}
+		return false;
 
 	}
 

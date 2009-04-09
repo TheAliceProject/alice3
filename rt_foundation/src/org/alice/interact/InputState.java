@@ -119,6 +119,18 @@ public class InputState {
 		currentMouseButtonsToStatesMap.put( mouseInt, new Boolean(isDown) );
 	}
 	
+	public boolean isAnyMouseButtonDown()
+	{
+		for (Integer key : this.currentMouseButtonsToStatesMap.keySet())
+		{
+			if (this.currentMouseButtonsToStatesMap.get( key ).booleanValue())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean isMouseDown( int mouseButton )
 	{
 		if (currentMouseButtonsToStatesMap.containsKey( mouseButton ))
