@@ -49,26 +49,27 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 			}
 		}
 	}
-	private RenderPane m_glPanel = new RenderPane();
+	private RenderPane glPanel = new RenderPane();
 	/*package-private*/ LightweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
+		this.glPanel.setFocusable( true );
 	}
 	
 	public javax.swing.JPanel getJPanel() {
-		return m_glPanel;
+		return this.glPanel;
 	}
 	public java.awt.Component getAWTComponent() {
 		return getJPanel();
 	}
 	public java.awt.Dimension getSize( java.awt.Dimension rv ) {
-		return getJPanel().getSize( rv );
+		return this.glPanel.getSize( rv );
 	}
 	public void repaint() {
-		getJPanel().repaint();
+		this.glPanel.repaint();
 	}
 	
 	@Override
 	protected javax.media.opengl.GLAutoDrawable getGLAutoDrawable() {
-		return m_glPanel;
+		return this.glPanel;
 	}
 }
