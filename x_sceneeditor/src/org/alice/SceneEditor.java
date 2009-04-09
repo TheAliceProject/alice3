@@ -22,6 +22,9 @@
  */
 
 package org.alice;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+
 import javax.swing.JPanel;
 
 import org.alice.apis.moveandturn.DirectionalLight;
@@ -32,11 +35,26 @@ import org.alice.apis.moveandturn.TurnDirection;
 import org.alice.apis.moveandturn.gallery.animals.Chicken;
 import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
 import org.alice.interact.GlobalDragAdapter;
+import org.alice.interact.MovementDirection;
+import org.alice.interact.MovementType;
 import org.alice.interact.PickHint;
 import org.alice.interact.PointOfViewManager;
 import org.alice.interact.PointsOfViewPanel;
+import org.alice.interact.condition.MovementDescription;
+import org.alice.interact.event.ManipulationEvent;
+import org.alice.interact.event.ManipulationEventCriteria;
+import org.alice.interact.handle.HandleSet;
+import org.alice.interact.handle.LinearTranslateHandle;
+import org.alice.interact.handle.ManipulationHandle2DCameraDriver;
+import org.alice.interact.handle.ManipulationHandle2DCameraStrafe;
+import org.alice.interact.handle.ManipulationHandle2DCameraTurnUpDown;
+import org.alice.interact.handle.ManipulationHandleIndirection;
+import org.alice.interact.manipulator.CameraDragDriveManipulator;
+import org.alice.interact.manipulator.CameraDragStrafeManipulator;
+import org.alice.interact.manipulator.CameraDragUpDownRotateManipulator;
+import org.alice.interact.manipulator.LinearDragManipulator;
 
-import edu.cmu.cs.dennisc.alice.ast.ThisExpression;
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter;
@@ -70,6 +88,10 @@ public class SceneEditor extends Program {
 	
 	PointOfViewManager pointOfViewManager = new PointOfViewManager();
 
+	@Override
+	protected boolean isLightweightOnscreenLookingGlassDesired() {
+		return true;
+	}
 	@Override
 	protected void initialize() {
 		scene.addComponent(grassyGround);
@@ -110,15 +132,65 @@ public class SceneEditor extends Program {
 		chicken.setVehicle(scene);
 		this.setScene(this.scene);
 		sunLight.turn(TurnDirection.FORWARD, 0.25);
-		simDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
+		//PointsOfViewPanel povPanel = new PointsOfViewPanel(this.pointOfViewManager);
+		
+		JPanel controlPanel = new JPanel();
+		controlPanel.setLayout( new FlowLayout() );
+		
+		ManipulationHandle2DCameraDriver cameraControl = new ManipulationHandle2DCameraDriver();
+		CameraDragDriveManipulator driverManipulator = new CameraDragDriveManipulator(cameraControl);
+		cameraControl.setManipulation( driverManipulator );
+		for (ManipulationEvent event : driverManipulator.getManipulationEvents())
+		{
+			cameraControl.addCondition( new ManipulationEventCriteria(
+					event.getType(),
+					event.getMovementDescription(),
+					PickHint.CAMERA ) );
+		}
+		globalDragAdapter.addListeners( cameraControl );
+		globalDragAdapter.addManipulationListener( cameraControl );
+		globalDragAdapter.addHandle( cameraControl );
+		
+		ManipulationHandle2DCameraTurnUpDown cameraControlUpDown = new ManipulationHandle2DCameraTurnUpDown();
+		CameraDragUpDownRotateManipulator upDownManipulator = new CameraDragUpDownRotateManipulator(cameraControl);
+		cameraControlUpDown.setManipulation( upDownManipulator );
+		for (ManipulationEvent event : upDownManipulator.getManipulationEvents())
+		{
+			cameraControlUpDown.addCondition( new ManipulationEventCriteria(
+					event.getType(),
+					event.getMovementDescription(),
+					PickHint.CAMERA ) );
+		}
+		globalDragAdapter.addListeners( cameraControlUpDown );
+		globalDragAdapter.addManipulationListener( cameraControlUpDown );
+		globalDragAdapter.addHandle( cameraControlUpDown );
+		
+		ManipulationHandle2DCameraStrafe cameraControlStrafe = new ManipulationHandle2DCameraStrafe();
+		CameraDragStrafeManipulator strafeManipulator = new CameraDragStrafeManipulator(cameraControlStrafe);
+		cameraControlStrafe.setManipulation( strafeManipulator );
+		for (ManipulationEvent event : strafeManipulator.getManipulationEvents())
+		{
+			cameraControlStrafe.addCondition( new ManipulationEventCriteria(
+					event.getType(),
+					event.getMovementDescription(),
+					PickHint.CAMERA ) );
+		}
+		globalDragAdapter.addListeners( cameraControlStrafe );
+		globalDragAdapter.addManipulationListener( cameraControlStrafe );
+		globalDragAdapter.addHandle( cameraControlStrafe );
+		
+		globalDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 		
 		this.pointOfViewManager.setCamera(camera.getSGPerspectiveCamera());
-		PointsOfViewPanel povPanel = new PointsOfViewPanel(this.pointOfViewManager);
 		
-		this.add(povPanel, java.awt.BorderLayout.SOUTH);
+		controlPanel.add( cameraControl );
+		controlPanel.add( cameraControlUpDown );
+		controlPanel.add( cameraControlStrafe );
+		
+		this.add(controlPanel, java.awt.BorderLayout.SOUTH);
 		
 		
-		simDragAdapter.setSelectedObject( chicken.getSGTransformable() );
+		globalDragAdapter.setSelectedObject( chicken.getSGTransformable() );
 		
 		//cameraNavigationDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 	}
