@@ -24,6 +24,10 @@ package org.alice.ide.ubiquitouspane;
 
 import org.alice.ide.ubiquitouspane.templates.*;
 
+class ReturnStatementWrapper extends swing.BorderPane {
+	private ReturnStatementTemplate re = new ReturnStatementTemplate();
+}
+
 /**
  * @author Dennis Cosgrove
  */

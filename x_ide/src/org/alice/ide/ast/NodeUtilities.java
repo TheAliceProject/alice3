@@ -240,5 +240,12 @@ public class NodeUtilities {
 		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
 		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getMethod( mthd );
 	}
+
 	
+	public static edu.cmu.cs.dennisc.alice.ast.ReturnStatement createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return createReturnStatement( type, new EmptyExpression( type ) );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ReturnStatement createReturnStatement( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		return new edu.cmu.cs.dennisc.alice.ast.ReturnStatement( type, expression );
+	}
 }
