@@ -26,12 +26,17 @@ package edu.cmu.cs.dennisc.alice.ide.editors.code;
  * @author Dennis Cosgrove
  */
 public class EmptyExpression extends edu.cmu.cs.dennisc.alice.ast.Expression {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	public edu.cmu.cs.dennisc.alice.ast.DeclarationProperty<edu.cmu.cs.dennisc.alice.ast.AbstractType> type = new edu.cmu.cs.dennisc.alice.ast.DeclarationProperty<edu.cmu.cs.dennisc.alice.ast.AbstractType>( this );
+	public EmptyExpression() {
+	}
 	public EmptyExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this.type = type;
+		this.type.setValue( type );
+	}
+	public EmptyExpression( Class< ? > cls ) {
+		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
-		return this.type;
+		return this.type.getValue();
 	}
 }
