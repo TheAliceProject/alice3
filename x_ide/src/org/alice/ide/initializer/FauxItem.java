@@ -51,7 +51,9 @@ abstract class DropDownListItemExpressionPane extends org.alice.ide.common.Abstr
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
 	public void refresh() {
 		this.removeAll();
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( expressionListProperty.get( index ) ) );
+		if( this.index < this.expressionListProperty.size() ) {
+			this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
+		}
 	}
 }
 

@@ -50,7 +50,10 @@ class ListPropertyComboBoxModel<E> extends javax.swing.AbstractListModel impleme
 			}
 			public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
 				int i = e.getStartIndex();
-				ListPropertyComboBoxModel.this.fireIntervalRemoved( e.getSource(), i, i + e.getElements().size() - 1 );
+				//int n = e.getElements().size();
+				int n = 1;
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle java.util.ConcurrentModificationException" );
+				ListPropertyComboBoxModel.this.fireIntervalRemoved( e.getSource(), i, i + n - 1 );
 			}
 
 			public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
@@ -114,7 +117,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.putValue( javax.swing.Action.NAME, "move up" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
-			this.swapWithNext( ArrayInitializerPane.this.list.getSelectedIndex() - 1 );
+			int index = ArrayInitializerPane.this.list.getSelectedIndex();
+			this.swapWithNext( index - 1 );
+			list.setSelectedIndex( index-1 );
 		}
 	}
 
@@ -123,7 +128,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.putValue( javax.swing.Action.NAME, "move down" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
-			this.swapWithNext( ArrayInitializerPane.this.list.getSelectedIndex() );
+			int index = ArrayInitializerPane.this.list.getSelectedIndex();
+			this.swapWithNext( index );
+			list.setSelectedIndex( index+1 );
 		}
 	}
 
@@ -181,18 +188,50 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.refresh();
 		}
 		public int getSelectedIndex() {
+			javax.swing.ButtonModel selection = this.group.getSelection();
+			int index = 0;
+			java.util.Enumeration< javax.swing.AbstractButton > e = this.group.getElements();
+			while( e.hasMoreElements() ) {
+				javax.swing.AbstractButton button = (javax.swing.AbstractButton)e.nextElement();
+				if( button.getModel() == selection ) {
+					return index;
+				}
+				index ++;
+			}
 			return -1;
+		}
+		
+		public void setSelectedIndex( int index ) {
+			if( index >= 0 ) {
+				FauxItem fauxItem = (FauxItem)this.getComponent( index );
+				fauxItem.setSelected( true );
+			} else {
+				javax.swing.ButtonModel model = this.group.getSelection();
+				if( model != null ) {
+					model.setSelected( false );
+				}
+			}
 		}
 		public void refresh() {
 			int N = ArrayInitializerPane.this.arrayExpressions.size();
 			int M = this.group.getButtonCount();
 			for( int i=M; i<N; i++ ) {
-				this.group.add( new FauxItem( i, ArrayInitializerPane.this.arrayExpressions ) {
+				FauxItem fauxItem = new FauxItem( i, ArrayInitializerPane.this.arrayExpressions ) {
 					@Override
 					protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
 						return ArrayInitializerPane.this.type.getComponentType();
 					}
-				});
+					@Override
+					public void setSelected( boolean b ) {
+						super.setSelected( b );
+						updateButtons();
+					}
+				};
+				this.group.add( fauxItem );
+			}
+			for( int i=N; i<M; i++ ) {
+				FauxItem fauxItem = (FauxItem)this.getComponent( i );
+				this.group.remove( fauxItem );
 			}
 			this.removeAll();
 			java.util.Enumeration< javax.swing.AbstractButton > e = this.group.getElements();
@@ -267,8 +306,8 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		boolean isTypeValid = this.type != null && this.type.isArray();
 		this.addButton.setEnabled( isTypeValid );
 		int index = this.list.getSelectedIndex();
-		//final int N = this.list.getModel().getSize();
-		final int N = 0;
+		final int N = this.list.getComponentCount()-1;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( index, N );
 		this.removeButton.setEnabled( isTypeValid && index != -1 );
 		this.moveUpButton.setEnabled( isTypeValid && index > 0 );
 		this.moveDownButton.setEnabled( isTypeValid && index >= 0 && index < N - 1 );

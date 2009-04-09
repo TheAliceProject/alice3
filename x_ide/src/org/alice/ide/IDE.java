@@ -139,7 +139,7 @@ public abstract class IDE extends zoot.ZFrame {
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType valueType = field.getValueType();
 				if( valueType.isDeclaredInAlice() ) {
-					if( rv.contains( rv ) ) {
+					if( rv.contains( valueType ) ) {
 						//pass
 					} else {
 						rv.add( valueType );
