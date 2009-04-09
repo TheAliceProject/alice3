@@ -98,5 +98,9 @@ public class CameraNavigatorWidget extends JPanel {
 		this.add(this.cameraControlUpDown);
 		
 	}
+	public void setExpanded( boolean isExpaned ) {
+		this.cameraControlUpDown.setVisible( isExpaned );
+		this.cameraControlStrafe.setVisible( isExpaned );
+	}
 
 }
