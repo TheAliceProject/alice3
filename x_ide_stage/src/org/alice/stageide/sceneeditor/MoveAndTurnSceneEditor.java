@@ -246,7 +246,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	protected org.alice.stageide.sceneeditor.ControlsForOverlayPane createControlsForOverlayPane() {
-		return new org.alice.stageide.sceneeditor.ControlsForOverlayPane( null );
+		return new org.alice.stageide.sceneeditor.ControlsForOverlayPane( this.globalDragAdapter );
 	}
 	protected Program createProgram() {
 		return new Program( this );

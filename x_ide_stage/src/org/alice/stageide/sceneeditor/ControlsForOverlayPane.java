@@ -145,14 +145,16 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 		}
 	};
 	
+	private org.alice.interact.AbstractDragAdapter dragAdapter;
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
 	private java.util.List< FieldTile > fieldTiles = new java.util.LinkedList< FieldTile >();
 	private IsExpandedCheckBox isSceneEditorExpandedCheckBox;
 	private zoot.ZButton runButton;
+	private org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget;
 
-	public ControlsForOverlayPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
+	public ControlsForOverlayPane( org.alice.interact.AbstractDragAdapter dragAdapter ) {
+		this.dragAdapter = dragAdapter;
 		this.setOpaque( false );
-		this.setRootField( rootField );
 	}
 
 	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
@@ -172,10 +174,12 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 			//		ide.addIDEListener( this.ideAdapter );
 			
+			this.cameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.dragAdapter );
 			this.isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
 			this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 			this.runButton = new zoot.ZButton( ide.getRunOperation() );
 			this.setNorthEastComponent( this.runButton );
+			this.setSouthWestComponent( this.cameraNavigatorWidget );
 		}
 		super.addNotify();
 	}
