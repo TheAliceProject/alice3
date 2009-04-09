@@ -181,6 +181,10 @@ public class TypeDeclaredInAlice extends AbstractType {
 		//return this.isStatic.getValue();
 	}
 	@Override
+	public boolean isInterface() {
+		return false;
+	}
+	@Override
 	public boolean isAbstract() {
 		return this.finalAbstractOrNeither.getValue() == TypeModifierFinalAbstractOrNeither.ABSTRACT;
 	}

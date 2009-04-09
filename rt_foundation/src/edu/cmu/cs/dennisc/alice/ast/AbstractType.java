@@ -82,6 +82,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	public abstract java.util.ArrayList< ? extends AbstractMethod > getDeclaredMethods();
 	public abstract java.util.ArrayList< ? extends AbstractField > getDeclaredFields();
 
+	public abstract boolean isInterface();
 	public abstract boolean isStatic();
 	//cannot be final and abstract
 	public abstract boolean isAbstract();

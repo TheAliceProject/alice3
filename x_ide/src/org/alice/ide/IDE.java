@@ -254,16 +254,19 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = new java.util.HashMap< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner >();
 
-	private org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > cls ) {
-		org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner rv = map.get( cls );
+	protected org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > clsEnum ) {
+		org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner rv = map.get( clsEnum );
 		if( rv != null ) {
 			//pass
 		} else {
-			rv = new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( cls );
-			map.put( cls, rv );
+			rv = new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( clsEnum );
+			map.put( clsEnum, rv );
 		}
 		return rv;
 	}
+//	protected org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > clsEnum ) {
+//		return getExpressionFillerInnerFor( clsEnum, clsEnum );
+//	}
 
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
 		rv.add( new org.alice.ide.cascade.fillerinners.NumberFillerInner() );
@@ -932,6 +935,9 @@ public abstract class IDE extends zoot.ZFrame {
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
 		return this.previousExpression;
 	}
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {
+		return null;
+	}
 	public void addFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( type != null ) {
 			if( this.previousExpression != null ) {
@@ -939,7 +945,6 @@ public abstract class IDE extends zoot.ZFrame {
 					blank.addFillIn( new org.alice.ide.cascade.PreviousExpressionFillIn( this.previousExpression ) );
 					blank.addSeparator();
 				}
-
 			}
 			//todo
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
@@ -951,8 +956,19 @@ public abstract class IDE extends zoot.ZFrame {
 					expressionFillerInner.addFillIns( blank );
 				}
 			}
-			if( type.isAssignableTo( Enum.class ) ) {
-				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)type.getFirstClassEncounteredDeclaredInJava() );
+			
+			edu.cmu.cs.dennisc.alice.ast.AbstractType enumType;
+			if( type.isInterface() ) {
+				enumType = this.getEnumTypeForInterfaceType( type );
+			} else {
+				if( type.isAssignableTo( Enum.class ) ) {
+					enumType = type;
+				} else {
+					enumType = null;
+				}
+			}
+			if( enumType != null ) {
+				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)enumType.getFirstClassEncounteredDeclaredInJava() );
 				constantsOwningFillerInner.addFillIns( blank );
 			}
 

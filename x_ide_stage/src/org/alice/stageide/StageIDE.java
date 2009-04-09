@@ -113,6 +113,16 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser( thumbnailRoot, map );
 	}
 	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( interfaceType );
+		if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Style.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.TraditionalStyle.class );
+		} else {
+			return super.getEnumTypeForInterfaceType( interfaceType );
+		}
+	}
+
+	@Override
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
 		super.addExpressionFillerInners( rv );
 		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );

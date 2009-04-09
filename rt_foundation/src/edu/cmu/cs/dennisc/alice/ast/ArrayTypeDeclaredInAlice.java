@@ -121,6 +121,11 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 		return m_leafType.getAccess();
 	}
 	@Override
+	public boolean isInterface() {
+		//todo?
+		return m_leafType.isInterface();
+	}
+	@Override
 	public boolean isAbstract() {
 		//todo?
 		return m_leafType.isAbstract();

@@ -318,6 +318,12 @@ public class TypeDeclaredInJava extends AbstractType {
 	public Access getAccess() {
 		return Access.get( m_cls.getModifiers() );
 	}	
+	
+	@Override
+	public boolean isInterface() {
+		return m_cls.isInterface();
+	}
+	
 	@Override
 	public boolean isStatic() {
 		return java.lang.reflect.Modifier.isStatic( m_cls.getModifiers() );
