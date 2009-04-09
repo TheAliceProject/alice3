@@ -95,11 +95,13 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 }
 
 class IsExpandedCheckBox extends zoot.ZCheckBox {
+	private final int X_PAD = 16;
+	private final int Y_PAD = 8;
 	public IsExpandedCheckBox() {
 		super( org.alice.ide.IDE.getSingleton().getIsSceneEditorExpandedOperation() );
 		this.setOpaque( false );
 		this.setFont( this.getFont().deriveFont( 24.0f ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 16 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );
 	}
 	@Override
 	public void updateUI() {
@@ -112,6 +114,18 @@ class IsExpandedCheckBox extends zoot.ZCheckBox {
 		} else {
 			return "edit scene";
 		}
+	}
+	private java.awt.Rectangle innerAreaBuffer = new java.awt.Rectangle();
+	@Override
+	public boolean contains( int x, int y ) {
+		java.awt.Rectangle bounds = javax.swing.SwingUtilities.calculateInnerArea( this, innerAreaBuffer );
+		if( this.isSelected() ) {
+			bounds.x -= X_PAD; 
+			bounds.y -= Y_PAD; 
+		}
+		bounds.width += X_PAD;
+		bounds.height += Y_PAD;
+		return bounds.contains( x, y );
 	}
 }
 
