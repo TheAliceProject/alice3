@@ -28,7 +28,7 @@ package edu.cmu.cs.dennisc.swing;
 public class SpringPane extends javax.swing.JPanel {
 	public enum Vertical {
 		NORTH(javax.swing.SpringLayout.NORTH), 
-		//CENTER(null), 
+		CENTER(null), 
 		SOUTH(javax.swing.SpringLayout.SOUTH);
 		private String internal;
 		private Vertical( String internal ) {
@@ -40,7 +40,7 @@ public class SpringPane extends javax.swing.JPanel {
 	}
 	public enum Horizontal {
 		WEST(javax.swing.SpringLayout.WEST), 
-		//CENTER(null), 
+		CENTER(null), 
 		EAST(javax.swing.SpringLayout.EAST);
 		private String internal;
 		private Horizontal( String internal ) {
@@ -59,9 +59,67 @@ public class SpringPane extends javax.swing.JPanel {
 		return this.springLayout;
 	}
 	
+	abstract class CenterSpring extends javax.swing.Spring {
+		private java.awt.Component component;
+		private int offset;
+		public CenterSpring( java.awt.Component component, int offset ) {
+			this.component = component;
+			this.offset = offset;
+		}
+		@Override
+		public int getValue() {
+			return this.getPreferredValue();
+		}
+		@Override
+		public void setValue( int value ) {
+		}
+		protected abstract int getValue( java.awt.Dimension dimension );
+		@Override
+		public int getPreferredValue() {
+			int macro = getValue( SpringPane.this.getSize() );
+			int micro = getValue( this.component.getSize() );
+			return this.offset + (macro - micro) / 2;
+		}
+		@Override
+		public int getMinimumValue() {
+			return this.getPreferredValue();
+		}
+		@Override
+		public int getMaximumValue() {
+			return this.getPreferredValue();
+		}
+	}
+	class HorizontalCenterSpring extends CenterSpring {
+		public HorizontalCenterSpring( java.awt.Component component, int offset ) {
+			super( component, offset );
+		}
+		@Override
+		protected int getValue( java.awt.Dimension dimension ) {
+			return dimension.width;
+		}
+	}
+	class VerticalCenterSpring extends CenterSpring {
+		public VerticalCenterSpring( java.awt.Component component, int offset ) {
+			super( component, offset );
+		}
+		@Override
+		protected int getValue( java.awt.Dimension dimension ) {
+			return dimension.height;
+		}
+	}
 	protected void putConstraint( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
-		this.springLayout.putConstraint( horizontal.getInternal(), component, x, horizontal.getInternal(), this );
-		this.springLayout.putConstraint( vertical.getInternal(), component, y, vertical.getInternal(), this );
+		String horizontalConstraint = horizontal.getInternal();
+		String verticalConstraint = vertical.getInternal();
+		if( horizontalConstraint != null ) {
+			this.springLayout.putConstraint( horizontalConstraint, component, x, horizontalConstraint, this );
+		} else {
+			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, component, new HorizontalCenterSpring( component, x ), javax.swing.SpringLayout.WEST, this );
+		}
+		if( verticalConstraint != null ) {
+			this.springLayout.putConstraint( verticalConstraint, component, y, verticalConstraint, this );
+		} else {
+			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component, new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, this );
+		}
 	}
 	
 	public void add( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
