@@ -27,16 +27,18 @@ import javax.swing.ImageIcon;
 
 import org.alice.interact.event.ManipulationEvent;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+
 /**
  * @author David Culyba
  */
 public class ManipulationHandle2DCameraTurnUpDown extends ImageBasedManipulationHandle2D {
 	private enum ControlState implements ImageBasedManipulationHandle2D.ImageState
 	{
-		Inactive("images/tilt.gif"),
-		Highlighted("images/tiltHighlight.gif"),
-		TurningForward("images/tiltDown.gif"),
-		TurningBackward("images/tiltUp.gif");
+		Inactive("images/tilt.png"),
+		Highlighted("images/tiltHighlight.png"),
+		TurningForward("images/tiltDown.png"),
+		TurningBackward("images/tiltUp.png");
 		
 		private ImageIcon icon;
 		private ControlState(String resourceString)
@@ -53,6 +55,11 @@ public class ManipulationHandle2DCameraTurnUpDown extends ImageBasedManipulation
 	private boolean turningForward = false;
 	private boolean turningBackward = false;
 
+	@Override
+	protected void setImageMask() {
+		this.imageMask = ImageUtilities.read( this.getClass().getResource( "images/tiltMask.png" ) );
+	}
+	
 	
 	@Override
 	protected ControlState getStateForManipulationStatus()

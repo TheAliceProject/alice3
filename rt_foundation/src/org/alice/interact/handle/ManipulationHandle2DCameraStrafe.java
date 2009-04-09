@@ -26,6 +26,8 @@ import javax.swing.ImageIcon;
 
 import org.alice.interact.event.ManipulationEvent;
 
+import edu.cmu.cs.dennisc.image.ImageUtilities;
+
 /**
  * @author David Culyba
  */
@@ -33,21 +35,28 @@ public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHand
 
 	private enum ControlState implements ImageBasedManipulationHandle2D.ImageState
 	{
-		Inactive( "images/slide.gif" ),
-		Highlighted( "images/slideHighlight.gif" ),
-		Down( "images/slideDown.gif" ),
-		DownLeft( "images/slideDownLeft.gif" ),
-		DownRight( "images/slideDownRight.gif" ),
-		Up( "images/slideUp.gif" ),
-		UpLeft( "images/slideUpLeft.gif" ),
-		UpRight( "images/slideUpRight.gif" ),
-		Left( "images/slideLeft.gif" ),
-		Right( "images/slideRight.gif" );
+		Inactive( "images/slide.png" ),
+		Highlighted( "images/slideHighlight.png" ),
+		Down( "images/slideDown.png" ),
+		DownLeft( "images/slideDownLeft.png" ),
+		DownRight( "images/slideDownRight.png" ),
+		Up( "images/slideUp.png" ),
+		UpLeft( "images/slideUpLeft.png" ),
+		UpRight( "images/slideUpRight.png" ),
+		Left( "images/slideLeft.png" ),
+		Right( "images/slideRight.png" );
 		
 		private ImageIcon icon;
 		private ControlState(String resourceString)
 		{
-			this.icon = new ImageIcon( this.getClass().getResource( resourceString ));
+			try
+			{
+				this.icon = new ImageIcon( this.getClass().getResource( resourceString ));
+			}
+			catch (Exception e)
+			{
+				System.err.println("can't load "+resourceString);
+			}
 		}
 		
 		public ImageIcon getIcon()
@@ -60,6 +69,11 @@ public class ManipulationHandle2DCameraStrafe extends ImageBasedManipulationHand
 	private boolean movingRight = false;
 	private boolean movingUp = false;
 	private boolean movingDown = false;
+	
+	@Override
+	protected void setImageMask() {
+		this.imageMask = ImageUtilities.read( this.getClass().getResource( "images/slideMask.png" ) );
+	}
 	
 	@Override
 	protected ImageState getStateForManipulationStatus()

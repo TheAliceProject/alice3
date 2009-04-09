@@ -22,7 +22,11 @@
  */
 package org.alice.interact.handle;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
@@ -41,14 +45,47 @@ public abstract class ImageBasedManipulationHandle2D extends ManipulationHandle2
 	}
 
 	protected ImageState currentState;
+	protected BufferedImage imageMask;
 	
 	public ImageBasedManipulationHandle2D()
 	{
+		this.setImageMask();
 		this.setStateBasedOnManipulationStatus();
 		Dimension size = new Dimension(this.getIcon().getIconWidth(), this.getIcon().getIconHeight());
 		this.setSize( size );
 		this.setMinimumSize( size );
 		this.setPreferredSize( size );
+	}
+	
+	public Color getColor( int x, int y)
+	{
+		if (super.contains( x, y ))
+		{
+			if (this.imageMask != null)
+			{
+				int colorInt = this.imageMask.getRGB( x, y );
+				Color color = new Color(colorInt, true);
+				return color;
+			}
+		}
+		return null;
+	}
+	
+	abstract protected void setImageMask(); 
+	
+	@Override
+	public boolean contains( int x, int y ) {
+		
+		
+		Color color = this.getColor( x, y );
+		if (color != null)
+		{
+			return color.getAlpha() != 0;
+		}
+		else
+		{
+			return super.contains( x, y );
+		}
 	}
 	
 	@Override

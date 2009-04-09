@@ -22,9 +22,13 @@
  */
 package org.alice.interact.handle;
 
+import java.awt.image.BufferedImage;
+
 import javax.swing.ImageIcon;
 
 import org.alice.interact.event.ManipulationEvent;
+
+import edu.cmu.cs.dennisc.image.ImageUtilities;
 
 
 /**
@@ -34,16 +38,16 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 	
 	private enum ControlState implements ImageBasedManipulationHandle2D.ImageState
 	{
-		Inactive( "images/drive.gif" ),
-		Highlighted( "images/driveHighlight.gif" ),
-		Back( "images/driveBack.gif" ),
-		BackLeft( "images/driveBackLeft.gif" ),
-		BackRight( "images/driveBackRight.gif" ),
-		Forward( "images/driveForward.gif" ),
-		ForwardLeft( "images/driveForwardLeft.gif" ),
-		ForwardRight( "images/driveForwardRight.gif" ),
-		Left( "images/driveLeft.gif" ),
-		Right( "images/driveRight.gif" );
+		Inactive( "images/drive.png" ),
+		Highlighted( "images/driveHighlight.png" ),
+		Back( "images/driveBack.png" ),
+		BackLeft( "images/driveBackLeft.png" ),
+		BackRight( "images/driveBackRight.png" ),
+		Forward( "images/driveForward.png" ),
+		ForwardLeft( "images/driveForwardLeft.png" ),
+		ForwardRight( "images/driveForwardRight.png" ),
+		Left( "images/driveLeft.png" ),
+		Right( "images/driveRight.png" );
 		
 		private ImageIcon icon;
 		private ControlState(String resourceString)
@@ -61,6 +65,11 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 	private boolean turningRight = false;
 	private boolean movingForward = false;
 	private boolean movingBackward = false;
+	
+	@Override
+	protected void setImageMask() {
+		this.imageMask = ImageUtilities.read( this.getClass().getResource( "images/driveMask.png" ) );
+	}
 	
 	@Override
 	protected ImageState getStateForManipulationStatus()
