@@ -51,11 +51,7 @@ import org.alice.interact.manipulator.ObjectTranslateKeyManipulator;
 import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
-
-
-
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.math.Vector3;
 
 /**
  * @author David Culyba

@@ -24,11 +24,6 @@ package org.alice.interact.event;
 
 import java.util.List;
 
-import org.alice.interact.PickHint;
-import org.alice.interact.condition.ManipulatorConditionSet;
-import org.alice.interact.condition.MovementDescription;
-import org.alice.interact.condition.PickCondition;
-
 /**
  * @author David Culyba
  */

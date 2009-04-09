@@ -23,15 +23,10 @@
 package org.alice.interact.manipulator;
 
 import org.alice.interact.InputState;
-import org.alice.interact.MovementDirection;
-import org.alice.interact.MovementType;
-import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;

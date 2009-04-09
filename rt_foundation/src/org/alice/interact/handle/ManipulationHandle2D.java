@@ -23,24 +23,15 @@
 package org.alice.interact.handle;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Vector;
-
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import org.alice.interact.ColorTargetBasedAnimation;
-import org.alice.interact.DoubleTargetBasedAnimation;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.event.EventCriteriaManager;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
 import org.alice.interact.event.ManipulationListener;
-import org.alice.interact.handle.HandleSet.HandleGroup;
 import org.alice.interact.manipulator.AbstractManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;

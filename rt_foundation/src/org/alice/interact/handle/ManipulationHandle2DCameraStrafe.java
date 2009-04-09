@@ -25,7 +25,6 @@ package org.alice.interact.handle;
 import javax.swing.ImageIcon;
 
 import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.handle.ImageBasedManipulationHandle2D.ImageState;
 
 /**
  * @author David Culyba
