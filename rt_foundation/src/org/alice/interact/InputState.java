@@ -250,19 +250,16 @@ public class InputState {
 
 	protected Component getFirstClassFromComponent( Component object )
 	{
+		if (object == null)
+		{
+			return null;
+		}
 		Object bonusData = object.getBonusDataFor( PickHint.PICK_HINT_KEY );
 		if ( bonusData instanceof PickHint)
 		{
 			return object;
 		}
-		else if (object != null)
-		{
-			return getFirstClassFromComponent( object.getParent() );
-		}
-		else
-		{
-			return null;
-		}
+		return getFirstClassFromComponent( object.getParent() );
 	}
 	
 	protected Transformable getPickedTransformable( PickResult pickResult, boolean getFirstClass)
