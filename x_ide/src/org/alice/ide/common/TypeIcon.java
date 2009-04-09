@@ -56,7 +56,11 @@ public class TypeIcon implements javax.swing.Icon {
 		int w = this.getIconWidth();
 		int h = this.getIconHeight();
 		this.border.paintBorder( c, g, x, y, w, h );
-		g.setColor( c.getForeground() );
+//		if( c.isEnabled() ) {
+			g.setColor( c.getForeground() );
+//		} else {
+//			g.setColor( java.awt.Color.RED );
+//		}
 		edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, x, y, w, h );
 	}
 }

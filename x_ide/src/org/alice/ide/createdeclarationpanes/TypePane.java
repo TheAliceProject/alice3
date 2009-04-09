@@ -79,6 +79,15 @@ public class TypePane extends swing.LineAxisPane {
 			}
 		} );
 		
+		
+		this.typeProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				typeComboBox.setSelectedItem( e.getValue() );
+			}
+		} );
+		
 		this.isArrayCheckBox = new zoot.ZCheckBox( new IsArrayStateOperation( isArrayProperty ) );
 		this.isArrayCheckBox.setOpaque( false );
 		this.isArrayCheckBox.setEnabled( isArrayCheckBoxEnabled );
@@ -95,6 +104,18 @@ public class TypePane extends swing.LineAxisPane {
 		}
 		return rv;
 	}
+	
+	public void disableComboBox() {
+//		if( type.isArray() ) {
+//			this.typeComboBox.setSelectedItem( type.getComponentType() );
+//		} else {
+//			this.typeComboBox.setSelectedItem( type );
+//		}
+		this.typeComboBox.setEnabled( false );
+//		this.isArrayCheckBox.setSelected( type.isArray() );
+//		this.isArrayCheckBox.setEnabled( false );
+	}
+	
 	private void updateTypeProperty() {
 		this.typeProperty.setValue( (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem() );
 	}
