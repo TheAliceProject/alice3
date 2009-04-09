@@ -26,8 +26,8 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 abstract class AbstractInitializerPane extends swing.Pane {
-	public abstract edu.cmu.cs.dennisc.alice.ast.Expression getInitializer();
-//	public abstract void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type );
+//	public abstract edu.cmu.cs.dennisc.alice.ast.Expression getInitializer();
+	public abstract void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type );
 //	protected abstract void handleInitializerChange();
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

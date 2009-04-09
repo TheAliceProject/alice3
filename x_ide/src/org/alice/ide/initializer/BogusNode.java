@@ -26,7 +26,13 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
-	public edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType > componentType = new edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType >( this );
+	public edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType > componentType = new edu.cmu.cs.dennisc.alice.ast.DeclarationProperty< edu.cmu.cs.dennisc.alice.ast.AbstractType >( this ) {
+		@Override
+		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, edu.cmu.cs.dennisc.alice.ast.AbstractType value) {
+			assert value == null || value.isArray() == false;
+			super.setValue( owner, value );
+		}
+	};
 	public edu.cmu.cs.dennisc.property.BooleanProperty isArray = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty componentExpression = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 		@Override
@@ -68,28 +74,27 @@ public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		this.componentType.setValue( componentType );
 		this.isArray.setValue( isArray );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.Expression getNextExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression previousExpression ) {
-		//todo: check to see if acceptable
-		edu.cmu.cs.dennisc.alice.ast.Expression rv;
-		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) {
-			rv = new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( false );
-		} else if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
-			rv = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 );
-		} else if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) {
-			rv = new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 0 );
-		} else {
-			rv = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
-		}
-		return rv;
-	}
 	private void handleChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.componentType.getValue();
 		if( type != null ) {
-			this.componentExpression.setValue( getNextExpression( type, this.componentExpression.getValue() ) );
+			this.componentExpression.setValue( ExpressionUtilities.getNextExpression( type, this.componentExpression.getValue() ) );
 			final int N = this.arrayExpressions.size();
 			for( int i=0; i<N; i++ ) {
-				this.arrayExpressions.set( i, this.arrayExpressions.get( i ) );
+				this.arrayExpressions.set( i, ExpressionUtilities.getNextExpression( type, this.arrayExpressions.get( i ) ) );
 			}
+		}
+	}
+	
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType componentType = this.componentType.getValue();
+		if( componentType != null ) {
+			if( this.isArray.getValue() ) {
+				return componentType.getArrayType();
+			} else {
+				return componentType;
+			}
+		} else {
+			return null;
 		}
 	}
 //	

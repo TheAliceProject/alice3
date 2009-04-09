@@ -32,8 +32,9 @@ public class InitializerPane extends swing.CardPane {
 	private ItemInitializerPane itemInitializerPane;
 	private ArrayInitializerPane arrayInitializerPane;
 	public InitializerPane( BogusNode bogusNode ) {
-		this.itemInitializerPane = new ItemInitializerPane( bogusNode.componentExpression );
-		this.arrayInitializerPane = new ArrayInitializerPane( bogusNode.arrayExpressions );
+		this.bogusNode = bogusNode;
+		this.itemInitializerPane = new ItemInitializerPane( this.bogusNode.componentExpression );
+		this.arrayInitializerPane = new ArrayInitializerPane( this.bogusNode.arrayExpressions );
 		this.add( this.itemInitializerPane, ITEM_KEY );
 		this.add( this.arrayInitializerPane, ARRAY_KEY );
 		this.show( ITEM_KEY );
@@ -66,8 +67,8 @@ public class InitializerPane extends swing.CardPane {
 		if( this.itemInitializerPane.isVisible() ) {
 			return this.bogusNode.componentExpression.getValue();
 		} else {
-			
-			return this.bogusNode.arrayExpressions.getValue();
+			java.util.List< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = this.bogusNode.arrayExpressions.getValue();
+			return org.alice.ide.ast.NodeUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
 		}
 	}
 	@Override

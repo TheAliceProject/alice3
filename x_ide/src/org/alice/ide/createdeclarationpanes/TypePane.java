@@ -75,15 +75,15 @@ public class TypePane extends swing.LineAxisPane {
 		this.add( this.isArrayCheckBox );
 	}
 
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType getArrayTypeIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType componentType ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = componentType;
-		if( rv != null ) {
-			if( this.isArrayCheckBox.isSelected() ) {
-				rv = rv.getArrayType();
-			}
-		}
-		return rv;
-	}
+//	private edu.cmu.cs.dennisc.alice.ast.AbstractType getArrayTypeIfAppropriate( edu.cmu.cs.dennisc.alice.ast.AbstractType componentType ) {
+//		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = componentType;
+//		if( rv != null ) {
+//			if( this.isArrayCheckBox.isSelected() ) {
+//				rv = rv.getArrayType();
+//			}
+//		}
+//		return rv;
+//	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem();
 		if( rv != null ) {
@@ -94,7 +94,8 @@ public class TypePane extends swing.LineAxisPane {
 		return rv;
 	}
 	private void updateTypeProperty() {
-		this.typeProperty.setValue( this.getArrayTypeIfAppropriate( (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem() ) );
+//		this.typeProperty.setValue( this.getArrayTypeIfAppropriate( (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem() ) );
+		this.typeProperty.setValue( (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem() );
 	}
 	private void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.updateTypeProperty();

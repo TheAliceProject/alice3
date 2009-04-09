@@ -22,28 +22,56 @@
  */
 package org.alice.ide.initializer;
 
+import edu.cmu.cs.dennisc.alice.ast.Expression;
+import edu.cmu.cs.dennisc.property.event.ListPropertyEvent;
+
+abstract class DropDownListItemExpressionPane extends org.alice.ide.common.AbstractDropDownPane {
+	private int index;
+	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
+	public DropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
+		this.index = index;
+		this.expressionListProperty = expressionListProperty;
+		this.expressionListProperty.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+			@Override
+			protected void changing( ListPropertyEvent< Expression > e ) {
+			}
+			@Override
+			protected void changed( ListPropertyEvent< Expression > e ) {
+				DropDownListItemExpressionPane.this.refresh();
+			}
+		} );
+		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionListPropertyItemOperation( this.index, this.expressionListProperty ) {
+			@Override
+			protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
+				return DropDownListItemExpressionPane.this.getFillInType();
+			}
+		});
+	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
+	public void refresh() {
+		this.removeAll();
+		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( expressionListProperty.get( index ) ) );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
-class FauxItem extends javax.swing.AbstractButton {
-	private BogusNode bogusNode = new BogusNode();
-	private ItemInitializerPane itemInitializerPane = new ItemInitializerPane( bogusNode.expression ) {
-//		@Override
-//		protected void handleInitializerChange() {
-//			this.revalidate();
-//			this.repaint();
-//		}
-	};
-	private zoot.ZLabel label = new zoot.ZLabel();
-	public FauxItem( int index, edu.cmu.cs.dennisc.alice.ast.Expression initializer ) {
-		this.setIndex( index );
-		bogusNode.expression.setValue( initializer );
+abstract class FauxItem extends javax.swing.AbstractButton {
+	private DropDownListItemExpressionPane dropDownListItemExpressionPane;
+	public FauxItem( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
+		this.dropDownListItemExpressionPane = new DropDownListItemExpressionPane( index, expressionListProperty ) {
+			@Override
+			protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
+				return FauxItem.this.getFillInType();
+			}
+		};
 		this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
-		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
-		this.add( this.label, java.awt.BorderLayout.WEST );
-		this.add( new swing.LineAxisPane( this.itemInitializerPane, new javax.swing.JLabel() ), java.awt.BorderLayout.CENTER );
-		//this.add( javax.swing.Box.createGlue() );
+		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+		this.add( new zoot.ZLabel( "[ " + index + " ]" ) );
+		this.add( this.dropDownListItemExpressionPane );
+		this.add( javax.swing.Box.createHorizontalGlue() );
 		this.addMouseListener( new java.awt.event.MouseListener() {
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
 			}
@@ -58,20 +86,8 @@ class FauxItem extends javax.swing.AbstractButton {
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
 			}
 		} );
-		//todo
-		//		this.setLeftButtonPressOperation( new org.alice.ide.operations.AbstractActionOperation() {
-		//			public void perform( zoot.ActionContext actionContext ) {
-		//				FauxItem.this.setSelected( !FauxItem.this.isSelected() );
-		//			}
-		//		} );
 	}
-	public void setIndex( int index ) {
-		this.label.setText( "[ " + index + " ]" );
-	}
-	public void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType componentType ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handleTypeChange" );
-		//this.itemInitializerPane.handleTypeChange( componentType );
-	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		//super.paintComponent( g );
@@ -80,6 +96,9 @@ class FauxItem extends javax.swing.AbstractButton {
 			g.setColor( color );
 			g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 		}
+	}
+	public void refresh() {
+		this.dropDownListItemExpressionPane.refresh();
 	}
 }
 

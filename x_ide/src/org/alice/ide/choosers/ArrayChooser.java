@@ -26,27 +26,23 @@ package org.alice.ide.choosers;
  * @author Dennis Cosgrove
  */
 public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
-//	class MyTypePane extends org.alice.ide.createdeclarationpanes.TypePane {
-//		public MyTypePane() {
-//			super( true, false );
-//		}
-//		@Override
-//		protected void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-//			ArrayChooser.this.arrayInitializerPane.handleTypeChange( type.getArrayType() );
-//		}
-//		@Override
-//		protected void handleIsArrayChange( boolean isArray ) {
-//		}
-//	}
-	private edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = new edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation();
-	private org.alice.ide.createdeclarationpanes.TypePane myTypePane = new org.alice.ide.createdeclarationpanes.TypePane( arrayInstanceCreation.arrayType, true, false );
-	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( arrayInstanceCreation );
+	private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( null, false );
+	private org.alice.ide.createdeclarationpanes.TypePane myTypePane = new org.alice.ide.createdeclarationpanes.TypePane( bogusNode.componentType, true, false );
+	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.arrayExpressions );
 	private static final String[] LABEL_TEXTS = { "type:", "value:" };
 	private java.awt.Component[] components = { this.myTypePane, this.arrayInitializerPane };
 	
 	public ArrayChooser() {
-		//this.arrayInitializerPane.handleTypeChange( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) );
-		this.arrayInstanceCreation.expressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		bogusNode.isArray.setValue( true );
+		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			}
+			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+				ArrayChooser.this.arrayInitializerPane.handleTypeChange( bogusNode.getType() );
+				ArrayChooser.this.getInputPane().updateOKButton();
+			}
+		} );
+		bogusNode.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			@Override
 			protected void changing( edu.cmu.cs.dennisc.property.event.ListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.Expression > e ) {
 			}
@@ -67,7 +63,8 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		return this.components;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation getValue() {
-		return this.arrayInstanceCreation;
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.Expression > expressions = this.bogusNode.arrayExpressions.getValue();
+		return org.alice.ide.ast.NodeUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
 	}
 	
 	public static void main( String[] args ) {

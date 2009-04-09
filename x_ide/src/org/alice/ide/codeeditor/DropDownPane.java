@@ -25,13 +25,10 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DropDownPane extends org.alice.ide.AbstractControl {
+public abstract class DropDownPane extends org.alice.ide.common.AbstractDropDownPane {
 	private java.awt.Component mainComponent;
 	public DropDownPane( java.awt.Component prefixPane, java.awt.Component mainComponent, java.awt.Component postfixPane ) {
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-		//this.setBorder( javax.swing.BorderFactory.createMatteBorder( TOP, LEFT, BOTTOM, RIGHT, edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR ) );
-		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
-		//this.setOpaque( true );
 		if( prefixPane != null ) {
 			this.add( prefixPane );
 		}
@@ -43,86 +40,6 @@ public abstract class DropDownPane extends org.alice.ide.AbstractControl {
 		zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
 		this.addMouseListener( controlAdapter );
 		this.addMouseMotionListener( controlAdapter );
-	}
-	
-	
-//	@Override
-//	protected boolean isActuallyPotentiallySelectable() {
-//		return false;
-//	}
-//	@Override
-//	public boolean isSelected() {
-//		return false;
-//	}
-	
-	private static final int INSET = 1;
-	private static final int AFFORDANCE_SIZE = 9;
-	@Override
-	protected int getInsetTop() {
-		return DropDownPane.INSET;
-	}
-	@Override
-	protected int getInsetLeft() {
-		return DropDownPane.INSET;
-	}
-	@Override
-	protected int getInsetBottom() {
-		return DropDownPane.INSET;
-	}
-	@Override
-	protected int getInsetRight() {
-		return DropDownPane.INSET + DropDownPane.AFFORDANCE_SIZE;
-	}
-	@Override
-	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.fillRect( x, y, width - 1, height - 1 );
-	}
-	@Override
-	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.setColor( java.awt.Color.WHITE );
-		fillBounds( g2, x, y, width, height );
-		
-		final int INSET = 4;
-		int size = DropDownPane.AFFORDANCE_SIZE;
-
-		int x0 = width - INSET / 2 - DropDownPane.AFFORDANCE_SIZE;
-		int x1 = x0 + size;
-		int xC = (x0 + x1) / 2;
-
-		int y0 = INSET + 2;
-		int y1 = y0 + size;
-
-		java.awt.Color triangleFill;
-		java.awt.Color triangleOutline;
-		if( this.isActive() ) {
-			triangleFill = java.awt.Color.YELLOW;
-			triangleOutline = java.awt.Color.BLACK;
-		} else {
-			triangleFill = edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 192 );
-			triangleOutline = null;
-		}
-
-		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-
-		int[] xs = { x0, xC, x1 };
-		int[] ys = { y0, y1, y0 };
-		g2.setColor( triangleFill );
-		g2.fillPolygon( xs, ys, 3 );
-		if( triangleOutline != null ) {
-			g2.setColor( triangleOutline );
-			g2.drawPolygon( xs, ys, 3 );
-		}
-	}
-	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		if( this.isActive() ) {
-			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
-			g2.setColor( java.awt.Color.BLUE );
-			g2.draw( new java.awt.geom.Rectangle2D.Float( 1.5f, 1.5f, width-3.0f, height-3.0f ) );
-		} else {
-			g2.setColor( java.awt.Color.LIGHT_GRAY );
-			g2.drawRect( x, y, width-1, height-1 );
-		}
 	}
 	
 
