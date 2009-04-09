@@ -25,8 +25,13 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-public class ItemInitializerPane extends org.alice.ide.codeeditor.ExpressionPropertyDropDownPane {
+public class ItemInitializerPane extends swing.BorderPane {
 	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
-		super( null, new org.alice.ide.common.ExpressionPropertyPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), initializerProperty ), initializerProperty );
+		this.add( new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, new org.alice.ide.common.ExpressionPropertyPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), initializerProperty ), initializerProperty ), java.awt.BorderLayout.WEST );
 	}
 }
+//public class ItemInitializerPane extends org.alice.ide.codeeditor.ExpressionPropertyDropDownPane {
+//	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
+//		super( null, new org.alice.ide.common.ExpressionPropertyPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), initializerProperty ), initializerProperty );
+//	}
+//}

@@ -29,6 +29,7 @@ abstract class DropDownListItemExpressionPane extends org.alice.ide.common.Abstr
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	public DropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
+		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
 		this.expressionListProperty.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {

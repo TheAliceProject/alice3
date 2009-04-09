@@ -37,7 +37,10 @@ public class InitializerPane extends swing.CardPane {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				arrayInitializerPane.handleTypeChange( InitializerPane.this.bogusNode.componentType.getValue().getArrayType() );
+				edu.cmu.cs.dennisc.alice.ast.AbstractType type = InitializerPane.this.bogusNode.componentType.getValue();
+				if( type != null ) {
+					arrayInitializerPane.handleTypeChange( type.getArrayType() );
+				}
 			}
 		} );
 		this.bogusNode.isArray.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
