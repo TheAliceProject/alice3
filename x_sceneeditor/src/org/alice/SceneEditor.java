@@ -34,6 +34,7 @@ import org.alice.apis.moveandturn.SymmetricPerspectiveCamera;
 import org.alice.apis.moveandturn.TurnDirection;
 import org.alice.apis.moveandturn.gallery.animals.Chicken;
 import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
+import org.alice.interact.CameraNavigatorWidget;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
@@ -134,58 +135,11 @@ public class SceneEditor extends Program {
 		sunLight.turn(TurnDirection.FORWARD, 0.25);
 		//PointsOfViewPanel povPanel = new PointsOfViewPanel(this.pointOfViewManager);
 		
-		JPanel controlPanel = new JPanel();
-		controlPanel.setLayout( new FlowLayout() );
-		
-		ManipulationHandle2DCameraDriver cameraControl = new ManipulationHandle2DCameraDriver();
-		CameraDragDriveManipulator driverManipulator = new CameraDragDriveManipulator(cameraControl);
-		cameraControl.setManipulation( driverManipulator );
-		for (ManipulationEvent event : driverManipulator.getManipulationEvents())
-		{
-			cameraControl.addCondition( new ManipulationEventCriteria(
-					event.getType(),
-					event.getMovementDescription(),
-					PickHint.CAMERA ) );
-		}
-		globalDragAdapter.addListeners( cameraControl );
-		globalDragAdapter.addManipulationListener( cameraControl );
-		globalDragAdapter.addHandle( cameraControl );
-		
-		ManipulationHandle2DCameraTurnUpDown cameraControlUpDown = new ManipulationHandle2DCameraTurnUpDown();
-		CameraDragUpDownRotateManipulator upDownManipulator = new CameraDragUpDownRotateManipulator(cameraControl);
-		cameraControlUpDown.setManipulation( upDownManipulator );
-		for (ManipulationEvent event : upDownManipulator.getManipulationEvents())
-		{
-			cameraControlUpDown.addCondition( new ManipulationEventCriteria(
-					event.getType(),
-					event.getMovementDescription(),
-					PickHint.CAMERA ) );
-		}
-		globalDragAdapter.addListeners( cameraControlUpDown );
-		globalDragAdapter.addManipulationListener( cameraControlUpDown );
-		globalDragAdapter.addHandle( cameraControlUpDown );
-		
-		ManipulationHandle2DCameraStrafe cameraControlStrafe = new ManipulationHandle2DCameraStrafe();
-		CameraDragStrafeManipulator strafeManipulator = new CameraDragStrafeManipulator(cameraControlStrafe);
-		cameraControlStrafe.setManipulation( strafeManipulator );
-		for (ManipulationEvent event : strafeManipulator.getManipulationEvents())
-		{
-			cameraControlStrafe.addCondition( new ManipulationEventCriteria(
-					event.getType(),
-					event.getMovementDescription(),
-					PickHint.CAMERA ) );
-		}
-		globalDragAdapter.addListeners( cameraControlStrafe );
-		globalDragAdapter.addManipulationListener( cameraControlStrafe );
-		globalDragAdapter.addHandle( cameraControlStrafe );
+		CameraNavigatorWidget controlPanel = new CameraNavigatorWidget(globalDragAdapter);
 		
 		globalDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 		
 		this.pointOfViewManager.setCamera(camera.getSGPerspectiveCamera());
-		
-		controlPanel.add( cameraControl );
-		controlPanel.add( cameraControlUpDown );
-		controlPanel.add( cameraControlStrafe );
 		
 		this.add(controlPanel, java.awt.BorderLayout.SOUTH);
 		
