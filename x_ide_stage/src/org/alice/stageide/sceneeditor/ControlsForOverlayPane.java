@@ -24,6 +24,7 @@ package org.alice.stageide.sceneeditor;
 
 class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 	private final static IsExpandedCheckBoxUI singleton = new IsExpandedCheckBoxUI();
+
 	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent c ) {
 		return singleton;
 	}
@@ -97,6 +98,7 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 class IsExpandedCheckBox extends zoot.ZCheckBox {
 	private final int X_PAD = 16;
 	private final int Y_PAD = 8;
+
 	public IsExpandedCheckBox() {
 		super( org.alice.ide.IDE.getSingleton().getIsSceneEditorExpandedOperation() );
 		this.setOpaque( false );
@@ -115,13 +117,15 @@ class IsExpandedCheckBox extends zoot.ZCheckBox {
 			return "edit scene";
 		}
 	}
+
 	private java.awt.Rectangle innerAreaBuffer = new java.awt.Rectangle();
+
 	@Override
 	public boolean contains( int x, int y ) {
 		java.awt.Rectangle bounds = javax.swing.SwingUtilities.calculateInnerArea( this, innerAreaBuffer );
 		if( this.isSelected() ) {
-			bounds.x -= X_PAD; 
-			bounds.y -= Y_PAD; 
+			bounds.x -= X_PAD;
+			bounds.y -= Y_PAD;
 		}
 		bounds.width += X_PAD;
 		bounds.height += Y_PAD;
@@ -158,7 +162,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 			ControlsForOverlayPane.this.refreshFields();
 		}
 	};
-	
+
 	private org.alice.interact.AbstractDragAdapter dragAdapter;
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
 	private java.util.List< FieldTile > fieldTiles = new java.util.LinkedList< FieldTile >();
@@ -180,6 +184,9 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 		}
 	}
 
+	//	public void setExpanded( boolean isExpaned ) {
+	//	}
+
 	@Override
 	public void addNotify() {
 		if( this.isSceneEditorExpandedCheckBox != null ) {
@@ -187,11 +194,11 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 		} else {
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 			//		ide.addIDEListener( this.ideAdapter );
-			
+
 			this.cameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.dragAdapter );
 			this.isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
-			this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 			this.runButton = new zoot.ZButton( ide.getRunOperation() );
+			this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 			this.setNorthEastComponent( this.runButton );
 			this.setSouthComponent( this.cameraNavigatorWidget );
 		}

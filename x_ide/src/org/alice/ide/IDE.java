@@ -246,6 +246,17 @@ public abstract class IDE extends zoot.ZFrame {
 		this.expressionFillerInners = this.addExpressionFillerInners( new java.util.LinkedList< org.alice.ide.cascade.fillerinners.ExpressionFillerInner >() );
 		javax.swing.JMenuBar menuBar = this.createMenuBar();
 		this.setJMenuBar( menuBar );
+
+		final java.awt.KeyboardFocusManager focusManager = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		focusManager.addPropertyChangeListener( new java.beans.PropertyChangeListener() {
+			public void propertyChange( java.beans.PropertyChangeEvent e ) {
+				String prop = e.getPropertyName();
+				if( ("focusOwner".equals( prop )) ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "focus owner: ", focusManager.getFocusOwner() );
+				}
+			}
+		} );
+		
 	}
 
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
