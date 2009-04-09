@@ -41,7 +41,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private Program program = this.createProgram();
 	private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
 	private org.alice.stageide.sceneeditor.ControlsForOverlayPane controlsForOverlayPane;
-	private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
+	//private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 
@@ -337,7 +337,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
 		this.program.setScene( scene );
 		this.getControlsForOverlayPane().setRootField( sceneField );
-		this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+		//this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 		return rv;
 	}
 	//	def createScene( self, sceneField ):
@@ -536,21 +536,21 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 	@Override
 	public void preserveProjectProperties() {
-		this.preserveCameraNavigationProperties( this.cameraNavigationDragAdapter );
+		//this.preserveCameraNavigationProperties( this.cameraNavigationDragAdapter );
 	}
 	@Override
 	public void restoreProjectProperties() {
-		this.restoreCameraNavigationProperties( this.cameraNavigationDragAdapter );
+		//this.restoreCameraNavigationProperties( this.cameraNavigationDragAdapter );
 	}
 
-	private java.util.Stack< Boolean > isCameraNavigationDragAdapterEnabledStack = new java.util.Stack< Boolean >();
+	//private java.util.Stack< Boolean > isCameraNavigationDragAdapterEnabledStack = new java.util.Stack< Boolean >();
 
 	protected void pushAndSetCameraNavigationDragAdapterEnabled( Boolean isCameraNavigationDragAdapterEnabled ) {
-		this.isCameraNavigationDragAdapterEnabledStack.push( this.cameraNavigationDragAdapter.isEnabled() );
-		this.cameraNavigationDragAdapter.setEnabled( isCameraNavigationDragAdapterEnabled );
+		//this.isCameraNavigationDragAdapterEnabledStack.push( this.cameraNavigationDragAdapter.isEnabled() );
+		//this.cameraNavigationDragAdapter.setEnabled( isCameraNavigationDragAdapterEnabled );
 	}
 	protected void popCameraNavigationDragAdapterEnabled() {
-		this.cameraNavigationDragAdapter.setEnabled( this.isCameraNavigationDragAdapterEnabledStack.pop() );
+		//this.cameraNavigationDragAdapter.setEnabled( this.isCameraNavigationDragAdapterEnabledStack.pop() );
 	}
 
 	public void orientToUpright( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {

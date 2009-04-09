@@ -118,7 +118,7 @@ class IsExpandedCheckBox extends zoot.ZCheckBox {
 /**
  * @author Dennis Cosgrove
  */
-public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
+public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPointSpringPane {
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
@@ -179,7 +179,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CornerSprin
 			this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 			this.runButton = new zoot.ZButton( ide.getRunOperation() );
 			this.setNorthEastComponent( this.runButton );
-			this.setSouthWestComponent( this.cameraNavigatorWidget );
+			this.setSouthComponent( this.cameraNavigatorWidget );
 		}
 		super.addNotify();
 	}
