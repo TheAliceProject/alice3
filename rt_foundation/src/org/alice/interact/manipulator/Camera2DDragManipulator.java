@@ -42,9 +42,12 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
  */
 public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 
+	protected static final double MIN_TIME = .001d;
+	protected static final double MAX_TIME = .1d;
 	protected static final double MIN_AMOUNT_TO_MOVE = .005d;
 	protected static final double WORLD_DISTANCE_PER_PIXEL_SECONDS = .1d;
 	protected static final double RADIANS_PER_PIXEL_SECONDS = .02d;
+	protected static final double MIN_PIXEL_MOVE_AMOUNT = 10.0d;
 	
 	protected Vector3 initialMoveFactor = new Vector3(0.0d, 0.0d, 0.0d);
 	protected Vector3 initialRotateFactor = new Vector3(0.0d, 0.0d, 0.0d);
@@ -107,7 +110,6 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 		Vector3 relativeMovementAmount = this.getRelativeMovementAmount( mousePos, time );
 		Vector3 amountToMoveInitial = Vector3.createMultiplication( this.initialMoveFactor, WORLD_DISTANCE_PER_PIXEL_SECONDS * time );
 		Vector3 amountToMove = Vector3.createAddition(relativeMovementAmount, amountToMoveInitial);
-		
 		return amountToMove;
 	}
 	
@@ -115,16 +117,18 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	{
 		Vector3 relativeRotationAmount = this.getRelativeRotationAmount( mousePos, time );
 		Vector3 amountToRotateInitial = Vector3.createMultiplication( this.initialRotateFactor, RADIANS_PER_PIXEL_SECONDS * time );
-		Vector3 amountToRotate = Vector3.createAddition(relativeRotationAmount, amountToRotateInitial);
-		
+		Vector3 amountToRotate = Vector3.createAddition(relativeRotationAmount, amountToRotateInitial);	
 		return amountToRotate;
 	}
 	
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
+		if (time < MIN_TIME)
+			time = MIN_TIME;
+		else if (time > MAX_TIME)
+			time = MAX_TIME;
+		
 		Vector2 mousePos = new Vector2( currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
-//		Vector2 handleCenter = this.handle.getCenter();
-//		toMouse.subtract( handleCenter );
 		Vector3 moveVector = this.getTotalMovementAmount( mousePos, time );
 		Vector3 rotateVector = this.getTotalRotationAmount( mousePos, time );
 		this.manipulatedTransformable.applyTranslation( moveVector, this.getMovementReferenceFrame() );
@@ -134,6 +138,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 			this.manipulatedTransformable.applyRotationAboutYAxis( new AngleInRadians(rotateVector.y), getRotationReferenceFrame() );
 		if (rotateVector.z != 0.0d)
 			this.manipulatedTransformable.applyRotationAboutZAxis( new AngleInRadians(rotateVector.z), getRotationReferenceFrame() );
+
 		for (ManipulationEvent event : this.manipulationEvents)
 		{
 			Vector3 dotVector = null;
@@ -150,11 +155,11 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 				Vector3 normalizedDotVector = new Vector3(dotVector);
 				normalizedDotVector.normalize();
 				double dot = Vector3.calculateDotProduct( event.getMovementDescription().direction.getVector(), normalizedDotVector );
-				if (dot > 0.0d)
+				if (!Double.isNaN( dot ) && dot > 0.0d)
 				{
 					this.dragAdapter.triggerManipulationEvent( event, true );
 				}
-				else if ( dot <= 0.0d)
+				else
 				{
 					this.dragAdapter.triggerManipulationEvent( event, false );
 				}

@@ -93,6 +93,45 @@ public class CameraDragStrafeManipulator extends Camera2DDragManipulator {
 	protected Vector3 getRelativeMovementAmount(Vector2 mousePos, double time)
 	{
 		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
+		if (this.initialHandleColor.equals( LEFT ) || this.initialHandleColor.equals( RIGHT ))
+		{
+			if (Math.abs( relativeMousePos.y ) < MIN_PIXEL_MOVE_AMOUNT)
+			{
+				relativeMousePos.y = 0.0d;
+			}
+			else
+			{
+				if (relativeMousePos.y < 0.0d)
+				{
+					relativeMousePos.y += MIN_PIXEL_MOVE_AMOUNT;
+				}
+				else
+				{
+					relativeMousePos.y = MIN_PIXEL_MOVE_AMOUNT;
+				}
+			}
+		}
+		else if (this.initialHandleColor.equals( UP ) || this.initialHandleColor.equals( DOWN ))
+		{
+			if (Math.abs( relativeMousePos.x ) < MIN_PIXEL_MOVE_AMOUNT)
+			{
+				relativeMousePos.x = 0.0d;
+			}
+			else
+			{
+				if (relativeMousePos.x < 0.0d)
+				{
+					relativeMousePos.x += MIN_PIXEL_MOVE_AMOUNT;
+				}
+				else
+				{
+					relativeMousePos.x = MIN_PIXEL_MOVE_AMOUNT;
+				}
+			}
+		}
+		
+		
+		
 		relativeMousePos.y *= -1.0d;
 		
 		double amountToMoveY = relativeMousePos.y * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
