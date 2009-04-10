@@ -541,7 +541,7 @@ public abstract class IDE extends zoot.ZFrame {
 							g2.setColor( java.awt.Color.BLUE );
 						}
 						java.awt.Rectangle holeBounds = component.getBounds();
-						holeBounds = javax.swing.SwingUtilities.convertRectangle( component, holeBounds, this );
+						holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent(), holeBounds, this );
 						holeBounds.x -= BUFFER;
 						holeBounds.y -= BUFFER;
 						holeBounds.width += 2 * BUFFER;
@@ -884,6 +884,11 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > getConstants( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
 		IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > crawler = new IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice.class );
+		codeInFocus.crawl( crawler, false );
+		return crawler.getList();
+	}
+	public static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement > getVariableDeclarationStatements( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
+		IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement > crawler = new IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement >( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
