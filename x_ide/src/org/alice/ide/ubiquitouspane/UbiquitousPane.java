@@ -26,6 +26,13 @@ import org.alice.ide.ubiquitouspane.templates.*;
 
 class ReturnStatementWrapper extends swing.BorderPane {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
+	public void refresh() {
+		this.removeAll();
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( org.alice.ide.IDE.getSingleton().getFocusedCode(), edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
+		if( method != null && method.isFunction() ) {
+			this.add( re );
+		}
+	}
 }
 
 /**
@@ -41,6 +48,8 @@ public class UbiquitousPane extends swing.LineAxisPane {
 	private EachInArrayTogetherTemplate eachInArrayTogetherTemplate = new EachInArrayTogetherTemplate();
 	private DeclareLocalTemplate declareLocalTemplate = new DeclareLocalTemplate();
 	private CommentTemplate commentTemplate = new CommentTemplate();
+	
+	private ReturnStatementWrapper returnStatementWrapper = new ReturnStatementWrapper();
 	public UbiquitousPane() {
 		this.add( this.doInOrderTemplate );
 		this.add( this.countLoopTemplate );
@@ -51,5 +60,22 @@ public class UbiquitousPane extends swing.LineAxisPane {
 		this.add( this.eachInArrayTogetherTemplate );
 		this.add( this.declareLocalTemplate );
 		this.add( this.commentTemplate );
+		
+		this.add( this.returnStatementWrapper );
+		
 	}
+//	@Override
+//	public void addNotify() {
+//		super.addNotify();
+//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//		ide.addIDEListener( new org.alice.ide.event.IDEAdapter() {
+////			@Override
+////			public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+//////				UbiquitousPane.this.handleFocusedCodeChanged( e );
+////			}
+//		} );
+//	}
+//	private void handleFocusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+//		//this.returnStatementWrapper.refresh();
+//	}
 }
