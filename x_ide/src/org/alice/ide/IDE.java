@@ -87,15 +87,14 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv;
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check for existing type" );
-		if( false ) {
-			//todo
-		} else {
-			String name = "My" + superType.getName();
-			rv = org.alice.ide.ast.NodeUtilities.createType( name, superType );
+		java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > aliceTypes = this.addAliceTypes( new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : aliceTypes ) {
+			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
+				return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
+			}
 		}
-		return rv;
+		String name = "My" + superType.getName();
+		return org.alice.ide.ast.NodeUtilities.createType( name, superType );
 	}
 
 	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
