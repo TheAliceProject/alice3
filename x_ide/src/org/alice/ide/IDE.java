@@ -103,7 +103,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor();
 	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
 	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane = this.createEditorsTabbedPane();
-	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane = this.createUbiquitousPane();
+	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 	//	private zoot.ZLabel feedback = new zoot.ZLabel();
 	
@@ -215,6 +215,8 @@ public abstract class IDE extends zoot.ZFrame {
 
 		this.promptForLicenseAgreements();
 
+		this.ubiquitousPane = this.createUbiquitousPane();
+		
 		this.addIDEListener( this.sceneEditor );
 		this.addIDEListener( this.membersEditor );
 		this.addIDEListener( this.listenersEditor );

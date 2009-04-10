@@ -63,19 +63,15 @@ public class UbiquitousPane extends swing.LineAxisPane {
 		
 		this.add( this.returnStatementWrapper );
 		
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		ide.addIDEListener( new org.alice.ide.event.IDEAdapter() {
+			@Override
+			public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+				UbiquitousPane.this.handleFocusedCodeChanged( e );
+			}
+		} );
 	}
-//	@Override
-//	public void addNotify() {
-//		super.addNotify();
-//		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//		ide.addIDEListener( new org.alice.ide.event.IDEAdapter() {
-////			@Override
-////			public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-//////				UbiquitousPane.this.handleFocusedCodeChanged( e );
-////			}
-//		} );
-//	}
-//	private void handleFocusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-//		//this.returnStatementWrapper.refresh();
-//	}
+	private void handleFocusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+		this.returnStatementWrapper.refresh();
+	}
 }
