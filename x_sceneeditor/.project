@@ -3,6 +3,7 @@
 	<name>x_sceneeditor</name>
 	<comment></comment>
 	<projects>
+		<project>rt_foundation</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

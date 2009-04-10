@@ -91,7 +91,7 @@ public class SceneEditor extends Program {
 
 	@Override
 	protected boolean isLightweightOnscreenLookingGlassDesired() {
-		return true;
+		return false;
 	}
 	@Override
 	protected void initialize() {

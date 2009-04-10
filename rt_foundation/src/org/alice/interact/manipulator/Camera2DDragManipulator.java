@@ -22,8 +22,12 @@
  */
 package org.alice.interact.manipulator;
 
+import java.awt.Color;
+import java.awt.Point;
+
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
+import org.alice.interact.handle.ImageBasedManipulationHandle2D;
 import org.alice.interact.handle.ManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -42,9 +46,16 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	protected static final double WORLD_DISTANCE_PER_PIXEL_SECONDS = .1d;
 	protected static final double RADIANS_PER_PIXEL_SECONDS = .02d;
 	
-	protected Transformable standUpReference = new Transformable();
+	protected Vector3 initialMoveFactor = new Vector3(0.0d, 0.0d, 0.0d);
+	protected Vector3 initialRotateFactor = new Vector3(0.0d, 0.0d, 0.0d);
+	protected static final double INITIAL_MOVE_FACTOR = 10.0d;
+	protected static final double INITIAL_ROTATE_FACTOR = 8.0d;
 	
-	public Camera2DDragManipulator( ManipulationHandle2D handle)
+	protected Transformable standUpReference = new Transformable();
+	protected Color initialHandleColor = null;
+	protected Vector2 initialMousePosition = new Vector2();
+	
+	public Camera2DDragManipulator( ImageBasedManipulationHandle2D handle)
 	{
 		super(handle);
 	}
@@ -71,23 +82,51 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 			this.standUpReference.setParent( this.getCamera().getParent() );
 			this.standUpReference.localTransformation.setValue( AffineMatrix4x4.createIdentity() );
 			this.standUpReference.setAxesOnlyToStandUp();
+			this.initialMousePosition.x = startInput.getMouseLocation().x;
+			this.initialMousePosition.y = startInput.getMouseLocation().y;
+			if (this.handle instanceof ImageBasedManipulationHandle2D)
+			{
+				this.initialHandleColor = ((ImageBasedManipulationHandle2D)this.handle).getColor( (int)this.initialMousePosition.x, (int)this.initialMousePosition.y );
+			}
+			this.initialMoveFactor = this.getMovementVectorForColor( this.initialHandleColor );
+			this.initialRotateFactor = this.getRotationVectorForColor( this.initialHandleColor );
 			return true;
 		}
 		return false;
 	}
 
-	protected abstract Vector3 getMovementAmount(Vector2 toMouse, double time);
-	protected abstract Vector3 getRotationAmount(Vector2 toMouse, double time);
+	protected abstract Vector3 getRotationVectorForColor(Color color);
+	protected abstract Vector3 getMovementVectorForColor(Color color);
+	protected abstract Vector3 getRelativeMovementAmount(Vector2 mousePos, double time);
+	protected abstract Vector3 getRelativeRotationAmount(Vector2 mousePos, double time);
 	protected abstract ReferenceFrame getRotationReferenceFrame();
 	protected abstract ReferenceFrame getMovementReferenceFrame();
 	
+	protected Vector3 getTotalMovementAmount(Vector2 mousePos, double time)
+	{
+		Vector3 relativeMovementAmount = this.getRelativeMovementAmount( mousePos, time );
+		Vector3 amountToMoveInitial = Vector3.createMultiplication( this.initialMoveFactor, WORLD_DISTANCE_PER_PIXEL_SECONDS * time );
+		Vector3 amountToMove = Vector3.createAddition(relativeMovementAmount, amountToMoveInitial);
+		
+		return amountToMove;
+	}
+	
+	protected Vector3 getTotalRotationAmount(Vector2 mousePos, double time)
+	{
+		Vector3 relativeRotationAmount = this.getRelativeRotationAmount( mousePos, time );
+		Vector3 amountToRotateInitial = Vector3.createMultiplication( this.initialRotateFactor, RADIANS_PER_PIXEL_SECONDS * time );
+		Vector3 amountToRotate = Vector3.createAddition(relativeRotationAmount, amountToRotateInitial);
+		
+		return amountToRotate;
+	}
+	
 	@Override
 	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		Vector2 toMouse = new Vector2( currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
-		Vector2 handleCenter = this.handle.getCenter();
-		toMouse.subtract( handleCenter );
-		Vector3 moveVector = this.getMovementAmount( toMouse, time );
-		Vector3 rotateVector = this.getRotationAmount( toMouse, time );
+		Vector2 mousePos = new Vector2( currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
+//		Vector2 handleCenter = this.handle.getCenter();
+//		toMouse.subtract( handleCenter );
+		Vector3 moveVector = this.getTotalMovementAmount( mousePos, time );
+		Vector3 rotateVector = this.getTotalRotationAmount( mousePos, time );
 		this.manipulatedTransformable.applyTranslation( moveVector, this.getMovementReferenceFrame() );
 		if (rotateVector.x != 0.0d)
 			this.manipulatedTransformable.applyRotationAboutXAxis( new AngleInRadians(rotateVector.x), getRotationReferenceFrame() );
@@ -108,7 +147,9 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 			}
 			if (dotVector != null)
 			{
-				double dot = Vector3.calculateDotProduct( event.getMovementDescription().direction.getVector(), dotVector );
+				Vector3 normalizedDotVector = new Vector3(dotVector);
+				normalizedDotVector.normalize();
+				double dot = Vector3.calculateDotProduct( event.getMovementDescription().direction.getVector(), normalizedDotVector );
 				if (dot > 0.0d)
 				{
 					this.dragAdapter.triggerManipulationEvent( event, true );

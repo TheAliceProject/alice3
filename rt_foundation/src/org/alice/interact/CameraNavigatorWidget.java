@@ -61,9 +61,8 @@ public class CameraNavigatorWidget extends JPanel {
 					event.getMovementDescription(),
 					PickHint.CAMERA ) );
 		}
-		this.dragAdapter.addListeners( this.cameraDriver );
 		this.dragAdapter.addManipulationListener( this.cameraDriver );
-		this.dragAdapter.addHandle( this.cameraDriver );
+		this.cameraDriver.setDragAdapter( this.dragAdapter );
 		
 		this.cameraControlUpDown = new ManipulationHandle2DCameraTurnUpDown();
 		CameraDragUpDownRotateManipulator upDownManipulator = new CameraDragUpDownRotateManipulator(this.cameraControlUpDown);
@@ -75,9 +74,8 @@ public class CameraNavigatorWidget extends JPanel {
 					event.getMovementDescription(),
 					PickHint.CAMERA ) );
 		}
-		this.dragAdapter.addListeners( this.cameraControlUpDown );
+		this.cameraControlUpDown.setDragAdapter( this.dragAdapter );
 		this.dragAdapter.addManipulationListener( this.cameraControlUpDown );
-		this.dragAdapter.addHandle( this.cameraControlUpDown );
 		
 		this.cameraControlStrafe = new ManipulationHandle2DCameraStrafe();
 		CameraDragStrafeManipulator strafeManipulator = new CameraDragStrafeManipulator(this.cameraControlStrafe);
@@ -89,9 +87,8 @@ public class CameraNavigatorWidget extends JPanel {
 					event.getMovementDescription(),
 					PickHint.CAMERA ) );
 		}
-		this.dragAdapter.addListeners( this.cameraControlStrafe );
 		this.dragAdapter.addManipulationListener( this.cameraControlStrafe );
-		this.dragAdapter.addHandle( this.cameraControlStrafe );
+		this.cameraControlStrafe.setDragAdapter( this.dragAdapter );
 		
 		this.add(this.cameraControlStrafe);
 		this.add(this.cameraDriver);

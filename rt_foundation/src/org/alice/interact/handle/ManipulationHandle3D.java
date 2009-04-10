@@ -22,6 +22,7 @@
  */
 package org.alice.interact.handle;
 
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.ColorTargetBasedAnimation;
 import org.alice.interact.DoubleTargetBasedAnimation;
 import org.alice.interact.InputState;
@@ -65,6 +66,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	protected ColorTargetBasedAnimation colorAnimation;
 	
 	protected AbstractManipulator manipulation = null;
+	protected AbstractDragAdapter dragAdapter = null;
 	
 	/**
 	 * @param manipulatedObject the manipulatedObject to set
@@ -81,6 +83,13 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.setManipulatedObject( selectedObject );
 	}
 	
+	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+		this.dragAdapter = dragAdapter;	
+		if (this.dragAdapter != null)
+		{
+			this.dragAdapter.addHandle( this );
+		}
+	}
 	
 	
 	@Override

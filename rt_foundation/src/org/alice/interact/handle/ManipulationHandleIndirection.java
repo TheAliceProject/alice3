@@ -22,6 +22,7 @@
  */
 package org.alice.interact.handle;
 
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
@@ -43,6 +44,7 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 	
 	private EventCriteriaManager criteriaManager = new EventCriteriaManager();
 	private HandleManager handleManager = null;
+	protected AbstractDragAdapter dragAdapter = null;
 	
 	public ManipulationHandleIndirection( ManipulationHandle handle )
 	{
@@ -65,6 +67,13 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		return newHandle;
 	}
 	
+	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+		this.dragAdapter = dragAdapter;	
+		if (this.dragAdapter != null)
+		{
+			this.dragAdapter.addHandle( this );
+		}
+	}
 	
 	public void setSelectedObject(Transformable manipulatedObject)
 	{

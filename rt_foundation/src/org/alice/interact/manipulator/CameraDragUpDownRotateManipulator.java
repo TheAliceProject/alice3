@@ -22,11 +22,13 @@
  */
 package org.alice.interact.manipulator;
 
+import java.awt.Color;
+
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.handle.ManipulationHandle2D;
+import org.alice.interact.handle.ImageBasedManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -37,8 +39,10 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  */
 public class CameraDragUpDownRotateManipulator extends Camera2DDragManipulator {
 
+	protected static final Color FORWARD = Color.RED;
+	protected static final Color BACKWARD = Color.GREEN;
 	
-	public CameraDragUpDownRotateManipulator( ManipulationHandle2D handle)
+	public CameraDragUpDownRotateManipulator( ImageBasedManipulationHandle2D handle)
 	{
 		super(handle);
 	}
@@ -52,17 +56,40 @@ public class CameraDragUpDownRotateManipulator extends Camera2DDragManipulator {
 	}
 	
 	@Override
-	protected Vector3 getMovementAmount(Vector2 toMouse, double time)
+	protected Vector3 getRotationVectorForColor(Color color) {
+		Vector3 initialRotate = new Vector3(0.0d, 0.0d, 0.0d);
+		if (color != null)
+		{
+			if (color.equals( FORWARD ))
+			{
+				initialRotate.x = -INITIAL_ROTATE_FACTOR;
+			}
+			else if (color.equals( BACKWARD ))
+			{
+				initialRotate.x = INITIAL_ROTATE_FACTOR;
+			}
+		}
+		return initialRotate;
+	}
+	
+	@Override
+	protected Vector3 getMovementVectorForColor( Color color ) {
+		return new Vector3(0.0d, 0.0d, 0.0d);
+	}
+	
+	@Override
+	protected Vector3 getRelativeMovementAmount(Vector2 mousePos, double time)
 	{
 		return new Vector3(0.0d, 0.0d, 0.0d);
 	}
 	
 	@Override
-	protected Vector3 getRotationAmount(Vector2 toMouse, double time)
+	protected Vector3 getRelativeRotationAmount(Vector2 mousePos, double time)
 	{
-		double awayFromCenter = toMouse.y;
-		double amountToRotateX = awayFromCenter * RADIANS_PER_PIXEL_SECONDS * time;
-		return new Vector3(amountToRotateX, 0.0d, 0.0d);
+		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
+		double amountToRotateX = relativeMousePos.y * RADIANS_PER_PIXEL_SECONDS * time;
+		Vector3 amountToRotateMouse = new Vector3 (amountToRotateX, 0.0d, 0.0d);
+		return amountToRotateMouse;
 	}
 	
 	@Override

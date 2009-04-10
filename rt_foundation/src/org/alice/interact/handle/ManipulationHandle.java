@@ -22,6 +22,7 @@
  */
 package org.alice.interact.handle;
 
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.manipulator.AbstractManipulator;
@@ -75,4 +76,6 @@ public interface ManipulationHandle extends Cloneable {
 	public void setManipulation( AbstractManipulator manipulation );
 	
 	public PickHint getPickHint();
+	
+	public void setDragAdapter(AbstractDragAdapter dragAdapter);
 }

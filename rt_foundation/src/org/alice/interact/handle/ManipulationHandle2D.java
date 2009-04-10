@@ -26,6 +26,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import javax.swing.JLabel;
 
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.event.EventCriteriaManager;
@@ -49,7 +50,7 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 	protected HandleManager handleManager = null;
 	protected HandleSet handleSet = new HandleSet();
 	protected AbstractManipulator manipulation = null;
-	
+	protected AbstractDragAdapter dragAdapter = null;
 	
 	public ManipulationHandle2D()
 	{
@@ -68,10 +69,32 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 		return new Vector2(ourSize.width*.5d, ourSize.height*.5d);
 	}
 	
-	private boolean containsPoint( Point point )
-	{
-		Dimension ourSize = this.getSize();
-		return (point.x >= 0 && point.y >= 0 && point.x <= ourSize.width && point.y <= ourSize.height );
+	@Override
+	public void setVisible( boolean flag ) {
+		boolean wasVisible = this.isVisible();
+		super.setVisible( flag );
+		if (wasVisible != flag && this.dragAdapter != null)
+		{
+			if (this.isVisible())
+			{
+				this.dragAdapter.addListeners( this );
+				this.dragAdapter.addManipulationListener( this );
+			}
+			else
+			{
+				this.dragAdapter.removeListeners( this );
+				this.dragAdapter.removeManipulationListener( this );
+			}
+		}
+	}
+	
+	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+		this.dragAdapter = dragAdapter;
+		if (this.dragAdapter != null)
+		{
+			this.dragAdapter.addListeners( this );
+			this.dragAdapter.addHandle( this );
+		}
 	}
 
 	public void addToSet( HandleSet set )

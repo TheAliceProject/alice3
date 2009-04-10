@@ -22,11 +22,13 @@
  */
 package org.alice.interact.manipulator;
 
+import java.awt.Color;
+
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.handle.ManipulationHandle2D;
+import org.alice.interact.handle.ImageBasedManipulationHandle2D;
 
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -37,7 +39,12 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
  */
 public class CameraDragStrafeManipulator extends Camera2DDragManipulator {
 	
-	public CameraDragStrafeManipulator( ManipulationHandle2D handle)
+	protected static final Color UP = Color.RED;
+	protected static final Color LEFT = Color.GREEN;
+	protected static final Color RIGHT = Color.BLUE;
+	protected static final Color DOWN = Color.WHITE;
+	
+	public CameraDragStrafeManipulator( ImageBasedManipulationHandle2D handle)
 	{
 		super(handle);
 	}
@@ -52,17 +59,50 @@ public class CameraDragStrafeManipulator extends Camera2DDragManipulator {
 		this.manipulationEvents.add( new ManipulationEvent( ManipulationEvent.EventType.Translate, new MovementDescription(MovementDirection.RIGHT, MovementType.STOOD_UP), this.manipulatedTransformable ) );
 	}
 	
-	
 	@Override
-	protected Vector3 getMovementAmount(Vector2 toMouse, double time)
-	{
-		double amountToMoveY = -toMouse.y * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
-		double amountToMoveX = toMouse.x * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
-		return new Vector3(amountToMoveX, amountToMoveY, 0.0d);
+	protected Vector3 getMovementVectorForColor(Color color) {
+		Vector3 initialMove = new Vector3(0.0d, 0.0d, 0.0d);
+		if (color != null)
+		{
+			if (color.equals( UP ))
+			{
+				initialMove.y = INITIAL_MOVE_FACTOR;
+			}
+			else if (color.equals( DOWN ))
+			{
+				initialMove.y = -INITIAL_MOVE_FACTOR;
+			}
+			else if (color.equals( LEFT ))
+			{
+				initialMove.x = -INITIAL_MOVE_FACTOR;
+			}
+			else if (color.equals( RIGHT ))
+			{
+				initialMove.x = INITIAL_MOVE_FACTOR;
+			}
+		}
+		return initialMove;
 	}
 	
 	@Override
-	protected Vector3 getRotationAmount(Vector2 toMouse, double time)
+	protected Vector3 getRotationVectorForColor( Color color ) {
+		return new Vector3(0.0d, 0.0d, 0.0d);
+	}
+	
+	@Override
+	protected Vector3 getRelativeMovementAmount(Vector2 mousePos, double time)
+	{
+		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
+		relativeMousePos.y *= -1.0d;
+		
+		double amountToMoveY = relativeMousePos.y * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
+		double amountToMoveX = relativeMousePos.x * WORLD_DISTANCE_PER_PIXEL_SECONDS * time;
+		Vector3 amountToMoveMouse = new Vector3 (amountToMoveX, amountToMoveY, 0.0d);
+		return amountToMoveMouse;
+	}
+	
+	@Override
+	protected Vector3 getRelativeRotationAmount(Vector2 mousePos, double time)
 	{
 		return new Vector3(0.0d, 0.0d, 0.0d);
 	}

@@ -25,8 +25,12 @@ package org.alice.interact;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.List;
 
 import org.alice.interact.condition.ManipulatorConditionSet;
@@ -313,18 +317,57 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 
+	protected boolean isComponentListener(java.awt.Component component)
+	{
+		for (MouseListener listener : component.getMouseListeners())
+		{
+			if (listener == this)
+			{
+				return true;
+			}
+		}
+		for (MouseMotionListener listener : component.getMouseMotionListeners())
+		{
+			if (listener == this)
+			{
+				return true;
+			}
+		}
+		for (KeyListener listener : component.getKeyListeners())
+		{
+			if (listener == this)
+			{
+				return true;
+			}
+		}
+		for (MouseWheelListener listener : component.getMouseWheelListeners())
+		{
+			if (listener == this)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void addListeners( java.awt.Component component ) {
-		component.addMouseListener( this );
-		component.addMouseMotionListener( this );
-		component.addKeyListener( this );
-		component.addMouseWheelListener( this );
+		if (!this.isComponentListener(component))
+		{
+			component.addMouseListener( this );
+			component.addMouseMotionListener( this );
+			component.addKeyListener( this );
+			component.addMouseWheelListener( this );
+		}
 	}
 
 	public void removeListeners( java.awt.Component component ) {
-		component.removeMouseListener( this );
-		component.removeMouseMotionListener( this );
-		component.removeKeyListener( this );
-		component.removeMouseWheelListener( this );
+		if (this.isComponentListener(component))
+		{
+			component.removeMouseListener( this );
+			component.removeMouseMotionListener( this );
+			component.removeKeyListener( this );
+			component.removeMouseWheelListener( this );
+		}
 	}
 	
 	public void addManipulationListener( ManipulationListener listener )
@@ -362,6 +405,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setMouseState( e.getButton(), true );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DOWN );
+		
+		e.getComponent().requestFocus();
+		
 		if (e.getComponent() == this.lookingGlassComponent)
 		{
 			this.currentInputState.setClickPickResult( pickIntoScene( e.getPoint() ) );
@@ -482,7 +528,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	}
 
 	public void keyTyped( KeyEvent e ) {
-		// TODO Auto-generated method stub
+		System.out.println("Key typed!");
 		
 	}
 

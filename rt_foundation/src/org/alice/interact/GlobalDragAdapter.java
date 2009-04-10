@@ -196,20 +196,19 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP),
 				PickHint.MOVEABLE_OBJECTS ) );
 		this.manipulationEventManager.addManipulationListener( rotateAboutYAxis );
-
-		this.handleManager.addHandle( rotateAboutYAxis );
+		rotateAboutYAxis.setDragAdapter( this );
 		
 		ManipulationHandleIndirection rotateAboutXAxis = new ManipulationHandleIndirection( new RotationRingHandle(MovementDirection.LEFT) );
 		rotateAboutXAxis.setManipulation( new ObjectRotateDragManipulator() );
 		rotateAboutXAxis.addToSet( HandleSet.ROTATION_INTERACTION );
 		rotateAboutXAxis.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION);
-		this.handleManager.addHandle( rotateAboutXAxis );
+		rotateAboutXAxis.setDragAdapter( this );
 		
 		ManipulationHandleIndirection rotateAboutZAxis = new ManipulationHandleIndirection(new RotationRingHandle(MovementDirection.BACKWARD));
 		rotateAboutZAxis.setManipulation( new ObjectRotateDragManipulator() );
 		rotateAboutZAxis.addToSet( HandleSet.ROTATION_INTERACTION );
 		rotateAboutZAxis.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION);
-		this.handleManager.addHandle( rotateAboutZAxis );
+		rotateAboutZAxis.setDragAdapter( this );
 		
 		ManipulationHandleIndirection translateUp = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), Color4f.GREEN));
 		ManipulationHandleIndirection translateDown = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.DOWN, MovementType.STOOD_UP), Color4f.GREEN));
@@ -237,8 +236,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				PickHint.MOVEABLE_OBJECTS ) );
 		this.manipulationEventManager.addManipulationListener( translateUp );
 		this.manipulationEventManager.addManipulationListener( translateDown );
-		this.handleManager.addHandle(translateUp);
-		this.handleManager.addHandle(translateDown);
+		translateDown.setDragAdapter( this );
+		translateUp.setDragAdapter( this );
 		
 		ManipulationHandleIndirection translateXAxisRight = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.ABSOLUTE), Color4f.RED));
 		ManipulationHandleIndirection translateXAxisLeft = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.LEFT, MovementType.ABSOLUTE), Color4f.RED));
@@ -267,8 +266,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				PickHint.MOVEABLE_OBJECTS ) );
 		this.manipulationEventManager.addManipulationListener( translateXAxisRight );
 		this.manipulationEventManager.addManipulationListener( translateXAxisLeft );
-		this.handleManager.addHandle( translateXAxisRight );
-		this.handleManager.addHandle( translateXAxisLeft );
+		translateXAxisRight.setDragAdapter( this );
+		translateXAxisLeft.setDragAdapter( this );
 		
 		ManipulationHandleIndirection translateForward = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.ABSOLUTE), Color4f.BLUE));
 		ManipulationHandleIndirection translateBackward = new ManipulationHandleIndirection(new LinearTranslateHandle(new MovementDescription(MovementDirection.BACKWARD, MovementType.ABSOLUTE), Color4f.BLUE));
@@ -296,32 +295,32 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 				PickHint.MOVEABLE_OBJECTS ) );
 		this.manipulationEventManager.addManipulationListener( translateForward );
 		this.manipulationEventManager.addManipulationListener( translateBackward );
-		this.handleManager.addHandle( translateForward );
-		this.handleManager.addHandle( translateBackward );
+		translateForward.setDragAdapter( this );
+		translateBackward.setDragAdapter( this );
 		
 		ManipulationHandleIndirection scaleAxis = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.RESIZE, MovementType.STOOD_UP), Color4f.PINK));
 		scaleAxis.setManipulation( new ScaleDragManipulator() );
 		scaleAxis.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxis.addToGroups( HandleSet.HandleGroup.RESIZE_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-		this.handleManager.addHandle( scaleAxis );
+		scaleAxis.setDragAdapter( this );
 		
 		ManipulationHandleIndirection scaleAxisX = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.RIGHT, MovementType.STOOD_UP), Color4f.MAGENTA, true));
 		scaleAxisX.setManipulation( new ScaleDragManipulator() );
 		scaleAxisX.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisX.addToGroups( HandleSet.HandleGroup.X_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-		this.handleManager.addHandle( scaleAxisX );
+		scaleAxisX.setDragAdapter( this );
 		
 		ManipulationHandleIndirection scaleAxisY = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.UP, MovementType.STOOD_UP), Color4f.YELLOW, true));
 		scaleAxisY.setManipulation( new ScaleDragManipulator() );
 		scaleAxisY.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisY.addToGroups( HandleSet.HandleGroup.Y_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-		this.handleManager.addHandle( scaleAxisY );
+		scaleAxisY.setDragAdapter( this );
 		
 		ManipulationHandleIndirection scaleAxisZ = new ManipulationHandleIndirection(new LinearScaleHandle(new MovementDescription(MovementDirection.FORWARD, MovementType.STOOD_UP), Color4f.CYAN, true));
 		scaleAxisZ.setManipulation( new ScaleDragManipulator() );
 		scaleAxisZ.addToSet( HandleSet.RESIZE_INTERACTION );
 		scaleAxisZ.addToGroups( HandleSet.HandleGroup.Z_AXIS, HandleSet.HandleGroup.VISUALIZATION );
-		this.handleManager.addHandle( scaleAxisZ );
+		scaleAxisZ.setDragAdapter( this );
 		
 		this.setHandleSet( HandleSet.DEFAULT_INTERACTION );
 	}
