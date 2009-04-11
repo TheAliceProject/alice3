@@ -173,14 +173,14 @@ public final class ReflectionUtilities {
 	}
 	public static <T> java.lang.reflect.Constructor< T > getConstructorForArguments( Class< T > cls, Object... arguments ) {
 		try {
-			return getConstructorForArguments( cls.getConstructors(), arguments );
+			return getConstructorForArguments( (java.lang.reflect.Constructor< T >[])cls.getConstructors(), arguments );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( cls.getName(), nsme );
 		}
 	}
 	public static <T> java.lang.reflect.Constructor< T > getDeclaredConstructorForArguments( Class< T > cls, Object... arguments ) {
 		try {
-			return getConstructorForArguments( cls.getDeclaredConstructors(), arguments );
+			return getConstructorForArguments( (java.lang.reflect.Constructor< T >[])cls.getDeclaredConstructors(), arguments );
 		} catch( NoSuchMethodException nsme ) {
 			throw new RuntimeException( cls.getName(), nsme );
 		}
