@@ -44,16 +44,28 @@ public class SystemUtilities {
 	public static String getPropertiesAsXMLString() {
 		return getPropertiesAsXMLByteArrayOutputStream().toString();
 	}
-	
-	private static boolean isWindows;
-	static {
-		SystemUtilities.isWindows = System.getProperty( "os.name" ).contains( "indows" );
+
+	private enum Platform {
+		WINDOWS, OSX
 	}
+
+	private static Platform platform;
+	static {
+		String lcOSName = System.getProperty( "os.name" ).toLowerCase();
+		if( lcOSName.contains( "windows" ) ) {
+			platform = Platform.WINDOWS;
+		} else if( lcOSName.startsWith( "mac os x" ) ) {
+			platform = Platform.OSX;
+		} else {
+			//todo
+			platform = null;
+		}
+	}
+
 	public static boolean isMac() {
-		//todo
-		return isWindows() == false;
+		return SystemUtilities.platform == Platform.OSX;
 	}
 	public static boolean isWindows() {
-		return SystemUtilities.isWindows;
+		return SystemUtilities.platform == Platform.WINDOWS;
 	}
 }
