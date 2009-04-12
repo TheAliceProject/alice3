@@ -66,22 +66,22 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		return this.owner;
 	}
 	
-	//todo?
-	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
-		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
-			//pass
-		} else {
-			if( this.statement.isEnabled.getValue() ) {
-				rv.add(  new org.alice.ide.operations.ast.DisableStatementOperation( this.statement ) );
-			} else {
-				rv.add(  new org.alice.ide.operations.ast.EnableStatementOperation( this.statement ) );
-			}
-		}
-		if( this.owner != null ) {
-			rv.add(  new org.alice.ide.operations.ast.DeleteStatementOperation( this.statement, this.owner ) );
-		}
-		return rv;
-	}
+//	//todo?
+//	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
+//		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
+//			//pass
+//		} else {
+//			if( this.statement.isEnabled.getValue() ) {
+//				rv.add(  new org.alice.ide.operations.ast.DisableStatementOperation( this.statement ) );
+//			} else {
+//				rv.add(  new org.alice.ide.operations.ast.EnableStatementOperation( this.statement ) );
+//			}
+//		}
+//		if( this.owner != null ) {
+//			rv.add(  new org.alice.ide.operations.ast.DeleteStatementOperation( this.statement, this.owner ) );
+//		}
+//		return rv;
+//	}
 //	@Override
 //	protected void handleRightMousePress( java.awt.event.MouseEvent e ) {
 //		super.handleRightMousePress( e );

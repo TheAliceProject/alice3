@@ -104,13 +104,13 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		return (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)this.getStatement();
 	}
 	
-	@Override
-	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
-		rv = super.updateOperationsListForAltMenu( rv );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
-		if( methodDeclaredInAlice != null ) {
-			rv.add( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ) );
-		}
-		return rv;
-	}
+//	@Override
+//	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
+//		rv = super.updateOperationsListForAltMenu( rv );
+//		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getMethodDeclaredInAlice();
+//		if( methodDeclaredInAlice != null ) {
+//			rv.add( new org.alice.ide.operations.ast.FocusCodeOperation( methodDeclaredInAlice ) );
+//		}
+//		return rv;
+//	}
 }

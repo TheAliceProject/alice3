@@ -70,6 +70,16 @@ public abstract class IDE extends zoot.ZFrame {
 		return new org.alice.ide.preview.Factory();
 	}
 
+	public void refreshUbiquitousPane() {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				if( IDE.this.ubiquitousPane != null ) {
+					IDE.this.ubiquitousPane.refresh();
+				}
+			}
+		} );
+	}
+
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
 		java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > aliceTypes = this.addAliceTypes( new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : aliceTypes ) {
@@ -90,7 +100,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 	//	private zoot.ZLabel feedback = new zoot.ZLabel();
-	
+
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression == false;
 	}
@@ -200,7 +210,7 @@ public abstract class IDE extends zoot.ZFrame {
 		this.promptForLicenseAgreements();
 
 		this.ubiquitousPane = this.createUbiquitousPane();
-		
+
 		this.addIDEListener( this.sceneEditor );
 		this.addIDEListener( this.membersEditor );
 		this.addIDEListener( this.listenersEditor );
@@ -241,7 +251,7 @@ public abstract class IDE extends zoot.ZFrame {
 				}
 			}
 		} );
-		
+
 	}
 
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
@@ -260,9 +270,9 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 		return rv;
 	}
-//	protected org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > clsEnum ) {
-//		return getExpressionFillerInnerFor( clsEnum, clsEnum );
-//	}
+	//	protected org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner getExpressionFillerInnerFor( Class< ? extends Enum > clsEnum ) {
+	//		return getExpressionFillerInnerFor( clsEnum, clsEnum );
+	//	}
 
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
 		rv.add( new org.alice.ide.cascade.fillerinners.NumberFillerInner() );
@@ -871,7 +881,7 @@ public abstract class IDE extends zoot.ZFrame {
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
-	
+
 	protected void addExpressionBonusFillInsForType( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
 		if( codeInFocus != null ) {
@@ -899,7 +909,7 @@ public abstract class IDE extends zoot.ZFrame {
 						isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
 						edu.cmu.cs.dennisc.alice.ast.ArrayLength arrayLength = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
-						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn<edu.cmu.cs.dennisc.alice.ast.ArrayLength>( arrayLength ) );
+						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArrayLength >( arrayLength ) );
 					}
 				}
 			}
@@ -952,7 +962,7 @@ public abstract class IDE extends zoot.ZFrame {
 					expressionFillerInner.addFillIns( blank );
 				}
 			}
-			
+
 			edu.cmu.cs.dennisc.alice.ast.AbstractType enumType;
 			if( type.isInterface() ) {
 				enumType = this.getEnumTypeForInterfaceType( type );

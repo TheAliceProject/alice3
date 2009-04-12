@@ -76,6 +76,8 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 					throw new RuntimeException( ee );
 				} finally {
 					if( statement != null ) {
+						//todo
+						getIDE().refreshUbiquitousPane();
 						taskObserver.handleCompletion( statement );
 					} else {
 						taskObserver.handleCancelation();

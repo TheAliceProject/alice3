@@ -35,6 +35,8 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		int i = this.property.indexOf( this.statement );
 		if( i >= 0 ) {
 			this.property.remove( i );
+			actionContext.commit();
+			getIDE().refreshUbiquitousPane();
 		} else {
 			throw new RuntimeException();
 		}
@@ -89,8 +91,20 @@ public class Factory extends org.alice.ide.common.Factory {
 		return abstractStatementPane;
 	}
 	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		rv.add( new DeleteStatementActionOperation( abstractStatementPane ) );
 		rv.add( new StatementEnabledStateOperation( abstractStatementPane.getStatement() ) );
+		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
+			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
+			edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
+			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
+				if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+					rv.add( new org.alice.ide.operations.ast.FocusCodeOperation( method ) );
+				}
+			}
+		}
 		return rv;
 	}
 	private java.util.List< zoot.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {

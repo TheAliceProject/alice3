@@ -140,7 +140,13 @@ public class UbiquitousPane extends swing.LineAxisPane {
 		} );
 	}
 	private void handleFocusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+		this.refresh();
+	}
+	
+	public void refresh() {
 		this.returnStatementWrapper.refresh();
 		this.transientStatementsWrapper.refresh();
+		this.revalidate();
+		this.repaint();
 	}
 }
