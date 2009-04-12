@@ -22,22 +22,6 @@
  */
 package org.alice.ide;
 
-class IsInstanceCrawler< E > implements edu.cmu.cs.dennisc.pattern.Crawler {
-	private Class<E> cls;
-	private java.util.List< E > list = new java.util.LinkedList< E >();
-	public IsInstanceCrawler( Class<E> cls ) {
-		this.cls = cls;
-	}
-	public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
-		if( this.cls.isAssignableFrom( crawlable.getClass() ) ) {
-			this.list.add( (E)crawlable );
-		}
-	}
-	public java.util.List<E> getList() {
-		return this.list;
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -878,17 +862,12 @@ public abstract class IDE extends zoot.ZFrame {
 		//					blank.addChild( MethodInvocationFillIn( getPartMethod, expression ) )
 	}
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > getVariables( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
-		IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > crawler = new IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice.class );
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > getConstants( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
-		IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > crawler = new IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice.class );
-		codeInFocus.crawl( crawler, false );
-		return crawler.getList();
-	}
-	public static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement > getVariableDeclarationStatements( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
-		IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement > crawler = new IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement >( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement.class );
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}

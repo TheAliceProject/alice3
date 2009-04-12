@@ -36,23 +36,63 @@ class ReturnStatementWrapper extends swing.BorderPane {
 	}
 }
 
-class TransientStatementsWrapper extends swing.BorderPane {
+class TransientStatementsWrapper extends swing.LineAxisPane {
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate > mapVariableToVariableAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate >();
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate > mapVariableToVariableArrayAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate >();
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate > mapParameterToParameterAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate >();
+	private VariableAssignmentStatementTemplate getVariableAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		VariableAssignmentStatementTemplate rv = this.mapVariableToVariableAssignmentStatementTemplate.get( variable );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new VariableAssignmentStatementTemplate( variable );
+			this.mapVariableToVariableAssignmentStatementTemplate.put( variable, rv );
+		}
+		return rv;
+	}
+	private VariableArrayAssignmentStatementTemplate getVariableArrayAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		VariableArrayAssignmentStatementTemplate rv = this.mapVariableToVariableArrayAssignmentStatementTemplate.get( variable );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new VariableArrayAssignmentStatementTemplate( variable );
+			this.mapVariableToVariableArrayAssignmentStatementTemplate.put( variable, rv );
+		}
+		return rv;
+	}
+	private ParameterArrayAssignmentStatementTemplate getParameterArrayAssignmentStatementTemplate( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		ParameterArrayAssignmentStatementTemplate rv = this.mapParameterToParameterAssignmentStatementTemplate.get( parameter );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ParameterArrayAssignmentStatementTemplate( parameter );
+			this.mapParameterToParameterAssignmentStatementTemplate.put( parameter, rv );
+		}
+		return rv;
+	}
+	
 	public void refresh() {
 		this.removeAll();
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
 		if( code != null ) {
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : code.getParameters() ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType type = parameter.getValueType();
-				if( type.isArray() ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add parameter[ i ] <- ???" );
+				if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice ) {
+					edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterInAlice = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter;
+					edu.cmu.cs.dennisc.alice.ast.AbstractType type = parameterInAlice.getValueType();
+					if( type.isArray() ) {
+						this.add( this.getParameterArrayAssignmentStatementTemplate( parameterInAlice ) );
+					}
 				}
 			}
-			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement variableDeclarationStatement : org.alice.ide.IDE.getSingleton().getVariableDeclarationStatements( code ) ) {
+			
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement >( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement.class );
+			code.crawl( crawler, false );
+			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement variableDeclarationStatement : crawler.getList() ) {
 				edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = variableDeclarationStatement.variable.getValue();
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add variable <- ???" );
+				this.add( this.getVariableAssignmentStatementTemplate( variable ) );
 				edu.cmu.cs.dennisc.alice.ast.AbstractType type = variable.valueType.getValue();
 				if( type.isArray() ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: add variable[ i ] = ???" );
+					this.add( this.getVariableArrayAssignmentStatementTemplate( variable ) );
 				}
 			}
 		}
@@ -85,10 +125,11 @@ public class UbiquitousPane extends swing.LineAxisPane {
 		this.add( this.doTogetherTemplate );
 		this.add( this.eachInArrayTogetherTemplate );
 		this.add( this.declareLocalTemplate );
-		this.add( this.commentTemplate );
 		
-		this.add( this.returnStatementWrapper );
 		this.add( this.transientStatementsWrapper );
+		this.add( this.returnStatementWrapper );
+
+		this.add( this.commentTemplate );
 		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		ide.addIDEListener( new org.alice.ide.event.IDEAdapter() {

@@ -28,7 +28,7 @@ package org.alice.ide.ubiquitouspane.templates;
 public class UbiquitousStatementImplementor { //todo: needs a better name
 	private edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement;
 	private javax.swing.JComponent incompleteStatementPane;
-	private zoot.ZLabel label;
+	private String labelText;
 	private javax.swing.JToolTip toolTip;
 
 	public UbiquitousStatementImplementor( edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
@@ -46,17 +46,14 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 		}
 		return this.incompleteStatementPane;
 	}
-	public zoot.ZLabel getLabel() {
-		if( this.label != null ) {
+	public String getLabelText() {
+		if( this.labelText != null ) {
 			//pass
 		} else {
 			Class<?> cls = incompleteStatement.getClass();
-			String text = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates" );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( cls );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( text );
-			this.label = new zoot.ZLabel( text );
+			this.labelText = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates" );
 		}
-		return this.label;
+		return this.labelText;
 	}
 	public javax.swing.JToolTip getToolTip() {
 		if( this.toolTip != null ) {

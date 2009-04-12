@@ -248,4 +248,33 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.ReturnStatement createReturnStatement( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ReturnStatement( type, expression );
 	}
+	
+	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createVariableAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.Expression valueExpression ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression variableAccess = new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ); 
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( variable.valueType.getValue(), variableAccess, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createIncompleteVariableAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		return createVariableAssignmentStatement( variable, new EmptyExpression( variable.valueType.getValue() ) );
+	}
+
+	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createVariableArrayAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.Expression indexExpression, edu.cmu.cs.dennisc.alice.ast.Expression valueExpression ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression variableAccess = new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ); 
+		edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( variable.valueType.getValue(), variableAccess, indexExpression ); 
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( variable.valueType.getValue().getComponentType(), arrayAccess, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createIncompleteVariableArrayAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
+		return createVariableArrayAssignmentStatement( variable, new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), new EmptyExpression( variable.valueType.getValue().getComponentType() ) );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createParameterArrayAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter, edu.cmu.cs.dennisc.alice.ast.Expression indexExpression, edu.cmu.cs.dennisc.alice.ast.Expression valueExpression ) {
+		edu.cmu.cs.dennisc.alice.ast.Expression parameterAccess = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ); 
+		edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( parameter.valueType.getValue(), parameterAccess, indexExpression ); 
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( parameter.valueType.getValue().getComponentType(), arrayAccess, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, valueExpression ); 
+		return new edu.cmu.cs.dennisc.alice.ast.ExpressionStatement( expression );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createIncompleteParameterArrayAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		return createParameterArrayAssignmentStatement( parameter, new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
+	}
+	
 }

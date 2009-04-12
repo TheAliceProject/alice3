@@ -27,12 +27,19 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	private UbiquitousStatementImplementor implementor;
+	private zoot.ZLabel label;
 	public CascadingUbiquitousStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
 		super( cls );
 		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
-		this.add( this.implementor.getLabel() );
-		this.setToolTipText( "" );
 	}
+	
+	protected String getLabelText() {
+		return this.implementor.getLabelText();
+	}
+	protected void updateLabel() {
+		this.label.setText( this.getLabelText() );
+	}
+	
 	@Override
 	public java.awt.Component getSubject() {
 		return this.implementor.getIncompleteStatementPane();
@@ -43,7 +50,14 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 	}
 	@Override
 	public void addNotify() {
-		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
+		if( this.label != null ) {
+			//pass
+		} else {
+			this.label = new zoot.ZLabel( this.getLabelText() );
+			this.add( this.label );
+			this.setToolTipText( "" );
+			this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
+		}
 		super.addNotify();
 	}
 	
