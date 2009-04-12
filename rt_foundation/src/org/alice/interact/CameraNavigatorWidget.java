@@ -48,7 +48,8 @@ public class CameraNavigatorWidget extends JPanel {
 	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter )
 	{
 		super();
-		this.setLayout( new FlowLayout() );
+		//this.setLayout( new FlowLayout() );
+		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 		this.setOpaque(false);
 		this.dragAdapter = dragAdapter;
 		this.cameraDriver = new ManipulationHandle2DCameraDriver();
