@@ -42,7 +42,10 @@ public abstract class NameInputPane<E> extends RowsInputPane< E > {
 	public String getNameText() {
 		return this.textField.getText();
 	}
-	
+	@Override
+	public boolean isOKButtonValid() {
+		return super.isOKButtonValid() && this.isNameAcceptable( this.textField.getText() );
+	}
 	protected void handleNameTextChange( String nameText ) {
 		updateOKButton();
 	}

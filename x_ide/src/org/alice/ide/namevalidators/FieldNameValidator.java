@@ -23,7 +23,7 @@
 
 package org.alice.ide.namevalidators;
 
-public class FieldNameValidator extends MemberNameValidator< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+public class FieldNameValidator extends MemberNameValidator {
 	public FieldNameValidator( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		super( field, (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType() );
 	}
@@ -31,7 +31,17 @@ public class FieldNameValidator extends MemberNameValidator< edu.cmu.cs.dennisc.
 		super( null, type );
 	}
 	@Override
-	protected boolean isNameAvailable( java.lang.String name ) {
+	protected boolean isNameAvailable( String name ) {
+		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
+		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.getType().fields ) {
+			if( field == node ) {
+				//pass
+			} else {
+				if( name.equals( field.name.getValue() ) ) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 }

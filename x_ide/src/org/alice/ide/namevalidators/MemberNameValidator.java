@@ -23,9 +23,9 @@
 
 package org.alice.ide.namevalidators;
 
-public abstract class MemberNameValidator< E extends edu.cmu.cs.dennisc.alice.ast.Node > extends NodeNameValidator< E > {
+public abstract class MemberNameValidator extends NodeNameValidator {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public MemberNameValidator( E node, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	public MemberNameValidator( edu.cmu.cs.dennisc.alice.ast.Node node, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( node );
 		this.type = type;
 	}

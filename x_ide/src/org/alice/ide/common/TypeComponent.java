@@ -31,7 +31,8 @@ public class TypeComponent extends org.alice.ide.common.NodeNameLabel {
 		String typeName;
 		
 		if( type != null ) {
-			typeName = type.getName() + " " + type.hashCode();
+			//typeName = type.getName() + " " + type.hashCode();
+			typeName = type.getName();
 		} else {
 			typeName = "<unset>";
 		}

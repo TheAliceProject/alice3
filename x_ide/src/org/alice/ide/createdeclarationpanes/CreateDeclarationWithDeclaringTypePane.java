@@ -26,7 +26,7 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public abstract class CreateDeclarationWithDeclaringTypePane<E> extends CreateDeclarationPane< E > {
-	public CreateDeclarationWithDeclaringTypePane( org.alice.ide.namevalidators.NodeNameValidator< ? > nodeNameValidator ) {
+	public CreateDeclarationWithDeclaringTypePane( org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator ) {
 		super( nodeNameValidator );
 	}
 	protected abstract String getDeclarationText();

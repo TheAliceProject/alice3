@@ -27,6 +27,6 @@ package org.alice.ide.operations.ast;
  */
 public class RenameParameterOperation extends RenameNodeOperation {
 	public RenameParameterOperation( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( parameter.name );
+		super( parameter.name, new org.alice.ide.namevalidators.ParameterNameValidator( parameter ) );
 	}
 }

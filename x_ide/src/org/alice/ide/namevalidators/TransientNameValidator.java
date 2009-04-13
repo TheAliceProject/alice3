@@ -23,12 +23,40 @@
 
 package org.alice.ide.namevalidators;
 
-public abstract class TransientNameValidator< E extends edu.cmu.cs.dennisc.alice.ast.Node > extends NodeNameValidator< E > {
-	public TransientNameValidator( E node ) {
+public abstract class TransientNameValidator extends NodeNameValidator {
+	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
+	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
+	public TransientNameValidator( edu.cmu.cs.dennisc.alice.ast.Node node, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		super( node );
+		this.code = code;
+		this.block = block;
 	}
 	@Override
-	protected boolean isNameAvailable( java.lang.String name ) {
+	protected boolean isNameAvailable( String name ) {
+		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
+		for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : this.code.getParamtersProperty() ) {
+			if( parameter == node ) {
+				//pass
+			} else {
+				if( name.equals( parameter.name.getValue() ) ) {
+					return false;
+				}
+			}
+		}
+//		if( this.block != null ) {
+//			
+//		}
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice.class );
+		((edu.cmu.cs.dennisc.alice.ast.AbstractCode)this.code).crawl( crawler, false );
+		for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : crawler.getList() ) {
+			if( local == node ) {
+				//pass
+			} else {
+				if( name.equals( local.name.getValue() ) ) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 }

@@ -27,14 +27,18 @@ package org.alice.ide.operations.ast;
  */
 public abstract class RenameNodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
+	private org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator;
 	private String prevValue;
 	private String nextValue;
-	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty ) {
+	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator ) {
 		this.nameProperty = nameProperty;
+		this.nodeNameValidator = nodeNameValidator;
 		this.putValue( javax.swing.Action.NAME, "rename..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		this.nextValue = javax.swing.JOptionPane.showInputDialog( "name" );
+		org.alice.ide.renamenodepanes.RenameNodePane renameNodePane = new org.alice.ide.renamenodepanes.RenameNodePane( this.nodeNameValidator );
+		renameNodePane.setAndSelectNameText( this.nameProperty.getValue() );
+		this.nextValue = renameNodePane.showInJDialog( this.getIDE() );
 		if( nextValue != null && nextValue.length() > 0 ) {
 			this.prevValue = nameProperty.getValue();
 			this.redo();

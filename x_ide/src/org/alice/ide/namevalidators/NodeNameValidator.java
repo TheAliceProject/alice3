@@ -23,12 +23,12 @@
 
 package org.alice.ide.namevalidators;
 
-public abstract class NodeNameValidator< E extends edu.cmu.cs.dennisc.alice.ast.Node > {
-	private E node;
-	public NodeNameValidator( E node ) {
+public abstract class NodeNameValidator {
+	private edu.cmu.cs.dennisc.alice.ast.Node node;
+	public NodeNameValidator( edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		this.node = node;
 	}
-	public E getNode() {
+	public edu.cmu.cs.dennisc.alice.ast.Node getNode() {
 		return this.node;
 	}
 	protected abstract boolean isNameAvailable( String name );

@@ -23,12 +23,15 @@
 
 package org.alice.ide.namevalidators;
 
-public class ParameterNameValidator extends TransientNameValidator< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice > {
+public class ParameterNameValidator extends TransientNameValidator {
+	private static edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)parameter.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+	}
 	public ParameterNameValidator( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( parameter );
+		super( parameter, getCode( parameter ), null );
 	}
 	public ParameterNameValidator( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		super( null );
+		super( null, code, null );
 	}
 	
 }

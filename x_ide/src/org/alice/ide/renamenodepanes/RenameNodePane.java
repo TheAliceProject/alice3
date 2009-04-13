@@ -26,9 +26,9 @@ package org.alice.ide.renamenodepanes;
  * @author Dennis Cosgrove
  */
 public class RenameNodePane extends NameInputPane<String> {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
-	public RenameNodePane( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-		this.node = node;
+	private org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator;
+	public RenameNodePane( org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator ) {
+		this.nodeNameValidator = nodeNameValidator;
 	}
 	@Override
 	protected String getActualInputValue() {
@@ -36,8 +36,7 @@ public class RenameNodePane extends NameInputPane<String> {
 	}
 	
 	@Override
-	protected boolean isNameAcceptable( java.lang.String name ) {
-		//todo: make this class abstract and check the appropraite siblings in each subclass
-		return true;
+	protected boolean isNameAcceptable( String name ) {
+		return this.nodeNameValidator.isNameValid( name );
 	}
 }

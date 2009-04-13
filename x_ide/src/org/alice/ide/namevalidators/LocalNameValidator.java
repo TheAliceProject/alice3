@@ -23,12 +23,25 @@
 
 package org.alice.ide.namevalidators;
 
-public class LocalNameValidator extends TransientNameValidator< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > {
+public class LocalNameValidator extends TransientNameValidator {
+	private static edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+		return getCode( getBlock( local ) );
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
+		if( block != null ) {
+			return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)block.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+		} else {
+			return null;
+		}
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.BlockStatement getBlock( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
+		return local.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.BlockStatement.class );
+	}
 	public LocalNameValidator( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
-		super( local );
+		super( local, getCode( local ), getBlock( local ) );
 	}
 	public LocalNameValidator( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
-		super( null );
+		super( null, getCode( block ), block );
 	}
 	
 }

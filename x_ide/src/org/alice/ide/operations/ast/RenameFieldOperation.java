@@ -27,6 +27,6 @@ package org.alice.ide.operations.ast;
  */
 public class RenameFieldOperation extends RenameNodeOperation{
 	public RenameFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( field.name );
+		super( field.name, new org.alice.ide.namevalidators.FieldNameValidator( field ) );
 	}
 }

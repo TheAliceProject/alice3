@@ -73,8 +73,8 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	private DeclarationNameTextField declarationNameTextField = new DeclarationNameTextField();
 	private InitializerPane initializerPane;
 
-	private org.alice.ide.namevalidators.NodeNameValidator< ? > nodeNameValidator;
-	public CreateDeclarationPane( org.alice.ide.namevalidators.NodeNameValidator< ? > nodeNameValidator ) {
+	private org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator;
+	public CreateDeclarationPane( org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator ) {
 		this.nodeNameValidator = nodeNameValidator;
 		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
