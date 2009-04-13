@@ -73,8 +73,9 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	private DeclarationNameTextField declarationNameTextField = new DeclarationNameTextField();
 	private InitializerPane initializerPane;
 
-	
-	public CreateDeclarationPane() {
+	private org.alice.ide.namevalidators.NodeNameValidator< ? > nodeNameValidator;
+	public CreateDeclarationPane( org.alice.ide.namevalidators.NodeNameValidator< ? > nodeNameValidator ) {
+		this.nodeNameValidator = nodeNameValidator;
 		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
@@ -263,7 +264,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 		this.updateOKButton();
 	}
 	protected boolean isDeclarationNameValid() {
-		return this.declarationNameTextField.getText().length() > 0;
+		return this.nodeNameValidator.isNameValid( this.declarationNameTextField.getText() );
 	}
 	protected boolean isValueTypeValid() {
 		if( this.typePane != null ) {

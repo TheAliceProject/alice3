@@ -26,9 +26,10 @@ package org.alice.ide.createdeclarationpanes;
  * @author Dennis Cosgrove
  */
 public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
-	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode;
-	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ownerCode ) {
-		this.ownerCode = ownerCode;
+	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
+	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		super( new org.alice.ide.namevalidators.ParameterNameValidator( code ) );
+		this.code = code;
 		this.setBackground( org.alice.ide.IDE.getParameterColor() );
 	}
 	@Override

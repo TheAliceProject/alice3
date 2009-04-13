@@ -41,6 +41,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	private zoot.ZLabel declarationTextLabel = this.createDeclarationTextLabel();
 		
 	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
+		super( new org.alice.ide.namevalidators.LocalNameValidator( block ) );
 		assert block != null;
 		this.block = block;
 		this.setBackground( org.alice.ide.IDE.getLocalColor() );

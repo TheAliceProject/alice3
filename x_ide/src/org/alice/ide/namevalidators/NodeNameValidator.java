@@ -20,18 +20,36 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.createdeclarationpanes;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class CreateDeclarationWithDeclaringTypePane<E> extends CreateDeclarationPane< E > {
-	public CreateDeclarationWithDeclaringTypePane( org.alice.ide.namevalidators.NodeNameValidator< ? > nodeNameValidator ) {
-		super( nodeNameValidator );
+package org.alice.ide.namevalidators;
+
+public abstract class NodeNameValidator< E extends edu.cmu.cs.dennisc.alice.ast.Node > {
+	private E node;
+	public NodeNameValidator( E node ) {
+		this.node = node;
 	}
-	protected abstract String getDeclarationText();
-	@Override
-	protected String getTitleDefault() {
-		return "Declare " + this.getDeclarationText();
+	public E getNode() {
+		return this.node;
+	}
+	protected abstract boolean isNameAvailable( String name );
+	public final boolean isNameValid( String name ) {
+		if( name != null ) {
+			final int N = name.length();
+			if( N > 0 ) {
+				char c0 = name.charAt( 0 );
+				if( Character.isLetter( c0 ) || c0 == '_' ) {
+					for( int i=1; i<N; i++ ) {
+						char cI = name.charAt( i );
+						if( Character.isLetterOrDigit( cI ) || cI== '_' ) {
+							//pass
+						} else {
+							return false;
+						}
+					}
+					return this.isNameAvailable( name );
+				}
+			}
+		}
+		return false;
 	}
 }

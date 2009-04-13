@@ -20,18 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.createdeclarationpanes;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class CreateDeclarationWithDeclaringTypePane<E> extends CreateDeclarationPane< E > {
-	public CreateDeclarationWithDeclaringTypePane( org.alice.ide.namevalidators.NodeNameValidator< ? > nodeNameValidator ) {
-		super( nodeNameValidator );
+package org.alice.ide.namevalidators;
+
+public class MethodNameValidator extends MemberNameValidator< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		super( method, (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)method.getDeclaringType() );
 	}
-	protected abstract String getDeclarationText();
+	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( null, type );
+	}
 	@Override
-	protected String getTitleDefault() {
-		return "Declare " + this.getDeclarationText();
+	protected boolean isNameAvailable( java.lang.String name ) {
+		return true;
 	}
 }

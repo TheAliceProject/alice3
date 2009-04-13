@@ -27,7 +27,7 @@ package org.alice.ide.createdeclarationpanes;
  */
 public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
 	public CreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		super( declaringType );
+		super( new org.alice.ide.namevalidators.MethodNameValidator( declaringType ) );
 	}
 	@Override
 	protected String getDeclarationText() {
