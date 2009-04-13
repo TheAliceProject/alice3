@@ -13,5 +13,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn_generated"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_generated_depended_upon"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/x_ide"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

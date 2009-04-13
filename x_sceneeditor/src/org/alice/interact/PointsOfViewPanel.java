@@ -29,13 +29,38 @@ public class PointsOfViewPanel extends JPanel implements ActionListener{
 		this.captureViewButton.addActionListener(this);
 	}
 	
+	public void setPOVManager(PointOfViewManager pointOfViewManager)
+	{
+		this.pointOfViewManager = pointOfViewManager;
+		for (int i=0; i<this.pointsOfViewPanel.getComponentCount(); i++)
+		{
+			if (this.pointsOfViewPanel.getComponent( i ) instanceof JButton)
+			{
+				JButton povButton = (JButton)this.pointsOfViewPanel.getComponent( i );
+				povButton.removeActionListener( this );
+			}
+		}
+		this.pointsOfViewPanel.removeAll();
+		for (int i=0; i<this.pointOfViewManager.getPointOfViewCount(); i++)
+		{
+			PointOfView pov = this.pointOfViewManager.getPointOfViewAt( i );
+			PointOfViewButton povButton = new PointOfViewButton(pov);
+			this.pointsOfViewPanel.add( povButton );
+			this.pointsOfViewPanel.validate();
+			povButton.addActionListener(this);
+		}
+		this.pointsOfViewPanel.revalidate();
+		this.pointsOfViewPanel.repaint();
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == this.captureViewButton)
 		{
 			PointOfView pov = this.pointOfViewManager.capturePointOfView();
 			PointOfViewButton povButton = new PointOfViewButton(pov);
 			this.pointsOfViewPanel.add( povButton );
-			this.pointsOfViewPanel.validate();
+			this.pointsOfViewPanel.revalidate();
+			this.pointsOfViewPanel.repaint();
 			povButton.addActionListener(this);
 		}
 		else if (e.getSource() instanceof PointOfViewButton)

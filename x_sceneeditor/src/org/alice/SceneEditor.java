@@ -24,7 +24,10 @@
 package org.alice;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.alice.apis.moveandturn.DirectionalLight;
@@ -35,6 +38,7 @@ import org.alice.apis.moveandturn.TurnDirection;
 import org.alice.apis.moveandturn.gallery.animals.Chicken;
 import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
 import org.alice.interact.CameraNavigatorWidget;
+import org.alice.interact.CreateASimDragAdapter;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
@@ -55,6 +59,7 @@ import org.alice.interact.manipulator.CameraDragStrafeManipulator;
 import org.alice.interact.manipulator.CameraDragUpDownRotateManipulator;
 import org.alice.interact.manipulator.LinearDragManipulator;
 
+import edu.cmu.cs.dennisc.alice.ide.IDE;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -76,7 +81,11 @@ public class SceneEditor extends Program {
 		});
 	}
 	
-
+	
+	//IDE level stuff
+	protected edu.cmu.cs.dennisc.alice.Project project;
+	private java.util.List< org.alice.ide.event.IDEListener > ideListeners = new java.util.LinkedList< org.alice.ide.event.IDEListener >();
+	
 	Scene scene = new Scene();
 	GrassyGround grassyGround = new GrassyGround();
 	DirectionalLight sunLight = new DirectionalLight();
@@ -87,27 +96,127 @@ public class SceneEditor extends Program {
 	org.alice.interact.CreateASimDragAdapter simDragAdapter = new org.alice.interact.CreateASimDragAdapter();
 	CameraNavigationDragAdapter cameraNavigationDragAdapter = new CameraNavigationDragAdapter();
 	
-	PointOfViewManager pointOfViewManager = new PointOfViewManager();
 
+	public void addIDEListener( org.alice.ide.event.IDEListener l ) {
+		synchronized( this.ideListeners ) {
+			this.ideListeners.add( l );
+		}
+	}
+
+	public void removeIDEListener( org.alice.ide.event.IDEListener l ) {
+		synchronized( this.ideListeners ) {
+			this.ideListeners.remove( l );
+		}
+	}
+	
+	protected void fireProjectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
+		synchronized( this.ideListeners ) {
+			for( org.alice.ide.event.IDEListener l : this.ideListeners ) {
+				l.projectOpening( e );
+			}
+		}
+	}
+
+	protected void fireProjectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
+		synchronized( this.ideListeners ) {
+			for( org.alice.ide.event.IDEListener l : this.ideListeners ) {
+				l.projectOpened( e );
+			}
+		}
+	}
+	
+	public void setProject(edu.cmu.cs.dennisc.alice.Project project)
+	{
+		//org.alice.ide.event.ProjectOpenEvent e = new org.alice.ide.event.ProjectOpenEvent( this, this.project, project );
+	//	fireProjectOpening( e );
+		this.project = project;
+		this.pointOfViewManager.initFromProject( project );
+		this.povPanel.setPOVManager( this.pointOfViewManager );
+	//	fireProjectOpened( e );
+	}
+	
+	public void loadProjectFrom( java.io.File file ) {
+		if( file.exists() ) {
+			this.setProject( edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( file ) );
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( "Cannot read project from file:\n\t" );
+			sb.append( file.getAbsolutePath() );
+			sb.append( "\nIt does not exist." );
+			javax.swing.JOptionPane.showMessageDialog( this, sb.toString(), "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE );
+		}
+	}
+	
+	public void loadProjectFrom( String path ) {
+		loadProjectFrom( new java.io.File( path ) );
+	}
+	
+	public void saveProjectTo( java.io.File file ) {
+		this.pointOfViewManager.writeToProject( this.project );
+		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( this.project, file );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
+	}
+	
+	public void saveProjectTo( String path ) {
+		saveProjectTo( new java.io.File( path ) );
+	}
+	
 	@Override
 	protected boolean isLightweightOnscreenLookingGlassDesired() {
 		return false;
 	}
-	@Override
-	protected void initialize() {
+	
+	PointOfViewManager pointOfViewManager = new PointOfViewManager();
+	protected PointsOfViewPanel povPanel;
+	protected java.io.File projectFile = new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "SCENE_EDITOR_TEST.a3p" );
+	protected java.io.File defaultFile = new java.io.File( "C:/Program Files/Alice/3.beta.0000/application/projects/templates/GrassyProject.a3p" );
+	
+	protected void initializeUI()
+	{
+		this.povPanel = new PointsOfViewPanel(this.pointOfViewManager);
+		
+		CameraNavigatorWidget controlPanel = new CameraNavigatorWidget(globalDragAdapter);
+		
+		globalDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
+		
+		this.pointOfViewManager.setCamera(camera.getSGPerspectiveCamera());
+		
+		JButton saveButton = new JButton("SAVE");
+		saveButton.addActionListener( new ActionListener(){
+
+			public void actionPerformed( ActionEvent e ) {
+				SceneEditor.this.saveProjectTo( SceneEditor.this.projectFile );
+			}
+		});
+		
+		JPanel widgetPanel = new JPanel();
+		widgetPanel.setLayout(new FlowLayout());
+		widgetPanel.add(controlPanel);
+		widgetPanel.add(this.povPanel);
+		
+		JButton loadButton = new JButton("LOAD");
+		loadButton.addActionListener( new ActionListener(){
+
+			public void actionPerformed( ActionEvent e ) {
+				SceneEditor.this.loadProjectFrom( SceneEditor.this.projectFile );
+			}
+		});
+		javax.swing.JPanel saveAndLoadPanel = new JPanel();
+		saveAndLoadPanel.setLayout( new FlowLayout());
+		saveAndLoadPanel.add( saveButton );
+		saveAndLoadPanel.add( loadButton );
+		
+		this.add(saveAndLoadPanel, java.awt.BorderLayout.NORTH);
+		this.add(widgetPanel, java.awt.BorderLayout.SOUTH);
+	}
+	
+	protected void initializeScene()
+	{
 		scene.addComponent(grassyGround);
 		grassyGround.getSGComposite().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.GROUND );
 		scene.addComponent(chicken);
 		chicken.getSGComposite().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.MOVEABLE_OBJECTS );
 		chicken.getSGComposite().putBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY, chicken.getAxisAlignedMinimumBoundingBox());
-		
-//		Jack jack = new Jack();
-//		jack.setModest( false );
-//		jack.setParent( chicken.getSGComposite() );
-//		
-//		Jack jack2 = new Jack();
-//		jack2.setModest( false );
-//		jack2.setParent( scene.getSGComposite() );
 		
 		scene.addComponent(sunLight);
 		sunLight.getSGComposite().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.LIGHT );
@@ -116,8 +225,6 @@ public class SceneEditor extends Program {
 		grassyGround.setVehicle(scene);
 		sunLight.setVehicle(scene);
 		camera.setVehicle(scene);
-		
-		//scene.getSGComposite().addComponent( myFirstHandle );
 		
 		edu.cmu.cs.dennisc.math.Vector3 initialPoint = new edu.cmu.cs.dennisc.math.Vector3(0.0d, 5.0d, 5.0d);
 		edu.cmu.cs.dennisc.math.Vector3 initialOrigin = new edu.cmu.cs.dennisc.math.Vector3(0.0d, 0.0d, 0.0d);
@@ -133,20 +240,22 @@ public class SceneEditor extends Program {
 		chicken.setVehicle(scene);
 		this.setScene(this.scene);
 		sunLight.turn(TurnDirection.FORWARD, 0.25);
-		//PointsOfViewPanel povPanel = new PointsOfViewPanel(this.pointOfViewManager);
+	}
+	
+	@Override
+	protected void initialize() {
+		initializeUI();
+		this.loadProjectFrom( defaultFile );
+		this.initializeScene();
 		
-		CameraNavigatorWidget controlPanel = new CameraNavigatorWidget(globalDragAdapter);
 		
-		globalDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 		
-		this.pointOfViewManager.setCamera(camera.getSGPerspectiveCamera());
 		
-		this.add(controlPanel, java.awt.BorderLayout.SOUTH);
+		
 		
 		
 		globalDragAdapter.setSelectedObject( chicken.getSGTransformable() );
 		
-		//cameraNavigationDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 	}
 
 	@Override
@@ -156,13 +265,13 @@ public class SceneEditor extends Program {
 	}
 
 	
-	static {
-		Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler() {
-			public void uncaughtException( Thread t, Throwable e ) {
-				e.printStackTrace();
-			}
-		} );
-	}
+//	static {
+//		Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler() {
+//			public void uncaughtException( Thread t, Throwable e ) {
+//				e.printStackTrace();
+//			}
+//		} );
+//	}
 	public static void main(String[] args) {
 		SceneEditor sceneEditor = new SceneEditor();
 		sceneEditor.showInJFrame(args, true);
