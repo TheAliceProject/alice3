@@ -20,30 +20,14 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.file;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSaveOperation extends AbstractClearanceActionOperation {
-	protected abstract boolean isPromptNecessary( java.io.File file );
-	protected abstract java.io.File getDefaultDirectory();
-	protected abstract String getExtension();
-	protected abstract void save( java.io.File file );
-	protected abstract String getInitialFilename();
-	public void perform( zoot.ActionContext actionContext ) {
-		java.io.File filePrevious = this.getIDE().getFile();
-		java.io.File fileNext = this.getIDE().getFile();
-		if( this.isPromptNecessary( filePrevious ) ) {
-			fileNext = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( this.getIDE(), this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
-		} else {
-			fileNext = filePrevious;
-		}
-		if( fileNext != null ) {
-			this.save( fileNext );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
+public class RenameTypeOperation extends RenameNodeOperation {
+	public RenameTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( type.name, new org.alice.ide.namevalidators.TypeNameValidator( type ) );
+		this.putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) );
 	}
 }

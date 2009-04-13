@@ -25,25 +25,31 @@ package org.alice.ide.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSaveOperation extends AbstractClearanceActionOperation {
-	protected abstract boolean isPromptNecessary( java.io.File file );
-	protected abstract java.io.File getDefaultDirectory();
-	protected abstract String getExtension();
-	protected abstract void save( java.io.File file );
-	protected abstract String getInitialFilename();
-	public void perform( zoot.ActionContext actionContext ) {
-		java.io.File filePrevious = this.getIDE().getFile();
-		java.io.File fileNext = this.getIDE().getFile();
-		if( this.isPromptNecessary( filePrevious ) ) {
-			fileNext = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( this.getIDE(), this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
-		} else {
-			fileNext = filePrevious;
-		}
-		if( fileNext != null ) {
-			this.save( fileNext );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
+public class SaveAsTypeOperation extends AbstractSaveOperation {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+	public SaveAsTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		this.type = type;
+		this.putValue( javax.swing.Action.NAME, "Save As..." );
+		this.putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) );
+	}
+	@Override
+	protected java.io.File getDefaultDirectory() {
+		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory();
+	}
+	@Override
+	protected String getExtension() {
+		return edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION;
+	}
+	@Override
+	protected String getInitialFilename() {
+		return this.type.name.getValue() + "." + this.getExtension();
+	}
+	@Override
+	protected void save( java.io.File file ) {
+		//this.getIDE().saveProjectTo( file );
+	}
+	@Override
+	protected boolean isPromptNecessary( java.io.File file ) {
+		return true;
 	}
 }

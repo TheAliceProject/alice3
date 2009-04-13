@@ -54,6 +54,9 @@ public class NodeNameLabel extends zoot.ZLabel {
 		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = (edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice)this.node;
 			nameProperty = local.name;
+		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.node;
+			nameProperty = type.name;
 		}
 		if( nameProperty != null ) {
 			this.namePropertyAdapter = new NamePropertyAdapter();

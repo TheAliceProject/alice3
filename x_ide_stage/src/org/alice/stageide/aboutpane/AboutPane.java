@@ -29,7 +29,7 @@ class ViewEULAAction extends javax.swing.AbstractAction {
 	private String text;
 	private String title;
 	public ViewEULAAction( String text, String title ) {
-		this.putValue( javax.swing.Action.NAME, "View EULA" );
+		this.putValue( javax.swing.Action.NAME, "View EULA..." );
 		this.text = text;
 		this.title = title;
 	}

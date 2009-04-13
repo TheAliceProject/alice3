@@ -28,28 +28,31 @@ package org.alice.ide.common;
 public class TypeIcon implements javax.swing.Icon {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private TypeBorder border;
-	private String text;
 	public TypeIcon( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
 		this.border = TypeBorder.getSingletonFor( type );
+	}
+	private String getText() {
+		String rv;
 		if( this.type != null ) {
-			text = this.type.getName();
+			rv = this.type.getName();
 		} else {
-			text = org.alice.ide.IDE.getSingleton().getTextForNull();
+			rv = org.alice.ide.IDE.getSingleton().getTextForNull();
 		}
+		return rv;
 	}
 	public int getIconWidth() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
 		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
 		java.awt.FontMetrics fm = g.getFontMetrics();
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( text, g );
+		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
 		return insets.left + insets.right + (int)bounds.getWidth();
 	}
 	public int getIconHeight() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
 		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
 		java.awt.FontMetrics fm = g.getFontMetrics();
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( text, g );
+		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
 		return insets.top + insets.bottom + (int)bounds.getHeight();
 	}
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
@@ -61,7 +64,7 @@ public class TypeIcon implements javax.swing.Icon {
 //		} else {
 //			g.setColor( java.awt.Color.RED );
 //		}
-		edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, x, y, w, h );
+		edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, this.getText(), x, y, w, h );
 	}
 }
 

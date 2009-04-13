@@ -35,6 +35,10 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
 		return edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION;
 	}
 	@Override
+	protected java.lang.String getInitialFilename() {
+		return null;
+	}
+	@Override
 	protected void save( java.io.File file ) {
 		this.getIDE().saveProjectTo( file );
 	}

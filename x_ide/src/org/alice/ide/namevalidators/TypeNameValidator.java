@@ -20,30 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.file;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class AbstractSaveOperation extends AbstractClearanceActionOperation {
-	protected abstract boolean isPromptNecessary( java.io.File file );
-	protected abstract java.io.File getDefaultDirectory();
-	protected abstract String getExtension();
-	protected abstract void save( java.io.File file );
-	protected abstract String getInitialFilename();
-	public void perform( zoot.ActionContext actionContext ) {
-		java.io.File filePrevious = this.getIDE().getFile();
-		java.io.File fileNext = this.getIDE().getFile();
-		if( this.isPromptNecessary( filePrevious ) ) {
-			fileNext = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( this.getIDE(), this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
-		} else {
-			fileNext = filePrevious;
-		}
-		if( fileNext != null ) {
-			this.save( fileNext );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
+package org.alice.ide.namevalidators;
+
+public class TypeNameValidator extends NodeNameValidator {
+	public TypeNameValidator( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( type );
+	}
+	@Override
+	protected boolean isNameAvailable( String name ) {
+		//todo
+		return true;
 	}
 }

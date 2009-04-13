@@ -34,7 +34,7 @@ class TypeBorder implements javax.swing.border.Border {
 	private static java.awt.Color FILL_DARKER_COLOR = FILL_COLOR.darker();
 
 	private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
-	private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
+	//private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
 	
 	private static java.awt.Color OUTLINE_COLOR = java.awt.Color.GRAY;
 	private static TypeBorder singletonForDeclaredInAlice = new TypeBorder( true );
