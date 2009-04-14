@@ -757,26 +757,48 @@ public abstract class Transformable extends AbstractTransformable {
 	public Boolean isToTheLeftOf( Model other, Model asSeenBy ) {
 		return isToCertainSideOf( other, asSeenBy, MoveDirection.LEFT );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public Boolean isToTheLeftOf( Model other ) {
+		return isToTheLeftOf( other, other );
+	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Boolean isToTheRightOf( Model other, Model asSeenBy ) {
 		return isToCertainSideOf( other, asSeenBy, MoveDirection.RIGHT );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public Boolean isToTheRightOf( Model other ) {
+		return isToTheRightOf( other, other );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Boolean isAbove( Model other, Model asSeenBy ) {
 		return isToCertainSideOf( other, asSeenBy, MoveDirection.UP );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public Boolean isAbove( Model other ) {
+		return isAbove( other, other );
+	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Boolean isBelow( Model other, Model asSeenBy ) {
 		return isToCertainSideOf( other, asSeenBy, MoveDirection.DOWN );
+	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public Boolean isBelow( Model other ) {
+		return isBelow( other, other );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Boolean isInFrontOf( Model other, Model asSeenBy ) {
 		return isToCertainSideOf( other, asSeenBy, MoveDirection.FORWARD );
 	}
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public Boolean isInFrontOf( Model other ) {
+		return isInFrontOf( other, other );
+	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Boolean isBehind( Model other, Model asSeenBy ) {
 		return isToCertainSideOf( other, asSeenBy, MoveDirection.BACKWARD );
 	}
-
-	
+	@MethodTemplate( visibility=Visibility.CHAINED )
+	public Boolean isBehind( Model other ) {
+		return isBehind( other, other );
+	}
 }
