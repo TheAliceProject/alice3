@@ -28,7 +28,7 @@ package org.alice.ide.operations.ast;
 public class BackwardShiftCodeParameterOperation extends AbstractShiftCodeParameterOperation {
 	public BackwardShiftCodeParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		super( code, parameter );
-		this.putValue( javax.swing.Action.NAME, "shift backward" );
+		this.putValue( javax.swing.Action.NAME, "Shift Backward" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo" );

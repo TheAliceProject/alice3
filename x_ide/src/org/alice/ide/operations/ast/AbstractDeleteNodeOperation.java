@@ -25,18 +25,18 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeleteNodeOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
+public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.alice.ast.Node > extends org.alice.ide.operations.AbstractActionOperation {
+	private E node;
 	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
 	private int index;
-	public AbstractDeleteNodeOperation( edu.cmu.cs.dennisc.alice.ast.Node node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
+	public AbstractDeleteNodeOperation( E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
 		this.node = node;
 		this.owner = owner;
-		this.putValue( javax.swing.Action.NAME, "delete" );
+		this.putValue( javax.swing.Action.NAME, "Delete" );
 	}
-	protected abstract boolean isClearToDelete();
+	protected abstract boolean isClearToDelete( E node );
 	public void perform( zoot.ActionContext actionContext ) {
-		if( this.isClearToDelete() ) {
+		if( this.isClearToDelete( this.node ) ) {
 			this.index = this.owner.indexOf( this.node );
 			this.redo();
 			actionContext.commit();

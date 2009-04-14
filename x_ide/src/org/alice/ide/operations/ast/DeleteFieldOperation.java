@@ -25,13 +25,39 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteFieldOperation extends AbstractDeleteNodeOperation {
+public class DeleteFieldOperation extends AbstractDeleteNodeOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	public DeleteFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		super( field, ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType()).fields );
 	}
+
 	@Override
-	protected boolean isClearToDelete() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isClearToDelete" );
-		return true;
+	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > references = this.getIDE().getFieldAccesses( field );
+		final int N = references.size();
+		if( N > 0 ) {
+			StringBuffer sb = new StringBuffer();
+			sb.append( "Unable to delete property named \"" );
+			sb.append( field.name.getValue() );
+			sb.append( "\" because it has " );
+			if( N == 1 ) {
+				sb.append( "an access refrence" );
+			} else {
+				sb.append( N );
+			}
+			sb.append( " access refrences" );
+			sb.append( " to it.\nYou must remove " );
+			if( N == 1 ) {
+				sb.append( "this reference" );
+			} else {
+				sb.append( "these references" );
+			}
+			sb.append( " if you want to delete \"" );
+			sb.append( field.name.getValue() );
+			sb.append( "\" ." );
+			javax.swing.JOptionPane.showMessageDialog( this.getIDE(), sb.toString() );
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

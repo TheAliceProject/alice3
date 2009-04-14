@@ -43,6 +43,39 @@ public abstract class IDE extends zoot.ZFrame {
 	//		return this;
 	//	}
 
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = this.getProgramType();
+		
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)sceneType.getDeclaredMethod( "performSceneEditorGeneratedSetUp" );
+		setUpMethod.body.getValue().statements.clear();
+
+		return rv;
+	}
+	public java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > getFieldAccesses( final edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+		assert programType != null;
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >(  edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
+			@Override
+			protected boolean isAcceptable(edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+				return fieldAccess.field.getValue() == field;
+			}
+		};
+		programType.crawl( crawler, true );
+		return crawler.getList();
+	}
+	public java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > getMethodInvocations( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+		assert programType != null;
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >(  edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
+			@Override
+			protected boolean isAcceptable(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+				return methodInvocation.method.getValue() == method;
+			}
+		};
+		programType.crawl( crawler, true );
+		return crawler.getList();
+	}
 	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
 
 	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {

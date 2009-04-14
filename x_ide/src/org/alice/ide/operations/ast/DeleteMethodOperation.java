@@ -25,13 +25,45 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeleteMethodOperation extends AbstractDeleteNodeOperation {
+public class DeleteMethodOperation extends AbstractDeleteNodeOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
 	public DeleteMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( method, ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)method.getDeclaringType()).methods );
 	}
 	@Override
-	protected boolean isClearToDelete() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: isClearToDelete" );
-		return true;
+	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > references = this.getIDE().getMethodInvocations( method );
+		final int N = references.size();
+		if( N > 0 ) {
+			StringBuffer sb = new StringBuffer();
+			sb.append( "Unable to delete " );
+			if( method.isProcedure() ) {
+				sb.append( "procedure" );
+			} else {
+				sb.append( "function" );
+			}
+			sb.append( " named \"" );
+			sb.append( method.name.getValue() );
+			sb.append( "\" because it has " );
+			if( N == 1 ) {
+				sb.append( "an invocation reference" );
+			} else {
+				sb.append( N );
+			}
+			sb.append( " invocation references" );
+			sb.append( " to it.\nYou must remove " );
+			if( N == 1 ) {
+				sb.append( "this reference" );
+			} else {
+				sb.append( "these references" );
+			}
+			sb.append( " if you want to delete \"" );
+			sb.append( method.name.getValue() );
+			sb.append( "\" ." );
+
+			javax.swing.JOptionPane.showMessageDialog( this.getIDE(), sb.toString() );
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
