@@ -47,7 +47,7 @@ class ViewEULAAction extends javax.swing.AbstractAction {
 				scrollPane.getVerticalScrollBar().setValue( 0 );
 			}
 		} );
-		javax.swing.JOptionPane.showMessageDialog( null, scrollPane, this.title, javax.swing.JOptionPane.PLAIN_MESSAGE );
+		javax.swing.JOptionPane.showMessageDialog( org.alice.ide.IDE.getSingleton(), scrollPane, this.title, javax.swing.JOptionPane.PLAIN_MESSAGE );
 	}
 }
 
