@@ -27,6 +27,7 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class Factory {
+	//todo: remove
 	static java.util.Map< Object, String > operatorMap = new java.util.HashMap< Object, String >();
 	static {
 		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.PLUS, "+" );
@@ -86,6 +87,7 @@ public abstract class Factory {
 			}
 		} else {
 			rv = null;
+			//todo: remove
 			if( "operator".equals( propertyName ) ) {
 				String value = Factory.operatorMap.get( property.getValue() );
 				if( value != null ) {
@@ -284,7 +286,13 @@ public abstract class Factory {
 //			rv = new ExpressionPane( this, expression );
 //		}
 		java.awt.Component rv;
-		if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
+		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
+			edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression conditionalInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)expression;
+			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression", javax.swing.JComponent.getDefaultLocale() );
+			String value = resourceBundle.getString( conditionalInfixExpression.operator.getValue().name() );
+			org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
+			rv = new ExpressionPane( conditionalInfixExpression, this.createComponent( page, conditionalInfixExpression ) );
+		} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
 			rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
 		} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
 			rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );

@@ -25,38 +25,6 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-class RelationalInfixExpressionOperatorFillIn extends InfixExpressionOperatorFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator > {
-	private static edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createRelationalInfixExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType operandType ) {
-		edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression rv = new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression();
-		rv.leftOperandType.setValue( operandType );
-		rv.rightOperandType.setValue( operandType );
-		return rv;
-	}
-	public RelationalInfixExpressionOperatorFillIn( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType operandType ) {
-		super( createRelationalInfixExpression( operandType ), Double.class, operator, Double.class );
-	}
-}
-/**
- * @author Dennis Cosgrove
- */
-class RelationalInfixExpressionOperatorBlank extends cascade.Blank {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType operandType;
-	public RelationalInfixExpressionOperatorBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType operandType ) {
-		this.operandType = operandType;
-	}
-	@Override
-	protected void addChildren() {
-		this.addChild( new RelationalInfixExpressionOperatorFillIn( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.EQUALS, this.operandType ) );
-		this.addChild( new RelationalInfixExpressionOperatorFillIn( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.NOT_EQUALS, this.operandType ) );
-		this.addChild( new RelationalInfixExpressionOperatorFillIn( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.LESS, this.operandType ) );
-		this.addChild( new RelationalInfixExpressionOperatorFillIn( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.LESS_EQUALS, this.operandType ) );
-		this.addChild( new RelationalInfixExpressionOperatorFillIn( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER, this.operandType ) );
-		this.addChild( new RelationalInfixExpressionOperatorFillIn( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER_EQUALS, this.operandType ) );
-	}
-}
-/**
- * @author Dennis Cosgrove
- */
 public class RelationalExpressionFillIn extends InfixExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression > {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	public RelationalExpressionFillIn( String menuText, Class<?> cls ) {

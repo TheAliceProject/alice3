@@ -22,6 +22,8 @@
  */
 package org.alice.ide.cascade.fillerinners;
 
+import org.alice.ide.cascade.RelationalInfixExpressionOperatorFillIn;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -41,11 +43,13 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 			}
 		} );
 		blank.addSeparator();
+		blank.addFillIn( new org.alice.ide.cascade.LogicalComplementExpressionFillIn() );
 		blank.addFillIn( new org.alice.ide.cascade.ConditionalExpressionFillIn() );
 		blank.addSeparator();
 		blank.addFillIn( new cascade.MenuFillIn( "relational { ==, !=, <, <=, >=, > }" ) {
 			@Override
 			protected void addChildrenToBlank(cascade.Blank blank) {
+				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Boolean", Boolean.class ) );
 				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Real Number", Number.class ) );
 				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Integer", Integer.class ) );
 			}
