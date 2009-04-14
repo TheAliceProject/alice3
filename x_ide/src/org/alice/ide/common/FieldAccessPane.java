@@ -39,11 +39,11 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		}
 		if( isExpressionDesired ) {
 			this.add( factory.createExpressionPropertyPane( this.fieldAccess.expression, false, null ) );
-			if( getIDE().isJava() ) {
-				//pass
-			} else {
-				this.add( new zoot.ZLabel( ".") );
-			}
+//			if( getIDE().isJava() ) {
+//				//pass
+//			} else {
+				this.add( new zoot.ZLabel( "." ) );
+//			}
 		}
 		org.alice.ide.common.NodeNameLabel nodeNameLabel = new org.alice.ide.common.NodeNameLabel( this.fieldAccess.field.getValue() );
 		nodeNameLabel.setFontToScaledFont( 1.2f );

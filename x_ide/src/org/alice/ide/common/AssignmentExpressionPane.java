@@ -47,14 +47,10 @@ public class AssignmentExpressionPane extends swing.LineAxisPane  {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
 			org.alice.ide.common.NodeNameLabel nameLabel = new org.alice.ide.common.NodeNameLabel( fieldAccess.field.getValue() );
 			nameLabel.setFontToScaledFont( 1.5f );
-			if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
-				parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, true, null ) );
+			parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, true, null ) );
+			if( org.alice.ide.IDE.getSingleton().isJava() ) {
 				parent.add( new zoot.ZLabel( " . " ) );
-				parent.add( nameLabel );
-			} else {
-				parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, true, null ) );
 			}
-			parent.add( new zoot.ZLabel( " . " ) );
 			parent.add( nameLabel );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression;
