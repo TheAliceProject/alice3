@@ -30,9 +30,19 @@ public class MoreDropDownPane extends DropDownPane {
 	public MoreDropDownPane( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
 		super( null, new zoot.ZLabel( "more"), null );
 		this.expressionStatement = expressionStatement;
+
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
+		final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
+		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
+		edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+		String name = lastParameter.getName();
+		if( name != null ) {
+			this.setToolTipText( name );
+		}
 		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInMoreOperation( this.expressionStatement ) );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getMethod() {
-		return this.expressionStatement;
-	}
+//	public edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getMethod() {
+//		return this.expressionStatement;
+//	}
 }

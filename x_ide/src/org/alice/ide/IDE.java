@@ -1078,8 +1078,19 @@ public abstract class IDE extends zoot.ZFrame {
 		cascade.Blank blank = createExpressionBlank( type, prevExpression );
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-	public void promptUserForMore( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-		cascade.Blank blank = createExpressionBlank( parameter.getValueType(), null );
+	public void promptUserForMore( final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+		cascade.Blank blank = new cascade.Blank() {
+			@Override
+			protected void addChildren() {
+				cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > menuFillIn = new cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( parameter.getName() ) {
+					@Override
+					protected void addChildrenToBlank( cascade.Blank blank ) {
+						org.alice.ide.IDE.getSingleton().addFillIns( blank, parameter.getValueType() );
+					}
+				};
+				this.addFillIn( menuFillIn );
+			}
+		};
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
 	public void unsetPreviousExpression() {
