@@ -25,11 +25,21 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class GetterTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
-	private static final edu.cmu.cs.dennisc.alice.ast.AbstractType[] ZERO_LENGTH_TYPE_ARRAY = new edu.cmu.cs.dennisc.alice.ast.AbstractType[] {};  
+public class SetArrayAtIndexTemplate extends ExpressionStatementTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
+	public SetArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( 
+				new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( 
+						field.getDesiredValueType().getComponentType(), 
+						new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
+								field.getValueType(), 
+								org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ), 
+								new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
+						), 
+						edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, 
+						new org.alice.ide.ast.EmptyExpression( field.getDesiredValueType().getComponentType() )
+				)
+		);
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
@@ -38,10 +48,22 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return ZERO_LENGTH_TYPE_ARRAY;
+		return new edu.cmu.cs.dennisc.alice.ast.AbstractType[] { edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, this.field.getDesiredValueType().getComponentType() };
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
-		return org.alice.ide.ast.NodeUtilities.createFieldAccess( this.getIDE().createInstanceExpression(), field );
+		edu.cmu.cs.dennisc.alice.ast.AssignmentExpression rv = new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression(
+				field.getValueType().getComponentType(), 
+				new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
+						field.getValueType(), 
+						org.alice.ide.ast.NodeUtilities.createFieldAccess( 
+								getIDE().createInstanceExpression(), 
+								field ), 
+						expressions[ 0 ]
+				), 
+				edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, 
+				expressions[ 1 ]
+		);
+		return rv;
 	}
 }

@@ -51,11 +51,21 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 				components.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
 			}
 			components.add( new org.alice.ide.memberseditor.templates.GetterTemplate( field ) );
+			if( field.getValueType().isArray() ) {
+				components.add( new org.alice.ide.memberseditor.templates.GetArrayAtIndexTemplate( field ) );
+				components.add( new org.alice.ide.memberseditor.templates.ArrayLengthTemplate( field ) );
+			}
 			if( field.isFinal() ) {
 				//pass
 			} else {
 				components.add( new org.alice.ide.memberseditor.templates.SetterTemplate( field ) );
 			}
+			
+			if( field.getValueType().isArray() ) {
+				components.add( new org.alice.ide.memberseditor.templates.SetArrayAtIndexTemplate( field ) );
+			}
+			
+			components.add( javax.swing.Box.createVerticalStrut( 16 ) );
 			rv = new java.awt.Component[ components.size() ];
 			components.toArray( rv );
 		} else {

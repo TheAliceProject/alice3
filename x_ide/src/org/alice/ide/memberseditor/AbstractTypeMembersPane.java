@@ -41,16 +41,19 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
 		}
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent e ) {
+			AbstractTypeMembersPane.this.refresh();
 		}
 
 		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
 		}
 		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent e ) {
+			AbstractTypeMembersPane.this.refresh();
 		}
 
 		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
 		}
 		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent e ) {
+			AbstractTypeMembersPane.this.refresh();
 		}
 	};
 	private org.alice.ide.common.TypeComponent typeComponent;
