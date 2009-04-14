@@ -175,8 +175,14 @@ public abstract class IDE extends zoot.ZFrame {
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;
 	}
+	
+	private int rootDividerLocation = 400;
+	private int leftDividerLocation = 300;
+	
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
+			this.rootDividerLocation = this.root.getDividerLocation();
+			this.leftDividerLocation = this.root.getDividerLocation();
 			this.root.setLeftComponent( this.left );
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.galleryBrowser );
@@ -185,8 +191,8 @@ public abstract class IDE extends zoot.ZFrame {
 		} else {
 			this.root.setLeftComponent( this.left );
 			this.root.setRightComponent( this.right );
-			this.root.setDividerLocation( 400 );
-			this.left.setDividerLocation( 300 );
+			this.root.setDividerLocation( this.rootDividerLocation );
+			this.left.setDividerLocation( this.leftDividerLocation );
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.membersEditor );
 			if( this.right.getComponentCount() == 0 ) {

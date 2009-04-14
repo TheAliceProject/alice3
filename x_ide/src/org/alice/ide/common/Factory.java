@@ -292,6 +292,8 @@ public abstract class Factory {
 			String value = resourceBundle.getString( conditionalInfixExpression.operator.getValue().name() );
 			org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
 			rv = new ExpressionPane( conditionalInfixExpression, this.createComponent( page, conditionalInfixExpression ) );
+			
+		//todo: handle Relational and Arithmetic
 		} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
 			rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
 		} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
