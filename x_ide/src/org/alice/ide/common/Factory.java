@@ -48,11 +48,11 @@ public abstract class Factory {
 	protected java.awt.Component createTextComponent( String text ) { 
 		return new zoot.ZLabel( text );
 	}
-	protected abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty );
+	protected abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane );
 	protected abstract java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
 
 	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired, java.awt.Component prefixPane ) {
-		return this.createExpressionPropertyPane( property );
+		return this.createExpressionPropertyPane( property, prefixPane );
 		//return new ExpressionPropertyPane( this, property, isDropDownPotentiallyDesired, prefixPane );
 	}
 	
@@ -101,7 +101,7 @@ public abstract class Factory {
 			} else {
 				if( property instanceof edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? > ) {
 					if( property instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionProperty ) {
-						rv = this.createExpressionPropertyPane( (edu.cmu.cs.dennisc.alice.ast.ExpressionProperty)property );
+						rv = this.createExpressionPropertyPane( (edu.cmu.cs.dennisc.alice.ast.ExpressionProperty)property, null );
 					} else {
 						rv = new NodePropertyPane( this, (edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? >)property );
 					}
