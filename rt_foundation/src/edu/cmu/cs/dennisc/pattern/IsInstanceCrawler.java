@@ -28,9 +28,15 @@ public class IsInstanceCrawler< E > implements edu.cmu.cs.dennisc.pattern.Crawle
 	public IsInstanceCrawler( Class<E> cls ) {
 		this.cls = cls;
 	}
+	protected boolean isAcceptable( E e ) {
+		return true;
+	}
 	public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
 		if( this.cls.isAssignableFrom( crawlable.getClass() ) ) {
-			this.list.add( (E)crawlable );
+			E e = (E)crawlable;
+			if( isAcceptable( e ) ) {
+				this.list.add( e );
+			}
 		}
 	}
 	public java.util.List<E> getList() {
