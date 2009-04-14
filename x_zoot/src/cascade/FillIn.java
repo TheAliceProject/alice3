@@ -81,7 +81,7 @@ public abstract class FillIn< E > extends Node {
 		return getValue();
 	}
 	public abstract E getValue();
-	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver< Object > taskObserver ) {
+	public void showPopupMenu( java.awt.Component invoker, int x, int y, edu.cmu.cs.dennisc.task.TaskObserver< ? extends Object > taskObserver ) {
 		class DefaultRootBlank extends Blank {
 			@Override
 			protected void addChildren() {
