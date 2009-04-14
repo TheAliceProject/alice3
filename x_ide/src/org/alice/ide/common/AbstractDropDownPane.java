@@ -33,42 +33,54 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 		this.addMouseMotionListener( controlAdapter );
 	}
 	
-	private static final int INSET = 1;
-	private static final int AFFORDANCE_SIZE = 9;
+	private static final int AFFORDANCE_WIDTH = 6;
+	private static final int AFFORDANCE_HALF_HEIGHT = 5;
 	@Override
 	protected int getInsetTop() {
-		return AbstractDropDownPane.INSET;
+//		if( this.isActive() || this.isInactiveFeedbackDesired() ) {
+			return 2;
+//		} else {
+//			return 0;
+//		}
 	}
 	@Override
 	protected int getInsetLeft() {
-		return AbstractDropDownPane.INSET;
+		return 1;
 	}
 	@Override
 	protected int getInsetBottom() {
-		return AbstractDropDownPane.INSET;
+//		if( this.isActive() || this.isInactiveFeedbackDesired() ) {
+			return 2;
+//		} else {
+//			return 0;
+//		}
 	}
 	@Override
 	protected int getInsetRight() {
-		return AbstractDropDownPane.INSET + AbstractDropDownPane.AFFORDANCE_SIZE;
+		return 3 + AbstractDropDownPane.AFFORDANCE_WIDTH;
+	}
+	
+	protected boolean isInactiveFeedbackDesired() {
+		return true;
 	}
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.fillRect( x, y, width - 1, height - 1 );
+		if( this.isActive() || this.isInactiveFeedbackDesired() ) {
+			g2.fillRect( x, y, width - 1, height - 1 );
+		}
 	}
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		g2.setColor( java.awt.Color.WHITE );
 		fillBounds( g2, x, y, width, height );
 		
-		final int INSET = 4;
-		int size = AbstractDropDownPane.AFFORDANCE_SIZE;
+		float x0 = x + width - 4 - AbstractDropDownPane.AFFORDANCE_WIDTH;
+		float x1 = x0 + AbstractDropDownPane.AFFORDANCE_WIDTH;
+		float xC = (x0 + x1) / 2;
 
-		int x0 = width - INSET / 2 - AbstractDropDownPane.AFFORDANCE_SIZE;
-		int x1 = x0 + size;
-		int xC = (x0 + x1) / 2;
-
-		int y0 = INSET + 2;
-		int y1 = y0 + size;
+		float yC = (y + height)/2;
+		float y0 = yC-AbstractDropDownPane.AFFORDANCE_HALF_HEIGHT;
+		float y1 = yC+AbstractDropDownPane.AFFORDANCE_HALF_HEIGHT;
 
 		java.awt.Color triangleFill;
 		java.awt.Color triangleOutline;
@@ -76,19 +88,29 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 			triangleFill = java.awt.Color.YELLOW;
 			triangleOutline = java.awt.Color.BLACK;
 		} else {
-			triangleFill = edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 192 );
+			triangleFill = edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 127 );
 			triangleOutline = null;
 		}
 
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
-		int[] xs = { x0, xC, x1 };
-		int[] ys = { y0, y1, y0 };
+//		float[] xs = { x0, xC, x1 };
+//		float[] ys = { y0, y1, y0 };
+		
+		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		path.moveTo( x0, y0 );
+		path.lineTo( xC, y1 );
+		path.lineTo( x1, y0 );
+		path.closePath();
+		
+		
 		g2.setColor( triangleFill );
-		g2.fillPolygon( xs, ys, 3 );
+		g2.fill( path );
+//		g2.fillPolygon( xs, ys, 3 );
 		if( triangleOutline != null ) {
 			g2.setColor( triangleOutline );
-			g2.drawPolygon( xs, ys, 3 );
+			g2.draw( path );
+//			g2.drawPolygon( xs, ys, 3 );
 		}
 	}
 	@Override
@@ -98,8 +120,10 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 			g2.setColor( java.awt.Color.BLUE );
 			g2.draw( new java.awt.geom.Rectangle2D.Float( 1.5f, 1.5f, width-3.0f, height-3.0f ) );
 		} else {
-			g2.setColor( java.awt.Color.LIGHT_GRAY );
-			g2.drawRect( x, y, width-1, height-1 );
+			if( this.isInactiveFeedbackDesired() ) {
+				g2.setColor( java.awt.Color.LIGHT_GRAY );
+				g2.drawRect( x, y, width-1, height-1 );
+			}
 		}
 	}
 }

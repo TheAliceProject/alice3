@@ -92,4 +92,23 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 	public java.awt.Component getAWTComponent() {
 		return this;
 	}
+
+	@Override
+	protected boolean isInactiveFeedbackDesired() {
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.expressionProperty.getValue();
+		if( expression != null ) {
+			edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
+			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+				if( parent instanceof edu.cmu.cs.dennisc.alice.ast.Expression  ) {
+					return parent instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation;
+				} else {
+					return true;
+				}
+			} else {
+				return ( parent instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || parent instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression ) == false;
+			}
+		} else {
+			return true;
+		}
+	}
 }

@@ -41,4 +41,20 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
 		}
 	}
+	@Override
+	protected int getInsetTop() {
+		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression ) {
+			return 0;
+		} else {
+			return super.getInsetTop();
+		}
+	}
+	@Override
+	protected int getInsetBottom() {
+		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression ) {
+			return 0;
+		} else {
+			return super.getInsetTop();
+		}
+	}
 }
