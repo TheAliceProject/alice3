@@ -63,5 +63,4 @@ public class ConditionalInfixExpression extends InfixExpression< ConditionalInfi
 		assert propertyName.equals( "expressionType" );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( propertyName, value );
 	}
-	
 }
