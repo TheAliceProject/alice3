@@ -105,7 +105,8 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		if( this.isVoid() ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
+			//edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
+			edu.cmu.cs.dennisc.awt.BevelState bevelState = edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
 			edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
 			beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
 		}

@@ -188,7 +188,7 @@ public abstract class Factory {
 		}
 	}
 	protected int getPixelsPerIndent() {
-		return 16;
+		return 10;
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.Line line, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int indentCount = line.getIndentCount();

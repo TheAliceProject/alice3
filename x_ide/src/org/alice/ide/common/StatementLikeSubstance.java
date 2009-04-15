@@ -74,8 +74,19 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	}
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		edu.cmu.cs.dennisc.awt.BeveledRoundRectangle beveledRoundRectangle = new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( x+1, y+1, width-3, height-3, 8, 8 );
-		beveledRoundRectangle.paint( g2, this.getBevelState(), 3.0f, 1.0f, 1.0f );
+		java.awt.geom.RoundRectangle2D rr = new java.awt.geom.RoundRectangle2D.Float( x+1, y+1, width-3, height-3, 8, 8 );
+		g2.fill( rr );
+		java.awt.Stroke prevStroke = g2.getStroke();
+		if( this.isActive() ) {
+			g2.setPaint( java.awt.Color.BLUE );
+			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
+		} else {
+			g2.setPaint( java.awt.Color.GRAY );
+		}
+		g2.draw( rr );
+		g2.setStroke( prevStroke );
+//		edu.cmu.cs.dennisc.awt.BeveledRoundRectangle beveledRoundRectangle = new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( x+1, y+1, width-3, height-3, 8, 8 );
+//		beveledRoundRectangle.paint( g2, this.getBevelState(), 3.0f, 1.0f, 1.0f );
 	}
 	
 //	@Override

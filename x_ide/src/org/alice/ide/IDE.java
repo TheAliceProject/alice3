@@ -530,6 +530,8 @@ public abstract class IDE extends zoot.ZFrame {
 		//return true;
 	}
 
+	private static java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
+	private static java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );//, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_MITER );
 	class ComponentStencil extends javax.swing.JPanel {
 		public ComponentStencil() {
 			setOpaque( false );
@@ -568,24 +570,48 @@ public abstract class IDE extends zoot.ZFrame {
 						g2.fill( area );
 					}
 
-					g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
+					g2.setStroke( THICK_STROKE );
 					final int BUFFER = 6;
 					for( java.awt.Component component : IDE.this.holes ) {
-						if( IDE.this.currentDropReceptorComponent == component ) {
-							g2.setColor( java.awt.Color.GREEN );
-						} else {
-							g2.setColor( java.awt.Color.BLUE );
-						}
 						java.awt.Rectangle holeBounds = component.getBounds();
 						holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent(), holeBounds, this );
 						holeBounds.x -= BUFFER;
 						holeBounds.y -= BUFFER;
 						holeBounds.width += 2 * BUFFER;
 						holeBounds.height += 2 * BUFFER;
+						
+						g2.setColor( new java.awt.Color( 0, 0, 0 ) );
 						g2.draw( holeBounds );
+						if( IDE.this.currentDropReceptorComponent == component ) {
+							g2.setColor( new java.awt.Color( 0, 255, 0 ) );
+							g2.setStroke( THIN_STROKE );
+							g2.draw( holeBounds );
+							g2.setStroke( THICK_STROKE );
+						}
+//
+////						g2.translate( 1, 1 );
+////						g2.draw( holeBounds );
+////						g2.translate( -1, -1 );
+//						if( IDE.this.currentDropReceptorComponent == component ) {
+//							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
+//							g2.draw( holeBounds );
+//						} else {
+////							g2.setColor( java.awt.Color.YELLOW );
+////							g2.draw3DRect( holeBounds.x, holeBounds.y, holeBounds.width, holeBounds.height, false );
+//							int x0 = holeBounds.x;
+//							int x1 = holeBounds.x+holeBounds.width;
+//							int y0 = holeBounds.y;
+//							int y1 = holeBounds.y+holeBounds.height;
+//							g2.setColor( new java.awt.Color( 63, 91, 63 ) );
+//							g2.drawLine( x0, y1, x0, y0 );
+//							g2.drawLine( x0, y0, x1, y0 );
+//							g2.setColor( new java.awt.Color( 160, 191, 160 ) );
+//							g2.drawLine( x0, y1, x1, y1 );
+//							g2.drawLine( x1, y1, x1, y0 );
+//						}
 					}
 					if( potentialDragSourceBounds != null ) {
-						g2.setColor( java.awt.Color.GREEN );
+						g2.setColor( java.awt.Color.BLUE );
 						g2.draw( potentialDragSourceBounds );
 					}
 				}
@@ -1595,13 +1621,13 @@ public abstract class IDE extends zoot.ZFrame {
 		return toColor( s );
 	}
 	public static java.awt.Color getProcedureColor() {
-		return new java.awt.Color( 0xedc484 );
+		return getColorFor( "procedure" );
 	}
 	public static java.awt.Color getFunctionColor() {
-		return new java.awt.Color( 0xb4ccaf );
+		return getColorFor( "function" );
 	}
 	public static java.awt.Color getConstructorColor() {
-		return getFunctionColor();
+		return getColorFor( "constructor" );
 	}
 	public static java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
@@ -1618,7 +1644,7 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 	public static java.awt.Color getFieldColor() {
-		return new java.awt.Color( 0x85abc9 );
+		return getColorFor( "field" );
 	}
 	public static java.awt.Color getLocalColor() {
 		return getFieldColor();
@@ -1626,11 +1652,11 @@ public abstract class IDE extends zoot.ZFrame {
 	public static java.awt.Color getParameterColor() {
 		return getFieldColor();
 	}
-	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
-		IDE ide = new FauxIDE();
-		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
-		ide.setSize( 1000, 1000 );
-		ide.setVisible( true );
-	}
+//	public static void main( String[] args ) {
+//		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
+//		IDE ide = new FauxIDE();
+//		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
+//		ide.setSize( 1000, 1000 );
+//		ide.setVisible( true );
+//	}
 }
