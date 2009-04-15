@@ -221,7 +221,7 @@ public abstract class Factory {
 						int n = this.getComponentCount();
 						java.awt.Component cFirst = this.getComponent( 0 );
 						java.awt.Component cLast = this.getComponent( n-1 );
-						g.setColor( java.awt.Color.GRAY );
+						g.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 100 ) );
 						int xB = Factory.this.getPixelsPerIndent();
 						int xA = xB/2;
 						int yTop = cFirst.getY() + cFirst.getHeight();

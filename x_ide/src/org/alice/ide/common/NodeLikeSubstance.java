@@ -76,7 +76,13 @@ public abstract class NodeLikeSubstance extends org.alice.ide.AbstractDragCompon
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		if( isKnurlDesired() ) {
-			g2.setColor( java.awt.Color.BLACK );
+			int grayscale;
+			if( this.isActive() ) {
+				grayscale = 0;
+			} else {
+				grayscale = 160;
+			}
+			g2.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( grayscale ) );
 			edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, x + getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 2 );
 		}
 	}
