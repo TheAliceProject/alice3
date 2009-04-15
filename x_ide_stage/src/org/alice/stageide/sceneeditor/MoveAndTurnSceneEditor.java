@@ -34,6 +34,32 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 
+
+class SidePane extends swing.PageAxisPane {
+	private boolean isExpanded = false;
+	public SidePane() {
+		this.setBackground( java.awt.Color.GREEN );
+		this.setOpaque( true );
+	}
+	public void setExpanded( boolean isExpanded ) {
+		this.isExpanded = isExpanded;
+		this.revalidate();
+		this.repaint();
+		this.doLayout();
+	}
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		java.awt.Dimension rv = super.getPreferredSize();
+		if( this.isExpanded ) {
+			rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( rv, 320 );
+		} else {
+			rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( rv, 10 );
+//			rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMaximumWidth( rv, 0 );
+		}
+		return rv;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -43,6 +69,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private org.alice.stageide.sceneeditor.ControlsForOverlayPane controlsForOverlayPane;
 	//private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 
+	private SidePane expandedSidePane = new SidePane();
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 
 	public MoveAndTurnSceneEditor() {
@@ -81,6 +108,26 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				} );
 			}
 		}.start();
+		this.add( this.expandedSidePane, java.awt.BorderLayout.EAST );
+	}
+	public void handleExpandContractChange( boolean isExpanded ) {
+		this.isExpanded = isExpanded;
+		this.updateSceneBasedOnScope();
+		this.expandedSidePane.setExpanded( isExpanded );
+//		this.expandedSidePane.invalidate();
+//		this.expandedSidePane.validate();
+//		this.expandedSidePane.invalidate();
+//		this.invalidate();
+//		this.validate();
+//		this.invalidate();
+//		this.revalidate();
+//		this.repaint();
+//		if( isExpanded ) {
+//			this.add( this.expandedSidePane, java.awt.BorderLayout.EAST );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( this.expandedSidePane );
+//		} else {
+//			this.remove( this.expandedSidePane );
+//		}
 	}
 
 	@Override
@@ -205,10 +252,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 		this.controlsForOverlayPane.focusedCodeChanged( e );
-	}
-	public void handleExpandContractChange( boolean isExpanded ) {
-		this.isExpanded = isExpanded;
-		this.updateSceneBasedOnScope();
 	}
 
 	private static boolean isGround( org.alice.apis.moveandturn.Model model ) {
