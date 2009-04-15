@@ -77,16 +77,23 @@ public class Factory extends org.alice.ide.common.Factory {
 	}
 	@Override
 	protected java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane ) {
-		java.awt.Component rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
-		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expressionProperty.getValue() ) )  {
-//			Object owner = expressionProperty.getOwner();
-//			if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument ) {
-//				edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)owner;
-//				edu.cmu.cs.dennisc.alice.ast.AbstractParameter paramter = argument.parameter.getValue();
-//				rv = new ArgumentExpressionPropertyDropDownPane( rv, expressionProperty, null, argument );
-//			} else {
-				rv = new ExpressionPropertyDropDownPane( prefixPane, rv, expressionProperty );
-//			}
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
+		java.awt.Component rv = ide.getOverrideComponent( expression );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		}
+		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
+			//			Object owner = expressionProperty.getOwner();
+			//			if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument ) {
+			//				edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)owner;
+			//				edu.cmu.cs.dennisc.alice.ast.AbstractParameter paramter = argument.parameter.getValue();
+			//				rv = new ArgumentExpressionPropertyDropDownPane( rv, expressionProperty, null, argument );
+			//			} else {
+			rv = new ExpressionPropertyDropDownPane( prefixPane, rv, expressionProperty );
+			//			}
 		}
 		return rv;
 	}

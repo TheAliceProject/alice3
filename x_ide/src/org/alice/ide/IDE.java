@@ -134,6 +134,9 @@ public abstract class IDE extends zoot.ZFrame {
 
 	//	private zoot.ZLabel feedback = new zoot.ZLabel();
 
+	public java.awt.Component getOverrideComponent( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		return null;
+	}
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression == false;
 	}
