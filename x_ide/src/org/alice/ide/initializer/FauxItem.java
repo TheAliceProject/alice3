@@ -22,48 +22,13 @@
  */
 package org.alice.ide.initializer;
 
-import edu.cmu.cs.dennisc.alice.ast.Expression;
-import edu.cmu.cs.dennisc.property.event.ListPropertyEvent;
-
-abstract class DropDownListItemExpressionPane extends org.alice.ide.common.AbstractDropDownPane {
-	private int index;
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	public DropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
-		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		this.index = index;
-		this.expressionListProperty = expressionListProperty;
-		this.expressionListProperty.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-			@Override
-			protected void changing( ListPropertyEvent< Expression > e ) {
-			}
-			@Override
-			protected void changed( ListPropertyEvent< Expression > e ) {
-				DropDownListItemExpressionPane.this.refresh();
-			}
-		} );
-		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionListPropertyItemOperation( this.index, this.expressionListProperty ) {
-			@Override
-			protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
-				return DropDownListItemExpressionPane.this.getFillInType();
-			}
-		});
-	}
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
-	public void refresh() {
-		this.removeAll();
-		if( this.index < this.expressionListProperty.size() ) {
-			this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
-		}
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
 abstract class FauxItem extends javax.swing.AbstractButton {
-	private DropDownListItemExpressionPane dropDownListItemExpressionPane;
+	private org.alice.ide.common.AbstractDropDownListItemExpressionPane dropDownListItemExpressionPane;
 	public FauxItem( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
-		this.dropDownListItemExpressionPane = new DropDownListItemExpressionPane( index, expressionListProperty ) {
+		this.dropDownListItemExpressionPane = new org.alice.ide.common.AbstractDropDownListItemExpressionPane( index, expressionListProperty ) {
 			@Override
 			protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
 				return FauxItem.this.getFillInType();
