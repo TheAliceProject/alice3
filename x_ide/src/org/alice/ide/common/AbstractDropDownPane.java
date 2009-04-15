@@ -57,7 +57,7 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 	}
 	@Override
 	protected int getInsetRight() {
-		return 3 + AbstractDropDownPane.AFFORDANCE_WIDTH;
+		return 5 + AbstractDropDownPane.AFFORDANCE_WIDTH;
 	}
 	
 	protected boolean isInactiveFeedbackDesired() {

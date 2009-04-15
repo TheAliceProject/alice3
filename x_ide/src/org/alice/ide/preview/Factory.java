@@ -31,7 +31,7 @@ public class Factory extends org.alice.ide.common.Factory {
 		return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	protected java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane ) {
+	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane ) {
 		return this.createExpressionPane( expressionProperty.getValue() );
 	}
 }

@@ -60,6 +60,6 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 				prefixPane = null;
 			}
 		}
-		return this.getFactory().createExpressionPropertyPane( argument.expression, true, prefixPane );
+		return this.getFactory().createExpressionPropertyPane( argument.expression, prefixPane );
 	}
 }

@@ -34,8 +34,10 @@ public class Line {
 	
 	private int indentCount;
 	private Chunk[] array;
+	private boolean isLoop;
 
 	public Line( String s ) {
+		this.isLoop = "\t loop".equals( s );
 		java.util.List< Chunk > chunks = new java.util.LinkedList< Chunk >();
 		this.indentCount = 0;
 		for( byte b : s.getBytes() ) {
@@ -79,5 +81,9 @@ public class Line {
 	}
 	public Chunk[] getChunks() {
 		return this.array;
+	}
+	@Deprecated
+	public boolean isLoop() {
+		return this.isLoop;
 	}
 }

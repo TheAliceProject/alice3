@@ -76,15 +76,16 @@ public class Factory extends org.alice.ide.common.Factory {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	protected java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane ) {
+	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
-		java.awt.Component rv = ide.getOverrideComponent( expression );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
-		}
+//		java.awt.Component rv = ide.getOverrideComponent( expression );
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+//		}
+		java.awt.Component rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
 			//			Object owner = expressionProperty.getOwner();
 			//			if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument ) {

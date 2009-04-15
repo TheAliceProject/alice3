@@ -38,7 +38,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 			isExpressionDesired = true;
 		}
 		if( isExpressionDesired ) {
-			this.add( factory.createExpressionPropertyPane( this.fieldAccess.expression, false, null ) );
+			this.add( factory.createExpressionPropertyPane( this.fieldAccess.expression, null ) );
 //			if( getIDE().isJava() ) {
 //				//pass
 //			} else {

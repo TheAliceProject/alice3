@@ -47,13 +47,8 @@ public abstract class Factory {
 	protected java.awt.Component createTextComponent( String text ) { 
 		return new zoot.ZLabel( text );
 	}
-	protected abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane );
+	public abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane );
 	protected abstract java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
-
-	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property, boolean isDropDownPotentiallyDesired, java.awt.Component prefixPane ) {
-		return this.createExpressionPropertyPane( property, prefixPane );
-		//return new ExpressionPropertyPane( this, property, isDropDownPotentiallyDesired, prefixPane );
-	}
 	
 	protected java.awt.Component createVariableDeclarationPane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice ) {
 		return new VariableDeclarationPane( variableDeclaredInAlice );
@@ -214,9 +209,36 @@ public abstract class Factory {
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.Page page, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		org.alice.ide.i18n.Line[] lines = page.getLines();
-		assert lines.length > 0;
-		if( lines.length > 1 ) {
-			swing.PageAxisPane pagePane = new swing.PageAxisPane();
+		final int N = lines.length;
+		assert N > 0;
+		if( N > 1 ) {
+			final boolean isLoop = lines[ N-1 ].isLoop();
+			swing.PageAxisPane pagePane = new swing.PageAxisPane() {
+				@Override
+				public void paint( java.awt.Graphics g ) {
+					super.paint( g );
+					if( isLoop ) {
+						int n = this.getComponentCount();
+						java.awt.Component cFirst = this.getComponent( 0 );
+						java.awt.Component cLast = this.getComponent( n-1 );
+						g.setColor( java.awt.Color.GRAY );
+						int xB = Factory.this.getPixelsPerIndent();
+						int xA = xB/2;
+						int yTop = cFirst.getY() + cFirst.getHeight();
+						int yBottom = cLast.getY() + cLast.getHeight()/2;
+						g.drawLine( xA, yTop, xA, yBottom );
+						g.drawLine( xA, yBottom, xB, yBottom );
+
+						int xC = cLast.getX() + cLast.getWidth();
+						int xD = xC + Factory.this.getPixelsPerIndent();;
+						g.drawLine( xC, yBottom, xD, yBottom );
+						g.drawLine( xD, yBottom, xD, cLast.getY() );
+						
+						final int HALF_TRIANGLE_WIDTH = 3;
+						edu.cmu.cs.dennisc.awt.GraphicsUtilties.fillTriangle( g, edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
+					}
+				}
+			};
 			for( org.alice.ide.i18n.Line line : lines ) {
 				pagePane.add( createComponent( line, owner ) );
 			}
@@ -284,27 +306,31 @@ public abstract class Factory {
 //		} else {
 //			rv = new ExpressionPane( this, expression );
 //		}
-		java.awt.Component rv;
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
-			edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression conditionalInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)expression;
-			java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression", javax.swing.JComponent.getDefaultLocale() );
-			String value = resourceBundle.getString( conditionalInfixExpression.operator.getValue().name() );
-			org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
-			rv = new ExpressionPane( conditionalInfixExpression, this.createComponent( page, conditionalInfixExpression ) );
-			
-		//todo: handle Relational and Arithmetic
-		} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
-			rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
-		} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
-			rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
-			rv = new AssignmentExpressionPane( this, (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			rv = new FieldAccessPane( this, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-			rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+		java.awt.Component rv = org.alice.ide.IDE.getSingleton().getOverrideComponent( expression );
+		if( rv != null ) {
+			//pass
 		} else {
-			rv = new ExpressionPane( expression, this.createComponent( expression ) );
+			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
+				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression conditionalInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)expression;
+				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression", javax.swing.JComponent.getDefaultLocale() );
+				String value = resourceBundle.getString( conditionalInfixExpression.operator.getValue().name() );
+				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
+				rv = new ExpressionPane( conditionalInfixExpression, this.createComponent( page, conditionalInfixExpression ) );
+				
+			//todo: handle Relational and Arithmetic
+			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
+				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
+			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
+				rv = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
+				rv = new AssignmentExpressionPane( this, (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+				rv = new FieldAccessPane( this, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+				rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+			} else {
+				rv = new ExpressionPane( expression, this.createComponent( expression ) );
+			}
 		}
 		return rv;
 	}

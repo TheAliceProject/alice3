@@ -47,7 +47,7 @@ public class AssignmentExpressionPane extends swing.LineAxisPane  {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
 			org.alice.ide.common.NodeNameLabel nameLabel = new org.alice.ide.common.NodeNameLabel( fieldAccess.field.getValue() );
 			nameLabel.setFontToScaledFont( 1.5f );
-			parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, true, null ) );
+			parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, null ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
 				parent.add( new zoot.ZLabel( " . " ) );
 			}
@@ -64,7 +64,7 @@ public class AssignmentExpressionPane extends swing.LineAxisPane  {
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
 			parent.add( new zoot.ZLabel( "[ " ) );
-			parent.add( factory.createExpressionPropertyPane( arrayAccess.index, true, null ) );
+			parent.add( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
 			parent.add( new zoot.ZLabel( " ]" ) );
 		}
 		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
@@ -72,6 +72,6 @@ public class AssignmentExpressionPane extends swing.LineAxisPane  {
 		} else {
 			parent.add( new org.alice.ide.common.GetsPane( true ) );
 		}
-		parent.add( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, true, null ) );
+		parent.add( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null ) );
 	}
 }
