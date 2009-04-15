@@ -136,10 +136,21 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 		} else {
 			java.awt.Container container = this.menuItem;
 			javax.swing.JComponent component = this.getMenuProxy();
+			if( component != null ) {
+				edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( component );
+				java.awt.Dimension size = component.getPreferredSize();
+				if( size.width > 0 && size.width > 0 ) {
+					this.menuItem.setIcon( edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component, container ) );
+					this.menuItem.setText( null );
+				} else {
+					this.menuItem.setIcon( null );
+					this.menuItem.setText( "unknown" );
+				}
+			} else {
+				this.menuItem.setIcon( null );
+				this.menuItem.setText( "unknown" );
+			}
 			//component.doLayout();
-			edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( component );
-			this.menuItem.setIcon( edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component, container ) );
-			this.menuItem.setText( "" );
 			setMenuItemIconUpToDate( true );
 		}
 		return this.menuItem;

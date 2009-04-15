@@ -42,6 +42,10 @@ public class MoreDropDownPane extends DropDownPane {
 		}
 		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInMoreOperation( this.expressionStatement ) );
 	}
+	@Override
+	protected int getInsetLeft() {
+		return super.getInsetLeft() + 2;
+	}
 //	public edu.cmu.cs.dennisc.alice.ast.ExpressionStatement getMethod() {
 //		return this.expressionStatement;
 //	}

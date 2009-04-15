@@ -1108,18 +1108,24 @@ public abstract class IDE extends zoot.ZFrame {
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
 	public void promptUserForMore( final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-		cascade.Blank blank = new cascade.Blank() {
-			@Override
-			protected void addChildren() {
-				cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > menuFillIn = new cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( parameter.getName() ) {
-					@Override
-					protected void addChildrenToBlank( cascade.Blank blank ) {
-						org.alice.ide.IDE.getSingleton().addFillIns( blank, parameter.getValueType() );
-					}
-				};
-				this.addFillIn( menuFillIn );
-			}
-		};
+		final String parameterName = parameter.getName();
+		cascade.Blank blank;
+		if( parameterName != null ) {
+			blank = new cascade.Blank() {
+				@Override
+				protected void addChildren() {
+					cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > menuFillIn = new cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( parameterName ) {
+						@Override
+						protected void addChildrenToBlank( cascade.Blank blank ) {
+							org.alice.ide.IDE.getSingleton().addFillIns( blank, parameter.getValueType() );
+						}
+					};
+					this.addFillIn( menuFillIn );
+				}
+			};
+		} else {
+			blank = createExpressionBlank( parameter.getValueType(), null );
+		}
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
 	public void unsetPreviousExpression() {

@@ -69,15 +69,13 @@ public class SwingUtilities {
 			rv = new javax.swing.ImageIcon( image );
 		} else {
 			rv = new javax.swing.Icon() {
-				public int getIconHeight() {
-					return 100;
-				}
 				public int getIconWidth() {
-					return 100;
+					return 24;
+				}
+				public int getIconHeight() {
+					return 12;
 				}
 				public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
-					g.setColor( java.awt.Color.RED );
-					g.fillOval( x, y, 100, 100 );
 				}
 			};
 		}
