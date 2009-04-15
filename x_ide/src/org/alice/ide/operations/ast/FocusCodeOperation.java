@@ -32,9 +32,9 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 		this.nextCode = nextCode;
 		String name;
 		if( nextCode instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
-			name = "edit constructor";
+			name = "Edit Constructor";
 		} else {
-			name = "edit";
+			name = "Edit";
 		}
 		this.putValue( javax.swing.Action.NAME, name );
 	}

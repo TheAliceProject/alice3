@@ -38,6 +38,9 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 //	protected boolean isActuallyPotentiallyDraggable() {
 //		return true;
 //	}
+	public ExpressionCreatorPane() {
+		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
+	}
 	
 	@Override
 	public void setActive( boolean isActive ) {
@@ -51,4 +54,8 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 	}
 	
 	public abstract void createExpression( final zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver );
+	@Override
+	protected boolean isKnurlDesired() {
+		return true;
+	}
 }

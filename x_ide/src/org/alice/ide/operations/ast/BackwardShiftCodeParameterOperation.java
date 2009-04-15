@@ -22,13 +22,20 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
+import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
 public class BackwardShiftCodeParameterOperation extends AbstractShiftCodeParameterOperation {
-	public BackwardShiftCodeParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( code, parameter );
+	public BackwardShiftCodeParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+		super( parametersProperty, parameter );
 		this.putValue( javax.swing.Action.NAME, "Shift Backward" );
+	}
+	@Override
+	protected boolean isAppropriate( int index, int n ) {
+		return index < n-1;
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo" );

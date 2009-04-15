@@ -33,7 +33,7 @@ class TypeBorder implements javax.swing.border.Border {
 	private static java.awt.Color FILL_BRIGHTER_COLOR = edu.cmu.cs.dennisc.color.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 0.5, 1.4 );
 	private static java.awt.Color FILL_DARKER_COLOR = edu.cmu.cs.dennisc.color.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 1.0, 0.9 );
 
-	private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
+	//private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
 	//private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();
 	
 	private static java.awt.Color OUTLINE_COLOR = java.awt.Color.GRAY;

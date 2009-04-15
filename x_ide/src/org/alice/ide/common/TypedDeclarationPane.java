@@ -22,45 +22,42 @@
  */
 package org.alice.ide.common;
 
-import java.awt.event.MouseEvent;
-
-import zoot.ZManager;
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class TypedDeclarationPane extends swing.LineAxisPane  {
-	class PopupOperation extends zoot.AbstractPopupActionOperation {
-		@Override
-		protected java.util.List< zoot.Operation > getOperations() {
-			return TypedDeclarationPane.this.getPopupOperations();
-		}
-	}
-	private PopupOperation popupOperation = new PopupOperation();
+//	class PopupOperation extends zoot.AbstractPopupActionOperation {
+//		@Override
+//		protected java.util.List< zoot.Operation > getOperations() {
+//			return TypedDeclarationPane.this.getPopupOperations();
+//		}
+//	}
+//	private PopupOperation popupOperation = new PopupOperation();
 	public TypedDeclarationPane( java.awt.Component... components ) {
 		super( components );
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setForeground( java.awt.Color.GRAY );
-		this.addMouseListener( new java.awt.event.MouseListener() {
-			public void mousePressed( MouseEvent e ) {
-				if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
-					if( TypedDeclarationPane.this.popupOperation != null ) {
-						ZManager.performIfAppropriate( TypedDeclarationPane.this.popupOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
-					}
-				}
-			}
-			public void mouseReleased( MouseEvent e ) {
-			}
-			public void mouseClicked( MouseEvent e ) {
-			}
-			public void mouseEntered( MouseEvent e ) {
-			}
-			public void mouseExited( MouseEvent e ) {
-			}
-		} );
+		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
+//		this.addMouseListener( new java.awt.event.MouseListener() {
+//			public void mousePressed( java.awt.event.MouseEvent e ) {
+//				if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
+//					if( TypedDeclarationPane.this.popupOperation != null ) {
+//						zoot.ZManager.performIfAppropriate( TypedDeclarationPane.this.popupOperation, e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+//					}
+//				}
+//			}
+//			public void mouseReleased( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseClicked( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseEntered( java.awt.event.MouseEvent e ) {
+//			}
+//			public void mouseExited( java.awt.event.MouseEvent e ) {
+//			}
+//		} );
 	}
-	protected abstract java.util.List< zoot.Operation > getPopupOperations();
+//	protected abstract java.util.List< zoot.Operation > getPopupOperations();
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );

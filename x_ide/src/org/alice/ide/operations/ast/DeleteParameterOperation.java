@@ -22,12 +22,15 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
+import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
-	public DeleteParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( code, parameter );
+	public DeleteParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( parametersProperty, parameter );
 		this.putValue( javax.swing.Action.NAME, "Delete" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {

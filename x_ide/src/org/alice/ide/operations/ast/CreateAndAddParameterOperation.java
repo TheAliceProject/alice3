@@ -28,7 +28,7 @@ package org.alice.ide.operations.ast;
 public class CreateAndAddParameterOperation extends AbstractCodeOperation {
 	public CreateAndAddParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		super( code );
-		this.putValue( javax.swing.Action.NAME, "add parameter..." );
+		this.putValue( javax.swing.Action.NAME, "Add Parameter..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code = this.getCode();

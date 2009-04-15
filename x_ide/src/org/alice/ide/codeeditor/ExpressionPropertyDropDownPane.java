@@ -47,8 +47,8 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 	public void dragStarted( zoot.DragAndDropContext dragAndDropContext ) {
 	}
 	public void dragEntered( zoot.DragAndDropContext dragAndDropContext ) {
-		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
-		source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height );
+//		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+//		source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height );
 	}
 	public void dragUpdated( zoot.DragAndDropContext dragAndDropContext ) {
 	}

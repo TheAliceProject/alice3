@@ -58,7 +58,7 @@ public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennis
 	}
 	@Override
 	protected java.awt.Component createPreviewSubComponent() {
-		return new org.alice.ide.codeeditor.TypedParameterPane( this.getActualInputValue() );
+		return new org.alice.ide.codeeditor.TypedParameterPane( null, this.getActualInputValue() );
 	}
 	@Override
 	protected String getTitleDefault() {

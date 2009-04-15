@@ -39,6 +39,7 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 		this.statementCls = statementCls;
 		this.setLayout( new javax.swing.BoxLayout( this, axis ) );
 		this.setBackground( getIDE().getColorForASTClass( this.statementCls ) );
+		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
 	}
 	
 	public Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementCls() {

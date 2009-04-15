@@ -34,10 +34,10 @@ class LocalDeclarationPane extends TypedDeclarationPane {
 		this.add( new org.alice.ide.common.TypeComponent( this.localDeclaredInAlice.valueType.getValue() ) );
 	}
 	
-	@Override
-	protected java.util.List< zoot.Operation > getPopupOperations() {
-		java.util.LinkedList< zoot.Operation > rv = new java.util.LinkedList< zoot.Operation >();
-		rv.add( new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( this.localDeclaredInAlice ) );
-		return rv;
-	}
+//	@Override
+//	protected java.util.List< zoot.Operation > getPopupOperations() {
+//		java.util.LinkedList< zoot.Operation > rv = new java.util.LinkedList< zoot.Operation >();
+//		rv.add( new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( this.localDeclaredInAlice ) );
+//		return rv;
+//	}
 }

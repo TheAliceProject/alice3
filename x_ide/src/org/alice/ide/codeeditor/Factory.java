@@ -27,7 +27,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 
 	public DeleteStatementActionOperation( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		this.putValue( javax.swing.Action.NAME, "delete" );
+		this.putValue( javax.swing.Action.NAME, "Delete" );
 		this.statement = abstractStatementPane.getStatement();
 		this.property = abstractStatementPane.getOwner();
 	}
@@ -49,7 +49,7 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( statement.isEnabled.getValue() );
 		this.statement = statement;
-		this.putValue( javax.swing.Action.NAME, "is enabled" );
+		this.putValue( javax.swing.Action.NAME, "Is Enabled" );
 		//update();
 	}
 	//	private void update() {
@@ -107,7 +107,6 @@ public class Factory extends org.alice.ide.common.Factory {
 	}
 	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
-		rv.add( new DeleteStatementActionOperation( abstractStatementPane ) );
 		rv.add( new StatementEnabledStateOperation( abstractStatementPane.getStatement() ) );
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
 			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
@@ -120,6 +119,8 @@ public class Factory extends org.alice.ide.common.Factory {
 				}
 			}
 		}
+		rv.add( zoot.ZManager.MENU_SEPARATOR );
+		rv.add( new DeleteStatementActionOperation( abstractStatementPane ) );
 		return rv;
 	}
 	private java.util.List< zoot.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {

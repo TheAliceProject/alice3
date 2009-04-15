@@ -22,16 +22,30 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
+import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodeParameterOperation extends AbstractCodeOperation {
-	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	public AbstractCodeParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( code );
+	private ParameterDeclaredInAlice parameter;
+	private NodeListProperty< ParameterDeclaredInAlice > parametersProperty;
+	private static edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)parameter.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+	}
+	public AbstractCodeParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+		super( getCode( parameter ) );
+		this.parametersProperty = parametersProperty;
 		this.parameter = parameter;
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice getParameter() {
 		return this.parameter;
+	}
+	protected int getIndex() {
+		return this.parametersProperty.indexOf( this.parameter );
+	}
+	protected int getParameterCount() {
+		return this.parametersProperty.size();
 	}
 }

@@ -29,7 +29,7 @@ public class CreateAndAddFieldOperation extends org.alice.ide.operations.Abstrac
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	public CreateAndAddFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		this.ownerType = ownerType;
-		this.putValue( javax.swing.Action.NAME, "create new property..." );
+		this.putValue( javax.swing.Action.NAME, "Declare Property..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		org.alice.ide.createdeclarationpanes.CreateFieldPane createMethodPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( this.ownerType );

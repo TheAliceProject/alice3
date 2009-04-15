@@ -86,7 +86,7 @@ class ListPropertyComboBoxModel<E> extends javax.swing.AbstractListModel impleme
 public class ArrayInitializerPane extends AbstractInitializerPane {
 	class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public AddItemOperation() {
-			this.putValue( javax.swing.Action.NAME, "add" );
+			this.putValue( javax.swing.Action.NAME, "Add" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
 			edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
@@ -96,7 +96,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public RemoveItemOperation() {
-			this.putValue( javax.swing.Action.NAME, "remove" );
+			this.putValue( javax.swing.Action.NAME, "Remove" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
 			int index = ArrayInitializerPane.this.list.getSelectedIndex();
@@ -114,7 +114,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class MoveItemUpOperation extends AbstractMoveItemOperation {
 		public MoveItemUpOperation() {
-			this.putValue( javax.swing.Action.NAME, "move up" );
+			this.putValue( javax.swing.Action.NAME, "Move Up" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
 			int index = ArrayInitializerPane.this.list.getSelectedIndex();
@@ -125,7 +125,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class MoveItemDownOperation extends AbstractMoveItemOperation {
 		public MoveItemDownOperation() {
-			this.putValue( javax.swing.Action.NAME, "move down" );
+			this.putValue( javax.swing.Action.NAME, "Move Down" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
 			int index = ArrayInitializerPane.this.list.getSelectedIndex();

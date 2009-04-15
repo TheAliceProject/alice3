@@ -57,7 +57,7 @@ public class AssignmentExpressionPane extends swing.LineAxisPane  {
 			parent.add( new VariablePane( variableAccess.variable.getValue() ) );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ParameterAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess = (edu.cmu.cs.dennisc.alice.ast.ParameterAccess)expression;
-			parent.add( new ParameterPane( parameterAccess.parameter.getValue() ) );
+			parent.add( new ParameterPane( null, (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameterAccess.parameter.getValue() ) );
 		} else {
 			parent.add( new zoot.ZLabel( "TODO" ) );
 		}

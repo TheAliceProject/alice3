@@ -27,7 +27,7 @@ package org.alice.stageide.personeditor;
  */
 class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public RandomPersonActionOperation() {
-		this.putValue( javax.swing.Action.NAME, "generate random selection" );
+		this.putValue( javax.swing.Action.NAME, "Generate Random Selection" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		PersonViewer.getSingleton().randomize();

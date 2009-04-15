@@ -22,12 +22,19 @@
  */
 package org.alice.ide.operations.ast;
 
+import edu.cmu.cs.dennisc.alice.ast.NodeListProperty;
+import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class AbstractShiftCodeParameterOperation extends AbstractCodeParameterOperation {
-	public AbstractShiftCodeParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( code, parameter );
+	public AbstractShiftCodeParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+		super( parametersProperty, parameter );
+	}
+	protected abstract boolean isAppropriate( int index, int n );
+	public boolean isIndexAppropriate() {
+		return this.isAppropriate( this.getIndex(), this.getParameterCount() );
 	}
 //	def prepare( self, e, observer ):
 //		return alice.ide.Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY

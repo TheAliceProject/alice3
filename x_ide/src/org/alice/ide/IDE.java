@@ -587,6 +587,8 @@ public abstract class IDE extends zoot.ZFrame {
 							g2.setStroke( THIN_STROKE );
 							g2.draw( holeBounds );
 							g2.setStroke( THICK_STROKE );
+							g2.setColor( new java.awt.Color( 191, 255, 191, 63 ) );
+							g2.fill( holeBounds );
 						}
 //
 ////						g2.translate( 1, 1 );

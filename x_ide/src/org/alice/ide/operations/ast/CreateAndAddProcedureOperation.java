@@ -28,7 +28,7 @@ package org.alice.ide.operations.ast;
 public class CreateAndAddProcedureOperation extends AbstractCreateAndAddMethodOperation {
 	public CreateAndAddProcedureOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( type );
-		this.putValue( javax.swing.Action.NAME, "create new procedure..." );
+		this.putValue( javax.swing.Action.NAME, "Declare Procedure..." );
 	}
 	@Override
 	protected org.alice.ide.createdeclarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {

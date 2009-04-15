@@ -28,7 +28,7 @@ package org.alice.ide.operations.ast;
 public class CreateAndAddFunctionOperation extends AbstractCreateAndAddMethodOperation {
 	public CreateAndAddFunctionOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( type );
-		this.putValue( javax.swing.Action.NAME, "create new function..." );
+		this.putValue( javax.swing.Action.NAME, "Declare Function..." );
 	}
 	@Override
 	protected org.alice.ide.createdeclarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {

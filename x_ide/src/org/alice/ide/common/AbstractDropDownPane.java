@@ -31,6 +31,7 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 		zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
 		this.addMouseListener( controlAdapter );
 		this.addMouseMotionListener( controlAdapter );
+		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 	}
 	
 	private static final int AFFORDANCE_WIDTH = 6;

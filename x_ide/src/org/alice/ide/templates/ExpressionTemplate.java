@@ -49,8 +49,4 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	protected boolean isPressed() {
 		return false;
 	}
-	@Override
-	protected boolean isKnurlDesired() {
-		return true;
-	}
 }

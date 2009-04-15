@@ -28,7 +28,7 @@ package org.alice.stageide.operations.ast;
 public class OrientToUprightActionOperation extends AbstractFieldTileActionOperation {
 	public OrientToUprightActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
-		this.putValue( javax.swing.Action.NAME, "orient to upright" );
+		this.putValue( javax.swing.Action.NAME, "Orient to Upright" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		this.getMoveAndTurnSceneEditor().orientToUpright( this.getField() );
