@@ -43,7 +43,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	}
 	@Override
 	protected int getInsetTop() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression ) {
+		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression ) {
 			return 0;
 		} else {
 			return super.getInsetTop();

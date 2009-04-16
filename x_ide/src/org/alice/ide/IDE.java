@@ -1485,52 +1485,6 @@ public abstract class IDE extends zoot.ZFrame {
 	//		}
 	//	}
 
-	public java.awt.Paint getPaintFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int x, int y, int width, int height ) {
-		java.awt.Color color = this.getColorFor( cls );
-		if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
-			return color;
-		} else {
-			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.DoTogether.class, edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class ) ) {
-				java.awt.Color colorA = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 0.95, 0.9 );
-				java.awt.Color colorB = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.1 );
-				return new java.awt.GradientPaint( x, y, colorA, x + 300, y, colorB );
-			} else {
-				return color;
-				//return new java.awt.GradientPaint( x, y, colorB, x, y + 64, color );
-			}
-		}
-	}
-	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
-		if( edu.cmu.cs.dennisc.alice.ast.Statement.class.isAssignableFrom( cls ) ) {
-			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
-				return edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 );
-			} else {
-				return new java.awt.Color( 0xd3d7f0 );
-			}
-		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
-			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression.class ) ) {
-				return new java.awt.Color( 0xc8e9b8 );
-			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
-				return new java.awt.Color( 0xbdcfb3 );
-			} else {
-				if( edu.cmu.cs.dennisc.alice.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
-					return java.awt.Color.RED;
-				} else {
-					return new java.awt.Color( 0xfdf6c0 );
-				}
-			}
-		} else {
-			return java.awt.Color.BLUE;
-		}
-	}
-	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-		if( node != null ) {
-			return this.getColorFor( node.getClass() );
-		} else {
-			return java.awt.Color.RED;
-		}
-	}
-
 	@Deprecated
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
 		edu.cmu.cs.dennisc.alice.Project project = getProject();
@@ -1706,9 +1660,9 @@ public abstract class IDE extends zoot.ZFrame {
 	//	}
 
 	private static final java.awt.Color DEFAULT_PROCEDURE_COLOR = new java.awt.Color( 0xb2b7d9 );
-	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xaabca1 );
-	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xb0c9a4 );
-	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 0xd8d2a4 );
+	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xb0c9a4 );
+	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xadc0ab );
+	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 0xc0ba8f );
 
 	public java.awt.Color getProcedureColor() {
 		return DEFAULT_PROCEDURE_COLOR;
@@ -1728,6 +1682,53 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.awt.Color getParameterColor() {
 		return getFieldColor();
 	}
+
+	public java.awt.Paint getPaintFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int x, int y, int width, int height ) {
+		java.awt.Color color = this.getColorFor( cls );
+		if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
+			return color;
+		} else {
+			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.DoTogether.class, edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class ) ) {
+				java.awt.Color colorA = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 0.95, 0.9 );
+				java.awt.Color colorB = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.1 );
+				return new java.awt.GradientPaint( x, y, colorA, x + 300, y, colorB );
+			} else {
+				return color;
+				//return new java.awt.GradientPaint( x, y, colorB, x, y + 64, color );
+			}
+		}
+	}
+	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
+		if( edu.cmu.cs.dennisc.alice.ast.Statement.class.isAssignableFrom( cls ) ) {
+			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
+				return edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 );
+			} else {
+				return new java.awt.Color( 0xd3d7f0 );
+			}
+		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
+			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression.class ) ) {
+				return new java.awt.Color( 0xc4d9c1 );
+			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
+				return new java.awt.Color( 0xbdcfb3 );
+			} else {
+				if( edu.cmu.cs.dennisc.alice.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
+					return java.awt.Color.RED;
+				} else {
+					return new java.awt.Color( 0xfdf6c0 );
+				}
+			}
+		} else {
+			return java.awt.Color.BLUE;
+		}
+	}
+	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+		if( node != null ) {
+			return this.getColorFor( node.getClass() );
+		} else {
+			return java.awt.Color.RED;
+		}
+	}
+
 
 	public java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {

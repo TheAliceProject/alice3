@@ -27,7 +27,7 @@ package org.alice.ide.common;
  */
 public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	private static final int INSET = 2;
-	private static final int DOCKING_BAY_INSET_LEFT = 8;
+	private static final int DOCKING_BAY_INSET_LEFT = 5;
 
 	public ExpressionLikeSubstance() {
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
