@@ -38,7 +38,6 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	public StatementLikeSubstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls, int axis ) {
 		this.statementCls = statementCls;
 		this.setLayout( new javax.swing.BoxLayout( this, axis ) );
-		this.setBackground( getIDE().getColorForASTClass( this.statementCls ) );
 		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
 	}
 	
@@ -69,6 +68,11 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	protected int getInsetRight() {
 		return StatementLikeSubstance.INSET + 4;
 	}
+	@Override
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		return getIDE().getPaintFor( this.statementCls, x, y, width, height );
+	}
+
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		g2.fillRoundRect( x, y, width - 1, height - 1, 8, 8 );

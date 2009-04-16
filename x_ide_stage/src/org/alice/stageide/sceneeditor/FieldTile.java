@@ -106,7 +106,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 //	}
 	protected java.awt.Color calculateColor() {
 		org.alice.ide.IDE ide = getIDE();
-		java.awt.Color color = ide.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+		java.awt.Color color = ide.getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 		if( this.field == ide.getFieldSelection() ) {
 			//color = color.brighter();
 			color = java.awt.Color.YELLOW;

@@ -27,8 +27,8 @@ package edu.cmu.cs.dennisc.swing.plaf;
  */
 class CloseIcon implements javax.swing.Icon {
 	private static final java.awt.Color BASE_COLOR = new java.awt.Color( 127, 63, 63 );
-	private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.color.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
-	private static final java.awt.Color PRESS_COLOR = edu.cmu.cs.dennisc.color.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
+	private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
+	private static final java.awt.Color PRESS_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
 
 	private boolean isFilled = false;
 	private boolean isHighlighted = false;

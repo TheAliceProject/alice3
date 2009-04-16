@@ -34,7 +34,7 @@ public class ShapeUtilties {
 		int width2 = width * 2;
 		for( int i = width2; i >= 2; i -= 2 ) {
 			float portion = (float)(width2 - i) / (width2);
-			g2.setColor( edu.cmu.cs.dennisc.color.ColorUtilities.interpolate( a, b, portion ) );
+			g2.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.interpolate( a, b, portion ) );
 			g2.setStroke( new java.awt.BasicStroke( i ) );
 			g2.draw( shape );
 		}
@@ -46,7 +46,7 @@ public class ShapeUtilties {
 		int width2 = width * 2;
 		for( int i = width2; i >= 2; i -= 2 ) {
 			float portion = (float)(width2 - i) / (width2);
-			g2.setColor( edu.cmu.cs.dennisc.color.ColorUtilities.interpolate( a, b, portion ) );
+			g2.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.interpolate( a, b, portion ) );
 			g2.setComposite( java.awt.AlphaComposite.getInstance( alphaRule, portion ) );
 			g2.setStroke( new java.awt.BasicStroke( i ) );
 			g2.draw( shape );

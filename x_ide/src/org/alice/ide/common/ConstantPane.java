@@ -30,7 +30,7 @@ public class ConstantPane extends LocalPane {
 	public ConstantPane( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant ) {
 		super( constant );
 		this.constant = constant;
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
+		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ConstantAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {

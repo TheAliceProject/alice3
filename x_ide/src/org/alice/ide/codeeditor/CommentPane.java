@@ -46,7 +46,7 @@ class CommentLine extends javax.swing.JTextArea {
 			}
 		} );
 		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 240 ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.Comment.class ) );
+		this.setBackground( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.Comment.class ) );
 		//this.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.BLACK ) );
 		this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
 		this.handleUpdate();

@@ -39,4 +39,13 @@ public class ClassUtilities {
 	public static Class<?> forName( String className ) {
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( className );
 	}
+	
+	public static boolean isAssignableToAtLeastOne( Class<?> right, Class<?>... lefts ) {
+		for( Class<?> left : lefts ) {
+			if( left.isAssignableFrom( right ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

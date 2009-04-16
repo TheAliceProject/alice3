@@ -30,7 +30,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	public ExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		this.expression = expression;
 		this.add( getIDE().getTemplatesFactory().createComponent( this.expression ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
+		this.setBackground( getIDE().getColorFor( expression ) );
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
 		this.setPopupOperation( new org.alice.ide.operations.AbstractActionOperation() {
 			public void perform( zoot.ActionContext actionContext ) {

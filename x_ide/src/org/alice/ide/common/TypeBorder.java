@@ -29,9 +29,9 @@ class TypeBorder implements javax.swing.border.Border {
 	private static final int X_INSET = 10;
 	private static final int Y_INSET = 4;
 	private static java.awt.Insets insets = new java.awt.Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
-	private static java.awt.Color FILL_COLOR = org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.TypeExpression.class );
-	private static java.awt.Color FILL_BRIGHTER_COLOR = edu.cmu.cs.dennisc.color.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 0.5, 1.4 );
-	private static java.awt.Color FILL_DARKER_COLOR = edu.cmu.cs.dennisc.color.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 1.0, 0.9 );
+	private static java.awt.Color FILL_COLOR = org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.TypeExpression.class );
+	private static java.awt.Color FILL_BRIGHTER_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 0.5, 1.4 );
+	private static java.awt.Color FILL_DARKER_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 1.0, 0.8 );
 
 	//private static java.awt.Color NULL_COLOR = java.awt.Color.RED.darker();
 	//private static java.awt.Color NULL_DARKER_COLOR = NULL_COLOR.darker();

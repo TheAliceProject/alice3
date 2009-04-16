@@ -30,7 +30,7 @@ public class ThisPane extends AccessiblePane {
 	public ThisPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
 		this.add( new zoot.ZLabel( "this" ) );
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
+		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {

@@ -28,8 +28,8 @@ package edu.cmu.cs.dennisc.swing;
  */
 public class Tab extends javax.swing.JComponent {
 	private static final java.awt.Color CLOSE_BUTTON_BASE_COLOR = new java.awt.Color( 127, 63, 63 );
-	private static final java.awt.Color CLOSE_BUTTON_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.color.ColorUtilities.shiftHSB( CLOSE_BUTTON_BASE_COLOR, 0, 0, +0.25f );
-	private static final java.awt.Color CLOSE_BUTTON_PRESS_COLOR = edu.cmu.cs.dennisc.color.ColorUtilities.shiftHSB( CLOSE_BUTTON_BASE_COLOR, 0, 0, -0.125f );
+	private static final java.awt.Color CLOSE_BUTTON_HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.shiftHSB( CLOSE_BUTTON_BASE_COLOR, 0, 0, +0.25f );
+	private static final java.awt.Color CLOSE_BUTTON_PRESS_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.shiftHSB( CLOSE_BUTTON_BASE_COLOR, 0, 0, -0.125f );
 
 	class CloseButton extends javax.swing.JComponent {
 		private boolean m_isShowing = false;

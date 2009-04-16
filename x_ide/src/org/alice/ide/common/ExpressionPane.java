@@ -30,7 +30,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	public ExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression, java.awt.Component component ) {
 		this.expression = expression;
 		this.add( component );
-		this.setBackground( org.alice.ide.IDE.getColorForASTInstance( expression ) );
+		this.setBackground( getIDE().getColorFor( expression ) );
 		//this.setBackground( java.awt.Color.GREEN );
 	}
 	@Override

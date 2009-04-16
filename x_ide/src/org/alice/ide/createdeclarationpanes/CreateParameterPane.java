@@ -30,7 +30,7 @@ public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennis
 	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		super( new org.alice.ide.namevalidators.ParameterNameValidator( code ) );
 		this.code = code;
-		this.setBackground( org.alice.ide.IDE.getParameterColor() );
+		this.setBackground( getIDE().getParameterColor() );
 	}
 	@Override
 	protected boolean isEditableInitializerComponentDesired() {

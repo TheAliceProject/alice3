@@ -28,7 +28,7 @@ package org.alice.ide.createdeclarationpanes;
 public class CreateProcedurePane extends CreateMethodPane {
 	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
-		this.setBackground( org.alice.ide.IDE.getProcedureColor() );
+		this.setBackground( getIDE().getProcedureColor() );
 	}
 	@Override
 	protected String getDeclarationText() {

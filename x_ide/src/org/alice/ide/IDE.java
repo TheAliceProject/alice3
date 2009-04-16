@@ -45,7 +45,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = this.getProgramType();
-		
+
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)sceneType.getDeclaredMethod( "performSceneEditorGeneratedSetUp" );
 		setUpMethod.body.getValue().statements.clear();
@@ -55,9 +55,9 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > getFieldAccesses( final edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
 		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >(  edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
 			@Override
-			protected boolean isAcceptable(edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 				return fieldAccess.field.getValue() == field;
 			}
 		};
@@ -67,15 +67,16 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > getMethodInvocations( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
 		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >(  edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
 			@Override
-			protected boolean isAcceptable(edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 				return methodInvocation.method.getValue() == method;
 			}
 		};
 		programType.crawl( crawler, true );
 		return crawler.getList();
 	}
+
 	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
 
 	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
@@ -125,11 +126,11 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
-	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor = this.createSceneEditor();
-	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser = this.createGalleryBrowser();
-	private org.alice.ide.memberseditor.MembersEditor membersEditor = this.createClassMembersEditor();
-	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor = this.createListenersEditor();
-	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane = this.createEditorsTabbedPane();
+	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
+	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
+	private org.alice.ide.memberseditor.MembersEditor membersEditor;
+	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor;
+	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 	//	private zoot.ZLabel feedback = new zoot.ZLabel();
@@ -211,10 +212,10 @@ public abstract class IDE extends zoot.ZFrame {
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;
 	}
-	
+
 	private int rootDividerLocation = 400;
 	private int leftDividerLocation = 300;
-	
+
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
 			this.left.setResizeWeight( 1.0 );
@@ -256,6 +257,11 @@ public abstract class IDE extends zoot.ZFrame {
 
 		this.promptForLicenseAgreements();
 
+		this.sceneEditor = this.createSceneEditor();
+		this.galleryBrowser = this.createGalleryBrowser();
+		this.membersEditor = this.createClassMembersEditor();
+		this.listenersEditor = this.createListenersEditor();
+		this.editorsTabbedPane = this.createEditorsTabbedPane();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
 		this.addIDEListener( this.sceneEditor );
@@ -537,6 +543,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private static java.awt.Stroke THIN_STROKE = new java.awt.BasicStroke( 1.0f );
 	private static java.awt.Stroke THICK_STROKE = new java.awt.BasicStroke( 3.0f );//, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_MITER );
+
 	class ComponentStencil extends javax.swing.JPanel {
 		public ComponentStencil() {
 			setOpaque( false );
@@ -584,7 +591,7 @@ public abstract class IDE extends zoot.ZFrame {
 						holeBounds.y -= BUFFER;
 						holeBounds.width += 2 * BUFFER;
 						holeBounds.height += 2 * BUFFER;
-						
+
 						g2.setColor( new java.awt.Color( 0, 0, 0 ) );
 						g2.draw( holeBounds );
 						if( IDE.this.currentDropReceptorComponent == component ) {
@@ -595,27 +602,27 @@ public abstract class IDE extends zoot.ZFrame {
 							g2.setColor( new java.awt.Color( 191, 255, 191, 63 ) );
 							g2.fill( holeBounds );
 						}
-//
-////						g2.translate( 1, 1 );
-////						g2.draw( holeBounds );
-////						g2.translate( -1, -1 );
-//						if( IDE.this.currentDropReceptorComponent == component ) {
-//							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
-//							g2.draw( holeBounds );
-//						} else {
-////							g2.setColor( java.awt.Color.YELLOW );
-////							g2.draw3DRect( holeBounds.x, holeBounds.y, holeBounds.width, holeBounds.height, false );
-//							int x0 = holeBounds.x;
-//							int x1 = holeBounds.x+holeBounds.width;
-//							int y0 = holeBounds.y;
-//							int y1 = holeBounds.y+holeBounds.height;
-//							g2.setColor( new java.awt.Color( 63, 91, 63 ) );
-//							g2.drawLine( x0, y1, x0, y0 );
-//							g2.drawLine( x0, y0, x1, y0 );
-//							g2.setColor( new java.awt.Color( 160, 191, 160 ) );
-//							g2.drawLine( x0, y1, x1, y1 );
-//							g2.drawLine( x1, y1, x1, y0 );
-//						}
+						//
+						////						g2.translate( 1, 1 );
+						////						g2.draw( holeBounds );
+						////						g2.translate( -1, -1 );
+						//						if( IDE.this.currentDropReceptorComponent == component ) {
+						//							g2.setColor( new java.awt.Color( 0, 0, 0 ) );
+						//							g2.draw( holeBounds );
+						//						} else {
+						////							g2.setColor( java.awt.Color.YELLOW );
+						////							g2.draw3DRect( holeBounds.x, holeBounds.y, holeBounds.width, holeBounds.height, false );
+						//							int x0 = holeBounds.x;
+						//							int x1 = holeBounds.x+holeBounds.width;
+						//							int y0 = holeBounds.y;
+						//							int y1 = holeBounds.y+holeBounds.height;
+						//							g2.setColor( new java.awt.Color( 63, 91, 63 ) );
+						//							g2.drawLine( x0, y1, x0, y0 );
+						//							g2.drawLine( x0, y0, x1, y0 );
+						//							g2.setColor( new java.awt.Color( 160, 191, 160 ) );
+						//							g2.drawLine( x0, y1, x1, y1 );
+						//							g2.drawLine( x1, y1, x1, y0 );
+						//						}
 					}
 					if( potentialDragSourceBounds != null ) {
 						g2.setColor( java.awt.Color.BLUE );
@@ -1451,28 +1458,74 @@ public abstract class IDE extends zoot.ZFrame {
 	//		return java.util.ResourceBundle.getBundle( baseName, locale );
 	//	}
 
-	private static java.awt.Color toColor( String s ) {
-		java.awt.Color rv;
-		//String s = resourceBundle.getString( key );
-		if( s.startsWith( "0x" ) ) {
-			int i = Integer.parseInt( s.substring( 2 ), 16 );
-			rv = new java.awt.Color( i );
-		} else {
-			String[] rgbStrings = s.split( " " );
-			int r = Integer.parseInt( rgbStrings[ 0 ] );
-			int g = Integer.parseInt( rgbStrings[ 1 ] );
-			int b = Integer.parseInt( rgbStrings[ 2 ] );
-			rv = new java.awt.Color( r, g, b );
-		}
-		return rv;
-	}
+	//	private static java.awt.Color toColor( String s ) {
+	//		java.awt.Color rv;
+	//		//String s = resourceBundle.getString( key );
+	//		if( s.startsWith( "0x" ) ) {
+	//			int i = Integer.parseInt( s.substring( 2 ), 16 );
+	//			rv = new java.awt.Color( i );
+	//		} else {
+	//			String[] rgbStrings = s.split( " " );
+	//			int r = Integer.parseInt( rgbStrings[ 0 ] );
+	//			int g = Integer.parseInt( rgbStrings[ 1 ] );
+	//			int b = Integer.parseInt( rgbStrings[ 2 ] );
+	//			rv = new java.awt.Color( r, g, b );
+	//		}
+	//		return rv;
+	//	}
+	//
+	//	public static java.awt.Color getColorForASTClass( Class< ? > cls ) {
+	//		return toColor( edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Colors", javax.swing.JComponent.getDefaultLocale() ) );
+	//	}
+	//	public static java.awt.Color getColorForASTInstance( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+	//		if( node != null ) {
+	//			return getColorForASTClass( node.getClass() );
+	//		} else {
+	//			return java.awt.Color.RED;
+	//		}
+	//	}
 
-	public static java.awt.Color getColorForASTClass( Class< ? > cls ) {
-		return toColor( edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Colors", javax.swing.JComponent.getDefaultLocale() ) );
+	public java.awt.Paint getPaintFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, int x, int y, int width, int height ) {
+		java.awt.Color color = this.getColorFor( cls );
+		if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
+			return color;
+		} else {
+			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.DoTogether.class, edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class ) ) {
+				java.awt.Color colorA = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 0.95, 0.9 );
+				java.awt.Color colorB = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.1 );
+				return new java.awt.GradientPaint( x, y, colorA, x + 300, y, colorB );
+			} else {
+				return color;
+				//return new java.awt.GradientPaint( x, y, colorB, x, y + 64, color );
+			}
+		}
 	}
-	public static java.awt.Color getColorForASTInstance( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
+		if( edu.cmu.cs.dennisc.alice.ast.Statement.class.isAssignableFrom( cls ) ) {
+			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
+				return edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 );
+			} else {
+				return new java.awt.Color( 0xd3d7f0 );
+			}
+		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
+			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression.class ) ) {
+				return new java.awt.Color( 0xc8e9b8 );
+			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
+				return new java.awt.Color( 0xbdcfb3 );
+			} else {
+				if( edu.cmu.cs.dennisc.alice.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
+					return java.awt.Color.RED;
+				} else {
+					return new java.awt.Color( 0xfdf6c0 );
+				}
+			}
+		} else {
+			return java.awt.Color.BLUE;
+		}
+	}
+	public java.awt.Color getColorFor( edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		if( node != null ) {
-			return getColorForASTClass( node.getClass() );
+			return this.getColorFor( node.getClass() );
 		} else {
 			return java.awt.Color.RED;
 		}
@@ -1628,21 +1681,55 @@ public abstract class IDE extends zoot.ZFrame {
 	//		return getComponentForNode( getNodeForUUID( uuid ) );
 	//	}
 
-	public static java.awt.Color getColorFor( String key ) {
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.Colors", javax.swing.JComponent.getDefaultLocale() );
-		String s = resourceBundle.getString( key );
-		return toColor( s );
+	//	public static java.awt.Color getColorFor( String key ) {
+	//		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "org.alice.ide.Colors", javax.swing.JComponent.getDefaultLocale() );
+	//		String s = resourceBundle.getString( key );
+	//		return toColor( s );
+	//	}
+	//	public static java.awt.Color getProcedureColor() {
+	//		return getColorFor( "procedure" );
+	//	}
+	//	public static java.awt.Color getFunctionColor() {
+	//		return getColorFor( "function" );
+	//	}
+	//	public static java.awt.Color getConstructorColor() {
+	//		return getColorFor( "constructor" );
+	//	}
+	//	public static java.awt.Color getFieldColor() {
+	//		return getColorFor( "field" );
+	//	}
+	//	public static java.awt.Color getLocalColor() {
+	//		return getFieldColor();
+	//	}
+	//	public static java.awt.Color getParameterColor() {
+	//		return getFieldColor();
+	//	}
+
+	private static final java.awt.Color DEFAULT_PROCEDURE_COLOR = new java.awt.Color( 0xb2b7d9 );
+	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xaabca1 );
+	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xb0c9a4 );
+	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 0xd8d2a4 );
+
+	public java.awt.Color getProcedureColor() {
+		return DEFAULT_PROCEDURE_COLOR;
 	}
-	public static java.awt.Color getProcedureColor() {
-		return getColorFor( "procedure" );
+	public java.awt.Color getFunctionColor() {
+		return DEFAULT_FUNCTION_COLOR;
 	}
-	public static java.awt.Color getFunctionColor() {
-		return getColorFor( "function" );
+	public java.awt.Color getConstructorColor() {
+		return DEFAULT_CONSTRUCTOR_COLOR;
 	}
-	public static java.awt.Color getConstructorColor() {
-		return getColorFor( "constructor" );
+	public java.awt.Color getFieldColor() {
+		return DEFAULT_FIELD_COLOR;
 	}
-	public static java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	public java.awt.Color getLocalColor() {
+		return getFieldColor();
+	}
+	public java.awt.Color getParameterColor() {
+		return getFieldColor();
+	}
+
+	public java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
 			if( methodDeclaredInAlice.isProcedure() ) {
@@ -1656,20 +1743,11 @@ public abstract class IDE extends zoot.ZFrame {
 			return java.awt.Color.GRAY;
 		}
 	}
-	public static java.awt.Color getFieldColor() {
-		return getColorFor( "field" );
-	}
-	public static java.awt.Color getLocalColor() {
-		return getFieldColor();
-	}
-	public static java.awt.Color getParameterColor() {
-		return getFieldColor();
-	}
-//	public static void main( String[] args ) {
-//		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
-//		IDE ide = new FauxIDE();
-//		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
-//		ide.setSize( 1000, 1000 );
-//		ide.setVisible( true );
-//	}
+	//	public static void main( String[] args ) {
+	//		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
+	//		IDE ide = new FauxIDE();
+	//		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
+	//		ide.setSize( 1000, 1000 );
+	//		ide.setVisible( true );
+	//	}
 }

@@ -57,7 +57,7 @@ public class GetsPane extends swing.Pane {
 		}
 	}
 	private java.awt.Paint createGradientPaint( int width ) {
-		java.awt.Color colorStart = org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
+		java.awt.Color colorStart = org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 		//java.awt.Color colorStart = java.awt.Color.ORANGE;
 		java.awt.Color colorEnd = colorStart.darker();
 		java.awt.Color color0;

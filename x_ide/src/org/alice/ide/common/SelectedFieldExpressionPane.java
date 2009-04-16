@@ -54,6 +54,6 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		//}
 		//color = java.awt.Color.MAGENTA;
 		//this.setBackground( color );
-		this.setBackground( org.alice.ide.IDE.getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
+		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 }

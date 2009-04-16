@@ -72,7 +72,7 @@ public class TextButton extends Button {
 		java.awt.Paint paint;
 		if( isPressed() ) {
 			//paint = edu.cmu.cs.dennisc.color.ColorUtilities.shiftHSB( BASE, 0, 0, -0.25 );
-			paint = new java.awt.GradientPaint( xButton, yButton, edu.cmu.cs.dennisc.color.ColorUtilities.shiftHSB( BASE, 0, 0, -0.5 ), xButton, yButton + heightButton, edu.cmu.cs.dennisc.color.ColorUtilities.shiftHSB( BASE, 0, 0, -0.25 ) );
+			paint = new java.awt.GradientPaint( xButton, yButton, edu.cmu.cs.dennisc.awt.ColorUtilities.shiftHSB( BASE, 0, 0, -0.5 ), xButton, yButton + heightButton, edu.cmu.cs.dennisc.awt.ColorUtilities.shiftHSB( BASE, 0, 0, -0.25 ) );
 		} else {
 			if( isHighlighted() ) {
 				paint = new java.awt.GradientPaint( xButton, yButton, new java.awt.Color( 255, 255, 191 ), xButton, yButton + heightButton, BASE );

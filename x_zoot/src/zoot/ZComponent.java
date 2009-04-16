@@ -41,6 +41,14 @@ public abstract class ZComponent extends swing.Pane {
 			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
 		}
 	}
+	
+	protected java.awt.Paint getForegroundPaint( int x, int y, int width, int height ) {
+		return this.getForeground();
+	}
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		return this.getBackground();
+	}
+	
 	@Override
 	public void doLayout() {
 		this.updateBorderIfNecessary();
@@ -56,15 +64,19 @@ public abstract class ZComponent extends swing.Pane {
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Color prev = g2.getColor();
+		java.awt.Paint prev = g2.getPaint();
+		int x = 0;
+		int y = 0;
+		int width = getWidth();
+		int height = getHeight();
 		try {
-			g2.setColor( this.getBackground() );
-			this.paintPrologue( g2, 0, 0, getWidth(), getHeight() );
+			g2.setPaint( this.getBackgroundPaint( x, y, width, height ) );
+			this.paintPrologue( g2, x, y, width, height );
 		} finally {
-			g2.setColor( prev );
+			g2.setPaint( prev );
 		}
 		super.paint( g );
-		g2.setColor( this.getForeground() );
-		this.paintEpilogue( g2, 0, 0, getWidth(), getHeight() );
+		g2.setPaint( this.getForegroundPaint( x, y, width, height ) );
+		this.paintEpilogue( g2, x, y, width, height );
 	}
 }

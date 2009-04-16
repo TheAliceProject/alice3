@@ -27,7 +27,7 @@ import java.awt.Color;
 import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.color.Color4f;
-import edu.cmu.cs.dennisc.color.ColorUtilities;
+import edu.cmu.cs.dennisc.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.Composite;

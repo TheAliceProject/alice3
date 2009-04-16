@@ -27,8 +27,10 @@ package org.alice.ide.memberseditor;
  */
 abstract class MembersTab extends swing.PageAxisPane {
 	public MembersTab() {
-		this.setBackground( org.alice.ide.IDE.getColorFor( this.getKey() ) );
 		this.setOpaque( true );
+	}
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
 	}
 	protected abstract String getKey();
 	public final String getTitle() {
@@ -89,6 +91,9 @@ abstract class MethodsTab extends MembersTab {
 }
 
 class ProceduresTab extends MethodsTab {
+	public ProceduresTab() {
+		this.setBackground( getIDE().getProcedureColor() );
+	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return new TypeProceduresPane( type );
@@ -100,6 +105,9 @@ class ProceduresTab extends MethodsTab {
 }
 
 class FunctionsTab extends MethodsTab {
+	public FunctionsTab() {
+		this.setBackground( getIDE().getFunctionColor() );
+	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return new TypeFunctionsPane( type );
@@ -111,6 +119,9 @@ class FunctionsTab extends MethodsTab {
 }
 
 class FieldsTab extends MembersTab {
+	public FieldsTab() {
+		this.setBackground( getIDE().getFieldColor() );
+	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return new TypeFieldsPane( type );

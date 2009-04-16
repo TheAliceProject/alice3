@@ -49,7 +49,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 		nodeNameLabel.setFontToScaledFont( 1.2f );
 		nodeNameLabel.setFontToDerivedFont(  zoot.font.ZTextWeight.BOLD );
 		this.add( nodeNameLabel );
-		this.setBackground( getIDE().getColorForASTClass( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
+		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
