@@ -76,7 +76,7 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 	}
 	
 	public boolean isInputValid() {
-		return true;
+		return this.typePane.getValueType() != null;
 	}
 	@Override
 	public java.lang.String[] getLabelTexts() {
