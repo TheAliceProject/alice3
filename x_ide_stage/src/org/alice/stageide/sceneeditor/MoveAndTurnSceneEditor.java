@@ -34,29 +34,48 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 
+class BogusModelManipulationModePane extends swing.PageAxisPane {
+	public BogusModelManipulationModePane() {
+		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
+		group.add( new javax.swing.JRadioButton( "rotateY", true ) );
+		group.add( new javax.swing.JRadioButton( "translateXZ" ) );
+		group.add( new javax.swing.JRadioButton( "rotateXYZ" ) );
+		group.add( new javax.swing.JRadioButton( "scale" ) );
+		group.add( new javax.swing.JRadioButton( "translateY" ) );
+		this.setBorder( javax.swing.BorderFactory.createTitledBorder( "models" ) );
+		for( java.util.Enumeration< javax.swing.AbstractButton > e = group.getElements(); e.hasMoreElements(); ) {
+			this.add( e.nextElement() );
+		}
+	}
+}
+
+class BogusCameraViewPane extends swing.PageAxisPane {
+	public BogusCameraViewPane() {
+		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
+		group.add( new javax.swing.JRadioButton( "opening scene view", true ) );
+		group.add( new javax.swing.JRadioButton( "working view" ) );
+		this.setBorder( javax.swing.BorderFactory.createTitledBorder( "camera" ) );
+		for( java.util.Enumeration< javax.swing.AbstractButton > e = group.getElements(); e.hasMoreElements(); ) {
+			this.add( e.nextElement() );
+		}
+	}
+}
 
 class SidePane extends swing.PageAxisPane {
 	private boolean isExpanded = false;
+
 	public SidePane() {
-		this.setBackground( java.awt.Color.GREEN );
-		this.setOpaque( true );
+		this.add( new BogusCameraViewPane() );
+		this.add( new BogusModelManipulationModePane() );
+	}
+	public boolean isExpanded() {
+		return this.isExpanded;
 	}
 	public void setExpanded( boolean isExpanded ) {
 		this.isExpanded = isExpanded;
-		this.revalidate();
-		this.repaint();
-		this.doLayout();
-	}
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		java.awt.Dimension rv = super.getPreferredSize();
-		if( this.isExpanded ) {
-			rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( rv, 320 );
-		} else {
-			rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( rv, 10 );
-//			rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMaximumWidth( rv, 0 );
-		}
-		return rv;
+//		this.revalidate();
+//		this.repaint();
+//		//this.doLayout();
 	}
 }
 
@@ -69,11 +88,16 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private org.alice.stageide.sceneeditor.ControlsForOverlayPane controlsForOverlayPane;
 	//private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 
-	private SidePane expandedSidePane = new SidePane();
+	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+	private SidePane sidePane = new SidePane();
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 
 	public MoveAndTurnSceneEditor() {
-		this.setLayout( new java.awt.BorderLayout() );
+		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
+		this.add( this.splitPane );
+		this.splitPane.setResizeWeight( 1.0 );
+		this.splitPane.setDividerLocation( 1.0 );
+		
 		this.program.setArgs( new String[] {} );
 		this.program.init();
 		this.program.start();
@@ -90,7 +114,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					}
 				}
 				MoveAndTurnSceneEditor.this.cardPane = new edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass );
-				MoveAndTurnSceneEditor.this.add( MoveAndTurnSceneEditor.this.cardPane, java.awt.BorderLayout.CENTER );
+				//MoveAndTurnSceneEditor.this.add( MoveAndTurnSceneEditor.this.cardPane, java.awt.BorderLayout.CENTER );
+				MoveAndTurnSceneEditor.this.splitPane.setLeftComponent( MoveAndTurnSceneEditor.this.cardPane );
+
+//				javax.swing.JPanel pane = new javax.swing.JPanel();
+//				pane.setBackground( java.awt.Color.BLUE );
+//				MoveAndTurnSceneEditor.this.add( pane, java.awt.BorderLayout.CENTER );
+
 				MoveAndTurnSceneEditor.this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 				edu.cmu.cs.dennisc.animation.Animator animator = MoveAndTurnSceneEditor.this.program.getAnimator();
 				while( animator == null ) {
@@ -108,26 +138,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				} );
 			}
 		}.start();
-		this.add( this.expandedSidePane, java.awt.BorderLayout.EAST );
 	}
+	@Override
 	public void handleExpandContractChange( boolean isExpanded ) {
-		this.isExpanded = isExpanded;
+		this.sidePane.setExpanded( isExpanded );
+		if( isExpanded ) {
+			this.splitPane.setRightComponent( this.sidePane );
+			this.splitPane.setDividerSize( 10 );
+		} else {
+			this.splitPane.setRightComponent( null );
+			this.splitPane.setDividerSize( 0 );
+		}
 		this.updateSceneBasedOnScope();
-		this.expandedSidePane.setExpanded( isExpanded );
-//		this.expandedSidePane.invalidate();
-//		this.expandedSidePane.validate();
-//		this.expandedSidePane.invalidate();
-//		this.invalidate();
-//		this.validate();
-//		this.invalidate();
-//		this.revalidate();
-//		this.repaint();
-//		if( isExpanded ) {
-//			this.add( this.expandedSidePane, java.awt.BorderLayout.EAST );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( this.expandedSidePane );
-//		} else {
-//			this.remove( this.expandedSidePane );
-//		}
 	}
 
 	@Override
@@ -157,7 +179,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			camera.getGoodLookAt( model, 0.5 );
 			this.program.getScene().addComponent( model );
 			model.setOpacity( 1.0 );
-			camera.moveAndOrientTo( this.program.getScene().createOffsetStandIn( pov.getInternal() ), 0.5 ); 
+			camera.moveAndOrientTo( this.program.getScene().createOffsetStandIn( pov.getInternal() ), 0.5 );
 		} finally {
 			this.popCameraNavigationDragAdapterEnabled();
 		}
@@ -171,8 +193,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-	private boolean isExpanded = false;
-
 	private void updateSceneBasedOnScope() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
 		if( code != null ) {
@@ -180,7 +200,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
 			if( sceneField != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
-				boolean isSceneScope = type.isAssignableFrom( sceneType ) || this.isExpanded;
+				boolean isSceneScope = type.isAssignableFrom( sceneType ) || this.sidePane.isExpanded();
 				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
 
 				try {
@@ -337,7 +357,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
-		public void clearing(edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> e) {
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
 		public void removing( RemoveListPropertyEvent< FieldDeclaredInAlice > e ) {
 			MoveAndTurnSceneEditor.this.handleRemoved( e );
@@ -349,7 +369,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		public void setting( SetListPropertyEvent< FieldDeclaredInAlice > e ) {
 		};
 	};
-	
+
 	private void handleRemoved( RemoveListPropertyEvent< FieldDeclaredInAlice > e ) {
 		for( FieldDeclaredInAlice fieldDeclaredInAlice : e.getElements() ) {
 			org.alice.apis.moveandturn.Transformable transformable = this.getInstanceInJavaForField( fieldDeclaredInAlice, org.alice.apis.moveandturn.Transformable.class );
@@ -358,7 +378,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 	}
-	
+
 	@Override
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.program.getOnscreenLookingGlass();
@@ -369,7 +389,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( this.sceneType != null ) {
 			this.sceneType.fields.removeListPropertyListener( this.listPropertyAdapter );
 		}
-		
+
 		Object rv = super.createScene( sceneField );
 		this.sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
 		if( this.sceneType != null ) {

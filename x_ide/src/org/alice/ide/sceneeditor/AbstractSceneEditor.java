@@ -78,6 +78,8 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 		}
 	}
 
+	public abstract void handleExpandContractChange( boolean isExpanded );
+	
 	@Deprecated
 	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance );
 	

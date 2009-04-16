@@ -217,14 +217,17 @@ public abstract class IDE extends zoot.ZFrame {
 	
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
+			this.left.setResizeWeight( 1.0 );
 			this.rootDividerLocation = this.root.getDividerLocation();
-			this.leftDividerLocation = this.root.getDividerLocation();
+			this.leftDividerLocation = this.left.getDividerLocation();
 			this.root.setLeftComponent( this.left );
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.galleryBrowser );
 			this.root.setRightComponent( null );
+			this.root.setDividerSize( 0 );
 			this.left.setDividerLocation( this.getHeight() - 300 );
 		} else {
+			this.left.setResizeWeight( 0.0 );
 			this.root.setLeftComponent( this.left );
 			this.root.setRightComponent( this.right );
 			this.root.setDividerLocation( this.rootDividerLocation );
@@ -235,7 +238,9 @@ public abstract class IDE extends zoot.ZFrame {
 				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.NORTH );
 				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
 			}
+			this.root.setDividerSize( this.left.getDividerSize() );
 		}
+		this.sceneEditor.handleExpandContractChange( isSceneEditorExpanded );
 	}
 
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );

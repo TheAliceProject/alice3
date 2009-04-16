@@ -41,4 +41,7 @@ public class FauxSceneEditor extends AbstractInstantiatingSceneEditor {
 	@Override
 	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
 	}
+	@Override
+	public void handleExpandContractChange( boolean isExpanded ) {
+	}
 }
