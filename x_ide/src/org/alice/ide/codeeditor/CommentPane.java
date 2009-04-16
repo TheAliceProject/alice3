@@ -58,7 +58,6 @@ class CommentLine extends javax.swing.JTextArea {
 				}
 			} ); 
 		}
-		
 		//todo: remove?
 		this.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {
@@ -75,13 +74,18 @@ class CommentLine extends javax.swing.JTextArea {
 		
 		this.addFocusListener( new java.awt.event.FocusListener() {
 			public void focusGained( java.awt.event.FocusEvent e ) {
+				CommentLine.this.setToolTipText( "Press the escape key to remove focus" );
 				CommentLine.this.repaint();
 			}
 			public void focusLost( java.awt.event.FocusEvent e ) {
+				CommentLine.this.setToolTipText( null );
 				CommentLine.this.repaint();
 			}
 		} );
 	}
+	
+	
+	
 	@Override
 	public java.awt.Font getFont() {
 		java.awt.Font rv = super.getFont();

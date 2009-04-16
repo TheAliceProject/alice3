@@ -122,23 +122,20 @@ class IngredientsPane extends swing.GridBagPane {
 			this.hairList.handleEpicChange( lifeStage, gender, hairColor );
 			this.hairList.setSelectedValue( hair, shouldScroll );
 			this.hairColorList.setSelectedValue( hairColor, shouldScroll );
-			
 			this.fullBodyOutfitList.setSelectedValue( personViewer.getFullBodyOutfit(), shouldScroll );
 			this.baseSkinToneList.setSelectedValue( personViewer.getBaseSkinTone(), shouldScroll );
 			this.baseEyeColorList.setSelectedValue( personViewer.getBaseEyeColor(), shouldScroll );
 			
+			
 //			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 //				public void run() {
+//					IngredientsPane.this.fullBodyOutfitList.setSelectedValue( personViewer.getFullBodyOutfit(), shouldScroll );
+//					IngredientsPane.this.baseSkinToneList.setSelectedValue( personViewer.getBaseSkinTone(), shouldScroll );
+//					IngredientsPane.this.baseEyeColorList.setSelectedValue( personViewer.getBaseEyeColor(), shouldScroll );
 //				}
 //			} );
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hair is null" );
 		}
 	}
-//	public void randomize() {
-//		this.genderList.randomize();
-//		this.baseSkinToneList.randomize();
-//		this.baseEyeColorList.randomize();
-//		//this.fitnessLevelPane.randomize();
-//	}
 }
