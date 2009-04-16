@@ -26,8 +26,14 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class CreateAndAddParameterOperation extends AbstractCodeOperation {
+	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
 	public CreateAndAddParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		super( code );
+		assert code != null;
+		this.code = code;
 		this.putValue( javax.swing.Action.NAME, "Add Parameter..." );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
+		return this.code;
 	}
 }

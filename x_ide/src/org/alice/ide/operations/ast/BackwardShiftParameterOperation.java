@@ -28,8 +28,8 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public class BackwardShiftCodeParameterOperation extends AbstractShiftCodeParameterOperation {
-	public BackwardShiftCodeParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+public class BackwardShiftParameterOperation extends ShiftParameterOperation {
+	public BackwardShiftParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
 		super( parametersProperty, parameter );
 		this.putValue( javax.swing.Action.NAME, "Shift Backward" );
 	}
@@ -37,12 +37,8 @@ public class BackwardShiftCodeParameterOperation extends AbstractShiftCodeParame
 	protected boolean isAppropriate( int index, int n ) {
 		return index < n-1;
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo" );
-		actionContext.cancel();
+	@Override
+	protected int getIndexA() {
+		return this.getIndex();
 	}
-//	def redo( self ):
-//		self._shift( self._index )
-//	def undo( self ):
-//		self._shift( self._index )
 }

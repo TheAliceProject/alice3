@@ -41,8 +41,8 @@ public class ParameterPane extends AccessiblePane {
 		
 		if( this.parametersProperty != null ) {
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, this.parameter );
-			final org.alice.ide.operations.ast.ForwardShiftCodeParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftCodeParameterOperation( this.parametersProperty, this.parameter );
-			final org.alice.ide.operations.ast.BackwardShiftCodeParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftCodeParameterOperation( this.parametersProperty, this.parameter );
+			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, this.parameter );
+			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, this.parameter );
 			this.setPopupOperation( new zoot.AbstractPopupActionOperation() {
 				@Override
 				protected java.util.List< zoot.Operation > getOperations() {

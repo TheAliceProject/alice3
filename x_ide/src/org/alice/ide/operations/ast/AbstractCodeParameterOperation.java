@@ -31,11 +31,7 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 public abstract class AbstractCodeParameterOperation extends AbstractCodeOperation {
 	private ParameterDeclaredInAlice parameter;
 	private NodeListProperty< ParameterDeclaredInAlice > parametersProperty;
-	private static edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)parameter.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
-	}
 	public AbstractCodeParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
-		super( getCode( parameter ) );
 		this.parametersProperty = parametersProperty;
 		this.parameter = parameter;
 	}
@@ -47,5 +43,9 @@ public abstract class AbstractCodeParameterOperation extends AbstractCodeOperati
 	}
 	protected int getParameterCount() {
 		return this.parametersProperty.size();
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
+		return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.parameter.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
 	}
 }
