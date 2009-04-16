@@ -34,8 +34,88 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 		this.putValue( javax.swing.Action.NAME, "Delete" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo" );
-		actionContext.cancel();
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		if( method != null ) {
+			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ParameterAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ParameterAccess >( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) {
+				@Override
+				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess ) {
+					return parameterAccess.parameter.getValue() == getParameter();
+				}
+			};
+			method.crawl( crawler, false );
+			java.util.List< edu.cmu.cs.dennisc.alice.ast.ParameterAccess > parameterAccesses = crawler.getList();
+			final int N_ACCESSES = parameterAccesses.size();
+
+			java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
+			final int N_INVOCATIONS = methodInvocations.size();
+			if( N_ACCESSES > 0 ) {
+				StringBuffer sb = new StringBuffer();
+				sb.append( "<html><body>There " );
+				if( N_INVOCATIONS == 1 ) {
+					sb.append( "is 1 access" );
+				} else {
+					sb.append( "are " );
+					sb.append( N_INVOCATIONS );
+					sb.append( " accesses" );
+				}
+				sb.append( " to this parameter.<br>You must remove the " );
+				if( N_INVOCATIONS == 1 ) {
+					sb.append( "access" );
+				} else {
+					sb.append( "accesses" );
+				}
+				sb.append( " before you may delete the parameter.<br>Cancelling.</body></html>" );
+				javax.swing.JOptionPane.showMessageDialog( this.getIDE(), sb.toString() );
+				actionContext.cancel();
+			} else {
+				if( N_INVOCATIONS > 0 ) {
+					String codeText;
+					if( method.isProcedure() ) {
+						codeText = "procedure";
+					} else {
+						codeText = "function";
+					}
+					StringBuffer sb = new StringBuffer();
+					sb.append( "<html><body>There " );
+					if( N_INVOCATIONS == 1 ) {
+						sb.append( "is 1 invocation" );
+					} else {
+						sb.append( "are " );
+						sb.append( N_INVOCATIONS );
+						sb.append( " invocations" );
+					}
+					sb.append( " to this " );
+					sb.append( codeText );
+					sb.append( " in your program.<br>Deleting this parameter will also delete the arguments from those " );
+					if( N_INVOCATIONS == 1 ) {
+						sb.append( "invocation" );
+					} else {
+						sb.append( "invocations" );
+					}
+					sb.append( "<br>Would you like to continue with the deletion?</body></html>" );
+					int result = javax.swing.JOptionPane.showConfirmDialog(this.getIDE(), sb.toString(), "Delete Parameter", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
+					if( result == javax.swing.JOptionPane.YES_OPTION ){
+						//pass
+					} else {
+						actionContext.cancel();
+					}
+				}
+			}
+			if( actionContext.isCancelled() ) {
+				//pass
+			} else {
+				int index = method.parameters.indexOf( this.getParameter() );
+				if( index >= 0 ) {
+					method.parameters.remove( index );
+					for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
+						methodInvocation.arguments.remove( index );
+					}
+					actionContext.commit();
+				}
+			}
+		} else {
+			//todo
+		}
 	}
 //	def prepare( self, e, observer ):
 //		invocations = self.getIDE().getInvocations( self._code )
