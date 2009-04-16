@@ -22,25 +22,19 @@
  */
 package org.alice.ide.createdeclarationpanes;
 
-class WarningPane extends swing.PageAxisPane {
-	public WarningPane( int invocationReferenceCount, String codeText ) {
-		this.add( new zoot.ZLabel( "There are invocations to this " + codeText + " in your program." ) );
-		this.add( new zoot.ZLabel( "You will need to fill in argument values for this new parameter." ) );
-		this.add( new swing.LineAxisPane( new zoot.ZLabel( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
-	}
-}
-
-class MethodInvocationsNotificationPane extends swing.BorderPane {
+class MethodInvocationsNotificationPane extends swing.PageAxisPane {
 	private javax.swing.JCheckBox checkBox;
 	public MethodInvocationsNotificationPane( int invocationReferenceCount, String codeText ) {
 		//this.setBorder( javax.swing.BorderFactory.createEtchedBorder() );
 
-		this.add( new WarningPane( invocationReferenceCount, codeText ), java.awt.BorderLayout.NORTH );
+		this.add( new zoot.ZLabel( "There are invocations to this " + codeText + " in your program." ) );
+		this.add( new zoot.ZLabel( "You will need to fill in argument values for this new parameter." ) );
+		this.add( new swing.LineAxisPane( new zoot.ZLabel( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
 		this.checkBox = new javax.swing.JCheckBox( "I understand that I need to update the invocations to this " + codeText + "." );
 		this.checkBox.setOpaque( false );
 //		this.checkbox.addItemListener( ecc.dennisc.swing.event.ItemAdapter( self._handleCheckBoxChange ) )
 
-		this.add( this.checkBox, java.awt.BorderLayout.SOUTH );
+		this.add( this.checkBox );
 	}
 //	def _handleCheckBoxChange( self, e ):
 //		self.updateOKButton()

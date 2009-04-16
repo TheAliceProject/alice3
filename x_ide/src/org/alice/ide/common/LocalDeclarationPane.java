@@ -29,9 +29,10 @@ package org.alice.ide.common;
 class LocalDeclarationPane extends TypedDeclarationPane {
 	private edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice;
 
-	public LocalDeclarationPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice ) {
+	public LocalDeclarationPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice localDeclaredInAlice, java.awt.Component component ) {
 		this.localDeclaredInAlice = localDeclaredInAlice;
 		this.add( new org.alice.ide.common.TypeComponent( this.localDeclaredInAlice.valueType.getValue() ) );
+		this.add( component );
 	}
 	
 //	@Override

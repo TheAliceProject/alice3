@@ -26,27 +26,10 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionCreatorPane extends org.alice.ide.common.ExpressionLikeSubstance {
-//	@Override
-//	protected boolean isActuallyPotentiallyActive() {
-//		return getIDE().isDragInProgress() == false;
-//	}
-//	@Override
-//	protected boolean isActuallyPotentiallySelectable() {
-//		return false;
-//	}
-//	@Override
-//	protected boolean isActuallyPotentiallyDraggable() {
-//		return true;
-//	}
-	public ExpressionCreatorPane() {
-		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
-	}
-	
 	@Override
 	public void setActive( boolean isActive ) {
 		super.setActive( isActive );
 		if( isActive ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle AccessiblePane setActive " );
 			getIDE().showStencilOver( this, getExpressionType() );
 		} else {
 			getIDE().hideStencil();

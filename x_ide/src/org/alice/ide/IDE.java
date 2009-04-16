@@ -546,7 +546,8 @@ public abstract class IDE extends zoot.ZFrame {
 
 	class ComponentStencil extends javax.swing.JPanel {
 		public ComponentStencil() {
-			setOpaque( false );
+			this.setOpaque( false );
+			this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
 		}
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
@@ -652,6 +653,7 @@ public abstract class IDE extends zoot.ZFrame {
 			this.stencil.setBounds( layeredPane.getBounds() );
 			layeredPane.add( this.stencil, null );
 			layeredPane.setLayer( this.stencil, javax.swing.JLayeredPane.POPUP_LAYER - 1 );
+			
 			this.stencil.repaint();
 		}
 	}

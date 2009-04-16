@@ -36,6 +36,7 @@ public class TypeComponent extends NodeNameLabel {
 		} else {
 			typeName = "<unset>";
 		}
+		this.setCursor( java.awt.Cursor.getDefaultCursor() );
 		this.setToolTipText( "class: " + typeName );
 		this.setBorder( TypeBorder.getSingletonFor( type ) );
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {

@@ -29,9 +29,9 @@ public abstract class NodeLikeSubstance extends org.alice.ide.AbstractDragCompon
 	protected static final int KNURL_WIDTH = 8;
 	public NodeLikeSubstance() {
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-//		if( this.isKnurlDesired() ) {
-//			this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
-//		}
+		if( this.isKnurlDesired() ) {
+			this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.HAND_CURSOR ) );
+		}
 	}
 
 	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {

@@ -28,7 +28,6 @@ package org.alice.ide.common;
 
 class VariableDeclarationPane extends LocalDeclarationPane {
 	public VariableDeclarationPane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variableDeclaredInAlice ) {
-		super( variableDeclaredInAlice );
-		this.add( new VariablePane( variableDeclaredInAlice ) );
+		super( variableDeclaredInAlice, new VariablePane( variableDeclaredInAlice ) );
 	}
 }
