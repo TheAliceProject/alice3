@@ -230,6 +230,9 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 			return null;
 		}
 	}
+	protected java.awt.Component[] createWarningRow() {
+		return null;
+	}
 
 	@Override
 	protected java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
@@ -237,6 +240,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 		final java.awt.Component[] valueTypeRow = createValueTypeRow();
 		final java.awt.Component[] nameRow = createNameRow();
 		final java.awt.Component[] initializerRow = createInitializerRow();
+		final java.awt.Component[] warningRow = createWarningRow();
 		if( isReassignableRow != null ) {
 			rv.add( isReassignableRow );
 		}
@@ -248,6 +252,10 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 		}
 		if( initializerRow != null ) {
 			rv.add( initializerRow );
+		}
+		if( warningRow != null ) {
+			rv.add( new java.awt.Component[] { javax.swing.Box.createVerticalStrut( 16 ), javax.swing.Box.createVerticalStrut( 16 ) } );
+			rv.add( warningRow );
 		}
 		return rv;
 	}

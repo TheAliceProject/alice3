@@ -22,6 +22,33 @@
  */
 package org.alice.ide.createdeclarationpanes;
 
+class WarningPane extends swing.PageAxisPane {
+	public WarningPane( int invocationReferenceCount, String codeText ) {
+		this.add( new zoot.ZLabel( "There are invocations to this " + codeText + " in your program." ) );
+		this.add( new zoot.ZLabel( "You will need to fill in argument values for this new parameter." ) );
+		this.add( new swing.LineAxisPane( new zoot.ZLabel( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+	}
+}
+
+class MethodInvocationsNotificationPane extends swing.BorderPane {
+	private javax.swing.JCheckBox checkBox;
+	public MethodInvocationsNotificationPane( int invocationReferenceCount, String codeText ) {
+		//this.setBorder( javax.swing.BorderFactory.createEtchedBorder() );
+
+		this.add( new WarningPane( invocationReferenceCount, codeText ), java.awt.BorderLayout.NORTH );
+		this.checkBox = new javax.swing.JCheckBox( "I understand that I need to update the invocations to this " + codeText + "." );
+		this.checkBox.setOpaque( false );
+//		this.checkbox.addItemListener( ecc.dennisc.swing.event.ItemAdapter( self._handleCheckBoxChange ) )
+
+		this.add( this.checkBox, java.awt.BorderLayout.SOUTH );
+	}
+//	def _handleCheckBoxChange( self, e ):
+//		self.updateOKButton()
+//
+//	def isValid( self ):
+//		return self._checkbox.isSelected()
+	}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -31,6 +58,22 @@ public class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennis
 		super( new org.alice.ide.namevalidators.ParameterNameValidator( code ) );
 		this.code = code;
 		this.setBackground( getIDE().getParameterColor() );
+		
+	}
+	@Override
+	protected java.awt.Component[] createWarningRow() {
+		String codeText;
+		if( code instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)code;
+			if( method.isProcedure() ) {
+				codeText = "procedure";
+			} else {
+				codeText = "function";
+			}
+		} else {
+			codeText = "constructor";
+		}
+		return new java.awt.Component[] { new zoot.ZLabel( "WARNING:" ), new MethodInvocationsNotificationPane( 2, codeText ) };
 	}
 	@Override
 	protected boolean isEditableInitializerComponentDesired() {
