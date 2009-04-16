@@ -20,14 +20,20 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package edu.cmu.cs.dennisc.awt;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CreateAndAddParameterOperation extends AbstractCodeOperation {
-	public CreateAndAddParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		super( code );
-		this.putValue( javax.swing.Action.NAME, "Add Parameter..." );
-	}
+public class KeyboardFocusManagerUtilties {
+	//todo
+//	final java.awt.KeyboardFocusManager focusManager = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager();
+//	focusManager.addPropertyChangeListener( new java.beans.PropertyChangeListener() {
+//		public void propertyChange( java.beans.PropertyChangeEvent e ) {
+//			String prop = e.getPropertyName();
+//			if( ("focusOwner".equals( prop )) ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "focus owner: ", focusManager.getFocusOwner() );
+//			}
+//		}
+//	} );
 }
