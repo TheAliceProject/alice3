@@ -69,9 +69,26 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 				}
 			}
 		}
+
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
+				final org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
+				if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+					edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
+					
+					//todo: remove this property listener when tab is closed
+					
+					method.name.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+						public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+						}
+						public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+							int index = EditorsTabbedPane.this.indexOfComponent( codeEditor );
+							if( index >= 0 ) {
+								EditorsTabbedPane.this.setTitleAt( index, code.getName() );
+							}
+						}
+					} );
+				}
 				EditorsTabbedPane.this.addTab( code.getName(), codeEditor );
 				EditorsTabbedPane.this.setSelectedComponent( codeEditor );
 			}

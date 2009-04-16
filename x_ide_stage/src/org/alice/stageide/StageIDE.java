@@ -39,6 +39,9 @@ class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Program {
 }
 
 public class StageIDE extends org.alice.ide.IDE {
+	public StageIDE() {
+		org.alice.ide.common.BeveledShapeForType.addRoundType( org.alice.apis.moveandturn.Transformable.class );		
+	}
 	@Override
 	protected void promptForLicenseAgreements() {
 		final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
