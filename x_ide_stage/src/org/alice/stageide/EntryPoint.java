@@ -44,7 +44,7 @@ class Icon extends javax.swing.ImageIcon {
 /**
  * @author Dennis Cosgrove
  */
-public class Launcher {
+public class EntryPoint {
 	private static edu.cmu.cs.dennisc.swing.SplashScreen s_splashScreen;
 	public static edu.cmu.cs.dennisc.swing.SplashScreen getSplashScreen() {
 		return s_splashScreen;
@@ -67,7 +67,7 @@ public class Launcher {
 	public static void main( final String[] args ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
 		javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
 			public void run() {
-				Launcher launcher = new Launcher();
+				EntryPoint launcher = new EntryPoint();
 				s_splashScreen = launcher.createSplashScreen( null, launcher.getIcon() );
 				s_splashScreen.setVisible( true );
 			}
@@ -87,8 +87,8 @@ public class Launcher {
 				};
 				if( args.length > 0 ) {
 					ide.loadProjectFrom( new java.io.File( args[ 0 ] ) );
-				} else {
-					ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
+//				} else {
+//					ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
 				}
 				ide.setSize( 1000, 740 );
 				//ide.maximize();

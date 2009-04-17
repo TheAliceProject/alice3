@@ -27,14 +27,14 @@ abstract class TabPane extends swing.Pane {
 	//	protected boolean isTabEnabled() {
 	//		return this.isEnabled();
 	//	}
-	private edu.cmu.cs.dennisc.swing.InputPane< java.io.File > inputPane;
+	private zoot.ZInputPane< java.io.File > inputPane;
 	public TabPane() {
 		this.setBackground( new java.awt.Color( 191, 191, 255 ) );
 		this.setOpaque( true );
 		final int INSET = 8;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-	public void setInputPane( edu.cmu.cs.dennisc.swing.InputPane< java.io.File > inputPane ) {
+	public void setInputPane( zoot.ZInputPane< java.io.File > inputPane ) {
 		this.inputPane = inputPane;
 	}
 	public abstract java.io.File getSelectedFile();
@@ -426,7 +426,7 @@ class FileSystemPane extends TabPane {
 /**
  * @author Dennis Cosgrove
  */
-public class OpenProjectPane extends edu.cmu.cs.dennisc.swing.InputPane< java.io.File > {
+public class OpenProjectPane extends zoot.ZInputPane< java.io.File > {
 	//private javax.swing.JTabbedPane tabbedPane = new javax.swing.JTabbedPane();
 	private zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane();
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
@@ -487,6 +487,11 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.swing.InputPane< java.io
 		}
 	}
 	
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		int longerSideLength = 650;
+		return new java.awt.Dimension( longerSideLength, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( longerSideLength ) );
+	}
 	public void selectAppropriateTab( boolean isNew ) {
 		TabPane tabPane;
 		if( isNew ) {

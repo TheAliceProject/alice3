@@ -26,14 +26,18 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class EmptyStatementListAfforance extends org.alice.ide.common.StatementLikeSubstance {
+	private static java.awt.Color TOP_COLOR = new java.awt.Color( 0, 0, 0, 63 );
+	private static java.awt.Color BOTTOM_COLOR = new java.awt.Color( 127, 127, 127, 63 );
 	public EmptyStatementListAfforance() {
 		super( edu.cmu.cs.dennisc.alice.ast.Statement.class, javax.swing.BoxLayout.LINE_AXIS );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
 		zoot.ZLabel label = new zoot.ZLabel( "drop statement here" );
 		label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.EXTRA_LIGHT );
 		this.add( label );
-		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
-		this.setBackground( new java.awt.Color( 63, 63, 63, 63 ) );
+	}
+	@Override
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		return new java.awt.GradientPaint( 0, y, TOP_COLOR, 0, y+height, BOTTOM_COLOR );
 	}
 	@Override
 	protected boolean isKnurlDesired() {
@@ -42,5 +46,10 @@ public class EmptyStatementListAfforance extends org.alice.ide.common.StatementL
 	@Override
 	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
 		return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+	}
+	@Override
+	protected void paintOutline( java.awt.Graphics2D g2, java.awt.geom.RoundRectangle2D.Float rr ) {
+		edu.cmu.cs.dennisc.awt.BeveledRoundRectangle brr = new edu.cmu.cs.dennisc.awt.BeveledRoundRectangle( rr );
+		brr.draw( g2, edu.cmu.cs.dennisc.awt.BevelState.SUNKEN, Float.NaN, Float.NaN, 1.0f );
 	}
 }

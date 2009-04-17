@@ -730,8 +730,12 @@ public abstract class IDE extends zoot.ZFrame {
 
 	public abstract void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
 	public final void handleRun( zoot.ActionContext context ) {
-		this.generateCodeForSceneSetUp();
-		this.handleRun( context, this.getSceneType() );
+		if( this.project != null ) {
+			this.generateCodeForSceneSetUp();
+			this.handleRun( context, this.getSceneType() );
+		} else {
+			javax.swing.JOptionPane.showMessageDialog( this, "Please open a project first." );
+		}
 	}
 
 	private boolean isDragInProgress = false;

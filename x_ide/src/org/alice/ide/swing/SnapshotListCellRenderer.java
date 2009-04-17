@@ -35,7 +35,7 @@ public abstract class SnapshotListCellRenderer implements javax.swing.ListCellRe
 		this.label.setBorder( javax.swing.BorderFactory.createEmptyBorder( LABEL_INSET, LABEL_INSET, LABEL_INSET, LABEL_INSET ) );
 		this.label.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 		this.label.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
-		
+		this.label.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
 		this.panel.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.panel.add( this.label );
 	}

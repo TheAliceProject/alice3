@@ -108,14 +108,14 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		org.alice.ide.IDE ide = getIDE();
 		java.awt.Color color = ide.getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 		if( this.field == ide.getFieldSelection() ) {
-			//color = color.brighter();
 			color = java.awt.Color.YELLOW;
 		} else {
 			if( ide.isFieldInScope( this.field ) ) {
-				color = new java.awt.Color( color.getRed(), color.getGreen(), color.getBlue(), 191 );
+				color = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 0.75, 0.75 );
 			} else {
-				color = new java.awt.Color( 127, 127, 127, 191 );
+				color = java.awt.Color.GRAY;
 			}
+			color = edu.cmu.cs.dennisc.awt.ColorUtilities.setAlpha( color, 191 );
 		}
 		return color;
 	}
