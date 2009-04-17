@@ -74,4 +74,8 @@ public class ColorUtilities {
 			return constructColor( s_hsbBuffer, color.getAlpha() );
 		}
 	}
+	public static synchronized java.awt.Color setAlpha( java.awt.Color color, int alpha ) {
+		return new java.awt.Color( color.getRed(), color.getGreen(), color.getBlue(), alpha );
+	}
+	
 }
