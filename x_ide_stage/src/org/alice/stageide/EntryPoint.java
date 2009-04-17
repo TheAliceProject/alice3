@@ -91,7 +91,7 @@ public class EntryPoint {
 //					ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
 				}
 				ide.setSize( 1000, 740 );
-				//ide.maximize();
+				ide.maximize();
 				ide.setVisible( true );
 			}
 		} );

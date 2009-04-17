@@ -1543,11 +1543,4 @@ public abstract class IDE extends zoot.ZFrame {
 			return java.awt.Color.GRAY;
 		}
 	}
-	//	public static void main( String[] args ) {
-	//		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "/program files/alice/3.beta.0027/application/classinfos" ) );
-	//		IDE ide = new FauxIDE();
-	//		ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
-	//		ide.setSize( 1000, 1000 );
-	//		ide.setVisible( true );
-	//	}
 }
