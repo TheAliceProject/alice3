@@ -40,7 +40,20 @@ class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Program {
 
 public class StageIDE extends org.alice.ide.IDE {
 	public StageIDE() {
-		org.alice.ide.common.BeveledShapeForType.addRoundType( org.alice.apis.moveandturn.Transformable.class );		
+		org.alice.ide.common.BeveledShapeForType.addRoundType( org.alice.apis.moveandturn.Transformable.class );
+		this.addWindowStateListener( new java.awt.event.WindowStateListener() {
+			public void windowStateChanged( java.awt.event.WindowEvent e ) {
+				int oldState = e.getOldState();
+				int newState = e.getNewState();
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "windowStateChanged", oldState, newState, java.awt.Frame.ICONIFIED );
+				if( ( oldState & java.awt.Frame.ICONIFIED ) == java.awt.Frame.ICONIFIED ) {
+					edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
+				}
+				if( ( newState & java.awt.Frame.ICONIFIED ) == java.awt.Frame.ICONIFIED ) {
+					edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
+				}
+			}
+		} );
 	}
 	@Override
 	protected void promptForLicenseAgreements() {

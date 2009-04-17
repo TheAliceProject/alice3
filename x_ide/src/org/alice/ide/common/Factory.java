@@ -310,12 +310,21 @@ public abstract class Factory {
 		if( rv != null ) {
 			//pass
 		} else {
-			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
-				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression conditionalInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)expression;
-				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( "edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression", javax.swing.JComponent.getDefaultLocale() );
-				String value = resourceBundle.getString( conditionalInfixExpression.operator.getValue().name() );
+			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression ) {
+				edu.cmu.cs.dennisc.alice.ast.InfixExpression infixExpression = (edu.cmu.cs.dennisc.alice.ast.InfixExpression)expression;
+				String clsName = infixExpression.getClass().getName();
+				java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( clsName, javax.swing.JComponent.getDefaultLocale() );
+				
+				
+				
+				//todo: investigate the need for this cast
+				Enum e = (Enum)infixExpression.operator.getValue();
+				
+				
+				
+				String value = resourceBundle.getString( e.name() );
 				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
-				rv = new ExpressionPane( conditionalInfixExpression, this.createComponent( page, conditionalInfixExpression ) );
+				rv = new ExpressionPane( infixExpression, this.createComponent( page, infixExpression ) );
 				
 			//todo: handle Relational and Arithmetic
 			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {

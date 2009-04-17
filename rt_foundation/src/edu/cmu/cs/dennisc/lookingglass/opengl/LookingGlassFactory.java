@@ -59,9 +59,51 @@ class WaitingRunnable implements Runnable {
  * @author Dennis Cosgrove
  */
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
-	class Animator extends com.sun.opengl.util.Animator{
+	class Animator extends com.sun.opengl.util.Animator {
 		private java.util.concurrent.Semaphore m_renderingLock = new java.util.concurrent.Semaphore( 1 );
 
+//		//todo: remove the double bookkeeping
+//		private java.util.ArrayList< javax.media.opengl.GLAutoDrawable > drawables = new java.util.ArrayList< javax.media.opengl.GLAutoDrawable >();
+//		@Override
+//		public synchronized void add( javax.media.opengl.GLAutoDrawable drawable ) {
+//			//super.add( drawable );
+//			this.drawables.add( drawable );
+//		}
+//		@Override
+//		public synchronized void remove( javax.media.opengl.GLAutoDrawable drawable ) {
+//			this.drawables.add( drawable );
+//			//super.remove( drawable );
+//		}
+//		@Override
+//		public java.util.Iterator drawableIterator() {
+//			return this.drawables.iterator();
+//		}
+//		@Override
+//		public java.util.Iterator drawableIterator() {
+//			java.util.ArrayList< javax.media.opengl.GLAutoDrawable > rv = new java.util.ArrayList< javax.media.opengl.GLAutoDrawable >();
+//			for( javax.media.opengl.GLAutoDrawable drawable : this.drawables ) {
+//				java.awt.Component component = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( drawable, java.awt.Component.class );
+//				if( component != null ) {
+//					if( component.isVisible() ) {
+//						//pass
+//					} else {
+//						continue;
+//					}
+//				}
+//				//rv.add( drawable );
+//			}
+//			return rv.iterator();
+//		}
+	
+//		@Override
+//		public synchronized void start() {
+//			//super.start();
+//		}
+//		@Override
+//		public synchronized void stop() {
+//			//super.stop();
+//		}
+		
 		public void acquireRenderingLock() {
 			try {
 				m_renderingLock.acquire();

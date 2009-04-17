@@ -25,14 +25,14 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InfixExpression< E > extends Expression {
+public abstract class InfixExpression< E extends Enum > extends Expression {
 	public ExpressionProperty leftOperand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType getExpressionType() {
 			return InfixExpression.this.getLeftOperandType();
 		}
 	};
-	public edu.cmu.cs.dennisc.property.InstanceProperty< E > operator = new edu.cmu.cs.dennisc.property.InstanceProperty< E >( this, null );
+	public edu.cmu.cs.dennisc.property.EnumProperty< E > operator = new edu.cmu.cs.dennisc.property.EnumProperty< E >( this, null );
 	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType getExpressionType() {

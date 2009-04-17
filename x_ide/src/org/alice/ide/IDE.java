@@ -1315,11 +1315,9 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	protected void preserveProjectProperties() {
 		this.sceneEditor.preserveProjectProperties();
-		;
 	}
 	protected void restoreProjectProperties() {
 		this.sceneEditor.restoreProjectProperties();
-		;
 	}
 	public void saveProjectTo( java.io.File file ) {
 		edu.cmu.cs.dennisc.alice.Project project = getProject();
