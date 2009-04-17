@@ -63,10 +63,14 @@ jarMap = {
 			[ "edu" ] 
 		],
 	], 
-	"storytelling" : [
+	"stage" : [
 		[ 
 			"rt_storytelling",
-			[ "org", "edu" ] 
+			[ "org" ] 
+		],
+		[ 
+			"rt_storytelling_private",
+			[ "edu" ] 
 		],
 		[ 
 			"rt_storytelling_generated_depended_upon",
@@ -74,25 +78,30 @@ jarMap = {
 		]
 	], 
 	"ide" : [
+		#todo: move rt_issue
 		[ 
-			"ide_launcher", 
+			"rt_issue", 
 			[ "edu" ] 
 		],
 		[ 
-			"ide_foundation", 
-			[ "edu" ] 
+			"x_zoot", 
+			[ "cascade", "swing", "zoot" ] 
 		],
 		[ 
-			"ide_moveandturn", 
+			"x_ide", 
 			[ "org" ] 
 		],
 		[ 
-			"ide_i18n", 
-			[ "edu" ] 
+			"x_ide_stage", 
+			[ "org" ] 
 		],
 		[ 
-			"ide_private", 
-			[ "edu" ] 
+			"x_ide_i18n", 
+			[ "org", "edu" ] 
+		],
+		[ 
+			"x_ide_private", 
+			[ "org" ] 
 		]
 	], 
 }
@@ -103,17 +112,14 @@ defaultDirectory = edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory()
 srcDir = java.io.File( defaultDirectory, "Eclipse Workspaces/Alice3/" )
 dstDir = java.io.File( "/Program Files/Alice/" + versionText + "/application" )
 
-if True:
+if False:
 	ShellUtilities.removeIfNecessary( dstDir )
-
-if True:
-	ShellUtilities.copyTree( java.io.File( srcDir, "ide_py_foundation/src" ), dstDir, "py" )
 
 if True:
 	for jarName, value in jarMap.items():
 		buildJar( jarName, value )
 
-if True:
+if False:
 	ShellUtilities.copyTree( java.io.File( "/Alice/BatchOutput/projects" ), java.io.File( "/Alice/application/projects" ), "a3p", isOverwriteDesired=True )
 	ShellUtilities.copyTree( java.io.File( "/Alice/application" ), dstDir )
 
