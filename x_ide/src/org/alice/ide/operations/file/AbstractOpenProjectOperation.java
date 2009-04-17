@@ -29,7 +29,7 @@ public abstract class AbstractOpenProjectOperation extends AbstractClearanceActi
 	public static final Object FILE_KEY = "FILE_KEY";
 	protected abstract boolean isNew();
 	protected zoot.ActionOperation getSelectProjectToOpenOperation() {
-		return this.getIDE().getSelectProjectToOpenOperation();
+		return this.getIDE().getSelectProjectToOpenOperation( this.isNew() );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		if( this.getIDE().isProjectUpToDateWithFile() ) {

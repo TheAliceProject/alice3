@@ -351,10 +351,14 @@ public abstract class IDE extends zoot.ZFrame {
 		return this.clearToProcedeWithChangedProjectOperation;
 	}
 
-	private zoot.ActionOperation selectProjectToOpenOperation = new zoot.AbstractActionOperation() {
+	class SelectProjectOperation extends zoot.AbstractActionOperation {
+		private boolean isNew;
+		public SelectProjectOperation( boolean isNew ) {
+			this.isNew = isNew;
+		}
 		public void perform( zoot.ActionContext actionContext ) {
 			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane();
-			openProjectPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
+			openProjectPane.selectAppropriateTab( this.isNew );
 			java.io.File file = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
 			if( file != null ) {
 				actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
@@ -363,10 +367,15 @@ public abstract class IDE extends zoot.ZFrame {
 				actionContext.cancel();
 			}
 		}
-	};
-
-	public zoot.ActionOperation getSelectProjectToOpenOperation() {
-		return this.selectProjectToOpenOperation;
+	}
+	private zoot.ActionOperation selectNewProjectOperation = new SelectProjectOperation( true );
+	private zoot.ActionOperation selectOpenProjectOperation = new SelectProjectOperation( false );
+	public zoot.ActionOperation getSelectProjectToOpenOperation( boolean isNew ) {
+		if( isNew ) {
+			return this.selectNewProjectOperation;
+		} else {
+			return this.selectOpenProjectOperation;
+		}
 	}
 
 	protected javax.swing.JMenuBar createMenuBar() {
@@ -1452,7 +1461,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private static final java.awt.Color DEFAULT_PROCEDURE_COLOR = new java.awt.Color( 0xb2b7d9 );
 	private static final java.awt.Color DEFAULT_FUNCTION_COLOR = new java.awt.Color( 0xb0c9a4 );
 	private static final java.awt.Color DEFAULT_CONSTRUCTOR_COLOR = new java.awt.Color( 0xadc0ab );
-	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 0xc0ba8f );
+	private static final java.awt.Color DEFAULT_FIELD_COLOR = new java.awt.Color( 230, 230, 210 );
 
 	public java.awt.Color getProcedureColor() {
 		return DEFAULT_PROCEDURE_COLOR;
