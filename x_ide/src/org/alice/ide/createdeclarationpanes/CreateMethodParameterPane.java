@@ -97,11 +97,12 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			pane.add( this.checkBox );
 			return new java.awt.Component[] { new zoot.ZLabel( "WARNING:" ), pane };
 		} else {
+			this.checkBox = null;
 			return null;
 		}
 	}
 	@Override
 	public boolean isOKButtonValid() {
-		return super.isOKButtonValid() && this.checkBox.isSelected();
+		return super.isOKButtonValid() && ( this.checkBox == null || this.checkBox.isSelected() );
 	}
 }
