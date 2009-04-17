@@ -26,16 +26,34 @@ package edu.cmu.cs.dennisc.swing;
  * @author Dennis Cosgrove
  */
 public class SwingUtilities {
-	public static void doLayout( java.awt.Component c ) {
+	public static void doLayoutTree( java.awt.Component c ) {
 //		c.doLayout();
 		if( c instanceof java.awt.Container ) {
 			java.awt.Container container = (java.awt.Container)c;
 			for( java.awt.Component component : container.getComponents() ) {
-				doLayout( component );
+				doLayoutTree( component );
 			}
 		}
 		c.doLayout();
 		//c.getPreferredSize();
+	}
+	public static void invalidateTree( java.awt.Component c ) {
+		c.invalidate();
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				invalidateTree( component );
+			}
+		}
+	}
+	public static void validateTree( java.awt.Component c ) {
+		c.invalidate();
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				validateTree( component );
+			}
+		}
 	}
 	private static void paint( java.awt.Graphics g, java.awt.Component c, java.awt.Container p, int x, int y ) {
 		java.awt.Dimension size = c.getPreferredSize();

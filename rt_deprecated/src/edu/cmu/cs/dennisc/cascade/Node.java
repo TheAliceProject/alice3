@@ -137,7 +137,8 @@ public abstract class Node implements javax.swing.event.MenuListener, java.awt.e
 //				this.menuItem.setIcon( label.getIcon() );
 //				this.menuItem.setText( label.getText() );
 //			} else {
-				edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( component );
+				edu.cmu.cs.dennisc.swing.SwingUtilities.invalidateTree( component );
+				edu.cmu.cs.dennisc.swing.SwingUtilities.doLayoutTree( component );
 				Node.this.menuItem.setIcon( edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component, container ) );
 				Node.this.menuItem.setText( null );
 //			}

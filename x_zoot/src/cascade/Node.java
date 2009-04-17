@@ -137,9 +137,11 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 			java.awt.Container container = this.menuItem;
 			javax.swing.JComponent component = this.getMenuProxy();
 			if( component != null ) {
-				edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( component );
+				//edu.cmu.cs.dennisc.swing.SwingUtilities.doLayoutTree( component );
+				edu.cmu.cs.dennisc.swing.SwingUtilities.invalidateTree( component );
+				edu.cmu.cs.dennisc.swing.SwingUtilities.doLayoutTree( component );
 				java.awt.Dimension size = component.getPreferredSize();
-				if( size.width > 0 && size.width > 0 ) {
+				if( size.width > 0 && size.height > 0 ) {
 					this.menuItem.setIcon( edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component, container ) );
 					this.menuItem.setText( null );
 				} else {

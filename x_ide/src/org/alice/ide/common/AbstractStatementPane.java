@@ -55,8 +55,8 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 	}
 	@Override
 	public void removeNotify() {
-		super.removeNotify();
 		this.factory.getStatementMap().remove( this.statement );
+		super.removeNotify();
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {

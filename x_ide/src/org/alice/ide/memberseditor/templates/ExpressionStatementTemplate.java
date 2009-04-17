@@ -31,19 +31,10 @@ public abstract class ExpressionStatementTemplate extends org.alice.ide.template
 	public ExpressionStatementTemplate( edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression ) {
 		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 		this.incompleteExpression = incompleteExpression;
+
+		this.incompleteExpressionPane = getIDE().getTemplatesFactory().createExpressionPane( this.incompleteExpression );
+		this.add( this.incompleteExpressionPane );
 	}
-	@Override
-	public void addNotify() {
-		if( this.incompleteExpressionPane != null ) {
-			//pass
-		} else {
-			this.incompleteExpressionPane = getIDE().getTemplatesFactory().createExpressionPane( this.incompleteExpression );
-			this.add( this.incompleteExpressionPane );
-			this.revalidate();
-		}
-		super.addNotify();
-	}
-	
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {

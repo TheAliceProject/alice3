@@ -169,8 +169,11 @@ public class StageIDE extends org.alice.ide.IDE {
 	public static void main( String[] args ) {
 		edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.setDirectory( new java.io.File( "./application/classinfos" ) );
 		StageIDE ide = new StageIDE();
-		ide.promptUserForNewProject();
-		//ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
+		if( args.length > 0 ) {
+			ide.loadProjectFrom( new java.io.File( args[ 0 ] ) );
+//		} else {
+//			ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
+		}
 		ide.setSize( 1280, 800 );
 		ide.setVisible( true );
 		

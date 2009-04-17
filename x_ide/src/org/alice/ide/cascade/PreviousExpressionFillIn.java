@@ -54,8 +54,6 @@ public class PreviousExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Ex
 		rv.add( s );
 		rv.add( javax.swing.Box.createHorizontalStrut( 16 ) );
 		rv.add( label );
-		edu.cmu.cs.dennisc.swing.SwingUtilities.doLayout( rv );
-		//rv.doLayout();
 		return rv;
 	}
 //	@Override

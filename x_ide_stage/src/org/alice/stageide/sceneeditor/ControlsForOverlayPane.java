@@ -173,6 +173,22 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 	public ControlsForOverlayPane( org.alice.interact.AbstractDragAdapter dragAdapter ) {
 		this.dragAdapter = dragAdapter;
 		this.setOpaque( false );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		//		ide.addIDEListener( this.ideAdapter );
+
+		this.cameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.dragAdapter );
+		this.isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
+		this.runButton = new zoot.ZButton( ide.getRunOperation() );
+		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
+		this.setNorthEastComponent( this.runButton );
+		this.setSouthComponent( this.cameraNavigatorWidget );
+		
+		this.setExpanded( this.isSceneEditorExpandedCheckBox.isSelected() );
+		this.isSceneEditorExpandedCheckBox.addItemListener( new java.awt.event.ItemListener() {
+			public void itemStateChanged( java.awt.event.ItemEvent e ) {
+				ControlsForOverlayPane.this.setExpanded( e.getStateChange() == java.awt.event.ItemEvent.SELECTED );
+			}
+		} );
 	}
 
 	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
@@ -189,32 +205,6 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 			this.cameraNavigatorWidget.setExpanded( isExpaned );
 		}
 	}
-
-	@Override
-	public void addNotify() {
-		if( this.isSceneEditorExpandedCheckBox != null ) {
-			//pass
-		} else {
-			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-			//		ide.addIDEListener( this.ideAdapter );
-
-			this.cameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.dragAdapter );
-			this.isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
-			this.runButton = new zoot.ZButton( ide.getRunOperation() );
-			this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
-			this.setNorthEastComponent( this.runButton );
-			this.setSouthComponent( this.cameraNavigatorWidget );
-			
-			this.setExpanded( this.isSceneEditorExpandedCheckBox.isSelected() );
-			this.isSceneEditorExpandedCheckBox.addItemListener( new java.awt.event.ItemListener() {
-				public void itemStateChanged( java.awt.event.ItemEvent e ) {
-					ControlsForOverlayPane.this.setExpanded( e.getStateChange() == java.awt.event.ItemEvent.SELECTED );
-				}
-			} );
-		}
-		super.addNotify();
-	}
-
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
 		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
 	}

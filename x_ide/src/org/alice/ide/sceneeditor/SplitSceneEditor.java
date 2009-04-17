@@ -88,13 +88,9 @@ class LookingGlass extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 	private zoot.ZCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
 	public LookingGlass() {
 		this.setBackground( java.awt.Color.RED );
-	}
-	@Override
-	public void addNotify() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		this.isSceneEditorExpandedCheckBox = new zoot.ZCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
 		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
-		super.addNotify();
 	}
 }
 

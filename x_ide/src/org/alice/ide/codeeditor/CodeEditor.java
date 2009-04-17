@@ -264,16 +264,6 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 			}
 		} );
 	}
-	//	@Override
-	//	public void addNotify() {
-	//		super.addNotify();
-	//		getIDE().addDropReceptor( this );
-	//	}
-	//	@Override
-	//	public void removeNotify() {
-	//		super.removeNotify();
-	//		getIDE().removeDropReceptor( this );
-	//	}
 	public boolean isPotentiallyAcceptingOf( zoot.ZDragComponent source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			return getIDE().getFocusedCode() == this.code;

@@ -43,24 +43,15 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file ) {
 		super( declaringType, getTypeFromGalleryFile( file ).getCls() );
 		this.file = file;
+		this.galleryIcon = new GalleryIcon( this.file );
+		this.add( this.galleryIcon, java.awt.BorderLayout.EAST );
 	}
 	
 
 	public Object createInstanceInJava() {
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstClassEncounteredDeclaredInJava() );
 	}
-	
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		if( this.galleryIcon != null ) {
-			//pass
-		} else {
-			this.galleryIcon = new GalleryIcon( this.file );
-			this.add( this.galleryIcon, java.awt.BorderLayout.EAST );
-		}
-	}
-	
+
 	private static java.util.Set< String > prefixSet = new java.util.HashSet< String >();
 	static {
 		prefixSet = new java.util.HashSet< String >();
