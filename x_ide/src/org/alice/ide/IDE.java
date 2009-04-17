@@ -446,7 +446,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation );
 		windowMenu.add( setLocaleMenu );
-		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), this.createAboutOperation() );
+		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), new org.alice.ide.operations.help.WarningOperation( true ), this.createAboutOperation() );
 		rv.add( fileMenu );
 		rv.add( editMenu );
 		rv.add( runMenu );

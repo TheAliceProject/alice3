@@ -32,6 +32,11 @@ public class ZLabel extends javax.swing.JLabel {
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 	}
+	
+	public ZLabel( javax.swing.Icon icon ) {
+		this();
+		this.setIcon( icon );
+	}
 	public ZLabel( String text ) {
 		this();
 		this.setText( text );
