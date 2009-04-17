@@ -47,6 +47,10 @@ public abstract class ZFrame extends javax.swing.JFrame {
 			}
 		} );
 	}
+	public void maximize() {
+		this.setExtendedState( this.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+	}
+	
 	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	//protected abstract void handleWindowClosing();
 	protected abstract void handleQuit( java.util.EventObject e );
