@@ -329,7 +329,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		synchronized( m_lightweightOnscreenLookingGlasses ) {
 			m_lightweightOnscreenLookingGlasses.add( lolg );
 		}
-		//m_animator.add( lolg.getGLAutoDrawable() );
+		m_animator.add( lolg.getGLAutoDrawable() );
 		return lolg;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass() {
@@ -338,7 +338,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		synchronized( m_heavyweightOnscreenLookingGlasses ) {
 			m_heavyweightOnscreenLookingGlasses.add( holg );
 		}
-		//m_animator.add( holg.getGLAutoDrawable() );
+		m_animator.add( holg.getGLAutoDrawable() );
 		return holg;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass createOffscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlassToShareContextWith ) {
