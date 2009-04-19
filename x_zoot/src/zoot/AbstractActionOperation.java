@@ -31,8 +31,18 @@ public abstract class AbstractActionOperation extends AbstractOperation implemen
 			AbstractActionOperation.this.handleActionPerformed( e );
 		}
 	};
+	private javax.swing.ButtonModel buttonModel;
+	public AbstractActionOperation() {
+		this( new javax.swing.DefaultButtonModel() );
+	}
+	public AbstractActionOperation( javax.swing.ButtonModel buttonModel ) {
+		this.buttonModel = buttonModel;
+	}
 	public javax.swing.Action getActionForConfiguringSwing() {
 		return this.actionForConfiguringSwingComponents;
+	}
+	public javax.swing.ButtonModel getButtonModel() {
+		return this.buttonModel;
 	}
 	protected void putValue( String key, Object value ) {
 		this.actionForConfiguringSwingComponents.putValue( key, value );

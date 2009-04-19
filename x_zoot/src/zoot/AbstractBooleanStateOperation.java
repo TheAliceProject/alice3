@@ -51,7 +51,7 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 	public Boolean getState() {
 		return this.buttonModel.isSelected();
 	}
-	public javax.swing.ButtonModel getButtonModelForConfiguringSwing() {
+	public javax.swing.ButtonModel getButtonModel() {
 		return this.buttonModel;
 	}
 	public javax.swing.Action getActionForConfiguringSwing() {

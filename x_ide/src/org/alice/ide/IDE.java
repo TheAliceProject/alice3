@@ -257,6 +257,8 @@ public abstract class IDE extends zoot.ZFrame {
 
 		this.promptForLicenseAgreements();
 
+		this.runButtonModel.setEnabled( false );
+		
 		this.sceneEditor = this.createSceneEditor();
 		this.galleryBrowser = this.createGalleryBrowser();
 		this.membersEditor = this.createClassMembersEditor();
@@ -281,10 +283,6 @@ public abstract class IDE extends zoot.ZFrame {
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
 		this.vmForSceneEditor = createVirtualMachineForSceneEditor();
-
-		this.runOperation = this.createRunOperation();
-		this.exitOperation = this.createExitOperation();
-		this.saveOperation = this.createSaveOperation();
 
 		getContentPane().addMouseWheelListener( new edu.cmu.cs.dennisc.swing.plaf.metal.FontMouseWheelAdapter() );
 
@@ -713,13 +711,15 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 
+	private javax.swing.ButtonModel runButtonModel = new javax.swing.DefaultButtonModel();
+	
 	private zoot.ActionOperation newProjectOperation = new org.alice.ide.operations.file.NewProjectOperation();
-	private zoot.ActionOperation runOperation = this.createRunOperation();
+	private zoot.ActionOperation runOperation = this.createRunOperation( this.runButtonModel );
 	private zoot.ActionOperation exitOperation = this.createExitOperation();
 	private zoot.ActionOperation saveOperation = this.createSaveOperation();
 
-	protected zoot.ActionOperation createRunOperation() {
-		return new org.alice.ide.operations.run.RunOperation();
+	protected zoot.ActionOperation createRunOperation( javax.swing.ButtonModel model ) {
+		return new org.alice.ide.operations.run.RunOperation( model );
 	}
 	protected zoot.ActionOperation createExitOperation() {
 		return new org.alice.ide.operations.file.ExitOperation();
@@ -1113,6 +1113,7 @@ public abstract class IDE extends zoot.ZFrame {
 		org.alice.ide.event.ProjectOpenEvent e = new org.alice.ide.event.ProjectOpenEvent( this, this.project, project );
 		fireProjectOpening( e );
 		this.project = project;
+		this.runButtonModel.setEnabled( this.project != null );
 		fireProjectOpened( e );
 	}
 

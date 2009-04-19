@@ -27,7 +27,7 @@ package zoot;
  */
 public abstract class AbstractBoundedRangeOperation extends AbstractOperation implements BoundedRangeOperation {
 	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-	public javax.swing.BoundedRangeModel getBoundedRangeModelForConfiguringSwing() {
+	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
 		return this.boundedRangeModel;
 	}
 }

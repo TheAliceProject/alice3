@@ -26,6 +26,11 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractActionOperation extends zoot.AbstractActionOperation {
+	public AbstractActionOperation() {
+	}
+	public AbstractActionOperation( javax.swing.ButtonModel model ) {
+		super( model );
+	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

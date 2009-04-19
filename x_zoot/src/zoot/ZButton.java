@@ -30,6 +30,7 @@ public class ZButton extends javax.swing.JButton {
 	public ZButton( ActionOperation actionOperation ) {
 		this.actionOperation = actionOperation;
 		this.setAction( this.actionOperation.getActionForConfiguringSwing() );
+		this.setModel( this.actionOperation.getButtonModel() );
 	}
 	protected ActionOperation getActionOperation() {
 		return this.actionOperation;

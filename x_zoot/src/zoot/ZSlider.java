@@ -29,7 +29,7 @@ public class ZSlider extends javax.swing.JSlider {
 	private BoundedRangeOperation boundedRangeOperation;
 	public ZSlider( BoundedRangeOperation boundedRangeOperation ) {
 		this.boundedRangeOperation = boundedRangeOperation;
-		this.setModel( this.boundedRangeOperation.getBoundedRangeModelForConfiguringSwing() );
+		this.setModel( this.boundedRangeOperation.getBoundedRangeModel() );
 //		this.addVetoableChangeListener( new java.beans.VetoableChangeListener() {
 //			public void vetoableChange( java.beans.PropertyChangeEvent e ) throws java.beans.PropertyVetoException {
 //				ZManager.performIfAppropriate( ZSlider.this.boundedRangeOperation, e );

@@ -26,6 +26,6 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public interface BoundedRangeOperation extends Operation {
-	public javax.swing.BoundedRangeModel getBoundedRangeModelForConfiguringSwing();
+	public javax.swing.BoundedRangeModel getBoundedRangeModel();
 	public void perform( BoundedRangeContext boundedRangeContext );
 }

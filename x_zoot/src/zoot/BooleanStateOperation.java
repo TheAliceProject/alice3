@@ -27,6 +27,6 @@ package zoot;
  */
 public interface BooleanStateOperation extends Operation {
 	public javax.swing.Action getActionForConfiguringSwing();
-	public javax.swing.ButtonModel getButtonModelForConfiguringSwing();
+	public javax.swing.ButtonModel getButtonModel();
 	public void performStateChange( BooleanStateContext booleanStateContext );
 }

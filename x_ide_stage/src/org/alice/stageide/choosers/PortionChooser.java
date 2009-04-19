@@ -41,7 +41,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 	private java.awt.Component[] components = {this.slider};
 	public PortionChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
-		this.slider.getBoundedRangeOperation().getBoundedRangeModelForConfiguringSwing().setValue( 100 );
+		this.slider.getBoundedRangeOperation().getBoundedRangeModel().setValue( 100 );
 	}
 	public java.awt.Component[] getComponents() {
 		return this.components;

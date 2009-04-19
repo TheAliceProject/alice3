@@ -60,7 +60,8 @@ class RunIcon implements javax.swing.Icon {
  * @author Dennis Cosgrove
  */
 public class RunOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public RunOperation() {
+	public RunOperation( javax.swing.ButtonModel model ) {
+		super( model );
 		this.putValue( javax.swing.Action.NAME, "Run..." );
 		this.putValue( javax.swing.Action.SMALL_ICON, new RunIcon() );
 		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_R );

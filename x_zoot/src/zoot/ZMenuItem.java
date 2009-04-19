@@ -98,10 +98,13 @@ public class ZMenuItem extends javax.swing.JMenuItem {
 	public void setActionOperation( ActionOperation actionOperation ) {
 		if( this.actionOperation != null ) {
 			this.setAction( null );
+			//todo?
+			this.setModel( model );
 		}
 		this.actionOperation = actionOperation;
 		if( this.actionOperation != null ) {
 			this.setAction( this.actionOperation.getActionForConfiguringSwing() );
+			this.setModel( this.actionOperation.getButtonModel() );
 		}
 	}
 
