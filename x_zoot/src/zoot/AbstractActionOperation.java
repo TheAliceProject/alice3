@@ -49,5 +49,6 @@ public abstract class AbstractActionOperation extends AbstractOperation implemen
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
 		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_WORTHWHILE );
+		Thread.dumpStack();
 	}
 }

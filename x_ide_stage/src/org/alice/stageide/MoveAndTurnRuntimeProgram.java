@@ -20,6 +20,13 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 			}
 		} );
 	}
+	
+	public edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {
+		return this.vm;
+	}
+	public edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice getSceneInstance() {
+		return this.sceneInstance;
+	}
 	@Override
 	protected void initialize() {
 		this.sceneInstance = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)this.vm.createInstanceEntryPoint( this.sceneType );

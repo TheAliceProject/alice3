@@ -64,11 +64,14 @@ public class StageIDE extends org.alice.ide.IDE {
 			return false;
 		}
 	}
+	protected MoveAndTurnRuntimeProgram createRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
+		return new MoveAndTurnRuntimeProgram( sceneType, vm );
+	}
 	@Override
 	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
 		vm.setEntryPointType( this.getProgramType() );
-		MoveAndTurnRuntimeProgram rtProgram = new MoveAndTurnRuntimeProgram( sceneType, vm );
+		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
 		rtProgram.showInJDialog( this, true, new String[]{} );
 	}
 	@Override
@@ -117,9 +120,12 @@ public class StageIDE extends org.alice.ide.IDE {
 		return rv;
 	}
 
+	protected java.io.File getGalleryRootDirectory() {
+		return org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory();
+	}
 	@Override
 	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
-		java.io.File thumbnailRoot = new java.io.File( org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails" );
+		java.io.File thumbnailRoot = new java.io.File( this.getGalleryRootDirectory(), "thumbnails" );
 		java.util.Map< String, String > map = this.createGalleryThumbnailsMap();
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser( thumbnailRoot, map );
 	}
