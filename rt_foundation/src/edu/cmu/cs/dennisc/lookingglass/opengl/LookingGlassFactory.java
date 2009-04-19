@@ -121,74 +121,89 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		}
 		return false;
 	}
-	class LookingGlassAnimator extends Animator {
+//	class LookingGlassAnimator extends Animator {
+//		private java.util.concurrent.Semaphore m_renderingLock = new java.util.concurrent.Semaphore( 1 );
+//		@Override
+//		protected ThreadDeferenceAction step() {
+//			ThreadDeferenceAction rv = ThreadDeferenceAction.SLEEP;
+//			synchronized( m_toBeReleased ) {
+//				for( edu.cmu.cs.dennisc.pattern.Releasable releasable : m_toBeReleased ) {
+//					if( releasable instanceof OnscreenLookingGlass ) {
+//						OnscreenLookingGlass onscreenLookingGlass = (OnscreenLookingGlass)releasable;
+//						if( onscreenLookingGlass instanceof HeavyweightOnscreenLookingGlass ) {
+//							synchronized( m_heavyweightOnscreenLookingGlasses ) {
+//								m_heavyweightOnscreenLookingGlasses.remove( onscreenLookingGlass );
+//							}
+//						} else if( onscreenLookingGlass instanceof LightweightOnscreenLookingGlass ) {
+//							synchronized( m_lightweightOnscreenLookingGlasses ) {
+//								m_lightweightOnscreenLookingGlasses.remove( onscreenLookingGlass );
+//							}
+//						} else {
+//							assert false;
+//						}
+//						//m_animator.remove( onscreenLookingGlass.getGLAutoDrawable() );
+//					} else if( releasable instanceof OffscreenLookingGlass ) {
+//						synchronized( m_offscreenLookingGlasses ) {
+//							m_offscreenLookingGlasses.remove( releasable );
+//						}
+//					} else {
+//						assert false;
+//					}
+//				}
+//				m_toBeReleased.clear();
+//			}
+//
+//			if( ChangeHandler.getEventCountSinceLastReset() > 0 ) {
+//				ChangeHandler.resetEventCount();
+//				acquireRenderingLock();
+//				try {
+//					ChangeHandler.pushRenderingMode();
+//					try {
+//						synchronized( m_heavyweightOnscreenLookingGlasses ) {
+//							for( OnscreenLookingGlass lg : m_heavyweightOnscreenLookingGlasses ) {
+//								if( isDisplayDesired( lg ) ) {
+//									lg.getGLAutoDrawable().display();
+//									//lg.getAWTComponent().repaint();
+//									//edu.cmu.cs.dennisc.print.PrintUtilities.println( lg );
+//									rv = ThreadDeferenceAction.YIELD; 
+//								}
+//							}
+//						}
+//						synchronized( m_lightweightOnscreenLookingGlasses ) {
+//							for( OnscreenLookingGlass lg : m_lightweightOnscreenLookingGlasses ) {
+//								if( isDisplayDesired( lg ) ) {
+//									lg.getGLAutoDrawable().display();
+//									//lg.getAWTComponent().repaint();
+//									//edu.cmu.cs.dennisc.print.PrintUtilities.println( lg );
+//									rv = ThreadDeferenceAction.YIELD; 
+//								}
+//							}
+//						}
+//					} finally {
+//						ChangeHandler.popRenderingMode();
+//					}
+//				} finally {
+//					releaseRenderingLock();
+//				}
+//			}
+//			LookingGlassFactory.this.handleDisplayed();
+//			return rv;
+//		}
+//		public void acquireRenderingLock() {
+//			try {
+//				m_renderingLock.acquire();
+//			} catch( InterruptedException ie ) {
+//				throw new RuntimeException( ie );
+//			}
+//		}
+//		public void releaseRenderingLock() {
+//			m_renderingLock.release();
+//		}
+//	}
+//	private LookingGlassAnimator m_animator = new LookingGlassAnimator();
+	class Animator extends com.sun.opengl.util.Animator{
 		private java.util.concurrent.Semaphore m_renderingLock = new java.util.concurrent.Semaphore( 1 );
-		@Override
-		protected ThreadDeferenceAction step() {
-			ThreadDeferenceAction rv = ThreadDeferenceAction.SLEEP;
-			synchronized( m_toBeReleased ) {
-				for( edu.cmu.cs.dennisc.pattern.Releasable releasable : m_toBeReleased ) {
-					if( releasable instanceof OnscreenLookingGlass ) {
-						OnscreenLookingGlass onscreenLookingGlass = (OnscreenLookingGlass)releasable;
-						if( onscreenLookingGlass instanceof HeavyweightOnscreenLookingGlass ) {
-							synchronized( m_heavyweightOnscreenLookingGlasses ) {
-								m_heavyweightOnscreenLookingGlasses.remove( onscreenLookingGlass );
-							}
-						} else if( onscreenLookingGlass instanceof LightweightOnscreenLookingGlass ) {
-							synchronized( m_lightweightOnscreenLookingGlasses ) {
-								m_lightweightOnscreenLookingGlasses.remove( onscreenLookingGlass );
-							}
-						} else {
-							assert false;
-						}
-						//m_animator.remove( onscreenLookingGlass.getGLAutoDrawable() );
-					} else if( releasable instanceof OffscreenLookingGlass ) {
-						synchronized( m_offscreenLookingGlasses ) {
-							m_offscreenLookingGlasses.remove( releasable );
-						}
-					} else {
-						assert false;
-					}
-				}
-				m_toBeReleased.clear();
-			}
 
-			if( ChangeHandler.getEventCountSinceLastReset() > 0 ) {
-				ChangeHandler.resetEventCount();
-				acquireRenderingLock();
-				try {
-					ChangeHandler.pushRenderingMode();
-					try {
-						synchronized( m_heavyweightOnscreenLookingGlasses ) {
-							for( OnscreenLookingGlass lg : m_heavyweightOnscreenLookingGlasses ) {
-								if( isDisplayDesired( lg ) ) {
-									lg.getGLAutoDrawable().display();
-									//lg.getAWTComponent().repaint();
-									//edu.cmu.cs.dennisc.print.PrintUtilities.println( lg );
-									rv = ThreadDeferenceAction.YIELD; 
-								}
-							}
-						}
-						synchronized( m_lightweightOnscreenLookingGlasses ) {
-							for( OnscreenLookingGlass lg : m_lightweightOnscreenLookingGlasses ) {
-								if( isDisplayDesired( lg ) ) {
-									lg.getGLAutoDrawable().display();
-									//lg.getAWTComponent().repaint();
-									//edu.cmu.cs.dennisc.print.PrintUtilities.println( lg );
-									rv = ThreadDeferenceAction.YIELD; 
-								}
-							}
-						}
-					} finally {
-						ChangeHandler.popRenderingMode();
-					}
-				} finally {
-					releaseRenderingLock();
-				}
-			}
-			LookingGlassFactory.this.handleDisplayed();
-			return rv;
-		}
 		public void acquireRenderingLock() {
 			try {
 				m_renderingLock.acquire();
@@ -199,8 +214,26 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		public void releaseRenderingLock() {
 			m_renderingLock.release();
 		}
+
+		@Override
+		protected void display() {
+			acquireRenderingLock();
+			try {
+				ChangeHandler.pushRenderingMode();
+				try {
+					super.display();
+				} finally {
+					ChangeHandler.popRenderingMode();
+				}
+			} finally {
+				releaseRenderingLock();
+			}
+			LookingGlassFactory.this.handleDisplayed();
+		}
 	}
-	private LookingGlassAnimator m_animator = new LookingGlassAnimator();
+
+	private Animator m_animator = new Animator();
+
 	private java.util.Queue< Runnable > m_runnables = new java.util.LinkedList< Runnable >();
 
 	private java.util.List<edu.cmu.cs.dennisc.pattern.Releasable> m_toBeReleased = new java.util.LinkedList<edu.cmu.cs.dennisc.pattern.Releasable>();
