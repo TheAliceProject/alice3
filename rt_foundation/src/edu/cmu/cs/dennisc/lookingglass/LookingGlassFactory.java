@@ -39,9 +39,9 @@ public interface LookingGlassFactory {
 	public Iterable< edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener > accessAutomaticDisplayListeners();
 
 	//todo:
-	public Iterable< LightweightOnscreenLookingGlass > accessLightweightOnscreenLookingGlasses();
-	public Iterable< HeavyweightOnscreenLookingGlass > accessHeavyweightOnscreenLookingGlasses();
-	public Iterable< OffscreenLookingGlass > accessOffscreenLookingGlasses();
+	public Iterable< ? extends LightweightOnscreenLookingGlass > accessLightweightOnscreenLookingGlasses();
+	public Iterable< ? extends HeavyweightOnscreenLookingGlass > accessHeavyweightOnscreenLookingGlasses();
+	public Iterable< ? extends OffscreenLookingGlass > accessOffscreenLookingGlasses();
 
 	public int getAutomaticDisplayCount();
 	public void incrementAutomaticDisplayCount();

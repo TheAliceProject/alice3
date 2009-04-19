@@ -56,6 +56,15 @@ public abstract class ChangeHandler {
 		//		}
 	}
 
+	private static int eventCount = 0;
+	
+	public static int getEventCountSinceLastReset() {
+		return ChangeHandler.eventCount;
+	}
+	public static void resetEventCount() {
+		ChangeHandler.eventCount = 0;
+	}
+	
 	private static void handleEvent( edu.cmu.cs.dennisc.pattern.event.Event< ? > event ) {
 		if( event instanceof edu.cmu.cs.dennisc.property.event.PropertyEvent ) {
 			edu.cmu.cs.dennisc.property.event.PropertyEvent propertyEvent = (edu.cmu.cs.dennisc.property.event.PropertyEvent)event;
@@ -88,6 +97,7 @@ public abstract class ChangeHandler {
 			}
 			//			fireRepaint();			
 		}
+		ChangeHandler.eventCount ++;
 	}
 
 	public static void handleBufferedChanges() {

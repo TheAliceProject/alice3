@@ -113,7 +113,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	private boolean isABGRExtensionSupported;
 
-	private boolean m_isDisplayIgnoredDueToPreviousException = true;
+	private boolean m_isDisplayIgnoredDueToPreviousException = false;
 
 	private class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent {
 		public ReusableLookingGlassRenderEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, Graphics2D g ) {
@@ -205,6 +205,8 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			m_renderContext.actuallyForgetTexturesIfNecessary();
 			m_renderContext.actuallyForgetDisplayListsIfNecessary();
 			if( m_isDisplayIgnoredDueToPreviousException ) {
+				//pass
+			} else {
 				try {
 					//todo: separate clearing and rendering
 					m_reusableLookingGlassRenderEvent.prologue();
@@ -213,16 +215,20 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 					} finally {
 						m_reusableLookingGlassRenderEvent.epilogue();
 					}
-
-					m_renderContext.initialize();
-					Iterable< edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameras = m_lookingGlass.accessCameras();
-					synchronized( cameras ) {
-						for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
-							AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapterI = AdapterFactory.getAdapterFor( camera );
-							cameraAdapterI.performClearAndRenderOffscreen( m_renderContext, m_width, m_height );
+					if( m_lookingGlass.getCameraCount() > 0 ) {
+						m_renderContext.initialize();
+						Iterable< edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameras = m_lookingGlass.accessCameras();
+						synchronized( cameras ) {
+							for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
+								AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapterI = AdapterFactory.getAdapterFor( camera );
+								cameraAdapterI.performClearAndRenderOffscreen( m_renderContext, m_width, m_height );
+							}
 						}
+						m_renderContext.renderLetterboxingIfNecessary( m_width, m_height );
+					} else {
+						m_renderContext.gl.glClearColor( 0, 0, 0, 1 );
+						m_renderContext.gl.glClear( GL.GL_COLOR_BUFFER_BIT );
 					}
-					m_renderContext.renderLetterboxingIfNecessary( m_width, m_height );
 					m_reusableLookingGlassRenderEvent.prologue();
 					try {
 						m_lookingGlass.fireRendered( m_reusableLookingGlassRenderEvent );
