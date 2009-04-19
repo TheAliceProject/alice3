@@ -106,7 +106,6 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	private PickParameters m_pickParameters = null;
 	private java.awt.image.BufferedImage m_rvColorBuffer = null;
 	private java.nio.FloatBuffer m_rvDepthBuffer = null;
-	
 
 	private static final int SELECTION_CAPACITY = 256;
 	private java.nio.IntBuffer m_selectionAsIntBuffer = null;
@@ -414,39 +413,55 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	//todo: investigate not being invoked
 	public void init( javax.media.opengl.GLAutoDrawable drawable ) {
-		assert drawable == m_drawable;
-		GL gl = drawable.getGL();
-		final boolean USE_DEBUG_GL = false;
-		if( USE_DEBUG_GL ) {
-			if( gl instanceof javax.media.opengl.DebugGL ) {
-				// pass
-			} else {
-				gl = new javax.media.opengl.DebugGL( gl );
-				System.out.println( "using debug gl: " + gl );
-				drawable.setGL( gl );
-			}
-		}
-		m_renderContext.setGL( gl );
-		m_pickContext.setGL( gl );
-		
-		String extensions = gl.glGetString( GL.GL_EXTENSIONS );
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "supported opengl extensions:", extensions );
-		this.isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
-		if( this.isABGRExtensionSupported ) {
-			//pass
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "will not be able to capture images from gl since GL_EXT_abgr not found in: " );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
-		}
-		
-		m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
+//		assert drawable == m_drawable;
+//		GL gl = drawable.getGL();
+//		final boolean USE_DEBUG_GL = false;
+//		if( USE_DEBUG_GL ) {
+//			if( gl instanceof javax.media.opengl.DebugGL ) {
+//				// pass
+//			} else {
+//				gl = new javax.media.opengl.DebugGL( gl );
+//				System.out.println( "using debug gl: " + gl );
+//				drawable.setGL( gl );
+//			}
+//		}
+//		m_renderContext.setGL( gl );
+//		m_pickContext.setGL( gl );
+//		
+//		String extensions = gl.glGetString( GL.GL_EXTENSIONS );
+//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "supported opengl extensions:", extensions );
+//		this.isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
+//		if( this.isABGRExtensionSupported ) {
+//			//pass
+//		} else {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "will not be able to capture images from gl since GL_EXT_abgr not found in: " );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
+//		}
+//		
+//		m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
 	}
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == m_drawable;
+		
 		//m_lookingGlass.commitAnyPendingChanges();
 		//todo?
 		GL gl = drawable.getGL();
+		if( m_renderContext.gl != null || m_pickContext.gl != null ) {
+			//pass
+		} else {
+			String extensions = gl.glGetString( GL.GL_EXTENSIONS );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "supported opengl extensions:", extensions );
+			this.isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
+			if( this.isABGRExtensionSupported ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "will not be able to capture images from gl since GL_EXT_abgr not found in: " );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
+			}
+			
+			m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
+		}
 		if( m_pickParameters != null ) {
 			//todo?
 			m_pickContext.setGL( gl );
