@@ -23,6 +23,8 @@
 package org.alice.ide.operations.run;
 
 class RunIcon implements javax.swing.Icon {
+	private static final java.awt.Color ENABLED_CIRCLE_COLOR = java.awt.Color.GREEN.darker();
+	private static final java.awt.Color DISABLED_CIRCLE_COLOR = java.awt.Color.GRAY;
 	public int getIconHeight() {
 		return 18;
 	}
@@ -32,7 +34,17 @@ class RunIcon implements javax.swing.Icon {
 	public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 		java.awt.Color prevColor = g.getColor();
 		try {
-			g.setColor( java.awt.Color.GREEN.darker() );
+			boolean isEnabled;
+			if( c instanceof javax.swing.AbstractButton ) {
+				isEnabled = ((javax.swing.AbstractButton)c).getModel().isEnabled();
+			} else {
+				isEnabled = c.isEnabled();
+			}
+			if( isEnabled ) {
+				g.setColor( ENABLED_CIRCLE_COLOR );
+			} else {
+				g.setColor( DISABLED_CIRCLE_COLOR );
+			}
 			int w = this.getIconWidth();
 			int h = this.getIconHeight();
 			g.fillOval( x, y, w, h );
