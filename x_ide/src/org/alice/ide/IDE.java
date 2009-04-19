@@ -496,10 +496,13 @@ public abstract class IDE extends zoot.ZFrame {
 	protected String getApplicationName() {
 		return "Alice";
 	}
+	protected String getVersionText() {
+		return edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText();
+	}
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
 		rv.append( this.getApplicationName() );
 		rv.append( " " );
-		rv.append( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
+		rv.append( this.getVersionText() );
 		rv.append( " " );
 		return rv;
 	}
