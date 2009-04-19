@@ -1542,4 +1542,61 @@ public abstract class IDE extends zoot.ZFrame {
 			return java.awt.Color.GRAY;
 		}
 	}
+	private static <E extends edu.cmu.cs.dennisc.alice.ast.Node> E getAncestor( edu.cmu.cs.dennisc.alice.ast.Node node, Class<E> cls ) {
+		edu.cmu.cs.dennisc.alice.ast.Node ancestor = node.getParent();
+		while( ancestor != null ) {
+			if( cls.isAssignableFrom( ancestor.getClass() ) ) {
+				break;
+			} else {
+				ancestor = ancestor.getParent();
+			}
+		}
+		return (E)ancestor;
+	}
+	
+	protected void ensureNodeVisible( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode = getAncestor( node, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
+		if( nextFocusedCode != null ) {
+			this.setFocusedCode( nextFocusedCode );
+		}
+	}
+	private edu.cmu.cs.dennisc.alice.ast.Node getNodeForUUID( java.util.UUID uuid ) {
+		edu.cmu.cs.dennisc.alice.ast.Node rv = mapUUIDToNode.get( uuid );
+		if( rv != null ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getProgramType();
+			type.crawl( new edu.cmu.cs.dennisc.pattern.Crawler() {
+				public void visit( edu.cmu.cs.dennisc.pattern.Crawlable crawlable ) {
+					if( crawlable instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+						edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)crawlable;
+						mapUUIDToNode.put( node.getUUID(), node );
+					}
+				}
+			}, true );
+			rv = mapUUIDToNode.get( uuid );
+		}
+		return rv;
+	}
+	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
+			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
+			ensureNodeVisible( node );
+			org.alice.ide.common.AbstractStatementPane rv = getCodeFactory().lookup( statement );
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					org.alice.ide.common.AbstractStatementPane pane = getCodeFactory().lookup( statement );
+					if( pane != null ) {
+						pane.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( pane ) );
+					}
+				}
+			} );
+			return rv;
+		} else {
+			return null;
+		}
+	}
+	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
+		return getComponentForNode( getNodeForUUID( uuid ) );
+	}
 }
