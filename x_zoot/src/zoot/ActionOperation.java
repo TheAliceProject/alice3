@@ -26,7 +26,7 @@ package zoot;
  * @author Dennis Cosgrove
  */
 public interface ActionOperation extends Operation {
-	public javax.swing.ButtonModel getButtonModel();
+	//public javax.swing.ButtonModel getButtonModel();
 	public javax.swing.Action getActionForConfiguringSwing();
 	public void perform( ActionContext actionContext );
 }
