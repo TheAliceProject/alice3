@@ -34,6 +34,15 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 		//this.setBackground( java.awt.Color.GREEN );
 	}
 	@Override
+	protected boolean isExpressionTypeFeedbackDesired() {
+		if( this.expression == null || edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( this.expression.getClass(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression.class, edu.cmu.cs.dennisc.alice.ast.ThisExpression.class )  ) {
+			return true;
+		} else {
+			return super.isExpressionTypeFeedbackDesired();
+		}
+	}
+	
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 		if( this.expression != null ) {
 			return this.expression.getType();

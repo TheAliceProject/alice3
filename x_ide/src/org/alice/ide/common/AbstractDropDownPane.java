@@ -66,14 +66,18 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 	}
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		if( this.isActive() || this.isInactiveFeedbackDesired() ) {
-			g2.fillRect( x, y, width - 1, height - 1 );
-		}
+		g2.fillRect( x+1, y+1, width - 3, height - 3 );
 	}
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		g2.setColor( java.awt.Color.WHITE );
-		fillBounds( g2, x, y, width, height );
+		if( this.isActive() || this.isInactiveFeedbackDesired() ) {
+			if( this.isActive() ) {
+				g2.setColor( java.awt.Color.WHITE );
+			} else {
+				g2.setColor( new java.awt.Color( 255, 255, 255, 127 ) );
+			}
+			this.fillBounds( g2, x, y, width, height );
+		}
 		
 		float x0 = x + width - 4 - AbstractDropDownPane.AFFORDANCE_WIDTH;
 		float x1 = x0 + AbstractDropDownPane.AFFORDANCE_WIDTH;
@@ -89,7 +93,7 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 			triangleFill = java.awt.Color.YELLOW;
 			triangleOutline = java.awt.Color.BLACK;
 		} else {
-			triangleFill = edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 127 );
+			triangleFill = edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 191 );
 			triangleOutline = null;
 		}
 
@@ -122,8 +126,10 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 			g2.draw( new java.awt.geom.Rectangle2D.Float( 1.5f, 1.5f, width-3.0f, height-3.0f ) );
 		} else {
 			if( this.isInactiveFeedbackDesired() ) {
-				g2.setColor( java.awt.Color.LIGHT_GRAY );
-				g2.drawRect( x, y, width-1, height-1 );
+				g2.setColor( java.awt.Color.WHITE );
+				//g2.drawRect( x, y, width-1, height-1 );
+				g2.drawLine( x+1, y+1, x+width-4, y+1 );
+				g2.drawLine( x+1, y+1, x+1, y+height-4 );
 			}
 		}
 	}

@@ -38,6 +38,9 @@ public abstract class IDE extends zoot.ZFrame {
 		return IDE.singleton;
 	}
 
+	public boolean isExpressionTypeFeedbackDesired() {
+		return this.isJava();
+	}
 	//	public zoot.DragAndDropOperation getDragAndDropOperation() {
 	//		//todo
 	//		return this;
@@ -135,7 +138,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	//	private zoot.ZLabel feedback = new zoot.ZLabel();
 
-	public java.awt.Component getOverrideComponent( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public java.awt.Component getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return null;
 	}
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
@@ -213,8 +216,8 @@ public abstract class IDE extends zoot.ZFrame {
 		return this.isSceneEditorExpandedOperation;
 	}
 
-	private int rootDividerLocation = 400;
-	private int leftDividerLocation = 300;
+	private int rootDividerLocation = 320;
+	private int leftDividerLocation = 240;
 
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
@@ -1502,13 +1505,15 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
 		if( edu.cmu.cs.dennisc.alice.ast.Statement.class.isAssignableFrom( cls ) ) {
 			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
-				return edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 );
+				return edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 245 );
 			} else {
 				return new java.awt.Color( 0xd3d7f0 );
 			}
 		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
-			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression.class ) ) {
-				return new java.awt.Color( 0xc4d9c1 );
+			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) ) {
+				return new java.awt.Color( 0xBAD1A7 );
+			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression.class ) ) {
+				return new java.awt.Color( 0xDEEBD3 );
 			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
 				return new java.awt.Color( 0xbdcfb3 );
 			} else {
@@ -1530,6 +1535,9 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 
+	public java.awt.Color getCommentForegroundColor() {
+		return new java.awt.Color( 0, 100, 0 );
+	}
 
 	public java.awt.Color getCodeDeclaredInAliceColor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
@@ -1601,5 +1609,9 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
 		return getComponentForNode( getNodeForUUID( uuid ) );
+	}
+
+	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+		return null;
 	}
 }

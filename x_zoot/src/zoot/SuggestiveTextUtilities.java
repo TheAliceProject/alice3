@@ -33,16 +33,10 @@ class SuggestiveTextUtilties {
 		} else {
 			java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
 			g.setFont( font );
-			int grayscale = 200;
-			//			int grayscale;
-			//			if( textComponent.isFocusOwner() ) {
-			//				grayscale = 160;
-			//			} else {
-			//				grayscale = 100;
-			//			}
-			g.setColor( new java.awt.Color( grayscale, grayscale, grayscale ) );
-			java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
-			g.drawString( textForBlankCondition, 4, (int)bounds.getHeight() + 0 );
+			g.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 127 ) );
+			java.awt.FontMetrics fm = g.getFontMetrics();
+			//java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
+			g.drawString( textForBlankCondition, 0, textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent() );
 		}
 	}
 }

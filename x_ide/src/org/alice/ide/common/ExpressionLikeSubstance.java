@@ -37,7 +37,9 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = getExpressionType();
 		return type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	}
-	
+	protected boolean isExpressionTypeFeedbackDesired() {
+		return this.getIDE().isExpressionTypeFeedbackDesired() || isKnurlDesired();
+	}
 	@Override
 	protected int getInsetTop() {
 		if( this.isVoid() ) {
@@ -49,7 +51,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	
 	@Override
 	protected int getDockInsetLeft() {
-		if( this.isVoid() ) {
+		if( this.isVoid() || this.isExpressionTypeFeedbackDesired() == false ) {
 			return 0;
 		} else {
 			return DOCKING_BAY_INSET_LEFT + 2;
@@ -97,12 +99,14 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	}
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
-		beveledShape.fill( g2 );
+		if( this.isExpressionTypeFeedbackDesired() ) {
+			edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
+			beveledShape.fill( g2 );
+		}
 	}
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		if( this.isVoid() ) {
+		if( this.isVoid() || this.isExpressionTypeFeedbackDesired() == false ) {
 			//pass
 		} else {
 			//edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();

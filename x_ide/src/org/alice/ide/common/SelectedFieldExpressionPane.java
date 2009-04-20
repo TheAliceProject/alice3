@@ -56,4 +56,8 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		//this.setBackground( color );
 		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
+	@Override
+	protected boolean isExpressionTypeFeedbackDesired() {
+		return true;
+	}
 }

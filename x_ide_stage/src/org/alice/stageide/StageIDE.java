@@ -30,21 +30,108 @@ public class StageIDE extends org.alice.ide.IDE {
 			System.exit( -1 );
 		}
 	}
+	
+	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava COLOR_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Color.class );
 
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, ColorIcon > mapFieldToIcon = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, ColorIcon >();
+	class ColorIcon implements javax.swing.Icon {
+		private static final int SIZE = 15;
+		private java.awt.Color fillColor;
+		private java.awt.Color outlineColor;
+		public ColorIcon( java.awt.Color color ) {
+			this.fillColor = color;
+			float[] hsb = new float[ 3 ];
+			//todo
+			java.awt.Color.RGBtoHSB( this.fillColor.getRed(), this.fillColor.getGreen(), this.fillColor.getBlue(), hsb );
+			if( hsb[ 2 ] > 0.9f ) {
+				this.outlineColor = java.awt.Color.GRAY;
+			} else {
+				this.outlineColor = null;
+			}
+		}
+		public int getIconWidth() {
+			return SIZE+3 + 2;
+		}
+		public int getIconHeight() {
+			return SIZE+3;
+		}
+		public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
+			g.setColor( this.fillColor );
+			g.fillRect( x+1 + 2, y+1, SIZE, SIZE );
+			if( this.outlineColor != null ) {
+				g.setColor( this.outlineColor );
+				g.drawRect( x+1 + 2, y+1, SIZE, SIZE );
+			}
+		}
+	}
+	private javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		if( field.getDeclaringType() == COLOR_TYPE && field.getValueType() == COLOR_TYPE ) {
+			ColorIcon rv = this.mapFieldToIcon.get( field );
+			if( rv != null ) {
+				//pass
+			} else {
+				try {
+					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField fieldInJava = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField)field;
+					org.alice.apis.moveandturn.Color color = (org.alice.apis.moveandturn.Color)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( fieldInJava.getFld(), null );
+					rv = new ColorIcon( color.getInternal().getAsAWTColor() );
+					this.mapFieldToIcon.put( field, rv );
+				} catch( RuntimeException re ) {
+					//pass
+				}
+			}
+			return rv;
+		}
+		return null;
+	}
+	
 	@Override
-	public java.awt.Component getOverrideComponent( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+		javax.swing.Icon icon = getIconFor( field );
+		if( icon != null ) {
+			return new zoot.ZLabel( icon );
+		}
+		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
+	}
+	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava REVOLUTIONS_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( org.alice.apis.moveandturn.AngleInRevolutions.class, Number.class ) );
+	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava PORTION_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( org.alice.apis.moveandturn.Portion.class, Number.class ) );
+	@Override
+	public java.awt.Component getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
-			if( fieldAccess.expression.getValue() instanceof edu.cmu.cs.dennisc.alice.ast.ThisExpression ) {
+			edu.cmu.cs.dennisc.alice.ast.Expression fieldExpression =  fieldAccess.expression.getValue();
+			if( fieldExpression instanceof edu.cmu.cs.dennisc.alice.ast.ThisExpression ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
 					if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
-						return new org.alice.ide.common.ExpressionPane( expression, new zoot.ZLabel( "this." + field.getName() ) );
+						return new org.alice.ide.common.ExpressionPane( expression, new zoot.ZLabel( "this." + field.getName() ) ) {
+							@Override
+							protected boolean isExpressionTypeFeedbackDesired() {
+								return true;
+							}
+						};
+					}
+				}
+			}
+		} else {
+			if( this.isJava() ) {
+				//pass
+			} else {
+				if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
+					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
+					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
+						return new swing.LineAxisPane( 
+								factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ),
+								new zoot.ZLabel( " revolutions" )
+						);
+					} else if( constructor == PORTION_CONSTRUCTOR ) {
+						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );
 					}
 				}
 			}
 		}
-		return super.getOverrideComponent( expression );
+		return super.getOverrideComponent( factory, expression );
 	}
 	@Override
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {

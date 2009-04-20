@@ -33,7 +33,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	protected javax.swing.JComponent createComponent( Object instance ) {
 		swing.LineAxisPane rv = new swing.LineAxisPane();
 		rv.setOpaque( true );
-		rv.setBackground( java.awt.Color.WHITE );
+		rv.setBackground( new java.awt.Color( 255, 255, 255, 127 ) );
 		rv.setBorder( edu.cmu.cs.dennisc.swing.BorderFactory.createOutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
 		

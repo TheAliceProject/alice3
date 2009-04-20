@@ -22,18 +22,15 @@
  */
 package org.alice.ide.codeeditor;
 
-import org.alice.ide.common.AbstractStatementPane;
-import org.alice.ide.common.Factory;
-
 /**
  * @author Dennis Cosgrove
  */
-class CommentLine extends javax.swing.JTextArea {
+class CommentLine extends zoot.ZSuggestiveTextField {
 	private edu.cmu.cs.dennisc.alice.ast.Comment comment;
-
 	public CommentLine( edu.cmu.cs.dennisc.alice.ast.Comment comment ) {
+		super( comment.text.getValue(), "enter your comment here" );
 		this.comment = comment;
-		this.setText( this.comment.text.getValue() );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 2, 0 ) );
 		this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
@@ -45,9 +42,8 @@ class CommentLine extends javax.swing.JTextArea {
 				CommentLine.this.handleUpdate();
 			}
 		} );
-		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 240 ) );
 		this.setBackground( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.Comment.class ) );
-		//this.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.BLACK ) );
+		this.setForeground( org.alice.ide.IDE.getSingleton().getCommentForegroundColor() );
 		this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
 		this.handleUpdate();
 		if( org.alice.ide.IDE.getSingleton().getCommentThatWantsFocus() == this.comment ) {
@@ -82,19 +78,8 @@ class CommentLine extends javax.swing.JTextArea {
 				CommentLine.this.repaint();
 			}
 		} );
-	}
-	
-	
-	
-	@Override
-	public java.awt.Font getFont() {
-		java.awt.Font rv = super.getFont();
-		if( rv != null ) {
-			rv = rv.deriveFont( rv.getSize2D() * 1.4f );
-			//rv = rv.deriveFont( java.awt.Font.BOLD );
-			rv = rv.deriveFont( java.awt.Font.ITALIC );
-		}
-		return rv;
+		
+		this.setFont( this.getFont().deriveFont( java.awt.Font.BOLD ) );
 	}
 	private void handleUpdate() {
 		this.revalidate();
@@ -102,44 +87,25 @@ class CommentLine extends javax.swing.JTextArea {
 		this.comment.text.setValue( this.getText() );
 	}
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
-		if( this.getText().length() == 0 ) {
-			String text = "enter your comment here";
-			g.setFont( this.getFont().deriveFont( java.awt.Font.ITALIC ) );
-			g.setColor( java.awt.Color.GRAY );
-			java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
-			g.drawString( "enter your comment here", 4, (int)bounds.getHeight() );
-		}
-		//g.draw3DRect( 0, 0, getWidth() - 1, getHeight() - 1, false );
-//		if( this.isFocusOwner() ) {
-//			g.setColor( java.awt.Color.DARK_GRAY );
-//			g.draw3DRect( 0, 0, getWidth() - 1, getHeight() - 1, false );
-//			g.drawRect( 0, 0, getWidth() - 1, getHeight() - 1 );
-//		}
-	}
-	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 256 );
+		java.awt.Dimension rv = super.getPreferredSize();
+		rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( rv, 256 );
+		rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMaximumHeight( rv, this.getMinimumSize().height );
+		return rv;
 	}
 }
 
 /**
  * @author Dennis Cosgrove
  */
-public class CommentPane extends AbstractStatementPane {
-	public CommentPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
+public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
+	public CommentPane( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, comment, owner );
-		String text;
-		if( getIDE().isJava() ) {
-			text = "//";
-		} else {
-			text = "comment: ";
-		}
-		zoot.ZLabel label = new zoot.ZLabel( text );
-		label.setFontToDerivedFont( java.awt.font.TextAttribute.WEIGHT, java.awt.font.TextAttribute.WEIGHT_LIGHT );
+		CommentLine commentLine = new CommentLine( comment );
+		zoot.ZLabel label = new zoot.ZLabel( "// " );
+		label.setFont( commentLine.getFont() );
+		label.setForeground( commentLine.getForeground() );
 		this.add( label );
-		this.add( new CommentLine( comment ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 16, 4, 16 ) );
+		this.add( commentLine );
 	}
 }

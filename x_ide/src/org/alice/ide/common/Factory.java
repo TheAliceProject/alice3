@@ -140,9 +140,9 @@ public abstract class Factory {
 		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Node && methodName.equals( "getName" ) ) {
 			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)owner;
 			org.alice.ide.common.NodeNameLabel label = new org.alice.ide.common.NodeNameLabel( node );
-			if( node instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
-				label.setFontToScaledFont( 1.5f );
-			}
+//			if( node instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
+//				label.setFontToScaledFont( 1.2f );
+//			}
 			rv = label;
 		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument && methodName.equals( "getParameterNameText" ) ) {
 			edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)owner;
@@ -297,6 +297,16 @@ public abstract class Factory {
 //		return new ExpressionPane( this, expression );
 //	}
 	
+	
+	protected java.awt.Component createFieldAccessPane( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+		java.awt.Component rv = new FieldAccessPane( this, fieldAccess );
+		java.awt.Component prefixPane = org.alice.ide.IDE.getSingleton().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
+		if( prefixPane != null ) {
+			rv = new swing.LineAxisPane( prefixPane, rv );
+		}
+		return rv;
+	}
+
 	public java.awt.Component createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 //		java.awt.Component rv;
 //		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
@@ -306,7 +316,7 @@ public abstract class Factory {
 //		} else {
 //			rv = new ExpressionPane( this, expression );
 //		}
-		java.awt.Component rv = org.alice.ide.IDE.getSingleton().getOverrideComponent( expression );
+		java.awt.Component rv = org.alice.ide.IDE.getSingleton().getOverrideComponent( this, expression );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -334,11 +344,16 @@ public abstract class Factory {
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
 				rv = new AssignmentExpressionPane( this, (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-				rv = new FieldAccessPane( this, (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+				rv = this.createFieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
 				rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+//			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractLiteral ) {
+//				rv = this.createComponent( expression );
 			} else {
-				rv = new ExpressionPane( expression, this.createComponent( expression ) );
+				rv = this.createComponent( expression );
+//				if( org.alice.ide.IDE.getSingleton().isExpressionTypeFeedbackDesired() ) {
+					rv = new ExpressionPane( expression, rv );
+//				}
 			}
 		}
 		return rv;

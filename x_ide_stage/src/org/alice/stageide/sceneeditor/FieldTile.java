@@ -149,7 +149,10 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
 		return edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
 	}
-		
+	@Override
+	protected boolean isExpressionTypeFeedbackDesired() {
+		return true;
+	}
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
