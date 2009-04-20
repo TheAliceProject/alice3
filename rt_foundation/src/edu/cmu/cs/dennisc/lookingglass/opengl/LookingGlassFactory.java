@@ -53,74 +53,74 @@ class WaitingRunnable implements Runnable {
 	}
 }
 
-abstract class Animator implements Runnable {
-	public static final long DEFAULT_SLEEP_MILLIS = 5;
-	private boolean isActive = false;
-	private long tStart;
-	private int frameCount;
-	private long sleepMillis = DEFAULT_SLEEP_MILLIS;
-	public enum ThreadDeferenceAction {
-		DO_NOTHING,
-		SLEEP,
-		YIELD
-	}
-	public void start() {
-		this.isActive = true;
-		this.frameCount = 0;
-		this.tStart = System.currentTimeMillis();
-//		javax.swing.SwingUtilities.invokeLater( this );
-		new Thread( this ).start();
-	}
-	public void stop() {
-		this.isActive = false;
-		long tDelta = System.currentTimeMillis() - this.tStart;
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.frameCount, tDelta, this.frameCount/(tDelta*0.001) );
-	}
-	public int getFrameCount() {
-		return this.frameCount;
-	}
-	public long getStartTimeMillis() {
-		return this.tStart;
-	}
-	public long getSleepMillis() {
-		return this.sleepMillis;
-	}
-	public void setSleepMillis( long sleepMillis ) {
-		this.sleepMillis = sleepMillis;
-	}
-	
-	protected abstract ThreadDeferenceAction step();
-	public void run() {
-		while( this.isActive ) {
-//		if( this.isActive ) {
-//			try {
-				ThreadDeferenceAction threadAction = this.step();
-				if( threadAction == ThreadDeferenceAction.SLEEP ) {
-					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( this.sleepMillis );
-				} else if( threadAction == ThreadDeferenceAction.YIELD ) {
-					Thread.yield();
-				}
-				this.frameCount ++;
-//			} finally {
-//				javax.swing.SwingUtilities.invokeLater( this );
-//			}
-		}
-	}
-}
-
+//abstract class Animator implements Runnable {
+//	public static final long DEFAULT_SLEEP_MILLIS = 5;
+//	private boolean isActive = false;
+//	private long tStart;
+//	private int frameCount;
+//	private long sleepMillis = DEFAULT_SLEEP_MILLIS;
+//	public enum ThreadDeferenceAction {
+//		DO_NOTHING,
+//		SLEEP,
+//		YIELD
+//	}
+//	public void start() {
+//		this.isActive = true;
+//		this.frameCount = 0;
+//		this.tStart = System.currentTimeMillis();
+////		javax.swing.SwingUtilities.invokeLater( this );
+//		new Thread( this ).start();
+//	}
+//	public void stop() {
+//		this.isActive = false;
+//		long tDelta = System.currentTimeMillis() - this.tStart;
+//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.frameCount, tDelta, this.frameCount/(tDelta*0.001) );
+//	}
+//	public int getFrameCount() {
+//		return this.frameCount;
+//	}
+//	public long getStartTimeMillis() {
+//		return this.tStart;
+//	}
+//	public long getSleepMillis() {
+//		return this.sleepMillis;
+//	}
+//	public void setSleepMillis( long sleepMillis ) {
+//		this.sleepMillis = sleepMillis;
+//	}
+//	
+//	protected abstract ThreadDeferenceAction step();
+//	public void run() {
+//		while( this.isActive ) {
+////		if( this.isActive ) {
+////			try {
+//				ThreadDeferenceAction threadAction = this.step();
+//				if( threadAction == ThreadDeferenceAction.SLEEP ) {
+//					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( this.sleepMillis );
+//				} else if( threadAction == ThreadDeferenceAction.YIELD ) {
+//					Thread.yield();
+//				}
+//				this.frameCount ++;
+////			} finally {
+////				javax.swing.SwingUtilities.invokeLater( this );
+////			}
+//		}
+//	}
+//}
+//
 /**
  * @author Dennis Cosgrove
  */
 public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory, edu.cmu.cs.dennisc.pattern.event.ReleaseListener {
-	private static boolean isDisplayDesired( OnscreenLookingGlass lg ) {
-		java.awt.Component component = lg.getAWTComponent();
-		if( component.isVisible() && component.isValid() && component.getWidth() > 0 && component.getHeight() > 0 ) {
-			if( lg.getCameraCount() > 0 ) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	private static boolean isDisplayDesired( OnscreenLookingGlass lg ) {
+//		java.awt.Component component = lg.getAWTComponent();
+//		if( component.isVisible() && component.isValid() && component.getWidth() > 0 && component.getHeight() > 0 ) {
+//			if( lg.getCameraCount() > 0 ) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 //	class LookingGlassAnimator extends Animator {
 //		private java.util.concurrent.Semaphore m_renderingLock = new java.util.concurrent.Semaphore( 1 );
 //		@Override

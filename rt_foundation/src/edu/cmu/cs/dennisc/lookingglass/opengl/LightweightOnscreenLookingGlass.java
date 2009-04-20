@@ -48,18 +48,6 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 				}
 			}
 		}
-//		@Override
-//		public java.awt.Dimension getPreferredSize() {
-//			return new java.awt.Dimension( 0, 0 );
-//		}
-//		@Override
-//		public void setSize( int width, int height ) {
-//			//super.setSize( width, height );
-//		}
-//		@Override
-//		public void setSize( java.awt.Dimension size ) {
-//			//super.setSize( width, height );
-//		}
 	}
 	private RenderPane glPanel = new RenderPane();
 	/*package-private*/ LightweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {

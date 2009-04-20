@@ -413,37 +413,38 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	//todo: investigate not being invoked
 	public void init( javax.media.opengl.GLAutoDrawable drawable ) {
-//		assert drawable == m_drawable;
-//		GL gl = drawable.getGL();
-//		final boolean USE_DEBUG_GL = false;
-//		if( USE_DEBUG_GL ) {
-//			if( gl instanceof javax.media.opengl.DebugGL ) {
-//				// pass
-//			} else {
-//				gl = new javax.media.opengl.DebugGL( gl );
-//				System.out.println( "using debug gl: " + gl );
-//				drawable.setGL( gl );
-//			}
-//		}
-//		m_renderContext.setGL( gl );
-//		m_pickContext.setGL( gl );
-//		
-//		String extensions = gl.glGetString( GL.GL_EXTENSIONS );
-//		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "supported opengl extensions:", extensions );
-//		this.isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
-//		if( this.isABGRExtensionSupported ) {
-//			//pass
-//		} else {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "will not be able to capture images from gl since GL_EXT_abgr not found in: " );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
-//		}
-//		
-//		m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
+		assert drawable == m_drawable;
+		GL gl = drawable.getGL();
+		final boolean USE_DEBUG_GL = false;
+		if( USE_DEBUG_GL ) {
+			if( gl instanceof javax.media.opengl.DebugGL ) {
+				// pass
+			} else {
+				gl = new javax.media.opengl.DebugGL( gl );
+				System.out.println( "using debug gl: " + gl );
+				drawable.setGL( gl );
+			}
+		}
+		m_renderContext.setGL( gl );
+		m_pickContext.setGL( gl );
+		
+		String extensions = gl.glGetString( GL.GL_EXTENSIONS );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "supported opengl extensions:", extensions );
+		this.isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
+		if( this.isABGRExtensionSupported ) {
+			//pass
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "will not be able to capture images from gl since GL_EXT_abgr not found in: " );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
+		}
+		
+		m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
 	}
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == m_drawable;
-		
+	
 		//m_lookingGlass.commitAnyPendingChanges();
 		//todo?
 		GL gl = drawable.getGL();
@@ -459,9 +460,15 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "will not be able to capture images from gl since GL_EXT_abgr not found in: " );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
 			}
-			
 			m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
 		}
+		
+//		if( m_width > 0 && m_height > 0 ) {
+//			//pass
+//		} else {
+//			m_width = drawable.getWidth();
+//			m_height = drawable.getHeight();
+//		}
 		if( m_pickParameters != null ) {
 			//todo?
 			m_pickContext.setGL( gl );
@@ -474,6 +481,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 	}
 	public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
 		assert drawable == m_drawable;
 		m_width = width;
 		m_height = height;
