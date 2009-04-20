@@ -159,7 +159,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 	public java.awt.Component getAWTComponent() {
 		return this;
 	}
-	private void refresh() {
+	public void refresh() {
 		this.removeAll();
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;

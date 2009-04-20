@@ -38,9 +38,6 @@ public abstract class IDE extends zoot.ZFrame {
 		return IDE.singleton;
 	}
 
-	public boolean isExpressionTypeFeedbackDesired() {
-		return this.isJava();
-	}
 	//	public zoot.DragAndDropOperation getDragAndDropOperation() {
 	//		//todo
 	//		return this;
@@ -211,9 +208,19 @@ public abstract class IDE extends zoot.ZFrame {
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
 
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
+	private org.alice.ide.operations.window.IsExpressionTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = new org.alice.ide.operations.window.IsExpressionTypeFeedbackDesiredOperation( true );
 
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;
+	}
+	public boolean isExpressionTypeFeedbackDesired() {
+		return this.isExpressionTypeFeedbackDesiredOperation.getButtonModel().isSelected();
+	}
+	public void setExpressionTypeFeedbackDesired( boolean isExpressionTypeFeedbackDesired ) {
+		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
+		if( codeEditor != null ) {
+			codeEditor.refresh();
+		}
 	}
 
 	private int rootDividerLocation = 320;
@@ -445,7 +452,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
 
-		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation );
+		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isExpressionTypeFeedbackDesiredOperation );
 		windowMenu.add( setLocaleMenu );
 		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), new org.alice.ide.operations.help.WarningOperation( true ), this.createAboutOperation() );
 		rv.add( fileMenu );
@@ -1614,4 +1621,5 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
+
 }

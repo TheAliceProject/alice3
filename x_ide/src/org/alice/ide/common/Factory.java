@@ -217,6 +217,7 @@ public abstract class Factory {
 				@Override
 				public void paint( java.awt.Graphics g ) {
 					super.paint( g );
+					java.awt.Color prev = g.getColor();
 					if( isLoop ) {
 						int n = this.getComponentCount();
 						java.awt.Component cFirst = this.getComponent( 0 );
@@ -237,11 +238,14 @@ public abstract class Factory {
 						final int HALF_TRIANGLE_WIDTH = 3;
 						edu.cmu.cs.dennisc.awt.GraphicsUtilties.fillTriangle( g, edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
 					}
+					g.setColor( prev );
 				}
 			};
 			for( org.alice.ide.i18n.Line line : lines ) {
 				pagePane.add( createComponent( line, owner ) );
 			}
+			pagePane.revalidate();
+			pagePane.repaint();
 			return pagePane;
 		} else {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "skipping page" );

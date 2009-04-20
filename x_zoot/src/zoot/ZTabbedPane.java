@@ -22,7 +22,6 @@
  */
 package zoot;
 
-import javax.swing.UIManager;
 
 /**
  * @author Dennis Cosgrove

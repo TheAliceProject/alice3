@@ -57,8 +57,6 @@ public class SwingUtilities {
 	}
 	private static void paint( java.awt.Graphics g, java.awt.Component c, java.awt.Container p, int x, int y ) {
 		java.awt.Dimension size = c.getPreferredSize();
-//		java.awt.Rectangle rect = new java.awt.Rectangle();
-//		javax.swing.SwingUtilities.calculateInnerArea( (javax.swing.JComponent)c, rect );
 		g.translate( x, y );
 		javax.swing.SwingUtilities.paintComponent( g, c, p, 0, 0, size.width, size.height );
 		if( c instanceof java.awt.Container ) {
