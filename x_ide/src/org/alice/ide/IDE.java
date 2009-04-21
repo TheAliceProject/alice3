@@ -231,12 +231,17 @@ public abstract class IDE extends zoot.ZFrame {
 	private javax.swing.JSplitPane left;
 	private swing.BorderPane right;
 
+	
+	
+	protected javax.swing.JSplitPane getRootSplitPane() {
+		return this.root;
+	}
 	protected java.awt.Component createRoot() {
 		this.root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 		this.left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
 		this.right = new swing.BorderPane();
 		return this.root;
-	}	
+	}
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
 			this.left.setResizeWeight( 1.0 );
@@ -1623,29 +1628,35 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 		return rv;
 	}
-	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node ) {
+
+	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+		return null;
+	}
+	
+	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node, boolean scrollToVisible ) {
 		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 			ensureNodeVisible( node );
 			org.alice.ide.common.AbstractStatementPane rv = getCodeFactory().lookup( statement );
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					org.alice.ide.common.AbstractStatementPane pane = getCodeFactory().lookup( statement );
-					if( pane != null ) {
-						pane.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( pane ) );
+			if (scrollToVisible) {
+				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+					public void run() {
+						org.alice.ide.common.AbstractStatementPane pane = getCodeFactory().lookup( statement );
+						if( pane != null ) {	
+							pane.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( pane ) );
+						}
 					}
-				}
-			} );
+				} );
+			}
 			return rv;
 		} else {
 			return null;
 		}
 	}
+	public java.awt.Component getComponentForNode( java.util.UUID uuid, boolean scrollToVisible ) {
+		return getComponentForNode( getNodeForUUID( uuid ), scrollToVisible );
+	}	
 	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
-		return getComponentForNode( getNodeForUUID( uuid ) );
-	}
-
-	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
-		return null;
+		return getComponentForNode( uuid, false );
 	}
 }
