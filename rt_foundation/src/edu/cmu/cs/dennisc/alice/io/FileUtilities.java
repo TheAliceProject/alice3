@@ -48,6 +48,14 @@ public class FileUtilities {
 		rv.mkdirs();
 		return rv;
 	}
+	@Deprecated
+	public static java.io.File getMyProjectsDirectory() {
+		return getMyProjectsDirectory( "Alice3" );
+	}
+	@Deprecated
+	public static java.io.File getMyTypesDirectory() {
+		return getMyTypesDirectory( "Alice3" );
+	}
 
 	public static java.io.File[] listProjectFiles( java.io.File directory ) {
 		return edu.cmu.cs.dennisc.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );
