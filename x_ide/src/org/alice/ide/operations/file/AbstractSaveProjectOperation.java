@@ -28,7 +28,7 @@ package org.alice.ide.operations.file;
 public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation {
 	@Override
 	protected java.io.File getDefaultDirectory() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory();
+		return getIDE().getMyProjectsDirectory();
 	}
 	@Override
 	protected java.lang.String getExtension() {

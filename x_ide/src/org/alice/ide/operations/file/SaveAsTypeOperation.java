@@ -34,7 +34,7 @@ public class SaveAsTypeOperation extends AbstractSaveOperation {
 	}
 	@Override
 	protected java.io.File getDefaultDirectory() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory();
+		return getIDE().getMyTypesDirectory();
 	}
 	@Override
 	protected String getExtension() {

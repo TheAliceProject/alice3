@@ -1659,4 +1659,20 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
 		return getComponentForNode( uuid, false );
 	}
+
+	//todo: remove
+	private String getSubPath() {
+		String rv = getApplicationName();
+		if( "Alice".equals( rv ) ) {
+			return "Alice3";
+		} else {
+			return rv;
+		}
+	}
+	public java.io.File getMyProjectsDirectory() {
+		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory( this.getApplicationName() );
+	}
+	public java.io.File getMyTypesDirectory() {
+		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory( this.getApplicationName() );
+	}
 }
