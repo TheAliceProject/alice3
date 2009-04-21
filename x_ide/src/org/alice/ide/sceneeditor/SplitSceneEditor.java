@@ -138,5 +138,4 @@ public class SplitSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.al
 	}
 	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
 	}
-	
 }

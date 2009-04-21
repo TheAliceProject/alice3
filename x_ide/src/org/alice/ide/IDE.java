@@ -226,6 +226,17 @@ public abstract class IDE extends zoot.ZFrame {
 	private int rootDividerLocation = 320;
 	private int leftDividerLocation = 240;
 
+
+	private javax.swing.JSplitPane root;
+	private javax.swing.JSplitPane left;
+	private swing.BorderPane right;
+
+	protected java.awt.Component createRoot() {
+		this.root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+		this.left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
+		this.right = new swing.BorderPane();
+		return this.root;
+	}
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
 			this.left.setResizeWeight( 1.0 );
@@ -253,12 +264,7 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 		this.sceneEditor.handleExpandContractChange( isSceneEditorExpanded );
 	}
-
-	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
-	private javax.swing.JSplitPane left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
-	//private javax.swing.JSplitPane right = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
-	private swing.BorderPane right = new swing.BorderPane();
-
+	
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -281,14 +287,11 @@ public abstract class IDE extends zoot.ZFrame {
 		this.addIDEListener( this.listenersEditor );
 		this.addIDEListener( this.editorsTabbedPane );
 
-		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
-		this.add( this.root );
-
-		this.setSceneEditorExpanded( false );
 		this.getContentPane().setLayout( new java.awt.BorderLayout() );
-		this.getContentPane().add( this.root, java.awt.BorderLayout.CENTER );
+		this.getContentPane().add( this.createRoot(), java.awt.BorderLayout.CENTER );
 		//		this.getContentPane().add( this.feedback, java.awt.BorderLayout.SOUTH );
 		this.getContentPane().add( this.concealedBin, java.awt.BorderLayout.EAST );
+		this.setSceneEditorExpanded( false );
 
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
