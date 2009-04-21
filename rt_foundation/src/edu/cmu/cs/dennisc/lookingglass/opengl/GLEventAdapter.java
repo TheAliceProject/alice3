@@ -410,12 +410,13 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 		return rv;
 	}
-
-	//todo: investigate not being invoked
-	public void init( javax.media.opengl.GLAutoDrawable drawable ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
+	
+	private void initialize( javax.media.opengl.GLAutoDrawable drawable ) {
 		assert drawable == m_drawable;
 		GL gl = drawable.getGL();
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
+		
 		final boolean USE_DEBUG_GL = false;
 		if( USE_DEBUG_GL ) {
 			if( gl instanceof javax.media.opengl.DebugGL ) {
@@ -441,6 +442,12 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		
 		m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
 	}
+
+	//todo: investigate not being invoked
+	public void init( javax.media.opengl.GLAutoDrawable drawable ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
+		initialize( drawable );
+	}
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == m_drawable;
@@ -451,16 +458,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		if( m_renderContext.gl != null || m_pickContext.gl != null ) {
 			//pass
 		} else {
-			String extensions = gl.glGetString( GL.GL_EXTENSIONS );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "supported opengl extensions:", extensions );
-			this.isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
-			if( this.isABGRExtensionSupported ) {
-				//pass
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "will not be able to capture images from gl since GL_EXT_abgr not found in: " );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
-			}
-			m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
+			initialize( drawable );
 		}
 		
 //		if( m_width > 0 && m_height > 0 ) {

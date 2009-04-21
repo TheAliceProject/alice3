@@ -804,8 +804,19 @@ public abstract class IDE extends zoot.ZFrame {
 		zoot.ZManager.performIfAppropriate( actionOperation, e, isCancelWorthwhile );
 	}
 
+	private java.awt.Window splashScreen;
+	public java.awt.Window getSplashScreen() {
+		return this.splashScreen;
+	}
+	public void setSplashScreen( java.awt.Window splashScreen ) {
+		this.splashScreen = splashScreen;
+	}
+
 	@Override
 	protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+		if( this.splashScreen != null ) {
+			this.splashScreen.setVisible( false );
+		}
 		if( this.file != null ) {
 			//pass
 		} else {
@@ -1637,5 +1648,4 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
-
 }
