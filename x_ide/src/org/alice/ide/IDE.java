@@ -1666,7 +1666,7 @@ public abstract class IDE extends zoot.ZFrame {
 		if( "Alice".equals( rv ) ) {
 			rv = "Alice3";
 		}
-		return rv.trim();
+		return rv.replaceAll( " ", "" );
 	}
 	public java.io.File getMyProjectsDirectory() {
 		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory( this.getSubPath() );
