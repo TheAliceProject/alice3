@@ -37,7 +37,7 @@ public class VariablePane extends LocalPane {
 		return this.variable.valueType.getValue();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
 		return new edu.cmu.cs.dennisc.alice.ast.VariableAccess( this.variable );
 	}
 }

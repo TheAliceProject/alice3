@@ -26,11 +26,11 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
-	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-	public ExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		this.expression = expression;
-		this.add( getIDE().getTemplatesFactory().createComponent( this.expression ) );
-		this.setBackground( getIDE().getColorFor( expression ) );
+	private edu.cmu.cs.dennisc.alice.ast.Expression template;
+	public ExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression template ) {
+		this.template = template;
+		this.add( getIDE().getTemplatesFactory().createComponent( this.template ) );
+		this.setBackground( getIDE().getColorFor( this.template ) );
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
 		this.setPopupOperation( new org.alice.ide.operations.AbstractActionOperation() {
 			public void perform( zoot.ActionContext actionContext ) {
@@ -38,12 +38,9 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 			}
 		} );
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.Expression getExpression() {
-		return this.expression;
-	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.expression.getType();
+		return this.template.getType();
 	}
 	@Override
 	protected boolean isPressed() {

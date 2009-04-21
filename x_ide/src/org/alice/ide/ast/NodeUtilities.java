@@ -159,7 +159,8 @@ public class NodeUtilities {
 		rv.arguments.add( new edu.cmu.cs.dennisc.alice.ast.Argument( parameters.get( N-1 ), expression ) );
 		return rv;
 	}
-	
+
+	//todo: remove
 	public static edu.cmu.cs.dennisc.alice.ast.AbstractType[] getDesiredParameterValueTypes( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType[] rv = new edu.cmu.cs.dennisc.alice.ast.AbstractType[ parameters.size() ];
@@ -167,6 +168,13 @@ public class NodeUtilities {
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : parameters ) {
 			rv[ i ] = parameter.getDesiredValueType();
 			i++;
+		}
+		return rv;
+	}
+	public static java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getDesiredParameterValueTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = method.getParameters();
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : parameters ) {
+			rv.add( parameter.getDesiredValueType() );
 		}
 		return rv;
 	}

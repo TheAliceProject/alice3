@@ -1016,12 +1016,15 @@ public abstract class IDE extends zoot.ZFrame {
 		this.previousExpression = prevExpression;
 		return new org.alice.ide.cascade.ExpressionBlank( type );
 	}
-	private cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType[] types ) {
+	private cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, final boolean isArrayLengthDesired ) {
 		cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] > rv = new cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
 			@Override
 			protected void addChildren() {
+				int N = types.length;
+				int i=0;
 				for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : types ) {
-					this.addBlank( new org.alice.ide.cascade.ExpressionBlank( type ) );
+					this.addBlank( new org.alice.ide.cascade.ExpressionBlank( type, i==N-1 && isArrayLengthDesired ) );
+					i++;
 				}
 			}
 			@Override
@@ -1039,8 +1042,8 @@ public abstract class IDE extends zoot.ZFrame {
 		};
 		return rv;
 	}
-	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
-		cascade.FillIn fillIn = createExpressionsFillIn( types );
+	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
+		cascade.FillIn fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
 		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
 	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {

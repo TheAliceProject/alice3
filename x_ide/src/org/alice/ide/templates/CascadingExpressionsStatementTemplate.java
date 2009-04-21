@@ -42,7 +42,7 @@ public abstract class CascadingExpressionsStatementTemplate extends StatementTem
 					edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > expressionsTaskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
 						@Override
 						public void run() {
-							getIDE().promptUserForExpressions( types, e.getEndingMouseEvent(), this );
+							getIDE().promptUserForExpressions( types, false, e.getEndingMouseEvent(), this );
 						}
 					};
 					return expressionsTaskObserver.getResult();

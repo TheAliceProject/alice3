@@ -36,8 +36,8 @@ public class FunctionInvocationTemplate extends org.alice.ide.templates.Cascadin
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( this.method );
+	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+		return org.alice.ide.ast.NodeUtilities.getDesiredParameterValueTypes( rv, this.method );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {

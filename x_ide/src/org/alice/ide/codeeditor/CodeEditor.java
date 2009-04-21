@@ -260,7 +260,23 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return edu.cmu.cs.dennisc.awt.ComponentUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
-				return expressionPropertyDropDownPane.getExpressionProperty().getExpressionType().isAssignableFrom( type );
+				edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
+				if( expressionType.isAssignableFrom( type ) ) {
+					return true;
+				} else {
+					if( type.isArray() ) {
+						if( expressionType.isAssignableFrom( type.getComponentType() ) ) {
+							return true;
+						} else {
+							for( edu.cmu.cs.dennisc.alice.ast.AbstractType integerType : edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_TYPES ) {
+								if( expressionType == integerType ) {
+									return true;
+								}
+							}
+						}
+					}
+				}
+				return false;
 			}
 		} );
 	}

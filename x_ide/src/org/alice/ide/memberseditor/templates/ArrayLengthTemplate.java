@@ -26,7 +26,6 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 public class ArrayLengthTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
-	private static final edu.cmu.cs.dennisc.alice.ast.AbstractType[] ZERO_LENGTH_TYPE_ARRAY = new edu.cmu.cs.dennisc.alice.ast.AbstractType[] {};  
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public ArrayLengthTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( new edu.cmu.cs.dennisc.alice.ast.ArrayLength( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) ) );
@@ -37,15 +36,14 @@ public class ArrayLengthTemplate extends org.alice.ide.templates.CascadingExpres
 		}
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {
-		return ZERO_LENGTH_TYPE_ARRAY;
+	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+		return rv;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess();
 		fieldAccess.expression.setValue( getIDE().createInstanceExpression() );
 		fieldAccess.field.setValue( this.field );
-		
 		edu.cmu.cs.dennisc.alice.ast.ArrayLength rv = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
 		return rv;
 	}

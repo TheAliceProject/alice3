@@ -26,16 +26,11 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class AccessiblePane extends ExpressionCreatorPane {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression();
 	public AccessiblePane() {
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
 	}
 	@Override
-	public void createExpression( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-		taskObserver.handleCompletion( this.createExpression() );
+	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+		return rv;
 	}
-//	@Override
-//	protected boolean isCullingContainsDesired() {
-//		return false;
-//	}
 }

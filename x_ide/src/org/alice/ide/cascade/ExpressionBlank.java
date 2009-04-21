@@ -27,11 +27,31 @@ package org.alice.ide.cascade;
  */
 public class ExpressionBlank extends cascade.Blank {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+	private boolean isArrayLengthDesired;
 	public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		this( type, false );
+	}
+	public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type, boolean isArrayLengthDesired ) {
 		this.type = type;
+		this.isArrayLengthDesired = isArrayLengthDesired;
 	}
 	@Override
 	protected void addChildren() {
+		if( this.isArrayLengthDesired ) {
+			this.addFillIn( new cascade.FillIn() {
+				@Override
+				public Object getValue() {
+					return null;
+				}
+				@Override
+				protected void addChildren() {
+				}
+				protected javax.swing.JComponent getMenuProxy() {
+					return new zoot.ZLabel( "length" );
+				}
+			} );
+			this.addSeparator();
+		}
 		org.alice.ide.IDE.getSingleton().addFillIns( this, this.type );
 	}
 }

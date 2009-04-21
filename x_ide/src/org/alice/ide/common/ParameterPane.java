@@ -68,7 +68,7 @@ public class ParameterPane extends AccessiblePane {
 		return parameter.getValueType();
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.Expression createExpression() {
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( this.parameter );
 	}
 }
