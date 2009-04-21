@@ -236,7 +236,7 @@ public abstract class IDE extends zoot.ZFrame {
 		this.left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
 		this.right = new swing.BorderPane();
 		return this.root;
-	}
+	}	
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
 			this.left.setResizeWeight( 1.0 );
@@ -263,6 +263,22 @@ public abstract class IDE extends zoot.ZFrame {
 			this.root.setDividerSize( this.left.getDividerSize() );
 		}
 		this.sceneEditor.handleExpandContractChange( isSceneEditorExpanded );
+	}
+
+	protected org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
+		return this.ubiquitousPane;
+	}
+	protected org.alice.ide.editorstabbedpane.EditorsTabbedPane getEditorsTabbedPane() {
+		return this.editorsTabbedPane;
+	}
+	protected org.alice.ide.memberseditor.MembersEditor getMembersEditor() {
+		return this.membersEditor;
+	}
+	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser getGalleryBrowser() {
+		return this.galleryBrowser;
+	}
+	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
+		return this.sceneEditor;
 	}
 	
 	public IDE() {
@@ -307,9 +323,6 @@ public abstract class IDE extends zoot.ZFrame {
 		this.setJMenuBar( menuBar );
 	}
 
-	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
-		return this.sceneEditor;
-	}
 
 	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = new java.util.HashMap< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner >();
 
