@@ -33,27 +33,18 @@ public class FileUtilities {
 	private static String VERSION_ENTRY_NAME = "version.txt";
 	private static String TYPE_ENTRY_NAME = "type.xml";
 
-	private static String subPath = "Alice3";
-
-	public static String getSubPath() {
-		return FileUtilities.subPath;
-	}
-	public static void setSubPath( String subPath ) {
-		FileUtilities.subPath = subPath;
-	}
-
-	public static java.io.File getMyAliceDirectory() {
-		java.io.File rv = new java.io.File( edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory(), FileUtilities.getSubPath() );
+	public static java.io.File getMyAliceDirectory( String applicationName ) {
+		java.io.File rv = new java.io.File( edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory(), applicationName );
 		rv.mkdirs();
 		return rv;
 	}
-	public static java.io.File getMyProjectsDirectory() {
-		java.io.File rv = new java.io.File( getMyAliceDirectory(), "MyProjects" );
+	public static java.io.File getMyProjectsDirectory( String applicationName ) {
+		java.io.File rv = new java.io.File( getMyAliceDirectory( applicationName ), "MyProjects" );
 		rv.mkdirs();
 		return rv;
 	}
-	public static java.io.File getMyTypesDirectory() {
-		java.io.File rv = new java.io.File( getMyAliceDirectory(), "MyClasses" );
+	public static java.io.File getMyTypesDirectory( String applicationName ) {
+		java.io.File rv = new java.io.File( getMyAliceDirectory( applicationName ), "MyClasses" );
 		rv.mkdirs();
 		return rv;
 	}
