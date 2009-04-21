@@ -1664,10 +1664,9 @@ public abstract class IDE extends zoot.ZFrame {
 	private String getSubPath() {
 		String rv = getApplicationName();
 		if( "Alice".equals( rv ) ) {
-			return "Alice3";
-		} else {
-			return rv;
+			rv = "Alice3";
 		}
+		return rv.trim();
 	}
 	public java.io.File getMyProjectsDirectory() {
 		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory( this.getApplicationName() );
