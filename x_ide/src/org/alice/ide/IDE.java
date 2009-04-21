@@ -1669,9 +1669,9 @@ public abstract class IDE extends zoot.ZFrame {
 		return rv.trim();
 	}
 	public java.io.File getMyProjectsDirectory() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory( this.getApplicationName() );
+		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory( this.getSubPath() );
 	}
 	public java.io.File getMyTypesDirectory() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory( this.getApplicationName() );
+		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory( this.getSubPath() );
 	}
 }
