@@ -107,16 +107,14 @@ class CommentLine extends zoot.ZSuggestiveTextArea {
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		super.paint( g );
-//		if( this.getText().length() > 0 ) {
-			g.setColor( this.getForeground() );
-			final int ROW_HEIGHT = this.getRowHeight();
-			final int N = this.getLineCount();
-			int y = -g.getFontMetrics().getDescent();
-			for( int i=0; i<N; i++ ) {
-				y += ROW_HEIGHT;
-				g.drawString( "//", 0, y );
-			}
-//		}
+		g.setColor( this.getForeground() );
+		final int ROW_HEIGHT = this.getRowHeight();
+		final int N = this.getLineCount();
+		int y = -g.getFontMetrics().getDescent();
+		for( int i=0; i<N; i++ ) {
+			y += ROW_HEIGHT;
+			g.drawString( "//", 0, y );
+		}
 	}
 }
 
