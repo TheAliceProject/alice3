@@ -26,8 +26,8 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 class TypeBorder implements javax.swing.border.Border {
-	private static final int X_INSET = 10;
-	private static final int Y_INSET = 4;
+	private static final int X_INSET = 8;
+	private static final int Y_INSET = 2;
 	private static java.awt.Insets insets = new java.awt.Insets( Y_INSET, X_INSET, Y_INSET, X_INSET );
 	private static java.awt.Color FILL_COLOR = org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.TypeExpression.class );
 	private static java.awt.Color FILL_BRIGHTER_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( FILL_COLOR, 1.0, 0.5, 1.4 );
@@ -92,8 +92,8 @@ class TypeBorder implements javax.swing.border.Border {
 		java.awt.geom.GeneralPath rv = new java.awt.geom.GeneralPath();
 		int x0 = x+1;
 		int x1 = x0 + width - 3;
-		int xA = x0 + X_INSET;
-		int xB = x1 - X_INSET;
+		int xA = x0 + X_INSET/2;
+		int xB = x1 - X_INSET/2;
 
 		int y0 = y+1;
 		int y1 = y0 + height - 3;
