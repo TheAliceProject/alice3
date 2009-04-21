@@ -49,6 +49,10 @@ public class FileUtilities {
 		return rv;
 	}
 	@Deprecated
+	public static java.io.File getMyAliceDirectory() {
+		return getMyAliceDirectory( "Alice3" );
+	}
+	@Deprecated
 	public static java.io.File getMyProjectsDirectory() {
 		return getMyProjectsDirectory( "Alice3" );
 	}
