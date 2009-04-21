@@ -62,6 +62,9 @@ public class ZSuggestiveTextArea extends javax.swing.JTextArea {
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
+		int xDelta = this.getInsets().left;
+		g.translate( xDelta, 0 );
 		SuggestiveTextUtilties.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
+		g.translate( -xDelta, 0 );
 	}
 }

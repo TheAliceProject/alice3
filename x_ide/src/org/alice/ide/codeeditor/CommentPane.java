@@ -25,12 +25,11 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class CommentLine extends zoot.ZSuggestiveTextField {
+class CommentLine extends zoot.ZSuggestiveTextArea {
 	private edu.cmu.cs.dennisc.alice.ast.Comment comment;
 	public CommentLine( edu.cmu.cs.dennisc.alice.ast.Comment comment ) {
 		super( comment.text.getValue(), "enter your comment here" );
 		this.comment = comment;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 2, 0 ) );
 		this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
 				CommentLine.this.handleUpdate();
@@ -44,7 +43,7 @@ class CommentLine extends zoot.ZSuggestiveTextField {
 		} );
 		this.setBackground( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.Comment.class ) );
 		this.setForeground( org.alice.ide.IDE.getSingleton().getCommentForegroundColor() );
-		this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
+		//this.setMargin( new java.awt.Insets( 2, 4, 2, 32 ) );
 		this.handleUpdate();
 		if( org.alice.ide.IDE.getSingleton().getCommentThatWantsFocus() == this.comment ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -79,7 +78,19 @@ class CommentLine extends zoot.ZSuggestiveTextField {
 			}
 		} );
 		
-		this.setFont( this.getFont().deriveFont( java.awt.Font.BOLD ) );
+		java.awt.Font font = this.getFont();
+		font = font.deriveFont( java.awt.Font.BOLD );
+		font = font.deriveFont( font.getSize() * 1.25f );
+		this.setFont( font );
+	}
+	
+	@Override
+	public void setFont( java.awt.Font f ) {
+		super.setFont( f );
+		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
+		java.awt.FontMetrics fm = g.getFontMetrics( f );
+		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( "//", g );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, (int)bounds.getWidth()+2, 0, 0 ) );
 	}
 	private void handleUpdate() {
 		this.revalidate();
@@ -93,6 +104,20 @@ class CommentLine extends zoot.ZSuggestiveTextField {
 		rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMaximumHeight( rv, this.getMinimumSize().height );
 		return rv;
 	}
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		super.paint( g );
+//		if( this.getText().length() > 0 ) {
+			g.setColor( this.getForeground() );
+			final int ROW_HEIGHT = this.getRowHeight();
+			final int N = this.getLineCount();
+			int y = -g.getFontMetrics().getDescent();
+			for( int i=0; i<N; i++ ) {
+				y += ROW_HEIGHT;
+				g.drawString( "//", 0, y );
+			}
+//		}
+	}
 }
 
 /**
@@ -102,10 +127,10 @@ public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
 	public CommentPane( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, comment, owner );
 		CommentLine commentLine = new CommentLine( comment );
-		zoot.ZLabel label = new zoot.ZLabel( "// " );
-		label.setFont( commentLine.getFont() );
-		label.setForeground( commentLine.getForeground() );
-		this.add( label );
+//		zoot.ZLabel label = new zoot.ZLabel( "// " );
+//		label.setFont( commentLine.getFont() );
+//		label.setForeground( commentLine.getForeground() );
+//		this.add( label );
 		this.add( commentLine );
 	}
 }

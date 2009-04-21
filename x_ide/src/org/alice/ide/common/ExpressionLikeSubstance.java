@@ -62,7 +62,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		if( this.isVoid() ) {
 			return 0;
 		} else {
-			return ExpressionLikeSubstance.INSET + 2;
+			return 2;
 		}
 	}
 	
