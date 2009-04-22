@@ -124,12 +124,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		new Thread() {
 			@Override
 			public void run() {
-				MoveAndTurnSceneEditor.this.init();
+				MoveAndTurnSceneEditor.this.initializeProgramAndDragAdapter();
 			}
 		}.start();
 	}
 	
-	private void init() {
+	private void initializeProgramAndDragAdapter() {
 		this.program.setArgs( new String[] {} );
 		this.program.init();
 		this.program.start();

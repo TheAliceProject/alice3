@@ -35,8 +35,9 @@ abstract class Proxy extends javax.swing.JPanel {
 		return image;
 	}
 	private java.awt.Component subject;
-	boolean isOverDropAcceptor = false;
-	boolean isCopyDesired = false;
+	private boolean isOverDropAcceptor = false;
+	private boolean isCopyDesired = false;
+	
 
 	public Proxy( java.awt.Component subject ) {
 		this.subject = subject;

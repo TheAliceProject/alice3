@@ -36,6 +36,10 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 		}
 	}
 	
+	@Override
+	protected boolean isAlphaDesiredWhenOverDropReceptor() {
+		return true;
+	}
 	protected abstract java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv );
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 //	@Override

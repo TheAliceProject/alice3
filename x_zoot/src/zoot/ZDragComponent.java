@@ -60,6 +60,11 @@ public abstract class ZDragComponent extends ZControl {
 	public void setDragAndDropOperation( DragAndDropOperation dragAndDropOperation ) {
 		this.dragAndDropOperation = dragAndDropOperation;
 	}
+	
+	protected boolean isAlphaDesiredWhenOverDropReceptor() {
+		return false;
+	}
+	
 	private boolean isActuallyPotentiallyDraggable() {
 		boolean rv = this.dragAndDropOperation != null;
 		if( rv ) {
@@ -67,7 +72,7 @@ public abstract class ZDragComponent extends ZControl {
 			if( this.dragProxy != null ) {
 				//pass
 			} else {
-				this.dragProxy = new DragProxy( subject );
+				this.dragProxy = new DragProxy( subject, this.isAlphaDesiredWhenOverDropReceptor() );
 			}
 			if( this.dropProxy != null ) {
 				//pass

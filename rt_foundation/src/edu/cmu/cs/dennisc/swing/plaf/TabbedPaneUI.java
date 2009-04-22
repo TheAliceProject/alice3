@@ -241,14 +241,20 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	protected void paintFocusIndicator( java.awt.Graphics g, int tabPlacement, java.awt.Rectangle[] rects, int tabIndex, java.awt.Rectangle iconRect, java.awt.Rectangle textRect, boolean isSelected ) {
 	}
 
+
+	private void repaintTab( int index ) {
+		if( index >= 0 ) {
+			java.awt.Rectangle bounds = this.getTabBounds( index, new java.awt.Rectangle() );
+			this.tabPane.repaint( bounds );
+		}
+	}
 	@Override
 	protected void setRolloverTab( int nextRollOverTab ) {
 		int prevRollOverTab = this.getRolloverTab();
 		super.setRolloverTab( nextRollOverTab );
 		if( prevRollOverTab != nextRollOverTab ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "prevRollOverTab", prevRollOverTab );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "nextRollOverTab", nextRollOverTab );
-			this.tabPane.repaint();
+			repaintTab( prevRollOverTab );
+			repaintTab( nextRollOverTab );
 		}
 	}
 

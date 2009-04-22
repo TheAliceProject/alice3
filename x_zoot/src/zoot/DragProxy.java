@@ -26,8 +26,10 @@ package zoot;
  * @author Dennis Cosgrove
  */
 class DragProxy extends Proxy {
-	public DragProxy( java.awt.Component subject ) {
+	private boolean isAlphaDesiredWhenOverDropReceptor;
+	public DragProxy( java.awt.Component subject, boolean isAlphaDesiredWhenOverDropReceptor ) {
 		super( subject );
+		this.isAlphaDesiredWhenOverDropReceptor = isAlphaDesiredWhenOverDropReceptor;
 	}
 	private final int DROP_SHADOW_SIZE = 6;
 	@Override
@@ -40,7 +42,7 @@ class DragProxy extends Proxy {
 	}
 	@Override
 	protected float getAlpha() {
-		if( this.isOverDropAcceptor() ) {
+		if( this.isAlphaDesiredWhenOverDropReceptor && this.isOverDropAcceptor() ) {
 			return 0.5f;
 		} else {
 			return 1.0f;
@@ -66,7 +68,7 @@ class DragProxy extends Proxy {
 //			g2.setPaint( new java.awt.Color( 127, 127, 127, 127 ) );
 //			this.createBoundsShape().fill( g2 );
 //		}
-		if( isCopyDesired ) {
+		if( this.isCopyDesired() ) {
 			g2.setPaint( PaintUtilities.getCopyTexturePaint() );
 			fillBounds( g2 );
 		}
