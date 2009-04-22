@@ -72,6 +72,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		}
 	}
 	private RenderPane glPanel = new RenderPane();
+	//private javax.media.opengl.GLJPanel glPanel = new javax.media.opengl.GLJPanel();
 	/*package-private*/ LightweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
 		this.glPanel.setFocusable( true );

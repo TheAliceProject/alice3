@@ -65,7 +65,6 @@ class SidePane extends swing.PageAxisPane {
 	private boolean isExpanded = false;
 
 	public SidePane() {
-
 		this.add( new zoot.ZLabel( "NOTE: " ) );
 		this.add( new zoot.ZLabel( "This pane is just a placeholder." ) );
 		this.add( new zoot.ZLabel( "It is not hooked up to anything." ) );
@@ -131,10 +130,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 	
 	private void init() {
-		swing.BorderPane pane = new swing.BorderPane();
-		this.splitPane.setLeftComponent( pane );
-		this.program.showInAWTContainer( pane, new String[] {} );
-
+		this.program.setArgs( new String[] {} );
+		this.program.init();
+		this.program.start();
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
 		while( true ) {
 			onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
@@ -144,6 +142,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
 			}
 		}
+
+		
+		//note: do not add the program... it is an applet and therefore heavyweight
+		this.splitPane.setLeftComponent( this.program.getOnscreenLookingGlass().getAWTComponent() );
+		
+		
 		this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 		edu.cmu.cs.dennisc.animation.Animator animator = this.program.getAnimator();
 		while( animator == null ) {
