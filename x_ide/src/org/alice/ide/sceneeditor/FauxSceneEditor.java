@@ -44,4 +44,10 @@ public class FauxSceneEditor extends AbstractInstantiatingSceneEditor {
 	@Override
 	public void handleExpandContractChange( boolean isExpanded ) {
 	}
+	@Override
+	public void handleDragStarted( zoot.DragAndDropContext dragAndDropContext ) {
+	}
+	@Override
+	public void handleDragStopped( zoot.DragAndDropContext dragAndDropContext ) {
+	}
 }

@@ -702,6 +702,7 @@ public abstract class IDE extends zoot.ZFrame {
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
+		this.sceneEditor.handleDragStarted( dragAndDropContext );
 	}
 	public void handleDragEnteredDropReceptor( zoot.DragAndDropContext dragAndDropContext ) {
 		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
@@ -716,6 +717,7 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 	public void handleDragStopped( zoot.DragAndDropContext dragAndDropContext ) {
+		this.sceneEditor.handleDragStopped( dragAndDropContext );
 	}
 
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;

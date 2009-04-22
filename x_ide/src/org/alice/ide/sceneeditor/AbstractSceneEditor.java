@@ -78,6 +78,9 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 		}
 	}
 
+	public abstract void handleDragStarted( zoot.DragAndDropContext dragAndDropContext );
+	public abstract void handleDragStopped( zoot.DragAndDropContext dragAndDropContext );
+
 	public abstract void handleExpandContractChange( boolean isExpanded );
 	
 	@Deprecated

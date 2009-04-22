@@ -257,6 +257,9 @@ public abstract class ZDragComponent extends ZControl {
 			layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 			
 			this.dragAndDropContext = new DefaultDragAndDropContext( this.getMousePressedEvent(), e, this.dragAndDropOperation.createListOfPotentialDropReceptors( this ) );
+			if( this.dragAndDropOperation != null ) {
+				this.dragAndDropOperation.handleDragStarted( dragAndDropContext );
+			}
 		}
 	}
 	@Override

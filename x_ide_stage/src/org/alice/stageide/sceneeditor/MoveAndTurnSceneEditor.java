@@ -70,7 +70,7 @@ class SidePane extends swing.PageAxisPane {
 		this.add( new zoot.ZLabel( "This pane is just a placeholder." ) );
 		this.add( new zoot.ZLabel( "It is not hooked up to anything." ) );
 		this.add( javax.swing.Box.createVerticalStrut( 16 ) );
-		
+
 		this.add( new BogusCameraViewPane() );
 		this.add( new BogusModelManipulationModePane() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
@@ -80,9 +80,9 @@ class SidePane extends swing.PageAxisPane {
 	}
 	public void setExpanded( boolean isExpanded ) {
 		this.isExpanded = isExpanded;
-//		this.revalidate();
-//		this.repaint();
-//		//this.doLayout();
+		//		this.revalidate();
+		//		this.repaint();
+		//		//this.doLayout();
 	}
 }
 
@@ -91,10 +91,8 @@ class SidePane extends swing.PageAxisPane {
  */
 public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor {
 	private Program program = this.createProgram();
-	private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
+	//private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
 	private org.alice.stageide.sceneeditor.ControlsForOverlayPane controlsForOverlayPane;
-	//private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
-
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private SidePane sidePane = new SidePane();
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
@@ -104,47 +102,92 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.add( this.splitPane );
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerLocation( 1.0 );
-		
-		this.program.setArgs( new String[] {} );
-		this.program.init();
-		this.program.start();
+
+		//		new Thread() {
+		//			@Override
+		//			public void run() {
+		//				MoveAndTurnSceneEditor.this.program.showInAWTContainer( MoveAndTurnSceneEditor.this, new String[] {} );
+		//				edu.cmu.cs.dennisc.animation.Animator animator = MoveAndTurnSceneEditor.this.program.getAnimator();
+		//				while( animator == null ) {
+		//					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+		//					animator = MoveAndTurnSceneEditor.this.program.getAnimator();
+		//				}
+		//				MoveAndTurnSceneEditor.this.globalDragAdapter.setAnimator( animator );
+		//				MoveAndTurnSceneEditor.this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
+		//					public void selecting( org.alice.interact.event.SelectionEvent e ) {
+		//					}
+		//					public void selected( org.alice.interact.event.SelectionEvent e ) {
+		//						MoveAndTurnSceneEditor.this.handleSelection( e );
+		//					}
+		//				} );
+		//			}
+		//		}.start();
 		new Thread() {
 			@Override
 			public void run() {
-				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
-				while( true ) {
-					onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
-					if( onscreenLookingGlass != null ) {
-						break;
-					} else {
-						edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
-					}
-				}
-				MoveAndTurnSceneEditor.this.cardPane = new edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass );
-				//MoveAndTurnSceneEditor.this.add( MoveAndTurnSceneEditor.this.cardPane, java.awt.BorderLayout.CENTER );
-				MoveAndTurnSceneEditor.this.splitPane.setLeftComponent( MoveAndTurnSceneEditor.this.cardPane );
-
-//				javax.swing.JPanel pane = new javax.swing.JPanel();
-//				pane.setBackground( java.awt.Color.BLUE );
-//				MoveAndTurnSceneEditor.this.add( pane, java.awt.BorderLayout.CENTER );
-
-				MoveAndTurnSceneEditor.this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
-				edu.cmu.cs.dennisc.animation.Animator animator = MoveAndTurnSceneEditor.this.program.getAnimator();
-				while( animator == null ) {
-					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
-					animator = MoveAndTurnSceneEditor.this.program.getAnimator();
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( animator );
-				}
-				MoveAndTurnSceneEditor.this.globalDragAdapter.setAnimator( animator );
-				MoveAndTurnSceneEditor.this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
-					public void selecting( org.alice.interact.event.SelectionEvent e ) {
-					}
-					public void selected( org.alice.interact.event.SelectionEvent e ) {
-						MoveAndTurnSceneEditor.this.handleSelection( e );
-					}
-				} );
+				MoveAndTurnSceneEditor.this.init();
 			}
 		}.start();
+	}
+	
+	private void init() {
+		swing.BorderPane pane = new swing.BorderPane();
+		this.splitPane.setLeftComponent( pane );
+		this.program.showInAWTContainer( pane, new String[] {} );
+
+		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+		while( true ) {
+			onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
+			if( onscreenLookingGlass != null ) {
+				break;
+			} else {
+				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+			}
+		}
+		this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+		edu.cmu.cs.dennisc.animation.Animator animator = this.program.getAnimator();
+		while( animator == null ) {
+			edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+			animator = this.program.getAnimator();
+		}
+		this.globalDragAdapter.setAnimator( animator );
+		this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
+			public void selecting( org.alice.interact.event.SelectionEvent e ) {
+			}
+			public void selected( org.alice.interact.event.SelectionEvent e ) {
+				MoveAndTurnSceneEditor.this.handleSelection( e );
+			}
+		} );
+
+//		this.program.setArgs( new String[] {} );
+//		this.program.init();
+//		this.program.start();
+//		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+//		while( true ) {
+//			onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
+//			if( onscreenLookingGlass != null ) {
+//				break;
+//			} else {
+//				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+//			}
+//		}
+//		this.cardPane = new edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass );
+//		this.splitPane.setLeftComponent( this.cardPane );
+//
+//		this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+//		edu.cmu.cs.dennisc.animation.Animator animator = this.program.getAnimator();
+//		while( animator == null ) {
+//			edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+//			animator = this.program.getAnimator();
+//		}
+//		this.globalDragAdapter.setAnimator( animator );
+//		this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
+//			public void selecting( org.alice.interact.event.SelectionEvent e ) {
+//			}
+//			public void selected( org.alice.interact.event.SelectionEvent e ) {
+//				MoveAndTurnSceneEditor.this.handleSelection( e );
+//			}
+//		} );
 	}
 	@Override
 	public void handleExpandContractChange( boolean isExpanded ) {
@@ -428,20 +471,20 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	//		this.controlsForOverlayPane.setRootField( sceneField );
 	//	}
 
-	public void setDragInProgress( boolean isDragInProgress ) {
-		if( isDragInProgress ) {
-			this.showSnapshotIfAppropriate();
-		} else {
-			this.showLiveIfAppropriate();
-		}
-	}
+	//	public void setDragInProgress( boolean isDragInProgress ) {
+	//		if( isDragInProgress ) {
+	//			this.showSnapshotIfAppropriate();
+	//		} else {
+	//			this.showLiveIfAppropriate();
+	//		}
+	//	}
 
-	public void showSnapshotIfAppropriate() {
-		this.cardPane.showSnapshot();
-	}
-	public void showLiveIfAppropriate() {
-		this.cardPane.showLive();
-	}
+	//	public void showSnapshotIfAppropriate() {
+	//		this.cardPane.showSnapshot();
+	//	}
+	//	public void showLiveIfAppropriate() {
+	//		this.cardPane.showLive();
+	//	}
 
 	public Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return this.getVM().createInstanceEntryPoint( type );
@@ -488,7 +531,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( rv != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class, Number.class ) );
+			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class,
+					Number.class ) );
 			rv = org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( color.getRed() ), createExpression( color.getGreen() ), createExpression( color.getBlue() ) );
 		}
 		return rv;
@@ -520,11 +564,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( font.getFamily() ), createExpression( font.getWeight() ), createExpression( font.getPosture() ) );
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? > parameterCls, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
+	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? > parameterCls, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression,
+			edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterCls );
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? >[] parameterClses, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
+	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? >[] parameterClses, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression,
+			edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterClses );
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
 	}
@@ -532,12 +578,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		Object instance = this.getInstanceInJavaForField( field );
 		if( instance instanceof org.alice.apis.moveandturn.Element ) {
 			org.alice.apis.moveandturn.Element element = (org.alice.apis.moveandturn.Element)instance;
-			bodyStatementsProperty.add( createStatement( edu.cmu.cs.dennisc.pattern.AbstractElement.class, "setName", String.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( element.getName() ) ) );
+			bodyStatementsProperty.add( createStatement( edu.cmu.cs.dennisc.pattern.AbstractElement.class, "setName", String.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( element
+					.getName() ) ) );
 			if( instance instanceof org.alice.apis.moveandturn.Transformable ) {
 				org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)element;
-				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
-						.createExpression( transformable.getLocalPointOfView() ) ) );
-				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Composite.class, "addComponent", org.alice.apis.moveandturn.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ) ) );
+				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ),
+						MoveAndTurnSceneEditor.createExpression( transformable.getLocalPointOfView() ) ) );
+				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Composite.class, "addComponent", org.alice.apis.moveandturn.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), MoveAndTurnSceneEditor
+						.createInstanceExpression( isThis, field ) ) );
 				if( instance instanceof org.alice.apis.moveandturn.Model ) {
 					org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)transformable;
 
@@ -545,43 +593,50 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( widthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ),
-								createExpression( widthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
+								.createInstanceExpression( isThis, field ), createExpression( widthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
 					double heightFactor = model.getResizeHeightAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( heightFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ),
-								createExpression( heightFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
+								.createInstanceExpression( isThis, field ), createExpression( heightFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
 					double depthFactor = model.getResizeDepthAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( depthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ),
-								createExpression( depthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
+								.createInstanceExpression( isThis, field ), createExpression( depthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
 					if( model instanceof org.alice.apis.moveandturn.Text ) {
 						org.alice.apis.moveandturn.Text text = (org.alice.apis.moveandturn.Text)model;
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setValue", String.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text.getValue() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setFont", org.alice.apis.moveandturn.Font.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text.getFont() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setLetterHeight", Number.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text.getLetterHeight() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setValue", String.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text
+								.getValue() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setFont", org.alice.apis.moveandturn.Font.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+								.createExpression( text.getFont() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setLetterHeight", Number.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text
+								.getLetterHeight() ) ) );
 					} else if( model instanceof org.alice.apis.stage.Person ) {
 						org.alice.apis.stage.Person person = (org.alice.apis.stage.Person)model;
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setHair", org.alice.apis.stage.Hair.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( (Enum)person.getHair() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setEyeColor", org.alice.apis.stage.EyeColor.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( (Enum)person.getEyeColor() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setSkinTone", org.alice.apis.stage.SkinTone.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( (Enum)person.getSkinTone() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setOutfit", org.alice.apis.stage.Outfit.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( (Enum)person.getOutfit() ) ) );
-						bodyStatementsProperty
-								.add( createStatement( org.alice.apis.stage.Person.class, "setFitnessLevel", org.alice.apis.stage.FitnessLevel.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( person.getFitnessLevel() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setHair", org.alice.apis.stage.Hair.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+								.createExpression( (Enum)person.getHair() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setEyeColor", org.alice.apis.stage.EyeColor.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+								.createExpression( (Enum)person.getEyeColor() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setSkinTone", org.alice.apis.stage.SkinTone.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+								.createExpression( (Enum)person.getSkinTone() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setOutfit", org.alice.apis.stage.Outfit.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+								.createExpression( (Enum)person.getOutfit() ) ) );
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setFitnessLevel", org.alice.apis.stage.FitnessLevel.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+								.createExpression( person.getFitnessLevel() ) ) );
 
 					}
 				}
 			} else if( instance instanceof org.alice.apis.moveandturn.Scene ) {
 				org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)element;
-				bodyStatementsProperty
-						.add( createStatement( org.alice.apis.moveandturn.Scene.class, "setAtmosphereColor", org.alice.apis.moveandturn.Color.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( scene.getAtmosphereColor() ) ) );
+				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Scene.class, "setAtmosphereColor", org.alice.apis.moveandturn.Color.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+						.createExpression( scene.getAtmosphereColor() ) ) );
 			}
 		}
 	}
@@ -644,6 +699,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "placeOnTopOfGround", field );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "placeOnTopOfGround", this.getInstanceInJavaForField( field ) );
 		}
+	}
+	@Override
+	public void handleDragStarted( zoot.DragAndDropContext dragAndDropContext ) {
+		this.program.getOnscreenLookingGlass().setRenderingEnabled( false );
+	}
+	@Override
+	public void handleDragStopped( zoot.DragAndDropContext dragAndDropContext ) {
+		this.program.getOnscreenLookingGlass().setRenderingEnabled( true );
 	}
 
 	//	def performOrientToUpright(self, field):
