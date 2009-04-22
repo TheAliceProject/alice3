@@ -46,6 +46,7 @@ public class ExpressionBlank extends cascade.Blank {
 				@Override
 				protected void addChildren() {
 				}
+				@Override
 				protected javax.swing.JComponent getMenuProxy() {
 					return new zoot.ZLabel( "length" );
 				}
