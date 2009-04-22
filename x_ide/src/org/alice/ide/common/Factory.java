@@ -215,8 +215,8 @@ public abstract class Factory {
 			final boolean isLoop = lines[ N-1 ].isLoop();
 			swing.PageAxisPane pagePane = new swing.PageAxisPane() {
 				@Override
-				public void paint( java.awt.Graphics g ) {
-					super.paint( g );
+				public void paintComponent( java.awt.Graphics g ) {
+					super.paintComponent( g );
 					java.awt.Color prev = g.getColor();
 					if( isLoop ) {
 						int n = this.getComponentCount();

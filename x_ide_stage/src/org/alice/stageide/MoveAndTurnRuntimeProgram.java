@@ -38,9 +38,21 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 		this.vm.invokeEntryPoint( this.sceneType.getDeclaredMethod( "run" ), this.sceneInstance );
 	}
 	
+	private zoot.ActionOperation getRestartOperation() {
+		return org.alice.ide.IDE.getSingleton().getRestartOperation();
+	}
+	@Override
+	protected boolean isRestartSupported() {
+		return getRestartOperation() != null;
+	}
+	@Override
+	protected void restart( java.util.EventObject e ) {
+		javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
+		zoot.ZManager.performIfAppropriate( this.getRestartOperation(), null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+	}
+	
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		return MoveAndTurnRuntimeProgram.preferredSize;
 	}
-	
 }

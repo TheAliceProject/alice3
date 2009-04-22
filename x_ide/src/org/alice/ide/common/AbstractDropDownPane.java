@@ -70,12 +70,13 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 	}
 	@Override
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		java.awt.Color prev = g2.getColor();
 		if( this.isActive() || this.isInactiveFeedbackDesired() ) {
-			if( this.isActive() ) {
+//			if( this.isActive() ) {
 				g2.setColor( java.awt.Color.WHITE );
-			} else {
-				g2.setColor( new java.awt.Color( 255, 255, 255, 127 ) );
-			}
+//			} else {
+//				g2.setColor( new java.awt.Color( 255, 255, 255, 127 ) );
+//			}
 			this.fillBounds( g2, x, y, width, height );
 		}
 		
@@ -117,6 +118,8 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 			g2.draw( path );
 //			g2.drawPolygon( xs, ys, 3 );
 		}
+		
+		g2.setColor( prev );
 	}
 	@Override
 	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {

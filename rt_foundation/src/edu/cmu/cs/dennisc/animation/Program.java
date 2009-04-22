@@ -60,7 +60,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 			} );
 			m_restart.addActionListener( new java.awt.event.ActionListener() {
 				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					Program.this.restart();
+					Program.this.restart( e );
 				}
 			} );
 
@@ -140,7 +140,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	protected boolean isRestartSupported() {
 		return false;
 	}
-	protected void restart() {
+	protected void restart( java.util.EventObject e ) {
 		throw new RuntimeException();
 	}
 

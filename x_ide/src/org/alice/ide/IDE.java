@@ -1677,4 +1677,10 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.io.File getMyTypesDirectory() {
 		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory( this.getSubPath() );
 	}
+	
+	public zoot.ActionOperation getRestartOperation() {
+		//todo
+		return this.getRunOperation();
+	}
+	
 }

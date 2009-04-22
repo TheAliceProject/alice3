@@ -246,6 +246,8 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		int prevRollOverTab = this.getRolloverTab();
 		super.setRolloverTab( nextRollOverTab );
 		if( prevRollOverTab != nextRollOverTab ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "prevRollOverTab", prevRollOverTab );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "nextRollOverTab", nextRollOverTab );
 			this.tabPane.repaint();
 		}
 	}

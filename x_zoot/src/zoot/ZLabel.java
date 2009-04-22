@@ -27,6 +27,8 @@ package zoot;
  */
 public class ZLabel extends javax.swing.JLabel {
 	public ZLabel() {
+		//this.setOpaque( true );
+		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
 		this.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 		this.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
@@ -53,6 +55,16 @@ public class ZLabel extends javax.swing.JLabel {
 		this( text );
 		this.setFontToDerivedFont( textAttributes );
 	}
+
+//	@Override
+//	public void setBackground( java.awt.Color background ) {
+//		super.setBackground( background );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( background );
+//	}
+//	@Override
+//	public boolean isOptimizedDrawingEnabled() {
+//		return false;
+//	}
 	
 	public void setFontToDerivedFont( java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
 		java.awt.Font font = this.getFont();
@@ -75,4 +87,13 @@ public class ZLabel extends javax.swing.JLabel {
 		java.awt.Font font = this.getFont();
 		this.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
 	}
+	
+	
+//	@Override
+//	public void paintComponent( java.awt.Graphics g ) {
+//		if( this.getText().equals( " loop" ) ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "paint", this );
+//		}
+//		super.paintComponent( g );
+//	}
 }

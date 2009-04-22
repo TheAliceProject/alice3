@@ -26,9 +26,11 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 class CommentLine extends zoot.ZSuggestiveTextArea {
+//class CommentLine extends javax.swing.JTextArea {
 	private edu.cmu.cs.dennisc.alice.ast.Comment comment;
 	public CommentLine( edu.cmu.cs.dennisc.alice.ast.Comment comment ) {
 		super( comment.text.getValue(), "enter your comment here" );
+		//super( comment.text.getValue() );
 		this.comment = comment;
 		this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
@@ -70,11 +72,11 @@ class CommentLine extends zoot.ZSuggestiveTextArea {
 		this.addFocusListener( new java.awt.event.FocusListener() {
 			public void focusGained( java.awt.event.FocusEvent e ) {
 				CommentLine.this.setToolTipText( "Press the escape key to remove focus" );
-				CommentLine.this.repaint();
+				//CommentLine.this.repaint();
 			}
 			public void focusLost( java.awt.event.FocusEvent e ) {
 				CommentLine.this.setToolTipText( null );
-				CommentLine.this.repaint();
+				//CommentLine.this.repaint();
 			}
 		} );
 		

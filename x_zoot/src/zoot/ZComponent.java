@@ -32,9 +32,10 @@ public abstract class ZComponent extends swing.Pane {
 	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
 
-//	public ZComponent() {
+	public ZComponent() {
 //		this.setBorder( null );
-//	}
+		this.setDoubleBuffered( false );
+	}
 	
 	private void updateBorderIfNecessary() {
 		if( this.getBorder() == null ) {
@@ -64,7 +65,7 @@ public abstract class ZComponent extends swing.Pane {
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-		java.awt.Color prev = g2.getColor();
+//		java.awt.Color prev = g2.getColor();
 		int x = 0;
 		int y = 0;
 		int width = getWidth();
@@ -74,16 +75,16 @@ public abstract class ZComponent extends swing.Pane {
 			//g2.setColor( this.getBackground() );
 			this.paintPrologue( g2, x, y, width, height );
 		} finally {
-			g2.setPaint( prev );
+//			g2.setPaint( prev );
 		}
 		super.paint( g );
-		prev = g2.getColor();
+//		prev = g2.getColor();
 		g2.setPaint( this.getForegroundPaint( x, y, width, height ) );
 		//g2.setColor( this.getForeground() );
 		try {
 			this.paintEpilogue( g2, x, y, width, height );
 		} finally {
-			g2.setPaint( prev );
+//			g2.setPaint( prev );
 		}
 	}
 }

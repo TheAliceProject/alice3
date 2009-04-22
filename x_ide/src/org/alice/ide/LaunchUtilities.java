@@ -26,15 +26,21 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public class LaunchUtilities {
-	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
+	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
 		if( splashScreen != null ) {
-			javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
-				public void run() {
-					splashScreen.setVisible( true );
-				}
-			} );
+			try {
+				javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
+					public void run() {
+						splashScreen.setVisible( true );
+					}
+				} );
+			} catch( InterruptedException ie ) {
+				ie.printStackTrace();
+			} catch( java.lang.reflect.InvocationTargetException ite ) {
+				ite.printStackTrace();
+			}
 		}
-		javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				java.io.File classInfoDirectory = new java.io.File( "./application/classinfos" );
 				if( classInfoDirectory.exists() ) {

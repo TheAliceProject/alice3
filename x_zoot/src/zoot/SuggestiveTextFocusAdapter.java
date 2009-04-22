@@ -31,13 +31,14 @@ class SuggestiveTextFocusAdapter implements java.awt.event.FocusListener {
 	public SuggestiveTextFocusAdapter( javax.swing.text.JTextComponent textComponent ) {
 		this.textComponent = textComponent;
 	}
-	public void focusGained( java.awt.event.FocusEvent arg0 ) {
+	public void focusGained( java.awt.event.FocusEvent e ) {
 		if( this.textComponent.getText().length() == 0 ) {
 			this.textComponent.repaint();
 		}
 		//this.textComponent.setBackground( new java.awt.Color( 230, 230, 255 ) );
 	}
-	public void focusLost( java.awt.event.FocusEvent arg0 ) {
+	public void focusLost( java.awt.event.FocusEvent e ) {
+		//Thread.dumpStack();
 		if( this.textComponent.getText().length() == 0 ) {
 			this.textComponent.repaint();
 		}

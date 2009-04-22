@@ -28,6 +28,7 @@ package swing;
 public class Pane extends javax.swing.JPanel {
 	public Pane() {
 		this.setOpaque( false );
+		this.setDoubleBuffered( false );
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 	}
