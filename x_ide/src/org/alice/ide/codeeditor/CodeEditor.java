@@ -95,7 +95,6 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackground( getIDE().getCodeDeclaredInAliceColor( this.code ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "isDoubleBuffered", this.isDoubleBuffered() );
 		this.setDoubleBuffered( true );
 		this.refresh();
 //		this.addMouseListener( new java.awt.event.MouseListener() {
