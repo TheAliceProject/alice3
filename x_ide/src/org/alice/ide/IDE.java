@@ -1547,9 +1547,9 @@ public abstract class IDE extends zoot.ZFrame {
 			return color;
 		} else {
 			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.DoTogether.class, edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class ) ) {
-				java.awt.Color colorA = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 0.95, 0.9 );
-				java.awt.Color colorB = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.1 );
-				return new java.awt.GradientPaint( x, y, colorA, x + 300, y, colorB );
+				java.awt.Color colorA = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
+				java.awt.Color colorB = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
+				return new java.awt.GradientPaint( x, y, colorA, x + 200, y, colorB );
 			} else {
 				return color;
 				//return new java.awt.GradientPaint( x, y, colorB, x, y + 64, color );

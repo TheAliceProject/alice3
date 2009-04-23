@@ -26,36 +26,57 @@ package edu.cmu.cs.dennisc.alice.reflect;
  * @author Dennis Cosgrove
  */
 public final class ClassInfoManager {
-	private static java.util.Map< Class< ? >, ClassInfo > s_map = new java.util.HashMap< Class< ? >, ClassInfo >();
+	private static java.util.Map< String, edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > > s_map = new java.util.HashMap< String, edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > >();
 	private ClassInfoManager() {
 	}
-	private static void add( java.io.File inFile ) {
-		//ClassInfo clsInfo = (ClassInfo)edu.cmu.cs.dennisc.io.SerializationUtilities.unserialize( inFile );
-		try {
-			ClassInfo clsInfo = edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( inFile, ClassInfo.class );
-			s_map.put( clsInfo.getCls(), clsInfo );
-		} catch( RuntimeException re ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: could not load class information from:", inFile );
-		}
-	}
-	
-	public static void setDirectory( java.io.File directory ) {
-		assert directory != null;
-		if( directory.exists() ) {
-			//assert directory.isDirectory();
-			//double t0 = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
-			for( java.io.File file : directory.listFiles() ) {
-				ClassInfoManager.add( file );
+	public static void addClassInfosFrom( java.io.File file ) {
+		assert file != null;
+		if( file.isDirectory() ) {
+			for( final java.io.File f : file.listFiles() ) {
+				String clsName = edu.cmu.cs.dennisc.io.FileUtilities.getBaseName( f );
+				s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
+					@Override
+					protected ClassInfo initialize() {
+						try {
+							return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( f, ClassInfo.class );
+						} catch( Exception e ) {
+							return null;
+						}
+					}
+				} );
 			}
-			//double t1 = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( t1-t0 );
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "could not find class info directory: " + directory );
+			try {
+				final java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file ); 
+				java.util.Enumeration< ? extends java.util.zip.ZipEntry > e = zipFile.entries();
+				while( e.hasMoreElements() ) {
+					final java.util.zip.ZipEntry zipEntry = e.nextElement();
+					String clsName = edu.cmu.cs.dennisc.io.FileUtilities.getBaseName( zipFile.getName() );
+					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
+						@Override
+						protected edu.cmu.cs.dennisc.alice.reflect.ClassInfo initialize() {
+							try {
+								return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( zipFile.getInputStream( zipEntry ), ClassInfo.class );
+							//} catch( java.io.IOException ioe ) {
+							} catch( Exception e ) {
+								return null;
+							}
+						}
+					} );
+				}
+			} catch( java.io.IOException ioe ) {
+				throw new RuntimeException( ioe );
+			}
 		}
 	}
 	
 	public static ClassInfo get( Class<?> cls ) {
-		return s_map.get( cls );
+		edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > lazyClassInfo = s_map.get( cls.getName() );
+		if( lazyClassInfo != null ) {
+			return lazyClassInfo.get();
+		} else {
+			return null;
+		}
 	}
 	public static String[] getParameterNamesFor( java.lang.reflect.Method mthd ) {
 		ClassInfo clsInfo = get( mthd.getDeclaringClass() );
