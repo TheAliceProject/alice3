@@ -706,7 +706,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 	@Override
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
-		this.program.getOnscreenLookingGlass().setRenderingEnabled( false );
+		this.program.getOnscreenLookingGlass().setRenderingEnabled( isRenderingEnabled );
 	}
 
 	//	def performOrientToUpright(self, field):
