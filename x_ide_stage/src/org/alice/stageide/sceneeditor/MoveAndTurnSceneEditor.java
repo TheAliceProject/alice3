@@ -705,12 +705,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	@Override
-	public void handleDragStarted( zoot.DragAndDropContext dragAndDropContext ) {
+	public void setRenderingEnabled( boolean isRenderingEnabled ) {
 		this.program.getOnscreenLookingGlass().setRenderingEnabled( false );
-	}
-	@Override
-	public void handleDragStopped( zoot.DragAndDropContext dragAndDropContext ) {
-		this.program.getOnscreenLookingGlass().setRenderingEnabled( true );
 	}
 
 	//	def performOrientToUpright(self, field):
