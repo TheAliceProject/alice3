@@ -38,13 +38,22 @@ class GalleryIcon extends javax.swing.JLabel {
  */
 public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldPane {
 	private GalleryIcon galleryIcon;
-	private java.io.File file;
-
+	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, java.io.File file ) {
+		super( declaringType, cls );
+		if( file != null ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( file );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( file.exists() );
+			if( file.exists() ) {
+				this.galleryIcon = new GalleryIcon( file );
+				this.add( this.galleryIcon, java.awt.BorderLayout.EAST );
+			}
+		}
+	}
+	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls ) {
+		this( declaringType, cls, getGalleryFileFromCls( cls ) );
+	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file ) {
-		super( declaringType, getTypeFromGalleryFile( file ).getCls() );
-		this.file = file;
-		this.galleryIcon = new GalleryIcon( this.file );
-		this.add( this.galleryIcon, java.awt.BorderLayout.EAST );
+		this( declaringType, getClsFromGalleryFile( file ), file );
 	}
 	
 
@@ -59,7 +68,8 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 		prefixSet.add( "edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes" );
 		prefixSet.add( "org.alice.apis.moveandturn.gallery" );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava getTypeFromGalleryFile( java.io.File file ) {
+	
+	private static Class<?> getClsFromGalleryFile( java.io.File file ) {
 		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file );
 		int index = -1;
 		for( String prefix : prefixSet ) {
@@ -73,18 +83,24 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 			String s = path.substring( index, path.length()-4 );
 			s = s.replace( '\\', '/' );
 			s = s.replace( '/', '.' );
-			Class<?> cls = edu.cmu.cs.dennisc.lang.ClassUtilities.forName( s );
-			if( cls != null ) {
-				return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
-			} else {
-				return null;
-			}
+			return edu.cmu.cs.dennisc.lang.ClassUtilities.forName( s );
 		} else {
 			return null;
 		}
 	}
-	
-	
+	private static java.io.File getGalleryFileFromCls( Class<?> cls ) {
+		String clsName = cls.getName();
+		for( String prefix : prefixSet ) {
+			if( clsName.startsWith( prefix ) ) {
+				String post = clsName.substring( prefix.length() );
+				String path = prefix + post.replaceAll( "\\.", "/" ) + ".png";
+				java.io.File rootDirectory = new java.io.File( "/Program Files/Alice/3.beta.0000/gallery/thumbnails" );
+				return new java.io.File( rootDirectory, path );
+			}
+		}
+		return null;
+	}
+
 	public static void main( String[] args ) {
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );

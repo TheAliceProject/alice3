@@ -99,18 +99,43 @@ class CreateTextActionOperation extends org.alice.ide.operations.AbstractActionO
 		
 	}
 }
-class CreateInstanceFromFileActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+abstract class CreateInstanceFromFileActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	protected abstract java.io.File getInitialDirectory();
 	public void perform( zoot.ActionContext actionContext ) {
+		java.io.File directory = this.getInitialDirectory();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( directory );
+		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog( this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION, false );
+		if( file != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType( file );
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
+			CreateFieldFromGalleryPane createFieldPane = new CreateFieldFromGalleryPane( declaringType, typeInJava.getCls() );
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
+			if( field != null ) {
+				//declaringType.fields.add( field );
+				
+				getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
+			}
+			actionContext.commit();
+		} else {
+			actionContext.cancel();
+		}
 	}
 }
 class CreateMyInstance extends CreateInstanceFromFileActionOperation {
 	public CreateMyInstance() {
 		this.putValue( javax.swing.Action.NAME, "My Classes..." );
 	}
+	protected java.io.File getInitialDirectory() {
+		return this.getIDE().getMyTypesDirectory();
+	}
 }
 class CreateTextbookInstance extends CreateInstanceFromFileActionOperation {
 	public CreateTextbookInstance() {
 		this.putValue( javax.swing.Action.NAME, "Textbook Classes..." );
+	}
+	protected java.io.File getInitialDirectory() {
+		return new java.io.File( this.getIDE().getApplicationRootDirectory(), "classes/textbook" );
 	}
 }
 
@@ -196,6 +221,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	}
 	
 	public static void main( String[] args ) {
+		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		java.io.File thumbnailRoot = new java.io.File( org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails" );
 		zoot.ZFrame frame = new zoot.ZFrame() {
 			@Override
