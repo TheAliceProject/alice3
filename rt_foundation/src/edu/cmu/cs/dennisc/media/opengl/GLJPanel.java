@@ -37,8 +37,10 @@
  * and developed by Kenneth Bradley Russell and Christopher John Kline.
  */
 
+//
 package edu.cmu.cs.dennisc.media.opengl;
 
+// edits made by Dennis Cosgrove in order to have access to the buffered image 
 import javax.media.opengl.*;
 
 import java.awt.*;
