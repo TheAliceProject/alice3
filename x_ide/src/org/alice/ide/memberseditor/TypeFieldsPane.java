@@ -35,7 +35,7 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 	}
 	@Override
 	protected zoot.ZButton createCreateAndAddMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddFieldOperation( type ) );
+		return new zoot.ZButton( new org.alice.ide.operations.ast.DeclareFieldOperation( type ) );
 	}
 	@Override
 	protected zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {

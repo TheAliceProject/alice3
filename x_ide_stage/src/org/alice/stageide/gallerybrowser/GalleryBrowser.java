@@ -126,6 +126,7 @@ class CreateMyInstance extends CreateInstanceFromFileActionOperation {
 	public CreateMyInstance() {
 		this.putValue( javax.swing.Action.NAME, "My Classes..." );
 	}
+	@Override
 	protected java.io.File getInitialDirectory() {
 		return this.getIDE().getMyTypesDirectory();
 	}
@@ -134,6 +135,7 @@ class CreateTextbookInstance extends CreateInstanceFromFileActionOperation {
 	public CreateTextbookInstance() {
 		this.putValue( javax.swing.Action.NAME, "Textbook Classes..." );
 	}
+	@Override
 	protected java.io.File getInitialDirectory() {
 		return new java.io.File( this.getIDE().getApplicationRootDirectory(), "classes/textbook" );
 	}

@@ -25,13 +25,20 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateAndAddProcedureOperation extends AbstractCreateAndAddMethodOperation {
-	public CreateAndAddProcedureOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type );
-		this.putValue( javax.swing.Action.NAME, "Declare Procedure..." );
+public class DeclareFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
+	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+		this.ownerType = ownerType;
+		this.putValue( javax.swing.Action.NAME, "Declare Property..." );
 	}
-	@Override
-	protected org.alice.ide.createdeclarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new org.alice.ide.createdeclarationpanes.CreateProcedurePane( type );
+	public void perform( zoot.ActionContext actionContext ) {
+		org.alice.ide.createdeclarationpanes.CreateFieldPane createMethodPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( this.ownerType );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createMethodPane.showInJDialog( getIDE() );
+		if( field != null ) {
+			this.ownerType.fields.add( field );
+			actionContext.commit();
+		} else {
+			actionContext.cancel();
+		}
 	}
 }

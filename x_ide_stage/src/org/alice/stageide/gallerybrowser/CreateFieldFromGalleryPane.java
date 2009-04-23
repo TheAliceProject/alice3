@@ -94,32 +94,32 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 			if( clsName.startsWith( prefix ) ) {
 				String post = clsName.substring( prefix.length() );
 				String path = prefix + post.replaceAll( "\\.", "/" ) + ".png";
-				java.io.File rootDirectory = new java.io.File( "/Program Files/Alice/3.beta.0000/gallery/thumbnails" );
+				java.io.File rootDirectory = new java.io.File( org.alice.ide.IDE.getSingleton().getGalleryRootDirectory(), "thumbnails" );
 				return new java.io.File( rootDirectory, path );
 			}
 		}
 		return null;
 	}
 
-	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getTypeDeclaredInAliceFor( declaringTypeDeclaredInJava );
-
-		java.io.File file = new java.io.File( "C:/Program Files/LookingGlass/0.alpha.0000/gallery/thumbnails/edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters/adults/Lunchlady.png" );
-		//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
-
-
-		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, file );
-		org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( declaringType );
-		org.alice.ide.createdeclarationpanes.CreateLocalPane createLocalPane = new org.alice.ide.createdeclarationpanes.CreateLocalPane( null );
-		org.alice.ide.createdeclarationpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.createdeclarationpanes.CreateProcedurePane( declaringType );
-		org.alice.ide.createdeclarationpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
-		createFieldFromGalleryPane.showInJDialog( ide );
-//		createFieldPane.showInJDialog( ide );
-//		createLocalPane.showInJDialog( ide );
-//		createProcedurePane.showInJDialog( ide );
-//		createFunctionPane.showInJDialog( ide );
-		System.exit( 0 );
-	}
+//	public static void main( String[] args ) {
+//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
+//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getTypeDeclaredInAliceFor( declaringTypeDeclaredInJava );
+//
+//		java.io.File file = new java.io.File( "C:/Program Files/LookingGlass/0.alpha.0000/gallery/thumbnails/edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters/adults/Lunchlady.png" );
+//		//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.adults.Coach.class );
+//
+//
+//		CreateFieldFromGalleryPane createFieldFromGalleryPane = new CreateFieldFromGalleryPane( declaringType, file );
+//		org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( declaringType );
+//		org.alice.ide.createdeclarationpanes.CreateLocalPane createLocalPane = new org.alice.ide.createdeclarationpanes.CreateLocalPane( null );
+//		org.alice.ide.createdeclarationpanes.CreateProcedurePane createProcedurePane = new org.alice.ide.createdeclarationpanes.CreateProcedurePane( declaringType );
+//		org.alice.ide.createdeclarationpanes.CreateFunctionPane createFunctionPane = new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
+//		createFieldFromGalleryPane.showInJDialog( ide );
+////		createFieldPane.showInJDialog( ide );
+////		createLocalPane.showInJDialog( ide );
+////		createProcedurePane.showInJDialog( ide );
+////		createFunctionPane.showInJDialog( ide );
+//		System.exit( 0 );
+//	}
 }

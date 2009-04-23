@@ -25,8 +25,8 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateAndAddMethodParameterOperation extends CreateAndAddParameterOperation {
-	public CreateAndAddMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+public class DeclareMethodParameterOperation extends DeclareParameterOperation {
+	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		super( method );
 	}
 	public void perform( zoot.ActionContext actionContext ) {

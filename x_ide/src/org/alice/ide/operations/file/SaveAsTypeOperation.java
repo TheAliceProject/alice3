@@ -46,7 +46,7 @@ public class SaveAsTypeOperation extends AbstractSaveOperation {
 	}
 	@Override
 	protected void save( java.io.File file ) {
-		//this.getIDE().saveProjectTo( file );
+		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeType( this.type, file );
 	}
 	@Override
 	protected boolean isPromptNecessary( java.io.File file ) {

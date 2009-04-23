@@ -38,8 +38,12 @@ public class FauxIDE extends IDE {
 		return new org.alice.ide.sceneeditor.FauxSceneEditor();
 	}
 	@Override
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
-		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser();
+	public java.io.File getGalleryRootDirectory() {
+		return null;
+	}
+	@Override
+	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRootDirectory ) {
+		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser( galleryRootDirectory );
 	}
 	@Override
 	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {

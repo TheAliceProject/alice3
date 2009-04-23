@@ -207,12 +207,13 @@ public class StageIDE extends org.alice.ide.IDE {
 		return rv;
 	}
 
-	protected java.io.File getGalleryRootDirectory() {
+	@Override
+	public java.io.File getGalleryRootDirectory() {
 		return org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory();
 	}
 	@Override
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser() {
-		java.io.File thumbnailRoot = new java.io.File( this.getGalleryRootDirectory(), "thumbnails" );
+	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRoot ) {
+		java.io.File thumbnailRoot = new java.io.File( galleryRoot, "thumbnails" );
 		java.util.Map< String, String > map = this.createGalleryThumbnailsMap();
 		return new org.alice.stageide.gallerybrowser.GalleryBrowser( thumbnailRoot, map );
 	}

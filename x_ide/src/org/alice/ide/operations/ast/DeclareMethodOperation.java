@@ -27,9 +27,9 @@ import org.alice.ide.createdeclarationpanes.CreateDeclarationPane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractCreateAndAddMethodOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class DeclareMethodOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public AbstractCreateAndAddMethodOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	public DeclareMethodOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		this.type = type;
 	}
 	protected abstract CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );

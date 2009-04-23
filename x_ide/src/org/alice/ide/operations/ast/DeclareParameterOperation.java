@@ -25,13 +25,15 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class CreateAndAddFunctionOperation extends AbstractCreateAndAddMethodOperation {
-	public CreateAndAddFunctionOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type );
-		this.putValue( javax.swing.Action.NAME, "Declare Function..." );
+public abstract class DeclareParameterOperation extends AbstractCodeOperation {
+	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
+	public DeclareParameterOperation( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		assert code != null;
+		this.code = code;
+		this.putValue( javax.swing.Action.NAME, "Add Parameter..." );
 	}
 	@Override
-	protected org.alice.ide.createdeclarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new org.alice.ide.createdeclarationpanes.CreateFunctionPane( type );
+	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
+		return this.code;
 	}
 }

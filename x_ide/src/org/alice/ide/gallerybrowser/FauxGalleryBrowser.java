@@ -26,8 +26,8 @@ package org.alice.ide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public class FauxGalleryBrowser extends AbstractGalleryBrowser {
-	public FauxGalleryBrowser() {
-		this.initialize( new java.io.File( "/" ) );
+	public FauxGalleryBrowser( java.io.File galleryRootDirectory ) {
+		this.initialize( new java.io.File( galleryRootDirectory, "thumbnails" ) );
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {

@@ -35,7 +35,7 @@ class TypeFunctionsPane extends AbstractTypeMethodsPane {
 	}
 	@Override
 	protected zoot.ZButton createCreateAndAddMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new zoot.ZButton( new org.alice.ide.operations.ast.CreateAndAddFunctionOperation( type ) );
+		return new zoot.ZButton( new org.alice.ide.operations.ast.DeclareFunctionOperation( type ) );
 	}
 	@Override
 	protected zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {

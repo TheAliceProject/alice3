@@ -191,7 +191,8 @@ public abstract class IDE extends zoot.ZFrame {
 		return this.typeComboBoxModel;
 	}
 	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
-	protected abstract org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser();
+	public abstract java.io.File getGalleryRootDirectory();
+	protected abstract org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRootDirectory );
 	protected org.alice.ide.listenerseditor.ListenersEditor createListenersEditor() {
 		return new org.alice.ide.listenerseditor.ListenersEditor();
 	}
@@ -297,7 +298,7 @@ public abstract class IDE extends zoot.ZFrame {
 		this.runButtonModel.setEnabled( false );
 		
 		this.sceneEditor = this.createSceneEditor();
-		this.galleryBrowser = this.createGalleryBrowser();
+		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRootDirectory() );
 		this.membersEditor = this.createClassMembersEditor();
 		this.listenersEditor = this.createListenersEditor();
 		this.editorsTabbedPane = this.createEditorsTabbedPane();
