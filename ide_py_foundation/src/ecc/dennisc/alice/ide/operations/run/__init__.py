@@ -27,6 +27,7 @@ class _RunIcon( javax.swing.Icon ):
 
 		g.setPaint( java.awt.Color.WHITE )
 		g.fillPolygon( xs, ys, 3 );
+		g.setPaint( java.awt.Color.BLACK )
 		
 
 class AbstractRunOperation(alice.ide.AbstractOperation):
