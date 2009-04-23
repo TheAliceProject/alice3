@@ -20,12 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.stageide.gallerybrowser;
+package org.alice.ide.createdeclarationpanes;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.createdeclarationpanes.AbstractCreateFieldPane {
+public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.createdeclarationpanes.AbstractCreateFieldPane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType valueType;
 	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
 

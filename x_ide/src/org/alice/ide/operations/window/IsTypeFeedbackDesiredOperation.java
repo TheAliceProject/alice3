@@ -25,10 +25,10 @@ package org.alice.ide.operations.window;
 /**
  * @author Dennis Cosgrove
  */
-public class IsExpressionTypeFeedbackDesiredOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
-	public IsExpressionTypeFeedbackDesiredOperation( Boolean initialValue ) {
+public class IsTypeFeedbackDesiredOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+	public IsTypeFeedbackDesiredOperation( Boolean initialValue ) {
 		super( initialValue );
-		this.putValue( javax.swing.Action.NAME, "Is Expression Type Feedback Desired" );
+		this.putValue( javax.swing.Action.NAME, "Is Type Feedback Desired" );
 	}
 	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
 		this.getIDE().setExpressionTypeFeedbackDesired( booleanStateContext.getNextValue() );

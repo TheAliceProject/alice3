@@ -37,7 +37,7 @@ class PersonEditorInputPane extends zoot.ZInputPane< org.alice.apis.stage.Person
 /**
  * @author Dennis Cosgrove
  */
-class CreateFieldFromPersonPane extends CreateLargelyPredeterminedFieldPane {
+class CreateFieldFromPersonPane extends org.alice.ide.createdeclarationpanes.CreateLargelyPredeterminedFieldPane {
 	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.stage.Person person ) {
 		super( declaringType, person.getClass() );
 	}
@@ -103,20 +103,19 @@ abstract class CreateInstanceFromFileActionOperation extends org.alice.ide.opera
 	protected abstract java.io.File getInitialDirectory();
 	public void perform( zoot.ActionContext actionContext ) {
 		java.io.File directory = this.getInitialDirectory();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( directory );
 		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog( this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION, false );
 		if( file != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType( file );
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
-			CreateFieldFromGalleryPane createFieldPane = new CreateFieldFromGalleryPane( declaringType, typeInJava.getCls() );
+			org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( declaringType, typeInJava.getCls() );
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
 			if( field != null ) {
-				//declaringType.fields.add( field );
-				
 				getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
+				actionContext.commit();
+			} else {
+				actionContext.cancel();
 			}
-			actionContext.commit();
 		} else {
 			actionContext.cancel();
 		}
@@ -142,31 +141,17 @@ class CreateTextbookInstance extends CreateInstanceFromFileActionOperation {
 }
 
 class GalleryFileActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private java.io.File rootDirectory;
 	private java.io.File file;
-	public GalleryFileActionOperation( java.io.File rootDirectory, java.io.File file ) {
-		this.rootDirectory = rootDirectory;
+	public GalleryFileActionOperation( java.io.File file ) {
 		this.file = file;
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava declaringTypeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Scene.class );
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getTypeDeclaredInAliceFor( declaringTypeDeclaredInJava );
-
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
-		CreateFieldFromGalleryPane createFieldPane = new CreateFieldFromGalleryPane( declaringType, this.file );
+		org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( declaringType, this.file );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
 		if( field != null ) {
-			//declaringType.fields.add( field );
-			
 			getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
 		}
-		
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( actionContext );
-//		CreateInstancePane createInstancePane = new CreateInstancePane( this.rootDirectory, file, null );
-//		Object instance = createInstancePane.showInJDialog( getIDE(), "Create Instance", true );
-//		if( instance != null ) {
-//			//getSceneEditor().addInstance( instance )
-//		}
 	}
 }
 
@@ -215,7 +200,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	@Override
 	protected void handleFileActivation( java.io.File file ) {
 		assert file.isFile();
-		zoot.ZManager.performIfAppropriate( new GalleryFileActionOperation( this.getRootDirectory(), file ), null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+		zoot.ZManager.performIfAppropriate( new GalleryFileActionOperation( file ), null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
@@ -223,7 +208,10 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	}
 	
 	public static void main( String[] args ) {
+		
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+		
+		
 		java.io.File thumbnailRoot = new java.io.File( org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails" );
 		zoot.ZFrame frame = new zoot.ZFrame() {
 			@Override

@@ -209,7 +209,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
 
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
-	private org.alice.ide.operations.window.IsExpressionTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = new org.alice.ide.operations.window.IsExpressionTypeFeedbackDesiredOperation( true );
+	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = new org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation( true );
 
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;

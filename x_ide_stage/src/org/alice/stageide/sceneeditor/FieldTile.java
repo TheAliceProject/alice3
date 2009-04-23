@@ -25,23 +25,8 @@ package org.alice.stageide.sceneeditor;
 /**
  * @author Dennis Cosgrove
  */
-class MyLabelThatDoesntLockOverlay extends javax.swing.JButton {
-	public MyLabelThatDoesntLockOverlay() {
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.setOpaque( false );
-		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
-	}
-//	@Override
-//	public boolean contains( int x, int y ) {
-//		return false;
-//	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
 public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
-	private MyLabelThatDoesntLockOverlay label = new MyLabelThatDoesntLockOverlay();
+	private String text;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private org.alice.ide.operations.ast.SelectFieldActionOperation selectOperation;
 	private zoot.DefaultPopupActionOperation popupOperation;
@@ -64,7 +49,15 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		}
 		this.updateLabel();
 	}
-	
+
+	@Override
+	protected int getInternalInsetLeft() {
+		return super.getInternalInsetLeft() + 2;
+	}
+	@Override
+	protected int getInsetRight() {
+		return super.getInsetRight() + 4;
+	}
 	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
@@ -85,10 +78,6 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	private java.util.List< zoot.Operation > createPopupOperations() {
 		return this.updatePopupOperations( new java.util.LinkedList< zoot.Operation >() );
 	}
-//	@Override
-//	protected boolean isCullingContainsDesired() {
-//		return false;
-//	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 		if( this.field != null ) {
@@ -124,10 +113,10 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		if( this.field != null ) {
 			String text = getIDE().getInstanceTextForField( this.field, false );
 			this.setBackground( this.calculateColor() );
-			this.label.setText( text );
+			this.text = text;
 		} else {
 			this.setBackground( java.awt.Color.RED );
-			this.label.setText( "null" );
+			this.text = "null";
 		}
 		this.revalidate();
 		this.repaint();
@@ -139,7 +128,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = super.getPreferredSize();
 		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
-		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.label.getText(), g );
+		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
 		rv.width += (int)( bounds.getWidth()+0.5 );
 		rv.height += (int)( bounds.getHeight()+0.5 );
 		return rv;
@@ -156,8 +145,9 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
-		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.label.getText(), g );
-		g.drawString( this.label.getText(), this.getBorder().getBorderInsets( this ).left-(int)bounds.getX(), this.getBorder().getBorderInsets( this ).top-(int)bounds.getY() );
+		java.awt.Insets insets = this.getBorder().getBorderInsets( this );
+		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
+		g.drawString( this.text, insets.left-(int)bounds.getX(), insets.top-(int)bounds.getY() );
 	}
 	@Override
 	public void paint( java.awt.Graphics g ) {

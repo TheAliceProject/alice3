@@ -43,6 +43,7 @@ public class TypeComponent extends NodeNameLabel {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
 			final zoot.ActionOperation operation = new zoot.DefaultPopupActionOperation( 
 					new org.alice.ide.operations.ast.RenameTypeOperation( typeInAlice ),
+					new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( org.alice.ide.IDE.getSingleton().getSceneType(), typeInAlice ), 
 					new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) 
 			);
 			this.addMouseListener( new java.awt.event.MouseListener() {
