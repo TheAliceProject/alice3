@@ -703,7 +703,7 @@ public abstract class IDE extends zoot.ZFrame {
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
-		this.sceneEditor.setRenderingEnabled( false );
+		this.setRenderingEnabled( false );
 	}
 	public void handleDragEnteredDropReceptor( zoot.DragAndDropContext dragAndDropContext ) {
 		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
@@ -718,9 +718,18 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 	public void handleDragStopped( zoot.DragAndDropContext dragAndDropContext ) {
-		this.sceneEditor.setRenderingEnabled( true );
+		this.setRenderingEnabled( true );
 	}
 
+	public void setRenderingEnabled( boolean isRenderingEnabled ) {
+		if( isRenderingEnabled ) {
+			edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();			
+		} else {
+			edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();			
+		}
+		this.sceneEditor.setRenderingEnabled( isRenderingEnabled );
+	}
+	
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
