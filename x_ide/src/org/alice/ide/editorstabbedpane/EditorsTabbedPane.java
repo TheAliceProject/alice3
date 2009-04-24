@@ -70,8 +70,8 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 			}
 		}
 
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
+//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//			public void run() {
 				final org.alice.ide.codeeditor.CodeEditor codeEditor = new org.alice.ide.codeeditor.CodeEditor( code );
 				if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 					edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
@@ -91,8 +91,8 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 				}
 				EditorsTabbedPane.this.addTab( code.getName(), codeEditor );
 				EditorsTabbedPane.this.setSelectedComponent( codeEditor );
-			}
-		} );
+//			}
+//		} );
 	}
 	@Override
 	public boolean isCloseButtonDesiredAt( int index ) {

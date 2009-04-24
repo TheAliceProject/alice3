@@ -26,12 +26,13 @@ package edu.cmu.cs.dennisc.swing;
  * @author Dennis Cosgrove
  */
 public class ForgetUtilities {
-	public static void forgetTree( java.awt.Component c ) {
+	private static void forgetTree( java.awt.Component c ) {
 		if( c instanceof java.awt.Container ) {
 			java.awt.Container container = (java.awt.Container)c;
 			for( java.awt.Component component : container.getComponents() ) {
 				forgetTree( component );
 			}
+			container.removeAll();
 		}
 		if( c instanceof edu.cmu.cs.dennisc.pattern.Forgettable ) {
 			((edu.cmu.cs.dennisc.pattern.Forgettable)c).forget();
@@ -39,9 +40,9 @@ public class ForgetUtilities {
 	}
 	public static void forgetAndRemoveAllComponents( java.awt.Container container ) {
 		java.awt.Component[] components = container.getComponents();
-		container.removeAll();
 		for( java.awt.Component component : components ) {
 			forgetTree( component );
 		}
+		container.removeAll();
 	}
 }

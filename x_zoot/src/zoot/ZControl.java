@@ -36,11 +36,11 @@ public abstract class ZControl extends ZComponent {
 		return this.leftButtonPressOperation != null || this.leftButtonDoubleClickOperation != null || this.popupOperation != null;
 	}
 
-	@Override
-	protected void finalize() throws Throwable {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize", this.getClass() );
-		super.finalize();
-	}
+//	@Override
+//	protected void finalize() throws Throwable {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize", this.getClass() );
+//		super.finalize();
+//	}
 	
 	@Override
 	public void addNotify() {
@@ -58,8 +58,8 @@ public abstract class ZControl extends ZComponent {
 			this.removeMouseListener( this.controlAdapter );
 			this.removeMouseMotionListener( this.controlAdapter );
 			this.controlAdapter = null;
-			
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "REMOVE NOTIFY: ", this.getClass() );
+//			
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "REMOVE NOTIFY: ", this.getClass() );
 		}
 	}
 	

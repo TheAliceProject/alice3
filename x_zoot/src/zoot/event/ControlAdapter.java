@@ -30,11 +30,11 @@ public class ControlAdapter implements java.awt.event.MouseListener, java.awt.ev
 	public ControlAdapter( zoot.ZControl control ) {
 		this.control = control;
 	}
-	@Override
-	protected void finalize() throws java.lang.Throwable {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize ControlAdapter" );
-		super.finalize();
-	}
+//	@Override
+//	protected void finalize() throws java.lang.Throwable {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize ControlAdapter" );
+//		super.finalize();
+//	}
 	public void mousePressed( java.awt.event.MouseEvent e ) {
 		this.control.handleMousePressed( e );
 	}
