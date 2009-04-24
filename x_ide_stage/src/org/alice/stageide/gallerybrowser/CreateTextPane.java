@@ -53,7 +53,7 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 		}
 	}
 	private static zoot.ZLabel createLabel( String text ) {
-		zoot.ZLabel rv = new zoot.ZLabel( text );
+		zoot.ZLabel rv = zoot.ZLabel.acquire( text );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
 	}

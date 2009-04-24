@@ -45,7 +45,7 @@ public abstract class Factory {
 		return new org.alice.ide.common.GetsPane( isTowardLeading );
 	}
 	protected java.awt.Component createTextComponent( String text ) { 
-		return new zoot.ZLabel( text );
+		return zoot.ZLabel.acquire( text );
 	}
 	public abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane );
 	protected abstract java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
@@ -69,7 +69,7 @@ public abstract class Factory {
 			} else if( "constant".equals( propertyName ) ) {
 				rv = this.createConstantDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = new zoot.ZLabel( "TODO: handle underscore count 2: " + propertyName );
+				rv = zoot.ZLabel.acquire( "TODO: handle underscore count 2: " + propertyName );
 			}
 		} else if( underscoreCount == 1 ) {
 			if( "variable".equals( propertyName ) ) {
@@ -77,7 +77,7 @@ public abstract class Factory {
 			} else if( "constant".equals( propertyName ) ) {
 				rv = new ConstantPane( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = new zoot.ZLabel( "TODO: handle underscore count 1: " + propertyName );
+				rv = zoot.ZLabel.acquire( "TODO: handle underscore count 1: " + propertyName );
 			}
 		} else {
 			rv = null;
@@ -85,7 +85,7 @@ public abstract class Factory {
 			if( "operator".equals( propertyName ) ) {
 				String value = Factory.operatorMap.get( property.getValue() );
 				if( value != null ) {
-					zoot.ZLabel label = new zoot.ZLabel( value, zoot.font.ZTextWeight.BOLD );
+					zoot.ZLabel label = zoot.ZLabel.acquire( value, zoot.font.ZTextWeight.BOLD );
 					label.setFontToScaledFont( 1.5f );
 					rv = label;
 				}
@@ -126,7 +126,7 @@ public abstract class Factory {
 		return this.createGetsComponent( getsChunk.isTowardLeading() );
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return new zoot.ZLabel( textChunk.getText() );
+		return zoot.ZLabel.acquire( textChunk.getText() );
 	}	
 	protected java.awt.Component createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
@@ -164,7 +164,7 @@ public abstract class Factory {
 				s = null;
 			}
 			//s = "<html><h1>" + s + "</h1></html>";
-			rv = new zoot.ZLabel( s );
+			rv = zoot.ZLabel.acquire( s );
 		}
 		return rv;
 	}
@@ -179,7 +179,7 @@ public abstract class Factory {
 		} else if( chunk instanceof org.alice.ide.i18n.GetsChunk ) {
 			return createComponent( (org.alice.ide.i18n.GetsChunk)chunk, owner );
 		} else {
-			return new zoot.ZLabel( "unhandled: " + chunk.toString() );
+			return zoot.ZLabel.acquire( "unhandled: " + chunk.toString() );
 		}
 	}
 	protected int getPixelsPerIndent() {
@@ -270,7 +270,7 @@ public abstract class Factory {
 				rv = createComponent( page, owner );
 //			}
 		} else {
-			rv = new zoot.ZLabel( "todo: handle null" );
+			rv = zoot.ZLabel.acquire( "todo: handle null" );
 		}
 		return rv;
 	}

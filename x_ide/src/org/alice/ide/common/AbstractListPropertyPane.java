@@ -27,38 +27,39 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.property.ListProperty > extends AbstractPropertyPane< E > {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< E >() {
+
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
+		}
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
+			AbstractListPropertyPane.this.refresh();
+		}
+
+
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
+		}
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
+			AbstractListPropertyPane.this.refresh();
+		}
+
+
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
+		}
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
+			AbstractListPropertyPane.this.refresh();
+		}
+
+
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
+		}
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
+			AbstractListPropertyPane.this.refresh();
+		}
+		
+	}; 
 	public AbstractListPropertyPane( Factory factory, int axis, E property ) {
 		super( factory, axis, property );
-		property.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.ListPropertyListener< E >() {
-
-			public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
-			}
-			public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
-				AbstractListPropertyPane.this.refresh();
-			}
-
-
-			public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
-			}
-			public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
-				AbstractListPropertyPane.this.refresh();
-			}
-
-
-			public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
-			}
-			public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
-				AbstractListPropertyPane.this.refresh();
-			}
-
-
-			public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
-			}
-			public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
-				AbstractListPropertyPane.this.refresh();
-			}
-			
-		} );
+		property.addListPropertyListener( this.listPropertyAdapter );
 	}
 	protected abstract java.awt.Component createComponent( Object instance );
 	protected void addPrefixComponents() {
@@ -66,6 +67,11 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 	protected void addPostfixComponents() {
 	}
 	
+	@Override
+	public void forget() {
+		this.getProperty().removeListPropertyListener( this.listPropertyAdapter );
+		super.forget();
+	}
 	protected java.awt.Component createInterstitial( int i, final int N ) {
 		return null;
 	}
@@ -81,7 +87,7 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 			if( o != null ) {
 				component = this.createComponent( o );
 			} else {
-				component = new zoot.ZLabel( "null" );
+				component = zoot.ZLabel.acquire( "null" );
 			}
 			this.add( component );
 			java.awt.Component interstitial = this.createInterstitial( i, N );

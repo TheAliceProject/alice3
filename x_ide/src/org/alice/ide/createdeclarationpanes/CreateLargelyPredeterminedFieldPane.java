@@ -77,9 +77,9 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		swing.LineAxisPane valueTypeLine = new swing.LineAxisPane();
 		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType ) );
 		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			valueTypeLine.add( new zoot.ZLabel( " which extends ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
+			valueTypeLine.add( zoot.ZLabel.acquire( " which extends ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
 			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
-//			valueTypeLine.add( new zoot.ZLabel( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
+//			valueTypeLine.add( zoot.ZLabel.acquire( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
 		}
 		return valueTypeLine;
 	}

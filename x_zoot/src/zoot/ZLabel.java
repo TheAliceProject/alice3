@@ -25,8 +25,16 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZLabel extends javax.swing.JLabel {
-	public ZLabel() {
+public class ZLabel extends javax.swing.JLabel implements edu.cmu.cs.dennisc.pattern.Reusable {
+//	private static edu.cmu.cs.dennisc.pattern.AbstractPool< ZLabel > pool = new edu.cmu.cs.dennisc.pattern.AbstractPool< ZLabel >() {
+//		@Override
+//		protected zoot.ZLabel createInstance() {
+//			return new ZLabel();
+//		}
+//	};
+	
+	//todo: reduce visibility to private
+	protected ZLabel() {
 		//this.setOpaque( true );
 		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
 		this.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
@@ -34,26 +42,41 @@ public class ZLabel extends javax.swing.JLabel {
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 	}
+
+//	@Override
+//	protected void finalize() throws Throwable {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize ZLabel" );
+//		super.finalize();
+//	}
 	
-	public ZLabel( javax.swing.Icon icon ) {
-		this();
-		this.setIcon( icon );
+	public static ZLabel acquire() {
+		//return ZLabel.pool.acquire();
+		return new ZLabel();
 	}
-	public ZLabel( String text ) {
-		this();
-		this.setText( text );
+	public static ZLabel acquire( javax.swing.Icon icon ) {
+		ZLabel rv = acquire();
+		rv.setIcon( icon );
+		return rv;
 	}
-	public ZLabel( String text, java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
-		this( text );
-		this.setFontToDerivedFont( map );
+	public static ZLabel acquire( String text ) {
+		ZLabel rv = acquire();
+		rv.setText( text );
+		return rv;
 	}
-	public ZLabel( String text, java.awt.font.TextAttribute attribute, Object value ) {
-		this( text );
-		this.setFontToDerivedFont( attribute, value );
+	public static ZLabel acquire( String text, java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
+		ZLabel rv = acquire( text );
+		rv.setFontToDerivedFont( map );
+		return rv;
 	}
-	public ZLabel( String text, zoot.font.ZTextAttribute< ? >... textAttributes ) {
-		this( text );
-		this.setFontToDerivedFont( textAttributes );
+	public static ZLabel acquire( String text, java.awt.font.TextAttribute attribute, Object value ) {
+		ZLabel rv = acquire( text );
+		rv.setFontToDerivedFont( attribute, value );
+		return rv;
+	}
+	public static ZLabel acquire( String text, zoot.font.ZTextAttribute< ? >... textAttributes ) {
+		ZLabel rv = acquire( text );
+		rv.setFontToDerivedFont( textAttributes );
+		return rv;
 	}
 
 //	@Override

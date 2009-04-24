@@ -27,13 +27,13 @@ package org.alice.ide.preview;
  */
 public abstract class PreviewInputPane<E> extends zoot.ZInputPane< E > {
 	protected static zoot.ZLabel createLabel( String s ) {
-		zoot.ZLabel rv = new zoot.ZLabel( s );
+		zoot.ZLabel rv = zoot.ZLabel.acquire( s );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
 	}
 	class PreviewPane extends swing.BorderPane {
 		public void refresh() {
-			this.removeAll();
+			edu.cmu.cs.dennisc.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
 			this.add( PreviewInputPane.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
 			this.revalidate();
 			this.repaint();

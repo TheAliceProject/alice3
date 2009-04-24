@@ -53,7 +53,7 @@ public abstract class NameInputPane<E> extends RowsInputPane< E > {
 	@Override
 	protected java.util.List< java.awt.Component[] > createComponentRows() {
 		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-		zoot.ZLabel label = new zoot.ZLabel();
+		zoot.ZLabel label = zoot.ZLabel.acquire();
 		label.setText( "name:" );
 		this.textField = new javax.swing.JTextField( 10 );
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {

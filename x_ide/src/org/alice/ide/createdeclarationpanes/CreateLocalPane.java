@@ -62,7 +62,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	}
 
 	private zoot.ZLabel createDeclarationTextLabel() {
-		zoot.ZLabel rv = new zoot.ZLabel( "Local" );
+		zoot.ZLabel rv = zoot.ZLabel.acquire( "Local" );
 		rv.setFontToScaledFont( 1.2f );
 		return rv;
 	}
@@ -74,7 +74,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		} else {
 			name = "unknown";
 		}
-		zoot.ZLabel rv = new zoot.ZLabel( name );
+		zoot.ZLabel rv = zoot.ZLabel.acquire( name );
 		rv.setFontToScaledFont( 1.2f );
 		return rv;
 	}
@@ -84,9 +84,9 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 //			public DeclarationComponent() {
 //				super(
 //						javax.swing.Box.createHorizontalGlue(),
-//						new zoot.ZLabel( "declare ", zoot.font.ZTextPosture.OBLIQUE ), 
+//						zoot.ZLabel.acquire( "declare ", zoot.font.ZTextPosture.OBLIQUE ), 
 //						CreateLocalPane.this.declarationTextLabel, 
-//						new zoot.ZLabel( " for method:", zoot.font.ZTextPosture.OBLIQUE ) 
+//						zoot.ZLabel.acquire( " for method:", zoot.font.ZTextPosture.OBLIQUE ) 
 //				);
 //				this.setAlignmentX( RIGHT_ALIGNMENT );
 //			}

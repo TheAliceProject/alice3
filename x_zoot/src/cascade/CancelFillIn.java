@@ -26,7 +26,7 @@ package cascade;
  * @author Dennis Cosgrove
  */
 public class CancelFillIn extends FillIn< Object > {
-	private zoot.ZLabel label = new zoot.ZLabel();
+	private zoot.ZLabel label = zoot.ZLabel.acquire();
 	public CancelFillIn( String text ) {
 		this.label.setText( text );
 	}

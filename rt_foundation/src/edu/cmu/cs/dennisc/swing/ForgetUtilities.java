@@ -20,28 +20,28 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
+package edu.cmu.cs.dennisc.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty< ? > > {
-	//	public InstancePropertyPane( Factory factory ) {
-	//		super( factory, javax.swing.BoxLayout.LINE_AXIS );
-	//	}
-	private zoot.ZLabel label;
-
-	public InstancePropertyPane( Factory factory, edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
-	}
-	@Override
-	protected void refresh() {
-		if( this.label != null ) {
-			//pass
-		} else {
-			this.label = zoot.ZLabel.acquire();
-			this.add( this.label );
+public class ForgetUtilities {
+	public static void forgetTree( java.awt.Component c ) {
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				forgetTree( component );
+			}
 		}
-		this.label.setText( getProperty().getValue().toString() );
+		if( c instanceof edu.cmu.cs.dennisc.pattern.Forgettable ) {
+			((edu.cmu.cs.dennisc.pattern.Forgettable)c).forget();
+		}
+	}
+	public static void forgetAndRemoveAllComponents( java.awt.Container container ) {
+		java.awt.Component[] components = container.getComponents();
+		container.removeAll();
+		for( java.awt.Component component : components ) {
+			forgetTree( component );
+		}
 	}
 }

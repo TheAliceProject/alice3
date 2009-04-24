@@ -37,6 +37,12 @@ public abstract class ZControl extends ZComponent {
 	}
 
 	@Override
+	protected void finalize() throws Throwable {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize", this.getClass() );
+		super.finalize();
+	}
+	
+	@Override
 	public void addNotify() {
 		super.addNotify();
 		if( isMouseListeningDesired() ) {
@@ -52,6 +58,8 @@ public abstract class ZControl extends ZComponent {
 			this.removeMouseListener( this.controlAdapter );
 			this.removeMouseMotionListener( this.controlAdapter );
 			this.controlAdapter = null;
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "REMOVE NOTIFY: ", this.getClass() );
 		}
 	}
 	

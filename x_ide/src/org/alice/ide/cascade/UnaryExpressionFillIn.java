@@ -40,7 +40,7 @@ public abstract class UnaryExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		return new zoot.ZLabel( menuText );
+		return zoot.ZLabel.acquire( menuText );
 	}
 	
 	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression operand );

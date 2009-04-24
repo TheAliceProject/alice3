@@ -33,7 +33,7 @@ public abstract class AbstractArgumentListPropertyPane extends AbstractListPrope
 	@Override
 	protected java.awt.Component createInterstitial( int i, final int N ) {
 		if( i < N - 1 ) {
-			return new zoot.ZLabel( ", " );
+			return zoot.ZLabel.acquire( ", " );
 		} else {
 			return null;
 		}

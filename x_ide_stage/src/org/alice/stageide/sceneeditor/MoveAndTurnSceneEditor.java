@@ -65,9 +65,9 @@ class SidePane extends swing.PageAxisPane {
 	private boolean isExpanded = false;
 
 	public SidePane() {
-		this.add( new zoot.ZLabel( "NOTE: " ) );
-		this.add( new zoot.ZLabel( "This pane is just a placeholder." ) );
-		this.add( new zoot.ZLabel( "It is not hooked up to anything." ) );
+		this.add( zoot.ZLabel.acquire( "NOTE: " ) );
+		this.add( zoot.ZLabel.acquire( "This pane is just a placeholder." ) );
+		this.add( zoot.ZLabel.acquire( "It is not hooked up to anything." ) );
 		this.add( javax.swing.Box.createVerticalStrut( 16 ) );
 
 		this.add( new BogusCameraViewPane() );

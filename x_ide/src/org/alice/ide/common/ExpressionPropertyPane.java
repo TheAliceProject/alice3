@@ -40,37 +40,7 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 
 	@Override
 	protected void refresh() {
-		//		if( this.isDropDownPotentiallyDesired != null ) {
-		this.removeAll();
-//		javax.swing.JComponent component;
-//		edu.cmu.cs.dennisc.alice.ast.Expression expression = getProperty().getValue();
-//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-//			component = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
-//		} else {
-//			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-//				component = new FieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-//			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
-//				component = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
-//			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
-//				component = new SelectedFieldExpressionPane( (org.alice.ide.ast.SelectedFieldExpression)expression );
-//			} else if( expression != null ) {
-//				component = new ExpressionPane( this.getFactory(), expression );
-//			} else {
-//				component = new zoot.ZLabel( "todo: handle null" );
-//			}
-//			//				if( this.isDropDownPotentiallyDesired ) {
-//			//					edu.cmu.cs.dennisc.alice.ast.ExpressionProperty property = this.getProperty();
-//			//					edu.cmu.cs.dennisc.property.PropertyOwner owner = property.getOwner();	
-//			//					if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument ) {
-//			//						edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)owner;
-//			//						component = new ArgumentExpressionPropertyDropDownPane( component, this.getProperty(), this.prefixPane, argument );
-//			//					} else {
-//			//						component = new ExpressionPropertyDropDownPane( component, this.getProperty(), this.prefixPane );
-//			//					}
-//			//				}
-//		}
-//		this.add( component );
-////				}
+		edu.cmu.cs.dennisc.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
 		this.add( this.getFactory().createExpressionPane( getProperty().getValue() ) );
 		this.revalidate();
 		this.repaint();

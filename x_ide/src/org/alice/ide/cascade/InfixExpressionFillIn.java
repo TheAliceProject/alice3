@@ -44,7 +44,7 @@ public abstract class InfixExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		return new zoot.ZLabel( menuText );
+		return zoot.ZLabel.acquire( menuText );
 	}
 	
 	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, Object operator, edu.cmu.cs.dennisc.alice.ast.Expression right );

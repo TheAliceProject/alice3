@@ -27,7 +27,7 @@ package org.alice.ide.common;
  */
 public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	private org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression;
-	private zoot.ZLabel label = new zoot.ZLabel();
+	private zoot.ZLabel label = zoot.ZLabel.acquire();
 	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
 		this.add( this.label );
 		this.selectedFieldExpression = selectedFieldExpression;

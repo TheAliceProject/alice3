@@ -90,12 +90,12 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			sb.append( " invocation.</body></html>" );
 
 			swing.PageAxisPane pane = new swing.PageAxisPane();
-			pane.add( new zoot.ZLabel( sb.toString() ) );
+			pane.add( zoot.ZLabel.acquire( sb.toString() ) );
 			pane.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			pane.add( new swing.LineAxisPane( new zoot.ZLabel( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+			pane.add( new swing.LineAxisPane( zoot.ZLabel.acquire( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
 			pane.add( javax.swing.Box.createVerticalStrut( 8 ) );
 			pane.add( this.checkBox );
-			return new java.awt.Component[] { new zoot.ZLabel( "WARNING:" ), pane };
+			return new java.awt.Component[] { zoot.ZLabel.acquire( "WARNING:" ), pane };
 		} else {
 			this.checkBox = null;
 			return null;

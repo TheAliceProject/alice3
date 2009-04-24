@@ -48,38 +48,38 @@ class IngredientsPane extends swing.GridBagPane {
 		final int INSET_TOP = 12;
 		final int INSET_LEFT = 2;
 
-//		this.add( new zoot.ZLabel( "life stage" ), gbc );
+//		this.add( zoot.ZLabel.acquire( "life stage" ), gbc );
 //		this.add( this.lifeStageList, gbc );
 		
 		this.add( this.randomizeButton, gbc );
 
 		gbc.insets.top = INSET_TOP;
-		this.add( new zoot.ZLabel( "gender" ), gbc );
+		this.add( zoot.ZLabel.acquire( "gender" ), gbc );
 		gbc.insets.top = 0;
 		this.add( this.genderList, gbc );
 
 		gbc.insets.top = INSET_TOP;
-		this.add( new zoot.ZLabel( "skin tone" ), gbc );
+		this.add( zoot.ZLabel.acquire( "skin tone" ), gbc );
 		gbc.insets.top = 0;
 		this.add( this.baseSkinToneList, gbc );
 
 		gbc.insets.top = INSET_TOP;
-		this.add( new zoot.ZLabel( "fitness level" ), gbc );
+		this.add( zoot.ZLabel.acquire( "fitness level" ), gbc );
 		gbc.insets.top = 0;
 		this.add( this.fitnessLevelPane, gbc );
 
 		gbc.weightx = 0.0;
 		gbc.insets.top = INSET_TOP;
 		gbc.gridwidth = 1;
-		this.add( new zoot.ZLabel( "hair" ), gbc );
+		this.add( zoot.ZLabel.acquire( "hair" ), gbc );
 		gbc.insets.left = INSET_LEFT;
 		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
 		gbc.weightx = 1.0;
-		this.add( new zoot.ZLabel( "" ), gbc );
+		this.add( zoot.ZLabel.acquire( "" ), gbc );
 		gbc.insets.left = INSET_LEFT*8;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		gbc.weightx = 0.0;
-		this.add( new zoot.ZLabel( "eye color" ), gbc );
+		this.add( zoot.ZLabel.acquire( "eye color" ), gbc );
 		gbc.insets.left = 0;
 
 		
@@ -102,7 +102,7 @@ class IngredientsPane extends swing.GridBagPane {
 
 		gbc.weighty = 0.0;
 		gbc.insets.top = INSET_TOP;
-		this.add( new zoot.ZLabel( "full body outfit" ), gbc );
+		this.add( zoot.ZLabel.acquire( "full body outfit" ), gbc );
 		gbc.insets.top = 0;
 		gbc.weighty = 6.0;
 		this.add( new javax.swing.JScrollPane( this.fullBodyOutfitList ), gbc ); 

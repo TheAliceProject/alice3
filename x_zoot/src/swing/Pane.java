@@ -32,6 +32,11 @@ public class Pane extends javax.swing.JPanel {
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
 		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
 	}
+//	@Override
+//	protected void finalize() throws Throwable {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize " + this.getClass() );
+//		super.finalize();
+//	}
 	protected boolean isMaximumSizeClampedToPreferredSize() {
 		return true;
 	}

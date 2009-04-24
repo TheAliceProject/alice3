@@ -133,7 +133,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
-	//	private zoot.ZLabel feedback = new zoot.ZLabel();
+	//	private zoot.ZLabel feedback = zoot.ZLabel.acquire();
 
 	public java.awt.Component getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return null;

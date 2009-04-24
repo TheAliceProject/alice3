@@ -42,7 +42,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 //			if( getIDE().isJava() ) {
 //				//pass
 //			} else {
-				this.add( new zoot.ZLabel( "." ) );
+				this.add( zoot.ZLabel.acquire( "." ) );
 //			}
 		}
 		org.alice.ide.common.NodeNameLabel nodeNameLabel = new org.alice.ide.common.NodeNameLabel( this.fieldAccess.field.getValue() );

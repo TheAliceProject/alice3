@@ -31,7 +31,7 @@ public class PreviousExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Ex
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		zoot.ZLabel label = new zoot.ZLabel( "(current value)" );
+		zoot.ZLabel label = zoot.ZLabel.acquire( "(current value)" );
 		label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT );
 //		label.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
 //		label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );

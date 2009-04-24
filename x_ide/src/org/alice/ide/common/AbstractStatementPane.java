@@ -31,34 +31,34 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		return this.factory;
 	}
 	
+	private edu.cmu.cs.dennisc.property.event.PropertyListener isEnabledListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		}
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			AbstractStatementPane.this.repaint();
+		}
+	}; 
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
 	public AbstractStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( org.alice.ide.common.StatementLikeSubstance.getClassFor(statement), javax.swing.BoxLayout.LINE_AXIS );
 		this.factory = factory;
 		this.statement = statement;
-		
 		this.owner = owner;
-		this.statement.isEnabled.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			}
-			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				AbstractStatementPane.this.repaint();
-			}
-		} );
 	}
 
 	@Override
 	public void addNotify() {
 		super.addNotify();
 		this.factory.getStatementMap().put( this.statement, this );
+		this.statement.isEnabled.addPropertyListener( this.isEnabledListener );
 	}
 	@Override
 	public void removeNotify() {
+		this.statement.isEnabled.removePropertyListener( this.isEnabledListener );
 		this.factory.getStatementMap().remove( this.statement );
 		super.removeNotify();
 	}
-	
 	public edu.cmu.cs.dennisc.alice.ast.Statement getStatement() {
 		return this.statement;
 	}

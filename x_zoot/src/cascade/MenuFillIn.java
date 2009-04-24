@@ -27,7 +27,7 @@ package cascade;
  */
 public abstract class MenuFillIn< E > extends FillIn< E > {
 	//private javax.swing.JLabel label = new javax.swing.JLabel();
-	private zoot.ZLabel label = new zoot.ZLabel();
+	private zoot.ZLabel label = zoot.ZLabel.acquire();
 	public MenuFillIn( String title ) {
 		this.label.setText( title );
 	}

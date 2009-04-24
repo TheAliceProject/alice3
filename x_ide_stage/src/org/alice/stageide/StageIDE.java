@@ -89,7 +89,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
 		if( icon != null ) {
-			return new zoot.ZLabel( icon );
+			return zoot.ZLabel.acquire( icon );
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
@@ -104,7 +104,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
 					if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
-						return new org.alice.ide.common.ExpressionPane( expression, new zoot.ZLabel( "this." + field.getName() ) ) {
+						return new org.alice.ide.common.ExpressionPane( expression, zoot.ZLabel.acquire( "this." + field.getName() ) ) {
 							@Override
 							protected boolean isExpressionTypeFeedbackDesired() {
 								return true;
@@ -123,7 +123,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
 						return new swing.LineAxisPane( 
 								factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ),
-								new zoot.ZLabel( " revolutions" )
+								zoot.ZLabel.acquire( " revolutions" )
 						);
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
 						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );

@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property.InstanceProperty< ? > > extends swing.BoxPane {
+public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property.InstanceProperty< ? > > extends swing.BoxPane implements edu.cmu.cs.dennisc.pattern.Forgettable {
 	private Factory factory;
 	private E property;
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -35,15 +35,16 @@ public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property
 			AbstractPropertyPane.this.refresh();
 		};
 	};
-	public AbstractPropertyPane( Factory factory, int direction ) {
+	public AbstractPropertyPane( Factory factory, int direction, E property ) {
 		super( direction );
 		this.factory = factory;
+		this.property = property;
+		if( this.property != null ) {
+			this.property.addPropertyListener( this.propertyAdapter );
+		}
+		this.refresh();
 	}
-	public AbstractPropertyPane( Factory factory, int direction, E property ) {
-		this( factory, direction );
-		this.setProperty( property );
-	}
-	
+
 	protected Factory getFactory() {
 		return this.factory;
 	}
@@ -51,15 +52,8 @@ public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property
 	public E getProperty() {
 		return this.property;
 	}
-	public void setProperty( E property ) {
-		if( this.property != null ) {
-			this.property.removePropertyListener( this.propertyAdapter );
-		}
-		this.property = property;
-		if( this.property != null ) {
-			this.property.addPropertyListener( this.propertyAdapter );
-		}
-		this.refresh();
+	public void forget() {
+		this.property.removePropertyListener( this.propertyAdapter );
 	}
 	protected abstract void refresh();
 }

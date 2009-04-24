@@ -27,11 +27,11 @@ package org.alice.ide.codeeditor;
  */
 class InstanceLine extends swing.LineAxisPane {
 	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		zoot.ZLabel a = new zoot.ZLabel( "current instance of " );
+		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
 		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 		this.add( a );
 		this.add( new org.alice.ide.common.TypeComponent( code.getDeclaringType() ) );
-		zoot.ZLabel b = new zoot.ZLabel( " is referred to as: " );
+		zoot.ZLabel b = zoot.ZLabel.acquire( " is referred to as: " );
 		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 		this.add( b );
 		this.add( new org.alice.ide.common.ThisPane( code.getDeclaringType() ) );

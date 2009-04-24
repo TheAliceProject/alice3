@@ -36,19 +36,10 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		} );
 		this.refresh();
-//		this.addMouseMotionListener( new java.awt.event.MouseMotionListener() {
-//			public void mouseDragged( java.awt.event.MouseEvent e ) {
-//			}
-//			public void mouseMoved( java.awt.event.MouseEvent e ) {
-//				if( edu.cmu.cs.dennisc.swing.SwingUtilities.isControlDown( e ) ) {
-//					//set method font to underlined
-//				}
-//			}
-//		} );
 	}
 
 	private void refresh() {
-		this.removeAll();
+		edu.cmu.cs.dennisc.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
 		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
@@ -72,7 +63,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( new zoot.ZLabel( ";" ) );
+			this.add( zoot.ZLabel.acquire( ";" ) );
 		}
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		ExpressionStatementPane.this.revalidate();

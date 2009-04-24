@@ -31,9 +31,9 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-			//this.add( new zoot.ZLabel( " {" ) );
+			//this.add( zoot.ZLabel.acquire( " {" ) );
 		} else {
-			this.add( new zoot.ZLabel( "declare ", zoot.font.ZTextPosture.OBLIQUE ) );
+			this.add( zoot.ZLabel.acquire( "declare ", zoot.font.ZTextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
 			if( methodDeclaredInAlice.isProcedure() ) {
 				sb.append( " procedure " );
@@ -41,7 +41,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 				this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( " function " );
 			}
-			this.add( new zoot.ZLabel( sb.toString(), zoot.font.ZTextPosture.OBLIQUE ) );
+			this.add( zoot.ZLabel.acquire( sb.toString(), zoot.font.ZTextPosture.OBLIQUE ) );
 		}
 		zoot.ZLabel nameLabel = new org.alice.ide.common.NodeNameLabel( methodDeclaredInAlice );
 		nameLabel.setFontToScaledFont( 2.0f );

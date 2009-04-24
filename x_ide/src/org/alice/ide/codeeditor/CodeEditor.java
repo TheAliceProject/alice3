@@ -161,7 +161,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 		return this;
 	}
 	public void refresh() {
-		this.removeAll();
+		edu.cmu.cs.dennisc.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
 			javax.swing.JComponent parametersPane = createParametersPane( codeDeclaredInAlice );
@@ -221,7 +221,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 					super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
 					this.setLayout( new java.awt.BorderLayout() );
 					this.setOpaque( false );
-					this.add( new zoot.ZLabel( "do in order" ), java.awt.BorderLayout.NORTH );
+					this.add( zoot.ZLabel.acquire( "do in order" ), java.awt.BorderLayout.NORTH );
 					this.add( new RootStatementListPropertyPane(), java.awt.BorderLayout.CENTER );
 					this.add( javax.swing.Box.createHorizontalStrut( 8 ), java.awt.BorderLayout.WEST );
 				}

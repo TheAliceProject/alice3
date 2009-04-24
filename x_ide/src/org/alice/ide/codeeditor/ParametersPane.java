@@ -49,7 +49,7 @@ class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< Node
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
 		if( getIDE().isJava() ) {
-			this.add( new zoot.ZLabel( "( " ) );
+			this.add( zoot.ZLabel.acquire( "( " ) );
 		} else {
 			int n = this.getProperty().size();
 			String text;
@@ -63,7 +63,7 @@ class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< Node
 			default:
 				text = " with parameters: ";
 			}
-			zoot.ZLabel label = new zoot.ZLabel( text );
+			zoot.ZLabel label = zoot.ZLabel.acquire( text );
 			label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 			this.add( label );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
@@ -72,7 +72,7 @@ class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< Node
 	@Override
 	protected java.awt.Component createInterstitial( int i, int N ) {
 		if( i<N-1 ) {
-			return new zoot.ZLabel( ", " );
+			return zoot.ZLabel.acquire( ", " );
 		} else {
 			return javax.swing.Box.createHorizontalStrut( 8 );
 		}
@@ -91,7 +91,7 @@ class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< Node
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( new zoot.ZLabel( " )" ) );
+			this.add( zoot.ZLabel.acquire( " )" ) );
 		}
 	}
 }

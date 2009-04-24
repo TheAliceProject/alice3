@@ -24,7 +24,7 @@ package org.alice.ide.warningpane;
 
 public class WarningPane extends swing.PageAxisPane {
 	public WarningPane( boolean isSolicited ) {
-		zoot.ZLabel label = new zoot.ZLabel(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
+		zoot.ZLabel label = zoot.ZLabel.acquire(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
 
 		StringBuffer sb = new StringBuffer();
 		sb.append( "<html><body>" );

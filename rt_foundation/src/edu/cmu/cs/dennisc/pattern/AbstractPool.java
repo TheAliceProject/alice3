@@ -25,28 +25,23 @@ package edu.cmu.cs.dennisc.pattern;
 /**
  * @author Dennis Cosgrove
  */
-public class Pool< E extends Reusable > {
-	private Class<E> m_cls;
-	private java.util.Stack< E > m_available = new java.util.Stack< E >();
-	
-	public Pool( Class<E> cls ) {
-		m_cls = cls;
-	}
-	
+public abstract class AbstractPool< E extends Reusable > {
+	private java.util.Stack< E > available = new java.util.Stack< E >();
+	protected abstract E createInstance();
 	public E acquire() {
 		E rv;
-		synchronized( m_available ) {
-			if( m_available.size() > 0 ) {
-				rv = m_available.pop(); 
+		synchronized( this.available ) {
+			if( this.available.size() > 0 ) {
+				rv = this.available.pop(); 
 			} else {
-				rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( m_cls );
+				rv = this.createInstance();
 			}
 		}
 		return rv;
 	}
 	public void release( E e ) {
-		synchronized( m_available ) {
-			m_available.push( e );
+		synchronized( this.available ) {
+			this.available.push( e );
 		}
 	}
 }

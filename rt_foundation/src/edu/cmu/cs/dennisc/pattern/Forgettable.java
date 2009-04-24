@@ -20,28 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
+package edu.cmu.cs.dennisc.pattern;
 
 /**
  * @author Dennis Cosgrove
  */
-public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.property.InstanceProperty< ? > > {
-	//	public InstancePropertyPane( Factory factory ) {
-	//		super( factory, javax.swing.BoxLayout.LINE_AXIS );
-	//	}
-	private zoot.ZLabel label;
 
-	public InstancePropertyPane( Factory factory, edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
-	}
-	@Override
-	protected void refresh() {
-		if( this.label != null ) {
-			//pass
-		} else {
-			this.label = zoot.ZLabel.acquire();
-			this.add( this.label );
-		}
-		this.label.setText( getProperty().getValue().toString() );
-	}
+public interface Forgettable {
+	public void forget();
 }

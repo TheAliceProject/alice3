@@ -28,21 +28,32 @@ public abstract class ZDragComponent extends ZControl {
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
 	
+	private java.awt.event.ComponentListener componentAdapter = new java.awt.event.ComponentListener() {
+		public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
+		}
+		public void componentMoved( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentResized( java.awt.event.ComponentEvent e ) {
+			ZDragComponent.this.updateProxySizes();
+		}
+		public void componentShown( java.awt.event.ComponentEvent e ) {
+		}
+	};
+	
 	public ZDragComponent() {
-		this.addComponentListener( new java.awt.event.ComponentListener() {
-			public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
-			}
-			public void componentMoved( java.awt.event.ComponentEvent e ) {
-			}
-			public void componentResized( java.awt.event.ComponentEvent e ) {
-				ZDragComponent.this.updateProxySizes();
-			}
-			public void componentShown( java.awt.event.ComponentEvent e ) {
-			}
-		} );
 		this.updateProxySizes();
 	}
-
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.addComponentListener( this.componentAdapter );
+	}
+	@Override
+	public void removeNotify() {
+		this.removeComponentListener( this.componentAdapter );
+		super.removeNotify();
+	}
+	
 	@Override
 	protected boolean isMouseListeningDesired() { 
 		return super.isMouseListeningDesired() || this.dragAndDropOperation != null;

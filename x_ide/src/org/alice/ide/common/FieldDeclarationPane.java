@@ -33,7 +33,7 @@ public class FieldDeclarationPane extends swing.LineAxisPane {
 		} else {
 			text = "initialize ";
 		}
-		this.add( new zoot.ZLabel( text ) );
+		this.add( zoot.ZLabel.acquire( text ) );
 		this.add( new TypeComponent( field.getValueType() ) );
 		org.alice.ide.common.NodeNameLabel nameLabel = new org.alice.ide.common.NodeNameLabel( field );
 		nameLabel.setFontToScaledFont( 1.5f );

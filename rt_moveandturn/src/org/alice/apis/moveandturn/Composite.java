@@ -74,7 +74,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( values );
 	}
 
-	private static edu.cmu.cs.dennisc.pattern.Pool< StandIn > s_standInPool = new edu.cmu.cs.dennisc.pattern.Pool< StandIn >( StandIn.class );
+	private static edu.cmu.cs.dennisc.pattern.DefaultPool< StandIn > s_standInPool = new edu.cmu.cs.dennisc.pattern.DefaultPool< StandIn >( StandIn.class );
 	protected static StandIn acquireStandIn( Composite composite ) {
 		StandIn rv = s_standInPool.acquire();
 		rv.setVehicle( composite );
