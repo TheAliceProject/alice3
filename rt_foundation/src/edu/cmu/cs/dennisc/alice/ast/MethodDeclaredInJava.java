@@ -128,7 +128,7 @@ public class MethodDeclaredInJava extends AbstractMethod {
 	}
 	
 	@Override
-	public boolean equals( Object other ) {
+	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof MethodDeclaredInJava ) {
 			return m_mthd.equals( ((MethodDeclaredInJava)other).m_mthd );
 		} else {

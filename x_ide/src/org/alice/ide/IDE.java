@@ -750,11 +750,13 @@ public abstract class IDE extends zoot.ZFrame {
 		java.util.Map< Integer, edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > map = edu.cmu.cs.dennisc.alice.ast.Node.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
 		edu.cmu.cs.dennisc.alice.ast.Node dst = edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), map );
-		if( original.equals( dst ) ) {
-			return dst;
-		} else {
-			throw new RuntimeException( "copy not equivalent to original" );
-		}
+//		if( original.isEquivalentTo( dst ) ) {
+//			return dst;
+//		} else {
+//			throw new RuntimeException( "copy not equivalent to original" );
+//		}
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check copy" );
+		return dst;
 	}
 
 	private javax.swing.ButtonModel runButtonModel = new javax.swing.DefaultButtonModel();

@@ -356,7 +356,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 
 	@Override
-	public boolean equals( Object other ) {
+	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof TypeDeclaredInJava ) {
 			return m_cls.equals( ((TypeDeclaredInJava)other).m_cls );
 		} else {

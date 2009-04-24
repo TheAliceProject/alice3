@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property.InstanceProperty< ? > > extends swing.BoxPane implements edu.cmu.cs.dennisc.pattern.Forgettable {
+public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property.InstanceProperty< ? > > extends swing.BoxPane {
 	private Factory factory;
 	private E property;
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -37,23 +37,29 @@ public abstract class AbstractPropertyPane<E extends edu.cmu.cs.dennisc.property
 	};
 	public AbstractPropertyPane( Factory factory, int direction, E property ) {
 		super( direction );
+		assert property != null;
 		this.factory = factory;
 		this.property = property;
-		if( this.property != null ) {
-			this.property.addPropertyListener( this.propertyAdapter );
-		}
 		this.refresh();
 	}
 
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.property.addPropertyListener( this.propertyAdapter );
+	}
+	@Override
+	public void removeNotify() {
+		this.property.removePropertyListener( this.propertyAdapter );
+		super.removeNotify();
+	}
+	
 	protected Factory getFactory() {
 		return this.factory;
 	}
 	
 	public E getProperty() {
 		return this.property;
-	}
-	public void forget() {
-		this.property.removePropertyListener( this.propertyAdapter );
 	}
 	protected abstract void refresh();
 }

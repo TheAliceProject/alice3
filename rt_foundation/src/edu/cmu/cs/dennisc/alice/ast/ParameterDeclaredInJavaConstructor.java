@@ -69,7 +69,7 @@ public class ParameterDeclaredInJavaConstructor extends ParameterDeclaredInJava 
 	}
 
 	@Override
-	public boolean equals( Object other ) {
+	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof ParameterDeclaredInJavaConstructor ) {
 			ParameterDeclaredInJavaConstructor otherPDIJC = (ParameterDeclaredInJavaConstructor)other;
 			return m_constructor.equals( otherPDIJC.m_constructor ) && m_index == otherPDIJC.m_index && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJC.m_name ) && m_valueType.equals( otherPDIJC.m_valueType );

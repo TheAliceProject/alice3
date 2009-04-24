@@ -409,7 +409,10 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 	}
 	
 	@Override
-	public boolean equals( Object other ) {
+	public final boolean equals( java.lang.Object obj ) {
+		return super.equals( obj );
+	}
+	public boolean isEquivalentTo( Object other ) {
 		if( this == other || super.equals( other ) ) {
 			return true;
 		} else {
@@ -423,32 +426,18 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 						if( otherProperty != null ) {
 							Object thisValue = thisProperty.getValue( this );
 							Object otherValue = otherProperty.getValue( otherDIPO );
-//							if( thisValue instanceof java.util.ArrayList ) {
-//								java.util.ArrayList thisArray = (java.util.ArrayList)thisValue;
-//								if( otherValue instanceof java.util.ArrayList ) {
-//									java.util.ArrayList otherArray = (java.util.ArrayList)otherValue;
-//									if( thisArray.size() == otherArray.size() ) {
-//										for( int i=0; i<thisArray.size(); i++ ) {									
-//											Object thisItem = thisArray.get( i );
-//											Object otherItem = otherArray.get( i );
-//											if( thisItem.equals( otherItem ) ) {
-//												//pass
-//											} else {
-//												edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//												edu.cmu.cs.dennisc.print.PrintUtilities.println( i );
-//												edu.cmu.cs.dennisc.print.PrintUtilities.println( thisItem.equals( otherItem ) );
-//												edu.cmu.cs.dennisc.print.PrintUtilities.println( thisItem );
-//												edu.cmu.cs.dennisc.print.PrintUtilities.println( otherItem );
-//											}
-//										}
-//										return true;
-//									}
-//								}
-//							}
-							if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( thisValue, otherValue ) ) {
-								//pass
+							if( thisValue instanceof DefaultInstancePropertyOwner ) {
+								if( ((DefaultInstancePropertyOwner)thisValue).isEquivalentTo( otherValue ) ) {
+									//pass
+								} else {
+									return false;
+								}
 							} else {
-								return false;
+								if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( thisValue, otherValue ) ) {
+									//pass
+								} else {
+									return false;
+								}
 							}
 						} else {
 							return false;

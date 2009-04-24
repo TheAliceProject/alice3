@@ -67,7 +67,7 @@ public class AssignmentExpressionPane extends swing.LineAxisPane  {
 			parent.add( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
 			parent.add( zoot.ZLabel.acquire( " ]" ) );
 		}
-		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			parent.add( zoot.ZLabel.acquire( " = " ) );
 		} else {
 			parent.add( new org.alice.ide.common.GetsPane( true ) );

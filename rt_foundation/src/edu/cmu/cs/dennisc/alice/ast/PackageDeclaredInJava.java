@@ -61,7 +61,7 @@ public class PackageDeclaredInJava extends AbstractPackage {
 	}
 	
 	@Override
-	public boolean equals( Object other ) {
+	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof PackageDeclaredInJava ) {
 			return m_pckg.equals( ((PackageDeclaredInJava)other).m_pckg );
 		} else {

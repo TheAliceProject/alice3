@@ -93,7 +93,7 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 	}
 	
 	@Override
-	public boolean equals( Object other ) {
+	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof FieldDeclaredInJavaWithField ) {
 			return m_fld.equals( ((FieldDeclaredInJavaWithField)other).m_fld );
 		} else {

@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDropDownListItemExpressionPane extends org.alice.ide.common.AbstractDropDownPane implements edu.cmu.cs.dennisc.pattern.Forgettable {
+public abstract class AbstractDropDownListItemExpressionPane extends org.alice.ide.common.AbstractDropDownPane {
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.Expression > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
@@ -41,7 +41,6 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
-		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
 		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionListPropertyItemOperation( this.index, this.expressionListProperty ) {
 			@Override
 			protected edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType() {
@@ -49,8 +48,15 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 			}
 		});
 	}
-	public void forget() {
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
+	}
+	@Override
+	public void removeNotify() {
 		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
+		super.removeNotify();
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
 	public void refresh() {

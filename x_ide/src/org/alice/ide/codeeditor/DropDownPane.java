@@ -37,12 +37,8 @@ public abstract class DropDownPane extends org.alice.ide.common.AbstractDropDown
 		if( postfixPane != null ) {
 			this.add( postfixPane );
 		}
-		zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
-		this.addMouseListener( controlAdapter );
-		this.addMouseMotionListener( controlAdapter );
 	}
 	
-
 	public java.awt.Component getMainComponent() {
 		return this.mainComponent;
 	}

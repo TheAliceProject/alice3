@@ -49,13 +49,7 @@ public class FauxIDE extends IDE {
 	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		javax.swing.JOptionPane.showMessageDialog( this, "imagine the program running here..." );
 	}
-	public static void main( final String[] args ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
-		javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
-			public void run() {
-				FauxIDE ide = new FauxIDE();
-				ide.setSize( 1000, 740 );
-				ide.setVisible( true );
-			}
-		} );
+	public static void main( String[] args ) {
+		org.alice.ide.LaunchUtilities.launch( FauxIDE.class, null, args );
 	}
 }

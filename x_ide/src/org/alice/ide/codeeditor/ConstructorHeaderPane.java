@@ -28,7 +28,7 @@ package org.alice.ide.codeeditor;
 class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, javax.swing.JComponent parametersPane ) {
 		super( constructorDeclaredInAlice );
-		if( "java".equals( org.alice.ide.IDE.getSingleton().getLocale().getVariant() ) ) {
+		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.add( zoot.ZLabel.acquire( "()" ) );
 		} else {

@@ -113,7 +113,7 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 	}
 
 	@Override
-	public boolean equals( Object other ) {
+	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof FieldDeclaredInJavaWithGetterAndSetter ) {
 			return m_gttr.equals( ((FieldDeclaredInJavaWithGetterAndSetter)other).m_gttr ) && m_sttr.equals( ((FieldDeclaredInJavaWithGetterAndSetter)other).m_sttr );
 		} else {

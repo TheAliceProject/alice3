@@ -79,16 +79,6 @@ public class ZLabel extends javax.swing.JLabel implements edu.cmu.cs.dennisc.pat
 		return rv;
 	}
 
-//	@Override
-//	public void setBackground( java.awt.Color background ) {
-//		super.setBackground( background );
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( background );
-//	}
-//	@Override
-//	public boolean isOptimizedDrawingEnabled() {
-//		return false;
-//	}
-	
 	public void setFontToDerivedFont( java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
 		java.awt.Font font = this.getFont();
 		this.setFont( font.deriveFont( map ) );
@@ -110,13 +100,4 @@ public class ZLabel extends javax.swing.JLabel implements edu.cmu.cs.dennisc.pat
 		java.awt.Font font = this.getFont();
 		this.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
 	}
-	
-	
-//	@Override
-//	public void paintComponent( java.awt.Graphics g ) {
-//		if( this.getText().equals( " loop" ) ) {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "paint", this );
-//		}
-//		super.paintComponent( g );
-//	}
 }

@@ -37,36 +37,48 @@ public class NodeNameLabel extends zoot.ZLabel {
 	}
 
 	private NamePropertyAdapter namePropertyAdapter = null;
+	private edu.cmu.cs.dennisc.property.StringProperty nameProperty = null;
 
 	public NodeNameLabel( edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		this.node = node;
 		this.updateText();
-		edu.cmu.cs.dennisc.property.StringProperty nameProperty = null;
 		if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.node;
-			nameProperty = field.name;
+			this.nameProperty = field.name;
 		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.node;
-			nameProperty = method.name;
+			this.nameProperty = method.name;
 		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)this.node;
-			nameProperty = parameter.name;
+			this.nameProperty = parameter.name;
 		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = (edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice)this.node;
-			nameProperty = local.name;
+			this.nameProperty = local.name;
 		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.node;
-			nameProperty = type.name;
-		}
-		if( nameProperty != null ) {
-			this.namePropertyAdapter = new NamePropertyAdapter();
-			nameProperty.addPropertyListener( this.namePropertyAdapter );
+			this.nameProperty = type.name;
 		}
 //		if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField ) {
 //			//pass
 //		} else {
 //			this.scaleFont( 1.25f );
 //		}
+	}
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		if( this.nameProperty != null ) {
+			this.namePropertyAdapter = new NamePropertyAdapter();
+			this.nameProperty.addPropertyListener( this.namePropertyAdapter );
+		}
+	}
+	@Override
+	public void removeNotify() {
+		if( this.nameProperty != null ) {
+			this.nameProperty.removePropertyListener( this.namePropertyAdapter );
+			this.namePropertyAdapter = null;
+		}
+		super.removeNotify();
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() {
 		return this.node;

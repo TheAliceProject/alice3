@@ -26,16 +26,27 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class ExpressionStatementPane extends AbstractStatementPane {
+	private edu.cmu.cs.dennisc.property.event.PropertyListener refreshAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		}
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			ExpressionStatementPane.this.refresh();
+		}
+	};
 	public ExpressionStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, expressionStatement, owner );
-		expressionStatement.expression.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
-			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			}
-			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				ExpressionStatementPane.this.refresh();
-			}
-		} );
 		this.refresh();
+	}
+	
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.getExpressionStatement().expression.addPropertyListener( this.refreshAdapter );
+	}
+	@Override
+	public void removeNotify() {
+		this.getExpressionStatement().expression.removePropertyListener( this.refreshAdapter );
+		super.removeNotify();
 	}
 
 	private void refresh() {

@@ -551,7 +551,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		appendInternal( sb, set );
 		sb.append( "]" );
 	}
-
+		
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

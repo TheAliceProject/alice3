@@ -80,7 +80,7 @@ public class ParameterDeclaredInJavaMethod extends ParameterDeclaredInJava {
 	}
 	
 	@Override
-	public boolean equals( Object other ) {
+	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof ParameterDeclaredInJavaMethod ) {
 			ParameterDeclaredInJavaMethod otherPDIJM = (ParameterDeclaredInJavaMethod)other;
 			return m_method.equals( otherPDIJM.m_method ) && m_index == otherPDIJM.m_index && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( m_name, otherPDIJM.m_name ) && m_valueType.equals( otherPDIJM.m_valueType );

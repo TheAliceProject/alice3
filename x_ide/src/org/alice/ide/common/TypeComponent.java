@@ -26,6 +26,22 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class TypeComponent extends NodeNameLabel {
+	private zoot.DefaultPopupActionOperation popupOperation;
+	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+			setRollover( true );
+		}
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+			setRollover( false );
+		}
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+			zoot.ZManager.performIfAppropriate( TypeComponent.this.popupOperation, e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+		}
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+		}
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		}
+	};
 	private boolean isRollover = false;
 	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super( type );
@@ -41,28 +57,24 @@ public class TypeComponent extends NodeNameLabel {
 		this.setBorder( TypeBorder.getSingletonFor( type ) );
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			final zoot.ActionOperation operation = new zoot.DefaultPopupActionOperation( 
+			this.popupOperation = new zoot.DefaultPopupActionOperation( 
 					new org.alice.ide.operations.ast.RenameTypeOperation( typeInAlice ),
 					new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( org.alice.ide.IDE.getSingleton().getSceneType(), typeInAlice ), 
 					new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) 
 			);
-			this.addMouseListener( new java.awt.event.MouseListener() {
-				public void mouseEntered( java.awt.event.MouseEvent e ) {
-					setRollover( true );
-				}
-				public void mouseExited( java.awt.event.MouseEvent e ) {
-					setRollover( false );
-				}
-				public void mousePressed( java.awt.event.MouseEvent e ) {
-					zoot.ZManager.performIfAppropriate( operation, e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
-				}
-				public void mouseReleased( java.awt.event.MouseEvent e ) {
-				}
-				public void mouseClicked( java.awt.event.MouseEvent e ) {
-				}
-			} );
 		}
 	}
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.addMouseListener( this.mouseAdapter );
+	}
+	@Override
+	public void removeNotify() {
+		this.removeMouseListener( this.mouseAdapter );
+		super.removeNotify();
+	}	
+
 	public void setRollover( boolean isRollover ) {
 		this.isRollover = isRollover;
 		this.repaint();

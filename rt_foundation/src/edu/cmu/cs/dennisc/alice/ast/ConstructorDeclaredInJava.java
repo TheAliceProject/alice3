@@ -91,7 +91,7 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 	}
 
 	@Override
-	public boolean equals( Object other ) {
+	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof ConstructorDeclaredInJava ) {
 			return m_cnstrctr.equals( ((ConstructorDeclaredInJava)other).m_cnstrctr );
 		} else {

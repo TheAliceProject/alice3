@@ -59,7 +59,6 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 	}; 
 	public AbstractListPropertyPane( Factory factory, int axis, E property ) {
 		super( factory, axis, property );
-		property.addListPropertyListener( this.listPropertyAdapter );
 	}
 	protected abstract java.awt.Component createComponent( Object instance );
 	protected void addPrefixComponents() {
@@ -68,9 +67,14 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 	}
 	
 	@Override
-	public void forget() {
+	public void addNotify() {
+		super.addNotify();
+		this.getProperty().addListPropertyListener( this.listPropertyAdapter );
+	}
+	@Override
+	public void removeNotify() {
 		this.getProperty().removeListPropertyListener( this.listPropertyAdapter );
-		super.forget();
+		super.removeNotify();
 	}
 	protected java.awt.Component createInterstitial( int i, final int N ) {
 		return null;
