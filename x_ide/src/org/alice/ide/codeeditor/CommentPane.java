@@ -130,10 +130,6 @@ public class CommentPane extends org.alice.ide.common.AbstractStatementPane {
 	public CommentPane( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Comment comment, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, comment, owner );
 		CommentLine commentLine = new CommentLine( comment );
-//		zoot.ZLabel label = zoot.ZLabel.acquire( "// " );
-//		label.setFont( commentLine.getFont() );
-//		label.setForeground( commentLine.getForeground() );
-//		this.add( label );
 		this.add( commentLine );
 	}
 }

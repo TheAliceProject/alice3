@@ -36,27 +36,29 @@ public class DeclarationNameLabel extends zoot.ZLabel {
 		}
 	}
 
-	private NamePropertyAdapter namePropertyAdapter = null;
-	private edu.cmu.cs.dennisc.property.StringProperty nameProperty = null;
+	private NamePropertyAdapter namePropertyAdapter = new NamePropertyAdapter();
 
 	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration ) {
 		this.declaration = declaration;
 		this.updateText();
-		this.nameProperty = declaration.getNamePropertyIfItExists();
 	}
 	@Override
 	public void addNotify() {
 		super.addNotify();
-		if( this.nameProperty != null ) {
-			this.namePropertyAdapter = new NamePropertyAdapter();
-			this.nameProperty.addPropertyListener( this.namePropertyAdapter );
+		if( this.declaration != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
+			if( nameProperty != null ) {
+				nameProperty.addPropertyListener( this.namePropertyAdapter );
+			}
 		}
 	}
 	@Override
 	public void removeNotify() {
-		if( this.nameProperty != null ) {
-			this.nameProperty.removePropertyListener( this.namePropertyAdapter );
-			this.namePropertyAdapter = null;
+		if( this.declaration != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
+			if( nameProperty != null ) {
+				nameProperty.removePropertyListener( this.namePropertyAdapter );
+			}
 		}
 		super.removeNotify();
 	}

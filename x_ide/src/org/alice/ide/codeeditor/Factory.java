@@ -107,7 +107,11 @@ public class Factory extends org.alice.ide.common.Factory {
 	}
 	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
-		rv.add( new StatementEnabledStateOperation( abstractStatementPane.getStatement() ) );
+		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
+			//pass
+		} else {
+			rv.add( new StatementEnabledStateOperation( abstractStatementPane.getStatement() ) );
+		}
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
 			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
 			edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
