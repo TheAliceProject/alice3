@@ -96,6 +96,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private SidePane sidePane = new SidePane();
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 
+	//private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
+	
 	public MoveAndTurnSceneEditor() {
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.add( this.splitPane );
@@ -163,6 +165,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		} );
 
+		//this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+		
+		
 //		this.program.setArgs( new String[] {} );
 //		this.program.init();
 //		this.program.start();

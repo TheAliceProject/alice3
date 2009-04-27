@@ -181,6 +181,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	public void update( double tDelta ) {
 		if( m_isEnabled ) {
 			edu.cmu.cs.dennisc.math.rungekutta.RungeKuttaUtilities.rk4( m_function, 0, tDelta );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.printlns( m_function.getTransformation() );
 			getSGCameraTransformable().setLocalTransformation( m_function.getTransformation() );
 		}
 	}
