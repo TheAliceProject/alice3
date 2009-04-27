@@ -137,16 +137,16 @@ public abstract class Factory {
 	protected java.awt.Component createComponent( org.alice.ide.i18n.MethodInvocationChunk methodInvocationChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		String methodName = methodInvocationChunk.getMethodName();
 		java.awt.Component rv;
-		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Node && methodName.equals( "getName" ) ) {
-			edu.cmu.cs.dennisc.alice.ast.Node node = (edu.cmu.cs.dennisc.alice.ast.Node)owner;
-			org.alice.ide.common.NodeNameLabel label = new org.alice.ide.common.NodeNameLabel( node );
+		if( owner instanceof edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration && methodName.equals( "getName" ) ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration = (edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration)owner;
+			org.alice.ide.common.DeclarationNameLabel label = new org.alice.ide.common.DeclarationNameLabel( declaration );
 //			if( node instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
 //				label.setFontToScaledFont( 1.2f );
 //			}
 			rv = label;
 		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.Argument && methodName.equals( "getParameterNameText" ) ) {
 			edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)owner;
-			rv = new org.alice.ide.common.NodeNameLabel( argument.parameter.getValue() );
+			rv = new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() );
 		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.AbstractConstructor && methodName.equals( "getDeclaringType" ) ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = (edu.cmu.cs.dennisc.alice.ast.AbstractConstructor)owner;
 			rv = new org.alice.ide.common.TypeComponent( constructor.getDeclaringType() );

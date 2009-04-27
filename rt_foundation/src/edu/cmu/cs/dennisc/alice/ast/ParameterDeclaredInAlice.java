@@ -47,6 +47,10 @@ public class ParameterDeclaredInAlice extends AbstractParameter {
 		return name.getValue();
 	}
 	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return this.name;
+	}
+	@Override
 	public AbstractType getValueType() {
 		return valueType.getValue();
 	}

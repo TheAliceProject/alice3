@@ -25,44 +25,24 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class NodeNameLabel extends zoot.ZLabel {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
+public class DeclarationNameLabel extends zoot.ZLabel {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration;
 
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
 		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-			NodeNameLabel.this.updateText();
+			DeclarationNameLabel.this.updateText();
 		}
 	}
 
 	private NamePropertyAdapter namePropertyAdapter = null;
 	private edu.cmu.cs.dennisc.property.StringProperty nameProperty = null;
 
-	public NodeNameLabel( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-		this.node = node;
+	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration ) {
+		this.declaration = declaration;
 		this.updateText();
-		if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.node;
-			this.nameProperty = field.name;
-		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.node;
-			this.nameProperty = method.name;
-		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)this.node;
-			this.nameProperty = parameter.name;
-		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local = (edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice)this.node;
-			this.nameProperty = local.name;
-		} else if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.node;
-			this.nameProperty = type.name;
-		}
-//		if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField ) {
-//			//pass
-//		} else {
-//			this.scaleFont( 1.25f );
-//		}
+		this.nameProperty = declaration.getNamePropertyIfItExists();
 	}
 	@Override
 	public void addNotify() {
@@ -80,9 +60,14 @@ public class NodeNameLabel extends zoot.ZLabel {
 		}
 		super.removeNotify();
 	}
-	protected edu.cmu.cs.dennisc.alice.ast.Node getNode() {
-		return this.node;
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration getDeclaration() {
+		return this.declaration;
 	}
+	
+	protected String getNameText() {
+		return this.declaration.getName();
+	}
+	
 	protected String getTextForNullName() {
 		return org.alice.ide.IDE.getSingleton().getTextForNull();
 	}
@@ -91,8 +76,8 @@ public class NodeNameLabel extends zoot.ZLabel {
 	}
 	private void updateText() {
 		String text;
-		if( this.node != null ) {
-			text = this.node.getName();
+		if( this.declaration != null ) {
+			text = getNameText();
 		} else {
 			text = null;
 		}

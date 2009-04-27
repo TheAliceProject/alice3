@@ -45,7 +45,7 @@ public class AssignmentExpressionPane extends swing.LineAxisPane  {
 		}
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
-			org.alice.ide.common.NodeNameLabel nameLabel = new org.alice.ide.common.NodeNameLabel( fieldAccess.field.getValue() );
+			org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( fieldAccess.field.getValue() );
 //			nameLabel.setFontToScaledFont( 1.5f );
 			parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, null ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {

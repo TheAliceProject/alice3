@@ -27,4 +27,8 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public abstract class FieldDeclaredInJava extends AbstractField {
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
 }

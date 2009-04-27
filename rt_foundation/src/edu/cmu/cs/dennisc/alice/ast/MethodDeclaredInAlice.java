@@ -69,6 +69,10 @@ public class MethodDeclaredInAlice extends AbstractMethod implements CodeDeclare
 		return name.getValue();
 	}
 	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return this.name;
+	}
+	@Override
 	public AbstractType getReturnType() {
 		return returnType.getValue();
 	}

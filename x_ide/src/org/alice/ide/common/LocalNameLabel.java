@@ -25,12 +25,12 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class LocalNameLabel extends NodeNameLabel {
+public class LocalNameLabel extends DeclarationNameLabel {
 	public LocalNameLabel( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
 		super( local );
 	}
 	@Override
 	protected String getTextForNullName() {
-		return ((edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice)getNode()).getValidName();
+		return ((edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice)getDeclaration()).getValidName();
 	}
 }

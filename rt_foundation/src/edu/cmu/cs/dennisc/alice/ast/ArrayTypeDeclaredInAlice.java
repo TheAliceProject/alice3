@@ -64,6 +64,12 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 		return sb.toString();
 	}
 	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		//todo?
+		return null;
+	}
+	
+	@Override
 	public boolean isArray() {
 		return true;
 	}

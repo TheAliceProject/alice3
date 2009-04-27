@@ -36,6 +36,10 @@ public abstract class ParameterDeclaredInJava extends AbstractParameter {
 		return false;
 	}
 	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+	@Override
 	public boolean isVariableLength() {
 		for( java.lang.annotation.Annotation annotation : m_annotations ) {
 			if( annotation instanceof edu.cmu.cs.dennisc.lang.ParameterAnnotation ) {

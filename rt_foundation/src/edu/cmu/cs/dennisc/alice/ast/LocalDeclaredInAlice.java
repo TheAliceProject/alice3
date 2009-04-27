@@ -49,6 +49,10 @@ public abstract class LocalDeclaredInAlice extends AbstractTransient {
 		return name.getValue();
 	}
 	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return this.name;
+	}
+	@Override
 	public boolean isDeclaredInAlice() {
 		return true;
 	}

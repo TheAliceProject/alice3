@@ -43,7 +43,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			}
 			this.add( zoot.ZLabel.acquire( sb.toString(), zoot.font.ZTextPosture.OBLIQUE ) );
 		}
-		zoot.ZLabel nameLabel = new org.alice.ide.common.NodeNameLabel( methodDeclaredInAlice );
+		zoot.ZLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
 		nameLabel.setFontToScaledFont( 2.0f );
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		this.add( nameLabel );

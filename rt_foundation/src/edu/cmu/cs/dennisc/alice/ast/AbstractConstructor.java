@@ -29,7 +29,11 @@ package edu.cmu.cs.dennisc.alice.ast;
 public abstract class AbstractConstructor extends AbstractCode {
 	//todo?
 	@Override
-	public java.lang.String getName() {
+	public String getName() {
 		return "constructor";
+	}
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
 	}
 }

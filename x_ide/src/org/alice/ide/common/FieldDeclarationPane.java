@@ -35,7 +35,7 @@ public class FieldDeclarationPane extends swing.LineAxisPane {
 		}
 		this.add( zoot.ZLabel.acquire( text ) );
 		this.add( new TypeComponent( field.getValueType() ) );
-		org.alice.ide.common.NodeNameLabel nameLabel = new org.alice.ide.common.NodeNameLabel( field );
+		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		nameLabel.setFontToScaledFont( 1.5f );
 		this.add( nameLabel );
 		this.add( new org.alice.ide.common.GetsPane( true ) );

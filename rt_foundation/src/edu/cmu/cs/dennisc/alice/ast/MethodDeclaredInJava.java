@@ -50,6 +50,11 @@ public class MethodDeclaredInJava extends AbstractMethod {
 		return m_mthd.getName();
 	}
 	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+	
+	@Override
 	public AbstractType getReturnType() {
 		return TypeDeclaredInJava.get( m_mthd.getReturnType() );
 	}

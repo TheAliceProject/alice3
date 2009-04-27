@@ -207,6 +207,10 @@ public class TypeDeclaredInJava extends AbstractType {
 		return m_cls.getSimpleName();
 	}
 	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
+	@Override
 	public AbstractPackage getPackage() {
 		return PackageDeclaredInJava.get( m_cls.getPackage() );
 	}

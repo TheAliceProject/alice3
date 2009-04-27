@@ -150,6 +150,10 @@ public class TypeDeclaredInAlice extends AbstractType {
 		return name.getValue();
 	}
 	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return this.name;
+	}
+	@Override
 	public AbstractPackage getPackage() {
 		return _package.getValue();
 	}

@@ -45,7 +45,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 				this.add( zoot.ZLabel.acquire( "." ) );
 //			}
 		}
-		org.alice.ide.common.NodeNameLabel nodeNameLabel = new org.alice.ide.common.NodeNameLabel( this.fieldAccess.field.getValue() );
+		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( this.fieldAccess.field.getValue() );
 		//nodeNameLabel.setFontToScaledFont( 1.2f );
 		//nodeNameLabel.setFontToDerivedFont( zoot.font.ZTextWeight.BOLD );
 		this.add( nodeNameLabel );

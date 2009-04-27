@@ -59,6 +59,10 @@ public class PackageDeclaredInJava extends AbstractPackage {
 	public String getName() {
 		return m_pckg.getName();
 	}
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return null;
+	}
 	
 	@Override
 	public boolean isEquivalentTo( Object other ) {

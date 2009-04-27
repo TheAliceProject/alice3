@@ -42,4 +42,8 @@ public class PackageDeclaredInAlice extends AbstractPackage {
 	public String getName() {
 		return name.getValue();
 	}
+	@Override
+	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
+		return this.name;
+	}
 }

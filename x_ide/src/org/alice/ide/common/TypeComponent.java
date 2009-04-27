@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeComponent extends NodeNameLabel {
+public class TypeComponent extends DeclarationNameLabel {
 	private zoot.DefaultPopupActionOperation popupOperation;
 	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
 		public void mouseEntered( java.awt.event.MouseEvent e ) {

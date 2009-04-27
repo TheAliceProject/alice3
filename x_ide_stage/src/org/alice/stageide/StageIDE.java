@@ -104,7 +104,18 @@ public class StageIDE extends org.alice.ide.IDE {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
 					if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
-						return new org.alice.ide.common.ExpressionPane( expression, zoot.ZLabel.acquire( "this." + field.getName() ) ) {
+						//todo: better name
+						class ThisFieldAccessNameLabel extends org.alice.ide.common.DeclarationNameLabel {
+							public ThisFieldAccessNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+								super( field );
+							}
+							@Override
+							protected java.lang.String getNameText() {
+								return "this." + super.getNameText();
+							}
+						}
+						
+						return new org.alice.ide.common.ExpressionPane( expression, new ThisFieldAccessNameLabel( field ) ) {
 							@Override
 							protected boolean isExpressionTypeFeedbackDesired() {
 								return true;
