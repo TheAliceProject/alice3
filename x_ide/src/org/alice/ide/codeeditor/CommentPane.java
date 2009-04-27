@@ -81,8 +81,8 @@ class CommentLine extends zoot.ZSuggestiveTextArea {
 		} );
 		
 		java.awt.Font font = this.getFont();
-		font = font.deriveFont( java.awt.Font.BOLD );
-		font = font.deriveFont( font.getSize() * 1.2f );
+//		font = font.deriveFont( java.awt.Font.BOLD );
+//		font = font.deriveFont( font.getSize() * 1.2f );
 		this.setFont( font );
 	}
 	

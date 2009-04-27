@@ -22,16 +22,63 @@
  */
 package org.alice.ide.common;
 
+import org.alice.ide.event.FieldSelectionEvent;
+import org.alice.ide.event.FocusedCodeChangeEvent;
+import org.alice.ide.event.LocaleEvent;
+import org.alice.ide.event.ProjectOpenEvent;
+import org.alice.ide.event.TransientSelectionEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
-	private org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression;
+	private org.alice.ide.event.IDEListener ideAdapter = new org.alice.ide.event.IDEListener() {
+
+		public void fieldSelectionChanging( FieldSelectionEvent e ) {
+		}
+		public void fieldSelectionChanged( FieldSelectionEvent e ) {
+			SelectedFieldExpressionPane.this.handleFieldChange( e.getNextValue() );
+		}
+
+
+		public void focusedCodeChanging( FocusedCodeChangeEvent e ) {
+		}
+		public void focusedCodeChanged( FocusedCodeChangeEvent e ) {
+		}
+
+
+		public void localeChanging( LocaleEvent e ) {
+		}
+		public void localeChanged( LocaleEvent e ) {
+		}
+
+
+		public void projectOpening( ProjectOpenEvent e ) {
+		}
+		public void projectOpened( ProjectOpenEvent e ) {
+		}
+
+
+		public void transientSelectionChanging( TransientSelectionEvent e ) {
+		}
+		public void transientSelectionChanged( TransientSelectionEvent e ) {
+		}
+		
+	};
+	
+	private edu.cmu.cs.dennisc.property.event.PropertyListener namePropertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		}
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			SelectedFieldExpressionPane.this.updateLabel();
+		}
+	};
+	
+	private edu.cmu.cs.dennisc.alice.ast.AbstractField field = null;
 	private zoot.ZLabel label = zoot.ZLabel.acquire();
 	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
 		this.add( this.label );
-		this.selectedFieldExpression = selectedFieldExpression;
-		this.updateLabel();
+		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
@@ -42,22 +89,38 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 			return null;
 		}
 	}
-	public void updateLabel() {
-		org.alice.ide.IDE ide = getIDE();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = ide.getFieldSelection();
-		this.label.setText( getIDE().getInstanceTextForField( field, true ) );
-		//java.awt.Color color;
-		//if( this.selectedFieldExpression != null ) {
-		//	color = getIDE().getColorForASTInstance( this.selectedFieldExpression );
-		//} else {
-		//	color = java.awt.Color.LIGHT_GRAY;
-		//}
-		//color = java.awt.Color.MAGENTA;
-		//this.setBackground( color );
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
+	private void handleFieldChange( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		if( this.field != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.field.getNamePropertyIfItExists();
+			if( nameProperty != null ) {
+				nameProperty.removePropertyListener( this.namePropertyAdapter );
+			}
+		}
+		this.field = field;
+		if( this.field != null ) {
+			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.field.getNamePropertyIfItExists();
+			if( nameProperty != null ) {
+				nameProperty.addPropertyListener( this.namePropertyAdapter );
+			}
+		}
+		this.updateLabel();
+	}
+	private void updateLabel() {
+		this.label.setText( getIDE().getInstanceTextForField( this.field, true ) );
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
 		return true;
+	}
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		getIDE().addIDEListener( this.ideAdapter );
+		this.handleFieldChange( getIDE().getFieldSelection() );
+	}
+	@Override
+	public void removeNotify() {
+		getIDE().removeIDEListener( this.ideAdapter );
+		super.removeNotify();
 	}
 }
