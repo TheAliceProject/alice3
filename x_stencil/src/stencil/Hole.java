@@ -38,4 +38,14 @@ public class Hole {
 	public void setTrailingDecorator( java.awt.Component trailingDecorator ) {
 		this.trailingDecorator = trailingDecorator;
 	}
+	
+	public void showDecorators() {
+		if (trailingDecorator != null) trailingDecorator.setVisible(true);
+		if (leadingDecorator != null) leadingDecorator.setVisible(true);
+	}
+	
+	public void hideDecorators() {
+		if (trailingDecorator != null) trailingDecorator.setVisible(false);
+		if (leadingDecorator != null) leadingDecorator.setVisible(false);
+	}
 }
