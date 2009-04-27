@@ -23,11 +23,6 @@
 package org.alice.ide.codeeditor;
 
 import org.alice.ide.common.StatementListPropertyPane;
-import org.alice.ide.event.FieldSelectionEvent;
-import org.alice.ide.event.FocusedCodeChangeEvent;
-import org.alice.ide.event.LocaleEvent;
-import org.alice.ide.event.ProjectOpenEvent;
-import org.alice.ide.event.TransientSelectionEvent;
 
 /**
  * @author Dennis Cosgrove
@@ -61,27 +56,27 @@ class StatementListPropertyPaneInfo {
  * @author Dennis Cosgrove
  */
 public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.event.IDEListener, zoot.DropReceptor {
-	public void fieldSelectionChanged( FieldSelectionEvent e ) {
+	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
 	}
-	public void fieldSelectionChanging( FieldSelectionEvent e ) {
+	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
 	}
-	public void focusedCodeChanged( FocusedCodeChangeEvent e ) {
+	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
 	}
-	public void focusedCodeChanging( FocusedCodeChangeEvent e ) {
+	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
 	}
-	public void localeChanged( LocaleEvent e ) {
+	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
 		this.refresh();
 		this.repaint();
 	}
-	public void localeChanging( LocaleEvent e ) {
+	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
 	}
-	public void projectOpened( ProjectOpenEvent e ) {
+	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
 	}
-	public void projectOpening( ProjectOpenEvent e ) {
+	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
 	}
-	public void transientSelectionChanged( TransientSelectionEvent e ) {
+	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
 	}
-	public void transientSelectionChanging( TransientSelectionEvent e ) {
+	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
 	}
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
