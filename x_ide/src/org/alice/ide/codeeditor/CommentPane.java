@@ -80,19 +80,22 @@ class CommentLine extends zoot.ZSuggestiveTextArea {
 			}
 		} );
 		
-		java.awt.Font font = this.getFont();
+//		java.awt.Font font = this.getFont();
 //		font = font.deriveFont( java.awt.Font.BOLD );
 //		font = font.deriveFont( font.getSize() * 1.2f );
-		this.setFont( font );
+//		this.setFont( font );
+		this.updateBorder();
 	}
-	
+	private void updateBorder() {
+		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
+		java.awt.FontMetrics fm = g.getFontMetrics( this.getFont() );
+		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( "//", g );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, (int)bounds.getWidth()+2, 0, 0 ) );
+	}
 	@Override
 	public void setFont( java.awt.Font f ) {
 		super.setFont( f );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
-		java.awt.FontMetrics fm = g.getFontMetrics( f );
-		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( "//", g );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, (int)bounds.getWidth()+2, 0, 0 ) );
+		this.updateBorder();
 	}
 	private void handleUpdate() {
 		this.revalidate();
