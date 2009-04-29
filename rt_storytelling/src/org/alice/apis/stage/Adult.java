@@ -872,28 +872,28 @@ public abstract class Adult extends Person {
 	public void searchForSourceOfOdor() {
 		searchForSourceOfOdor( SearchForSourceOfOdorStyle.DISCOVER_UNDER_ARM );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public void hockALoogie() {
 		perform( Cycle.HOCK_LOOGEY );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public void snortPhlegm() {
 		perform( Cycle.SNIFF_PHELGM );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public void pickRearEnd() {
 		perform( Cycle.PICK_REAR_END );
 	}
 //	DEMOSTRATE_MENTAL_ANGUISH( State.HANDS_AT_SIDES ),
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public void wetPants() {
 		perform( Cycle.WET_PANTS );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public void belch() {
 		perform( Cycle.BELCH );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public void fart( FartStyle style ) {
 		perform( style.getCycle() );
 	}
@@ -912,7 +912,7 @@ public abstract class Adult extends Person {
 	public void wipeMouth() {
 		perform( Cycle.WIPE_MOUTH );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public void scratchArmPit() {
 		perform( Cycle.SCRATCH_ARM_PIT );
 	}

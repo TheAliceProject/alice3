@@ -161,12 +161,11 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 			tabPane.repaint();
 		}
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
-			closeIcon.setPressed( false );
-			if( isWithinCloseIcon( e ) ) {
+			if( closeIcon.isPressed() && isWithinCloseIcon( e ) ) {
 				closeTab( getTabIndex( e ), e );
-			} else {
-				tabPane.repaint();
 			}
+			closeIcon.setPressed( false );
+			tabPane.repaint();
 		}
 		public void mouseClicked( java.awt.event.MouseEvent e ) {
 		}
