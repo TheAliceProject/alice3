@@ -98,7 +98,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.expressionProperty.getValue();
 		if( expression != null ) {
 			edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
-			if( parent instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || parent instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression ) { 
+			if( parent instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || parent instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) { 
 				edu.cmu.cs.dennisc.alice.ast.Node grandparent = parent.getParent();
 				return grandparent instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation || grandparent instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression || grandparent instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess; 
 			}

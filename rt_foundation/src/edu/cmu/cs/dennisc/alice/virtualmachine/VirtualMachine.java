@@ -455,8 +455,8 @@ public abstract class VirtualMachine {
 		Object rightOperand = this.evaluate( shiftInfixExpression.rightOperand.getValue() );
 		return shiftInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
 	}
-	protected Object evaluateLogicalComplementExpression( edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression logicalComplementExpression ) {
-		Boolean operand = this.evaluate( logicalComplementExpression.operand.getValue(), Boolean.class );
+	protected Object evaluateLogicalComplement( edu.cmu.cs.dennisc.alice.ast.LogicalComplement logicalComplement ) {
+		Boolean operand = this.evaluate( logicalComplement.operand.getValue(), Boolean.class );
 		return !operand;
 	}
 	protected String evaluateStringConcatenation( edu.cmu.cs.dennisc.alice.ast.StringConcatenation stringConcatenation ) {
@@ -535,8 +535,8 @@ public abstract class VirtualMachine {
 			return this.evaluateRelationalInfixExpression( (edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression)expression );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ShiftInfixExpression ) {
 			return this.evaluateShiftInfixExpression( (edu.cmu.cs.dennisc.alice.ast.ShiftInfixExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression ) {
-			return this.evaluateLogicalComplementExpression( (edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression)expression );
+		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
+			return this.evaluateLogicalComplement( (edu.cmu.cs.dennisc.alice.ast.LogicalComplement)expression );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
 			return this.evaluateMethodInvocation( (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {

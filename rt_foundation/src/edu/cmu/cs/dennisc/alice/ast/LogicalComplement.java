@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class LogicalComplementExpression extends Expression {
+public class LogicalComplement extends Expression {
 	public ExpressionProperty operand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType getExpressionType() {
@@ -34,9 +34,9 @@ public class LogicalComplementExpression extends Expression {
 		}
 	};
 
-	public LogicalComplementExpression() {
+	public LogicalComplement() {
 	}
-	public LogicalComplementExpression( Expression operand ){
+	public LogicalComplement( Expression operand ){
 		this.operand.setValue( operand );
 	}
 	@Override

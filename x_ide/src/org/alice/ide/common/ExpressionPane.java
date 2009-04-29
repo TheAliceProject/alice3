@@ -35,7 +35,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression == null || edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( this.expression.getClass(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression.class, edu.cmu.cs.dennisc.alice.ast.ThisExpression.class )  ) {
+		if( this.expression == null || edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( this.expression.getClass(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.ThisExpression.class )  ) {
 			return true;
 		} else {
 			return super.isExpressionTypeFeedbackDesired();
@@ -52,7 +52,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	}
 	@Override
 	protected int getInsetTop() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression ) {
+		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
 			return 0;
 		} else {
 			return super.getInsetTop();
@@ -60,7 +60,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	}
 	@Override
 	protected int getInsetBottom() {
-		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression ) {
+		if( this.expression instanceof edu.cmu.cs.dennisc.alice.ast.InfixExpression || this.expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
 			return 0;
 		} else {
 			return super.getInsetTop();

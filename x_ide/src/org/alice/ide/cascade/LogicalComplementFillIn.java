@@ -25,8 +25,8 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class LogicalComplementExpressionFillIn extends UnaryExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression > {
-	public LogicalComplementExpressionFillIn() {
+public class LogicalComplementFillIn extends UnaryExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplement > {
+	public LogicalComplementFillIn() {
 		super( "not" );
 	}
 	@Override
@@ -34,7 +34,7 @@ public class LogicalComplementExpressionFillIn extends UnaryExpressionFillIn< ed
 		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression operand ) {
-		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression( operand );
+	protected edu.cmu.cs.dennisc.alice.ast.LogicalComplement createValue( edu.cmu.cs.dennisc.alice.ast.Expression operand ) {
+		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( operand );
 	}
 }

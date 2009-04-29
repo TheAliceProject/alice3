@@ -43,7 +43,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 			}
 		} );
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.ide.cascade.LogicalComplementExpressionFillIn() );
+		blank.addFillIn( new org.alice.ide.cascade.LogicalComplementFillIn() );
 		blank.addFillIn( new org.alice.ide.cascade.ConditionalExpressionFillIn() );
 		blank.addSeparator();
 		blank.addFillIn( new cascade.MenuFillIn( "relational { ==, !=, <, <=, >=, > }" ) {

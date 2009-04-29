@@ -1585,7 +1585,7 @@ public abstract class IDE extends zoot.ZFrame {
 		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
 			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) ) {
 				return new java.awt.Color( 0xBAD1A7 );
-			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplementExpression.class ) ) {
+			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class ) ) {
 				return new java.awt.Color( 0xDEEBD3 );
 			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
 				return new java.awt.Color( 0xbdcfb3 );
