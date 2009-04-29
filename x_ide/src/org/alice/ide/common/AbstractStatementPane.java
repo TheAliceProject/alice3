@@ -94,27 +94,6 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 //		}
 //	}
 
-	private static java.awt.TexturePaint disabledTexturePaint = null;
-
-	private static java.awt.TexturePaint getDisabledTexturePaint() {
-		if( AbstractStatementPane.disabledTexturePaint != null ) {
-			//pass
-		} else {
-			int width = 8;
-			int height = 8;
-			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage( width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB );
-			java.awt.Graphics g = image.getGraphics();
-			g.setColor( new java.awt.Color( 128, 128, 128, 96 ) );
-			g.fillRect( 0, 0, width, height );
-			g.setColor( java.awt.Color.DARK_GRAY );
-			g.drawLine( 0, height, width, 0 );
-			g.drawLine( 0, 0, 0, 0 );
-			g.dispose();
-			AbstractStatementPane.disabledTexturePaint = new java.awt.TexturePaint( image, new java.awt.Rectangle( 0, 0, width, height ) );
-		}
-		return AbstractStatementPane.disabledTexturePaint;
-	}
-	
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		super.paint( g );
@@ -122,7 +101,7 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		if( this.statement.isEnabled.getValue() ) {
 			//pass
 		} else {
-			g2.setPaint( AbstractStatementPane.getDisabledTexturePaint() );
+			g2.setPaint( zoot.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

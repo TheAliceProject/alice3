@@ -26,18 +26,74 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class ThisPane extends AccessiblePane {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
-	public ThisPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		this.type = type;
-		this.add( zoot.ZLabel.acquire( "this" ) );
+	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava TYPE_FOR_NULL = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Void.class );
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType type = TYPE_FOR_NULL;
+	private org.alice.ide.event.IDEListener ideAdapter = new org.alice.ide.event.IDEListener() {
+		public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
+		}
+		public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
+		}
+		public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+		}
+		public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+			ThisPane.this.updateBasedOnFocusedCode( e.getNextValue() );
+		}
+		public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
+		}
+		public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
+		}
+		public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
+		}
+		public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
+		}
+		public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
+		}
+		public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
+		}
+	};
+
+	public ThisPane() {
+		zoot.ZLabel label = zoot.ZLabel.acquire( "this" );
+		this.add( label );
 		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.updateBasedOnFocusedCode( org.alice.ide.IDE.getSingleton().getFocusedCode() );
+		getIDE().addIDEListener( this.ideAdapter );
+	}
+	@Override
+	public void removeNotify() {
+		getIDE().removeIDEListener( this.ideAdapter );
+		super.removeNotify();
+	}
+	private void updateBasedOnFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		if( code != null ) {
+			this.type = code.getDeclaringType();
+			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as this" );
+		} else {
+			this.type = TYPE_FOR_NULL;
+			this.setToolTipText( null );
+		}
+	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return type;
+		return this.type;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
 	}
+
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		super.paint( g );
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		if( this.type == TYPE_FOR_NULL ) {
+			g2.setPaint( zoot.PaintUtilities.getDisabledTexturePaint() );
+			this.fillBounds( g2 );
+		}
+	}
+	
 }

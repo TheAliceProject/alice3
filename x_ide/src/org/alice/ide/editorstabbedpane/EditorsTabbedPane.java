@@ -23,28 +23,46 @@
 package org.alice.ide.editorstabbedpane;
 
 class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
+	private DeclarationsUIResource declarationsUIResource;
 	public EditorsTabbedPaneUI( EditorsTabbedPane editorsTabbedPane ) {
 		super( editorsTabbedPane );
+		this.declarationsUIResource = new DeclarationsUIResource();
+		this.declarationsUIResource.addComponentListener( new java.awt.event.ComponentListener() {
+			public void componentShown( java.awt.event.ComponentEvent e ) {
+			}
+			public void componentHidden( java.awt.event.ComponentEvent e ) {
+			}
+			public void componentResized( java.awt.event.ComponentEvent e ) {
+				EditorsTabbedPaneUI.this.handleResized( e );
+			}
+			public void componentMoved( java.awt.event.ComponentEvent e ) {
+			}
+		} );
+		editorsTabbedPane.add( this.declarationsUIResource );
+	}
+	private java.awt.Dimension prevSize = null;
+	private void handleResized( java.awt.event.ComponentEvent e ) {
+		java.awt.Dimension size = this.declarationsUIResource.getSize();
+		if( size.equals( prevSize ) ) {
+			//pass
+		} else {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+			this.prevSize = size;
+			this.tabPane.revalidate();
+			this.tabPane.repaint();
+		}
 	}
 	@Override
 	protected java.awt.Insets getTabAreaInsets( int tabPlacement ) {
 		java.awt.Insets rv = super.getTabAreaInsets( tabPlacement );
-		org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource = org.alice.ide.IDE.getSingleton().getDeclarationsUIResource();
-		rv.left += declarationsUIResource.getWidth();
+		rv.left += this.declarationsUIResource.getWidth();
 		rv.left += 16;
 		return rv;
 	}
-	
-//	@Override
-//	protected int getTabLabelShiftY( int tabPlacement, int tabIndex, boolean isSelected ) {
-//		return super.getTabLabelShiftY( tabPlacement, tabIndex, isSelected ) + 10;
-//	}
-	
 	@Override
 	protected int calculateMaxTabHeight( int tabPlacement ) {
 		int rv = super.calculateMaxTabHeight( tabPlacement );
-		org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource = org.alice.ide.IDE.getSingleton().getDeclarationsUIResource();
-		rv = Math.max( rv, declarationsUIResource.getHeight() );
+		rv = Math.max( rv, this.declarationsUIResource.getHeight() );
 		return rv;
 	}
 	
@@ -61,7 +79,6 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 			@Override
 			public void layoutContainer( java.awt.Container parent ) {
 				super.layoutContainer( parent );
-				org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource = org.alice.ide.IDE.getSingleton().getDeclarationsUIResource();
 				declarationsUIResource.setLocation( 0, 0 );
 				declarationsUIResource.setSize( declarationsUIResource.getPreferredSize() );
 			}

@@ -39,8 +39,8 @@ class InstanceLine extends swing.LineAxisPane {
 		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance: " );
 //		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 		this.add( a );
-		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane( code.getDeclaringType() );
-		thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );
+		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane();
+//		thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );
 		this.add( thisPane );
 	}
 }

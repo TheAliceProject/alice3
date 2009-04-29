@@ -134,7 +134,6 @@ public abstract class IDE extends zoot.ZFrame {
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor;
-	private org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource;
 	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
@@ -258,8 +257,6 @@ public abstract class IDE extends zoot.ZFrame {
 		this.root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 		this.left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
 		this.rightPane = new RightPane();
-		this.editorsTabbedPane.add( this.declarationsUIResource );
-		this.declarationsUIResource.setLocation( 0, 0 );
 		return this.root;
 	}
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
@@ -306,9 +303,6 @@ public abstract class IDE extends zoot.ZFrame {
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
 		return this.sceneEditor;
 	}
-	public org.alice.ide.declarationseditor.DeclarationsUIResource getDeclarationsUIResource() {
-		return this.declarationsUIResource;
-	}
 	
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
@@ -321,7 +315,6 @@ public abstract class IDE extends zoot.ZFrame {
 		this.runButtonModel.setEnabled( false );
 		
 		this.sceneEditor = this.createSceneEditor();
-		this.declarationsUIResource = new org.alice.ide.declarationseditor.DeclarationsUIResource();
 		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRootDirectory() );
 		this.membersEditor = this.createClassMembersEditor();
 		this.listenersEditor = this.createListenersEditor();
