@@ -832,8 +832,13 @@ public abstract class Adult extends Person {
 	public void stampFoot() {
 		perform( Cycle.STAMP_FOOT );
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@Deprecated
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void pointScoldinginly() {
+		perform( Cycle.POINT_SCOLDINGLY );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void pointScoldingly() {
 		perform( Cycle.POINT_SCOLDINGLY );
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
