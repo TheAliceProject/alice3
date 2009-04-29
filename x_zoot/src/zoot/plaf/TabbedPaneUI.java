@@ -20,41 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package cascade;
+package zoot.plaf;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MenuFillIn< E > extends FillIn< E > {
-	//private javax.swing.JLabel label = new javax.swing.JLabel();
-	private zoot.ZLabel label = zoot.ZLabel.acquire();
-	private String title;
-	public MenuFillIn( String title ) {
-		this.title = title;
-	}
-	protected abstract void addChildrenToBlank( Blank blank );
-	private Blank createBlank() {
-		return new Blank() {
-			@Override
-			protected void addChildren() {
-				MenuFillIn.this.addChildrenToBlank( this );
-			}	
-		};
-	}
-	protected String getLabelText() {
-		return this.title;
+public class TabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
+	private zoot.ZTabbedPane tabbedPane;
+
+	public TabbedPaneUI( zoot.ZTabbedPane tabbedPane ) {
+		this.tabbedPane = tabbedPane;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		this.label.setText( this.getLabelText() );
-		return this.label;
+	protected boolean isCloseButtonDesiredAt( int index ) {
+		return this.tabbedPane.isCloseButtonDesiredAt( index );
 	}
 	@Override
-	final protected void addChildren() {
-		this.addBlank( createBlank() );
-	}
-	@Override
-	final public E getValue() {
-		return (E)((Blank)this.getChildren().get( 0 )).getSelectedFillIn().getValue();
+	protected void closeTab( int index, java.awt.event.MouseEvent e ) {
+		this.tabbedPane.closeTab( index, e );
 	}
 }

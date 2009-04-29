@@ -34,7 +34,7 @@ class TypeProceduresPane extends AbstractTypeMethodsPane {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods };
 	}
 	@Override
-	protected zoot.ZButton createCreateAndAddMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected zoot.ZButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return new zoot.ZButton( new org.alice.ide.operations.ast.DeclareProcedureOperation( type ) );
 	}
 	@Override

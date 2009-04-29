@@ -29,6 +29,7 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 	private zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
 	public AbstractDropDownPane() {
 		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
+		this.setForeground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 191 ) );
 		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 	}
 	
@@ -83,11 +84,11 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		java.awt.Color prev = g2.getColor();
 		if( this.isActive() || this.isInactiveFeedbackDesired() ) {
-//			if( this.isActive() ) {
+			if( this.isActive() ) {
 				g2.setColor( java.awt.Color.WHITE );
-//			} else {
-//				g2.setColor( new java.awt.Color( 255, 255, 255, 127 ) );
-//			}
+			} else {
+				g2.setColor( this.getBackground() );
+			}
 			this.fillBounds( g2, x, y, width, height );
 		}
 		
@@ -105,7 +106,7 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 			triangleFill = java.awt.Color.YELLOW;
 			triangleOutline = java.awt.Color.BLACK;
 		} else {
-			triangleFill = edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 191 );
+			triangleFill = this.getForeground();
 			triangleOutline = null;
 		}
 

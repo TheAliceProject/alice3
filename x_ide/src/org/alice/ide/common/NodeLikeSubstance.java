@@ -83,7 +83,7 @@ public abstract class NodeLikeSubstance extends org.alice.ide.AbstractDragCompon
 			if( this.isActive() ) {
 				grayscale = 0;
 			} else {
-				grayscale = 160;
+				grayscale = 60;
 			}
 			g2.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( grayscale ) );
 			edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, x + getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 2 );

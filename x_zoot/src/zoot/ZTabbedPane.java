@@ -22,26 +22,6 @@
  */
 package zoot;
 
-
-/**
- * @author Dennis Cosgrove
- */
-class ZTabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
-	private ZTabbedPane tabbedPane;
-
-	public ZTabbedPaneUI( ZTabbedPane tabbedPane ) {
-		this.tabbedPane = tabbedPane;
-	}
-	@Override
-	protected boolean isCloseButtonDesiredAt( int index ) {
-		return this.tabbedPane.isCloseButtonDesiredAt( index );
-	}
-	@Override
-	protected void closeTab( int index, java.awt.event.MouseEvent e ) {
-		this.tabbedPane.closeTab( index, e );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -50,15 +30,18 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 //	private ItemSelectionOperation tabSelectionOperation;
 
 	public ZTabbedPane() {
-		this.setTabLayoutPolicy( javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT );
+		//this.setTabLayoutPolicy( javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT );
 		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 90 ) );
 		//this.setOpaque( false );
 	}
 
+	protected zoot.plaf.TabbedPaneUI createTabbedPaneUI() {
+		return new zoot.plaf.TabbedPaneUI( this );
+	}
 	@Override
 	public void updateUI() {
 		javax.swing.UIManager.put("TabbedPane.contentAreaColor", new java.awt.Color( 63, 63, 81 ) );
-		this.setUI( new ZTabbedPaneUI( this ) );
+		this.setUI( this.createTabbedPaneUI() );
 	}
 	public ActionOperation getTabCloseOperation() {
 		return this.tabCloseOperation;

@@ -42,6 +42,10 @@ public abstract class IDE extends zoot.ZFrame {
 	//		//todo
 	//		return this;
 	//	}
+	
+	public boolean isEmphasizingClasses() {
+		return true;
+	}
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = this.getProgramType();
@@ -231,10 +235,21 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private javax.swing.JSplitPane root;
 	private javax.swing.JSplitPane left;
-	private swing.BorderPane right;
-	private swing.BorderPane rightBottom;
-
 	
+	class RightPane extends swing.GridBagPane {
+		public RightPane() {
+			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+			gbc.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
+			gbc.fill = java.awt.GridBagConstraints.BOTH;
+			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+			gbc.weightx = 1.0;
+			this.add( IDE.this.ubiquitousPane, gbc );
+//			this.add( IDE.this.declarationsEditor, gbc );
+			gbc.weighty = 1.0;
+			this.add( IDE.this.editorsTabbedPane, gbc );
+		}
+	}
+	private RightPane rightPane;
 	
 	protected javax.swing.JSplitPane getRootSplitPane() {
 		return this.root;
@@ -242,7 +257,9 @@ public abstract class IDE extends zoot.ZFrame {
 	protected java.awt.Component createRoot() {
 		this.root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 		this.left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
-		this.right = new swing.BorderPane();
+		this.rightPane = new RightPane();
+		this.editorsTabbedPane.add( this.declarationsEditor );
+		this.declarationsEditor.setLocation( 0, 0 );
 		return this.root;
 	}
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
@@ -259,16 +276,16 @@ public abstract class IDE extends zoot.ZFrame {
 		} else {
 			this.left.setResizeWeight( 0.0 );
 			this.root.setLeftComponent( this.left );
-			this.root.setRightComponent( this.right );
+			this.root.setRightComponent( this.rightPane );
 			this.root.setDividerLocation( this.rootDividerLocation );
 			this.left.setDividerLocation( this.leftDividerLocation );
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.membersEditor );
-			if( this.right.getComponentCount() == 0 ) {
-				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.SOUTH );
-				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
-				this.right.add( this.declarationsEditor, java.awt.BorderLayout.NORTH );
-			}
+//			if( this.right.getComponentCount() == 0 ) {
+//				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.SOUTH );
+//				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
+//				this.right.add( this.declarationsEditor, java.awt.BorderLayout.NORTH );
+//			}
 			this.root.setDividerSize( this.left.getDividerSize() );
 		}
 		this.sceneEditor.handleExpandContractChange( isSceneEditorExpanded );
@@ -288,6 +305,9 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
 		return this.sceneEditor;
+	}
+	public org.alice.ide.declarationseditor.DeclarationsEditor getDeclarationsEditor() {
+		return this.declarationsEditor;
 	}
 	
 	public IDE() {

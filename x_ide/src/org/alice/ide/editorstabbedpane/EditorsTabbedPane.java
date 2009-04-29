@@ -22,6 +22,47 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
+	public EditorsTabbedPaneUI( EditorsTabbedPane editorsTabbedPane ) {
+		super( editorsTabbedPane );
+	}
+	@Override
+	protected java.awt.Insets getTabAreaInsets( int tabPlacement ) {
+		java.awt.Insets rv = super.getTabAreaInsets( tabPlacement );
+		org.alice.ide.declarationseditor.DeclarationsEditor declarationsEditor = org.alice.ide.IDE.getSingleton().getDeclarationsEditor();
+		rv.left += declarationsEditor.getWidth();
+		rv.left += 16;
+		return rv;
+	}
+	@Override
+	protected int calculateMaxTabHeight( int tabPlacement ) {
+		int rv = super.calculateMaxTabHeight( tabPlacement );
+		org.alice.ide.declarationseditor.DeclarationsEditor declarationsEditor = org.alice.ide.IDE.getSingleton().getDeclarationsEditor();
+		rv = Math.max( rv, declarationsEditor.getHeight() );
+		return rv;
+	}
+	
+//	@Override
+//	protected int calculateTabAreaHeight( int tabPlacement, int horizRunCount, int maxTabHeight ) {
+//		int rv = super.calculateTabAreaHeight( tabPlacement, horizRunCount, maxTabHeight );
+//		org.alice.ide.declarationseditor.DeclarationsEditor declarationsEditor = org.alice.ide.IDE.getSingleton().getDeclarationsEditor();
+//		rv = Math.max( rv, declarationsEditor.getHeight() );
+//		return rv;
+//	}	
+	@Override
+	protected java.awt.LayoutManager createLayoutManager() {
+		class LayoutManager extends TabbedPaneLayout {
+			@Override
+			public void layoutContainer( java.awt.Container parent ) {
+				super.layoutContainer( parent );
+				org.alice.ide.declarationseditor.DeclarationsEditor declarationsEditor = org.alice.ide.IDE.getSingleton().getDeclarationsEditor();
+				declarationsEditor.setLocation( 0, 0 );
+				declarationsEditor.setSize( declarationsEditor.getPreferredSize() );
+			}
+		}
+		return new LayoutManager();
+	}
+}
 /**
  * @author Dennis Cosgrove
  */
@@ -48,6 +89,10 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 				org.alice.ide.IDE.getSingleton().setFocusedCode( nextFocusedCode );
 			}
 		} );
+	}
+	@Override
+	protected zoot.plaf.TabbedPaneUI createTabbedPaneUI() {
+		return new EditorsTabbedPaneUI( this );
 	}
 
 	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( java.awt.Component component ) {
@@ -94,10 +139,10 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 //			}
 //		} );
 	}
-	@Override
-	public boolean isCloseButtonDesiredAt( int index ) {
-		return index > 0;
-	}
+//	@Override
+//	public boolean isCloseButtonDesiredAt( int index ) {
+//		return index > 0;
+//	}
 
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
 	}

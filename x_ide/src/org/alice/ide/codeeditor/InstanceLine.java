@@ -27,13 +27,20 @@ package org.alice.ide.codeeditor;
  */
 class InstanceLine extends swing.LineAxisPane {
 	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
-		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
+//		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
+//		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
+//		this.add( a );
+//		this.add( new org.alice.ide.common.TypeComponent( code.getDeclaringType() ) );
+//		zoot.ZLabel b = zoot.ZLabel.acquire( " is referred to as: " );
+//		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
+//		this.add( b );
+		
+		this.add( javax.swing.Box.createHorizontalStrut( 16 ) );
+		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance: " );
+//		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 		this.add( a );
-		this.add( new org.alice.ide.common.TypeComponent( code.getDeclaringType() ) );
-		zoot.ZLabel b = zoot.ZLabel.acquire( " is referred to as: " );
-		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
-		this.add( b );
-		this.add( new org.alice.ide.common.ThisPane( code.getDeclaringType() ) );
+		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane( code.getDeclaringType() );
+		thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );
+		this.add( thisPane );
 	}
 }

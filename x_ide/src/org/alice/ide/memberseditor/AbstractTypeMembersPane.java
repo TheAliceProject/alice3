@@ -60,9 +60,9 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
 		this.typeComponent = new org.alice.ide.common.TypeComponent( this.type );
-		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+		if( getIDE().isEmphasizingClasses() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			this.createAndAddMemberButton = this.createCreateAndAddMemberButton( typeInAlice );
+			this.createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
 			this.editConstructorButton = this.createEditConstructorButton( typeInAlice );
 			for( edu.cmu.cs.dennisc.property.ListProperty listProperty : this.getListPropertiesToListenTo( typeInAlice ) ) {
 				listProperty.addListPropertyListener( this.listPropertyAdapter );
@@ -98,7 +98,7 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	}
 	protected abstract java.awt.Component[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
 
-	protected abstract zoot.ZButton createCreateAndAddMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract zoot.ZButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected abstract zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
 		this.removeAll();

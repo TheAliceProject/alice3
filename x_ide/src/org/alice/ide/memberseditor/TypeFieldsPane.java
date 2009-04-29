@@ -34,7 +34,7 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
 	@Override
-	protected zoot.ZButton createCreateAndAddMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected zoot.ZButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return new zoot.ZButton( new org.alice.ide.operations.ast.DeclareFieldOperation( type ) );
 	}
 	@Override
@@ -47,8 +47,12 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 			java.util.List< java.awt.Component > components = new java.util.LinkedList< java.awt.Component >();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
-			if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-				components.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
+			if( getIDE().isEmphasizingClasses() ) {
+				//pass
+			} else {
+				if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+					components.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
+				}
 			}
 			components.add( new org.alice.ide.memberseditor.templates.GetterTemplate( field ) );
 			if( field.getValueType().isArray() ) {
@@ -65,7 +69,11 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 				components.add( new org.alice.ide.memberseditor.templates.SetArrayAtIndexTemplate( field ) );
 			}
 			
-			components.add( javax.swing.Box.createVerticalStrut( 16 ) );
+			if( getIDE().isEmphasizingClasses() ) {
+				//pass
+			} else {
+				components.add( javax.swing.Box.createVerticalStrut( 16 ) );
+			}
 			rv = new java.awt.Component[ components.size() ];
 			components.toArray( rv );
 		} else {

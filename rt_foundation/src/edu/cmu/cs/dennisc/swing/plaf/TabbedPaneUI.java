@@ -122,6 +122,60 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	private java.awt.Stroke normalStroke = new java.awt.BasicStroke( 1.0f );
 
 	private CloseIcon closeIcon = new CloseIcon();
+	class CloseIconMouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
+		private java.awt.Rectangle buffer = new java.awt.Rectangle();
+
+		private int getTabIndex( java.awt.event.MouseEvent e ) {
+			return TabbedPaneUI.this.tabForCoordinate( TabbedPaneUI.this.tabPane, e.getX(), e.getY() );
+		}
+		private boolean isWithinCloseIcon( java.awt.event.MouseEvent e ) {
+			if( TabbedPaneUI.this.tabPane.isEnabled() ) {
+				int index = getTabIndex( e );
+				TabbedPaneUI.this.setRolloverTab( index );
+				if( index >= 0 ) {
+					if( TabbedPaneUI.this.isCloseButtonDesiredAt( index ) ) {
+						TabbedPaneUI.this.getTabBounds( index, buffer );
+						int xMin = buffer.x + buffer.width - EAST_TAB_PAD / 2;
+						int xMax = xMin + closeIcon.getIconWidth();
+						int yMin = buffer.y + buffer.height / 2 - 4;
+						int yMax = yMin + closeIcon.getIconHeight();
+						return (xMin < e.getX() && e.getX() < xMax) && (yMin < e.getY() && e.getY() < yMax);
+					}
+				}
+			}
+			return false;
+		}
+
+		private void updateRollover( java.awt.event.MouseEvent e ) {
+			closeIcon.setHighlighted( isWithinCloseIcon( e ) );
+			TabbedPaneUI.this.repaintTab( this.getTabIndex( e ) );
+		}
+
+		public void mouseEntered( java.awt.event.MouseEvent e ) {
+			updateRollover( e );
+		}
+		public void mouseExited( java.awt.event.MouseEvent e ) {
+		}
+		public void mousePressed( java.awt.event.MouseEvent e ) {
+			closeIcon.setPressed( isWithinCloseIcon( e ) );
+			tabPane.repaint();
+		}
+		public void mouseReleased( java.awt.event.MouseEvent e ) {
+			closeIcon.setPressed( false );
+			if( isWithinCloseIcon( e ) ) {
+				closeTab( getTabIndex( e ), e );
+			} else {
+				tabPane.repaint();
+			}
+		}
+		public void mouseClicked( java.awt.event.MouseEvent e ) {
+		}
+		public void mouseMoved( java.awt.event.MouseEvent e ) {
+			updateRollover( e );
+		}
+		public void mouseDragged( java.awt.event.MouseEvent e ) {
+		}
+	}
 
 	@Override
 	protected void installDefaults() {
@@ -129,60 +183,54 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		java.awt.Font normalFont = this.tabPane.getFont();
 		this.tabPane.setFont( normalFont.deriveFont( java.awt.Font.ITALIC ) );
 
-		this.tabAreaInsets.set( 2, 0, 0, 0 );
-		this.tabInsets.set( 2, 2, 2, 2 );
+		this.tabAreaInsets.set( 0, 0, 0, 0 );
+		this.tabInsets.set( 3, 2, 3, 2 );
 		this.selectedTabPadInsets.set( 0, 0, 0, 0 );
-		this.contentBorderInsets.set( 3, 3, 0, 0 );
+		this.contentBorderInsets.set( 2, 2, 0, 0 );
 		//this.lightHighlight = java.awt.Color.YELLOW;
 	}
-
-	//	@Override
-	//	protected java.awt.LayoutManager createLayoutManager() {
-	//		class MyLayoutManager extends TabbedPaneLayout {
-	//			
-	//		}
-	//		return super.createLayoutManager();
-	//	}
-	private java.awt.geom.GeneralPath createPath( int width, int height ) {
-		float x0 = width - EAST_TAB_PAD / 2;
-		float x1 = width + EAST_TAB_PAD;
+	private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, float a, boolean isContinuation ) {
+		float x0 = x + width - EAST_TAB_PAD / 2;
+		float x1 = x + width + EAST_TAB_PAD;
 		//x0 += EAST_TAB_PAD;
 		float cx0 = x0 + EAST_TAB_PAD * 0.75f;
 		float cx1 = x0;
 
-		float y0 = NORTH_AREA_PAD;
-		float y1 = height + this.contentBorderInsets.top;
+		float y0 = y + NORTH_AREA_PAD;
+		float y1 = y + height;// + this.contentBorderInsets.top;
 		float cy0 = y0;
 		float cy1 = y1;
 
-		float xA = height * 0.4f;
-		float yA = xA;
-		java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+		float xA = x + a;
+		float yA = y + a;
+	
+		if( isContinuation ) {
+			rv.lineTo( x1, y1 );
+		} else {
+			rv.moveTo( x1, y1 );
+		}
+		rv.curveTo( cx1, cy1, cx0, cy0, x0, y0 );
+		rv.lineTo( xA, y0 );
+		rv.quadTo( x, y0, x, yA );
+		rv.lineTo( x, y1 );
 
-		path.moveTo( x1, y1 );
-		path.curveTo( cx1, cy1, cx0, cy0, x0, y0 );
-		path.lineTo( xA, y0 );
-		path.quadTo( 0, y0, 0, yA );
-		path.lineTo( 0, y1 );
-		return path;
+		return rv;
 	}
 	@Override
 	protected void paintTabBorder( java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int width, int height, boolean isSelected ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.Color prev = g.getColor();
 		try {
-			if( isSelected ) {
-				g.setColor( this.lightHighlight );
-				g2.setStroke( this.selectedStroke );
-				g2.setClip( x, y, width + EAST_TAB_PAD, height + this.contentBorderInsets.top );
-			} else {
+//			if( isSelected ) {
+//				g.setColor( this.lightHighlight );
+//				g2.setStroke( this.selectedStroke );
+//				g2.setClip( x, y, width + EAST_TAB_PAD, height + this.contentBorderInsets.top );
+//			} else {
 				g.setColor( this.shadow );
 				g2.setStroke( this.normalStroke );
-			}
-			java.awt.geom.GeneralPath path = createPath( width, height );
-			g2.translate( x, y );
+//			}
+			java.awt.geom.GeneralPath path = this.addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, height*0.4f, false );
 			g2.draw( path );
-			g2.translate( -x, -y );
 		} finally {
 			g.setColor( prev );
 		}
@@ -207,10 +255,10 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 			g.setColor( color );
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			//g2.setClip( x-100, y, width+200, height + this.contentBorderInsets.top );
-			java.awt.geom.GeneralPath path = createPath( width, height );
-			g2.translate( x, y );
+			java.awt.geom.GeneralPath path = addToPath( new java.awt.geom.GeneralPath(), x, y, width, height, height * 0.4f, false );
+			//g2.translate( x, y );
 			g2.fill( path );
-			g2.translate( -x, -y );
+			//g2.translate( -x, -y );
 			if( isCloseButtonDesiredAt( tabIndex ) ) {
 				if( this.getRolloverTab() == tabIndex ) {
 					this.closeIcon.setFilled( true );
@@ -245,6 +293,13 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	private void repaintTab( int index ) {
 		if( index >= 0 ) {
 			java.awt.Rectangle bounds = this.getTabBounds( index, new java.awt.Rectangle() );
+			
+			
+			//todo: investigate
+			bounds.x -= EAST_TAB_PAD;
+			bounds.width += EAST_TAB_PAD*2;
+			
+			
 			this.tabPane.repaint( bounds );
 		}
 	}
@@ -258,60 +313,6 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		}
 	}
 
-	class CloseIconMouseAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
-		private java.awt.Rectangle buffer = new java.awt.Rectangle();
-
-		private int getTabIndex( java.awt.event.MouseEvent e ) {
-			return TabbedPaneUI.this.tabForCoordinate( TabbedPaneUI.this.tabPane, e.getX(), e.getY() );
-		}
-		private boolean isWithinCloseIcon( java.awt.event.MouseEvent e ) {
-			if( TabbedPaneUI.this.tabPane.isEnabled() ) {
-				int index = getTabIndex( e );
-				TabbedPaneUI.this.setRolloverTab( index );
-				if( index >= 0 ) {
-					if( TabbedPaneUI.this.isCloseButtonDesiredAt( index ) ) {
-						TabbedPaneUI.this.getTabBounds( index, buffer );
-						int xMin = buffer.x + buffer.width - EAST_TAB_PAD / 2;
-						int xMax = xMin + closeIcon.getIconWidth();
-						int yMin = buffer.y + buffer.height / 2 - 4;
-						int yMax = yMin + closeIcon.getIconHeight();
-						return (xMin < e.getX() && e.getX() < xMax) && (yMin < e.getY() && e.getY() < yMax);
-					}
-				}
-			}
-			return false;
-		}
-
-		private void updateRollover( java.awt.event.MouseEvent e ) {
-			closeIcon.setHighlighted( isWithinCloseIcon( e ) );
-//			tabPane.repaint();
-		}
-
-		public void mouseEntered( java.awt.event.MouseEvent e ) {
-			updateRollover( e );
-		}
-		public void mouseExited( java.awt.event.MouseEvent e ) {
-		}
-		public void mousePressed( java.awt.event.MouseEvent e ) {
-			closeIcon.setPressed( isWithinCloseIcon( e ) );
-			tabPane.repaint();
-		}
-		public void mouseReleased( java.awt.event.MouseEvent e ) {
-			closeIcon.setPressed( false );
-			if( isWithinCloseIcon( e ) ) {
-				closeTab( getTabIndex( e ), e );
-			} else {
-				tabPane.repaint();
-			}
-		}
-		public void mouseClicked( java.awt.event.MouseEvent e ) {
-		}
-		public void mouseMoved( java.awt.event.MouseEvent e ) {
-			updateRollover( e );
-		}
-		public void mouseDragged( java.awt.event.MouseEvent e ) {
-		}
-	}
 
 	protected boolean isCloseButtonDesiredAt( int index ) {
 		return true;
@@ -321,11 +322,6 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	}
 
 	private CloseIconMouseAdapter closeIconMouseAdapter = new CloseIconMouseAdapter();
-
-	//	@Override
-	//	protected java.awt.event.MouseListener createMouseListener() {
-	//		return mouseAdapter;
-	//	}
 
 	@Override
 	protected void installListeners() {
@@ -345,37 +341,33 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 	protected void paintContentBorderTopEdge( java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h ) {
 		java.awt.Color prev = g.getColor();
 		try {
-			if( selectedIndex >= 0 ) {
-				java.awt.Rectangle boundsTab = getTabBounds( this.tabPane, selectedIndex );
-				int xA = boundsTab.x;
-				int xB = boundsTab.x + boundsTab.width + EAST_TAB_PAD / 2;
+			java.awt.Component component = this.tabPane.getSelectedComponent();
+			if( component != null ) {
+				g.setColor( component.getBackground() );
+				g.fillRect( x, y, w, h );
+				if( selectedIndex >= 0 ) {
+					java.awt.Rectangle boundsTab = getTabBounds( this.tabPane, selectedIndex );
+					int xA = boundsTab.x;
+					//int xB = boundsTab.x + boundsTab.width + EAST_TAB_PAD / 2;
 
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				g2.setStroke( this.selectedStroke );
-				g.setColor( this.lightHighlight );
-				g.fillRect( x, y, xA - x, h );
-				g.fillRect( xB, y, w - xB, h );
-
-				java.awt.Component component = this.tabPane.getComponentAt( selectedIndex );
-				java.awt.Color color = component.getBackground();
-				g.setColor( color );
-				g.fillRect( xA, y, xB - xA, h );
+					final float Y_DELTA = 0.0f;
+					float y0 = y - Y_DELTA;
+					java.awt.geom.GeneralPath path = new java.awt.geom.GeneralPath();
+					path.moveTo( x+w, y0 );
+					//path.lineTo( xB, y );
+					this.addToPath( path, xA, y0-boundsTab.height+Y_DELTA, boundsTab.width, boundsTab.height-Y_DELTA, boundsTab.height * 0.4f, true );
+					path.lineTo( x, y0 );
+					path.lineTo( x, y+h );
+					
+					java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+					g2.setStroke( this.selectedStroke );
+					g.setColor( this.lightHighlight );
+					g2.draw( path );
+				}
 			}
 		} finally {
 			g.setColor( prev );
 		}
-	}
-	@Override
-	protected void paintContentBorderBottomEdge( java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h ) {
-	}
-	@Override
-	protected void paintContentBorderLeftEdge( java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h ) {
-		if( this.tabPane.getTabCount() > 0 ) {
-			super.paintContentBorderLeftEdge( g, tabPlacement, selectedIndex, x, y, w, h );
-		}
-	}
-	@Override
-	protected void paintContentBorderRightEdge( java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h ) {
 	}
 
 	@Override

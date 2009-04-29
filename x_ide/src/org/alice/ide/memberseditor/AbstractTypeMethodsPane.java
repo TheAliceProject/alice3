@@ -55,14 +55,18 @@ abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 		if( component != null ) {
 			//line.add( javax.swing.Box.createHorizontalStrut( INDENT ) );
 			//if( member.isDeclaredInAlice() ) {
-			if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractCode ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractCode code = (edu.cmu.cs.dennisc.alice.ast.AbstractCode)member;
-				if( code.isDeclaredInAlice() ) {
-					swing.LineAxisPane line = new swing.LineAxisPane();
-					zoot.ZButton editButton = new zoot.ZButton( new org.alice.ide.operations.ast.FocusCodeOperation( code ) );
-					line.add( editButton );
-					line.add( component );
-					component = line;
+			if( getIDE().isEmphasizingClasses() ) {
+				//pass
+			} else {
+				if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractCode ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractCode code = (edu.cmu.cs.dennisc.alice.ast.AbstractCode)member;
+					if( code.isDeclaredInAlice() ) {
+						swing.LineAxisPane line = new swing.LineAxisPane();
+						zoot.ZButton editButton = new zoot.ZButton( new org.alice.ide.operations.ast.FocusCodeOperation( code ) );
+						line.add( editButton );
+						line.add( component );
+						component = line;
+					}
 				}
 			}
 			rv = new java.awt.Component[] { component };
