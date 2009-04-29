@@ -26,43 +26,51 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 	private DeclarationsUIResource declarationsUIResource;
 	public EditorsTabbedPaneUI( EditorsTabbedPane editorsTabbedPane ) {
 		super( editorsTabbedPane );
-		this.declarationsUIResource = new DeclarationsUIResource();
-		this.declarationsUIResource.addComponentListener( new java.awt.event.ComponentListener() {
-			public void componentShown( java.awt.event.ComponentEvent e ) {
-			}
-			public void componentHidden( java.awt.event.ComponentEvent e ) {
-			}
-			public void componentResized( java.awt.event.ComponentEvent e ) {
-				EditorsTabbedPaneUI.this.handleResized( e );
-			}
-			public void componentMoved( java.awt.event.ComponentEvent e ) {
-			}
-		} );
-		editorsTabbedPane.add( this.declarationsUIResource );
+		if( org.alice.ide.IDE.getSingleton().isEmphasizingClasses() ) {
+			this.declarationsUIResource = new DeclarationsUIResource();
+			this.declarationsUIResource.addComponentListener( new java.awt.event.ComponentListener() {
+				public void componentShown( java.awt.event.ComponentEvent e ) {
+				}
+				public void componentHidden( java.awt.event.ComponentEvent e ) {
+				}
+				public void componentResized( java.awt.event.ComponentEvent e ) {
+					EditorsTabbedPaneUI.this.handleResized( e );
+				}
+				public void componentMoved( java.awt.event.ComponentEvent e ) {
+				}
+			} );
+			editorsTabbedPane.add( this.declarationsUIResource );
+		}
 	}
 	private java.awt.Dimension prevSize = null;
 	private void handleResized( java.awt.event.ComponentEvent e ) {
-		java.awt.Dimension size = this.declarationsUIResource.getSize();
-		if( size.equals( prevSize ) ) {
-			//pass
-		} else {
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-			this.prevSize = size;
-			this.tabPane.revalidate();
-			this.tabPane.repaint();
+		if( this.declarationsUIResource != null ) {
+			java.awt.Dimension size = this.declarationsUIResource.getSize();
+			if( size.equals( prevSize ) ) {
+				//pass
+			} else {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+				this.prevSize = size;
+				this.tabPane.revalidate();
+				this.tabPane.repaint();
+			}
 		}
 	}
 	@Override
 	protected java.awt.Insets getTabAreaInsets( int tabPlacement ) {
 		java.awt.Insets rv = super.getTabAreaInsets( tabPlacement );
-		rv.left += this.declarationsUIResource.getWidth();
-		rv.left += 16;
+		if( this.declarationsUIResource != null ) {
+			rv.left += this.declarationsUIResource.getWidth();
+			rv.left += 16;
+		}
 		return rv;
 	}
 	@Override
 	protected int calculateMaxTabHeight( int tabPlacement ) {
 		int rv = super.calculateMaxTabHeight( tabPlacement );
-		rv = Math.max( rv, this.declarationsUIResource.getHeight() );
+		if( this.declarationsUIResource != null ) {
+			rv = Math.max( rv, this.declarationsUIResource.getHeight() );
+		}
 		return rv;
 	}
 	
@@ -75,15 +83,19 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 //	}	
 	@Override
 	protected java.awt.LayoutManager createLayoutManager() {
-		class LayoutManager extends TabbedPaneLayout {
-			@Override
-			public void layoutContainer( java.awt.Container parent ) {
-				super.layoutContainer( parent );
-				declarationsUIResource.setLocation( 0, 0 );
-				declarationsUIResource.setSize( declarationsUIResource.getPreferredSize() );
+		if( this.declarationsUIResource != null ) {
+			class LayoutManager extends TabbedPaneLayout {
+				@Override
+				public void layoutContainer( java.awt.Container parent ) {
+					super.layoutContainer( parent );
+					declarationsUIResource.setLocation( 0, 0 );
+					declarationsUIResource.setSize( declarationsUIResource.getPreferredSize() );
+				}
 			}
+			return new LayoutManager();
+		} else {
+			return super.createLayoutManager();
 		}
-		return new LayoutManager();
 	}
 }
 /**
@@ -165,10 +177,10 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 //			}
 //		} );
 	}
-//	@Override
-//	public boolean isCloseButtonDesiredAt( int index ) {
-//		return index > 0;
-//	}
+	@Override
+	public boolean isCloseButtonDesiredAt( int index ) {
+		return index > 0 || org.alice.ide.IDE.getSingleton().isEmphasizingClasses();
+	}
 
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
 	}
