@@ -271,6 +271,14 @@ class RootOperationDropDown extends OperationDropDown {
 	public RootOperationDropDown() {
 		super( new RootOperation() );
 	}
+	@Override
+	protected int getInsetTop() {
+		return 0;
+	}
+	@Override
+	protected int getInsetBottom() {
+		return 0;
+	}
 }
 
 public class DeclarationsEditor extends swing.LineAxisPane implements org.alice.ide.event.IDEListener
@@ -287,7 +295,7 @@ public class DeclarationsEditor extends swing.LineAxisPane implements org.alice.
 		org.alice.ide.IDE.getSingleton().addIDEListener( this );
 		this.add( this.rootOperationDropDown );
 		//this.add( new OperationDropDown( typeOperation ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 0, 4, 0 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 2, 0 ) );
 
 		//		this.setOpaque( true );
 		//		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );

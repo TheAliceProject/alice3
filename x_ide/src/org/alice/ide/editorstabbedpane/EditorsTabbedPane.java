@@ -34,6 +34,12 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 		rv.left += 16;
 		return rv;
 	}
+	
+//	@Override
+//	protected int getTabLabelShiftY( int tabPlacement, int tabIndex, boolean isSelected ) {
+//		return super.getTabLabelShiftY( tabPlacement, tabIndex, isSelected ) + 10;
+//	}
+	
 	@Override
 	protected int calculateMaxTabHeight( int tabPlacement ) {
 		int rv = super.calculateMaxTabHeight( tabPlacement );
@@ -89,6 +95,9 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 				org.alice.ide.IDE.getSingleton().setFocusedCode( nextFocusedCode );
 			}
 		} );
+		
+		java.awt.Font f = this.getFont();
+		this.setFont( f.deriveFont( f.getSize2D() * 1.25f ) );
 	}
 	@Override
 	protected zoot.plaf.TabbedPaneUI createTabbedPaneUI() {
