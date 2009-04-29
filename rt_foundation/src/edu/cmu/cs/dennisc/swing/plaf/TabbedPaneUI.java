@@ -116,7 +116,7 @@ class CloseIcon implements javax.swing.Icon {
 }
 
 public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
-	private static final int NORTH_AREA_PAD = 4;
+	private static final int NORTH_AREA_PAD = 8;
 	private static final int EAST_TAB_PAD = 48;
 	private java.awt.Stroke selectedStroke = new java.awt.BasicStroke( 3.0f );
 	private java.awt.Stroke normalStroke = new java.awt.BasicStroke( 1.0f );
