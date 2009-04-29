@@ -41,7 +41,7 @@ public class VariableAssignmentStatementTemplate extends CascadingUbiquitousStat
 	@Override
 	protected String getLabelText() {
 		assert this.variable != null;
-		return this.variable.getName() + "\u2190?";
+		return this.variable.getName() + "\u2190\u2423";
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {

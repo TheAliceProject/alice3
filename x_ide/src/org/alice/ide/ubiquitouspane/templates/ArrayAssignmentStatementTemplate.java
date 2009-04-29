@@ -34,7 +34,7 @@ public abstract class ArrayAssignmentStatementTemplate extends CascadingUbiquito
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getTransientComponentType();
 	@Override
 	protected String getLabelText() {
-		return this.getTransientName() + "[?]\u2190?";
+		return this.getTransientName() + "[\u2423]\u2190\u2423";
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {

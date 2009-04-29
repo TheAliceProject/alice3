@@ -29,8 +29,8 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 	@Override
 	protected java.awt.Insets getTabAreaInsets( int tabPlacement ) {
 		java.awt.Insets rv = super.getTabAreaInsets( tabPlacement );
-		org.alice.ide.declarationseditor.DeclarationsEditor declarationsEditor = org.alice.ide.IDE.getSingleton().getDeclarationsEditor();
-		rv.left += declarationsEditor.getWidth();
+		org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource = org.alice.ide.IDE.getSingleton().getDeclarationsUIResource();
+		rv.left += declarationsUIResource.getWidth();
 		rv.left += 16;
 		return rv;
 	}
@@ -43,16 +43,16 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 	@Override
 	protected int calculateMaxTabHeight( int tabPlacement ) {
 		int rv = super.calculateMaxTabHeight( tabPlacement );
-		org.alice.ide.declarationseditor.DeclarationsEditor declarationsEditor = org.alice.ide.IDE.getSingleton().getDeclarationsEditor();
-		rv = Math.max( rv, declarationsEditor.getHeight() );
+		org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource = org.alice.ide.IDE.getSingleton().getDeclarationsUIResource();
+		rv = Math.max( rv, declarationsUIResource.getHeight() );
 		return rv;
 	}
 	
 //	@Override
 //	protected int calculateTabAreaHeight( int tabPlacement, int horizRunCount, int maxTabHeight ) {
 //		int rv = super.calculateTabAreaHeight( tabPlacement, horizRunCount, maxTabHeight );
-//		org.alice.ide.declarationseditor.DeclarationsEditor declarationsEditor = org.alice.ide.IDE.getSingleton().getDeclarationsEditor();
-//		rv = Math.max( rv, declarationsEditor.getHeight() );
+//		org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource = org.alice.ide.IDE.getSingleton().getDeclarationsUIResource();
+//		rv = Math.max( rv, declarationsUIResource.getHeight() );
 //		return rv;
 //	}	
 	@Override
@@ -61,9 +61,9 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 			@Override
 			public void layoutContainer( java.awt.Container parent ) {
 				super.layoutContainer( parent );
-				org.alice.ide.declarationseditor.DeclarationsEditor declarationsEditor = org.alice.ide.IDE.getSingleton().getDeclarationsEditor();
-				declarationsEditor.setLocation( 0, 0 );
-				declarationsEditor.setSize( declarationsEditor.getPreferredSize() );
+				org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource = org.alice.ide.IDE.getSingleton().getDeclarationsUIResource();
+				declarationsUIResource.setLocation( 0, 0 );
+				declarationsUIResource.setSize( declarationsUIResource.getPreferredSize() );
 			}
 		}
 		return new LayoutManager();

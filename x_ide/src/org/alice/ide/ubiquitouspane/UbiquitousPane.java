@@ -117,18 +117,22 @@ public class UbiquitousPane extends swing.LineAxisPane {
 	private TransientStatementsWrapper transientStatementsWrapper = new TransientStatementsWrapper();
 
 	public UbiquitousPane() {
+		final int PAD = 6;
 		this.add( this.doInOrderTemplate );
+		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
 		this.add( this.countLoopTemplate );
 		this.add( this.whileLoopTemplate );
 		this.add( this.forEachInArrayLoopTemplate );
+		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
 		this.add( this.conditionalStatementTemplate );
+		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
 		this.add( this.doTogetherTemplate );
 		this.add( this.eachInArrayTogetherTemplate );
+		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
 		this.add( this.declareLocalTemplate );
-		
 		this.add( this.transientStatementsWrapper );
 		this.add( this.returnStatementWrapper );
-
+		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
 		this.add( this.commentTemplate );
 		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();

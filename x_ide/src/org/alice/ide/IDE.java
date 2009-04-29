@@ -134,7 +134,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
 	private org.alice.ide.listenerseditor.ListenersEditor listenersEditor;
-	private org.alice.ide.declarationseditor.DeclarationsEditor declarationsEditor;
+	private org.alice.ide.declarationseditor.DeclarationsUIResource declarationsUIResource;
 	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
@@ -244,7 +244,7 @@ public abstract class IDE extends zoot.ZFrame {
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 			gbc.weightx = 1.0;
 			this.add( IDE.this.ubiquitousPane, gbc );
-//			this.add( IDE.this.declarationsEditor, gbc );
+//			this.add( IDE.this.declarationsUIResource, gbc );
 			gbc.weighty = 1.0;
 			this.add( IDE.this.editorsTabbedPane, gbc );
 		}
@@ -258,8 +258,8 @@ public abstract class IDE extends zoot.ZFrame {
 		this.root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 		this.left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
 		this.rightPane = new RightPane();
-		this.editorsTabbedPane.add( this.declarationsEditor );
-		this.declarationsEditor.setLocation( 0, 0 );
+		this.editorsTabbedPane.add( this.declarationsUIResource );
+		this.declarationsUIResource.setLocation( 0, 0 );
 		return this.root;
 	}
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
@@ -284,7 +284,7 @@ public abstract class IDE extends zoot.ZFrame {
 //			if( this.right.getComponentCount() == 0 ) {
 //				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.SOUTH );
 //				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
-//				this.right.add( this.declarationsEditor, java.awt.BorderLayout.NORTH );
+//				this.right.add( this.declarationsUIResource, java.awt.BorderLayout.NORTH );
 //			}
 			this.root.setDividerSize( this.left.getDividerSize() );
 		}
@@ -306,8 +306,8 @@ public abstract class IDE extends zoot.ZFrame {
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
 		return this.sceneEditor;
 	}
-	public org.alice.ide.declarationseditor.DeclarationsEditor getDeclarationsEditor() {
-		return this.declarationsEditor;
+	public org.alice.ide.declarationseditor.DeclarationsUIResource getDeclarationsUIResource() {
+		return this.declarationsUIResource;
 	}
 	
 	public IDE() {
@@ -321,7 +321,7 @@ public abstract class IDE extends zoot.ZFrame {
 		this.runButtonModel.setEnabled( false );
 		
 		this.sceneEditor = this.createSceneEditor();
-		this.declarationsEditor = new org.alice.ide.declarationseditor.DeclarationsEditor();
+		this.declarationsUIResource = new org.alice.ide.declarationseditor.DeclarationsUIResource();
 		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRootDirectory() );
 		this.membersEditor = this.createClassMembersEditor();
 		this.listenersEditor = this.createListenersEditor();

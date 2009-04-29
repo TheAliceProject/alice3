@@ -267,9 +267,43 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 	}
 }
 
-class RootOperationDropDown extends OperationDropDown {
-	public RootOperationDropDown() {
+public class DeclarationsDropDown extends OperationDropDown {
+	private org.alice.ide.event.IDEListener ideAdapter = new org.alice.ide.event.IDEListener() {
+		public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
+		}
+		public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
+		}
+		public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+		}
+		public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+			DeclarationsDropDown.this.updateOperation( e.getNextValue() );
+		}
+		public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
+		}
+		public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
+		}
+		public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
+		}
+		public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
+		}
+		public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
+		}
+		public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
+		}
+	};
+	public DeclarationsDropDown() {
 		super( new RootOperation() );
+	}
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.updateOperation( org.alice.ide.IDE.getSingleton().getFocusedCode() );
+		getIDE().addIDEListener( this.ideAdapter );
+	}
+	@Override
+	public void removeNotify() {
+		getIDE().removeIDEListener( this.ideAdapter );
+		super.removeNotify();
 	}
 	@Override
 	protected int getInsetTop() {
@@ -279,35 +313,7 @@ class RootOperationDropDown extends OperationDropDown {
 	protected int getInsetBottom() {
 		return 0;
 	}
-}
-
-public class DeclarationsEditor extends swing.LineAxisPane implements org.alice.ide.event.IDEListener
-
-//note:
-		, javax.swing.plaf.UIResource
-
-{
-	private RootOperationDropDown rootOperationDropDown = new RootOperationDropDown();
-
-	//private TypeOperation typeOperation = new TypeOperation();
-
-	public DeclarationsEditor() {
-		org.alice.ide.IDE.getSingleton().addIDEListener( this );
-		this.add( this.rootOperationDropDown );
-		//this.add( new OperationDropDown( typeOperation ) );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 0, 2, 0 ) );
-
-		//		this.setOpaque( true );
-		//		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
-		//this.setAlignmentY( java.awt.Component.TOP_ALIGNMENT );
-		this.updateDropDown( org.alice.ide.IDE.getSingleton().getFocusedCode() );
-	}
-
-	//	@Override
-	//	protected boolean isMaximumSizeClampedToPreferredSize() {
-	//		return true;
-	//	}
-	private void updateDropDown( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	private void updateOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 //		StringBuffer sb = new StringBuffer();
 //		sb.append( "class: " );
@@ -319,52 +325,8 @@ public class DeclarationsEditor extends swing.LineAxisPane implements org.alice.
 			type = null;
 		}
 //		this.rootOperationDropDown.getLeftButtonPressOperation().getActionForConfiguringSwing().putValue( javax.swing.Action.NAME, sb.toString() );
-		this.rootOperationDropDown.getLeftButtonPressOperation().getActionForConfiguringSwing().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) );
+		this.getLeftButtonPressOperation().getActionForConfiguringSwing().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) );
 		this.revalidate();
 		this.repaint();
 	}
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
-		this.updateDropDown( code );
-	}
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-
-	//	public static void main( String[] args ) {
-	//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-	//		
-	//		DeclarationsEditor declarationPane = new DeclarationsEditor();
-	//		
-	//		ide.loadProjectFrom( "C:/Users/estrian/Documents/Alice3/MyProjects/a.a3p" );
-	//		
-	//		zoot.ZFrame frame = new zoot.ZFrame() {
-	//			@Override
-	//			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-	//			}
-	//			@Override
-	//			protected void handleQuit( java.util.EventObject e ) {
-	//				System.exit( 0 );
-	//			}
-	//		};
-	//		
-	//		frame.getContentPane().add( declarationPane );
-	//		frame.pack();
-	//		frame.setVisible( true );
-	//	}
 }

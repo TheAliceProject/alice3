@@ -59,6 +59,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
 				this.label.setForeground( getIDE().getCommentForegroundColor() );
 			}
+			//this.label.setFontToScaledFont( 1.2f );
 			this.add( this.label );
 			this.setToolTipText( "" );
 			this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
