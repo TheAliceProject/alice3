@@ -97,8 +97,12 @@ public class GalleryRootUtilities {
 			}
 		} while( rv == null );
 		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( rv );
-		userPreferences.put( ROOT_PATH_KEY, path );
-		systemPreferences.put( ROOT_PATH_KEY, path );
+		try {
+			userPreferences.put( ROOT_PATH_KEY, path );
+			systemPreferences.put( ROOT_PATH_KEY, path );
+		} catch( Exception e ) {
+			e.printStackTrace();
+		}
 		return rv;
 	}
 	private static int promptUserToSpecifyOrInstall( String expectedLocation, String title ) {
