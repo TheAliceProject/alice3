@@ -38,7 +38,7 @@ class RunIcon implements javax.swing.Icon {
 			if( c instanceof javax.swing.AbstractButton ) {
 				isEnabled = ((javax.swing.AbstractButton)c).getModel().isEnabled();
 			} else {
-				isEnabled = c.isEnabled();
+				isEnabled = c!=null && c.isEnabled();
 			}
 			if( isEnabled ) {
 				g.setColor( ENABLED_CIRCLE_COLOR );
