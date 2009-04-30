@@ -185,7 +185,11 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		this.tabAreaInsets.set( 0, 0, 0, 0 );
 		this.tabInsets.set( 3, 2, 3, 2 );
 		this.selectedTabPadInsets.set( 0, 0, 0, 0 );
-		this.contentBorderInsets.set( 2, 2, 0, 0 );
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			this.contentBorderInsets.set( 0, 0, 0, 0 );
+		} else {
+			this.contentBorderInsets.set( 2, 2, 0, 0 );
+		}
 		//this.lightHighlight = java.awt.Color.YELLOW;
 	}
 	private java.awt.geom.GeneralPath addToPath( java.awt.geom.GeneralPath rv, float x, float y, float width, float height, float a, boolean isContinuation ) {
