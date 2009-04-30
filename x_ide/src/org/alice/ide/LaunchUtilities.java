@@ -44,6 +44,7 @@ public class LaunchUtilities {
 			public void run() {
 				for( String path : new String[] { "./application/classinfos.zip", "./application/classinfos" } ) {
 					java.io.File file = new java.io.File( path );
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( file.getAbsolutePath() );
 					if( file.exists() ) {
 						long t0 = System.currentTimeMillis();
 						edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.addClassInfosFrom( file );
