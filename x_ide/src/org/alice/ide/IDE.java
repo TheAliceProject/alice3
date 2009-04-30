@@ -311,6 +311,22 @@ public abstract class IDE extends zoot.ZFrame {
 		IDE.singleton = this;
 
 		this.promptForLicenseAgreements();
+		
+		zoot.ZManager.addOperationListener( new zoot.event.OperationListener() {
+			public void operationPerforming( zoot.event.OperationEvent e ) {
+			}
+			public void operationPerformed( zoot.event.OperationEvent e ) {
+				if( e.getContext().isCommitted() ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+					zoot.Operation source = e.getTypedSource();
+					if( source instanceof org.alice.ide.operations.file.AbstractSaveProjectOperation || source instanceof org.alice.ide.operations.file.AbstractOpenProjectOperation ) {
+						//pass
+					} else {
+						IDE.this.markChanged();
+					}
+				}
+			}
+		} );
 
 		this.runButtonModel.setEnabled( false );
 		
@@ -1316,11 +1332,14 @@ public abstract class IDE extends zoot.ZFrame {
 			return true;
 		}
 	}
+	private void markChanged() {
+		this.isMarkedChanged = true;
+		this.updateTitle();
+	}
 	@Deprecated
 	public void markChanged( String description ) {
-		this.isMarkedChanged = true;
+		this.markChanged();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: convert change to operation ( " + description + " )" );
-		this.updateTitle();
 	}
 
 	//	protected void addToHistory( Operation operation ) {

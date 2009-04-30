@@ -67,11 +67,15 @@ public class TypeComponent extends DeclarationNameLabel {
 	@Override
 	public void addNotify() {
 		super.addNotify();
-		this.addMouseListener( this.mouseAdapter );
+		if( this.popupOperation != null ) {
+			this.addMouseListener( this.mouseAdapter );
+		}
 	}
 	@Override
 	public void removeNotify() {
-		this.removeMouseListener( this.mouseAdapter );
+		if( this.popupOperation != null ) {
+			this.removeMouseListener( this.mouseAdapter );
+		}
 		super.removeNotify();
 	}	
 

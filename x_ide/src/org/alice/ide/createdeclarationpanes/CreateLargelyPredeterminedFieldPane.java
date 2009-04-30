@@ -29,11 +29,21 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType valueType;
 	private edu.cmu.cs.dennisc.alice.ast.Expression initializer;
 
-	public CreateLargelyPredeterminedFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class< ? > cls ) {
+	public CreateLargelyPredeterminedFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
 		super( declaringType );
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
-		this.valueType = getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
-		this.initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( valueType );
+		if( cls != null ) {
+			assert valueType == null;
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
+			this.valueType = this.getTypeDeclaredInAliceFor( typeDeclaredInJava );
+		} else {
+			assert valueType != null;
+			this.valueType = valueType;
+		}
+		this.initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( this.valueType );
+	}
+	
+	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava ) {
+		return getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
 	}
 	
 	@Override

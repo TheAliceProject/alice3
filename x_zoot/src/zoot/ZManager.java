@@ -155,13 +155,34 @@ class MySingleSelectionContext<E> extends AbstractContext implements ItemSelecti
  * @author Dennis Cosgrove
  */
 public class ZManager {
-	static {
+	private static java.util.List< zoot.event.OperationListener > operationListeners = new java.util.LinkedList< zoot.event.OperationListener >();
+
+	public static void addOperationListener( zoot.event.OperationListener l ) {
+		synchronized( ZManager.operationListeners ) {
+			ZManager.operationListeners.add( l );
+		}
+	}
+	public static void removeOperationListener( zoot.event.OperationListener l ) {
+		synchronized( ZManager.operationListeners ) {
+			ZManager.operationListeners.remove( l );
+		}
 	}
 
-	//	public static void setHandler( Handler handler ) {
-	//	}
-	public static void handleTabSelection( ZTabbedPane tabbedPane, int index ) {
+	protected static void fireOperationPerforming( zoot.event.OperationEvent e ) {
+		synchronized( ZManager.operationListeners ) {
+			for( zoot.event.OperationListener l : ZManager.operationListeners ) {
+				l.operationPerforming( e );
+			}
+		}
 	}
+	protected static void fireOperationPerformed( zoot.event.OperationEvent e ) {
+		synchronized( ZManager.operationListeners ) {
+			for( zoot.event.OperationListener l : ZManager.operationListeners ) {
+				l.operationPerformed( e );
+			}
+		}
+	}
+
 
 	//	private static void addToHistory( Operation operation ) {
 	//	}
@@ -179,7 +200,6 @@ public class ZManager {
 	//		}
 	//	}
 
-
 	private static boolean isDragInProgress = false;
 
 	public static boolean isDragInProgress() {
@@ -195,26 +215,35 @@ public class ZManager {
 	public static BooleanStateContext performIfAppropriate( BooleanStateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
 		assert stateOperation != null;
 		BooleanStateContext rv = new MyBooleanStateContext( e, isCancelWorthwhile, previousValue, nextValue );
+		zoot.event.OperationEvent operationEvent = new zoot.event.OperationEvent( stateOperation, rv );
+		fireOperationPerforming( operationEvent );
 		stateOperation.performStateChange( rv );
+		fireOperationPerformed( operationEvent );
 		return rv;
 	}
 
-//	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e ) throws java.beans.PropertyVetoException {
-//		assert boundedRangeOperation != null;
-//		BoundedRangeContext rv = new MyBoundedRangeContext( e, CANCEL_IS_WORTHWHILE );
-//		boundedRangeOperation.perform( rv );
-//		return rv;
-//	}	
+	//	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e ) throws java.beans.PropertyVetoException {
+	//		assert boundedRangeOperation != null;
+	//		BoundedRangeContext rv = new MyBoundedRangeContext( e, CANCEL_IS_WORTHWHILE );
+	//		boundedRangeOperation.perform( rv );
+	//		return rv;
+	//	}	
 	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert boundedRangeOperation != null;
 		BoundedRangeContext rv = new MyBoundedRangeContext( e, isCancelWorthwhile );
+		zoot.event.OperationEvent operationEvent = new zoot.event.OperationEvent( boundedRangeOperation, rv );
+		fireOperationPerforming( operationEvent );
 		boundedRangeOperation.perform( rv );
+		fireOperationPerformed( operationEvent );
 		return rv;
-	}	
+	}
 	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
 		ActionContext rv = new MyActionContext( e, isCancelWorthwhile );
+		zoot.event.OperationEvent operationEvent = new zoot.event.OperationEvent( actionOperation, rv );
+		fireOperationPerforming( operationEvent );
 		actionOperation.perform( rv );
+		fireOperationPerformed( operationEvent );
 		return rv;
 		//		if( operation instanceof CancellableOperation ) {
 		//			CancellableOperation cancellableOperation = (CancellableOperation)operation;
@@ -236,7 +265,10 @@ public class ZManager {
 	public static ItemSelectionContext performIfAppropriate( ItemSelectionOperation< ? > itemSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
 		assert itemSelectionOperation != null;
 		ItemSelectionContext rv = new MySingleSelectionContext( e, isCancelWorthwhile, previousSelection, nextSelection );
+		zoot.event.OperationEvent operationEvent = new zoot.event.OperationEvent( itemSelectionOperation, rv );
+		fireOperationPerforming( operationEvent );
 		itemSelectionOperation.performSelectionChange( rv );
+		fireOperationPerformed( operationEvent );
 		return rv;
 	}
 	//public static ZMenu createMenu( StateOperation< java.util.ArrayList< E > > stateOperation )
@@ -249,7 +281,7 @@ public class ZManager {
 		javax.swing.JMenu rv = new javax.swing.JMenu( name );
 		rv.setMnemonic( mnemonic );
 		//rv.getPopupMenu().setSelectionModel( singleSelectionOperation.getSingleSelectionModelForConfiguringSwingComponents() );
-//		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
+		//		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
 		javax.swing.ComboBoxModel comboBoxModel = itemSelectionOperation.getComboBoxModel();
 		int N = comboBoxModel.getSize();
 		for( int i = 0; i < N; i++ ) {
@@ -257,7 +289,7 @@ public class ZManager {
 			javax.swing.ButtonModel buttonModelI = itemSelectionOperation.getButtonModelForConfiguringSwing( i );
 			javax.swing.JRadioButtonMenuItem itemI = new javax.swing.JRadioButtonMenuItem( actionI );
 			itemI.setModel( buttonModelI );
-//			buttonModelI.setGroup( group );
+			//			buttonModelI.setGroup( group );
 			rv.add( itemI );
 		}
 		//todo?
@@ -278,7 +310,7 @@ public class ZManager {
 			throw new RuntimeException();
 		}
 	}
-	
+
 	public static javax.swing.JMenu createMenu( String name, int mnemonic, Operation... operations ) {
 		javax.swing.JMenu rv = new javax.swing.JMenu( name );
 		rv.setMnemonic( mnemonic );

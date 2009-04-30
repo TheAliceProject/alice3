@@ -20,13 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice;
+package zoot.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Version {
-	public static String getCurrentVersionText() {
-		return "3.beta.0037";
-	}
+public interface OperationListener {
+	public void operationPerforming( OperationEvent e );
+	public void operationPerformed( OperationEvent e );
 }

@@ -38,11 +38,9 @@ class GalleryIcon extends javax.swing.JLabel {
  */
 public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldPane {
 	private GalleryIcon galleryIcon;
-	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, java.io.File file ) {
-		super( declaringType, cls );
+	private CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls, java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
+		super( declaringType, cls, valueType );
 		if( file != null ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( file );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( file.exists() );
 			if( file.exists() ) {
 				this.galleryIcon = new GalleryIcon( file );
 				this.add( this.galleryIcon, java.awt.BorderLayout.EAST );
@@ -50,10 +48,13 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 		}
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls ) {
-		this( declaringType, cls, getGalleryFileFromCls( cls ) );
+		this( declaringType, cls, getGalleryFileFromCls( cls ), null );
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file ) {
-		this( declaringType, getClsFromGalleryFile( file ), file );
+		this( declaringType, getClsFromGalleryFile( file ), file, null );
+	}
+	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
+		this( declaringType, null, getGalleryFileFromCls( valueType.getFirstClassEncounteredDeclaredInJava() ), valueType );
 	}
 	
 
