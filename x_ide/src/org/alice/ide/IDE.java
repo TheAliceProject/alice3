@@ -531,8 +531,11 @@ public abstract class IDE extends zoot.ZFrame {
 	private java.io.File applicationDirectory = null;
 
 	protected java.io.File getDefaultApplicationRootDirectory() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getDefaultApplicationRootDirectory()" );
-		return new java.io.File( "/program files/" + this.getApplicationName() + "/" + this.getVersionText() + "/application" );
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			return new java.io.File( "/Applications/" + this.getApplicationName() + ".app/Contents/Resources/Java/application" );
+		} else {
+			return new java.io.File( "/Program Files/" + this.getApplicationName() + "/" + this.getVersionText() + "/application" );
+		}
 	}
 	public java.io.File getApplicationRootDirectory() {
 		if( this.applicationDirectory != null ) {
