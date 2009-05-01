@@ -44,7 +44,7 @@ public abstract class IDE extends zoot.ZFrame {
 	//	}
 
 	public boolean isEmphasizingClasses() {
-		return true;
+		return false;
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
