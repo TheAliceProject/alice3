@@ -42,7 +42,7 @@ public abstract class IDE extends zoot.ZFrame {
 	//		//todo
 	//		return this;
 	//	}
-	
+
 	public boolean isEmphasizingClasses() {
 		return false;
 	}
@@ -231,10 +231,9 @@ public abstract class IDE extends zoot.ZFrame {
 	private int rootDividerLocation = 320;
 	private int leftDividerLocation = 240;
 
-
 	private javax.swing.JSplitPane root;
 	private javax.swing.JSplitPane left;
-	
+
 	class RightPane extends swing.GridBagPane {
 		public RightPane() {
 			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
@@ -243,13 +242,14 @@ public abstract class IDE extends zoot.ZFrame {
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 			gbc.weightx = 1.0;
 			this.add( IDE.this.ubiquitousPane, gbc );
-//			this.add( IDE.this.declarationsUIResource, gbc );
+			//			this.add( IDE.this.declarationsUIResource, gbc );
 			gbc.weighty = 1.0;
 			this.add( IDE.this.editorsTabbedPane, gbc );
 		}
 	}
+
 	private RightPane rightPane;
-	
+
 	protected javax.swing.JSplitPane getRootSplitPane() {
 		return this.root;
 	}
@@ -278,11 +278,11 @@ public abstract class IDE extends zoot.ZFrame {
 			this.left.setDividerLocation( this.leftDividerLocation );
 			this.left.setTopComponent( this.sceneEditor );
 			this.left.setBottomComponent( this.membersEditor );
-//			if( this.right.getComponentCount() == 0 ) {
-//				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.SOUTH );
-//				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
-//				this.right.add( this.declarationsUIResource, java.awt.BorderLayout.NORTH );
-//			}
+			//			if( this.right.getComponentCount() == 0 ) {
+			//				this.right.add( this.ubiquitousPane, java.awt.BorderLayout.SOUTH );
+			//				this.right.add( this.editorsTabbedPane, java.awt.BorderLayout.CENTER );
+			//				this.right.add( this.declarationsUIResource, java.awt.BorderLayout.NORTH );
+			//			}
 			this.root.setDividerSize( this.left.getDividerSize() );
 		}
 		this.sceneEditor.handleExpandContractChange( isSceneEditorExpanded );
@@ -303,7 +303,7 @@ public abstract class IDE extends zoot.ZFrame {
 	public org.alice.ide.sceneeditor.AbstractSceneEditor getSceneEditor() {
 		return this.sceneEditor;
 	}
-	
+
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -311,7 +311,7 @@ public abstract class IDE extends zoot.ZFrame {
 		IDE.singleton = this;
 
 		this.promptForLicenseAgreements();
-		
+
 		zoot.ZManager.addOperationListener( new zoot.event.OperationListener() {
 			public void operationPerforming( zoot.event.OperationEvent e ) {
 			}
@@ -329,7 +329,7 @@ public abstract class IDE extends zoot.ZFrame {
 		} );
 
 		this.runButtonModel.setEnabled( false );
-		
+
 		this.sceneEditor = this.createSceneEditor();
 		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRootDirectory() );
 		this.membersEditor = this.createClassMembersEditor();
@@ -361,7 +361,6 @@ public abstract class IDE extends zoot.ZFrame {
 		javax.swing.JMenuBar menuBar = this.createMenuBar();
 		this.setJMenuBar( menuBar );
 	}
-
 
 	private java.util.Map< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner > map = new java.util.HashMap< Class< ? extends Enum >, org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner >();
 
@@ -416,6 +415,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	class SelectProjectOperation extends zoot.AbstractActionOperation {
 		private boolean isNew;
+
 		public SelectProjectOperation( boolean isNew ) {
 			this.isNew = isNew;
 		}
@@ -431,8 +431,10 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		}
 	}
+
 	private zoot.ActionOperation selectNewProjectOperation = new SelectProjectOperation( true );
 	private zoot.ActionOperation selectOpenProjectOperation = new SelectProjectOperation( false );
+
 	public zoot.ActionOperation getSelectProjectToOpenOperation( boolean isNew ) {
 		if( isNew ) {
 			return this.selectNewProjectOperation;
@@ -444,8 +446,8 @@ public abstract class IDE extends zoot.ZFrame {
 	protected javax.swing.JMenuBar createMenuBar() {
 		javax.swing.JMenuBar rv = new javax.swing.JMenuBar();
 
-		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, this.newProjectOperation, new org.alice.ide.operations.file.OpenProjectOperation(), this.saveOperation, new org.alice.ide.operations.file.SaveAsProjectOperation(),
-				zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.file.RevertProjectOperation(), zoot.ZManager.MENU_SEPARATOR, this.exitOperation );
+		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, this.newProjectOperation, new org.alice.ide.operations.file.OpenProjectOperation(), this.saveOperation, new org.alice.ide.operations.file.SaveAsProjectOperation(), zoot.ZManager.MENU_SEPARATOR,
+				new org.alice.ide.operations.file.RevertProjectOperation(), zoot.ZManager.MENU_SEPARATOR, this.exitOperation );
 		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, new org.alice.ide.operations.edit.UndoOperation(), new org.alice.ide.operations.edit.RedoOperation(), zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.edit.CutOperation(),
 				new org.alice.ide.operations.edit.CopyOperation(), new org.alice.ide.operations.edit.PasteOperation() );
 		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, this.runOperation );
@@ -717,7 +719,7 @@ public abstract class IDE extends zoot.ZFrame {
 			this.stencil.setBounds( layeredPane.getBounds() );
 			layeredPane.add( this.stencil, null );
 			layeredPane.setLayer( this.stencil, javax.swing.JLayeredPane.POPUP_LAYER - 1 );
-			
+
 			this.stencil.repaint();
 		}
 	}
@@ -756,13 +758,13 @@ public abstract class IDE extends zoot.ZFrame {
 
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
 		if( isRenderingEnabled ) {
-			edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();			
+			edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		} else {
-			edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();			
+			edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		}
 		this.sceneEditor.setRenderingEnabled( isRenderingEnabled );
 	}
-	
+
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForRuntimeProgram;
 	private edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vmForSceneEditor;
 
@@ -783,17 +785,17 @@ public abstract class IDE extends zoot.ZFrame {
 		java.util.Map< Integer, edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > map = edu.cmu.cs.dennisc.alice.ast.Node.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
 		edu.cmu.cs.dennisc.alice.ast.Node dst = edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), map );
-//		if( original.isEquivalentTo( dst ) ) {
-//			return dst;
-//		} else {
-//			throw new RuntimeException( "copy not equivalent to original" );
-//		}
+		//		if( original.isEquivalentTo( dst ) ) {
+		//			return dst;
+		//		} else {
+		//			throw new RuntimeException( "copy not equivalent to original" );
+		//		}
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: check copy" );
 		return dst;
 	}
 
 	private javax.swing.ButtonModel runButtonModel = new javax.swing.DefaultButtonModel();
-	
+
 	private zoot.ActionOperation newProjectOperation = new org.alice.ide.operations.file.NewProjectOperation();
 	private zoot.ActionOperation runOperation = this.createRunOperation( this.runButtonModel );
 	private zoot.ActionOperation exitOperation = this.createExitOperation();
@@ -857,6 +859,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	private java.awt.Window splashScreen;
+
 	public java.awt.Window getSplashScreen() {
 		return this.splashScreen;
 	}
@@ -1068,9 +1071,9 @@ public abstract class IDE extends zoot.ZFrame {
 			@Override
 			protected void addChildren() {
 				int N = types.length;
-				int i=0;
+				int i = 0;
 				for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : types ) {
-					this.addBlank( new org.alice.ide.cascade.ExpressionBlank( type, i==N-1 && isArrayLengthDesired ) );
+					this.addBlank( new org.alice.ide.cascade.ExpressionBlank( type, i == N - 1 && isArrayLengthDesired ) );
 					i++;
 				}
 			}
@@ -1152,17 +1155,13 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	protected void fireLocaleChanging( org.alice.ide.event.LocaleEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : this.ideListeners ) {
-				l.localeChanging( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.localeChanging( e );
 		}
 	}
 	protected void fireLocaleChanged( org.alice.ide.event.LocaleEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : this.ideListeners ) {
-				l.localeChanged( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.localeChanged( e );
 		}
 	}
 
@@ -1185,18 +1184,14 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	protected void fireProjectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : getIDEListeners() ) {
-				l.projectOpening( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.projectOpening( e );
 		}
 	}
 
 	protected void fireProjectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : getIDEListeners() ) {
-				l.projectOpened( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.projectOpened( e );
 		}
 	}
 
@@ -1234,18 +1229,14 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	protected void fireMethodFocusChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : getIDEListeners() ) {
-				l.focusedCodeChanging( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.focusedCodeChanging( e );
 		}
 	}
 
 	protected void fireMethodFocusChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : getIDEListeners() ) {
-				l.focusedCodeChanged( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.focusedCodeChanged( e );
 		}
 	}
 
@@ -1265,18 +1256,14 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	protected void fireFieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : getIDEListeners() ) {
-				l.fieldSelectionChanging( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.fieldSelectionChanging( e );
 		}
 	}
 
 	protected void fireFieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : getIDEListeners() ) {
-				l.fieldSelectionChanged( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.fieldSelectionChanged( e );
 		}
 	}
 
@@ -1292,18 +1279,14 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	protected void fireTransientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : getIDEListeners() ) {
-				l.transientSelectionChanging( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.transientSelectionChanging( e );
 		}
 	}
 
 	protected void fireTransientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
-		synchronized( this.ideListeners ) {
-			for( org.alice.ide.event.IDEListener l : getIDEListeners() ) {
-				l.transientSelectionChanged( e );
-			}
+		for( org.alice.ide.event.IDEListener l : this.getIDEListeners() ) {
+			l.transientSelectionChanged( e );
 		}
 	}
 
@@ -1645,7 +1628,7 @@ public abstract class IDE extends zoot.ZFrame {
 			return java.awt.Color.GRAY;
 		}
 	}
-	private static <E extends edu.cmu.cs.dennisc.alice.ast.Node> E getAncestor( edu.cmu.cs.dennisc.alice.ast.Node node, Class<E> cls ) {
+	private static <E extends edu.cmu.cs.dennisc.alice.ast.Node> E getAncestor( edu.cmu.cs.dennisc.alice.ast.Node node, Class< E > cls ) {
 		edu.cmu.cs.dennisc.alice.ast.Node ancestor = node.getParent();
 		while( ancestor != null ) {
 			if( cls.isAssignableFrom( ancestor.getClass() ) ) {
@@ -1656,7 +1639,7 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 		return (E)ancestor;
 	}
-	
+
 	protected void ensureNodeVisible( edu.cmu.cs.dennisc.alice.ast.Node node ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode = getAncestor( node, edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
 		if( nextFocusedCode != null ) {
@@ -1685,17 +1668,17 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
-	
+
 	public java.awt.Component getComponentForNode( edu.cmu.cs.dennisc.alice.ast.Node node, boolean scrollToVisible ) {
 		if( node instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
 			final edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)node;
 			ensureNodeVisible( node );
 			org.alice.ide.common.AbstractStatementPane rv = getCodeFactory().lookup( statement );
-			if (scrollToVisible) {
+			if( scrollToVisible ) {
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 					public void run() {
 						org.alice.ide.common.AbstractStatementPane pane = getCodeFactory().lookup( statement );
-						if( pane != null ) {	
+						if( pane != null ) {
 							pane.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( pane ) );
 						}
 					}
@@ -1708,7 +1691,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	public java.awt.Component getComponentForNode( java.util.UUID uuid, boolean scrollToVisible ) {
 		return getComponentForNode( getNodeForUUID( uuid ), scrollToVisible );
-	}	
+	}
 	public java.awt.Component getComponentForNode( java.util.UUID uuid ) {
 		return getComponentForNode( uuid, false );
 	}
@@ -1727,10 +1710,10 @@ public abstract class IDE extends zoot.ZFrame {
 	public java.io.File getMyTypesDirectory() {
 		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory( this.getSubPath() );
 	}
-	
+
 	public zoot.ActionOperation getRestartOperation() {
 		//todo
 		return this.getRunOperation();
 	}
-	
+
 }
