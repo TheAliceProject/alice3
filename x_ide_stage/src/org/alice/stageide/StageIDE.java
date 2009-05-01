@@ -219,6 +219,29 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
+	protected void addFillInAndPossiblyPartFills( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
+		super.addFillInAndPossiblyPartFills( blank, expression, type, type2 );
+		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
+			Class<?> paramCls = null;
+			if( type2.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
+				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
+				Class<?> cls = typeInJava.getCls();
+				for( Class innerCls : cls.getDeclaredClasses() ) {
+					if( innerCls.getSimpleName().equals( "Part" ) ) {
+						paramCls = innerCls;
+					}
+				}
+			}
+			if( paramCls !=null ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
+				if( getPartMethod != null ) {
+					blank.addFillIn( new org.alice.ide.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
+				}
+			}
+		}
+	}
+	@Override
 	public java.io.File getGalleryRootDirectory() {
 		return org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory();
 	}

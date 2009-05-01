@@ -44,7 +44,7 @@ public abstract class IDE extends zoot.ZFrame {
 	//	}
 
 	public boolean isEmphasizingClasses() {
-		return false;
+		return true;
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
@@ -911,23 +911,6 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	protected void addFillInAndPossiblyPartFills( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
-		//			if type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel ):
-		//				if type2.isAssignableFrom( org.alice.apis.moveandturn.Model ):
-		//					typeInJava = type.getFirstTypeEncounteredDeclaredInJava()
-		//					clsInJava = typeInJava.getCls()
-		//					try:
-		//						paramType = clsInJava.Part
-		//					except:
-		//						paramType = None
-		//				else:
-		//					paramType = None
-		//				if paramType:
-		//					getPartMethod = typeInJava.getDeclaredMethod( "getPart", [ paramType ] )
-		//					
-		//					#todo
-		//					
-		//					
-		//					blank.addChild( MethodInvocationFillIn( getPartMethod, expression ) )
 	}
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > getVariables( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice.class );
