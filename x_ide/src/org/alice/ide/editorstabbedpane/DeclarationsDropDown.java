@@ -171,6 +171,7 @@ class TypeFillIn extends cascade.MenuFillIn< zoot.ActionOperation > {
 			blank.addFillIn( new ProceduresFillIn( this.type ) );
 			blank.addFillIn( new FunctionsFillIn( this.type ) );
 			blank.addFillIn( new OperatorFillIn( new EditConstructorOperation( (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.type.getDeclaredConstructor() ) ) );
+			blank.addSeparator();
 			blank.addFillIn( new OperatorFillIn( new EditFieldsOperation( this.type ) ) );
 		} else {
 			blank.addFillIn( new cascade.CancelFillIn( "type is not set.  canceling." ) );

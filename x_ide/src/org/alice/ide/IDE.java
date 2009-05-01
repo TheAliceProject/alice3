@@ -38,13 +38,8 @@ public abstract class IDE extends zoot.ZFrame {
 		return IDE.singleton;
 	}
 
-	//	public zoot.DragAndDropOperation getDragAndDropOperation() {
-	//		//todo
-	//		return this;
-	//	}
-
 	public boolean isEmphasizingClasses() {
-		return false;
+		return true;
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
@@ -535,6 +530,10 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private java.io.File applicationDirectory = null;
 
+	protected java.io.File getDefaultApplicationRootDirectory() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getDefaultApplicationRootDirectory()" );
+		return new java.io.File( "/program files/" + this.getApplicationName() + "/" + this.getVersionText() + "/application" );
+	}
 	public java.io.File getApplicationRootDirectory() {
 		if( this.applicationDirectory != null ) {
 			//pass
@@ -543,8 +542,7 @@ public abstract class IDE extends zoot.ZFrame {
 			if( this.applicationDirectory.exists() ) {
 				//pass
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getApplicationRootDirectory()" );
-				this.applicationDirectory = new java.io.File( "/program files/alice/3.beta.0027/application" );
+				this.applicationDirectory = this.getDefaultApplicationRootDirectory();
 			}
 		}
 		return this.applicationDirectory;
