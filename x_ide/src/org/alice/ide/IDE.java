@@ -38,9 +38,6 @@ public abstract class IDE extends zoot.ZFrame {
 		return IDE.singleton;
 	}
 
-	public boolean isEmphasizingClasses() {
-		return true;
-	}
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = this.getProgramType();
@@ -209,6 +206,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = new org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation( true );
+	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = new org.alice.ide.operations.window.IsEmphasizingClassesOperation( false );
 
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;
@@ -221,6 +219,13 @@ public abstract class IDE extends zoot.ZFrame {
 		if( codeEditor != null ) {
 			codeEditor.refresh();
 		}
+	}
+	public boolean isEmphasizingClasses() {
+		return this.isEmphasizingClassesOperation.getButtonModel().isSelected();
+	}
+	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
+		this.editorsTabbedPane.setEmphasizingClasses( isEmphasizingClasses );
+		this.membersEditor.setEmphasizingClasses( isEmphasizingClasses );
 	}
 
 	private int rootDividerLocation = 320;
@@ -504,7 +509,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
 
-		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isExpressionTypeFeedbackDesiredOperation );
+		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isExpressionTypeFeedbackDesiredOperation );
 		windowMenu.add( setLocaleMenu );
 		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), new org.alice.ide.operations.help.WarningOperation( true ), this.createAboutOperation() );
 		rv.add( fileMenu );
@@ -1699,5 +1704,4 @@ public abstract class IDE extends zoot.ZFrame {
 		//todo
 		return this.getRunOperation();
 	}
-
 }

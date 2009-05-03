@@ -28,12 +28,15 @@ package org.alice.ide.memberseditor.templates;
 public class SetterTemplate extends ExpressionStatementTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public SetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( field ) );
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
 			this.setPopupOperation( new FieldPopupOperation( fieldInAlice ) );
 		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+		return org.alice.ide.ast.NodeUtilities.createIncompleteAssignmentExpression( this.field );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {

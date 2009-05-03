@@ -28,23 +28,24 @@ package org.alice.ide.memberseditor.templates;
 public class SetArrayAtIndexTemplate extends ExpressionStatementTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public SetArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( 
-				new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( 
-						field.getDesiredValueType().getComponentType(), 
-						new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
-								field.getValueType(), 
-								org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ), 
-								new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
-						), 
-						edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, 
-						new org.alice.ide.ast.EmptyExpression( field.getDesiredValueType().getComponentType() )
-				)
-		);
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
 			this.setPopupOperation( new FieldPopupOperation( fieldInAlice ) );
 		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.AssignmentExpression( 
+				this.field.getDesiredValueType().getComponentType(), 
+				new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
+						field.getValueType(), 
+						org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( this.field ), 
+						new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
+				), 
+				edu.cmu.cs.dennisc.alice.ast.AssignmentExpression.Operator.ASSIGN, 
+				new org.alice.ide.ast.EmptyExpression( this.field.getDesiredValueType().getComponentType() )
+		);
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType[] getBlankExpressionTypes() {

@@ -56,7 +56,7 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 			}
 			components.add( new org.alice.ide.memberseditor.templates.GetterTemplate( field ) );
 			if( field.getValueType().isArray() ) {
-				components.add( new org.alice.ide.memberseditor.templates.GetArrayAtIndexTemplate( field ) );
+				components.add( new org.alice.ide.memberseditor.templates.AccessArrayAtIndexTemplate( field ) );
 				components.add( new org.alice.ide.memberseditor.templates.ArrayLengthTemplate( field ) );
 			}
 			if( field.isFinal() ) {

@@ -24,23 +24,50 @@ package org.alice.ide.editorstabbedpane;
 
 class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 	private DeclarationsUIResource declarationsUIResource;
+	private java.awt.event.ComponentListener componentAdapter = new java.awt.event.ComponentListener() {
+		public void componentShown( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentHidden( java.awt.event.ComponentEvent e ) {
+		}
+		public void componentResized( java.awt.event.ComponentEvent e ) {
+			EditorsTabbedPaneUI.this.handleResized( e );
+		}
+		public void componentMoved( java.awt.event.ComponentEvent e ) {
+		}
+	};
 	public EditorsTabbedPaneUI( EditorsTabbedPane editorsTabbedPane ) {
 		super( editorsTabbedPane );
 		if( org.alice.ide.IDE.getSingleton().isEmphasizingClasses() ) {
 			this.declarationsUIResource = new DeclarationsUIResource();
-			this.declarationsUIResource.addComponentListener( new java.awt.event.ComponentListener() {
-				public void componentShown( java.awt.event.ComponentEvent e ) {
-				}
-				public void componentHidden( java.awt.event.ComponentEvent e ) {
-				}
-				public void componentResized( java.awt.event.ComponentEvent e ) {
-					EditorsTabbedPaneUI.this.handleResized( e );
-				}
-				public void componentMoved( java.awt.event.ComponentEvent e ) {
-				}
-			} );
-			editorsTabbedPane.add( this.declarationsUIResource );
 		}
+	}
+	@Override
+	protected void installComponents() {
+		super.installComponents();
+		if( this.declarationsUIResource != null ) {
+			this.tabPane.add( this.declarationsUIResource );
+		}
+	}
+	@Override
+	protected void uninstallComponents() {
+		if( this.declarationsUIResource != null ) {
+			this.tabPane.remove( this.declarationsUIResource );
+		}
+		super.uninstallComponents();
+	}
+	@Override
+	protected void installListeners() {
+		super.installListeners();
+		if( this.declarationsUIResource != null ) {
+			this.declarationsUIResource.addComponentListener( this.componentAdapter );
+		}
+	}
+	@Override
+	protected void uninstallListeners() {
+		if( this.declarationsUIResource != null ) {
+			this.declarationsUIResource.removeComponentListener( this.componentAdapter );
+		}
+		super.uninstallListeners();
 	}
 	private java.awt.Dimension prevSize = null;
 	private void handleResized( java.awt.event.ComponentEvent e ) {
@@ -51,8 +78,10 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 			} else {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
 				this.prevSize = size;
-				this.tabPane.revalidate();
-				this.tabPane.repaint();
+				if( this.tabPane != null ) {
+					this.tabPane.revalidate();
+					this.tabPane.repaint();
+				}
 			}
 		}
 	}
@@ -210,5 +239,8 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
 	}
 	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
+	}
+	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
+		this.updateUI();
 	}
 }

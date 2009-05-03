@@ -29,8 +29,6 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	private static final int INDENT = 16;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
-	private zoot.ZButton createAndAddMemberButton;
-	private zoot.ZButton editConstructorButton;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener () {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent e ) {
 		}
@@ -60,16 +58,10 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
 		this.typeComponent = new org.alice.ide.common.TypeComponent( this.type );
-		if( getIDE().isEmphasizingClasses() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			this.createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
-			this.editConstructorButton = this.createEditConstructorButton( typeInAlice );
-			for( edu.cmu.cs.dennisc.property.ListProperty listProperty : this.getListPropertiesToListenTo( typeInAlice ) ) {
+		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+			for( edu.cmu.cs.dennisc.property.ListProperty listProperty : this.getListPropertiesToListenTo( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.type ) ) {
 				listProperty.addListPropertyListener( this.listPropertyAdapter );
 			}
-		} else {
-			this.createAndAddMemberButton = null;
-			this.editConstructorButton = null;
 		}
 		this.refresh();
 	}
@@ -127,11 +119,16 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 				}
 			}
 		}
-		if( this.createAndAddMemberButton != null ) {
-			page.add( this.createAndAddMemberButton );
-		}
-		if( this.editConstructorButton != null ) {
-			page.add( this.editConstructorButton );
+		if( getIDE().isEmphasizingClasses() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
+			zoot.ZButton createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
+			zoot.ZButton editConstructorButton = this.createEditConstructorButton( typeInAlice );
+			if( createAndAddMemberButton != null ) {
+				page.add( createAndAddMemberButton );
+			}
+			if( editConstructorButton != null ) {
+				page.add( editConstructorButton );
+			}
 		}
 		int pad;
 		if( page.getComponentCount() > 0 ) {

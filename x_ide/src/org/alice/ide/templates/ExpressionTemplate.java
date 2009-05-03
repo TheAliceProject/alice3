@@ -26,11 +26,7 @@ package org.alice.ide.templates;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
-	private edu.cmu.cs.dennisc.alice.ast.Expression template;
-	public ExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression template ) {
-		this.template = template;
-		this.add( getIDE().getTemplatesFactory().createComponent( this.template ) );
-		this.setBackground( getIDE().getColorFor( this.template ) );
+	public ExpressionTemplate() {
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
 		this.setPopupOperation( new org.alice.ide.operations.AbstractActionOperation() {
 			public void perform( zoot.ActionContext actionContext ) {
@@ -38,12 +34,26 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 			}
 		} );
 	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-		return this.template.getType();
+	public void addNotify() {
+		super.addNotify();
+		this.refresh();
+	}
+	@Override
+	public void removeNotify() {
+		this.removeAll();
+		super.removeNotify();
+	}
+	protected void refresh() {
+		this.removeAll();
+		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
+		this.setBackground( getIDE().getColorFor( incompleteExpression ) );
+		this.add( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
 	}
 	@Override
 	protected boolean isPressed() {
 		return false;
 	}
+	
 }

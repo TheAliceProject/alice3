@@ -26,16 +26,28 @@ package org.alice.ide.memberseditor.templates;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
-	private edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression;
-	private java.awt.Component incompleteExpressionPane;
-	public ExpressionStatementTemplate( edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression ) {
+	public ExpressionStatementTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
-		this.incompleteExpression = incompleteExpression;
-
-		this.incompleteExpressionPane = getIDE().getTemplatesFactory().createExpressionPane( this.incompleteExpression );
-		this.add( this.incompleteExpressionPane );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
+	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.refresh();
+	}
+	@Override
+	public void removeNotify() {
+		this.removeAll();
+		super.removeNotify();
+	}
+	protected void refresh() {
+		this.removeAll();
+		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
+		this.setBackground( getIDE().getColorFor( incompleteExpression ) );
+		this.add( getIDE().getTemplatesFactory().createExpressionPane( incompleteExpression ) );
+	}
+
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.Statement createStatement( edu.cmu.cs.dennisc.alice.ast.Expression... expressions ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = this.createExpression( expressions );

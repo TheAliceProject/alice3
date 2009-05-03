@@ -66,7 +66,8 @@ abstract class MembersTab extends swing.PageAxisPane {
 	protected AbstractTypeMembersPane getTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		AbstractTypeMembersPane rv = this.mapTypeToPane.get( type );
 		if( rv != null ) {
-			//pass
+			//todo?
+			rv.refresh();
 		} else {
 			rv = this.createTypeMembersPane( type );
 			this.mapTypeToPane.put( type, rv );
@@ -148,6 +149,11 @@ class TabbedPane extends zoot.ZTabbedPane {
 			membersTab.handleFieldSelection( e );
 		}
 	}
+	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
+		for( MembersTab membersTab : membersTabs ) {
+			membersTab.refresh();
+		}
+	}
 }
 
 /**
@@ -185,5 +191,9 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
 	}
 	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
+	}
+
+	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
+		this.tabbedPane.setEmphasizingClasses( isEmphasizingClasses );
 	}
 }

@@ -25,20 +25,26 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class GetArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
+public class AccessArrayAtIndexTemplate extends org.alice.ide.templates.CascadingExpressionsExpressionTemplate {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
-	public GetArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( 	new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
-						field.getValueType(), 
-						org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ), 
-						new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
-				)
-		);
+	public AccessArrayAtIndexTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
 			this.setPopupOperation( new FieldPopupOperation( fieldInAlice ) );
 		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+		return new edu.cmu.cs.dennisc.alice.ast.ArrayAccess( 
+				field.getValueType(), 
+				org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ), 
+				new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) 
+		);
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+		return field.getValueType().getComponentType();
 	}
 	@Override
 	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {

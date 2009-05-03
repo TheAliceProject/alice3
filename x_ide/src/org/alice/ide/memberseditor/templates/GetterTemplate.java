@@ -29,12 +29,19 @@ public class GetterTemplate extends org.alice.ide.templates.CascadingExpressions
 	private static final edu.cmu.cs.dennisc.alice.ast.AbstractType[] ZERO_LENGTH_TYPE_ARRAY = new edu.cmu.cs.dennisc.alice.ast.AbstractType[] {};  
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	public GetterTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field ) );
 		this.field = field;
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.field;
 			this.setPopupOperation( new FieldPopupOperation( fieldInAlice ) );
 		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression() {
+		return org.alice.ide.ast.NodeUtilities.createIncompleteFieldAccess( field );
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
+		return this.field.getValueType();
 	}
 	@Override
 	protected java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > getBlankExpressionTypes( java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {

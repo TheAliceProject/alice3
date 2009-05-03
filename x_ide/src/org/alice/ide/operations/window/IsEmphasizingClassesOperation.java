@@ -20,13 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.templates;
+package org.alice.ide.operations.window;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CascadingExpressionsExpressionTemplate extends ExpressionTemplate {
-//	public CascadingExpressionsExpressionTemplate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-//		super( expression );
-//	}
+public class IsEmphasizingClassesOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+	public IsEmphasizingClassesOperation( Boolean initialValue ) {
+		super( initialValue );
+		this.putValue( javax.swing.Action.NAME, "Is IsEmphasizing Classes" );
+		//this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
+	}
+	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+		this.getIDE().setEmphasizingClasses( booleanStateContext.getNextValue() );
+		booleanStateContext.commit();
+	}
 }
