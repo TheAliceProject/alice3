@@ -37,13 +37,14 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		public void fieldSelectionChanging( FieldSelectionEvent e ) {
 		}
 		public void fieldSelectionChanged( FieldSelectionEvent e ) {
-			SelectedFieldExpressionPane.this.handleFieldChange( e.getNextValue() );
+			SelectedFieldExpressionPane.this.handleFieldChanged( e.getNextValue() );
 		}
 
 
 		public void focusedCodeChanging( FocusedCodeChangeEvent e ) {
 		}
 		public void focusedCodeChanged( FocusedCodeChangeEvent e ) {
+			SelectedFieldExpressionPane.this.handleCodeChanged( e.getNextValue() );
 		}
 
 
@@ -89,7 +90,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 			return null;
 		}
 	}
-	private void handleFieldChange( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private void handleFieldChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		if( this.field != null ) {
 			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.field.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
@@ -105,6 +106,10 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		}
 		this.updateLabel();
 	}
+	private void handleCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+		this.updateLabel();
+	}
+	
 	private void updateLabel() {
 		this.label.setText( getIDE().getInstanceTextForField( this.field, true ) );
 	}
@@ -116,7 +121,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	public void addNotify() {
 		super.addNotify();
 		getIDE().addIDEListener( this.ideAdapter );
-		this.handleFieldChange( getIDE().getFieldSelection() );
+		this.handleFieldChanged( getIDE().getFieldSelection() );
 	}
 	@Override
 	public void removeNotify() {

@@ -56,4 +56,23 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		return false;
 	}
 	
+	@Override
+	public boolean contains( int x, int y ) {
+		if( getIDE().isInScope() ) {
+			return super.contains( x, y );
+		} else {
+			return false;
+		}
+	}
+	@Override
+	public void paint( java.awt.Graphics g ) {
+		super.paint( g );
+		if( getIDE().isInScope() ) {
+			//pass
+		} else {
+			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+			g2.setPaint( zoot.PaintUtilities.getDisabledTexturePaint() );
+			this.fillBounds( g2 );
+		}
+	}
 }
