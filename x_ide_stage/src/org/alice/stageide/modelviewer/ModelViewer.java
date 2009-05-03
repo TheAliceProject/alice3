@@ -30,8 +30,8 @@ abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
 	private org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = new org.alice.apis.moveandturn.SymmetricPerspectiveCamera();
 	private org.alice.apis.moveandturn.DirectionalLight sunLight = new org.alice.apis.moveandturn.DirectionalLight();
 	@Override
-	protected boolean isSpeedMultiplierControlPanelDesired() {
-		return false;
+	protected java.awt.Component createSpeedMultiplierControlPanel() {
+		return null;
 	}
 	protected org.alice.apis.moveandturn.SymmetricPerspectiveCamera getCamera() {
 		return this.camera;

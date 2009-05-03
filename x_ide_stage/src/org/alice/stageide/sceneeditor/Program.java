@@ -35,8 +35,8 @@ public class Program extends org.alice.apis.moveandturn.Program {
 		return true;
 	}
 	@Override
-	protected boolean isSpeedMultiplierControlPanelDesired() {
-		return false;
+	protected java.awt.Component createSpeedMultiplierControlPanel() {
+		return null;
 	}
 	@Override
 	protected void initialize() {
