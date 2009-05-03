@@ -22,6 +22,9 @@
  */
 package edu.cmu.cs.dennisc.awt;
 
+
+//todo: subtract border
+
 /**
  * @author Dennis Cosgrove
  */

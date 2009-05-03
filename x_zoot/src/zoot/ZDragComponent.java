@@ -24,10 +24,10 @@ package zoot;
 
 public abstract class ZDragComponent extends ZControl {
 	private DragAndDropOperation dragAndDropOperation;
-	
+
 	private DragProxy dragProxy = null;
 	private DropProxy dropProxy = null;
-	
+
 	private java.awt.event.ComponentListener componentAdapter = new java.awt.event.ComponentListener() {
 		public void componentHidden( java.awt.event.ComponentEvent arg0 ) {
 		}
@@ -39,7 +39,7 @@ public abstract class ZDragComponent extends ZControl {
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 		}
 	};
-	
+
 	public ZDragComponent() {
 		this.updateProxySizes();
 	}
@@ -53,29 +53,29 @@ public abstract class ZDragComponent extends ZControl {
 		this.removeComponentListener( this.componentAdapter );
 		super.removeNotify();
 	}
-	
+
 	@Override
-	protected boolean isMouseListeningDesired() { 
+	protected boolean isMouseListeningDesired() {
 		return super.isMouseListeningDesired() || this.dragAndDropOperation != null;
 	}
-	
+
 	public java.awt.Component getSubject() {
 		return this;
 	}
-//	public void setSubject( java.awt.Component subject ) {
-//		this.subject = subject;
-//	}
+	//	public void setSubject( java.awt.Component subject ) {
+	//		this.subject = subject;
+	//	}
 	public DragAndDropOperation getDragAndDropOperation() {
 		return this.dragAndDropOperation;
 	}
 	public void setDragAndDropOperation( DragAndDropOperation dragAndDropOperation ) {
 		this.dragAndDropOperation = dragAndDropOperation;
 	}
-	
+
 	protected boolean isAlphaDesiredWhenOverDropReceptor() {
 		return false;
 	}
-	
+
 	private boolean isActuallyPotentiallyDraggable() {
 		boolean rv = this.dragAndDropOperation != null;
 		if( rv ) {
@@ -119,10 +119,10 @@ public abstract class ZDragComponent extends ZControl {
 				java.awt.Point locationOnScreen = this.getLocationOnScreen();
 				int dx = locationOnScreen.x - locationOnScreenLayeredPane.x;
 				int dy = locationOnScreen.y - locationOnScreenLayeredPane.y;
-		
+
 				dx -= mousePressedEvent.getX();
 				dy -= mousePressedEvent.getY();
-		
+
 				boolean isCopyDesired = edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e );
 				int x = e.getX() + dx;
 				int y = e.getY() + dy;
@@ -133,16 +133,17 @@ public abstract class ZDragComponent extends ZControl {
 			}
 		}
 	}
-	
+
 	class DefaultDragAndDropContext extends AbstractContext implements DragAndDropContext {
 		private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 		private DropReceptor currentDropReceptor;
 		private java.awt.event.MouseEvent latestMouseEvent;
+
 		public DefaultDragAndDropContext( java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, java.util.List< ? extends DropReceptor > potentialDropReceptors ) {
 			super( originalMouseEvent, ZManager.CANCEL_IS_WORTHWHILE );
 			this.setLatestMouseEvent( latestMouseEvent );
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
-			int i=0;
+			int i = 0;
 			for( DropReceptor dropReceptor : potentialDropReceptors ) {
 				java.awt.Component dropComponent = dropReceptor.getAWTComponent();
 				java.awt.Rectangle bounds = dropComponent.getBounds();
@@ -155,7 +156,7 @@ public abstract class ZDragComponent extends ZControl {
 				dropReceptorInfo.getDropReceptor().dragStarted( this );
 			}
 		}
-		
+
 		public java.awt.event.MouseEvent getOriginalMouseEvent() {
 			return (java.awt.event.MouseEvent)this.getEvent();
 		}
@@ -165,7 +166,7 @@ public abstract class ZDragComponent extends ZControl {
 		public void setLatestMouseEvent( java.awt.event.MouseEvent latestMouseEvent ) {
 			this.latestMouseEvent = latestMouseEvent;
 		}
-		
+
 		public ZDragComponent getDragSource() {
 			return (ZDragComponent)getEvent().getSource();
 		}
@@ -180,11 +181,11 @@ public abstract class ZDragComponent extends ZControl {
 			int prevHeight = Integer.MAX_VALUE;
 			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
 				if( dropReceptorInfo.contains( x, y ) ) {
-					 int nextHeight = dropReceptorInfo.getBounds().height;
-					 if( nextHeight < prevHeight ) {
-						 rv = dropReceptorInfo.getDropReceptor();
-						 prevHeight = nextHeight;
-					 }
+					int nextHeight = dropReceptorInfo.getBounds().height;
+					if( nextHeight < prevHeight ) {
+						rv = dropReceptorInfo.getDropReceptor();
+						prevHeight = nextHeight;
+					}
 				}
 			}
 			return rv;
@@ -194,11 +195,11 @@ public abstract class ZDragComponent extends ZControl {
 			int prevHeight = Integer.MAX_VALUE;
 			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
 				if( dropReceptorInfo.intersects( bounds ) ) {
-					 int nextHeight = dropReceptorInfo.getBounds().height;
-					 if( nextHeight < prevHeight ) {
-						 rv = dropReceptorInfo.getDropReceptor();
-						 prevHeight = nextHeight;
-					 }
+					int nextHeight = dropReceptorInfo.getBounds().height;
+					if( nextHeight < prevHeight ) {
+						rv = dropReceptorInfo.getDropReceptor();
+						prevHeight = nextHeight;
+					}
 				}
 			}
 			return rv;
@@ -212,7 +213,7 @@ public abstract class ZDragComponent extends ZControl {
 					java.awt.Rectangle dragBounds = ZDragComponent.this.dragProxy.getBounds();
 					dragBounds = javax.swing.SwingUtilities.convertRectangle( ZDragComponent.this.dragProxy.getParent(), dragBounds, this.getDragSource() );
 					int x = dragBounds.x;
-					int y = dragBounds.y + dragBounds.height/2;
+					int y = dragBounds.y + dragBounds.height / 2;
 					rv = getDropReceptorUnder( x, y );
 					if( rv != null ) {
 						//pass
@@ -257,24 +258,33 @@ public abstract class ZDragComponent extends ZControl {
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 		}
 	}
+
 	private DefaultDragAndDropContext dragAndDropContext;
-		
+
+	private void handleLeftMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
+		ZManager.setDragInProgress( true );
+		this.updateProxySizes();
+		this.updateProxyPosition( e );
+
+		javax.swing.JLayeredPane layeredPane = getLayeredPane();
+		layeredPane.add( this.dragProxy, new Integer( 1 ) );
+		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
+
+		this.dragAndDropContext = new DefaultDragAndDropContext( this.getMousePressedEvent(), e, this.dragAndDropOperation.createListOfPotentialDropReceptors( this ) );
+		if( this.dragAndDropOperation != null ) {
+			this.dragAndDropOperation.handleDragStarted( dragAndDropContext );
+		}
+	}
+	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
+		this.updateProxyPosition( e );
+		this.dragAndDropContext.handleMouseDragged( e );
+	}
 	@Override
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		super.handleMouseDraggedOutsideOfClickThreshold( e );
 		if( isActuallyPotentiallyDraggable() ) {
-			ZManager.setDragInProgress( true );
-			this.updateProxySizes();
-			this.updateProxyPosition( e );
-			
-			
-			javax.swing.JLayeredPane layeredPane = getLayeredPane();
-			layeredPane.add( this.dragProxy, new Integer( 1 ) );
-			layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
-			
-			this.dragAndDropContext = new DefaultDragAndDropContext( this.getMousePressedEvent(), e, this.dragAndDropOperation.createListOfPotentialDropReceptors( this ) );
-			if( this.dragAndDropOperation != null ) {
-				this.dragAndDropOperation.handleDragStarted( dragAndDropContext );
+			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+				this.handleLeftMouseDraggedOutsideOfClickThreshold( e );
 			}
 		}
 	}
@@ -282,39 +292,71 @@ public abstract class ZDragComponent extends ZControl {
 	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		super.handleMouseDragged( e );
 		if( isActuallyPotentiallyDraggable() ) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
-			if( this.isWithinClickThreshold() ) {
-				//pass
-			} else {
-				this.updateProxyPosition( e );
-				this.dragAndDropContext.handleMouseDragged( e );
+			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
+				if( this.isWithinClickThreshold() ) {
+					//pass
+				} else {
+					this.handleLeftMouseDragged( e );
+				}
 			}
 		}
 	}
 	@Override
-	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
+	public void handleMouseMoved( java.awt.event.MouseEvent e ) {
+		super.handleMouseMoved( e );
 		if( isActuallyPotentiallyDraggable() ) {
-			if( ZManager.isDragInProgress() ) {
-				ZManager.setDragInProgress( false );
-				this.setActive( this.contains( e.getPoint() ) );
-				javax.swing.JLayeredPane layeredPane = getLayeredPane();
-				java.awt.Rectangle bounds = this.dragProxy.getBounds();
-				layeredPane.remove( this.dragProxy );
-				layeredPane.repaint( bounds );
-				
-				this.dragAndDropContext.handleMouseReleased( e );
+			if( this.isFauxDrag ) {
+				if( ZManager.isDragInProgress() ) {
+					//pass
+				} else {
+					this.handleLeftMouseDraggedOutsideOfClickThreshold( e );
+				}
+				this.handleLeftMouseDragged( e );
 			}
 		}
 	}
 
-	
+	private boolean isFauxDrag = false;
+
+	@Override
+	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
+		if( isActuallyPotentiallyDraggable() ) {
+			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+				boolean isDrop;
+				if( this.isWithinClickThreshold() ) {
+					java.awt.Component focusedComponent;
+					if( this.isFauxDrag ) {
+						focusedComponent = null;
+					} else {
+						focusedComponent = this;
+					}
+					isDrop = this.isFauxDrag;
+					this.isFauxDrag = !this.isFauxDrag;
+					edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().setComponentWithMouseFocus( focusedComponent );
+				} else {
+					isDrop = true;
+				}
+				if( isDrop ) {
+					ZManager.setDragInProgress( false );
+					this.setActive( this.contains( e.getPoint() ) );
+					javax.swing.JLayeredPane layeredPane = getLayeredPane();
+					java.awt.Rectangle bounds = this.dragProxy.getBounds();
+					layeredPane.remove( this.dragProxy );
+					layeredPane.repaint( bounds );
+					this.dragAndDropContext.handleMouseReleased( e );
+				}
+			}
+		}
+	}
+
 	public void setDropProxyLocationAndShowIfNecessary( java.awt.Point p, java.awt.Component asSeenBy, Integer heightToAlignLeftCenterOn ) {
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
 		p = javax.swing.SwingUtilities.convertPoint( asSeenBy, p, layeredPane );
-		
+
 		if( heightToAlignLeftCenterOn != null ) {
 			java.awt.Rectangle dropBounds = this.dropProxy.getBounds();
-			p.y += ( heightToAlignLeftCenterOn - dropBounds.height ) / 2;
+			p.y += (heightToAlignLeftCenterOn - dropBounds.height) / 2;
 		}
 
 		//java.awt.event.MouseEvent mousePressedEvent = this.getMousePressedEvent();
