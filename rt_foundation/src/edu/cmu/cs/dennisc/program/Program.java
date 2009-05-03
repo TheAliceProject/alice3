@@ -47,6 +47,9 @@ public abstract class Program extends javax.swing.JApplet {
 			return super.getParameter( name );
 		}
 	}
+	public void setParameter( String name, String value ) {
+		m_argNameToValueMap.put( name, value );
+	}
 
 	public void setArgs( String args[] ) {
 		m_isClosed = false;
@@ -224,6 +227,18 @@ public abstract class Program extends javax.swing.JApplet {
 					System.exit( 0 );
 				}
 				Program.this.m_isClosed = true;
+			}
+		} );
+		window.addComponentListener( new java.awt.event.ComponentListener() {
+			public void componentHidden( java.awt.event.ComponentEvent e ) {
+			}
+			public void componentShown( java.awt.event.ComponentEvent e ) {
+			}
+			public void componentMoved( java.awt.event.ComponentEvent e ) {
+				setParameter( "X_LOCATION", Integer.toString( e.getComponent().getX() ) );
+				setParameter( "Y_LOCATION", Integer.toString( e.getComponent().getY() ) );
+			}
+			public void componentResized( java.awt.event.ComponentEvent e ) {
 			}
 		} );
 		window.setVisible( true );

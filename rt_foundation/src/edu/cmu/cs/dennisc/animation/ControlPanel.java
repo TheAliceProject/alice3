@@ -29,54 +29,61 @@ public class ControlPanel extends javax.swing.JPanel {
 	private static final String PAUSE_TEXT = "pause";
 	private static final String RESUME_TEXT = "resume";
 
-	private javax.swing.JButton m_pauseResume = new javax.swing.JButton( "pause" );
-	private javax.swing.JLabel m_feedback = new javax.swing.JLabel( "speed: 1x" );
-	private javax.swing.JSlider m_speed = new javax.swing.JSlider();
-	private javax.swing.JButton m_restart = new javax.swing.JButton( "restart" );
+	private javax.swing.JButton pauseResume = new javax.swing.JButton( "pause" );
+	private javax.swing.JLabel feedback = new javax.swing.JLabel( "speed: 1x" );
+	private javax.swing.JSlider speed = new javax.swing.JSlider() {
+		@Override
+		public java.awt.Dimension getMaximumSize() {
+			java.awt.Dimension rv = super.getMaximumSize();
+			edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMaximumWidth( rv, 400 );
+			return rv;
+		}
+	};
+	private javax.swing.JButton restart = new javax.swing.JButton( "restart" );
 
 	public ControlPanel( final Program program ) {
 
-		m_speed.setMinimum( 1 );
-		m_speed.setValue( 1 );
-		m_speed.setMaximum( 10 );
+		this.speed.setMinimum( 1 );
+		this.speed.setValue( 1 );
+		this.speed.setMaximum( 10 );
 
-		m_restart.setEnabled( program.isRestartSupported() );
+		this.restart.setEnabled( program.isRestartSupported() );
 
-		m_pauseResume.addActionListener( new java.awt.event.ActionListener() {
+		this.pauseResume.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				boolean isPaused = ControlPanel.this.isPaused();
 				if( isPaused ) {
-					m_pauseResume.setText( PAUSE_TEXT );
-					program.handleSpeedChange( m_speed.getValue() );
+					ControlPanel.this.pauseResume.setText( PAUSE_TEXT );
+					program.handleSpeedChange( ControlPanel.this.speed.getValue() );
 				} else {
-					m_pauseResume.setText( RESUME_TEXT );
+					ControlPanel.this.pauseResume.setText( RESUME_TEXT );
 					program.handleSpeedChange( 0 );
 				}
-				m_speed.setEnabled( isPaused );
-				m_feedback.setEnabled( isPaused );
+				ControlPanel.this.speed.setEnabled( isPaused );
+				ControlPanel.this.feedback.setEnabled( isPaused );
 				updateFeedback();
 			}
 		} );
-		m_restart.addActionListener( new java.awt.event.ActionListener() {
+		this.restart.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				program.restart( e );
 			}
 		} );
 
-		m_speed.addChangeListener( new javax.swing.event.ChangeListener() {
+		this.speed.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				ControlPanel.this.updateFeedback();
-				program.handleSpeedChange( m_speed.getValue() );
+				program.handleSpeedChange( ControlPanel.this.speed.getValue() );
 			}
 		} );
-		m_speed.addMouseListener( new java.awt.event.MouseListener() {
+		this.speed.addMouseListener( new java.awt.event.MouseListener() {
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 			}
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
 				if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
 					//pass
 				} else {
-					m_speed.setValue( 1 );
+					ControlPanel.this.speed.setValue( 1 );
 				}
 			}
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
@@ -87,26 +94,28 @@ public class ControlPanel extends javax.swing.JPanel {
 			}
 		} );
 
+		javax.swing.Box box = javax.swing.Box.createHorizontalBox();
+		box.add( this.speed );
 		setLayout( new java.awt.GridBagLayout() );
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		add( m_pauseResume, gbc );
-		add( m_feedback, gbc );
+		add( this.pauseResume, gbc );
+		add( this.feedback, gbc );
 		gbc.weightx = 1.0;
-		add( m_speed, gbc );
+		add( box, gbc );
 		gbc.weightx = 0.0;
-		add( m_restart, gbc );
+		add( this.restart, gbc );
 	}
 
 	private boolean isPaused() {
-		return m_pauseResume.getText().equals( RESUME_TEXT );
+		return this.pauseResume.getText().equals( RESUME_TEXT );
 	}
 
 	private void updateFeedback() {
 		if( isPaused() ) {
-			m_feedback.setText( "speed: 0x" );
+			this.feedback.setText( "speed: 0x" );
 		} else {
-			m_feedback.setText( "speed: " + m_speed.getValue() + "x" );
+			this.feedback.setText( "speed: " + this.speed.getValue() + "x" );
 		}
 	}
 }

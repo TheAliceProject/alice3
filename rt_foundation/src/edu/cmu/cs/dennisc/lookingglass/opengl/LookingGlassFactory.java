@@ -201,7 +201,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 //		}
 //	}
 //	private LookingGlassAnimator m_animator = new LookingGlassAnimator();
-	class Animator extends com.sun.opengl.util.Animator{
+	class Animator extends com.sun.opengl.util.Animator {
 		private java.util.concurrent.Semaphore m_renderingLock = new java.util.concurrent.Semaphore( 1 );
 
 		public void acquireRenderingLock() {
@@ -305,12 +305,17 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	public synchronized void incrementAutomaticDisplayCount() {
 		m_automaticDisplayCount++;
 		if( m_automaticDisplayCount == 1 ) {
+			while( m_animator.isAnimating() ) {
+				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "waiting for animator to stop" );
+			}
 			m_animator.start();
 		}
 	}
 	public synchronized void decrementAutomaticDisplayCount() {
 		if( m_automaticDisplayCount == 1 ) {
 			m_animator.stop();
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "animator.stop()" );
 		}
 		m_automaticDisplayCount--;
 	}

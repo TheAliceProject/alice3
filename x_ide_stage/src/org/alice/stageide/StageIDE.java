@@ -165,12 +165,32 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected MoveAndTurnRuntimeProgram createRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
 		return new MoveAndTurnRuntimeProgram( sceneType, vm );
 	}
+	private int xLocation = 100;
+	private int yLocation = 100;
 	@Override
 	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
 		vm.setEntryPointType( this.getProgramType() );
 		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
-		rtProgram.showInJDialog( this, true, new String[]{} );
+		
+		this.getSceneEditor().setRenderingEnabled( false );
+		//this.setRenderingEnabled( false );
+		try {
+			rtProgram.showInJDialog( this, true, new String[]{ "X_LOCATION="+xLocation, "Y_LOCATION="+yLocation } );
+		} finally {
+			try {
+				this.xLocation = Integer.parseInt( rtProgram.getParameter( "X_LOCATION" ) );
+			} catch( Throwable t ) {
+				this.xLocation = 0;
+			}
+			try {
+				this.yLocation = Integer.parseInt( rtProgram.getParameter( "Y_LOCATION" ) );
+			} catch( Throwable t ) {
+				this.yLocation = 0;
+			}
+			this.getSceneEditor().setRenderingEnabled( true );
+			//this.setRenderingEnabled( true );
+		}
 	}
 	@Override
 	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
