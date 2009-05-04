@@ -276,7 +276,8 @@ public abstract class Model extends Transformable {
 		m_sgAppearance.setShadingStyle( shadingStyle.getSGShadingStyle() );
 	}
 
-	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	//todo: until this descends it does not make sense
+	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
 	public Boolean isShowing() {
 		return m_sgVisual.isShowing.getValue();
 	}

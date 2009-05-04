@@ -80,6 +80,15 @@ abstract class MembersTab extends swing.PageAxisPane {
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : this.getTypes() ) {
 			this.add( this.getTypeMembersPane( type ) );
 		}
+//		java.util.List< AbstractTypeMembersPane > panes = new java.util.LinkedList< AbstractTypeMembersPane >();
+//		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : this.getTypes() ) {
+//			panes.add( this.getTypeMembersPane( type ) );
+//		}
+//		for( AbstractTypeMembersPane pane : panes ) {
+//			for( java.awt.Component component : pane.getComponents() ) {
+//				this.add( component );
+//			}
+//		}
 		this.revalidate();
 		this.repaint();
 	}
