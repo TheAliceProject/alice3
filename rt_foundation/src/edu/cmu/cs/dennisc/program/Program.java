@@ -355,6 +355,10 @@ public abstract class Program extends javax.swing.JApplet {
 //		this.addComponentListener( new ComponentAdapter() );
 		
 		awtContainer.add( this );
+		if( awtContainer instanceof javax.swing.JComponent ) {
+			((javax.swing.JComponent)awtContainer).revalidate();
+		}
+		awtContainer.repaint();
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				java.awt.Container contentPane = Program.this.getContentPane();

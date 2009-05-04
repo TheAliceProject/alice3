@@ -39,7 +39,12 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	}
 	
 	private zoot.ActionOperation getRestartOperation() {
-		return org.alice.ide.IDE.getSingleton().getRestartOperation();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		if( ide != null ) {
+			return ide.getRestartOperation();
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected boolean isRestartSupported() {

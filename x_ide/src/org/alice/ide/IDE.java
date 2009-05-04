@@ -22,8 +22,6 @@
  */
 package org.alice.ide;
 
-import javax.swing.Icon;
-
 /**
  * @author Dennis Cosgrove
  */
