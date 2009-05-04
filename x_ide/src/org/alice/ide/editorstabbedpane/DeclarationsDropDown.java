@@ -40,16 +40,16 @@ class EditMethodOperation extends org.alice.ide.operations.AbstractActionOperati
 	}
 }
 
-class EditFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-
-	public EditFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		this.field = field;
-		this.putValue( javax.swing.Action.NAME, "Edit " + this.field.getName() + "..." );
-	}
-	public void perform( zoot.ActionContext actionContext ) {
-	}
-}
+//class EditFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
+//	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+//
+//	public EditFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+//		this.field = field;
+//		this.putValue( javax.swing.Action.NAME, "Edit " + this.field.getName() + "..." );
+//	}
+//	public void perform( zoot.ActionContext actionContext ) {
+//	}
+//}
 
 class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
@@ -59,7 +59,28 @@ class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperati
 		this.putValue( javax.swing.Action.NAME, "Edit Properties..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo" );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] array = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[ this.type.fields.size() ];
+		this.type.fields.toArray( array );
+		EditFieldsPane editFieldsPane = new EditFieldsPane( this.type );
+		Boolean isAccepted = editFieldsPane.showInJDialog( getIDE() );
+		if( isAccepted != null ) {
+//			for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : fields ) {
+//				if( this.type.fields.contains( field ) ) {
+//					//pass
+//				} else {
+//					this.type.fields.add( field );
+//				}
+//			}
+			actionContext.commit();
+		} else {
+			int N = this.type.fields.size();
+//			this.type.fields.set( 0, array );
+			if( array.length < N ) {
+//				this.type.fields.remove( array.length, N-1 );
+				javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo: handle cancel.  apologies." );
+			}
+			actionContext.cancel();
+		}
 	}
 }
 

@@ -26,7 +26,9 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class FieldDeclarationPane extends swing.LineAxisPane {
+	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		this.field = field;
 		String text;
 		if( field.isFinal() ) {
 			text = "permanently set ";
@@ -48,5 +50,8 @@ public class FieldDeclarationPane extends swing.LineAxisPane {
 			component = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane(null, component, field.initializer );
 		}
 		this.add( component );
+	}
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getField() {
+		return this.field;
 	}
 }
