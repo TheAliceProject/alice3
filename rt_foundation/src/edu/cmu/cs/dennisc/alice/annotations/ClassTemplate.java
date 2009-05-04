@@ -29,4 +29,5 @@ package edu.cmu.cs.dennisc.alice.annotations;
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)
 public @interface ClassTemplate {
 	boolean isFollowToSuperClassDesired();
+	boolean isConsumptionBySubClassDesired();
 }

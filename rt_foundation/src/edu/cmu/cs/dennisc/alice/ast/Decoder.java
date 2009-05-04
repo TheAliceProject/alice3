@@ -136,12 +136,41 @@ public class Decoder {
 		Class< ? >[] parameterTypes = decodeParameters( xmlConstructor );
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredConstructor( declaringCls, parameterTypes );
 	}
+	
+	
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> > mapToMap = new edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> >();
+	public static void addMethodFilter( Class<?> prevCls, String name, Class<?> nextCls ) {
+		Decoder.mapToMap.put( prevCls, name, nextCls );
+	}
+	private static Class<?> filterClsIfNecessary( Class<?> cls, String name ) {
+		Class<?> rv = Decoder.mapToMap.get( cls, name );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = cls;
+		}
+		return rv;
+	}
+	
 	private java.lang.reflect.Method decodeMethod( org.w3c.dom.Element xmlParent, String nodeName ) {
 		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlParent, nodeName );
 		Class< ? > declaringCls = decodeDeclaringClass( xmlMethod );
 		String name = xmlMethod.getAttribute( "name" );
 		Class< ? >[] parameterTypes = decodeParameters( xmlMethod );
-		java.lang.reflect.Method rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredMethod( declaringCls, name, parameterTypes );
+		java.lang.reflect.Method rv;
+		try {
+			rv = declaringCls.getDeclaredMethod( name, parameterTypes );
+		} catch( NoSuchMethodException nsme1 ) {
+			declaringCls = Decoder.filterClsIfNecessary( declaringCls, name );
+//			if( declaringCls.getName().equals( "org.alice.apis.moveandturn.Transformable" ) ) {
+//				declaringCls = edu.cmu.cs.dennisc.lang.ClassUtilities.forName( "org.alice.apis.moveandturn.Model" );
+//			}
+			try {
+				rv = declaringCls.getDeclaredMethod( name, parameterTypes );
+			} catch( NoSuchMethodException nsme2 ) {
+				rv = null;
+			}
+		}
 		assert rv != null;
 		return rv;
 	}

@@ -37,6 +37,21 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 		super( factory, expressionStatement, owner );
 		this.refresh();
 	}
+
+	@Override
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
+		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+			if( methodInvocation.isValid() ) {
+				//pass
+			} else {
+				return java.awt.Color.RED;
+			}
+		}
+		return super.getBackgroundPaint( x, y, width, height );
+	}
 	
 	@Override
 	public void addNotify() {
@@ -61,6 +76,11 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
 				
+				if( methodInvocation.isValid() ) {
+					//pass
+				} else {
+					this.setBackground( java.awt.Color.RED );
+				}
 				
 				//todo:
 				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {

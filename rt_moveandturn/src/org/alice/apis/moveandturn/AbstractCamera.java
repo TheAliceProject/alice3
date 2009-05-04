@@ -23,6 +23,7 @@
 
 package org.alice.apis.moveandturn;
 
+import edu.cmu.cs.dennisc.alice.annotations.ClassTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 
@@ -30,6 +31,7 @@ import edu.cmu.cs.dennisc.alice.annotations.Visibility;
  * @author Dennis Cosgrove
  */
 
+@ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired=true)
 public abstract class AbstractCamera extends Transformable {
 	private edu.cmu.cs.dennisc.lookingglass.LookingGlass m_lookingGlass = null;
 

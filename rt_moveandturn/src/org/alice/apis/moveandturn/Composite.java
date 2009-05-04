@@ -28,6 +28,7 @@ import edu.cmu.cs.dennisc.alice.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
+@ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired=true)
 public abstract class Composite extends Element implements ReferenceFrame {
 	public static final Double DEFAULT_DURATION = 1.0;
 	public static final Double RIGHT_NOW = 0.0;

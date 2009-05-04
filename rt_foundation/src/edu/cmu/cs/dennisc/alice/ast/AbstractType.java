@@ -76,6 +76,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	}
 
 	public abstract boolean isFollowToSuperClassDesired();
+	public abstract boolean isConsumptionBySubClassDesired();
 	public abstract AbstractPackage getPackage();
 	public abstract AbstractType getSuperType();
 	public abstract java.util.ArrayList< ? extends AbstractConstructor > getDeclaredConstructors();

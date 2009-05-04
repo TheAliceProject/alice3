@@ -22,12 +22,14 @@
  */
 package org.alice.apis.moveandturn.gallery;
 
+import edu.cmu.cs.dennisc.alice.annotations.ClassTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 
 /**
  * @author Dennis Cosgrove
  */
+@ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired=true)
 public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalModel {
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< String > MODELED_BY_CREDIT_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< String >( GalleryModel.class, "ModeledByCredit" );
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< String > PAINTED_BY_CREDIT_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< String >( GalleryModel.class, "PaintedByCredit" );

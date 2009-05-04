@@ -23,12 +23,14 @@
 
 package org.alice.apis.moveandturn;
 
+import edu.cmu.cs.dennisc.alice.annotations.ClassTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 
 /**
  * @author Dennis Cosgrove
  */
+@ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired=true)
 public abstract class AbstractPerspectiveCamera extends AbstractNearPlaneAndFarPlaneCamera {
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
     @Override

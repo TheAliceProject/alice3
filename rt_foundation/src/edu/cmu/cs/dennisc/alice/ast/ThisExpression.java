@@ -29,7 +29,8 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class ThisExpression extends Expression {
 	@Override
 	public AbstractType getType() {
-		//todo
-		return TypeDeclaredInJava.get( Object.class );
+		return this.getFirstAncestorAssignableTo( AbstractType.class );
+//		//todo
+//		return TypeDeclaredInJava.get( Object.class );
 	}
 }

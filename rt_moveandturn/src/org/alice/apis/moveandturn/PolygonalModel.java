@@ -23,6 +23,7 @@
 
 package org.alice.apis.moveandturn;
 
+import edu.cmu.cs.dennisc.alice.annotations.ClassTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 
@@ -30,6 +31,7 @@ import edu.cmu.cs.dennisc.alice.annotations.Visibility;
  * @author Dennis Cosgrove
  */
 
+@ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired=true)
 public class PolygonalModel extends Model {
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< int[] > POLYGONS_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< int[] >( PolygonalModel.class, "Polygons" );
 

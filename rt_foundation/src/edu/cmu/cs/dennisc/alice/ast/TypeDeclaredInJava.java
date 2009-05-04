@@ -203,6 +203,16 @@ public class TypeDeclaredInJava extends AbstractType {
 		}
 	}	
 	@Override
+	public boolean isConsumptionBySubClassDesired() {
+		if( m_cls.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class ) ) {
+			edu.cmu.cs.dennisc.alice.annotations.ClassTemplate classTemplate = m_cls.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class );
+			return classTemplate.isConsumptionBySubClassDesired();
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
 	public String getName() {
 		return m_cls.getSimpleName();
 	}

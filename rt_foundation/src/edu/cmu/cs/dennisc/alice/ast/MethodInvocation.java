@@ -39,6 +39,7 @@ public class MethodInvocation extends Expression {
 	public MethodInvocation() {
 	}
 	public MethodInvocation( Expression expression, AbstractMethod method, Argument... arguments ){
+		assert method.getDeclaringType().isAssignableFrom( expression.getType() );
 		this.expression.setValue( expression );
 		this.method.setValue( method );
 		this.arguments.add( arguments );
@@ -46,5 +47,17 @@ public class MethodInvocation extends Expression {
 	@Override
 	public AbstractType getType() {
 		return method.getValue().getReturnType();
+	}
+	
+	public boolean isValid() {
+		boolean rv = false;
+		Expression e = expression.getValue();
+		AbstractMethod m = method.getValue();
+		if( e != null && m != null ) {
+			rv = m.getDeclaringType().isAssignableFrom( e.getType() );
+		} else {
+			rv = false;
+		}
+		return rv;
 	}
 }

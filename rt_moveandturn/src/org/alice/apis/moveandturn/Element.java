@@ -28,7 +28,7 @@ import edu.cmu.cs.dennisc.alice.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-@ClassTemplate(isFollowToSuperClassDesired = false)
+@ClassTemplate(isFollowToSuperClassDesired = false, isConsumptionBySubClassDesired=true)
 public class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner {
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< Composite > NAME_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< Composite >( Element.class, "Name" );
 

@@ -29,6 +29,7 @@ import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 /**
  * @author Dennis Cosgrove
  */
+@ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired=true)
 public abstract class AbstractTransformable extends Composite {
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< PointOfView > LOCAL_POINT_OF_VIEW_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< PointOfView >( Transformable.class, "LocalPointOfView" );
 

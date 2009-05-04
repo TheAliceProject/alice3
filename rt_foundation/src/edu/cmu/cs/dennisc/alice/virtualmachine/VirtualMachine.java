@@ -469,7 +469,12 @@ public abstract class VirtualMachine {
 	}
 
 	protected Object evaluateMethodInvocation( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-		return this.invoke( methodInvocation.method.getValue(), this.evaluate( methodInvocation.expression.getValue() ), this.evaluateArguments( methodInvocation.method.getValue().getParameters(), methodInvocation.arguments ) );
+		if( methodInvocation.isValid() ) {
+			return this.invoke( methodInvocation.method.getValue(), this.evaluate( methodInvocation.expression.getValue() ), this.evaluateArguments( methodInvocation.method.getValue().getParameters(), methodInvocation.arguments ) );
+		} else {
+			javax.swing.JOptionPane.showMessageDialog( null, "skipping invalid methodInvocation: " + methodInvocation.method.getValue().getName() );
+			return null;
+		}
 	}
 	protected Object evaluateNullLiteral( edu.cmu.cs.dennisc.alice.ast.NullLiteral nullLiteral ) {
 		return null;

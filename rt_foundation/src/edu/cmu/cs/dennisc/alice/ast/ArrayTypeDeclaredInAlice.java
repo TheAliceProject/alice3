@@ -106,6 +106,12 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 		//todo?
 		return m_leafType.isFollowToSuperClassDesired();
 	}
+	@Override
+	public boolean isConsumptionBySubClassDesired() {
+		//todo?
+		return m_leafType.isConsumptionBySubClassDesired();
+	}
+	
 
 	@Override
 	public java.util.ArrayList< ? extends AbstractConstructor > getDeclaredConstructors() {

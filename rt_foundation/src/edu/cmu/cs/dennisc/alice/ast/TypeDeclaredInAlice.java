@@ -146,6 +146,10 @@ public class TypeDeclaredInAlice extends AbstractType {
 		return true;
 	}
 	@Override
+	public boolean isConsumptionBySubClassDesired() {
+		return false;
+	}
+	@Override
 	public String getName() {
 		return name.getValue();
 	}
