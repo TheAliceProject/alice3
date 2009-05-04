@@ -1,14 +1,11 @@
 package scopeschmope;
 
 class ScopeSchmopeVirtualMachine extends edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine {
-//	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField;
-//	public ScopeSchmopeVirtualMachine( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
-//		this.sceneField = sceneField;
-//	}
-//	
 	private Object ths = null; 
 	@Override
 	protected Object getThis() {
+		//it just so happens that the first call to this is the scene
+		//since this whole thing is a hack we just roll with it
 		if( this.ths != null ) {
 			//pass
 		} else {
@@ -18,26 +15,18 @@ class ScopeSchmopeVirtualMachine extends edu.cmu.cs.dennisc.alice.virtualmachine
 	}
 }
 
-//class ScopeSchmopeSceneEditor extends org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor {
-//	@Override
-//	protected void updateSceneBasedOnScope() {
-//	}
-//}
-
 public class ScopeSchmopeIDE extends org.alice.stageide.StageIDE {
 	public ScopeSchmopeIDE() {
 		this.setLocale( new java.util.Locale( "en", "US", "scopeschmope" ) );
 	}
 	@Override
+	protected String getApplicationName() {
+		return "ScopeSchmope";
+	}
+	@Override
 	public edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine createVirtualMachineForRuntimeProgram() {
-//		return new ScopeSchmopeVirtualMachine( this.getSceneField() );
 		return new ScopeSchmopeVirtualMachine();
 	}
-//	@Override
-//	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-//		return new ScopeSchmopeSceneEditor();
-//	}
-	
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeInScope() {
 		return this.getSceneType();
