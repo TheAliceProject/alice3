@@ -22,7 +22,6 @@
  */
 
 package org.alice;
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,29 +37,10 @@ import org.alice.apis.moveandturn.TurnDirection;
 import org.alice.apis.moveandturn.gallery.animals.Chicken;
 import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
 import org.alice.interact.CameraNavigatorWidget;
-import org.alice.interact.CreateASimDragAdapter;
 import org.alice.interact.GlobalDragAdapter;
-import org.alice.interact.MovementDirection;
-import org.alice.interact.MovementType;
 import org.alice.interact.PickHint;
-import org.alice.interact.PointOfViewManager;
-import org.alice.interact.PointsOfViewPanel;
-import org.alice.interact.condition.MovementDescription;
-import org.alice.interact.event.ManipulationEvent;
-import org.alice.interact.event.ManipulationEventCriteria;
-import org.alice.interact.handle.HandleSet;
-import org.alice.interact.handle.LinearTranslateHandle;
-import org.alice.interact.handle.ManipulationHandle2DCameraDriver;
-import org.alice.interact.handle.ManipulationHandle2DCameraStrafe;
-import org.alice.interact.handle.ManipulationHandle2DCameraTurnUpDown;
-import org.alice.interact.handle.ManipulationHandleIndirection;
-import org.alice.interact.manipulator.CameraDragDriveManipulator;
-import org.alice.interact.manipulator.CameraDragStrafeManipulator;
-import org.alice.interact.manipulator.CameraDragUpDownRotateManipulator;
-import org.alice.interact.manipulator.LinearDragManipulator;
+import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 
-import edu.cmu.cs.dennisc.alice.ide.IDE;
-import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter;
@@ -127,12 +107,7 @@ public class SceneEditor extends Program {
 	
 	public void setProject(edu.cmu.cs.dennisc.alice.Project project)
 	{
-		//org.alice.ide.event.ProjectOpenEvent e = new org.alice.ide.event.ProjectOpenEvent( this, this.project, project );
-	//	fireProjectOpening( e );
-		this.project = project;
-		this.pointOfViewManager.initFromProject( project );
-		this.povPanel.setPOVManager( this.pointOfViewManager );
-	//	fireProjectOpened( e );
+		this.viewPanel.setProject( project );
 	}
 	
 	public void loadProjectFrom( java.io.File file ) {
@@ -152,7 +127,7 @@ public class SceneEditor extends Program {
 	}
 	
 	public void saveProjectTo( java.io.File file ) {
-		this.pointOfViewManager.writeToProject( this.project );
+		this.viewPanel.saveToProject();
 		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( this.project, file );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
 	}
@@ -166,20 +141,17 @@ public class SceneEditor extends Program {
 		return false;
 	}
 	
-	PointOfViewManager pointOfViewManager = new PointOfViewManager();
-	protected PointsOfViewPanel povPanel;
+	SceneViewManagerPanel viewPanel = new SceneViewManagerPanel();
 	protected java.io.File projectFile = new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "SCENE_EDITOR_TEST.a3p" );
 	protected java.io.File defaultFile = new java.io.File( "C:/Program Files/Alice/3.beta.0000/application/projects/templates/GrassyProject.a3p" );
 	
 	protected void initializeUI()
 	{
-		this.povPanel = new PointsOfViewPanel(this.pointOfViewManager);
-		
 		CameraNavigatorWidget controlPanel = new CameraNavigatorWidget(globalDragAdapter);
 		
 		globalDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 		
-		this.pointOfViewManager.setCamera(camera.getSGPerspectiveCamera());
+		this.viewPanel.setCamera(camera.getSGPerspectiveCamera());
 		
 		JButton saveButton = new JButton("SAVE");
 		saveButton.addActionListener( new ActionListener(){
@@ -192,7 +164,7 @@ public class SceneEditor extends Program {
 		JPanel widgetPanel = new JPanel();
 		widgetPanel.setLayout(new FlowLayout());
 		widgetPanel.add(controlPanel);
-		widgetPanel.add(this.povPanel);
+		widgetPanel.add(this.viewPanel);
 		
 		JButton loadButton = new JButton("LOAD");
 		loadButton.addActionListener( new ActionListener(){
@@ -261,7 +233,7 @@ public class SceneEditor extends Program {
 	@Override
 	protected void run() {
 		globalDragAdapter.setAnimator( this.getAnimator() );
-		this.pointOfViewManager.setOnscreenLookingGlass(globalDragAdapter.getOnscreenLookingGlass());
+		this.viewPanel.setCamera(globalDragAdapter.getOnscreenLookingGlass().getCameraAt( 0 ));
 	}
 
 	
