@@ -22,6 +22,8 @@
  */
 package org.alice.ide;
 
+import javax.swing.Icon;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -929,11 +931,19 @@ public abstract class IDE extends zoot.ZFrame {
 		return crawler.getList();
 	}
 
+	public edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeInScope() {
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
+		if( codeInFocus != null ) {
+			return codeInFocus.getDeclaringType();
+		} else {
+			return null;
+		}
+	}
 	protected void addExpressionBonusFillInsForType( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
 		if( codeInFocus != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = this.getTypeInScope();
 			boolean isNecessary = true;
-			edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = codeInFocus.getDeclaringType();
 			if( type.isAssignableFrom( selectedType ) ) {
 				isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 				this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
@@ -1462,48 +1472,8 @@ public abstract class IDE extends zoot.ZFrame {
 			return null;
 		}
 	}
-	public boolean isInScope() {
-		//todo?
-		return createInstanceExpression() != null;
-	}
-	public edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) /*throws OutOfScopeException*/{
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = getFocusedCode();
-		if( focusedCode != null && field != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType focusedCodeDeclaringType = focusedCode.getDeclaringType();
-			if( focusedCodeDeclaringType != null ) {
-				edu.cmu.cs.dennisc.alice.ast.ThisExpression thisExpression = new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
-				if( focusedCodeDeclaringType.equals( field.getValueType() ) ) {
-					return thisExpression;
-				} else if( focusedCodeDeclaringType.equals( field.getDeclaringType() ) ) {
-					return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( thisExpression, field );
-				} else {
-					return null;
-				}
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-	public edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
-		return createInstanceExpression( getFieldSelection() );
-	}
 
-	public boolean isSelectedFieldInScope() {
-		return createInstanceExpression() != null;
-	}
-	public boolean isFieldInScope( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		return createInstanceExpression( field ) != null;
-	}
-	public boolean isDragInProgress() {
-		return this.isDragInProgress;
-	}
-	public void setDragInProgress( boolean isDragInProgress ) {
-		this.isDragInProgress = isDragInProgress;
-		this.currentDropReceptorComponent = null;
-	}
-
+	
 	public String getInstanceTextForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, boolean isOutOfScopeTagDesired ) {
 		String text;
 		if( field != null ) {
@@ -1524,6 +1494,46 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 		return text;
 	}
+
+	public edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) /*throws OutOfScopeException*/{
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode focusedCode = getFocusedCode();
+		if( focusedCode != null && field != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType focusedCodeDeclaringType = focusedCode.getDeclaringType();
+			if( focusedCodeDeclaringType != null ) {
+				edu.cmu.cs.dennisc.alice.ast.ThisExpression thisExpression = new edu.cmu.cs.dennisc.alice.ast.ThisExpression();
+				if( focusedCodeDeclaringType.equals( field.getValueType() ) ) {
+					return thisExpression;
+				} else if( focusedCodeDeclaringType.equals( field.getDeclaringType() ) ) {
+					return new edu.cmu.cs.dennisc.alice.ast.FieldAccess( thisExpression, field );
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+	public final edu.cmu.cs.dennisc.alice.ast.Expression createInstanceExpression() /*throws OutOfScopeException*/{
+		return createInstanceExpression( getFieldSelection() );
+	}
+
+	public boolean isFieldInScope( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		return createInstanceExpression( field ) != null;
+	}
+	public final boolean isSelectedFieldInScope() {
+		return isFieldInScope( getFieldSelection() );
+	}
+
+	public boolean isDragInProgress() {
+		return this.isDragInProgress;
+	}
+	public void setDragInProgress( boolean isDragInProgress ) {
+		this.isDragInProgress = isDragInProgress;
+		this.currentDropReceptorComponent = null;
+	}
+
 
 	private java.util.Map< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node > mapUUIDToNode = new java.util.HashMap< java.util.UUID, edu.cmu.cs.dennisc.alice.ast.Node >();
 
@@ -1703,5 +1713,15 @@ public abstract class IDE extends zoot.ZFrame {
 	public zoot.ActionOperation getRestartOperation() {
 		//todo
 		return this.getRunOperation();
+	}
+
+
+	public boolean isInstanceLineDesired() {
+		return true;
+	}
+
+
+	public String getTextForThis() {
+		return edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class, "edu.cmu.cs.dennisc.alice.ast.Templates" );
 	}
 }

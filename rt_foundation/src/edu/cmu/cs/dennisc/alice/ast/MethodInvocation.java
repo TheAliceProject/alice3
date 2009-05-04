@@ -54,7 +54,13 @@ public class MethodInvocation extends Expression {
 		Expression e = expression.getValue();
 		AbstractMethod m = method.getValue();
 		if( e != null && m != null ) {
-			rv = m.getDeclaringType().isAssignableFrom( e.getType() );
+			AbstractType declaringType = m.getDeclaringType();
+			AbstractType expressionType = e.getType();
+			if( declaringType != null && expressionType != null ) {
+				rv = declaringType.isAssignableFrom( expressionType );
+			} else {
+				rv = false;
+			}
 		} else {
 			rv = false;
 		}

@@ -102,6 +102,19 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava REVOLUTIONS_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( org.alice.apis.moveandturn.AngleInRevolutions.class, Number.class ) );
 	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava PORTION_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( org.alice.apis.moveandturn.Portion.class, Number.class ) );
+	protected org.alice.ide.common.DeclarationNameLabel createDeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		//todo: better name
+		class ThisFieldAccessNameLabel extends org.alice.ide.common.DeclarationNameLabel {
+			public ThisFieldAccessNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+				super( field );
+			}
+			@Override
+			protected String getNameText() {
+				return "this." + super.getNameText();
+			}
+		}
+		return new ThisFieldAccessNameLabel( field );
+	}
 	@Override
 	public java.awt.Component getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
@@ -111,18 +124,7 @@ public class StageIDE extends org.alice.ide.IDE {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
 					if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
-						//todo: better name
-						class ThisFieldAccessNameLabel extends org.alice.ide.common.DeclarationNameLabel {
-							public ThisFieldAccessNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-								super( field );
-							}
-							@Override
-							protected java.lang.String getNameText() {
-								return "this." + super.getNameText();
-							}
-						}
-						
-						return new org.alice.ide.common.ExpressionPane( expression, new ThisFieldAccessNameLabel( field ) ) {
+						return new org.alice.ide.common.ExpressionPane( expression, this.createDeclarationNameLabel( field ) ) {
 							@Override
 							protected boolean isExpressionTypeFeedbackDesired() {
 								return true;

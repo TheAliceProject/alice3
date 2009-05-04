@@ -252,14 +252,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-	private void updateSceneBasedOnScope() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
-		if( code != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
+	protected void updateSceneBasedOnScope() {
+//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getIDE().getTypeInScope();
+		if( type != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
 			if( sceneField != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
 				boolean isSceneScope = type.isAssignableFrom( sceneType ) || this.sidePane.isExpanded();
+				
 				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
 
 				try {

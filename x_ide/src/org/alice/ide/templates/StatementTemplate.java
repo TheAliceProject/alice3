@@ -64,7 +64,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	}
 	@Override
 	public boolean contains( int x, int y ) {
-		if( getIDE().isInScope() ) {
+		if( getIDE().isSelectedFieldInScope() ) {
 			return super.contains( x, y );
 		} else {
 			return false;
@@ -73,7 +73,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		super.paint( g );
-		if( getIDE().isInScope() ) {
+		if( getIDE().isSelectedFieldInScope() ) {
 			//pass
 		} else {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;

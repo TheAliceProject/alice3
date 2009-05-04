@@ -244,7 +244,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 			//this.scrollPane.setBackground( java.awt.Color.RED );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
 			this.add( header );
-			if( this.getIDE().isEmphasizingClasses() ) {
+			if( this.getIDE().isEmphasizingClasses() || this.getIDE().isInstanceLineDesired()==false ) {
 				//pass
 			} else {
 				header.add( new InstanceLine( this.code ) );

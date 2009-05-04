@@ -53,7 +53,7 @@ public class ThisPane extends AccessiblePane {
 	};
 
 	public ThisPane() {
-		zoot.ZLabel label = zoot.ZLabel.acquire( "this" );
+		zoot.ZLabel label = zoot.ZLabel.acquire( getIDE().getTextForThis() );
 		this.add( label );
 		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
@@ -71,7 +71,7 @@ public class ThisPane extends AccessiblePane {
 	private void updateBasedOnFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		if( code != null ) {
 			this.type = code.getDeclaringType();
-			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as this" );
+			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as " + getIDE().getTextForThis() );
 		} else {
 			this.type = TYPE_FOR_NULL;
 			this.setToolTipText( null );
