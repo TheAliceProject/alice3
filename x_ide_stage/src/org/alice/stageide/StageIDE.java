@@ -2,13 +2,13 @@ package org.alice.stageide;
 
 public class StageIDE extends org.alice.ide.IDE {
 	public StageIDE() {
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Transformable.class, "resize", org.alice.apis.moveandturn.Model.class );
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Transformable.class, "resizeWidth", org.alice.apis.moveandturn.Model.class );
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Transformable.class, "resizeHeight", org.alice.apis.moveandturn.Model.class );
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Transformable.class, "resizeDepth", org.alice.apis.moveandturn.Model.class );
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Transformable.class, "setWidth", org.alice.apis.moveandturn.Model.class );
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Transformable.class, "setHeight", org.alice.apis.moveandturn.Model.class );
-		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Transformable.class, "setDepth", org.alice.apis.moveandturn.Model.class );
+		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resize", org.alice.apis.moveandturn.Transformable.class );
+		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resizeWidth", org.alice.apis.moveandturn.Transformable.class );
+		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resizeHeight", org.alice.apis.moveandturn.Transformable.class );
+		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resizeDepth", org.alice.apis.moveandturn.Transformable.class );
+		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setWidth", org.alice.apis.moveandturn.Transformable.class );
+		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setHeight", org.alice.apis.moveandturn.Transformable.class );
+		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setDepth", org.alice.apis.moveandturn.Transformable.class );
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.alice.apis.moveandturn.Transformable.class );
 		this.addWindowStateListener( new java.awt.event.WindowStateListener() {
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {

@@ -603,21 +603,21 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( widthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Model.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
 								.createInstanceExpression( isThis, field ), createExpression( widthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
 					double heightFactor = model.getResizeHeightAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( heightFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Model.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
 								.createInstanceExpression( isThis, field ), createExpression( heightFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
 					double depthFactor = model.getResizeDepthAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( depthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Model.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
 								.createInstanceExpression( isThis, field ), createExpression( depthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
 					if( model instanceof org.alice.apis.moveandturn.Text ) {
