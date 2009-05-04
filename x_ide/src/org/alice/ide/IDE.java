@@ -544,12 +544,23 @@ public abstract class IDE extends zoot.ZFrame {
 			return new java.io.File( "/Program Files/" + this.getApplicationName() + "/" + this.getVersionText() + "/application" );
 		}
 	}
+	private java.io.File getApplicationRootDirectory( String[] propertyKeys, String[] subPaths ) {
+		for( String propertyKey : propertyKeys ) {
+			for( String subPath : subPaths ) {
+				java.io.File rv = new java.io.File( java.lang.System.getProperty( propertyKey ), subPath );
+				if( rv.exists() ) {
+					return rv;
+				}
+			}
+		}
+		return null;
+	}
 	public java.io.File getApplicationRootDirectory() {
 		if( this.applicationDirectory != null ) {
 			//pass
 		} else {
-			this.applicationDirectory = new java.io.File( java.lang.System.getProperty( "user.dir" ), "application" );
-			if( this.applicationDirectory.exists() ) {
+			this.applicationDirectory = getApplicationRootDirectory( new String[] { "org.alice.ide.IDE.install.dir", "user.dir" }, new String[] { "application", "required/application/" + this.getVersionText() } );
+			if( this.applicationDirectory != null ) {
 				//pass
 			} else {
 				this.applicationDirectory = this.getDefaultApplicationRootDirectory();

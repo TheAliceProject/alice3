@@ -42,18 +42,21 @@ public class LaunchUtilities {
 		}
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				for( String path : new String[] { "./application/classinfos.zip", "./application/classinfos" } ) {
-					java.io.File file = new java.io.File( path );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( file.getAbsolutePath() );
-					if( file.exists() ) {
-						long t0 = System.currentTimeMillis();
-						edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.addClassInfosFrom( file );
-						long tDelta = System.currentTimeMillis() - t0;
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "ClassInfoManager", tDelta );
-						break;
+				IDE ide = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cls );
+				java.io.File applicationRootDirectory = ide.getApplicationRootDirectory();
+				if( applicationRootDirectory != null && applicationRootDirectory.exists() ) {
+					for( String path : new String[] { "classinfos.zip", "classinfos" } ) {
+						java.io.File file = new java.io.File( applicationRootDirectory, path );
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( file.getAbsolutePath() );
+						if( file.exists() ) {
+							long t0 = System.currentTimeMillis();
+							edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.addClassInfosFrom( file );
+							long tDelta = System.currentTimeMillis() - t0;
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "ClassInfoManager", tDelta );
+							break;
+						}
 					}
 				}
-				IDE ide = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cls );
 				if( args.length > 0 ) {
 					ide.loadProjectFrom( new java.io.File( args[ 0 ] ) );
 //				} else {

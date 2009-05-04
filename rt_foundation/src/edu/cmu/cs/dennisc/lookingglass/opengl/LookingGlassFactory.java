@@ -254,7 +254,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
 				libraryPath = "\"/Applications/Programming/Alice/3.beta.0000/tools/jogl/lib/macosx-universal\"";
 			} else {
-				libraryPath = "\"/Program Files/Alice/3.beta.0000/tools/jogl/lib/windows-i586\"";
+				libraryPath = "\"/Program Files/Alice3Beta/required/ext/3.beta.0025/jogl/lib/windows-i586\"";
 			}
 			sb.append( "-ea -Xmx1024m -Djava.library.path=" + libraryPath );
 			

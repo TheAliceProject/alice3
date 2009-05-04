@@ -26,11 +26,8 @@ package org.alice.apis.moveandturn.gallery;
  * @author Dennis Cosgrove
  */
 public class GalleryRootUtilities {
-	private static java.io.File APPLICATION_ROOT;
-	static {
-		APPLICATION_ROOT = new java.io.File( System.getProperty( "user.dir" ) );
-	}
 	private static final String ROOT_PATH_KEY = "rootPath";
+	private static final String GALLERY_VERSION_TEXT = "3.beta.0025";
 	public static java.io.File calculateGalleryRootDirectory( Class<?> cls, String subPath, String name, String childName, String grandchildName, String titleForPromptingUserToSpecifyOrInstall, String applicationName ) {
 		java.io.File rv = null;
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
@@ -39,6 +36,15 @@ public class GalleryRootUtilities {
 		String rootPathSystemPreference = systemPreferences.get( ROOT_PATH_KEY, null );
 		do {
 			java.util.List< String > potentialPaths = new java.util.LinkedList< String >();
+			
+			String installDirPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
+			if( installDirPath != null && installDirPath.length() > 0 ) {
+				java.io.File installDir = new java.io.File( installDirPath );
+				if( installDir != null && installDir.exists() ) {
+					potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( installDir ) + "/required/gallery/" + GALLERY_VERSION_TEXT );
+				}
+			}
+
 			String rootPathProperty = System.getProperty( cls.getName() + "." + ROOT_PATH_KEY );
 			if( rootPathProperty != null ) {
 				potentialPaths.add( rootPathProperty );
@@ -51,15 +57,15 @@ public class GalleryRootUtilities {
 			}
 			potentialPaths.add( "c:/Program Files" + subPath );
 			potentialPaths.add( "c:/Program Files (x86)" + subPath );
-			if( APPLICATION_ROOT != null && APPLICATION_ROOT.exists() ) {
-				potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( APPLICATION_ROOT ) + "/" + name );
+			
+			java.io.File userDir = new java.io.File( System.getProperty( "user.dir" ) );
+			if( userDir != null && userDir.exists() ) {
+				potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( userDir ) + "/" + name );
 			}
 			if( rootPathUserPreference != null ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "rootPathUserPreference", rootPathUserPreference );
 				potentialPaths.add( rootPathUserPreference );
 			}
 			if( rootPathSystemPreference != null ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "rootPathSystemPreference", rootPathSystemPreference );
 				potentialPaths.add( rootPathSystemPreference );
 			}
 			
@@ -96,12 +102,14 @@ public class GalleryRootUtilities {
 				}
 			}
 		} while( rv == null );
-		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( rv );
-		try {
-			userPreferences.put( ROOT_PATH_KEY, path );
-			systemPreferences.put( ROOT_PATH_KEY, path );
-		} catch( Exception e ) {
-			e.printStackTrace();
+		if( rv != null ) {
+			String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( rv );
+			try {
+				userPreferences.put( ROOT_PATH_KEY, path );
+				systemPreferences.put( ROOT_PATH_KEY, path );
+			} catch( Exception e ) {
+				e.printStackTrace();
+			}
 		}
 		return rv;
 	}
