@@ -1,10 +1,7 @@
 import shutil
-import os
-
-import java
-import edu
 
 def copyTree( srcRoot, dstRoot, extension=None, isOverwriteDesired=True ):
+	import edu
 	srcFiles = edu.cmu.cs.dennisc.io.FileUtilities.listDescendants( srcRoot, extension )
 	for srcFile in srcFiles:
 		dstFile = edu.cmu.cs.dennisc.io.FileUtilities.getAnalogousFile( srcFile, srcRoot, dstRoot )
