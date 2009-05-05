@@ -34,6 +34,11 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 			}
 		} );
 	}
+//	@Override
+//	protected boolean isFauxDragDesired() {
+//		return true;
+//	}
+	
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
 	@Override
 	public void addNotify() {

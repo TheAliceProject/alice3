@@ -317,23 +317,37 @@ public abstract class ZDragComponent extends ZControl {
 		}
 	}
 
+	private static boolean isFauxDragDesired = true;
+	public static boolean isFauxDragDesired() {
+		return ZDragComponent.isFauxDragDesired;
+	}
+	public static void setFauxDragDesired( boolean isFauxDragDesired ) {
+		ZDragComponent.isFauxDragDesired = isFauxDragDesired;
+	}
+	
+//	protected boolean isFauxDragDesired() {
+//		return false;
+//	}
 	private boolean isFauxDrag = false;
-
 	@Override
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
 			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
 				boolean isDrop;
 				if( this.isWithinClickThreshold() ) {
-					java.awt.Component focusedComponent;
-					if( this.isFauxDrag ) {
-						focusedComponent = null;
+					if( ZDragComponent.isFauxDragDesired ) {
+						java.awt.Component focusedComponent;
+						if( this.isFauxDrag ) {
+							focusedComponent = null;
+						} else {
+							focusedComponent = this;
+						}
+						isDrop = this.isFauxDrag;
+						this.isFauxDrag = !this.isFauxDrag;
+						edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().setComponentWithMouseFocus( focusedComponent );
 					} else {
-						focusedComponent = this;
+						isDrop = false;
 					}
-					isDrop = this.isFauxDrag;
-					this.isFauxDrag = !this.isFauxDrag;
-					edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().setComponentWithMouseFocus( focusedComponent );
 				} else {
 					isDrop = true;
 				}
