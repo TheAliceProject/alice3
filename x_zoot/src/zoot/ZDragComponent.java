@@ -111,7 +111,7 @@ public abstract class ZDragComponent extends ZControl {
 	}
 	private synchronized void updateProxyPosition( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
-			java.awt.event.MouseEvent mousePressedEvent = this.getMousePressedEvent();
+			java.awt.event.MouseEvent mousePressedEvent = this.getLeftButtonPressedEvent();
 			if( mousePressedEvent != null ) {
 				javax.swing.JLayeredPane layeredPane = getLayeredPane();
 				java.awt.Point locationOnScreenLayeredPane = layeredPane.getLocationOnScreen();
@@ -167,7 +167,12 @@ public abstract class ZDragComponent extends ZControl {
 		}
 
 		public ZDragComponent getDragSource() {
-			return (ZDragComponent)getEvent().getSource();
+			java.util.EventObject e = getEvent();
+			if( e != null ) {
+				return (ZDragComponent)e.getSource();
+			} else {
+				return null;
+			}
 		}
 		public DropReceptor getCurrentDropReceptor() {
 			return this.currentDropReceptor;
@@ -256,7 +261,7 @@ public abstract class ZDragComponent extends ZControl {
 			ZDragComponent.this.dragAndDropOperation.handleDragStopped( this );
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 		}
-		public void handleCancel( java.awt.event.KeyEvent e ) {
+		public void handleCancel( java.util.EventObject e ) {
 			if( this.currentDropReceptor != null ) {
 				this.currentDropReceptor.dragExited( this, false );
 			}
@@ -280,14 +285,16 @@ public abstract class ZDragComponent extends ZControl {
 		layeredPane.add( this.dragProxy, new Integer( 1 ) );
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
-		this.dragAndDropContext = new DefaultDragAndDropContext( this.getMousePressedEvent(), e, this.dragAndDropOperation.createListOfPotentialDropReceptors( this ) );
+		this.dragAndDropContext = new DefaultDragAndDropContext( this.getLeftButtonPressedEvent(), e, this.dragAndDropOperation.createListOfPotentialDropReceptors( this ) );
 		if( this.dragAndDropOperation != null ) {
 			this.dragAndDropOperation.handleDragStarted( dragAndDropContext );
 		}
 	}
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
-		this.updateProxyPosition( e );
-		this.dragAndDropContext.handleMouseDragged( e );
+		if( ZManager.isDragInProgress() ) {
+			this.updateProxyPosition( e );
+			this.dragAndDropContext.handleMouseDragged( e );
+		}
 	}
 	@Override
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
@@ -339,6 +346,16 @@ public abstract class ZDragComponent extends ZControl {
 //		return false;
 //	}
 	private boolean isFauxDrag = false;
+	
+	@Override
+	public void handleMousePressed( java.awt.event.MouseEvent e ) {
+		super.handleMousePressed( e );
+		if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+			if( ZManager.isDragInProgress() ) {
+				this.handleCancel( e );
+			}
+		}
+	}
 	@Override
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
@@ -407,7 +424,7 @@ public abstract class ZDragComponent extends ZControl {
 			}
 		}
 	}
-	public void handleCancel(java.awt.event.KeyEvent e) {
+	public void handleCancel( java.util.EventObject e ) {
 		ZManager.setDragInProgress( false );
 		this.setActive( false );
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();

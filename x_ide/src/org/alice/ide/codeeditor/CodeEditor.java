@@ -402,7 +402,9 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 				source.setDropProxyLocationAndShowIfNecessary( p, this.currentUnder, height );
 			}
 		} else {
-			source.hideDropProxyIfNecessary();
+			if( source != null ) {
+				source.hideDropProxyIfNecessary();
+			}
 		}
 		this.repaint();
 

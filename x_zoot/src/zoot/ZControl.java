@@ -64,22 +64,30 @@ public abstract class ZControl extends ZComponent {
 	}
 	
 	private java.awt.event.MouseEvent mousePressedEvent = null;
+	private java.awt.event.MouseEvent leftButtonPressedEvent = null;
 
-	public java.awt.event.MouseEvent getMousePressedEvent() {
-		return this.mousePressedEvent;
+	public java.awt.event.MouseEvent getLeftButtonPressedEvent() {
+		return this.leftButtonPressedEvent;
 	}
 
 	public void handleMousePressed( java.awt.event.MouseEvent e ) {
+//		java.awt.event.MouseEvent prevMousePressedEvent = this.mousePressedEvent;
 		this.isWithinClickThreshold = true;
 		this.mousePressedEvent = e;
+		this.leftButtonPressedEvent = null;
 		this.setPressed( true );
 		if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
+			this.leftButtonPressedEvent = e;
 			if( this.leftButtonPressOperation != null ) {
 				ZManager.performIfAppropriate( this.leftButtonPressOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
 			}
 		} else if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-			if( this.popupOperation != null ) {
-				ZManager.performIfAppropriate( this.popupOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
+			if( ZManager.isDragInProgress() ) {
+				this.isWithinClickThreshold = false;
+			} else {
+				if( this.popupOperation != null ) {
+					ZManager.performIfAppropriate( this.popupOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
+				}
 			}
 		}
 	}

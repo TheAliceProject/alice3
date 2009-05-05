@@ -32,7 +32,7 @@ public class DragAndDropEvent extends edu.cmu.cs.dennisc.pattern.event.Event< zo
 
 	public DragAndDropEvent( zoot.ZDragComponent source, zoot.DropReceptor dropReceptor, java.awt.event.MouseEvent eDrop ) {
 		super( source );
-		this.eDrag = source.getMousePressedEvent();
+		this.eDrag = source.getLeftButtonPressedEvent();
 		this.dropReceptor = dropReceptor;
 		this.eDrop = eDrop;
 	}
