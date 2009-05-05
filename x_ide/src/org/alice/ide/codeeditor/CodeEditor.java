@@ -338,71 +338,71 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 	}
 	public void dragUpdated( zoot.DragAndDropContext dragAndDropContext ) {
 		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
-		java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-		java.awt.event.MouseEvent eAsSeenBy = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( source, eSource, this.getAsSeenBy() );
-		StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
-		this.currentUnder = nextUnder;		
-		if( this.currentUnder != null ) {
-			boolean isDropProxyAlreadyUpdated = false;
-			if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-				//pass
-			} else {
-				java.awt.Component subject = source.getSubject();
-				if( subject instanceof org.alice.ide.common.AbstractStatementPane ) {
-					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)subject;
-					if( source instanceof org.alice.ide.templates.StatementTemplate ) {
-						//pass
-					} else {
-						edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
-						edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
-						edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
-		
-						int prevIndex = prevOwner.indexOf( statement );
-						int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
-		
-						if( prevOwner == nextOwner ) {
-							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
-								source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), source, null );
-								isDropProxyAlreadyUpdated = true;
-							}
-						}
-					}
-				}
-			}
-			if( isDropProxyAlreadyUpdated ) {
-				//pass
-			} else {
-				java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this.getAsSeenBy(), eAsSeenBy, this.currentUnder );
-				Integer height = 0;
-				java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder );
-				int x = insets.left;
-				java.awt.Point p = new java.awt.Point( x, 0 );
-				if( this.currentUnder.isFigurativelyEmpty() ) {
-					height = null;
-					p.y = insets.top;
+		if( source != null ) {
+			java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
+			java.awt.event.MouseEvent eAsSeenBy = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( source, eSource, this.getAsSeenBy() );
+			StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
+			this.currentUnder = nextUnder;		
+			if( this.currentUnder != null ) {
+				boolean isDropProxyAlreadyUpdated = false;
+				if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
+					//pass
 				} else {
-					int n = this.currentUnder.getComponentCount();
-					if( n > 0 ) {
-						int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
-						if( index == 0 ) {
-							//java.awt.Component firstComponent = this.currentUnder.getComponent( 0 );
-							p.y = 0;
-						} else if( index < n ) {
-							p.y = this.currentUnder.getComponent( index ).getY();
+					java.awt.Component subject = source.getSubject();
+					if( subject instanceof org.alice.ide.common.AbstractStatementPane ) {
+						org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)subject;
+						if( source instanceof org.alice.ide.templates.StatementTemplate ) {
+							//pass
 						} else {
-							java.awt.Component lastComponent = this.currentUnder.getComponent( n - 1 );
-							p.y = lastComponent.getY() + lastComponent.getHeight();
-							p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
-							if( this.currentUnder.getProperty() == ((edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code).getBodyProperty().getValue().statements ) {
-								height = null;
+							edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
+							edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
+							edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
+			
+							int prevIndex = prevOwner.indexOf( statement );
+							int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
+			
+							if( prevOwner == nextOwner ) {
+								if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
+									source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), source, null );
+									isDropProxyAlreadyUpdated = true;
+								}
 							}
 						}
 					}
 				}
-				source.setDropProxyLocationAndShowIfNecessary( p, this.currentUnder, height );
-			}
-		} else {
-			if( source != null ) {
+				if( isDropProxyAlreadyUpdated ) {
+					//pass
+				} else {
+					java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this.getAsSeenBy(), eAsSeenBy, this.currentUnder );
+					Integer height = 0;
+					java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder );
+					int x = insets.left;
+					java.awt.Point p = new java.awt.Point( x, 0 );
+					if( this.currentUnder.isFigurativelyEmpty() ) {
+						height = null;
+						p.y = insets.top;
+					} else {
+						int n = this.currentUnder.getComponentCount();
+						if( n > 0 ) {
+							int index = this.currentUnder.calculateIndex( eUnder.getPoint() );
+							if( index == 0 ) {
+								//java.awt.Component firstComponent = this.currentUnder.getComponent( 0 );
+								p.y = 0;
+							} else if( index < n ) {
+								p.y = this.currentUnder.getComponent( index ).getY();
+							} else {
+								java.awt.Component lastComponent = this.currentUnder.getComponent( n - 1 );
+								p.y = lastComponent.getY() + lastComponent.getHeight();
+								p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
+								if( this.currentUnder.getProperty() == ((edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code).getBodyProperty().getValue().statements ) {
+									height = null;
+								}
+							}
+						}
+					}
+					source.setDropProxyLocationAndShowIfNecessary( p, this.currentUnder, height );
+				}
+			} else {
 				source.hideDropProxyIfNecessary();
 			}
 		}
