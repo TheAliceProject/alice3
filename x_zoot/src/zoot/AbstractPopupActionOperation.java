@@ -30,6 +30,6 @@ public abstract class AbstractPopupActionOperation extends zoot.AbstractActionOp
 	public void perform( zoot.ActionContext actionContext ) {
 		javax.swing.JPopupMenu popupMenu = zoot.ZManager.createPopupMenu( this.getOperations() );
 		java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( actionContext.getEvent(), java.awt.event.MouseEvent.class );
-		popupMenu.show( me.getComponent(), me.getX(), me.getY() );
+		edu.cmu.cs.dennisc.swing.PopupMenuUtilities.showModal( popupMenu, me.getComponent(), me.getX(), me.getY() );
 	}
 }

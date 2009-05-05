@@ -79,83 +79,21 @@ public abstract class Blank extends Node {
 	public void showPopupMenu( java.awt.Component invoker, int x, int y, final edu.cmu.cs.dennisc.task.TaskObserver< ? extends Object > taskObserver ) {
 		this.taskObserver = taskObserver;
 		final javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
-		
 		//
 		//popupMenu.setLightWeightPopupEnabled( false );
 		//
-		
-		class EventConsumer extends javax.swing.JComponent {
-			private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
-				public void mouseEntered( MouseEvent e ) {
-				}
-				public void mouseExited( MouseEvent e ) {
-				}
-				public void mousePressed( MouseEvent e ) {
-				}
-				public void mouseReleased( MouseEvent e ) {
-					EventConsumer.this.removeFromParentJustInCaseAnExceptionWasThrownSomewhere();
-				}
-				public void mouseClicked( MouseEvent e ) {
-				}
-			};
-			private void removeFromParentJustInCaseAnExceptionWasThrownSomewhere() {
-				java.awt.Container parent = this.getParent();
-				if( parent != null ) {
-					parent.remove( this );
-				}
-			}
-			@Override
-			public void addNotify() {
-				super.addNotify();
-				this.setLocation( 0, 0 );
-				java.awt.Component parent = this.getParent();
-				if( parent != null ) {
-					this.setSize( parent.getSize() );
-				}
-				this.addMouseListener( this.mouseAdapter );
-			}
-			@Override
-			public void removeNotify() {
-				this.removeMouseListener( this.mouseAdapter );
-				super.removeNotify();
-			}
-
-		}
-		final EventConsumer eventConsumer = new EventConsumer();
-		
-		
-		java.awt.Component root = javax.swing.SwingUtilities.getRoot( invoker );
-		final javax.swing.JLayeredPane layeredPane;
-		if( root instanceof javax.swing.JFrame ) {
-			javax.swing.JFrame window = (javax.swing.JFrame)root;
-			layeredPane = window.getLayeredPane();
-		} else if( root instanceof javax.swing.JDialog ) {
-			javax.swing.JDialog window = (javax.swing.JDialog)root;
-			layeredPane = window.getLayeredPane();
-		} else if( root instanceof javax.swing.JWindow ) {
-			javax.swing.JWindow window = (javax.swing.JWindow)root;
-			layeredPane = window.getLayeredPane();
-		} else {
-			layeredPane = null;
-		}
 		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
 			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-				if( layeredPane != null ) {
-					layeredPane.add( eventConsumer, new Integer( javax.swing.JLayeredPane.MODAL_LAYER ) );
-				}
 				Blank.this.addNextNodeMenuItems( popupMenu );
 			}
 			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-				if( layeredPane != null ) {
-					layeredPane.remove( eventConsumer );
-				}
 				popupMenu.removeAll();
 			}
 			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
 				Blank.this.handleCancel( e );
 			}
 		} );
-		popupMenu.show( invoker, x, y );
+		edu.cmu.cs.dennisc.swing.PopupMenuUtilities.showModal( popupMenu, invoker, x, y );
 	}
 
 	protected void handleActionPerformed() {

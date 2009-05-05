@@ -169,6 +169,6 @@ public abstract class PathControl extends swing.LineAxisPane {
 			SelectFileActionOperation operation = new SelectFileActionOperation( file );
 			popupMenu.add( operation.getActionForConfiguringSwing() );
 		}
-		popupMenu.show( invoker, 0, invoker.getHeight() );
+		edu.cmu.cs.dennisc.swing.PopupMenuUtilities.showModal( popupMenu, invoker, 0, invoker.getHeight() );
 	}
 }
