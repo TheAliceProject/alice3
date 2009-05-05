@@ -79,16 +79,15 @@ public abstract class ZDragComponent extends ZControl {
 	private boolean isActuallyPotentiallyDraggable() {
 		boolean rv = this.dragAndDropOperation != null;
 		if( rv ) {
-			java.awt.Component subject = this.getSubject();
 			if( this.dragProxy != null ) {
 				//pass
 			} else {
-				this.dragProxy = new DragProxy( subject, this.isAlphaDesiredWhenOverDropReceptor() );
+				this.dragProxy = new DragProxy( this, this.isAlphaDesiredWhenOverDropReceptor() );
 			}
 			if( this.dropProxy != null ) {
 				//pass
 			} else {
-				this.dropProxy = new DropProxy( subject );
+				this.dropProxy = new DropProxy( this );
 			}
 		}
 		return rv;
@@ -257,6 +256,17 @@ public abstract class ZDragComponent extends ZControl {
 			ZDragComponent.this.dragAndDropOperation.handleDragStopped( this );
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 		}
+		public void handleCancel( java.awt.event.KeyEvent e ) {
+			if( this.currentDropReceptor != null ) {
+				this.currentDropReceptor.dragExited( this, false );
+			}
+			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+				dropReceptorInfo.getDropReceptor().dragStopped( this );
+			}
+			ZDragComponent.this.dragAndDropOperation.handleDragStopped( this );
+			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+			ZDragComponent.this.hideDropProxyIfNecessary();
+		}
 	}
 
 	private DefaultDragAndDropContext dragAndDropContext;
@@ -283,7 +293,7 @@ public abstract class ZDragComponent extends ZControl {
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		super.handleMouseDraggedOutsideOfClickThreshold( e );
 		if( isActuallyPotentiallyDraggable() ) {
-			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+			if(edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				this.handleLeftMouseDraggedOutsideOfClickThreshold( e );
 			}
 		}
@@ -292,7 +302,7 @@ public abstract class ZDragComponent extends ZControl {
 	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		super.handleMouseDragged( e );
 		if( isActuallyPotentiallyDraggable() ) {
-			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+			if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
 				if( this.isWithinClickThreshold() ) {
 					//pass
@@ -332,7 +342,7 @@ public abstract class ZDragComponent extends ZControl {
 	@Override
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
-			if( javax.swing.SwingUtilities.isLeftMouseButton( e ) ) {
+			if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				boolean isDrop;
 				if( this.isWithinClickThreshold() ) {
 					if( ZDragComponent.isFauxDragDesired ) {
@@ -396,5 +406,16 @@ public abstract class ZDragComponent extends ZControl {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: hideDropProxyIfNecessary, layeredPane is null" );
 			}
 		}
+	}
+	public void handleCancel(java.awt.event.KeyEvent e) {
+		ZManager.setDragInProgress( false );
+		this.setActive( false );
+		javax.swing.JLayeredPane layeredPane = getLayeredPane();
+		java.awt.Rectangle bounds = this.dragProxy.getBounds();
+		layeredPane.remove( this.dragProxy );
+		layeredPane.repaint( bounds );
+		this.dragAndDropContext.handleCancel( e );
+		this.isFauxDrag = false;
+		edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().setComponentWithMouseFocus( null );
 	}
 }

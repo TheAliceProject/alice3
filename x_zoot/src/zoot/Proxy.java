@@ -34,25 +34,28 @@ abstract class Proxy extends javax.swing.JPanel {
 		}
 		return image;
 	}
-	private java.awt.Component subject;
+	private ZDragComponent dragComponent;
 	private boolean isOverDropAcceptor = false;
 	private boolean isCopyDesired = false;
 	
 
-	public Proxy( java.awt.Component subject ) {
-		this.subject = subject;
+	public Proxy( ZDragComponent dragComponent ) {
+		this.dragComponent = dragComponent;
 		this.setOpaque( false );
 	}
 	
+	protected ZDragComponent getDragComponent() {
+		return this.dragComponent;
+	}
 	protected java.awt.Component getSubject() {
-		return this.subject;
+		return this.dragComponent.getSubject();
 	}
 
 	public int getProxyWidth() {
-		return this.subject.getWidth();
+		return this.getSubject().getWidth();
 	}
 	public int getProxyHeight() {
-		return this.subject.getHeight();
+		return this.getSubject().getHeight();
 	}
 	
 	protected void fillBounds( java.awt.Graphics2D g2 ) {

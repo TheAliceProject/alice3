@@ -26,9 +26,20 @@ package zoot;
  * @author Dennis Cosgrove
  */
 class DragProxy extends Proxy {
+	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+		public void keyPressed( java.awt.event.KeyEvent e ) {
+		}
+		public void keyReleased( java.awt.event.KeyEvent e ) {
+			if( e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE ) {
+				DragProxy.this.getDragComponent().handleCancel( e );
+			}
+		}
+		public void keyTyped( java.awt.event.KeyEvent e ) {
+		}
+	};
 	private boolean isAlphaDesiredWhenOverDropReceptor;
-	public DragProxy( java.awt.Component subject, boolean isAlphaDesiredWhenOverDropReceptor ) {
-		super( subject );
+	public DragProxy( ZDragComponent dragComponent, boolean isAlphaDesiredWhenOverDropReceptor ) {
+		super( dragComponent );
 		this.isAlphaDesiredWhenOverDropReceptor = isAlphaDesiredWhenOverDropReceptor;
 	}
 	private final int DROP_SHADOW_SIZE = 6;
@@ -49,6 +60,19 @@ class DragProxy extends Proxy {
 		}
 	}
 	
+	
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.addKeyListener( this.keyAdapter );
+		this.requestFocus();
+	}
+	@Override
+	public void removeNotify() {
+		this.transferFocus();
+		this.removeKeyListener( this.keyAdapter );
+		super.removeNotify();
+	}
 	
 	@Override
 	protected void paintProxy( java.awt.Graphics2D g2 ) {

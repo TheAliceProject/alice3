@@ -26,8 +26,8 @@ package zoot;
  * @author Dennis Cosgrove
  */
 class DropProxy extends Proxy {
-	public DropProxy( java.awt.Component subject ) {
-		super( subject );
+	public DropProxy( ZDragComponent dragComponent ) {
+		super( dragComponent );
 	}
 	@Override
 	protected float getAlpha() {
