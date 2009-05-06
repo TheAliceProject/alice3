@@ -31,14 +31,9 @@ public abstract class Bubble extends Text {
 	private edu.cmu.cs.dennisc.lookingglass.LookingGlass m_lookingGlass;
 	private java.awt.Color m_fillColor;
 	private java.awt.Color m_outlineColor;
-
-//	private java.awt.geom.Point2D m_origin = null;
-//	private java.awt.geom.Point2D m_textOffset = null;
-//	private java.awt.geom.Point2D m_anchorOffset = null; 
-	
-	private java.awt.geom.Point2D m_originOfTail = null;
-	private java.awt.geom.Point2D m_bodyConnectionLocationOfTail = null;
-	private java.awt.geom.Point2D m_textBoundsOffset = null;
+	private java.awt.geom.Point2D m_originOfTail;
+	private java.awt.geom.Point2D m_bodyConnectionLocationOfTail;
+	private java.awt.geom.Point2D m_textBoundsOffset;
 	
 	public enum State {
 		OPENNING,
@@ -60,7 +55,7 @@ public abstract class Bubble extends Text {
 		return m_originOfTail;
 	}
 	
-	
+	private Object o = new Object();
 
 	protected abstract void paint( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.lang.String text, java.awt.Font font, java.awt.Color textColor, java.awt.geom.Rectangle2D textBounds, State state, double portion, java.awt.geom.Point2D originOfTail, java.awt.geom.Point2D bodyConnectionLocationOfTail, java.awt.geom.Point2D textBoundsOffset, java.awt.Color fillColor, java.awt.Color outlineColor  );
 	
@@ -69,36 +64,40 @@ public abstract class Bubble extends Text {
 		m_sgCamera = sgCamera;
 		m_lookingGlass = lookingGlass;
 		if( m_state != null ) {
-			if( m_originOfTail != null ) {
-				//pass
-			} else {
-				m_originOfTail = m_originator.calculateOriginOfTail( this, m_sgCamera, m_lookingGlass );
+			synchronized( o ) {
+				if( m_originOfTail != null ) {
+					//pass
+				} else {
+					m_originOfTail = m_originator.calculateOriginOfTail( this, m_sgCamera, m_lookingGlass );
+				}
+				assert m_originOfTail != null;
+	
+				if( m_bodyConnectionLocationOfTail != null ) {
+					//pass
+				} else {
+					m_bodyConnectionLocationOfTail = m_originator.calculateBodyConnectionLocationOfTail( this, m_sgCamera, m_lookingGlass );
+				}
+				assert m_bodyConnectionLocationOfTail != null;
+	
+				if( m_textBoundsOffset != null ) {
+					//pass
+				} else {
+					m_textBoundsOffset = m_originator.calculateTextBoundsOffset( this, m_sgCamera, m_lookingGlass );
+				}
+				assert m_textBoundsOffset != null;
+				
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+				g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+				paint( g2, lookingGlass, sgCamera, text, font, textColor, textBounds, m_state, m_portion, m_originOfTail, m_bodyConnectionLocationOfTail, m_textBoundsOffset, m_fillColor, m_outlineColor );
 			}
-			assert m_originOfTail != null;
-
-			if( m_bodyConnectionLocationOfTail != null ) {
-				//pass
-			} else {
-				m_bodyConnectionLocationOfTail = m_originator.calculateBodyConnectionLocationOfTail( this, m_sgCamera, m_lookingGlass );
-			}
-			assert m_bodyConnectionLocationOfTail != null;
-
-			if( m_textBoundsOffset != null ) {
-				//pass
-			} else {
-				m_textBoundsOffset = m_originator.calculateTextBoundsOffset( this, m_sgCamera, m_lookingGlass );
-			}
-			assert m_textBoundsOffset != null;
-			
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
-			g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-			paint( g2, lookingGlass, sgCamera, text, font, textColor, textBounds, m_state, m_portion, m_originOfTail, m_bodyConnectionLocationOfTail, m_textBoundsOffset, m_fillColor, m_outlineColor );
 		}
 	}
 
 	//todo: update origin based on absolute transformation listeners 
 	protected void updateOrigin() {
-		m_originOfTail = null;
+		synchronized( o ) {
+			m_originOfTail = null;
+		}
 	}
 
 	public void set( State state, double portion ) {

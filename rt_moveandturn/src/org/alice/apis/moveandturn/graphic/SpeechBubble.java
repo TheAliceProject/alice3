@@ -56,6 +56,10 @@ public abstract class SpeechBubble extends Bubble {
 	protected void paint( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.lang.String text, java.awt.Font font, java.awt.Color textColor,
 			java.awt.geom.Rectangle2D textBounds, org.alice.apis.moveandturn.graphic.Bubble.State state, double portion, java.awt.geom.Point2D originOfTail, java.awt.geom.Point2D bodyConnectionLocationOfTail,
 			java.awt.geom.Point2D textBoundsOffset, java.awt.Color fillColor, java.awt.Color outlineColor ) {
+		
+		assert originOfTail != null;
+		assert bodyConnectionLocationOfTail != null;
+		
 		java.awt.Stroke stroke = g2.getStroke();
 		g2.setStroke( getStroke() );
 		g2.setFont( font );
