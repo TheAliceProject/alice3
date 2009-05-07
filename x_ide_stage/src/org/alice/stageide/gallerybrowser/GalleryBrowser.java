@@ -91,6 +91,13 @@ class CreateTextActionOperation extends org.alice.ide.operations.AbstractActionO
 		CreateTextPane createTextPane = new CreateTextPane();
 		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( getIDE(), "Create Text", true );
 		if( text != null ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor( org.alice.apis.moveandturn.Text.class );
+			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( text.getName(), type, initializer );
+			field.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+			field.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+			getIDE().getSceneEditor().handleFieldCreation( getIDE().getSceneType(), field, text );
+			
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle text", text );
 			actionContext.commit();
 		} else {
