@@ -64,6 +64,7 @@ abstract class Animator implements Runnable {
 
 	protected abstract ThreadDeferenceAction step();
 	public void run() {
+		long tPrev = System.currentTimeMillis();
 		while( this.isActive ) {
 			//		if( this.isActive ) {
 			//			try {
@@ -77,6 +78,15 @@ abstract class Animator implements Runnable {
 			//			} finally {
 			//				javax.swing.SwingUtilities.invokeLater( this );
 			//			}
+			while( true ) {
+				long tCurrent = System.currentTimeMillis();
+				if( (tCurrent-tPrev) < 10 ) {
+					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 5 );
+				} else {
+					tPrev = tCurrent;
+					break;
+				}
+			}
 		}
 	}
 }
