@@ -207,7 +207,6 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			}
 		} else {
 			rv = ThreadDeferenceAction.SLEEP;
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "SLEEP" );
 		}
 		LookingGlassFactory.this.handleDisplayed();
 		return rv;
