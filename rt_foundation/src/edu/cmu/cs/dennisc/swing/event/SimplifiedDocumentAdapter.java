@@ -20,25 +20,20 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package edu.cmu.cs.dennisc.swing.event;
 
 /**
  * @author Dennis Cosgrove
  */
-class SuggestiveTextUtilties {
-	public static void drawBlankTextIfNecessary( javax.swing.text.JTextComponent textComponent, java.awt.Graphics g, String textForBlankCondition ) {
-		if( textComponent.isEditable() && textComponent.isEnabled() ) {
-			String text = textComponent.getText();
-			if( text.length() > 0 ) {
-				//pass
-			} else {
-				java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
-				g.setFont( font );
-				g.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 127 ) );
-				java.awt.FontMetrics fm = g.getFontMetrics();
-				//java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
-				g.drawString( textForBlankCondition, 0, textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent() );
-			}
-		}
+public abstract class SimplifiedDocumentAdapter implements javax.swing.event.DocumentListener {
+	protected abstract void updated( javax.swing.event.DocumentEvent e );
+	public void changedUpdate( javax.swing.event.DocumentEvent e ) {
+		this.updated( e );
+	}
+	public void insertUpdate( javax.swing.event.DocumentEvent e ) {
+		this.updated( e );
+	}
+	public void removeUpdate( javax.swing.event.DocumentEvent e ) {
+		this.updated( e );
 	}
 }

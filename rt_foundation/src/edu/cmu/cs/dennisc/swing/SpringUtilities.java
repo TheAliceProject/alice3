@@ -93,7 +93,12 @@ public class SpringUtilities {
 			if( rv[ i ] != null ) {
 				//pass
 			} else {
-				rv[ i ] = javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 0 ) );
+				java.awt.Component box = javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 0 ) );
+//				box.setBackground( java.awt.Color.BLUE );
+//				if( box instanceof javax.swing.JComponent ) {
+//					((javax.swing.JComponent)box).setOpaque( false );
+//				}
+				rv[ i ] = box;
 			}
 		}
 		return rv;

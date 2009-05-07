@@ -36,7 +36,7 @@ public class ZLabel extends javax.swing.JLabel implements edu.cmu.cs.dennisc.pat
 	//todo: reduce visibility to private
 	protected ZLabel() {
 		//this.setOpaque( true );
-		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
+		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.GARISH_COLOR );
 		this.setHorizontalAlignment( javax.swing.SwingConstants.LEADING );
 		this.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );

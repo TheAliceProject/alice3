@@ -22,6 +22,8 @@
  */
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -119,6 +121,10 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 		String name = "My" + superType.getName();
 		return org.alice.ide.ast.NodeUtilities.createType( name, superType );
+	}
+	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( Class<?> superCls ) {
+		return getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( superCls ) );
+		
 	}
 
 	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
