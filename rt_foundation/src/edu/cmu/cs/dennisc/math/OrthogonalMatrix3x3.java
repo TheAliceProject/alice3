@@ -339,7 +339,7 @@ public class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orientatio
                     theta = +0.25;
                 }
                 rv.applyRotationAboutXAxis( new AngleInRevolutions( theta ) );
-                edu.cmu.cs.dennisc.print.PrintUtilities.println( "rotate about x" );
+//                edu.cmu.cs.dennisc.print.PrintUtilities.println( "rotate about x" );
             } else {
                 if( EpsilonUtilities.isWithinReasonableEpsilon( zAxis.y, 0.0 ) ) {
                     //pass
