@@ -1,5 +1,6 @@
 package stencil;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import edu.cmu.cs.dennisc.print.PrintUtilities;
@@ -227,11 +228,12 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 						java.awt.Component proxy = hole.getProxy();
 						java.awt.Point p = component.getLocation();
 						p = javax.swing.SwingUtilities.convertPoint( component.getParent(), p, this );
-						this.putConstraint( proxy, Horizontal.WEST, p.x, Vertical.NORTH, p.y );				
+						this.putConstraint( proxy, Horizontal.WEST, p.x, Vertical.NORTH, p.y );		
 						
-	//					proxy.setPreferredSize( component.getSize() );
-	//					Dimension clippedSize = getClippedBoundsFor((JComponent)component, scrollPane);
-						proxy.setPreferredSize( ((javax.swing.JComponent)component).getVisibleRect().getSize() );
+						Dimension preferredSize = component.getSize();
+						preferredSize.width = ((javax.swing.JComponent)component).getVisibleRect().width;
+						proxy.setPreferredSize(preferredSize);
+						
 						minX = Math.min( minX, p.x );
 						minY = Math.min( minY, p.y );
 					}
@@ -262,11 +264,14 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 					size.width = maxWidth;
 					proxy.setPreferredSize( size );
 					
+					
 				}
 				
 				// clip against the viewport bounds for the component
 				if (minY < this.getViewportBounds().y) {
 					minY  = this.getViewportBounds().y;
+					
+					
 				} 
 				
 				java.awt.Component northDecorator = holeGroup.getNorthDecorator();
