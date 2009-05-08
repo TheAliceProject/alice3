@@ -354,18 +354,32 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		boolean isClearedToCreateImage;
 		if( this.m_renderContext.gl != null ) {
 			String extensions = this.m_renderContext.gl.glGetString( GL.GL_EXTENSIONS );
-			boolean isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
-			if( isABGRExtensionSupported ) {
-				//pass
+			if( extensions != null ) {
+				boolean isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
+				if( isABGRExtensionSupported ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "createBufferedImageForUseAsColorBuffer: capturing images from gl is expected to fail since since GL_EXT_abgr not found in: " );
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
+				}
+				isClearedToCreateImage = isABGRExtensionSupported;
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "will not be able to capture images from gl since GL_EXT_abgr not found in: " );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "createBufferedImageForUseAsColorBuffer: capturing images from gl is expected to fail since since gl.glGetString( GL.GL_EXTENSIONS ) returns null." );
+				isClearedToCreateImage = false;
 			}
-			isClearedToCreateImage = isABGRExtensionSupported;
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "createBufferedImageForUseAsColorBuffer: opengl is not initialized yet, so we will assume the GL_EXT_abgr extension is present." );
 			isClearedToCreateImage = true;
 		}
+		
+		
+		//todo: investigate
+		if( isClearedToCreateImage ) {
+			//pass
+		} else {
+			isClearedToCreateImage = true;
+		}
+		
 		if( isClearedToCreateImage ) {
 			//todo:
 			//int type = java.awt.image.BufferedImage.TYPE_3BYTE_ABGR;

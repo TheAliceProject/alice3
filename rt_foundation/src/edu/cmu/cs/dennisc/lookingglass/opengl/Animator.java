@@ -64,7 +64,8 @@ abstract class Animator implements Runnable {
 
 	protected abstract ThreadDeferenceAction step();
 	public void run() {
-		long tPrev = System.currentTimeMillis();
+		final long THRESHOLD = 10;
+		long tPrev = System.currentTimeMillis() - THRESHOLD;
 		while( this.isActive ) {
 			//		if( this.isActive ) {
 			//			try {
@@ -80,7 +81,8 @@ abstract class Animator implements Runnable {
 			//			}
 			while( true ) {
 				long tCurrent = System.currentTimeMillis();
-				if( (tCurrent-tPrev) < 10 ) {
+				if( (tCurrent-tPrev) < THRESHOLD ) {
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "dt", tCurrent-tPrev );
 					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 5 );
 				} else {
 					tPrev = tCurrent;
