@@ -70,10 +70,15 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 		}
 	}
 
+	private java.awt.image.BufferedImage reusableImage = null;
 	protected void updateAnimator() {
 		if( m_animator != null ) {
 			if( m_movieEncoder != null ) {
-				m_movieEncoder.addBufferedImage( getOnscreenLookingGlass().getColorBuffer() );
+				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
+				if( reusableImage == null || reusableImage.getWidth() != lg.getWidth() || reusableImage.getHeight() != lg.getHeight() ) {
+					reusableImage = lg.createBufferedImageForUseAsColorBuffer();
+				}
+				m_movieEncoder.addBufferedImage( lg.getColorBuffer( this.reusableImage ) );
 			}
 			m_animator.update();
 		}
