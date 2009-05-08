@@ -205,8 +205,6 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			} finally {
 				releaseRenderingLock();
 			}
-		} else {
-			rv = ThreadDeferenceAction.SLEEP;
 		}
 		LookingGlassFactory.this.handleDisplayed();
 		return rv;
@@ -238,7 +236,13 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 					return LookingGlassFactory.this.step();
 				}
 			};
-			this.animator.start();
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "lightweight count:", this.lightweightOnscreenLookingGlasses.size() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "heavyweight count:", this.heavyweightOnscreenLookingGlasses.size() );
+//			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//				public void run() {
+					LookingGlassFactory.this.animator.start();
+//				}
+//			} );
 		}
 	}
 	public synchronized void decrementAutomaticDisplayCount() {

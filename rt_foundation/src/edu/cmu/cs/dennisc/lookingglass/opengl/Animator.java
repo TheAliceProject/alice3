@@ -64,31 +64,31 @@ abstract class Animator implements Runnable {
 
 	protected abstract ThreadDeferenceAction step();
 	public void run() {
-		final long THRESHOLD = 10;
+		final long THRESHOLD = 5;
 		long tPrev = System.currentTimeMillis() - THRESHOLD;
 		while( this.isActive ) {
-			//		if( this.isActive ) {
-			//			try {
-			ThreadDeferenceAction threadAction = this.step();
-			if( threadAction == ThreadDeferenceAction.SLEEP ) {
-				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( this.sleepMillis );
-			} else if( threadAction == ThreadDeferenceAction.YIELD ) {
-				Thread.yield();
-			}
-			this.frameCount++;
-			//			} finally {
-			//				javax.swing.SwingUtilities.invokeLater( this );
-			//			}
 			while( true ) {
 				long tCurrent = System.currentTimeMillis();
 				if( (tCurrent-tPrev) < THRESHOLD ) {
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "dt", tCurrent-tPrev );
 					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 5 );
 				} else {
 					tPrev = tCurrent;
 					break;
 				}
 			}
+			//		if( this.isActive ) {
+			//			try {
+			ThreadDeferenceAction threadAction = this.step();
+			if( threadAction == ThreadDeferenceAction.SLEEP ) {
+				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( this.sleepMillis );
+			} else if( threadAction == ThreadDeferenceAction.YIELD ) {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "yield" );
+				Thread.yield();
+			}
+			this.frameCount++;
+			//			} finally {
+			//				javax.swing.SwingUtilities.invokeLater( this );
+			//			}
 		}
 	}
 }

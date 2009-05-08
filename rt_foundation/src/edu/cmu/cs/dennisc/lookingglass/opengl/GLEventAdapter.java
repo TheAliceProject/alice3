@@ -351,44 +351,46 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 	}
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
-		boolean isClearedToCreateImage;
-		if( this.m_renderContext.gl != null ) {
-			String extensions = this.m_renderContext.gl.glGetString( GL.GL_EXTENSIONS );
-			if( extensions != null ) {
-				boolean isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
-				if( isABGRExtensionSupported ) {
-					//pass
-				} else {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "createBufferedImageForUseAsColorBuffer: capturing images from gl is expected to fail since since GL_EXT_abgr not found in: " );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
-				}
-				isClearedToCreateImage = isABGRExtensionSupported;
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "createBufferedImageForUseAsColorBuffer: capturing images from gl is expected to fail since since gl.glGetString( GL.GL_EXTENSIONS ) returns null." );
-				isClearedToCreateImage = false;
-			}
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "createBufferedImageForUseAsColorBuffer: opengl is not initialized yet, so we will assume the GL_EXT_abgr extension is present." );
-			isClearedToCreateImage = true;
-		}
-		
-		
-		//todo: investigate
-		if( isClearedToCreateImage ) {
-			//pass
-		} else {
-			isClearedToCreateImage = true;
-		}
-		
-		if( isClearedToCreateImage ) {
-			//todo:
-			//int type = java.awt.image.BufferedImage.TYPE_3BYTE_ABGR;
-			int type = java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
-			//int type = java.awt.image.BufferedImage.TYPE_INT_ARGB;
-			return createBufferedImageForUseAsColorBuffer( type );
-		} else {
-			return null;
-		}
+//		boolean isClearedToCreateImage;
+//		if( this.m_renderContext.gl != null ) {
+//			String extensions = this.m_renderContext.gl.glGetString( GL.GL_EXTENSIONS );
+//			if( extensions != null ) {
+//				boolean isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
+//				if( isABGRExtensionSupported ) {
+//					//pass
+//				} else {
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "createBufferedImageForUseAsColorBuffer: capturing images from gl is expected to fail since since GL_EXT_abgr not found in: " );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "\t" + extensions );
+//				}
+//				isClearedToCreateImage = isABGRExtensionSupported;
+//			} else {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "createBufferedImageForUseAsColorBuffer: capturing images from gl is expected to fail since since gl.glGetString( GL.GL_EXTENSIONS ) returns null." );
+//				isClearedToCreateImage = false;
+//			}
+//		} else {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "createBufferedImageForUseAsColorBuffer: opengl is not initialized yet, so we will assume the GL_EXT_abgr extension is present." );
+//			isClearedToCreateImage = true;
+//		}
+//		
+//		
+//		//todo: investigate
+//		if( isClearedToCreateImage ) {
+//			//pass
+//		} else {
+//			isClearedToCreateImage = true;
+//		}
+//		
+//		if( isClearedToCreateImage ) {
+//			//todo:
+//			//int type = java.awt.image.BufferedImage.TYPE_3BYTE_ABGR;
+//			int type = java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
+//			//int type = java.awt.image.BufferedImage.TYPE_INT_ARGB;
+//			return createBufferedImageForUseAsColorBuffer( type );
+//		} else {
+//			return null;
+//		}
+		int type = java.awt.image.BufferedImage.TYPE_4BYTE_ABGR;
+		return createBufferedImageForUseAsColorBuffer( type );
 	}
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
 		if( rv != null ) {
