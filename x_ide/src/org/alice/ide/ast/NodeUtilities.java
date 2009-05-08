@@ -22,7 +22,6 @@
  */
 package org.alice.ide.ast;
 
-
 /**
  * @author Dennis Cosgrove
  */
@@ -283,6 +282,15 @@ public class NodeUtilities {
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createIncompleteParameterArrayAssignmentStatement( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		return createParameterArrayAssignmentStatement( parameter, new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ), new EmptyExpression( parameter.valueType.getValue().getComponentType() ) );
+	}
+
+	
+	public static edu.cmu.cs.dennisc.alice.ast.StringConcatenation createStringConcatenation( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.Expression right ) {
+		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( left, right );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.StringConcatenation createIncompleteStringConcatenation() {
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType OBJECT_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
+		return createStringConcatenation( new EmptyExpression( OBJECT_TYPE ), new EmptyExpression( OBJECT_TYPE ) );
 	}
 
 //	public static edu.cmu.cs.dennisc.alice.ast.AbstractParameter getNextParameter( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {

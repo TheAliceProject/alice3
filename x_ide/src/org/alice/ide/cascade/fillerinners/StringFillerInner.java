@@ -35,6 +35,6 @@ public class StringFillerInner extends ExpressionFillerInner {
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
 		blank.addSeparator();
-//		blank.addChild( ecc.dennisc.alice.ide.cascade.StringConcatenationFillIn() )
+		blank.addFillIn( new org.alice.ide.cascade.StringConcatenationFillIn() );
 	}
 }

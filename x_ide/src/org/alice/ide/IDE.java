@@ -22,8 +22,6 @@
  */
 package org.alice.ide;
 
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -1016,6 +1014,12 @@ public abstract class IDE extends zoot.ZFrame {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {
 		return null;
 	}
+	protected void addFillInsForObjectType( cascade.Blank blank ) {
+		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
+		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
+		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
+		blank.addFillIn( new org.alice.ide.cascade.StringConcatenationFillIn() );
+	}
 	public void addFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( type != null ) {
 			if( this.previousExpression != null ) {
@@ -1029,9 +1033,13 @@ public abstract class IDE extends zoot.ZFrame {
 				type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;
 			}
 
-			for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
-				if( expressionFillerInner.isAssignableTo( type ) ) {
-					expressionFillerInner.addFillIns( blank );
+			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) {
+				this.addFillInsForObjectType( blank );
+			} else {
+				for( org.alice.ide.cascade.fillerinners.ExpressionFillerInner expressionFillerInner : this.expressionFillerInners ) {
+					if( expressionFillerInner.isAssignableTo( type ) ) {
+						expressionFillerInner.addFillIns( blank );
+					}
 				}
 			}
 
@@ -1601,7 +1609,7 @@ public abstract class IDE extends zoot.ZFrame {
 		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
 			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) ) {
 				return new java.awt.Color( 0xBAD1A7 );
-			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class ) ) {
+			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.StringConcatenation.class ) ) {
 				return new java.awt.Color( 0xDEEBD3 );
 			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
 				return new java.awt.Color( 0xbdcfb3 );

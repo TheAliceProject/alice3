@@ -27,6 +27,6 @@ package edu.cmu.cs.dennisc.alice;
  */
 public class Version {
 	public static String getCurrentVersionText() {
-		return "3.beta.0044";
+		return "3.beta.0045";
 	}
 }
