@@ -594,8 +594,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)element;
 				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ),
 						MoveAndTurnSceneEditor.createExpression( transformable.getLocalPointOfView() ) ) );
-				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Composite.class, "addComponent", org.alice.apis.moveandturn.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), MoveAndTurnSceneEditor
-						.createInstanceExpression( isThis, field ) ) );
 				if( instance instanceof org.alice.apis.moveandturn.Model ) {
 					org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)transformable;
 
@@ -630,6 +628,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 								.getLetterHeight() ) ) );
 					} else if( model instanceof org.alice.apis.stage.Person ) {
 						org.alice.apis.stage.Person person = (org.alice.apis.stage.Person)model;
+						if( person instanceof org.alice.apis.stage.MaleAdult || person instanceof org.alice.apis.stage.FemaleAdult ) {
+							//pass
+						} else {
+							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setGender", org.alice.apis.stage.Gender.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+									.createExpression( (Enum)person.getGender() ) ) );
+						}
+						
 						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setHair", org.alice.apis.stage.Hair.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
 								.createExpression( (Enum)person.getHair() ) ) );
 						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setEyeColor", org.alice.apis.stage.EyeColor.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
@@ -643,6 +648,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 					}
 				}
+				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Composite.class, "addComponent", org.alice.apis.moveandturn.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), MoveAndTurnSceneEditor
+						.createInstanceExpression( isThis, field ) ) );
 			} else if( instance instanceof org.alice.apis.moveandturn.Scene ) {
 				org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)element;
 				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Scene.class, "setAtmosphereColor", org.alice.apis.moveandturn.Color.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor

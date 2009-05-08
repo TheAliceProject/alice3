@@ -27,7 +27,7 @@ import edu.cmu.cs.dennisc.alice.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Adult extends Person {
+public class Adult extends Person {
 	//todo: reduce visibility?
 	public enum State implements FiniteStateMachine.State {
 		PREPARED_TO_EXERCISE,
@@ -622,7 +622,7 @@ public abstract class Adult extends Person {
 //		FiniteStateMachine.addTransitionABCs( Adult.State.PREPARED_TO_INTERACT_WITH_HEAVY_PUNCHING_BAG, Adult.State.PREPARED_TO_HIT_HEAVY_PUNCHING_BAG );
 	}
 
-	public Adult( Gender gender ) { 
+	protected Adult( Gender gender ) { 
 		super( LifeStage.ADULT, gender );
 
 		//todo: remove
@@ -630,6 +630,9 @@ public abstract class Adult extends Person {
 		sgLightTransformable.applyTranslation( 0.0, 2.0, -1.0 );
 		sgLightTransformable.addComponent( new edu.cmu.cs.dennisc.scenegraph.PointLight() );
 		this.getSGTransformable().addComponent( sgLightTransformable );
+	}
+	public Adult() { 
+		this( null );
 	}
 
 	@Override
@@ -647,6 +650,10 @@ public abstract class Adult extends Person {
 		performStateTransition( State.HANDS_AT_SIDES );
 	}
 
+	@Override
+	public Boolean isPregnant() {
+		return false;
+	}
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void doSitUp( SitUpStyle style ) {

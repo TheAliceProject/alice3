@@ -44,12 +44,16 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 	public org.alice.apis.stage.Person getPerson() {
 		org.alice.apis.stage.Person rv;
 		if( this.personViewer.getLifeStage() == org.alice.apis.stage.LifeStage.ADULT ) {
-			if( this.personViewer.getGender() == org.alice.apis.stage.Gender.FEMALE ) {
-				rv = new org.alice.apis.stage.FemaleAdult();
-			} else {
-				rv = new org.alice.apis.stage.MaleAdult();
-			}
-			
+//			if( false ) {
+				rv = new org.alice.apis.stage.Adult();
+				rv.setGender( this.personViewer.getGender() );
+//			} else {
+//				if( this.personViewer.getGender() == org.alice.apis.stage.Gender.FEMALE ) {
+//					rv = new org.alice.apis.stage.FemaleAdult();
+//				} else {
+//					rv = new org.alice.apis.stage.MaleAdult();
+//				}
+//			}
 			rv.setHair( this.personViewer.getHair() );
 			rv.setSkinTone( this.personViewer.getBaseSkinTone() );
 			rv.setEyeColor( this.personViewer.getBaseEyeColor() );

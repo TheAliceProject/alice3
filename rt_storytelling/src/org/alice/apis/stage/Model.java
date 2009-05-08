@@ -24,12 +24,15 @@ package org.alice.apis.stage;
 
 import org.alice.apis.moveandturn.gallery.GalleryRootUtilities;
 
+import edu.cmu.cs.dennisc.alice.annotations.ClassTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 
 /**
  * @author Dennis Cosgrove
  */
+@ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired=true)
 public abstract class Model extends org.alice.apis.moveandturn.Model {
 	static {
 		java.io.File root = GalleryRootUtilities.calculateGalleryRootDirectory( Model.class, "/Alice/3.beta.0026/gallery", "gallery", "assets", "org.alice.apis.stage", "Cannot find The Sims (TM) 2 Art Assets", "Alice" );
@@ -60,6 +63,7 @@ public abstract class Model extends org.alice.apis.moveandturn.Model {
 
 	private FiniteStateMachine.State m_state = getInitialState();
 
+	@PropertyGetterTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public FiniteStateMachine.State getCurrentState() {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "getCurrentState:", m_state );
 		return m_state;

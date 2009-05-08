@@ -34,7 +34,7 @@ import edu.cmu.cs.dennisc.alice.annotations.*;
  * @author Dennis Cosgrove
  */
 public abstract class Person extends Model {
-	private edu.cmu.cs.dennisc.nebulous.Person m_nebPerson;
+	private edu.cmu.cs.dennisc.nebulous.Person nebPerson;
 	
 	//todo: remove when bounding box works
 	@Override
@@ -156,22 +156,11 @@ public abstract class Person extends Model {
 //	}
 //	
 //	private org.alice.apis.moveandturn.Transformable m_root = new org.alice.apis.moveandturn.Transformable(){};
-	private LifeStage m_lifeStage;
-	private Gender m_gender;
-	public final LifeStage getLifeStage() {
-		return m_lifeStage;
-	}
-	public final Gender getGender() {
-		return m_gender;
-	}
+	private LifeStage lifeStage;
+	private Gender gender;
 	public Person( LifeStage lifeStage, Gender gender ) {
-		m_lifeStage = lifeStage;
-		m_gender = gender;
-		try {
-			m_nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( this );
-		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			throw new RuntimeException( lre );
-		}
+		this.lifeStage = lifeStage;
+		setGender( gender );
 		//final String PELVIS_PART_NAME = "pelvis";
 		
 //		this.addComponent( m_root );
@@ -209,6 +198,31 @@ public abstract class Person extends Model {
 //			bodyPart.getAxisAlignedMinimumBoundingBox();
 //		}
 	}
+	public final LifeStage getLifeStage() {
+		return lifeStage;
+	}
+	public final Gender getGender() {
+		return gender;
+	}
+	public void setGender( Gender gender ) {
+		this.gender = gender;
+	}
+	
+	public edu.cmu.cs.dennisc.nebulous.Person getNebPerson() {
+		if( this.nebPerson != null ) {
+			//pass
+		} else {
+			try {
+				if( this.lifeStage != null && this.gender != null ) {
+					this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( this );
+				}
+			} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
+				throw new RuntimeException( lre );
+			}
+		}
+		return this.nebPerson;
+	}
+	
 
 	@Override
 	protected void createSGGeometryIfNecessary() {
@@ -216,16 +230,17 @@ public abstract class Person extends Model {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
-		return m_nebPerson;
+		return getNebPerson();
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.nebulous.Model getNebulousModel() {
-		return m_nebPerson;
+		return getNebPerson();
 	}
 	protected edu.cmu.cs.dennisc.nebulous.Person getNebulousPerson() {
-		return m_nebPerson;
+		return getNebPerson();
 	}
 	
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public abstract Boolean isPregnant();
 
 	private int m_atomicChangeCount = 0;
@@ -266,7 +281,7 @@ public abstract class Person extends Model {
 	public void setOutfit( Outfit outfit ) {
 		assert outfit != null;
 		m_outfit = outfit;
-		m_nebPerson.setOutfit( outfit );
+		getNebPerson().setOutfit( outfit );
 	}
 	
 	private SkinTone m_skinTone = null;
@@ -277,7 +292,7 @@ public abstract class Person extends Model {
 	public void setSkinTone( SkinTone skinTone ) {
 		assert skinTone != null;
 		m_skinTone = skinTone;
-		m_nebPerson.setSkinTone( m_skinTone );
+		getNebPerson().setSkinTone( m_skinTone );
 	}
 
 	private FitnessLevel m_fitnessLevel = null;
@@ -288,7 +303,7 @@ public abstract class Person extends Model {
 	public void setFitnessLevel( FitnessLevel fitnessLevel ) {
 		assert fitnessLevel != null;
 		m_fitnessLevel = fitnessLevel;
-		m_nebPerson.setFitnessLevel( m_fitnessLevel );
+		getNebPerson().setFitnessLevel( m_fitnessLevel );
 	}
 
 	private EyeColor m_eyeColor = null;
@@ -299,7 +314,7 @@ public abstract class Person extends Model {
 	public void setEyeColor( EyeColor eyeColor ) {
 		assert eyeColor != null;
 		m_eyeColor = eyeColor;
-		m_nebPerson.setEyeColor( m_eyeColor );
+		getNebPerson().setEyeColor( m_eyeColor );
 	}
 	
 	private Hair m_hair = null;
@@ -310,7 +325,7 @@ public abstract class Person extends Model {
 	public void setHair( Hair hair ) {
 		assert hair != null;
 		m_hair = hair;
-		m_nebPerson.setHair( hair );
+		getNebPerson().setHair( hair );
 	}
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
@@ -344,7 +359,11 @@ public abstract class Person extends Model {
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
 		//todo
-		return m_nebPerson.getAxisAlignedMinimumBoundingBox();
+		if( this.nebPerson != null ) {
+			return this.nebPerson.getAxisAlignedMinimumBoundingBox();
+		} else {
+			return null;
+		}
 	}
 	
 }
