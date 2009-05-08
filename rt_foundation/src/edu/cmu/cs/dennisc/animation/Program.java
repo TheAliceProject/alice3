@@ -75,10 +75,15 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 		if( m_animator != null ) {
 			if( m_movieEncoder != null ) {
 				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
-				if( reusableImage == null || reusableImage.getWidth() != lg.getWidth() || reusableImage.getHeight() != lg.getHeight() ) {
-					reusableImage = lg.createBufferedImageForUseAsColorBuffer();
+				if( lg.getWidth() > 0 && lg.getHeight() > 0 ) {
+					if( reusableImage == null || reusableImage.getWidth() != lg.getWidth() || reusableImage.getHeight() != lg.getHeight() ) {
+						reusableImage = lg.createBufferedImageForUseAsColorBuffer();
+					}
+					if( this.reusableImage != null ) {
+						lg.getColorBuffer( this.reusableImage );
+						m_movieEncoder.addBufferedImage( this.reusableImage );
+					}
 				}
-				m_movieEncoder.addBufferedImage( lg.getColorBuffer( this.reusableImage ) );
 			}
 			m_animator.update();
 		}
