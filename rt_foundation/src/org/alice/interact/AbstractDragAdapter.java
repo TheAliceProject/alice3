@@ -123,21 +123,32 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	}
 	
 	protected java.awt.Component getAWTComponentToAddListenersTo( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
-		return this.onscreenLookingGlass.getAWTComponent();
+		if( onscreenLookingGlass != null ) {
+			return onscreenLookingGlass.getAWTComponent();
+		} else {
+			return null;
+		}
 	}
 	
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
 	
+	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayAdapter = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+			AbstractDragAdapter.this.handleDisplayed();
+		}
+	};
+	
 	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass ) {
+		if( this.onscreenLookingGlass != null ) {
+			this.onscreenLookingGlass.getLookingGlassFactory().removeAutomaticDisplayListener( this.automaticDisplayAdapter );
+		}
 		this.onscreenLookingGlass = onscreenLookingGlass;
-		setAWTComponent( getAWTComponentToAddListenersTo( onscreenLookingGlass ) );
-		onscreenLookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
-			public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
-				AbstractDragAdapter.this.handleDisplayed();
-			}
-		} );
+		setAWTComponent( getAWTComponentToAddListenersTo( this.onscreenLookingGlass ) );
+		if( this.onscreenLookingGlass != null ) {
+			this.onscreenLookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( this.automaticDisplayAdapter );
+		}
 	}
 	
 	protected java.awt.Component getAWTComponent() {

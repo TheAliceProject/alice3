@@ -27,8 +27,8 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class ArrayTypeDeclaredInAlice extends AbstractType {
-	private static edu.cmu.cs.dennisc.map.MapToMap< TypeDeclaredInAlice, Integer, ArrayTypeDeclaredInAlice > s_map = new edu.cmu.cs.dennisc.map.MapToMap< TypeDeclaredInAlice, Integer, ArrayTypeDeclaredInAlice >();
-	public static ArrayTypeDeclaredInAlice get( TypeDeclaredInAlice leafType, int dimensionCount ) {
+	private static edu.cmu.cs.dennisc.map.MapToMap< AbstractTypeDeclaredInAlice, Integer, ArrayTypeDeclaredInAlice > s_map = new edu.cmu.cs.dennisc.map.MapToMap< AbstractTypeDeclaredInAlice, Integer, ArrayTypeDeclaredInAlice >();
+	public static ArrayTypeDeclaredInAlice get( AbstractTypeDeclaredInAlice leafType, int dimensionCount ) {
 		ArrayTypeDeclaredInAlice rv = s_map.get( leafType, dimensionCount );
 		if( rv != null ) {
 			//pass
@@ -39,15 +39,15 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 		return rv;
 	}
 
-	private TypeDeclaredInAlice m_leafType;
+	private AbstractTypeDeclaredInAlice m_leafType;
 	private int m_dimensionCount;
 	
-	private ArrayTypeDeclaredInAlice( TypeDeclaredInAlice leafType, int dimensionCount ) {
+	private ArrayTypeDeclaredInAlice( AbstractTypeDeclaredInAlice leafType, int dimensionCount ) {
 		m_leafType = leafType;
 		m_dimensionCount = dimensionCount;
 	}
 	
-	public TypeDeclaredInAlice getLeafType() {
+	public AbstractTypeDeclaredInAlice getLeafType() {
 		return m_leafType;
 	}
 	public int getDimensionCount() {
@@ -93,8 +93,8 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 	@Override
 	public AbstractType getSuperType() {
 		AbstractType superType = m_leafType.getSuperType();
-		if( superType instanceof TypeDeclaredInAlice ) {
-			return ArrayTypeDeclaredInAlice.get( ((TypeDeclaredInAlice)superType), m_dimensionCount );
+		if( superType instanceof AbstractTypeDeclaredInAlice ) {
+			return ArrayTypeDeclaredInAlice.get( ((AbstractTypeDeclaredInAlice)superType), m_dimensionCount );
 		} else {
 			assert superType instanceof TypeDeclaredInJava;
 			return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getArrayClass( superType.getClass(), m_dimensionCount ) );

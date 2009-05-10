@@ -171,7 +171,7 @@ public class Decoder {
 				rv = null;
 			}
 		}
-		assert rv != null;
+		assert rv != null : name;
 		return rv;
 	}
 

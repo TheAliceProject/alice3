@@ -26,98 +26,32 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class TypeDeclaredInAlice extends AbstractType {
-	private class Adapter<E extends AbstractMember> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< E > {
-		private void handleAdd( E member ) {
-			assert member instanceof MemberDeclaredInAlice;
-			assert member.getDeclaringType() == null;
-			MemberDeclaredInAlice memberDeclaredInAlice = (MemberDeclaredInAlice)member;
-			memberDeclaredInAlice.setDeclaringType( TypeDeclaredInAlice.this );
-		}
-		private void handleRemove( E member ) {
-			assert member instanceof MemberDeclaredInAlice;
-			assert member.getDeclaringType() != null;
-			MemberDeclaredInAlice memberDeclaredInAlice = (MemberDeclaredInAlice)member;
-			memberDeclaredInAlice.setDeclaringType( null );
-		}
-
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
-			for( E element : e.getElements() ) {
-				handleAdd( element );
-			}
-			//todo
-			//			for( E element : e.getCollection() ) {
-			//				handleAdd( element );
-			//			}
-		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< E > e ) {
-		}
-
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
-			for( E element : e.getTypedSource() ) {
-				handleRemove( element );
-			}
-		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< E > e ) {
-		}
-
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
-			for( E element : e.getElements() ) {
-				handleRemove( element );
-			}
-		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< E > e ) {
-		}
-
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
-			int startIndex = e.getStartIndex();
-			java.util.Collection< ? extends E > elements = e.getElements();
-			for( int i = 0; i < elements.size(); i++ ) {
-				handleRemove( e.getTypedSource().get( startIndex + i ) );
-			}
-			for( E element : e.getElements() ) {
-				handleAdd( element );
-			}
-		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< E > e ) {
-		}
-	}
-
+public class TypeDeclaredInAlice extends AbstractTypeDeclaredInAlice {
 	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
 	public DeclarationProperty< PackageDeclaredInAlice > _package = new DeclarationProperty< PackageDeclaredInAlice >( this );
-	public DeclarationProperty< AbstractType > superType = new DeclarationProperty< AbstractType >( this ) {
-		@Override
-		public void setValue(edu.cmu.cs.dennisc.property.PropertyOwner owner, AbstractType value) {
-			assert value.isArray() == false;
-			super.setValue( owner, value );
-		}
-	};
 	public NodeListProperty< ConstructorDeclaredInAlice > constructors = new NodeListProperty< ConstructorDeclaredInAlice >( this );
-	public NodeListProperty< MethodDeclaredInAlice > methods = new NodeListProperty< MethodDeclaredInAlice >( this );
-	public NodeListProperty< FieldDeclaredInAlice > fields = new NodeListProperty< FieldDeclaredInAlice >( this );
 	public edu.cmu.cs.dennisc.property.EnumProperty< Access > access = new edu.cmu.cs.dennisc.property.EnumProperty< Access >( this, Access.PUBLIC );
-	//inner classes only
-	//public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public edu.cmu.cs.dennisc.property.EnumProperty< TypeModifierFinalAbstractOrNeither > finalAbstractOrNeither = new edu.cmu.cs.dennisc.property.EnumProperty< TypeModifierFinalAbstractOrNeither >( this, TypeModifierFinalAbstractOrNeither.NEITHER );
 	public edu.cmu.cs.dennisc.property.BooleanProperty isStrictFloatingPoint = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 
 	public TypeDeclaredInAlice() {
-		this.constructors.addListPropertyListener( new Adapter< ConstructorDeclaredInAlice >() );
-		this.methods.addListPropertyListener( new Adapter< MethodDeclaredInAlice >() );
-		this.fields.addListPropertyListener( new Adapter< FieldDeclaredInAlice >() );
+		this.addListenerForConstructors();
 	}
 	public TypeDeclaredInAlice( String name, PackageDeclaredInAlice _package, AbstractType superType, ConstructorDeclaredInAlice[] constructors, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
-		this();
+		super( superType, methods, fields );
+		this.addListenerForConstructors();
 		this.name.setValue( name );
 		this._package.setValue( _package );
-		this.superType.setValue( superType );
 		this.constructors.add( constructors );
-		this.methods.add( methods );
-		this.fields.add( fields );
 	}
 	public TypeDeclaredInAlice( String name, PackageDeclaredInAlice _package, Class< ? > superCls, ConstructorDeclaredInAlice[] constructors, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
 		this( name, _package, TypeDeclaredInJava.get( superCls ), constructors, methods, fields );
 	}
+	
+	private void addListenerForConstructors() {
+		this.constructors.addListPropertyListener( new Adapter< ConstructorDeclaredInAlice >() );
+	}
+	
 
 //	private void postDecode( MemberDeclaredInAlice member ) {
 //		if( member.getDeclaringType() == this ) {
@@ -142,14 +76,6 @@ public class TypeDeclaredInAlice extends AbstractType {
 //	}
 	
 	@Override
-	public boolean isFollowToSuperClassDesired() {
-		return true;
-	}
-	@Override
-	public boolean isConsumptionBySubClassDesired() {
-		return false;
-	}
-	@Override
 	public String getName() {
 		return name.getValue();
 	}
@@ -162,20 +88,8 @@ public class TypeDeclaredInAlice extends AbstractType {
 		return _package.getValue();
 	}
 	@Override
-	public AbstractType getSuperType() {
-		return superType.getValue();
-	}
-	@Override
 	public java.util.ArrayList< ? extends AbstractConstructor > getDeclaredConstructors() {
 		return constructors.getValue();
-	}
-	@Override
-	public java.util.ArrayList< ? extends AbstractMethod > getDeclaredMethods() {
-		return methods.getValue();
-	}
-	@Override
-	public java.util.ArrayList< ? extends AbstractField > getDeclaredFields() {
-		return fields.getValue();
 	}
 	
 	@Override
@@ -189,10 +103,6 @@ public class TypeDeclaredInAlice extends AbstractType {
 		//return this.isStatic.getValue();
 	}
 	@Override
-	public boolean isInterface() {
-		return false;
-	}
-	@Override
 	public boolean isAbstract() {
 		return this.finalAbstractOrNeither.getValue() == TypeModifierFinalAbstractOrNeither.ABSTRACT;
 	}
@@ -204,22 +114,4 @@ public class TypeDeclaredInAlice extends AbstractType {
 	public boolean isStrictFloatingPoint() {
 		return this.isStrictFloatingPoint.getValue();
 	}
-	@Override
-	public boolean isDeclaredInAlice() {
-		return true;
-	}
-
-	@Override
-	public boolean isArray() {
-		return false;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.alice.ast.AbstractType getComponentType() {
-		return null;
-	}
-	@Override
-	public AbstractType getArrayType() {
-		return ArrayTypeDeclaredInAlice.get( this, 1 );
-	}
-	
 }
