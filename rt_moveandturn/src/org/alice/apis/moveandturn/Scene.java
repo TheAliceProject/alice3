@@ -110,6 +110,19 @@ public class Scene extends Composite {
 	private java.util.List< org.alice.apis.moveandturn.event.MouseButtonListener > mouseButtonListeners = new java.util.LinkedList< org.alice.apis.moveandturn.event.MouseButtonListener >();
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void addMouseButtonListener( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener ) {
+//		SceneOwner owner = this.getOwner();
+//		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
+//		java.awt.Component component = lg.getAWTComponent();
+//		edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
+//			@Override
+//			protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+//				org.alice.apis.moveandturn.event.MouseButtonEvent mbe = new org.alice.apis.moveandturn.event.MouseButtonEvent( e.getComponent() );
+//				mouseButtonListener.mouseButtonClicked( mbe );
+//			}
+//		};
+//		
+//		component.addMouseListener( mouseAdapter );
+//		component.addMouseMotionListener( mouseAdapter );
 		synchronized( this.mouseButtonListeners ) {
 			this.mouseButtonListeners.add( mouseButtonListener );
 		}
@@ -154,12 +167,10 @@ public class Scene extends Composite {
 			m_owner = owner;
 			handleOwnerChange( m_owner );
 			if( m_owner != null ) {
-				if( m_owner != null ) {
-					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = m_owner.getOnscreenLookingGlass();
-					java.awt.Component component = lg.getAWTComponent();
-					component.addMouseListener( this.mouseAdapter );
-					component.addMouseMotionListener( this.mouseAdapter );
-				}
+				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = m_owner.getOnscreenLookingGlass();
+				java.awt.Component component = lg.getAWTComponent();
+				component.addMouseListener( this.mouseAdapter );
+				component.addMouseMotionListener( this.mouseAdapter );
 			}
 		}
 	}
