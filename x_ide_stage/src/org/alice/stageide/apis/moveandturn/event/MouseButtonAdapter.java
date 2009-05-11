@@ -1,10 +1,13 @@
 package org.alice.stageide.apis.moveandturn.event;
 
 public class MouseButtonAdapter implements org.alice.apis.moveandturn.event.MouseButtonListener {
-	public MouseButtonAdapter( edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type, Object[] arguments ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "MouseButtonAdapter", type );
+	private edu.cmu.cs.dennisc.alice.virtualmachine.Context context;
+	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
+	public MouseButtonAdapter( edu.cmu.cs.dennisc.alice.virtualmachine.Context context, edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice type, Object[] arguments ) {
+		this.context = context;
+		this.method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)type.getDeclaredMethod( "mouseButtonClicked", org.alice.apis.moveandturn.event.MouseButtonEvent.class );
 	}
 	public void mouseButtonClicked( org.alice.apis.moveandturn.event.MouseButtonEvent e ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "mouseButtonClicked", e );
+		this.context.invokeEntryPoint( this.method, e );
 	}
 }

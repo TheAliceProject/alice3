@@ -146,8 +146,19 @@ public abstract class VirtualMachine {
 				Class< ? > anonymousCls = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)superType).getCls();
 				Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( anonymousCls );
 				if( adapterCls != null ) {
-					Class< ? >[] parameterTypes = { edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice.class, Object[].class };
-					Object[] args = { anonymousType, arguments };
+					final Object instance = this.getThis();
+					Context context = new Context() {
+						public void invokeEntryPoint( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, final Object... arguments ) {
+							new Thread() {
+								@Override
+								public void run() {
+									VirtualMachine.this.invokeEntryPoint( method, instance, arguments );
+								}
+							}.start();
+						}
+					};
+					Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice.class, Object[].class };
+					Object[] args = { context, anonymousType, arguments };
 					return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
 				} else {
 					throw new RuntimeException();
