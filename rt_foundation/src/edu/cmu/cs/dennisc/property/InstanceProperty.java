@@ -67,16 +67,20 @@ public class InstanceProperty<E> implements Property< E > {
 
 	private void firePropertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		if( m_propertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
-				propertyListener.propertyChanging( e );
+			synchronized( m_propertyListeners ) {
+				for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
+					propertyListener.propertyChanging( e );
+				}
 			}
 		}
 		getOwner().firePropertyChanging( e );
 	}
 	private void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		if( m_propertyListeners != null ) {
-			for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
-				propertyListener.propertyChanged( e );
+			synchronized( m_propertyListeners ) {
+				for( edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener : m_propertyListeners ) {
+					propertyListener.propertyChanged( e );
+				}
 			}
 		}
 		getOwner().firePropertyChanged( e );
