@@ -108,6 +108,7 @@ public class Scene extends Composite {
 	}
 
 	private java.util.List< org.alice.apis.moveandturn.event.MouseButtonListener > mouseButtonListeners = new java.util.LinkedList< org.alice.apis.moveandturn.event.MouseButtonListener >();
+
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void addMouseButtonListener( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener ) {
 //		SceneOwner owner = this.getOwner();

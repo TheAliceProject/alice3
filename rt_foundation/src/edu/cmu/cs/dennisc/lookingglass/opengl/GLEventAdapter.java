@@ -441,7 +441,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		assert drawable == m_drawable;
 		GL gl = drawable.getGL();
 		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
 		
 		final boolean USE_DEBUG_GL = false;
 		if( USE_DEBUG_GL ) {
@@ -464,7 +464,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		initialize( drawable );
 	}
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == m_drawable;
 	
 		//m_lookingGlass.commitAnyPendingChanges();

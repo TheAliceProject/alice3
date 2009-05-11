@@ -181,7 +181,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 							if( isDisplayDesired( lg ) ) {
 								//lg.getGLAutoDrawable().display();
 								lg.repaint();
-								//edu.cmu.cs.dennisc.print.PrintUtilities.println( lg, System.currentTimeMillis() );
+//								edu.cmu.cs.dennisc.print.PrintUtilities.println( lg, System.currentTimeMillis() );
 								rv = ThreadDeferenceAction.YIELD;
 							}
 						}
