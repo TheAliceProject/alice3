@@ -28,22 +28,36 @@ package org.alice.ide;
 public abstract class IDE extends zoot.ZFrame {
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static IDE singleton;
+	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
+	
 
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
+		performSceneEditorGeneratedSetUpMethodNameSet.add( "performSceneEditorGeneratedSetUp" );
+		performSceneEditorGeneratedSetUpMethodNameSet.add( "performEditorGeneratedSetUp" );
 	}
 
 	public static IDE getSingleton() {
 		return IDE.singleton;
 	}
 
+	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice rv;
+		
+		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : sceneType.methods ) {
+			if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
+				return method;
+			}
+		}
+		return null;
+	}
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = this.getProgramType();
 
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)sceneType.getDeclaredMethod( "performSceneEditorGeneratedSetUp" );
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = this.getPerformEditorGeneratedSetUpMethod();;
 		setUpMethod.body.getValue().statements.clear();
 
 		return rv;

@@ -84,15 +84,84 @@ public class Scene extends Composite {
 
 	private SceneOwner m_owner;
 
+	private org.alice.interact.AbstractDragAdapter dragAdapter;
+
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void addDefaultModelManipulation() {
+		if( this.dragAdapter != null ) {
+			//pass
+		} else {
+			this.dragAdapter = new org.alice.interact.GlobalDragAdapter();
+			this.dragAdapter.setOnscreenLookingGlass( this.getOwner().getOnscreenLookingGlass() );
+			//this.globalDragAdapter.setAnimator( ((Program)this.getOwner()).getAnimator() );
+			for( Transformable transformable : this.getComponents() ) {
+				this.putBonusDataFor( transformable );
+			}
+		}
+	}
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void removeDefaultModelManipulation() {
+		if( this.dragAdapter != null ) {
+			this.dragAdapter.setOnscreenLookingGlass( null );
+			this.dragAdapter = null;
+		}
+	}
+
+	private java.util.List< org.alice.apis.moveandturn.event.MouseButtonListener > mouseButtonListeners = new java.util.LinkedList< org.alice.apis.moveandturn.event.MouseButtonListener >();
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void addMouseButtonListener( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener ) {
+		synchronized( this.mouseButtonListeners ) {
+			this.mouseButtonListeners.add( mouseButtonListener );
+		}
+	}
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	public void removeMouseButtonListener( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener ) {
+		synchronized( this.mouseButtonListeners ) {
+			this.mouseButtonListeners.remove( mouseButtonListener );
+		}
+	}
+
+	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
+		@Override
+		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+			Scene.this.handleMouseQuoteClickedUnquote( e );
+		}
+	};
+	private void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+		if( this.mouseButtonListeners.size() > 0 ) {
+			synchronized( this.mouseButtonListeners ) {
+				org.alice.apis.moveandturn.event.MouseButtonEvent mbe = new org.alice.apis.moveandturn.event.MouseButtonEvent( e.getComponent() );
+				for( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener : this.mouseButtonListeners ) {
+					mouseButtonListener.mouseButtonClicked( mbe );
+				}
+			}
+		}
+	}
+	@PropertyGetterTemplate(visibility = Visibility.TUCKED_AWAY)
 	@Override
 	public SceneOwner getOwner() {
 		return m_owner;
 	}
 	public void setOwner( SceneOwner owner ) {
 		if( m_owner != owner ) {
+			if( m_owner != null ) {
+				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = m_owner.getOnscreenLookingGlass();
+				java.awt.Component component = lg.getAWTComponent();
+				component.removeMouseListener( this.mouseAdapter );
+				component.removeMouseMotionListener( this.mouseAdapter );
+			}
 			//handleOwnerChange( null );
 			m_owner = owner;
 			handleOwnerChange( m_owner );
+			if( m_owner != null ) {
+				if( m_owner != null ) {
+					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = m_owner.getOnscreenLookingGlass();
+					java.awt.Component component = lg.getAWTComponent();
+					component.addMouseListener( this.mouseAdapter );
+					component.addMouseMotionListener( this.mouseAdapter );
+				}
+			}
 		}
 	}
 
@@ -214,48 +283,4 @@ public class Scene extends Composite {
 			sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.CAMERA );
 		}
 	}
-
-	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
-
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void addDefaultModelManipulation() {
-		if( this.globalDragAdapter != null ) {
-			//pass
-		} else {
-			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
-			this.globalDragAdapter.setOnscreenLookingGlass( this.getOwner().getOnscreenLookingGlass() );
-			//this.globalDragAdapter.setAnimator( ((Program)this.getOwner()).getAnimator() );
-			for( Transformable transformable : this.getComponents() ) {
-				this.putBonusDataFor( transformable );
-			}
-		}
-	}
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void removeDefaultModelManipulation() {
-		if( this.globalDragAdapter != null ) {
-			this.globalDragAdapter.setOnscreenLookingGlass( null );
-			this.globalDragAdapter = null;
-		}
-	}
-
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void addMouseButtonListener( final org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener ) {
-		SceneOwner owner = this.getOwner();
-		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
-		java.awt.Component component = lg.getAWTComponent();
-		edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
-			@Override
-			protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
-				org.alice.apis.moveandturn.event.MouseButtonEvent mbe = new org.alice.apis.moveandturn.event.MouseButtonEvent( e.getComponent() );
-				mouseButtonListener.mouseButtonClicked( mbe );
-			}
-		};
-		
-		component.addMouseListener( mouseAdapter );
-		component.addMouseMotionListener( mouseAdapter );
-	}
-	//	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
-	//	public void removeMouseButtonListener( org.alice.apis.moveandturn.event.MouseListener mouseListener ) {
-	//		
-	//	}
 }

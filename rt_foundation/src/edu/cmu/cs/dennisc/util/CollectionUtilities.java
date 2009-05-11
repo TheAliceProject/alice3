@@ -32,7 +32,7 @@ public abstract class CollectionUtilities {
 		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, collection.size() );
 		return collection.toArray( rv );
 	}
-	public static <E extends Object> void set( java.util.Collection< E > collection, E[] array ) {
+	public static <E extends Object> void set( java.util.Collection< E > collection, E... array ) {
 		collection.clear();
 		if( collection instanceof java.util.ArrayList ) {
 			java.util.ArrayList< E > arrayList = (java.util.ArrayList< E >)collection;

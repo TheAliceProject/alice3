@@ -209,9 +209,14 @@ class ProjectBlank extends cascade.Blank {
 	@Override
 	protected void addChildren() {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice.class );
-		this.project.getProgramType().crawl( crawler, true );
+		final edu.cmu.cs.dennisc.alice.ast.AbstractType programType = this.project.getProgramType();
+		programType.crawl( crawler, true );
 		for( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type : crawler.getList() ) {
-			this.addFillIn( new TypeFillIn( type ) );
+			if( type == programType ) {
+				//pass
+			} else {
+				this.addFillIn( new TypeFillIn( type ) );
+			}
 		}
 	}
 }

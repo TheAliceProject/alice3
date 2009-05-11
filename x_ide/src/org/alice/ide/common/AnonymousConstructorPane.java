@@ -48,18 +48,14 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		this.anonymousConstructor = anonymousConstructor;
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
 		
-		javax.swing.Box header = javax.swing.Box.createHorizontalBox();
 		if( getIDE().isJava() ) {
+			javax.swing.Box header = javax.swing.Box.createHorizontalBox();
 			header.add( zoot.ZLabel.acquire( "new " ) );
-		} else {
-			header.add( zoot.ZLabel.acquire( "new instance of " ) );
-		}
-		header.add( new TypeComponent( anonymousConstructor.getDeclaringType().getSuperType() ) );
-		if( getIDE().isJava() ) {
+			header.add( new TypeComponent( anonymousConstructor.getDeclaringType().getSuperType() ) );
 			header.add( zoot.ZLabel.acquire( "() {" ) );
+			header.setAlignmentX( 0.0f );
+			this.add( header );
 		}
-		header.setAlignmentX( 0.0f );
-		this.add( header );
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.anonymousConstructor.getDeclaringType();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {

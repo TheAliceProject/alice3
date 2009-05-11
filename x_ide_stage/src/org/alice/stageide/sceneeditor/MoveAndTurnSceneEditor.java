@@ -455,7 +455,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( this.sceneType != null ) {
 			this.sceneType.fields.addListPropertyListener( this.listPropertyAdapter );
 		}
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( "performSetUp" );
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = getIDE().getPerformEditorGeneratedSetUpMethod();
 		this.getVM().invokeEntryPoint( method, rv );
 		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)((edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)rv).getInstanceInJava();
 		this.program.setScene( scene );
@@ -658,23 +658,26 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
+	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";
 	@Override
 	public void generateCodeForSetUp() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
-		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( "performSceneEditorGeneratedSetUp" );
-		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+//		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+//		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( "performSceneEditorGeneratedSetUp" );
+//		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+//			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice =  this.getIDE().getPerformEditorGeneratedSetUpMethod();
 			edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
 			bodyStatementsProperty.clear();
-			bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( "DO NOT EDIT.  This code is automatically generated." ) );
+			bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
 			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
 				this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
 			}
-		} else {
-			throw new RuntimeException();
-		}
+			//bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
+//		} else {
+//			throw new RuntimeException();
+//		}
 	}
 	@Override
 	public void preserveProjectProperties() {
