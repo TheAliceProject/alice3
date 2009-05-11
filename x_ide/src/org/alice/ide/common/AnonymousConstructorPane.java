@@ -36,6 +36,7 @@ class MethodPane extends swing.BorderPane {
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackground( org.alice.ide.IDE.getSingleton().getProcedureColor() );
+		this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK | java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
 	}
 }
 
@@ -61,7 +62,12 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 			swing.Pane pane = new swing.Pane();
 			pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
-			pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 16, 4, 4 ) );
+			int inset = 4;
+			int left = 4;
+			if( getIDE().isJava() ) {
+				left += 12;
+			}
+			pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, left, inset, inset ) );
 			pane.add( new MethodPane( factory, (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method ) );
 			this.add( pane );
 		}

@@ -124,7 +124,6 @@ public class Scene extends Composite {
 	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
 			Scene.this.handleMouseQuoteClickedUnquote( e );
 		}
 	};
