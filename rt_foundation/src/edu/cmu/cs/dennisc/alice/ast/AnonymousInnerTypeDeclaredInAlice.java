@@ -27,10 +27,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class AnonymousInnerTypeDeclaredInAlice extends AbstractTypeDeclaredInAlice {
-	//todo?
 	private java.util.ArrayList< AbstractConstructor > constructors = new java.util.ArrayList< AbstractConstructor >();
-	//inner classes only
-	//public edu.cmu.cs.dennisc.property.BooleanProperty isStatic = new edu.cmu.cs.dennisc.property.BooleanProperty( this, Boolean.FALSE );
 	public AnonymousInnerTypeDeclaredInAlice() {
 	}
 	public AnonymousInnerTypeDeclaredInAlice( AbstractType superType, MethodDeclaredInAlice[] methods, FieldDeclaredInAlice[] fields ) {
@@ -58,21 +55,18 @@ public class AnonymousInnerTypeDeclaredInAlice extends AbstractTypeDeclaredInAli
 		return null;
 	}
 	
-
-	@Override
-	public boolean isStatic() {
-		return false;
-		//return this.isStatic.getValue();
-	}
+	//An anonymous class is never abstract (§8.1.1.1). An anonymous class is always an inner class (§8.1.3); it is never static (§8.1.1, §8.5.2). An anonymous class is always implicitly final (§8.1.1.2).
 	@Override
 	public boolean isAbstract() {
-		//todo?
+		return false;
+	}
+	@Override
+	public boolean isStatic() {
 		return false;
 	}
 	@Override
 	public boolean isFinal() {
-		//todo?
-		return false;
+		return true;
 	}
 	@Override
 	public boolean isStrictFloatingPoint() {

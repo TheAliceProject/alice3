@@ -20,28 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
+package org.alice.ide.common;
 
-package org.alice.ide.namevalidators;
-
-public class MethodNameValidator extends MemberNameValidator {
-	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( method, (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice)method.getDeclaringType() );
-	}
-	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type ) {
-		super( null, type );
+public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
+	public BodyPane( java.awt.Component statementListComponent ) {
+		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.setOpaque( false );
+		this.add( zoot.ZLabel.acquire( "do in order" ), java.awt.BorderLayout.NORTH );
+		this.add( statementListComponent, java.awt.BorderLayout.CENTER );
+		this.add( javax.swing.Box.createHorizontalStrut( 8 ), java.awt.BorderLayout.WEST );
 	}
 	@Override
-	protected boolean isNameAvailable( java.lang.String name ) {
-		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
-		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.getType().methods ) {
-			if( method == node ) {
-				//pass
-			} else {
-				if( name.equals( method.name.getValue() ) ) {
-					return false;
-				}
-			}
-		}
-		return true;
+	protected boolean isKnurlDesired() {
+		return false;
 	}
 }

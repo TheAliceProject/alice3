@@ -179,6 +179,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
+		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
 		vm.setEntryPointType( this.getProgramType() );
 		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
 		
@@ -296,6 +297,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );
 		rv.add( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.MouseButtonClickedFillerInner() );
 		return rv;
 	}
 }

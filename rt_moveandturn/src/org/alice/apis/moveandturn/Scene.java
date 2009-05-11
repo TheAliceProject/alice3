@@ -37,21 +37,22 @@ public class Scene extends Composite {
 	private edu.cmu.cs.dennisc.scenegraph.Scene m_sgScene = new edu.cmu.cs.dennisc.scenegraph.Scene();
 	private edu.cmu.cs.dennisc.scenegraph.Background m_sgBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 	private edu.cmu.cs.dennisc.scenegraph.AmbientLight m_sgAmbientLight = new edu.cmu.cs.dennisc.scenegraph.AmbientLight();
+
 	public Scene() {
 		putElement( m_sgScene );
-		
+
 		m_sgBackground.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 0.5f, 0.5f, 1, 1 ) );
 		m_sgScene.background.setValue( m_sgBackground );
 
-	    m_sgAmbientLight.setParent( m_sgScene );
-	    //m_sgAmbientLight.setColor( new edu.cmu.cs.dennisc.color.Color4f( 0.2f, 0.2f, 0.2f, 1 ) );
-	    m_sgAmbientLight.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 1.0f, 1.0f, 1.0f, 1.0f ) );
-	    m_sgAmbientLight.brightness.setValue( 0.3f );
+		m_sgAmbientLight.setParent( m_sgScene );
+		//m_sgAmbientLight.setColor( new edu.cmu.cs.dennisc.color.Color4f( 0.2f, 0.2f, 0.2f, 1 ) );
+		m_sgAmbientLight.color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 1.0f, 1.0f, 1.0f, 1.0f ) );
+		m_sgAmbientLight.brightness.setValue( 0.3f );
 
-        //getSGReferenceFrame().setParent( m_scene );
-        
-//		Axes axes = new Axes( 10 );
-//		axes.setParent( m_sgScene );
+		//getSGReferenceFrame().setParent( m_scene );
+
+		//		Axes axes = new Axes( 10 );
+		//		axes.setParent( m_sgScene );
 	}
 
 	@Override
@@ -62,26 +63,27 @@ public class Scene extends Composite {
 		m_sgAmbientLight.setName( name + ".m_sgAmbientLight" );
 	}
 
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getTransformation( ReferenceFrame other ) {
 		return other.getSGReferenceFrame().getInverseAbsoluteTransformation();
 	}
-	
+
 	//todo?
 
 	//todo: reduce visibility to protected?
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Composite getSGComposite() {
 		return m_sgScene;
 	}
-		
+
 	@Override
 	public Scene getScene() {
 		return this;
 	}
 
 	private SceneOwner m_owner;
+
 	@Override
 	public SceneOwner getOwner() {
 		return m_owner;
@@ -93,9 +95,8 @@ public class Scene extends Composite {
 			handleOwnerChange( m_owner );
 		}
 	}
-	
-	
-	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+
+	@PropertyGetterTemplate(visibility = Visibility.PRIME_TIME)
 	public Color getAmbientLightColor() {
 		return new Color( m_sgAmbientLight.color.getValue() );
 	}
@@ -118,8 +119,8 @@ public class Scene extends Composite {
 	public void setAmbientLightColor( Color color ) {
 		setAmbientLightColor( color, DEFAULT_DURATION );
 	}
-	
-	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+
+	@PropertyGetterTemplate(visibility = Visibility.PRIME_TIME)
 	public Double getAmbientLightBrightness() {
 		return (double)m_sgAmbientLight.brightness.getValue();
 	}
@@ -143,7 +144,7 @@ public class Scene extends Composite {
 		setAmbientLightBrightness( brightness, DEFAULT_DURATION );
 	}
 
-	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	@PropertyGetterTemplate(visibility = Visibility.PRIME_TIME)
 	public Color getAtmosphereColor() {
 		return new Color( m_sgBackground.color.getValue() );
 	}
@@ -167,8 +168,7 @@ public class Scene extends Composite {
 		setAtmosphereColor( color, DEFAULT_DURATION );
 	}
 
-
-	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	@PropertyGetterTemplate(visibility = Visibility.PRIME_TIME)
 	public Double getGlobalBrightness() {
 		return (double)m_sgScene.globalBrightness.getValue();
 	}
@@ -216,8 +216,8 @@ public class Scene extends Composite {
 	}
 
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
-	
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void addDefaultModelManipulation() {
 		if( this.globalDragAdapter != null ) {
 			//pass
@@ -230,11 +230,32 @@ public class Scene extends Composite {
 			}
 		}
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void removeDefaultModelManipulation() {
 		if( this.globalDragAdapter != null ) {
 			this.globalDragAdapter.setOnscreenLookingGlass( null );
 			this.globalDragAdapter = null;
 		}
 	}
+
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void addMouseButtonListener( final org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener ) {
+		SceneOwner owner = this.getOwner();
+		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
+		java.awt.Component component = lg.getAWTComponent();
+		edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
+			@Override
+			protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+				org.alice.apis.moveandturn.event.MouseButtonEvent mbe = new org.alice.apis.moveandturn.event.MouseButtonEvent( e.getComponent() );
+				mouseButtonListener.mouseButtonClicked( mbe );
+			}
+		};
+		
+		component.addMouseListener( mouseAdapter );
+		component.addMouseMotionListener( mouseAdapter );
+	}
+	//	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	//	public void removeMouseButtonListener( org.alice.apis.moveandturn.event.MouseListener mouseListener ) {
+	//		
+	//	}
 }

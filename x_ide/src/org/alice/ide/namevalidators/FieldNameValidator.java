@@ -25,9 +25,9 @@ package org.alice.ide.namevalidators;
 
 public class FieldNameValidator extends MemberNameValidator {
 	public FieldNameValidator( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( field, (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType() );
+		super( field, (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice)field.getDeclaringType() );
 	}
-	public FieldNameValidator( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	public FieldNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type ) {
 		super( null, type );
 	}
 	@Override

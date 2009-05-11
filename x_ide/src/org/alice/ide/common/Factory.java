@@ -28,17 +28,17 @@ package org.alice.ide.common;
  */
 public abstract class Factory {
 	//todo: remove
-	static java.util.Map< Object, String > operatorMap = new java.util.HashMap< Object, String >();
-	static {
-		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.PLUS, "+" );
-		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.MINUS, "-" );
-		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.TIMES, "\u00D7" );
-		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.REAL_DIVIDE, "\u00F7" );
-		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.LESS, "<" );
-		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.LESS_EQUALS, "\u2264" );
-		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER, ">" );
-		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER_EQUALS, "\u2265" );
-	}
+//	static java.util.Map< Object, String > operatorMap = new java.util.HashMap< Object, String >();
+//	static {
+//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.PLUS, "+" );
+//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.MINUS, "-" );
+//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.TIMES, "\u00D7" );
+//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.REAL_DIVIDE, "\u00F7" );
+//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.LESS, "<" );
+//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.LESS_EQUALS, "\u2264" );
+//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER, ">" );
+//		Factory.operatorMap.put( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.GREATER_EQUALS, "\u2265" );
+//	}
 
 	
 	protected java.awt.Component createGetsComponent( boolean isTowardLeading ) { 
@@ -82,14 +82,14 @@ public abstract class Factory {
 		} else {
 			rv = null;
 			//todo: remove
-			if( "operator".equals( propertyName ) ) {
-				String value = Factory.operatorMap.get( property.getValue() );
-				if( value != null ) {
-					zoot.ZLabel label = zoot.ZLabel.acquire( value, zoot.font.ZTextWeight.BOLD );
-					label.setFontToScaledFont( 1.5f );
-					rv = label;
-				}
-			}
+//			if( "operator".equals( propertyName ) ) {
+//				String value = Factory.operatorMap.get( property.getValue() );
+//				if( value != null ) {
+//					zoot.ZLabel label = zoot.ZLabel.acquire( value, zoot.font.ZTextWeight.BOLD );
+//					label.setFontToScaledFont( 1.5f );
+//					rv = label;
+//				}
+//			}
 			if( rv != null ) {
 				//pass
 			} else {
@@ -310,6 +310,14 @@ public abstract class Factory {
 		}
 		return rv;
 	}
+	protected java.awt.Component createInstanceCreationPane( edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+		if( constructor instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor ) {
+			return new AnonymousConstructorPane( this, (edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor)constructor );
+		} else {
+			return new ExpressionPane( instanceCreation, this.createComponent( instanceCreation ) );
+		}
+	}
 
 	public java.awt.Component createExpressionPane( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 //		java.awt.Component rv;
@@ -351,6 +359,8 @@ public abstract class Factory {
 				rv = this.createFieldAccessPane( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
 				rv = new TypeComponent( ((edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression).value.getValue() );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
+				rv = this.createInstanceCreationPane( (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression );
 //			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractLiteral ) {
 //				rv = this.createComponent( expression );
 			} else {

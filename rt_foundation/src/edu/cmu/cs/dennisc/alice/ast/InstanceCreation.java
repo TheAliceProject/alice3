@@ -33,6 +33,7 @@ public class InstanceCreation extends Expression {
 	public InstanceCreation() {
 	}
 	public InstanceCreation( AbstractConstructor constructor, Argument... arguments ) {
+		assert constructor != null;
 		this.constructor.setValue( constructor );
 		this.arguments.add( arguments );
 	}

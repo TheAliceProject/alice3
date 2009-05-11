@@ -211,25 +211,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 			//bodyPane.setFont( bodyPane.getFont().deriveFont( java.awt.Font.BOLD ) );
 			//bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( bodyPane.getFont().getSize() + 8, 16, 4, 4 ) );
 			
-			class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
-				public BodyPane() {
-					super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
-					this.setLayout( new java.awt.BorderLayout() );
-					this.setOpaque( false );
-					this.add( zoot.ZLabel.acquire( "do in order" ), java.awt.BorderLayout.NORTH );
-					this.add( new RootStatementListPropertyPane(), java.awt.BorderLayout.CENTER );
-					this.add( javax.swing.Box.createHorizontalStrut( 8 ), java.awt.BorderLayout.WEST );
-				}
-				@Override
-				protected boolean isKnurlDesired() {
-					return false;
-				}
-//				@Override
-//				protected boolean isCullingContainsDesired() {
-//					return false;
-//				}
-			}
-			BodyPane bodyPane = new BodyPane();
+			org.alice.ide.common.BodyPane bodyPane = new org.alice.ide.common.BodyPane( new RootStatementListPropertyPane() );
 			
 //			javax.swing.JPanel panel = new javax.swing.JPanel();
 //			panel.setLayout( new java.awt.GridLayout() );

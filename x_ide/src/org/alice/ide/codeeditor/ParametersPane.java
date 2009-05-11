@@ -28,8 +28,8 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< ParameterDeclaredInAlice >> {
-	public ParametersPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPane< NodeListProperty< ParameterDeclaredInAlice >> {
+	public ParametersPane( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, code.getParamtersProperty() );
 	}
 	

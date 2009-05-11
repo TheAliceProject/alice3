@@ -20,28 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
+package org.alice.apis.moveandturn.event;
 
-package org.alice.ide.namevalidators;
-
-public class MethodNameValidator extends MemberNameValidator {
-	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( method, (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice)method.getDeclaringType() );
-	}
-	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type ) {
-		super( null, type );
-	}
-	@Override
-	protected boolean isNameAvailable( java.lang.String name ) {
-		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
-		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.getType().methods ) {
-			if( method == node ) {
-				//pass
-			} else {
-				if( name.equals( method.name.getValue() ) ) {
-					return false;
-				}
-			}
-		}
-		return true;
+/**
+ * @author Dennis Cosgrove
+ */
+public class MouseButtonEvent extends edu.cmu.cs.dennisc.pattern.event.Event< java.awt.Component > {
+	public MouseButtonEvent( java.awt.Component source ) {
+		super( source );
 	}
 }

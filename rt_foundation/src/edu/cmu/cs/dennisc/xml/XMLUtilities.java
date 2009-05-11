@@ -148,9 +148,13 @@ public class XMLUtilities {
 	public static Iterable< org.w3c.dom.Element > getElementsByTagNameAsIterable( org.w3c.dom.Element xmlParent, String tagName ) {
 		return new ElementIterable( xmlParent.getElementsByTagName( tagName ) );
 	}
+
+	
+	//WARNING: this method seems to return all decendants.  investigate.
+	@Deprecated
 	public static org.w3c.dom.Element getSingleElementByTagName( org.w3c.dom.Element xmlParent, String tagName ) {
 		org.w3c.dom.NodeList nodeList = xmlParent.getElementsByTagName( tagName );
-		assert nodeList.getLength() == 1 : xmlParent.toString();
+		assert nodeList.getLength() == 1 : tagName;
 		org.w3c.dom.Node node0 = nodeList.item( 0 );
 		assert node0 instanceof org.w3c.dom.Element : node0;
 		return (org.w3c.dom.Element)node0;

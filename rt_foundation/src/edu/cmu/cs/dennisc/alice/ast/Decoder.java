@@ -106,10 +106,16 @@ public class Decoder {
 	private ArrayTypeDeclaredInAlice decodeArrayTypeDeclaredInAlice( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "leafType" );
 		org.w3c.dom.Element xmlDimensionCount = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "dimensionCount" );
-		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "node" );
+		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlLeafType, "node" );
 		TypeDeclaredInAlice leafType = (TypeDeclaredInAlice)decode( xmlLeafTypeNode, map );
 		int dimensionCount = Integer.parseInt( xmlDimensionCount.getTextContent() );
 		return ArrayTypeDeclaredInAlice.get( leafType, dimensionCount );
+	}
+	private AnonymousConstructor decodeAnonymousConstructor( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
+		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "anonymousType" );
+		org.w3c.dom.Element xmlLeafTypeNode = (org.w3c.dom.Element)xmlLeafType.getChildNodes().item( 0 );
+		AnonymousInnerTypeDeclaredInAlice anonymousType = (AnonymousInnerTypeDeclaredInAlice)decode( xmlLeafTypeNode, map );
+		return AnonymousConstructor.get( anonymousType );
 	}
 
 	private Class< ? > decodeDeclaringClass( org.w3c.dom.Element xmlElement ) {
@@ -197,6 +203,8 @@ public class Decoder {
 				java.lang.reflect.Method gttr = decodeMethod( xmlElement, "getter" );
 				java.lang.reflect.Method sttr = decodeMethod( xmlElement, "setter" );
 				rv = TypeDeclaredInJava.getField( gttr, sttr );
+			} else if( clsName.equals( AnonymousConstructor.class.getName() ) ) {
+				rv = decodeAnonymousConstructor( xmlElement, map );
 			} else if( clsName.equals( ParameterDeclaredInJavaConstructor.class.getName() ) ) {
 				org.w3c.dom.NodeList nodeList = xmlElement.getChildNodes();
 				assert nodeList.getLength() == 2;

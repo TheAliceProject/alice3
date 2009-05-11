@@ -131,12 +131,42 @@ public abstract class VirtualMachine {
 		}
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( constructor.getCnstrctr(), arguments );
 	}
+	
+	private java.util.Map< Class<?>, Class<?> > mapAnonymousClsToAdapterCls = new java.util.HashMap< Class<?>, Class<?> >();
+	public void registerAnonymousAdapter( Class<?> anonymousCls, Class<?> adapterCls ) {
+		this.mapAnonymousClsToAdapterCls.put( anonymousCls, adapterCls );
+	}
+	
+	protected Object createInstanceFromAnonymousConstructor( edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor constructor, Object[] arguments ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = constructor.getDeclaringType();
+		if( type instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice)type;
+			edu.cmu.cs.dennisc.alice.ast.AbstractType superType = anonymousType.getSuperType();
+			if( superType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
+				Class< ? > anonymousCls = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)superType).getCls();
+				Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( anonymousCls );
+				if( adapterCls != null ) {
+					Class< ? >[] parameterTypes = { edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice.class, Object[].class };
+					Object[] args = { anonymousType, arguments };
+					return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
+				} else {
+					throw new RuntimeException();
+				}
+			} else {
+				throw new RuntimeException();
+			}
+		} else {
+			throw new RuntimeException();
+		}
+	}
 	protected Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments ) {
 		assert constructor != null;
 		if( constructor instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
 			return this.createInstanceFromConstructorDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)constructor, arguments );
 		} else if( constructor instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava ) {
 			return this.createInstanceFromConstructorDeclaredInJava( (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava)constructor, arguments );
+		} else if( constructor instanceof edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor ) {
+			return this.createInstanceFromAnonymousConstructor( (edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor)constructor, arguments );
 		} else {
 			throw new RuntimeException();
 		}

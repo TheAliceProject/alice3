@@ -348,6 +348,4 @@ public abstract class Model extends Transformable {
 		}
 		return rv;
 	}	
-
-
 }

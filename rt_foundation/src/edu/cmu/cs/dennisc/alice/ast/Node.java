@@ -364,6 +364,11 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 			java.lang.reflect.Method sttr = fieldDeclaredInJavaWithGetterAndSetter.getSttr();
 			rv.appendChild( encodeMethod( xmlDocument, "getter", gttr ) );
 			rv.appendChild( encodeMethod( xmlDocument, "setter", sttr ) );
+		} else if( this instanceof AnonymousConstructor ) {
+			AnonymousConstructor anonymousConstructor = (AnonymousConstructor)this;
+			org.w3c.dom.Element xmlType = xmlDocument.createElement( "anonymousType" );
+			xmlType.appendChild( encodeValue( anonymousConstructor.getDeclaringType(), xmlDocument, set ) );
+			rv.appendChild( xmlType );
 		} else if( this instanceof ParameterDeclaredInJavaConstructor ) {
 			ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (ParameterDeclaredInJavaConstructor)this;
 			ConstructorDeclaredInJava constructor = parameterDeclaredInJavaConstructor.getConstructor();
