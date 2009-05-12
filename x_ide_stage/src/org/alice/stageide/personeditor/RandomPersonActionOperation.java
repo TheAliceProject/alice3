@@ -31,6 +31,7 @@ class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActio
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		PersonViewer.getSingleton().randomize();
+		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		actionContext.commit();
 	}
 }

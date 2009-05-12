@@ -193,6 +193,7 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 		}
 		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
 			CreateTextPane.this.instanceNameVC.setEditable( booleanStateContext.getNextValue() == false );
+			booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 			booleanStateContext.commit();
 		}
 	}

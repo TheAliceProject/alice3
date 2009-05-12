@@ -40,6 +40,7 @@ class HairList extends AbstractArrayOfEnumConstantsList<Enum> {
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<Enum> context ) {
 		PersonViewer.getSingleton().setHair( (org.alice.apis.stage.Hair)context.getNextSelection() );
+		context.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		context.commit();
 	}
 }

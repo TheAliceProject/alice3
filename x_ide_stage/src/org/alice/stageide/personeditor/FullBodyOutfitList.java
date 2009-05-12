@@ -40,6 +40,7 @@ class FullBodyOutfitList extends AbstractArrayOfEnumConstantsList<Enum> {
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<Enum> context ) {
 		PersonViewer.getSingleton().setFullBodyOutfit( (org.alice.apis.stage.FullBodyOutfit)context.getNextSelection() );
+		context.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		context.commit();
 	}
 }

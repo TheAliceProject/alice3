@@ -32,6 +32,7 @@ class BaseSkinToneList extends AbstractList< org.alice.apis.stage.BaseSkinTone >
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<org.alice.apis.stage.BaseSkinTone> context ) {
 		PersonViewer.getSingleton().setBaseSkinTone( context.getNextSelection() );
+		context.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		context.commit();
 	}
 }

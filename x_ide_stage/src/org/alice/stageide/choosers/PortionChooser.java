@@ -34,6 +34,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 			if( inputPane != null ) {
 				inputPane.updateOKButton();
 			}
+			boundedRangeContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 			boundedRangeContext.commit();
 		}
 	}

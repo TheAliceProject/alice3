@@ -33,6 +33,7 @@ public class AboutOperation extends org.alice.ide.operations.AbstractActionOpera
 	public void perform( zoot.ActionContext actionContext ) {
 		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), aboutPane, "About Alice 3", javax.swing.JOptionPane.PLAIN_MESSAGE );
+		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		actionContext.commit();
 	}
 }

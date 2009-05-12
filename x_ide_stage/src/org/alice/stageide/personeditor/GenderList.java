@@ -32,6 +32,7 @@ class GenderList extends AbstractList< org.alice.apis.stage.Gender > {
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<org.alice.apis.stage.Gender> context ) {
 		PersonViewer.getSingleton().setGender( context.getNextSelection() );
+		context.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		context.commit();
 	}
 }

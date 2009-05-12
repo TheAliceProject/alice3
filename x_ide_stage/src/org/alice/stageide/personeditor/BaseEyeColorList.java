@@ -32,6 +32,7 @@ class BaseEyeColorList extends AbstractList< org.alice.apis.stage.BaseEyeColor >
 	@Override
 	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<org.alice.apis.stage.BaseEyeColor> context ) {
 		PersonViewer.getSingleton().setBaseEyeColor( context.getNextSelection() );
+		context.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		context.commit();
 	}
 }
