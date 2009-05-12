@@ -39,7 +39,10 @@ public class MethodInvocation extends Expression {
 	public MethodInvocation() {
 	}
 	public MethodInvocation( Expression expression, AbstractMethod method, Argument... arguments ){
-		assert method.getDeclaringType().isAssignableFrom( expression.getType() );
+		AbstractType expressionType = expression.getType();
+		if( expressionType != null ) {
+			assert method.getDeclaringType().isAssignableFrom( expressionType );
+		}
 		this.expression.setValue( expression );
 		this.method.setValue( method );
 		this.arguments.add( arguments );

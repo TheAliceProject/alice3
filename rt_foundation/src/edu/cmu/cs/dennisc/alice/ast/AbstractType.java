@@ -61,9 +61,14 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 		return getFirstTypeEncounteredDeclaredInJava().getCls();
 	}
 	public boolean isAssignableFrom( AbstractType other ) {
-		TypeDeclaredInJava thisTypeDeclaredInJava = this.getFirstTypeEncounteredDeclaredInJava();
-		TypeDeclaredInJava otherTypeDeclaredInJava = other.getFirstTypeEncounteredDeclaredInJava();
-		return getClsWrapperIfNecessary( thisTypeDeclaredInJava ).isAssignableFrom( getClsWrapperIfNecessary( otherTypeDeclaredInJava ) );
+		if( other != null ) {
+			TypeDeclaredInJava thisTypeDeclaredInJava = this.getFirstTypeEncounteredDeclaredInJava();
+			TypeDeclaredInJava otherTypeDeclaredInJava = other.getFirstTypeEncounteredDeclaredInJava();
+			return getClsWrapperIfNecessary( thisTypeDeclaredInJava ).isAssignableFrom( getClsWrapperIfNecessary( otherTypeDeclaredInJava ) );
+		} else {
+			//todo?
+			return false;
+		}
 	}
 	public boolean isAssignableFrom( Class<?> other ) {
 		return isAssignableFrom( TypeDeclaredInJava.get( other ) );
