@@ -539,7 +539,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	}
 
 	public void keyTyped( KeyEvent e ) {
-		System.out.println("Key typed!");
+		//System.out.println("Key typed!");
 		
 	}
 

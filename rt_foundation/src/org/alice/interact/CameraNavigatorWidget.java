@@ -22,6 +22,7 @@
  */
 package org.alice.interact;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
