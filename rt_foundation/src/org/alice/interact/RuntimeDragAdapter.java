@@ -54,6 +54,11 @@ public class RuntimeDragAdapter extends AbstractDragAdapter {
 		MouseDragCondition moveableObjectWithCtrl = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierKey.CONTROL ));
 		mouseRotateObjectLeftRight.addCondition( moveableObjectWithCtrl );
 		this.manipulators.add( mouseRotateObjectLeftRight );
+		
+		for (int i=0; i<this.manipulators.size(); i++)
+		{
+			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
+		}
 	}
 	
 	
