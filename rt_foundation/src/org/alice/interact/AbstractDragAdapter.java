@@ -361,6 +361,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return false;
 	}
 	
+	public void addManipulator( ManipulatorConditionSet manipulator )
+	{
+		this.manipulators.add(manipulator);
+	}
+	
 	public void addListeners( java.awt.Component component ) {
 		if (!this.isComponentListener(component))
 		{
@@ -370,7 +375,7 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			component.addMouseWheelListener( this );
 		}
 	}
-
+	
 	public void removeListeners( java.awt.Component component ) {
 		if (this.isComponentListener(component))
 		{

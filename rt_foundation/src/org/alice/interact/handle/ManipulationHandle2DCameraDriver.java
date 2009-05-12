@@ -22,10 +22,9 @@
  */
 package org.alice.interact.handle;
 
-import java.awt.image.BufferedImage;
-
 import javax.swing.ImageIcon;
 
+import org.alice.interact.PickHint;
 import org.alice.interact.event.ManipulationEvent;
 
 import edu.cmu.cs.dennisc.image.ImageUtilities;
@@ -65,6 +64,11 @@ public class ManipulationHandle2DCameraDriver extends ImageBasedManipulationHand
 	private boolean turningRight = false;
 	private boolean movingForward = false;
 	private boolean movingBackward = false;
+	
+	@Override
+	public PickHint getPickHint() {
+		return PickHint.MULTIMODE_HANDLES;
+	}
 	
 	@Override
 	protected void setImageMask() {

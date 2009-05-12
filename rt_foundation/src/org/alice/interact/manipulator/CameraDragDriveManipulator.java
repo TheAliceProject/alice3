@@ -100,7 +100,7 @@ public class CameraDragDriveManipulator extends Camera2DDragManipulator {
 	{
 		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
 		
-		if (this.initialHandleColor.equals( LEFT ) || this.initialHandleColor.equals( RIGHT ))
+		if (this.initialHandleColor != null && (this.initialHandleColor.equals( LEFT ) || this.initialHandleColor.equals( RIGHT )))
 		{
 			if (Math.abs( relativeMousePos.y ) < MIN_PIXEL_MOVE_AMOUNT)
 			{
@@ -129,21 +129,24 @@ public class CameraDragDriveManipulator extends Camera2DDragManipulator {
 	{
 		Vector2 relativeMousePos = Vector2.createSubtraction( mousePos, this.initialMousePosition );
 		
-		if (this.initialHandleColor.equals( UP ) || this.initialHandleColor.equals( DOWN ))
+		if (this.initialHandleColor != null)
 		{
-			if (Math.abs( relativeMousePos.x ) < MIN_PIXEL_MOVE_AMOUNT)
+			if (this.initialHandleColor.equals( UP ) || this.initialHandleColor.equals( DOWN ))
 			{
-				relativeMousePos.x = 0.0d;
-			}
-			else
-			{
-				if (relativeMousePos.x < 0.0d)
+				if (Math.abs( relativeMousePos.x ) < MIN_PIXEL_MOVE_AMOUNT)
 				{
-					relativeMousePos.x += MIN_PIXEL_MOVE_AMOUNT;
+					relativeMousePos.x = 0.0d;
 				}
 				else
 				{
-					relativeMousePos.x -= MIN_PIXEL_MOVE_AMOUNT;
+					if (relativeMousePos.x < 0.0d)
+					{
+						relativeMousePos.x += MIN_PIXEL_MOVE_AMOUNT;
+					}
+					else
+					{
+						relativeMousePos.x -= MIN_PIXEL_MOVE_AMOUNT;
+					}
 				}
 			}
 		}

@@ -175,14 +175,14 @@ public class InputState {
 		this.clickPickResult = pickResult;
 		Transformable picked = this.getClickPickedTransformable( true );
 		PickHint clickedObjectType = PickCondition.getPickType( this.clickPickResult );
-		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
+		if ( !clickedObjectType.intersects( PickHint.NOTHING) )
 		{
 			this.setClickPickTransformable( picked );
 		}
-		else if (clickedObjectType.intersects( PickHint.HANDLES) )
-		{
-			this.setClickPickTransformable(picked);
-		}
+//		else if (clickedObjectType.intersects( PickHint.HANDLES) )
+//		{
+//			this.setClickPickTransformable(picked);
+//		}
 		else
 		{
 			this.setClickPickTransformable( null );
@@ -210,14 +210,14 @@ public class InputState {
 		this.rolloverPickResult = rolloverPickResult;
 		Transformable picked = this.getRolloverPickedTransformable( true );
 		PickHint rolloverObjectType = PickCondition.getPickType( this.rolloverPickResult );
-		if ( rolloverObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
+		if ( !rolloverObjectType.intersects( PickHint.NOTHING) )
 		{
 			this.setRolloverPickTransformable( picked );
 		}
-		else if (rolloverObjectType.intersects( PickHint.HANDLES) )
-		{
-			this.setRolloverPickTransformable(picked);
-		}
+//		else if (rolloverObjectType.intersects( PickHint.HANDLES) )
+//		{
+//			this.setRolloverPickTransformable(picked);
+//		}
 		else
 		{
 			this.setRolloverPickTransformable( null );
