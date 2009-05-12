@@ -90,7 +90,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	@Override
 	public boolean doStartManipulator( InputState startInput ) 
 	{
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();
+		this.manipulatedTransformable = startInput.getClickPickTransformable();
 		if (this.manipulatedTransformable != null)
 		{
 			this.initManipulator( startInput );

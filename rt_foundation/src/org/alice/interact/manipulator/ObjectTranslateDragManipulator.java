@@ -220,7 +220,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = startInput.getCurrentlySelectedObject();	
+		this.manipulatedTransformable = startInput.getClickPickTransformable();	
 		if (this.manipulatedTransformable != null)
 		{
 			this.initializeEventMessages();

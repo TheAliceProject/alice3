@@ -174,7 +174,7 @@ public class InputState {
 	{
 		this.clickPickResult = pickResult;
 		Transformable picked = this.getClickPickedTransformable( true );
-		PickHint clickedObjectType = PickCondition.getPickType( this.rolloverPickResult );
+		PickHint clickedObjectType = PickCondition.getPickType( this.clickPickResult );
 		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )
 		{
 			this.setClickPickTransformable( picked );
