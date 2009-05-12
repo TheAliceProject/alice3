@@ -92,8 +92,9 @@ public class Scene extends Composite {
 			//pass
 		} else {
 			this.dragAdapter = new org.alice.interact.RuntimeDragAdapter();
+			//this.dragAdapter = new org.alice.interact.GlobalDragAdapter();
 			this.dragAdapter.setOnscreenLookingGlass( this.getOwner().getOnscreenLookingGlass() );
-			this.dragAdapter.setAnimator( ((Program)this.getOwner()).getAnimator() );
+			//this.dragAdapter.setAnimator( ((Program)this.getOwner()).getAnimator() );
 			for( Transformable transformable : this.getComponents() ) {
 				this.putBonusDataFor( transformable );
 			}
