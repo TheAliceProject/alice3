@@ -39,6 +39,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 		if( this.isClearToDelete( this.node ) ) {
 			this.index = this.owner.indexOf( this.node );
 			this.redo();
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 			actionContext.commit();
 		} else {
 			actionContext.cancel();

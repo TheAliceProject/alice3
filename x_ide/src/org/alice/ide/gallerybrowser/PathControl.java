@@ -34,6 +34,7 @@ public abstract class PathControl extends swing.LineAxisPane {
 			}
 			public void perform( zoot.ActionContext actionContext ) {
 				PathControl.this.handleSelectDirectory( DirectoryControl.this.file );
+				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 				actionContext.commit();
 			}
 		}
@@ -42,6 +43,7 @@ public abstract class PathControl extends swing.LineAxisPane {
 			//}
 			public void perform( zoot.ActionContext actionContext ) {
 				DirectoryControl.this.handleSelectChildDirectory();
+				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 				actionContext.commit();
 			}
 		}
@@ -156,6 +158,7 @@ public abstract class PathControl extends swing.LineAxisPane {
 				} else {
 					PathControl.this.handleSelectFile( this.file );
 				}
+				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 				actionContext.commit();
 			}
 		}

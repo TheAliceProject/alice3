@@ -29,7 +29,8 @@ public abstract class IDE extends zoot.ZFrame {
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
-	
+
+	public static String IS_PROJECT_CHANGED_KEY = "IS_PROJECT_AFFECTED_KEY";
 
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
@@ -334,14 +335,24 @@ public abstract class IDE extends zoot.ZFrame {
 			public void operationPerforming( zoot.event.OperationEvent e ) {
 			}
 			public void operationPerformed( zoot.event.OperationEvent e ) {
-				if( e.getContext().isCommitted() ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-					zoot.Operation source = e.getTypedSource();
-					if( source instanceof org.alice.ide.operations.file.AbstractSaveProjectOperation || source instanceof org.alice.ide.operations.file.AbstractOpenProjectOperation ) {
-						//pass
+				zoot.Context context = e.getContext();
+				if( context.isCommitted() ) {
+					Boolean isProjectChanged = context.get( IDE.IS_PROJECT_CHANGED_KEY, Boolean.class );
+					if( isProjectChanged != null ) {
+						if( isProjectChanged ) {
+							IDE.this.markChanged();
+						}
 					} else {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: mark IDE.IS_PROJECT_CHANGED_KEY:", e );
 						IDE.this.markChanged();
 					}
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+//					zoot.Operation source = e.getTypedSource();
+//					if( source instanceof org.alice.ide.operations.file.AbstractSaveProjectOperation || source instanceof org.alice.ide.operations.file.AbstractOpenProjectOperation ) {
+//						//pass
+//					} else {
+//						IDE.this.markChanged();
+//					}
 				}
 			}
 		} );
@@ -415,11 +426,13 @@ public abstract class IDE extends zoot.ZFrame {
 			if( option == javax.swing.JOptionPane.YES_OPTION ) {
 				zoot.ActionContext saveActionContext = actionContext.perform( IDE.this.saveOperation, null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				if( saveActionContext.isCommitted() ) {
+					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 					actionContext.commit();
 				} else {
 					actionContext.cancel();
 				}
 			} else if( option == javax.swing.JOptionPane.NO_OPTION ) {
+				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 				actionContext.commit();
 			} else {
 				actionContext.cancel();
@@ -443,6 +456,7 @@ public abstract class IDE extends zoot.ZFrame {
 			java.io.File file = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
 			if( file != null ) {
 				actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
+				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 				actionContext.commit();
 			} else {
 				actionContext.cancel();

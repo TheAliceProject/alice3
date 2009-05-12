@@ -34,6 +34,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 		}
 		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
 			CreateMethodParameterPane.this.updateOKButton();
+			booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 			booleanStateContext.commit();
 		}
 	}

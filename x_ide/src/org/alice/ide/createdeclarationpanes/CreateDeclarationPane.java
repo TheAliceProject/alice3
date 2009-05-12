@@ -35,6 +35,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 		}
 		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
 			CreateDeclarationPane.this.handleIsReassignableChange( booleanStateContext );
+			booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 			booleanStateContext.commit();
 		}
 	}

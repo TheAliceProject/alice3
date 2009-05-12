@@ -41,6 +41,7 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 	public void perform( zoot.ActionContext actionContext ) {
 		this.prevCode = getIDE().getFocusedCode();
 		this.redo();
+		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		actionContext.commit();
 	}
 	public void redo() {

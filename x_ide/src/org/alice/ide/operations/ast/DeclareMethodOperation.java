@@ -39,6 +39,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.Ab
 		if( method != null ) {
 			this.type.methods.add( method );
 			actionContext.perform( new FocusCodeOperation( method ), null, zoot.ZManager.CANCEL_IS_FUTILE );
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 			actionContext.commit();
 		} else {
 			actionContext.cancel();

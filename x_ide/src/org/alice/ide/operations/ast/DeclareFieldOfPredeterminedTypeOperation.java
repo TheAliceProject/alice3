@@ -40,6 +40,7 @@ public class DeclareFieldOfPredeterminedTypeOperation extends org.alice.ide.oper
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
 		if( field != null ) {
 			getIDE().getSceneEditor().handleFieldCreation( this.ownerType, field, createFieldPane.createInstanceInJava() );
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 			actionContext.commit();
 		} else {
 			actionContext.cancel();

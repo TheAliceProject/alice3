@@ -41,6 +41,7 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 		}
 		if( fileNext != null ) {
 			this.save( fileNext );
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 			actionContext.commit();
 		} else {
 			actionContext.cancel();

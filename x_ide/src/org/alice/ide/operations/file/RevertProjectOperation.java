@@ -33,6 +33,7 @@ public class RevertProjectOperation extends org.alice.ide.operations.AbstractAct
 	public void perform( zoot.ActionContext actionContext ) {
 		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this.getIDE(), "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE ) ) {
 			this.getIDE().revert();
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 			actionContext.commit();
 		} else {
 			actionContext.cancel();

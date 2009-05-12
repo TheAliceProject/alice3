@@ -39,6 +39,7 @@ public class FieldItemSelectionOperation extends org.alice.ide.operations.Abstra
 //		}
 		this.nextField = singleSelectionContext.getNextSelection();
 		this.redo();
+		singleSelectionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		singleSelectionContext.commit();
 	}
 	

@@ -36,6 +36,7 @@ public class DeclareFieldOperation extends org.alice.ide.operations.AbstractActi
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createMethodPane.showInJDialog( getIDE() );
 		if( field != null ) {
 			this.ownerType.fields.add( field );
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 			actionContext.commit();
 		} else {
 			actionContext.cancel();

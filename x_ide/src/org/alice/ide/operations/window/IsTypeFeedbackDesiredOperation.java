@@ -32,6 +32,7 @@ public class IsTypeFeedbackDesiredOperation extends org.alice.ide.operations.Abs
 	}
 	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
 		this.getIDE().setExpressionTypeFeedbackDesired( booleanStateContext.getNextValue() );
+		booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		booleanStateContext.commit();
 	}
 }

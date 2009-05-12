@@ -34,6 +34,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	public void perform( zoot.ActionContext actionContext ) {
 		this.prevValue = this.statement.isEnabled.getValue();
 		this.redo();
+		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 		actionContext.commit();
 	}
 	protected abstract boolean getDesiredValue();

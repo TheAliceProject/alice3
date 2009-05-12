@@ -39,6 +39,7 @@ public class DeclareMethodParameterOperation extends DeclareParameterOperation {
 			for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
 				methodInvocation.arguments.add( new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) );
 			}
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 			actionContext.commit();
 		} else {
 			actionContext.cancel();

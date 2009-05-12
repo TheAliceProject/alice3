@@ -42,6 +42,7 @@ public abstract class RenameNodeOperation extends org.alice.ide.operations.Abstr
 		if( nextValue != null && nextValue.length() > 0 ) {
 			this.prevValue = nameProperty.getValue();
 			this.redo();
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 			actionContext.commit();
 		} else {
 			actionContext.cancel();

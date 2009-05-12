@@ -80,6 +80,7 @@ public class RunOperation extends org.alice.ide.operations.AbstractActionOperati
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		this.getIDE().handleRun( actionContext );
+		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		actionContext.commit();
 	}
 }

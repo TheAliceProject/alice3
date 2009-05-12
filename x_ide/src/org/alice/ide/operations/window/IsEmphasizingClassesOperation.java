@@ -33,6 +33,7 @@ public class IsEmphasizingClassesOperation extends org.alice.ide.operations.Abst
 	}
 	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
 		this.getIDE().setEmphasizingClasses( booleanStateContext.getNextValue() );
+		booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		booleanStateContext.commit();
 	}
 }

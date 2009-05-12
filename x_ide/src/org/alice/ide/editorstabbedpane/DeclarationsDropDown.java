@@ -71,6 +71,7 @@ class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperati
 //					this.type.fields.add( field );
 //				}
 //			}
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 			actionContext.commit();
 		} else {
 			int N = this.type.fields.size();

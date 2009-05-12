@@ -44,6 +44,7 @@ public class HelpOperation extends org.alice.ide.operations.AbstractActionOperat
 		String title = "Help coming soon";
 		String message = getHelpText();
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ); 
+		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		actionContext.commit();
 	}
 }

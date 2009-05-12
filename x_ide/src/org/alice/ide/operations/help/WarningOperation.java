@@ -34,6 +34,7 @@ public class WarningOperation extends org.alice.ide.operations.AbstractActionOpe
 	public void perform( zoot.ActionContext actionContext ) {
 		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( this.isSolicited );
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), warningPane, "Alice3 is currently under development", javax.swing.JOptionPane.WARNING_MESSAGE ); 
+		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		actionContext.commit();
 	}
 }

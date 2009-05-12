@@ -410,6 +410,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 										statementListPropertyPane.getProperty().add( index, statement );
 										getIDE().markChanged( "drop statement template" );
 										CodeEditor.this.refresh();
+										actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 										actionContext.commit();
 										source.hideDropProxyIfNecessary();
 										CodeEditor.this.resetScrollPane( viewPosition );

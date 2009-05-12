@@ -35,6 +35,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		int i = this.property.indexOf( this.statement );
 		if( i >= 0 ) {
 			this.property.remove( i );
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 			actionContext.commit();
 			getIDE().refreshUbiquitousPane();
 		} else {

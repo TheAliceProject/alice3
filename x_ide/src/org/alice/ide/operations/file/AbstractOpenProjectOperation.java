@@ -54,6 +54,7 @@ public abstract class AbstractOpenProjectOperation extends AbstractClearanceActi
 				} else {
 					this.getIDE().createProjectFromBootstrap();
 				}
+				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 				actionContext.commit();
 			} else {
 				actionContext.cancel();

@@ -110,6 +110,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
 						methodInvocation.arguments.remove( index );
 					}
+					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 					actionContext.commit();
 				}
 			}
