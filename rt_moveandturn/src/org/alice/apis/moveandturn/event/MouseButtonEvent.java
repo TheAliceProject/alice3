@@ -26,7 +26,11 @@ package org.alice.apis.moveandturn.event;
  * @author Dennis Cosgrove
  */
 public class MouseButtonEvent extends edu.cmu.cs.dennisc.pattern.event.Event< java.awt.Component > {
-	public MouseButtonEvent( java.awt.Component source ) {
-		super( source );
+	private java.awt.event.MouseEvent e;
+	private org.alice.apis.moveandturn.Scene scene;
+	public MouseButtonEvent( java.awt.event.MouseEvent e, org.alice.apis.moveandturn.Scene scene ) {
+		super( e.getComponent() );
+		this.e = e;
+		this.scene = scene;
 	}
 }
