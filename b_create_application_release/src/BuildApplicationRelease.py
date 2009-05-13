@@ -39,6 +39,10 @@ jarMap = {
 			[ "edu" ] 
 		],
 		[ 
+			"x_zoot", 
+			[ "cascade", "swing", "zoot" ] 
+		],
+		[ 
 			"rt_foundation", 
 			[ "org" ] 
 		]
@@ -84,10 +88,6 @@ jarMap = {
 			[ "edu" ] 
 		],
 		[ 
-			"x_zoot", 
-			[ "cascade", "swing", "zoot" ] 
-		],
-		[ 
 			"x_ide", 
 			[ "org" ] 
 		],
@@ -123,7 +123,7 @@ if False:
 	ShellUtilities.copyTree( java.io.File( "/Alice/BatchOutput/projects" ), java.io.File( "/Alice/application/projects" ), "a3p", isOverwriteDesired=True )
 	ShellUtilities.copyTree( java.io.File( "/Alice/application" ), dstDir )
 
-if True:
+if False:
 	for file in edu.cmu.cs.dennisc.io.FileUtilities.listDescendants( java.io.File( dstDir, "projects" ), "a3p" ):
 		if file.setReadOnly():
 			print "success setReadOnly:", file 
