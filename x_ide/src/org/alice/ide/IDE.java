@@ -267,7 +267,14 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 
-	private RightPane rightPane;
+	private javax.swing.JComponent rightPane;
+	
+	protected javax.swing.JComponent createRightPane() {
+		return new RightPane();
+	}
+	protected javax.swing.JComponent getRightPane() {
+		return this.rightPane;
+	}
 
 	protected javax.swing.JSplitPane getRootSplitPane() {
 		return this.root;
@@ -275,7 +282,7 @@ public abstract class IDE extends zoot.ZFrame {
 	protected java.awt.Component createRoot() {
 		this.root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 		this.left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
-		this.rightPane = new RightPane();
+		this.rightPane = this.createRightPane();
 		return this.root;
 	}
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
