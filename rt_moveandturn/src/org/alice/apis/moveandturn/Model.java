@@ -98,7 +98,7 @@ public abstract class Model extends Transformable {
 		}
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public Iterable< org.alice.apis.moveandturn.event.MouseButtonListener > getMouseButtonListeners() {
+	public java.util.List< org.alice.apis.moveandturn.event.MouseButtonListener > getMouseButtonListeners() {
 		return this.mouseButtonListeners;
 	}
 	

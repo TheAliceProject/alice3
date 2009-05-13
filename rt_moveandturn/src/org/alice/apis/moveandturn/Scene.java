@@ -145,12 +145,28 @@ public class Scene extends Composite {
 		}
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public Iterable< org.alice.apis.moveandturn.event.MouseButtonListener > getMouseButtonListeners() {
+	public java.util.List< org.alice.apis.moveandturn.event.MouseButtonListener > getMouseButtonListeners() {
 		return this.mouseButtonListeners;
 	}
 	
-	private void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+	private boolean isMouseButtonListenerInExistence() {
 		if( this.mouseButtonListeners.size() > 0 ) {
+			return true;
+		} else {
+			for( Transformable component : this.getComponents() ) {
+				if( component instanceof Model ) {
+					Model model = (Model)component;
+					if( model.getMouseButtonListeners().size() > 0 ) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+	}
+	
+	private void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+		if( this.isMouseButtonListenerInExistence() ) {
 			synchronized( this.mouseButtonListeners ) {
 				org.alice.apis.moveandturn.event.MouseButtonEvent mbe = new org.alice.apis.moveandturn.event.MouseButtonEvent( e, this );
 				Model model = mbe.getModelAtMouseLocation();
