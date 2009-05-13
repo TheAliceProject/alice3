@@ -25,38 +25,34 @@ package org.alice.apis.moveandturn.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanInputPane extends InputPane< Boolean > {
-	private javax.swing.JRadioButton trueButton = new javax.swing.JRadioButton( "true" );
-	private javax.swing.JRadioButton falseButton = new javax.swing.JRadioButton( "false" );
-	public BooleanInputPane( String message ) {
+public abstract class TextBasedInputPane< E > extends InputPane< E > {
+	private javax.swing.JTextField textField = new javax.swing.JTextField() {
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+		}
+	};
+	public TextBasedInputPane( String message ) {
 		super( message );
-		
-		class ItemAdapter implements java.awt.event.ItemListener {
-			public void itemStateChanged( java.awt.event.ItemEvent e ) {
-				BooleanInputPane.this.updateOKButton();
+		this.add( this.textField, java.awt.BorderLayout.CENTER );
+		this.textField.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.swing.event.SimplifiedDocumentAdapter() {
+			@Override
+			protected void updated( javax.swing.event.DocumentEvent e ) {
+				TextBasedInputPane.this.updateOKButton();
 			}
-		}
-		ItemAdapter itemAdapter = new ItemAdapter();
-		this.trueButton.addItemListener( itemAdapter );
-		this.falseButton.addItemListener( itemAdapter );
-		
-		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
-		group.add( trueButton );
-		group.add( falseButton );
-		
-		javax.swing.Box box = javax.swing.Box.createVerticalBox();
-		java.util.Enumeration< javax.swing.AbstractButton > enm = group.getElements();
-		while( enm.hasMoreElements() ) {
-			box.add( enm.nextElement() );
-		}
-		this.add( box, java.awt.BorderLayout.CENTER );
+		} );
 	}
 	@Override
 	public boolean isOKButtonValid() {
-		return super.isOKButtonValid() && ( this.trueButton.isSelected() || this.falseButton.isSelected() );
+		try {
+			return super.isOKButtonValid() && this.getActualInputValue( this.textField.getText() ) != null;
+		} catch( RuntimeException re ) {
+			return false;
+		}
 	}
+	protected abstract E getActualInputValue( String text );
 	@Override
-	protected Boolean getActualInputValue() {
-		return this.trueButton.isSelected();
+	protected final E getActualInputValue() {
+		return this.getActualInputValue( this.textField.getText() );
 	}
 }

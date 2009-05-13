@@ -25,21 +25,12 @@ package org.alice.apis.moveandturn.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputPane< E > extends zoot.ZInputPane< E > {
-	private zoot.ZLabel messageLabel;
-	public InputPane( String message ) {
-		this.messageLabel = zoot.ZLabel.acquire( message );
-		this.messageLabel.setFontToScaledFont( 1.5f );
-		final int INSET = 12;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( this.messageLabel, java.awt.BorderLayout.NORTH );
-	}
-	protected zoot.ZLabel getMessageLabel() {
-		return this.messageLabel;
+public class DoubleInputPane extends TextBasedInputPane< Double > {
+	public DoubleInputPane( String message ) {
+		super( message );
 	}
 	@Override
-	protected boolean isCancelDesired() {
-		return false;
+	protected Double getActualInputValue( String text ) {
+		return Double.parseDouble( text );
 	}
 }

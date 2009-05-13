@@ -25,21 +25,19 @@ package org.alice.apis.moveandturn.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputPane< E > extends zoot.ZInputPane< E > {
-	private zoot.ZLabel messageLabel;
-	public InputPane( String message ) {
-		this.messageLabel = zoot.ZLabel.acquire( message );
-		this.messageLabel.setFontToScaledFont( 1.5f );
-		final int INSET = 12;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( this.messageLabel, java.awt.BorderLayout.NORTH );
-	}
-	protected zoot.ZLabel getMessageLabel() {
-		return this.messageLabel;
+public class StringInputPane extends InputPane< String > {
+	private javax.swing.JTextField textField = new javax.swing.JTextField() {
+		@Override
+		public java.awt.Dimension getPreferredSize() {
+			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+		}
+	};
+	public StringInputPane( String message ) {
+		super( message );
+		this.add( this.textField, java.awt.BorderLayout.CENTER );
 	}
 	@Override
-	protected boolean isCancelDesired() {
-		return false;
+	protected String getActualInputValue() {
+		return this.textField.getText();
 	}
 }

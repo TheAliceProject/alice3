@@ -228,8 +228,8 @@ public abstract class Composite extends Element implements ReferenceFrame {
 	public void setName( String name ) {
 		m_name = name;
 	}
-
 	public abstract Scene getScene();
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public abstract SceneOwner getOwner();
 	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	public edu.cmu.cs.dennisc.lookingglass.LookingGlass getLookingGlass() {
@@ -505,7 +505,22 @@ public abstract class Composite extends Element implements ReferenceFrame {
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Boolean getBooleanFromUser( String message ) {
-		org.alice.apis.moveandturn.inputpanes.BooleanInputPane booleanInputPane = new org.alice.apis.moveandturn.inputpanes.BooleanInputPane( message );
-		return booleanInputPane.showInJDialog( this.getOwnerComponent() );
+		org.alice.apis.moveandturn.inputpanes.BooleanInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.BooleanInputPane( message );
+		return inputPane.showInJDialog( this.getOwnerComponent() );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public String getStringFromUser( String message ) {
+		org.alice.apis.moveandturn.inputpanes.StringInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.StringInputPane( message );
+		return inputPane.showInJDialog( this.getOwnerComponent() );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public Integer getIntegerFromUser( String message ) {
+		org.alice.apis.moveandturn.inputpanes.IntegerInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.IntegerInputPane( message );
+		return inputPane.showInJDialog( this.getOwnerComponent() );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public Double getDoubleFromUser( String message ) {
+		org.alice.apis.moveandturn.inputpanes.DoubleInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.DoubleInputPane( message );
+		return inputPane.showInJDialog( this.getOwnerComponent() );
 	}
 }
