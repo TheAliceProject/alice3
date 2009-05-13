@@ -492,4 +492,20 @@ public abstract class Composite extends Element implements ReferenceFrame {
 	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT( java.awt.Point p, double z, AbstractCamera camera ) {
 		return transformFromAWT( new edu.cmu.cs.dennisc.math.Point3(), p, z, camera );
 	}
+	
+	private java.awt.Component getOwnerComponent() { 
+		SceneOwner owner = this.getOwner();
+		if( owner != null ) {
+			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
+			if( lg != null ) {
+				return lg.getAWTComponent();
+			}
+		}
+		return null;
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public Boolean getBooleanFromUser( String message ) {
+		org.alice.apis.moveandturn.inputpanes.BooleanInputPane booleanInputPane = new org.alice.apis.moveandturn.inputpanes.BooleanInputPane( message );
+		return booleanInputPane.showInJDialog( this.getOwnerComponent() );
+	}
 }

@@ -113,7 +113,7 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 	
 	protected abstract E getActualInputValue();
 
-	public final E getInputValue() {
+	private final E getInputValue() {
 		if( m_isOK ) {
 			return getActualInputValue();
 		} else {
@@ -177,12 +177,17 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 			}
 		}
 		ZButton okButton = new ZButton( new OKOperation() );
-		ZButton cancelButton = new ZButton( new CancelOperation() );
 
 		javax.swing.JPanel panel = new javax.swing.JPanel();
 		panel.setBackground( this.getBackground() );
 		panel.add( okButton );
-		panel.add( cancelButton );
+
+		if( this.isCancelDesired() ) {
+			ZButton cancelButton = new ZButton( new CancelOperation() );
+			panel.add( cancelButton );
+		} else {
+			dialog.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
+		}
 
 		dialog.getRootPane().setDefaultButton( okButton );
 		dialog.getContentPane().add( this, java.awt.BorderLayout.CENTER );
@@ -208,6 +213,9 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 			//todo?
 			//this.m_isOK = false;
 		}
+	}
+	protected boolean isCancelDesired() {
+		return true;
 	}
 	protected boolean isModalDefault() {
 		return true;
