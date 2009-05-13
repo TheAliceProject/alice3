@@ -83,6 +83,25 @@ public abstract class Model extends Transformable {
 		}
 	}
 	
+	private java.util.List< org.alice.apis.moveandturn.event.MouseButtonListener > mouseButtonListeners = new java.util.LinkedList< org.alice.apis.moveandturn.event.MouseButtonListener >();
+
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void addMouseButtonListener( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener ) {
+		synchronized( this.mouseButtonListeners ) {
+			this.mouseButtonListeners.add( mouseButtonListener );
+		}
+	}
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	public void removeMouseButtonListener( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener ) {
+		synchronized( this.mouseButtonListeners ) {
+			this.mouseButtonListeners.remove( mouseButtonListener );
+		}
+	}
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	public Iterable< org.alice.apis.moveandturn.event.MouseButtonListener > getMouseButtonListeners() {
+		return this.mouseButtonListeners;
+	}
+	
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public Double getResizeWidthAmount() { 

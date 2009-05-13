@@ -92,6 +92,30 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 	@Override
+	protected void addCustomFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		super.addCustomFillIns( blank, type );
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+		if( previousExpression != null ) {
+			if( type.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
+				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+				if( enclosingMethod != null ) {
+					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
+						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonEvent.class );
+						if( parameter.getValueType() == typeMouseButtonEvent ) {
+							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
+							for( String methodName : methodNames ) {
+								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
+								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
+								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	@Override
 	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
@@ -283,7 +307,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( interfaceType );
 		if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Style.class ) ) {
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.TraditionalStyle.class );
 		} else {
@@ -297,7 +320,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );
 		rv.add( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.MouseButtonClickedFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.MouseButtonListenerFillerInner() );
 		return rv;
 	}
 }

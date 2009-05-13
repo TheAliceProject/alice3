@@ -39,9 +39,13 @@ public class MethodInvocation extends Expression {
 	public MethodInvocation() {
 	}
 	public MethodInvocation( Expression expression, AbstractMethod method, Argument... arguments ){
-		AbstractType expressionType = expression.getType();
-		if( expressionType != null ) {
-			assert method.getDeclaringType().isAssignableFrom( expressionType );
+		if( expression instanceof NullLiteral ) {
+			//pass
+		} else {
+			AbstractType expressionType = expression.getType();
+			if( expressionType != null ) {
+				assert method.getDeclaringType().isAssignableFrom( expressionType );
+			}
 		}
 		this.expression.setValue( expression );
 		this.method.setValue( method );
@@ -57,12 +61,17 @@ public class MethodInvocation extends Expression {
 		Expression e = expression.getValue();
 		AbstractMethod m = method.getValue();
 		if( e != null && m != null ) {
-			AbstractType declaringType = m.getDeclaringType();
-			AbstractType expressionType = e.getType();
-			if( declaringType != null && expressionType != null ) {
-				rv = declaringType.isAssignableFrom( expressionType );
+			if( m.isStatic() ) {
+				//todo
+				rv = true;
 			} else {
-				rv = false;
+				AbstractType declaringType = m.getDeclaringType();
+				AbstractType expressionType = e.getType();
+				if( declaringType != null && expressionType != null ) {
+					rv = declaringType.isAssignableFrom( expressionType );
+				} else {
+					rv = false;
+				}
 			}
 		} else {
 			rv = false;

@@ -144,13 +144,25 @@ public class Scene extends Composite {
 			this.mouseButtonListeners.remove( mouseButtonListener );
 		}
 	}
-
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	public Iterable< org.alice.apis.moveandturn.event.MouseButtonListener > getMouseButtonListeners() {
+		return this.mouseButtonListeners;
+	}
+	
 	private void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
 		if( this.mouseButtonListeners.size() > 0 ) {
 			synchronized( this.mouseButtonListeners ) {
 				org.alice.apis.moveandturn.event.MouseButtonEvent mbe = new org.alice.apis.moveandturn.event.MouseButtonEvent( e, this );
-				for( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener : this.mouseButtonListeners ) {
-					mouseButtonListener.mouseButtonClicked( mbe );
+				Model model = mbe.getModelAtMouseLocation();
+				//todo
+				if( model != null ) {
+					for( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener : this.getMouseButtonListeners() ) {
+						mouseButtonListener.mouseButtonClicked( mbe );
+					}
+					for( org.alice.apis.moveandturn.event.MouseButtonListener mouseButtonListener : model.getMouseButtonListeners() ) {
+						mouseButtonListener.mouseButtonClicked( mbe );
+					}
+					
 				}
 			}
 		}

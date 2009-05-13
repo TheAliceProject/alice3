@@ -1,7 +1,7 @@
 package org.alice.stageide.cascade.fillerinners;
 
-public class MouseButtonClickedFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public MouseButtonClickedFillerInner() {
+public class MouseButtonListenerFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
+	public MouseButtonListenerFillerInner() {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class ), edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class );
 	}
 	@Override

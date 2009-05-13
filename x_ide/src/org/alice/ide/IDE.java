@@ -1048,6 +1048,8 @@ public abstract class IDE extends zoot.ZFrame {
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
 		blank.addFillIn( new org.alice.ide.cascade.StringConcatenationFillIn() );
 	}
+	protected void addCustomFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	}
 	public void addFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( type != null ) {
 			if( this.previousExpression != null ) {
@@ -1056,6 +1058,7 @@ public abstract class IDE extends zoot.ZFrame {
 					blank.addSeparator();
 				}
 			}
+			this.addCustomFillIns( blank, type );
 			//todo
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
 				type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;
