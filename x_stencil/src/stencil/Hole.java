@@ -42,6 +42,7 @@ public class Hole {
 	public void showDecorators() {
 		if (trailingDecorator != null) trailingDecorator.setVisible(true);
 		if (leadingDecorator != null) leadingDecorator.setVisible(true);
+
 	}
 	
 	public void hideDecorators() {

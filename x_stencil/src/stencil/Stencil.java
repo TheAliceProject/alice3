@@ -323,7 +323,7 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 
 		return rv;
 	}
-	private java.awt.geom.Area calculateArea( java.awt.Rectangle bounds, boolean isPaddingDesired ) {
+	protected java.awt.geom.Area calculateArea( java.awt.Rectangle bounds, boolean isPaddingDesired ) {
 		java.awt.geom.Area rv = new java.awt.geom.Area( bounds );
 		synchronized( this.holeGroups ) {
 			for( HoleGroup holeGroup : this.holeGroups ) {
@@ -341,20 +341,23 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 		//super.paintComponent( g );
 
 		java.awt.geom.Area area = calculateArea( this.getBounds(), PADDING_DESIRED );
+		
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g2.setPaint( this.getBackground() );
 		g2.fill( area );
 		for( HoleGroup holeGroup : this.holeGroups ) {
 			java.awt.Rectangle rectGroup = this.calculateBoundsFor( holeGroup, PADDING_DESIRED );
 			g2.setColor( java.awt.Color.GRAY );
-			g.draw3DRect( rectGroup.x, rectGroup.y, rectGroup.width, rectGroup.height, false );
-			g2.setColor( this.getForeground() );
-			final float BONUS_PAD = 10.0f;
-			java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( rectGroup.x-BONUS_PAD, rectGroup.y-BONUS_PAD, rectGroup.width+2*BONUS_PAD, rectGroup.height+2*BONUS_PAD, BONUS_PAD, BONUS_PAD );
-			java.awt.Stroke prevStroke = g2.getStroke();
-			g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
-			g2.draw( rr );
-			g2.setStroke( prevStroke );
+			if (rectGroup!= null) {
+				g.draw3DRect( rectGroup.x, rectGroup.y, rectGroup.width, rectGroup.height, false );
+				g2.setColor( this.getForeground() );
+				final float BONUS_PAD = 10.0f;
+				java.awt.geom.RoundRectangle2D.Float rr = new java.awt.geom.RoundRectangle2D.Float( rectGroup.x-BONUS_PAD, rectGroup.y-BONUS_PAD, rectGroup.width+2*BONUS_PAD, rectGroup.height+2*BONUS_PAD, BONUS_PAD, BONUS_PAD );
+				java.awt.Stroke prevStroke = g2.getStroke();
+				g2.setStroke( new java.awt.BasicStroke( 3.0f ) );
+				g2.draw( rr );
+				g2.setStroke( prevStroke );
+			}
 		}
 	}
 	
