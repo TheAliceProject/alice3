@@ -135,7 +135,7 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 		this.setTabCloseOperation( new org.alice.ide.operations.AbstractActionOperation() {
 			public void perform( zoot.ActionContext actionContext ) {
 				EditorsTabbedPane.this.remove( EditorsTabbedPane.this.getSelectedIndex() );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle tab close" );
+				EditorsTabbedPane.this.updateFocusedCode();
 			}
 		} );
 		
@@ -143,23 +143,26 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 //			public void vetoableChange( java.beans.PropertyChangeEvent e ) throws java.beans.PropertyVetoException {
 		this.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( EditorsTabbedPane.this.getSelectedComponent() );
-				edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode;
-				if( codeEditor != null ) {
-					nextFocusedCode = codeEditor.getCode();
-				} else {
-					nextFocusedCode = null;
-				}
-				org.alice.ide.IDE.getSingleton().setFocusedCode( nextFocusedCode );
+				EditorsTabbedPane.this.updateFocusedCode();
 			}
-		} );
-		
+		} );		
 		java.awt.Font f = this.getFont();
 		this.setFont( f.deriveFont( f.getSize2D() * 1.25f ) );
 	}
 	@Override
 	protected zoot.plaf.TabbedPaneUI createTabbedPaneUI() {
 		return new EditorsTabbedPaneUI( this );
+	}
+	
+	private void updateFocusedCode() {
+		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( this.getSelectedComponent() );
+		edu.cmu.cs.dennisc.alice.ast.AbstractCode nextFocusedCode;
+		if( codeEditor != null ) {
+			nextFocusedCode = codeEditor.getCode();
+		} else {
+			nextFocusedCode = null;
+		}
+		org.alice.ide.IDE.getSingleton().setFocusedCode( nextFocusedCode );
 	}
 
 	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( java.awt.Component component ) {

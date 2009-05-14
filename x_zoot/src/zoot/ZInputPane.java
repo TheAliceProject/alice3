@@ -187,6 +187,25 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 			panel.add( cancelButton );
 		} else {
 			dialog.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
+			dialog.addWindowListener( new java.awt.event.WindowListener() {
+				public void windowActivated( java.awt.event.WindowEvent e ) {
+				}
+				public void windowDeactivated( java.awt.event.WindowEvent e ) {
+				}
+				public void windowIconified( java.awt.event.WindowEvent e ) {
+				}
+				public void windowDeiconified( java.awt.event.WindowEvent e ) {
+				}
+				public void windowOpened( java.awt.event.WindowEvent e ) {
+				}
+				public void windowClosing( java.awt.event.WindowEvent e ) {
+					if( ZInputPane.this.isDisposeDesired( e ) ) {
+						e.getWindow().dispose();
+					}
+				}
+				public void windowClosed( java.awt.event.WindowEvent e ) {
+				}
+			} );
 		}
 
 		dialog.getRootPane().setDefaultButton( okButton );
@@ -213,6 +232,9 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 			//todo?
 			//this.m_isOK = false;
 		}
+	}
+	protected boolean isDisposeDesired( java.awt.event.WindowEvent e ) {
+		return true;
 	}
 	protected boolean isCancelDesired() {
 		return true;

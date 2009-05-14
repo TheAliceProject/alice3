@@ -494,7 +494,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 	}
 	public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
 		assert drawable == m_drawable;
 		m_width = width;
 		m_height = height;

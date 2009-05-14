@@ -39,6 +39,11 @@ public abstract class InputPane< E > extends zoot.ZInputPane< E > {
 		return this.messageLabel;
 	}
 	@Override
+	protected boolean isDisposeDesired( java.awt.event.WindowEvent e ) {
+		int result = javax.swing.JOptionPane.showConfirmDialog( e.getWindow(), "Would you like to close the running program?" );
+		return result == javax.swing.JOptionPane.YES_OPTION;
+	}
+	@Override
 	protected boolean isCancelDesired() {
 		return false;
 	}

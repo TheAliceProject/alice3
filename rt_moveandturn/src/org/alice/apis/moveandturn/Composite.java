@@ -503,24 +503,49 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		}
 		return null;
 	}
+	private void closeProgramInCaseOfNull( Object o ) {
+		if( o != null ) {
+			//pass
+		} else {
+			SceneOwner owner = this.getOwner();
+			if( owner instanceof Program ) {
+				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
+				if( lg != null ) {
+					java.awt.Component component = lg.getAWTComponent();
+					java.awt.Component root = javax.swing.SwingUtilities.getRoot( component );
+					root.setVisible( false );
+				}
+			}
+			throw new edu.cmu.cs.dennisc.program.ProgramClosedException();
+		}
+	}
+	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Boolean getBooleanFromUser( String message ) {
 		org.alice.apis.moveandturn.inputpanes.BooleanInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.BooleanInputPane( message );
-		return inputPane.showInJDialog( this.getOwnerComponent() );
+		Boolean rv = inputPane.showInJDialog( this.getOwnerComponent() );
+		this.closeProgramInCaseOfNull( rv );
+		return rv;
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public String getStringFromUser( String message ) {
 		org.alice.apis.moveandturn.inputpanes.StringInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.StringInputPane( message );
-		return inputPane.showInJDialog( this.getOwnerComponent() );
+		String rv = inputPane.showInJDialog( this.getOwnerComponent() );
+		this.closeProgramInCaseOfNull( rv );
+		return rv;
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Integer getIntegerFromUser( String message ) {
 		org.alice.apis.moveandturn.inputpanes.IntegerInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.IntegerInputPane( message );
-		return inputPane.showInJDialog( this.getOwnerComponent() );
+		Integer rv = inputPane.showInJDialog( this.getOwnerComponent() );
+		this.closeProgramInCaseOfNull( rv );
+		return rv;
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Double getDoubleFromUser( String message ) {
 		org.alice.apis.moveandturn.inputpanes.DoubleInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.DoubleInputPane( message );
-		return inputPane.showInJDialog( this.getOwnerComponent() );
+		Double rv = inputPane.showInJDialog( this.getOwnerComponent() );
+		this.closeProgramInCaseOfNull( rv );
+		return rv;
 	}
 }
