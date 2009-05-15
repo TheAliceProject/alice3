@@ -309,10 +309,25 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {
 		if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Style.class ) ) {
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.TraditionalStyle.class );
+		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.EyeColor.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseEyeColor.class );
+		} else if( interfaceType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.SkinTone.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseSkinTone.class );
 		} else {
 			return super.getEnumTypeForInterfaceType( interfaceType );
 		}
 	}
+	
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+//		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.EyeColor.class ) ) {
+//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseEyeColor.class );
+//		} else if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.SkinTone.class ) ) {
+//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseSkinTone.class );
+//		} else {
+//			return super.getTypeFor( type );
+//		}
+//	}
 
 	@Override
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
@@ -321,6 +336,8 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.MouseButtonListenerFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		return rv;
 	}
 }

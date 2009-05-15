@@ -208,20 +208,6 @@ public abstract class Person extends Model {
 		this.gender = gender;
 	}
 	
-	public edu.cmu.cs.dennisc.nebulous.Person getNebPerson() {
-		if( this.nebPerson != null ) {
-			//pass
-		} else {
-			try {
-				if( this.lifeStage != null && this.gender != null ) {
-					this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( this );
-				}
-			} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-				throw new RuntimeException( lre );
-			}
-		}
-		return this.nebPerson;
-	}
 	
 
 	@Override
@@ -238,6 +224,21 @@ public abstract class Person extends Model {
 	}
 	protected edu.cmu.cs.dennisc.nebulous.Person getNebulousPerson() {
 		return getNebPerson();
+	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public edu.cmu.cs.dennisc.nebulous.Person getNebPerson() {
+		if( this.nebPerson != null ) {
+			//pass
+		} else {
+			try {
+				if( this.lifeStage != null && this.gender != null ) {
+					this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( this );
+				}
+			} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
+				throw new RuntimeException( lre );
+			}
+		}
+		return this.nebPerson;
 	}
 	
 	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
@@ -274,7 +275,7 @@ public abstract class Person extends Model {
 	}
 
 	private Outfit m_outfit = null;
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
 	public Outfit getOutfit() {
 		return m_outfit;
 	}
@@ -285,7 +286,7 @@ public abstract class Person extends Model {
 	}
 	
 	private SkinTone m_skinTone = null;
-	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
 	public SkinTone getSkinTone() {
 		return m_skinTone;
 	}
@@ -307,7 +308,7 @@ public abstract class Person extends Model {
 	}
 
 	private EyeColor m_eyeColor = null;
-	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
 	public EyeColor getEyeColor() {
 		return m_eyeColor;
 	}
@@ -318,7 +319,7 @@ public abstract class Person extends Model {
 	}
 	
 	private Hair m_hair = null;
-	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
 	public Hair getHair() {
 		return m_hair;
 	}
@@ -352,10 +353,12 @@ public abstract class Person extends Model {
 //		setPose( path, 0 );
 //	}
 
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public Boolean isFacing( Person other ) {
 		return other.getPosition( this ).z < 0.0;
 	}
 
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
 		//todo

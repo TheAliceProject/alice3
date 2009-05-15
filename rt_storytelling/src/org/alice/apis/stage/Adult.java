@@ -650,6 +650,7 @@ public class Adult extends Person {
 		performStateTransition( State.HANDS_AT_SIDES );
 	}
 
+	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	@Override
 	public Boolean isPregnant() {
 		return false;

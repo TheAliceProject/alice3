@@ -20,25 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.stageide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	public ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
-	}
-	public ConstantsOwningFillerInner( Class<?> cls ) {
-		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+public class OutfitFillerInner extends IngredientFillerInner {
+	public OutfitFillerInner() {
+		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Outfit.class ) );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getType();
- 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
- 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
- 	 			this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
- 			}
- 		}
+	protected Class<? extends org.alice.apis.stage.Ingredient>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
+		return org.alice.apis.stage.IngredientUtilities.get( lifeStage.getFullBodyOutfitInterface( gender ) );
 	}
 }

@@ -61,6 +61,19 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		//		this.setHair( FemaleAdultHairGetFabulous.RED );
 		//		this.setFitnessLevel( FitnessLevel.NORMAL );
 	}
+	public void initializeValues( Person person ) {
+		if( person != null ) {
+			this.lifeStage = person.getLifeStage();
+			this.gender = person.getGender();
+			this.baseSkinTone = (BaseSkinTone)person.getSkinTone();
+			this.baseEyeColor = (BaseEyeColor)person.getEyeColor();
+			this.fullBodyOutfit = (FullBodyOutfit)person.getOutfit();
+			this.hair = person.getHair();
+			this.fitnessLevel = person.getFitnessLevel();
+		}
+	}
+
+	
 	public IngredientsPane getIngredientsPane() {
 		return this.ingredientsPane;
 	}

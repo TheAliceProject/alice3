@@ -73,6 +73,9 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		if( fieldType.isAssignableTo( org.alice.apis.moveandturn.Model.class ) ) {
 			rv.add( new org.alice.stageide.operations.ast.PlaceOnTopOfGroundActionOperation( fieldInAlice ) );
 		}
+		if( fieldType.isAssignableTo( org.alice.apis.stage.Person.class ) ) {
+			rv.add( new org.alice.stageide.operations.ast.EditPersonActionOperation( fieldInAlice ) );
+		}
 		return rv;
 	}
 	private java.util.List< zoot.Operation > createPopupOperations() {

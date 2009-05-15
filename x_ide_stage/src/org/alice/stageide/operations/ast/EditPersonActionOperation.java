@@ -20,25 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.stageide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	public ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
+public class EditPersonActionOperation extends AbstractFieldTileActionOperation {
+	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( field );
+		this.putValue( javax.swing.Action.NAME, "Edit..." );
 	}
-	public ConstantsOwningFillerInner( Class<?> cls ) {
-		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
-	}
-	@Override
-	public void addFillIns( cascade.Blank blank ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getType();
- 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
- 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
- 	 			this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
- 			}
- 		}
+	public void perform( zoot.ActionContext actionContext ) {
+		this.getMoveAndTurnSceneEditor().editPerson( this.getField() );
 	}
 }

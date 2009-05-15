@@ -22,18 +22,6 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-class PersonEditorInputPane extends zoot.ZInputPane< org.alice.apis.stage.Person > {
-	private org.alice.stageide.personeditor.PersonEditor personEditor = new org.alice.stageide.personeditor.PersonEditor(); 
-	public PersonEditorInputPane() {
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( this.personEditor, java.awt.BorderLayout.CENTER );
-	}
-	@Override
-	protected org.alice.apis.stage.Person getActualInputValue() {
-		return this.personEditor.getPerson();
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -48,8 +36,7 @@ class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActio
 		this.putValue( javax.swing.Action.NAME, "Create Person..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "perform", actionContext );
-		PersonEditorInputPane personEditorInputPane = new PersonEditorInputPane();
+		org.alice.stageide.personeditor.PersonEditorInputPane personEditorInputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( null );
 		org.alice.apis.stage.Person person = personEditorInputPane.showInJDialog( this.getIDE() );
 		if( person != null ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();

@@ -20,25 +20,20 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.stageide.personeditor;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ConstantsOwningFillerInner extends ExpressionFillerInner {
-	public ConstantsOwningFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		super( type, edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
-	}
-	public ConstantsOwningFillerInner( Class<?> cls ) {
-		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
+public class PersonEditorInputPane extends zoot.ZInputPane< org.alice.apis.stage.Person > {
+	private org.alice.stageide.personeditor.PersonEditor personEditor; 
+	public PersonEditorInputPane( org.alice.apis.stage.Person person ) {
+		this.personEditor = new org.alice.stageide.personeditor.PersonEditor( person );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( this.personEditor, java.awt.BorderLayout.CENTER );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getType();
- 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
- 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {
- 	 			this.addExpressionFillIn( blank, new edu.cmu.cs.dennisc.alice.ast.TypeExpression( type ), field );
- 			}
- 		}
+	protected org.alice.apis.stage.Person getActualInputValue() {
+		return this.personEditor.getPerson();
 	}
 }

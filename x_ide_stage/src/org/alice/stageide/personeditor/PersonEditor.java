@@ -30,8 +30,12 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 	private javax.swing.JSplitPane splitPane;
 	private PersonViewer personViewer = PersonViewer.getSingleton();
 	private IngredientsPane ingredientsPane = new IngredientsPane();
-	public PersonEditor() {
+	
+	private org.alice.apis.stage.Person person;
+	public PersonEditor( org.alice.apis.stage.Person person ) {
+		this.person = person;
 		this.personViewer.setIngredientsPane( this.ingredientsPane );
+		this.personViewer.initializeValues( this.person );
 		javax.swing.JPanel container = new javax.swing.JPanel();
 		this.splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, container, this.ingredientsPane );
 		this.splitPane.setDividerLocation( 400 );
@@ -43,17 +47,14 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 	
 	public org.alice.apis.stage.Person getPerson() {
 		org.alice.apis.stage.Person rv;
+		
 		if( this.personViewer.getLifeStage() == org.alice.apis.stage.LifeStage.ADULT ) {
-//			if( false ) {
+			if( this.person != null ) {
+				rv = this.person;
+			} else {
 				rv = new org.alice.apis.stage.Adult();
-				rv.setGender( this.personViewer.getGender() );
-//			} else {
-//				if( this.personViewer.getGender() == org.alice.apis.stage.Gender.FEMALE ) {
-//					rv = new org.alice.apis.stage.FemaleAdult();
-//				} else {
-//					rv = new org.alice.apis.stage.MaleAdult();
-//				}
-//			}
+			}
+			rv.setGender( this.personViewer.getGender() );
 			rv.setHair( this.personViewer.getHair() );
 			rv.setSkinTone( this.personViewer.getBaseSkinTone() );
 			rv.setEyeColor( this.personViewer.getBaseEyeColor() );
@@ -81,7 +82,7 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 			}
 		};
 		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
-		frame.getContentPane().add( new PersonEditor() );
+		frame.getContentPane().add( new PersonEditor( null ) );
 		frame.setVisible( true );
 	}
 }

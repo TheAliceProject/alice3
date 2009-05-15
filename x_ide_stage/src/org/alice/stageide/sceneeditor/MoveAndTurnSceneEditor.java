@@ -732,6 +732,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignoring: setRenderingEnabled", isRenderingEnabled );
 	}
 
+	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		org.alice.apis.stage.Person person = this.getInstanceInJavaForField( field, org.alice.apis.stage.Person.class );
+		if( person != null ) {
+			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
+			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( result );
+		}
+	}
+
 	//	def performOrientToUpright(self, field):
 	//		instanceInJava = self.getInstanceInJavaForField( field )
 	//		instanceInJava.orientToUpright()

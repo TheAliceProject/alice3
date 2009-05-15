@@ -1057,6 +1057,15 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	protected void addCustomFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 	}
+	
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;
+		} else {
+			return type;
+		}
+	}
+	
 	public void addFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( type != null ) {
 			if( this.previousExpression != null ) {
@@ -1066,10 +1075,7 @@ public abstract class IDE extends zoot.ZFrame {
 				}
 			}
 			this.addCustomFillIns( blank, type );
-			//todo
-			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Number.class ) ) {
-				type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE;
-			}
+			type = getTypeFor( type );
 
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) {
 				this.addFillInsForObjectType( blank );
