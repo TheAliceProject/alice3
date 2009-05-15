@@ -340,4 +340,14 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		return rv;
 	}
+	
+	@Override
+	public void declareFieldOfPredeterminedType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType, zoot.ActionContext actionContext ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+		if( typeInJava == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) ) {
+			javax.swing.JOptionPane.showMessageDialog( this, "todo" );
+		} else {
+			super.declareFieldOfPredeterminedType( ownerType, valueType, actionContext );
+		}
+	}
 }

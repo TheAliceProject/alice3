@@ -35,15 +35,6 @@ public class DeclareFieldOfPredeterminedTypeOperation extends org.alice.ide.oper
 		this.putValue( javax.swing.Action.NAME, "Declare New Instance..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = this.valueType.getFirstTypeEncounteredDeclaredInJava();
-		org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( this.ownerType, typeInJava.getCls() );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
-		if( field != null ) {
-			getIDE().getSceneEditor().handleFieldCreation( this.ownerType, field, createFieldPane.createInstanceInJava() );
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
+		this.getIDE().declareFieldOfPredeterminedType( this.ownerType, this.valueType, actionContext );
 	}
 }

@@ -22,6 +22,9 @@
  */
 package org.alice.ide;
 
+import zoot.ActionContext;
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -1790,5 +1793,18 @@ public abstract class IDE extends zoot.ZFrame {
 
 	public String getTextForThis() {
 		return edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class, "edu.cmu.cs.dennisc.alice.ast.Templates" );
+	}
+
+	public void declareFieldOfPredeterminedType( TypeDeclaredInAlice ownerType, TypeDeclaredInAlice valueType, ActionContext actionContext ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+		org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getCls() );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( this, "Create New Instance", true );
+		if( field != null ) {
+			this.getSceneEditor().handleFieldCreation( ownerType, field, createFieldPane.createInstanceInJava() );
+			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
+			actionContext.commit();
+		} else {
+			actionContext.cancel();
+		}
 	}
 }
