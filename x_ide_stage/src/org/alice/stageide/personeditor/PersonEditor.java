@@ -35,7 +35,12 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 	public PersonEditor( org.alice.apis.stage.Person person ) {
 		this.person = person;
 		this.personViewer.setIngredientsPane( this.ingredientsPane );
-		this.personViewer.initializeValues( this.person );
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				PersonEditor.this.personViewer.initializeValues( PersonEditor.this.person );
+			}			
+		} );
+//		this.personViewer.initializeValues( this.person );
 		javax.swing.JPanel container = new javax.swing.JPanel();
 		this.splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, container, this.ingredientsPane );
 		this.splitPane.setDividerLocation( 400 );

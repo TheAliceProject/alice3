@@ -70,6 +70,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			this.fullBodyOutfit = (FullBodyOutfit)person.getOutfit();
 			this.hair = person.getHair();
 			this.fitnessLevel = person.getFitnessLevel();
+			this.updatePerson();
 		}
 	}
 
