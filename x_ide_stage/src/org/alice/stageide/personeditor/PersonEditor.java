@@ -72,9 +72,9 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 		return rv;
 	}
 	@Override
-		public java.awt.Dimension getPreferredSize() {
-			return new java.awt.Dimension( 1024, 700 );
-		}
+	public java.awt.Dimension getPreferredSize() {
+		return new java.awt.Dimension( 1024, 700 );
+	}
 	
 	public static void main( String[] args ) {
 		zoot.ZFrame frame = new zoot.ZFrame() {
