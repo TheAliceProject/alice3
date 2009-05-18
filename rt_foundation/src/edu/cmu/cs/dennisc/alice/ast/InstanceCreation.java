@@ -27,7 +27,12 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public class InstanceCreation extends Expression {
 	//todo: AbstractConstructor -> Expression<AbstractConstructor>
-	public DeclarationProperty< AbstractConstructor > constructor = new DeclarationProperty< AbstractConstructor >( this );
+	public DeclarationProperty< AbstractConstructor > constructor = new DeclarationProperty< AbstractConstructor >( this ) {
+		@Override
+		public boolean isReference() {
+			return ( this.getValue() instanceof AnonymousConstructor ) == false; 
+		}
+	};
 	public ArgumentListProperty arguments = new ArgumentListProperty( this );
 
 	public InstanceCreation() {

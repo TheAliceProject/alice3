@@ -843,7 +843,8 @@ public abstract class IDE extends zoot.ZFrame {
 		original.removeDeclarationsThatNeedToBeCopied( abstractDeclarations );
 		java.util.Map< Integer, edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration > map = edu.cmu.cs.dennisc.alice.ast.Node.createMapOfDeclarationsThatShouldNotBeCopied( abstractDeclarations );
 		org.w3c.dom.Document xmlDocument = original.encode( abstractDeclarations );
-		edu.cmu.cs.dennisc.alice.ast.Node dst = edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), map );
+		edu.cmu.cs.dennisc.alice.ast.Node dst = edu.cmu.cs.dennisc.alice.ast.Node.decode( xmlDocument, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), map, false );
+		
 		//		if( original.isEquivalentTo( dst ) ) {
 		//			return dst;
 		//		} else {

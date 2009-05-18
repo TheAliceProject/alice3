@@ -503,16 +503,22 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	protected void postDecode() {
 	}
 
-	public static Node decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map ) {
+	public static Node decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map, boolean isUUIDDecodingDesired ) {
 		org.w3c.dom.Element xmlElement = xmlDocument.getDocumentElement();
 		double xmlVersion = Double.parseDouble( xmlElement.getAttribute( "version" ) );
 		assert xmlVersion == VERSION;
 		
-		Decoder decoder = new Decoder( projectVersion, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
+		Decoder decoder = new Decoder( projectVersion, edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText(), isUUIDDecodingDesired );
 		return decoder.decode( xmlElement, map );
+	}
+	public static Node decode( org.w3c.dom.Document xmlDocument, String projectVersion, java.util.Map< Integer, AbstractDeclaration > map ) {
+		return decode( xmlDocument, projectVersion, map, true );
 	}
 	public static Node decode( org.w3c.dom.Document xmlDocument, String projectVersion ) {
 		return decode( xmlDocument, projectVersion, new java.util.HashMap< Integer, AbstractDeclaration >() );
+	}
+
+	public void assignUUIDs( java.util.Map< Integer, AbstractDeclaration > map ) {
 	}
 
 	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {

@@ -29,10 +29,12 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class Decoder {
 	private String srcVersion;
 	private String dstVersion;
+	private boolean isUUIDDecodingDesired;
 
-	public Decoder( String srcVersion, String dstVersion ) {
+	public Decoder( String srcVersion, String dstVersion, boolean isUUIDDecodingDesired ) {
 		this.srcVersion = srcVersion;
 		this.dstVersion = dstVersion;
+		this.isUUIDDecodingDesired = isUUIDDecodingDesired;
 	}
 
 	private String getClassName( org.w3c.dom.Element xmlElement ) {
@@ -231,7 +233,9 @@ public class Decoder {
 			}
 			rv.decodeNode( this, xmlElement, map );
 			if( xmlElement.hasAttribute( CodecConstants.UUID_ATTRIBUTE ) ) {
-				rv.setUUID( java.util.UUID.fromString( xmlElement.getAttribute( CodecConstants.UUID_ATTRIBUTE ) ) );
+				if( this.isUUIDDecodingDesired ) {
+					rv.setUUID( java.util.UUID.fromString( xmlElement.getAttribute( CodecConstants.UUID_ATTRIBUTE ) ) );
+				}
 			}
 		} else {
 			int key = Integer.parseInt( xmlElement.getAttribute( CodecConstants.KEY_ATTRIBUTE ), 16 );
