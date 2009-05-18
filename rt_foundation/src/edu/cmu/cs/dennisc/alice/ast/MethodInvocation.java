@@ -67,10 +67,15 @@ public class MethodInvocation extends Expression {
 			} else {
 				AbstractType declaringType = m.getDeclaringType();
 				AbstractType expressionType = e.getType();
-				if( declaringType != null && expressionType != null ) {
-					rv = declaringType.isAssignableFrom( expressionType );
+				if( expressionType instanceof AnonymousInnerTypeDeclaredInAlice ) {
+					//todo
+					rv = true;
 				} else {
-					rv = false;
+					if( declaringType != null && expressionType != null ) {
+						rv = declaringType.isAssignableFrom( expressionType );
+					} else {
+						rv = false;
+					}
 				}
 			}
 		} else {
