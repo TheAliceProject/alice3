@@ -313,23 +313,24 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
 		if( code != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
-
-			edu.cmu.cs.dennisc.alice.ast.AbstractField selectedField = this.getIDE().getFieldSelection();
-			if( selectedField != null ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = selectedField.getValueType();
-				if( type.isAssignableFrom( selectedType ) ) {
-					//pass
-				} else {
-					edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
-					if( sceneField != null ) {
-						edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
-						if( type.isAssignableFrom( sceneType ) ) {
-							//pass
-						} else {
-							for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-								if( type.isAssignableFrom( field.getValueType() ) ) {
-									this.getIDE().setFieldSelection( field );
-									break;
+			if( type != null ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractField selectedField = this.getIDE().getFieldSelection();
+				if( selectedField != null ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = selectedField.getValueType();
+					if( type.isAssignableFrom( selectedType ) ) {
+						//pass
+					} else {
+						edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
+						if( sceneField != null ) {
+							edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+							if( type.isAssignableFrom( sceneType ) ) {
+								//pass
+							} else {
+								for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+									if( type.isAssignableFrom( field.getValueType() ) ) {
+										this.getIDE().setFieldSelection( field );
+										break;
+									}
 								}
 							}
 						}
