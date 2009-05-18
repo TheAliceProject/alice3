@@ -23,16 +23,14 @@ public abstract class Model extends edu.cmu.cs.dennisc.scenegraph.Geometry {
 	}
 	@Override
 	protected void updateBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox boundingBox ) {
-		final double RADIUS = 0.4;
-		final double HEIGHT = 3.0;
-		boundingBox.setMinimum( -RADIUS, 0.0, -RADIUS );
-		boundingBox.setMaximum( +RADIUS, HEIGHT, +RADIUS );
+		boundingBox.setNaN();
 	}
 	@Override
 	protected void updateBoundingSphere( edu.cmu.cs.dennisc.math.Sphere boundingSphere ) {
-		final double HALF_HEIGHT = 1.5;
-		boundingSphere.center.set( 0.0, HALF_HEIGHT, 0.0 );
-		boundingSphere.radius = HALF_HEIGHT;
+		boundingSphere.setNaN();
+//		final double HALF_HEIGHT = 1.5;
+//		boundingSphere.center.set( 0.0, HALF_HEIGHT, 0.0 );
+//		boundingSphere.radius = HALF_HEIGHT;
 	}
 	@Override
 	protected void updatePlane( edu.cmu.cs.dennisc.math.Vector3 forward, edu.cmu.cs.dennisc.math.Vector3 upGuide, edu.cmu.cs.dennisc.math.Point3 translation ) {

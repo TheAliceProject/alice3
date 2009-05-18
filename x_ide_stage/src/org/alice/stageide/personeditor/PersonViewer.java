@@ -142,11 +142,15 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.getCamera().moveTo( this.getScene().createOffsetStandIn( -1, 2, -7 ), 0.0 );
-		this.getCamera().pointAt( this.getScene().createOffsetStandIn( 0, 1.5, 0 ), 0.0 );
+		this.updatePerson();
+		if( this.lifeStage != null && this.gender != null ) {
+			Person person = this.mapToMap.get( this.lifeStage, this.gender );
+			double height = person.getHeight();
+			this.getCamera().moveTo( this.getScene().createOffsetStandIn( -1, height*0.667, -height*2.333 ), 0.0 );
+			this.getCamera().pointAt( this.getScene().createOffsetStandIn( 0, height*0.5, 0 ), 0.0 );
+		}
 		//this._sunLight.turn( apis.moveandturn.TurnDirection.FORWARD, org.alice.apis.moveandturn.AngleInRevolutions( 0.125 ) );
 		this.dragAdapter.setOnscreenLookingGlass( this.getOnscreenLookingGlass() );
-		this.updatePerson();
 	}
 
 	public void randomize() {

@@ -37,7 +37,7 @@ public class ZList<E> extends javax.swing.JList {
 	private ItemSelectionOperation itemSelectionOperation;
 	private javax.swing.event.ListSelectionListener listSelectionAdapter = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "valueChanged", e );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "valueChanged", e );
 			if( e.getValueIsAdjusting() ) {
 				//pass
 			} else {

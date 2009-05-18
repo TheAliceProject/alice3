@@ -625,11 +625,11 @@ public class Adult extends Person {
 	protected Adult( Gender gender ) { 
 		super( LifeStage.ADULT, gender );
 
-		//todo: remove
-		edu.cmu.cs.dennisc.scenegraph.Transformable sgLightTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
-		sgLightTransformable.applyTranslation( 0.0, 2.0, -1.0 );
-		sgLightTransformable.addComponent( new edu.cmu.cs.dennisc.scenegraph.PointLight() );
-		this.getSGTransformable().addComponent( sgLightTransformable );
+//		//todo: remove
+//		edu.cmu.cs.dennisc.scenegraph.Transformable sgLightTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+//		sgLightTransformable.applyTranslation( 0.0, 2.0, -1.0 );
+//		sgLightTransformable.addComponent( new edu.cmu.cs.dennisc.scenegraph.PointLight() );
+//		this.getSGTransformable().addComponent( sgLightTransformable );
 	}
 	public Adult() { 
 		this( null );

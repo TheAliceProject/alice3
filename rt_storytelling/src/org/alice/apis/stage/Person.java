@@ -361,12 +361,17 @@ public abstract class Person extends Model {
 	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
-		//todo
-		if( this.nebPerson != null ) {
-			return this.nebPerson.getAxisAlignedMinimumBoundingBox();
-		} else {
-			return null;
-		}
+		edu.cmu.cs.dennisc.math.AxisAlignedBox rv = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
+		double x = 0.208;
+		double y = 1.7;
+		double z = 0.131;
+		rv.setMinimum( -x, 0.0, -z );
+		rv.setMaximum( +x, y, +z );
+//		final double RADIUS = 0.4;
+//		final double HEIGHT = 3.0;
+//		rv.setMinimum( -RADIUS, 0.0, -RADIUS );
+//		rv.setMaximum( +RADIUS, HEIGHT, +RADIUS );
+		return rv;
 	}
 	
 }
