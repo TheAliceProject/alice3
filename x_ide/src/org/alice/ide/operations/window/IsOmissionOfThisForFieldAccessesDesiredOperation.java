@@ -20,13 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice;
+package org.alice.ide.operations.window;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Version {
-	public static String getCurrentVersionText() {
-		return "3.beta.0052";
+public class IsOmissionOfThisForFieldAccessesDesiredOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
+	public IsOmissionOfThisForFieldAccessesDesiredOperation( Boolean initialValue ) {
+		super( initialValue );
+		this.putValue( javax.swing.Action.NAME, "Is Omission Of This For Field Accesses Desired" );
+	}
+	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+		this.getIDE().setOmittingThisFieldAccesses( booleanStateContext.getNextValue() );
+		booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
+		booleanStateContext.commit();
 	}
 }

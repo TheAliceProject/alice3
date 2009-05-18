@@ -246,4 +246,13 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 		this.updateUI();
 	}
+	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+		for( java.awt.Component component : this.getComponents() ) {
+			org.alice.ide.codeeditor.CodeEditor codeEditor = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( component, org.alice.ide.codeeditor.CodeEditor.class );
+			if( codeEditor != null ) {
+				codeEditor.refresh();
+			}
+		}
+	}
+	
 }

@@ -134,7 +134,11 @@ public class StageIDE extends org.alice.ide.IDE {
 			}
 			@Override
 			protected String getNameText() {
-				return "this." + super.getNameText();
+				if( StageIDE.this.isOmittingThisFieldAccesses() ) {
+					return super.getNameText();
+				} else {
+					return "this." + super.getNameText();
+				}
 			}
 		}
 		return new ThisFieldAccessNameLabel( field );

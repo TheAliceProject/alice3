@@ -47,4 +47,7 @@ public class FauxSceneEditor extends AbstractInstantiatingSceneEditor {
 	@Override
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
 	}
+	@Override
+	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+	}
 }

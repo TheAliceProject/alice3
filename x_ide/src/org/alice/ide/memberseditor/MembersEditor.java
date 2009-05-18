@@ -158,7 +158,7 @@ class TabbedPane extends zoot.ZTabbedPane {
 			membersTab.handleFieldSelection( e );
 		}
 	}
-	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
+	public void refresh() {
 		for( MembersTab membersTab : membersTabs ) {
 			membersTab.refresh();
 		}
@@ -203,6 +203,9 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	}
 
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
-		this.tabbedPane.setEmphasizingClasses( isEmphasizingClasses );
+		this.tabbedPane.refresh();
+	}
+	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+		this.tabbedPane.refresh();
 	}
 }

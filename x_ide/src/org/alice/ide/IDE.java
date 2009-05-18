@@ -228,6 +228,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = new org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation( true );
+	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = new org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation( false );
 	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = new org.alice.ide.operations.window.IsEmphasizingClassesOperation( false );
 
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
@@ -248,6 +249,14 @@ public abstract class IDE extends zoot.ZFrame {
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 		this.editorsTabbedPane.setEmphasizingClasses( isEmphasizingClasses );
 		this.membersEditor.setEmphasizingClasses( isEmphasizingClasses );
+	}
+	public boolean isOmittingThisFieldAccesses() {
+		return this.isOmissionOfThisForFieldAccessesDesiredOperation.getButtonModel().isSelected();
+	}
+	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+		this.editorsTabbedPane.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+		this.membersEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+		this.sceneEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
 	}
 
 	private int rootDividerLocation = 320;
@@ -551,7 +560,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
 
-		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isExpressionTypeFeedbackDesiredOperation );
+		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isOmissionOfThisForFieldAccessesDesiredOperation, this.isExpressionTypeFeedbackDesiredOperation );
 		windowMenu.add( setLocaleMenu );
 		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), new org.alice.ide.operations.help.WarningOperation( true ), this.createAboutOperation() );
 		rv.add( fileMenu );
@@ -1555,7 +1564,11 @@ public abstract class IDE extends zoot.ZFrame {
 				if( field.getValueType() == scopeType ) {
 					text = "this (a.k.a. " + text + ")";
 				} else if( field.getDeclaringType() == scopeType ) {
-					text = "this." + text;
+					if( this.isOmittingThisFieldAccesses() ) {
+						//pass
+					} else {
+						text = "this." + text;
+					}
 				} else if( isOutOfScopeTagDesired ) {
 					text = "out of scope: " + text;
 				}

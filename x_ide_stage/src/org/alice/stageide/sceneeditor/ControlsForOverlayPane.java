@@ -195,6 +195,9 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 		this.refreshFields();
 	}
 	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
+		this.updateFieldLabels();
+	}
+	public void updateFieldLabels() {
 		for( FieldTile fieldTile : this.fieldTiles ) {
 			fieldTile.updateLabel();
 		}
@@ -225,6 +228,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 		assert field != null;
 		return new FieldTile( field );
 	}
+	
 	private void refreshFields() {
 		javax.swing.SpringLayout springLayout = this.getSpringLayout();
 		for( FieldTile fieldTile : this.fieldTiles ) {

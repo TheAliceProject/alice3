@@ -727,6 +727,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 	@Override
+	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+		this.controlsForOverlayPane.updateFieldLabels();
+	}
+	@Override
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
 		this.program.getOnscreenLookingGlass().setRenderingEnabled( isRenderingEnabled );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignoring: setRenderingEnabled", isRenderingEnabled );
