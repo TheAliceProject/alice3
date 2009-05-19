@@ -125,15 +125,5 @@ public class CreateASimDragAdapter extends AbstractDragAdapter {
 		}
 	}
 	
-	@Override
-	public void mousePressed( java.awt.event.MouseEvent e ) {
-		this.currentInputState.setMouseState( e.getButton(), true );
-		this.currentInputState.setMouseLocation( e.getPoint() );
-		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DOWN );
-		
-		//The selected object will be set externally by the sims viewer
-		//this.currentInputState.setClickPickResult( pickIntoScene( e.getPoint() ) );
-		this.handleStateChange();
-	}
 
 }
