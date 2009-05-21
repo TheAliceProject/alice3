@@ -23,7 +23,6 @@ public class LaunchGenerator {
 	}
 	public static boolean isAMD64() {
 		return System.getProperty( "os.arch" ).equals( "amd64" );
-		//return true;
 	}
 	
 	private static String getSeparator() {
