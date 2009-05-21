@@ -8,14 +8,21 @@ public class HoleGroup {
 	private java.awt.Component eastDecorator;
 	private java.awt.Component southDecorator;
 	private java.awt.Component westDecorator;
+	
+	private int northDecoratorOffset = 0;
 
 	public HoleGroup( Hole... holes ) {
 		initialize( holes );
 	}
+	
 	public HoleGroup( java.util.List< Hole > holes ) {
 		Hole[] array = new Hole[ holes.size() ];
 		holes.toArray( array );
 		initialize( array );
+	}
+	public HoleGroup( java.util.List< Hole > holes, int northDecoratorOffset) {
+		this( holes );
+		this.northDecoratorOffset = northDecoratorOffset;
 	}
 	private void initialize( Hole[] holes ) {
 		this.holes = holes;
@@ -27,6 +34,10 @@ public class HoleGroup {
 
 	public Hole[] getHoles() {
 		return this.holes;
+	}
+	
+	public int getNorthDecoratorOffset() {
+		return this.northDecoratorOffset;
 	}
 
 	private void addDecoratorIfNecessary( java.awt.Component decorator ) {

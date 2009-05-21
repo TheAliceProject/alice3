@@ -3,6 +3,8 @@ package stencil;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
+import javax.swing.Box;
+
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 
 public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
@@ -274,13 +276,19 @@ public class Stencil extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
 					
 				} 
 				
+				
+				// this is where the offset of the title from the holegroup happens, so
+				// the strategy of setting an offset for the holegroup should work and apply here
+				
 				java.awt.Component northDecorator = holeGroup.getNorthDecorator();
 				if( northDecorator != null ) {
 					northDecorator.doLayout();
 					java.awt.Dimension size = northDecorator.getPreferredSize();
 					size.width = Math.max( size.width, maxWidth );
 					northDecorator.setPreferredSize( size );
-					this.putConstraint( northDecorator, Horizontal.WEST, minX, Vertical.NORTH, minY-size.height-holeGroup.getPad()/2 );
+					
+					int northOffset = minY- size.height-holeGroup.getNorthDecoratorOffset() - holeGroup.getPad()/2;
+					this.putConstraint( northDecorator, Horizontal.WEST, minX, Vertical.NORTH, northOffset );
 				}
 			}
 		}
