@@ -17,10 +17,15 @@ public class LaunchGenerator {
 	private java.io.File trustStore;
 	private String mainClassName;
 
-	private static boolean isOSX() {
+	public static boolean isOSX() {
 		return System.getProperty( "os.name" ).toLowerCase().startsWith( "mac os x" );
 		//return true;
 	}
+	public static boolean isAMD64() {
+		return System.getProperty( "os.arch" ).equals( "amd64" );
+		//return true;
+	}
+	
 	private static String getSeparator() {
 		if( isOSX() ) {
 			return ":";
