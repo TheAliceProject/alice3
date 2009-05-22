@@ -385,7 +385,9 @@ public abstract class ZDragComponent extends ZControl {
 					java.awt.Rectangle bounds = this.dragProxy.getBounds();
 					layeredPane.remove( this.dragProxy );
 					layeredPane.repaint( bounds );
-					this.dragAndDropContext.handleMouseReleased( e );
+					if( this.dragAndDropContext != null ) {
+						this.dragAndDropContext.handleMouseReleased( e );
+					}
 				}
 			}
 		}
