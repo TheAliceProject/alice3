@@ -44,7 +44,11 @@ public class MethodInvocation extends Expression {
 		} else {
 			AbstractType expressionType = expression.getType();
 			if( expressionType != null ) {
-				assert method.getDeclaringType().isAssignableFrom( expressionType );
+				AbstractType declaringType = method.getDeclaringType();
+				if( declaringType != null ) {
+					//todo
+					//assert declaringType.isAssignableFrom( expressionType );
+				}
 			}
 		}
 		this.expression.setValue( expression );

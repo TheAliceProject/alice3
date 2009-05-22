@@ -22,9 +22,6 @@
  */
 package org.alice.ide;
 
-import zoot.ActionContext;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -226,10 +223,26 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
 
+	
+	private static <E> E createBooleanOperation( Class<E> cls, Boolean defaultInitialValue ) {
+		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
+		Boolean initialValue = userPreferences.getBoolean( cls.getSimpleName(), defaultInitialValue );
+		Class<?>[] parameterClses = { Boolean.class };
+		Object[] arguments = { initialValue };
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cls, parameterClses, arguments );
+	}
+	private static void preservePreference( org.alice.ide.operations.AbstractBooleanStateOperation operation ) {
+		if( operation != null ) {
+			Class<?> cls = operation.getClass();
+			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
+			userPreferences.putBoolean( cls.getSimpleName(), operation.getState() );
+		}
+	}
+	
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
-	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = new org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation( true );
-	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = new org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation( false );
-	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = new org.alice.ide.operations.window.IsEmphasizingClassesOperation( false );
+	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
+	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
+	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, false );
 
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;
@@ -497,11 +510,24 @@ public abstract class IDE extends zoot.ZFrame {
 	protected javax.swing.JMenuBar createMenuBar() {
 		javax.swing.JMenuBar rv = new javax.swing.JMenuBar();
 
-		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, this.newProjectOperation, new org.alice.ide.operations.file.OpenProjectOperation(), this.saveOperation, new org.alice.ide.operations.file.SaveAsProjectOperation(), zoot.ZManager.MENU_SEPARATOR,
-				new org.alice.ide.operations.file.RevertProjectOperation(), zoot.ZManager.MENU_SEPARATOR, this.exitOperation );
-		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, new org.alice.ide.operations.edit.UndoOperation(), new org.alice.ide.operations.edit.RedoOperation(), zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.edit.CutOperation(),
-				new org.alice.ide.operations.edit.CopyOperation(), new org.alice.ide.operations.edit.PasteOperation() );
-		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, this.runOperation );
+		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, 
+				this.newProjectOperation, 
+				new org.alice.ide.operations.file.OpenProjectOperation(), 
+				this.saveOperation, 
+				new org.alice.ide.operations.file.SaveAsProjectOperation(), 
+				zoot.ZManager.MENU_SEPARATOR,
+				new org.alice.ide.operations.file.RevertProjectOperation(), 
+				zoot.ZManager.MENU_SEPARATOR, 
+				this.exitOperation );
+		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, 
+				new org.alice.ide.operations.edit.UndoOperation(), 
+				new org.alice.ide.operations.edit.RedoOperation(), 
+				zoot.ZManager.MENU_SEPARATOR, 
+				new org.alice.ide.operations.edit.CutOperation(),
+				new org.alice.ide.operations.edit.CopyOperation(), 
+				new org.alice.ide.operations.edit.PasteOperation() );
+		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, 
+				this.runOperation );
 
 		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 			private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "complex" ), new java.util.Locale( "en", "US", "java" ) };
@@ -890,6 +916,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	public abstract void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
+	public abstract void handlePreviewMethod( zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
 	public final void handleRun( zoot.ActionContext context ) {
 		if( this.project != null ) {
 			this.generateCodeForSceneSetUp();
@@ -949,6 +976,9 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {
+		preservePreference( this.isEmphasizingClassesOperation );
+		preservePreference( this.isExpressionTypeFeedbackDesiredOperation );
+		preservePreference( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 		this.performIfAppropriate( this.exitOperation, e, true );
 	}
 	//	protected abstract void handleWindowClosing();
@@ -1809,7 +1839,7 @@ public abstract class IDE extends zoot.ZFrame {
 		return edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class, "edu.cmu.cs.dennisc.alice.ast.Templates" );
 	}
 
-	public void declareFieldOfPredeterminedType( TypeDeclaredInAlice ownerType, TypeDeclaredInAlice valueType, ActionContext actionContext ) {
+	public void declareFieldOfPredeterminedType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType, zoot.ActionContext actionContext ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 		org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getCls() );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( this, "Create New Instance", true );

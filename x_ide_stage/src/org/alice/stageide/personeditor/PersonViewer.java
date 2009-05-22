@@ -48,11 +48,14 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private BaseEyeColor baseEyeColor = null;
 	private FullBodyOutfit fullBodyOutfit = null;
 	private Hair hair = null;
-	private FitnessLevel fitnessLevel = FitnessLevel.NORMAL;
+	private Double fitnessLevel = 0.5;
 
 	private PersonViewer() {
 		this.mapToMap.put( LifeStage.ADULT, Gender.FEMALE, new FemaleAdult() );
 		this.mapToMap.put( LifeStage.ADULT, Gender.MALE, new MaleAdult() );
+		this.mapToMap.get( LifeStage.ADULT, Gender.FEMALE ).getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
+		this.mapToMap.get( LifeStage.ADULT, Gender.MALE ).getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
+
 		this.randomize();
 		//		this.setLifeStage( LifeStage.ADULT );
 		//		this.setGender( Gender.FEMALE );
@@ -101,7 +104,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 				if( this.baseSkinTone != null ) {
 					person.setSkinTone( this.baseSkinTone );
 					if( this.fitnessLevel != null ) {
-						person.setFitnessLevel( this.fitnessLevel );
+						person.setFitnessLevel( this.fitnessLevel, org.alice.apis.stage.Person.RIGHT_NOW );
 						if( this.fullBodyOutfit != null && IngredientUtilities.isApplicable( this.fullBodyOutfit, this.lifeStage, this.gender ) ) {
 							//pass
 						} else {
@@ -162,8 +165,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		this.baseEyeColor = BaseEyeColor.getRandom();
 		this.fullBodyOutfit = IngredientUtilities.getRandomEnumConstant( this.lifeStage.getFullBodyOutfitInterface( this.gender ) );
 		this.hair = IngredientUtilities.getRandomEnumConstant( this.lifeStage.getHairInterface( this.gender ) );
-		//this.fitnessLevel = FitnessLevel.getRandom();
-		this.fitnessLevel = FitnessLevel.NORMAL;
+		this.fitnessLevel = Math.random();
 		if( isUpdateDesired ) {
 			this.updatePerson();
 		}
@@ -254,10 +256,10 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 	
-	public FitnessLevel getFitnessLevel() {
+	public Double getFitnessLevel() {
 		return this.fitnessLevel;
 	}
-	public void setFitnessLevel( FitnessLevel fitnessLevel ) {
+	public void setFitnessLevel( Double fitnessLevel ) {
 		if( this.fitnessLevel == fitnessLevel ) {
 			//pass
 		} else {

@@ -650,7 +650,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 								.createExpression( (Enum)person.getSkinTone() ) ) );
 						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setOutfit", org.alice.apis.stage.Outfit.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
 								.createExpression( (Enum)person.getOutfit() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setFitnessLevel", org.alice.apis.stage.FitnessLevel.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setFitnessLevel", Number.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
 								.createExpression( person.getFitnessLevel() ) ) );
 
 					}

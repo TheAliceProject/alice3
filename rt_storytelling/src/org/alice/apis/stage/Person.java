@@ -22,12 +22,6 @@
  */
 package org.alice.apis.stage;
 
-import org.alice.apis.moveandturn.HowMuch;
-import org.alice.apis.moveandturn.OriginInclusionPolicy;
-import org.alice.apis.moveandturn.ReferenceFrame;
-import org.alice.apis.stage.Hair;
-import org.alice.apis.stage.Outfit;
-
 import edu.cmu.cs.dennisc.alice.annotations.*;
 
 /**
@@ -206,6 +200,9 @@ public abstract class Person extends Model {
 	}
 	public void setGender( Gender gender ) {
 		this.gender = gender;
+		if( this.gender != null ) {
+			getNebPerson().setGender( this.gender );
+		}
 	}
 	
 	
@@ -231,7 +228,7 @@ public abstract class Person extends Model {
 			//pass
 		} else {
 			try {
-				if( this.lifeStage != null && this.gender != null ) {
+				if( this.lifeStage != null ) {
 					this.nebPerson = new edu.cmu.cs.dennisc.nebulous.Person( this );
 				}
 			} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
@@ -296,17 +293,67 @@ public abstract class Person extends Model {
 		getNebPerson().setSkinTone( m_skinTone );
 	}
 
-	private FitnessLevel m_fitnessLevel = null;
-	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
-	public FitnessLevel getFitnessLevel() {
+
+	private double m_fitnessLevel = 0.5;
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	public Double getFitnessLevel() {
 		return m_fitnessLevel;
 	}
-	public void setFitnessLevel( FitnessLevel fitnessLevel ) {
-		assert fitnessLevel != null;
-		m_fitnessLevel = fitnessLevel;
-		getNebPerson().setFitnessLevel( m_fitnessLevel );
+//	public void setFitnessLevel( Number fitnessLevel ) {
+//		assert fitnessLevel != null;
+//		m_fitnessLevel = fitnessLevel.doubleValue();
+//		getNebPerson().setFitnessLevel( m_fitnessLevel );
+//	}
+	
+	public void setFitnessLevel( 
+			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=org.alice.apis.moveandturn.Portion.class )
+			final Number fitnessLevel,
+			Number duration, 
+			final org.alice.apis.moveandturn.Style style
+		) {
+		final double actualDuration = adjustDurationIfNecessary( duration );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
+			m_fitnessLevel = fitnessLevel.doubleValue();
+			getNebPerson().setFitnessLevel( m_fitnessLevel );
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( actualDuration, style, getFitnessLevel(), fitnessLevel.doubleValue() ) {
+				@Override
+				protected void updateValue( Double d ) {
+					m_fitnessLevel = d.doubleValue();
+					getNebPerson().setFitnessLevel( m_fitnessLevel );
+				}
+			} );
+		}
 	}
-
+	public void setFitnessLevel( 
+			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=org.alice.apis.moveandturn.Portion.class )
+			Number fitnessLevel,
+			Number duration 
+		) {
+		setFitnessLevel( fitnessLevel, duration, DEFAULT_STYLE );
+	}
+	public void setFitnessLevel( 
+			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=org.alice.apis.moveandturn.Portion.class )
+			Number fitnessLevel
+		) {
+		setFitnessLevel( fitnessLevel, DEFAULT_DURATION );
+	}
+	
+	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
+	@Deprecated
+	public void setFitnessLevel( FitnessLevel fitnessLevel ) {
+		double d;
+		if( fitnessLevel == FitnessLevel.SOFT ) {
+			d = 1.0;
+		} else if( fitnessLevel == FitnessLevel.NORMAL ) {
+			d = 0.5;
+		} else {
+			d = 0.0;
+		}
+		setFitnessLevel( d );
+	}
+	
+	
 	private EyeColor m_eyeColor = null;
 	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
 	public EyeColor getEyeColor() {
@@ -360,7 +407,7 @@ public abstract class Person extends Model {
 
 	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	@Override
-	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( ReferenceFrame asSeenBy, HowMuch howMuch, OriginInclusionPolicy originPolicy ) {
+	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( org.alice.apis.moveandturn.ReferenceFrame asSeenBy, org.alice.apis.moveandturn.HowMuch howMuch, org.alice.apis.moveandturn.OriginInclusionPolicy originPolicy ) {
 		edu.cmu.cs.dennisc.math.AxisAlignedBox rv = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
 		double x = 0.208;
 		double y = 1.7;

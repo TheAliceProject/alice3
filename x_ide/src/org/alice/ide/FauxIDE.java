@@ -49,6 +49,10 @@ public class FauxIDE extends IDE {
 	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		javax.swing.JOptionPane.showMessageDialog( this, "imagine the program running here..." );
 	}
+	@Override
+	public void handlePreviewMethod( zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+		javax.swing.JOptionPane.showMessageDialog( this, "imagine testing method here..." );
+	}
 	public static void main( String[] args ) {
 		org.alice.ide.LaunchUtilities.launch( FauxIDE.class, null, args );
 	}

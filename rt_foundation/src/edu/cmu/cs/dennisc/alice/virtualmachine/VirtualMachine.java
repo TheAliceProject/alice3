@@ -553,64 +553,68 @@ public abstract class VirtualMachine {
 	
 
 	protected Object evaluate( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
-			return this.evaluateAssignmentExpression( (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.BooleanLiteral ) {
-			return this.evaluateBooleanLiteral( (edu.cmu.cs.dennisc.alice.ast.BooleanLiteral)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
-			return this.evaluateInstanceCreation( (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation ) {
-			return this.evaluateArrayInstanceCreation( (edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayLength ) {
-			return this.evaluateArrayLength( (edu.cmu.cs.dennisc.alice.ast.ArrayLength)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
-			return this.evaluateArrayAccess( (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-			return this.evaluateFieldAccess( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ConstantAccess ) {
-			return this.evaluateConstantAccess( (edu.cmu.cs.dennisc.alice.ast.ConstantAccess)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
-			return this.evaluateVariableAccess( (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
-			return this.evaluateArithmeticInfixExpression( (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.BitwiseInfixExpression ) {
-			return this.evaluateBitwiseInfixExpression( (edu.cmu.cs.dennisc.alice.ast.BitwiseInfixExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
-			return this.evaluateConditionalInfixExpression( (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression ) {
-			return this.evaluateRelationalInfixExpression( (edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ShiftInfixExpression ) {
-			return this.evaluateShiftInfixExpression( (edu.cmu.cs.dennisc.alice.ast.ShiftInfixExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
-			return this.evaluateLogicalComplement( (edu.cmu.cs.dennisc.alice.ast.LogicalComplement)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
-			return this.evaluateMethodInvocation( (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {
-			return this.evaluateNullLiteral( (edu.cmu.cs.dennisc.alice.ast.NullLiteral)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.StringConcatenation ) {
-			return this.evaluateStringConcatenation( (edu.cmu.cs.dennisc.alice.ast.StringConcatenation)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.NumberLiteral ) {
-			return this.evaluateNumberLiteral( (edu.cmu.cs.dennisc.alice.ast.NumberLiteral)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
-			return this.evaluateDoubleLiteral( (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FloatLiteral ) {
-			return this.evaluateFloatLiteral( (edu.cmu.cs.dennisc.alice.ast.FloatLiteral)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.IntegerLiteral ) {
-			return this.evaluateIntegerLiteral( (edu.cmu.cs.dennisc.alice.ast.IntegerLiteral)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ParameterAccess ) {
-			return this.evaluateParameterAccess( (edu.cmu.cs.dennisc.alice.ast.ParameterAccess)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.StringLiteral ) {
-			return this.evaluateStringLiteral( (edu.cmu.cs.dennisc.alice.ast.StringLiteral)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ThisExpression ) {
-			return this.evaluateThisExpression( (edu.cmu.cs.dennisc.alice.ast.ThisExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
-			return this.evaluateTypeExpression( (edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeLiteral ) {
-			return this.evaluateTypeLiteral( (edu.cmu.cs.dennisc.alice.ast.TypeLiteral)expression );
-		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression ) {
-			return this.evaluateEntryPointTypeExpression( (edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression)expression );
+		if( expression != null ) {
+			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
+				return this.evaluateAssignmentExpression( (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.BooleanLiteral ) {
+				return this.evaluateBooleanLiteral( (edu.cmu.cs.dennisc.alice.ast.BooleanLiteral)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
+				return this.evaluateInstanceCreation( (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation ) {
+				return this.evaluateArrayInstanceCreation( (edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayLength ) {
+				return this.evaluateArrayLength( (edu.cmu.cs.dennisc.alice.ast.ArrayLength)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
+				return this.evaluateArrayAccess( (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+				return this.evaluateFieldAccess( (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ConstantAccess ) {
+				return this.evaluateConstantAccess( (edu.cmu.cs.dennisc.alice.ast.ConstantAccess)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
+				return this.evaluateVariableAccess( (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression ) {
+				return this.evaluateArithmeticInfixExpression( (edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.BitwiseInfixExpression ) {
+				return this.evaluateBitwiseInfixExpression( (edu.cmu.cs.dennisc.alice.ast.BitwiseInfixExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
+				return this.evaluateConditionalInfixExpression( (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression ) {
+				return this.evaluateRelationalInfixExpression( (edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ShiftInfixExpression ) {
+				return this.evaluateShiftInfixExpression( (edu.cmu.cs.dennisc.alice.ast.ShiftInfixExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
+				return this.evaluateLogicalComplement( (edu.cmu.cs.dennisc.alice.ast.LogicalComplement)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+				return this.evaluateMethodInvocation( (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.NullLiteral ) {
+				return this.evaluateNullLiteral( (edu.cmu.cs.dennisc.alice.ast.NullLiteral)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.StringConcatenation ) {
+				return this.evaluateStringConcatenation( (edu.cmu.cs.dennisc.alice.ast.StringConcatenation)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.NumberLiteral ) {
+				return this.evaluateNumberLiteral( (edu.cmu.cs.dennisc.alice.ast.NumberLiteral)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
+				return this.evaluateDoubleLiteral( (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FloatLiteral ) {
+				return this.evaluateFloatLiteral( (edu.cmu.cs.dennisc.alice.ast.FloatLiteral)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.IntegerLiteral ) {
+				return this.evaluateIntegerLiteral( (edu.cmu.cs.dennisc.alice.ast.IntegerLiteral)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ParameterAccess ) {
+				return this.evaluateParameterAccess( (edu.cmu.cs.dennisc.alice.ast.ParameterAccess)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.StringLiteral ) {
+				return this.evaluateStringLiteral( (edu.cmu.cs.dennisc.alice.ast.StringLiteral)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ThisExpression ) {
+				return this.evaluateThisExpression( (edu.cmu.cs.dennisc.alice.ast.ThisExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression ) {
+				return this.evaluateTypeExpression( (edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeLiteral ) {
+				return this.evaluateTypeLiteral( (edu.cmu.cs.dennisc.alice.ast.TypeLiteral)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression ) {
+				return this.evaluateEntryPointTypeExpression( (edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression)expression );
+			} else {
+				throw new RuntimeException( expression.getClass().getName() );
+			}
 		} else {
-			throw new RuntimeException();
+			throw new NullPointerException();
 		}
 	}
 	protected final <E extends Object> E evaluate( edu.cmu.cs.dennisc.alice.ast.Expression expression, Class< E > cls ) {

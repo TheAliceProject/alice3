@@ -22,11 +22,21 @@
  */
 package org.alice.stageide.personeditor;
 
+
 /**
  * @author Dennis Cosgrove
  */
 class FitnessLevelSlider extends javax.swing.JSlider {
 	public FitnessLevelSlider() {
 		this.setOpaque( false );
+		this.addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				FitnessLevelSlider.this.handleStateChanged( e );
+			}
+		} );
+	}
+
+	private void handleStateChanged( javax.swing.event.ChangeEvent e ) {
+		PersonViewer.getSingleton().setFitnessLevel( this.getValue()*0.01 );
 	}
 }

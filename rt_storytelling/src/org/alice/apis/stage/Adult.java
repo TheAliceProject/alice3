@@ -672,7 +672,7 @@ public class Adult extends Person {
 
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void doPushUp() {
-		doPushUp( PushUpStyle.TWO_HANDED_ON_KNEES );
+		doPushUp( PushUpStyle.TWO_HANDED_ON_TOES );
 	}
 	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )

@@ -90,7 +90,7 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 
 	protected abstract com.sun.opengl.util.texture.Texture newTexture( com.sun.opengl.util.texture.Texture currentTexture );
 	public com.sun.opengl.util.texture.Texture getTexture( RenderContext rc ) {
-		if( isDirty() ) {
+		if( isDirty() || m_glTexture == null || rc.gl.glIsTexture( m_glTexture.getTextureObject() ) == false ) {
 			com.sun.opengl.util.texture.Texture glTexture = newTexture( m_glTexture );
 			if( m_glTexture != glTexture ) {
 				m_glTexture = glTexture;

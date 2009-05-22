@@ -26,7 +26,7 @@ package org.alice.stageide.modelviewer;
  * @author Dennis Cosgrove
  */
 abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
-	private org.alice.apis.moveandturn.Scene scene = new org.alice.apis.moveandturn.Scene();
+	protected org.alice.apis.moveandturn.Scene scene = new org.alice.apis.moveandturn.Scene();
 	private org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = new org.alice.apis.moveandturn.SymmetricPerspectiveCamera();
 	private org.alice.apis.moveandturn.DirectionalLight sunLight = new org.alice.apis.moveandturn.DirectionalLight();
 	@Override
@@ -57,11 +57,11 @@ public class ModelViewer extends AbstractViewer {
 	}
 	public void setModel( org.alice.apis.moveandturn.Model model ) {
 		if( this.model != null ) {
-			this.getScene().removeComponent( this.model );
+			this.scene.removeComponent( this.model );
 		}
 		this.model = model;
 		if( this.model != null ) {
-			this.getScene().addComponent( this.model );
+			this.scene.addComponent( this.model );
 		}
 	}
 

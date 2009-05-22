@@ -38,10 +38,15 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	};
 	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		this.method = method;
+		java.util.List< zoot.Operation > operations = new java.util.LinkedList< zoot.Operation >();
+		operations.add( new org.alice.ide.operations.run.PreviewMethodOperation( this ) );
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			this.setPopupOperation( new MethodPopupOperation( methodInAlice ) );
+			operations.add( new org.alice.ide.operations.ast.RenameMethodOperation( methodInAlice ) );
+			operations.add( new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ) );
+			operations.add( new org.alice.ide.operations.ast.FocusCodeOperation( methodInAlice ) );
 		}
+		this.setPopupOperation( new zoot.DefaultPopupActionOperation( operations ) );
 	}
 	@Override
 	public void addNotify() {

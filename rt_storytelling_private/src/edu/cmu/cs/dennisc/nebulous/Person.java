@@ -15,12 +15,12 @@ public class Person extends Model {
 		initialize( o );
 	}
 	private native void initialize( Object o );
+	public native void setGender( Object o );
 	public native void setOutfit( Object o );
 	public native void setSkinTone( Object o );
 	public native void setFitnessLevel( Object o );
 	public native void setEyeColor( Object o );
 	public native void setHair( Object o );
-	
 
 //	private native void getLocalTransformationForBodyPartNamed( double[] result, String name );
 //	private native void setLocalTransformationForBodyPartNamed( String name, double[] value );

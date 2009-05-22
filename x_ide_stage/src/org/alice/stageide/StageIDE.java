@@ -230,6 +230,34 @@ public class StageIDE extends org.alice.ide.IDE {
 			//this.setRenderingEnabled( true );
 		}
 	}
+
+	@Override
+	public void handlePreviewMethod( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+		this.generateCodeForSceneSetUp();
+		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldSelection();
+		if( field == this.getSceneField() ) {
+			field = null;
+		}
+		TestMethodProgram testProgram = new TestMethodProgram( this.getSceneType(), field, emptyExpressionMethodInvocation );
+		this.getSceneEditor().setRenderingEnabled( false );
+		//this.setRenderingEnabled( false );
+		try {
+			testProgram.showInJDialog( this, true, new String[]{ "X_LOCATION="+xLocation, "Y_LOCATION="+yLocation } );
+		} finally {
+			try {
+				this.xLocation = Integer.parseInt( testProgram.getParameter( "X_LOCATION" ) );
+			} catch( Throwable t ) {
+				this.xLocation = 0;
+			}
+			try {
+				this.yLocation = Integer.parseInt( testProgram.getParameter( "Y_LOCATION" ) );
+			} catch( Throwable t ) {
+				this.yLocation = 0;
+			}
+			this.getSceneEditor().setRenderingEnabled( true );
+			//this.setRenderingEnabled( true );
+		}
+	}
 	@Override
 	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
 		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();

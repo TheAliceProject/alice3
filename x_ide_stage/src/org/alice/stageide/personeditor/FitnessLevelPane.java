@@ -26,9 +26,14 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 class FitnessLevelPane extends swing.BorderPane {
+	private FitnessLevelSlider slider = new FitnessLevelSlider();
 	public FitnessLevelPane() {
-		this.add( new zoot.ZButton( new FitnessLevelActionOperation( org.alice.apis.stage.FitnessLevel.CUT ) ), java.awt.BorderLayout.WEST );
-		this.add( new FitnessLevelSlider(), java.awt.BorderLayout.CENTER );
-		this.add( new zoot.ZButton( new FitnessLevelActionOperation( org.alice.apis.stage.FitnessLevel.SOFT ) ), java.awt.BorderLayout.EAST );
+		this.add( new zoot.ZButton( new FitnessLevelActionOperation( slider, 0, "SOFT" ) ), java.awt.BorderLayout.WEST );
+		this.add( this.slider, java.awt.BorderLayout.CENTER );
+		this.add( new zoot.ZButton( new FitnessLevelActionOperation( slider, 100, "CUT" ) ), java.awt.BorderLayout.EAST );
+	}
+
+	public void setFitnessLevel( Double fitnessLevel ) {
+		this.slider.setValue( (int)(fitnessLevel*100) );
 	}
 }

@@ -125,7 +125,7 @@ class IngredientsPane extends swing.GridBagPane {
 			this.fullBodyOutfitList.setSelectedValue( personViewer.getFullBodyOutfit(), shouldScroll );
 			this.baseSkinToneList.setSelectedValue( personViewer.getBaseSkinTone(), shouldScroll );
 			this.baseEyeColorList.setSelectedValue( personViewer.getBaseEyeColor(), shouldScroll );
-			
+			this.fitnessLevelPane.setFitnessLevel( personViewer.getFitnessLevel() );
 			
 //			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 //				public void run() {

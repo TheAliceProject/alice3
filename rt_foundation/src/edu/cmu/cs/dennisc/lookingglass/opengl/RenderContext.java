@@ -175,8 +175,8 @@ public class RenderContext extends Context {
 	}
 	@Override
 	protected void handleGLChange() {
-		forgetAllTextureAdapters();
-		forgetAllGeometryAdapters();
+		//forgetAllTextureAdapters();
+		//forgetAllGeometryAdapters();
 	}
 
 	private int m_face;
@@ -333,7 +333,14 @@ public class RenderContext extends Context {
 
 	public Integer getDisplayListID( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter ) {
 		synchronized( m_displayListMap ) {
-			return m_displayListMap.get( geometryAdapter );
+			Integer rv = m_displayListMap.get( geometryAdapter );
+//			if( this.gl.glIsList( rv ) ) {
+//				//pass
+//			} else {
+//				m_displayListMap.remove( geometryAdapter );
+//				rv = null;
+//			}
+			return rv;
 		}
 	}
 	public Integer generateDisplayListID( GeometryAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > geometryAdapter ) {

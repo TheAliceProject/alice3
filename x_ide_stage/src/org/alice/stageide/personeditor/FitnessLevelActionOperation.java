@@ -26,12 +26,14 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 class FitnessLevelActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private org.alice.apis.stage.FitnessLevel fitnessLevel;
-	public FitnessLevelActionOperation( org.alice.apis.stage.FitnessLevel fitnessLevel ) {
-		this.fitnessLevel = fitnessLevel;
-		this.putValue( javax.swing.Action.NAME, fitnessLevel.toString() );
+	private javax.swing.JSlider slider;
+	private int value;
+	public FitnessLevelActionOperation( javax.swing.JSlider slider, int value, String name ) {
+		this.slider = slider;
+		this.value = value;
+		this.putValue( javax.swing.Action.NAME, name );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		PersonViewer.getSingleton().setFitnessLevel( this.fitnessLevel );
+		this.slider.setValue( this.value );
 	}
 }

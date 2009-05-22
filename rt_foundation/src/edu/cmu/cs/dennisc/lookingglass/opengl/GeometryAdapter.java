@@ -76,7 +76,7 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
     			id = rc.generateDisplayListID( this );
     			setIsGeometryChanged( true );
     		}
-    		if( isDisplayListInNeedOfRefresh( rc )  ) {
+    		if( isDisplayListInNeedOfRefresh( rc ) || rc.gl.glIsList( id ) == false ) {
     			rc.gl.glNewList( id, GL.GL_COMPILE_AND_EXECUTE );
     			try {
             		renderGeometry( rc );

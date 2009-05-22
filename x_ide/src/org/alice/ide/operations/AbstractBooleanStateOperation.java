@@ -32,4 +32,7 @@ public abstract class AbstractBooleanStateOperation extends zoot.AbstractBoolean
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
+	protected boolean isPreservedAndRestored() {
+		return false;
+	}
 }
