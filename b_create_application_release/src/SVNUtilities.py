@@ -7,10 +7,14 @@ __author__="Dave Culyba"
 __date__ ="$May 5, 2009 2:24:57 PM$"
 
 class SVNPackage:
-	def __init__(self, path):
+	def __init__(self, path, dirs):
 		self.name = path
+		self.dirs = dirs
 		self.previousRevision = 0
-		self.currentRevision = 0
+		self.newRevision = 0
+
+	def isNew(self):
+		return self.previousRevision != self.newRevision
 
 class Repository:
 	def __init__(self, url, username, password, localRoot):
@@ -74,9 +78,9 @@ class Repository:
 		latestRevision = 0
 		while (iterator.hasNext()):
 			entry = iterator.next()
-			currentRevision = entry.getRevision()
-			if (currentRevision > latestRevision):
-				latestRevision = currentRevision
+			newRevision = entry.getRevision()
+			if (newRevision > latestRevision):
+				latestRevision = newRevision
 		return latestRevision
 
 	def listEntries( self, path ):
@@ -106,13 +110,15 @@ class Repository:
 		print result
 
 	def updatePath( self, path):
-		localFile = java.io.File( self.localRoot + path )
+		localFile = java.io.File( self.localRoot,  path )
 		updateClient = self.clientManager.getUpdateClient()
 		updateClient.setIgnoreExternals( False )
+		print "updating "+localFile.getAbsolutePath()
 		return updateClient.doUpdate( localFile, core.wc.SVNRevision.HEAD, True )
 
 	def getLocalCommittedRevision(self, path):
-		localFile = java.io.File( self.localRoot + path )
+		localFile = java.io.File( self.localRoot, path )
+		print "getting revision of "+localFile.getAbsolutePath()
 		statusClient = self.clientManager.getStatusClient()
 		localStatus = statusClient.doStatus(localFile, True)
 		return localStatus.getCommittedRevision().getNumber()
