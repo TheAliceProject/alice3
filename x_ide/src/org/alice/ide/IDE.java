@@ -242,7 +242,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
 	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
-	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, false );
+	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, true );
 
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;
