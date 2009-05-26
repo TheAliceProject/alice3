@@ -35,15 +35,19 @@ public abstract class Person extends Model {
 	protected org.alice.apis.moveandturn.graphic.Originator createOriginator() {
 		return new org.alice.apis.moveandturn.graphic.Originator() {
 			public java.awt.geom.Point2D calculateOriginOfTail( org.alice.apis.moveandturn.graphic.Bubble bubble, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
+				double height = Person.this.getHeight();
 				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
 				if( bubble instanceof org.alice.apis.moveandturn.graphic.SpeechBubble ) {
 					offsetAsSeenBySubject.x = 0.0;
-					offsetAsSeenBySubject.y = 2.5;
-					offsetAsSeenBySubject.z = -0.5;
+					offsetAsSeenBySubject.y = height*0.9;
+					offsetAsSeenBySubject.z = -0.25;
 				} else if( bubble instanceof org.alice.apis.moveandturn.graphic.ThoughtBubble ) {
-					offsetAsSeenBySubject.x = 2.0;
-					offsetAsSeenBySubject.y = 0.25;
+					offsetAsSeenBySubject.x = 0.0;
+					offsetAsSeenBySubject.y = height*1.1;
 					offsetAsSeenBySubject.z = 0.0;
+//					offsetAsSeenBySubject.x = 2.0;
+//					offsetAsSeenBySubject.y = 0.25;
+//					offsetAsSeenBySubject.z = 0.0;
 				} else {
 					offsetAsSeenBySubject.x = 0;
 					offsetAsSeenBySubject.y = 0;
