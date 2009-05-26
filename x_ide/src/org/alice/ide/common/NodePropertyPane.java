@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class NodePropertyPane<E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? >> extends AbstractPropertyPane< E > {
+public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProperty > extends AbstractPropertyPane< E > {
 //	public NodePropertyPane( Factory factory ) {
 //		super( factory, javax.swing.BoxLayout.LINE_AXIS );
 //	}
@@ -35,6 +35,9 @@ public class NodePropertyPane<E extends edu.cmu.cs.dennisc.alice.ast.NodePropert
 	@Override
 	protected void refresh() {
 		edu.cmu.cs.dennisc.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
-		this.add( this.getFactory().createComponent( getProperty().getValue() ) );
+		Object value = getProperty().getValue();
+		if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
+			this.add( this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)value ) );
+		}
 	}
 }
