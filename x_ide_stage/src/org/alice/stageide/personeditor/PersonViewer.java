@@ -246,8 +246,11 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	}
 	public void setHairColor( String hairColor ) {
 		if( this.hair != null ) {
-			Class<Enum> cls = (Class<Enum>)this.hair.getClass();
+			Class< ? extends Enum > cls = (Class<? extends Enum>)this.hair.getClass();
 			for( Enum e : cls.getEnumConstants() ) {
+//			Class cls = this.hair.getClass();
+//			for( Object o : cls.getEnumConstants() ) {
+//				Enum e = (Enum)o;
 				if( e.name().equals( hairColor ) ) {
 					this.setHair( (Hair)e );
 					break;

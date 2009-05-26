@@ -27,6 +27,6 @@ package org.alice.stageide.personeditor;
  */
 class EnumConstantsComboBoxModel extends ArrayComboBoxModel { 
 	public EnumConstantsComboBoxModel( Class<? extends Enum> cls ) {
-		super( cls.getEnumConstants() );
+		super( (Object[])cls.getEnumConstants() );
 	}
 }
