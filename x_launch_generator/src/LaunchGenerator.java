@@ -24,7 +24,7 @@ public class LaunchGenerator {
 	public static boolean isAMD64() {
 		return System.getProperty( "os.arch" ).equals( "amd64" );
 	}
-	
+
 	private static String getSeparator() {
 		if( isOSX() ) {
 			return ":";
@@ -90,7 +90,7 @@ public class LaunchGenerator {
 			sb.append( "\" " );
 		}
 	}
-	
+
 	public String encode() {
 		final String SEPARATOR = getSeparator();
 		StringBuffer sb = new StringBuffer();
@@ -133,13 +133,13 @@ public class LaunchGenerator {
 			sb.append( "\n" );
 			sb.append( "\t\t\t<key>ClassPath</key>\n" );
 			sb.append( "\t\t\t<array>\n" );
-			
+
 			for( java.io.File f : this.classPath ) {
 				sb.append( "\t\t\t\t<string>" );
 				sb.append( getCanonicalPathIfPossible( f ) );
 				sb.append( "</string>\n" );
 			}
-			
+
 			sb.append( "\t\t\t</array>\n" );
 			sb.append( "\n" );
 			sb.append( "\t\t\t<key>JVMVersion</key>\n" );
@@ -179,7 +179,7 @@ public class LaunchGenerator {
 			sb.append( "\t\t\t<string>" );
 
 			this.appendNonClassPathOptions( sb );
-			
+
 			sb.append( "</string>\n" );
 			sb.append( "\n" );
 			sb.append( "\t\t\t<key>WorkingDirectory</key>\n" );
@@ -190,7 +190,14 @@ public class LaunchGenerator {
 			sb.append( "\t</dict>\n" );
 			sb.append( "</plist>\n" );
 		} else {
-			sb.append( ".\\jdk1.5.0_17\\bin\\java " );
+			final String FILE_SEPARATOR = System.getProperty( "file.separator" );
+			final String LINE_SEPARATOR = System.getProperty( "line.separator" );
+			final String JRE_NAME = "jre1.5.0_17";
+			sb.append( "set PATH=." + FILE_SEPARATOR + JRE_NAME + FILE_SEPARATOR + "bin" + FILE_SEPARATOR + ";." + FILE_SEPARATOR + JRE_NAME + FILE_SEPARATOR + "bin" + FILE_SEPARATOR + "client" );
+			sb.append( LINE_SEPARATOR );
+			sb.append( "set JAVA_HOME=." + FILE_SEPARATOR + JRE_NAME );
+			sb.append( LINE_SEPARATOR );
+			sb.append( "java " );
 			this.appendNonClassPathOptions( sb );
 			String separator = "";
 			sb.append( "-classpath " );
@@ -204,7 +211,7 @@ public class LaunchGenerator {
 
 			sb.append( this.mainClassName );
 			sb.append( " %1" );
-			sb.append( System.getProperty("line.separator") );
+			sb.append( LINE_SEPARATOR );
 			sb.append( "pause" );
 		}
 
