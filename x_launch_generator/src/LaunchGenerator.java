@@ -18,8 +18,8 @@ public class LaunchGenerator {
 	private String mainClassName;
 
 	public static boolean isOSX() {
-		//return System.getProperty( "os.name" ).toLowerCase().startsWith( "mac os x" );
-		return true;
+		return System.getProperty( "os.name" ).toLowerCase().startsWith( "mac os x" );
+		//return true;
 	}
 	public static boolean isAMD64() {
 		return System.getProperty( "os.arch" ).equals( "amd64" );
