@@ -190,7 +190,7 @@ public class LaunchGenerator {
 			sb.append( "\t</dict>\n" );
 			sb.append( "</plist>\n" );
 		} else {
-			sb.append( "java " );
+			sb.append( ".\\jre6\\bin\\java " );
 			this.appendNonClassPathOptions( sb );
 			String separator = "";
 			sb.append( "-classpath " );
