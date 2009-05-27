@@ -18,8 +18,8 @@ public class LaunchGenerator {
 	private String mainClassName;
 
 	public static boolean isOSX() {
-		return System.getProperty( "os.name" ).toLowerCase().startsWith( "mac os x" );
-		//return true;
+		//return System.getProperty( "os.name" ).toLowerCase().startsWith( "mac os x" );
+		return true;
 	}
 	public static boolean isAMD64() {
 		return System.getProperty( "os.arch" ).equals( "amd64" );
@@ -63,31 +63,36 @@ public class LaunchGenerator {
 	private void appendNonClassPathOptions( StringBuffer sb ) {
 		final String SEPARATOR = getSeparator();
 		sb.append( "-ea " );
-		sb.append( "-Xmx1024m " );
-		sb.append( "-Dswing.aatext=true " );
-		sb.append( "-Dorg.alice.ide.IDE.install.dir=" );
-		sb.append( "\"" );
-		sb.append( getCanonicalPathIfPossible( this.installDirectory ) );
-		sb.append( "\" " );
-		if( this.trustStore != null ) {
-			sb.append( "-Djavax.net.ssl.trustStore=" );
+		sb.append( "-Xmx1024m" );
+		if( isOSX() ) {
+			//pass
+		} else {
+			sb.append( " " );
+			sb.append( "-Dswing.aatext=true " );
+			sb.append( "-Dorg.alice.ide.IDE.install.dir=" );
 			sb.append( "\"" );
-			sb.append( getCanonicalPathIfPossible( this.trustStore ) );
+			sb.append( getCanonicalPathIfPossible( this.installDirectory ) );
+			sb.append( "\" " );
+			if( this.trustStore != null ) {
+				sb.append( "-Djavax.net.ssl.trustStore=" );
+				sb.append( "\"" );
+				sb.append( getCanonicalPathIfPossible( this.trustStore ) );
+				sb.append( "\" " );
+			}
+			String separator = "";
+			sb.append( "-Djava.library.path=" );
+			sb.append( "\"" );
+			for( java.io.File f : this.libraryPath ) {
+				sb.append( separator );
+				sb.append( getCanonicalPathIfPossible( f ) );
+				separator = SEPARATOR;
+			}
 			sb.append( "\" " );
 		}
-		String separator = "";
-		sb.append( "-Djava.library.path=" );
-		sb.append( "\"" );
-		for( java.io.File f : this.libraryPath ) {
-			sb.append( separator );
-			sb.append( getCanonicalPathIfPossible( f ) );
-			separator = SEPARATOR;
-		}
-		sb.append( "\" " );
 	}
 	
 	public String encode() {
-		final String SEPARATOR = this.getSeparator();
+		final String SEPARATOR = getSeparator();
 		StringBuffer sb = new StringBuffer();
 		if( isOSX() ) {
 			sb.append( "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" );
@@ -149,6 +154,25 @@ public class LaunchGenerator {
 			sb.append( "\t\t\t<dict>\n" );
 			sb.append( "\t\t\t\t<key>apple.laf.useScreenMenuBar</key>\n" );
 			sb.append( "\t\t\t\t<string>true</string>\n" );
+			sb.append( "\t\t\t\t<key>swing.aatext</key>\n" );
+			sb.append( "\t\t\t\t<string>true</string>\n" );
+			sb.append( "\t\t\t\t<key>javax.net.ssl.trustStore</key>\n" );
+			sb.append( "\t\t\t\t<string>" );
+			sb.append( getCanonicalPathIfPossible( this.trustStore ) );
+			sb.append( "</string>\n" );
+			sb.append( "\t\t\t\t<key>org.alice.ide.IDE.install.dir</key>\n" );
+			sb.append( "\t\t\t\t<string>" );
+			sb.append( getCanonicalPathIfPossible( this.installDirectory ) );
+			sb.append( "</string>\n" );
+			sb.append( "\t\t\t\t<key>java.library.path</key>\n" );
+			sb.append( "\t\t\t\t<string>" );
+			String separator = "";
+			for( java.io.File f : this.libraryPath ) {
+				sb.append( separator );
+				sb.append( getCanonicalPathIfPossible( f ) );
+				separator = SEPARATOR;
+			}
+			sb.append( "</string>\n" );
 			sb.append( "\t\t\t</dict>\n" );
 			sb.append( "\n" );
 			sb.append( "\t\t\t<key>VMOptions</key>\n" );
