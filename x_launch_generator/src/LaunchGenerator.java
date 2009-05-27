@@ -203,7 +203,8 @@ public class LaunchGenerator {
 			sb.append( "\" " );
 
 			sb.append( this.mainClassName );
-			sb.append( " %1\n" );
+			sb.append( " %1" );
+			sb.append( System.getProperty("line.separator") );
 			sb.append( "pause" );
 		}
 
