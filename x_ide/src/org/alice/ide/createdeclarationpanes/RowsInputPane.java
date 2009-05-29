@@ -25,17 +25,24 @@ package org.alice.ide.createdeclarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowsInputPane< E > extends zoot.ZInputPane< E > { 
+public abstract class RowsInputPane< E > extends zoot.ZInputPane< E > {
+	private javax.swing.JPanel panel = new javax.swing.JPanel();
 	public RowsInputPane() {
-		java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
-		javax.swing.JPanel panel = new javax.swing.JPanel();
-		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( panel, componentRows, this.getSpringXPad(), this.getSpringYPad() );
 		this.setLayout( new java.awt.BorderLayout() );
 		this.add( panel, java.awt.BorderLayout.NORTH );
 		this.add( javax.swing.Box.createGlue(), java.awt.BorderLayout.CENTER );
 
 		int inset = 8;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
+	}
+	
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		if( this.panel.getComponentCount()==0) {
+			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
+			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this.panel, componentRows, this.getSpringXPad(), this.getSpringYPad() );
+		}
 	}
 	protected int getSpringXPad() {
 		return 12;
