@@ -26,7 +26,7 @@ package org.alice.ide.choosers;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E> {
-	private zoot.ZSuggestiveTextField textField = new zoot.ZSuggestiveTextField( "", "<unset>" ) {
+	private zoot.ZSuggestiveTextField textField = new zoot.ZSuggestiveTextField( "", "" ) {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );

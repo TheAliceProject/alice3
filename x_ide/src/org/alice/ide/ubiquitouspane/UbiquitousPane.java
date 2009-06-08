@@ -99,11 +99,22 @@ class TransientStatementsWrapper extends swing.LineAxisPane {
 	}
 }
 
+//class LoopTemplate extends org.alice.ide.templates.StatementTemplate {
+//	public LoopTemplate() {
+//		super( edu.cmu.cs.dennisc.alice.ast.AbstractLoop.class );
+//	}
+//	@Override
+//	public void createStatement( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
+//		taskObserver.handleCancelation();
+//	}
+//}
+
 /**
  * @author Dennis Cosgrove
  */
 public class UbiquitousPane extends swing.LineAxisPane {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
+//	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
 	private WhileLoopTemplate whileLoopTemplate = new WhileLoopTemplate();
 	private ForEachInArrayLoopTemplate forEachInArrayLoopTemplate = new ForEachInArrayLoopTemplate();
@@ -120,6 +131,8 @@ public class UbiquitousPane extends swing.LineAxisPane {
 		final int PAD = 6;
 		this.add( this.doInOrderTemplate );
 		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
+//		this.add( this.loopTemplate );
+
 		this.add( this.countLoopTemplate );
 		this.add( this.whileLoopTemplate );
 		this.add( this.forEachInArrayLoopTemplate );

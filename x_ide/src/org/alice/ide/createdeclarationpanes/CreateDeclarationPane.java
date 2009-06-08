@@ -41,7 +41,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	}
 	class DeclarationNameTextField extends zoot.ZSuggestiveTextField {
 		public DeclarationNameTextField() {
-			super( "", "<unset>" );
+			super( "", "" );
 			this.setFont( this.getFont().deriveFont( 18.0f ) );
 			this.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 				public void changedUpdate( javax.swing.event.DocumentEvent e ) {
