@@ -381,7 +381,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	protected Program createProgram() {
 		return new Program( this );
 	}
-	protected Program getProgram() {
+	public Program getProgram() {
 		return this.program;
 	}
 	private org.alice.stageide.sceneeditor.ControlsForOverlayPane getControlsForOverlayPane() {

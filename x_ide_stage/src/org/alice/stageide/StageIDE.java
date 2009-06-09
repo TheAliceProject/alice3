@@ -204,13 +204,8 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	private int xLocation = 100;
 	private int yLocation = 100;
-	@Override
-	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
-		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
-		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
-		vm.setEntryPointType( this.getProgramType() );
-		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
-		
+	
+	protected void showInJDialog( MoveAndTurnRuntimeProgram rtProgram ) {
 		this.getSceneEditor().setRenderingEnabled( false );
 		//this.setRenderingEnabled( false );
 		try {
@@ -229,6 +224,15 @@ public class StageIDE extends org.alice.ide.IDE {
 			this.getSceneEditor().setRenderingEnabled( true );
 			//this.setRenderingEnabled( true );
 		}
+	}
+	
+	@Override
+	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
+		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
+		vm.setEntryPointType( this.getProgramType() );
+		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
+		showInJDialog( rtProgram );
 	}
 
 	@Override
