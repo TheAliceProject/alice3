@@ -100,7 +100,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		repaint();
 	}
 	public boolean isFigurativelyEmpty() {
-		return this.getComponent( 0 ) instanceof EmptyStatementListAfforance;
+		return this.getComponentCount() == 0 || this.getComponent( 0 ) instanceof EmptyStatementListAfforance;
 	}
 
 	private int getCenterYOfComponentAt( int i ) {

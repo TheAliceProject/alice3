@@ -32,8 +32,12 @@ public class FieldNameValidator extends MemberNameValidator {
 	}
 	@Override
 	protected boolean isNameAvailable( String name ) {
+		assert name != null;
 		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
-		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.getType().fields ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type = this.getType();
+		assert type != null;
+		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : type.fields ) {
+			assert field != null;
 			if( field == node ) {
 				//pass
 			} else {

@@ -293,7 +293,11 @@ public abstract class VirtualMachine {
 			InstanceInAlice instanceInAlice = (InstanceInAlice)instance;
 			instance = instanceInAlice.getInstanceInJava();
 		}
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getGttr() );
+		if( instance != null ) {
+			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getGttr() );
+		} else {
+			throw new NullPointerException();
+		}
 	}
 	protected void setFieldDeclaredInJavaWithGetterAndSetter( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithGetterAndSetter field, Object instance, Object value ) {
 		//todo
@@ -307,7 +311,11 @@ public abstract class VirtualMachine {
 			InstanceInAlice valueInAlice = (InstanceInAlice)value;
 			value = valueInAlice.getInstanceInJava();
 		}
-		edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getSttr(), value );
+		if( instance != null ) {
+			edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getSttr(), value );
+		} else {
+			throw new NullPointerException();
+		}
 	}
 	
 	protected Object get( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {

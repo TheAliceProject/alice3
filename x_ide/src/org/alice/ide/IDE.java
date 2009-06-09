@@ -128,6 +128,7 @@ public abstract class IDE extends zoot.ZFrame {
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
 		java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > aliceTypes = this.addAliceTypes( new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : aliceTypes ) {
+			assert type != null;
 			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
 				return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
 			}

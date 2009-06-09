@@ -46,16 +46,18 @@ public class SystemUtilities {
 	}
 
 	private enum Platform {
-		WINDOWS, OSX
+		WINDOWS, OSX, LINUX
 	}
 
 	private static Platform platform;
 	static {
-		String lcOSName = System.getProperty( "os.name" ).toLowerCase();
-		if( lcOSName.contains( "windows" ) ) {
+		String lowercaseOSName = System.getProperty( "os.name" ).toLowerCase();
+		if( lowercaseOSName.contains( "windows" ) ) {
 			platform = Platform.WINDOWS;
-		} else if( lcOSName.startsWith( "mac os x" ) ) {
+		} else if( lowercaseOSName.startsWith( "mac os x" ) ) {
 			platform = Platform.OSX;
+		} else if( lowercaseOSName.startsWith( "linux" ) ) {
+			platform = Platform.LINUX;
 		} else {
 			//todo
 			platform = null;

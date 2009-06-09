@@ -184,8 +184,11 @@ public abstract class ZDragComponent extends ZControl {
 			DropReceptor rv = null;
 			int prevHeight = Integer.MAX_VALUE;
 			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+				assert dropReceptorInfo != null;
 				if( dropReceptorInfo.contains( x, y ) ) {
-					int nextHeight = dropReceptorInfo.getBounds().height;
+					java.awt.Rectangle bounds = dropReceptorInfo.getBounds();
+					assert bounds != null;
+					int nextHeight = bounds.height;
 					if( nextHeight < prevHeight ) {
 						rv = dropReceptorInfo.getDropReceptor();
 						prevHeight = nextHeight;

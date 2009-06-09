@@ -35,7 +35,9 @@ public class TypeComponent extends DeclarationNameLabel {
 			setRollover( false );
 		}
 		public void mousePressed( java.awt.event.MouseEvent e ) {
-			zoot.ZManager.performIfAppropriate( TypeComponent.this.popupOperation, e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			if( TypeComponent.this.popupOperation != null ) {
+				zoot.ZManager.performIfAppropriate( TypeComponent.this.popupOperation, e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			}
 		}
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
 		}

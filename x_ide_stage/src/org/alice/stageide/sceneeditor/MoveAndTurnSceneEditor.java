@@ -363,7 +363,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.GROUND );
 				} else {
 					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
-					sgTransformable.putBonusDataFor( org.alice.interact.GlobalDragAdapter.BOUNDING_BOX_KEY, model.getAxisAlignedMinimumBoundingBox() );
+					edu.cmu.cs.dennisc.math.AxisAlignedBox box = model.getAxisAlignedMinimumBoundingBox();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( model );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( box );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
+					sgTransformable.putBonusDataFor( org.alice.interact.GlobalDragAdapter.BOUNDING_BOX_KEY, box );
 					//edu.cmu.cs.dennisc.print.PrintUtilities.println( sgTransformable.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY ) );
 				}
 			} else if( transformable instanceof org.alice.apis.moveandturn.Light ) {

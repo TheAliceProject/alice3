@@ -26,25 +26,25 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl {
-	private zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
+//	private zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
 	public AbstractDropDownPane() {
 		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
 		this.setForeground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 191 ) );
 		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 	}
 	
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		this.addMouseListener( controlAdapter );
-		this.addMouseMotionListener( controlAdapter );
-	}
-	@Override
-	public void removeNotify() {
-		this.removeMouseListener( controlAdapter );
-		this.removeMouseMotionListener( controlAdapter );
-		super.removeNotify();
-	}
+//	@Override
+//	public void addNotify() {
+//		super.addNotify();
+//		this.addMouseListener( controlAdapter );
+//		this.addMouseMotionListener( controlAdapter );
+//	}
+//	@Override
+//	public void removeNotify() {
+//		this.removeMouseListener( controlAdapter );
+//		this.removeMouseMotionListener( controlAdapter );
+//		super.removeNotify();
+//	}
 	
 	private static final int AFFORDANCE_WIDTH = 6;
 	private static final int AFFORDANCE_HALF_HEIGHT = 5;

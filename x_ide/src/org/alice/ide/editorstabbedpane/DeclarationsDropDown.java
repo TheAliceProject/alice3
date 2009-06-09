@@ -205,6 +205,7 @@ class ProjectBlank extends cascade.Blank {
 	private edu.cmu.cs.dennisc.alice.Project project;
 
 	public ProjectBlank( edu.cmu.cs.dennisc.alice.Project project ) {
+		assert project != null;
 		this.project = project;
 	}
 	@Override
@@ -230,13 +231,18 @@ class RootOperation extends org.alice.ide.operations.AbstractActionOperation {
 		java.awt.Component component = (java.awt.Component)actionContext.getEvent().getSource();
 		int x = 0;//component.getWidth();
 		int y = component.getHeight();
-		new ProjectBlank( getIDE().getProject() ).showPopupMenu( component, x, y, new edu.cmu.cs.dennisc.task.TaskObserver< zoot.ActionOperation >() {
-			public void handleCompletion( zoot.ActionOperation actionOperation ) {
-				zoot.ZManager.performIfAppropriate( actionOperation, null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
-			}
-			public void handleCancelation() {
-			}
-		} );
+		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
+		if( project != null ) {
+			new ProjectBlank( project ).showPopupMenu( component, x, y, new edu.cmu.cs.dennisc.task.TaskObserver< zoot.ActionOperation >() {
+				public void handleCompletion( zoot.ActionOperation actionOperation ) {
+					zoot.ZManager.performIfAppropriate( actionOperation, null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+				}
+				public void handleCancelation() {
+				}
+			} );
+		} else {
+			javax.swing.JOptionPane.showMessageDialog( this.getIDE(), "Open a project first (via the File Menu)", "No Project", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+		}
 	}
 }
 
