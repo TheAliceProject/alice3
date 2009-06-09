@@ -34,6 +34,9 @@ public class FloatChooser extends AbstractNumberChooser< Float > {
 			this.setAndSelectText( Float.toString( floatLiteral.value.getValue() ) );
 		}
 	}
+	public String getTitleDefault() {
+		return "Enter Custom Float";
+	}
 	@Override
 	protected Float valueOf( String text ) {
 		return Float.valueOf( text );

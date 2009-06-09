@@ -35,6 +35,12 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 		this.chooser = chooser;
 		this.chooser.setInputPane( this );
 	}
+	
+	@Override
+	protected String getTitleDefault() {
+		return this.chooser.getTitleDefault();
+	}
+	
 	@Override
 	protected java.awt.Component createPreviewSubComponent() {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;

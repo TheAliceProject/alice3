@@ -33,6 +33,9 @@ public class StringChooser extends AbstractChooserWithTextField< String > {
 			this.setAndSelectText( stringLiteral.value.getValue() );
 		}
 	}
+	public String getTitleDefault() {
+		return "Enter Custom String";
+	}
 	@Override
 	protected String valueOf( String text ) {
 		return text;

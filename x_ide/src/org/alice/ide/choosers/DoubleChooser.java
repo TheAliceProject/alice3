@@ -35,6 +35,9 @@ public class DoubleChooser extends AbstractNumberChooser< Double > {
 			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
 		}
 	}
+	public String getTitleDefault() {
+		return "Enter Custom Double";
+	}
 	@Override
 	protected Double valueOf( String text ) {
 		return Double.valueOf( text );

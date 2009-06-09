@@ -74,6 +74,9 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		} );
 		
 	}
+	public String getTitleDefault() {
+		return "Enter Custom Array";
+	}
 	
 	public boolean isInputValid() {
 		return this.typePane.getValueType() != null;

@@ -54,4 +54,8 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 	public boolean isInputValid() {
 		return true;
 	}
+	public String getTitleDefault() {
+		return "Enter Custom Portion";
+	}
 }
+

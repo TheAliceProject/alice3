@@ -34,6 +34,9 @@ public class IntegerChooser extends AbstractNumberChooser< Integer > {
 			this.setAndSelectText( Integer.toString( integerLiteral.value.getValue() ) );
 		}
 	}
+	public String getTitleDefault() {
+		return "Enter Custom Integer";
+	}
 	@Override
 	protected Integer valueOf( String text ) {
 		return Integer.valueOf( text );

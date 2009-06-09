@@ -34,6 +34,9 @@ public class AngleChooser extends org.alice.ide.choosers.AbstractChooserWithText
 			this.setAndSelectText( Double.toString( doubleLiteral.value.getValue() ) );
 		}
 	}
+	public String getTitleDefault() {
+		return "Enter Custom Angle";
+	}
 	@Override
 	protected org.alice.apis.moveandturn.Angle valueOf( String text ) {
 		double value = Double.valueOf( text );
