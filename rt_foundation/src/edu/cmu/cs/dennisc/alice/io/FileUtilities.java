@@ -68,8 +68,6 @@ public class FileUtilities {
 		return edu.cmu.cs.dennisc.io.FileUtilities.listFiles( directory, TYPE_EXTENSION );
 	}
 
-
-	
 	private static String readVersion( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
 		assert zipFile != null;
 		java.util.zip.ZipEntry entry = zipFile.getEntry( VERSION_ENTRY_NAME );
@@ -95,7 +93,7 @@ public class FileUtilities {
 		assert zipFile != null;
 		java.util.zip.ZipEntry entry = zipFile.getEntry( PROPERTIES_ENTRY_NAME );
 		if( entry != null ) {
-			java.io.BufferedInputStream  bis = new java.io.BufferedInputStream( zipFile.getInputStream( entry ) );
+			java.io.BufferedInputStream bis = new java.io.BufferedInputStream( zipFile.getInputStream( entry ) );
 			rv.read( bis );
 		}
 		return rv;
@@ -184,6 +182,42 @@ public class FileUtilities {
 			throw new RuntimeException( file.getAbsolutePath(), ioe );
 		}
 	}
+
+	private static String SNAPSHOT_ENTRY_NAME = "snapshot.png";
+
+	//todo
+	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file, java.awt.Image snapshotImage ) {
+		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		try {
+			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
+			java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
+			writeType( project.getProgramType(), zos, PROGRAM_TYPE_ENTRY_NAME );
+			edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
+			if( properties != null ) {
+				writeProperties( zos, properties );
+			}
+			if( snapshotImage != null ) {
+				writeSnapshotImage( zos, snapshotImage );
+			}
+			zos.flush();
+			zos.close();
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( file.getAbsolutePath(), ioe );
+		}
+	}
+
+	private static void writeSnapshotImage( java.util.zip.ZipOutputStream zos, java.awt.Image image ) throws java.io.IOException {
+		java.util.zip.ZipEntry snapshotEntry = new java.util.zip.ZipEntry( SNAPSHOT_ENTRY_NAME );
+
+		zos.putNextEntry( snapshotEntry );
+		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( zos );
+
+		edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, bos, image );
+
+		bos.flush();
+		zos.closeEntry();
+	}
+
 	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, String path ) {
 		writeProject( project, new java.io.File( path ) );
 	}

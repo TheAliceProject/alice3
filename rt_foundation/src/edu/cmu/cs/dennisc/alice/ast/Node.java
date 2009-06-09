@@ -318,7 +318,9 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		rv.appendChild( encodeParameters( xmlDocument, mthd.getParameterTypes() ) );
 		return rv;
 	}
-	private org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
+	
+	//todo: reduce visibility?
+	public org.w3c.dom.Element encode( org.w3c.dom.Document xmlDocument, java.util.Set< AbstractDeclaration > set ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "node" );
 		if( this instanceof AbstractDeclaration ) {
 			AbstractDeclaration abstractDeclaration = (AbstractDeclaration)this;
