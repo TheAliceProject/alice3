@@ -28,6 +28,7 @@ import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
@@ -111,7 +112,13 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 	
 	@Override
 	public void positionRelativeToObject( Composite object ) {
-		this.setTransformation( this.getTransformationForAxis( this.dragAxis ), this.getReferenceFrame() );
+		AffineMatrix4x4 objectTransformation = this.getTransformationForAxis( this.dragAxis );
+		if (objectTransformation.isNaN())
+		{
+			assert !objectTransformation.isNaN() : "Created NaN transformation from "+this.dragAxis;
+			objectTransformation = new AffineMatrix4x4();
+		}
+		this.setTransformation( objectTransformation, this.getReferenceFrame() );
 		Vector3 handleOffset = new Vector3(this.dragAxis);
 		handleOffset.multiply( this.getHandleLength(this.manipulatedObject) );
 		this.setTranslationOnly( handleOffset, this.getReferenceFrame() );

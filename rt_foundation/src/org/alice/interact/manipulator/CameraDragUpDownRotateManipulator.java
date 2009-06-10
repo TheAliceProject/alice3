@@ -95,13 +95,13 @@ public class CameraDragUpDownRotateManipulator extends Camera2DDragManipulator {
 	@Override
 	protected ReferenceFrame getRotationReferenceFrame()
 	{
-		return this.manipulatedTransformable;
+		return this.getManipulatedTransformable();
 	}
 	
 	@Override
 	protected ReferenceFrame getMovementReferenceFrame()
 	{
-		return this.manipulatedTransformable;
+		return this.getManipulatedTransformable();
 	}
 	
 

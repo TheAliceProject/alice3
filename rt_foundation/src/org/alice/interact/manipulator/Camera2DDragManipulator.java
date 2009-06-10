@@ -79,7 +79,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		if (this.getCamera() != null)
+		if (super.doStartManipulator( startInput ))
 		{
 			this.initializeEventMessages();
 			this.standUpReference.setParent( this.getCamera().getParent() );

@@ -75,13 +75,16 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward;
-		cameraForward.multiply( -1.0d );
-		Point3 pickPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
-		if ( pickPoint != null)
+		if (super.doStartManipulator( startInput ))
 		{
-			this.setPivotPoint( pickPoint );
-			return true;
+			Vector3 cameraForward = this.manipulatedTransformable.getAbsoluteTransformation().orientation.backward;
+			cameraForward.multiply( -1.0d );
+			Point3 pickPoint = PlaneUtilities.getPointInPlane( GROUND_PLANE, new edu.cmu.cs.dennisc.math.Ray(this.manipulatedTransformable.getAbsoluteTransformation().translation, cameraForward));
+			if ( pickPoint != null)
+			{
+				this.setPivotPoint( pickPoint );
+				return true;
+			}
 		}
 		return false;
 		

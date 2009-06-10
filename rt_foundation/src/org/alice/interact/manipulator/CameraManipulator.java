@@ -23,6 +23,7 @@
 package org.alice.interact.manipulator;
 
 
+import org.alice.interact.InputState;
 import org.alice.interact.handle.HandleSet;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
@@ -44,7 +45,27 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
 		} 
 		return null;
 	}
+	
+	public Transformable getManipulatedTransformable()
+	{
+		AbstractCamera camera = this.getCamera();
+		if (camera.getParent() instanceof Transformable)
+		{
+			return (Transformable)camera.getParent();
+		}
+		return null;
+	}
 
+	@Override
+	public boolean doStartManipulator( InputState startInput ) {
+		this.manipulatedTransformable = this.getManipulatedTransformable();
+		if (this.manipulatedTransformable != null)
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
 		this.onscreenLookingGlass = onscreenLookingGlass;
 		if (this.onscreenLookingGlass != null && this.getCamera() != null)
