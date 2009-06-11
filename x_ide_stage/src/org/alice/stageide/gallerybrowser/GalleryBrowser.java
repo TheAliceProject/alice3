@@ -100,16 +100,22 @@ abstract class CreateInstanceFromFileActionOperation extends org.alice.ide.opera
 		java.io.File directory = this.getInitialDirectory();
 		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog( this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION, false );
 		if( file != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType( file );
-			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
-			org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( declaringType, type );
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
-			if( field != null ) {
-				getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
-				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-				actionContext.commit();
-			} else {
+			String lcFilename = file.getName().toLowerCase();
+			if( lcFilename.endsWith( ".a2c" ) ) {
+				javax.swing.JOptionPane.showMessageDialog( org.alice.ide.IDE.getSingleton(), "Alice3 does not load Alice2 characters", "Cannot read file", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 				actionContext.cancel();
+			} else {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType( file );
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
+				org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( declaringType, type );
+				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
+				if( field != null ) {
+					getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
+					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
+					actionContext.commit();
+				} else {
+					actionContext.cancel();
+				}
 			}
 		} else {
 			actionContext.cancel();
