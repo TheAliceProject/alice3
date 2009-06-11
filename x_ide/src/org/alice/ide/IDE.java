@@ -1334,9 +1334,14 @@ public abstract class IDE extends zoot.ZFrame {
 			if( lcFilename.endsWith( ".a2w" ) ) {
 				javax.swing.JOptionPane.showMessageDialog( this, "Alice3 does not load Alice2 worlds", "Cannot read file", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			} else {
-				this.file = file;
-				this.setProject( edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( this.file ) );
-				this.updateTitle();
+				try {
+					edu.cmu.cs.dennisc.alice.Project project = edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( file );
+					this.setProject( project );
+					this.file = file;
+					this.updateTitle();
+				} catch( Throwable t ) {
+					throw new RuntimeException( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ), t );
+				}
 			}
 		} else {
 			StringBuffer sb = new StringBuffer();

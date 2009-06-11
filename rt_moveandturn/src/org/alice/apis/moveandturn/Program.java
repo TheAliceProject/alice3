@@ -40,11 +40,13 @@ public abstract class Program extends edu.cmu.cs.dennisc.animation.Program imple
 			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2 = e.getGraphics2D();
 
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass = e.getTypedSource();
-			edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
-			assert sgCamera != null;
-			synchronized( m_liveGraphics ) {
-				for( org.alice.apis.moveandturn.graphic.Graphic graphic : m_liveGraphics ) {
-					graphic.paint( g2, lookingGlass, sgCamera );
+			if( lookingGlass.getCameraCount() > 0 ) {
+				edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
+				assert sgCamera != null;
+				synchronized( m_liveGraphics ) {
+					for( org.alice.apis.moveandturn.graphic.Graphic graphic : m_liveGraphics ) {
+						graphic.paint( g2, lookingGlass, sgCamera );
+					}
 				}
 			}
 			synchronized( m_finishedGraphics ) {

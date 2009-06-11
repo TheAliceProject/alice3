@@ -71,6 +71,10 @@ public class ThisPane extends AccessiblePane {
 	private void updateBasedOnFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		if( code != null ) {
 			this.type = code.getDeclaringType();
+		} else {
+			this.type = null;
+		}
+		if( this.type != null ) {
 			this.setToolTipText( "the current instance of " + this.type.getName() + " is referred to as " + getIDE().getTextForThis() );
 		} else {
 			this.type = TYPE_FOR_NULL;
