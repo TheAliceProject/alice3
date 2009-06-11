@@ -49,7 +49,7 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
 	public Transformable getManipulatedTransformable()
 	{
 		AbstractCamera camera = this.getCamera();
-		if (camera.getParent() instanceof Transformable)
+		if (camera != null && camera.getParent() instanceof Transformable)
 		{
 			return (Transformable)camera.getParent();
 		}
