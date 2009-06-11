@@ -28,10 +28,11 @@ import org.alice.ide.createdeclarationpanes.RowsInputPane;
  * @author Dennis Cosgrove
  */
 public abstract class NameInputPane<E> extends RowsInputPane< E > {
-	private javax.swing.JTextField textField;
+	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
 
 	public void setAndSelectNameText( String text ) {
 		if( text != null ) {
+			assert this.textField != null;
 			this.textField.setText( text );
 			this.textField.selectAll();
 		}
@@ -55,7 +56,7 @@ public abstract class NameInputPane<E> extends RowsInputPane< E > {
 		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
 		zoot.ZLabel label = zoot.ZLabel.acquire();
 		label.setText( "name:" );
-		this.textField = new javax.swing.JTextField( 10 );
+		assert this.textField != null;
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
 				javax.swing.text.Document document = e.getDocument();

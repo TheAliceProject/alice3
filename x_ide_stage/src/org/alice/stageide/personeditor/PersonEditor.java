@@ -46,7 +46,6 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 		this.splitPane.setDividerLocation( 400 );
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.add( this.splitPane );
-		
 		personViewer.showInAWTContainer( container, new String[] {} );
 	}
 	

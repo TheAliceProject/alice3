@@ -22,6 +22,9 @@
  */
 package org.alice.ide.cascade;
 
+import cascade.Blank;
+import cascade.FillIn;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -46,8 +49,11 @@ public abstract class UnaryExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.
 	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression operand );
 	@Override
 	public final E getValue() {
-		edu.cmu.cs.dennisc.alice.ast.Expression operand = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getValue();
-		return this.createValue( operand );
+		return this.createValue( (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getValue() );
+	}
+	@Override
+	public E getTransientValue() {
+		return this.createValue( (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getTransientValue() );
 	}
 	
 }

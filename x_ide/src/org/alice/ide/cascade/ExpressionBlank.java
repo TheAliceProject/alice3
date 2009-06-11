@@ -44,6 +44,10 @@ public class ExpressionBlank extends cascade.Blank {
 					return null;
 				}
 				@Override
+				public Object getTransientValue() {
+					return null;
+				};
+				@Override
 				protected void addChildren() {
 				}
 				@Override

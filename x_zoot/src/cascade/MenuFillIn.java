@@ -53,8 +53,16 @@ public abstract class MenuFillIn< E > extends FillIn< E > {
 	final protected void addChildren() {
 		this.addBlank( createBlank() );
 	}
+	
+	private FillIn< E > getSelectedFillInOfChild0() {
+		return getBlankAt( 0 ).getSelectedFillIn();
+	}
 	@Override
 	final public E getValue() {
-		return (E)((Blank)this.getChildren().get( 0 )).getSelectedFillIn().getValue();
+		return getSelectedFillInOfChild0().getValue();
+	}
+	@Override
+	final public E getTransientValue() {
+		return getSelectedFillInOfChild0().getTransientValue();
 	}
 }

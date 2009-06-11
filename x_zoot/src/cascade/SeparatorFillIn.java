@@ -49,7 +49,11 @@ public class SeparatorFillIn extends FillIn< Object > {
 	protected void addChildren() {
 	}
 	@Override
-	public Object getValue() {
+	public final Object getValue() {
+		return null;
+	}
+	@Override
+	public final Object getTransientValue() {
 		return null;
 	}
 }

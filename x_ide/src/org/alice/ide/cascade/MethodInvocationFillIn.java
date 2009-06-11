@@ -52,6 +52,7 @@ public class MethodInvocationFillIn extends cascade.FillIn< edu.cmu.cs.dennisc.a
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation incompleteMethodInvocation = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.expression, this.method );
 		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( incompleteMethodInvocation );
 	}
+	
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getValue() {
 		java.util.List< cascade.Node > nodes = this.getChildren();
@@ -66,4 +67,19 @@ public class MethodInvocationFillIn extends cascade.FillIn< edu.cmu.cs.dennisc.a
 		org.alice.ide.ast.NodeUtilities.completeMethodInvocation( rv, this.expression, argumentExpressions );
 		return rv;
 	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue() {
+		java.util.List< cascade.Node > nodes = this.getChildren();
+		final int N = nodes.size();
+		edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
+		
+		for( int i=0; i<N; i++ ) {
+			argumentExpressions[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((cascade.Blank)nodes.get( i )).getSelectedFillIn().getTransientValue();
+		}
+		
+		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( null, this.method );
+		org.alice.ide.ast.NodeUtilities.completeMethodInvocation( rv, this.expression, argumentExpressions );
+		return rv;
+	}
+	
 }

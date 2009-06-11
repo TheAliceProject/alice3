@@ -152,7 +152,8 @@ public abstract class ThumbnailsPane extends swing.LineAxisPane {
 	/*package private*/ static java.io.File[] listClasses( java.io.File directory ) {
 		return edu.cmu.cs.dennisc.io.FileUtilities.listFiles( directory, new java.io.FileFilter() {
 			public boolean accept( java.io.File file ) {
-				return file.isFile() && file.getName().equals( "directoryThumbnail.png" ) == false;
+				String lcFilename = file.getName().toLowerCase();
+				return file.isFile() && lcFilename.equals( "directorythumbnail.png" ) == false;
 			}
 		} );
 	}

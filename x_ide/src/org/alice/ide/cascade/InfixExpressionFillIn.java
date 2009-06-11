@@ -55,5 +55,12 @@ public abstract class InfixExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.
 		edu.cmu.cs.dennisc.alice.ast.Expression right = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 2 ).getSelectedFillIn().getValue();
 		return this.createValue( left, operator, right );
 	}
+	@Override
+	public E getTransientValue() {
+		edu.cmu.cs.dennisc.alice.ast.Expression left = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getTransientValue();
+		Object operator = this.getBlankAt( 1 ).getSelectedFillIn().getTransientValue();
+		edu.cmu.cs.dennisc.alice.ast.Expression right = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 2 ).getSelectedFillIn().getTransientValue();
+		return this.createValue( left, operator, right );
+	}
 	
 }

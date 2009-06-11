@@ -37,7 +37,11 @@ public class SimpleFillIn< E > extends FillIn< E > {
 	protected void addChildren() {
 	}
 	@Override
-	public E getValue() {
+	public final E getValue() {
+		return this.getModel();
+	}
+	@Override
+	public final E getTransientValue() {
 		return this.getModel();
 	}
 	

@@ -184,14 +184,16 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( super.isDropDownDesiredFor( expression ) ) {
-			edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
-			if( parent instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
-				edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)parent;
-				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
-				assert field != null;
-				if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
-					if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
-						return false;
+			if( expression != null ) {
+				edu.cmu.cs.dennisc.alice.ast.Node parent = expression.getParent();
+				if( parent instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
+					edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)parent;
+					edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+					assert field != null;
+					if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
+						if( field.getValueType().isAssignableTo( org.alice.apis.moveandturn.Transformable.class ) ) {
+							return false;
+						}
 					}
 				}
 			}

@@ -28,7 +28,6 @@ package org.alice.ide.cascade;
 public class StringConcatenationFillIn extends cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
 	@Override
 	protected void addChildren() {
-		edu.cmu.cs.dennisc.alice.ast.StringConcatenation instance = new edu.cmu.cs.dennisc.alice.ast.StringConcatenation();
 		this.addChild( new ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) );
 		this.addChild( new ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) );
 	}
@@ -37,6 +36,13 @@ public class StringConcatenationFillIn extends cascade.FillIn< edu.cmu.cs.dennis
 		edu.cmu.cs.dennisc.alice.ast.StringConcatenation rv  = new edu.cmu.cs.dennisc.alice.ast.StringConcatenation();
 		rv.leftOperand.setValue( (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getValue() );
 		rv.rightOperand.setValue( (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 1 ).getSelectedFillIn().getValue() );
+		return rv;
+	}
+	@Override
+	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getTransientValue() {
+		edu.cmu.cs.dennisc.alice.ast.StringConcatenation rv  = new edu.cmu.cs.dennisc.alice.ast.StringConcatenation();
+		rv.leftOperand.setValue( (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getTransientValue() );
+		rv.rightOperand.setValue( (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 1 ).getSelectedFillIn().getTransientValue() );
 		return rv;
 	}
 	@Override

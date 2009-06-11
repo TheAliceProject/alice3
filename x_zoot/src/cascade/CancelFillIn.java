@@ -34,8 +34,12 @@ public class CancelFillIn extends FillIn< Object > {
 	protected void addChildren() {
 	}
 	@Override
-	public Object getValue() {
+	public final Object getValue() {
 		throw new CancelException( this.label.getText() );
+	}
+	@Override
+	public final Object getTransientValue() {
+		return null;
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {

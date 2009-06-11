@@ -1190,13 +1190,21 @@ public abstract class IDE extends zoot.ZFrame {
 			@Override
 			public edu.cmu.cs.dennisc.alice.ast.Expression[] getValue() {
 				edu.cmu.cs.dennisc.alice.ast.Expression[] rv = new edu.cmu.cs.dennisc.alice.ast.Expression[ this.getChildren().size() ];
-
 				int i = 0;
 				for( cascade.Node child : this.getChildren() ) {
 					rv[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((cascade.Blank)child).getSelectedFillIn().getValue();
 					i++;
 				}
-
+				return rv;
+			}
+			@Override
+			public edu.cmu.cs.dennisc.alice.ast.Expression[] getTransientValue() {
+				edu.cmu.cs.dennisc.alice.ast.Expression[] rv = new edu.cmu.cs.dennisc.alice.ast.Expression[ this.getChildren().size() ];
+				int i = 0;
+				for( cascade.Node child : this.getChildren() ) {
+					rv[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((cascade.Blank)child).getSelectedFillIn().getTransientValue();
+					i++;
+				}
 				return rv;
 			}
 		};
@@ -1322,9 +1330,14 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	public void setFile( java.io.File file ) {
 		if( file.exists() ) {
-			this.file = file;
-			this.setProject( edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( this.file ) );
-			this.updateTitle();
+			String lcFilename = file.getName().toLowerCase();
+			if( lcFilename.endsWith( ".a2w" ) ) {
+				javax.swing.JOptionPane.showMessageDialog( this, "Alice3 does not load Alice2 worlds", "Cannot read file", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			} else {
+				this.file = file;
+				this.setProject( edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( this.file ) );
+				this.updateTitle();
+			}
 		} else {
 			StringBuffer sb = new StringBuffer();
 			sb.append( "Cannot read project from file:\n\t" );
@@ -1335,7 +1348,12 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	public void revert() {
-		this.loadProjectFrom( this.getFile() );
+		java.io.File file = this.getFile();
+		if( file != null ) {
+			this.loadProjectFrom( file );
+		} else {
+			javax.swing.JOptionPane.showMessageDialog( this, "You must have a project open in order to revert.", "Revert", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+		}
 	}
 
 	protected void fireMethodFocusChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
