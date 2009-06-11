@@ -38,7 +38,7 @@ public class MouseButtonEvent extends edu.cmu.cs.dennisc.pattern.event.Event< ja
 		this.isPickPerformed = false;
 	}
 
-	private void pickIfNecessary() {
+	private synchronized void pickIfNecessary() {
 		if( this.isPickPerformed ) {
 			//pass
 		} else {

@@ -36,6 +36,9 @@ abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
 	protected org.alice.apis.moveandturn.SymmetricPerspectiveCamera getCamera() {
 		return this.camera;
 	}
+	protected org.alice.apis.moveandturn.DirectionalLight getSunLight() {
+		return this.sunLight;
+	}
 	@Override
 	protected void initialize() {
 		this.scene.addComponent( this.camera );

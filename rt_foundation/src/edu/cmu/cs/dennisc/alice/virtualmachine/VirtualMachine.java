@@ -149,12 +149,12 @@ public abstract class VirtualMachine {
 					final Object instance = this.getThis();
 					Context context = new Context() {
 						public void invokeEntryPoint( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, final Object... arguments ) {
-							new Thread() {
-								@Override
-								public void run() {
+//							new Thread() {
+//								@Override
+//								public void run() {
 									VirtualMachine.this.invokeEntryPoint( method, instance, arguments );
-								}
-							}.start();
+//								}
+//							}.start();
 						}
 					};
 					Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice.class, Object[].class };
