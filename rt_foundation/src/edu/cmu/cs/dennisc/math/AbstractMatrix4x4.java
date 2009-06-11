@@ -1,0 +1,93 @@
+/*
+ * Copyright (c) 2006-2009, Carnegie Mellon University. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ * 3. Products derived from the software may not be called "Alice",
+ *    nor may "Alice" appear in their name, without prior written
+ *    permission of Carnegie Mellon University.
+ * 
+ * 4. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    "This product includes software developed by Carnegie Mellon University"
+ */
+package edu.cmu.cs.dennisc.math;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class AbstractMatrix4x4 {
+	public abstract double[] getAsColumnMajorArray16( double[] rv );
+	public final double[] getAsColumnMajorArray16() {
+		return getAsColumnMajorArray16( new double[ 16 ] );
+	}
+	
+	public abstract boolean isAffine();
+
+	public abstract void setNaN();
+	public abstract boolean isNaN();
+
+	public abstract void setIdentity();
+	public abstract boolean isIdentity();
+	
+	public abstract Vector4 setReturnValueToTransformed( Vector4 rv, Vector4 b );
+	public final Vector4 createTransformed( Vector4 b ) {
+		return setReturnValueToTransformed( new Vector4(), b );
+	}
+	public final void transform( Vector4 b ) { 
+		setReturnValueToTransformed( b, b );
+	}
+
+	
+	public abstract Vector3 setReturnValueToTransformed( Vector3 rv, Vector3 b );
+	public final Vector3 createTransformed( Vector3 b ) {
+		return setReturnValueToTransformed( new Vector3(), b );
+	}
+	public final void transform( Vector3 b ) { 
+		setReturnValueToTransformed( b, b );
+	}
+
+	public abstract Point3 setReturnValueToTransformed( Point3 rv, Point3 b );
+	public final Point3 createTransformed( Point3 b ) {
+		return setReturnValueToTransformed( new Point3(), b );
+	}
+	public final void transform( Point3 b ) { 
+		setReturnValueToTransformed( b, b );
+	}
+
+
+	
+	public abstract Vector4f setReturnValueToTransformed( Vector4f rv, Vector4f b );
+	public final Vector4f createTransformed( Vector4f b ) {
+		return setReturnValueToTransformed( new Vector4f(), b );
+	}
+	public final void transform( Vector4f b ) { 
+		setReturnValueToTransformed( b, b );
+	}
+
+	
+	public abstract Vector3f setReturnValueToTransformed( Vector3f rv, Vector3f b );
+	public final Vector3f createTransformed( Vector3f b ) {
+		return setReturnValueToTransformed( new Vector3f(), b );
+	}
+	public final void transform( Vector3f b ) { 
+		setReturnValueToTransformed( b, b );
+	}
+
+	public abstract Point3f setReturnValueToTransformed( Point3f rv, Point3f b );
+	public final Point3f createTransformed( Point3f b ) {
+		return setReturnValueToTransformed( new Point3f(), b );
+	}
+	public final void transform( Point3f b ) { 
+		setReturnValueToTransformed( b, b );
+	}
+}

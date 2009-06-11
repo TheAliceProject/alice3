@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_foundation"/>
+	<classpathentry kind="lib" path="/jar_mail/mail.jar"/>
+	<classpathentry kind="lib" path="/jar_mail/lib/smtp.jar"/>
+	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
+	<classpathentry kind="lib" path="/jar_jaf/activation.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ide_private"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_issue"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch_gallery_generated"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_generated_depended_upon"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_storytelling_private"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_deprecated"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

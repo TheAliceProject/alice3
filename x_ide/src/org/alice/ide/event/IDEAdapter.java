@@ -1,0 +1,54 @@
+/*
+ * Copyright (c) 2006-2009, Carnegie Mellon University. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ * 3. Products derived from the software may not be called "Alice",
+ *    nor may "Alice" appear in their name, without prior written
+ *    permission of Carnegie Mellon University.
+ * 
+ * 4. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    "This product includes software developed by Carnegie Mellon University"
+ */
+package org.alice.ide.event;
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class IDEAdapter implements IDEListener {
+
+	public void projectOpened( ProjectOpenEvent e ) {
+	}
+	public void projectOpening( ProjectOpenEvent e ) {
+	}
+
+	public void fieldSelectionChanging( FieldSelectionEvent e ) {
+	}
+	public void fieldSelectionChanged( FieldSelectionEvent e ) {
+	}
+	public void transientSelectionChanging( TransientSelectionEvent e ) {
+	}
+	public void transientSelectionChanged( TransientSelectionEvent e ) {
+	}
+
+	public void focusedCodeChanging( FocusedCodeChangeEvent e ) {
+	}
+	public void focusedCodeChanged( FocusedCodeChangeEvent e ) {
+	}
+	
+	public void localeChanging( LocaleEvent e ) {
+	}
+	public void localeChanged( LocaleEvent e ) {
+	}
+
+}
