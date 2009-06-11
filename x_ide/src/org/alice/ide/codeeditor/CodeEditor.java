@@ -493,14 +493,16 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 		} );
 	}
 	public void dragExited( zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
-		final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		this.statementListPropertyPaneInfos = null;
 		this.currentUnder = null;
 		this.repaint();
 		if( isDropRecipient ) {
 			//pass
 		} else {
-			source.hideDropProxyIfNecessary();
+			final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+			if( source != null ) {
+				source.hideDropProxyIfNecessary();
+			}
 		}
 	}
 	public void dragStopped( zoot.DragAndDropContext dragAndDropContext ) {
