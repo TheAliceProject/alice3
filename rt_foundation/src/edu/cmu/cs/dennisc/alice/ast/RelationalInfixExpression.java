@@ -84,6 +84,8 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				//todo Character
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
+					assert leftOperand != null;
+					assert rightOperand != null;
 					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
 						return doubleValue( leftOperand ) < doubleValue( rightOperand );
 					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
@@ -110,6 +112,8 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				//todo Character
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
+					assert leftOperand != null;
+					assert rightOperand != null;
 					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
 						return doubleValue( leftOperand ) <= doubleValue( rightOperand );
 					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
@@ -136,6 +140,8 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				//todo Character
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
+					assert leftOperand != null;
+					assert rightOperand != null;
 					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
 						return doubleValue( leftOperand ) > doubleValue( rightOperand );
 					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
@@ -162,6 +168,8 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				//todo Character
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
+					assert leftOperand != null;
+					assert rightOperand != null;
 					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
 						return doubleValue( leftOperand ) >= doubleValue( rightOperand );
 					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
@@ -185,9 +193,13 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 		EQUALS() { 
 			@Override
 			public Boolean operate( Object leftOperand, Object rightOperand ) {
+				assert leftOperand != null;
+				assert rightOperand != null;
 				//todo Character
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
+					assert leftOperand != null;
+					assert rightOperand != null;
 					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
 						return doubleValue( leftOperand ) == doubleValue( rightOperand );
 					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
@@ -214,6 +226,8 @@ public class RelationalInfixExpression extends InfixExpression< RelationalInfixE
 				//todo Character
 				//todo AtomicInteger, AtomicLong, BigDecimal, BigInteger ?
 				if( isNumberComparisonDesired( leftOperand, rightOperand ) ) {
+					assert leftOperand != null;
+					assert rightOperand != null;
 					if( isDoubleComparisonDesired( leftOperand, rightOperand ) ) {
 						return doubleValue( leftOperand ) != doubleValue( rightOperand );
 					} else if( isFloatComparisonDesired( leftOperand, rightOperand ) ) {
