@@ -26,7 +26,11 @@ package edu.cmu.cs.dennisc.alice;
  * @author Dennis Cosgrove
  */
 public class Version {
+	private static final String TEXT;
+	static {
+		TEXT = edu.cmu.cs.dennisc.io.TextFileUtilities.read( License.class.getResourceAsStream( "Version.txt" ) );
+	}
 	public static String getCurrentVersionText() {
-		return "3.beta.0055";
+		return TEXT;
 	}
 }
