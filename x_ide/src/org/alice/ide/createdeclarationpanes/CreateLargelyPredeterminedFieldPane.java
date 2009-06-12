@@ -45,7 +45,12 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeDeclaredInJava ) {
 		return getIDE().getTypeDeclaredInAliceFor( typeDeclaredInJava );
 	}
-	
+
+	@Override
+	protected String getDefaultNameText() {
+		return this.getIDE().getPotentialInstanceNameFor( this.getDeclaringType(), this.valueType );
+	}
+
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		return this.valueType;

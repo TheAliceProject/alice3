@@ -240,10 +240,15 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 	
+	protected boolean isDefaultFieldNameGenerationDesiredByDefault() {
+		return false;
+	}
+	
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
 	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
 	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, true );
+	private org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation isDefaultFieldNameGenerationDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation.class, this.isDefaultFieldNameGenerationDesiredByDefault() );
 
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;
@@ -271,6 +276,9 @@ public abstract class IDE extends zoot.ZFrame {
 		this.editorsTabbedPane.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
 		this.membersEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
 		this.sceneEditor.setOmittingThisFieldAccesses( isOmittingThisFieldAccesses );
+	}
+	public boolean isDefaultFieldNameGenerationDesired() {
+		return this.isDefaultFieldNameGenerationDesiredOperation.getButtonModel().isSelected();
 	}
 
 	private int rootDividerLocation = 320;
@@ -587,7 +595,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
 
-		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isOmissionOfThisForFieldAccessesDesiredOperation, this.isExpressionTypeFeedbackDesiredOperation );
+		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isOmissionOfThisForFieldAccessesDesiredOperation, this.isExpressionTypeFeedbackDesiredOperation, this.isDefaultFieldNameGenerationDesiredOperation );
 		windowMenu.add( setLocaleMenu );
 		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), new org.alice.ide.operations.help.WarningOperation( true ), this.createAboutOperation() );
 		rv.add( fileMenu );
@@ -980,6 +988,7 @@ public abstract class IDE extends zoot.ZFrame {
 		preservePreference( this.isEmphasizingClassesOperation );
 		preservePreference( this.isExpressionTypeFeedbackDesiredOperation );
 		preservePreference( this.isOmissionOfThisForFieldAccessesDesiredOperation );
+		preservePreference( this.isDefaultFieldNameGenerationDesiredOperation );
 		this.performIfAppropriate( this.exitOperation, e, true );
 	}
 	//	protected abstract void handleWindowClosing();
@@ -1874,5 +1883,50 @@ public abstract class IDE extends zoot.ZFrame {
 		} else {
 			actionContext.cancel();
 		}
+	}
+
+	//	def _isFieldNameFree( self, name ):
+	//		sceneType = self.getSceneType()
+	//		if sceneType:
+	//			for field in sceneType.fields.iterator():
+	//				if field.getName() == name:
+	//					return False
+	//		return True 
+	//
+	//	def _getAvailableFieldName( self, superClassBaseName ):
+	//		name = superClassBaseName[ 0 ].lower() + superClassBaseName[ 1: ]
+	//		rv = name
+	//		i = 2
+	//		while not self._isFieldNameFree( rv ):
+	//			rv = name + `i`
+	//			i += 1
+	//		return rv
+
+	private static String getAvailableFieldName( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, String baseName ) {
+		org.alice.ide.namevalidators.FieldNameValidator validator = new org.alice.ide.namevalidators.FieldNameValidator( declaringType );
+		int i = 2;
+		String rv = baseName;
+		while( validator.isNameValid( rv ) == false ) {
+			rv = baseName + i;
+			i++;
+		}
+		return rv;
+	}
+	public String getPotentialInstanceNameFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
+		if( valueType != null ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+			if( typeInJava != null ) {
+				if( this.isDefaultFieldNameGenerationDesired() ) {
+					String typeName = typeInJava.getName();
+					if( typeName != null && typeName.length() > 0 ) {
+						StringBuffer sb = new StringBuffer();
+						sb.append( Character.toLowerCase( typeName.charAt( 0 )  ) );
+						sb.append( typeName.substring( 1 ) );
+						return IDE.getAvailableFieldName( declaringType, sb.toString() );
+					}
+				}
+			}
+		}
+		return "";
 	}
 }

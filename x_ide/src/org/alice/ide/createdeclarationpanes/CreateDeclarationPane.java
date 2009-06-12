@@ -260,9 +260,16 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 		}
 		return rv;
 	}
+	
+	protected String getDefaultNameText() {
+		return "";
+	}
+	
 	@Override
 	public void addNotify() {
 		super.addNotify();
+		this.declarationNameTextField.setText( this.getDefaultNameText() );
+		this.declarationNameTextField.selectAll();
 		this.declarationNameTextField.requestFocus();
 	}
 
