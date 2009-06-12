@@ -92,8 +92,8 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 		this.dragAdapter = dragAdapter;
 		if (this.dragAdapter != null)
 		{
-			this.dragAdapter.addListeners( this );
 			this.dragAdapter.addHandle( this );
+			this.dragAdapter.addListeners( this );
 		}
 	}
 

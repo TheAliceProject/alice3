@@ -63,21 +63,21 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 	{
 		MovementKey[] movementKeys = {
 				//Forward
-//				new MovementKey(KeyEvent.VK_UP, new Point3(0, 0, -1)),
-//				new MovementKey(KeyEvent.VK_NUMPAD8, new Point3(0, 0, -1)),
-				new MovementKey(KeyEvent.VK_W, new MovementDescription(MovementDirection.FORWARD)),
+				new MovementKey(KeyEvent.VK_UP, new MovementDescription(MovementDirection.FORWARD)),
+//				new MovementKey(KeyEvent.VK_NUMPAD8, new MovementDescription(MovementDirection.FORWARD)),
+//				new MovementKey(KeyEvent.VK_W, new MovementDescription(MovementDirection.FORWARD)),
 				//Backward
-//				new MovementKey(KeyEvent.VK_DOWN, new Point3(0, 0, 1)),
-//				new MovementKey(KeyEvent.VK_NUMPAD2, new Point3(0, 0, 1)),
-				new MovementKey(KeyEvent.VK_S, new MovementDescription(MovementDirection.BACKWARD)),
+				new MovementKey(KeyEvent.VK_DOWN, new MovementDescription(MovementDirection.BACKWARD)),
+//				new MovementKey(KeyEvent.VK_NUMPAD2, new MovementDescription(MovementDirection.BACKWARD)),
+//				new MovementKey(KeyEvent.VK_S, new MovementDescription(MovementDirection.BACKWARD)),
 				//Left
-//				new MovementKey(KeyEvent.VK_LEFT, new Point3(-1, 0, 0)),
-//				new MovementKey(KeyEvent.VK_NUMPAD4, new Point3(-1, 0, 0)),
-				new MovementKey(KeyEvent.VK_A, new MovementDescription(MovementDirection.LEFT)),
+				new MovementKey(KeyEvent.VK_LEFT, new MovementDescription(MovementDirection.LEFT)),
+//				new MovementKey(KeyEvent.VK_NUMPAD4, new MovementDescription(MovementDirection.LEFT)),
+//				new MovementKey(KeyEvent.VK_A, new MovementDescription(MovementDirection.LEFT)),
 				//Right
-//				new MovementKey(KeyEvent.VK_RIGHT, new Point3(1, 0, 0)),
-//				new MovementKey(KeyEvent.VK_NUMPAD6, new Point3(1, 0, 0)),
-				new MovementKey(KeyEvent.VK_D,  new MovementDescription(MovementDirection.RIGHT)),
+				new MovementKey(KeyEvent.VK_RIGHT, new MovementDescription(MovementDirection.RIGHT)),
+//				new MovementKey(KeyEvent.VK_NUMPAD6, new MovementDescription(MovementDirection.RIGHT)),
+//				new MovementKey(KeyEvent.VK_D,  new MovementDescription(MovementDirection.RIGHT)),
 				//Up
 				new MovementKey(KeyEvent.VK_PAGE_UP, new MovementDescription(MovementDirection.UP, MovementType.LOCAL), .5d),
 				//Down
