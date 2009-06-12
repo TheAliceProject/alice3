@@ -66,6 +66,11 @@ public abstract class AbstractStatementPane extends org.alice.ide.common.Stateme
 		return this.owner;
 	}
 	
+//	@Override
+//	protected boolean isClickReservedForSelection() {
+//		return true;
+//	}
+
 //	//todo?
 //	protected java.util.List< org.alice.ide.operations.AbstractActionOperation > updateOperationsListForAltMenu( java.util.List< org.alice.ide.operations.AbstractActionOperation > rv ) {
 //		if( this.statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {

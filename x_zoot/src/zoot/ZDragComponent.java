@@ -336,6 +336,10 @@ public abstract class ZDragComponent extends ZControl {
 			}
 		}
 	}
+	
+	protected boolean isClickReservedForSelection() {
+		return false;
+	}
 
 	private static boolean isFauxDragDesired = true;
 	public static boolean isFauxDragDesired() {
@@ -365,7 +369,7 @@ public abstract class ZDragComponent extends ZControl {
 			if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				boolean isDrop;
 				if( this.isWithinClickThreshold() ) {
-					if( ZDragComponent.isFauxDragDesired ) {
+					if( ZDragComponent.isFauxDragDesired && this.isClickReservedForSelection()==false ) {
 						java.awt.Component focusedComponent;
 						if( this.isFauxDrag ) {
 							focusedComponent = null;
