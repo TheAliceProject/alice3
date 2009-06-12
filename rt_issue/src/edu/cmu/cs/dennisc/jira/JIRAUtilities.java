@@ -56,11 +56,18 @@ public class JIRAUtilities {
 //	    return rv;
 //	}
 	
+	private static String ensureStringWithinLimit( String s, int limit ) {
+		if( s.length() > limit ) {
+			return s.substring( 0, limit+1 );
+		} else {
+			return s;
+		}
+	}
 	public static redstone.xmlrpc.XmlRpcStruct createIssue( edu.cmu.cs.dennisc.issue.Issue issue, redstone.xmlrpc.XmlRpcClient client, Object token, String project ) throws redstone.xmlrpc.XmlRpcFault {
 		redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
 		rv.put( "project", project );
 		rv.put( "type", getType( issue.getType() ) );
-		rv.put( "summary", issue.getJIRASummary() );
+		rv.put( "summary", ensureStringWithinLimit( issue.getJIRASummary(), 254 ) );
 		rv.put( "description", issue.getDescription() );
 		
 		StringBuffer environment = new StringBuffer();
