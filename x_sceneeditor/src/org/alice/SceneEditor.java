@@ -72,7 +72,7 @@ public class SceneEditor extends Program {
 	SymmetricPerspectiveCamera camera = new SymmetricPerspectiveCamera();
 	Chicken chicken = new Chicken();
 
-	org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
+	org.alice.interact.RuntimeDragAdapter globalDragAdapter = new org.alice.interact.RuntimeDragAdapter();
 	org.alice.interact.CreateASimDragAdapter simDragAdapter = new org.alice.interact.CreateASimDragAdapter();
 	CameraNavigationDragAdapter cameraNavigationDragAdapter = new CameraNavigationDragAdapter();
 	
@@ -164,7 +164,7 @@ public class SceneEditor extends Program {
 		JPanel widgetPanel = new JPanel();
 		widgetPanel.setLayout(new FlowLayout());
 		widgetPanel.add(controlPanel);
-		widgetPanel.add(this.viewPanel);
+		//widgetPanel.add(this.viewPanel);
 		
 		JButton loadButton = new JButton("LOAD");
 		loadButton.addActionListener( new ActionListener(){
@@ -180,6 +180,7 @@ public class SceneEditor extends Program {
 		
 		this.add(saveAndLoadPanel, java.awt.BorderLayout.NORTH);
 		this.add(widgetPanel, java.awt.BorderLayout.SOUTH);
+		this.add(this.viewPanel, java.awt.BorderLayout.EAST);
 	}
 	
 	protected void initializeScene()
