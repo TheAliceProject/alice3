@@ -2,6 +2,8 @@
 
 import java.util.Vector;
 
+import javax.swing.ListModel;
+
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -16,7 +18,7 @@ public class PointOfViewManager {
 	private OnscreenLookingGlass onscreenLookingGlass = null;
 	private AbstractCamera camera = null;
 	private Transformable pointOfViewSource;
-	private Vector<PointOfView> pointsOfView = new Vector<PointOfView>();
+	private PointOfViewListModel pointsOfView = new PointOfViewListModel();
 	private Project project = null;
 	
 	public void initFromProject(edu.cmu.cs.dennisc.alice.Project project)
@@ -31,7 +33,7 @@ public class PointOfViewManager {
 			PointOfView currentPointOfView = new PointOfView();
 			currentPointOfView.initFromProjectProperties( properties, prefixKey, "" );
 			currentPointOfView.setReferenceFrame( AsSeenBy.SCENE );
-			this.pointsOfView.add( currentPointOfView );
+			this.pointsOfView.addElement( currentPointOfView );
 		}
 		
 	}
@@ -50,16 +52,21 @@ public class PointOfViewManager {
 		if (toWriteTo != null)
 		{
 			edu.cmu.cs.dennisc.alice.Project.Properties properties = toWriteTo.getProperties();
-			properties.putInteger( POINT_OF_VIEW_COUNT_KEY, this.pointsOfView.size() );
-			for (int i=0; i<this.pointsOfView.size(); i++)
+			properties.putInteger( POINT_OF_VIEW_COUNT_KEY, this.pointsOfView.getSize() );
+			for (int i=0; i<this.pointsOfView.getSize(); i++)
 			{
-				PointOfView pov = this.pointsOfView.get( i );
+				PointOfView pov = (PointOfView)this.pointsOfView.getElementAt( i );
 				String prefixKey = this.getTransformable().getName() + "."+i + POINT_OF_VIEW_KEY_SUFFIX;
 				pov.writeToProjectProperties( properties, prefixKey, "" );
 			}
 		}
 	}
-		
+	
+	public ListModel getPointOfViewListModel()
+	{
+		return this.pointsOfView;
+	}
+	
 	public OnscreenLookingGlass getOnscreenLookingGlass() {
 		return onscreenLookingGlass;
 	}
@@ -74,12 +81,17 @@ public class PointOfViewManager {
 
 	public int getPointOfViewCount()
 	{
-		return this.pointsOfView.size();
+		return this.pointsOfView.getSize();
 	}
 	
 	public PointOfView getPointOfViewAt(int index)
 	{
-		return this.pointsOfView.get( index );
+		return (PointOfView)this.pointsOfView.getElementAt( index );
+	}
+	
+	public void removePointOfView(PointOfView pov)
+	{
+		this.pointsOfView.removeElement( pov );
 	}
 	
 	public PointOfView capturePointOfView()
@@ -88,7 +100,7 @@ public class PointOfViewManager {
 		if (pointOfViewToGet != null)
 		{
 			PointOfView pov = new PointOfView(pointOfViewToGet.getAbsoluteTransformation(), AsSeenBy.SCENE);
-			this.pointsOfView.add(pov);
+			this.pointsOfView.addElement(pov);
 			return pov;
 		}
 		return null;

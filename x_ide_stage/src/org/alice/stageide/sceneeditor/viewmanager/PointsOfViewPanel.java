@@ -13,19 +13,18 @@ public class PointsOfViewPanel extends JPanel implements ActionListener{
 
 	private PointOfViewManager pointOfViewManager;
 	private JButton captureViewButton;
-	private JPanel pointsOfViewPanel;
+	private PointsOfViewListUI pointsOfViewList;
 	
 	public PointsOfViewPanel(PointOfViewManager pointOfViewManager)
 	{
 		super();
 		this.pointOfViewManager = pointOfViewManager;
 		this.captureViewButton = new JButton("Capture View");
-		this.pointsOfViewPanel = new JPanel();
-		this.pointsOfViewPanel.setLayout(new BoxLayout(this.pointsOfViewPanel, BoxLayout.Y_AXIS));
-		
+		this.pointsOfViewList = new PointsOfViewListUI(this.pointOfViewManager);
+
 		this.setLayout(new BorderLayout());
 		this.add(this.captureViewButton, BorderLayout.WEST);
-		this.add(this.pointsOfViewPanel,BorderLayout.CENTER);
+		this.add(this.pointsOfViewList,BorderLayout.CENTER);
 		
 		this.captureViewButton.addActionListener(this);
 	}
@@ -33,36 +32,15 @@ public class PointsOfViewPanel extends JPanel implements ActionListener{
 	public void setPOVManager(PointOfViewManager pointOfViewManager)
 	{
 		this.pointOfViewManager = pointOfViewManager;
-		for (int i=0; i<this.pointsOfViewPanel.getComponentCount(); i++)
-		{
-			if (this.pointsOfViewPanel.getComponent( i ) instanceof JButton)
-			{
-				JButton povButton = (JButton)this.pointsOfViewPanel.getComponent( i );
-				povButton.removeActionListener( this );
-			}
-		}
-		this.pointsOfViewPanel.removeAll();
-		for (int i=0; i<this.pointOfViewManager.getPointOfViewCount(); i++)
-		{
-			PointOfView pov = this.pointOfViewManager.getPointOfViewAt( i );
-			PointOfViewButton povButton = new PointOfViewButton(pov);
-			this.pointsOfViewPanel.add( povButton );
-			this.pointsOfViewPanel.validate();
-			povButton.addActionListener(this);
-		}
-		this.pointsOfViewPanel.revalidate();
-		this.pointsOfViewPanel.repaint();
+		this.pointsOfViewList.setListManager(this.pointOfViewManager);
+		this.pointsOfViewList.revalidate();
+		this.pointsOfViewList.repaint();
 	}
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == this.captureViewButton)
 		{
-			PointOfView pov = this.pointOfViewManager.capturePointOfView();
-			PointOfViewButton povButton = new PointOfViewButton(pov);
-			this.pointsOfViewPanel.add( povButton );
-			this.pointsOfViewPanel.revalidate();
-			this.pointsOfViewPanel.repaint();
-			povButton.addActionListener(this);
+			this.pointOfViewManager.capturePointOfView();
 		}
 		else if (e.getSource() instanceof PointOfViewButton)
 		{
