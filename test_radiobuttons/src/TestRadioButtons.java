@@ -77,7 +77,8 @@ public class TestRadioButtons {
 			@Override
 			public void run() {
 				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 2000 );
-				localeItemSelectionOperation.getButtonModelForConfiguringSwing( 1 ).setSelected( true );
+				int index = 1;
+				localeItemSelectionOperation.getButtonModelForConfiguringSwing( index ).setSelected( true );
 			}
 		}.start();
 	}
