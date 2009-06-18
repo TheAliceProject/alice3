@@ -51,15 +51,15 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			if( N_ACCESSES > 0 ) {
 				StringBuffer sb = new StringBuffer();
 				sb.append( "<html><body>There " );
-				if( N_INVOCATIONS == 1 ) {
+				if( N_ACCESSES == 1 ) {
 					sb.append( "is 1 access" );
 				} else {
 					sb.append( "are " );
-					sb.append( N_INVOCATIONS );
+					sb.append( N_ACCESSES );
 					sb.append( " accesses" );
 				}
 				sb.append( " to this parameter.<br>You must remove the " );
-				if( N_INVOCATIONS == 1 ) {
+				if( N_ACCESSES == 1 ) {
 					sb.append( "access" );
 				} else {
 					sb.append( "accesses" );

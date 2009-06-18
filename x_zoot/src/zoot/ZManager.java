@@ -277,6 +277,20 @@ public class ZManager {
 	//		popup.setLightWeightPopupEnabled( false );
 	//	}
 
+	public static javax.swing.JPanel createRadioButtons( ItemSelectionOperation itemSelectionOperation ) {
+		javax.swing.JPanel rv = new swing.BoxPane( javax.swing.BoxLayout.PAGE_AXIS );
+		javax.swing.ComboBoxModel comboBoxModel = itemSelectionOperation.getComboBoxModel();
+		int N = comboBoxModel.getSize();
+		for( int i = 0; i < N; i++ ) {
+			javax.swing.Action actionI = itemSelectionOperation.getActionForConfiguringSwing( i );
+			javax.swing.ButtonModel buttonModelI = itemSelectionOperation.getButtonModelForConfiguringSwing( i );
+			javax.swing.JRadioButton radioI = new javax.swing.JRadioButton( actionI );
+			radioI.setModel( buttonModelI );
+			//			buttonModelI.setGroup( group );
+			rv.add( radioI );
+		}
+		return rv;
+	}
 	public static javax.swing.JMenu createMenu( String name, int mnemonic, ItemSelectionOperation itemSelectionOperation ) {
 		javax.swing.JMenu rv = new javax.swing.JMenu( name );
 		rv.setMnemonic( mnemonic );
@@ -296,6 +310,7 @@ public class ZManager {
 		//setHeavyWeight( rv.getPopupMenu() );
 		return rv;
 	}
+	
 
 	public static ActionOperation MENU_SEPARATOR = null;
 

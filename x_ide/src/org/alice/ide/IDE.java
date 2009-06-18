@@ -588,8 +588,7 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 			public void performSelectionChange( zoot.ItemSelectionContext< java.util.Locale > context ) {
 				IDE.this.setLocale( context.getNextSelection() );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "performSelectionChange:", context );
-				context.cancel();
+				context.commit();
 			}
 		}
 
