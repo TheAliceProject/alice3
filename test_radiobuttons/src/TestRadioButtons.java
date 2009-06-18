@@ -58,7 +58,7 @@ public class TestRadioButtons {
 			}
 		}
 
-		LocaleItemSelectionOperation localeItemSelectionOperation = new LocaleItemSelectionOperation();
+		final LocaleItemSelectionOperation localeItemSelectionOperation = new LocaleItemSelectionOperation();
 		javax.swing.JPanel radioButtons = zoot.ZManager.createRadioButtons( localeItemSelectionOperation );
 		zoot.ZFrame frame = new zoot.ZFrame() {
 			@Override
@@ -72,5 +72,13 @@ public class TestRadioButtons {
 		frame.getContentPane().add( radioButtons );
 		frame.pack();
 		frame.setVisible( true );
+		
+		new Thread() {
+			@Override
+			public void run() {
+				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 2000 );
+				localeItemSelectionOperation.getButtonModelForConfiguringSwing( 1 ).setSelected( true );
+			}
+		}.start();
 	}
 }
