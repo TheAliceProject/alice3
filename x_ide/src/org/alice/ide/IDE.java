@@ -494,13 +494,22 @@ public abstract class IDE extends zoot.ZFrame {
 		public void perform( zoot.ActionContext actionContext ) {
 			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane();
 			openProjectPane.selectAppropriateTab( this.isNew );
-			java.io.File file = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
-			if( file != null ) {
-				actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
-				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-				actionContext.commit();
-			} else {
-				actionContext.cancel();
+			while( actionContext.isPending() ) {
+				java.io.File file = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
+				
+				//todo: just load default project
+				
+				if( file != null ) {
+					actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
+					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
+					actionContext.commit();
+				} else {
+					if( IDE.this.getFile() == null ) {
+						javax.swing.JOptionPane.showMessageDialog( IDE.this, "Please select a project to open." );
+					} else {
+						actionContext.cancel();
+					}
+				}
 			}
 		}
 	}

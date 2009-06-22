@@ -32,8 +32,13 @@ public class IsSceneEditorExpandedOperation extends org.alice.ide.operations.Abs
 		//this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
 	}
 	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-		this.getIDE().setSceneEditorExpanded( booleanStateContext.getNextValue() );
-		booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		booleanStateContext.commit();
+//		if( this.getIDE().getFile() == null && booleanStateContext.getNextValue() ) {
+//			javax.swing.JOptionPane.showMessageDialog( this.getIDE(), "Please open a project first." );
+//			booleanStateContext.cancel();
+//		} else {
+			this.getIDE().setSceneEditorExpanded( booleanStateContext.getNextValue() );
+			booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
+			booleanStateContext.commit();
+//		}
 	}
 }
