@@ -71,7 +71,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	private Component currentRolloverComponent = null;
 	
-	protected java.util.Map<Integer, HandleSet> keyToHandleSetMap = new java.util.HashMap<Integer, HandleSet>();
 	
 	protected HandleManager handleManager = new HandleManager();
 	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
@@ -492,12 +491,6 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public void keyPressed( java.awt.event.KeyEvent e ) {
 		this.currentInputState.setKeyState( e.getKeyCode(), true );
 		this.currentInputState.setInputEventType( InputState.InputEventType.KEY_DOWN );
-		
-		HandleSet toSet = this.keyToHandleSetMap.get( e.getKeyCode() );
-		if (toSet != null)
-		{
-			this.setHandleSet( toSet );
-		}
 		handleStateChange();
 		
 	}

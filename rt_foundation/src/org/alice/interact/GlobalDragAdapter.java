@@ -177,11 +177,6 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 			this.manipulators.get( i ).getManipulator().setDragAdapter( this );
 		}
 		
-		this.keyToHandleSetMap.put( java.awt.event.KeyEvent.VK_4, HandleSet.RESIZE_INTERACTION );
-		this.keyToHandleSetMap.put( java.awt.event.KeyEvent.VK_3, HandleSet.ROTATION_INTERACTION );
-		this.keyToHandleSetMap.put( java.awt.event.KeyEvent.VK_2, HandleSet.TRANSLATION_INTERACTION );
-		this.keyToHandleSetMap.put( java.awt.event.KeyEvent.VK_1, HandleSet.DEFAULT_INTERACTION );
-		
 		
 		ManipulationHandleIndirection rotateAboutYAxis = new ManipulationHandleIndirection(new StoodUpRotationRingHandle(MovementDirection.UP, RotationRingHandle.HandlePosition.BOTTOM ));
 		rotateAboutYAxis.setManipulation( new ObjectRotateDragManipulator() );
