@@ -9,6 +9,7 @@ import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 public class PointOfViewManager {
 
@@ -96,11 +97,40 @@ public class PointOfViewManager {
 	
 	public PointOfView capturePointOfView()
 	{
+		
+		PointOfView pov = this.getCurrentPointOfView();
+		if (pov != null)
+		{
+			this.pointsOfView.addElement(pov);
+			return pov;
+		}
+		return null;
+	}
+	
+	public void addTransformationListener(AbsoluteTransformationListener listener)
+	{
+		Transformable pointOfViewToListenTo = this.getTransformable();
+		if (pointOfViewToListenTo != null)
+		{
+			pointOfViewToListenTo.addAbsoluteTransformationListener( listener );
+		}
+	}
+	
+	public void removeTransformationListener(AbsoluteTransformationListener listener)
+	{
+		Transformable pointOfViewToListenTo = this.getTransformable();
+		if (pointOfViewToListenTo != null)
+		{
+			pointOfViewToListenTo.removeAbsoluteTransformationListener( listener );
+		}
+	}	
+	
+	public PointOfView getCurrentPointOfView()
+	{
 		Transformable pointOfViewToGet = this.getTransformable();
 		if (pointOfViewToGet != null)
 		{
 			PointOfView pov = new PointOfView(pointOfViewToGet.getAbsoluteTransformation(), AsSeenBy.SCENE);
-			this.pointsOfView.addElement(pov);
 			return pov;
 		}
 		return null;

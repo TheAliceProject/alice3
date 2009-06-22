@@ -39,14 +39,21 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.EtchedBorder;
 
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
+import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
+
 /**
  * @author David Culyba
  */
-public class PointOfViewControl extends JPanel implements ActionListener{
+public class PointOfViewControl extends JPanel implements ActionListener, AbsoluteTransformationListener{
 	private PointOfViewButton pointOfViewButton;
 	private PointOfViewManager pointOfViewManager;
 	private JButton deleteButton;
 	private JButton setViewButton;
+	private JButton recordButton;
+	
+	private ImageIcon stopIcon;
+	private ImageIcon recordIcon;
 	
 	
 	public PointOfViewControl(PointOfView pointOfView, PointOfViewManager pointsOfViewManager)
@@ -68,13 +75,22 @@ public class PointOfViewControl extends JPanel implements ActionListener{
 		this.setViewButton.setMinimumSize( cameraButtonSize );
 		this.setViewButton.setMaximumSize( cameraButtonSize );
 		
+		this.recordIcon = new ImageIcon( this.getClass().getResource( "images/record.png" ));
+		this.stopIcon = new ImageIcon( this.getClass().getResource( "images/stop.png" ));
+		this.recordButton = new JButton(this.recordIcon);
+		this.recordButton.setOpaque( false );
+		Dimension recordButtonSize = new Dimension(this.recordIcon.getIconWidth(), this.recordIcon.getIconHeight());
+		this.recordButton.setPreferredSize( recordButtonSize );
+		this.recordButton.setMinimumSize( recordButtonSize );
+		this.recordButton.setMaximumSize( recordButtonSize );
+		
 		
 		this.setLayout( new GridBagLayout() );
 		this.add(this.pointOfViewButton, 
 				new GridBagConstraints( 0, //gridX
 										0, //gridY
 										1, //gridWidth
-										2, //gridHeight
+										3, //gridHeight
 										1.0, //weightX
 										1.0, //weightY
 										GridBagConstraints.WEST, //anchor 
@@ -96,9 +112,22 @@ public class PointOfViewControl extends JPanel implements ActionListener{
 										0, //ipadX
 										0 ) //ipadY
 		);
-		this.add(this.setViewButton, 
+		this.add(this.recordButton, 
 				new GridBagConstraints( 1, //gridX
 										1, //gridY
+										1, //gridWidth
+										1, //gridHeight
+										1.0, //weightX
+										1.0, //weightY
+										GridBagConstraints.EAST, //anchor 
+										GridBagConstraints.NONE, //fill
+										new Insets(2,2,2,2), //insets
+										0, //ipadX
+										0 ) //ipadY
+		);
+		this.add(this.setViewButton, 
+				new GridBagConstraints( 1, //gridX
+										2, //gridY
 										1, //gridWidth
 										1, //gridHeight
 										1.0, //weightX
@@ -117,6 +146,7 @@ public class PointOfViewControl extends JPanel implements ActionListener{
 		this.deleteButton.addActionListener( this );
 		this.pointOfViewButton.addActionListener( this );
 		this.setViewButton.addActionListener( this );
+		this.recordButton.addActionListener( this );
 		
 	}
 	
@@ -128,6 +158,23 @@ public class PointOfViewControl extends JPanel implements ActionListener{
 	public PointOfViewButton getPointOfViewButton()
 	{
 		return this.pointOfViewButton;
+	}
+	
+	private void toggleRecording()
+	{
+		if (this.recordButton.isSelected())
+		{
+			this.recordButton.setSelected( false );
+			this.recordButton.setIcon( this.recordIcon );
+			this.pointOfViewManager.removeTransformationListener( this );
+		}
+		else
+		{
+			this.recordButton.setSelected( true );
+			this.recordButton.setIcon( this.stopIcon );
+			this.pointOfViewManager.setPointOfView( this.pointOfViewButton.getPointOfView() );
+			this.pointOfViewManager.addTransformationListener( this );
+		}
 	}
 
 	public void actionPerformed( ActionEvent e ) {
@@ -141,9 +188,19 @@ public class PointOfViewControl extends JPanel implements ActionListener{
 		}
 		else if (e.getSource() == this.setViewButton)
 		{
-			System.out.println("set this view to current camera!");
+			PointOfView pov = this.pointOfViewManager.getCurrentPointOfView();
+			this.pointOfViewButton.setPointOfView( pov );
+		}
+		else if (e.getSource() == this.recordButton)
+		{
+			this.toggleRecording();
 		}
 		
+	}
+
+	public void absoluteTransformationChanged( AbsoluteTransformationEvent absoluteTransformationEvent ) {
+		PointOfView pov = this.pointOfViewManager.getCurrentPointOfView();
+		this.pointOfViewButton.setPointOfView( pov );
 	}
 
 }

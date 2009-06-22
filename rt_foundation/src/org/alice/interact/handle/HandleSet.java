@@ -96,6 +96,30 @@ public class HandleSet extends BitSet
 	}
 	
 	
+	public static String getStringForSet(HandleSet set)
+	{
+		if (set == RESIZE_INTERACTION)
+		{
+			return "Resize";
+		}
+		else if (set == ROTATION_INTERACTION)
+		{
+			return "Rotation";
+		}
+		else if (set == TRANSLATION_INTERACTION)
+		{
+			return "Move";
+		}
+		else if (set == DEFAULT_INTERACTION)
+		{
+			return "Default";
+		}
+		else
+		{
+			return "NO STRING SET";
+		}
+	}
+	
 	public HandleSet( HandleGroup...groups)
 	{
 		addGroups(groups);

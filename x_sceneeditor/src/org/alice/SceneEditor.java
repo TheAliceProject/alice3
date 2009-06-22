@@ -22,9 +22,11 @@
  */
 
 package org.alice;
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -39,6 +41,7 @@ import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
 import org.alice.interact.CameraNavigatorWidget;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.PickHint;
+import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
@@ -128,8 +131,15 @@ public class SceneEditor extends Program {
 	
 	public void saveProjectTo( java.io.File file ) {
 		this.viewPanel.saveToProject();
-		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( this.project, file );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
+		try
+		{
+			edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( this.project, file );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void saveProjectTo( String path ) {
@@ -142,6 +152,7 @@ public class SceneEditor extends Program {
 	}
 	
 	SceneViewManagerPanel viewPanel = new SceneViewManagerPanel();
+	ManipulationHandleControlPanel handleControlPanel;
 	protected java.io.File projectFile = new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "SCENE_EDITOR_TEST.a3p" );
 	protected java.io.File defaultFile = new java.io.File( "C:/Program Files/Alice/3.beta.0000/application/projects/templates/GrassyProject.a3p" );
 	
@@ -152,6 +163,8 @@ public class SceneEditor extends Program {
 		globalDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
 		
 		this.viewPanel.setCamera(camera.getSGPerspectiveCamera());
+		
+		this.handleControlPanel = new ManipulationHandleControlPanel(globalDragAdapter);
 		
 		JButton saveButton = new JButton("SAVE");
 		saveButton.addActionListener( new ActionListener(){
@@ -181,6 +194,7 @@ public class SceneEditor extends Program {
 		this.add(saveAndLoadPanel, java.awt.BorderLayout.NORTH);
 		this.add(widgetPanel, java.awt.BorderLayout.SOUTH);
 		this.add(this.viewPanel, java.awt.BorderLayout.EAST);
+		this.add( this.handleControlPanel, BorderLayout.WEST );
 	}
 	
 	protected void initializeScene()
