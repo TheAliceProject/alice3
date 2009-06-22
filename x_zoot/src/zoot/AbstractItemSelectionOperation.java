@@ -68,7 +68,9 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 			return "null";
 		}
 	}
-	
+	public javax.swing.KeyStroke getAcceleratorForConfiguringSwing( int index ) {
+		return null;
+	}
 	public javax.swing.Action getActionForConfiguringSwing( int index ) {
 		return this.actions[ index ];
 	}
@@ -77,5 +79,17 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	}
 	public javax.swing.ComboBoxModel getComboBoxModel() {
 		return this.comboBoxModel;
+	}
+	public void handleKeyPressed( java.awt.event.KeyEvent e ) {
+		int N = this.comboBoxModel.getSize();
+		for( int i=0; i<N; i++ ) {
+			javax.swing.KeyStroke acceleratorI = this.getAcceleratorForConfiguringSwing( i );
+			if( acceleratorI != null ) {
+				if( e.getKeyCode() == acceleratorI.getKeyCode() && e.getModifiersEx() == acceleratorI.getModifiers() ) {
+					java.awt.event.ActionEvent actionEvent = new java.awt.event.ActionEvent(e.getSource(), java.awt.event.ActionEvent.ACTION_PERFORMED, null );
+					this.getActionForConfiguringSwing( i ).actionPerformed( actionEvent );
+				}
+			}
+		}
 	}
 }

@@ -1542,7 +1542,7 @@ public abstract class IDE extends zoot.ZFrame {
 	protected void restoreProjectProperties() {
 		this.sceneEditor.restoreProjectProperties();
 	}
-	public void saveProjectTo( java.io.File file ) {
+	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.alice.Project project = getProject();
 		this.generateCodeForSceneSetUp();
 		this.preserveProjectProperties();
@@ -1551,7 +1551,7 @@ public abstract class IDE extends zoot.ZFrame {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
 		this.updateHistoryLengthAtLastFileOperation();
 	}
-	public void saveProjectTo( String path ) {
+	public void saveProjectTo( String path ) throws java.io.IOException {
 		saveProjectTo( new java.io.File( path ) );
 	}
 

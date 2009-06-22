@@ -27,7 +27,9 @@ package zoot;
  */
 public interface ItemSelectionOperation<E> extends Operation {
 	public void performSelectionChange( ItemSelectionContext<E> context );
+	public javax.swing.ComboBoxModel getComboBoxModel();
 	public javax.swing.Action getActionForConfiguringSwing( int index );
 	public javax.swing.ButtonModel getButtonModelForConfiguringSwing( int index );
-	public javax.swing.ComboBoxModel getComboBoxModel();
+	public javax.swing.KeyStroke getAcceleratorForConfiguringSwing( int index );
+	public void handleKeyPressed( java.awt.event.KeyEvent e );
 }

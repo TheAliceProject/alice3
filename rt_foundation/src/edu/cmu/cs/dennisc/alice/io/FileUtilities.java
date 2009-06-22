@@ -166,21 +166,17 @@ public class FileUtilities {
 	private static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
 		writeXML( type.encode(), zos, entryName );
 	}
-	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file ) {
+	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		try {
-			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-			java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
-			writeType( project.getProgramType(), zos, PROGRAM_TYPE_ENTRY_NAME );
-			edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
-			if( properties != null ) {
-				writeProperties( zos, properties );
-			}
-			zos.flush();
-			zos.close();
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( file.getAbsolutePath(), ioe );
+		java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
+		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
+		writeType( project.getProgramType(), zos, PROGRAM_TYPE_ENTRY_NAME );
+		edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
+		if( properties != null ) {
+			writeProperties( zos, properties );
 		}
+		zos.flush();
+		zos.close();
 	}
 
 	private static String SNAPSHOT_ENTRY_NAME = "snapshot.png";
@@ -218,10 +214,10 @@ public class FileUtilities {
 		zos.closeEntry();
 	}
 
-	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, String path ) {
+	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, String path ) throws java.io.IOException {
 		writeProject( project, new java.io.File( path ) );
 	}
-	public static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.io.File file ) {
+	public static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.io.File file ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		try {
 			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
@@ -233,7 +229,7 @@ public class FileUtilities {
 			throw new RuntimeException( file.getAbsolutePath(), ioe );
 		}
 	}
-	public static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, String path ) {
+	public static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, String path ) throws java.io.IOException {
 		writeType( type, new java.io.File( path ) );
 	}
 }

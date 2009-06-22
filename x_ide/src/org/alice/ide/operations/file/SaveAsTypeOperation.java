@@ -45,7 +45,7 @@ public class SaveAsTypeOperation extends AbstractSaveOperation {
 		return this.type.name.getValue() + "." + this.getExtension();
 	}
 	@Override
-	protected void save( java.io.File file ) {
+	protected void save( java.io.File file ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeType( this.type, file );
 	}
 	@Override

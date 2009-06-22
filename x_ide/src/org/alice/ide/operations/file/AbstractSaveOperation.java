@@ -29,22 +29,35 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 	protected abstract boolean isPromptNecessary( java.io.File file );
 	protected abstract java.io.File getDefaultDirectory();
 	protected abstract String getExtension();
-	protected abstract void save( java.io.File file );
+	protected abstract void save( java.io.File file ) throws java.io.IOException;
 	protected abstract String getInitialFilename();
 	public void perform( zoot.ActionContext actionContext ) {
 		java.io.File filePrevious = this.getIDE().getFile();
-		java.io.File fileNext = this.getIDE().getFile();
-		if( this.isPromptNecessary( filePrevious ) ) {
-			fileNext = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( this.getIDE(), this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
-		} else {
-			fileNext = filePrevious;
-		}
-		if( fileNext != null ) {
-			this.save( fileNext );
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
+		java.io.File fileNext;
+		boolean isExceptionRaised;
+		do {
+			if( this.isPromptNecessary( filePrevious ) ) {
+				fileNext = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( this.getIDE(), this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
+			} else {
+				fileNext = filePrevious;
+			}
+			isExceptionRaised = false;
+			if( fileNext != null ) {
+				try {
+					this.save( fileNext );
+				} catch( java.io.IOException ioe ) {
+					isExceptionRaised = true;
+					javax.swing.JOptionPane.showMessageDialog( this.getIDE(), ioe.getMessage(), "Unable to save file", javax.swing.JOptionPane.ERROR_MESSAGE );
+				}
+				if( isExceptionRaised ) {
+					//pass
+				} else {
+					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
+					actionContext.commit();
+				}
+			} else {
+				actionContext.cancel();
+			}
+		} while( isExceptionRaised );
 	}
 }

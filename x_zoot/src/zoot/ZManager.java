@@ -311,6 +311,19 @@ public class ZManager {
 		return rv;
 	}
 	
+	public static java.awt.event.KeyListener createKeyListener( final ItemSelectionOperation itemSelectionOperation ) {
+		class KeyAdapter implements java.awt.event.KeyListener {
+			public void keyPressed( java.awt.event.KeyEvent e ) {
+				itemSelectionOperation.handleKeyPressed( e );
+			}
+			public void keyReleased( java.awt.event.KeyEvent e ) {
+			}
+			public void keyTyped( java.awt.event.KeyEvent e ) {
+			}
+		}
+		return new KeyAdapter();
+	}
+	
 
 	public static ActionOperation MENU_SEPARATOR = null;
 

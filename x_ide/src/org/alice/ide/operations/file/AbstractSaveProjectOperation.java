@@ -39,7 +39,7 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
 		return null;
 	}
 	@Override
-	protected void save( java.io.File file ) {
+	protected void save( java.io.File file ) throws java.io.IOException {
 		this.getIDE().saveProjectTo( file );
 	}
 }
