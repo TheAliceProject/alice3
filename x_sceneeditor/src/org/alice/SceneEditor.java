@@ -164,7 +164,8 @@ public class SceneEditor extends Program {
 		
 		this.viewPanel.setCamera(camera.getSGPerspectiveCamera());
 		
-		this.handleControlPanel = new ManipulationHandleControlPanel(globalDragAdapter);
+		this.handleControlPanel = new ManipulationHandleControlPanel();
+		this.handleControlPanel.setDragAdapter( this.globalDragAdapter );
 		
 		JButton saveButton = new JButton("SAVE");
 		saveButton.addActionListener( new ActionListener(){

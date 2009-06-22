@@ -54,10 +54,14 @@ public class ManipulationHandleSelectionOperation extends zoot.AbstractItemSelec
 		return KeyStroke.getKeyStroke( KeyEvent.VK_1 + index, 0);
 	}
 	
+	public void setDragAdapter(AbstractDragAdapter dragAdapter)
+	{
+		this.dragAdapter = dragAdapter;
+	}
+	
 	public void performSelectionChange( zoot.ItemSelectionContext< HandleSet > context ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "performSelectionChange:", context.getNextSelection() );
 		this.dragAdapter.setHandleSet( context.getNextSelection() );
-		System.out.println( "Pressed "+context.getNextSelection() );
 		context.commit();
 	}
 }

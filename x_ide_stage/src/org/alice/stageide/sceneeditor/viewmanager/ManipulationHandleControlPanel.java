@@ -39,18 +39,34 @@ import zoot.font.ZTextWeight;
  * @author David Culyba
  */
 public class ManipulationHandleControlPanel extends JPanel {
-	public ManipulationHandleControlPanel(AbstractDragAdapter dragAdapter)
+	private ManipulationHandleSelectionOperation handleSelectionOperation;
+	private AbstractDragAdapter dragAdapter;
+	
+	public ManipulationHandleControlPanel()
 	{
 		super();
-		ManipulationHandleSelectionOperation manipulationHandleSelectionOperation = new ManipulationHandleSelectionOperation(dragAdapter);
+		this.dragAdapter = null;
+		this.handleSelectionOperation = new ManipulationHandleSelectionOperation(dragAdapter);
 		this.setOpaque( false );
 		this.setLayout( new BorderLayout() );
 		ZLabel title = ZLabel.acquire( "Handle Style", ZTextWeight.BOLD);
 		title.setFontToScaledFont( 1.5f );
 		this.add( title, BorderLayout.NORTH );
-		this.add(zoot.ZManager.createRadioButtons( manipulationHandleSelectionOperation ), BorderLayout.CENTER);
-		
-		dragAdapter.getOnscreenLookingGlass().getAWTComponent().addKeyListener( zoot.ZManager.createKeyListener( manipulationHandleSelectionOperation ) );
+		this.add(zoot.ZManager.createRadioButtons( this.handleSelectionOperation ), BorderLayout.CENTER);
 		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+	}
+	
+	public void setDragAdapter(AbstractDragAdapter dragAdapter)
+	{
+		if (this.dragAdapter != null)
+		{
+			this.dragAdapter.getOnscreenLookingGlass().getAWTComponent().removeKeyListener( zoot.ZManager.createKeyListener( this.handleSelectionOperation ) );
+		}
+		this.dragAdapter = dragAdapter;
+		this.handleSelectionOperation.setDragAdapter( this.dragAdapter );
+		if (this.dragAdapter != null)
+		{
+			this.dragAdapter.getOnscreenLookingGlass().getAWTComponent().addKeyListener( zoot.ZManager.createKeyListener( this.handleSelectionOperation ) );
+		}
 	}
 }

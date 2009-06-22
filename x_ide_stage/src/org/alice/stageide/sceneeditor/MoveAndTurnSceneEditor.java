@@ -29,6 +29,8 @@ import org.alice.apis.moveandturn.gallery.environments.grounds.MoonSurface;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SandyGround;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SeaSurface;
 import org.alice.apis.moveandturn.gallery.environments.grounds.SnowyGround;
+import org.alice.interact.AbstractDragAdapter;
+import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
@@ -63,26 +65,27 @@ class BogusCameraViewPane extends swing.PageAxisPane {
 
 class SidePane extends swing.PageAxisPane {
 	private boolean isExpanded = false;
-
+	private ManipulationHandleControlPanel handleControlPanel;
+	
 	public SidePane() {
-//		this.add( zoot.ZLabel.acquire( "NOTE: " ) );
-//		this.add( zoot.ZLabel.acquire( "This pane is just a placeholder." ) );
-//		this.add( zoot.ZLabel.acquire( "It is not hooked up to anything." ) );
-//		this.add( javax.swing.Box.createVerticalStrut( 16 ) );
-//
-//		this.add( new BogusCameraViewPane() );
-//		this.add( new BogusModelManipulationModePane() );
-//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.handleControlPanel = new ManipulationHandleControlPanel();
+		this.add(this.handleControlPanel);
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 	public boolean isExpanded() {
 		return this.isExpanded;
 	}
 	public void setExpanded( boolean isExpanded ) {
 		this.isExpanded = isExpanded;
-		//		this.revalidate();
-		//		this.repaint();
-		//		//this.doLayout();
+		this.revalidate();
+		this.repaint();
+				//this.doLayout();
 	}
+	public void setDragAdapter(AbstractDragAdapter dragAdapter)
+	{
+		this.handleControlPanel.setDragAdapter(dragAdapter);
+	}
+	
 }
 
 /**
@@ -93,13 +96,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	//private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
 	private org.alice.stageide.sceneeditor.ControlsForOverlayPane controlsForOverlayPane;
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
-	private SidePane sidePane = new SidePane();
+	
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
-
+	private SidePane sidePane;
 	//private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
 	
 	public MoveAndTurnSceneEditor() {
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
+		this.sidePane = new SidePane();
 		this.add( this.splitPane );
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerLocation( 1.0 );
@@ -165,6 +169,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		} );
 
+		this.sidePane.setDragAdapter( this.globalDragAdapter );
+		
 		//this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 		
 		
