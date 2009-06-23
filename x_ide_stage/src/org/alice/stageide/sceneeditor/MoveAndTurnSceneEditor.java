@@ -219,6 +219,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	@Override
 	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
+		assert instance instanceof org.alice.apis.moveandturn.Transformable;
 		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
 		declaringType.fields.add( field );
 		this.putInstanceForField( field, transformable );
@@ -731,6 +732,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		org.alice.apis.moveandturn.Model model = this.getInstanceInJavaForField( field, org.alice.apis.moveandturn.Model.class );
 		if( model != null ) {
 			org.alice.apis.moveandturn.Scene scene = model.getScene();
+			assert scene != null;
 			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = model.getAxisAlignedMinimumBoundingBox();
 			edu.cmu.cs.dennisc.math.Point3 position = model.getPosition( scene );
 			position.y = -bb.getYMinimum();
