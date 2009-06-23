@@ -129,6 +129,19 @@ public abstract class Program extends javax.swing.JApplet {
 //			}
 		}
 	}
+	
+	public static void invokeAndCatchProgramClosedException( Runnable runnable ) {
+		try {
+			runnable.run();
+		} catch( RuntimeException re ) {
+			if( isProgramClosedException( re ) ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "note: ProgramClosedException caught." );
+			} else {
+				throw re;
+			}
+		}
+	}
+	
 	@Override
 	public final void start() {
 		super.start();
@@ -138,15 +151,11 @@ public abstract class Program extends javax.swing.JApplet {
 				m_semaphore.acquireUninterruptibly();
 				if( m_isInitializationSuccessful ) {
 					Program.this.preRun();
-					try {
-						Program.this.run();
-					} catch( RuntimeException re ) {
-						if( isProgramClosedException( re ) ) {
-							edu.cmu.cs.dennisc.print.PrintUtilities.println( "note: ProgramClosedException caught." );
-						} else {
-							throw re;
+					Program.invokeAndCatchProgramClosedException( new Runnable() {
+						public void run() {
+							Program.this.run();
 						}
-					}
+					} );
 					Program.this.postRun();
 				} else {
 					System.err.println( "WARNING: initialization not successful; run() method will not be invoked." );

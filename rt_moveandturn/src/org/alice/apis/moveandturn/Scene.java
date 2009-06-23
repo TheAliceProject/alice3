@@ -24,6 +24,7 @@
 package org.alice.apis.moveandturn;
 
 import edu.cmu.cs.dennisc.alice.annotations.*;
+import edu.cmu.cs.dennisc.program.Program;
 
 /**
  * @author Dennis Cosgrove
@@ -176,7 +177,11 @@ public class Scene extends Composite {
 						new Thread() {
 							@Override
 							public void run() {
-								mouseButtonListener.mouseButtonClicked( mbe );
+								Program.invokeAndCatchProgramClosedException( new Runnable() {
+									public void run() {
+										mouseButtonListener.mouseButtonClicked( mbe );
+									}
+								} );
 							}
 						}.start();
 					}
@@ -184,7 +189,11 @@ public class Scene extends Composite {
 						new Thread() {
 							@Override
 							public void run() {
-								mouseButtonListener.mouseButtonClicked( mbe );
+								Program.invokeAndCatchProgramClosedException( new Runnable() {
+									public void run() {
+										mouseButtonListener.mouseButtonClicked( mbe );
+									}
+								} );
 							}
 						}.start();
 					}

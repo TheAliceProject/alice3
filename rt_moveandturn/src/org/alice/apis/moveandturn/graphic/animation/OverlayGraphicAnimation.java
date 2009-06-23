@@ -28,6 +28,7 @@ package org.alice.apis.moveandturn.graphic.animation;
 public abstract class OverlayGraphicAnimation extends edu.cmu.cs.dennisc.animation.AbstractAnimation {
 	private org.alice.apis.moveandturn.SceneOwner m_owner;
 	public OverlayGraphicAnimation( org.alice.apis.moveandturn.SceneOwner owner ) {
+		assert owner != null;
 		m_owner = owner;
 	}
 	
