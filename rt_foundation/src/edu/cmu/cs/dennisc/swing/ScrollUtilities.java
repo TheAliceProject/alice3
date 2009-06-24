@@ -27,6 +27,7 @@ package edu.cmu.cs.dennisc.swing;
  */
 public class ScrollUtilities {
 	public static void scrollToVisible( final javax.swing.JComponent c ) {
+		assert c != null;
 		if( c.isValid() ) {
 			c.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( c ) );
 		} else {
