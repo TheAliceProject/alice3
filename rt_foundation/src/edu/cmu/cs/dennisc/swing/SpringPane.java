@@ -77,7 +77,13 @@ public class SpringPane extends javax.swing.JPanel {
 		@Override
 		public int getPreferredValue() {
 			int macro = getValue( SpringPane.this.getSize() );
-			int micro = getValue( this.component.getSize() );
+			java.awt.Dimension size;
+			if( this.component.isValid() ) {
+				size = this.component.getSize();
+			} else {
+				size = this.component.getPreferredSize();
+			}
+			int micro = getValue( size );
 			return this.offset + (macro - micro) / 2;
 		}
 		@Override

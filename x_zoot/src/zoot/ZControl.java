@@ -95,6 +95,11 @@ public abstract class ZControl extends ZComponent {
 		this.setPressed( false );
 	}
 	public void handleMouseClicked( java.awt.event.MouseEvent e ) {
+		if( e.getClickCount() == 2 ) {
+			if( this.leftButtonDoubleClickOperation != null ) {
+				ZManager.performIfAppropriate( this.leftButtonDoubleClickOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
+			}
+		}
 	}
 	public void handleMouseEntered( java.awt.event.MouseEvent e ) {
 		if( ZManager.isDragInProgress() ) {
