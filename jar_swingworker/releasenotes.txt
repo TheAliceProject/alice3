@@ -1,0 +1,10 @@
+Release notes for swingworker (http://swingworker.dev.java.net)
+
+1.2 Release (2008/07/025)
+--------------------------
+issue 5 (6557137 [SwingWorker does not change the state to DONE on exception in done])
+
+1.1 Release (2007/03/01)
+--------------------------
+issue 4 [SwingWorker in Applets, Reload problems]
+backport 6493680 [SwingWorker notifications might be out of order]
