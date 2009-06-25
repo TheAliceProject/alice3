@@ -438,10 +438,14 @@ public abstract class ZDragComponent extends ZControl {
 		ZManager.setDragInProgress( false );
 		this.setActive( false );
 		javax.swing.JLayeredPane layeredPane = getLayeredPane();
-		java.awt.Rectangle bounds = this.dragProxy.getBounds();
-		layeredPane.remove( this.dragProxy );
-		layeredPane.repaint( bounds );
-		this.dragAndDropContext.handleCancel( e );
+		if( layeredPane != null ) {
+			java.awt.Rectangle bounds = this.dragProxy.getBounds();
+			layeredPane.remove( this.dragProxy );
+			layeredPane.repaint( bounds );
+		}
+		if( this.dragAndDropContext != null ) {
+			this.dragAndDropContext.handleCancel( e );
+		}
 		this.isFauxDrag = false;
 		edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().setComponentWithMouseFocus( null );
 	}
