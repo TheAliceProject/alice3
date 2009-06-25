@@ -133,13 +133,13 @@ public abstract class ZDragComponent extends ZControl {
 		}
 	}
 
-	class DefaultDragAndDropContext extends AbstractContext implements DragAndDropContext {
+	class DefaultDragAndDropContext extends AbstractContext< DragAndDropOperation > implements DragAndDropContext {
 		private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
 		private DropReceptor currentDropReceptor;
 		private java.awt.event.MouseEvent latestMouseEvent;
 
-		public DefaultDragAndDropContext( java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, java.util.List< ? extends DropReceptor > potentialDropReceptors ) {
-			super( originalMouseEvent, ZManager.CANCEL_IS_WORTHWHILE );
+		public DefaultDragAndDropContext( DragAndDropOperation operation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, java.util.List< ? extends DropReceptor > potentialDropReceptors ) {
+			super( operation, originalMouseEvent, ZManager.CANCEL_IS_WORTHWHILE );
 			this.setLatestMouseEvent( latestMouseEvent );
 			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
 			int i = 0;
@@ -288,7 +288,8 @@ public abstract class ZDragComponent extends ZControl {
 		layeredPane.add( this.dragProxy, new Integer( 1 ) );
 		layeredPane.setLayer( this.dragProxy, javax.swing.JLayeredPane.DRAG_LAYER );
 
-		this.dragAndDropContext = new DefaultDragAndDropContext( this.getLeftButtonPressedEvent(), e, this.dragAndDropOperation.createListOfPotentialDropReceptors( this ) );
+		//todo?
+		this.dragAndDropContext = new DefaultDragAndDropContext( this.dragAndDropOperation, this.getLeftButtonPressedEvent(), e, this.dragAndDropOperation.createListOfPotentialDropReceptors( this ) );
 		if( this.dragAndDropOperation != null ) {
 			this.dragAndDropOperation.handleDragStarted( dragAndDropContext );
 		}

@@ -100,21 +100,21 @@ public class Decoder {
 	}
 
 	private Class< ? > decodeType( org.w3c.dom.Element xmlElement, String nodeName ) {
-		org.w3c.dom.Element xmlClass = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, nodeName );
+		org.w3c.dom.Element xmlClass = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, nodeName );
 		String clsName = xmlClass.getAttribute( "name" );
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( clsName );
 	}
 
 	private ArrayTypeDeclaredInAlice decodeArrayTypeDeclaredInAlice( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
-		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "leafType" );
-		org.w3c.dom.Element xmlDimensionCount = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "dimensionCount" );
-		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlLeafType, "node" );
+		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "leafType" );
+		org.w3c.dom.Element xmlDimensionCount = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "dimensionCount" );
+		org.w3c.dom.Element xmlLeafTypeNode = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlLeafType, "node" );
 		TypeDeclaredInAlice leafType = (TypeDeclaredInAlice)decode( xmlLeafTypeNode, map );
 		int dimensionCount = Integer.parseInt( xmlDimensionCount.getTextContent() );
 		return ArrayTypeDeclaredInAlice.get( leafType, dimensionCount );
 	}
 	private AnonymousConstructor decodeAnonymousConstructor( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
-		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "anonymousType" );
+		org.w3c.dom.Element xmlLeafType = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "anonymousType" );
 		org.w3c.dom.Element xmlLeafTypeNode = (org.w3c.dom.Element)xmlLeafType.getChildNodes().item( 0 );
 		AnonymousInnerTypeDeclaredInAlice anonymousType = (AnonymousInnerTypeDeclaredInAlice)decode( xmlLeafTypeNode, map );
 		return AnonymousConstructor.get( anonymousType );
@@ -124,22 +124,22 @@ public class Decoder {
 		return decodeType( xmlElement, "declaringClass" );
 	}
 	private Class< ? >[] decodeParameters( org.w3c.dom.Element xmlElement ) {
-		org.w3c.dom.Element xmlParameters = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlElement, "parameters" );
-		org.w3c.dom.Element[] xmlTypes = edu.cmu.cs.dennisc.xml.XMLUtilities.getElementsByTagNameAsArray( xmlParameters, "type" );
-		Class< ? >[] rv = new Class< ? >[ xmlTypes.length ];
-		for( int i = 0; i < xmlTypes.length; i++ ) {
-			rv[ i ] = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( xmlTypes[ i ].getAttribute( "name" ) );
+		org.w3c.dom.Element xmlParameters = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "parameters" );
+		java.util.List< org.w3c.dom.Element> xmlTypes = edu.cmu.cs.dennisc.xml.XMLUtilities.getChildElementsByTagName( xmlParameters, "type" );
+		Class< ? >[] rv = new Class< ? >[ xmlTypes.size() ];
+		for( int i = 0; i < rv.length; i++ ) {
+			rv[ i ] = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( xmlTypes.get( i ).getAttribute( "name" ) );
 		}
 		return rv;
 	}
 	private java.lang.reflect.Field decodeField( org.w3c.dom.Element xmlParent, String nodeName ) {
-		org.w3c.dom.Element xmlField = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlParent, nodeName );
+		org.w3c.dom.Element xmlField = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		Class< ? > declaringCls = decodeDeclaringClass( xmlField );
 		String name = xmlField.getAttribute( "name" );
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredField( declaringCls, name );
 	}
 	private java.lang.reflect.Constructor< ? > decodeConstructor( org.w3c.dom.Element xmlParent, String nodeName ) {
-		org.w3c.dom.Element xmlConstructor = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlParent, nodeName );
+		org.w3c.dom.Element xmlConstructor = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		Class< ? > declaringCls = decodeDeclaringClass( xmlConstructor );
 		Class< ? >[] parameterTypes = decodeParameters( xmlConstructor );
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredConstructor( declaringCls, parameterTypes );
@@ -161,7 +161,7 @@ public class Decoder {
 	}
 	
 	private java.lang.reflect.Method decodeMethod( org.w3c.dom.Element xmlParent, String nodeName ) {
-		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleElementByTagName( xmlParent, nodeName );
+		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
 		Class< ? > declaringCls = decodeDeclaringClass( xmlMethod );
 		String name = xmlMethod.getAttribute( "name" );
 		Class< ? >[] parameterTypes = decodeParameters( xmlMethod );

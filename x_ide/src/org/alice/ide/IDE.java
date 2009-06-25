@@ -378,7 +378,9 @@ public abstract class IDE extends zoot.ZFrame {
 			public void operationPerformed( zoot.event.OperationEvent e ) {
 				zoot.Context context = e.getContext();
 				if( context.isCommitted() ) {
-					Boolean isProjectChanged = context.get( IDE.IS_PROJECT_CHANGED_KEY, Boolean.class );
+					//todo:
+					//Boolean isProjectChanged = context.get( IDE.IS_PROJECT_CHANGED_KEY, Boolean.class );
+					Boolean isProjectChanged = (Boolean)context.get( IDE.IS_PROJECT_CHANGED_KEY );
 					if( isProjectChanged != null ) {
 						if( isProjectChanged ) {
 							IDE.this.markChanged();
@@ -1829,6 +1831,7 @@ public abstract class IDE extends zoot.ZFrame {
 			ensureNodeVisible( node );
 			org.alice.ide.common.AbstractStatementPane rv = getCodeFactory().lookup( statement );
 			if( scrollToVisible ) {
+				//todo: use ScrollUtilities.scrollRectToVisible
 				javax.swing.SwingUtilities.invokeLater( new Runnable() {
 					public void run() {
 						org.alice.ide.common.AbstractStatementPane pane = getCodeFactory().lookup( statement );

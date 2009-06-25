@@ -136,27 +136,58 @@ public class XMLUtilities {
 		return read( new java.io.File( path ) );
 	}
 	
-	
-	public static org.w3c.dom.Element[] getElementsByTagNameAsArray( org.w3c.dom.Element xmlParent, String tagName ) {
-		org.w3c.dom.NodeList nodeList = xmlParent.getElementsByTagName( tagName );
-		org.w3c.dom.Element[] rv = new org.w3c.dom.Element[ nodeList.getLength() ];
-		for( int i=0; i<nodeList.getLength(); i++ ) {
-			rv[ i ] = (org.w3c.dom.Element)nodeList.item( i );
+//	//WARNING: this method returns all decendants.  remove.
+//	@Deprecated
+//	public static org.w3c.dom.Element[] getDescendantElementsByTagNameAsArray( org.w3c.dom.Element xmlParent, String tagName ) {
+//		org.w3c.dom.NodeList nodeList = xmlParent.getElementsByTagName( tagName );
+//		org.w3c.dom.Element[] rv = new org.w3c.dom.Element[ nodeList.getLength() ];
+//		for( int i=0; i<nodeList.getLength(); i++ ) {
+//			rv[ i ] = (org.w3c.dom.Element)nodeList.item( i );
+//		}
+//		return rv;
+//	}
+//	//WARNING: this method returns all decendants.  remove.
+//	@Deprecated
+//	public static Iterable< org.w3c.dom.Element > getDescendantElementsByTagNameAsIterable( org.w3c.dom.Element xmlParent, String tagName ) {
+//		return new ElementIterable( xmlParent.getElementsByTagName( tagName ) );
+//	}
+//	//WARNING: this method returns all decendants.  remove.
+//	@Deprecated
+//	public static org.w3c.dom.Element getSingleDescendantElementByTagName( org.w3c.dom.Element xmlParent, String tagName ) {
+//		org.w3c.dom.NodeList nodeList = xmlParent.getElementsByTagName( tagName );
+//		assert nodeList.getLength() == 1 : tagName;
+//		org.w3c.dom.Node node0 = nodeList.item( 0 );
+//		assert node0 instanceof org.w3c.dom.Element : node0;
+//		return (org.w3c.dom.Element)node0;
+//	}
+
+	public static java.util.List< org.w3c.dom.Element > getChildElementsByTagName( org.w3c.dom.Element xmlParent, String tagName ) {
+		java.util.List< org.w3c.dom.Element > rv = new java.util.LinkedList< org.w3c.dom.Element >();
+		org.w3c.dom.NodeList nodeList = xmlParent.getChildNodes();
+		final int N = nodeList.getLength();
+		for( int i=0; i<N; i++ ) {
+			org.w3c.dom.Node node = nodeList.item( i );
+			if( node instanceof org.w3c.dom.Element ) {
+				org.w3c.dom.Element element = (org.w3c.dom.Element)node;
+				if( tagName.equals( element.getTagName() ) ) {
+					rv.add( element );
+				}
+			}
 		}
 		return rv;
 	}
-	public static Iterable< org.w3c.dom.Element > getElementsByTagNameAsIterable( org.w3c.dom.Element xmlParent, String tagName ) {
-		return new ElementIterable( xmlParent.getElementsByTagName( tagName ) );
-	}
-
-	
-	//WARNING: this method seems to return all decendants.  investigate.
-	@Deprecated
-	public static org.w3c.dom.Element getSingleElementByTagName( org.w3c.dom.Element xmlParent, String tagName ) {
-		org.w3c.dom.NodeList nodeList = xmlParent.getElementsByTagName( tagName );
-		assert nodeList.getLength() == 1 : tagName;
-		org.w3c.dom.Node node0 = nodeList.item( 0 );
-		assert node0 instanceof org.w3c.dom.Element : node0;
-		return (org.w3c.dom.Element)node0;
+	public static org.w3c.dom.Element getSingleChildElementByTagName( org.w3c.dom.Element xmlParent, String tagName ) {
+		org.w3c.dom.NodeList nodeList = xmlParent.getChildNodes();
+		final int N = nodeList.getLength();
+		for( int i=0; i<N; i++ ) {
+			org.w3c.dom.Node node = nodeList.item( i );
+			if( node instanceof org.w3c.dom.Element ) {
+				org.w3c.dom.Element element = (org.w3c.dom.Element)node;
+				if( tagName.equals( element.getTagName() ) ) {
+					return element;
+				}
+			}
+		}
+		return null;
 	}
 }

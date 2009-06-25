@@ -25,5 +25,5 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface BoundedRangeContext extends Context {
+public interface BoundedRangeContext extends Context< BoundedRangeOperation > {
 }

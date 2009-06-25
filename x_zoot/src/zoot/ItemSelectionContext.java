@@ -25,7 +25,7 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface ItemSelectionContext<E> extends Context {
+public interface ItemSelectionContext<E> extends Context< ItemSelectionOperation< E > > {
 //	public boolean isPreviousSelectionValid();
 	public E getPreviousSelection();
 	public E getNextSelection();

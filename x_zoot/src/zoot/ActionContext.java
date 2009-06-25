@@ -25,5 +25,5 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface ActionContext extends Context {
+public interface ActionContext extends Context< ActionOperation > {
 }

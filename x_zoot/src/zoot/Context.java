@@ -25,7 +25,8 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface Context {
+public interface Context< O extends Operation > {
+	public O getOperation();
 	public java.util.EventObject getEvent();
 	public <E extends Object> E get( Object key, Class<E> cls );
 	public Object get( Object key );
@@ -33,6 +34,7 @@ public interface Context {
 	public boolean isCommitted();
 	public boolean isCancelled();
 	public boolean isPending();
+	public void commit( javax.swing.undo.UndoableEdit edit );
 	public void commit();
 	public void cancel();
 	public void setTaskObserver( edu.cmu.cs.dennisc.task.TaskObserver< ? > taskObserver );

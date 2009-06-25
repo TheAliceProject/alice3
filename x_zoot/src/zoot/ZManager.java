@@ -22,16 +22,21 @@
  */
 package zoot;
 
-abstract class AbstractContext implements Context {
+abstract class AbstractContext< E extends Operation > implements Context< E > {
+	private E operation;
 	private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
 	private boolean isCommitted = false;
 	private boolean isCancelled = false;
 	private java.util.EventObject e;
 	private boolean isCancelWorthwhile;
 
-	public AbstractContext( java.util.EventObject e, boolean isCancelWorthwhile ) {
+	public AbstractContext( E operation, java.util.EventObject e, boolean isCancelWorthwhile ) {
+		this.operation = operation;
 		this.e = e;
 		this.isCancelWorthwhile = isCancelWorthwhile;
+	}
+	public E getOperation() {
+		return this.operation;
 	}
 	public boolean isCommitted() {
 		return this.isCommitted;
@@ -46,6 +51,13 @@ abstract class AbstractContext implements Context {
 		assert this.isPending();
 		this.isCommitted = true;
 	}
+	public void commit( javax.swing.undo.UndoableEdit undoableEdit ) {
+		zoot.event.EditEvent e = new zoot.event.EditEvent( null, this, undoableEdit );
+		ZManager.fireEditCommitting( e );
+		undoableEdit.redo();
+		ZManager.fireEditCommitted( e );
+	}
+	
 	public void cancel() {
 		assert this.isPending();
 		this.isCancelled = true;
@@ -84,12 +96,6 @@ abstract class AbstractContext implements Context {
 	}
 }
 
-class MyActionContext extends AbstractContext implements ActionContext {
-	public MyActionContext( java.util.EventObject e, boolean isCancelWorthwhile ) {
-		super( e, isCancelWorthwhile );
-	}
-}
-
 //class MyStateContext<E> extends AbstractContext implements StateContext {
 //	private E previousValue;
 //	private E nextValue;
@@ -106,12 +112,18 @@ class MyActionContext extends AbstractContext implements ActionContext {
 //	}
 //}
 
-class MyBooleanStateContext extends AbstractContext implements BooleanStateContext {
+class MyActionContext extends AbstractContext< ActionOperation > implements ActionContext {
+	public MyActionContext( ActionOperation operation, java.util.EventObject e, boolean isCancelWorthwhile ) {
+		super( operation, e, isCancelWorthwhile );
+	}
+}
+
+class MyBooleanStateContext extends AbstractContext< BooleanStateOperation > implements BooleanStateContext {
 	private Boolean previousValue;
 	private Boolean nextValue;
 
-	public MyBooleanStateContext( java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
-		super( e, isCancelWorthwhile );
+	public MyBooleanStateContext( BooleanStateOperation operation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
+		super( operation, e, isCancelWorthwhile );
 		this.previousValue = previousValue;
 		this.nextValue = nextValue;
 	}
@@ -123,19 +135,19 @@ class MyBooleanStateContext extends AbstractContext implements BooleanStateConte
 	}
 }
 
-class MyBoundedRangeContext extends AbstractContext implements BoundedRangeContext {
-	public MyBoundedRangeContext( java.util.EventObject e, boolean isCancelWorthwhile ) {
-		super( e, isCancelWorthwhile );
+class MyBoundedRangeContext extends AbstractContext< BoundedRangeOperation > implements BoundedRangeContext {
+	public MyBoundedRangeContext( BoundedRangeOperation operation, java.util.EventObject e, boolean isCancelWorthwhile ) {
+		super( operation, e, isCancelWorthwhile );
 	}
 }
 
-class MySingleSelectionContext<E> extends AbstractContext implements ItemSelectionContext< E > {
+class MyItemSelectionContext<E> extends AbstractContext< ItemSelectionOperation< E > > implements ItemSelectionContext< E > {
 	private E previousSelection;
 	private E nextSelection;
 
 	//	private boolean isPreviousSelectionValid;
-	public MySingleSelectionContext( java.util.EventObject e, boolean isCancelWorthwhile, E previousSelection, E nextSelection ) {
-		super( e, isCancelWorthwhile );
+	public MyItemSelectionContext( ItemSelectionOperation< E > operation, java.util.EventObject e, boolean isCancelWorthwhile, E previousSelection, E nextSelection ) {
+		super( operation, e, isCancelWorthwhile );
 		this.previousSelection = previousSelection;
 		this.nextSelection = nextSelection;
 		//		this.isPreviousSelectionValid = true;
@@ -156,6 +168,7 @@ class MySingleSelectionContext<E> extends AbstractContext implements ItemSelecti
  */
 public class ZManager {
 	private static java.util.List< zoot.event.OperationListener > operationListeners = new java.util.LinkedList< zoot.event.OperationListener >();
+	private static java.util.List< zoot.event.EditListener > editListeners = new java.util.LinkedList< zoot.event.EditListener >();
 
 	public static void addOperationListener( zoot.event.OperationListener l ) {
 		synchronized( ZManager.operationListeners ) {
@@ -179,6 +192,32 @@ public class ZManager {
 		synchronized( ZManager.operationListeners ) {
 			for( zoot.event.OperationListener l : ZManager.operationListeners ) {
 				l.operationPerformed( e );
+			}
+		}
+	}
+
+	public static void addEditListener( zoot.event.EditListener l ) {
+		synchronized( ZManager.editListeners ) {
+			ZManager.editListeners.add( l );
+		}
+	}
+	public static void removeEditListener( zoot.event.EditListener l ) {
+		synchronized( ZManager.editListeners ) {
+			ZManager.editListeners.remove( l );
+		}
+	}
+
+	protected static void fireEditCommitting( zoot.event.EditEvent e ) {
+		synchronized( ZManager.editListeners ) {
+			for( zoot.event.EditListener l : ZManager.editListeners ) {
+				l.editCommitting( e );
+			}
+		}
+	}
+	protected static void fireEditCommitted( zoot.event.EditEvent e ) {
+		synchronized( ZManager.editListeners ) {
+			for( zoot.event.EditListener l : ZManager.editListeners ) {
+				l.editCommitted( e );
 			}
 		}
 	}
@@ -214,7 +253,7 @@ public class ZManager {
 
 	public static BooleanStateContext performIfAppropriate( BooleanStateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
 		assert stateOperation != null;
-		BooleanStateContext rv = new MyBooleanStateContext( e, isCancelWorthwhile, previousValue, nextValue );
+		BooleanStateContext rv = new MyBooleanStateContext( stateOperation, e, isCancelWorthwhile, previousValue, nextValue );
 		zoot.event.OperationEvent operationEvent = new zoot.event.OperationEvent( stateOperation, rv );
 		fireOperationPerforming( operationEvent );
 		stateOperation.performStateChange( rv );
@@ -230,7 +269,7 @@ public class ZManager {
 	//	}	
 	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert boundedRangeOperation != null;
-		BoundedRangeContext rv = new MyBoundedRangeContext( e, isCancelWorthwhile );
+		BoundedRangeContext rv = new MyBoundedRangeContext( boundedRangeOperation, e, isCancelWorthwhile );
 		zoot.event.OperationEvent operationEvent = new zoot.event.OperationEvent( boundedRangeOperation, rv );
 		fireOperationPerforming( operationEvent );
 		boundedRangeOperation.perform( rv );
@@ -239,7 +278,7 @@ public class ZManager {
 	}
 	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
-		ActionContext rv = new MyActionContext( e, isCancelWorthwhile );
+		ActionContext rv = new MyActionContext( actionOperation, e, isCancelWorthwhile );
 		zoot.event.OperationEvent operationEvent = new zoot.event.OperationEvent( actionOperation, rv );
 		fireOperationPerforming( operationEvent );
 		actionOperation.perform( rv );
@@ -264,7 +303,7 @@ public class ZManager {
 
 	public static ItemSelectionContext performIfAppropriate( ItemSelectionOperation< ? > itemSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
 		assert itemSelectionOperation != null;
-		ItemSelectionContext rv = new MySingleSelectionContext( e, isCancelWorthwhile, previousSelection, nextSelection );
+		ItemSelectionContext rv = new MyItemSelectionContext( itemSelectionOperation, e, isCancelWorthwhile, previousSelection, nextSelection );
 		zoot.event.OperationEvent operationEvent = new zoot.event.OperationEvent( itemSelectionOperation, rv );
 		fireOperationPerforming( operationEvent );
 		itemSelectionOperation.performSelectionChange( rv );

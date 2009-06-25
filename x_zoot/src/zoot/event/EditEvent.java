@@ -20,18 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.xml;
+package zoot.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ElementIterable implements Iterable< org.w3c.dom.Element > {
-	private org.w3c.dom.NodeList m_nodeList;
-
-	public ElementIterable( org.w3c.dom.NodeList nodeList ) {
-		m_nodeList = nodeList;
+public class EditEvent extends edu.cmu.cs.dennisc.pattern.event.Event< zoot.Operation > {
+	private zoot.Context context;
+	private javax.swing.undo.UndoableEdit edit;
+	public EditEvent( zoot.Operation source, zoot.Context context, javax.swing.undo.UndoableEdit edit ) {
+		super( source );
+		this.context = context;
+		this.edit = edit;
 	}
-	public java.util.Iterator< org.w3c.dom.Element > iterator() {
-		return new ElementIterator( m_nodeList );
+	public zoot.Context getContext() {
+		return this.context;
+	}
+	public javax.swing.undo.UndoableEdit getEdit() {
+		return this.edit;
 	}
 }

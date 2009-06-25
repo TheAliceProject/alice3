@@ -20,26 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.xml;
+package zoot.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ElementIterator implements java.util.Iterator< org.w3c.dom.Element > {
-	private org.w3c.dom.NodeList m_nodeList;
-	private int m_index;
-
-	public ElementIterator( org.w3c.dom.NodeList nodeList ) {
-		m_nodeList = nodeList;
-		m_index = 0;
-	}
-	public boolean hasNext() {
-		return m_index < m_nodeList.getLength();
-	}
-	public org.w3c.dom.Element next() {
-		return (org.w3c.dom.Element)m_nodeList.item( m_index++ );
-	}
-	public void remove() {
-		throw new RuntimeException( "not supported" );
-	}
+public interface EditListener {
+	public void editCommitting( EditEvent e );
+	public void editCommitted( EditEvent e );
 }

@@ -25,7 +25,7 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface DragAndDropContext extends Context {
+public interface DragAndDropContext extends Context< DragAndDropOperation > {
 	public java.awt.event.MouseEvent getOriginalMouseEvent();
 	public java.awt.event.MouseEvent getLatestMouseEvent();
 	
