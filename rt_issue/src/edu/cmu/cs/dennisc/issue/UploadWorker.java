@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.dennisc.issue;
 
+import com.atlassian.jira.rpc.soap.client.RemoteIssue;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -32,8 +34,9 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 	private Issue issue;
 
 	private java.net.URL jiraServer;
-	private edu.cmu.cs.dennisc.jira.Authenticator jiraAuthenticator;
-
+	private edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator;
+	private edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator;
+	
 	private String mailServer;
 	private edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator;
 	private String reporterEMailAddress;
@@ -44,9 +47,10 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 		assert progressPane != null;
 		this.progressPane = progressPane;
 	}
-	public void initialize( Issue issue, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.Authenticator jiraAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient ) {
+	public void initialize( Issue issue, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator, edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient ) {
 		this.jiraServer = jiraServer;
-		this.jiraAuthenticator = jiraAuthenticator;
+		this.jiraRPCAuthenticator = jiraRPCAuthenticator;
+		this.jiraSOAPAuthenticator = jiraSOAPAuthenticator;
 		this.mailServer = mailServer;
 		this.mailAuthenticator = mailAuthenticator;
 		this.issue = issue;
@@ -82,11 +86,11 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 		return this.reporterName;
 	}
 	
-	protected void uploadToJIRA() throws Exception {
-		final String PROJECT_KEY = "AIIIP";
+	private final String PROJECT_KEY = "AIIIP";
+	protected void uploadToJIRAViaRPC() throws Exception {
 		final boolean STREAM_MESSAGES = true;
 		redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( this.jiraServer, STREAM_MESSAGES );
-		Object token = this.jiraAuthenticator.login( client );
+		Object token = this.jiraRPCAuthenticator.login( client );
 		try {
 			redstone.xmlrpc.XmlRpcStruct serverInfo = (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.getServerInfo", new Object[] { token } );
 //			System.out.println( "serverInfo: " + serverInfo );
@@ -95,7 +99,7 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 //			for( redstone.xmlrpc.XmlRpcStruct project : projects ) {
 //				System.out.println( "\t" + project );
 //			}
-			redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.JIRAUtilities.createIssue( issue, client, token, PROJECT_KEY );
+			redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.createIssue( issue, client, token, PROJECT_KEY );
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( result );
 			
 		} finally {
@@ -104,6 +108,15 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 		}
 //				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
 //				throw new Exception();
+	}
+	protected void uploadToJIRAViaSOAP() throws Exception {
+		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
+		com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
+		
+		String token = this.jiraSOAPAuthenticator.login( service );
+	    RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( issue, service, token, "AIIIP" );
+	    edu.cmu.cs.dennisc.print.PrintUtilities.println( result.getId() );
+		service.logout( token );
 	}
 
 	protected void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride ) throws Exception {
@@ -127,33 +140,41 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 		this.process( "attempting to submit bug report...\n" );
 		try {
 			this.process( "* uploading directly to database... " );
-			this.uploadToJIRA();
+			this.uploadToJIRAViaSOAP();
 			this.process( "SUCCEEDED.\n" );
-		} catch( Exception e0 ) {
-			e0.printStackTrace();
-			this.process( "FAILED.\n" );
-			this.process( "* sending mail (on smtp port)... " );
+		} catch( Exception eA ) {
+			eA.printStackTrace();
 			try {
-				this.sendMail( false, null );
-				this.process( "SUCCEEDED.\n" );
-			} catch( Exception e1 ) {
-				e1.printStackTrace();
 				this.process( "FAILED.\n" );
-				this.process( "* sending secure mail (on secure smtp port)... " );
+				this.process( "* uploading directly to database via RPC... " );
+				this.uploadToJIRAViaRPC();
+				this.process( "SUCCEEDED.\n" );
+			} catch( Exception eB ) {
+				eB.printStackTrace();
+				this.process( "FAILED.\n" );
+				this.process( "* sending mail (on smtp port)... " );
 				try {
-					this.sendMail( true, null );
+					this.sendMail( false, null );
 					this.process( "SUCCEEDED.\n" );
-				} catch( Exception e2 ) {
-					e2.printStackTrace();
+				} catch( Exception eC ) {
+					eC.printStackTrace();
 					this.process( "FAILED.\n" );
-					this.process( "* sending secure mail (on http port)... " );
+					this.process( "* sending secure mail (on secure smtp port)... " );
 					try {
-						this.sendMail( true, 80 );
+						this.sendMail( true, null );
 						this.process( "SUCCEEDED.\n" );
-					} catch( Exception e3 ) {
-						e3.printStackTrace();
+					} catch( Exception e2 ) {
+						e2.printStackTrace();
 						this.process( "FAILED.\n" );
-						return false;
+						this.process( "* sending secure mail (on http port)... " );
+						try {
+							this.sendMail( true, 80 );
+							this.process( "SUCCEEDED.\n" );
+						} catch( Exception e3 ) {
+							e3.printStackTrace();
+							this.process( "FAILED.\n" );
+							return false;
+						}
 					}
 				}
 			}

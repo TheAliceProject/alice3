@@ -166,10 +166,8 @@ public class FileUtilities {
 	private static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
 		writeXML( type.encode(), zos, entryName );
 	}
-	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
+	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.OutputStream os ) throws java.io.IOException {
+		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
 		writeType( project.getProgramType(), zos, PROGRAM_TYPE_ENTRY_NAME );
 		edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
 		if( properties != null ) {
@@ -177,6 +175,11 @@ public class FileUtilities {
 		}
 		zos.flush();
 		zos.close();
+	}
+	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file ) throws java.io.IOException {
+		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
+		writeProject( project, fos );
 	}
 
 	private static String SNAPSHOT_ENTRY_NAME = "snapshot.png";

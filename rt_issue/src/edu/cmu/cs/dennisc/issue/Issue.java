@@ -37,7 +37,7 @@ public abstract class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRe
 	private String steps;
 	private Throwable throwable;
 	private String[] affectsVersions = new String[] {};
-	private java.util.List< edu.cmu.cs.dennisc.mail.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.mail.Attachment >();
+	private java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.issue.Attachment >();
 
 	public Type getType() {
 		return type;
@@ -107,13 +107,13 @@ public abstract class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRe
 		return rv;
 	}
 	
-	public void addAttachment( edu.cmu.cs.dennisc.mail.Attachment attachment ) {
+	public void addAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
 		this.attachments.add( attachment );
 	}
-	public void removeAttachment( edu.cmu.cs.dennisc.mail.Attachment attachment ) {
+	public void removeAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
 		this.attachments.remove( attachment );
 	}
-	public java.util.List< edu.cmu.cs.dennisc.mail.Attachment > getAttachments() {
+	public java.util.List< edu.cmu.cs.dennisc.issue.Attachment > getAttachments() {
 		return this.attachments;
 	}
 

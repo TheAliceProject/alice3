@@ -20,12 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.issue.jira;
+package org.alice.ide.issue.jira.rpc;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Authenticator implements edu.cmu.cs.dennisc.jira.Authenticator {
+public class Authenticator implements edu.cmu.cs.dennisc.jira.rpc.Authenticator {
 	public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
 		return client.invoke( "jira1.login", new Object[] { "alice3_rpc", "iNw6aFRhNia6SirM" } );
 	}

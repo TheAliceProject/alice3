@@ -20,17 +20,11 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice;
+package edu.cmu.cs.dennisc.jira.soap;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Version {
-	private static final String TEXT;
-	static {
-		TEXT = edu.cmu.cs.dennisc.io.TextFileUtilities.read( License.class.getResourceAsStream( "Version.txt" ) ).trim();
-	}
-	public static String getCurrentVersionText() {
-		return TEXT;
-	}
+public interface Authenticator {
+	public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException;
 }

@@ -76,12 +76,15 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 	private ExceptionPane vcExceptionPane;
 
 	@Override
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
+	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
 		rv = super.updateCriticalAttachments( rv );
-		rv.add( new edu.cmu.cs.dennisc.mail.Attachment() {
-			public javax.activation.DataSource getDataSource() {
+		rv.add( new edu.cmu.cs.dennisc.issue.Attachment() {
+			public byte[] getBytes() {
 				Throwable throwable = AbstractCaughtExceptionPane.this.vcExceptionPane.getThrowable();
-				return new javax.mail.util.ByteArrayDataSource( edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsByteArray( throwable ), "text/plain" );
+				return edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsByteArray( throwable );
+			}
+			public String getMIMEType() {
+				return "text/plain";
 			}
 			public String getFileName() {
 				return "stacktrace.txt";

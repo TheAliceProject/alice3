@@ -20,12 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.mail;
+package edu.cmu.cs.dennisc.issue;
 
 /**
  * @author Dennis Cosgrove
  */
 public interface Attachment {
 	public String getFileName();
-	public javax.activation.DataSource getDataSource();
+	public String getMIMEType();
+	public byte[] getBytes();
 }

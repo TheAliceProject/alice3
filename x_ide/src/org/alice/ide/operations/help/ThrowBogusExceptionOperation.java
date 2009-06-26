@@ -20,17 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice;
+package org.alice.ide.operations.help;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Version {
-	private static final String TEXT;
-	static {
-		TEXT = edu.cmu.cs.dennisc.io.TextFileUtilities.read( License.class.getResourceAsStream( "Version.txt" ) ).trim();
+public class ThrowBogusExceptionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	public ThrowBogusExceptionOperation() {
+		this.putValue( javax.swing.Action.NAME, "Throw Bogus Exception..." );
 	}
-	public static String getCurrentVersionText() {
-		return TEXT;
+	public void perform( zoot.ActionContext actionContext ) {
+		throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
 	}
 }

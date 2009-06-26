@@ -356,7 +356,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		rv.setSummary( this.getSummary() );
 		rv.setDescription( this.getDescription() );
 		rv.setSteps( this.getStepsToReproduce() );
-		for( edu.cmu.cs.dennisc.mail.Attachment attachment : this.createAttachments() ) {
+		for( edu.cmu.cs.dennisc.issue.Attachment attachment : this.createAttachments() ) {
 			rv.addAttachment( attachment );
 		}
 		return rv;
@@ -369,10 +369,10 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 			return summary;
 		} else {
 			StringBuffer sb = new StringBuffer();
-			sb.append( "summary: unspecified; " );
+//			sb.append( "summary: unspecified; " );
 			Throwable throwable = issue.getThrowable();
 			if( throwable != null ) {
-				sb.append( "exception: " );
+//				sb.append( "exception: " );
 				sb.append( throwable.getClass().getName() );
 				sb.append( "; " );
 				String message = throwable.getMessage();
@@ -449,10 +449,13 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	private String getStepsToReproduce() {
 		return this.vcStepsToReproduce.getText();
 	}
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
-		rv.add( new edu.cmu.cs.dennisc.mail.Attachment() {
-			public javax.activation.DataSource getDataSource() {
-				return new javax.mail.util.ByteArrayDataSource( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLByteArray(), "application/xml" );
+	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
+		rv.add( new edu.cmu.cs.dennisc.issue.Attachment() {
+			public byte[] getBytes() {
+				return edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLByteArray();
+			}
+			public String getMIMEType() {
+				return "application/xml";
 			}
 			public String getFileName() {
 				return "systemProperties.xml";
@@ -460,14 +463,14 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		} );
 		return rv;
 	}
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > updateBonusAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv ) {
+	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateBonusAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
 		return rv;
 	}
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > createAttachments() {
-		java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > rv = new java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment >();
+	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > createAttachments() {
+		java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv = new java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment >();
 		updateCriticalAttachments( rv );
 		try {
-			java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment > bonus = updateBonusAttachments( new java.util.ArrayList< edu.cmu.cs.dennisc.mail.Attachment >() );
+			java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > bonus = updateBonusAttachments( new java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment >() );
 			rv.addAll( bonus );
 		} catch( Throwable t ) {
 			//todo:
@@ -479,7 +482,8 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	protected abstract String getJIRAServer();
 	protected abstract String getMailServer();
 	protected abstract String getMailRecipient();
-	protected abstract edu.cmu.cs.dennisc.jira.Authenticator getJIRAAuthenticator();
+	protected abstract edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRARPCAuthenticator();
+	protected abstract edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRASOAPAuthenticator();
 	protected abstract edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator();
 
 	private boolean isSubmitAttempted = false;
@@ -506,7 +510,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		} catch( java.net.MalformedURLException murl ) {
 			throw new RuntimeException( murl );
 		}
-		progressPane.initializeAndExecuteWorker( issue, jiraURL, this.getJIRAAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient() );
+		progressPane.initializeAndExecuteWorker( issue, jiraURL, this.getJIRARPCAuthenticator(), this.getJIRASOAPAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient() );
 
 		this.isSubmitBackgrounded = false;
 		javax.swing.JFrame frame = new javax.swing.JFrame();

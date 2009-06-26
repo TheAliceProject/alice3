@@ -70,6 +70,33 @@ class Template extends ShapeDragComponent {
 	}
 }
 
+class SetBoundsOperation extends zoot.AbstractActionOperation {
+	private javax.swing.JComponent component;
+	private java.awt.Rectangle boundsPrev;
+	private java.awt.Rectangle boundsNext;
+	public SetBoundsOperation( javax.swing.JComponent component, int xNext, int yNext, int widthNext, int heightNext ) {
+		this.component = component;
+		this.boundsNext = new java.awt.Rectangle( xNext, yNext, widthNext, heightNext );
+	}
+	private void setBounds( java.awt.Rectangle bounds ) {
+		component.setBounds( bounds );
+		component.revalidate();
+	}
+	public void perform( zoot.ActionContext actionContext ) {
+		this.boundsPrev = this.component.getBounds();
+		actionContext.commit( new javax.swing.undo.AbstractUndoableEdit() {
+			@Override
+			public void undo() throws javax.swing.undo.CannotUndoException {
+				setBounds( boundsNext );
+			}
+			@Override
+			public void redo() throws javax.swing.undo.CannotRedoException {
+				setBounds( boundsPrev );
+			}
+		} );
+	}
+	
+}
 
 class ResizeControlsPane extends edu.cmu.cs.dennisc.swing.SpringPane {
 	class ResizeControl extends javax.swing.JComponent {
@@ -89,7 +116,7 @@ class ResizeControlsPane extends edu.cmu.cs.dennisc.swing.SpringPane {
 			public void mouseReleased( MouseEvent e ) {
 				int xDelta = e.getX() - this.xPress;
 				int yDelta = e.getY() - this.yPress;
-				ResizeControl.this.handleResize( xDelta, yDelta );
+				ResizeControl.this.handleResize( e, xDelta, yDelta );
 			}
 			public void mouseExited( MouseEvent e ) {
 			}
@@ -102,7 +129,7 @@ class ResizeControlsPane extends edu.cmu.cs.dennisc.swing.SpringPane {
 		private Horizontal horizontal;
 		private Vertical vertical;
 		
-		private void handleResize( int xDelta, int yDelta ) {
+		private void handleResize( MouseEvent e, int xDelta, int yDelta ) {
 			javax.swing.JComponent component = (javax.swing.JComponent)this.getParent().getParent();
 			java.awt.Point location = component.getLocation();
 			java.awt.Dimension size = component.getPreferredSize();
@@ -124,9 +151,10 @@ class ResizeControlsPane extends edu.cmu.cs.dennisc.swing.SpringPane {
 				size.height += yDelta; 
 				break;
 			}
-			component.setLocation( location );
-			component.setPreferredSize( size );
-			component.revalidate();
+			zoot.ZManager.performIfAppropriate( new SetBoundsOperation( component, location.x, location.y, size.width, size.height ), e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+//			component.setLocation( location );
+//			component.setPreferredSize( size );
+//			component.revalidate();
 		}
 		
 		public ResizeControl( Horizontal horizontal, Vertical vertical ) {
@@ -177,7 +205,7 @@ class ResizeControlsPane extends edu.cmu.cs.dennisc.swing.SpringPane {
 
 class Instance extends ShapeDragComponent {
 	private ResizeControlsPane resizeControlsPane = new ResizeControlsPane();
-	
+	private java.util.UUID uuid = java.util.UUID.randomUUID();
 	public Instance( Shape shape ) {
 		super( shape );
 		this.setLeftButtonDoubleClickOperation( new zoot.AbstractActionOperation() {
@@ -193,6 +221,9 @@ class Instance extends ShapeDragComponent {
 	@Override
 	protected boolean isClickReservedForSelection() {
 		return true;
+	}
+	public java.util.UUID getUUID() {
+		return this.uuid;
 	}
 	public boolean isSelected() {
 		return this.resizeControlsPane.isVisible();
@@ -349,7 +380,23 @@ class TemplatesPane extends swing.LineAxisPane {
 	}
 }
 
-public class ShapesFrame extends zoot.ZFrame {
+abstract class HistoryFrame extends zoot.ZFrame {
+	private javax.swing.undo.UndoManager undoManager = new javax.swing.undo.UndoManager();
+	public HistoryFrame() {
+		zoot.ZManager.addEditListener( new zoot.event.EditListener() {
+			public void editCommitting( zoot.event.EditEvent e ) {
+			}
+			public void editCommitted( zoot.event.EditEvent e ) {
+				HistoryFrame.this.handleEditCommitted( e );
+			}
+		} );
+	}
+	protected void handleEditCommitted( zoot.event.EditEvent e ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "editCommitted:", e.getEdit() );
+	}
+}
+
+public class ShapesFrame extends HistoryFrame {
 	public ShapesFrame() {
 		java.awt.Container contentPane = this.getContentPane();
 

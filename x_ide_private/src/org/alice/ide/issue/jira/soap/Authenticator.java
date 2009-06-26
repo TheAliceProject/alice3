@@ -20,11 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.jira;
+package org.alice.ide.issue.jira.soap;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Authenticator {
-	public Object login( redstone.xmlrpc.XmlRpcClient xmlRpcStruct ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault;
+public class Authenticator implements edu.cmu.cs.dennisc.jira.soap.Authenticator {
+	public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
+		return service.login( "alice3_soap", "BW@U~1.455g45u" );
+	}
 }

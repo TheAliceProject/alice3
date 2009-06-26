@@ -8,5 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_foundation"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_issue"/>
 	<classpathentry kind="lib" path="/jar_jaf/activation.jar"/>
+	<classpathentry kind="lib" path="/jar_jira/jira-soapclient-4.0-with-dependencies.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

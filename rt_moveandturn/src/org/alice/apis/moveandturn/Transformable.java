@@ -232,7 +232,13 @@ public abstract class Transformable extends AbstractTransformable {
 	private org.alice.apis.moveandturn.Font DEFAULT_FONT = new org.alice.apis.moveandturn.Font().deriveScaledFont( 2.0f );
 	
 	protected void displayBubble( org.alice.apis.moveandturn.graphic.Bubble bubble, Number duration ) {
-		perform( new org.alice.apis.moveandturn.graphic.animation.BubbleAnimation( this.getOwner(), bubble, 0.2, duration.doubleValue(), 0.2 ) );
+		SceneOwner owner = this.getOwner();
+		if( owner != null ) {
+			perform( new org.alice.apis.moveandturn.graphic.animation.BubbleAnimation( owner, bubble, 0.2, duration.doubleValue(), 0.2 ) );
+		} else {
+			//todo
+			javax.swing.JOptionPane.showMessageDialog( null, "unable to display bubble" );
+		}
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void say( String text, Number duration, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {

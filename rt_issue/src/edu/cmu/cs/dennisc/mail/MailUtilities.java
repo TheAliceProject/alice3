@@ -33,7 +33,7 @@ public class MailUtilities {
 			uee.printStackTrace();
 		}
 	}
-	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, Attachment... attachments )
+	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, edu.cmu.cs.dennisc.issue.Attachment... attachments )
 			throws javax.mail.MessagingException {
 		java.util.Properties props = new java.util.Properties();
 		props.put( "mail.transport.protocol", "smtp" );
@@ -111,9 +111,10 @@ public class MailUtilities {
 		javax.mail.Multipart multipart = new javax.mail.internet.MimeMultipart();
 		multipart.addBodyPart( messagePart );
 
-		for( Attachment attachment : attachments ) {
+		for( edu.cmu.cs.dennisc.issue.Attachment attachment : attachments ) {
 			javax.mail.BodyPart attachmentPart = new javax.mail.internet.MimeBodyPart();
-			attachmentPart.setDataHandler( new javax.activation.DataHandler( attachment.getDataSource() ) );
+			javax.activation.DataSource dataSource = new javax.mail.util.ByteArrayDataSource( attachment.getBytes(), attachment.getMIMEType() );
+			attachmentPart.setDataHandler( new javax.activation.DataHandler( dataSource ) );
 			attachmentPart.setFileName( attachment.getFileName() );
 			multipart.addBodyPart( attachmentPart );
 		}
@@ -121,8 +122,8 @@ public class MailUtilities {
 		javax.mail.Transport.send( message );
 	}
 
-	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, java.util.List< Attachment > attachments ) throws javax.mail.MessagingException {
-		Attachment[] array = new Attachment[ attachments.size() ];
+	public static void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride, String host, AbstractAuthenticator authenticator, String replyTo, String replyToPresonal, String to, String subject, String text, java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments ) throws javax.mail.MessagingException {
+		edu.cmu.cs.dennisc.issue.Attachment[] array = new edu.cmu.cs.dennisc.issue.Attachment[ attachments.size() ];
 		attachments.toArray( array );
 		sendMail( isTransportLayerSecurityDesired, portOverride, host, authenticator, replyTo, replyToPresonal, to, subject, text, array );
 	}
