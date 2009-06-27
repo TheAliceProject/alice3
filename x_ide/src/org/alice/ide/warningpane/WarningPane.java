@@ -34,11 +34,6 @@ public class WarningPane extends swing.PageAxisPane {
 		sb.append( "Thank you for your patience.<br>" );
 		sb.append( "We welcome your feedback.<br>" );
 		sb.append( "</font>" );
-		//sb.append( "bug reports: <a href=http://bugs.alice.org:8080/>http://bugs.alice.org:8080/</a>" );
-		sb.append( "<li>resources: <u>http://alice.kenai.com/</u><br>" );
-		sb.append( "<li>bug reports: <u>http://bugs.alice.org:8080/</u><br>" );
-		sb.append( "<li>blog: <u>http://blog.alice.org/</u><br>" );
-		sb.append( "<li>community: <u>http://www.alice.org/community/</u><br>" );
 		sb.append( "</body></html>" );
 		
 		javax.swing.JEditorPane editorPane = new javax.swing.JEditorPane( "text/html", sb.toString() );
@@ -49,10 +44,33 @@ public class WarningPane extends swing.PageAxisPane {
 		editorPane.setAlignmentX( 0.0f );
 		this.add( label );
 		this.add( editorPane );
+		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
+		
+		class FurtherInfoPane extends swing.RowsSpringPane {
+			public FurtherInfoPane() {
+				super( 8, 4 );
+				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
+			}
+			private java.awt.Component createLabel( String text ) {
+				zoot.ZLabel rv = zoot.ZLabel.acquire( text );
+				rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
+				return rv;
+			}
+			@Override
+			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
+				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "updates:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://kenai.com/projects/alice/downloads" ) ) );
+				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "blog:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://blog.alice.org/" ) ) );
+				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "community:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://www.alice.org/community/" ) ) );
+				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "bug reports:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://bugs.alice.org:8080/" ) ) );
+				return rv;
+			}
+		}
+		this.add( new FurtherInfoPane() );
 		
 		if( isSolicited ) {
 			//pass
 		} else {
+			this.add( javax.swing.Box.createVerticalStrut( 8 ) );
 			this.add( new javax.swing.JCheckBox( "show this warning at start up ") );
 		}
 	}

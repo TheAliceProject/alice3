@@ -42,7 +42,7 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 			this.throwable = throwable;
 			this.removeAll();
 			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-			edu.cmu.cs.dennisc.swing.Hyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.swing.Hyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
+			edu.cmu.cs.dennisc.swing.FauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.swing.FauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
 				public void actionPerformed( java.awt.event.ActionEvent e ) {
 					edu.cmu.cs.dennisc.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( ExceptionPane.this, edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsString( throwable ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 				}

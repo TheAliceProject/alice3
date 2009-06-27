@@ -25,23 +25,9 @@ package edu.cmu.cs.dennisc.swing;
 /**
  * @author Dennis Cosgrove
  */
-public class Hyperlink extends AbstractHyperlink {
-	public Hyperlink( final String url ) {
-		javax.swing.Action action = new javax.swing.AbstractAction() {
-			public void actionPerformed(java.awt.event.ActionEvent event) {
-				try {
-					edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
-				} catch( Exception e ) {
-					e.printStackTrace();
-					edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( url );
-					javax.swing.JOptionPane.showMessageDialog( Hyperlink.this, "Alice was unable to launch your default browser.\n\nThe text\n\n    " + url + "\n\nhas been copied to your clipboard so that you may paste it into the address line of your favorite web browser." );
-				}
-			}
-		};
-		action.putValue( javax.swing.Action.NAME, url );
+public class FauxHyperlink extends AbstractHyperlink {
+	private javax.swing.Action action;
+	public FauxHyperlink( javax.swing.Action action ) {
 		this.setAction( action );
-	}
-	public Hyperlink( java.net.URI uri ) {
-		this( uri.getRawPath() );
 	}
 }

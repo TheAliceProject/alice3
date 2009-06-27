@@ -163,7 +163,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 			}
 		}
 
-		private edu.cmu.cs.dennisc.swing.Hyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.swing.Hyperlink( new ShowAllSystemPropertiesAction() );
+		private edu.cmu.cs.dennisc.swing.FauxHyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.swing.FauxHyperlink( new ShowAllSystemPropertiesAction() );
 
 		public SystemPropertiesPane() {
 			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
