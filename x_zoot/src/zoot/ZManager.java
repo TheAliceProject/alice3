@@ -52,7 +52,7 @@ abstract class AbstractContext< E extends Operation > implements Context< E > {
 		this.isCommitted = true;
 	}
 	public void commit( javax.swing.undo.UndoableEdit undoableEdit ) {
-		zoot.event.EditEvent e = new zoot.event.EditEvent( null, this, undoableEdit );
+		zoot.event.EditEvent e = new zoot.event.EditEvent( this.getOperation(), this, undoableEdit );
 		ZManager.fireEditCommitting( e );
 		undoableEdit.redo();
 		ZManager.fireEditCommitted( e );
