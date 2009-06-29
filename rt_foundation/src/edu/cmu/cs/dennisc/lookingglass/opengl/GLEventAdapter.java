@@ -320,6 +320,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
 		assert sgCamera != null;
+		assert m_drawable != null;
 		m_drawable.setAutoSwapBufferMode( false );
 		try {
 			m_pickParameters = new PickParameters( m_drawable, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );

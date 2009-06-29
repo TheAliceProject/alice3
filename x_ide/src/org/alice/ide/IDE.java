@@ -1016,6 +1016,7 @@ public abstract class IDE extends zoot.ZFrame {
 	//	protected abstract void handleWindowClosing();
 
 	public java.util.List< ? extends zoot.DropReceptor > createListOfPotentialDropReceptors( zoot.ZDragComponent source ) {
+		assert source != null;
 		if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
 			org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
 			return getCodeEditorInFocus().createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );

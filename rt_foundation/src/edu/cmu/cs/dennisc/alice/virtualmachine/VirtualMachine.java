@@ -77,6 +77,7 @@ public abstract class VirtualMachine {
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType;
 	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractType entryPointType ) {
+		assert entryPointType != null;
 		this.setEntryPointType( entryPointType );
 		pushCurrentThread( null );
 		try {
