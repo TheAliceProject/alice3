@@ -278,11 +278,27 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				offset += 7;
 			}
 
-			java.util.Arrays.sort( selectionBufferInfos, new java.util.Comparator< SelectionBufferInfo >() {
-				public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-					return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
+			if( length > 1 ) {
+				float front0 = selectionBufferInfos[ 0 ].getZFront();
+				boolean isDifferentiated = false;
+				for( int i=1; i<length; i++ ) {
+					if( front0 == selectionBufferInfos[ i ].getZFront() ) {
+						//pass
+					} else {
+						isDifferentiated = true;
+						break;
+					}
 				}
-			} );
+				if( isDifferentiated ) {
+					java.util.Arrays.sort( selectionBufferInfos, new java.util.Comparator< SelectionBufferInfo >() {
+						public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
+							return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
+						}
+					} );
+				} else {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: account for video card driver bug" );
+				}
+			}
 
 			for( int i=0; i<length; i++ ) {
 				//todo: perform trimmed math

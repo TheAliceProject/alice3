@@ -93,6 +93,8 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
     }
 	public final void pick( PickContext pc, boolean isSubElementRequired ) {
 		//todo: display lists?
+		pc.gl.glBegin( GL.GL_LINES );
+		pc.gl.glEnd();
 		pickGeometry( pc, isSubElementRequired );
 	}
 }
