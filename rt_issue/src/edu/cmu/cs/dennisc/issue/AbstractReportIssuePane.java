@@ -26,16 +26,57 @@ package edu.cmu.cs.dennisc.issue;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractReportIssuePane extends AbstractIssuePane {
+	private edu.cmu.cs.dennisc.issue.Issue.Type issueType;
+	public AbstractReportIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type issueType ) {
+		this.issueType = issueType;
+		javax.swing.JTextArea vcEnvironment = new javax.swing.JTextArea() {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 48 );
+			}
+		};
+		vcEnvironment.setBorder( new TextComponentBorder() );
+		StringBuffer sb = new StringBuffer();
+		sb.append( "java.version: " );
+		sb.append( System.getProperty( "java.version" ) );
+		sb.append( "\n" );
+		sb.append( "os.name: " );
+		sb.append( System.getProperty( "os.name" ) );
+		sb.append( "\n" );
+		vcEnvironment.setText( sb.toString() );
+		javax.swing.JScrollPane scrollEnvironment = new javax.swing.JScrollPane( vcEnvironment );
+		scrollEnvironment.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		
+		
+		java.util.ArrayList< java.awt.Component[] > rows = new java.util.ArrayList< java.awt.Component[] >();
+		javax.swing.JLabel typeLabel = new javax.swing.JLabel("issue type:", javax.swing.SwingConstants.TRAILING);
+		typeLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
+		rows.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( typeLabel, new javax.swing.JLabel( this.issueType.name() ) ) );
+		this.addInsightPaneRows( rows );
+		javax.swing.JLabel environmentLabel = new javax.swing.JLabel("environment:", javax.swing.SwingConstants.TRAILING);
+		environmentLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
+		rows.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( environmentLabel, scrollEnvironment ) );
+		
+		//this.addReporterPaneRows( rows );
+
+		
+		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this, rows, 8, 4 );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+	}
+	
+	@Override
+	protected boolean isStepsPaneDesired() {
+		return edu.cmu.cs.dennisc.issue.Issue.Type.BUG.equals( this.issueType );
+	}
+	@Override
+	protected boolean isSummaryRequired() {
+		return true;
+	}
+	
 	@Override
 	protected Issue updateIssue( edu.cmu.cs.dennisc.issue.Issue rv ) {
 		super.updateIssue( rv );
-		rv.setType( Issue.Type.BUG );
+		rv.setType( this.issueType );
 		return rv;
 	}
-	@Override
-	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
-		rv = super.addBugPaneRows( rv );
-		return rv;
-	}
-	
 }

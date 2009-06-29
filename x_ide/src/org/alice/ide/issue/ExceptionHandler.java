@@ -47,6 +47,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 				bugReportPane.setThreadAndThrowable( thread, throwable );
 				javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton();
 				if( frame != null ) {
+					//pass
 				} else {
 					frame = new javax.swing.JFrame();
 				}

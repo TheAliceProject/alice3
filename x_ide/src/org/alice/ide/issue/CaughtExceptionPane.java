@@ -27,8 +27,8 @@ package org.alice.ide.issue;
  */
 public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaughtExceptionPane {
 	@Override
-	protected String getJIRAServer() {
-		return "http://bugs.alice.org:8080";
+	protected java.net.URL getJIRAServer() throws java.net.MalformedURLException {
+		return new java.net.URL( "http://bugs.alice.org:8080/rpc/xmlrpc" );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRARPCAuthenticator() {

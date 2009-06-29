@@ -25,10 +25,13 @@ package org.alice.ide.issue;
 /**
  * @author Dennis Cosgrove
  */
-public class ReportIssuePane extends edu.cmu.cs.dennisc.issue.AbstractIssuePane {
+public class ReportIssuePane extends edu.cmu.cs.dennisc.issue.AbstractReportIssuePane {
+	public ReportIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type issueType ) {
+		super( issueType );
+	}
 	@Override
-	protected String getJIRAServer() {
-		return "http://bugs.alice.org:8080";
+	protected java.net.URL getJIRAServer() throws java.net.MalformedURLException {
+		return new java.net.URL( "http://bugs.alice.org:8080/rpc/xmlrpc" );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRARPCAuthenticator() {
@@ -50,7 +53,7 @@ public class ReportIssuePane extends edu.cmu.cs.dennisc.issue.AbstractIssuePane 
 	protected String getMailRecipient() {
 		return "alice.bugs.3.beta.xxxx@gmail.com";
 	}
-
+	
 	@Override
 	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
 		rv = super.updateCriticalAttachments( rv );
@@ -110,8 +113,20 @@ public class ReportIssuePane extends edu.cmu.cs.dennisc.issue.AbstractIssuePane 
 	}
 	
 	public static void main( String[] args ) {
-		ReportIssuePane pane = new ReportIssuePane();
-		javax.swing.JOptionPane.showMessageDialog( null, pane, "Report issue", javax.swing.JOptionPane.QUESTION_MESSAGE );
+		ReportIssuePane pane = new ReportIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type.NEW_FEAURE );
+		javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton();
+		if( frame != null ) {
+			//pass
+		} else {
+			frame = new javax.swing.JFrame();
+		}
+		javax.swing.JDialog window = new javax.swing.JDialog( frame, "Report Issue", true );
+		pane.setWindow( window );
+		window.getContentPane().add( pane );
+		window.pack();
+		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
+		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
+		window.setVisible( true );
 	}
 	
 }

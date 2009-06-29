@@ -56,19 +56,29 @@ class SuggestiveTextUtilties {
 		if( text.length() > 0 ) {
 			//pass
 		} else {
-			java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
+			java.awt.Font font = textComponent.getFont();
+			font = font.deriveFont( java.awt.Font.ITALIC );
+			//int grayscale = 160;
+			int grayscale;
+			if( textComponent.isFocusOwner() ) {
+				grayscale = 120;
+			} else {
+				grayscale = 160;
+				font = font.deriveFont( font.getSize2D() * 0.9f );
+			}
 			g.setFont( font );
-			int grayscale = 160;
-			//			int grayscale;
-			//			if( textComponent.isFocusOwner() ) {
-			//				grayscale = 160;
-			//			} else {
-			//				grayscale = 100;
-			//			}
 			g.setColor( new java.awt.Color( grayscale, grayscale, grayscale ) );
-			java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
-			g.drawString( textForBlankCondition, 4, (int)bounds.getHeight() + 0 );
+			java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( textForBlankCondition, g );
+			int x = (int)(textComponent.getWidth() - bounds.getWidth() - textComponent.getInsets().right - 4 );
+			int y = (int)bounds.getHeight();
+			g.drawString( textForBlankCondition, x, y );
 		}
+	}
+}
+
+class TextComponentBorder extends javax.swing.border.CompoundBorder {
+	public TextComponentBorder() {
+		super( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ), javax.swing.BorderFactory.createEmptyBorder( 1, 3, 1, 3 ) );
 	}
 }
 
@@ -81,7 +91,7 @@ class SuggestiveTextField extends javax.swing.JTextField {
 
 	public SuggestiveTextField( String text, String textForBlankCondition ) {
 		super( text );
-		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
+		this.setBorder( new TextComponentBorder() );
 		this.textForBlankCondition = textForBlankCondition;
 		this.addFocusListener( new FocusAdapter( this ) );
 		//setToolTipText( this.textForBlankCondition );
@@ -109,7 +119,7 @@ class SuggestiveTextArea extends javax.swing.JTextArea {
 
 	public SuggestiveTextArea( String text, String textForBlankCondition ) {
 		super( text );
-		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
+		this.setBorder( new TextComponentBorder() );
 		this.textForBlankCondition = textForBlankCondition;
 		//this.setToolTipText( this.textForBlankCondition );
 		this.addFocusListener( new FocusAdapter( this ) );
@@ -174,10 +184,10 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 
 	}
 
-	private static final String SUMMARY_TEXT = "please fill in a one line synopsis of the bug";
-	private static final String DESCRIPTION_TEXT = "please fill in a detailed description of the bug";
+	private static final String SUMMARY_TEXT = "please fill in a one line synopsis";
+	private static final String DESCRIPTION_TEXT = "please fill in a detailed description";
 	private static final String STEPS_TEXT = "please fill in the steps required to reproduce the bug";
-	private SuggestiveTextField vcSummary = new SuggestiveTextField( "", SUMMARY_TEXT );
+	private SuggestiveTextField vcSummary;
 	private SuggestiveTextArea vcDescription = new SuggestiveTextArea( "", DESCRIPTION_TEXT );
 	private SuggestiveTextArea vcStepsToReproduce = new SuggestiveTextArea( "", STEPS_TEXT );
 	private SystemPropertiesPane vcSystemPropertiesPane = new SystemPropertiesPane();
@@ -203,81 +213,10 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	private javax.swing.JButton vcSubmit = new javax.swing.JButton( new SubmitAction() );
 
 	public AbstractIssuePane() {
-		javax.swing.JPanel reporterPane = new javax.swing.JPanel();
-		//reporterPane.setBorder( javax.swing.BorderFactory.createTitledBorder( "about you" ) );
-		javax.swing.JPanel bugPane = new javax.swing.JPanel();
-		//bugPane.setBorder( javax.swing.BorderFactory.createTitledBorder( "about the bug" ) );
-		
-		class MyExpandPane extends edu.cmu.cs.dennisc.swing.ExpandPane {
-			@Override
-			protected javax.swing.JComponent createCenterPane() {
-				javax.swing.JPanel rv = new javax.swing.JPanel();
-				rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
-				edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( rv, AbstractIssuePane.this.createInsightPaneRows(), 8, 4 );
-				return rv;
-			}
-			@Override
-			protected java.lang.String getCollapsedButtonText() {
-				return "yes >>>";
-			}
-			@Override
-			protected java.lang.String getCollapsedLabelText() {
-				return "Can you provide insight into this problem?";
-			}
-			@Override
-			protected java.lang.String getExpandedLabelText() {
-				return "Please provide insight:";
-			}
-		}
-		MyExpandPane expandPane = new MyExpandPane();
-		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( bugPane, createBugPaneRows(), 8, 4 );
-		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( reporterPane, createReporterPaneRows(), 8, 4 );
-		//edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( insightPane, createInsightPaneRows(), 8, 4 );
-
 		//this.vcSubmit.setBackground( java.awt.Color.GREEN.brighter() );
 		java.awt.Font font = this.vcSubmit.getFont();
 		this.vcSubmit.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
 		this.vcSubmit.setAlignmentX( java.awt.Component.CENTER_ALIGNMENT );
-		
-
-		StringBuffer sb = new StringBuffer();
-		sb.append( "An exception has been caught:\n\n" );
-		sb.append( "  If you were running your program then:\n    it could be either a bug(error) in Alice or your code.\n\n" );
-		sb.append( "  If you were building your program then:\n    it is a bug in Alice.\n\n" );
-		sb.append( "Please press the \"submit bug report\" button" );
-		//sb.append( " and accept our apologies" );
-		sb.append( "." );
-		javax.swing.JTextArea header = new javax.swing.JTextArea( sb.toString() ) {
-			@Override
-			public void paint(java.awt.Graphics g) {
-				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-				g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-				super.paint( g );
-			}
-		};
-		header.setEditable( false );
-		//header.setOpaque( false );
-		header.setLineWrap( true );
-		header.setWrapStyleWord( true );
-		header.setFont( font.deriveFont( font.getSize2D() * 1.15f ) );
-		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,8,4,0 ) );
-
-		javax.swing.JPanel headerPane = new javax.swing.JPanel();
-		headerPane.setLayout( new java.awt.BorderLayout() );
-		headerPane.add( header );
-		headerPane.setBorder( javax.swing.BorderFactory.createEtchedBorder() );
-		
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-		this.add( headerPane );
-		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 16 ) ) );
-		this.add( reporterPane );
-		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 24 ) ) );
-		this.add( bugPane );
-		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 24 ) ) );
-		this.add( expandPane );
-		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 16 ) ) );
-		this.add( this.vcSubmit );
 	}
 
 	private java.awt.Window window;
@@ -289,39 +228,55 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		this.window = window;
 	}
 
-	private java.util.ArrayList< java.awt.Component[] > createInsightPaneRows() {
+	protected abstract boolean isSummaryRequired();
+	protected java.util.ArrayList< java.awt.Component[] > createInsightPaneRows() {
 		return addInsightPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 	}
+	
+	protected abstract boolean isStepsPaneDesired();
 	protected java.util.ArrayList< java.awt.Component[] > addInsightPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
 		javax.swing.JLabel summaryLabel = new javax.swing.JLabel( "summary:", javax.swing.SwingConstants.TRAILING );
 		javax.swing.JLabel descriptionLabel = new javax.swing.JLabel( "description:", javax.swing.SwingConstants.TRAILING );
-		javax.swing.JLabel stepsToReproduceLabel = new javax.swing.JLabel( "steps:", javax.swing.SwingConstants.TRAILING );
-		summaryLabel.setToolTipText( SUMMARY_TEXT );
+		
+		String summaryText = SUMMARY_TEXT;
+		if( this.isSummaryRequired() ) {
+			summaryText = summaryText + " (Required)";
+		}
+		this.vcSummary = new SuggestiveTextField( "", summaryText );
+		summaryLabel.setToolTipText( summaryText );
 		descriptionLabel.setToolTipText( DESCRIPTION_TEXT );
-		stepsToReproduceLabel.setToolTipText( STEPS_TEXT );
 
 		descriptionLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
-		stepsToReproduceLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 
-		this.vcDescription.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.vcStepsToReproduce.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		
+		javax.swing.JScrollPane scrollDescription = new javax.swing.JScrollPane( this.vcDescription );
+		scrollDescription.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+
 		rv.add( new java.awt.Component[] { summaryLabel, this.vcSummary } );
-		rv.add( new java.awt.Component[] { descriptionLabel, new javax.swing.JScrollPane( this.vcDescription ) } );
-		rv.add( new java.awt.Component[] { stepsToReproduceLabel, new javax.swing.JScrollPane( this.vcStepsToReproduce ) } );
+		rv.add( new java.awt.Component[] { descriptionLabel, scrollDescription } );
+		
+		if( this.isStepsPaneDesired() ) {
+			javax.swing.JLabel stepsToReproduceLabel = new javax.swing.JLabel( "steps:", javax.swing.SwingConstants.TRAILING );
+			stepsToReproduceLabel.setToolTipText( STEPS_TEXT );
+			stepsToReproduceLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
+			javax.swing.JScrollPane scrollSteps = new javax.swing.JScrollPane( this.vcStepsToReproduce );
+			scrollSteps.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+			rv.add( new java.awt.Component[] { stepsToReproduceLabel, scrollSteps } );
+		}
 		return rv;
 	}
 
-	private java.util.ArrayList< java.awt.Component[] > createBugPaneRows() {
+	protected java.util.ArrayList< java.awt.Component[] > createBugPaneRows() {
 		return addBugPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 	}
 	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
-		javax.swing.JLabel systemLabel = new javax.swing.JLabel( "system:", javax.swing.SwingConstants.TRAILING );
+		javax.swing.JLabel systemLabel = new javax.swing.JLabel( "environment:", javax.swing.SwingConstants.TRAILING );
 		systemLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.add( new java.awt.Component[] { systemLabel, this.vcSystemPropertiesPane } );
 		return rv;
 	}
 
-	private java.util.ArrayList< java.awt.Component[] > createReporterPaneRows() {
+	protected java.util.ArrayList< java.awt.Component[] > createReporterPaneRows() {
 		return addReporterPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 	}
 	protected java.util.ArrayList< java.awt.Component[] > addReporterPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
@@ -361,18 +316,17 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		}
 		return rv;
 	}
-	
-	
+
 	private String getSubSummary( Issue issue ) {
 		String summary = issue.getSummary();
 		if( summary != null && summary.length() > 0 ) {
 			return summary;
 		} else {
 			StringBuffer sb = new StringBuffer();
-//			sb.append( "summary: unspecified; " );
+			//			sb.append( "summary: unspecified; " );
 			Throwable throwable = issue.getThrowable();
 			if( throwable != null ) {
-//				sb.append( "exception: " );
+				//				sb.append( "exception: " );
 				sb.append( throwable.getClass().getName() );
 				sb.append( "; " );
 				String message = throwable.getMessage();
@@ -401,7 +355,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 			return sb.toString();
 		}
 	}
-	
+
 	protected final String getJIRASummary( Issue issue ) {
 		return getSubSummary( issue );
 	}
@@ -479,7 +433,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		return rv;
 	}
 
-	protected abstract String getJIRAServer();
+	protected abstract java.net.URL getJIRAServer() throws java.net.MalformedURLException;
 	protected abstract String getMailServer();
 	protected abstract String getMailRecipient();
 	protected abstract edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRARPCAuthenticator();
@@ -503,10 +457,10 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		Issue issue = this.createIssue();
 		updateIssue( issue );
 		ProgressPane progressPane = new ProgressPane();
-		final String RPC_PATH = "/rpc/xmlrpc";
+
 		java.net.URL jiraURL;
 		try {
-			jiraURL = new java.net.URL( this.getJIRAServer() + RPC_PATH );
+			jiraURL = this.getJIRAServer();
 		} catch( java.net.MalformedURLException murl ) {
 			throw new RuntimeException( murl );
 		}
@@ -532,7 +486,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		} else {
 			this.isSubmitBackgrounded = progressPane.isBackgrounded();
 		}
-		
+
 		return progressPane.isSuccessful();
 	}
 }
