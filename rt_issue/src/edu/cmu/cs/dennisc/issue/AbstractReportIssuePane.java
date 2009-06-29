@@ -57,7 +57,7 @@ public abstract class AbstractReportIssuePane extends AbstractIssuePane {
 		environmentLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rows.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( environmentLabel, scrollEnvironment ) );
 		
-		//this.addReporterPaneRows( rows );
+		this.addReporterPaneRows( rows );
 
 		
 		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this, rows, 8, 4 );

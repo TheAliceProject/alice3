@@ -113,7 +113,7 @@ public class ReportIssuePane extends edu.cmu.cs.dennisc.issue.AbstractReportIssu
 	}
 	
 	public static void main( String[] args ) {
-		ReportIssuePane pane = new ReportIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type.NEW_FEAURE );
+		ReportIssuePane pane = new ReportIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type.BUG );
 		javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton();
 		if( frame != null ) {
 			//pass
