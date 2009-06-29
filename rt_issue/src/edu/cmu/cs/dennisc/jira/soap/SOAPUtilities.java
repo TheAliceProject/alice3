@@ -52,7 +52,7 @@ public class SOAPUtilities {
 		rv.append( ";\n" );
 		return rv;
 	}
-	private static com.atlassian.jira.rpc.soap.client.RemoteIssue createPreparedIssue( edu.cmu.cs.dennisc.issue.Issue issue ) {
+	private static com.atlassian.jira.rpc.soap.client.RemoteIssue createPreparedIssue( edu.cmu.cs.dennisc.issue.Issue issue, boolean isInclusionOfCompleteSystemPropertiesDesired ) {
 		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = new com.atlassian.jira.rpc.soap.client.RemoteIssue();
 		remoteIssue.setSummary( edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( issue.getJIRASummary(), 254 ) );
 		remoteIssue.setType( Integer.toString( edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( issue.getType() ) ) );
@@ -71,15 +71,17 @@ public class SOAPUtilities {
 		}
 		SOAPUtilities.appendSystemProperty( environment, "os.name" );
 		SOAPUtilities.appendSystemProperty( environment, "java.vm.version" );
-		environment.append( "complete system properties:\n" );
-		environment.append( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
-		environment.append( "\n;\n" );
+		if( isInclusionOfCompleteSystemPropertiesDesired ) {
+			environment.append( "complete system properties:\n" );
+			environment.append( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
+			environment.append( "\n;\n" );
+		}
 		remoteIssue.setEnvironment( environment.toString() );
 		return remoteIssue;
 	}
 
-	public static com.atlassian.jira.rpc.soap.client.RemoteIssue createIssue( edu.cmu.cs.dennisc.issue.Issue issue, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token, String project ) throws java.rmi.RemoteException {
-		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = createPreparedIssue( issue );
+	public static com.atlassian.jira.rpc.soap.client.RemoteIssue createIssue( edu.cmu.cs.dennisc.issue.Issue issue, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token, String project, boolean isInclusionOfCompleteSystemPropertiesDesired ) throws java.rmi.RemoteException {
+		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = createPreparedIssue( issue, isInclusionOfCompleteSystemPropertiesDesired );
 		remoteIssue.setProject( project );
 		com.atlassian.jira.rpc.soap.client.RemoteVersion[] remoteAffectsVersions = SOAPUtilities.getRemoteAffectsVersions( issue, service, token, project );
 		remoteIssue.setAffectsVersions( remoteAffectsVersions );

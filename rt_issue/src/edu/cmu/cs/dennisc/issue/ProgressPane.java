@@ -51,8 +51,8 @@ public class ProgressPane extends javax.swing.JPanel {
 		this.add( new javax.swing.JScrollPane( this.console ), java.awt.BorderLayout.CENTER );
 		this.add( new javax.swing.JScrollPane( buttonPane ), java.awt.BorderLayout.SOUTH );
 	}
-	public void initializeAndExecuteWorker( Issue issue, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator, edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient ) {
-		this.uploadWorker.initialize( issue, jiraServer, jiraRPCAuthenticator, jiraSOAPAuthenticator, mailServer, mailAuthenticator, reporterEMailAddress, reporterName, recipient );
+	public void initializeAndExecuteWorker( Issue issue, String projectKey, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator, edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient, boolean isInclusionOfCompleteSystemPropertiesDesired ) {
+		this.uploadWorker.initialize( issue, projectKey, jiraServer, jiraRPCAuthenticator, jiraSOAPAuthenticator, mailServer, mailAuthenticator, reporterEMailAddress, reporterName, recipient, isInclusionOfCompleteSystemPropertiesDesired );
 		this.uploadWorker.execute();
 	}
 

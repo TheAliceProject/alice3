@@ -25,9 +25,9 @@ package edu.cmu.cs.dennisc.issue;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractReportIssuePane extends AbstractIssuePane {
+public abstract class AbstractPostIssuePane extends AbstractIssuePane {
 	private edu.cmu.cs.dennisc.issue.Issue.Type issueType;
-	public AbstractReportIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type issueType ) {
+	public AbstractPostIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type issueType ) {
 		this.issueType = issueType;
 		javax.swing.JTextArea vcEnvironment = new javax.swing.JTextArea() {
 			@Override
@@ -57,11 +57,28 @@ public abstract class AbstractReportIssuePane extends AbstractIssuePane {
 		environmentLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rows.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( environmentLabel, scrollEnvironment ) );
 		
-		this.addReporterPaneRows( rows );
+		//this.addReporterPaneRows( rows );
 
 		
-		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this, rows, 8, 4 );
+		javax.swing.JPanel centerPane = new javax.swing.JPanel();
+		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( centerPane, rows, 8, 4 );
+		
+		javax.swing.JPanel southPane = new javax.swing.JPanel();
+		southPane.add( this.getSubmitButton() );
+
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( centerPane, java.awt.BorderLayout.CENTER );
+		this.add( southPane, java.awt.BorderLayout.SOUTH );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+	}
+
+	@Override
+	protected int getPreferredDescriptionHeight() {
+		return 128;
+	}
+	@Override
+	protected int getPreferredStepsHeight() {
+		return 128;
 	}
 	
 	@Override
@@ -71,6 +88,22 @@ public abstract class AbstractReportIssuePane extends AbstractIssuePane {
 	@Override
 	protected boolean isSummaryRequired() {
 		return true;
+	}
+
+	@Override
+	protected boolean isInclusionOfCompleteSystemPropertiesDesired() {
+		return false;
+	}
+	
+	@Override
+	protected boolean isClearedToSubmit() {
+		String summary = this.getSummary();
+		if( summary != null && summary.length() > 0 ) {
+			return true;
+		} else {
+			javax.swing.JOptionPane.showMessageDialog( this, "You must fill in the summary field in order to submit." );
+			return false;
+		}
 	}
 	
 	@Override

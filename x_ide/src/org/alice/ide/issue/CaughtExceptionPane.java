@@ -27,6 +27,10 @@ package org.alice.ide.issue;
  */
 public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaughtExceptionPane {
 	@Override
+	protected java.lang.String getProjectKey() {
+		return "AIIIP";
+	}
+	@Override
 	protected java.net.URL getJIRAServer() throws java.net.MalformedURLException {
 		return new java.net.URL( "http://bugs.alice.org:8080/rpc/xmlrpc" );
 	}
@@ -55,50 +59,51 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaught
 	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
 		rv = super.updateCriticalAttachments( rv );
 		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the Alice team in diagnosing and fixing this bug.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_OPTION ) ) {
-			rv.add( new edu.cmu.cs.dennisc.issue.Attachment() {
-				private boolean isCreateAttempted = false;
-				private boolean isCreateSuccessful = false;
-				private byte[] bytes = null;
-
-				private void createBytesIfNecessary() {
-					if( this.isCreateAttempted ) {
-						//pass
-					} else {
-						try {
-							org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-							edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-							java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-							edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( project, baos );
-							baos.flush();
-							this.bytes = baos.toByteArray();
-							this.isCreateSuccessful = true;
-						} catch( Throwable t ) {
-							this.bytes = edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsByteArray( t );
-						}
-						this.isCreateAttempted = true;
-					}
-				}
-				public byte[] getBytes() {
-					this.createBytesIfNecessary();
-					return this.bytes;
-				}
-				public String getMIMEType() {
-					this.createBytesIfNecessary();
-					if( this.isCreateSuccessful ) {
-						return "application/a3p";
-					} else {
-						return "text/plain";
-					}
-				}
-				public String getFileName() {
-					this.createBytesIfNecessary();
-					if( this.isCreateSuccessful ) {
-						return "currentProject.a3p";
-					} else {
-						return "failedToAttachProject.txt";
-					}
-				}
-			} );
+			rv.add( new CurrentProjectAttachment() );
+//			rv.add( new edu.cmu.cs.dennisc.issue.Attachment() {
+//				private boolean isCreateAttempted = false;
+//				private boolean isCreateSuccessful = false;
+//				private byte[] bytes = null;
+//
+//				private void createBytesIfNecessary() {
+//					if( this.isCreateAttempted ) {
+//						//pass
+//					} else {
+//						try {
+//							org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+//							edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+//							java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+//							edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( project, baos );
+//							baos.flush();
+//							this.bytes = baos.toByteArray();
+//							this.isCreateSuccessful = true;
+//						} catch( Throwable t ) {
+//							this.bytes = edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsByteArray( t );
+//						}
+//						this.isCreateAttempted = true;
+//					}
+//				}
+//				public byte[] getBytes() {
+//					this.createBytesIfNecessary();
+//					return this.bytes;
+//				}
+//				public String getMIMEType() {
+//					this.createBytesIfNecessary();
+//					if( this.isCreateSuccessful ) {
+//						return "application/a3p";
+//					} else {
+//						return "text/plain";
+//					}
+//				}
+//				public String getFileName() {
+//					this.createBytesIfNecessary();
+//					if( this.isCreateSuccessful ) {
+//						return "currentProject.a3p";
+//					} else {
+//						return "failedToAttachProject.txt";
+//					}
+//				}
+//			} );
 		}
 		return rv;
 

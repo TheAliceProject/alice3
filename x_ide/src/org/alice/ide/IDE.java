@@ -607,7 +607,19 @@ public abstract class IDE extends zoot.ZFrame {
 
 		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isOmissionOfThisForFieldAccessesDesiredOperation, this.isExpressionTypeFeedbackDesiredOperation, this.isDefaultFieldNameGenerationDesiredOperation );
 		windowMenu.add( setLocaleMenu );
-		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, new org.alice.ide.operations.help.HelpOperation(), new org.alice.ide.operations.help.ThrowBogusExceptionOperation(), new org.alice.ide.operations.help.WarningOperation( true ), this.createAboutOperation() );
+		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, 
+				new org.alice.ide.operations.help.HelpOperation(), 
+				zoot.ZManager.MENU_SEPARATOR,
+				new org.alice.ide.operations.help.ThrowBogusExceptionOperation(),
+				zoot.ZManager.MENU_SEPARATOR,
+				new org.alice.ide.operations.help.ReportBugOperation(), 
+				new org.alice.ide.operations.help.SuggestImprovementOperation(), 
+				new org.alice.ide.operations.help.RequestNewFeatureOperation(), 
+				zoot.ZManager.MENU_SEPARATOR,
+				new org.alice.ide.operations.help.WarningOperation( true ), 
+				zoot.ZManager.MENU_SEPARATOR,
+				this.createAboutOperation() 
+		);
 		rv.add( fileMenu );
 		rv.add( editMenu );
 		rv.add( runMenu );
@@ -704,7 +716,7 @@ public abstract class IDE extends zoot.ZFrame {
 		this.setTitle( sb.toString() );
 	}
 
-	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
+//	private java.util.List< zoot.DropReceptor > dropReceptors = new java.util.LinkedList< zoot.DropReceptor >();
 
 	protected org.alice.ide.codeeditor.CodeEditor getCodeEditorInFocus() {
 		return (org.alice.ide.codeeditor.CodeEditor)this.editorsTabbedPane.getSelectedComponent();

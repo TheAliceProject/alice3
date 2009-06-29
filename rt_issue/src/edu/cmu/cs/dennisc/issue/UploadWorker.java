@@ -33,6 +33,8 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 
 	private Issue issue;
 
+	private String projectKey;
+	
 	private java.net.URL jiraServer;
 	private edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator;
 	private edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator;
@@ -42,21 +44,24 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 	private String reporterEMailAddress;
 	private String reporterName;
 	private String recipient;
+	private boolean isInclusionOfCompleteSystemPropertiesDesired;
 
 	public UploadWorker( ProgressPane progressPane ) {
 		assert progressPane != null;
 		this.progressPane = progressPane;
 	}
-	public void initialize( Issue issue, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator, edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient ) {
+	public void initialize( Issue issue, String projectKey, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator, edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient, boolean isInclusionOfCompleteSystemPropertiesDesired ) {
+		this.projectKey = projectKey;
+		this.issue = issue;
 		this.jiraServer = jiraServer;
 		this.jiraRPCAuthenticator = jiraRPCAuthenticator;
 		this.jiraSOAPAuthenticator = jiraSOAPAuthenticator;
 		this.mailServer = mailServer;
 		this.mailAuthenticator = mailAuthenticator;
-		this.issue = issue;
 		this.reporterEMailAddress = reporterEMailAddress;
 		this.reporterName = reporterName;
 		this.recipient = recipient;
+		this.isInclusionOfCompleteSystemPropertiesDesired = isInclusionOfCompleteSystemPropertiesDesired;
 	}
 	@Override
 	protected void process( java.util.List< String > chunks ) {
@@ -86,35 +91,24 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 		return this.reporterName;
 	}
 	
-	private final String PROJECT_KEY = "AIIIP";
 	protected void uploadToJIRAViaRPC() throws Exception {
 		final boolean STREAM_MESSAGES = true;
 		redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( this.jiraServer, STREAM_MESSAGES );
 		Object token = this.jiraRPCAuthenticator.login( client );
 		try {
-			redstone.xmlrpc.XmlRpcStruct serverInfo = (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.getServerInfo", new Object[] { token } );
-//			System.out.println( "serverInfo: " + serverInfo );
-			java.util.List< redstone.xmlrpc.XmlRpcStruct > projects = (java.util.List< redstone.xmlrpc.XmlRpcStruct >)client.invoke( "jira1.getProjectsNoSchemes", new Object[] { token } );
-//			System.out.println( "projects: " );
-//			for( redstone.xmlrpc.XmlRpcStruct project : projects ) {
-//				System.out.println( "\t" + project );
-//			}
-			redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.createIssue( issue, client, token, PROJECT_KEY );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( result );
-			
+//			redstone.xmlrpc.XmlRpcStruct serverInfo = (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.getServerInfo", new Object[] { token } );
+//			java.util.List< redstone.xmlrpc.XmlRpcStruct > projects = (java.util.List< redstone.xmlrpc.XmlRpcStruct >)client.invoke( "jira1.getProjectsNoSchemes", new Object[] { token } );
+			redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.createIssue( issue, client, token, this.projectKey );
 		} finally {
 			client.invoke( "jira1.logout", new Object[] { token } );
-			//System.out.println( "done." );
 		}
-//				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
-//				throw new Exception();
 	}
 	protected void uploadToJIRAViaSOAP() throws Exception {
 		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 		com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
 		
 		String token = this.jiraSOAPAuthenticator.login( service );
-	    RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( issue, service, token, "AIIIP" );
+	    RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( issue, service, token, this.projectKey, this.isInclusionOfCompleteSystemPropertiesDesired );
 	    edu.cmu.cs.dennisc.print.PrintUtilities.println( result.getId() );
 		service.logout( token );
 	}

@@ -116,12 +116,14 @@ class SuggestiveTextField extends javax.swing.JTextField {
 @Deprecated
 class SuggestiveTextArea extends javax.swing.JTextArea {
 	private String textForBlankCondition;
+	private int preferredHeight;
 
-	public SuggestiveTextArea( String text, String textForBlankCondition ) {
+	public SuggestiveTextArea( String text, String textForBlankCondition, int preferredHeight ) {
 		super( text );
-		this.setBorder( new TextComponentBorder() );
+		this.preferredHeight = preferredHeight;
 		this.textForBlankCondition = textForBlankCondition;
 		//this.setToolTipText( this.textForBlankCondition );
+		this.setBorder( new TextComponentBorder() );
 		this.addFocusListener( new FocusAdapter( this ) );
 		this.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {
@@ -146,7 +148,7 @@ class SuggestiveTextArea extends javax.swing.JTextArea {
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 64 );
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), this.preferredHeight );
 	}
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
@@ -184,12 +186,14 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 
 	}
 
+	protected abstract int getPreferredDescriptionHeight();
+	protected abstract int getPreferredStepsHeight();
 	private static final String SUMMARY_TEXT = "please fill in a one line synopsis";
 	private static final String DESCRIPTION_TEXT = "please fill in a detailed description";
 	private static final String STEPS_TEXT = "please fill in the steps required to reproduce the bug";
 	private SuggestiveTextField vcSummary;
-	private SuggestiveTextArea vcDescription = new SuggestiveTextArea( "", DESCRIPTION_TEXT );
-	private SuggestiveTextArea vcStepsToReproduce = new SuggestiveTextArea( "", STEPS_TEXT );
+	private SuggestiveTextArea vcDescription = new SuggestiveTextArea( "", DESCRIPTION_TEXT, this.getPreferredDescriptionHeight() );
+	private SuggestiveTextArea vcStepsToReproduce = new SuggestiveTextArea( "", STEPS_TEXT, this.getPreferredStepsHeight() );
 	private SystemPropertiesPane vcSystemPropertiesPane = new SystemPropertiesPane();
 
 	private static final String NAME_TEXT = "please fill in your name (optional)";
@@ -202,10 +206,12 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 			super( "submit bug report" );
 		}
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			AbstractIssuePane.this.isSubmitAttempted = true;
-			AbstractIssuePane.this.isSubmitSuccessful = AbstractIssuePane.this.submit();
-			if( AbstractIssuePane.this.window != null ) {
-				AbstractIssuePane.this.window.setVisible( false );
+			if( AbstractIssuePane.this.isClearedToSubmit() ) {
+				AbstractIssuePane.this.isSubmitAttempted = true;
+				AbstractIssuePane.this.isSubmitSuccessful = AbstractIssuePane.this.submit();
+				if( AbstractIssuePane.this.window != null ) {
+					AbstractIssuePane.this.window.setVisible( false );
+				}
 			}
 		}
 	}
@@ -394,7 +400,10 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 			}
 		};
 	}
-	private String getSummary() {
+	
+	
+	
+	protected String getSummary() {
 		return this.vcSummary.getText();
 	}
 	private String getDescription() {
@@ -404,17 +413,19 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		return this.vcStepsToReproduce.getText();
 	}
 	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
-		rv.add( new edu.cmu.cs.dennisc.issue.Attachment() {
-			public byte[] getBytes() {
-				return edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLByteArray();
-			}
-			public String getMIMEType() {
-				return "application/xml";
-			}
-			public String getFileName() {
-				return "systemProperties.xml";
-			}
-		} );
+		if( this.isInclusionOfCompleteSystemPropertiesDesired() ) {
+			rv.add( new edu.cmu.cs.dennisc.issue.Attachment() {
+				public byte[] getBytes() {
+					return edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLByteArray();
+				}
+				public String getMIMEType() {
+					return "application/xml";
+				}
+				public String getFileName() {
+					return "systemProperties.xml";
+				}
+			} );
+		}
 		return rv;
 	}
 	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateBonusAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
@@ -453,6 +464,10 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	public boolean isSubmitSuccessful() {
 		return this.isSubmitSuccessful;
 	}
+	protected abstract boolean isInclusionOfCompleteSystemPropertiesDesired();
+	protected abstract boolean isClearedToSubmit();
+	protected abstract String getProjectKey();
+	
 	protected boolean submit() {
 		Issue issue = this.createIssue();
 		updateIssue( issue );
@@ -464,7 +479,7 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		} catch( java.net.MalformedURLException murl ) {
 			throw new RuntimeException( murl );
 		}
-		progressPane.initializeAndExecuteWorker( issue, jiraURL, this.getJIRARPCAuthenticator(), this.getJIRASOAPAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient() );
+		progressPane.initializeAndExecuteWorker( issue, this.getProjectKey(), jiraURL, this.getJIRARPCAuthenticator(), this.getJIRASOAPAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient(), this.isInclusionOfCompleteSystemPropertiesDesired() );
 
 		this.isSubmitBackgrounded = false;
 		javax.swing.JFrame frame = new javax.swing.JFrame();

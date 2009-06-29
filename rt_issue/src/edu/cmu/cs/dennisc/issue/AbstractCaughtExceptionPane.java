@@ -144,12 +144,31 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 16 ) ) );
 		this.add( this.getSubmitButton() );
 	}
+	
+	
+	@Override
+	protected boolean isClearedToSubmit() {
+		return true;
+	}
+	@Override
+	protected int getPreferredDescriptionHeight() {
+		return 64;
+	}
+	@Override
+	protected int getPreferredStepsHeight() {
+		return 64;
+	}
 	@Override
 	protected boolean isSummaryRequired() {
 		return false;
 	}
 	@Override
 	protected boolean isStepsPaneDesired() {
+		return true;
+	}
+	
+	@Override
+	protected boolean isInclusionOfCompleteSystemPropertiesDesired() {
 		return true;
 	}
 	@Override
@@ -183,6 +202,7 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 		return rv;
 	}
 
+	
 	@Override
 	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
 		assert this.vcExceptionPane == null;
