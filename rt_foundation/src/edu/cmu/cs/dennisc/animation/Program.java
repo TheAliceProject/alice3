@@ -62,11 +62,15 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	}
 	public void setMovieEncoder( edu.cmu.cs.dennisc.movie.MovieEncoder movieEncoder ) {
 		if( m_movieEncoder != null ) {
-			m_movieEncoder.stop();
+			synchronized( m_movieEncoder ) {
+				m_movieEncoder.stop();
+			}
 		}
 		m_movieEncoder = movieEncoder;
 		if( m_movieEncoder != null ) {
-			m_movieEncoder.start();
+			synchronized( m_movieEncoder ) {
+				m_movieEncoder.start();
+			}
 		}
 	}
 
@@ -74,14 +78,16 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	protected void updateAnimator() {
 		if( m_animator != null ) {
 			if( m_movieEncoder != null ) {
-				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
-				if( lg.getWidth() > 0 && lg.getHeight() > 0 ) {
-					if( reusableImage == null || reusableImage.getWidth() != lg.getWidth() || reusableImage.getHeight() != lg.getHeight() ) {
-						reusableImage = lg.createBufferedImageForUseAsColorBuffer();
-					}
-					if( this.reusableImage != null ) {
-						lg.getColorBuffer( this.reusableImage );
-						m_movieEncoder.addBufferedImage( this.reusableImage );
+				synchronized( m_movieEncoder ) {
+					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
+					if( lg.getWidth() > 0 && lg.getHeight() > 0 ) {
+						if( reusableImage == null || reusableImage.getWidth() != lg.getWidth() || reusableImage.getHeight() != lg.getHeight() ) {
+							reusableImage = lg.createBufferedImageForUseAsColorBuffer();
+						}
+						if( this.reusableImage != null ) {
+							lg.getColorBuffer( this.reusableImage );
+							m_movieEncoder.addBufferedImage( this.reusableImage );
+						}
 					}
 				}
 			}

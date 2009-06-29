@@ -27,10 +27,6 @@ public class VideoCapturePane extends swing.LineAxisPane {
 	private java.io.File getProjectFile() {
 		return new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" );
 	}
-	private java.io.File getOutputDirectory() {
-		return new java.io.File( "/VideoCapture" );
-	}
-	
 	private edu.cmu.cs.dennisc.alice.Project project;
 	public VideoCapturePane() {
 		this.project = edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( getProjectFile() );
