@@ -42,13 +42,15 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Abstra
 		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.setVisible( true );
-		if( pane.isSubmitBackgrounded() ) {
-			//javax.swing.JOptionPane.showMessageDialog( frame, "Thank you for submitting a bug report." );
-		} else {
-			if( pane.isSubmitSuccessful() ) {
-				javax.swing.JOptionPane.showMessageDialog( frame, "Your issue report has been successfully submitted.  Thank you." );
+		if( pane.isSubmitAttempted() ) {
+			if( pane.isSubmitBackgrounded() ) {
+				//javax.swing.JOptionPane.showMessageDialog( frame, "Thank you for submitting a bug report." );
 			} else {
-				javax.swing.JOptionPane.showMessageDialog( frame, "Your issue report FAILED to submitted.  Thank you for trying." );
+				if( pane.isSubmitSuccessful() ) {
+					javax.swing.JOptionPane.showMessageDialog( frame, "Your issue report has been successfully submitted.  Thank you." );
+				} else {
+					javax.swing.JOptionPane.showMessageDialog( frame, "Your issue report FAILED to submitted.  Thank you for trying." );
+				}
 			}
 		}
 	}
