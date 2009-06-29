@@ -87,11 +87,11 @@ class SetBoundsOperation extends zoot.AbstractActionOperation {
 		actionContext.commit( new javax.swing.undo.AbstractUndoableEdit() {
 			@Override
 			public void undo() throws javax.swing.undo.CannotUndoException {
-				setBounds( boundsNext );
+				setBounds( boundsPrev );
 			}
 			@Override
 			public void redo() throws javax.swing.undo.CannotRedoException {
-				setBounds( boundsPrev );
+				setBounds( boundsNext );
 			}
 		} );
 	}
@@ -392,6 +392,8 @@ abstract class HistoryFrame extends zoot.ZFrame {
 		} );
 	}
 	protected void handleEditCommitted( zoot.event.EditEvent e ) {
+		javax.swing.undo.UndoableEdit edit = e.getEdit();
+		edit.redo();
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "editCommitted:", e.getEdit() );
 	}
 }
