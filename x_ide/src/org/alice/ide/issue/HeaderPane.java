@@ -15,7 +15,9 @@ class LogInOperation extends zoot.AbstractActionOperation {
 		this.putValue( javax.swing.Action.NAME, "Log In (Optional)" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		javax.swing.JOptionPane.showMessageDialog( null, "Coming Soon" );
+		Object source = actionContext.getEvent().getSource();
+		java.awt.Component parentComponent = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( source, java.awt.Component.class );
+		javax.swing.JOptionPane.showMessageDialog( parentComponent, "Coming Soon" );
 	}
 }
 class LogOutOperation extends zoot.AbstractActionOperation {
@@ -49,7 +51,8 @@ public class HeaderPane extends swing.LineAxisPane {
 		this.add( hyperlink );
 		this.add( javax.swing.Box.createHorizontalGlue() );
 		this.add( new LogInStatusPane() );
-		this.add( javax.swing.Box.createHorizontalStrut( 12 ) );
+		//this.add( javax.swing.Box.createHorizontalStrut( 12 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 6, 8, 12 ) );
 	}
 	
 	public static void main( String[] args ) {
