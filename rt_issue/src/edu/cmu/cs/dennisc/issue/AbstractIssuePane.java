@@ -444,11 +444,12 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		return rv;
 	}
 
-	protected abstract java.net.URL getJIRAServer() throws java.net.MalformedURLException;
+	protected abstract java.net.URL getJIRAViaRPCServer() throws java.net.MalformedURLException;
+	protected abstract java.net.URL getJIRAViaSOAPServer() throws java.net.MalformedURLException;
 	protected abstract String getMailServer();
 	protected abstract String getMailRecipient();
-	protected abstract edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRARPCAuthenticator();
-	protected abstract edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRASOAPAuthenticator();
+	protected abstract edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator();
+	protected abstract edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator();
 	protected abstract edu.cmu.cs.dennisc.mail.AbstractAuthenticator getMailAuthenticator();
 
 	private boolean isSubmitAttempted = false;
@@ -473,13 +474,19 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 		updateIssue( issue );
 		ProgressPane progressPane = new ProgressPane();
 
-		java.net.URL jiraURL;
+		java.net.URL jiraViaRPCURL;
 		try {
-			jiraURL = this.getJIRAServer();
+			jiraViaRPCURL = this.getJIRAViaRPCServer();
 		} catch( java.net.MalformedURLException murl ) {
 			throw new RuntimeException( murl );
 		}
-		progressPane.initializeAndExecuteWorker( issue, this.getProjectKey(), jiraURL, this.getJIRARPCAuthenticator(), this.getJIRASOAPAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient(), this.isInclusionOfCompleteSystemPropertiesDesired() );
+		java.net.URL jiraViaSOAPURL;
+		try {
+			jiraViaSOAPURL = this.getJIRAViaSOAPServer();
+		} catch( java.net.MalformedURLException murl ) {
+			throw new RuntimeException( murl );
+		}
+		progressPane.initializeAndExecuteWorker( issue, this.getProjectKey(), jiraViaRPCURL, jiraViaSOAPURL, this.getJIRAViaRPCAuthenticator(), this.getJIRAViaSOAPAuthenticator(), this.getMailServer(), this.getMailAuthenticator(), this.getReporterEMailAddress(), this.getReporterName(), this.getMailRecipient(), this.isInclusionOfCompleteSystemPropertiesDesired() );
 
 		this.isSubmitBackgrounded = false;
 		javax.swing.JFrame frame = new javax.swing.JFrame();

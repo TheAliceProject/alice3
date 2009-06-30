@@ -35,7 +35,8 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 
 	private String projectKey;
 	
-	private java.net.URL jiraServer;
+	private java.net.URL jiraViaRPCServer;
+	private java.net.URL jiraViaSOAPServer;
 	private edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator;
 	private edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator;
 	
@@ -50,10 +51,11 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 		assert progressPane != null;
 		this.progressPane = progressPane;
 	}
-	public void initialize( Issue issue, String projectKey, java.net.URL jiraServer, edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator, edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient, boolean isInclusionOfCompleteSystemPropertiesDesired ) {
+	public void initialize( Issue issue, String projectKey, java.net.URL jiraViaRPCServer, java.net.URL jiraViaSOAPServer, edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator, edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient, boolean isInclusionOfCompleteSystemPropertiesDesired ) {
 		this.projectKey = projectKey;
 		this.issue = issue;
-		this.jiraServer = jiraServer;
+		this.jiraViaRPCServer = jiraViaRPCServer;
+		this.jiraViaSOAPServer = jiraViaSOAPServer;
 		this.jiraRPCAuthenticator = jiraRPCAuthenticator;
 		this.jiraSOAPAuthenticator = jiraSOAPAuthenticator;
 		this.mailServer = mailServer;
@@ -93,7 +95,7 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 	
 	protected void uploadToJIRAViaRPC() throws Exception {
 		final boolean STREAM_MESSAGES = true;
-		redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( this.jiraServer, STREAM_MESSAGES );
+		redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( this.jiraViaRPCServer, STREAM_MESSAGES );
 		Object token = this.jiraRPCAuthenticator.login( client );
 		try {
 //			redstone.xmlrpc.XmlRpcStruct serverInfo = (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.getServerInfo", new Object[] { token } );
@@ -105,7 +107,7 @@ public class UploadWorker extends org.jdesktop.swingworker.SwingWorker< Boolean,
 	}
 	protected void uploadToJIRAViaSOAP() throws Exception {
 		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-		com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
+		com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.jiraViaSOAPServer );
 		
 		String token = this.jiraSOAPAuthenticator.login( service );
 	    RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( issue, service, token, this.projectKey, this.isInclusionOfCompleteSystemPropertiesDesired );

@@ -31,15 +31,19 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaught
 		return "AIIIP";
 	}
 	@Override
-	protected java.net.URL getJIRAServer() throws java.net.MalformedURLException {
+	protected java.net.URL getJIRAViaRPCServer() throws java.net.MalformedURLException {
 		return new java.net.URL( "http://bugs.alice.org:8080/rpc/xmlrpc" );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRARPCAuthenticator() {
+	protected java.net.URL getJIRAViaSOAPServer() throws java.net.MalformedURLException {
+		return new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
 		return new org.alice.ide.issue.jira.rpc.Authenticator();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRASOAPAuthenticator() {
+	protected edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
 		return new org.alice.ide.issue.jira.soap.Authenticator();
 	}
 	@Override
