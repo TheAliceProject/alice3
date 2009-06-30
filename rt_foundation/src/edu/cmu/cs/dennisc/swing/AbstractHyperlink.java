@@ -27,6 +27,8 @@ package edu.cmu.cs.dennisc.swing;
  */
 public abstract class AbstractHyperlink extends javax.swing.JLabel {
 	private javax.swing.Action action;
+	private java.awt.Color defaultColor = java.awt.Color.BLACK;
+	private java.awt.Color armedColor = java.awt.Color.BLUE;
 	public AbstractHyperlink() {
 		this.addMouseListener( new java.awt.event.MouseListener() {
 			public void mouseClicked( java.awt.event.MouseEvent e ) {
@@ -34,16 +36,32 @@ public abstract class AbstractHyperlink extends javax.swing.JLabel {
 				AbstractHyperlink.this.action.actionPerformed( null );
 			}
 			public void mouseEntered( java.awt.event.MouseEvent e ) {
-				AbstractHyperlink.this.setForeground( java.awt.Color.BLUE );
+				AbstractHyperlink.this.setForeground( armedColor );
 			}
 			public void mouseExited( java.awt.event.MouseEvent e ) {
-				AbstractHyperlink.this.setForeground( java.awt.Color.BLACK );
+				AbstractHyperlink.this.setForeground( defaultColor );
 			}
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 			}
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
 			} 
 		} );
+	}
+	@Override
+	public java.awt.Dimension getMaximumSize() {
+		return this.getPreferredSize();
+	}
+	public java.awt.Color getDefaultColor() {
+		return this.defaultColor;
+	}
+	public void setDefaultColor( java.awt.Color defaultColor ) {
+		this.defaultColor = defaultColor;
+	}
+	public java.awt.Color getArmedColor() {
+		return this.armedColor;
+	}
+	public void setArmedColor( java.awt.Color armedColor ) {
+		this.armedColor = armedColor;
 	}
 	public javax.swing.Action getAction() {
 		return this.action;

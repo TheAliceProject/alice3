@@ -69,7 +69,7 @@ public abstract class AbstractPostIssuePane extends AbstractIssuePane {
 		this.setLayout( new java.awt.BorderLayout() );
 		this.add( centerPane, java.awt.BorderLayout.CENTER );
 		this.add( southPane, java.awt.BorderLayout.SOUTH );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
+		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 	}
 
 	@Override

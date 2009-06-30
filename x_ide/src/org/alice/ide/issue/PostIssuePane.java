@@ -29,14 +29,16 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.issue.AbstractPostIssuePan
 	public PostIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type issueType ) {
 		super( issueType );
 
-		javax.swing.JPanel northPane = new javax.swing.JPanel();
+//		javax.swing.JPanel northPane = new javax.swing.JPanel();
+//
+//		edu.cmu.cs.dennisc.swing.Hyperlink hyperlink = new edu.cmu.cs.dennisc.swing.Hyperlink( "http://bugs.alice.org:8080" );
+//
+//		northPane.add( zoot.ZLabel.acquire( "alice bug database: " ) );
+//		northPane.add( hyperlink );
 
-		edu.cmu.cs.dennisc.swing.Hyperlink hyperlink = new edu.cmu.cs.dennisc.swing.Hyperlink( "http://bugs.alice.org:8080" );
-
-		northPane.add( zoot.ZLabel.acquire( "alice bug database: " ) );
-		northPane.add( hyperlink );
-
-		this.add( northPane, java.awt.BorderLayout.NORTH );
+//		this.add( northPane, java.awt.BorderLayout.NORTH );
+		HeaderPane headerPane = new HeaderPane();
+		this.add( headerPane, java.awt.BorderLayout.NORTH );
 	}
 	@Override
 	protected String getProjectKey() {
