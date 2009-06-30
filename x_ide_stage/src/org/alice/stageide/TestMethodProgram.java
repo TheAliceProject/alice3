@@ -40,6 +40,7 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 		this.emptyExpressionMethodInvocation = emptyExpressionMethodInvocation;
 		this.vm = new TestVirtualMachine();
 		this.vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
+		this.vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
 		this.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentShown( java.awt.event.ComponentEvent e ) {
 			}

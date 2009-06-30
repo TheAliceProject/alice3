@@ -35,6 +35,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	}
 	@Override
 	protected void run() {
+		this.getOnscreenLookingGlass().getAWTComponent().requestFocus();
 		this.vm.invokeEntryPoint( this.sceneType.getDeclaredMethod( "run" ), this.sceneInstance );
 	}
 	

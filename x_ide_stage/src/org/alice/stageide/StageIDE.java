@@ -233,6 +233,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
 		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
+		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
 		vm.setEntryPointType( this.getProgramType() );
 		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
 		showInJDialog( rtProgram );
@@ -375,6 +376,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.MouseButtonListenerFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		return rv;

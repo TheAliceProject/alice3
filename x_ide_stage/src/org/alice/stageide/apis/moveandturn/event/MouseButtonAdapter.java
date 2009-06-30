@@ -7,7 +7,7 @@ public class MouseButtonAdapter implements org.alice.apis.moveandturn.event.Mous
 		this.context = context;
 		this.method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)type.getDeclaredMethod( "mouseButtonClicked", org.alice.apis.moveandturn.event.MouseButtonEvent.class );
 	}
-	public void mouseButtonClicked( final org.alice.apis.moveandturn.event.MouseButtonEvent e ) {
+	public void mouseButtonClicked( org.alice.apis.moveandturn.event.MouseButtonEvent e ) {
 		this.context.invokeEntryPoint( this.method, e );
 	}
 }

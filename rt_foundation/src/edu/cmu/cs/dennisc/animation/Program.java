@@ -26,23 +26,23 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultProgram {
-	private Animator m_animator;
-	private edu.cmu.cs.dennisc.movie.MovieEncoder m_movieEncoder = null;
+	private Animator animator;
+	private edu.cmu.cs.dennisc.movie.MovieEncoder movieEncoder = null;
 
 	protected void handleSpeedChange( double speed ) {
-		if( m_animator != null ) {
-			m_animator.setSpeedFactor( speed );
+		if( this.animator != null ) {
+			this.animator.setSpeedFactor( speed );
 		}
 	}
 
 	public Animator getAnimator() {
-		return m_animator;
+		return this.animator;
 	}
 	protected void setAnimator( Animator animator ) {
-		m_animator = animator;
+		this.animator = animator;
 	}
 	protected Animator createAnimator() {
-		if( m_movieEncoder != null ) {
+		if( this.movieEncoder != null ) {
 			return new FrameBasedAnimator();
 		} else {
 			return new ClockBasedAnimator();
@@ -57,28 +57,28 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 		throw new RuntimeException();
 	}
 
+	private Object monitor = new Object();
+	
 	public edu.cmu.cs.dennisc.movie.MovieEncoder getMovieEncoder() {
-		return m_movieEncoder;
+		return this.movieEncoder;
 	}
 	public void setMovieEncoder( edu.cmu.cs.dennisc.movie.MovieEncoder movieEncoder ) {
-		if( m_movieEncoder != null ) {
-			synchronized( m_movieEncoder ) {
-				m_movieEncoder.stop();
+		synchronized( this.monitor ) {
+			if( this.movieEncoder != null ) {
+				this.movieEncoder.stop();
 			}
-		}
-		m_movieEncoder = movieEncoder;
-		if( m_movieEncoder != null ) {
-			synchronized( m_movieEncoder ) {
-				m_movieEncoder.start();
+			this.movieEncoder = movieEncoder;
+			if( this.movieEncoder != null ) {
+				this.movieEncoder.start();
 			}
 		}
 	}
 
 	private java.awt.image.BufferedImage reusableImage = null;
 	protected void updateAnimator() {
-		if( m_animator != null ) {
-			if( m_movieEncoder != null ) {
-				synchronized( m_movieEncoder ) {
+		if( this.animator != null ) {
+			synchronized( this.monitor ) {
+				if( this.movieEncoder != null ) {
 					edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = this.getOnscreenLookingGlass();
 					if( lg.getWidth() > 0 && lg.getHeight() > 0 ) {
 						if( reusableImage == null || reusableImage.getWidth() != lg.getWidth() || reusableImage.getHeight() != lg.getHeight() ) {
@@ -86,12 +86,12 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 						}
 						if( this.reusableImage != null ) {
 							lg.getColorBuffer( this.reusableImage );
-							m_movieEncoder.addBufferedImage( this.reusableImage );
+							this.movieEncoder.addBufferedImage( this.reusableImage );
 						}
 					}
 				}
 			}
-			m_animator.update();
+			this.animator.update();
 		}
 	}
 
@@ -126,7 +126,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 		if( movieEncoderDirectoryPath != null ) {
 			setMovieEncoder( new edu.cmu.cs.dennisc.movie.seriesofimages.SeriesOfImagesMovieEncoder( movieEncoderDirectoryPath, "capture", "000", "bmp" ) );
 		}
-		if( m_animator != null ) {
+		if( this.animator != null ) {
 			//pass
 		} else {
 			setAnimator( createAnimator() );
@@ -142,8 +142,8 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 		if( this.isClosed() ) {
 			throw new edu.cmu.cs.dennisc.program.ProgramClosedException();
 		}
-		if( m_animator != null ) {
-			m_animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
+		if( this.animator != null ) {
+			this.animator.invokeAndWait_ThrowRuntimeExceptionsIfNecessary( animation, animationObserver );
 		} else {
 			//todo: issue warning?
 			animation.complete( animationObserver );

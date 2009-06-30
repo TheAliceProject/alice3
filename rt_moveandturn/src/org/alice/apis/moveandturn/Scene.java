@@ -150,6 +150,25 @@ public class Scene extends Composite {
 		return this.mouseButtonListeners;
 	}
 	
+	private java.util.List< org.alice.apis.moveandturn.event.KeyListener > keyListeners = new java.util.LinkedList< org.alice.apis.moveandturn.event.KeyListener >();
+
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void addKeyListener( org.alice.apis.moveandturn.event.KeyListener keyListener ) {
+		synchronized( this.keyListeners ) {
+			this.keyListeners.add( keyListener );
+		}
+	}
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	public void removeKeyListener( org.alice.apis.moveandturn.event.KeyListener keyListener ) {
+		synchronized( this.keyListeners ) {
+			this.keyListeners.remove( keyListener );
+		}
+	}
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	public java.util.List< org.alice.apis.moveandturn.event.KeyListener > getKeyListeners() {
+		return this.keyListeners;
+	}
+
 	private boolean isMouseButtonListenerInExistence() {
 		if( this.mouseButtonListeners.size() > 0 ) {
 			return true;
@@ -208,6 +227,16 @@ public class Scene extends Composite {
 			Scene.this.handleMouseQuoteClickedUnquote( e );
 		}
 	};
+	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
+		public void keyPressed(java.awt.event.KeyEvent e) {
+		}
+		public void keyReleased(java.awt.event.KeyEvent e) {
+		}
+		public void keyTyped(java.awt.event.KeyEvent e) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getKeyCode() );
+		}
+	};
+	
 
 	@PropertyGetterTemplate(visibility = Visibility.TUCKED_AWAY)
 	@Override
@@ -221,6 +250,7 @@ public class Scene extends Composite {
 				java.awt.Component component = lg.getAWTComponent();
 				component.removeMouseListener( this.mouseAdapter );
 				component.removeMouseMotionListener( this.mouseAdapter );
+				component.removeKeyListener( this.keyAdapter );
 			}
 			//handleOwnerChange( null );
 			m_owner = owner;
@@ -230,6 +260,7 @@ public class Scene extends Composite {
 				java.awt.Component component = lg.getAWTComponent();
 				component.addMouseListener( this.mouseAdapter );
 				component.addMouseMotionListener( this.mouseAdapter );
+				component.addKeyListener( this.keyAdapter );
 			}
 		}
 	}
