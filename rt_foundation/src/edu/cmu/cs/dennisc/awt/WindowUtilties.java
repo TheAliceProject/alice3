@@ -34,11 +34,32 @@ public class WindowUtilties {
 				java.awt.Dimension sizeDialog = window.getSize();
 				java.awt.Dimension sizeRoot = root.getSize();
 				java.awt.Point locationRoot = root.getLocationOnScreen();
-				
-				x = locationRoot.x + ( sizeRoot.width - sizeDialog.width )/ 2;
-				y = locationRoot.y + ( sizeRoot.height - sizeDialog.height )/ 2;
+
+				x = locationRoot.x + (sizeRoot.width - sizeDialog.width) / 2;
+				y = locationRoot.y + (sizeRoot.height - sizeDialog.height) / 2;
 			}
 		}
 		window.setLocation( x, y );
+		//ensureTopLeftCornerIsOnScreen( window );
+	}
+
+	public static void ensureTopLeftCornerIsOnScreen( final java.awt.Window window ) {
+		assert window != null;
+		if( window.isValid() && window.isVisible() ) {
+			java.awt.Point ptScreen = window.getLocationOnScreen();
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( ptScreen );
+			if( ptScreen.x < 0 || ptScreen.y < 0 ) {
+				java.awt.Point ptParent = window.getLocation();
+				ptParent.x -= Math.min( ptScreen.x, 0 );
+				ptParent.y -= Math.min( ptScreen.y, 0 );
+				window.setLocation( ptParent );
+			}
+		} else {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					WindowUtilties.ensureTopLeftCornerIsOnScreen( window );
+				}
+			} );
+		}
 	}
 }

@@ -1,10 +1,15 @@
 package org.alice.ide.issue;
 
-class PasswordPane extends swing.Pane {
+class PasswordPane extends swing.PageAxisPane {
 	private static final String HIDDEN_KEY = "HIDDEN_KEY";
 	private static final String EXPOSED_KEY = "EXPOSED_KEY";
 	class PasswordCardPane extends swing.CardPane {
-		private javax.swing.JPasswordField hidden = new javax.swing.JPasswordField();
+		private javax.swing.JPasswordField hidden = new javax.swing.JPasswordField(){
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 256 );
+			}
+		};
 		private javax.swing.JTextField exposed = new javax.swing.JTextField();
 		private boolean isExposed = false;
 		public PasswordCardPane() {
@@ -33,7 +38,7 @@ class PasswordPane extends swing.Pane {
 			}
 		} );
 		
-		this.setLayout( new java.awt.GridLayout( 2, 1 ) );
+		//this.setLayout( new java.awt.GridLayout( 2, 1 ) );
 		this.add( passwordCardPane );
 		this.add( checkBox );
 	}
@@ -61,7 +66,7 @@ class LogInPane extends swing.PageAxisPane {
 		return rv;
 	}
 	public LogInPane() {
-		swing.RowsSpringPane rowsPane = new swing.RowsSpringPane( 4, 4 ) {
+		swing.RowsSpringPane rowsPane = new swing.RowsSpringPane( 8, 4 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "Username:" ), new zoot.ZTextField() ) );
@@ -84,12 +89,12 @@ class LogInPane extends swing.PageAxisPane {
 		buttonPane.setAlignmentX( javax.swing.JComponent.CENTER_ALIGNMENT );
 		
 		this.add( signUpPane );
-		this.add( javax.swing.Box.createHorizontalStrut( 32 ) );
+		this.add( javax.swing.Box.createVerticalStrut( 32 ) );
 		this.add( rowsPane );
-		this.add( javax.swing.Box.createHorizontalStrut( 12 ) );
+		this.add( javax.swing.Box.createVerticalStrut( 6 ) );
 		this.add( buttonPane );
 
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 32, 8, 32 ) );
 	}
 }
 
@@ -109,6 +114,7 @@ class LogInOperation extends zoot.AbstractActionOperation {
 		window.getContentPane().add( pane );
 		window.pack();
 		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, this.getSourceComponent( actionContext ) );
 		window.setVisible( true );
 	}
 }
@@ -121,12 +127,15 @@ class LogOutOperation extends zoot.AbstractActionOperation {
 	}
 }
 
-class LogInStatusPane extends swing.LineAxisPane {
+class LogInStatusPane extends swing.CardPane {
+	private static final String LOG_IN_KEY = "LOG_IN_KEY";
+	private static final String LOG_OUT_KEY = "LOG_OUT_KEY";
 	private zoot.ZButton logInButton = new zoot.ZButton( new LogInOperation() );
 	private zoot.ZButton logOutButton = new zoot.ZButton( new LogOutOperation() );
 
 	public LogInStatusPane() {
-		this.add( this.logInButton );
+		this.add( this.logInButton, LOG_IN_KEY );
+		this.add( this.logOutButton, LOG_OUT_KEY );
 	}
 }
 
@@ -149,8 +158,8 @@ public class HeaderPane extends swing.LineAxisPane {
 	}
 
 	public static void main( String[] args ) {
-		//HeaderPane pane = new HeaderPane();
-		LogInPane pane = new LogInPane();
+		HeaderPane pane = new HeaderPane();
+		//LogInPane pane = new LogInPane();
 		//PasswordPane pane = new PasswordPane();
 		javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton();
 		if( frame != null ) {
@@ -161,6 +170,7 @@ public class HeaderPane extends swing.LineAxisPane {
 		javax.swing.JDialog window = new javax.swing.JDialog( frame, "", true );
 		window.getContentPane().add( pane );
 		window.pack();
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, null );
 		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
 		window.setVisible( true );
 	}

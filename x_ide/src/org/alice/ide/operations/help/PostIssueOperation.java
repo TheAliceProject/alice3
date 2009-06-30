@@ -41,6 +41,7 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Abstra
 		window.pack();
 		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, this.getSourceComponent( actionContext ) );
 		window.setVisible( true );
 		if( pane.isSubmitAttempted() ) {
 			if( pane.isSubmitBackgrounded() ) {
