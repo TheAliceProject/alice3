@@ -28,6 +28,15 @@ package org.alice.ide.issue;
 public class PostIssuePane extends edu.cmu.cs.dennisc.issue.AbstractPostIssuePane {
 	public PostIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type issueType ) {
 		super( issueType );
+
+		javax.swing.JPanel northPane = new javax.swing.JPanel();
+
+		edu.cmu.cs.dennisc.swing.Hyperlink hyperlink = new edu.cmu.cs.dennisc.swing.Hyperlink( "http://bugs.alice.org:8080" );
+
+		northPane.add( zoot.ZLabel.acquire( "alice bug database: " ) );
+		northPane.add( hyperlink );
+
+		this.add( northPane, java.awt.BorderLayout.NORTH );
 	}
 	@Override
 	protected String getProjectKey() {
@@ -61,56 +70,12 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.issue.AbstractPostIssuePan
 	protected String getMailRecipient() {
 		return "alice.bugs.3.beta.xxxx@gmail.com";
 	}
-	
+
 	@Override
 	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
 		rv = super.updateCriticalAttachments( rv );
 		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this, "Is your current project relevant to this issue and are you willing to attach your project with this report?", "Submit project?", javax.swing.JOptionPane.YES_NO_OPTION ) ) {
 			rv.add( new CurrentProjectAttachment() );
-//			rv.add( new edu.cmu.cs.dennisc.issue.Attachment() {
-//				private boolean isCreateAttempted = false;
-//				private boolean isCreateSuccessful = false;
-//				private byte[] bytes = null;
-//
-//				private void createBytesIfNecessary() {
-//					if( this.isCreateAttempted ) {
-//						//pass
-//					} else {
-//						try {
-//							org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-//							edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-//							java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-//							edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( project, baos );
-//							baos.flush();
-//							this.bytes = baos.toByteArray();
-//							this.isCreateSuccessful = true;
-//						} catch( Throwable t ) {
-//							this.bytes = edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsByteArray( t );
-//						}
-//						this.isCreateAttempted = true;
-//					}
-//				}
-//				public byte[] getBytes() {
-//					this.createBytesIfNecessary();
-//					return this.bytes;
-//				}
-//				public String getMIMEType() {
-//					this.createBytesIfNecessary();
-//					if( this.isCreateSuccessful ) {
-//						return "application/a3p";
-//					} else {
-//						return "text/plain";
-//					}
-//				}
-//				public String getFileName() {
-//					this.createBytesIfNecessary();
-//					if( this.isCreateSuccessful ) {
-//						return "currentProject.a3p";
-//					} else {
-//						return "failedToAttachProject.txt";
-//					}
-//				}
-//			} );
 		}
 		return rv;
 
@@ -120,7 +85,7 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.issue.AbstractPostIssuePan
 		rv.setAffectsVersions( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
 		return super.updateIssue( rv );
 	}
-	
+
 	public static void main( String[] args ) {
 		PostIssuePane pane = new PostIssuePane( edu.cmu.cs.dennisc.issue.Issue.Type.BUG );
 		javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton();
@@ -137,5 +102,5 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.issue.AbstractPostIssuePan
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.setVisible( true );
 	}
-	
+
 }
