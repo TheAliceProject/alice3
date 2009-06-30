@@ -26,17 +26,18 @@ package org.alice.ide.issue;
  * @author Dennis Cosgrove
  */
 public class CaughtExceptionPane extends edu.cmu.cs.dennisc.issue.AbstractCaughtExceptionPane {
+	private static final String BASE_JIRA_URL = "http://bugs.alice.org:8080/rpc/";
 	@Override
 	protected java.lang.String getProjectKey() {
 		return "AIIIP";
 	}
 	@Override
 	protected java.net.URL getJIRAViaRPCServer() throws java.net.MalformedURLException {
-		return new java.net.URL( "http://bugs.alice.org:8080/rpc/xmlrpc" );
+		return new java.net.URL( BASE_JIRA_URL + "xmlrpc" );
 	}
 	@Override
 	protected java.net.URL getJIRAViaSOAPServer() throws java.net.MalformedURLException {
-		return new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" );
+		return new java.net.URL(  BASE_JIRA_URL + "soap/jirasoapservice-v2" );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
