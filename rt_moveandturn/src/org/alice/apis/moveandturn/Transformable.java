@@ -82,6 +82,24 @@ public abstract class Transformable extends AbstractTransformable {
 	public edu.cmu.cs.dennisc.scenegraph.Transformable getSGTransformable() {
 		return m_sgTransformable;
 	}
+	
+	private java.util.List< org.alice.apis.moveandturn.event.KeyListener > keyListeners = new java.util.LinkedList< org.alice.apis.moveandturn.event.KeyListener >();
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void addKeyListener( org.alice.apis.moveandturn.event.KeyListener keyListener ) {
+		synchronized( this.keyListeners ) {
+			this.keyListeners.add( keyListener );
+		}
+	}
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	public void removeKeyListener( org.alice.apis.moveandturn.event.KeyListener keyListener ) {
+		synchronized( this.keyListeners ) {
+			this.keyListeners.remove( keyListener );
+		}
+	}
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	public java.util.List< org.alice.apis.moveandturn.event.KeyListener > getKeyListeners() {
+		return this.keyListeners;
+	}
 
 	private boolean m_isRealized = false;
 	protected void realize() {

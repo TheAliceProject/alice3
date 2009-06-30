@@ -26,5 +26,5 @@ package org.alice.apis.moveandturn.event;
  * @author Dennis Cosgrove
  */
 public interface KeyListener {
-	public void keyTyped( KeyEvent e );
+	public void keyPressed( KeyEvent e );
 }

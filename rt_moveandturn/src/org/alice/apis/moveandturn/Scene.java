@@ -150,25 +150,6 @@ public class Scene extends Composite {
 		return this.mouseButtonListeners;
 	}
 	
-	private java.util.List< org.alice.apis.moveandturn.event.KeyListener > keyListeners = new java.util.LinkedList< org.alice.apis.moveandturn.event.KeyListener >();
-
-	@MethodTemplate(visibility = Visibility.PRIME_TIME)
-	public void addKeyListener( org.alice.apis.moveandturn.event.KeyListener keyListener ) {
-		synchronized( this.keyListeners ) {
-			this.keyListeners.add( keyListener );
-		}
-	}
-	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
-	public void removeKeyListener( org.alice.apis.moveandturn.event.KeyListener keyListener ) {
-		synchronized( this.keyListeners ) {
-			this.keyListeners.remove( keyListener );
-		}
-	}
-	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public java.util.List< org.alice.apis.moveandturn.event.KeyListener > getKeyListeners() {
-		return this.keyListeners;
-	}
-
 	private boolean isMouseButtonListenerInExistence() {
 		if( this.mouseButtonListeners.size() > 0 ) {
 			return true;
@@ -221,6 +202,70 @@ public class Scene extends Composite {
 			}
 		}
 	}
+
+	private java.util.List< org.alice.apis.moveandturn.event.KeyListener > keyListeners = new java.util.LinkedList< org.alice.apis.moveandturn.event.KeyListener >();
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void addKeyListener( org.alice.apis.moveandturn.event.KeyListener keyListener ) {
+		synchronized( this.keyListeners ) {
+			this.keyListeners.add( keyListener );
+		}
+	}
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	public void removeKeyListener( org.alice.apis.moveandturn.event.KeyListener keyListener ) {
+		synchronized( this.keyListeners ) {
+			this.keyListeners.remove( keyListener );
+		}
+	}
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	public java.util.List< org.alice.apis.moveandturn.event.KeyListener > getKeyListeners() {
+		return this.keyListeners;
+	}
+	private boolean isKeyListenerInExistence() {
+		if( this.keyListeners.size() > 0 ) {
+			return true;
+		} else {
+			for( Transformable component : this.getComponents() ) {
+				if( component.getKeyListeners().size() > 0 ) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+	private void handleKeyPressed( java.awt.event.KeyEvent e ) {
+		if( this.isKeyListenerInExistence() ) {
+			synchronized( this.keyListeners ) {
+				final org.alice.apis.moveandturn.event.KeyEvent ke = new org.alice.apis.moveandturn.event.KeyEvent( e );
+				for( final org.alice.apis.moveandturn.event.KeyListener keyListener : this.keyListeners ) {
+					new Thread() {
+						@Override
+						public void run() {
+							Program.invokeAndCatchProgramClosedException( new Runnable() {
+								public void run() {
+									keyListener.keyPressed( ke );
+								}
+							} );
+						}
+					}.start();
+				}
+				for( Transformable component : this.getComponents() ) {
+					for( final org.alice.apis.moveandturn.event.KeyListener keyListener : component.getKeyListeners() ) {
+						new Thread() {
+							@Override
+							public void run() {
+								Program.invokeAndCatchProgramClosedException( new Runnable() {
+									public void run() {
+										keyListener.keyPressed( ke );
+									}
+								} );
+							}
+						}.start();
+					}
+				}
+			}
+		}
+	}
+
 	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
@@ -229,11 +274,11 @@ public class Scene extends Composite {
 	};
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {
 		public void keyPressed(java.awt.event.KeyEvent e) {
+			Scene.this.handleKeyPressed( e );
 		}
 		public void keyReleased(java.awt.event.KeyEvent e) {
 		}
 		public void keyTyped(java.awt.event.KeyEvent e) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getKeyCode() );
 		}
 	};
 	
