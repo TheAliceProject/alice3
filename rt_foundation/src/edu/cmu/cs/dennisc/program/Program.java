@@ -30,58 +30,61 @@ public abstract class Program extends javax.swing.JApplet {
 //		Thread.setDefaultUncaughtExceptionHandler( new UncaughtExceptionHandler() );
 //	}
 	
-	//	private javax.swing.JLayeredPane m_topLevelLayeredPane = new javax.swing.JLayeredPane();
-	private java.util.Map< String, String > m_argNameToValueMap = null;
+	//	private javax.swing.JLayeredPane this.topLevelLayeredPane = new javax.swing.JLayeredPane();
+	private java.util.Map< String, String > argNameToValueMap = null;
 
-	private boolean m_isClosed = false;
+	private boolean isClosed = false;
 	protected boolean isClosed() {
-		return m_isClosed;
+		return this.isClosed;
+	}
+	public void setClosed( boolean isClosed ) {
+		this.isClosed = isClosed;
 	}
 	//todo: override getParameterInfo()
 
 	@Override
 	public String getParameter( String name ) {
-		if( m_argNameToValueMap != null ) {
-			return m_argNameToValueMap.get( name );
+		if( this.argNameToValueMap != null ) {
+			return this.argNameToValueMap.get( name );
 		} else {
 			return super.getParameter( name );
 		}
 	}
 	public void setParameter( String name, String value ) {
-		m_argNameToValueMap.put( name, value );
+		this.argNameToValueMap.put( name, value );
 	}
 
 	public void setArgs( String args[] ) {
-		m_isClosed = false;
-		m_argNameToValueMap = new java.util.HashMap< String, String >();
+		this.isClosed = false;
+		this.argNameToValueMap = new java.util.HashMap< String, String >();
 		for( String arg : args ) {
 			int i = arg.indexOf( '=' );
 			assert i != -1;
 			String key = arg.substring( 0, i );
 			String value = arg.substring( i + 1 );
-			m_argNameToValueMap.put( key, value );
+			this.argNameToValueMap.put( key, value );
 		}
 	}
 
 	//	public javax.swing.JLayeredPane getTopLevelLayeredPane() {
-	//		return m_topLevelLayeredPane;
+	//		return this.topLevelLayeredPane;
 	//		//return getLayeredPane();
 	//	}
 
-	private javax.swing.JLayeredPane m_layeredPane;
+	private javax.swing.JLayeredPane layeredPane;
 
 	@Override
 	public javax.swing.JLayeredPane getLayeredPane() {
-		if( m_layeredPane != null ) {
-			return m_layeredPane;
+		if( this.layeredPane != null ) {
+			return this.layeredPane;
 		} else {
 			return super.getLayeredPane();
 		}
 	}
 
-	private boolean m_isInitializationSuccessful = false;
+	private boolean isInitializationSuccessful = false;
 
-	private java.util.concurrent.Semaphore m_semaphore = new java.util.concurrent.Semaphore( 0 );
+	private java.util.concurrent.Semaphore semaphore = new java.util.concurrent.Semaphore( 0 );
 
 	@Override
 	public final void init() {
@@ -90,14 +93,14 @@ public abstract class Program extends javax.swing.JApplet {
 			@Override
 			public void run() {
 				preInitialize();
-				m_isInitializationSuccessful = false;
+				Program.this.isInitializationSuccessful = false;
 				try {
 					initialize();
-					m_isInitializationSuccessful = true;
+					Program.this.isInitializationSuccessful = true;
 				} finally {
 					getContentPane().validate();
-					postInitialize( m_isInitializationSuccessful );
-					m_semaphore.release();
+					postInitialize( Program.this.isInitializationSuccessful );
+					Program.this.semaphore.release();
 				}
 			}
 		}
@@ -148,8 +151,8 @@ public abstract class Program extends javax.swing.JApplet {
 		class RunThread extends edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString {
 			@Override
 			public void run() {
-				m_semaphore.acquireUninterruptibly();
-				if( m_isInitializationSuccessful ) {
+				Program.this.semaphore.acquireUninterruptibly();
+				if( Program.this.isInitializationSuccessful ) {
 					Program.this.preRun();
 					Program.invokeAndCatchProgramClosedException( new Runnable() {
 						public void run() {
@@ -184,20 +187,20 @@ public abstract class Program extends javax.swing.JApplet {
 		}
 	}
 
-	//	private java.awt.Dimension m_preferredSize = new java.awt.Dimension( 640, 480 );
+	//	private java.awt.Dimension this.preferredSize = new java.awt.Dimension( 640, 480 );
 	//
 	//	@Override
 	//	public java.awt.Dimension getPreferredSize() {
-	//		return m_preferredSize;
+	//		return this.preferredSize;
 	//	}
 
 	public class StartProgramComponentAdapter implements java.awt.event.ComponentListener {
-		private boolean m_isAlreadyStarted = false;
+		private boolean isAlreadyStarted = false;
 		public void componentShown( java.awt.event.ComponentEvent e ) {
-			if( m_isAlreadyStarted ) {
+			if( this.isAlreadyStarted ) {
 				//pass
 			} else {
-				m_isAlreadyStarted = true;
+				this.isAlreadyStarted = true;
 				Program.this.start();
 			}
 		}
@@ -235,7 +238,7 @@ public abstract class Program extends javax.swing.JApplet {
 				if( isExitDesiredOnClose ) {
 					System.exit( 0 );
 				}
-				Program.this.m_isClosed = true;
+				Program.this.setClosed( true );
 			}
 		} );
 		window.addComponentListener( new java.awt.event.ComponentListener() {
@@ -271,7 +274,7 @@ public abstract class Program extends javax.swing.JApplet {
 			frame.getContentPane().add( this );
 		} else {
 			frame.getContentPane().add( this.getContentPane() );
-			m_layeredPane = frame.getLayeredPane();
+			this.layeredPane = frame.getLayeredPane();
 		}
 
 		init();
