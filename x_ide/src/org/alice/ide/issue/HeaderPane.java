@@ -114,7 +114,8 @@ class LogInOperation extends zoot.AbstractActionOperation {
 		window.getContentPane().add( pane );
 		window.pack();
 		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, this.getSourceComponent( actionContext ) );
+		
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, javax.swing.SwingUtilities.getRoot( this.getSourceComponent( actionContext ) ) );
 		window.setVisible( true );
 	}
 }
