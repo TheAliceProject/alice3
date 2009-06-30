@@ -145,6 +145,10 @@ public abstract class AbstractCaughtExceptionPane extends AbstractIssuePane {
 		this.add( this.getSubmitButton() );
 	}
 	
+	@Override
+	protected int getPreferredWidth() {
+		return 480;
+	}
 	
 	@Override
 	protected boolean isClearedToSubmit() {

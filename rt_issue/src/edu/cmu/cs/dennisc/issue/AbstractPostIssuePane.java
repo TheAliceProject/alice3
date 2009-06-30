@@ -62,6 +62,7 @@ public abstract class AbstractPostIssuePane extends AbstractIssuePane {
 		
 		javax.swing.JPanel centerPane = new javax.swing.JPanel();
 		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( centerPane, rows, 8, 4 );
+		centerPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 12, 12, 12 ) );
 		
 		javax.swing.JPanel southPane = new javax.swing.JPanel();
 		southPane.add( this.getSubmitButton() );
@@ -72,6 +73,10 @@ public abstract class AbstractPostIssuePane extends AbstractIssuePane {
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4,4,4,4 ) );
 	}
 
+	@Override
+	protected int getPreferredWidth() {
+		return 600;
+	}
 	@Override
 	protected int getPreferredDescriptionHeight() {
 		return 128;

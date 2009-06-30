@@ -298,11 +298,14 @@ public abstract class AbstractIssuePane extends javax.swing.JPanel {
 	public javax.swing.JButton getSubmitButton() {
 		return this.vcSubmit;
 	}
+	
+	protected abstract int getPreferredWidth();
+	
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = super.getPreferredSize();
 		//rv.width = Math.max( rv.width, 640 );
-		rv.width = 480;
+		rv.width = this.getPreferredWidth();
 		return rv;
 	}
 

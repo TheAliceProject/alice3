@@ -20,18 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot;
+package org.alice.apis.moveandturn.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractOperation implements Operation {
-	protected java.awt.Component getSourceComponent( Context< ? > context ) {
-		if( context != null ) {
-			java.util.EventObject e = context.getEvent();
-			return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( e.getSource(), java.awt.Component.class );
-		} else {
-			return null;
-		}
+public class KeyEvent extends edu.cmu.cs.dennisc.pattern.event.Event< java.awt.Component > {
+	private java.awt.event.KeyEvent e;
+	public KeyEvent( java.awt.event.KeyEvent e ) {
+		super( e.getComponent() );
+		this.e = e;
+	}
+	
+	public org.alice.apis.moveandturn.Key getKey() {
+		return org.alice.apis.moveandturn.Key.get( e );
 	}
 }
