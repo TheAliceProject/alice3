@@ -36,6 +36,11 @@ public class ZComboBox extends javax.swing.JComboBox {
 			}
 		}
 	};
+	public ZComboBox() {
+	}
+	public ZComboBox( ItemSelectionOperation itemSelectionOperation ) {
+		this.setItemSelectionOperation( itemSelectionOperation );
+	}
 	public ItemSelectionOperation getItemSelectionOperation() {
 		return this.itemSelectionOperation;
 	}
