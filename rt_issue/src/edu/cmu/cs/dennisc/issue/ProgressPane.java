@@ -23,19 +23,19 @@
 
 package edu.cmu.cs.dennisc.issue;
 
+
 /**
  * @author Dennis Cosgrove
  */
 public class ProgressPane extends javax.swing.JPanel {
 	private javax.swing.JTextPane console = new javax.swing.JTextPane();
 	private javax.swing.JButton background = new javax.swing.JButton( "run in background" );
-	private UploadWorker uploadWorker;
+	private IssueReportWorker issueReportWorker;
 	private boolean isDone = false;
 	private boolean isSuccessful = false;
 	private boolean isBackgrounded = false;
 
 	public ProgressPane() {
-		this.uploadWorker = this.createUploadWorker();
 		this.console.setPreferredSize( new java.awt.Dimension( 400, 240 ) );
 
 		this.background.addActionListener( new java.awt.event.ActionListener() {
@@ -51,13 +51,9 @@ public class ProgressPane extends javax.swing.JPanel {
 		this.add( new javax.swing.JScrollPane( this.console ), java.awt.BorderLayout.CENTER );
 		this.add( new javax.swing.JScrollPane( buttonPane ), java.awt.BorderLayout.SOUTH );
 	}
-	public void initializeAndExecuteWorker( Issue issue, String projectKey, java.net.URL jiraViaRPCServer, java.net.URL jiraViaSOAPURL, edu.cmu.cs.dennisc.jira.rpc.Authenticator jiraRPCAuthenticator, edu.cmu.cs.dennisc.jira.soap.Authenticator jiraSOAPAuthenticator, String mailServer, edu.cmu.cs.dennisc.mail.AbstractAuthenticator mailAuthenticator, String reporterEMailAddress, String reporterName, String recipient, boolean isInclusionOfCompleteSystemPropertiesDesired ) {
-		this.uploadWorker.initialize( issue, projectKey, jiraViaRPCServer, jiraViaSOAPURL, jiraRPCAuthenticator, jiraSOAPAuthenticator, mailServer, mailAuthenticator, reporterEMailAddress, reporterName, recipient, isInclusionOfCompleteSystemPropertiesDesired );
-		this.uploadWorker.execute();
-	}
-
-	protected UploadWorker createUploadWorker() {
-		return new UploadWorker( this );
+	public void initializeAndExecuteWorker( ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
+		this.issueReportWorker = new IssueReportWorker( this, issueReportGenerator, reportSubmissionConfiguration );
+		this.issueReportWorker.execute();
 	}
 	private void hideRoot() {
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );

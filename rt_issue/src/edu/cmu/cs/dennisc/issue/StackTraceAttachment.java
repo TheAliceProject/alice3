@@ -20,17 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.help;
+package edu.cmu.cs.dennisc.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RequestNewFeatureOperation extends PostIssueOperation {
-	public RequestNewFeatureOperation() {
-		this.putValue( javax.swing.Action.NAME, "Request a New Feature..." );
+public class StackTraceAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
+	private Throwable throwable;
+	public StackTraceAttachment( Throwable throwable ) {
+		this.throwable = throwable;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEAURE;
+	public byte[] getBytes() {
+		return edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsByteArray( this.throwable );
+	}
+	public String getMIMEType() {
+		return "text/plain";
+	}
+	public String getFileName() {
+		return "stacktrace.txt";
 	}
 }

@@ -75,7 +75,7 @@ class LogInPane extends swing.PageAxisPane {
 
 		swing.Pane signUpPane = new swing.Pane();
 		signUpPane.add( zoot.ZLabel.acquire( "Not a member?" ) );
-		org.alice.ide.operations.hyperlink.HyperlinkOperation hyperlinkOperation = new org.alice.ide.operations.hyperlink.HyperlinkOperation( "http://bugs.alice.org:8080/secure/Signup!default.jspa", "Sign up" );
+		edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation hyperlinkOperation = new edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation( "http://bugs.alice.org:8080/secure/Signup!default.jspa", "Sign up" );
 		signUpPane.add( new zoot.ZHyperlink( hyperlinkOperation ) );
 		signUpPane.add( zoot.ZLabel.acquire( "for an account." ) );
 
@@ -102,19 +102,10 @@ class LogInOperation extends zoot.AbstractActionOperation {
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		LogInPane pane = new LogInPane();
-		javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton();
-		if( frame != null ) {
-			//pass
-		} else {
-			frame = new javax.swing.JFrame();
-		}
-		javax.swing.JDialog window = new javax.swing.JDialog( frame, "Log In", true );
-		window.getContentPane().add( pane );
-		window.pack();
-		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		
-		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, javax.swing.SwingUtilities.getRoot( this.getSourceComponent( actionContext ) ) );
-		window.setVisible( true );
+		java.awt.Component owner = this.getSourceComponent( actionContext );
+		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( this.getSourceComponent( actionContext ) ) );
+		dialog.setVisible( true );
 	}
 }
 
@@ -151,6 +142,7 @@ public class HeaderPane extends swing.LineAxisPane {
 		hyperlink.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 		hyperlink.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 		this.add( hyperlink );
+		this.add( javax.swing.Box.createHorizontalStrut( 200 ) );
 		this.add( javax.swing.Box.createHorizontalGlue() );
 		this.add( new LogInStatusPane() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 6, 8, 12 ) );
@@ -160,17 +152,8 @@ public class HeaderPane extends swing.LineAxisPane {
 		HeaderPane pane = new HeaderPane();
 		//LogInPane pane = new LogInPane();
 		//PasswordPane pane = new PasswordPane();
-		javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton();
-		if( frame != null ) {
-			//pass
-		} else {
-			frame = new javax.swing.JFrame();
-		}
-		javax.swing.JDialog window = new javax.swing.JDialog( frame, "", true );
-		window.getContentPane().add( pane );
-		window.pack();
-		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, null );
-		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		window.setVisible( true );
+		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, null, "", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, null );
+		dialog.setVisible( true );
 	}
 }

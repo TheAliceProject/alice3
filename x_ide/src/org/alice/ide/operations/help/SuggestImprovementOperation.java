@@ -30,7 +30,7 @@ public class SuggestImprovementOperation extends PostIssueOperation {
 		this.putValue( javax.swing.Action.NAME, "Suggest Improvement..." );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.issue.Issue.Type getIssueType() {
-		return edu.cmu.cs.dennisc.issue.Issue.Type.IMPROVEMENT;
+	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
+		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.IMPROVEMENT;
 	}
 }

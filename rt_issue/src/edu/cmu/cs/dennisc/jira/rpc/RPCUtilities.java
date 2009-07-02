@@ -45,15 +45,16 @@ public class RPCUtilities {
 //	    return rv;
 //	}
 	
-	public static redstone.xmlrpc.XmlRpcStruct createIssue( edu.cmu.cs.dennisc.issue.Issue issue, redstone.xmlrpc.XmlRpcClient client, Object token, String project ) throws redstone.xmlrpc.XmlRpcFault {
+	public static redstone.xmlrpc.XmlRpcStruct createIssue( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport, redstone.xmlrpc.XmlRpcClient client, Object token ) throws redstone.xmlrpc.XmlRpcFault {
+		String project = jiraReport.getProjectKey();
 		redstone.xmlrpc.XmlRpcStruct rv = new redstone.xmlrpc.XmlRpcStruct();
 		rv.put( "project", project );
-		rv.put( "type", edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( issue.getType() ) );
-		rv.put( "summary", edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( issue.getJIRASummary(), 254 ) );
-		rv.put( "description", issue.getDescription() );
+		rv.put( "type", edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( jiraReport.getType() ) );
+		rv.put( "summary", edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( jiraReport.getSummary(), 254 ) );
+		rv.put( "description", jiraReport.getDescription() );
 		
 		StringBuffer environment = new StringBuffer();
-		String[] affectsVersions = issue.getAffectsVersions();
+		String[] affectsVersions = jiraReport.getAffectsVersions();
 		if( affectsVersions != null && affectsVersions.length > 0 ) {
 			String affectsVersion = affectsVersions[ 0 ];
 
@@ -78,8 +79,8 @@ public class RPCUtilities {
 		environment.append( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
 		rv.put( "environment", environment.toString() );
 	    java.util.Vector< redstone.xmlrpc.XmlRpcStruct > customFields = new java.util.Vector< redstone.xmlrpc.XmlRpcStruct >();
-	    customFields.add( createCustomField( 10000, issue.getSteps() ) );
-	    customFields.add( createCustomField( 10001, issue.getExceptionText() ) );
+	    customFields.add( createCustomField( 10000, jiraReport.getSteps() ) );
+	    customFields.add( createCustomField( 10001, jiraReport.getException() ) );
 	    rv.put( "customFieldValues", customFields );
 		return (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.createIssue", new Object[] { token, rv } );
 	}

@@ -26,31 +26,23 @@ package org.alice.ide.operations.help;
  * @author Dennis Cosgrove
  */
 public abstract class PostIssueOperation extends org.alice.ide.operations.AbstractActionOperation {
-	protected abstract edu.cmu.cs.dennisc.issue.Issue.Type getIssueType();
+	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType();
 	public void perform( zoot.ActionContext actionContext ) {
 		org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
-		javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton();
-		if( frame != null ) {
-			//pass
-		} else {
-			frame = new javax.swing.JFrame();
-		}
-		javax.swing.JDialog window = new javax.swing.JDialog( frame, "Report Issue", true );
-		pane.setWindow( window );
-		window.getContentPane().add( pane );
-		window.pack();
-		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
-		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, this.getSourceComponent( actionContext ) );
-		window.setVisible( true );
+		
+		javax.swing.JFrame owner = org.alice.ide.IDE.getSingleton();
+		javax.swing.JFrame dialog = edu.cmu.cs.dennisc.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, this.getSourceComponent( actionContext ) );
+		dialog.getRootPane().setDefaultButton( pane.getSubmitButton() );
+		dialog.setVisible( true );
 		if( pane.isSubmitAttempted() ) {
 			if( pane.isSubmitBackgrounded() ) {
 				//javax.swing.JOptionPane.showMessageDialog( frame, "Thank you for submitting a bug report." );
 			} else {
 				if( pane.isSubmitSuccessful() ) {
-					javax.swing.JOptionPane.showMessageDialog( frame, "Your issue report has been successfully submitted.  Thank you." );
+					javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report has been successfully submitted.  Thank you." );
 				} else {
-					javax.swing.JOptionPane.showMessageDialog( frame, "Your issue report FAILED to submitted.  Thank you for trying." );
+					javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report FAILED to submitted.  Thank you for trying." );
 				}
 			}
 		}

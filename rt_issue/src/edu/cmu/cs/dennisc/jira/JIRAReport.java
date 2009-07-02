@@ -21,26 +21,32 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package edu.cmu.cs.dennisc.issue;
+package edu.cmu.cs.dennisc.jira;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRevealingToString {
+public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	public enum Type {
 		BUG, NEW_FEAURE, IMPROVEMENT
 	}
-
+	private String projectKey;
 	private Type type;
 	private String summary;
 	private String description;
 	private String steps;
-	private Throwable throwable;
+	private String environment;
+	private String exception;
 	private String[] affectsVersions = new String[] {};
-	private java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.issue.Attachment >();
+	public String getProjectKey() {
+		return this.projectKey;
+	}
+	public void setProjectKey( String projectKey ) {
+		this.projectKey = projectKey;
+	}
 
 	public Type getType() {
-		return type;
+		return this.type;
 	}
 	public void setType( Type type ) {
 		this.type = type;
@@ -63,35 +69,25 @@ public abstract class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRe
 	public void setSteps( String steps ) {
 		this.steps = steps;
 	}
-//	public String getEnvironment() {
-//		return this.environment;
-//	}
-//	public void setEnvironment( String environment ) {
-//		this.environment = environment;
-//	}
-	public Throwable getThrowable() {
-		return this.throwable;
+	public String getEnvironment() {
+		return this.environment;
 	}
-	public void setThrowable( Throwable throwable ) {
-		this.throwable = throwable;
+	public void setEnvironment( String environment ) {
+		this.environment = environment;
 	}
-	
 	public String[] getAffectsVersions() {
 		return this.affectsVersions;
 	}
 	public void setAffectsVersions( String... affectsVersions ) {
 		this.affectsVersions = affectsVersions;
 	}
-	
-	
-	
-	public String getExceptionText() {
-		if( this.throwable != null ) {
-			return edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsString( this.throwable );
-		} else {
-			return "";
-		}
+	public String getException() {
+		return this.exception;
 	}
+	public void setException( String exception ) {
+		this.exception = exception;
+	}
+
 	public String getAffectsVersionText() {
 		String rv;
 		if( this.affectsVersions != null && this.affectsVersions.length > 0 ) {
@@ -104,38 +100,6 @@ public abstract class Issue extends edu.cmu.cs.dennisc.lang.AbstractObjectWithRe
 		} else {
 			rv = "";
 		}
-		return rv;
-	}
-	
-	public void addAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
-		this.attachments.add( attachment );
-	}
-	public void removeAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
-		this.attachments.remove( attachment );
-	}
-	public java.util.List< edu.cmu.cs.dennisc.issue.Attachment > getAttachments() {
-		return this.attachments;
-	}
-
-	public abstract String getMailSubject();
-	public abstract String getMailBody();
-	public abstract String getJIRASummary();
-
-	@Override
-	protected StringBuffer updateRepr( StringBuffer rv ) {
-		rv.append( "type=" );
-		rv.append( this.getType() );
-		rv.append( ";summary=" );
-		rv.append( this.getSummary() );
-		rv.append( ";description=" );
-		rv.append( this.getDescription() );
-		rv.append( ";steps=" );
-		rv.append( this.getSteps() );
-		rv.append( ";throwable=" );
-		rv.append( this.getThrowable() );
-		
-		//todo: attachments
-		
 		return rv;
 	}
 }

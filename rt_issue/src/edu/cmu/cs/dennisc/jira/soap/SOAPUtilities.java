@@ -29,8 +29,8 @@ public class SOAPUtilities {
 	private static com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue createCustomField( int key, String value ) {
 		return new com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue( "customfield_" + key, "", new String[] { value } );
 	}
-	private static com.atlassian.jira.rpc.soap.client.RemoteVersion[] getRemoteAffectsVersions( edu.cmu.cs.dennisc.issue.Issue issue, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token, String project ) throws java.rmi.RemoteException {
-		String[] affectsVersions = issue.getAffectsVersions();
+	private static com.atlassian.jira.rpc.soap.client.RemoteVersion[] getRemoteAffectsVersions( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token, String project ) throws java.rmi.RemoteException {
+		String[] affectsVersions = jiraReport.getAffectsVersions();
 		if( affectsVersions != null && affectsVersions.length > 0 ) {
 			String affectsVersion = affectsVersions[ 0 ];
 			com.atlassian.jira.rpc.soap.client.RemoteVersion[] versions = service.getVersions( token, project );
@@ -45,49 +45,51 @@ public class SOAPUtilities {
 		}
 		return new com.atlassian.jira.rpc.soap.client.RemoteVersion[] {};
 	}
-	private static StringBuffer appendSystemProperty( StringBuffer rv, String key ) {
-		rv.append( key );
-		rv.append( ": " );
-		rv.append( System.getProperty( key ) );
-		rv.append( ";\n" );
-		return rv;
-	}
-	private static com.atlassian.jira.rpc.soap.client.RemoteIssue createPreparedIssue( edu.cmu.cs.dennisc.issue.Issue issue, boolean isInclusionOfCompleteSystemPropertiesDesired ) {
+//	private static StringBuffer appendSystemProperty( StringBuffer rv, String key ) {
+//		rv.append( key );
+//		rv.append( ": " );
+//		rv.append( System.getProperty( key ) );
+//		rv.append( ";\n" );
+//		return rv;
+//	}
+	private static com.atlassian.jira.rpc.soap.client.RemoteIssue createPreparedIssue( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport ) {
 		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = new com.atlassian.jira.rpc.soap.client.RemoteIssue();
-		remoteIssue.setSummary( edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( issue.getJIRASummary(), 254 ) );
-		remoteIssue.setType( Integer.toString( edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( issue.getType() ) ) );
-		remoteIssue.setDescription( issue.getDescription() );
+		remoteIssue.setSummary( edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( jiraReport.getSummary(), 254 ) );
+		remoteIssue.setType( Integer.toString( edu.cmu.cs.dennisc.jira.JIRAUtilities.getType( jiraReport.getType() ) ) );
+		remoteIssue.setDescription( jiraReport.getDescription() );
 		
-		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue steps = createCustomField( 10000, issue.getSteps() );
-		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue exception = createCustomField( 10001, issue.getExceptionText() );
+		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue steps = createCustomField( 10000, jiraReport.getSteps() );
+		com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue exception = createCustomField( 10001, jiraReport.getException() );
 		remoteIssue.setCustomFieldValues( new com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue[]{ steps, exception } );
 		
 		StringBuffer environment = new StringBuffer();
-		String[] affectsVersions = issue.getAffectsVersions();
+		String[] affectsVersions = jiraReport.getAffectsVersions();
 		if( affectsVersions != null && affectsVersions.length > 0 ) {
 			environment.append( "version: " );
 			environment.append( affectsVersions[ 0 ] );
 			environment.append( ";\n" );
 		}
-		SOAPUtilities.appendSystemProperty( environment, "os.name" );
-		SOAPUtilities.appendSystemProperty( environment, "java.vm.version" );
-		if( isInclusionOfCompleteSystemPropertiesDesired ) {
-			environment.append( "complete system properties:\n" );
-			environment.append( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
-			environment.append( "\n;\n" );
-		}
-		remoteIssue.setEnvironment( environment.toString() );
+//		SOAPUtilities.appendSystemProperty( environment, "os.name" );
+//		SOAPUtilities.appendSystemProperty( environment, "java.vm.version" );
+//		if( isInclusionOfCompleteSystemPropertiesDesired ) {
+//			environment.append( "complete system properties:\n" );
+//			environment.append( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
+//			environment.append( "\n;\n" );
+//		}
+//		remoteIssue.setEnvironment( environment.toString() );
+		remoteIssue.setEnvironment( jiraReport.getEnvironment() );
 		return remoteIssue;
 	}
 
-	public static com.atlassian.jira.rpc.soap.client.RemoteIssue createIssue( edu.cmu.cs.dennisc.issue.Issue issue, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token, String project, boolean isInclusionOfCompleteSystemPropertiesDesired ) throws java.rmi.RemoteException {
-		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = createPreparedIssue( issue, isInclusionOfCompleteSystemPropertiesDesired );
+	public static com.atlassian.jira.rpc.soap.client.RemoteIssue createIssue( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token ) throws java.rmi.RemoteException {
+		String project = jiraReport.getProjectKey();
+		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = createPreparedIssue( jiraReport );
 		remoteIssue.setProject( project );
-		com.atlassian.jira.rpc.soap.client.RemoteVersion[] remoteAffectsVersions = SOAPUtilities.getRemoteAffectsVersions( issue, service, token, project );
+		com.atlassian.jira.rpc.soap.client.RemoteVersion[] remoteAffectsVersions = SOAPUtilities.getRemoteAffectsVersions( jiraReport, service, token, project );
 		remoteIssue.setAffectsVersions( remoteAffectsVersions );
 		com.atlassian.jira.rpc.soap.client.RemoteIssue rv = service.createIssue( token, remoteIssue );
 		
-		java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = issue.getAttachments();
+		java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = jiraReport.getAttachments();
 		if( attachments != null && attachments.size() > 0 ) {
 			try {
 				final int N = attachments.size();

@@ -30,7 +30,7 @@ public class ReportBugOperation extends PostIssueOperation {
 		this.putValue( javax.swing.Action.NAME, "Report a Bug..." );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.issue.Issue.Type getIssueType() {
-		return edu.cmu.cs.dennisc.issue.Issue.Type.BUG;
+	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
+		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG;
 	}
 }

@@ -20,17 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.help;
+package edu.cmu.cs.dennisc.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RequestNewFeatureOperation extends PostIssueOperation {
-	public RequestNewFeatureOperation() {
-		this.putValue( javax.swing.Action.NAME, "Request a New Feature..." );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEAURE;
+public class JFrameUtilities {
+	public static javax.swing.JFrame createPackedJFrame( java.awt.Component content, String title, int closeOperation ) {
+		javax.swing.JFrame rv = new javax.swing.JFrame();
+		rv.setTitle( title );
+		rv.getContentPane().add( content );
+		rv.pack();
+		rv.setDefaultCloseOperation( closeOperation );
+		return rv;
 	}
 }

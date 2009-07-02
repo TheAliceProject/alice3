@@ -20,17 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.help;
+
+package edu.cmu.cs.dennisc.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RequestNewFeatureOperation extends PostIssueOperation {
-	public RequestNewFeatureOperation() {
-		this.putValue( javax.swing.Action.NAME, "Request a New Feature..." );
+public class AbstractReport {
+	private java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.issue.Attachment >();
+	public void addAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
+		this.attachments.add( attachment );
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
-		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.NEW_FEAURE;
+	public void removeAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
+		this.attachments.remove( attachment );
+	}
+	public java.util.List< edu.cmu.cs.dennisc.issue.Attachment > getAttachments() {
+		return this.attachments;
 	}
 }
