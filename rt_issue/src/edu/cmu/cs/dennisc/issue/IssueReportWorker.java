@@ -62,7 +62,6 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
 		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 		com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
-		
 		String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
 	    com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
 		service.logout( token );

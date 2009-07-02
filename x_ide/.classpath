@@ -9,5 +9,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/x_zoot"/>
 	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
 	<classpathentry kind="lib" path="/jar_mail/mail.jar"/>
+	<classpathentry kind="lib" path="/jar_jira/jira-soapclient-4.0-with-dependencies.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
