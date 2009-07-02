@@ -21,40 +21,20 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package edu.cmu.cs.dennisc.mail;
+package edu.cmu.cs.dennisc.issue;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MailReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
-	private String replyTo;
-	private String replyToPersonal;
-	private String subject;
-	private String body;
+public class AbstractReport {
 	private java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.issue.Attachment >();
-
-	public String getReplyTo() {
-		return this.replyTo;
+	public void addAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
+		this.attachments.add( attachment );
 	}
-	public void setReplyTo( String replyTo ) {
-		this.replyTo = replyTo;
+	public void removeAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
+		this.attachments.remove( attachment );
 	}
-	public String getReplyToPersonal() {
-		return this.replyToPersonal;
-	}
-	public void setReplyToPersonal( String replyToPersonal ) {
-		this.replyToPersonal = replyToPersonal;
-	}
-	public String getSubject() {
-		return this.subject;
-	}
-	public void setSubject( String subject ) {
-		this.subject = subject;
-	}
-	public String getBody() {
-		return this.body;
-	}
-	public void setBody( String body ) {
-		this.body = body;
+	public java.util.List< edu.cmu.cs.dennisc.issue.Attachment > getAttachments() {
+		return this.attachments;
 	}
 }

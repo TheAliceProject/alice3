@@ -28,7 +28,7 @@ import edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IssueReportPane extends javax.swing.JPanel implements ReportGenerator {
+public abstract class IssueReportPane extends swing.BorderPane implements ReportGenerator {
 	protected abstract ReportSubmissionConfiguration getReportSubmissionConfiguration();
 	public Iterable< String > getSystemPropertiesForEnvironmentField() {
 		java.util.List< String > rv = new java.util.LinkedList< String >();
@@ -113,6 +113,13 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		this.labelSummary.setToolTipText( textSummary.getSuggestiveText() );
 		this.labelDescription.setToolTipText( textDescription.getSuggestiveText() );
 		this.labelSteps.setToolTipText( textSteps.getSuggestiveText() );
+		
+		this.scrollDescription.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		this.scrollSteps.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+
+		javax.swing.JPanel southPane = new javax.swing.JPanel();
+		southPane.add( this.getSubmitButton() );
+		this.add( southPane, java.awt.BorderLayout.SOUTH );
 	}
 	
 	protected abstract String getJIRAProjectKey();
@@ -164,7 +171,14 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	protected abstract String getSMTPReplyTo();
 	protected abstract String getSMTPReplyToPersonal();
 	
-	
+	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
+		Throwable throwable = this.getThrowable();
+		if( throwable != null ) {
+			rv.addAttachment( new edu.cmu.cs.dennisc.issue.StackTraceAttachment( throwable ) );
+		}
+		rv.addAttachment( new edu.cmu.cs.dennisc.issue.SystemPropertiesAttachment() );
+		return rv;
+	}
 	private edu.cmu.cs.dennisc.jira.JIRAReport generateIssue() {
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = new edu.cmu.cs.dennisc.jira.JIRAReport();
 		rv.setProjectKey( this.getJIRAProjectKey() );

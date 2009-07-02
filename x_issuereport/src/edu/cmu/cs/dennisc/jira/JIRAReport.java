@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.jira;
 /**
  * @author Dennis Cosgrove
  */
-public class JIRAReport {
+public class JIRAReport extends edu.cmu.cs.dennisc.issue.AbstractReport {
 	public enum Type {
 		BUG, NEW_FEAURE, IMPROVEMENT
 	}
@@ -38,7 +38,6 @@ public class JIRAReport {
 	private String environment;
 	private String exception;
 	private String[] affectsVersions = new String[] {};
-	private java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = new java.util.LinkedList< edu.cmu.cs.dennisc.issue.Attachment >();
 	public String getProjectKey() {
 		return this.projectKey;
 	}
@@ -102,15 +101,5 @@ public class JIRAReport {
 			rv = "";
 		}
 		return rv;
-	}
-	
-	public void addAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
-		this.attachments.add( attachment );
-	}
-	public void removeAttachment( edu.cmu.cs.dennisc.issue.Attachment attachment ) {
-		this.attachments.remove( attachment );
-	}
-	public java.util.List< edu.cmu.cs.dennisc.issue.Attachment > getAttachments() {
-		return this.attachments;
 	}
 }

@@ -22,168 +22,160 @@
  */
 package edu.cmu.cs.dennisc.toolkit.issue;
 
-public abstract class CaughtExceptionPane extends IssueReportPane {
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
-//		if( this.isInclusionOfCompleteSystemPropertiesDesired() ) {
-//			rv.add( new edu.cmu.cs.dennisc.issue.Attachment() {
-//				public byte[] getBytes() {
-//					return edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLByteArray();
-//				}
-//				public String getMIMEType() {
-//					return "application/xml";
-//				}
-//				public String getFileName() {
-//					return "systemProperties.xml";
-//				}
-//			} );
-//		}
-		return rv;
+class ExceptionPane extends javax.swing.JPanel {
+	private Thread thread;
+	private Throwable throwable;
+
+	protected Thread getThread() {
+		return this.thread;
 	}
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateBonusAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
-		return rv;
+	protected Throwable getThrowable() {
+		return this.throwable;
 	}
-	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > createAttachments() {
-		java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv = new java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment >();
-		updateCriticalAttachments( rv );
-		try {
-			java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > bonus = updateBonusAttachments( new java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment >() );
-			rv.addAll( bonus );
-		} catch( Throwable t ) {
-			//todo:
-			t.printStackTrace();
-		}
-		return rv;
-	}
-
-
-	//	private String getReporterEMailAddress() {
-//		return this.vcReporterEMailAddress.getText();
-//	}
-//	private String getReporterName() {
-//		return this.vcReporterName.getText();
-//	}
-	class ExceptionPane extends javax.swing.JPanel {
-		private Thread thread;
-		private Throwable throwable;
-
-		protected Thread getThread() {
-			return this.thread;
-		}
-		protected Throwable getThrowable() {
-			return this.throwable;
-		}
-		private void setThreadAndThrowable( final Thread thread, final Throwable throwable ) {
-			assert thread != null;
-			assert throwable != null;
-			this.thread = thread;
-			this.throwable = throwable;
-			this.removeAll();
-			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-			edu.cmu.cs.dennisc.swing.FauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.swing.FauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					edu.cmu.cs.dennisc.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( ExceptionPane.this, edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsString( throwable ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
-				}
-			} );
-
-			StringBuffer sb = new StringBuffer();
-			sb.append( throwable.getClass().getSimpleName() );
-			String message = throwable.getLocalizedMessage();
-			if( message != null && message.length() > 0 ) {
-				sb.append( "[" );
-				sb.append( message );
-				sb.append( "]" );
+	public void setThreadAndThrowable( final Thread thread, final Throwable throwable ) {
+		assert thread != null;
+		assert throwable != null;
+		this.thread = thread;
+		this.throwable = throwable;
+		this.removeAll();
+		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
+		edu.cmu.cs.dennisc.swing.FauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.swing.FauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				edu.cmu.cs.dennisc.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( ExceptionPane.this, edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsString( throwable ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			}
-			sb.append( " in " );
-			sb.append( thread.getClass().getSimpleName() );
+		} );
+
+		StringBuffer sb = new StringBuffer();
+		sb.append( throwable.getClass().getSimpleName() );
+		String message = throwable.getLocalizedMessage();
+		if( message != null && message.length() > 0 ) {
 			sb.append( "[" );
-			sb.append( thread.getName() );
+			sb.append( message );
 			sb.append( "]" );
+		}
+		sb.append( " in " );
+		sb.append( thread.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( thread.getName() );
+		sb.append( "]" );
 
-			this.add( new javax.swing.JLabel( sb.toString() ) );
-			StackTraceElement[] elements = throwable.getStackTrace();
-			if( elements.length > 0 ) {
-				StackTraceElement e0 = elements[ 0 ];
-				this.add( new javax.swing.JLabel( "class: " + e0.getClassName() ) );
-				this.add( new javax.swing.JLabel( "method: " + e0.getMethodName() ) );
-				this.add( new javax.swing.JLabel( "in file " + e0.getFileName() + " at line number " + e0.getLineNumber() ) );
+		this.add( new javax.swing.JLabel( sb.toString() ) );
+		StackTraceElement[] elements = throwable.getStackTrace();
+		if( elements.length > 0 ) {
+			StackTraceElement e0 = elements[ 0 ];
+			this.add( new javax.swing.JLabel( "class: " + e0.getClassName() ) );
+			this.add( new javax.swing.JLabel( "method: " + e0.getMethodName() ) );
+			this.add( new javax.swing.JLabel( "in file " + e0.getFileName() + " at line number " + e0.getLineNumber() ) );
+		}
+		this.add( vcShowStackTrace );
+	}
+}
+
+
+public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
+	private static javax.swing.JLabel createSystemPropertyLabel( String propertyName ) {
+		return new javax.swing.JLabel( propertyName + ": " + System.getProperty( propertyName ) );
+	}
+	class SystemPropertiesPane extends javax.swing.JPanel {
+		class ShowAllSystemPropertiesAction extends javax.swing.AbstractAction {
+			public ShowAllSystemPropertiesAction() {
+				super( "show all system properties..." );
 			}
-			this.add( vcShowStackTrace );
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				edu.cmu.cs.dennisc.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( AbstractCaughtExceptionPane.this, edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString(), "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			}
+		}
+
+		private edu.cmu.cs.dennisc.swing.FauxHyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.swing.FauxHyperlink( new ShowAllSystemPropertiesAction() );
+
+		public SystemPropertiesPane() {
+			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
+			for( String propertyName : getSystemPropertiesForEnvironmentField() ) {
+				this.add( createSystemPropertyLabel( propertyName ) );
+			}
+			this.add( this.vcShowAllSystemProperties );
 		}
 	}
 
-	private ExceptionPane vcExceptionPane;
+	private javax.swing.JLabel labelException = createLabelForMultiLine( "exception:" );
+	private ExceptionPane paneException = new ExceptionPane();
+	private java.awt.Component[] rowException = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelException, paneException );
 
-//	public AbstractCaughtExceptionPane() {
-//		class MyExpandPane extends edu.cmu.cs.dennisc.swing.ExpandPane {
-//			@Override
-//			protected javax.swing.JComponent createCenterPane() {
-//				javax.swing.JPanel rv = new javax.swing.JPanel();
-//				rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
-//				edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( rv, AbstractCaughtExceptionPane.this.createInsightPaneRows(), 8, 4 );
-//				return rv;
-//			}
-//			@Override
-//			protected java.lang.String getCollapsedButtonText() {
-//				return "yes >>>";
-//			}
-//			@Override
-//			protected java.lang.String getCollapsedLabelText() {
-//				return "Can you provide insight into this problem?";
-//			}
-//			@Override
-//			protected java.lang.String getExpandedLabelText() {
-//				return "Please provide insight:";
-//			}
-//		}
-//		MyExpandPane expandPane = new MyExpandPane();
-//
-//		javax.swing.JPanel reporterPane = new javax.swing.JPanel();
-//		javax.swing.JPanel bugPane = new javax.swing.JPanel();
-//		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( bugPane, createBugPaneRows(), 8, 4 );
-//		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( reporterPane, createReporterPaneRows(), 8, 4 );
-//		//edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( insightPane, createInsightPaneRows(), 8, 4 );
-//
-//
-//		StringBuffer sb = new StringBuffer();
-//		sb.append( "An exception has been caught:\n\n" );
-//		sb.append( "  If you were running your program then:\n    it could be either a bug(error) in Alice or your code.\n\n" );
-//		sb.append( "  If you were building your program then:\n    it is a bug in Alice.\n\n" );
-//		sb.append( "Please press the \"submit bug report\" button." );
-//		javax.swing.JTextArea header = new javax.swing.JTextArea( sb.toString() ) {
-//			@Override
-//			public void paint( java.awt.Graphics g ) {
-//				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//				g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
-//				super.paint( g );
-//			}
-//		};
-//		header.setEditable( false );
-//		//header.setOpaque( false );
-//		header.setLineWrap( true );
-//		header.setWrapStyleWord( true );
-//		java.awt.Font font = header.getFont();
-//		font = font.deriveFont( font.getSize2D() * 1.15f );
-//		font = font.deriveFont( java.awt.Font.BOLD );
-//		header.setFont( font );
-//		header.setOpaque( false );
-//		header.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 0 ) );
-//
-//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-//		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-//		this.add( header );
-//		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 16 ) ) );
-//		this.add( reporterPane );
-//		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 24 ) ) );
-//		this.add( bugPane );
-//		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 24 ) ) );
-//		this.add( expandPane );
-//		this.add( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 16 ) ) );
-//		this.add( this.getSubmitButton() );
-//	}
+	private javax.swing.JLabel labelEnvironment = createLabelForMultiLine( "environment:" );
+	private SystemPropertiesPane paneEnvironment = new SystemPropertiesPane();
+	private java.awt.Component[] rowEnvironment = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelEnvironment, paneEnvironment );
+
+	private static final String NAME_SUGGESTIVE_TEXT = "please fill in your name (optional)";
+	private javax.swing.JLabel labelName = createLabelForSingleLine( "reported by:" );
+	private SuggestiveTextField textReporterName = new SuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
+	private java.awt.Component[] rowName = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelName, textReporterName );
+
+	private static final String EMAIL_SUGGESTIVE_TEXT = "please fill in your e-mail address (optional)";
+	private javax.swing.JLabel labelAddress = createLabelForSingleLine( "e-mail address:" );
+	private SuggestiveTextField textReporterEMailAddress = new SuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
+	private java.awt.Component[] rowAddress = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelAddress, textReporterEMailAddress );
+
+	class MyExpandPane extends edu.cmu.cs.dennisc.swing.ExpandPane {
+		@Override
+		protected javax.swing.JComponent createCenterPane() {
+			javax.swing.JPanel rv = new javax.swing.JPanel();
+			rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 0, 0, 0 ) );
+			java.util.List< java.awt.Component[] > rows = new java.util.LinkedList< java.awt.Component[] >();
+			rows.add( rowSummary );
+			rows.add( rowDescription );
+			rows.add( rowSteps );
+			rows.add( rowException );
+			rows.add( rowEnvironment );
+			rows.add( rowName );
+			rows.add( rowAddress );
+			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( rv, rows, 8, 4 );
+			return rv;
+		}
+		@Override
+		protected java.lang.String getCollapsedButtonText() {
+			return "yes >>>";
+		}
+		@Override
+		protected java.lang.String getCollapsedLabelText() {
+			return "Can you provide insight into this problem?";
+		}
+		@Override
+		protected java.lang.String getExpandedLabelText() {
+			return "Please provide insight:";
+		}
+	}
+
+	private MyExpandPane expandPane = new MyExpandPane();
+	
+	public AbstractCaughtExceptionPane() {
+		expandPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 16 ) );
+		this.add( expandPane, java.awt.BorderLayout.CENTER );
+	}
 	
 	@Override
+	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getJIRAType() {
+		return edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG;
+	}
+	@Override
+	protected String getSMTPReplyToPersonal() {
+		return this.textReporterName.getText();
+	}
+	@Override
+	protected String getSMTPReplyTo() {
+		return this.textReporterEMailAddress.getText();
+	}
+	@Override
+	protected String getEnvironmentText() {
+		return null;
+	}
+	@Override
+	protected Throwable getThrowable() {
+		return this.paneException.getThrowable();
+	}
+
+	@Override
 	protected int getPreferredWidth() {
-		return 480;
+		return 540;
 	}
 	
 	@Override
@@ -203,30 +195,9 @@ public abstract class CaughtExceptionPane extends IssueReportPane {
 		return false;
 	}
 	
-//	@Override
-//	protected boolean isInclusionOfCompleteSystemPropertiesDesired() {
-//		return true;
-//	}
-//	@Override
-//	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
-//		rv = super.updateCriticalAttachments( rv );
-//		rv.add( new edu.cmu.cs.dennisc.issue.Attachment() {
-//			public byte[] getBytes() {
-//				Throwable throwable = AbstractCaughtExceptionPane.this.vcExceptionPane.getThrowable();
-//				return edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsByteArray( throwable );
-//			}
-//			public String getMIMEType() {
-//				return "text/plain";
-//			}
-//			public String getFileName() {
-//				return "stacktrace.txt";
-//			}
-//		} );
-//		return rv;
-//	}
 	public void setThreadAndThrowable( Thread thread, Throwable throwable ) {
-		assert this.vcExceptionPane != null;
-		this.vcExceptionPane.setThreadAndThrowable( thread, throwable );
+		assert this.paneException != null;
+		this.paneException.setThreadAndThrowable( thread, throwable );
 		this.revalidate();
 	}
 	
@@ -249,56 +220,27 @@ public abstract class CaughtExceptionPane extends IssueReportPane {
 //		rv = super.addBugPaneRows( rv );
 //		return rv;
 //	}
-
-	private static final String NAME_TEXT = "please fill in your name (optional)";
-	private static final String EMAIL_TEXT = "please fill in your e-mail address (optional)";
-	private SuggestiveTextField vcReporterName = new SuggestiveTextField( "", NAME_TEXT );
-	private SuggestiveTextField vcReporterEMailAddress = new SuggestiveTextField( "", EMAIL_TEXT );
-
-	private static javax.swing.JLabel createSystemPropertyLabel( String propertyName ) {
-		return new javax.swing.JLabel( propertyName + ": " + System.getProperty( propertyName ) );
-	}
-	class SystemPropertiesPane extends javax.swing.JPanel {
-		class ShowAllSystemPropertiesAction extends javax.swing.AbstractAction {
-			public ShowAllSystemPropertiesAction() {
-				super( "show all system properties..." );
-			}
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( CaughtExceptionPane.this, edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString(), "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE );
-			}
-		}
-
-		private edu.cmu.cs.dennisc.swing.FauxHyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.swing.FauxHyperlink( new ShowAllSystemPropertiesAction() );
-
-		public SystemPropertiesPane() {
-			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-			this.add( createSystemPropertyLabel( "java.version" ) );
-			this.add( createSystemPropertyLabel( "os.name" ) );
-			this.add( this.vcShowAllSystemProperties );
-		}
-	}
-	private SystemPropertiesPane vcSystemPropertiesPane = new SystemPropertiesPane();
 //	protected java.util.ArrayList< java.awt.Component[] > createInsightPaneRows() {
 //		return addInsightPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
 //	}
-	protected java.util.ArrayList< java.awt.Component[] > createReporterPaneRows() {
-		return addReporterPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
-	}
-	protected java.util.ArrayList< java.awt.Component[] > addReporterPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
-		javax.swing.JLabel nameLabel = new javax.swing.JLabel( "reported by:", javax.swing.SwingConstants.TRAILING );
-		javax.swing.JLabel emailLabel = new javax.swing.JLabel( "e-mail address:", javax.swing.SwingConstants.TRAILING );
-		nameLabel.setToolTipText( NAME_TEXT );
-		emailLabel.setToolTipText( EMAIL_TEXT );
-		rv.add( new java.awt.Component[] { nameLabel, this.vcReporterName } );
-		rv.add( new java.awt.Component[] { emailLabel, this.vcReporterEMailAddress } );
-		return rv;
-	}
-	private String getReporterEMailAddress() {
-		return this.vcReporterEMailAddress.getText();
-	}
-	private String getReporterName() {
-		return this.vcReporterName.getText();
-	}
+//	protected java.util.ArrayList< java.awt.Component[] > createReporterPaneRows() {
+//		return addReporterPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
+//	}
+//	protected java.util.ArrayList< java.awt.Component[] > addReporterPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
+//		javax.swing.JLabel nameLabel = new javax.swing.JLabel( "reported by:", javax.swing.SwingConstants.TRAILING );
+//		javax.swing.JLabel emailLabel = new javax.swing.JLabel( "e-mail address:", javax.swing.SwingConstants.TRAILING );
+//		nameLabel.setToolTipText( NAME_TEXT );
+//		emailLabel.setToolTipText( EMAIL_TEXT );
+//		rv.add( new java.awt.Component[] { nameLabel, this.vcReporterName } );
+//		rv.add( new java.awt.Component[] { emailLabel, this.vcReporterEMailAddress } );
+//		return rv;
+//	}
+//	private String getReporterEMailAddress() {
+//		return this.textReporterEMailAddress.getText();
+//	}
+//	private String getReporterName() {
+//		return this.textReporterName.getText();
+//	}
 
 	
 //	protected String getSummary() {
@@ -311,15 +253,15 @@ public abstract class CaughtExceptionPane extends IssueReportPane {
 //		return this.vcStepsToReproduce.getText();
 //	}
 
-	protected java.util.ArrayList< java.awt.Component[] > createBugPaneRows() {
-		return addBugPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
-	}
-	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
-		javax.swing.JLabel systemLabel = new javax.swing.JLabel( "environment:", javax.swing.SwingConstants.TRAILING );
-		systemLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
-		rv.add( new java.awt.Component[] { systemLabel, this.vcSystemPropertiesPane } );
-		return rv;
-	}
+//	protected java.util.ArrayList< java.awt.Component[] > createBugPaneRows() {
+//		return addBugPaneRows( new java.util.ArrayList< java.awt.Component[] >() );
+//	}
+//	protected java.util.ArrayList< java.awt.Component[] > addBugPaneRows( java.util.ArrayList< java.awt.Component[] > rv ) {
+//		javax.swing.JLabel systemLabel = new javax.swing.JLabel( "environment:", javax.swing.SwingConstants.TRAILING );
+//		systemLabel.setVerticalAlignment( javax.swing.SwingConstants.TOP );
+//		rv.add( new java.awt.Component[] { systemLabel, this.paneEnvironment } );
+//		return rv;
+//	}
 	
 //	protected Issue updateIssue( Issue rv ) {
 //		rv.setSummary( this.getSummary() );

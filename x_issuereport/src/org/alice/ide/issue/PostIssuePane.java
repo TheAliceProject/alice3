@@ -43,32 +43,23 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 	protected String getJIRAPrivateProjectKey() {
 		return "AIIIP";
 	}
-	
+
 	@Override
 	protected String[] getAffectsVersions() {
-		return new String[] { "3.beta.0058" };
+		return new String[] { edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() };
 	}
-	
 
-//	@Override
-//	protected java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > updateCriticalAttachments( java.util.ArrayList< edu.cmu.cs.dennisc.issue.Attachment > rv ) {
-//		rv = super.updateCriticalAttachments( rv );
-//		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this, "Is your current project relevant to this issue and are you willing to attach your project with this report?", "Submit project?", javax.swing.JOptionPane.YES_NO_OPTION ) ) {
-//			rv.add( new CurrentProjectAttachment() );
-//		}
-//		return rv;
-//
-//	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.issue.Issue updateIssue( edu.cmu.cs.dennisc.issue.Issue rv ) {
-//		rv.setAffectsVersions( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() );
-//		return super.updateIssue( rv );
-//	}
-
+	@Override
+	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
+		rv = super.addAttachments( rv );
+		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this, "Is your current project relevant to this issue and are you willing to attach your project with this report?", "Submit project?", javax.swing.JOptionPane.YES_NO_OPTION ) ) {
+			rv.addAttachment( new CurrentProjectAttachment() );
+		}
+		return rv;
+	}
 	public static void main( String[] args ) {
 		PostIssuePane pane = new PostIssuePane( edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG );
 		javax.swing.JDialog window = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, null, "Report Issue", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-//		pane.setWindow( window );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.setVisible( true );
 	}

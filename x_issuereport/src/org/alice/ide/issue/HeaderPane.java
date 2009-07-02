@@ -164,12 +164,8 @@ public class HeaderPane extends swing.LineAxisPane {
 		HeaderPane pane = new HeaderPane();
 		//LogInPane pane = new LogInPane();
 		//PasswordPane pane = new PasswordPane();
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		javax.swing.JDialog window = new javax.swing.JDialog( frame, "", true );
-		window.getContentPane().add( pane );
-		window.pack();
-		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, null );
-		window.setDefaultCloseOperation( javax.swing.JFrame.DISPOSE_ON_CLOSE );
-		window.setVisible( true );
+		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, null, "", true, javax.swing.WindowConstants.EXIT_ON_CLOSE );
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, null );
+		dialog.setVisible( true );
 	}
 }

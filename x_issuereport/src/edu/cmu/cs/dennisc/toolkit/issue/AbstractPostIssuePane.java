@@ -125,14 +125,10 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 
 		this.centerPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 12, 12, 12 ) );
 		
-		javax.swing.JPanel southPane = new javax.swing.JPanel();
-		southPane.add( this.getSubmitButton() );
-
-		this.setLayout( new java.awt.BorderLayout() );
 		this.add( this.centerPane, java.awt.BorderLayout.CENTER );
-		this.add( southPane, java.awt.BorderLayout.SOUTH );
 
 		this.typeSelectionOperation.getComboBoxModel().setSelectedItem( issueType );
+		this.scrollEnvironment.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 	}
 	protected abstract String getJIRAPublicProjectKey();
 	protected abstract String getJIRAPrivateProjectKey();
