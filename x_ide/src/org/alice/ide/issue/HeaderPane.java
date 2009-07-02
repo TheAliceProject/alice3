@@ -37,8 +37,6 @@ class PasswordPane extends swing.PageAxisPane {
 				passwordCardPane.toggle();
 			}
 		} );
-		
-		//this.setLayout( new java.awt.GridLayout( 2, 1 ) );
 		this.add( passwordCardPane );
 		this.add( checkBox );
 	}
