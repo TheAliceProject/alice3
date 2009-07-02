@@ -31,13 +31,37 @@ import javax.media.opengl.glu.GLU;
  */
 class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter {
 	private GL m_gl;
+	private GLU m_glu;
 	private double m_xOffset;
 	private double m_yOffset;
 	private double m_z;
 	private boolean m_isFront;
 
-	public void set( GL gl, double xOffset, double yOffset, double z, boolean isFront ) {
+	private String getErrorString( int error ) {
+		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( m_glu.gluErrorString( error ) );
+		switch( error ) {
+		case GLU.GLU_TESS_MISSING_BEGIN_POLYGON:
+			return "GLU_TESS_MISSING_BEGIN_POLYGON";
+		case GLU.GLU_TESS_MISSING_END_POLYGON:
+			return "GLU_TESS_MISSING_END_POLYGON";
+		case GLU.GLU_TESS_MISSING_BEGIN_CONTOUR:
+			return "GLU_TESS_MISSING_BEGIN_CONTOUR";
+		case GLU.GLU_TESS_MISSING_END_CONTOUR:
+			return "GLU_TESS_MISSING_END_CONTOUR";
+		case GLU.GLU_TESS_COORD_TOO_LARGE:
+			return "GLU_TESS_COORD_TOO_LARGE";
+		case GLU.GLU_TESS_NEED_COMBINE_CALLBACK:
+			return "GLU_TESS_NEED_COMBINE_CALLBACK";
+		case GLU.GLU_OUT_OF_MEMORY:
+			return "GLU_OUT_OF_MEMORY";
+		default:
+			return "UNKNOWN";
+		}
+	}
+
+	public void set( GL gl, GLU glu, double xOffset, double yOffset, double z, boolean isFront ) {
 		m_gl = gl;
+		m_glu = glu;
 		m_xOffset = xOffset;
 		m_yOffset = yOffset;
 		m_z = z;
@@ -62,6 +86,17 @@ class MyTessAdapter extends javax.media.opengl.glu.GLUtessellatorCallbackAdapter
 	public void end() {
 		m_gl.glEnd();
 	}
+
+	@Override
+	public void combine( double[] coords, Object[] data, float[] weight, Object[] outData ) {
+		outData[ 0 ] = new double[] { coords[ 0 ], coords[ 1 ], coords[ 2 ] };
+	}
+	@Override
+	public void error( int arg0 ) {
+		super.error( arg0 );
+		//todo: investigate error GLU_TESS_MISSING_END_CONTOUR 100154 
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "error", getErrorString( arg0 ), arg0 );
+	}
 }
 
 /**
@@ -80,34 +115,43 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 
 			java.util.Vector< java.util.Vector< edu.cmu.cs.dennisc.math.Point2f >> faceContours = m_element.getGlyphVector().acquireFaceContours();
 
-			s_tessAdapter.set( context.gl, xOffset, yOffset, z, isFront );
+			s_tessAdapter.set( context.gl, context.glu, xOffset, yOffset, z, isFront );
 
 			javax.media.opengl.glu.GLUtessellator tesselator = context.glu.gluNewTess();
 			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_BEGIN, s_tessAdapter );
 			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_VERTEX, s_tessAdapter );
 			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_END, s_tessAdapter );
+			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE, s_tessAdapter );
+			//			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_COMBINE_DATA, s_tessAdapter );
+			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR, s_tessAdapter );
+			//			context.glu.gluTessCallback( tesselator, GLU.GLU_TESS_ERROR_DATA, s_tessAdapter );
 			try {
 				context.glu.gluBeginPolygon( tesselator );
-				for( java.util.Vector< edu.cmu.cs.dennisc.math.Point2f > faceContour : faceContours ) {
-					context.glu.gluTessBeginContour( tesselator );
-					int n = faceContour.size();
-					for( int i = 0; i < n; i++ ) {
-						edu.cmu.cs.dennisc.math.Point2f p;
-						if( isFront ) {
-							p = faceContour.elementAt( n - i - 1 );
-						} else {
-							p = faceContour.elementAt( i );
+				try {
+					for( java.util.Vector< edu.cmu.cs.dennisc.math.Point2f > faceContour : faceContours ) {
+						context.glu.gluTessBeginContour( tesselator );
+						try {
+							int n = faceContour.size();
+							for( int i = 0; i < n; i++ ) {
+								edu.cmu.cs.dennisc.math.Point2f p;
+								if( isFront ) {
+									p = faceContour.elementAt( n - i - 1 );
+								} else {
+									p = faceContour.elementAt( i );
+								}
+								double[] xyz = { p.x, p.y, 0 };
+								context.glu.gluTessVertex( tesselator, xyz, 0, xyz );
+							}
+						} finally {
+							context.glu.gluTessEndContour( tesselator );
 						}
-						double[] xyz = { p.x, p.y, 0 };
-						context.glu.gluTessVertex( tesselator, xyz, 0, xyz );
 					}
-					context.glu.gluTessEndContour( tesselator );
+				} finally {
+					context.glu.gluTessEndPolygon( tesselator );
 				}
-				context.glu.gluTessEndPolygon( tesselator );
 			} finally {
 				m_element.getGlyphVector().releaseFaceContours();
 			}
-
 		}
 	}
 
@@ -173,7 +217,7 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 		pc.gl.glPopName();
 	}
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
 		if( property == m_element.text ) {
 			setIsGeometryChanged( true );
 		} else if( property == m_element.font ) {
