@@ -22,6 +22,8 @@
  */
 package org.alice.media;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -34,7 +36,12 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -48,6 +55,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 
+import org.alice.media.UploadToYouTubeStatusPane.UploadStatus;
 import org.alice.media.encoder.EncoderListener;
 import org.alice.media.encoder.ImagesToMOVEncoder;
 import org.alice.stageide.MoveAndTurnRuntimeProgram;
@@ -65,13 +73,6 @@ import zoot.ZFrame;
  */
 
 public class VideoCapturePane extends LineAxisPane implements ActionListener, DocumentListener, EncoderListener{
-	
-	private static final float FRAME_RATE = 24;
-	private static final Color ERROR_COLOR = Color.RED;
-	private static final Color NEUTRAL_TEXT_COLOR = Color.BLACK;
-	private static final Color NEUTRAL_LABEL_COLOR = Color.GRAY;
-	private static final Color ACTIVE_LABEL_COLOR = Color.BLACK;
-	private static final Color HAPPY_COLOR = new Color(0f, .6f, 0f);
 	
 	private class OwnerPane extends javax.swing.JPanel {
 		public OwnerPane() {
@@ -149,7 +150,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				public boolean accept( File f ) {
 					if (f.isDirectory())
 					{
-						return true;
+						return false;
 					}
 					if (f.getName().endsWith( "mov" ))
 					{
@@ -160,7 +161,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 
 				@Override
 				public String getDescription() {
-					return "*.mov or Directories";
+					return "*.mov";
 				}
 				
 			});
@@ -179,12 +180,22 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		
 	};
 	
+	private static final float FRAME_RATE = 24;
+	private static final Color ERROR_COLOR = Color.RED;
+	private static final Color NEUTRAL_TEXT_COLOR = Color.BLACK;
+	private static final Color NEUTRAL_LABEL_COLOR = Color.GRAY;
+	private static final Color ACTIVE_LABEL_COLOR = Color.BLACK;
+	private static final Color HAPPY_COLOR = new Color(0f, .6f, 0f);
+	
 	private MovieFileSelectionPane fileSelectionPane = new MovieFileSelectionPane();
 	private OwnerPane pane = new OwnerPane();
 	private edu.cmu.cs.dennisc.alice.Project project;
 	private RecordableRuntimeProgram rtProgram;
 	private boolean isRestart = false;
 	private UploadToYouTubePane youTubeUploaderPane;
+	private File recordedMovieFile;
+	private File savedMovieFile;
+	private MoviePlayer moviePlayer;
 	
 	private JButton recordButton;
 	private ImageIcon recordIcon;
@@ -194,10 +205,32 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 	private JButton browseButton;
 	private ImagesToMOVEncoder encoder;
 	private JLabel statusLabel;
+	private JLabel statusLabel2;
 	private JButton exportToYouTubeButton;
+	private JLabel youTubeStatus;
 	private JButton doneButton;
+	private JButton saveButton;
+	private JLabel saveStatus;
+	private JButton recordAgain;
 	
-	private static final String NO_RECORDING_STATUS = "No recording.";
+	
+	private JPanel controlPanel;
+	private JPanel recordPanel;
+	private JPanel savePanel;
+	private CardLayout controlPanelCardLayout;
+	
+	private JPanel worldPanel;
+	private JPanel playPanel;
+	private JPanel previewPanel;
+	private CardLayout worldPanelCardLayout;
+	
+	private static final String SAVE_KEY = "SAVE";
+	private static final String RECORD_KEY = "RECORD";
+	private static final String PLAY_KEY = "PLAY";
+	private static final String PREVIEW_KEY = "PREVIEW";
+	
+	private static final String NO_RECORDING_STATUS = "Ready to record.";
+	private static final String YOUTUBE_NOT_UPLOADED_STATUS = "Not uploaded to YouTube.";
 	
 	private String getDefaultDirectory()
 	{
@@ -238,10 +271,6 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
 		rtProgram.showInAWTContainer( this.pane, new String[] {} );
 		
-		JPanel controlPanel = new JPanel();
-		controlPanel.setOpaque( false );
-		controlPanel.setLayout( new GridBagLayout() );
-		
 		this.recordButton = new JButton();
 		this.recordButton.setOpaque(false);
 		this.recordIcon = new ImageIcon( this.getClass().getResource( "images/rec_button.png" ));
@@ -259,15 +288,12 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		this.doneButton = new JButton("Done");
 		this.doneButton.addActionListener( this );
 		
-		JLabel statusTitle = new JLabel("Recorded File:");
+		JLabel statusTitle = new JLabel("Recording status:");
 		statusTitle.setForeground( Color.GRAY );
 		statusTitle.setFont(  this.getFont().deriveFont(Font.ITALIC)  );
 		
 		this.statusLabel = new JLabel();
-//		TitledBorder titleBorder = BorderFactory.createTitledBorder( "Recording Status" );
-//		titleBorder.setTitleColor( Color.GRAY );
-//		titleBorder.setTitleFont(  this.getFont().deriveFont(Font.ITALIC)  );
-//		this.statusLabel.setBorder( titleBorder );
+		this.statusLabel.setFont( this.statusLabel.getFont().deriveFont( 12f ));
 		this.statusLabel.setForeground( NEUTRAL_LABEL_COLOR );
 		this.statusLabel.setText(NO_RECORDING_STATUS);
 		this.statusLabel.setHorizontalAlignment( JLabel.CENTER );
@@ -276,100 +302,140 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		this.statusLabel.setPreferredSize( labelSize );
 		this.statusLabel.setMinimumSize( labelSize );
 		
+		this.statusLabel2 = new JLabel();
+		this.statusLabel2.setFont( this.statusLabel2.getFont().deriveFont( 14f ));
+		this.statusLabel2.setForeground( NEUTRAL_LABEL_COLOR );
+		this.statusLabel2.setText(NO_RECORDING_STATUS);
+		this.statusLabel2.setHorizontalAlignment( JLabel.CENTER );
+		this.statusLabel2.setVerticalAlignment( JLabel.CENTER );
+		this.statusLabel2.setPreferredSize( labelSize );
+		this.statusLabel2.setMinimumSize( labelSize );
+		
 		this.exportToYouTubeButton =  new JButton(new ImageIcon( this.getClass().getResource( "images/export_to_youtube.png" )));
 		this.exportToYouTubeButton.addActionListener( this );
-		this.exportToYouTubeButton.setEnabled( false );
+		this.exportToYouTubeButton.setEnabled( true );
+		this.youTubeStatus = new JLabel(YOUTUBE_NOT_UPLOADED_STATUS);
+		this.youTubeStatus.setHorizontalAlignment( JLabel.CENTER );
 		
-		int gridY = 0;
-		controlPanel.add( new JLabel("Save movie to: "), 
+		this.saveButton = new JButton("Save Movie");
+		this.saveButton.setFont( this.saveButton.getFont().deriveFont( 24f ) );
+		this.saveButton.addActionListener( this );
+		this.saveStatus = new JLabel("Not saved.");
+		this.saveStatus.setHorizontalAlignment( JLabel.CENTER );
+		Dimension saveDimension = new Dimension(256, 40);
+		this.saveStatus.setMaximumSize( saveDimension );
+		this.saveStatus.setMinimumSize( saveDimension );
+		this.saveStatus.setPreferredSize( saveDimension );
+		
+		this.recordAgain = new JButton("Record again");
+		this.recordAgain.addActionListener( this );
+		
+		this.moviePlayer = new MoviePlayer();
+		Dimension playerSize = this.pane.getPreferredSize();
+		Dimension previewSize = new Dimension();
+		previewSize.setSize( playerSize.width, playerSize.height + 30 );
+		this.moviePlayer.setPreferredSize( previewSize );
+		this.moviePlayer.setMinimumSize( previewSize );
+		this.moviePlayer.setMaximumSize( previewSize );
+		
+		
+		
+		this.playPanel = new JPanel();
+		this.playPanel.setLayout( new BorderLayout());
+		JPanel worldHolder = new JPanel();
+		worldHolder.setPreferredSize( previewSize );
+		worldHolder.setMinimumSize( previewSize );
+		worldHolder.setMaximumSize( previewSize );
+		worldHolder.add( this.pane );
+		JLabel recordLabel = new JLabel("Record World");
+		recordLabel.setFont( recordLabel.getFont().deriveFont( 18f ));
+		recordLabel.setBorder( BorderFactory.createEmptyBorder( 6,12,6,6 ) );
+		this.playPanel.add( recordLabel, BorderLayout.NORTH );
+		this.playPanel.add( worldHolder, BorderLayout.CENTER );
+		
+		this.previewPanel = new JPanel();
+		this.previewPanel.setLayout( new BorderLayout() );
+		JPanel movieHolder = new JPanel();
+		movieHolder.setPreferredSize( previewSize );
+		movieHolder.setMinimumSize( previewSize );
+		movieHolder.setMaximumSize( previewSize );
+		movieHolder.add( this.moviePlayer );
+		JLabel previewLabel = new JLabel("Preview Movie");
+		previewLabel.setFont( previewLabel.getFont().deriveFont( 18f ));
+		previewLabel.setBorder( BorderFactory.createEmptyBorder( 6,12,6,6 ) );
+		this.previewPanel.add( previewLabel, BorderLayout.NORTH );
+		this.previewPanel.add( movieHolder, BorderLayout.CENTER );
+		
+		this.worldPanel = new JPanel();
+		this.worldPanelCardLayout = new CardLayout();
+		this.worldPanel.setLayout( this.worldPanelCardLayout );
+		this.worldPanel.add( this.previewPanel, PREVIEW_KEY );
+		this.worldPanel.add(  this.playPanel, PLAY_KEY );
+		this.worldPanelCardLayout.show( this.worldPanel, PLAY_KEY );
+		
+		
+		this.recordPanel = new JPanel();
+		this.recordPanel.setOpaque( false );
+		this.recordPanel.setLayout( new GridBagLayout() );
+		
+		this.savePanel = new JPanel();
+		this.savePanel.setOpaque(false);
+		this.savePanel.setLayout( new GridBagLayout() );
+		
+		this.controlPanelCardLayout = new CardLayout();
+		this.controlPanel = new JPanel();
+		this.controlPanel.setOpaque( false );
+		this.controlPanel.setLayout( this.controlPanelCardLayout );
+		this.controlPanel.add( this.recordPanel, RECORD_KEY );
+		this.controlPanel.add(  this.savePanel, SAVE_KEY );
+		this.controlPanelCardLayout.show( this.controlPanel, RECORD_KEY );
+		this.recordPanel.add( Box.createVerticalGlue() , 
 				new GridBagConstraints( 
 				0, //gridX
-				gridY++, //gridY
-				2, //gridWidth
+				0, //gridY
+				1, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 16, 2, 2, 2 ), //insets
+				1.0, //weightY
+				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.BOTH, //fill
+				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);
-		controlPanel.add( this.pathLabel , 
+		this.recordPanel.add( this.recordButton , 
 				new GridBagConstraints( 
 				0, //gridX
-				gridY++, //gridY
-				2, //gridWidth
+				1, //gridY
+				1, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
 				0.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
+				GridBagConstraints.CENTER, //anchor 
 				GridBagConstraints.NONE, //fill
 				new Insets( 2, 2, 2, 2 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);
-		controlPanel.add( this.fileNameField , 
+//		this.recordPanel.add( statusTitle, 
+//				new GridBagConstraints( 
+//				0, //gridX
+//				2, //gridY
+//				1, //gridWidth
+//				1, //gridHeight
+//				1.0, //weightX
+//				0.0, //weightY
+//				GridBagConstraints.NORTH, //anchor 
+//				GridBagConstraints.HORIZONTAL, //fill
+//				new Insets( 16, 8, 8, 2 ), //insets
+//				0, //ipadX
+//				0 ) //ipadY
+//				);
+		this.recordPanel.add( this.statusLabel , 
 				new GridBagConstraints( 
 				0, //gridX
-				gridY, //gridY
+				2, //gridY
 				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 8, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		controlPanel.add( this.browseButton , 
-				new GridBagConstraints( 
-				1, //gridX
-				gridY++, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.WEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 8, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		controlPanel.add( this.recordButton , 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTH, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 32, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		controlPanel.add( statusTitle, 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTH, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 16, 8, 8, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		controlPanel.add( this.statusLabel , 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				2, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
 				0.0, //weightY
@@ -379,56 +445,186 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				0, //ipadX
 				0 ) //ipadY
 				);
-		controlPanel.add( this.exportToYouTubeButton , 
+		this.recordPanel.add( Box.createVerticalGlue() , 
 				new GridBagConstraints( 
 				0, //gridX
-				gridY++, //gridY
-				2, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTH, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 16, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		
-		controlPanel.add( Box.createVerticalGlue() , 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				2, //gridWidth
+				3, //gridY
+				1, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
 				1.0, //weightY
-				GridBagConstraints.NORTHWEST, //anchor 
-				GridBagConstraints.VERTICAL, //fill
+				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.BOTH, //fill
 				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);
-		controlPanel.add( this.doneButton, 
+		int gridY = 0;
+		this.savePanel.add( this.statusLabel2, 
 				new GridBagConstraints( 
 				0, //gridX
 				gridY++, //gridY
-				2, //gridWidth
+				1, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.BOTH, //fill
+				new Insets( 16, 2, 2, 2 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		this.savePanel.add( this.saveButton , 
+				new GridBagConstraints( 
+				0, //gridX
+				gridY++, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets( 2, 2, 2, 2 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		this.savePanel.add( this.saveStatus , 
+				new GridBagConstraints( 
+				0, //gridX
+				gridY++, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.BOTH, //fill
+				new Insets( 2, 2, 2, 2 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		this.savePanel.add( this.exportToYouTubeButton , 
+				new GridBagConstraints( 
+				0, //gridX
+				gridY++, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets( 2, 8, 2, 2 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		this.savePanel.add( this.youTubeStatus , 
+				new GridBagConstraints( 
+				0, //gridX
+				gridY++, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.BOTH, //fill
+				new Insets( 2, 2, 2, 2 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		this.savePanel.add( Box.createVerticalGlue() , 
+				new GridBagConstraints( 
+				0, //gridX
+				gridY++, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
 				1.0, //weightY
+				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.BOTH, //fill
+				new Insets( 0, 0, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		this.savePanel.add( this.recordAgain , 
+				new GridBagConstraints( 
+				0, //gridX
+				gridY++, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.SOUTHWEST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets( 2, 2, 2, 2 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		
+		JPanel sidePanel = new JPanel();
+		sidePanel.setLayout(new GridBagLayout() );
+		gridY = 0;
+		sidePanel.add( this.controlPanel , 
+				new GridBagConstraints( 
+				0, //gridX
+				gridY++, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.BOTH, //fill
+				new Insets( 0, 0, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		sidePanel.add( this.doneButton, 
+				new GridBagConstraints( 
+				0, //gridX
+				gridY++, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
 				GridBagConstraints.SOUTHEAST, //anchor 
 				GridBagConstraints.NONE, //fill
 				new Insets( 0, 0, 8, 8 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);
-		this.add( this.pane );
-		this.add( controlPanel );
-		this.add( javax.swing.Box.createGlue() );
 		
+		this.setLayout( new GridBagLayout() );
+		this.add( this.worldPanel , 
+				new GridBagConstraints( 
+				0, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.BOTH, //fill
+				new Insets( 0, 0, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		
+		this.add( sidePanel , 
+				new GridBagConstraints( 
+				1, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.VERTICAL, //fill
+				new Insets( 0, 0, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
 		this.fileNameField.addActionListener( this );
 		this.recordButton.addActionListener( this );
 		this.fileNameField.getDocument().addDocumentListener( this );
+		this.revalidate();
 		//this.recordButton.getAction().setEnabled( false );
 	}
 	
@@ -457,11 +653,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				
 				if (VideoCapturePane.this.isRestart)
 				{
-					VideoCapturePane.this.pane.removeAll();
-					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
-					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)VideoCapturePane.this.project.getProgramType().getDeclaredFields().get( 0 ).getValueType();
-					VideoCapturePane.this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
-					VideoCapturePane.this.rtProgram.showInAWTContainer( VideoCapturePane.this.pane, new String[] {} );
+					VideoCapturePane.this.restartWorld();
 				}
 				else
 				{
@@ -480,6 +672,15 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		worker.execute();
 		
 		
+	}
+	
+	private void restartWorld()
+	{
+		this.pane.removeAll();
+		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)VideoCapturePane.this.project.getProgramType().getDeclaredFields().get( 0 ).getValueType();
+		this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
+		this.rtProgram.showInAWTContainer( VideoCapturePane.this.pane, new String[] {} );
 	}
 	
 	private void onWorldStart()
@@ -525,42 +726,126 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 
 	private void uploadToYouTube()
 	{
-		this.youTubeUploaderPane.setVideo(this.getMovieFile(), this.encoder.getFirstFrame().getScaledInstance( 400, 300, Image.SCALE_FAST ));
-		this.youTubeUploaderPane.pack();
+		File videoFile = this.savedMovieFile;
+		if (videoFile ==  null)
+		{
+			videoFile = this.recordedMovieFile;
+		}
+		if (videoFile != null)
+		{
+			this.youTubeUploaderPane.setVideo(this.getMovieFile(), this.encoder.getFirstFrame().getScaledInstance( 400, 300, Image.SCALE_FAST ));
+			this.youTubeUploaderPane.pack();
+			SwingWorker< Boolean, Void > worker = new SwingWorker< Boolean, Void >(){
+				@Override
+				public Boolean doInBackground()
+				{
+					int parentWidth = VideoCapturePane.this.getWidth();
+					int parentHeight = VideoCapturePane.this.getHeight();
+					Dimension dialogSize = VideoCapturePane.this.youTubeUploaderPane.getSize();
+					int positionX = (parentWidth / 2) - dialogSize.width/2;
+					int positionY = (parentHeight / 2) - dialogSize.height/2;
+					if (positionY < 0)
+					{
+						positionY = 0;
+					}
+					if (positionX < 0)
+					{
+						positionX = 0;
+					}
+					VideoCapturePane.this.youTubeUploaderPane.setLocation( positionX, positionY );
+					VideoCapturePane.this.youTubeUploaderPane.setVisible( true );
+					return Boolean.TRUE;
+				}
+				
+				@Override
+				public void done()
+				{
+					VideoCapturePane.this.onUploadFinished();
+				}
+			};
+			worker.execute();
+		}
+	}
+	
+	private void onUploadFinished()
+	{
+		if (this.youTubeUploaderPane.getUploadStatus() == UploadStatus.Succeeded)
+		{
+			this.exportToYouTubeButton.setEnabled( false );
+			this.youTubeStatus.setForeground( HAPPY_COLOR );
+			this.youTubeStatus.setText( UploadStatus.Succeeded.toString() );
+		}
+		else if (this.youTubeUploaderPane.getUploadStatus() == UploadStatus.Cancelled ||
+				 this.youTubeUploaderPane.getUploadStatus() == UploadStatus.Waiting)
+		{
+			this.exportToYouTubeButton.setEnabled( true );
+			this.youTubeStatus.setForeground( NEUTRAL_TEXT_COLOR );
+			this.youTubeStatus.setText( YOUTUBE_NOT_UPLOADED_STATUS );
+		}
+		else
+		{
+			this.youTubeStatus.setForeground( ERROR_COLOR );
+			this.youTubeStatus.setText( this.youTubeUploaderPane.getUploadDetails() );
+		}
+	}
+	
+	private boolean copyFile(File source, File dest)
+	{
+		try
+		{
+			InputStream in = new FileInputStream(source);
+			OutputStream out = new FileOutputStream(dest);
+			
+			// Transfer bytes from in to out
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = in.read(buf)) > 0) {
+			    out.write(buf, 0, len);
+			}
+			in.close();
+			out.close();
+			return true;
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
+	
+	private void copyRecordedFile(final File recordedFile, final File destFile)
+	{
 		SwingWorker< Boolean, Void > worker = new SwingWorker< Boolean, Void >(){
 			@Override
 			public Boolean doInBackground()
 			{
-				int parentWidth = VideoCapturePane.this.getWidth();
-				int parentHeight = VideoCapturePane.this.getHeight();
-				Dimension dialogSize = VideoCapturePane.this.youTubeUploaderPane.getSize();
-				int positionX = (parentWidth / 2) - dialogSize.width/2;
-				int positionY = (parentHeight / 2) - dialogSize.height/2;
-				if (positionY < 0)
-				{
-					positionY = 0;
-				}
-				if (positionX < 0)
-				{
-					positionX = 0;
-				}
-				VideoCapturePane.this.youTubeUploaderPane.setLocation( positionX, positionY );
-				VideoCapturePane.this.youTubeUploaderPane.setVisible( true );
-				return Boolean.TRUE;
+				boolean copySuccess = copyFile(recordedFile, destFile);
+				VideoCapturePane.this.savedMovieFile = destFile;
+				return new Boolean(copySuccess);
 			}
 			
 			@Override
 			public void done()
 			{
-				VideoCapturePane.this.onUploadFinished();
+				try
+				{
+					if (get().booleanValue())
+					{
+						VideoCapturePane.this.saveStatus.setForeground( VideoCapturePane.HAPPY_COLOR );
+						VideoCapturePane.this.saveStatus.setText( "<html>Saved movie to:<br>"+destFile.getAbsolutePath()+"</html>" );
+					}
+					else
+					{
+						VideoCapturePane.this.saveStatus.setForeground( VideoCapturePane.ERROR_COLOR );
+						VideoCapturePane.this.saveStatus.setText( "Failed to save the movie" );
+					}
+				}
+				catch (Exception e)
+				{
+					
+				}
 			}
 		};
 		worker.execute();
-	}
-	
-	private void onUploadFinished()
-	{
-		
 	}
 	
 	public void actionPerformed( ActionEvent e )
@@ -577,20 +862,12 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				this.record();
 			}
 		}
-		else if (e.getSource() == this.browseButton)
+		else if (e.getSource() == this.saveButton)
 		{
-			File selectedFile = this.fileSelectionPane.showInJDialog( this, "Choose movie save location" );
+			File selectedFile = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog(this, getDefaultDirectory(), getDefaultFilename(), "mov", true);
 			if (selectedFile != null)
 			{
-				if (selectedFile.isDirectory())
-				{
-					this.pathLabel.setText( selectedFile.getAbsolutePath() );
-				}
-				else
-				{
-					this.pathLabel.setText( selectedFile.getParentFile().getAbsolutePath() );
-					this.fileNameField.setText( selectedFile.getName() );
-				}
+				copyRecordedFile( this.recordedMovieFile, selectedFile );
 			}
 		}
 		else if (e.getSource() == this.exportToYouTubeButton)
@@ -601,47 +878,43 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		{
 			this.close();
 		}
+		else if (e.getSource() == this.recordAgain)
+		{
+			setRecordMode();
+		}
 	}
 
 	private void close()
 	{
 		this.setVisible( false );
-		
+		this.recordedMovieFile.delete();
 		//VERY VERY TEMPORARY
 		System.exit( 0 );
 	}
 	
 	private File getMovieFile()
 	{
-		if (this.fileNameField.getText() == null || this.pathLabel.getText() == null)
+		if (this.recordedMovieFile != null)
 		{
-			return null;
+			return this.recordedMovieFile;
 		}
-		String filename = this.fileNameField.getText().trim();
-		String path = this.pathLabel.getText().trim();
-		if (filename.equals( "" ) || path.equals( "" ))
+		String filename = "myAliceMovie.mov";
+		String path = this.getDefaultDirectory();
+		this.recordedMovieFile = new File(path, filename);
+		if (this.recordedMovieFile.exists())
 		{
-			return null;
-		}
-		if (!filename.endsWith( ".mov" ))
-		{
-			filename = filename + ".mov";
-		}
-		File movieFile = new File(path, filename);
-		if (movieFile.exists())
-		{
-			return movieFile;
+			return this.recordedMovieFile;
 		}
 		boolean goodFile = false;
 		try {
-			goodFile = movieFile.createNewFile();
-			movieFile.delete();
+			goodFile = this.recordedMovieFile.createNewFile();
+			this.recordedMovieFile.delete();
 		} catch( IOException e ) {
 			return null;
 		}
 		if (goodFile)
 		{
-			return movieFile;
+			return this.recordedMovieFile;
 		}
 		return null;
 	}
@@ -676,15 +949,38 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 	public void removeUpdate( DocumentEvent e ) {
 		updateUIForSaveFile();
 	}
+	
+	private void setSaveMode()
+	{
+		this.statusLabel.setForeground( HAPPY_COLOR );
+		this.statusLabel.setText( "Successfully recorded movie!");
+		this.statusLabel2.setForeground( this.statusLabel.getForeground() );
+		this.statusLabel2.setText( this.statusLabel.getText() );
+		this.exportToYouTubeButton.setEnabled( true );
+		this.controlPanelCardLayout.show( this.controlPanel, SAVE_KEY );
+		this.worldPanelCardLayout.show( this.worldPanel, PREVIEW_KEY );
+		
+	}
+	
+	private void setRecordMode()
+	{
+		this.moviePlayer.destroy();
+		this.restartWorld();
+		this.isRestart = false;
+		this.recordButton.setIcon( this.recordIcon );
+		this.statusLabel.setForeground( NEUTRAL_LABEL_COLOR );
+		this.statusLabel.setText(NO_RECORDING_STATUS);
+		this.controlPanelCardLayout.show( this.controlPanel, RECORD_KEY );
+		this.worldPanelCardLayout.show( this.worldPanel, PLAY_KEY );
+	}
 
 	public void encodingFinished(boolean success) {
 		if (success)
 		{
 			javax.swing.SwingUtilities.invokeLater( new Runnable(){
 				public void run() {
-					VideoCapturePane.this.statusLabel.setForeground( HAPPY_COLOR );
-					VideoCapturePane.this.statusLabel.setText( "<html>Successfully recorded movie to:<br><center><b>"+VideoCapturePane.this.encoder.getOutputFile().getName()+"</b></center></html>");
-					VideoCapturePane.this.exportToYouTubeButton.setEnabled( true );
+					VideoCapturePane.this.moviePlayer.setMovie( VideoCapturePane.this.recordedMovieFile );
+					VideoCapturePane.this.setSaveMode();
 				}
 			});
 			
@@ -695,6 +991,8 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				public void run() {
 					VideoCapturePane.this.statusLabel.setForeground( ERROR_COLOR );
 					VideoCapturePane.this.statusLabel.setText( "Failed to record movie" );
+					VideoCapturePane.this.statusLabel2.setForeground( VideoCapturePane.this.statusLabel.getForeground() );
+					VideoCapturePane.this.statusLabel.setText( VideoCapturePane.this.statusLabel.getText() );
 				}
 			});
 		}

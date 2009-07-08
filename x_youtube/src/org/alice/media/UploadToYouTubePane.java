@@ -89,7 +89,7 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 	private YouTubeMediaGroupEditorPanel infoPanel;
 	private UploadToYouTubeStatusPane statusPane;
 	
-	private JLabel videoFileLabel;
+	//private JLabel videoFileLabel;
 	private JButton uploadButton;
 	private ImageIcon uploadIcon;
 	private ImageIcon thumbnailImage;
@@ -143,9 +143,9 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 		fileTitle.setForeground( Color.GRAY );
 		
 		
-		this.videoFileLabel = new JLabel();
-		this.videoFileLabel.setFont( this.videoFileLabel.getFont().deriveFont( 14f ));
-		this.videoFileLabel.setHorizontalAlignment( JLabel.CENTER );
+//		this.videoFileLabel = new JLabel();
+//		this.videoFileLabel.setFont( this.videoFileLabel.getFont().deriveFont( 14f ));
+//		this.videoFileLabel.setHorizontalAlignment( JLabel.CENTER );
 		
 		this.statusLabel = new JLabel(NOT_LOGGED_IN_STATUS);
 		this.statusLabel.setForeground( ERROR_COLOR );
@@ -170,24 +170,24 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 				0, //ipadX
 				0 ) //ipadY
 				);
-		movieInfoPanel.add( this.videoFileLabel, 
-				new GridBagConstraints( 
-				0, //gridX
-				1, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.SOUTH, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
+//		movieInfoPanel.add( this.videoFileLabel, 
+//				new GridBagConstraints( 
+//				0, //gridX
+//				1, //gridY
+//				1, //gridWidth
+//				1, //gridHeight
+//				1.0, //weightX
+//				0.0, //weightY
+//				GridBagConstraints.SOUTH, //anchor 
+//				GridBagConstraints.HORIZONTAL, //fill
+//				new Insets( 2, 2, 2, 2 ), //insets
+//				0, //ipadX
+//				0 ) //ipadY
+//				);
 		movieInfoPanel.add( thumbnailLabel, 
 				new GridBagConstraints( 
 				0, //gridX
-				2, //gridY
+				1, //gridY
 				1, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
@@ -308,7 +308,7 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 	{
 		this.thumbnailImage.setImage( thumbnail );
 		this.videoFile = videoFile;
-		this.videoFileLabel.setText( videoFile.getName() );
+		//this.videoFileLabel.setText( videoFile.getName() );
 	}
 	
 	public void enableUI(boolean enable)
@@ -336,6 +336,16 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 			this.close();
 		}
 		
+	}
+	
+	public UploadToYouTubeStatusPane.UploadStatus getUploadStatus()
+	{
+		return this.statusPane.getStatus();
+	}
+	
+	public String getUploadDetails()
+	{
+		return this.statusPane.getDetails();
 	}
 	
 	public static void main( String[] args ) {
