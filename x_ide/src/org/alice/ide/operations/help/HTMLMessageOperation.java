@@ -25,29 +25,21 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class HelpOperation extends HTMLMessageOperation {
-	public HelpOperation() {
-		this.putValue( javax.swing.Action.NAME, "Help..." );
-		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
-	}
-	@Override
-	protected StringBuffer getMessage( StringBuffer rv ) {
-		String url = "http://kenai.com/projects/alice/pages/Help";
-		rv.append( "Help is available " );
-		rv.append( "<a href=\"" );
-		rv.append( url );
-		rv.append( "\">" );
-		rv.append( "on the web" );
-		rv.append( "</a>" );
-		rv.append( "." );
-		return rv;
-	}
-	@Override
-	protected java.lang.String getTitle() {
-		return "Help";
-	}
-	@Override
-	protected int getMessageType() {
-		return javax.swing.JOptionPane.PLAIN_MESSAGE;
+public abstract class HTMLMessageOperation extends org.alice.ide.operations.AbstractActionOperation {
+	protected abstract String getTitle(); 
+	protected abstract int getMessageType();
+	protected abstract StringBuffer getMessage( StringBuffer sb ); 
+	public final void perform( zoot.ActionContext actionContext ) {
+		String title = this.getTitle();
+		edu.cmu.cs.dennisc.ui.html.HTMLPane htmlPane = new edu.cmu.cs.dennisc.ui.html.HTMLPane();
+		StringBuffer sb = new StringBuffer();
+		sb.append( "<html>" );
+		getMessage( sb );
+		sb.append( "</html>" );
+		htmlPane.setText( sb.toString() );
+		htmlPane.setOpaque( false );
+		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), htmlPane, this.getTitle(), this.getMessageType() );
+		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
+		actionContext.commit();
 	}
 }

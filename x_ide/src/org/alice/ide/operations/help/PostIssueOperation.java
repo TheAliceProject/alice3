@@ -41,9 +41,11 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Abstra
 						//pass
 					} else {
 						if( pane.isSubmitSuccessful() ) {
+							
 							java.net.URL urlResult = pane.getURLResult();
 							final String MESSAGE = "Your issue report has been successfully submitted.  Thank you.";
 							Object message;
+							String title = "Report Successfully Submitted";
 							if( urlResult != null ) {
 								edu.cmu.cs.dennisc.ui.html.HTMLPane htmlPane = new edu.cmu.cs.dennisc.ui.html.HTMLPane();
 								StringBuffer sb = new StringBuffer();
@@ -65,9 +67,9 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Abstra
 							} else {
 								message = MESSAGE;
 							}
-							javax.swing.JOptionPane.showMessageDialog( owner, message );
+							javax.swing.JOptionPane.showMessageDialog( owner, message, title, javax.swing.JOptionPane.PLAIN_MESSAGE );
 						} else {
-							javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report FAILED to submit.  Thank you for trying." );
+							javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report FAILED to submit.  Thank you for trying.", "Report Submission Failed", javax.swing.JOptionPane.ERROR_MESSAGE );
 						}
 					}
 				}
