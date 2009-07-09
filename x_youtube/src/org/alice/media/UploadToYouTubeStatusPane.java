@@ -231,26 +231,26 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 	
 	private void stopUpload(YouTubeEvent event)
 	{
-		if (event.getType() == YouTubeEvent.EventType.UploadFailed)
+		if (event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED)
 		{
 			this.status = UploadStatus.Failed;
 		}
-		if (event.getType() == YouTubeEvent.EventType.UploadSucces)
+		if (event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS)
 		{
 			this.status = UploadStatus.Succeeded;
 		}
-		if (event.getType() == YouTubeEvent.EventType.UploadCancelledSuccess)
+		if (event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS)
 		{
 			this.status = UploadStatus.Cancelled;
 		}
-		if (event.getType() == YouTubeEvent.EventType.UploadCancelledFailed)
+		if (event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED)
 		{
 			this.status = UploadStatus.FailedCancelled;
 		}
 		this.isUploading = false;
 		this.cardLayout.show( this.buttonPanel, DONE_UPLOADING_KEY );
 		this.statusLabel.setText( event.getType().toString() );
-		this.uploadDetails = event.getMoreInfo();
+		this.uploadDetails = (String)event.getMoreInfo();
 	}
 	
 	public UploadStatus getStatus()
@@ -276,15 +276,15 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 	}
 
 	public void youTubeEventTriggered( YouTubeEvent event ) {
-		if (event.getType() == YouTubeEvent.EventType.UploadFailed ||
-			event.getType() == YouTubeEvent.EventType.UploadSucces ||
-			event.getType() == YouTubeEvent.EventType.UploadCancelledSuccess ||
-			event.getType() == YouTubeEvent.EventType.UploadCancelledFailed)
+		if (event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED ||
+			event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS ||
+			event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS ||
+			event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED)
 		{
 			
 			stopUpload(event);
 		}
-		else if (event.getType() == YouTubeEvent.EventType.UploadStarted )
+		else if (event.getType() == YouTubeEvent.EventType.UPLOAD_STARTED )
 		{
 			startUpload();
 		}

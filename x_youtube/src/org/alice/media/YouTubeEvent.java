@@ -29,14 +29,15 @@ public class YouTubeEvent {
 	
 	public enum EventType
 	{
-		UploadSucces("Upload Succeeded"),
-		UploadFailed("Upload Failed"),
-		UploadStarted("Upload Started"),
-		UploadCancelledSuccess("Upload Successfully Cancelled"),
-		UploadCancelledFailed("Failed to Cancel Upload"),
-		LoginStarted("Login Started"),
-		LoginFailed("Login Failed"),
-		LoginSuccess("Login Succeeded");
+		UPLOAD_SUCCESS("Upload Succeeded"),
+		UPLOAD_FAILED("Upload Failed"),
+		UPLOAD_STARTED("Upload Started"),
+		UPLOAD_CANCELLED_SUCCESS("Upload Successfully Cancelled"),
+		UPLOAD_CANCELLED_FAILED("Failed to Cancel Upload"),
+		LOGIN_STARTED("Login Started"),
+		LOGIN_FAILED("Login Failed"),
+		LOGIN_SUCCESS("Login Succeeded"),
+		LINK_RETRIEVED("Link Retrieved");
 		
 		private String description;
 		private EventType(String description)
@@ -52,14 +53,14 @@ public class YouTubeEvent {
 	}
 	
 	private EventType type;
-	private String moreInfo;
+	private Object moreInfo;
 	
 	public YouTubeEvent(EventType type)
 	{
 		this(type, null);
 	}
 	
-	public YouTubeEvent(EventType type, String moreInfo)
+	public YouTubeEvent(EventType type, Object moreInfo)
 	{
 		this.type = type;
 		this.moreInfo = moreInfo;
@@ -70,7 +71,7 @@ public class YouTubeEvent {
 		return this.type;
 	}
 	
-	public String getMoreInfo()
+	public Object getMoreInfo()
 	{
 		return this.moreInfo;
 	}

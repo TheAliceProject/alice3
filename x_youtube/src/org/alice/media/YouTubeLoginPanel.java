@@ -296,7 +296,7 @@ public class YouTubeLoginPanel extends JPanel implements ActionListener, Documen
 				{
 					for (YouTubeListener l : YouTubeLoginPanel.this.listeners)
 					{
-						l.youTubeEventTriggered( new YouTubeEvent(YouTubeEvent.EventType.LoginStarted) );
+						l.youTubeEventTriggered( new YouTubeEvent(YouTubeEvent.EventType.LOGIN_STARTED) );
 					}
 					try
 					{
@@ -309,7 +309,7 @@ public class YouTubeLoginPanel extends JPanel implements ActionListener, Documen
 						YouTubeLoginPanel.this.setLoggedInUIState( true );
 						for (YouTubeListener l : YouTubeLoginPanel.this.listeners)
 						{
-							l.youTubeEventTriggered( new YouTubeEvent(YouTubeEvent.EventType.LoginSuccess, loginMessage) );
+							l.youTubeEventTriggered( new YouTubeEvent(YouTubeEvent.EventType.LOGIN_SUCCESS, loginMessage) );
 						}
 						
 						return Boolean.TRUE;
@@ -322,7 +322,7 @@ public class YouTubeLoginPanel extends JPanel implements ActionListener, Documen
 						YouTubeLoginPanel.this.setLoggedInUIState( false );
 						for (YouTubeListener l : YouTubeLoginPanel.this.listeners)
 						{
-							l.youTubeEventTriggered( new YouTubeEvent(YouTubeEvent.EventType.LoginFailed, e.getMessage()) );
+							l.youTubeEventTriggered( new YouTubeEvent(YouTubeEvent.EventType.LOGIN_FAILED, e.getMessage()) );
 						}
 						return Boolean.FALSE;
 					}

@@ -50,6 +50,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -61,12 +62,18 @@ import org.alice.media.encoder.ImagesToMOVEncoder;
 import org.alice.stageide.MoveAndTurnRuntimeProgram;
 import org.jdesktop.swingworker.SwingWorker;
 
+import com.google.gdata.data.media.mediarss.MediaPlayer;
+import com.google.gdata.data.youtube.VideoEntry;
+import com.google.gdata.data.youtube.YouTubeMediaGroup;
+
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
 import edu.cmu.cs.dennisc.swing.FileSelectionPane;
+import edu.cmu.cs.dennisc.swing.Hyperlink;
 
 import swing.LineAxisPane;
 import zoot.ZFrame;
+import zoot.ZHyperlink;
 
 /**
  * @author David Culyba
@@ -206,12 +213,14 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 	private ImagesToMOVEncoder encoder;
 	private JLabel statusLabel;
 	private JLabel statusLabel2;
+	private JPanel youTubeControlPanel;
 	private JButton exportToYouTubeButton;
-	private JLabel youTubeStatus;
+	private CardLayout youTubeCardLayout;
 	private JButton doneButton;
 	private JButton saveButton;
 	private JLabel saveStatus;
 	private JButton recordAgain;
+	private YouTubeResultsPane youTubeResultPane;
 	
 	
 	private JPanel controlPanel;
@@ -228,6 +237,9 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 	private static final String RECORD_KEY = "RECORD";
 	private static final String PLAY_KEY = "PLAY";
 	private static final String PREVIEW_KEY = "PREVIEW";
+	private static final String YOUTUBE_BUTTON_KEY = "YOUTUBE_BUTTON";
+	private static final String YOUTUBE_STATUS_KEY = "YOUTUBE_STATUS";
+	private static final String YOUTUBE_LINK_KEY = "YOUTUBE_LINK";
 	
 	private static final String NO_RECORDING_STATUS = "Ready to record.";
 	private static final String YOUTUBE_NOT_UPLOADED_STATUS = "Not uploaded to YouTube.";
@@ -314,8 +326,22 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		this.exportToYouTubeButton =  new JButton(new ImageIcon( this.getClass().getResource( "images/export_to_youtube.png" )));
 		this.exportToYouTubeButton.addActionListener( this );
 		this.exportToYouTubeButton.setEnabled( true );
-		this.youTubeStatus = new JLabel(YOUTUBE_NOT_UPLOADED_STATUS);
-		this.youTubeStatus.setHorizontalAlignment( JLabel.CENTER );
+
+		JPanel recordButtonHolder = new JPanel();
+		recordButtonHolder.setOpaque(false);
+		recordButtonHolder.add( this.exportToYouTubeButton );
+		
+		this.youTubeResultPane = new YouTubeResultsPane();
+		
+		
+		this.youTubeControlPanel = new JPanel();
+		this.youTubeControlPanel.setOpaque(false);
+		this.youTubeCardLayout = new CardLayout();
+		this.youTubeControlPanel.setLayout( this.youTubeCardLayout );
+		this.youTubeControlPanel.add(recordButtonHolder, YOUTUBE_BUTTON_KEY);
+		this.youTubeControlPanel.add(this.youTubeResultPane, YOUTUBE_STATUS_KEY);
+		this.youTubeCardLayout.show( this.youTubeControlPanel, YOUTUBE_BUTTON_KEY );
+		
 		
 		this.saveButton = new JButton("Save Movie");
 		this.saveButton.setFont( this.saveButton.getFont().deriveFont( 24f ) );
@@ -502,7 +528,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				0, //ipadX
 				0 ) //ipadY
 				);
-		this.savePanel.add( this.exportToYouTubeButton , 
+		this.savePanel.add( this.youTubeControlPanel , 
 				new GridBagConstraints( 
 				0, //gridX
 				gridY++, //gridY
@@ -513,20 +539,6 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				GridBagConstraints.CENTER, //anchor 
 				GridBagConstraints.NONE, //fill
 				new Insets( 2, 8, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-		this.savePanel.add( this.youTubeStatus , 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.NORTH, //anchor 
-				GridBagConstraints.BOTH, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);
@@ -733,7 +745,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		}
 		if (videoFile != null)
 		{
-			this.youTubeUploaderPane.setVideo(this.getMovieFile(), this.encoder.getFirstFrame().getScaledInstance( 400, 300, Image.SCALE_FAST ));
+			this.youTubeUploaderPane.setVideo(videoFile, this.encoder.getFirstFrame().getScaledInstance( 400, 300, Image.SCALE_FAST ));
 			this.youTubeUploaderPane.pack();
 			SwingWorker< Boolean, Void > worker = new SwingWorker< Boolean, Void >(){
 				@Override
@@ -769,24 +781,57 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 	
 	private void onUploadFinished()
 	{
-		if (this.youTubeUploaderPane.getUploadStatus() == UploadStatus.Succeeded)
+		this.youTubeResultPane.setResults( this.youTubeUploaderPane.getYouTubeResults() );
+		this.youTubeCardLayout.show( this.youTubeControlPanel, YOUTUBE_STATUS_KEY );
+//		if (this.youTubeUploaderPane.getUploadStatus() == UploadStatus.Succeeded)
+//		{
+//			boolean isSuccessful = false;
+//			VideoEntry uploadedVideo = this.youTubeUploaderPane.getUploadedVideo();
+//			if (uploadedVideo != null)
+//			{
+//				this.exportToYouTubeButton.setEnabled( false );
+//				this.youTubeResultPane.setResults( this.youTube )
+//				this.youTubeStatus.setForeground( HAPPY_COLOR );
+//				this.youTubeStatus.setText( "Uploaded movie to YouTube" );
+//				YouTubeMediaGroup mediaGroup = uploadedVideo.getMediaGroup();
+//				MediaPlayer mediaPlayer = mediaGroup.getPlayer();
+//			    if (mediaPlayer != null)
+//			    {
+//			    	this.youTubeLink.setURI( mediaPlayer.getUrl() );
+//			    	this.youTubeLink.setBackground( Color.RED );
+//			    	this.youTubeCardLayout.show( this.youTubeControlPanel, YOUTUBE_LINK_KEY );
+//			    	isSuccessful = true;
+//			    }
+//			}
+//			if (!isSuccessful)
+//			{
+//				this.youTubeStatus.setForeground( ERROR_COLOR );
+//				this.youTubeStatus.setText( "Upload wasn't good for some reason" );
+//				
+//			}
+//			
+//		}
+//		else if (this.youTubeUploaderPane.getUploadStatus() == UploadStatus.Cancelled ||
+//				 this.youTubeUploaderPane.getUploadStatus() == UploadStatus.Waiting)
+//		{
+//			this.exportToYouTubeButton.setEnabled( true );
+//			this.youTubeStatus.setForeground( NEUTRAL_TEXT_COLOR );
+//			this.youTubeStatus.setText( YOUTUBE_NOT_UPLOADED_STATUS );
+//			this.youTubeCardLayout.show( this.youTubeControlPanel, YOUTUBE_STATUS_KEY );
+//		}
+//		else
+//		{
+//			this.youTubeStatus.setForeground( ERROR_COLOR );
+//			this.youTubeStatus.setText( this.youTubeUploaderPane.getUploadDetails() );
+//			this.youTubeCardLayout.show( this.youTubeControlPanel, YOUTUBE_STATUS_KEY );
+//		}
+		SwingUtilities.invokeLater( new Runnable()
 		{
-			this.exportToYouTubeButton.setEnabled( false );
-			this.youTubeStatus.setForeground( HAPPY_COLOR );
-			this.youTubeStatus.setText( UploadStatus.Succeeded.toString() );
-		}
-		else if (this.youTubeUploaderPane.getUploadStatus() == UploadStatus.Cancelled ||
-				 this.youTubeUploaderPane.getUploadStatus() == UploadStatus.Waiting)
-		{
-			this.exportToYouTubeButton.setEnabled( true );
-			this.youTubeStatus.setForeground( NEUTRAL_TEXT_COLOR );
-			this.youTubeStatus.setText( YOUTUBE_NOT_UPLOADED_STATUS );
-		}
-		else
-		{
-			this.youTubeStatus.setForeground( ERROR_COLOR );
-			this.youTubeStatus.setText( this.youTubeUploaderPane.getUploadDetails() );
-		}
+			public void run() {
+				VideoCapturePane.this.repaint();
+			}
+		});
+		
 	}
 	
 	private boolean copyFile(File source, File dest)
@@ -972,6 +1017,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		this.statusLabel.setText(NO_RECORDING_STATUS);
 		this.controlPanelCardLayout.show( this.controlPanel, RECORD_KEY );
 		this.worldPanelCardLayout.show( this.worldPanel, PLAY_KEY );
+		this.youTubeCardLayout.show( this.youTubeControlPanel, YOUTUBE_BUTTON_KEY );
 	}
 
 	public void encodingFinished(boolean success) {

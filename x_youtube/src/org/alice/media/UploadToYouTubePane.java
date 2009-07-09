@@ -96,6 +96,8 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 	private JButton exitButton;
 	
 	private JLabel statusLabel;
+	private VideoEntry uploadedVideo;
+	private YouTubeEvent youTubeResults;
 
 	public UploadToYouTubePane(Frame owner)
 	{
@@ -156,38 +158,10 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 		movieInfoPanel.setOpaque( true );
 		movieInfoPanel.setBackground( new Color(.85f, .85f, .85f) );
 		movieInfoPanel.setLayout( new GridBagLayout() );
-		movieInfoPanel.add( fileTitle, 
-				new GridBagConstraints( 
-				0, //gridX
-				0, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.SOUTH, //anchor 
-				GridBagConstraints.HORIZONTAL, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
-//		movieInfoPanel.add( this.videoFileLabel, 
-//				new GridBagConstraints( 
-//				0, //gridX
-//				1, //gridY
-//				1, //gridWidth
-//				1, //gridHeight
-//				1.0, //weightX
-//				0.0, //weightY
-//				GridBagConstraints.SOUTH, //anchor 
-//				GridBagConstraints.HORIZONTAL, //fill
-//				new Insets( 2, 2, 2, 2 ), //insets
-//				0, //ipadX
-//				0 ) //ipadY
-//				);
 		movieInfoPanel.add( thumbnailLabel, 
 				new GridBagConstraints( 
 				0, //gridX
-				1, //gridY
+				0, //gridY
 				1, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
@@ -343,9 +317,19 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 		return this.statusPane.getStatus();
 	}
 	
+	public YouTubeEvent getYouTubeResults()
+	{
+		return this.youTubeResults;
+	}
+	
 	public String getUploadDetails()
 	{
 		return this.statusPane.getDetails();
+	}
+	
+	public VideoEntry getUploadedVideo()
+	{
+		return this.uploadedVideo;
 	}
 	
 	public static void main( String[] args ) {
@@ -365,27 +349,41 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 	}
 
 	public void youTubeEventTriggered( YouTubeEvent event ) {
-		if (event.getType() == YouTubeEvent.EventType.UploadFailed ||
-			event.getType() == YouTubeEvent.EventType.UploadSucces ||
-			event.getType() == YouTubeEvent.EventType.UploadCancelledSuccess ||
-			event.getType() == YouTubeEvent.EventType.UploadCancelledFailed)
+		if (event.getType() == YouTubeEvent.EventType.UPLOAD_FAILED ||
+			event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS ||
+			event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_SUCCESS ||
+			event.getType() == YouTubeEvent.EventType.UPLOAD_CANCELLED_FAILED)
 		{
+			this.youTubeResults = event;
+			if (event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS)
+			{
+				this.uploadedVideo = (VideoEntry)event.getMoreInfo();
+			}
+			else
+			{
+				this.uploadedVideo = null;
+			}
 			enableUI(true);
 		}
-		else if (event.getType() == YouTubeEvent.EventType.UploadStarted )
+		else if (event.getType() == YouTubeEvent.EventType.UPLOAD_STARTED )
 		{
+			this.uploadedVideo = null;
 			enableUI(false);
 			this.showStatusPane();
 		}
-		else if (event.getType() == YouTubeEvent.EventType.LoginStarted )
+		else if (event.getType() == YouTubeEvent.EventType.LOGIN_STARTED )
 		{
 			this.uploadButton.setEnabled( false );
 		}
-		else if (event.getType() == YouTubeEvent.EventType.LoginFailed ||
-				 event.getType() == YouTubeEvent.EventType.LoginSuccess)
+		else if (event.getType() == YouTubeEvent.EventType.LOGIN_FAILED ||
+				 event.getType() == YouTubeEvent.EventType.LOGIN_SUCCESS)
 		{
 			updateStatus();
 		}
+//		else if (event.getType() == YouTubeEvent.EventType.LINK_RETRIEVED )
+//		{
+//			this.uploadedVideo = (VideoEntry)event.getMoreInfo();
+//		}
 	}
 	
 	private void close()
@@ -395,15 +393,7 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 	
 	private void onUploadFinished()
 	{
-		if (this.statusPane.getStatus() == UploadToYouTubeStatusPane.UploadStatus.Succeeded)
-		{
-			this.close();
-		}
-		else
-		{
-			this.enableUI( true );
-		}
-			
+		this.close();
 	}
 	
 	private void showStatusPane()

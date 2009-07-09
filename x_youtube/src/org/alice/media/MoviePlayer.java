@@ -232,9 +232,6 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 //			}
 //			this.revalidate();
 //		}
-		else {
-			System.out.println("Unhandled event: "+event);
-		}
 		
 	}
 	
