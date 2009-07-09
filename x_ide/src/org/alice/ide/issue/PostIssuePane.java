@@ -91,7 +91,34 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.issue.ReportSubmissionConfiguration getReportSubmissionConfiguration() {
-		return new ReportSubmissionConfiguration();
+		return new ReportSubmissionConfiguration() {
+			@Override
+			public edu.cmu.cs.dennisc.jira.rpc.Authenticator getJIRAViaRPCAuthenticator() {
+				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane.BUGS_ALICE_ORG_KEY );
+				if( accountInformation != null ) {
+					return new edu.cmu.cs.dennisc.jira.rpc.Authenticator() {
+						public Object login( redstone.xmlrpc.XmlRpcClient client ) throws redstone.xmlrpc.XmlRpcException, redstone.xmlrpc.XmlRpcFault {
+							return edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.logIn( client, accountInformation.getID(), accountInformation.getPassword() );
+						}
+					};
+				} else {
+					return super.getJIRAViaRPCAuthenticator();
+				}
+			}
+			@Override
+			public edu.cmu.cs.dennisc.jira.soap.Authenticator getJIRAViaSOAPAuthenticator() {
+				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane.BUGS_ALICE_ORG_KEY );
+				if( accountInformation != null ) {
+					return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
+						public java.lang.String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
+							return service.login( accountInformation.getID(), accountInformation.getPassword() );
+						}
+					};
+				} else {
+					return super.getJIRAViaSOAPAuthenticator();
+				}
+			}
+		};
 	}
 	@Override
 	protected java.util.ArrayList< java.awt.Component[] > addRows( java.util.ArrayList< java.awt.Component[] > rows ) {

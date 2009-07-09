@@ -13,7 +13,7 @@ public class HeaderPane extends swing.LineAxisPane {
 		hyperlink.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 		hyperlink.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 		this.add( hyperlink );
-		this.add( javax.swing.Box.createHorizontalStrut( 200 ) );
+		this.add( javax.swing.Box.createHorizontalStrut( 32 ) );
 		this.add( javax.swing.Box.createHorizontalGlue() );
 		this.add( new edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 6, 8, 12 ) );

@@ -26,6 +26,10 @@ package edu.cmu.cs.dennisc.jira.soap;
  * @author Dennis Cosgrove
  */
 public class SOAPUtilities {
+//	public String logIn( com.atlassian.jira.rpc.soap.client.JiraSoapService service, String username, String password ) throws java.rmi.RemoteException {
+//		return service.login( username, password );
+//	}
+	
 	private static com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue createCustomField( int key, String value ) {
 		return new com.atlassian.jira.rpc.soap.client.RemoteCustomFieldValue( "customfield_" + key, "", new String[] { value } );
 	}

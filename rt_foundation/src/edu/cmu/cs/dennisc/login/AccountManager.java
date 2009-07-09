@@ -20,13 +20,22 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.swing;
 
-/**
- * @author Dennis Cosgrove
- */
-public class FauxHyperlink extends AbstractHyperlink {
-	public FauxHyperlink( javax.swing.Action action ) {
-		this.setAction( action );
+package edu.cmu.cs.dennisc.login;
+
+public class AccountManager {
+	private static java.util.Map< String, AccountInformation > map = new java.util.HashMap< String, AccountInformation >();
+	
+	public static AccountInformation get( String key ) {
+		return map.get( key );
+	}
+	public static void logIn( String key, AccountInformation accountInformation ) {
+		map.put( key, accountInformation );
+	}
+	public static void logIn( String key, String id, String password, String fullName ) {
+		logIn( key, new AccountInformation( id, password, fullName ) );
+	}
+	public static void logOut( String key ) {
+		map.remove( key );
 	}
 }

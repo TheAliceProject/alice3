@@ -44,6 +44,9 @@ public class RPCUtilities {
 //	    rv.put( "values", values );
 //	    return rv;
 //	}
+	public static Object logIn( redstone.xmlrpc.XmlRpcClient client, String id, String password ) throws redstone.xmlrpc.XmlRpcFault {
+		return client.invoke( "jira1.login", new Object[] { id, password } );
+	}
 	
 	public static redstone.xmlrpc.XmlRpcStruct createIssue( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport, redstone.xmlrpc.XmlRpcClient client, Object token ) throws redstone.xmlrpc.XmlRpcFault {
 		String project = jiraReport.getProjectKey();

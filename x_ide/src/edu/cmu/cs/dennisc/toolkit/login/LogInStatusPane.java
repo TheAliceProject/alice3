@@ -59,25 +59,18 @@ class LogInPane extends swing.PageAxisPane {
 				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
 				String username = textUsername.getText();
 				try {
-					String token = service.login( username, passwordPane.getPassword() );
+					String password = passwordPane.getPassword();
+					String token = service.login( username, password );
 					try {
 						com.atlassian.jira.rpc.soap.client.RemoteUser remoteUser = service.getUser( token, username );
-						StringBuffer sb = new StringBuffer();
-//						sb.append( "name: " );
-//						sb.append( remoteUser.getName() );
-//						sb.append( "\n" );
-						sb.append( "full name: " );
-						sb.append( remoteUser.getFullname() );
-//						sb.append( "\n" );
-//						sb.append( "email: " );
-//						sb.append( remoteUser.getEmail() );
-//						sb.append( "\n" );
-						javax.swing.JOptionPane.showMessageDialog( null, sb.toString() );
+						edu.cmu.cs.dennisc.login.AccountManager.logIn( LogInStatusPane.BUGS_ALICE_ORG_KEY, username, password, remoteUser.getFullname() );
 					} finally {
 						service.logout( token );
 					}
+					javax.swing.SwingUtilities.getRoot( LogInPane.this ).setVisible( false );
 				} catch( com.atlassian.jira.rpc.soap.client.RemoteAuthenticationException rae ) {
-					javax.swing.JOptionPane.showMessageDialog( null, rae.getLocalizedMessage() );
+					javax.swing.JOptionPane.showMessageDialog( null, rae );
+					//edu.cmu.cs.dennisc.account.AccountManager.logOut( BUGS_ALICE_ORG_KEY );
 				}
 			} catch( Exception e ) {
 				throw new RuntimeException( e );
@@ -133,6 +126,7 @@ class LogInPane extends swing.PageAxisPane {
 
 
 public class LogInStatusPane extends swing.CardPane {
+	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
 	class LogInOperation extends zoot.AbstractActionOperation {
 		public LogInOperation() {
 			this.putValue( javax.swing.Action.NAME, "Log In... (Optional)" );
@@ -144,7 +138,11 @@ public class LogInStatusPane extends swing.CardPane {
 			edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( this.getSourceComponent( actionContext ) ) );
 			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
 			dialog.setVisible( true );
-			LogInStatusPane.this.show( ON_KEY );
+			edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
+			if( accountInformation != null ) {
+				LogInStatusPane.this.onPane.refresh();
+				LogInStatusPane.this.show( ON_KEY );
+			}
 		}
 	}
 
@@ -153,6 +151,7 @@ public class LogInStatusPane extends swing.CardPane {
 			this.putValue( javax.swing.Action.NAME, "Log Out" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
+			edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			LogInStatusPane.this.show( OFF_KEY );
 		}
 	}
@@ -169,23 +168,42 @@ public class LogInStatusPane extends swing.CardPane {
 		}
 	}
 	class OnPane extends swing.LineAxisPane {
+		private javax.swing.JLabel nameLabel = new javax.swing.JLabel( "Full Name" ) {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+			}
+			@Override
+			public java.awt.Dimension getMaximumSize() {
+				return this.getPreferredSize();
+			}
+		};
 		public OnPane() {
-			javax.swing.JLabel nameLabel = new javax.swing.JLabel( "Pedro Estrian" ) {
-				@Override
-				public java.awt.Dimension getMaximumSize() {
-					return this.getPreferredSize();
-				}
-			};
-			nameLabel.setForeground( java.awt.Color.WHITE );
+			this.refresh();
+			this.nameLabel.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
+			this.nameLabel.setForeground( java.awt.Color.WHITE );
 			this.add( javax.swing.Box.createHorizontalGlue() );
-			this.add( nameLabel );
+			this.add( this.nameLabel );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			this.add( logOutButton );
 		}
+		public void refresh() {
+			edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
+			if( accountInformation != null ) {
+				this.nameLabel.setText( accountInformation.getFullName() );
+				this.revalidate();
+			}
+		}
 	}
+	private OffPane offPane = new OffPane();
+	private OnPane onPane = new OnPane();
 	public LogInStatusPane() {
-		this.add( new OffPane(), OFF_KEY );
-		this.add( new OnPane(), ON_KEY );
+		this.add( this.offPane, OFF_KEY );
+		this.add( this.onPane, ON_KEY );
+		edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
+		if( accountInformation != null ) {
+			LogInStatusPane.this.show( ON_KEY );
+		}
 	}
 
 //	@Override
