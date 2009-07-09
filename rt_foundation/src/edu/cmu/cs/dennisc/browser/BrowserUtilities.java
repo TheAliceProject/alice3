@@ -32,4 +32,7 @@ public class BrowserUtilities {
 	public static void browse( java.net.URI uri ) throws Exception {
 		browse( uri.getRawPath() );
 	}
+	public static void browse( java.net.URL url ) throws Exception {
+		browse( url.toExternalForm() );
+	}
 }

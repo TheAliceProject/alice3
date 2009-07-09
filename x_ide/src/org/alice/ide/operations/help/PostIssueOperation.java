@@ -45,12 +45,23 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Abstra
 							final String MESSAGE = "Your issue report has been successfully submitted.  Thank you.";
 							Object message;
 							if( urlResult != null ) {
-								swing.PageAxisPane pane = new swing.PageAxisPane();
-								pane.add( zoot.ZLabel.acquire( MESSAGE ) );
-								pane.add( javax.swing.Box.createVerticalStrut( 16 ) );
-								pane.add( zoot.ZLabel.acquire( "You can view your report at:" ) );
-								pane.add( new edu.cmu.cs.dennisc.swing.Hyperlink( urlResult.toString() ) );
-								message = pane;
+								edu.cmu.cs.dennisc.ui.html.HTMLPane htmlPane = new edu.cmu.cs.dennisc.ui.html.HTMLPane();
+								StringBuffer sb = new StringBuffer();
+								sb.append( "<html>" );
+								sb.append( MESSAGE );
+								sb.append( "<br>" );
+								sb.append( "<br>" );
+								//sb.append( "You can view your report (if it is public) at: " );
+								sb.append( "View your report: " );
+								sb.append( "<a href=\"" );
+								sb.append( urlResult.toExternalForm() );
+								sb.append( "\">" );
+								sb.append( urlResult.toExternalForm() );
+								sb.append( "</a>" );
+								sb.append( "</html>" );
+								htmlPane.setText( sb.toString() );
+								htmlPane.setOpaque( false );
+								message = htmlPane;
 							} else {
 								message = MESSAGE;
 							}

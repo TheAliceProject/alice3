@@ -448,6 +448,8 @@ public class OpenProjectPane extends zoot.ZInputPane< java.io.File > {
 			scrollPane.setOpaque( false );
 			scrollPane.setBackground( tabPane.getBackground() );
 			scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+			//scrollPane.setHorizontalScrollBarPolicy( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+			//scrollPane.setVerticalScrollBarPolicy( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
 			
 			this.mapTabPaneToScrollPane.put( tabPane, scrollPane );
 			this.tabbedPane.addTab( tabPane.getTabTitleText(), tabPane.getTabTitleIcon(), scrollPane );
