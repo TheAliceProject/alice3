@@ -627,6 +627,8 @@ public abstract class IDE extends zoot.ZFrame {
 		helpOperations.add( new org.alice.ide.operations.help.SuggestImprovementOperation() );
 		helpOperations.add( new org.alice.ide.operations.help.RequestNewFeatureOperation() );
 		helpOperations.add( zoot.ZManager.MENU_SEPARATOR );
+		helpOperations.add( new org.alice.ide.operations.help.ReleaseNotesOperation() );
+		helpOperations.add( zoot.ZManager.MENU_SEPARATOR );
 		helpOperations.add( new org.alice.ide.operations.help.WarningOperation( true ) );
 		helpOperations.add( zoot.ZManager.MENU_SEPARATOR );
 		helpOperations.add( this.createAboutOperation() );
