@@ -297,7 +297,10 @@ public abstract class ZDragComponent extends ZControl {
 	private void handleLeftMouseDragged( java.awt.event.MouseEvent e ) {
 		if( ZManager.isDragInProgress() ) {
 			this.updateProxyPosition( e );
-			this.dragAndDropContext.handleMouseDragged( e );
+			//todo: investidate why this would be null
+			if( this.dragAndDropOperation != null ) {
+				this.dragAndDropContext.handleMouseDragged( e );
+			}
 		}
 	}
 	@Override

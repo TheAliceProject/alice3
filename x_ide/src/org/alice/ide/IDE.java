@@ -22,6 +22,8 @@
  */
 package org.alice.ide;
 
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -1974,4 +1976,6 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 		return "";
 	}
+
+	public abstract boolean isInstanceCreationAllowableFor( TypeDeclaredInAlice typeInAlice );
 }

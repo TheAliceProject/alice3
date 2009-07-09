@@ -53,6 +53,10 @@ public class FauxIDE extends IDE {
 	public void handlePreviewMethod( zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 		javax.swing.JOptionPane.showMessageDialog( this, "imagine testing method here..." );
 	}
+	@Override
+	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
+		return true;
+	}
 	public static void main( String[] args ) {
 		org.alice.ide.LaunchUtilities.launch( FauxIDE.class, null, args );
 	}

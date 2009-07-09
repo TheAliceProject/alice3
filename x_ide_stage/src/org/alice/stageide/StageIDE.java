@@ -391,4 +391,9 @@ public class StageIDE extends org.alice.ide.IDE {
 			super.declareFieldOfPredeterminedType( ownerType, valueType, actionContext );
 		}
 	}
+	@Override
+	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = typeInAlice.getFirstTypeEncounteredDeclaredInJava();
+		return false == edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getCls(), org.alice.apis.moveandturn.Scene.class, org.alice.apis.moveandturn.AbstractCamera.class );
+	}
 }

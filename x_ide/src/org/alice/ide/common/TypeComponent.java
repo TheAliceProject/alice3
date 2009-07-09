@@ -59,11 +59,22 @@ public class TypeComponent extends DeclarationNameLabel {
 		this.setBorder( TypeBorder.getSingletonFor( type ) );
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			this.popupOperation = new zoot.DefaultPopupActionOperation( 
-					new org.alice.ide.operations.ast.RenameTypeOperation( typeInAlice ),
-					new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( org.alice.ide.IDE.getSingleton().getSceneType(), typeInAlice ), 
-					new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) 
-			);
+			
+			java.util.List< zoot.Operation > operations = new java.util.LinkedList< zoot.Operation >();
+			operations.add( new org.alice.ide.operations.ast.RenameTypeOperation( typeInAlice ) );
+			
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			if( ide.isInstanceCreationAllowableFor( typeInAlice ) ) {
+				operations.add( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ide.getSceneType(), typeInAlice ) );
+			}
+			operations.add( new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) );
+			this.popupOperation = new zoot.DefaultPopupActionOperation( operations );
+					
+//			this.popupOperation = new zoot.DefaultPopupActionOperation( 
+//					new org.alice.ide.operations.ast.RenameTypeOperation( typeInAlice ),
+//					new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( org.alice.ide.IDE.getSingleton().getSceneType(), typeInAlice ), 
+//					new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) 
+//			);
 		}
 	}
 	@Override
