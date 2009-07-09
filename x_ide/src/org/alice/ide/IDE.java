@@ -540,6 +540,8 @@ public abstract class IDE extends zoot.ZFrame {
 				zoot.ZManager.MENU_SEPARATOR,
 				new org.alice.ide.operations.file.RevertProjectOperation(), 
 				zoot.ZManager.MENU_SEPARATOR, 
+				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(),
+				zoot.ZManager.MENU_SEPARATOR, 
 				this.exitOperation );
 		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, 
 				new org.alice.ide.operations.edit.UndoOperation(), 
