@@ -28,19 +28,19 @@ import edu.cmu.cs.dennisc.alice.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-@ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired=true)
+@ClassTemplate(isFollowToSuperClassDesired = true, isConsumptionBySubClassDesired = true)
 public abstract class Composite extends Element implements ReferenceFrame {
 	public static final Double DEFAULT_DURATION = 1.0;
 	public static final Double RIGHT_NOW = 0.0;
 	public static final Style DEFAULT_STYLE = org.alice.apis.moveandturn.TraditionalStyle.BEGIN_AND_END_GENTLY;
 	public static final Style DEFAULT_SPEED_STYLE = org.alice.apis.moveandturn.TraditionalStyle.BEGIN_AND_END_ABRUPTLY;
 	public static final HowMuch DEFAULT_HOW_MUCH = HowMuch.THIS_AND_DESCENDANT_PARTS;
-	
+
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< Transformable[] > COMPONENTS_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< Transformable[] >( Composite.class, "Components" );
 
 	private java.util.List< Transformable > m_components = new java.util.LinkedList< Transformable >();
 
-	protected void alreadyAdjustedDelay( Number duration ) { 
+	protected void alreadyAdjustedDelay( Number duration ) {
 		if( duration == RIGHT_NOW ) {
 			//pass;
 		} else {
@@ -57,25 +57,23 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			} );
 		}
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public PointOfView getPointOfView( ReferenceFrame asSeenBy ) {
 		return new PointOfView( getTransformation( asSeenBy ) );
 	}
 
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void delay( Number duration ) {
 		alreadyAdjustedDelay( adjustDurationIfNecessary( duration ) );
 	}
 	//todo 
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
-	public void print(
-			@edu.cmu.cs.dennisc.lang.ParameterAnnotation( isVariable=true )
-			Object... values 
-	) {
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	public void print( @edu.cmu.cs.dennisc.lang.ParameterAnnotation(isVariable = true) Object... values ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( values );
 	}
 
 	private static edu.cmu.cs.dennisc.pattern.DefaultPool< StandIn > s_standInPool = new edu.cmu.cs.dennisc.pattern.DefaultPool< StandIn >( StandIn.class );
+
 	protected static StandIn acquireStandIn( Composite composite ) {
 		StandIn rv = s_standInPool.acquire();
 		rv.setVehicle( composite );
@@ -86,21 +84,21 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		s_standInPool.release( standIn );
 	}
 
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public org.alice.apis.moveandturn.Composite getActualReferenceFrame( org.alice.apis.moveandturn.Composite ths ) {
 		return this;
 	}
-	
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public StandIn createOffsetStandIn( double x, double y, double z ) {
 		assert Double.isNaN( x ) == false;
 		assert Double.isNaN( y ) == false;
 		assert Double.isNaN( z ) == false;
 		return createOffsetStandIn( MoveDirection.RIGHT, x, MoveDirection.UP, y, MoveDirection.BACKWARD, z );
 	}
-	
+
 	@Deprecated
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public Composite createOffsetStandInIfNecessary( edu.cmu.cs.dennisc.math.Tuple3 offset ) {
 		if( offset != null ) {
 			return createOffsetStandIn( offset.x, offset.y, offset.z );
@@ -108,19 +106,19 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			return this;
 		}
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public StandIn createOffsetStandIn( edu.cmu.cs.dennisc.math.Tuple3 offset ) {
 		assert offset != null;
 		return createOffsetStandIn( offset.x, offset.y, offset.z );
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public StandIn createOffsetStandIn( edu.cmu.cs.dennisc.math.Orientation offset ) {
 		StandIn standIn = new StandIn();
 		standIn.setVehicle( this );
 		standIn.getSGAbstractTransformable().setAxesOnly( offset, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT );
 		return standIn;
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public StandIn createOffsetStandIn( edu.cmu.cs.dennisc.math.AffineMatrix4x4 offset ) {
 		StandIn standIn = new StandIn();
 		standIn.setVehicle( this );
@@ -128,14 +126,14 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		return standIn;
 	}
 
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public StandIn createOffsetStandIn( MoveDirection direction, Number amount ) {
 		StandIn standIn = new StandIn();
 		standIn.setVehicle( this );
 		standIn.move( direction, amount, RIGHT_NOW );
 		return standIn;
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public StandIn createOffsetStandIn( MoveDirection directionA, Number amountA, MoveDirection directionB, Number amountB ) {
 		StandIn standIn = new StandIn();
 		standIn.setVehicle( this );
@@ -143,7 +141,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		standIn.move( directionB, amountB, RIGHT_NOW );
 		return standIn;
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public StandIn createOffsetStandIn( MoveDirection directionA, Number amountA, MoveDirection directionB, Number amountB, MoveDirection directionC, Number amountC ) {
 		StandIn standIn = new StandIn();
 		standIn.setVehicle( this );
@@ -153,7 +151,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		return standIn;
 	}
 
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public void addComponent( Transformable component ) {
 		synchronized( m_components ) {
 			if( component.getVehicle() != this ) {
@@ -163,7 +161,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			}
 		}
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public void removeComponent( Transformable component ) {
 		synchronized( m_components ) {
 			assert component.getVehicle() == this;
@@ -172,17 +170,23 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			component.handleVehicleChange( null );
 		}
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public Iterable< Transformable > getComponentIterable() {
 		return m_components;
 	}
+
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void clearComponents() {
 		synchronized( m_components ) {
 			java.util.ListIterator< Transformable > listIterator = m_components.listIterator();
 			while( listIterator.hasNext() ) {
-				removeComponent( listIterator.next() );
+				//removeComponent( listIterator.next() );
+				Transformable component = listIterator.next();
+				assert component.getVehicle() == this;
+				assert m_components.contains( component );
+				component.handleVehicleChange( null );
 			}
+			m_components.clear();
 		}
 	}
 	private Transformable[] getComponents( Transformable[] rv ) {
@@ -190,7 +194,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			return m_components.toArray( rv );
 		}
 	}
-	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
+	@PropertyGetterTemplate(visibility = Visibility.TUCKED_AWAY)
 	public Transformable[] getComponents() {
 		return getComponents( new Transformable[ m_components.size() ] );
 	}
@@ -208,19 +212,20 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			component.handleOwnerChange( owner );
 		}
 	}
-	
+
 	//todo: reduce visibility to protected?
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public final edu.cmu.cs.dennisc.scenegraph.ReferenceFrame getSGReferenceFrame() {
 		return getSGComposite();
 	}
 	//todo: reduce visibility to protected?
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public abstract edu.cmu.cs.dennisc.scenegraph.Composite getSGComposite();
+
 	private String m_name = "<unnamed>";
 
 	@Override
-	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	@PropertyGetterTemplate(visibility = Visibility.PRIME_TIME)
 	public String getName() {
 		return m_name;
 	}
@@ -229,9 +234,9 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		m_name = name;
 	}
 	public abstract Scene getScene();
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public abstract SceneOwner getOwner();
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public edu.cmu.cs.dennisc.lookingglass.LookingGlass getLookingGlass() {
 		SceneOwner owner = getOwner();
 		if( owner != null ) {
@@ -240,7 +245,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			return null;
 		}
 	}
-	
+
 	protected double adjustDurationIfNecessary( Number duration ) {
 		if( duration == RIGHT_NOW ) {
 			//pass
@@ -256,7 +261,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		return duration.doubleValue();
 	}
 
-	@PropertyGetterTemplate( visibility=Visibility.TUCKED_AWAY )
+	@PropertyGetterTemplate(visibility = Visibility.TUCKED_AWAY)
 	public Double getGlobalSimulationSpeedFactor() {
 		SceneOwner owner = getOwner();
 		if( owner != null ) {
@@ -273,8 +278,8 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			throw new RuntimeException();
 		}
 	}
-	
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	protected void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		SceneOwner owner = getOwner();
 		if( owner != null ) {
@@ -283,15 +288,15 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			animation.complete( animationObserver );
 		}
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	protected final void perform( edu.cmu.cs.dennisc.animation.Animation animation ) {
 		perform( animation, null );
 	}
-	
-	private <E extends Transformable> E getFirstChildNamed( Class<E> cls, String name ) {
+
+	private <E extends Transformable> E getFirstChildNamed( Class< E > cls, String name ) {
 		for( Transformable child : getComponents() ) {
 			if( cls.isAssignableFrom( child.getClass() ) ) {
-				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( child.getName(), name ) ) { 
+				if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( child.getName(), name ) ) {
 					return (E)child;
 				}
 			}
@@ -299,7 +304,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		return null;
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public <E extends Transformable> E getDescendant( Class<E> cls, String... pathOfNames ) {
+	public <E extends Transformable> E getDescendant( Class< E > cls, String... pathOfNames ) {
 		Composite rv = this;
 		for( String name : pathOfNames ) {
 			rv = rv.getFirstChildNamed( cls, name );
@@ -312,7 +317,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		}
 	}
 
-	protected java.util.List< String[] > update( java.util.List< String[] > rv, java.util.Stack< String > path, Class<? extends Transformable> cls ) {
+	protected java.util.List< String[] > update( java.util.List< String[] > rv, java.util.Stack< String > path, Class< ? extends Transformable > cls ) {
 		for( Transformable child : getComponents() ) {
 			String name = child.getName();
 			//assert name != null;
@@ -331,20 +336,20 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		return rv;
 	}
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public java.util.List< String[] > findPathsToAllDescendants( Class<? extends Transformable> cls ) {
+	public java.util.List< String[] > findPathsToAllDescendants( Class< ? extends Transformable > cls ) {
 		java.util.List< String[] > rv = new java.util.LinkedList< String[] >();
 		java.util.Stack< String > path = new java.util.Stack< String >();
 		return update( rv, path, cls );
 	}
-//	public String[] getPathOfNamesToDescendant( Element descendant ) {
-//		Element e = descendant;
-//		while( e != this ) {
-//			assert e != null;
-//			e = e.getParent();
-//		}
-//		return null;
-//	}
-	
+	//	public String[] getPathOfNamesToDescendant( Element descendant ) {
+	//		Element e = descendant;
+	//		while( e != this ) {
+	//			assert e != null;
+	//			e = e.getParent();
+	//		}
+	//		return null;
+	//	}
+
 	private static <E extends Composite> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, Composite component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
 		assert component != null;
 		E rv = null;
@@ -422,78 +427,78 @@ public abstract class Composite extends Element implements ReferenceFrame {
 	private static <E extends Composite> void updateAllToAccept( HowMuch candidateMask, java.util.List< E > list, Composite component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
 		updateAllToAccept( candidateMask.isThisACandidate(), candidateMask.isChildACandidate(), candidateMask.isGrandchildAndBeyondACandidate(), list, component, cls, criterions );
 	}
-	
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public <E extends Composite> E findFirstMatch( HowMuch howMuch, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
 		return Composite.getFirstToAccept( howMuch, this, cls, criterions );
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public <E extends Composite> E findFirstMatch( Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
 		return findFirstMatch( DEFAULT_HOW_MUCH, cls, criterions );
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public <E extends Composite> E findFirstMatch( Class< E > cls ) {
 		return findFirstMatch( cls, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public Element findFirstMatch( edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
 		return findFirstMatch( null, criterions );
 	}
 
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public <E extends Transformable> E findFirstDescendantNamed( Class< E > cls, String name ) {
 		return findFirstMatch( HowMuch.DESCENDANT_PARTS_ONLY, cls, new edu.cmu.cs.dennisc.pattern.NameEqualsCriterion( name, false ) );
 	}
-	
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public <E extends Composite> java.util.List< E > findAllMatches( HowMuch howMuch, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
 		java.util.List< E > list = new java.util.LinkedList< E >();
 		Composite.updateAllToAccept( howMuch, list, this, cls, criterions );
 		return list;
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public <E extends Composite> java.util.List< E > findAllMatches( Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
 		return findAllMatches( DEFAULT_HOW_MUCH, cls, criterions );
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public <E extends Composite> java.util.List< E > findAllMatches( Class< E > cls ) {
 		return findAllMatches( cls, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public java.util.List< Composite > findAllMatches( edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
 		return findAllMatches( null, criterions );
 	}
-	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public java.util.List< Composite > findAllMatches() {
 		return findAllMatches( null, (edu.cmu.cs.dennisc.pattern.Criterion< ? >[])null );
 	}
 
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Point3 p, AbstractCamera camera ) {
 		//todo
 		edu.cmu.cs.dennisc.math.Vector4 xyzw = new edu.cmu.cs.dennisc.math.Vector4( p.x, p.y, p.z, 1.0 );
 		getSGComposite().transformToAWT( rv, xyzw, camera.getLookingGlass(), camera.getSGCamera() );
 		return rv;
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public java.awt.Point transformToAWT( edu.cmu.cs.dennisc.math.Point3 p, AbstractCamera camera ) {
 		return transformToAWT( new java.awt.Point(), p, camera );
 	}
-	
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT( edu.cmu.cs.dennisc.math.Point3 rv, java.awt.Point p, double z, AbstractCamera camera ) {
 		//todo
 		edu.cmu.cs.dennisc.math.Vector4 xyzw = new edu.cmu.cs.dennisc.math.Vector4( p.x, p.y, z, 1.0 );
 		getSGComposite().transformFromAWT( xyzw, p, z, camera.getLookingGlass(), camera.getSGCamera() );
-		rv.set( xyzw.x/xyzw.w, xyzw.y/xyzw.w, xyzw.z/xyzw.w );
+		rv.set( xyzw.x / xyzw.w, xyzw.y / xyzw.w, xyzw.z / xyzw.w );
 		return rv;
 	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
 	public edu.cmu.cs.dennisc.math.Point3 transformFromAWT( java.awt.Point p, double z, AbstractCamera camera ) {
 		return transformFromAWT( new edu.cmu.cs.dennisc.math.Point3(), p, z, camera );
 	}
-	
-	private java.awt.Component getOwnerComponent() { 
+
+	private java.awt.Component getOwnerComponent() {
 		SceneOwner owner = this.getOwner();
 		if( owner != null ) {
 			edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass lg = owner.getOnscreenLookingGlass();
@@ -519,29 +524,29 @@ public abstract class Composite extends Element implements ReferenceFrame {
 			throw new edu.cmu.cs.dennisc.program.ProgramClosedException();
 		}
 	}
-	
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public Boolean getBooleanFromUser( String message ) {
 		org.alice.apis.moveandturn.inputpanes.BooleanInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.BooleanInputPane( message );
 		Boolean rv = inputPane.showInJDialog( this.getOwnerComponent() );
 		this.closeProgramInCaseOfNull( rv );
 		return rv;
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public String getStringFromUser( String message ) {
 		org.alice.apis.moveandturn.inputpanes.StringInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.StringInputPane( message );
 		String rv = inputPane.showInJDialog( this.getOwnerComponent() );
 		this.closeProgramInCaseOfNull( rv );
 		return rv;
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public Integer getIntegerFromUser( String message ) {
 		org.alice.apis.moveandturn.inputpanes.IntegerInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.IntegerInputPane( message );
 		Integer rv = inputPane.showInJDialog( this.getOwnerComponent() );
 		this.closeProgramInCaseOfNull( rv );
 		return rv;
 	}
-	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public Double getDoubleFromUser( String message ) {
 		org.alice.apis.moveandturn.inputpanes.DoubleInputPane inputPane = new org.alice.apis.moveandturn.inputpanes.DoubleInputPane( message );
 		Double rv = inputPane.showInJDialog( this.getOwnerComponent() );
