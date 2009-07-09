@@ -8,8 +8,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn"/>
 	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/x_ide"/>
-	<classpathentry kind="lib" path="lib/jmf/jmf.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/google-collect-1.0-rc1.jar"/>
-	<classpathentry kind="lib" path="lib/youtube/youtube.jar"/>
+	<classpathentry kind="lib" path="/jar_youtube/google-collect-1.0-rc1.jar"/>
+	<classpathentry kind="lib" path="/jar_youtube/jmf.jar"/>
+	<classpathentry kind="lib" path="/jar_youtube/youtube.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
