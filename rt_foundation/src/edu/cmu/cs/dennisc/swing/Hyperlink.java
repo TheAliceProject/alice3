@@ -26,22 +26,32 @@ package edu.cmu.cs.dennisc.swing;
  * @author Dennis Cosgrove
  */
 public class Hyperlink extends AbstractHyperlink {
-	public Hyperlink( final String url ) {
-		javax.swing.Action action = new javax.swing.AbstractAction() {
-			public void actionPerformed(java.awt.event.ActionEvent event) {
-				try {
-					edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( url );
-				} catch( Exception e ) {
-					e.printStackTrace();
-					edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( url );
-					javax.swing.JOptionPane.showMessageDialog( Hyperlink.this, "Alice was unable to launch your default browser.\n\nThe text\n\n    " + url + "\n\nhas been copied to your clipboard so that you may paste it into the address line of your favorite web browser." );
-				}
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed(java.awt.event.ActionEvent event) {
+			String uri = Hyperlink.this.getURI();
+			try {
+				edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( uri );
+			} catch( Exception e ) {
+				e.printStackTrace();
+				edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( uri );
+				javax.swing.JOptionPane.showMessageDialog( Hyperlink.this, "Alice was unable to launch your default browser.\n\nThe text\n\n    " + uri + "\n\nhas been copied to your clipboard so that you may paste it into the address line of your favorite web browser." );
 			}
-		};
-		action.putValue( javax.swing.Action.NAME, url );
+		}
+	};
+	public Hyperlink( String uri ) {
+		this.setURI( uri );
 		this.setAction( action );
 	}
 	public Hyperlink( java.net.URI uri ) {
 		this( uri.getRawPath() );
+	}
+	public String getURI() {
+		return (String)this.action.getValue( javax.swing.Action.NAME );
+	}
+	public void setURI( String uri ) {
+		this.action.putValue( javax.swing.Action.NAME, uri );
+	}
+	public void setURI( java.net.URI uri ) {
+		setURI( uri.getRawPath() );
 	}
 }
