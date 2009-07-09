@@ -68,9 +68,14 @@ public abstract class AbstractHyperlink extends javax.swing.JLabel {
 	}
 	public void setAction( javax.swing.Action action ) {
 		assert action != null;
-		this.setText( "<html><u>" + (String)action.getValue( javax.swing.Action.NAME ) + "</u></html>" );
+		this.setContentText( (String)action.getValue( javax.swing.Action.NAME ) );
 		this.action = action;
 	}
+	
+	public void setContentText( String contentText ) {
+		this.setText( "<html><u>" + contentText + "</u></html>" );
+	}
+	
 //	@Override
 //	protected void paintComponent( java.awt.Graphics g ) {
 //		java.awt.Font font = g.getFont();
