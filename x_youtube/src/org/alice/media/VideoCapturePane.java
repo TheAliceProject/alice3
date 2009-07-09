@@ -343,10 +343,10 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		this.youTubeCardLayout.show( this.youTubeControlPanel, YOUTUBE_BUTTON_KEY );
 		
 		
-		this.saveButton = new JButton("Save Movie");
+		this.saveButton = new JButton("Save Movie to File");
 		this.saveButton.setFont( this.saveButton.getFont().deriveFont( 24f ) );
 		this.saveButton.addActionListener( this );
-		this.saveStatus = new JLabel("Not saved.");
+		this.saveStatus = new JLabel();
 		this.saveStatus.setHorizontalAlignment( JLabel.CENTER );
 		Dimension saveDimension = new Dimension(256, 40);
 		this.saveStatus.setMaximumSize( saveDimension );
@@ -496,7 +496,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				0.0, //weightY
 				GridBagConstraints.NORTH, //anchor 
 				GridBagConstraints.BOTH, //fill
-				new Insets( 16, 2, 2, 2 ), //insets
+				new Insets( 80, 2, 2, 2 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);
@@ -510,7 +510,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				0.0, //weightY
 				GridBagConstraints.CENTER, //anchor 
 				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
+				new Insets( 30, 2, 2, 2 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);
@@ -538,7 +538,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				0.0, //weightY
 				GridBagConstraints.CENTER, //anchor 
 				GridBagConstraints.NONE, //fill
-				new Insets( 2, 8, 2, 2 ), //insets
+				new Insets( 16, 8, 2, 2 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);

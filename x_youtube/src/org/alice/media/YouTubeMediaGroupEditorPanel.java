@@ -83,7 +83,7 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 	private static final String LABEL_STRING = "label='";
 	private static final String TERM_PATTERN = "term='[^']*'";
 	private static final String LABEL_PATTERN = "label='[^']*'";
-	private static final String[] DEFAULT_TAGS = {"alice"};
+	private static final String[] DEFAULT_TAGS = {"alice", "alice3"};
 	private static final String DEFAULT_CATEGORY = "tech";
 	
 	public YouTubeMediaGroupEditorPanel()
