@@ -22,9 +22,6 @@
  */
 package org.alice.ide.operations.help;
 
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowEvent;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -38,13 +35,26 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Abstra
 		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, this.getSourceComponent( actionContext ) );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.addComponentListener( new java.awt.event.ComponentListener() {
-			public void componentHidden( ComponentEvent e ) {
+			public void componentHidden( java.awt.event.ComponentEvent e ) {
 				if( pane.isSubmitAttempted() ) {
 					if( pane.isSubmitBackgrounded() ) {
 						//pass
 					} else {
 						if( pane.isSubmitSuccessful() ) {
-							javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report has been successfully submitted.  Thank you." );
+							java.net.URL urlResult = pane.getURLResult();
+							final String MESSAGE = "Your issue report has been successfully submitted.  Thank you.";
+							Object message;
+							if( urlResult != null ) {
+								swing.PageAxisPane pane = new swing.PageAxisPane();
+								pane.add( zoot.ZLabel.acquire( MESSAGE ) );
+								pane.add( javax.swing.Box.createVerticalStrut( 16 ) );
+								pane.add( zoot.ZLabel.acquire( "You can view your report at:" ) );
+								pane.add( new edu.cmu.cs.dennisc.swing.Hyperlink( urlResult.toString() ) );
+								message = pane;
+							} else {
+								message = MESSAGE;
+							}
+							javax.swing.JOptionPane.showMessageDialog( owner, message );
 						} else {
 							javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report FAILED to submit.  Thank you for trying." );
 						}
@@ -52,13 +62,13 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Abstra
 				}
 			}
 
-			public void componentMoved( ComponentEvent e ) {
+			public void componentMoved( java.awt.event.ComponentEvent e ) {
 			}
 
-			public void componentResized( ComponentEvent e ) {
+			public void componentResized( java.awt.event.ComponentEvent e ) {
 			}
 
-			public void componentShown( ComponentEvent e ) {
+			public void componentShown( java.awt.event.ComponentEvent e ) {
 			}
 
 		} );

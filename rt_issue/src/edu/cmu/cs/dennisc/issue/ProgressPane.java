@@ -34,6 +34,7 @@ public class ProgressPane extends javax.swing.JPanel {
 	private boolean isDone = false;
 	private boolean isSuccessful = false;
 	private boolean isBackgrounded = false;
+	private java.net.URL urlResult = null;
 
 	public ProgressPane() {
 		this.console.setPreferredSize( new java.awt.Dimension( 400, 240 ) );
@@ -76,9 +77,10 @@ public class ProgressPane extends javax.swing.JPanel {
 			System.out.print( chunk );
 		}
 	}
-	public void handleDone( boolean isSuccessful ) {
+	public void handleDone( boolean isSuccessful, java.net.URL urlResult ) {
 		this.isDone = true;
 		this.isSuccessful = isSuccessful;
+		this.urlResult = urlResult;
 		this.hideRoot();
 	}
 	public boolean isDone() {
@@ -89,5 +91,8 @@ public class ProgressPane extends javax.swing.JPanel {
 	}
 	public boolean isSuccessful() {
 		return this.isSuccessful;
+	}
+	public java.net.URL getURLResult() {
+		return this.urlResult;
 	}
 }

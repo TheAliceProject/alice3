@@ -33,6 +33,7 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 	private ProgressPane progressPane;
 	private ReportGenerator issueReportGenerator;
 	private ReportSubmissionConfiguration reportSubmissionConfiguration;
+	private String key = null;
 	public IssueReportWorker( ProgressPane progressPane, ReportGenerator issueReportGenerator, ReportSubmissionConfiguration reportSubmissionConfiguration ) {
 		assert progressPane != null;
 		this.progressPane = progressPane;
@@ -54,6 +55,7 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 		Object token = this.reportSubmissionConfiguration.getJIRAViaRPCAuthenticator().login( client );
 		try {
 			redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.createIssue( jiraReport, client, token );
+			this.key = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.getKey( remote );
 		} finally {
 			client.invoke( "jira1.logout", new Object[] { token } );
 		}
@@ -64,12 +66,14 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 		com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
 		String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
 	    com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
+	    this.key = result.getKey();
 		service.logout( token );
 	}
 
 	protected void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride ) throws Exception {
 		MailReport mailReport = this.issueReportGenerator.generateIssueForSMTP();
 		edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.reportSubmissionConfiguration.getMailServer(), this.reportSubmissionConfiguration.getMailAuthenticator(), mailReport.getReplyTo(), mailReport.getReplyToPersonal(), this.reportSubmissionConfiguration.getMailRecipient(), mailReport.getSubject(), mailReport.getBody(), mailReport.getAttachments() );
+	    this.key = null;
 	}
 	@Override
 	protected Boolean doInBackground() throws Exception {
@@ -122,7 +126,18 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 		try {
 			Boolean isSuccessful = this.get();
 			if( isSuccessful != null ) {
-				this.progressPane.handleDone( isSuccessful );
+				java.net.URL urlResult;
+				if( this.key != null ) {
+					try {
+						java.net.URL urlSOAP = this.reportSubmissionConfiguration.getJIRAViaSOAPServer();
+						urlResult = new java.net.URL( urlSOAP.getProtocol(), urlSOAP.getHost(), urlSOAP.getPort(), "/browse/" + this.key );
+					} catch( java.net.MalformedURLException murle ) {
+						urlResult = null;
+					}
+				} else {
+					urlResult = null;
+				}
+				this.progressPane.handleDone( isSuccessful, urlResult );
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "isSuccessful is null" );
 			}

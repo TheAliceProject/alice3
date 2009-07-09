@@ -250,6 +250,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	private boolean isSubmitAttempted = false;
 	private boolean isSubmitSuccessful = false;
 	private boolean isSubmitBackgrounded = false;
+	private java.net.URL urlResult = null;
 
 	public boolean isSubmitAttempted() {
 		return this.isSubmitAttempted;
@@ -259,6 +260,9 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	}
 	public boolean isSubmitSuccessful() {
 		return this.isSubmitSuccessful;
+	}
+	public java.net.URL getURLResult() {
+		return this.urlResult;
 	}
 	protected abstract boolean isClearedToSubmit();
 
@@ -287,6 +291,8 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 			this.isSubmitBackgrounded = progressPane.isBackgrounded();
 		}
 
+		this.urlResult = progressPane.getURLResult();
+		
 		return progressPane.isSuccessful();
 	}
 }

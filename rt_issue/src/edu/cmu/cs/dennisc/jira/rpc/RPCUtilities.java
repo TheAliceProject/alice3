@@ -22,6 +22,8 @@
  */
 package edu.cmu.cs.dennisc.jira.rpc;
 
+import redstone.xmlrpc.XmlRpcStruct;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -86,5 +88,8 @@ public class RPCUtilities {
 	    customFields.add( createCustomField( 10001, jiraReport.getException() ) );
 	    rv.put( "customFieldValues", customFields );
 		return (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.createIssue", new Object[] { token, rv } );
+	}
+	public static String getKey( XmlRpcStruct issue ) {
+		return issue.getString( "key" );
 	}
 }
