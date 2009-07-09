@@ -22,29 +22,46 @@
  */
 package org.alice.ide.operations.help;
 
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class PostIssueOperation extends org.alice.ide.operations.AbstractActionOperation {
 	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType();
 	public void perform( zoot.ActionContext actionContext ) {
-		org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
-		
-		javax.swing.JFrame owner = org.alice.ide.IDE.getSingleton();
-		javax.swing.JFrame dialog = edu.cmu.cs.dennisc.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, this.getSourceComponent( actionContext ) );
-		dialog.getRootPane().setDefaultButton( pane.getSubmitButton() );
-		dialog.setVisible( true );
-		if( pane.isSubmitAttempted() ) {
-			if( pane.isSubmitBackgrounded() ) {
-				//javax.swing.JOptionPane.showMessageDialog( frame, "Thank you for submitting a bug report." );
-			} else {
-				if( pane.isSubmitSuccessful() ) {
-					javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report has been successfully submitted.  Thank you." );
-				} else {
-					javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report FAILED to submitted.  Thank you for trying." );
+		final org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
+
+		final javax.swing.JFrame owner = org.alice.ide.IDE.getSingleton();
+		javax.swing.JFrame window = edu.cmu.cs.dennisc.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, this.getSourceComponent( actionContext ) );
+		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
+		window.addComponentListener( new java.awt.event.ComponentListener() {
+			public void componentHidden( ComponentEvent e ) {
+				if( pane.isSubmitAttempted() ) {
+					if( pane.isSubmitBackgrounded() ) {
+						//pass
+					} else {
+						if( pane.isSubmitSuccessful() ) {
+							javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report has been successfully submitted.  Thank you." );
+						} else {
+							javax.swing.JOptionPane.showMessageDialog( owner, "Your issue report FAILED to submit.  Thank you for trying." );
+						}
+					}
 				}
 			}
-		}
+
+			public void componentMoved( ComponentEvent e ) {
+			}
+
+			public void componentResized( ComponentEvent e ) {
+			}
+
+			public void componentShown( ComponentEvent e ) {
+			}
+
+		} );
+		window.setVisible( true );
 	}
 }

@@ -63,7 +63,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 							if( bugReportPane.isSubmitSuccessful() ) {
 								javax.swing.JOptionPane.showMessageDialog( frame, "Your bug report has been successfully submitted.  Thank you." );
 							} else {
-								javax.swing.JOptionPane.showMessageDialog( frame, "Your bug report FAILED to submitted.  Thank you for trying." );
+								javax.swing.JOptionPane.showMessageDialog( frame, "Your bug report FAILED to submit.  Thank you for trying." );
 							}
 						}
 //						break;
