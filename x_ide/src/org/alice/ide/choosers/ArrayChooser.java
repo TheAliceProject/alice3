@@ -82,7 +82,7 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		return this.typePane.getValueType() != null;
 	}
 	@Override
-	public java.lang.String[] getLabelTexts() {
+	public String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
 	public java.awt.Component[] getComponents() {

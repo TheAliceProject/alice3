@@ -132,7 +132,7 @@ public class InstanceProperty<E> implements Property< E > {
 	}
 
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return getClass().getName() + "[owner=" + getOwner() + ";name=" + getName() + "]";
 	}
 }

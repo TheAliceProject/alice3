@@ -66,7 +66,7 @@ public abstract class VirtualMachine {
 //	}
 
 	
-	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, java.lang.Object instance, java.lang.Object... arguments ) {
+	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments ) {
 		pushCurrentThread( null );
 		try {
 			invoke( method, instance, arguments );

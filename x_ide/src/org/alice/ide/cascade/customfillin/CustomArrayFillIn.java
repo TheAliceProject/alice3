@@ -27,7 +27,7 @@ package org.alice.ide.cascade.customfillin;
  */
 public class CustomArrayFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
 	@Override
-	protected java.lang.String getMenuProxyText() {
+	protected String getMenuProxyText() {
 		return "Custom Array...";
 	}
 	@Override

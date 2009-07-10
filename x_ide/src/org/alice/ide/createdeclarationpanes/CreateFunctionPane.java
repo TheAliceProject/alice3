@@ -39,7 +39,7 @@ public class CreateFunctionPane extends CreateMethodPane {
 		return true;
 	}
 	@Override
-	protected java.lang.String getValueTypeText() {
+	protected String getValueTypeText() {
 		return "return value type:";
 	}
 }

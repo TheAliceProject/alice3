@@ -207,7 +207,7 @@ public class LogInStatusPane extends swing.CardPane {
 	}
 
 //	@Override
-//	public void show( java.lang.String key ) {
+//	public void show( String key ) {
 //		super.show( key );
 //		this.revalidate();
 //	}

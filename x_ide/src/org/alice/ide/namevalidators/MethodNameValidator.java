@@ -31,7 +31,7 @@ public class MethodNameValidator extends MemberNameValidator {
 		super( null, type );
 	}
 	@Override
-	protected boolean isNameAvailable( java.lang.String name ) {
+	protected boolean isNameAvailable( String name ) {
 		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
 		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.getType().methods ) {
 			if( method == node ) {

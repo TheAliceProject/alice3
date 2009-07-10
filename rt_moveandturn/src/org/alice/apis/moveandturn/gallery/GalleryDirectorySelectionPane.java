@@ -45,7 +45,7 @@ public class GalleryDirectorySelectionPane extends edu.cmu.cs.dennisc.swing.Dire
 	}
 
 	@Override
-	protected java.lang.String getFeedbackText() {
+	protected String getFeedbackText() {
 		StringBuffer sb = new StringBuffer();
 		sb.append( "<html>" );
 		if( this.isOKButtonValid() ) {

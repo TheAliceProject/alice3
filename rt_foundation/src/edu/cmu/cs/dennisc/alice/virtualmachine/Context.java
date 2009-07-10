@@ -26,5 +26,5 @@ package edu.cmu.cs.dennisc.alice.virtualmachine;
  * @author Dennis Cosgrove
  */
 public interface Context {
-	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, java.lang.Object... arguments );
+	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object... arguments );
 }

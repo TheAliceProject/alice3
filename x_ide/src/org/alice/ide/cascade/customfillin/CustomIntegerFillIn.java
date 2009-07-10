@@ -27,7 +27,7 @@ package org.alice.ide.cascade.customfillin;
  */
 public class CustomIntegerFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.IntegerLiteral, Integer > {
 	@Override
-	protected java.lang.String getMenuProxyText() {
+	protected String getMenuProxyText() {
 		return "Custom Integer...";
 	}
 	@Override

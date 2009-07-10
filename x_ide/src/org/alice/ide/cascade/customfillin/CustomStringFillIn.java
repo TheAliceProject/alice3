@@ -27,7 +27,7 @@ package org.alice.ide.cascade.customfillin;
  */
 public class CustomStringFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.StringLiteral, String > {
 	@Override
-	protected java.lang.String getMenuProxyText() {
+	protected String getMenuProxyText() {
 		return "Custom String...";
 	}
 	@Override

@@ -43,7 +43,7 @@ public class HelpOperation extends HTMLMessageOperation {
 		return rv;
 	}
 	@Override
-	protected java.lang.String getTitle() {
+	protected String getTitle() {
 		return "Help";
 	}
 	@Override

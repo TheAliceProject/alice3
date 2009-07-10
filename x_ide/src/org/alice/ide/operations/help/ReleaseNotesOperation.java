@@ -42,7 +42,7 @@ public class ReleaseNotesOperation extends HTMLMessageOperation {
 		return rv;
 	}
 	@Override
-	protected java.lang.String getTitle() {
+	protected String getTitle() {
 		return "Release Notes";
 	}
 	@Override

@@ -34,7 +34,7 @@ public class TextChunk extends Chunk {
 		return this.text;
 	}
 	@Override
-	protected java.lang.StringBuffer updateRepr( java.lang.StringBuffer rv ) {
+	protected StringBuffer updateRepr( StringBuffer rv ) {
 		rv.append( "text=" );
 		rv.append( this.text );
 		return rv;

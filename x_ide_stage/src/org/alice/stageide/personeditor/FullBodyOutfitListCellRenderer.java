@@ -27,7 +27,7 @@ package org.alice.stageide.personeditor;
  */
 class FullBodyOutfitListCellRenderer extends IngredientListCellRenderer {
 	@Override
-	protected java.lang.String getSubPath() {
+	protected String getSubPath() {
 		return "fullbodyoutfit_pictures";
 	}
 }

@@ -31,11 +31,11 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
 		return getIDE().getMyProjectsDirectory();
 	}
 	@Override
-	protected java.lang.String getExtension() {
+	protected String getExtension() {
 		return edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION;
 	}
 	@Override
-	protected java.lang.String getInitialFilename() {
+	protected String getInitialFilename() {
 		return null;
 	}
 	@Override

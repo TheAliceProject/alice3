@@ -272,7 +272,7 @@ public class FileUtilities {
 	
 	public static java.io.FilenameFilter createFilenameFilter( final String extension ) {
 		return new java.io.FilenameFilter() {
-			public boolean accept( java.io.File dir, java.lang.String name ) {
+			public boolean accept( java.io.File dir, String name ) {
 				return name.endsWith( extension );
 			}
 		};

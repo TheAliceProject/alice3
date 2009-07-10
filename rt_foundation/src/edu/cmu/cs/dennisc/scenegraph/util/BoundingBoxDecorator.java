@@ -47,7 +47,7 @@ public class BoundingBoxDecorator extends edu.cmu.cs.dennisc.scenegraph.Visual {
 	}
 	
 	@Override
-	public void setName( java.lang.String name ) {
+	public void setName( String name ) {
 		super.setName( name );
 		if( name != null ) {
 			//pass

@@ -52,7 +52,7 @@ public abstract class AssetsPane extends swing.BorderPane {
 				AssetsPane.this.handleFileActivationFromThumbnails( file );
 			}
 			@Override
-			protected java.lang.String getTextFor( java.io.File file ) {
+			protected String getTextFor( java.io.File file ) {
 				return AssetsPane.this.getTextFor( file, true );
 			}
 		};
@@ -68,7 +68,7 @@ public abstract class AssetsPane extends swing.BorderPane {
 				AssetsPane.this.handleFileActivationFromThumbnails( file );
 			}
 			@Override
-			protected java.lang.String getTextFor( java.io.File file ) {
+			protected String getTextFor( java.io.File file ) {
 				return AssetsPane.this.getTextFor( file, false );
 			}
 			@Override

@@ -409,7 +409,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 	}
 	
 	@Override
-	public final boolean equals( java.lang.Object obj ) {
+	public final boolean equals( Object obj ) {
 		return super.equals( obj );
 	}
 	public boolean isEquivalentTo( Object other ) {

@@ -60,7 +60,7 @@ public class StringConcatenationFillIn extends cascade.FillIn< edu.cmu.cs.dennis
 //		rv.rightOperand.setValue( self.getChildren()[ 1 ].getSelectedFillIn().getValue() )
 //		return rv
 //	def createMenuProxy( self ):
-//		operandType = ecc.dennisc.alice.ast.getType( java.lang.Object )
+//		operandType = ecc.dennisc.alice.ast.getType( Object )
 //		leftValue = alice.ide.editors.code.EmptyExpression( operandType )
 //		rightValue = alice.ide.editors.code.EmptyExpression( operandType )
 //		return alice.ide.editors.code.ExpressionPane( alice.ast.StringConcatenation( leftValue, rightValue ) )

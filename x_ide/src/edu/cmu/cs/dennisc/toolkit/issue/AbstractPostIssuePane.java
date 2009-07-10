@@ -84,16 +84,16 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		this.typeSelectionOperation.getComboBoxModel().setSelectedItem( issueType );
 	}
 	@Override
-	protected java.lang.String getSMTPReplyTo() {
+	protected String getSMTPReplyTo() {
 		return null;
 	}
 	@Override
-	protected java.lang.String getSMTPReplyToPersonal() {
+	protected String getSMTPReplyToPersonal() {
 		return null;
 	}
 	
 	@Override
-	protected java.lang.String getEnvironmentText() {
+	protected String getEnvironmentText() {
 		return this.textEnvironment.getText();
 	}
 	

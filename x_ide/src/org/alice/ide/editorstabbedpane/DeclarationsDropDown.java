@@ -94,7 +94,7 @@ abstract class MembersFillIn extends cascade.MenuFillIn< zoot.ActionOperation > 
 	}
 	protected abstract int getMemberCount();
 	@Override
-	protected java.lang.String getLabelText() {
+	protected String getLabelText() {
 		return super.getLabelText() + " (" + this.getMemberCount() + ")";
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getType() {

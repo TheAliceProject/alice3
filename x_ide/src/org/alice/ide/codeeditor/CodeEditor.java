@@ -133,7 +133,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 	}
 	
 	@Override
-	public java.lang.String getName() {
+	public String getName() {
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.code;
 			return method.getName();

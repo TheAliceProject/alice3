@@ -50,7 +50,7 @@ public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.
 		return true;
 	}
 	@Override
-	protected java.lang.String getValueTypeText() {
+	protected String getValueTypeText() {
 		return "value type:";
 	}
 	@Override

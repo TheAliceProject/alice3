@@ -27,7 +27,7 @@ package org.alice.stageide.personeditor;
  */
 class HairListCellRenderer extends IngredientListCellRenderer {
 	@Override
-	protected java.lang.String getSubPath() {
+	protected String getSubPath() {
 		return "hair_pictures";
 	}
 }

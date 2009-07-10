@@ -8,11 +8,11 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 			return super.get( field, instance );
 		}
 		@Override
-		public java.lang.Object[] evaluateArguments( java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.Argument > arguments ) {
+		public Object[] evaluateArguments( java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< edu.cmu.cs.dennisc.alice.ast.Argument > arguments ) {
 			return super.evaluateArguments( parameters, arguments );
 		}
 		@Override
-		public void pushFrame( edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instance, java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, java.lang.Object > map ) {
+		public void pushFrame( edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instance, java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractParameter, Object > map ) {
 			super.pushFrame( instance, map );
 		}
 		@Override

@@ -149,7 +149,7 @@ class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCe
 //		this.panel.add( this.label );
 //	}
 //	
-//	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, java.lang.Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+//	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 //		java.io.File file = (java.io.File)value;
 //		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file );
 //		if( path != null ) {
@@ -197,7 +197,7 @@ class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCe
 //	};
 //	private final int INSET = 8;
 //	@Override
-//	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, java.lang.Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+//	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 //		java.awt.Component rv = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
 //		if( rv instanceof javax.swing.JLabel ) {
 //			javax.swing.JLabel label = (javax.swing.JLabel)rv;
@@ -418,7 +418,7 @@ class FileSystemPane extends TabPane {
 		}
 	}
 	@Override
-	public java.lang.String getTabTitleText() {
+	public String getTabTitleText() {
 		return "File System";
 	}
 }

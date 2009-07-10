@@ -132,15 +132,15 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 			return rv;
 		}
 		@Override
-		protected java.lang.String getCollapsedButtonText() {
+		protected String getCollapsedButtonText() {
 			return "yes >>>";
 		}
 		@Override
-		protected java.lang.String getCollapsedLabelText() {
+		protected String getCollapsedLabelText() {
 			return "Can you provide insight into this problem?";
 		}
 		@Override
-		protected java.lang.String getExpandedLabelText() {
+		protected String getExpandedLabelText() {
 			return "Please provide insight:";
 		}
 	}

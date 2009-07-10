@@ -110,7 +110,7 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 				final edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( edu.cmu.cs.dennisc.toolkit.login.LogInStatusPane.BUGS_ALICE_ORG_KEY );
 				if( accountInformation != null ) {
 					return new edu.cmu.cs.dennisc.jira.soap.Authenticator() {
-						public java.lang.String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
+						public String login( com.atlassian.jira.rpc.soap.client.JiraSoapService service ) throws java.rmi.RemoteException {
 							return service.login( accountInformation.getID(), accountInformation.getPassword() );
 						}
 					};

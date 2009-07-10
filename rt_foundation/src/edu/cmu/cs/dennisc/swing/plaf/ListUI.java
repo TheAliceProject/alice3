@@ -188,7 +188,7 @@ public abstract class ListUI<E> extends javax.swing.plaf.ListUI {
 //				
 //		ListUI ui = new ListUI() {
 //			@Override
-//			protected javax.swing.AbstractButton createComponentFor( int index, java.lang.Object o ) {
+//			protected javax.swing.AbstractButton createComponentFor( int index, Object o ) {
 //				return new javax.swing.JCheckBox( o.toString() );
 //			}
 //		};

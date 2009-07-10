@@ -275,7 +275,7 @@ public class ListProperty<E> extends InstanceProperty< java.util.ArrayList< E > 
 	//	}
 	//
 	//	@Override
-	//	public void appendValue( java.lang.StringBuffer sb ) {
+	//	public void appendValue( StringBuffer sb ) {
 	//		sb.append( "{" );
 	//		boolean isFirst = true;
 	//		for( E e : getValue() ) {

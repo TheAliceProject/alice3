@@ -37,7 +37,7 @@ public class GetsChunk extends Chunk {
 		return this.isTowardLeading;
 	}
 	@Override
-	protected java.lang.StringBuffer updateRepr( java.lang.StringBuffer rv ) {
+	protected StringBuffer updateRepr( StringBuffer rv ) {
 		rv.append( "isTowardLeading=" );
 		rv.append( this.isTowardLeading );
 		return rv;

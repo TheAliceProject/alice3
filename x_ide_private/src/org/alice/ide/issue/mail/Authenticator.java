@@ -31,7 +31,7 @@ public class Authenticator extends edu.cmu.cs.dennisc.mail.AbstractAuthenticator
 		return new javax.mail.PasswordAuthentication( "anonymous-alice-user", "silkySmooth123" );
 	}
 	@Override
-	public java.lang.String getAnonymousFrom() {
+	public String getAnonymousFrom() {
 		return "anonymous-alice-user@haru.pc.cc.cmu.edu";
 	}
 //	@Override

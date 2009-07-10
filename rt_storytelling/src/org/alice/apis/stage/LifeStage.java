@@ -22,13 +22,6 @@
  */
 package org.alice.apis.stage;
 
-import org.alice.apis.stage.FemaleAdultFullBodyOutfit;
-import org.alice.apis.stage.FemaleAdultHair;
-import org.alice.apis.stage.FullBodyOutfit;
-import org.alice.apis.stage.Hair;
-import org.alice.apis.stage.MaleAdultFullBodyOutfit;
-import org.alice.apis.stage.MaleAdultHair;
-
 /**
  * @author Dennis Cosgrove
  */

@@ -359,7 +359,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 
 	@Override
-	protected void putFieldForInstanceInJava( java.lang.Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	protected void putFieldForInstanceInJava( Object instanceInJava, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super.putFieldForInstanceInJava( instanceInJava, field );
 		if( instanceInJava instanceof org.alice.apis.moveandturn.Transformable ) {
 			org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instanceInJava;
