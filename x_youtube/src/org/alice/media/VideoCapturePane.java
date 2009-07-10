@@ -753,9 +753,11 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 				{
 					int parentWidth = VideoCapturePane.this.getWidth();
 					int parentHeight = VideoCapturePane.this.getHeight();
+					int parentX = VideoCapturePane.this.getLocationOnScreen().x;
+					int parentY = VideoCapturePane.this.getLocationOnScreen().y;
 					Dimension dialogSize = VideoCapturePane.this.youTubeUploaderPane.getSize();
-					int positionX = (parentWidth / 2) - dialogSize.width/2;
-					int positionY = (parentHeight / 2) - dialogSize.height/2;
+					int positionX = (parentWidth / 2) - dialogSize.width/2 + parentX;
+					int positionY = (parentHeight / 2) - dialogSize.height/2 + parentY;
 					if (positionY < 0)
 					{
 						positionY = 0;

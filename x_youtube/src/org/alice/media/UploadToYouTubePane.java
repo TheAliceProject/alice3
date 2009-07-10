@@ -405,9 +405,11 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 			{
 				int parentWidth = UploadToYouTubePane.this.getWidth();
 				int parentHeight = UploadToYouTubePane.this.getHeight();
+				int parentX = UploadToYouTubePane.this.getLocationOnScreen().x;
+				int parentY = UploadToYouTubePane.this.getLocationOnScreen().y;
 				Dimension dialogSize = UploadToYouTubePane.this.statusPane.getSize();
-				int positionX = (parentWidth / 2) - dialogSize.width/2;
-				int positionY = (parentHeight / 2) - dialogSize.height/2;
+				int positionX = (parentWidth / 2) - dialogSize.width/2 + parentX;
+				int positionY = (parentHeight / 2) - dialogSize.height/2 + parentY;
 				UploadToYouTubePane.this.statusPane.setLocation( positionX, positionY );
 				UploadToYouTubePane.this.statusPane.setVisible( true );
 				return Boolean.TRUE;
