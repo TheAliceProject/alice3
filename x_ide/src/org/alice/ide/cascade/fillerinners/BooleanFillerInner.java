@@ -22,8 +22,6 @@
  */
 package org.alice.ide.cascade.fillerinners;
 
-import org.alice.ide.cascade.RelationalInfixExpressionOperatorFillIn;
-
 /**
  * @author Dennis Cosgrove
  */

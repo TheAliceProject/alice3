@@ -192,7 +192,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			int index = 0;
 			java.util.Enumeration< javax.swing.AbstractButton > e = this.group.getElements();
 			while( e.hasMoreElements() ) {
-				javax.swing.AbstractButton button = (javax.swing.AbstractButton)e.nextElement();
+				javax.swing.AbstractButton button = e.nextElement();
 				if( button.getModel() == selection ) {
 					return index;
 				}

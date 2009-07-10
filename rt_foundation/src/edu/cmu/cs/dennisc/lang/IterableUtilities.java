@@ -37,7 +37,7 @@ public class IterableUtilities {
 			}
 		}
 		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, collection.size() );
-		return (E[])collection.toArray( rv );
+		return collection.toArray( rv );
 	}
 	public static Object[] toArray( Iterable iterable ) {
 		return toArray( iterable, Object.class );

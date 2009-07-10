@@ -58,7 +58,7 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 	public edu.cmu.cs.dennisc.alice.annotations.Visibility getVisibility() {
 		if( m_cnstrctr.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate.class ) ) {
 			//todo: investigate cast requirement
-			edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate cnstrctrTemplate = (edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate)m_cnstrctr.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate.class );
+			edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate cnstrctrTemplate = m_cnstrctr.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate.class );
 			return cnstrctrTemplate.visibility();
 		} else {
 			return null;

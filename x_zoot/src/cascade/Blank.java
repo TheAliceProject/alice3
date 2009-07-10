@@ -22,8 +22,6 @@
  */
 package cascade;
 
-import java.awt.event.MouseEvent;
-
 /**
  * @author Dennis Cosgrove
  */

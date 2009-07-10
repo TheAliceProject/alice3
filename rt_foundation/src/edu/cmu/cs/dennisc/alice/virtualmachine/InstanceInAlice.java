@@ -94,10 +94,10 @@ public class InstanceInAlice {
 		return m_instanceInJava;
 	}
 	public Object get( FieldDeclaredInAlice field ) {
-		return m_map.get( (FieldDeclaredInAlice)field );
+		return m_map.get( field );
 	}
 	public void set( FieldDeclaredInAlice field, Object value ) {
-		m_map.put( (FieldDeclaredInAlice)field, value );
+		m_map.put( field, value );
 	}
 
 	@Override

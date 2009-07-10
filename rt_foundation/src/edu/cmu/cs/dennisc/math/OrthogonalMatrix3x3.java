@@ -291,7 +291,7 @@ public class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orientatio
 		return rv;
 	}
 	public static OrthogonalMatrix3x3 createNormalizedColumns( AbstractMatrix3x3 m ) {
-		return (OrthogonalMatrix3x3)setReturnValueToNormalizedColumns( new OrthogonalMatrix3x3(), m );
+		return setReturnValueToNormalizedColumns( new OrthogonalMatrix3x3(), m );
 	}
 	public void setToNormalizedColumns( AbstractMatrix3x3 m ) {
 		setReturnValueToNormalizedColumns( this, m );

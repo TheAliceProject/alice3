@@ -680,7 +680,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private java.io.File getApplicationRootDirectory( String[] propertyKeys, String[] subPaths ) {
 		for( String propertyKey : propertyKeys ) {
 			for( String subPath : subPaths ) {
-				java.io.File rv = new java.io.File( java.lang.System.getProperty( propertyKey ), subPath );
+				java.io.File rv = new java.io.File( System.getProperty( propertyKey ), subPath );
 				if( rv.exists() ) {
 					return rv;
 				}

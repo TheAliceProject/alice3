@@ -22,9 +22,6 @@
  */
 package org.alice.ide.cascade;
 
-import cascade.Blank;
-import cascade.FillIn;
-
 /**
  * @author Dennis Cosgrove
  */

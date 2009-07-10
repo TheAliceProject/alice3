@@ -220,7 +220,7 @@ public abstract class IngredientUtilities {
 		return (Class<E>[])s_map.get( cls );
 	}
 	public static <E extends Ingredient> Class<E> getRandomClass( Class< E > cls ) {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( (Class<E>[])get( cls ) );
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( get( cls ) );
 	}
 	public static <E extends Ingredient> E getRandomEnumConstant( Class< E > cls ) {
 		while( true ) {

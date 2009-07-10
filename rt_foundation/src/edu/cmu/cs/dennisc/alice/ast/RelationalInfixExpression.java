@@ -22,8 +22,6 @@
  */
 package edu.cmu.cs.dennisc.alice.ast;
 
-import edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator;
-
 /**
  * @author Dennis Cosgrove
  */

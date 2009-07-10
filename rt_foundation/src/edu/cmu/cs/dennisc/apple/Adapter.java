@@ -22,8 +22,6 @@
  */
 package edu.cmu.cs.dennisc.apple;
 
-import edu.cmu.cs.dennisc.apple.event.ApplicationListener;
-
 /**
  * @author Dennis Cosgrove
  */

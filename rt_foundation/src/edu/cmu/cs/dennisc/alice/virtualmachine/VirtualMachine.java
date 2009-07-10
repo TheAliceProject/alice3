@@ -468,7 +468,7 @@ public abstract class VirtualMachine {
 	protected Object evaluateArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression arithmeticInfixExpression ) {
 		Number leftOperand = (Number)this.evaluate( arithmeticInfixExpression.leftOperand.getValue() );
 		Number rightOperand = (Number)this.evaluate( arithmeticInfixExpression.rightOperand.getValue() );
-		return (Number)arithmeticInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+		return arithmeticInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
 	}
 	protected Object evaluateBitwiseInfixExpression( edu.cmu.cs.dennisc.alice.ast.BitwiseInfixExpression bitwiseInfixExpression ) {
 		Object leftOperand = this.evaluate( bitwiseInfixExpression.leftOperand.getValue() );
@@ -498,7 +498,7 @@ public abstract class VirtualMachine {
 	protected Boolean evaluateRelationalInfixExpression( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression relationalInfixExpression ) {
 		Object leftOperand = this.evaluate( relationalInfixExpression.leftOperand.getValue() );
 		Object rightOperand = this.evaluate( relationalInfixExpression.rightOperand.getValue() );
-		return (Boolean)relationalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
+		return relationalInfixExpression.operator.getValue().operate( leftOperand, rightOperand );
 	}
 	protected Object evaluateShiftInfixExpression( edu.cmu.cs.dennisc.alice.ast.ShiftInfixExpression shiftInfixExpression ) {
 		Object leftOperand = this.evaluate( shiftInfixExpression.leftOperand.getValue() );
