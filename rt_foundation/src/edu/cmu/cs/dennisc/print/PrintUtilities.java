@@ -55,17 +55,18 @@ public abstract class PrintUtilities {
 				double[].class, 
 				java.nio.IntBuffer.class, 
 				java.nio.FloatBuffer.class, 
-				java.nio.DoubleBuffer.class, 
-				edu.cmu.cs.dennisc.math.Tuple3.class, 
-				edu.cmu.cs.dennisc.math.Tuple4.class, 
-				edu.cmu.cs.dennisc.math.UnitQuaternion.class, 
-				edu.cmu.cs.dennisc.math.AxisRotation.class, 
-				edu.cmu.cs.dennisc.math.EulerNumbers.class, 
-				edu.cmu.cs.dennisc.math.EulerAngles.class, 
-				edu.cmu.cs.dennisc.math.Matrix3x3.class, 
-				edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.class, 
-				edu.cmu.cs.dennisc.math.Matrix4x4.class,
-				edu.cmu.cs.dennisc.math.AffineMatrix4x4.class
+				java.nio.DoubleBuffer.class,
+				Printable.class
+//				edu.cmu.cs.dennisc.math.Tuple3.class, 
+//				edu.cmu.cs.dennisc.math.Tuple4.class, 
+//				edu.cmu.cs.dennisc.math.UnitQuaternion.class, 
+//				edu.cmu.cs.dennisc.math.AxisRotation.class, 
+//				edu.cmu.cs.dennisc.math.EulerNumbers.class, 
+//				edu.cmu.cs.dennisc.math.EulerAngles.class, 
+//				edu.cmu.cs.dennisc.math.Matrix3x3.class, 
+//				edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.class, 
+//				edu.cmu.cs.dennisc.math.Matrix4x4.class,
+//				edu.cmu.cs.dennisc.math.AffineMatrix4x4.class
 		};
 		for( Class<?> cls : classes ) {
 			s_classToAppendMethod.put( cls, getMethod( "append", cls  ) );
@@ -363,493 +364,440 @@ public abstract class PrintUtilities {
 		return append( rv, value );
 	}
 
-	//edu.cmu.cs.dennisc.math.Tuple3f
-
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple3f value ) {
-		append( rv, s_decimalFormat.format( value.x ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.y ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.z ) );
-		return rv;
+	public static StringBuffer append( StringBuffer rv, Printable value ) {
+		return value.append( rv, s_decimalFormat, false );
 	}
 
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple3f value ) {
-		//todo:
-		return append( rv, value );
-	}
-
-	//edu.cmu.cs.dennisc.math.Tuple3d
-
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple3 value ) {
-		append( rv, s_decimalFormat.format( value.x ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.y ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.z ) );
-		return rv;
-	}
-
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple3 value ) {
-		//todo:
-		return append( rv, value );
-	}
-
-	//edu.cmu.cs.dennisc.math.Tuple4d
-
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple4 value ) {
-		append( rv, s_decimalFormat.format( value.x ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.y ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.z ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.w ) );
-		return rv;
-	}
-
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple4 value ) {
-		//todo:
-		return append( rv, value );
-	}
-
-	//edu.cmu.cs.dennisc.math.UnitQuaternionD
-
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.UnitQuaternion value ) {
-		append( rv, s_decimalFormat.format( value.x ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.y ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.z ) );
-		rv.append( ' ' );
-		append( rv, s_decimalFormat.format( value.w ) );
-		return rv;
-	}
-
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.UnitQuaternion value ) {
-		rv.append( "+-       -+\n" );
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.x ) );
-		rv.append( " |\n" );
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.y ) );
-		rv.append( " |\n" );
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.z ) );
-		rv.append( " |\n" );
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.w ) );
-		rv.append( " |\n" );
-		rv.append( "+-       -+q\n" );
-		return rv;
-	}
-
-	//edu.cmu.cs.dennisc.math.AxisAngleD
-
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Angle value ) {
-		//todo?
-		append( rv, s_decimalFormat.format( value.getAsRadians() ) );
-		rv.append( "(radians)" );
-		return rv;
-	}
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Angle value ) {
-		//todo:
-		return append( rv, value );
+	public static StringBuffer appendLines( StringBuffer rv, Printable value ) {
+		return value.append( rv, s_decimalFormat, true );
 	}
 	
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.AxisRotation value ) {
-		append( rv, value.axis );
-		rv.append( ' ' );
-		append( rv, value.angle );
-		return rv;
-	}
-
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.AxisRotation value ) {
-		//todo:
-		return append( rv, value );
-	}
-
-	//edu.cmu.cs.dennisc.math.EulerNumbers3d
-
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.EulerNumbers value ) {
-		append( rv, "\tpitch:", value.pitch, " " );
-		append( rv, "\tyaw:", value.yaw, " " );
-		append( rv, "\troll:", value.roll, " " );
-		return rv;
-	}
-	public static StringBuffer appendLines( StringBuffer rv,edu.cmu.cs.dennisc.math.EulerNumbers value ) {
-		append( rv, "\tpitch:", value.pitch, "\n" );
-		append( rv, "\tyaw:", value.yaw, "\n" );
-		append( rv, "\troll:", value.roll, "\n" );
-		return rv;
-	}
-
-	//edu.cmu.cs.dennisc.math.EulerAngles3d
-
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.EulerAngles value ) {
-		append( rv, "yaw:", value.yaw, " " );
-		append( rv, "pitch:", value.pitch, " " );
-		append( rv, "roll:", value.roll, " " );
-		append( rv, "order:", value.order, " " );
-		return rv;
-	}
-	public static StringBuffer appendLines( StringBuffer rv,edu.cmu.cs.dennisc.math.EulerAngles value ) {
-		append( rv, "\tyaw:", value.yaw, "\n" );
-		append( rv, "\tpitch:", value.pitch, "\n" );
-		append( rv, "\troll:", value.roll, "\n" );
-		append( rv, "\torder:", value.order, "\n" );
-		return rv;
-	}
-
-	//edu.cmu.cs.dennisc.math.AbstractMatrix3x3
-
-	private static StringBuffer abstractAppend( StringBuffer rv, edu.cmu.cs.dennisc.math.AbstractMatrix3x3 value ) {
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.right.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.x ) );
-		rv.append( "  ] " );
-
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.right.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.y ) );
-		rv.append( "  ] " );
-
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.right.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.z ) );
-		rv.append( "  ] " );
-		return rv;
-	}
-	private static StringBuffer abstractAppendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.AbstractMatrix3x3 value ) {
-		int n = s_decimalFormat.format( 0.0 ).length() + 1;
-		rv.append( "+-" );
-		for( int i = 0; i < 3; i++ ) {
-			for( int j = 0; j < n; j++ ) {
-				rv.append( ' ' );
-			}
-		}
-		rv.append( "-+\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.right.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.x ) );
-		rv.append( "  |\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.right.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.y ) );
-		rv.append( "  |\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.right.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.z ) );
-		rv.append( "  |\n" );
-
-		rv.append( "+-" );
-		for( int i = 0; i < 3; i++ ) {
-			for( int j = 0; j < n; j++ ) {
-				rv.append( ' ' );
-			}
-		}
-		rv.append( "-+\n" );
-		return rv;
-	}
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 value ) {
-		return abstractAppend( rv, value );
-	}
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
-		return abstractAppend( rv, value );
-	}
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 value ) {
-		return abstractAppendLines( rv, value );
-	}
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
-		return abstractAppendLines( rv, value );
-	}
-
-	//edu.cmu.cs.dennisc.math.AffineMatrix4x4
-
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.orientation.right.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.up.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.backward.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.x ) );
-		rv.append( "  ] " );
-
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.orientation.right.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.up.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.backward.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.y ) );
-		rv.append( "  ] " );
-
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.orientation.right.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.up.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.backward.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.z ) );
-		rv.append( "  ] " );
-
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( 0 ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( 0 ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( 0 ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( 1 ) );
-		rv.append( "  ] " );
-		return rv;
-	}
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
-		int n = s_decimalFormat.format( 0.0 ).length() + 1;
-		rv.append( "+-" );
-		for( int i = 0; i < 4; i++ ) {
-			for( int j = 0; j < n; j++ ) {
-				rv.append( ' ' );
-			}
-		}
-		rv.append( "-+\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.orientation.right.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.up.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.backward.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.x ) );
-		rv.append( "  |\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.orientation.right.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.up.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.backward.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.y ) );
-		rv.append( "  |\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.orientation.right.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.up.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.orientation.backward.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.z ) );
-		rv.append( "  |\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( 0 ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( 0 ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( 0 ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( 1 ) );
-		rv.append( "  |\n" );
-
-		rv.append( "+-" );
-		for( int i = 0; i < 4; i++ ) {
-			for( int j = 0; j < n; j++ ) {
-				rv.append( ' ' );
-			}
-		}
-		rv.append( "-+\n" );
-		return rv;
-	}
-
-	//edu.cmu.cs.dennisc.math.Matrix4x4
-
-	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Matrix4x4 value ) {
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.right.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.x ) );
-		rv.append( "  ] " );
-
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.right.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.y ) );
-		rv.append( "  ] " );
-
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.right.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.z ) );
-		rv.append( "  ] " );
-
-		rv.append( "[ " );
-		rv.append( s_decimalFormat.format( value.right.w ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.w ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.w ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.w ) );
-		rv.append( "  ] " );
-		return rv;
-	}
-	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Matrix4x4 value ) {
-		int n = s_decimalFormat.format( 0.0 ).length() + 1;
-		rv.append( "+-" );
-		for( int i = 0; i < 4; i++ ) {
-			for( int j = 0; j < n; j++ ) {
-				rv.append( ' ' );
-			}
-		}
-		rv.append( "-+\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.right.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.x ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.x ) );
-		rv.append( "  |\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.right.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.y ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.y ) );
-		rv.append( "  |\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.right.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.z ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.z ) );
-		rv.append( "  |\n" );
-
-		rv.append( "| " );
-		rv.append( s_decimalFormat.format( value.right.w ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.up.w ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.backward.w ) );
-		rv.append( ' ' );
-		rv.append( s_decimalFormat.format( value.translation.w ) );
-		rv.append( "  |\n" );
-
-		rv.append( "+-" );
-		for( int i = 0; i < 4; i++ ) {
-			for( int j = 0; j < n; j++ ) {
-				rv.append( ' ' );
-			}
-		}
-		rv.append( "-+\n" );
-		return rv;
-	}
-
-//	//todo:
-//	private static StringBuffer appendIndent( StringBuffer rv, int indentLevel ) {
-//		for( int i = 0; i < indentLevel; i++ ) {
-//			rv.append( s_indentText );
-//		}
-//		return rv;
-//	}
-//	private static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.pattern.Element value, boolean isPropertyInformationDesired, boolean isTreeDescendDesired, int indentLevel ) {
-//		rv = appendIndent( rv, indentLevel );
-//		rv.append( value.getClass() );
+//	//edu.cmu.cs.dennisc.math.Tuple3f
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple3f value ) {
+//		append( rv, s_decimalFormat.format( value.x ) );
 //		rv.append( ' ' );
-//		if( value instanceof edu.cmu.cs.dennisc.pattern.Nameable ) {
-//			edu.cmu.cs.dennisc.pattern.Nameable nameable = (edu.cmu.cs.dennisc.pattern.Nameable)value;
-//			rv.append( nameable.getName() );
-//		} else {
-//			rv.append( value.toString() );
-//		}
-//		rv.append( '\n' );
-//		if( isPropertyInformationDesired ) {
-//			for( edu.cmu.cs.dennisc.property.Property< ? > property : value.getProperties() ) {
-//				rv = appendIndent( rv, indentLevel );
-//				rv.append( "-> " );
-//				rv.append( property.getName() );
-//				rv.append( ":\n" );
-//				appendLines( rv, property.getValue( value ) );
-//				rv.append( "\n" );
-//			}
-//		}
-//		if( isTreeDescendDesired && value instanceof edu.cmu.cs.dennisc.pattern.Composite ) {
-//			edu.cmu.cs.dennisc.pattern.Composite<? extends edu.cmu.cs.dennisc.pattern.Component> composite = (edu.cmu.cs.dennisc.pattern.Composite<? extends edu.cmu.cs.dennisc.pattern.Component>)value;
-//			for( int i = 0; i < composite.getComponentCount(); i++ ) {
-//				append( rv, composite.getComponentAt( i ), isPropertyInformationDesired, isTreeDescendDesired, indentLevel + 1 );
-//			}
-//		}
+//		append( rv, s_decimalFormat.format( value.y ) );
+//		rv.append( ' ' );
+//		append( rv, s_decimalFormat.format( value.z ) );
 //		return rv;
 //	}
 //
-//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.pattern.Element value, boolean isPropertyInformationDesired, boolean isTreeDescendDesired ) {
-//		return append( rv, value, isPropertyInformationDesired, isTreeDescendDesired, 0 );
-//	}
-//	public static String toString( edu.cmu.cs.dennisc.pattern.Element value, boolean isPropertyInformationDesired, boolean isTreeDescendDesired ) {
-//		return append( new StringBuffer(), value, isPropertyInformationDesired, isTreeDescendDesired ).toString();
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple3f value ) {
+//		//todo:
+//		return append( rv, value );
 //	}
 //
-//	public static void printlnsPropertyValues( java.io.PrintStream ps, edu.cmu.cs.dennisc.pattern.Element value ) {
-//		ps.print( toString( value, true, false ) );
-//		ps.flush();
-//	}
-//	public static void printlnsPropertyValues( edu.cmu.cs.dennisc.pattern.Element value ) {
-//		printlnsPropertyValues( s_printStream, value );
+//	//edu.cmu.cs.dennisc.math.Tuple3d
+//
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple3 value ) {
+//		append( rv, s_decimalFormat.format( value.x ) );
+//		rv.append( ' ' );
+//		append( rv, s_decimalFormat.format( value.y ) );
+//		rv.append( ' ' );
+//		append( rv, s_decimalFormat.format( value.z ) );
+//		return rv;
 //	}
 //
-//	public static void printlnsTree( java.io.PrintStream ps, edu.cmu.cs.dennisc.pattern.Composite<? extends edu.cmu.cs.dennisc.pattern.Component> value, boolean isPropertyInformationDesired ) {
-//		ps.print( toString( value, isPropertyInformationDesired, true ) );
-//		ps.flush();
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple3 value ) {
+//		//todo:
+//		return append( rv, value );
 //	}
-//	public static void printlnsTree( edu.cmu.cs.dennisc.pattern.Composite<? extends edu.cmu.cs.dennisc.pattern.Component> value, boolean isPropertyInformationDesired ) {
-//		printlnsTree( s_printStream, value, isPropertyInformationDesired );
+//
+//	//edu.cmu.cs.dennisc.math.Tuple4d
+//
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple4 value ) {
+//		append( rv, s_decimalFormat.format( value.x ) );
+//		rv.append( ' ' );
+//		append( rv, s_decimalFormat.format( value.y ) );
+//		rv.append( ' ' );
+//		append( rv, s_decimalFormat.format( value.z ) );
+//		rv.append( ' ' );
+//		append( rv, s_decimalFormat.format( value.w ) );
+//		return rv;
+//	}
+//
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Tuple4 value ) {
+//		//todo:
+//		return append( rv, value );
+//	}
+//
+//	//edu.cmu.cs.dennisc.math.UnitQuaternionD
+//
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.UnitQuaternion value ) {
+//		append( rv, s_decimalFormat.format( value.x ) );
+//		rv.append( ' ' );
+//		append( rv, s_decimalFormat.format( value.y ) );
+//		rv.append( ' ' );
+//		append( rv, s_decimalFormat.format( value.z ) );
+//		rv.append( ' ' );
+//		append( rv, s_decimalFormat.format( value.w ) );
+//		return rv;
+//	}
+//
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.UnitQuaternion value ) {
+//		rv.append( "+-       -+\n" );
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.x ) );
+//		rv.append( " |\n" );
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.y ) );
+//		rv.append( " |\n" );
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.z ) );
+//		rv.append( " |\n" );
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.w ) );
+//		rv.append( " |\n" );
+//		rv.append( "+-       -+q\n" );
+//		return rv;
+//	}
+//
+//	//edu.cmu.cs.dennisc.math.AxisAngleD
+//
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Angle value ) {
+//		//todo?
+//		append( rv, s_decimalFormat.format( value.getAsRadians() ) );
+//		rv.append( "(radians)" );
+//		return rv;
+//	}
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Angle value ) {
+//		//todo:
+//		return append( rv, value );
+//	}
+//	
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.AxisRotation value ) {
+//		append( rv, value.axis );
+//		rv.append( ' ' );
+//		append( rv, value.angle );
+//		return rv;
+//	}
+//
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.AxisRotation value ) {
+//		//todo:
+//		return append( rv, value );
+//	}
+//
+//	//edu.cmu.cs.dennisc.math.EulerNumbers3d
+//
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.EulerNumbers value ) {
+//		append( rv, "\tpitch:", value.pitch, " " );
+//		append( rv, "\tyaw:", value.yaw, " " );
+//		append( rv, "\troll:", value.roll, " " );
+//		return rv;
+//	}
+//	public static StringBuffer appendLines( StringBuffer rv,edu.cmu.cs.dennisc.math.EulerNumbers value ) {
+//		append( rv, "\tpitch:", value.pitch, "\n" );
+//		append( rv, "\tyaw:", value.yaw, "\n" );
+//		append( rv, "\troll:", value.roll, "\n" );
+//		return rv;
+//	}
+//
+//	//edu.cmu.cs.dennisc.math.EulerAngles3d
+//
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.EulerAngles value ) {
+//		append( rv, "yaw:", value.yaw, " " );
+//		append( rv, "pitch:", value.pitch, " " );
+//		append( rv, "roll:", value.roll, " " );
+//		append( rv, "order:", value.order, " " );
+//		return rv;
+//	}
+//	public static StringBuffer appendLines( StringBuffer rv,edu.cmu.cs.dennisc.math.EulerAngles value ) {
+//		append( rv, "\tyaw:", value.yaw, "\n" );
+//		append( rv, "\tpitch:", value.pitch, "\n" );
+//		append( rv, "\troll:", value.roll, "\n" );
+//		append( rv, "\torder:", value.order, "\n" );
+//		return rv;
+//	}
+//
+//	//edu.cmu.cs.dennisc.math.AbstractMatrix3x3
+//
+//	private static StringBuffer abstractAppend( StringBuffer rv, edu.cmu.cs.dennisc.math.AbstractMatrix3x3 value ) {
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.right.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.x ) );
+//		rv.append( "  ] " );
+//
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.right.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.y ) );
+//		rv.append( "  ] " );
+//
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.right.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.z ) );
+//		rv.append( "  ] " );
+//		return rv;
+//	}
+//	private static StringBuffer abstractAppendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.AbstractMatrix3x3 value ) {
+//		int n = s_decimalFormat.format( 0.0 ).length() + 1;
+//		rv.append( "+-" );
+//		for( int i = 0; i < 3; i++ ) {
+//			for( int j = 0; j < n; j++ ) {
+//				rv.append( ' ' );
+//			}
+//		}
+//		rv.append( "-+\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.right.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.x ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.right.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.y ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.right.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.z ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "+-" );
+//		for( int i = 0; i < 3; i++ ) {
+//			for( int j = 0; j < n; j++ ) {
+//				rv.append( ' ' );
+//			}
+//		}
+//		rv.append( "-+\n" );
+//		return rv;
+//	}
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 value ) {
+//		return abstractAppend( rv, value );
+//	}
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
+//		return abstractAppend( rv, value );
+//	}
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 value ) {
+//		return abstractAppendLines( rv, value );
+//	}
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Matrix3x3 value ) {
+//		return abstractAppendLines( rv, value );
+//	}
+//
+//	//edu.cmu.cs.dennisc.math.AffineMatrix4x4
+//
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.orientation.right.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.up.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.backward.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.x ) );
+//		rv.append( "  ] " );
+//
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.orientation.right.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.up.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.backward.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.y ) );
+//		rv.append( "  ] " );
+//
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.orientation.right.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.up.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.backward.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.z ) );
+//		rv.append( "  ] " );
+//
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( 0 ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( 0 ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( 0 ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( 1 ) );
+//		rv.append( "  ] " );
+//		return rv;
+//	}
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 value ) {
+//		int n = s_decimalFormat.format( 0.0 ).length() + 1;
+//		rv.append( "+-" );
+//		for( int i = 0; i < 4; i++ ) {
+//			for( int j = 0; j < n; j++ ) {
+//				rv.append( ' ' );
+//			}
+//		}
+//		rv.append( "-+\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.orientation.right.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.up.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.backward.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.x ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.orientation.right.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.up.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.backward.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.y ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.orientation.right.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.up.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.orientation.backward.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.z ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( 0 ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( 0 ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( 0 ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( 1 ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "+-" );
+//		for( int i = 0; i < 4; i++ ) {
+//			for( int j = 0; j < n; j++ ) {
+//				rv.append( ' ' );
+//			}
+//		}
+//		rv.append( "-+\n" );
+//		return rv;
+//	}
+//
+//	//edu.cmu.cs.dennisc.math.Matrix4x4
+//
+//	public static StringBuffer append( StringBuffer rv, edu.cmu.cs.dennisc.math.Matrix4x4 value ) {
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.right.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.x ) );
+//		rv.append( "  ] " );
+//
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.right.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.y ) );
+//		rv.append( "  ] " );
+//
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.right.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.z ) );
+//		rv.append( "  ] " );
+//
+//		rv.append( "[ " );
+//		rv.append( s_decimalFormat.format( value.right.w ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.w ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.w ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.w ) );
+//		rv.append( "  ] " );
+//		return rv;
+//	}
+//	public static StringBuffer appendLines( StringBuffer rv, edu.cmu.cs.dennisc.math.Matrix4x4 value ) {
+//		int n = s_decimalFormat.format( 0.0 ).length() + 1;
+//		rv.append( "+-" );
+//		for( int i = 0; i < 4; i++ ) {
+//			for( int j = 0; j < n; j++ ) {
+//				rv.append( ' ' );
+//			}
+//		}
+//		rv.append( "-+\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.right.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.x ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.x ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.right.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.y ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.y ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.right.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.z ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.z ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "| " );
+//		rv.append( s_decimalFormat.format( value.right.w ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.up.w ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.backward.w ) );
+//		rv.append( ' ' );
+//		rv.append( s_decimalFormat.format( value.translation.w ) );
+//		rv.append( "  |\n" );
+//
+//		rv.append( "+-" );
+//		for( int i = 0; i < 4; i++ ) {
+//			for( int j = 0; j < n; j++ ) {
+//				rv.append( ' ' );
+//			}
+//		}
+//		rv.append( "-+\n" );
+//		return rv;
 //	}
 }

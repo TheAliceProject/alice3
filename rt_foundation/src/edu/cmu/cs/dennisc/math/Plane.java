@@ -27,7 +27,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Plane implements Cloneable {
+public class Plane {
 	private double m_a;
 	private double m_b;
 	private double m_c;
@@ -105,14 +105,14 @@ public class Plane implements Cloneable {
 	public double[] getEquation() {
 		return getEquation( new double[ 4 ] );
 	}
-	@Override
-	public synchronized Object clone() {
-		try {
-			return super.clone();
-		} catch( CloneNotSupportedException e ) {
-			throw new InternalError();
-		}
-	}
+//	@Override
+//	public synchronized Object clone() {
+//		try {
+//			return super.clone();
+//		} catch( CloneNotSupportedException e ) {
+//			throw new InternalError();
+//		}
+//	}
 	@Override
 	public boolean equals( Object o ) {
 		if( o == this )

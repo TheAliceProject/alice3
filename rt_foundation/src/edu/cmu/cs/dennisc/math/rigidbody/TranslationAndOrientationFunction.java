@@ -36,15 +36,15 @@ public abstract class TranslationAndOrientationFunction extends TranslationFunct
 	private double m_inertiaTensor = 1/6.0;
 	private double m_inverseInertiaTensor = 6.0;
 
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		TranslationAndOrientationFunction pof = (TranslationAndOrientationFunction)super.clone();
-		pof.m_orientation = new edu.cmu.cs.dennisc.math.UnitQuaternion( m_orientation );
-		pof.m_angularMomentum = new edu.cmu.cs.dennisc.math.Vector3( m_angularMomentum );
-		pof.m_spin = new edu.cmu.cs.dennisc.math.UnitQuaternion( m_spin );
-		pof.m_angularVelocity = new edu.cmu.cs.dennisc.math.Vector3( m_angularVelocity );
-		return pof;
-	}
+//	@Override
+//	protected Object clone() throws CloneNotSupportedException {
+//		TranslationAndOrientationFunction pof = (TranslationAndOrientationFunction)super.clone();
+//		pof.m_orientation = new edu.cmu.cs.dennisc.math.UnitQuaternion( m_orientation );
+//		pof.m_angularMomentum = new edu.cmu.cs.dennisc.math.Vector3( m_angularMomentum );
+//		pof.m_spin = new edu.cmu.cs.dennisc.math.UnitQuaternion( m_spin );
+//		pof.m_angularVelocity = new edu.cmu.cs.dennisc.math.Vector3( m_angularVelocity );
+//		return pof;
+//	}
 	
 	public edu.cmu.cs.dennisc.math.UnitQuaternion accessOrientation() {
 		return m_orientation;

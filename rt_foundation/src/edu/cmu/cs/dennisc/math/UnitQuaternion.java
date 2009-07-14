@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.print.Printable {
 	public double x = Double.NaN;
 	public double y = Double.NaN;
 	public double z = Double.NaN;
@@ -100,6 +100,40 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.codec.Bin
 		binaryEncoder.encode( y );
 		binaryEncoder.encode( z );
 		binaryEncoder.encode( w );
+	}
+
+	public StringBuffer append( StringBuffer rv, java.text.DecimalFormat decimalFormat, boolean isLines ) {
+		if( isLines ) {
+			rv.append( "+-       -+\n" );
+			rv.append( "| " );
+		}
+		rv.append( decimalFormat.format( this.x ) );
+		if( isLines ) {
+			rv.append( " |\n" );
+			rv.append( "| " );
+		} else {
+			rv.append( ' ' );
+		}
+		rv.append( decimalFormat.format( this.y ) );
+		if( isLines ) {
+			rv.append( " |\n" );
+			rv.append( "| " );
+		} else {
+			rv.append( ' ' );
+		}
+		rv.append( decimalFormat.format( this.z ) );
+		if( isLines ) {
+			rv.append( " |\n" );
+			rv.append( "| " );
+		} else {
+			rv.append( ' ' );
+		}
+		rv.append( decimalFormat.format( this.w ) );
+		if( isLines ) {
+			rv.append( " |\n" );
+			rv.append( "+-       -+q\n" );
+		}
+		return rv;
 	}
 
 	//NaN

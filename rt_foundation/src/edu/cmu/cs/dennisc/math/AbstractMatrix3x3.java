@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.print.Printable {
 	public final Vector3 right = Vector3.createPositiveXAxis();
 	public final Vector3 up = Vector3.createPositiveYAxis();
 	public final Vector3 backward = Vector3.createPositiveZAxis();
@@ -39,6 +39,79 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		right.encode( binaryEncoder );
 		up.encode( binaryEncoder );
 		backward.encode( binaryEncoder );
+	}
+
+	public StringBuffer append( StringBuffer rv, java.text.DecimalFormat decimalFormat, boolean isLines ) {
+		if( isLines ) {
+			int n = decimalFormat.format( 0.0 ).length() + 1;
+			rv.append( "+-" );
+			for( int i = 0; i < 3; i++ ) {
+				for( int j = 0; j < n; j++ ) {
+					rv.append( ' ' );
+				}
+			}
+			rv.append( "-+\n" );
+		}
+
+		if( isLines ) {
+			rv.append( "| " );
+		} else {
+			rv.append( "[ " );
+		}
+		rv.append( decimalFormat.format( this.right.x ) );
+		rv.append( ' ' );
+		rv.append( decimalFormat.format( this.up.x ) );
+		rv.append( ' ' );
+		rv.append( decimalFormat.format( this.backward.x ) );
+		if( isLines ) {
+			rv.append( "  |\n" );
+		} else {
+			rv.append( "  ] " );
+		}
+
+		if( isLines ) {
+			rv.append( "| " );
+		} else {
+			rv.append( "[ " );
+		}
+		rv.append( decimalFormat.format( this.right.y ) );
+		rv.append( ' ' );
+		rv.append( decimalFormat.format( this.up.y ) );
+		rv.append( ' ' );
+		rv.append( decimalFormat.format( this.backward.y ) );
+		if( isLines ) {
+			rv.append( "  |\n" );
+		} else {
+			rv.append( "  ] " );
+		}
+
+		if( isLines ) {
+			rv.append( "| " );
+		} else {
+			rv.append( "[ " );
+		}
+		rv.append( decimalFormat.format( this.right.z ) );
+		rv.append( ' ' );
+		rv.append( decimalFormat.format( this.up.z ) );
+		rv.append( ' ' );
+		rv.append( decimalFormat.format( this.backward.z ) );
+		if( isLines ) {
+			rv.append( "  |\n" );
+		} else {
+			rv.append( "  ] " );
+		}
+
+		if( isLines ) {
+			int n = decimalFormat.format( 0.0 ).length() + 1;
+			rv.append( "+-" );
+			for( int i = 0; i < 3; i++ ) {
+				for( int j = 0; j < n; j++ ) {
+					rv.append( ' ' );
+				}
+			}
+			rv.append( "-+\n" );
+		}
+		return rv;
 	}
 	
 	public boolean isWithinEpsilonOfUnitLengthSquared( double epsilon ) {

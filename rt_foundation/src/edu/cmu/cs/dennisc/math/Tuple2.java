@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Tuple2 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, Cloneable {
+public abstract class Tuple2 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable, edu.cmu.cs.dennisc.print.Printable {
 	public double x = 0.0;
 	public double y = 0.0;
 
@@ -45,6 +45,26 @@ public abstract class Tuple2 implements edu.cmu.cs.dennisc.codec.BinaryEncodable
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		binaryEncoder.encode( x );
 		binaryEncoder.encode( y );
+	}
+	
+	public StringBuffer append( StringBuffer rv, java.text.DecimalFormat decimalFormat, boolean isLines ) {
+		if( isLines ) {
+			rv.append( "+-       -+\n" );
+			rv.append( "| " );
+		}
+		rv.append( decimalFormat.format( this.x ) );
+		if( isLines ) {
+			rv.append( " |\n" );
+			rv.append( "| " );
+		} else {
+			rv.append( ' ' );
+		}
+		rv.append( decimalFormat.format( this.y ) );
+		if( isLines ) {
+			rv.append( " |\n" );
+			rv.append( "+-       -+\n" );
+		}
+		return rv;
 	}
 
 	@Override

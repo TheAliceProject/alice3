@@ -27,7 +27,9 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class TypeDeclaredInJava extends AbstractType {
-	private static java.util.Map< Class<?>, TypeDeclaredInJava > s_map;
+	private static java.util.Map< Class<?>, TypeDeclaredInJava > s_map = new java.util.HashMap< Class<?>, TypeDeclaredInJava >();
+	private static java.util.Map< String, TypeDeclaredInJava > s_mapNotFound = new java.util.HashMap< String, TypeDeclaredInJava >();
+
 	public static final TypeDeclaredInJava VOID_TYPE = get( Void.TYPE );
 
 	public static final TypeDeclaredInJava BOOLEAN_PRIMITIVE_TYPE = get( Boolean.TYPE );
@@ -44,11 +46,6 @@ public class TypeDeclaredInJava extends AbstractType {
 
 	public static TypeDeclaredInJava get( Class< ? > cls ) {
 		if( cls != null ) {
-			if( s_map != null ) {
-				//pass
-			} else {
-				s_map = new java.util.HashMap< Class<?>, TypeDeclaredInJava >();
-			}
 			TypeDeclaredInJava rv = s_map.get( cls );
 			if( rv != null ) {
 				//pass
@@ -56,6 +53,23 @@ public class TypeDeclaredInJava extends AbstractType {
 				rv = new TypeDeclaredInJava( cls );
 			}
 			return rv;
+		} else {
+			return null;
+		}
+	}
+	public static TypeDeclaredInJava get( String clsName ) {
+		if( clsName != null ) {
+			try {
+				return get( Class.forName( clsName ) ); 
+			} catch (ClassNotFoundException cnfe) {
+				TypeDeclaredInJava rv = s_mapNotFound.get( clsName );
+				if( rv != null ) {
+					//pass
+				} else {
+					rv = new TypeDeclaredInJava( clsName );
+				}
+				return rv;
+			}
 		} else {
 			return null;
 		}
@@ -69,7 +83,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 	public static MethodDeclaredInJava getMethod( java.lang.reflect.Method mthd ) {
 		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( mthd.getDeclaringClass() );
-		for( AbstractMethod method : typeDeclaredInJava.m_methods ) {
+		for( AbstractMethod method : typeDeclaredInJava.methods ) {
 			if( method.getName().equals( mthd.getName() ) ) {
 				MethodDeclaredInJava methodDeclaredInJava = (MethodDeclaredInJava)method;
 				MethodDeclaredInJava m = methodDeclaredInJava;
@@ -85,9 +99,10 @@ public class TypeDeclaredInJava extends AbstractType {
 		//return null;
 		return new MethodDeclaredInJava( mthd );
 	}
+	
 	public static ConstructorDeclaredInJava getConstructor( java.lang.reflect.Constructor<?> cnstrctr ) {
 		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( cnstrctr.getDeclaringClass() );
-		for( AbstractConstructor constructor : typeDeclaredInJava.m_constructors ) {
+		for( AbstractConstructor constructor : typeDeclaredInJava.constructors ) {
 			ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)constructor;
 			if( cnstrctr.equals( constructorDeclaredInJava.getCnstrctr() ) ) {
 				return constructorDeclaredInJava;
@@ -98,7 +113,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 	public static FieldDeclaredInJavaWithField getField( java.lang.reflect.Field fld ) {
 		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( fld.getDeclaringClass() );
-		for( AbstractField field : typeDeclaredInJava.m_fields ) {
+		for( AbstractField field : typeDeclaredInJava.fields ) {
 			if( field instanceof FieldDeclaredInJavaWithField ) {
 				FieldDeclaredInJavaWithField fieldDeclaredInJavaWithField = (FieldDeclaredInJavaWithField)field;
 				if( fld.equals( fieldDeclaredInJavaWithField.getFld() ) ) {
@@ -111,7 +126,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 	public static FieldDeclaredInJavaWithGetterAndSetter getField( java.lang.reflect.Method gttr, java.lang.reflect.Method sttr ) {
 		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( gttr.getDeclaringClass() );
-		for( AbstractField field : typeDeclaredInJava.m_fields ) {
+		for( AbstractField field : typeDeclaredInJava.fields ) {
 			if( field instanceof FieldDeclaredInJavaWithGetterAndSetter ) {
 				FieldDeclaredInJavaWithGetterAndSetter fieldDeclaredInJavaWithGetterAndSetter = (FieldDeclaredInJavaWithGetterAndSetter)field;
 				if( gttr.equals( fieldDeclaredInJavaWithGetterAndSetter.getGttr() ) ) {
@@ -131,34 +146,34 @@ public class TypeDeclaredInJava extends AbstractType {
 		return (modifiers & prohibited) == 0;
 	}
 
-	private Class< ? > m_cls;
-	private java.util.ArrayList< ConstructorDeclaredInJava > m_constructors = new java.util.ArrayList< ConstructorDeclaredInJava >();
-	private java.util.ArrayList< MethodDeclaredInJava > m_methods = new java.util.ArrayList< MethodDeclaredInJava >();
-	private java.util.ArrayList< FieldDeclaredInJava > m_fields = new java.util.ArrayList< FieldDeclaredInJava >();
+	private Class< ? > cls;
+	private String clsName;
+	private java.util.ArrayList< ConstructorDeclaredInJava > constructors = new java.util.ArrayList< ConstructorDeclaredInJava >();
+	private java.util.ArrayList< MethodDeclaredInJava > methods = new java.util.ArrayList< MethodDeclaredInJava >();
+	private java.util.ArrayList< FieldDeclaredInJava > fields = new java.util.ArrayList< FieldDeclaredInJava >();
 
 	private TypeDeclaredInJava( Class<?> cls ) {
-		m_cls = cls;
-		s_map.put( cls, this );
-
-		for( java.lang.reflect.Constructor<?> cnstrctr : cls.getDeclaredConstructors() ) {
-			m_constructors.add( new ConstructorDeclaredInJava( cnstrctr ) );
+		this.cls = cls;
+		this.clsName = this.cls.getName();
+		s_map.put( this.cls, this );
+		for( java.lang.reflect.Constructor<?> cnstrctr : this.cls.getDeclaredConstructors() ) {
+			this.constructors.add( new ConstructorDeclaredInJava( cnstrctr ) );
 		}
-
-		for( java.lang.reflect.Field fld : cls.getDeclaredFields() ) {
-//			if( fld.isEnumConstant() ) {
-//				m_constants.add( new ConstantDeclaredInJava( fld ) );
-//			} else {
-//				int modifiers = fld.getModifiers();
-//				if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) ) {
-//					if( isMask( modifiers, java.lang.reflect.Modifier.STATIC ) ) {
-//						if( isMask( modifiers, java.lang.reflect.Modifier.FINAL ) ) {
-//							m_constants.add( new ConstantDeclaredInJava( fld ) );
+		for( java.lang.reflect.Field fld : this.cls.getDeclaredFields() ) {
+//				if( fld.isEnumConstant() ) {
+//					this.constants.add( new ConstantDeclaredInJava( fld ) );
+//				} else {
+//					int modifiers = fld.getModifiers();
+//					if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) ) {
+//						if( isMask( modifiers, java.lang.reflect.Modifier.STATIC ) ) {
+//							if( isMask( modifiers, java.lang.reflect.Modifier.FINAL ) ) {
+//								this.constants.add( new ConstantDeclaredInJava( fld ) );
+//							}
+//						} else {
+						this.fields.add( new FieldDeclaredInJavaWithField( fld ) );
 //						}
-//					} else {
-						m_fields.add( new FieldDeclaredInJavaWithField( fld ) );
 //					}
 //				}
-//			}
 		}
 
 		java.util.Set< java.lang.reflect.Method > set = null;
@@ -178,35 +193,41 @@ public class TypeDeclaredInJava extends AbstractType {
 				}
 			}
 		}
-		for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
+		for( java.lang.reflect.Method mthd : this.cls.getDeclaredMethods() ) {
 			if( set != null && set.contains( mthd ) ) {
 				//pass
 			} else {
 				handleMthd( mthd );
 			}
 		}
-		
-//		if( m_cls.getSimpleName().equals( "AbstractTransformable" ) ) {
-//			for( AbstractMethod method : m_methods ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( ((MethodDeclaredInJava)method).getMthd() );
-//			}
-//		}
+	}
+	private TypeDeclaredInJava( String clsName ) {
+		this.cls = null;
+		this.clsName = clsName;
 	}
 
 	@Override
 	public boolean isFollowToSuperClassDesired() {
-		if( m_cls.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class ) ) {
-			edu.cmu.cs.dennisc.alice.annotations.ClassTemplate classTemplate = m_cls.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class );
-			return classTemplate.isFollowToSuperClassDesired();
+		if( this.cls != null ) {
+			if( this.cls.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class ) ) {
+				edu.cmu.cs.dennisc.alice.annotations.ClassTemplate classTemplate = this.cls.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class );
+				return classTemplate.isFollowToSuperClassDesired();
+			} else {
+				return true;
+			}
 		} else {
-			return true;
+			return false;
 		}
 	}	
 	@Override
 	public boolean isConsumptionBySubClassDesired() {
-		if( m_cls.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class ) ) {
-			edu.cmu.cs.dennisc.alice.annotations.ClassTemplate classTemplate = m_cls.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class );
-			return classTemplate.isConsumptionBySubClassDesired();
+		if( this.cls != null ) {
+			if( this.cls.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class ) ) {
+				edu.cmu.cs.dennisc.alice.annotations.ClassTemplate classTemplate = this.cls.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class );
+				return classTemplate.isConsumptionBySubClassDesired();
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -214,7 +235,11 @@ public class TypeDeclaredInJava extends AbstractType {
 	
 	@Override
 	public String getName() {
-		return m_cls.getSimpleName();
+		if( this.cls != null ) {
+			return this.cls.getSimpleName();
+		} else {
+			return this.clsName.substring( this.clsName.lastIndexOf( '.' )+1 );
+		}
 	}
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
@@ -222,23 +247,31 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 	@Override
 	public AbstractPackage getPackage() {
-		return PackageDeclaredInJava.get( m_cls.getPackage() );
+		if( this.cls != null ) {
+			return PackageDeclaredInJava.get( this.cls.getPackage() );
+		} else {
+			return null;
+		}
 	}
 	@Override
 	public AbstractType getSuperType() {
-		return TypeDeclaredInJava.get( m_cls.getSuperclass() );
+		if( this.cls != null ) {
+			return TypeDeclaredInJava.get( this.cls.getSuperclass() );
+		} else {
+			return null;
+		}
 	}
 	@Override
 	public java.util.ArrayList< ? extends AbstractConstructor > getDeclaredConstructors() {
-		return m_constructors;
+		return this.constructors;
 	}
 	@Override
 	public java.util.ArrayList< ? extends AbstractMethod > getDeclaredMethods() {
-		return m_methods;
+		return this.methods;
 	}
 	@Override
 	public java.util.ArrayList< ? extends AbstractField > getDeclaredFields() {
-		return m_fields;
+		return this.fields;
 	}
 
 	private static Class<?>[] trimLast( Class<?>[] src ) {
@@ -274,7 +307,7 @@ public class TypeDeclaredInJava extends AbstractType {
 			if( edu.cmu.cs.dennisc.property.PropertyUtilities.isGetterAndSetterExists( mthd ) ) {
 				java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
 				java.lang.annotation.Annotation[][] parameterAnnotations = sttr.getParameterAnnotations();
-				m_fields.add( new FieldDeclaredInJavaWithGetterAndSetter( mthd, sttr, parameterAnnotations[ 0 ] ) );
+				this.fields.add( new FieldDeclaredInJavaWithGetterAndSetter( mthd, sttr, parameterAnnotations[ 0 ] ) );
 			} else if( edu.cmu.cs.dennisc.property.PropertyUtilities.isSetterAndGetterExists( mthd ) ) {
 				//pass
 			} else if( edu.cmu.cs.dennisc.property.PropertyUtilities.isSetterWithExtraParametersAndGetterExists( mthd ) ) {
@@ -309,7 +342,7 @@ public class TypeDeclaredInJava extends AbstractType {
 					}
 				}
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "adding method:", methodDeclaredInJava );
-				m_methods.add( methodDeclaredInJava );
+				this.methods.add( methodDeclaredInJava );
 //				else if( visibility == edu.cmu.cs.dennisc.alice.annotations.Visibility.CHAINED ) {
 //				} else if( visibility == edu.cmu.cs.dennisc.alice.annotations.Visibility.COMPLETELY_HIDDEN ) {
 //				} else {
@@ -321,8 +354,12 @@ public class TypeDeclaredInJava extends AbstractType {
 	
 	//todo: reduce visibility?
 	public Class< ? > getCls() {
-		return m_cls;
+		return this.cls;
 	}
+	public String getClsName() {
+		return this.clsName;
+	}
+	
 	@Override
 	public boolean isDeclaredInAlice() {
 		return false;
@@ -330,55 +367,64 @@ public class TypeDeclaredInJava extends AbstractType {
 
 	@Override
 	public Access getAccess() {
-		return Access.get( m_cls.getModifiers() );
+		assert this.cls != null;
+		return Access.get( this.cls.getModifiers() );
 	}	
 	
 	@Override
 	public boolean isInterface() {
-		return m_cls.isInterface();
+		assert this.cls != null;
+		return this.cls.isInterface();
 	}
 	
 	@Override
 	public boolean isStatic() {
-		return java.lang.reflect.Modifier.isStatic( m_cls.getModifiers() );
+		assert this.cls != null;
+		return java.lang.reflect.Modifier.isStatic( this.cls.getModifiers() );
 	}
 	@Override
 	public boolean isAbstract() {
-		return java.lang.reflect.Modifier.isAbstract( m_cls.getModifiers() );
+		assert this.cls != null;
+		return java.lang.reflect.Modifier.isAbstract( this.cls.getModifiers() );
 	}
 	@Override
 	public boolean isFinal() {
-		return java.lang.reflect.Modifier.isFinal( m_cls.getModifiers() );
+		assert this.cls != null;
+		return java.lang.reflect.Modifier.isFinal( this.cls.getModifiers() );
 	}
 	@Override
 	public boolean isStrictFloatingPoint() {
-		return java.lang.reflect.Modifier.isStrict( m_cls.getModifiers() );
+		assert this.cls != null;
+		return java.lang.reflect.Modifier.isStrict( this.cls.getModifiers() );
 	}
 
 	@Override
 	public boolean isArray() {
-		return m_cls.isArray();
+		assert this.cls != null;
+		return this.cls.isArray();
 	}
 	@Override
 	public AbstractType getComponentType() {
-		return TypeDeclaredInJava.get( m_cls.getComponentType() );
+		assert this.cls != null;
+		return TypeDeclaredInJava.get( this.cls.getComponentType() );
 	}
 	
 	@Override
 	public AbstractType getArrayType() {
-		return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getArrayClass( m_cls ) );
+		assert this.cls != null;
+		return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getArrayClass( this.cls ) );
 	}
 
 	@Override
 	public boolean isEquivalentTo( Object other ) {
 		if( other instanceof TypeDeclaredInJava ) {
-			return m_cls.equals( ((TypeDeclaredInJava)other).m_cls );
+			return this.clsName.equals( ((TypeDeclaredInJava)other).clsName );
 		} else {
 			return false;
 		}
 	}
 	@Override
 	public String toString() {
-		return getClass() + "[cls=" + m_cls + "]";
+		return getClass() + "[cls=" + this.cls + "]";
 	}
 }
