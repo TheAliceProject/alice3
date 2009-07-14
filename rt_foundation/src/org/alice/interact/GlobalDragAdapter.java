@@ -27,6 +27,7 @@ import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.AndInputCondition;
 import org.alice.interact.condition.KeyPressCondition;
 import org.alice.interact.condition.ManipulatorConditionSet;
+import org.alice.interact.condition.MouseClickCondition;
 import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.condition.PickCondition;
@@ -169,7 +170,7 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		this.manipulators.add( mouseHandleDrag );
 		
 		ManipulatorConditionSet selectObject = new ManipulatorConditionSet( new SelectObjectDragManipulator(this) );
-		selectObject.addCondition( new MouseDragCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.EVERYTHING)) );
+		selectObject.addCondition( new MouseClickCondition(java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.EVERYTHING)) );
 		this.manipulators.add( selectObject );
 		
 		for (int i=0; i<this.manipulators.size(); i++)

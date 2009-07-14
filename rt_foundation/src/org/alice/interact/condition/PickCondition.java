@@ -91,7 +91,14 @@ public class PickCondition {
 		boolean result = false;
 		if (input.getClickHandle() != null)
 		{
-			result = this.pickHint.intersects( input.getClickHandle().getPickHint() );
+			if (input.getClickHandle().isPickable())
+			{
+				result = this.pickHint.intersects( input.getClickHandle().getPickHint() );
+			}
+			else
+			{
+				result = false;
+			}
 		}
 		else
 		{

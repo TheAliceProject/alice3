@@ -29,7 +29,9 @@ import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
 
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -311,6 +313,18 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		{
 			this.radiusAnimation.setCurrentValue( radius );
 			this.radiusAnimation.setTarget( radius );
+		}
+	}
+	
+	@Override
+	protected void setScale( double scale ) {
+		if (this.sgTorus != null)
+		{
+			this.sgTorus.minorRadius.setValue( MINOR_RADIUS * scale );
+		}
+		if (this.sgSphere != null)
+		{
+			this.sgSphere.radius.setValue( MINOR_RADIUS * 2.0d * scale);
 		}
 	}
 

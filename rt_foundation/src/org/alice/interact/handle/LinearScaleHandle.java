@@ -24,13 +24,20 @@ package org.alice.interact.handle;
 
 import java.awt.Color;
 
+import org.alice.interact.MovementDirection;
 import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.awt.ColorUtilities;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.event.AddListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
+import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
+import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
@@ -40,7 +47,7 @@ import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 /**
  * @author David Culyba
  */
-public class LinearScaleHandle extends LinearDragHandle implements PropertyListener{
+public class LinearScaleHandle extends LinearDragHandle{
 
 	protected Arrow arrow;
 	protected Color4f baseColor;
@@ -82,36 +89,36 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 	
 	@Override
 	protected void createShape() {
-		this.arrow = new Arrow(.05, 0.1, 0.15, 0.15, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+		createShape(1.0d);
+	}
+	
+	protected void createShape(double scale) {
+		this.arrow = new Arrow(.05*scale, 0.1*scale, 0.15*scale, 0.15*scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
 		this.arrow.setParent( this );
 	}
 	
-	@Override
-	public void setManipulatedObject( Transformable manipulatedObject ) {
-		if (this.manipulatedObject != manipulatedObject)
-		{
-			if (this.manipulatedObject != null)
-			{
-				this.manipulatedObject.localTransformation.removePropertyListener( this );
-				Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
-				if (visualElement != null)
-					visualElement.scale.removePropertyListener( this );
-			}
-			super.setManipulatedObject( manipulatedObject );
-			if (this.manipulatedObject != null)
-			{
-				this.manipulatedObject.localTransformation.addPropertyListener( this );
-				Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
-				if (visualElement != null)
-					visualElement.scale.addPropertyListener( this );
-				
-			}
-		}
+	protected Vector3 getUniformResizeOffset()
+	{
+		AxisAlignedBox bbox = getManipulatedObjectBox();
+		Vector3 handleOffset = new Vector3(bbox.getMaximum());
+		handleOffset.z = 0;
+		handleOffset.x *= -1;
+		return handleOffset;
 	}
 	
+	protected Vector3 getUniformResizeDirection()
+	{
+		Vector3 direction =  getUniformResizeOffset();
+		direction.normalize();
+		return direction;
+	}
 	
 	@Override
 	public void positionRelativeToObject( Composite object ) {
+		if (this.dragDescription.direction == MovementDirection.RESIZE)
+		{
+			this.dragAxis = this.getUniformResizeDirection();
+		}
 		AffineMatrix4x4 objectTransformation = this.getTransformationForAxis( this.dragAxis );
 		if (objectTransformation.isNaN())
 		{
@@ -148,6 +155,15 @@ public class LinearScaleHandle extends LinearDragHandle implements PropertyListe
 		default : break; //Do nothing
 		}
 		return new Color4f(desiredColor);
+	}
+
+	@Override
+	protected void setScale( double scale ) {
+		if (this.arrow != null)
+		{
+			this.arrow.setParent( null );
+		}
+		this.createShape( scale );
 	}
 
 	

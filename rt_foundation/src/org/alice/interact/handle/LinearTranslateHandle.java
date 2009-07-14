@@ -28,6 +28,9 @@ import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.awt.ColorUtilities;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Matrix3x3;
+import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
 import edu.cmu.cs.dennisc.scenegraph.util.Arrow;
 
@@ -63,7 +66,11 @@ public class LinearTranslateHandle extends LinearDragHandle {
 	
 	@Override
 	protected void createShape() {
-		this.arrow = new Arrow(.15, 0.075, 0.15, 0.15, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
+		this.createShape(1.0d);
+	}
+	
+	protected void createShape(double scale) {
+		this.arrow = new Arrow(.05*scale, 0.1*scale, 0.15*scale, 0.15*scale, BottomToTopAxis.POSITIVE_Y, this.sgFrontFacingAppearance, true);
 		this.arrow.setParent( this );
 	}
 	
@@ -93,5 +100,13 @@ public class LinearTranslateHandle extends LinearDragHandle {
 		return new Color4f(desiredColor);
 	}
 	
+	@Override
+	protected void setScale( double scale ) {
+		if (this.arrow != null)
+		{
+			this.arrow.setParent( null );
+		}
+		this.createShape( scale );
+	}
 
 }

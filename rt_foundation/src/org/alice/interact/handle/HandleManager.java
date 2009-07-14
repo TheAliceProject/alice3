@@ -89,6 +89,7 @@ public class HandleManager implements ManipulationListener{
 	
 	public void pushNewHandleSet( HandleSet handleSet )
 	{
+//		System.out.println("Pushed "+handleSet);
 		this.handleSetStack.push( handleSet );
 		this.updateHandlesBasedOnHandleSet();
 	}
@@ -101,7 +102,8 @@ public class HandleManager implements ManipulationListener{
 			Thread.dumpStack();
 			return null;
 		}
-		HandleSet popped = this.handleSetStack.pop();	
+		HandleSet popped = this.handleSetStack.pop();
+//		System.out.println("popped "+popped+" and current handle set is "+this.handleSetStack.peek());
 		this.updateHandlesBasedOnHandleSet();
 		return popped;
 	}

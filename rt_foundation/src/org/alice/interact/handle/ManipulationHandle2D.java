@@ -127,6 +127,11 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 		return this.handleSet.intersects( set );
 	}
 	
+	public boolean isPickable()
+	{
+		return true;
+	}
+	
 	public boolean isMemberOf( HandleSet.HandleGroup group)
 	{
 		return this.handleSet.get( group.getIndex() );

@@ -94,7 +94,7 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 			this.nextHandle = tempHandle;
 		}
 	}
-
+	
 	public ManipulationHandle getCurrentHandle()
 	{
 		return this.currentHandle;
@@ -169,6 +169,11 @@ public class ManipulationHandleIndirection  implements ManipulationListener, Man
 		return this.currentHandle.getHandleSet();
 	}
 
+	public boolean isPickable()
+	{
+		return this.currentHandle.isPickable();
+	}
+	
 	public boolean isAlwaysVisible() {
 		return this.currentHandle.isAlwaysVisible();
 	}

@@ -25,6 +25,7 @@ package org.alice.interact.handle;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.ColorTargetBasedAnimation;
 import org.alice.interact.DoubleTargetBasedAnimation;
+import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.condition.PickCondition;
@@ -39,7 +40,11 @@ import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AngleInRadians;
+import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
@@ -67,15 +72,57 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	protected AbstractManipulator manipulation = null;
 	protected AbstractDragAdapter dragAdapter = null;
+	protected boolean isPickable = false; //This is false until a manipulation is set on the handle
+	
+	protected class ScaleChangeListener implements PropertyListener
+	{
+		public void propertyChanged( PropertyEvent e ) {
+			ManipulationHandle3D.this.setScale( ManipulationHandle3D.this.getObjectScale() );
+			ManipulationHandle3D.this.positionRelativeToObject( ManipulationHandle3D.this.manipulatedObject );
+		}
+
+		public void propertyChanging( PropertyEvent e ) {
+		}
+	}
+	
+	protected ScaleChangeListener scaleListener = new ScaleChangeListener();
 	
 	/**
 	 * @param manipulatedObject the manipulatedObject to set
 	 */
-	public void setManipulatedObject( Transformable manipulatedObject ) {
-		if (this.manipulatedObject != manipulatedObject)
+	public void setManipulatedObject( Transformable manipulatedObjectIn ) {
+//		String manipulatedObjectString = "null";
+//		if (manipulatedObjectIn != null)
+//		{
+//			manipulatedObjectString = manipulatedObjectIn.getName();
+//		}
+//		String currentObjectString = "null";
+//		if (this.manipulatedObject != null)
+//		{
+//			currentObjectString = this.manipulatedObject.getName();
+//		}
+//		System.out.println("trying to set manipulated object from "+currentObjectString+" to "+manipulatedObjectString);
+		if (this.manipulatedObject != null)
 		{
-			this.manipulatedObject = manipulatedObject;
-			this.setParent( manipulatedObject );
+			Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
+			if (visualElement != null)
+			{
+				visualElement.scale.removePropertyListener( this.scaleListener );
+			}
+		}
+		if (this.manipulatedObject != manipulatedObjectIn)
+		{
+			this.manipulatedObject = manipulatedObjectIn;
+			this.setParent( this.manipulatedObject );
+			this.setScale( this.getObjectScale() );
+		}
+		if (this.manipulatedObject != null)
+		{
+			Visual visualElement = this.getSGVisualForTransformable( this.manipulatedObject );
+			if (visualElement != null)
+			{
+				visualElement.scale.addPropertyListener( this.scaleListener );
+			}
 		}
 	}
 	
@@ -94,6 +141,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	@Override
 	public abstract ManipulationHandle3D clone();
+	
+	protected abstract void setScale(double scale);
 	
 	protected void initFromHandle( ManipulationHandle3D handle )
 	{
@@ -141,6 +190,12 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		}
 		return returnScale;
 		
+	}
+	
+	protected void setTransformableScale( Transformable t, edu.cmu.cs.dennisc.math.Matrix3x3 scaleMatrix )
+	{
+		Visual objectVisual = getSGVisualForTransformable( t );
+		objectVisual.scale.setValue( scaleMatrix );
 	}
 	
 	protected Visual getSGVisualForTransformable( Transformable object )
@@ -320,8 +375,10 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		if ( Math.abs( upDot ) != 1.0d )
 		{
 			Vector3 rightAxis = Vector3.createCrossProduct( axis, Vector3.accessPositiveYAxis() );
+			rightAxis.normalize();
 			Vector3 upAxis = axis;
 			Vector3 backwardAxis = Vector3.createCrossProduct( rightAxis, upAxis );
+			backwardAxis.normalize();
 			transform.orientation.set( rightAxis, upAxis, backwardAxis );
 		}
 		else if (upDot == -1.0d)
@@ -334,6 +391,10 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	public void setManipulation(AbstractManipulator manipulation)
 	{
 		this.manipulation = manipulation;
+		if (this.manipulation != null)
+		{
+			this.setPickable( true );
+		}
 	}
 	
 	public AbstractManipulator getManipulation( InputState input )
@@ -364,6 +425,60 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return this.state.shouldRender();
 	}
 
+	protected double getObjectScale()
+	{
+		final double VOLUME_NORMALIZER = 1d;
+		AxisAlignedBox bbox = this.getManipulatedObjectBox();
+		if (bbox == null)
+		{
+			return 1.0d;
+		}
+		Point3 max = bbox.getMaximum();
+		max.y = 0d;
+		Point3 min = bbox.getMinimum();
+		min.y = 0d;
+		double volume = Point3.createSubtraction( max, min ).calculateMagnitude();
+		double scale = volume / VOLUME_NORMALIZER;
+		if (scale < .25d)
+		{
+			scale = .25d;
+		}
+		if (scale > 2.0d)
+		{
+			scale = 2.0d;
+		}
+		return scale;
+		
+	}
+	
+	protected AxisAlignedBox getManipulatedObjectBox()
+	{
+		if (this.manipulatedObject != null)
+		{
+			Object bbox = this.manipulatedObject.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
+			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
+			{
+				AxisAlignedBox boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
+				boundingBox.scale( this.getTransformableScale( this.manipulatedObject ) );
+				return boundingBox;
+			}
+		}
+		return null;
+	}
+	
+	public void setPickable(boolean isPickable)
+	{
+		this.isPickable = isPickable;
+	}
+	
+	public boolean isPickable()
+	{
+		if (this.isPickable)
+		{
+			return this.state.isVisible();
+		}
+		return false;
+	}
 	
 	public void setHandleActive( boolean active ) {
 		this.state.setActive(active);

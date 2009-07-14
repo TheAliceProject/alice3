@@ -22,6 +22,8 @@
  */
 package org.alice.interact.condition;
 
+import java.awt.Point;
+
 import org.alice.interact.InputState;
 import org.alice.interact.ModifierMask;
 
@@ -30,8 +32,12 @@ import org.alice.interact.ModifierMask;
  */
 public class MouseDragCondition extends ModifierSensitiveCondition{
 	
+	protected static final double MIN_MOUSE_MOVE = 2.0d;
 	private int mouseButton = 0;
 	private PickCondition pickCondition = null;
+	protected Point mouseDownLocation;
+	protected boolean hasStarted = false;
+	
 	
 	enum PickClasses
 	{
@@ -51,18 +57,6 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 		this.pickCondition = pickCondition;
 		this.mouseButton = mouseButton;
 	}
-	
-
-//	@Override
-//	public boolean justStarted( InputState currentState, InputState previousState ) {
-//		//only test pick on the initial mouse down
-//		//the drag is still valid if the pick becomes false
-//		if (testInputs(currentState) && testPick(currentState) && !testInputs(previousState))
-//		{
-//			return true;
-//		}
-//		return false;
-//	}
 
 	@Override
 	public boolean stateChanged( InputState currentState, InputState previousState ) {
@@ -72,6 +66,53 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 	@Override
 	protected boolean testState( InputState state ) {
 		return testInputs(state) && testPick( state );
+	}
+	
+	@Override
+	public boolean isRunning( InputState currentState, InputState previousState ) {
+		if (this.hasStarted && testState(currentState) && testState(previousState))
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean justStarted( InputState currentState, InputState previousState ) 
+	{
+		if (testClick(currentState) && !testMouse(previousState))
+		{
+			this.mouseDownLocation = new Point(currentState.getMouseLocation());
+		}
+		if (testMouse(currentState))
+		{
+			if (this.mouseDownLocation != null &&  currentState.getMouseLocation().distance( this.mouseDownLocation ) >= MIN_MOUSE_MOVE)
+			{
+				this.mouseDownLocation = null;
+				this.hasStarted = true;
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean justEnded( InputState currentState, InputState previousState ) {
+		if (this.hasStarted && !testState(currentState) && testState(previousState))
+		{
+			this.hasStarted = false;
+			return true;
+		}
+		return false;
+	}
+	
+	protected boolean testClick(InputState state)
+	{
+		if (testMouse(state))
+		{
+			return testPick(state);
+		}
+		return false;
 	}
 	
 	protected boolean testPick(InputState state)

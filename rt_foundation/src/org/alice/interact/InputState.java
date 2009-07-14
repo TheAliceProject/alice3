@@ -209,20 +209,26 @@ public class InputState {
 	public void setRolloverPickResult( PickResult rolloverPickResult ) {
 		this.rolloverPickResult = rolloverPickResult;
 		Transformable picked = this.getRolloverPickedTransformable( true );
+		boolean validPick = true;
+		if (picked instanceof ManipulationHandle)
+		{
+			ManipulationHandle handle = (ManipulationHandle)picked;
+			if (!handle.isPickable())
+			{
+				validPick = false;
+			}
+				
+		}
 		PickHint rolloverObjectType = PickCondition.getPickType( this.rolloverPickResult );
-		if ( !rolloverObjectType.intersects( PickHint.NOTHING) )
+		if ( validPick && !rolloverObjectType.intersects( PickHint.NOTHING) )
 		{
 			this.setRolloverPickTransformable( picked );
 		}
-//		else if (rolloverObjectType.intersects( PickHint.HANDLES) )
-//		{
-//			this.setRolloverPickTransformable(picked);
-//		}
 		else
 		{
 			this.setRolloverPickTransformable( null );
 		}
-		if (picked instanceof ManipulationHandle)
+		if (validPick && picked instanceof ManipulationHandle)
 		{
 			this.rolloverHandle = (ManipulationHandle)picked;
 		}
