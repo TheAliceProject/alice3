@@ -52,6 +52,11 @@ abstract class IngredientListCellRenderer< E > extends swing.ListCellRenderer< E
 			rv.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 			rv.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
 
+			rv.setOpaque( isSelected );
+			if( isSelected ) {
+				rv.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( java.awt.Color.GREEN, 1.0, 0.3, 2.0 ) );
+			}
+			
 			javax.swing.Icon icon = new javax.swing.ImageIcon( pathForIcon );
 			if( icon != null ) {
 				rv.setIcon( icon );
