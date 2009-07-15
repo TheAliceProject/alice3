@@ -25,7 +25,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-class IngredientsPane extends swing.BorderPane {
+abstract class IngredientsPane extends swing.BorderPane {
 	private zoot.ZButton randomizeButton = new zoot.ZButton( new RandomPersonActionOperation() );
 	private LifeStageList lifeStageList = new LifeStageList();
 	private GenderList genderList = new GenderList();
@@ -43,6 +43,22 @@ class IngredientsPane extends swing.BorderPane {
 	}
 	
 	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
+	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
+	private static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+	
+	private zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane() {
+		@Override
+		protected java.awt.Color getContentAreaColor() {
+			return BACKGROUND_COLOR;
+		}
+	};
+	private javax.swing.event.ChangeListener tabChangeAdapter = new javax.swing.event.ChangeListener() {
+		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+			int index = tabbedPane.getSelectedIndex();
+			handleTabSelection( index );
+		}
+	};
+	
 	public IngredientsPane() {
 		this.hairList.setOpaque( false );
 		this.fullBodyOutfitList.setOpaque( false );
@@ -67,51 +83,34 @@ class IngredientsPane extends swing.BorderPane {
 		this.baseEyeColorList.setVisibleRowCount( 1 );
 		this.baseEyeColorList.setOpaque( false );
 		
-		final javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 );
-		class ListCellRenderer extends javax.swing.DefaultListCellRenderer {
-			@Override
-			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, java.lang.Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-				java.awt.Component rv = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-				javax.swing.JLabel label = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( rv, javax.swing.JLabel.class );
-				if( label != null ) {
-					label.setBorder( border );
-					label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
-					if( isSelected ) {
-						label.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( java.awt.Color.GREEN, 1.0, 0.3, 2.0 ) );
-					} else {
-						label.setBackground( java.awt.Color.LIGHT_GRAY );
-					}
-					//label.setOpaque( isSelected );
+		class ListCellRenderer implements javax.swing.ListCellRenderer {
+			private swing.BorderPane pane = new swing.BorderPane();
+			private javax.swing.JLabel label = new javax.swing.JLabel();
+			public ListCellRenderer() {
+				label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
+				label.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 8, 2, 8 ) );
+				label.setOpaque( true );
+				pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
+				pane.setOpaque( false );
+				pane.add( label, java.awt.BorderLayout.CENTER );
+			}
+			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+				this.label.setText( value.toString() );
+				if( isSelected ) {
+					this.label.setBackground( SELECTED_COLOR );
+				} else {
+					this.label.setBackground( UNSELECTED_COLOR );
 				}
-				return rv;
+				return this.pane;
 			}
 		}
 		
-//		class ListCellRenderer implements javax.swing.ListCellRenderer {
-//			public ListCellRenderer() {
-//			}
-//			public java.awt.Component getListCellRendererComponent( javax.swing.JList list, java.lang.Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-//				java.awt.Component rv = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
-//				javax.swing.JLabel label = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( rv, javax.swing.JLabel.class );
-//				if( label != null ) {
-//					label.setBorder( border );
-//					label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
-//					if( isSelected ) {
-//						label.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( java.awt.Color.GREEN, 1.0, 0.3, 2.0 ) );
-//					} else {
-//						label.setBackground( java.awt.Color.LIGHT_GRAY );
-//					}
-//					//label.setOpaque( isSelected );
-//				}
-//				return rv;
-//			}
-//		}
-		
-		this.genderList.setCellRenderer( new ListCellRenderer() );
-		this.lifeStageList.setCellRenderer( new ListCellRenderer() );
-		this.baseSkinToneList.setCellRenderer( new ListCellRenderer() );
-		this.hairColorList.setCellRenderer( new ListCellRenderer() );
-		this.baseEyeColorList.setCellRenderer( new ListCellRenderer() );
+		ListCellRenderer listCellRenderer = new ListCellRenderer();
+		this.genderList.setCellRenderer( listCellRenderer );
+		this.lifeStageList.setCellRenderer( listCellRenderer );
+		this.baseSkinToneList.setCellRenderer( listCellRenderer );
+		this.hairColorList.setCellRenderer( listCellRenderer );
+		this.baseEyeColorList.setCellRenderer( listCellRenderer );
 
 		swing.BorderPane northPane = new swing.BorderPane();
 		northPane.add( this.randomizeButton, java.awt.BorderLayout.NORTH );
@@ -141,13 +140,7 @@ class IngredientsPane extends swing.BorderPane {
 			}
 		};
 		
-		zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane() {
-			@Override
-			protected java.awt.Color getContentAreaColor() {
-				return BACKGROUND_COLOR;
-			}
-		};
-		
+
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.fullBodyOutfitList );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 66 );
 		//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
@@ -160,65 +153,38 @@ class IngredientsPane extends swing.BorderPane {
 		bodyPane.add( scrollPane, java.awt.BorderLayout.CENTER );
 		bodyPane.add( this.fitnessLevelPane, java.awt.BorderLayout.SOUTH );
 		
-		java.awt.Color color = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+		//java.awt.Color color = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+		java.awt.Color color = BACKGROUND_COLOR;
 		
 		bodyPane.setBackground( color );
 		headPane.setBackground( color );
 		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
 		headPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
 		
-		tabbedPane.add( "Body", bodyPane );
-		tabbedPane.add( "Head", headPane );
-		tabbedPane.setOpaque( true );
+		this.tabbedPane.add( "Body", bodyPane );
+		this.tabbedPane.add( "Head", headPane );
+		this.tabbedPane.setOpaque( true );
+
+		java.awt.Font font = tabbedPane.getFont();
+		this.tabbedPane.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
 
 		this.add( northPane, java.awt.BorderLayout.NORTH );
 		this.add( tabbedPane, java.awt.BorderLayout.CENTER );
 		
-//		gbc.insets.top = INSET_TOP;
-//		this.add( zoot.ZLabel.acquire( "fitness level" ), gbc );
-//		gbc.insets.top = 0;
-//		this.add( this.fitnessLevelPane, gbc );
-//
-//		gbc.weightx = 0.0;
-//		gbc.insets.top = INSET_TOP;
-//		gbc.gridwidth = 1;
-//		this.add( zoot.ZLabel.acquire( "hair" ), gbc );
-//		gbc.insets.left = INSET_LEFT;
-//		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
-//		gbc.weightx = 1.0;
-//		this.add( zoot.ZLabel.acquire( "" ), gbc );
-//		gbc.insets.left = INSET_LEFT*8;
-//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-//		gbc.weightx = 0.0;
-//		this.add( zoot.ZLabel.acquire( "eye color" ), gbc );
-//		gbc.insets.left = 0;
-//
-//		
-//		gbc.weighty = 1.0;
-//		gbc.insets.top = 0;
-//		gbc.gridwidth = 1;
-//		this.add( this.hairColorList, gbc );
-//		gbc.gridwidth = java.awt.GridBagConstraints.RELATIVE;
-//		gbc.insets.left = INSET_LEFT;
-//		gbc.weightx = 1.0;
-//		javax.swing.JScrollPane hairScrollPane = new javax.swing.JScrollPane( this.hairList );
-//		hairScrollPane.setBorder( null );
-//		this.add( hairScrollPane, gbc );
-//		gbc.insets.left = INSET_LEFT*8;
-//		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-//		gbc.weightx = 0.0;
-//		this.add( this.baseEyeColorList, gbc ); 
-//		gbc.insets.left = 0;
-//		gbc.weightx = 1.0;
-//
-//		gbc.weighty = 0.0;
-//		gbc.insets.top = INSET_TOP;
-//		this.add( zoot.ZLabel.acquire( "full body outfit" ), gbc );
-//		gbc.insets.top = 0;
-//		gbc.weighty = 6.0;
-//		this.add( new javax.swing.JScrollPane( this.fullBodyOutfitList ), gbc ); 
 	}
 	
+	protected abstract void handleTabSelection( int index );
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		tabbedPane.addChangeListener( this.tabChangeAdapter );
+	}
+	@Override
+	public void removeNotify() {
+		tabbedPane.removeChangeListener( this.tabChangeAdapter );
+		super.removeNotify();
+	}
 	public void refresh() {
 		final boolean shouldScroll = true;
 		final PersonViewer personViewer = PersonViewer.getSingleton();

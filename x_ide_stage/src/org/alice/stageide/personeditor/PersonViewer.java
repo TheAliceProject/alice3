@@ -77,6 +77,18 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
+	public void handleTabSelection( int index ) {
+		Person person = this.mapToMap.get( this.lifeStage, this.gender );
+		double height = person.getHeight();
+		double amount = 3.0;
+		double duration = 0.5;
+		org.alice.apis.moveandturn.StandIn target = this.getScene().createOffsetStandIn( 0, height*1.0, 0 );
+		if( index == 0 ) {
+			this.getCamera().moveAwayFrom( amount, target, duration );
+		} else {
+			this.getCamera().moveToward( amount, target, duration );
+		}
+	}
 	
 	public IngredientsPane getIngredientsPane() {
 		return this.ingredientsPane;

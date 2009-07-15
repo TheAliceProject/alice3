@@ -54,7 +54,7 @@ abstract class IngredientListCellRenderer< E > extends swing.ListCellRenderer< E
 
 			rv.setOpaque( isSelected );
 			if( isSelected ) {
-				rv.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( java.awt.Color.GREEN, 1.0, 0.3, 2.0 ) );
+				rv.setBackground( IngredientsPane.SELECTED_COLOR );
 			}
 			
 			javax.swing.Icon icon = new javax.swing.ImageIcon( pathForIcon );

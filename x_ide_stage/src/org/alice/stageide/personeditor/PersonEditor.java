@@ -29,7 +29,12 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 //public class PersonEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 	private javax.swing.JSplitPane splitPane;
 	private PersonViewer personViewer = PersonViewer.getSingleton();
-	private IngredientsPane ingredientsPane = new IngredientsPane();
+	private IngredientsPane ingredientsPane = new IngredientsPane() {
+		@Override
+		protected void handleTabSelection( int index ) {
+			personViewer.handleTabSelection( index );
+		}
+	};
 	
 	private org.alice.apis.stage.Person person;
 	public PersonEditor( org.alice.apis.stage.Person person ) {
