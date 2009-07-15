@@ -20,36 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.file;
+package edu.cmu.cs.dennisc.zip;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SaveAsTypeOperation extends AbstractSaveOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public SaveAsTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		this.type = type;
-		this.putValue( javax.swing.Action.NAME, "Save As..." );
-		this.putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) );
-	}
-	@Override
-	protected java.io.File getDefaultDirectory() {
-		return getIDE().getMyTypesDirectory();
-	}
-	@Override
-	protected String getExtension() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION;
-	}
-	@Override
-	protected String getInitialFilename() {
-		return this.type.name.getValue() + "." + this.getExtension();
-	}
-	@Override
-	protected void save( java.io.File file ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeType( file, this.type );
-	}
-	@Override
-	protected boolean isPromptNecessary( java.io.File file ) {
-		return true;
-	}
+public interface DataSource {
+	public String getName();
+	public void write( java.io.OutputStream os ) throws java.io.IOException;
 }

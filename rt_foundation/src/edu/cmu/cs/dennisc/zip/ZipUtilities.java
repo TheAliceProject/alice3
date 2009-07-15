@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.zip;
  * @author Dennis Cosgrove
  */
 public class ZipUtilities {
-	public static java.util.HashMap< String, byte[] > extract( java.io.InputStream is ) {
+	public static java.util.HashMap< String, byte[] > extract( java.io.InputStream is ) throws java.io.IOException {
 		java.util.zip.ZipInputStream zis;
 		if( is instanceof java.util.zip.ZipInputStream ) {
 			zis = (java.util.zip.ZipInputStream) is;
@@ -35,26 +35,33 @@ public class ZipUtilities {
 		}
 		java.util.HashMap<String, byte[]> filenameToBytesMap = new java.util.HashMap<String, byte[]>();
 		java.util.zip.ZipEntry zipEntry;
-		try {
-			while ((zipEntry = zis.getNextEntry()) != null) {
-				String name = zipEntry.getName();
-				if( zipEntry.isDirectory() ) {
-					// pass
-				} else {
-					final int BUFFER_SIZE = 2048;
-					byte[] buffer = new byte[BUFFER_SIZE];
-					java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream( BUFFER_SIZE );
-					int count;
-					while ((count = zis.read( buffer, 0, BUFFER_SIZE )) != -1) {
-						baos.write( buffer, 0, count );
-					}
-					zis.closeEntry();
-					filenameToBytesMap.put( name, baos.toByteArray() );
+		while ((zipEntry = zis.getNextEntry()) != null) {
+			String name = zipEntry.getName();
+			if( zipEntry.isDirectory() ) {
+				// pass
+			} else {
+				final int BUFFER_SIZE = 2048;
+				byte[] buffer = new byte[BUFFER_SIZE];
+				java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream( BUFFER_SIZE );
+				int count;
+				while ((count = zis.read( buffer, 0, BUFFER_SIZE )) != -1) {
+					baos.write( buffer, 0, count );
 				}
+				zis.closeEntry();
+				filenameToBytesMap.put( name, baos.toByteArray() );
 			}
-			return filenameToBytesMap;
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( ioe );
 		}
+		return filenameToBytesMap;
+	}
+	
+	public static void write( java.util.zip.ZipOutputStream zos, DataSource dataSource ) throws java.io.IOException {
+		assert dataSource != null;
+		assert dataSource.getName() != null;
+		java.util.zip.ZipEntry snapshotEntry = new java.util.zip.ZipEntry( dataSource.getName() );
+		zos.putNextEntry( snapshotEntry );
+		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( zos );
+		dataSource.write( bos );
+		bos.flush();
+		zos.closeEntry();
 	}
 }

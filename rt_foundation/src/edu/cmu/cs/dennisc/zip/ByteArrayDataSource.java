@@ -20,36 +20,32 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.file;
+package edu.cmu.cs.dennisc.zip;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SaveAsTypeOperation extends AbstractSaveOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-	public SaveAsTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		this.type = type;
-		this.putValue( javax.swing.Action.NAME, "Save As..." );
-		this.putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) );
+public class ByteArrayDataSource implements DataSource {
+	private String name;
+	private byte[] data;
+	public ByteArrayDataSource( String name, byte[] data ) {
+		this.setName( name );
+		this.setData( data );
 	}
-	@Override
-	protected java.io.File getDefaultDirectory() {
-		return getIDE().getMyTypesDirectory();
+	public String getName() {
+		return this.name;
 	}
-	@Override
-	protected String getExtension() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION;
+	public void setName( String name ) {
+		this.name = name;
 	}
-	@Override
-	protected String getInitialFilename() {
-		return this.type.name.getValue() + "." + this.getExtension();
+	public byte[] getData() {
+		return this.data;
 	}
-	@Override
-	protected void save( java.io.File file ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeType( file, this.type );
+	public void setData( byte[] data ) {
+		this.data = data;
 	}
-	@Override
-	protected boolean isPromptNecessary( java.io.File file ) {
-		return true;
+	
+	public void write( java.io.OutputStream os ) throws java.io.IOException {
+		os.write( this.data );
 	}
 }

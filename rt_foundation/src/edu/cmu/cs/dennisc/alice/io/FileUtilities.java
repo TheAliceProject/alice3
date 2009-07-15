@@ -141,98 +141,91 @@ public class FileUtilities {
 		return readType( new java.io.File( path ) );
 	}
 
-	private static void writeProperties( java.util.zip.ZipOutputStream zos, edu.cmu.cs.dennisc.alice.Project.Properties properties ) throws java.io.IOException {
-		java.util.zip.ZipEntry propertiesEntry = new java.util.zip.ZipEntry( PROPERTIES_ENTRY_NAME );
-		zos.putNextEntry( propertiesEntry );
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( zos );
-		properties.write( bos );
-		bos.flush();
-		zos.closeEntry();
-		zos.flush();
+	private static void writeVersion( java.util.zip.ZipOutputStream zos ) throws java.io.IOException {
+		edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
+			public String getName() {
+				return VERSION_ENTRY_NAME;
+			}
+			public void write( java.io.OutputStream os ) throws java.io.IOException {
+				os.write( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText().getBytes() );
+			}
+		} );
 	}
-	private static void writeXML( org.w3c.dom.Document xmlDocument, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
-		java.util.zip.ZipEntry programTypeEntry = new java.util.zip.ZipEntry( entryName );
-		zos.putNextEntry( programTypeEntry );
-		edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, zos );
-		zos.closeEntry();
-		zos.flush();
-
-		java.util.zip.ZipEntry versionEntry = new java.util.zip.ZipEntry( VERSION_ENTRY_NAME );
-		zos.putNextEntry( versionEntry );
-		zos.write( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText().getBytes() );
-		zos.closeEntry();
-		zos.flush();
+	private static void writeXML( final org.w3c.dom.Document xmlDocument, java.util.zip.ZipOutputStream zos, final String entryName ) throws java.io.IOException {
+		edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
+			public String getName() {
+				return entryName;
+			}
+			public void write( java.io.OutputStream os ) throws java.io.IOException {
+				edu.cmu.cs.dennisc.xml.XMLUtilities.write( xmlDocument, os );
+			}
+		} );
 	}
 	private static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.util.zip.ZipOutputStream zos, String entryName ) throws java.io.IOException {
 		writeXML( type.encode(), zos, entryName );
 	}
-	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.OutputStream os ) throws java.io.IOException {
-		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
-		writeType( project.getProgramType(), zos, PROGRAM_TYPE_ENTRY_NAME );
-		edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
-		if( properties != null ) {
-			writeProperties( zos, properties );
+	private static void writeDataSources( java.util.zip.ZipOutputStream zos, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+		for( edu.cmu.cs.dennisc.zip.DataSource dataSource : dataSources ) {
+			edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, dataSource );
 		}
+	}
+
+	public static void writeProject( java.io.OutputStream os, edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
+		writeVersion( zos );
+		writeType( project.getProgramType(), zos, PROGRAM_TYPE_ENTRY_NAME );
+		final edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
+		if( properties != null ) {
+			edu.cmu.cs.dennisc.zip.ZipUtilities.write( zos, new edu.cmu.cs.dennisc.zip.DataSource() {
+				public String getName() {
+					return PROPERTIES_ENTRY_NAME;
+				}
+				public void write( java.io.OutputStream os ) throws java.io.IOException {
+					assert os instanceof java.io.BufferedOutputStream;
+					properties.write( (java.io.BufferedOutputStream)os );
+				}
+			} );
+		}
+		writeDataSources( zos, dataSources );
 		zos.flush();
 		zos.close();
 	}
-	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file ) throws java.io.IOException {
+	public static void writeProject( java.io.File file, edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-		writeProject( project, fos );
+		writeProject( new java.io.FileOutputStream( file ), project, dataSources );
 	}
+
+	public static void writeProject( String path, edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+		writeProject( new java.io.File( path ), project, dataSources );
+	}
+
+	public static void writeType( java.io.OutputStream os, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( os );
+		writeVersion( zos );
+		writeType( type, zos, TYPE_ENTRY_NAME );
+		writeDataSources( zos, dataSources );
+		zos.flush();
+		zos.close();
+	}
+	public static void writeType( java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		writeType( new java.io.FileOutputStream( file ), type, dataSources );
+	}
+	public static void writeType( String path, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
+		writeType( new java.io.File( path ), type, dataSources );
+	}
+
 
 	private static String SNAPSHOT_ENTRY_NAME = "snapshot.png";
-
-	//todo
-	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file, java.awt.Image snapshotImage ) {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		try {
-			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-			java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
-			writeType( project.getProgramType(), zos, PROGRAM_TYPE_ENTRY_NAME );
-			edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
-			if( properties != null ) {
-				writeProperties( zos, properties );
+	@Deprecated
+	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file, final java.awt.Image snapshotImage ) throws java.io.IOException {
+		writeProject( file, project, new edu.cmu.cs.dennisc.zip.DataSource() {
+			public String getName() {
+				return SNAPSHOT_ENTRY_NAME;
 			}
-			if( snapshotImage != null ) {
-				writeSnapshotImage( zos, snapshotImage );
+			public void write( java.io.OutputStream os ) throws java.io.IOException {
+				edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, os, snapshotImage );
 			}
-			zos.flush();
-			zos.close();
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( file.getAbsolutePath(), ioe );
-		}
-	}
-
-	private static void writeSnapshotImage( java.util.zip.ZipOutputStream zos, java.awt.Image image ) throws java.io.IOException {
-		java.util.zip.ZipEntry snapshotEntry = new java.util.zip.ZipEntry( SNAPSHOT_ENTRY_NAME );
-
-		zos.putNextEntry( snapshotEntry );
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream( zos );
-
-		edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, bos, image );
-
-		bos.flush();
-		zos.closeEntry();
-	}
-
-	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, String path ) throws java.io.IOException {
-		writeProject( project, new java.io.File( path ) );
-	}
-	public static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, java.io.File file ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		try {
-			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
-			java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
-			writeType( type, zos, TYPE_ENTRY_NAME );
-			zos.flush();
-			zos.close();
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( file.getAbsolutePath(), ioe );
-		}
-	}
-	public static void writeType( edu.cmu.cs.dennisc.alice.ast.AbstractType type, String path ) throws java.io.IOException {
-		writeType( type, new java.io.File( path ) );
+		} );
 	}
 }

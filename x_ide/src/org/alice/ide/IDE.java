@@ -1597,7 +1597,7 @@ public abstract class IDE extends zoot.ZFrame {
 		edu.cmu.cs.dennisc.alice.Project project = getProject();
 		this.generateCodeForSceneSetUp();
 		this.preserveProjectProperties();
-		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( project, file );
+		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( file, project );
 		this.file = file;
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
 		this.updateHistoryLengthAtLastFileOperation();
