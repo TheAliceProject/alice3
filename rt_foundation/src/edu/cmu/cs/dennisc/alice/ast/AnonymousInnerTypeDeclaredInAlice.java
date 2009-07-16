@@ -55,7 +55,7 @@ public class AnonymousInnerTypeDeclaredInAlice extends AbstractTypeDeclaredInAli
 		return null;
 	}
 	
-	//An anonymous class is never abstract (§8.1.1.1). An anonymous class is always an inner class (§8.1.3); it is never static (§8.1.1, §8.5.2). An anonymous class is always implicitly final (§8.1.1.2).
+	//An anonymous class is never abstract (8.1.1.1). An anonymous class is always an inner class (8.1.3); it is never static (8.1.1, 8.5.2). An anonymous class is always implicitly final (8.1.1.2).
 	@Override
 	public boolean isAbstract() {
 		return false;
