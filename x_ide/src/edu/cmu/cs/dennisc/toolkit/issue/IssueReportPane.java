@@ -88,7 +88,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 
 	private javax.swing.JLabel labelDescription = createLabelForMultiLine( "description:" );
 	private SuggestiveTextArea textDescription = new SuggestiveTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
-	private javax.swing.JScrollPane scrollDescription = new javax.swing.JScrollPane( this.textDescription ) {
+	private javax.swing.JScrollPane scrollDescription = new javax.swing.JScrollPane( this.textDescription, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredDescriptionHeight() );
@@ -98,7 +98,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 
 	private javax.swing.JLabel labelSteps = createLabelForMultiLine( "steps:" );
 	private SuggestiveTextArea textSteps = new SuggestiveTextArea( "", STEPS_SUGGESTIVE_TEXT );
-	private javax.swing.JScrollPane scrollSteps = new javax.swing.JScrollPane( this.textSteps ) {
+	private javax.swing.JScrollPane scrollSteps = new javax.swing.JScrollPane( this.textSteps, javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ) {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredStepsHeight() );
@@ -117,6 +117,11 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		
 		this.scrollDescription.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.scrollSteps.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+
+		this.textDescription.setLineWrap( true );
+		this.textDescription.setWrapStyleWord( true );
+		this.textSteps.setLineWrap( true );
+		this.textSteps.setWrapStyleWord( true );
 
 		this.setLayout( new java.awt.BorderLayout() );
 		javax.swing.JPanel southPane = new javax.swing.JPanel();
