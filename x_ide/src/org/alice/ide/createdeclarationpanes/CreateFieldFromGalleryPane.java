@@ -84,7 +84,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 			String s = path.substring( index, path.length()-4 );
 			s = s.replace( '\\', '/' );
 			s = s.replace( '/', '.' );
-			return edu.cmu.cs.dennisc.lang.ClassUtilities.forName( s );
+			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( s );
 		} else {
 			return null;
 		}

@@ -27,6 +27,20 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class Decoder {
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> > mapToMap = new edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> >();
+	public static void addMethodFilter( Class<?> prevCls, String name, Class<?> nextCls ) {
+		Decoder.mapToMap.put( prevCls, name, nextCls );
+	}
+	private static Class<?> filterClsIfNecessary( Class<?> cls, String name ) {
+		Class<?> rv = Decoder.mapToMap.get( cls, name );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = cls;
+		}
+		return rv;
+	}
+
 	private String srcVersion;
 	private String dstVersion;
 	private boolean isUUIDDecodingDesired;
@@ -46,9 +60,14 @@ public class Decoder {
 		}
 		return rv;
 	}
+	private ClassReflectionProxy getJavaClassInfo( org.w3c.dom.Element xmlElement ) {
+		return new ClassReflectionProxy( getClassName( xmlElement ) );
+	}
+	//todo: investigate
 	private Class< ? > getCls( org.w3c.dom.Element xmlElement ) {
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( getClassName( xmlElement ) );
 	}
+	//todo: investigate
 	private Object newInstance( org.w3c.dom.Element xmlElement ) {
 		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( getClassName( xmlElement ) );
 	}
@@ -98,11 +117,10 @@ public class Decoder {
 		}
 		return rv;
 	}
-
-	private Class< ? > decodeType( org.w3c.dom.Element xmlElement, String nodeName ) {
+	private ClassReflectionProxy decodeType( org.w3c.dom.Element xmlElement, String nodeName ) {
 		org.w3c.dom.Element xmlClass = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, nodeName );
 		String clsName = xmlClass.getAttribute( "name" );
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+		return new ClassReflectionProxy( clsName );
 	}
 
 	private ArrayTypeDeclaredInAlice decodeArrayTypeDeclaredInAlice( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
@@ -120,90 +138,54 @@ public class Decoder {
 		return AnonymousConstructor.get( anonymousType );
 	}
 
-	private Class< ? > decodeDeclaringClass( org.w3c.dom.Element xmlElement ) {
+	private ClassReflectionProxy decodeDeclaringClass( org.w3c.dom.Element xmlElement ) {
 		return decodeType( xmlElement, "declaringClass" );
 	}
-	private Class< ? >[] decodeParameters( org.w3c.dom.Element xmlElement ) {
+	private ClassReflectionProxy[] decodeParameters( org.w3c.dom.Element xmlElement ) {
 		org.w3c.dom.Element xmlParameters = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlElement, "parameters" );
 		java.util.List< org.w3c.dom.Element> xmlTypes = edu.cmu.cs.dennisc.xml.XMLUtilities.getChildElementsByTagName( xmlParameters, "type" );
-		Class< ? >[] rv = new Class< ? >[ xmlTypes.size() ];
+		ClassReflectionProxy[] rv = new ClassReflectionProxy[ xmlTypes.size() ];
 		for( int i = 0; i < rv.length; i++ ) {
-			rv[ i ] = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( xmlTypes.get( i ).getAttribute( "name" ) );
+			rv[ i ] = new ClassReflectionProxy( xmlTypes.get( i ).getAttribute( "name" ) );
 		}
 		return rv;
 	}
-	private java.lang.reflect.Field decodeField( org.w3c.dom.Element xmlParent, String nodeName ) {
+	private FieldReflectionProxy decodeField( org.w3c.dom.Element xmlParent, String nodeName ) {
 		org.w3c.dom.Element xmlField = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
-		Class< ? > declaringCls = decodeDeclaringClass( xmlField );
+		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlField );
 		String name = xmlField.getAttribute( "name" );
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredField( declaringCls, name );
+		return new FieldReflectionProxy( declaringCls, name );
 	}
-	private java.lang.reflect.Constructor< ? > decodeConstructor( org.w3c.dom.Element xmlParent, String nodeName ) {
+	private ConstructorReflectionProxy decodeConstructor( org.w3c.dom.Element xmlParent, String nodeName ) {
 		org.w3c.dom.Element xmlConstructor = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
-		Class< ? > declaringCls = decodeDeclaringClass( xmlConstructor );
-		Class< ? >[] parameterTypes = decodeParameters( xmlConstructor );
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getDeclaredConstructor( declaringCls, parameterTypes );
+		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlConstructor );
+		ClassReflectionProxy[] parameterClses = decodeParameters( xmlConstructor );
+		return new ConstructorReflectionProxy( declaringCls, parameterClses );
 	}
-	
-	
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> > mapToMap = new edu.cmu.cs.dennisc.map.MapToMap< Class<?>, String, Class<?> >();
-	public static void addMethodFilter( Class<?> prevCls, String name, Class<?> nextCls ) {
-		Decoder.mapToMap.put( prevCls, name, nextCls );
-	}
-	private static Class<?> filterClsIfNecessary( Class<?> cls, String name ) {
-		Class<?> rv = Decoder.mapToMap.get( cls, name );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = cls;
-		}
-		return rv;
-	}
-	
-	private java.lang.reflect.Method decodeMethod( org.w3c.dom.Element xmlParent, String nodeName ) {
+	private MethodReflectionProxy decodeMethod( org.w3c.dom.Element xmlParent, String nodeName ) {
 		org.w3c.dom.Element xmlMethod = edu.cmu.cs.dennisc.xml.XMLUtilities.getSingleChildElementByTagName( xmlParent, nodeName );
-		Class< ? > declaringCls = decodeDeclaringClass( xmlMethod );
+		ClassReflectionProxy declaringCls = decodeDeclaringClass( xmlMethod );
 		String name = xmlMethod.getAttribute( "name" );
-		Class< ? >[] parameterTypes = decodeParameters( xmlMethod );
-		java.lang.reflect.Method rv;
-		try {
-			rv = declaringCls.getDeclaredMethod( name, parameterTypes );
-		} catch( NoSuchMethodException nsme1 ) {
-			declaringCls = Decoder.filterClsIfNecessary( declaringCls, name );
-//			if( declaringCls.getName().equals( "org.alice.apis.moveandturn.Transformable" ) ) {
-//				declaringCls = edu.cmu.cs.dennisc.lang.ClassUtilities.forName( "org.alice.apis.moveandturn.Model" );
-//			}
-			try {
-				rv = declaringCls.getDeclaredMethod( name, parameterTypes );
-			} catch( NoSuchMethodException nsme2 ) {
-				rv = null;
-			}
-		}
-		assert rv != null : name;
-		return rv;
+		ClassReflectionProxy[] parameterClses = decodeParameters( xmlMethod );
+		return new MethodReflectionProxy( declaringCls, name, parameterClses );
 	}
-
 	public Node decode( org.w3c.dom.Element xmlElement, java.util.Map< Integer, AbstractDeclaration > map ) {
 		Node rv;
 		if( xmlElement.hasAttribute( CodecConstants.TYPE_ATTRIBUTE ) ) {
 			String clsName = getClassName( xmlElement );
 			if( clsName.equals( TypeDeclaredInJava.class.getName() ) ) {
-				Class< ? > cls = decodeType( xmlElement, "type" );
-				rv = TypeDeclaredInJava.get( cls );
+				rv = TypeDeclaredInJava.get( decodeType( xmlElement, "type" ) );
 			} else if( clsName.equals( ArrayTypeDeclaredInAlice.class.getName() ) ) {
 				rv = decodeArrayTypeDeclaredInAlice( xmlElement, map );
 			} else if( clsName.equals( ConstructorDeclaredInJava.class.getName() ) ) {
-				java.lang.reflect.Constructor< ? > cnstrctr = decodeConstructor( xmlElement, "constructor" );
-				rv = TypeDeclaredInJava.getConstructor( cnstrctr );
+				rv = TypeDeclaredInJava.getConstructor( decodeConstructor( xmlElement, "constructor" ) );
 			} else if( clsName.equals( MethodDeclaredInJava.class.getName() ) ) {
-				java.lang.reflect.Method mthd = decodeMethod( xmlElement, "method" );
-				rv = TypeDeclaredInJava.getMethod( mthd );
+				rv = TypeDeclaredInJava.getMethod( decodeMethod( xmlElement, "method" ) );
 			} else if( clsName.equals( FieldDeclaredInJavaWithField.class.getName() ) ) {
-				java.lang.reflect.Field fld = decodeField( xmlElement, "field" );
-				rv = TypeDeclaredInJava.getField( fld );
+				rv = TypeDeclaredInJava.getField( decodeField( xmlElement, "field" ) );
 			} else if( clsName.equals( FieldDeclaredInJavaWithGetterAndSetter.class.getName() ) ) {
-				java.lang.reflect.Method gttr = decodeMethod( xmlElement, "getter" );
-				java.lang.reflect.Method sttr = decodeMethod( xmlElement, "setter" );
+				MethodReflectionProxy gttr = decodeMethod( xmlElement, "getter" );
+				MethodReflectionProxy sttr = decodeMethod( xmlElement, "setter" );
 				rv = TypeDeclaredInJava.getField( gttr, sttr );
 			} else if( clsName.equals( AnonymousConstructor.class.getName() ) ) {
 				rv = decodeAnonymousConstructor( xmlElement, map );
