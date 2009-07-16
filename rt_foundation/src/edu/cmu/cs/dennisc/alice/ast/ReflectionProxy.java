@@ -28,4 +28,8 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public abstract class ReflectionProxy {
 	protected boolean isAttempted = false;
+	@Override
+	public abstract int hashCode();
+	@Override
+	public abstract boolean equals( Object o );
 }

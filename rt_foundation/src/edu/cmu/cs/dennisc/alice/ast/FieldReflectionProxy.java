@@ -26,20 +26,35 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldReflectionProxy extends ReflectionProxy {
+public class FieldReflectionProxy extends MemberReflectionProxy {
 	private java.lang.reflect.Field fld;
-	private ClassReflectionProxy declaringCls;
 	private String name;
-	public FieldReflectionProxy( ClassReflectionProxy declaringCls, String name ) {
-		this.declaringCls = declaringCls;
+
+	public FieldReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name ) {
+		super( declaringClassReflectionProxy );
 		this.name = name;
 	}
 	public FieldReflectionProxy( java.lang.reflect.Field fld ) {
+		super( fld.getDeclaringClass() );
 		this.fld = fld;
-		this.isAttempted = true;
-		this.declaringCls = new ClassReflectionProxy( this.fld.getDeclaringClass() );
 		this.name = this.fld.getName();
+		this.isAttempted = true;
 	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode() ^ this.name.hashCode();
+	}
+	@Override
+	public boolean equals( Object o ) {
+		FieldReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, FieldReflectionProxy.class );
+		if( other != null ) {
+			return super.equals( other ) && this.name.equals( other.name );
+		} else {
+			return false;
+		}
+	}
+
 	public String getName() {
 		return this.name;
 	}
@@ -47,7 +62,7 @@ public class FieldReflectionProxy extends ReflectionProxy {
 		if( this.isAttempted ) {
 			//pass
 		} else {
-			this.fld = this.declaringCls.getFld( name );
+			this.fld = this.getDeclaringClassReflectionProxy().getFld( name );
 			this.isAttempted = true;
 		}
 		return this.fld;

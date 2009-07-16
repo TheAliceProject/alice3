@@ -39,11 +39,17 @@ public class ClassReflectionProxy extends ReflectionProxy {
 		this.isAttempted = true;
 	}
 	@Override
-	public boolean equals( Object other ) {
-		if( other instanceof ClassReflectionProxy ) {
-			return this.name.equals( ((ClassReflectionProxy)other).name );
+	public int hashCode() {
+		return this.name.hashCode();
+	}
+	@Override
+	public boolean equals( Object o ) {
+		ClassReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, ClassReflectionProxy.class );
+		if( other != null ) {
+			return this.name.equals( other.name );
+		} else {
+			return false;
 		}
-		return super.equals( other );
 	}
 	public String getName() {
 		return this.name;
@@ -78,6 +84,14 @@ public class ClassReflectionProxy extends ReflectionProxy {
 		}
 		return rv;
 	}
+	public static ClassReflectionProxy[] create( Class<?>[] clses ) {
+		ClassReflectionProxy[] rv = new ClassReflectionProxy[ clses.length ];
+		for( int i = 0; i < clses.length; i++ ) {
+			rv[ i ] = new ClassReflectionProxy( clses[ i ] );
+		}
+		return rv;
+	}
+	
 	
 	/*package private*/ java.lang.reflect.Field getFld( String name ) {
 		Class< ? > cls = this.getCls();

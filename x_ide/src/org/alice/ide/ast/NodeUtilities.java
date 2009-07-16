@@ -244,8 +244,7 @@ public class NodeUtilities {
 	}
 
 	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {
-		java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
-		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getMethod( mthd );
+		return edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava.get( cls, methodName, parameterTypes );
 	}
 
 	

@@ -79,7 +79,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			} else {
 				try {
 					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField fieldInJava = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField)field;
-					org.alice.apis.moveandturn.Color color = (org.alice.apis.moveandturn.Color)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( fieldInJava.getFld(), null );
+					org.alice.apis.moveandturn.Color color = (org.alice.apis.moveandturn.Color)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( fieldInJava.getFieldReflectionProxy().getFld(), null );
 					rv = new ColorIcon( color.getInternal().getAsAWTColor() );
 					this.mapFieldToIcon.put( field, rv );
 				} catch( RuntimeException re ) {
@@ -124,8 +124,8 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
-	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava REVOLUTIONS_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( org.alice.apis.moveandturn.AngleInRevolutions.class, Number.class ) );
-	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava PORTION_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( org.alice.apis.moveandturn.Portion.class, Number.class ) );
+	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava REVOLUTIONS_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AngleInRevolutions.class, Number.class );
+	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava PORTION_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.Portion.class, Number.class );
 	protected org.alice.ide.common.DeclarationNameLabel createDeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		//todo: better name
 		class ThisFieldAccessNameLabel extends org.alice.ide.common.DeclarationNameLabel {
@@ -320,7 +320,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			Class<?> paramCls = null;
 			if( type2.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
 				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-				Class<?> cls = typeInJava.getCls();
+				Class<?> cls = typeInJava.getClassReflectionProxy().getCls();
 				for( Class innerCls : cls.getDeclaredClasses() ) {
 					if( innerCls.getSimpleName().equals( "Part" ) ) {
 						paramCls = innerCls;
@@ -394,6 +394,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = typeInAlice.getFirstTypeEncounteredDeclaredInJava();
-		return false == edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getCls(), org.alice.apis.moveandturn.Scene.class, org.alice.apis.moveandturn.AbstractCamera.class );
+		return false == edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getCls(), org.alice.apis.moveandturn.Scene.class, org.alice.apis.moveandturn.AbstractCamera.class );
 	}
 }

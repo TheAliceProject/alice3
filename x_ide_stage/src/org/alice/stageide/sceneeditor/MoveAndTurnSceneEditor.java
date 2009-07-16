@@ -554,7 +554,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( cls, cls ) ) {
 			if( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( fld, null ).equals( color ) ) {
 				edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression = new edu.cmu.cs.dennisc.alice.ast.TypeExpression( cls );
-				edu.cmu.cs.dennisc.alice.ast.AbstractField field = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getField( fld );
+				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field = edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField.get( fld );
 				rv = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( typeExpression, field );
 				break;
 			}
@@ -562,8 +562,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( rv != null ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class,
-					Number.class ) );
+			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
 			rv = org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( color.getRed() ), createExpression( color.getGreen() ), createExpression( color.getBlue() ) );
 		}
 		return rv;
@@ -571,27 +570,24 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createPositionExpression( edu.cmu.cs.dennisc.math.Point3 translation ) {
 		Class< ? > cls = org.alice.apis.moveandturn.Position.class;
-		java.lang.reflect.Constructor< ? > cnstrctr = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class, Number.class );
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( cnstrctr );
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( translation.x ), createExpression( translation.y ), createExpression( translation.z ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createQuaternionExpression( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
 		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( orientation );
 		Class< ? > cls = org.alice.apis.moveandturn.Quaternion.class;
 		java.lang.reflect.Constructor< ? > cnstrctr = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class, Number.class, Number.class );
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( cnstrctr );
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cnstrctr );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.PointOfView pointOfView ) {
 		Class< ? > cls = org.alice.apis.moveandturn.PointOfView.class;
-		java.lang.reflect.Constructor< ? > cnstrctr = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( cls, org.alice.apis.moveandturn.Orientation.class, org.alice.apis.moveandturn.Position.class );
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( cnstrctr );
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.alice.apis.moveandturn.Orientation.class, org.alice.apis.moveandturn.Position.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createQuaternionExpression( pointOfView.getInternal().orientation ), createPositionExpression( pointOfView.getInternal().translation ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Font font ) {
 		Class< ? > cls = org.alice.apis.moveandturn.Font.class;
-		java.lang.reflect.Constructor< ? > cnstrctr = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( cls, org.alice.apis.moveandturn.font.Attribute[].class );
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.getConstructor( cnstrctr );
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.alice.apis.moveandturn.font.Attribute[].class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( font.getFamily() ), createExpression( font.getWeight() ), createExpression( font.getPosture() ) );
 	}
 

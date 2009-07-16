@@ -48,18 +48,18 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 		}
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, Class<?> cls ) {
-		this( declaringType, cls, getGalleryFileFromCls( cls ), null );
+		this( declaringType, cls, getGalleryFileFromCls( cls.getName() ), null );
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, java.io.File file ) {
 		this( declaringType, getClsFromGalleryFile( file ), file, null );
 	}
 	public CreateFieldFromGalleryPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.AbstractType valueType ) {
-		this( declaringType, null, getGalleryFileFromCls( valueType.getFirstClassEncounteredDeclaredInJava() ), valueType );
+		this( declaringType, null, getGalleryFileFromCls( valueType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getName() ), valueType );
 	}
 	
 
 	public Object createInstanceInJava() {
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstClassEncounteredDeclaredInJava() );
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getCls() );
 	}
 
 	private static java.util.Set< String > prefixSet = new java.util.HashSet< String >();
@@ -89,8 +89,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 			return null;
 		}
 	}
-	private static java.io.File getGalleryFileFromCls( Class<?> cls ) {
-		String clsName = cls.getName();
+	private static java.io.File getGalleryFileFromCls( String clsName ) {
 		for( String prefix : prefixSet ) {
 			if( clsName.startsWith( prefix ) ) {
 				String post = clsName.substring( prefix.length() );

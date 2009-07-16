@@ -28,7 +28,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class ParameterDeclaredInJavaConstructor extends ParameterDeclaredInJava {
-	private static String getParameterNameFor( java.lang.reflect.Constructor<?> cnstrctr, int index ) {
+	private static String getParameterNameFor( ConstructorReflectionProxy constructorReflectionProxy, int index ) {
 		//todo
 //		edu.cmu.cs.dennisc.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.reflect.ClassInfoManager.get( cnstrctr.getDeclaringClass() );
 //		if( classInfo != null ) {
@@ -46,9 +46,9 @@ public class ParameterDeclaredInJavaConstructor extends ParameterDeclaredInJava 
 		super( annotations );
 		m_constructor = constructor;
 		m_index = index;
-		java.lang.reflect.Constructor<?> cnstrctr = m_constructor.getCnstrctr();
-		m_name = getParameterNameFor( cnstrctr, m_index );
-		m_valueType = TypeDeclaredInJava.get( cnstrctr.getParameterTypes()[ index ] );
+		ConstructorReflectionProxy constructorReflectionProxy = constructor.getConstructorReflectionProxy();
+		m_name = getParameterNameFor( constructorReflectionProxy, m_index );
+		m_valueType = TypeDeclaredInJava.get( constructorReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
 		assert m_valueType != null;
 	}
 	

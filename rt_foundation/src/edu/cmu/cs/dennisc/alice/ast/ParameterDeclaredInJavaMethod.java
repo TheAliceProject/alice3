@@ -30,11 +30,11 @@ import edu.cmu.cs.dennisc.alice.reflect.MethodInfo;
  * @author Dennis Cosgrove
  */
 public class ParameterDeclaredInJavaMethod extends ParameterDeclaredInJava {
-	private static String getParameterNameFor( java.lang.reflect.Method mthd, int index ) {
+	private static String getParameterNameFor( MethodReflectionProxy methodReflectionProxy, int index ) {
 		String rv = null;
-		edu.cmu.cs.dennisc.alice.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.get( mthd.getDeclaringClass() );
+		edu.cmu.cs.dennisc.alice.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.get( methodReflectionProxy.getDeclaringClassReflectionProxy().getCls() );
 		if( classInfo != null ) {
-			MethodInfo methodInfo = classInfo.lookupInfo( mthd );
+			MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getMthd() );
 			if( methodInfo != null ) {
 				String[] parameterNames = methodInfo.getParameterNames();
 				if( parameterNames != null ) {
@@ -53,9 +53,9 @@ public class ParameterDeclaredInJavaMethod extends ParameterDeclaredInJava {
 		super( annotations );
 		m_method = method;
 		m_index = index;
-		java.lang.reflect.Method mthd = m_method.getMthd();
-		m_name = getParameterNameFor( mthd, m_index );
-		m_valueType = TypeDeclaredInJava.get( mthd.getParameterTypes()[ index ] );
+		MethodReflectionProxy methodReflectionProxy = m_method.getMethodReflectionProxy();
+		m_name = getParameterNameFor( methodReflectionProxy, m_index );
+		m_valueType = TypeDeclaredInJava.get( methodReflectionProxy.getParameterClassReflectionProxies()[ m_index ] );
 	}
 	
 	public MethodDeclaredInJava getMethod() {

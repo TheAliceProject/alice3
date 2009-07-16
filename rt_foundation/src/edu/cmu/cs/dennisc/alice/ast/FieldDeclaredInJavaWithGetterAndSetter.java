@@ -27,34 +27,83 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava {
-	private java.lang.reflect.Method m_gttr;
-	private java.lang.reflect.Method m_sttr;
-	private java.lang.annotation.Annotation[] m_sttrParameterAnnotations;
+	private static java.util.Map< MethodReflectionProxy, FieldDeclaredInJavaWithGetterAndSetter > s_map = new java.util.HashMap< MethodReflectionProxy, FieldDeclaredInJavaWithGetterAndSetter >();
 
-	/*package-private*/ FieldDeclaredInJavaWithGetterAndSetter( java.lang.reflect.Method gttr, java.lang.reflect.Method sttr, java.lang.annotation.Annotation[] sttrParameterAnnotations ) {
-		m_gttr = gttr;
-		m_sttr = sttr;
-		m_sttrParameterAnnotations = sttrParameterAnnotations;
+	private MethodReflectionProxy getterReflectionProxy;
+	private MethodReflectionProxy setterReflectionProxy;
+	private java.util.ArrayList< ParameterDeclaredInJavaMethod > parameters;
+	private java.lang.annotation.Annotation[] parameterAnnotations0;
+
+	public static FieldDeclaredInJavaWithGetterAndSetter get( MethodReflectionProxy getterReflectionProxy, MethodReflectionProxy setterReflectionProxy ) {
+		if( setterReflectionProxy != null ) {
+			FieldDeclaredInJavaWithGetterAndSetter rv = s_map.get( setterReflectionProxy );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new FieldDeclaredInJavaWithGetterAndSetter( getterReflectionProxy, setterReflectionProxy );
+				s_map.put( setterReflectionProxy, rv );
+			}
+			return rv;
+		} else {
+			return null;
+		}
 	}
-	//todo: reduce visibility?
-	public java.lang.reflect.Method getGttr() {
-		return m_gttr;
+	public static FieldDeclaredInJavaWithGetterAndSetter get( java.lang.reflect.Method getter, java.lang.reflect.Method setter ) {
+		return get( new MethodReflectionProxy( getter ), new MethodReflectionProxy( setter ) );
 	}
-	//todo: reduce visibility?
-	public java.lang.reflect.Method getSttr() {
-		return m_sttr;
+
+	private FieldDeclaredInJavaWithGetterAndSetter( MethodReflectionProxy getterReflectionProxy, MethodReflectionProxy setterReflectionProxy ) {
+		this.getterReflectionProxy = getterReflectionProxy;
+		this.setterReflectionProxy = setterReflectionProxy;
+
+		java.lang.annotation.Annotation[][] parameterAnnotations = this.setterReflectionProxy.getParameterAnnotations();
+		if( parameterAnnotations != null ) {
+			this.parameterAnnotations0 = parameterAnnotations[ 0 ];
+		} else {
+			this.parameterAnnotations0 = null;
+		}
 	}
+
+	public MethodReflectionProxy getGetterReflectionProxy() {
+		return this.getterReflectionProxy;
+	}
+	public MethodReflectionProxy getSetterReflectionProxy() {
+		return this.setterReflectionProxy;
+	}
+	
+	//	private java.lang.reflect.Method m_gttr;
+	//	private java.lang.reflect.Method m_sttr;
+	//	private java.lang.annotation.Annotation[] m_sttrParameterAnnotations;
+	//
+	//	private FieldDeclaredInJavaWithGetterAndSetter( java.lang.reflect.Method gttr, java.lang.reflect.Method sttr, java.lang.annotation.Annotation[] sttrParameterAnnotations ) {
+	//		m_gttr = gttr;
+	//		m_sttr = sttr;
+	//		m_sttrParameterAnnotations = sttrParameterAnnotations;
+	//	}
+	//	//todo: reduce visibility?
+	//	public java.lang.reflect.Method getGttr() {
+	//		return m_gttr;
+	//	}
+	//	//todo: reduce visibility?
+	//	public java.lang.reflect.Method getSttr() {
+	//		return m_sttr;
+	//	}
 
 	@Override
 	public AbstractType getDeclaringType() {
-		return TypeDeclaredInJava.get( m_gttr.getDeclaringClass() );
+		return TypeDeclaredInJava.get( this.setterReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 
 	@Override
 	public edu.cmu.cs.dennisc.alice.annotations.Visibility getVisibility() {
-		if( m_gttr.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate.class ) ) {
-			edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate propertyFieldTemplate = m_gttr.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate.class );
-			return propertyFieldTemplate.visibility();
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		if( gttr != null ) {
+			if( gttr.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate.class ) ) {
+				edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate propertyFieldTemplate = gttr.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate.class );
+				return propertyFieldTemplate.visibility();
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
@@ -62,24 +111,29 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 
 	@Override
 	public String getName() {
-		return edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( m_gttr );
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		assert gttr != null;
+		return edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( gttr );
 	}
 	@Override
 	public AbstractType getValueType() {
-		return TypeDeclaredInJava.get( m_gttr.getReturnType() );
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		assert gttr != null;
+		return TypeDeclaredInJava.get( gttr.getReturnType() );
 	}
 	@Override
 	public AbstractType getDesiredValueType() {
-		for( java.lang.annotation.Annotation annotation : m_sttrParameterAnnotations ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( annotation );
-			if( annotation instanceof edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate ) {
-				edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate parameterTemplate = (edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate)annotation;
-				return TypeDeclaredInJava.get( parameterTemplate.preferredArgumentClass() );
+		if( this.parameterAnnotations0 != null ) {
+			for( java.lang.annotation.Annotation annotation : parameterAnnotations0 ) {
+					if( annotation instanceof edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate ) {
+					edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate parameterTemplate = (edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate)annotation;
+					return TypeDeclaredInJava.get( parameterTemplate.preferredArgumentClass() );
+				}
 			}
 		}
 		return getValueType();
 	}
-	
+
 	//todo
 	@Override
 	public AbstractMember getNextLongerInChain() {
@@ -90,14 +144,18 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 	public AbstractMember getNextShorterInChain() {
 		return null;
 	}
-	
+
 	@Override
 	public Access getAccess() {
-		return Access.get( m_gttr.getModifiers() );
-	}	
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		assert gttr != null;
+		return Access.get( gttr.getModifiers() );
+	}
 	@Override
 	public boolean isStatic() {
-		return java.lang.reflect.Modifier.isStatic( m_gttr.getModifiers() );
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		assert gttr != null;
+		return java.lang.reflect.Modifier.isStatic( gttr.getModifiers() );
 	}
 	@Override
 	public boolean isFinal() {
@@ -113,9 +171,10 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 	}
 
 	@Override
-	public boolean isEquivalentTo( Object other ) {
-		if( other instanceof FieldDeclaredInJavaWithGetterAndSetter ) {
-			return m_gttr.equals( ((FieldDeclaredInJavaWithGetterAndSetter)other).m_gttr ) && m_sttr.equals( ((FieldDeclaredInJavaWithGetterAndSetter)other).m_sttr );
+	public boolean isEquivalentTo( Object o ) {
+		FieldDeclaredInJavaWithGetterAndSetter other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, FieldDeclaredInJavaWithGetterAndSetter.class );
+		if( other != null ) {
+			return this.getterReflectionProxy.equals( other.getterReflectionProxy ) && this.setterReflectionProxy.equals( other.setterReflectionProxy );
 		} else {
 			return false;
 		}

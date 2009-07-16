@@ -1201,7 +1201,7 @@ public abstract class IDE extends zoot.ZFrame {
 				}
 			}
 			if( enumType != null ) {
-				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)enumType.getFirstClassEncounteredDeclaredInJava() );
+				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)enumType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getCls() );
 				constantsOwningFillerInner.addFillIns( blank );
 			}
 
@@ -1925,7 +1925,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	public void declareFieldOfPredeterminedType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType, zoot.ActionContext actionContext ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-		org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getCls() );
+		org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getClassReflectionProxy().getCls() );
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( this, "Create New Instance", true );
 		if( field != null ) {
 			this.getSceneEditor().handleFieldCreation( ownerType, field, createFieldPane.createInstanceInJava() );

@@ -178,15 +178,15 @@ public class Decoder {
 			} else if( clsName.equals( ArrayTypeDeclaredInAlice.class.getName() ) ) {
 				rv = decodeArrayTypeDeclaredInAlice( xmlElement, map );
 			} else if( clsName.equals( ConstructorDeclaredInJava.class.getName() ) ) {
-				rv = TypeDeclaredInJava.getConstructor( decodeConstructor( xmlElement, "constructor" ) );
+				rv = ConstructorDeclaredInJava.get( decodeConstructor( xmlElement, "constructor" ) );
 			} else if( clsName.equals( MethodDeclaredInJava.class.getName() ) ) {
-				rv = TypeDeclaredInJava.getMethod( decodeMethod( xmlElement, "method" ) );
+				rv = MethodDeclaredInJava.get( decodeMethod( xmlElement, "method" ) );
 			} else if( clsName.equals( FieldDeclaredInJavaWithField.class.getName() ) ) {
-				rv = TypeDeclaredInJava.getField( decodeField( xmlElement, "field" ) );
+				rv = FieldDeclaredInJavaWithField.get( decodeField( xmlElement, "field" ) );
 			} else if( clsName.equals( FieldDeclaredInJavaWithGetterAndSetter.class.getName() ) ) {
 				MethodReflectionProxy gttr = decodeMethod( xmlElement, "getter" );
 				MethodReflectionProxy sttr = decodeMethod( xmlElement, "setter" );
-				rv = TypeDeclaredInJava.getField( gttr, sttr );
+				rv = FieldDeclaredInJavaWithGetterAndSetter.get( gttr, sttr );
 			} else if( clsName.equals( AnonymousConstructor.class.getName() ) ) {
 				rv = decodeAnonymousConstructor( xmlElement, map );
 			} else if( clsName.equals( ParameterDeclaredInJavaConstructor.class.getName() ) ) {

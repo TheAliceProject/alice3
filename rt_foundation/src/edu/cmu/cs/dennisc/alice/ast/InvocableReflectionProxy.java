@@ -26,12 +26,52 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InvocableReflectionProxy extends ReflectionProxy {
-	protected ClassReflectionProxy declaringCls;
-	protected ClassReflectionProxy[] parameterClses;
-
-	public InvocableReflectionProxy( ClassReflectionProxy declaringCls, ClassReflectionProxy[] parameterClses ) {
-		this.declaringCls = declaringCls;
-		this.parameterClses = parameterClses;
+public abstract class InvocableReflectionProxy extends MemberReflectionProxy {
+	protected ClassReflectionProxy[] parameterClassReflectionProxies;
+	public InvocableReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies ) {
+		super( declaringClassReflectionProxy );
+		this.parameterClassReflectionProxies = parameterClassReflectionProxies;
 	}
+	public InvocableReflectionProxy( Class<?> declaringCls, Class<?>[] parameterClses ) {
+		super( declaringCls );
+		this.parameterClassReflectionProxies = ClassReflectionProxy.create( parameterClses );
+	}
+	@Override
+	public int hashCode() {
+		int rv = super.hashCode();
+		for( ClassReflectionProxy parameterClassReflectionProxy : parameterClassReflectionProxies ) {
+			rv ^= parameterClassReflectionProxy.hashCode();
+		}
+		return rv;
+	}
+	@Override
+	public boolean equals( Object o ) {
+		InvocableReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, InvocableReflectionProxy.class );
+		if( other != null ) {
+			if( super.equals( other ) ) {
+				if( this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length ) {
+					for( int i=0; i<this.parameterClassReflectionProxies.length; i++ ) {
+						if( this.parameterClassReflectionProxies[ i ] == other.parameterClassReflectionProxies[ i ] ) {
+							//pass
+						} else {
+							return false;
+						}
+					}
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
+	public ClassReflectionProxy[] getParameterClassReflectionProxies() {
+		return this.parameterClassReflectionProxies;
+	}
+	
+	protected abstract java.lang.annotation.Annotation[][] getParameterAnnotations();
 }

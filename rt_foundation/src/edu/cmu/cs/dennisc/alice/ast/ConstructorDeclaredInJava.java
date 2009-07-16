@@ -27,73 +27,112 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class ConstructorDeclaredInJava extends AbstractConstructor {
-	private java.lang.reflect.Constructor< ? > m_cnstrctr;
-	private java.util.ArrayList< ParameterDeclaredInJavaConstructor > m_parameters;
+	private static java.util.Map< ConstructorReflectionProxy, ConstructorDeclaredInJava > s_map = new java.util.HashMap< ConstructorReflectionProxy, ConstructorDeclaredInJava >();
 
-	/*package-private*/ConstructorDeclaredInJava( java.lang.reflect.Constructor< ? > cnstrctr ) {
-		m_cnstrctr = cnstrctr;
-		Class< ? >[] clses = m_cnstrctr.getParameterTypes();
-		m_parameters = new java.util.ArrayList< ParameterDeclaredInJavaConstructor >();
-		m_parameters.ensureCapacity( clses.length );
-		java.lang.annotation.Annotation[][] parameterAnnotations = m_cnstrctr.getParameterAnnotations();
-		for( int i = 0; i < clses.length; i++ ) {
-			m_parameters.add( new ParameterDeclaredInJavaConstructor( this, i, parameterAnnotations[ i ] ) );
+	private ConstructorReflectionProxy constructorReflectionProxy;
+	private java.util.ArrayList< ParameterDeclaredInJavaConstructor > parameters;
+
+	public static ConstructorDeclaredInJava get( ConstructorReflectionProxy constructorReflectionProxy ) {
+		if( constructorReflectionProxy != null ) {
+			ConstructorDeclaredInJava rv = s_map.get( constructorReflectionProxy );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new ConstructorDeclaredInJava( constructorReflectionProxy );
+				s_map.put( constructorReflectionProxy, rv );
+			}
+			return rv;
+		} else {
+			return null;
 		}
 	}
-	//todo: reduce visibility?
-	public java.lang.reflect.Constructor< ? > getCnstrctr() {
-		return m_cnstrctr;
+	public static ConstructorDeclaredInJava get( java.lang.reflect.Constructor< ? > cnstrctr ) {
+		return get( new ConstructorReflectionProxy( cnstrctr ) );
 	}
-
-	@Override
-	public java.util.ArrayList< ? extends AbstractParameter > getParameters() {
-		return m_parameters;
+	public static ConstructorDeclaredInJava get( Class<?> declaringCls, Class<?>... parameterClses ) {
+		return get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
 	}
-
+	
+	private ConstructorDeclaredInJava( ConstructorReflectionProxy constructorReflectionProxy ) {
+		this.constructorReflectionProxy = constructorReflectionProxy;
+		ClassReflectionProxy[] classReflectionProxies = this.constructorReflectionProxy.getParameterClassReflectionProxies();
+		this.parameters = new java.util.ArrayList< ParameterDeclaredInJavaConstructor >();
+		this.parameters.ensureCapacity( classReflectionProxies.length );
+		java.lang.annotation.Annotation[][] parameterAnnotations = this.constructorReflectionProxy.getParameterAnnotations();
+		for( int i = 0; i < classReflectionProxies.length; i++ ) {
+			java.lang.annotation.Annotation[] annotationsI;
+			if( parameterAnnotations != null ) {
+				annotationsI = parameterAnnotations[ i ];
+			} else {
+				annotationsI = null;
+			}
+			this.parameters.add( new ParameterDeclaredInJavaConstructor( this, i, annotationsI ) );
+		}
+	}
+	
+	public ConstructorReflectionProxy getConstructorReflectionProxy() {
+		return this.constructorReflectionProxy;
+	}
+	
 	@Override
 	public AbstractType getDeclaringType() {
-		return TypeDeclaredInJava.get( m_cnstrctr.getDeclaringClass() );
+		return TypeDeclaredInJava.get( this.constructorReflectionProxy.getDeclaringClassReflectionProxy() );
+	}
+	@Override
+	public java.util.ArrayList< ? extends AbstractParameter > getParameters() {
+		return this.parameters;
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.annotations.Visibility getVisibility() {
-		if( m_cnstrctr.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate.class ) ) {
-			//todo: investigate cast requirement
-			edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate cnstrctrTemplate = m_cnstrctr.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate.class );
-			return cnstrctrTemplate.visibility();
+		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getCnstrctr();
+		if( cnstrctr != null ) {
+			if( cnstrctr.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate.class ) ) {
+				//todo: investigate cast requirement
+				edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate cnstrctrTemplate = cnstrctr.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate.class );
+				return cnstrctrTemplate.visibility();
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
 	}
 
-	private ConstructorDeclaredInJava m_nextLongerInChain = null;
+	private ConstructorDeclaredInJava nextLongerInChain = null;
 
 	@Override
 	public AbstractMember getNextLongerInChain() {
-		return m_nextLongerInChain;
+		return this.nextLongerInChain;
 	}
 	public void setNextLongerInChain( ConstructorDeclaredInJava nextLongerInChain ) {
-		m_nextLongerInChain = nextLongerInChain;
+		this.nextLongerInChain = nextLongerInChain;
 	}
 
-	private ConstructorDeclaredInJava m_nextShorterInChain = null;
+	private ConstructorDeclaredInJava nextShorterInChain = null;
 
 	@Override
 	public AbstractMember getNextShorterInChain() {
-		return m_nextShorterInChain;
+		return this.nextShorterInChain;
 	}
 	public void setNextShorterInChain( ConstructorDeclaredInJava nextShorterInChain ) {
-		m_nextShorterInChain = nextShorterInChain;
+		this.nextShorterInChain = nextShorterInChain;
 	}
 
 	@Override
 	public Access getAccess() {
-		return Access.get( m_cnstrctr.getModifiers() );
+		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getCnstrctr();
+		if( cnstrctr != null ) {
+			return Access.get( cnstrctr.getModifiers() );
+		} else {
+			return null;
+		}
 	}
 
 	@Override
-	public boolean isEquivalentTo( Object other ) {
-		if( other instanceof ConstructorDeclaredInJava ) {
-			return m_cnstrctr.equals( ((ConstructorDeclaredInJava)other).m_cnstrctr );
+	public boolean isEquivalentTo( Object o ) {
+		ConstructorDeclaredInJava other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, ConstructorDeclaredInJava.class );
+		if( other != null ) {
+			return this.constructorReflectionProxy.equals( other.constructorReflectionProxy );
 		} else {
 			return false;
 		}

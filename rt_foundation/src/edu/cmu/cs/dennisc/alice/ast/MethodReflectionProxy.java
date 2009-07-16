@@ -29,10 +29,36 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class MethodReflectionProxy extends InvocableReflectionProxy {
 	private String name;
 	private java.lang.reflect.Method mthd;
-	public MethodReflectionProxy( ClassReflectionProxy declaringCls, String name, ClassReflectionProxy[] parameterClses ) {
-		super( declaringCls, parameterClses );
+	public MethodReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name, ClassReflectionProxy[] parameterClassReflectionProxies ) {
+		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
 		this.name = name;
 	}
+	public MethodReflectionProxy( java.lang.reflect.Method mthd ) {
+		super( mthd.getDeclaringClass(), mthd.getParameterTypes() );
+		this.mthd = mthd;
+		this.name = mthd.getName();
+		this.isAttempted = true;
+	}
+	@Override
+	public int hashCode() {
+		int rv = super.hashCode();
+		rv ^= this.name.hashCode();
+		return rv;
+	}
+	@Override
+	public boolean equals( Object o ) {
+		MethodReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, MethodReflectionProxy.class );
+		if( other != null ) {
+			if( super.equals( other ) ) {
+				return this.name == other.name;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
 	public String getName() {
 		return this.name;
 	}
@@ -40,9 +66,19 @@ public class MethodReflectionProxy extends InvocableReflectionProxy {
 		if( this.isAttempted ) {
 			//pass
 		} else {
-			this.mthd = this.declaringCls.getMthd( this.name, this.parameterClses );
+			this.mthd = this.getDeclaringClassReflectionProxy().getMthd( this.name, this.parameterClassReflectionProxies );
 			this.isAttempted = true;
 		}
 		return this.mthd;
 	}
+	@Override
+	protected java.lang.annotation.Annotation[][] getParameterAnnotations() {
+		java.lang.reflect.Method mthd = this.getMthd();
+		if( mthd != null ) {
+			return mthd.getParameterAnnotations();
+		} else {
+			return null;
+		}
+	}
+	
 }

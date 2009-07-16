@@ -27,9 +27,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class TypeDeclaredInJava extends AbstractType {
-	private static java.util.Map< Class< ? >, TypeDeclaredInJava > s_map = new java.util.HashMap< Class< ? >, TypeDeclaredInJava >();
-	private static java.util.Map< String, TypeDeclaredInJava > s_mapNotFound = new java.util.HashMap< String, TypeDeclaredInJava >();
-
+	private static java.util.Map< ClassReflectionProxy, TypeDeclaredInJava > s_map = new java.util.HashMap< ClassReflectionProxy, TypeDeclaredInJava >();
 	public static final TypeDeclaredInJava VOID_TYPE = get( Void.TYPE );
 
 	public static final TypeDeclaredInJava BOOLEAN_PRIMITIVE_TYPE = get( Boolean.TYPE );
@@ -44,35 +42,21 @@ public class TypeDeclaredInJava extends AbstractType {
 	public static final TypeDeclaredInJava[] INTEGER_TYPES = { INTEGER_PRIMITIVE_TYPE, INTEGER_OBJECT_TYPE };
 	public static final TypeDeclaredInJava[] DOUBLE_TYPES = { DOUBLE_PRIMITIVE_TYPE, DOUBLE_OBJECT_TYPE };
 
-	public static TypeDeclaredInJava get( Class< ? > cls ) {
-		if( cls != null ) {
-			TypeDeclaredInJava rv = s_map.get( cls );
+	public static TypeDeclaredInJava get( ClassReflectionProxy classReflectionProxy ) {
+		if( classReflectionProxy != null ) {
+			TypeDeclaredInJava rv = s_map.get( classReflectionProxy );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = get( new ClassReflectionProxy( cls ) );
-			}
-			return rv;
-		} else {
-			return null;
-		}
-	}
-	public static TypeDeclaredInJava get( ClassReflectionProxy classReflectionProxy ) {
-		if( classReflectionProxy != null ) {
-			TypeDeclaredInJava rv;
-			Class< ? > cls = classReflectionProxy.getCls();
-			if( cls != null ) {
-				rv = s_map.get( cls );
-				if( rv != null ) {
-					//pass
-				} else {
-					rv = new TypeDeclaredInJava( classReflectionProxy );
-					s_map.put( cls, rv );
+				rv = new TypeDeclaredInJava( classReflectionProxy );
+				s_map.put( classReflectionProxy, rv );
+				Class< ? > cls = classReflectionProxy.getCls();
+				if( cls != null ) {
 					for( java.lang.reflect.Constructor< ? > cnstrctr : cls.getDeclaredConstructors() ) {
-						rv.constructors.add( new ConstructorDeclaredInJava( cnstrctr ) );
+						rv.constructors.add( ConstructorDeclaredInJava.get( cnstrctr ) );
 					}
 					for( java.lang.reflect.Field fld : cls.getDeclaredFields() ) {
-						rv.fields.add( new FieldDeclaredInJavaWithField( fld ) );
+						rv.fields.add( FieldDeclaredInJavaWithField.get( fld ) );
 					}
 
 					java.util.Set< java.lang.reflect.Method > set = null;
@@ -100,15 +84,19 @@ public class TypeDeclaredInJava extends AbstractType {
 						}
 					}
 				}
+			}
+			return rv;
+		} else {
+			return null;
+		}
+	}
+	public static TypeDeclaredInJava get( Class< ? > cls ) {
+		if( cls != null ) {
+			TypeDeclaredInJava rv = s_map.get( cls );
+			if( rv != null ) {
+				//pass
 			} else {
-				String name = classReflectionProxy.getName();
-				rv = s_mapNotFound.get( name );
-				if( rv != null ) {
-					//pass
-				} else {
-					rv = new TypeDeclaredInJava( classReflectionProxy );
-					s_mapNotFound.put( name, rv );
-				}
+				rv = get( new ClassReflectionProxy( cls ) );
 			}
 			return rv;
 		} else {
@@ -129,81 +117,82 @@ public class TypeDeclaredInJava extends AbstractType {
 		}
 		return rv;
 	}
-	public static FieldDeclaredInJavaWithField getField( FieldReflectionProxy fieldReflectionProxy ) {
-		return getField( fieldReflectionProxy.getFld() );
-	}
-	public static FieldDeclaredInJavaWithGetterAndSetter getField( MethodReflectionProxy getterReflectionProxy, MethodReflectionProxy setterReflectionProxy ) {
-		return getField( getterReflectionProxy.getMthd(), setterReflectionProxy.getMthd() );
-	}
-	public static FieldDeclaredInJavaWithField getField( java.lang.reflect.Field fld ) {
-		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( fld.getDeclaringClass() );
-		for( AbstractField field : typeDeclaredInJava.fields ) {
-			if( field instanceof FieldDeclaredInJavaWithField ) {
-				FieldDeclaredInJavaWithField fieldDeclaredInJavaWithField = (FieldDeclaredInJavaWithField)field;
-				if( fld.equals( fieldDeclaredInJavaWithField.getFld() ) ) {
-					return fieldDeclaredInJavaWithField;
-				}
-			}
-		}
-		assert false : fld;
-		return null;
-	}
-	public static FieldDeclaredInJavaWithGetterAndSetter getField( java.lang.reflect.Method gttr, java.lang.reflect.Method sttr ) {
-		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( gttr.getDeclaringClass() );
-		for( AbstractField field : typeDeclaredInJava.fields ) {
-			if( field instanceof FieldDeclaredInJavaWithGetterAndSetter ) {
-				FieldDeclaredInJavaWithGetterAndSetter fieldDeclaredInJavaWithGetterAndSetter = (FieldDeclaredInJavaWithGetterAndSetter)field;
-				if( gttr.equals( fieldDeclaredInJavaWithGetterAndSetter.getGttr() ) ) {
-					assert sttr.equals( fieldDeclaredInJavaWithGetterAndSetter.getSttr() ) : sttr;
-					return fieldDeclaredInJavaWithGetterAndSetter;
-				}
-			}
-		}
-		assert false : gttr;
-		return null;
-	}
-
-	public static ConstructorDeclaredInJava getConstructor( java.lang.reflect.Constructor< ? > cnstrctr ) {
-		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( cnstrctr.getDeclaringClass() );
-		for( AbstractConstructor constructor : typeDeclaredInJava.constructors ) {
-			ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)constructor;
-			if( cnstrctr.equals( constructorDeclaredInJava.getCnstrctr() ) ) {
-				return constructorDeclaredInJava;
-			}
-		}
-		assert false : cnstrctr;
-		return null;
-	}
-	public static ConstructorDeclaredInJava getConstructor( ConstructorReflectionProxy cnstrctr ) {
-		return getConstructor( cnstrctr.getCnstrctr() );
-	}
-	public static MethodDeclaredInJava getMethod( java.lang.reflect.Method mthd ) {
-		//System.err.println( "searching for: " + mthd.getName() );
-		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( mthd.getDeclaringClass() );
-		for( AbstractMethod method : typeDeclaredInJava.methods ) {
-			//System.err.println( "checking: " + method.getName() );
-			if( method.getName().equals( mthd.getName() ) ) {
-				//System.err.println( "FOUND: " + mthd.getName() );
-				MethodDeclaredInJava methodDeclaredInJava = (MethodDeclaredInJava)method;
-				MethodDeclaredInJava m = methodDeclaredInJava;
-				while( m != null ) {
-					if( mthd.equals( m.getMthd() ) ) {
-						//System.err.println( "__FOUND__: " + mthd.getName() );
-						return m;
-					}
-					m = (MethodDeclaredInJava)m.getNextShorterInChain();
-				}
-			}
-		}
-//		assert false : mthd;
+	
+//	public static FieldDeclaredInJavaWithField getField( FieldReflectionProxy fieldReflectionProxy ) {
+//		return getField( fieldReflectionProxy.getFld() );
+//	}
+//	public static FieldDeclaredInJavaWithGetterAndSetter getField( MethodReflectionProxy getterReflectionProxy, MethodReflectionProxy setterReflectionProxy ) {
+//		return getField( getterReflectionProxy.getMthd(), setterReflectionProxy.getMthd() );
+//	}
+//	public static FieldDeclaredInJavaWithField getField( java.lang.reflect.Field fld ) {
+//		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( fld.getDeclaringClass() );
+//		for( AbstractField field : typeDeclaredInJava.fields ) {
+//			if( field instanceof FieldDeclaredInJavaWithField ) {
+//				FieldDeclaredInJavaWithField fieldDeclaredInJavaWithField = (FieldDeclaredInJavaWithField)field;
+//				if( fld.equals( fieldDeclaredInJavaWithField.getFld() ) ) {
+//					return fieldDeclaredInJavaWithField;
+//				}
+//			}
+//		}
+//		assert false : fld;
 //		return null;
-		//System.err.println( "NOT FOUND:" + mthd.getName() );
-		//Thread.dumpStack();
-		return new MethodDeclaredInJava( mthd );
-	}
-	public static MethodDeclaredInJava getMethod( MethodReflectionProxy methodReflectionProxy ) {
-		return getMethod( methodReflectionProxy.getMthd() );
-	}
+//	}
+//	public static FieldDeclaredInJavaWithGetterAndSetter getField( java.lang.reflect.Method gttr, java.lang.reflect.Method sttr ) {
+//		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( gttr.getDeclaringClass() );
+//		for( AbstractField field : typeDeclaredInJava.fields ) {
+//			if( field instanceof FieldDeclaredInJavaWithGetterAndSetter ) {
+//				FieldDeclaredInJavaWithGetterAndSetter fieldDeclaredInJavaWithGetterAndSetter = (FieldDeclaredInJavaWithGetterAndSetter)field;
+//				if( gttr.equals( fieldDeclaredInJavaWithGetterAndSetter.getGttr() ) ) {
+//					assert sttr.equals( fieldDeclaredInJavaWithGetterAndSetter.getSttr() ) : sttr;
+//					return fieldDeclaredInJavaWithGetterAndSetter;
+//				}
+//			}
+//		}
+//		assert false : gttr;
+//		return null;
+//	}
+//
+//	public static ConstructorDeclaredInJava getConstructor( java.lang.reflect.Constructor< ? > cnstrctr ) {
+//		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( cnstrctr.getDeclaringClass() );
+//		for( AbstractConstructor constructor : typeDeclaredInJava.constructors ) {
+//			ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)constructor;
+//			if( cnstrctr.equals( constructorDeclaredInJava.getCnstrctr() ) ) {
+//				return constructorDeclaredInJava;
+//			}
+//		}
+//		assert false : cnstrctr;
+//		return null;
+//	}
+//	public static ConstructorDeclaredInJava getConstructor( ConstructorReflectionProxy cnstrctr ) {
+//		return getConstructor( cnstrctr.getCnstrctr() );
+//	}
+//	public static MethodDeclaredInJava getMethod( java.lang.reflect.Method mthd ) {
+//		//System.err.println( "searching for: " + mthd.getName() );
+//		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( mthd.getDeclaringClass() );
+//		for( AbstractMethod method : typeDeclaredInJava.methods ) {
+//			//System.err.println( "checking: " + method.getName() );
+//			if( method.getName().equals( mthd.getName() ) ) {
+//				//System.err.println( "FOUND: " + mthd.getName() );
+//				MethodDeclaredInJava methodDeclaredInJava = (MethodDeclaredInJava)method;
+//				MethodDeclaredInJava m = methodDeclaredInJava;
+//				while( m != null ) {
+//					if( mthd.equals( m.getMthd() ) ) {
+//						//System.err.println( "__FOUND__: " + mthd.getName() );
+//						return m;
+//					}
+//					m = (MethodDeclaredInJava)m.getNextShorterInChain();
+//				}
+//			}
+//		}
+////		assert false : mthd;
+////		return null;
+//		//System.err.println( "NOT FOUND:" + mthd.getName() );
+//		//Thread.dumpStack();
+//		return new MethodDeclaredInJava( mthd );
+//	}
+//	public static MethodDeclaredInJava getMethod( MethodReflectionProxy methodReflectionProxy ) {
+//		return getMethod( methodReflectionProxy.getMthd() );
+//	}
 
 	private static boolean isMask( int modifiers, int required ) {
 		return (modifiers & required) != 0;
@@ -321,8 +310,7 @@ public class TypeDeclaredInJava extends AbstractType {
 		if( isMask( modifiers, java.lang.reflect.Modifier.PUBLIC ) /*&& isNotMask( modifiers, java.lang.reflect.Modifier.STATIC )*/) {
 			if( edu.cmu.cs.dennisc.property.PropertyUtilities.isGetterAndSetterExists( mthd ) ) {
 				java.lang.reflect.Method sttr = edu.cmu.cs.dennisc.property.PropertyUtilities.getSetterForGetter( mthd );
-				java.lang.annotation.Annotation[][] parameterAnnotations = sttr.getParameterAnnotations();
-				this.fields.add( new FieldDeclaredInJavaWithGetterAndSetter( mthd, sttr, parameterAnnotations[ 0 ] ) );
+				this.fields.add( FieldDeclaredInJavaWithGetterAndSetter.get( mthd, sttr ) );
 			} else if( edu.cmu.cs.dennisc.property.PropertyUtilities.isSetterAndGetterExists( mthd ) ) {
 				//pass
 			} else if( edu.cmu.cs.dennisc.property.PropertyUtilities.isSetterWithExtraParametersAndGetterExists( mthd ) ) {
@@ -334,7 +322,7 @@ public class TypeDeclaredInJava extends AbstractType {
 				//				} else {
 				//					nodeListProperty = this.questions;
 				//				}
-				MethodDeclaredInJava methodDeclaredInJava = new MethodDeclaredInJava( mthd );
+				MethodDeclaredInJava methodDeclaredInJava = MethodDeclaredInJava.get( mthd );
 				edu.cmu.cs.dennisc.alice.annotations.Visibility visibility = methodDeclaredInJava.getVisibility();
 
 				if( visibility == edu.cmu.cs.dennisc.alice.annotations.Visibility.PRIME_TIME ) {
@@ -343,7 +331,7 @@ public class TypeDeclaredInJava extends AbstractType {
 					while( true ) {
 						_mthd = getNextShorterInChain( _mthd );
 						if( _mthd != null ) {
-							MethodDeclaredInJava shorter = TypeDeclaredInJava.getMethod( _mthd );
+							MethodDeclaredInJava shorter = MethodDeclaredInJava.get( _mthd );
 							if( shorter.getVisibility() == edu.cmu.cs.dennisc.alice.annotations.Visibility.CHAINED ) {
 								longer.setNextShorterInChain( shorter );
 								shorter.setNextLongerInChain( longer );
@@ -365,14 +353,18 @@ public class TypeDeclaredInJava extends AbstractType {
 			}
 		}
 	}
+	
+	public ClassReflectionProxy getClassReflectionProxy() {
+		return this.classReflectionProxy;
+	}
 
-	//todo: reduce visibility?
-	public Class< ? > getCls() {
-		return this.classReflectionProxy.getCls();
-	}
-	public String getClsName() {
-		return this.classReflectionProxy.getName();
-	}
+//	//todo: reduce visibility?
+//	public Class< ? > getCls() {
+//		return this.classReflectionProxy.getCls();
+//	}
+//	public String getClsName() {
+//		return this.classReflectionProxy.getName();
+//	}
 
 	@Override
 	public boolean isDeclaredInAlice() {

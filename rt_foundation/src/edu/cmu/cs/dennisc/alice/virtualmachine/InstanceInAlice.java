@@ -85,7 +85,7 @@ public class InstanceInAlice {
 		
 		//return edu.cmu.cs.dennisc.reflect.ReflectionUtilities.newInstance( m_cls, parameterClses, arguments );
 		
-		m_instanceInJava = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( typeDeclaredInJava.getCls() );
+		m_instanceInJava = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( typeDeclaredInJava.getClassReflectionProxy().getCls() );
 	}
 	public AbstractType getType() {
 		return m_type;

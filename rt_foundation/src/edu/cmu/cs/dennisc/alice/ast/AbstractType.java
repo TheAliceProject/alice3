@@ -42,7 +42,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 		s_mapPrimitiveToWrapper.put( java.lang.Double.TYPE, java.lang.Double.class );
 	}
 	private static Class<?> getClsWrapperIfNecessary( TypeDeclaredInJava typeDeclaredInJava ) { 
-		Class<?> rv = typeDeclaredInJava.getCls();
+		Class<?> rv = typeDeclaredInJava.getClassReflectionProxy().getCls();
 		if( rv.isPrimitive() ) {
 			rv = s_mapPrimitiveToWrapper.get( rv );
 			assert rv != null;
@@ -57,9 +57,9 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 		}
 		return (TypeDeclaredInJava)type;
 	}
-	public Class<?> getFirstClassEncounteredDeclaredInJava() {
-		return getFirstTypeEncounteredDeclaredInJava().getCls();
-	}
+//	public Class<?> getFirstClassEncounteredDeclaredInJava() {
+//		return getFirstTypeEncounteredDeclaredInJava().getCls();
+//	}
 	public boolean isAssignableFrom( AbstractType other ) {
 		if( other != null ) {
 			TypeDeclaredInJava thisTypeDeclaredInJava = this.getFirstTypeEncounteredDeclaredInJava();

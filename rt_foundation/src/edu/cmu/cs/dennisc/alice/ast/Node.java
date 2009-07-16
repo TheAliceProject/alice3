@@ -278,44 +278,46 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		xmlProperty.appendChild( encodeValue( value, xmlDocument, set ) );
 		return xmlProperty;
 	}
-	private static org.w3c.dom.Element encodeType( org.w3c.dom.Document xmlDocument, String nodeName, Class< ? > type ) {
+	private static org.w3c.dom.Element encodeType( org.w3c.dom.Document xmlDocument, String nodeName, ClassReflectionProxy classReflectionProxy ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( nodeName );
-		rv.setAttribute( "name", type.getName() );
+		rv.setAttribute( "name", classReflectionProxy.getName() );
 		return rv;
 	}
-	private static org.w3c.dom.Element encodeDeclaringClass( org.w3c.dom.Document xmlDocument, java.lang.reflect.Member mmbr ) {
-		return encodeType( xmlDocument, "declaringClass", mmbr.getDeclaringClass() );
+	private static org.w3c.dom.Element encodeDeclaringClass( org.w3c.dom.Document xmlDocument, MemberReflectionProxy memberReflectionProxy ) {
+		return encodeType( xmlDocument, "declaringClass", memberReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
-	private static org.w3c.dom.Element encodeParameters( org.w3c.dom.Document xmlDocument, Class< ? >[] parameterTypes ) {
+	private static org.w3c.dom.Element encodeParameters( org.w3c.dom.Document xmlDocument, ClassReflectionProxy[] parameterClassReflectionProxies ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( "parameters" );
-		for( Class< ? > parameterType : parameterTypes ) {
-			rv.appendChild( encodeType( xmlDocument, "type", parameterType ) );
+		for( ClassReflectionProxy parameterClassReflectionProxy : parameterClassReflectionProxies ) {
+			rv.appendChild( encodeType( xmlDocument, "type", parameterClassReflectionProxy ) );
 		}
 		return rv;
 	}
-	private static org.w3c.dom.Element encodeMember( org.w3c.dom.Document xmlDocument, String nodeName, java.lang.reflect.Member mmbr ) {
+	private static org.w3c.dom.Element encodeMember( org.w3c.dom.Document xmlDocument, String nodeName, MemberReflectionProxy memberReflectionProxy ) {
 		org.w3c.dom.Element rv = xmlDocument.createElement( nodeName );
-		String name = mmbr.getName();
-		if( name == null ) {
-			assert mmbr instanceof java.lang.reflect.Constructor< ? >;
-		} else {
-			rv.setAttribute( "name", name );
-		}
-		rv.appendChild( encodeDeclaringClass( xmlDocument, mmbr ) );
+//		String name = mmbr.getName();
+//		if( name == null ) {
+//			assert mmbr instanceof java.lang.reflect.Constructor< ? >;
+//		} else {
+//			rv.setAttribute( "name", name );
+//		}
+		rv.appendChild( encodeDeclaringClass( xmlDocument, memberReflectionProxy ) );
 		return rv;
 	}
-	private static org.w3c.dom.Element encodeField( org.w3c.dom.Document xmlDocument, String nodeName, java.lang.reflect.Field fld ) {
-		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, fld );
+	private static org.w3c.dom.Element encodeField( org.w3c.dom.Document xmlDocument, String nodeName, FieldReflectionProxy fieldReflectionProxy ) {
+		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, fieldReflectionProxy );
+		rv.setAttribute( "name", fieldReflectionProxy.getName() );
 		return rv;
 	}
-	private static org.w3c.dom.Element encodeConstructor( org.w3c.dom.Document xmlDocument, String nodeName, java.lang.reflect.Constructor cnstrctr ) {
-		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, cnstrctr );
-		rv.appendChild( encodeParameters( xmlDocument, cnstrctr.getParameterTypes() ) );
+	private static org.w3c.dom.Element encodeConstructor( org.w3c.dom.Document xmlDocument, String nodeName, ConstructorReflectionProxy constructorReflectionProxy ) {
+		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, constructorReflectionProxy );
+		rv.appendChild( encodeParameters( xmlDocument, constructorReflectionProxy.getParameterClassReflectionProxies() ) );
 		return rv;
 	}
-	private static org.w3c.dom.Element encodeMethod( org.w3c.dom.Document xmlDocument, String nodeName, java.lang.reflect.Method mthd ) {
-		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, mthd );
-		rv.appendChild( encodeParameters( xmlDocument, mthd.getParameterTypes() ) );
+	private static org.w3c.dom.Element encodeMethod( org.w3c.dom.Document xmlDocument, String nodeName, MethodReflectionProxy methodReflectionProxy ) {
+		org.w3c.dom.Element rv = encodeMember( xmlDocument, nodeName, methodReflectionProxy );
+		rv.setAttribute( "name", methodReflectionProxy.getName() );
+		rv.appendChild( encodeParameters( xmlDocument, methodReflectionProxy.getParameterClassReflectionProxies() ) );
 		return rv;
 	}
 	
@@ -335,8 +337,7 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, getClass().getName() );
 		if( this instanceof TypeDeclaredInJava ) {
 			TypeDeclaredInJava typeDeclaredInJava = (TypeDeclaredInJava)this;
-			Class< ? > cls = typeDeclaredInJava.getCls();
-			rv.appendChild( encodeType( xmlDocument, "type", cls ) );
+			rv.appendChild( encodeType( xmlDocument, "type", typeDeclaredInJava.getClassReflectionProxy() ) );
 		} else if( this instanceof ArrayTypeDeclaredInAlice ) {
 			ArrayTypeDeclaredInAlice arrayTypeDeclaredInAlice = (ArrayTypeDeclaredInAlice)this;
 
@@ -350,22 +351,17 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		
 		} else if( this instanceof ConstructorDeclaredInJava ) {
 			ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)this;
-			java.lang.reflect.Constructor< ? > cnstrctr = constructorDeclaredInJava.getCnstrctr();
-			rv.appendChild( encodeConstructor( xmlDocument, "constructor", cnstrctr ) );
+			rv.appendChild( encodeConstructor( xmlDocument, "constructor", constructorDeclaredInJava.getConstructorReflectionProxy() ) );
 		} else if( this instanceof MethodDeclaredInJava ) {
 			MethodDeclaredInJava methodDeclaredInJava = (MethodDeclaredInJava)this;
-			java.lang.reflect.Method mthd = methodDeclaredInJava.getMthd();
-			rv.appendChild( encodeMethod( xmlDocument, "method", mthd ) );
+			rv.appendChild( encodeMethod( xmlDocument, "method", methodDeclaredInJava.getMethodReflectionProxy() ) );
 		} else if( this instanceof FieldDeclaredInJavaWithField ) {
 			FieldDeclaredInJavaWithField fieldDeclaredInJavaWithField = (FieldDeclaredInJavaWithField)this;
-			java.lang.reflect.Field fld = fieldDeclaredInJavaWithField.getFld();
-			rv.appendChild( encodeField( xmlDocument, "field", fld ) );
+			rv.appendChild( encodeField( xmlDocument, "field", fieldDeclaredInJavaWithField.getFieldReflectionProxy() ) );
 		} else if( this instanceof FieldDeclaredInJavaWithGetterAndSetter ) {
 			FieldDeclaredInJavaWithGetterAndSetter fieldDeclaredInJavaWithGetterAndSetter = (FieldDeclaredInJavaWithGetterAndSetter)this;
-			java.lang.reflect.Method gttr = fieldDeclaredInJavaWithGetterAndSetter.getGttr();
-			java.lang.reflect.Method sttr = fieldDeclaredInJavaWithGetterAndSetter.getSttr();
-			rv.appendChild( encodeMethod( xmlDocument, "getter", gttr ) );
-			rv.appendChild( encodeMethod( xmlDocument, "setter", sttr ) );
+			rv.appendChild( encodeMethod( xmlDocument, "getter", fieldDeclaredInJavaWithGetterAndSetter.getGetterReflectionProxy() ) );
+			rv.appendChild( encodeMethod( xmlDocument, "setter", fieldDeclaredInJavaWithGetterAndSetter.getSetterReflectionProxy() ) );
 		} else if( this instanceof AnonymousConstructor ) {
 			AnonymousConstructor anonymousConstructor = (AnonymousConstructor)this;
 			org.w3c.dom.Element xmlType = xmlDocument.createElement( "anonymousType" );

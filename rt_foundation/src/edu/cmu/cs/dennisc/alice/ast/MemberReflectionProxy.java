@@ -26,32 +26,28 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorReflectionProxy extends InvocableReflectionProxy {
-	private java.lang.reflect.Constructor< ? > cnstrctr;
-	public ConstructorReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies ) {
-		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
+public abstract class MemberReflectionProxy extends ReflectionProxy {
+	private ClassReflectionProxy declaringClassReflectionProxy;
+	public MemberReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy ) {
+		this.declaringClassReflectionProxy = declaringClassReflectionProxy;
 	}
-	public ConstructorReflectionProxy( java.lang.reflect.Constructor< ? > cnstrctr ) {
-		super( cnstrctr.getDeclaringClass(), cnstrctr.getParameterTypes() );
-		this.cnstrctr = cnstrctr;
-		this.isAttempted = true;
-	}
-	public java.lang.reflect.Constructor< ? > getCnstrctr() {
-		if( this.isAttempted ) {
-			//pass
-		} else {
-			this.cnstrctr = this.getDeclaringClassReflectionProxy().getCnstrctr( this.parameterClassReflectionProxies );
-			this.isAttempted = true;
-		}
-		return this.cnstrctr;
+	public MemberReflectionProxy( Class<?> declaringCls ) {
+		this( new ClassReflectionProxy( declaringCls ) );
 	}
 	@Override
-	protected java.lang.annotation.Annotation[][] getParameterAnnotations() {
-		java.lang.reflect.Constructor< ? > cnstrctr = this.getCnstrctr();
-		if( cnstrctr != null ) {
-			return cnstrctr.getParameterAnnotations();
+	public int hashCode() {
+		return this.declaringClassReflectionProxy.hashCode();
+	}
+	@Override
+	public boolean equals( Object o ) {
+		MemberReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, MemberReflectionProxy.class );
+		if( other != null ) {
+			return this.declaringClassReflectionProxy.equals( other.declaringClassReflectionProxy );
 		} else {
-			return null;
+			return false;
 		}
+	}
+	public ClassReflectionProxy getDeclaringClassReflectionProxy() {
+		return this.declaringClassReflectionProxy;
 	}
 }

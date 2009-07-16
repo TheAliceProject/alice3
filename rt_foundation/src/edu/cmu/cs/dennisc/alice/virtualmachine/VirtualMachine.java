@@ -130,7 +130,7 @@ public abstract class VirtualMachine {
 				arguments[ i ] = valueInAlice.getInstanceInJava();
 			}
 		}
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( constructor.getCnstrctr(), arguments );
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( constructor.getConstructorReflectionProxy().getCnstrctr(), arguments );
 	}
 	
 	private java.util.Map< Class<?>, Class<?> > mapAnonymousClsToAdapterCls = new java.util.HashMap< Class<?>, Class<?> >();
@@ -144,7 +144,7 @@ public abstract class VirtualMachine {
 			edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice anonymousType = (edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice)type;
 			edu.cmu.cs.dennisc.alice.ast.AbstractType superType = anonymousType.getSuperType();
 			if( superType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
-				Class< ? > anonymousCls = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)superType).getCls();
+				Class< ? > anonymousCls = ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava)superType).getClassReflectionProxy().getCls();
 				Class< ? > adapterCls = this.mapAnonymousClsToAdapterCls.get( anonymousCls );
 				if( adapterCls != null ) {
 					final Object instance = this.getThis();
@@ -196,7 +196,7 @@ public abstract class VirtualMachine {
 		return rv;
 	}
 	protected Object createArrayInstanceFromTypeDeclaredInJava( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type, int[] lengths, Object[] arguments ) {
-		Class<?> cls = type.getCls();
+		Class<?> cls = type.getClassReflectionProxy().getCls();
 		assert cls != null;
 		Class<?> componentCls = cls.getComponentType();
 		assert componentCls != null;
@@ -238,7 +238,7 @@ public abstract class VirtualMachine {
 			
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter paramLast = parameters.get( N-1 );
 			if( paramLast.isVariableLength() ) {
-				Class<?> arrayCls =  paramLast.getValueType().getFirstClassEncounteredDeclaredInJava();
+				Class<?> arrayCls =  paramLast.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getCls();
 				assert arrayCls != null;
 				Class<?> componentCls = arrayCls.getComponentType();
 				assert componentCls != null;
@@ -279,7 +279,7 @@ public abstract class VirtualMachine {
 			InstanceInAlice instanceInAlice = (InstanceInAlice)instance;
 			instance = instanceInAlice.getInstanceInJava();
 		}
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field.getFld(), instance );
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field.getFieldReflectionProxy().getFld(), instance );
 	}
 	protected void setFieldDeclaredInJavaWithField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field, Object instance, Object value ) {
 		//todo
@@ -287,7 +287,7 @@ public abstract class VirtualMachine {
 			InstanceInAlice valueInAlice = (InstanceInAlice)value;
 			value = valueInAlice.getInstanceInJava();
 		}
-		edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.set( field.getFld(), instance, value );
+		edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.set( field.getFieldReflectionProxy().getFld(), instance, value );
 	}
 	protected Object getFieldDeclaredInJavaWithGetterAndSetter( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithGetterAndSetter field, Object instance ) {
 		if( instance instanceof InstanceInAlice ) {
@@ -295,7 +295,7 @@ public abstract class VirtualMachine {
 			instance = instanceInAlice.getInstanceInJava();
 		}
 		if( instance != null ) {
-			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getGttr() );
+			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getGetterReflectionProxy().getMthd() );
 		} else {
 			throw new NullPointerException();
 		}
@@ -313,7 +313,7 @@ public abstract class VirtualMachine {
 			value = valueInAlice.getInstanceInJava();
 		}
 		if( instance != null ) {
-			edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getSttr(), value );
+			edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getSetterReflectionProxy().getMthd(), value );
 		} else {
 			throw new NullPointerException();
 		}
@@ -389,7 +389,7 @@ public abstract class VirtualMachine {
 			}
 		}
 //		try {
-			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, method.getMthd(), arguments );
+			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, method.getMethodReflectionProxy().getMthd(), arguments );
 //		} catch( RuntimeException re ) {
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: could not invoke ", method );
 //			for( Object argument : arguments ) {

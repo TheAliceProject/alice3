@@ -27,24 +27,50 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
-	private java.lang.reflect.Field m_fld;
-	/*package-private*/ FieldDeclaredInJavaWithField( java.lang.reflect.Field fld ) {
-		m_fld = fld;
+	private static java.util.Map< FieldReflectionProxy, FieldDeclaredInJavaWithField > s_map = new java.util.HashMap< FieldReflectionProxy, FieldDeclaredInJavaWithField >();
+	public static FieldDeclaredInJavaWithField get( FieldReflectionProxy fieldReflectionProxy ) {
+		if( fieldReflectionProxy != null ) {
+			FieldDeclaredInJavaWithField rv = s_map.get( fieldReflectionProxy );
+			if( rv != null ) {
+				//pass
+			} else {
+				rv = new FieldDeclaredInJavaWithField( fieldReflectionProxy );
+				s_map.put( fieldReflectionProxy, rv );
+			}
+			return rv;
+		} else {
+			return null;
+		}
 	}
-	//todo: reduce visibility?
-	public java.lang.reflect.Field getFld() {
-		return m_fld;
+	public static FieldDeclaredInJavaWithField get( java.lang.reflect.Field fld ) {
+		return get( new FieldReflectionProxy( fld ) );
+	}
+	public static FieldDeclaredInJavaWithField get( Class<?> declaringCls, String name ) {
+		return get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getField(  declaringCls, name ) );
+	}
+
+	private FieldReflectionProxy fieldReflectionProxy;
+	private FieldDeclaredInJavaWithField( FieldReflectionProxy fieldReflectionProxy ) {
+		this.fieldReflectionProxy = fieldReflectionProxy;
 	}
 	
+	public FieldReflectionProxy getFieldReflectionProxy() {
+		return this.fieldReflectionProxy;
+	}
 	@Override
 	public AbstractType getDeclaringType() {
-		return TypeDeclaredInJava.get( m_fld.getDeclaringClass() );
+		return TypeDeclaredInJava.get( this.fieldReflectionProxy.getDeclaringClassReflectionProxy() );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.annotations.Visibility getVisibility() {
-		if( m_fld.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.PropertyFieldTemplate.class ) ) {
-			edu.cmu.cs.dennisc.alice.annotations.PropertyFieldTemplate propertyFieldTemplate = m_fld.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.PropertyFieldTemplate.class );
-			return propertyFieldTemplate.visibility();
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		if( fld != null ) {
+			if( fld.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.PropertyFieldTemplate.class ) ) {
+				edu.cmu.cs.dennisc.alice.annotations.PropertyFieldTemplate propertyFieldTemplate = fld.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.PropertyFieldTemplate.class );
+				return propertyFieldTemplate.visibility();
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
@@ -52,11 +78,13 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 
 	@Override
 	public String getName() {
-		return m_fld.getName();
+		return this.fieldReflectionProxy.getName();
 	}
 	@Override
 	public AbstractType getValueType() {
-		return TypeDeclaredInJava.get( m_fld.getType() );
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		assert fld != null;
+		return TypeDeclaredInJava.get( fld.getType() );
 	}
 	@Override
 	public AbstractType getDesiredValueType() {
@@ -73,29 +101,40 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 	}
 	@Override
 	public Access getAccess() {
-		return Access.get( m_fld.getModifiers() );
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		assert fld != null;
+		return Access.get( fld.getModifiers() );
 	}	
 	@Override
 	public boolean isStatic() {
-		return java.lang.reflect.Modifier.isStatic( m_fld.getModifiers() );
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		assert fld != null;
+		return java.lang.reflect.Modifier.isStatic( fld.getModifiers() );
 	}
 	@Override
 	public boolean isFinal() {
-		return java.lang.reflect.Modifier.isFinal( m_fld.getModifiers() );
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		assert fld != null;
+		return java.lang.reflect.Modifier.isFinal( fld.getModifiers() );
 	}
 	@Override
 	public boolean isVolatile() {
-		return java.lang.reflect.Modifier.isVolatile( m_fld.getModifiers() );
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		assert fld != null;
+		return java.lang.reflect.Modifier.isVolatile( fld.getModifiers() );
 	}
 	@Override
 	public boolean isTransient() {
-		return java.lang.reflect.Modifier.isTransient( m_fld.getModifiers() );
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		assert fld != null;
+		return java.lang.reflect.Modifier.isTransient( fld.getModifiers() );
 	}
 	
 	@Override
-	public boolean isEquivalentTo( Object other ) {
-		if( other instanceof FieldDeclaredInJavaWithField ) {
-			return m_fld.equals( ((FieldDeclaredInJavaWithField)other).m_fld );
+	public boolean isEquivalentTo( Object o ) {
+		FieldDeclaredInJavaWithField other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, FieldDeclaredInJavaWithField.class );
+		if( other != null ) {
+			return this.fieldReflectionProxy.equals( other.fieldReflectionProxy );
 		} else {
 			return false;
 		}

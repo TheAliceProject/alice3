@@ -71,9 +71,13 @@ public final class ClassInfoManager {
 	}
 	
 	public static ClassInfo get( Class<?> cls ) {
-		edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > lazyClassInfo = s_map.get( cls.getName() );
-		if( lazyClassInfo != null ) {
-			return lazyClassInfo.get();
+		if( cls != null ) {
+			edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo > lazyClassInfo = s_map.get( cls.getName() );
+			if( lazyClassInfo != null ) {
+				return lazyClassInfo.get();
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
