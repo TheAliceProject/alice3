@@ -47,13 +47,16 @@ public class FrameBasedAnimator extends AbstractAnimator {
 	}
 
 	@Override
-	protected void updateCurrentTime() {
+	protected void updateCurrentTime( boolean isPaused ) {
 		double tCurrent;
 		if( Double.isNaN( m_tPrevious ) ) {
 			tCurrent = 0.0;
 		} else {
-			//todo: optimize for speed factor == 0
-			tCurrent = m_tPrevious + m_tDelta * getSpeedFactor();
+			if( isPaused ) {
+				tCurrent = m_tPrevious;
+			} else {
+				tCurrent = m_tPrevious + m_tDelta * getSpeedFactor();
+			}
 		}
 		m_tPrevious = tCurrent;
 		setCurrentTime( tCurrent );

@@ -30,7 +30,7 @@ public class ClockBasedAnimator extends AbstractAnimator {
 	private double m_tPreviousSimulation = Double.NaN;
 
 	@Override
-	protected void updateCurrentTime() {
+	protected void updateCurrentTime( boolean isPaused ) {
 		//todo: optimize for speed factor == 0
 		double tCurrentClock = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
 		double tCurrentSimulation;

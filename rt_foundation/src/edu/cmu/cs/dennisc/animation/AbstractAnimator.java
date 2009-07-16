@@ -31,7 +31,7 @@ public abstract class AbstractAnimator implements Animator {
 	private double m_speedFactor = 1.0;
 	private double m_tCurrent;
 
-	protected abstract void updateCurrentTime();
+	protected abstract void updateCurrentTime( boolean isPaused );
 	protected final void setCurrentTime( double tCurrent ) {
 		m_tCurrent = tCurrent;
 	}
@@ -52,8 +52,11 @@ public abstract class AbstractAnimator implements Animator {
 	
 	public void update() {
 		synchronized( m_waitingAnimations ) {
-			if( m_speedFactor > 0.0 ) {
-				updateCurrentTime();
+			boolean isPaused = m_speedFactor <= 0.0;
+			updateCurrentTime( isPaused );
+			if( isPaused ) {
+				//pass
+			} else {
 				double tCurrent = getCurrentTime();
 				java.util.Iterator< WaitingAnimation > iterator = m_waitingAnimations.iterator();
 				while( iterator.hasNext() ) {
