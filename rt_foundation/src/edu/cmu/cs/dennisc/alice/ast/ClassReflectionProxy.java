@@ -77,6 +77,32 @@ public class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 			return simpleNames[ simpleNames.length-1 ];
 		}
 	}
+	public boolean isArray() {
+		Class< ? > cls = this.getReification();
+		if( cls != null ) {
+			return cls.isArray();
+		} else {
+			return edu.cmu.cs.dennisc.lang.ClassUtilities.getArrayDimensionCount( this.name ) > 0;
+		}
+	}
+	public ClassReflectionProxy getComponentClassReflectionProxy() {
+		Class< ? > cls = this.getReification();
+		if( cls != null ) {
+			Class<?> componentCls = cls.getComponentType();
+			if( componentCls != null ) {
+				return new ClassReflectionProxy( componentCls );
+			} else {
+				return null;
+			}
+		} else {
+			if( this.name.charAt( 0 ) == '[' ) {
+				return new ClassReflectionProxy( this.name.substring( 1 ) );
+			} else {
+				return null;
+			}
+		}
+	}
+	
 	public ClassReflectionProxy getDeclaringClassReflectionProxy() {
 		Class< ? > cls = this.getReification();
 		if( cls != null ) {

@@ -323,15 +323,11 @@ public class TypeDeclaredInJava extends AbstractType {
 
 	@Override
 	public boolean isArray() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
-		assert cls != null;
-		return cls.isArray();
+		return this.classReflectionProxy.isArray();
 	}
 	@Override
 	public AbstractType getComponentType() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
-		assert cls != null;
-		return TypeDeclaredInJava.get( cls.getComponentType() );
+		return TypeDeclaredInJava.get( this.classReflectionProxy.getComponentClassReflectionProxy() );
 	}
 
 	@Override

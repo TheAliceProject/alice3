@@ -72,17 +72,39 @@ public class ClassUtilities {
 		return false;
 	}
 	
+	public static int getArrayDimensionCount( String packageNameAndSimpleClassNames ) {
+		final int N = packageNameAndSimpleClassNames.length();
+		int i;
+		for( i=0; i<N; i++ ) {
+			char c = packageNameAndSimpleClassNames.charAt( i );
+			if( c == '[' ) {
+				//pass
+			} else {
+				break;
+			}
+		}
+		return i;
+	}
 	public static String getPackageName( String packageNameAndSimpleClassNames ) {
 		int index = packageNameAndSimpleClassNames.lastIndexOf( '.' );
 		if( index != -1 ) {
-			return packageNameAndSimpleClassNames.substring( 0, index );
+			int beginIndex = getArrayDimensionCount( packageNameAndSimpleClassNames );
+			if( beginIndex > 0 ) {
+				assert packageNameAndSimpleClassNames.charAt( beginIndex ) == 'L';
+				beginIndex += 1;
+			}
+			return packageNameAndSimpleClassNames.substring( beginIndex, index );
 		} else {
 			return null;
 		}
 	}
 	public static String[] getSimpleClassNames( String packageNameAndSimpleClassNames ) {
 		int index = packageNameAndSimpleClassNames.lastIndexOf( '.' );
-		String simpleClassNames = packageNameAndSimpleClassNames.substring( index+1 );
+		int n = packageNameAndSimpleClassNames.length();
+		if( packageNameAndSimpleClassNames.charAt( n-1 ) == ';' ) {
+			n -= 1;
+		}
+		String simpleClassNames = packageNameAndSimpleClassNames.substring( index+1, n );
 		return simpleClassNames.split( "\\$" );
 	}
 }
