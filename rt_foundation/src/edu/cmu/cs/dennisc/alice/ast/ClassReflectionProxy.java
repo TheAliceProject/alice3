@@ -60,14 +60,54 @@ public class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 	public String getName() {
 		return this.name;
 	}
+
 	public String getSimpleName() {
 		Class< ? > cls = this.getReification();
 		if( cls != null ) {
 			return cls.getSimpleName();
 		} else {
-			return this.name.substring( this.name.lastIndexOf( '.' )+1 );
+			String[] simpleNames = edu.cmu.cs.dennisc.lang.ClassUtilities.getSimpleClassNames( this.name );
+			return simpleNames[ simpleNames.length-1 ];
 		}
 	}
+	public ClassReflectionProxy getDeclaringClassReflectionProxy() {
+		Class< ? > cls = this.getReification();
+		if( cls != null ) {
+			Class<?> declaringCls = cls.getDeclaringClass();
+			if( declaringCls != null ) {
+				return new ClassReflectionProxy( declaringCls );
+			} else {
+				return null;
+			}
+		} else {
+			int index = this.name.lastIndexOf( "$" );
+			if( index != -1 ) {
+				return new ClassReflectionProxy( this.name.substring( 0, index ) );
+			} else {
+				return null;
+			}
+		}
+	}
+	
+	public PackageReflectionProxy getPackageReflectionProxy() {
+		Class< ? > cls = this.getReification();
+		if( cls != null ) {
+			Package pckg = cls.getPackage();
+			if( pckg != null ) {
+				return new PackageReflectionProxy( pckg );
+			} else {
+				return null;
+			}
+		} else {
+			String packageName = edu.cmu.cs.dennisc.lang.ClassUtilities.getPackageName( this.name );
+			if( packageName != null ) {
+				return new PackageReflectionProxy( packageName );
+			} else {
+				return null;
+			}
+		}
+	}
+
 	@Override
 	protected Class<?> reify() {
 		try {

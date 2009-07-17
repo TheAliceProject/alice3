@@ -358,14 +358,6 @@ public class TypeDeclaredInJava extends AbstractType {
 		return this.classReflectionProxy;
 	}
 
-//	//todo: reduce visibility?
-//	public Class< ? > getCls() {
-//		return this.classReflectionProxy.getCls();
-//	}
-//	public String getClsName() {
-//		return this.classReflectionProxy.getName();
-//	}
-
 	@Override
 	public boolean isDeclaredInAlice() {
 		return false;
