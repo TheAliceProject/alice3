@@ -49,13 +49,6 @@ public class SOAPUtilities {
 		}
 		return new com.atlassian.jira.rpc.soap.client.RemoteVersion[] {};
 	}
-//	private static StringBuffer appendSystemProperty( StringBuffer rv, String key ) {
-//		rv.append( key );
-//		rv.append( ": " );
-//		rv.append( System.getProperty( key ) );
-//		rv.append( ";\n" );
-//		return rv;
-//	}
 	private static com.atlassian.jira.rpc.soap.client.RemoteIssue createPreparedIssue( edu.cmu.cs.dennisc.jira.JIRAReport jiraReport ) {
 		com.atlassian.jira.rpc.soap.client.RemoteIssue remoteIssue = new com.atlassian.jira.rpc.soap.client.RemoteIssue();
 		remoteIssue.setSummary( edu.cmu.cs.dennisc.jira.JIRAUtilities.ensureStringWithinLimit( jiraReport.getSummary(), 254 ) );
@@ -73,14 +66,6 @@ public class SOAPUtilities {
 			environment.append( affectsVersions[ 0 ] );
 			environment.append( ";\n" );
 		}
-//		SOAPUtilities.appendSystemProperty( environment, "os.name" );
-//		SOAPUtilities.appendSystemProperty( environment, "java.vm.version" );
-//		if( isInclusionOfCompleteSystemPropertiesDesired ) {
-//			environment.append( "complete system properties:\n" );
-//			environment.append( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
-//			environment.append( "\n;\n" );
-//		}
-//		remoteIssue.setEnvironment( environment.toString() );
 		remoteIssue.setEnvironment( jiraReport.getEnvironment() );
 		return remoteIssue;
 	}

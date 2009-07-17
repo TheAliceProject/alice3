@@ -35,6 +35,8 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		java.util.List< String > rv = new java.util.LinkedList< String >();
 		rv.add( "java.version" );
 		rv.add( "os.name" );
+		rv.add( "os.arch" );
+		rv.add( "os.version" );
 		return rv;
 	}
 
