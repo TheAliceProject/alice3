@@ -61,7 +61,16 @@ public class MethodReflectionProxy extends InvocableReflectionProxy< java.lang.r
 	}
 	@Override
 	protected java.lang.reflect.Method reify() {
-		return this.getDeclaringClassReflectionProxy().getMthd( this.name, this.parameterClassReflectionProxies );
+		Class< ? > cls = this.getDeclaringClassReflectionProxy().getReification();
+		if( cls != null ) {
+			try {
+				return cls.getMethod( name, ClassReflectionProxy.getReifications( this.parameterClassReflectionProxies ) );
+			} catch( NoSuchMethodException nsme ) {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected java.lang.annotation.Annotation[][] getReifiedParameterAnnotations() {

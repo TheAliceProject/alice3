@@ -56,6 +56,15 @@ public class FieldReflectionProxy extends MemberReflectionProxy< java.lang.refle
 	}
 	@Override
 	protected java.lang.reflect.Field reify() {
-		return this.getDeclaringClassReflectionProxy().getFld( name );
+		Class< ? > cls = this.getDeclaringClassReflectionProxy().getReification();
+		if( cls != null ) {
+			try {
+				return cls.getField( name );
+			} catch( NoSuchFieldException nsfe ) {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 }

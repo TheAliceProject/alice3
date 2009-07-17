@@ -34,6 +34,13 @@ public class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 		}
 		return rv;
 	}
+	public static Class<?>[] getReifications( ClassReflectionProxy[] classReflectionProxies ) {
+		Class<?>[] rv = new Class<?>[ classReflectionProxies.length ];
+		for( int i=0; i<rv.length; i++ ) {
+			rv[ i ] = classReflectionProxies[ i ].getReification();
+		}
+		return rv;
+	}
 
 	
 	private String name;
@@ -114,52 +121,6 @@ public class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 			return edu.cmu.cs.dennisc.lang.ClassUtilities.forName( this.name );
 		} catch( ClassNotFoundException cnfe ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: could not find class", this.name );
-			return null;
-		}
-	}
-	private static Class<?>[] getReifications( ClassReflectionProxy[] classReflectionProxies ) {
-		Class<?>[] rv = new Class<?>[ classReflectionProxies.length ];
-		for( int i=0; i<rv.length; i++ ) {
-			rv[ i ] = classReflectionProxies[ i ].getReification();
-		}
-		return rv;
-	}
-
-	
-	
-	/*package private*/ java.lang.reflect.Field getFld( String name ) {
-		Class< ? > cls = this.getReification();
-		if( cls != null ) {
-			try {
-				return cls.getField( name );
-			} catch( NoSuchFieldException nsfe ) {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-	/*package private*/ java.lang.reflect.Constructor< ? > getCnstrctr( ClassReflectionProxy[] parameterClassReflectionProxies ) {
-		Class< ? > cls = this.getReification();
-		if( cls != null ) {
-			try {
-				return cls.getConstructor( getReifications( parameterClassReflectionProxies ) );
-			} catch( NoSuchMethodException nsme ) {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-	/*package private*/ java.lang.reflect.Method getMthd( String name, ClassReflectionProxy[] parameterClassReflectionProxies ) {
-		Class< ? > cls = this.getReification();
-		if( cls != null ) {
-			try {
-				return cls.getMethod( name, getReifications( parameterClassReflectionProxies ) );
-			} catch( NoSuchMethodException nsme ) {
-				return null;
-			}
-		} else {
 			return null;
 		}
 	}

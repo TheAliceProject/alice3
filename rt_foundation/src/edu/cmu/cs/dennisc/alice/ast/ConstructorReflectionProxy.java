@@ -35,7 +35,16 @@ public class ConstructorReflectionProxy extends InvocableReflectionProxy< java.l
 	}
 	@Override
 	protected java.lang.reflect.Constructor< ? > reify() {
-		return this.getDeclaringClassReflectionProxy().getCnstrctr( this.parameterClassReflectionProxies );
+		Class< ? > cls = this.getDeclaringClassReflectionProxy().getReification();
+		if( cls != null ) {
+			try {
+				return cls.getConstructor( ClassReflectionProxy.getReifications( this.parameterClassReflectionProxies ) );
+			} catch( NoSuchMethodException nsme ) {
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected java.lang.annotation.Annotation[][] getReifiedParameterAnnotations() {
