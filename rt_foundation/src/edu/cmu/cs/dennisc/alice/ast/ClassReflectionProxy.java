@@ -26,17 +26,23 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ClassReflectionProxy extends ReflectionProxy {
-	private String name;
-	private Class< ? > cls;
+public class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
+	public static ClassReflectionProxy[] create( Class<?>[] clses ) {
+		ClassReflectionProxy[] rv = new ClassReflectionProxy[ clses.length ];
+		for( int i = 0; i < clses.length; i++ ) {
+			rv[ i ] = new ClassReflectionProxy( clses[ i ] );
+		}
+		return rv;
+	}
 
+	
+	private String name;
 	public ClassReflectionProxy( String name ) {
 		this.name = name;
 	}
 	public ClassReflectionProxy( Class<?> cls ) {
+		super( cls );
 		this.name = cls.getName();
-		this.cls = cls;
-		this.isAttempted = true;
 	}
 	@Override
 	public int hashCode() {
@@ -55,46 +61,34 @@ public class ClassReflectionProxy extends ReflectionProxy {
 		return this.name;
 	}
 	public String getSimpleName() {
-		Class< ? > cls = this.getCls();
+		Class< ? > cls = this.getReification();
 		if( cls != null ) {
 			return cls.getSimpleName();
 		} else {
 			return this.name.substring( this.name.lastIndexOf( '.' )+1 );
 		}
 	}
-	public Class< ? > getCls() {
-		if( this.isAttempted ) {
-			//pass
-		} else {
-			try {
-				this.cls = edu.cmu.cs.dennisc.lang.ClassUtilities.forName( this.name );
-			} catch( ClassNotFoundException cnfe ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: could not find class", this.name );
-				this.cls = null;
-			}
-			this.isAttempted = true;
+	@Override
+	protected Class<?> reify() {
+		try {
+			return edu.cmu.cs.dennisc.lang.ClassUtilities.forName( this.name );
+		} catch( ClassNotFoundException cnfe ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: could not find class", this.name );
+			return null;
 		}
-		return this.cls;
 	}
-	
-	private static Class<?>[] getClses( ClassReflectionProxy[] classReflectionProxies ) {
+	private static Class<?>[] getReifications( ClassReflectionProxy[] classReflectionProxies ) {
 		Class<?>[] rv = new Class<?>[ classReflectionProxies.length ];
 		for( int i=0; i<rv.length; i++ ) {
-			rv[ i ] = classReflectionProxies[ i ].getCls();
+			rv[ i ] = classReflectionProxies[ i ].getReification();
 		}
 		return rv;
 	}
-	public static ClassReflectionProxy[] create( Class<?>[] clses ) {
-		ClassReflectionProxy[] rv = new ClassReflectionProxy[ clses.length ];
-		for( int i = 0; i < clses.length; i++ ) {
-			rv[ i ] = new ClassReflectionProxy( clses[ i ] );
-		}
-		return rv;
-	}
+
 	
 	
 	/*package private*/ java.lang.reflect.Field getFld( String name ) {
-		Class< ? > cls = this.getCls();
+		Class< ? > cls = this.getReification();
 		if( cls != null ) {
 			try {
 				return cls.getField( name );
@@ -106,10 +100,10 @@ public class ClassReflectionProxy extends ReflectionProxy {
 		}
 	}
 	/*package private*/ java.lang.reflect.Constructor< ? > getCnstrctr( ClassReflectionProxy[] parameterClassReflectionProxies ) {
-		Class< ? > cls = this.getCls();
+		Class< ? > cls = this.getReification();
 		if( cls != null ) {
 			try {
-				return cls.getConstructor( getClses( parameterClassReflectionProxies ) );
+				return cls.getConstructor( getReifications( parameterClassReflectionProxies ) );
 			} catch( NoSuchMethodException nsme ) {
 				return null;
 			}
@@ -118,10 +112,10 @@ public class ClassReflectionProxy extends ReflectionProxy {
 		}
 	}
 	/*package private*/ java.lang.reflect.Method getMthd( String name, ClassReflectionProxy[] parameterClassReflectionProxies ) {
-		Class< ? > cls = this.getCls();
+		Class< ? > cls = this.getReification();
 		if( cls != null ) {
 			try {
-				return cls.getMethod( name, getClses( parameterClassReflectionProxies ) );
+				return cls.getMethod( name, getReifications( parameterClassReflectionProxies ) );
 			} catch( NoSuchMethodException nsme ) {
 				return null;
 			}

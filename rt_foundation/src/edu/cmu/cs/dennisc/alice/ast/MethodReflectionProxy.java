@@ -26,18 +26,15 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodReflectionProxy extends InvocableReflectionProxy {
+public class MethodReflectionProxy extends InvocableReflectionProxy< java.lang.reflect.Method > {
 	private String name;
-	private java.lang.reflect.Method mthd;
 	public MethodReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name, ClassReflectionProxy[] parameterClassReflectionProxies ) {
 		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
 		this.name = name;
 	}
 	public MethodReflectionProxy( java.lang.reflect.Method mthd ) {
-		super( mthd.getDeclaringClass(), mthd.getParameterTypes() );
-		this.mthd = mthd;
+		super( mthd, mthd.getDeclaringClass(), mthd.getParameterTypes() );
 		this.name = mthd.getName();
-		this.isAttempted = true;
 	}
 	@Override
 	public int hashCode() {
@@ -62,18 +59,13 @@ public class MethodReflectionProxy extends InvocableReflectionProxy {
 	public String getName() {
 		return this.name;
 	}
-	public java.lang.reflect.Method getMthd() {
-		if( this.isAttempted ) {
-			//pass
-		} else {
-			this.mthd = this.getDeclaringClassReflectionProxy().getMthd( this.name, this.parameterClassReflectionProxies );
-			this.isAttempted = true;
-		}
-		return this.mthd;
+	@Override
+	protected java.lang.reflect.Method reify() {
+		return this.getDeclaringClassReflectionProxy().getMthd( this.name, this.parameterClassReflectionProxies );
 	}
 	@Override
-	protected java.lang.annotation.Annotation[][] getParameterAnnotations() {
-		java.lang.reflect.Method mthd = this.getMthd();
+	protected java.lang.annotation.Annotation[][] getReifiedParameterAnnotations() {
+		java.lang.reflect.Method mthd = this.getReification();
 		if( mthd != null ) {
 			return mthd.getParameterAnnotations();
 		} else {

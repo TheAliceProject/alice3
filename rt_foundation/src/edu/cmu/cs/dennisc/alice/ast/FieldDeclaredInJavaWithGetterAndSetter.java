@@ -57,11 +57,7 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 		this.setterReflectionProxy = setterReflectionProxy;
 
 		java.lang.annotation.Annotation[][] parameterAnnotations = this.setterReflectionProxy.getParameterAnnotations();
-		if( parameterAnnotations != null ) {
-			this.parameterAnnotations0 = parameterAnnotations[ 0 ];
-		} else {
-			this.parameterAnnotations0 = null;
-		}
+		this.parameterAnnotations0 = parameterAnnotations[ 0 ];
 	}
 
 	public MethodReflectionProxy getGetterReflectionProxy() {
@@ -96,7 +92,7 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 
 	@Override
 	public edu.cmu.cs.dennisc.alice.annotations.Visibility getVisibility() {
-		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getReification();
 		if( gttr != null ) {
 			if( gttr.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate.class ) ) {
 				edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate propertyFieldTemplate = gttr.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate.class );
@@ -111,13 +107,13 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 
 	@Override
 	public String getName() {
-		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getReification();
 		assert gttr != null;
 		return edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( gttr );
 	}
 	@Override
 	public AbstractType getValueType() {
-		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getReification();
 		assert gttr != null;
 		return TypeDeclaredInJava.get( gttr.getReturnType() );
 	}
@@ -147,13 +143,13 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 
 	@Override
 	public Access getAccess() {
-		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getReification();
 		assert gttr != null;
 		return Access.get( gttr.getModifiers() );
 	}
 	@Override
 	public boolean isStatic() {
-		java.lang.reflect.Method gttr = this.getterReflectionProxy.getMthd();
+		java.lang.reflect.Method gttr = this.getterReflectionProxy.getReification();
 		assert gttr != null;
 		return java.lang.reflect.Modifier.isStatic( gttr.getModifiers() );
 	}

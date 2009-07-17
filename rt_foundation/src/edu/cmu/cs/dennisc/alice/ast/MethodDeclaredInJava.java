@@ -60,13 +60,7 @@ public class MethodDeclaredInJava extends AbstractMethod {
 		this.parameters.ensureCapacity( classReflectionProxies.length );
 		java.lang.annotation.Annotation[][] parameterAnnotations = this.methodReflectionProxy.getParameterAnnotations();
 		for( int i = 0; i < classReflectionProxies.length; i++ ) {
-			java.lang.annotation.Annotation[] annotationsI;
-			if( parameterAnnotations != null ) {
-				annotationsI = parameterAnnotations[ i ];
-			} else {
-				annotationsI = null;
-			}
-			this.parameters.add( new ParameterDeclaredInJavaMethod( this, i, annotationsI ) );
+			this.parameters.add( new ParameterDeclaredInJavaMethod( this, i, parameterAnnotations[ i ] ) );
 		}
 	}
 
@@ -85,7 +79,7 @@ public class MethodDeclaredInJava extends AbstractMethod {
 
 	@Override
 	public AbstractType getReturnType() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getMthd();
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;
 		return TypeDeclaredInJava.get( mthd.getReturnType() );
 	}
@@ -100,7 +94,7 @@ public class MethodDeclaredInJava extends AbstractMethod {
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.annotations.Visibility getVisibility() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getMthd();
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		if( mthd != null ) {
 			if( mthd.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.MethodTemplate.class ) ) {
 				edu.cmu.cs.dennisc.alice.annotations.MethodTemplate mthdTemplate = mthd.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.MethodTemplate.class );
@@ -141,43 +135,43 @@ public class MethodDeclaredInJava extends AbstractMethod {
 
 	@Override
 	public Access getAccess() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getMthd();
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;
 		return Access.get( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isStatic() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getMthd();
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;
 		return java.lang.reflect.Modifier.isStatic( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isAbstract() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getMthd();
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;
 		return java.lang.reflect.Modifier.isAbstract( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isFinal() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getMthd();
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;
 		return java.lang.reflect.Modifier.isFinal( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isNative() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getMthd();
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;
 		return java.lang.reflect.Modifier.isNative( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isSynchronized() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getMthd();
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;
 		return java.lang.reflect.Modifier.isSynchronized( mthd.getModifiers() );
 	}
 	@Override
 	public boolean isStrictFloatingPoint() {
-		java.lang.reflect.Method mthd = this.methodReflectionProxy.getMthd();
+		java.lang.reflect.Method mthd = this.methodReflectionProxy.getReification();
 		assert mthd != null;
 		return java.lang.reflect.Modifier.isStrict( mthd.getModifiers() );
 	}

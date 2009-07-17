@@ -50,7 +50,7 @@ public class TypeDeclaredInJava extends AbstractType {
 			} else {
 				rv = new TypeDeclaredInJava( classReflectionProxy );
 				s_map.put( classReflectionProxy, rv );
-				Class< ? > cls = classReflectionProxy.getCls();
+				Class< ? > cls = classReflectionProxy.getReification();
 				if( cls != null ) {
 					for( java.lang.reflect.Constructor< ? > cnstrctr : cls.getDeclaredConstructors() ) {
 						rv.constructors.add( ConstructorDeclaredInJava.get( cnstrctr ) );
@@ -212,7 +212,7 @@ public class TypeDeclaredInJava extends AbstractType {
 
 	@Override
 	public boolean isFollowToSuperClassDesired() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
 			if( cls.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class ) ) {
 				edu.cmu.cs.dennisc.alice.annotations.ClassTemplate classTemplate = cls.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class );
@@ -226,7 +226,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 	@Override
 	public boolean isConsumptionBySubClassDesired() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
 			if( cls.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class ) ) {
 				edu.cmu.cs.dennisc.alice.annotations.ClassTemplate classTemplate = cls.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.ClassTemplate.class );
@@ -249,7 +249,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 	@Override
 	public AbstractPackage getPackage() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
 			return PackageDeclaredInJava.get( cls.getPackage() );
 		} else {
@@ -258,7 +258,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 	@Override
 	public AbstractType getSuperType() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		if( cls != null ) {
 			return TypeDeclaredInJava.get( cls.getSuperclass() );
 		} else {
@@ -373,59 +373,59 @@ public class TypeDeclaredInJava extends AbstractType {
 
 	@Override
 	public Access getAccess() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return Access.get( cls.getModifiers() );
 	}
 
 	@Override
 	public boolean isInterface() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return cls.isInterface();
 	}
 
 	@Override
 	public boolean isStatic() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return java.lang.reflect.Modifier.isStatic( cls.getModifiers() );
 	}
 	@Override
 	public boolean isAbstract() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return java.lang.reflect.Modifier.isAbstract( cls.getModifiers() );
 	}
 	@Override
 	public boolean isFinal() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return java.lang.reflect.Modifier.isFinal( cls.getModifiers() );
 	}
 	@Override
 	public boolean isStrictFloatingPoint() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return java.lang.reflect.Modifier.isStrict( cls.getModifiers() );
 	}
 
 	@Override
 	public boolean isArray() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return cls.isArray();
 	}
 	@Override
 	public AbstractType getComponentType() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return TypeDeclaredInJava.get( cls.getComponentType() );
 	}
 
 	@Override
 	public AbstractType getArrayType() {
-		Class< ? > cls = this.classReflectionProxy.getCls();
+		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
 		return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getArrayClass( cls ) );
 	}

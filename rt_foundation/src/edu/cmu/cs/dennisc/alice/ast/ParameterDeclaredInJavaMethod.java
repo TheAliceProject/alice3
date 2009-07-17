@@ -32,9 +32,9 @@ import edu.cmu.cs.dennisc.alice.reflect.MethodInfo;
 public class ParameterDeclaredInJavaMethod extends ParameterDeclaredInJava {
 	private static String getParameterNameFor( MethodReflectionProxy methodReflectionProxy, int index ) {
 		String rv = null;
-		edu.cmu.cs.dennisc.alice.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.get( methodReflectionProxy.getDeclaringClassReflectionProxy().getCls() );
+		edu.cmu.cs.dennisc.alice.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.get( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
 		if( classInfo != null ) {
-			MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getMthd() );
+			MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
 			if( methodInfo != null ) {
 				String[] parameterNames = methodInfo.getParameterNames();
 				if( parameterNames != null ) {

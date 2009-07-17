@@ -71,4 +71,18 @@ public class ClassUtilities {
 		}
 		return false;
 	}
+	
+	public static String getPackageName( String packageNameAndSimpleClassNames ) {
+		int index = packageNameAndSimpleClassNames.lastIndexOf( '.' );
+		if( index != -1 ) {
+			return packageNameAndSimpleClassNames.substring( 0, index );
+		} else {
+			return null;
+		}
+	}
+	public static String[] getSimpleClassNames( String packageNameAndSimpleClassNames ) {
+		int index = packageNameAndSimpleClassNames.lastIndexOf( '.' );
+		String simpleClassNames = packageNameAndSimpleClassNames.substring( index+1 );
+		return simpleClassNames.split( "\\$" );
+	}
 }

@@ -79,7 +79,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			} else {
 				try {
 					edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField fieldInJava = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField)field;
-					org.alice.apis.moveandturn.Color color = (org.alice.apis.moveandturn.Color)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( fieldInJava.getFieldReflectionProxy().getFld(), null );
+					org.alice.apis.moveandturn.Color color = (org.alice.apis.moveandturn.Color)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( fieldInJava.getFieldReflectionProxy().getReification(), null );
 					rv = new ColorIcon( color.getInternal().getAsAWTColor() );
 					this.mapFieldToIcon.put( field, rv );
 				} catch( RuntimeException re ) {
@@ -320,7 +320,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			Class<?> paramCls = null;
 			if( type2.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
 				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-				Class<?> cls = typeInJava.getClassReflectionProxy().getCls();
+				Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
 				for( Class innerCls : cls.getDeclaredClasses() ) {
 					if( innerCls.getSimpleName().equals( "Part" ) ) {
 						paramCls = innerCls;
@@ -394,6 +394,6 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = typeInAlice.getFirstTypeEncounteredDeclaredInJava();
-		return false == edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getCls(), org.alice.apis.moveandturn.Scene.class, org.alice.apis.moveandturn.AbstractCamera.class );
+		return false == edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getReification(), org.alice.apis.moveandturn.Scene.class, org.alice.apis.moveandturn.AbstractCamera.class );
 	}
 }

@@ -63,7 +63,7 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.annotations.Visibility getVisibility() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		if( fld != null ) {
 			if( fld.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.PropertyFieldTemplate.class ) ) {
 				edu.cmu.cs.dennisc.alice.annotations.PropertyFieldTemplate propertyFieldTemplate = fld.getAnnotation( edu.cmu.cs.dennisc.alice.annotations.PropertyFieldTemplate.class );
@@ -82,7 +82,7 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 	}
 	@Override
 	public AbstractType getValueType() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		assert fld != null;
 		return TypeDeclaredInJava.get( fld.getType() );
 	}
@@ -101,31 +101,31 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 	}
 	@Override
 	public Access getAccess() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		assert fld != null;
 		return Access.get( fld.getModifiers() );
 	}	
 	@Override
 	public boolean isStatic() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		assert fld != null;
 		return java.lang.reflect.Modifier.isStatic( fld.getModifiers() );
 	}
 	@Override
 	public boolean isFinal() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		assert fld != null;
 		return java.lang.reflect.Modifier.isFinal( fld.getModifiers() );
 	}
 	@Override
 	public boolean isVolatile() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		assert fld != null;
 		return java.lang.reflect.Modifier.isVolatile( fld.getModifiers() );
 	}
 	@Override
 	public boolean isTransient() {
-		java.lang.reflect.Field fld = this.fieldReflectionProxy.getFld();
+		java.lang.reflect.Field fld = this.fieldReflectionProxy.getReification();
 		assert fld != null;
 		return java.lang.reflect.Modifier.isTransient( fld.getModifiers() );
 	}

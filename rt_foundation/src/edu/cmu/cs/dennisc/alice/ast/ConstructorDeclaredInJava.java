@@ -60,13 +60,7 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 		this.parameters.ensureCapacity( classReflectionProxies.length );
 		java.lang.annotation.Annotation[][] parameterAnnotations = this.constructorReflectionProxy.getParameterAnnotations();
 		for( int i = 0; i < classReflectionProxies.length; i++ ) {
-			java.lang.annotation.Annotation[] annotationsI;
-			if( parameterAnnotations != null ) {
-				annotationsI = parameterAnnotations[ i ];
-			} else {
-				annotationsI = null;
-			}
-			this.parameters.add( new ParameterDeclaredInJavaConstructor( this, i, annotationsI ) );
+			this.parameters.add( new ParameterDeclaredInJavaConstructor( this, i, parameterAnnotations[ i ] ) );
 		}
 	}
 	
@@ -84,7 +78,7 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.annotations.Visibility getVisibility() {
-		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getCnstrctr();
+		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getReification();
 		if( cnstrctr != null ) {
 			if( cnstrctr.isAnnotationPresent( edu.cmu.cs.dennisc.alice.annotations.ConstructorTemplate.class ) ) {
 				//todo: investigate cast requirement
@@ -120,7 +114,7 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 
 	@Override
 	public Access getAccess() {
-		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getCnstrctr();
+		java.lang.reflect.Constructor< ? > cnstrctr = this.constructorReflectionProxy.getReification();
 		if( cnstrctr != null ) {
 			return Access.get( cnstrctr.getModifiers() );
 		} else {

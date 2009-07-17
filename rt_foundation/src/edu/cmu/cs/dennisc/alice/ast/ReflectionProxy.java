@@ -26,8 +26,24 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ReflectionProxy {
-	protected boolean isAttempted = false;
+public abstract class ReflectionProxy<E> {
+	private boolean isReificationNecessary;
+	private E reification;
+	public ReflectionProxy() {
+		isReificationNecessary = true;
+	}
+	public ReflectionProxy( E reification ) {
+		this.reification = reification;
+		isReificationNecessary = false;
+	}
+	protected abstract E reify();
+	public E getReification() {
+		if( isReificationNecessary ) {
+			this.reification = this.reify();
+			isReificationNecessary = false;
+		}
+		return this.reification;
+	}
 	@Override
 	public abstract int hashCode();
 	@Override

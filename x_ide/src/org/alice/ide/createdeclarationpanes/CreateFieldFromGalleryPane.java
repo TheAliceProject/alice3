@@ -59,7 +59,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 	
 
 	public Object createInstanceInJava() {
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getCls() );
+		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
 	}
 
 	private static java.util.Set< String > prefixSet = new java.util.HashSet< String >();

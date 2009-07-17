@@ -26,28 +26,20 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class ConstructorReflectionProxy extends InvocableReflectionProxy {
-	private java.lang.reflect.Constructor< ? > cnstrctr;
+public class ConstructorReflectionProxy extends InvocableReflectionProxy< java.lang.reflect.Constructor< ? > > {
 	public ConstructorReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies ) {
 		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
 	}
 	public ConstructorReflectionProxy( java.lang.reflect.Constructor< ? > cnstrctr ) {
-		super( cnstrctr.getDeclaringClass(), cnstrctr.getParameterTypes() );
-		this.cnstrctr = cnstrctr;
-		this.isAttempted = true;
-	}
-	public java.lang.reflect.Constructor< ? > getCnstrctr() {
-		if( this.isAttempted ) {
-			//pass
-		} else {
-			this.cnstrctr = this.getDeclaringClassReflectionProxy().getCnstrctr( this.parameterClassReflectionProxies );
-			this.isAttempted = true;
-		}
-		return this.cnstrctr;
+		super( cnstrctr, cnstrctr.getDeclaringClass(), cnstrctr.getParameterTypes() );
 	}
 	@Override
-	protected java.lang.annotation.Annotation[][] getParameterAnnotations() {
-		java.lang.reflect.Constructor< ? > cnstrctr = this.getCnstrctr();
+	protected java.lang.reflect.Constructor< ? > reify() {
+		return this.getDeclaringClassReflectionProxy().getCnstrctr( this.parameterClassReflectionProxies );
+	}
+	@Override
+	protected java.lang.annotation.Annotation[][] getReifiedParameterAnnotations() {
+		java.lang.reflect.Constructor< ? > cnstrctr = this.getReification();
 		if( cnstrctr != null ) {
 			return cnstrctr.getParameterAnnotations();
 		} else {

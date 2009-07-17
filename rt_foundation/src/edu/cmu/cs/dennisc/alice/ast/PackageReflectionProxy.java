@@ -26,29 +26,33 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MemberReflectionProxy< E > extends ReflectionProxy< E > {
-	private ClassReflectionProxy declaringClassReflectionProxy;
-	public MemberReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy ) {
-		this.declaringClassReflectionProxy = declaringClassReflectionProxy;
+public class PackageReflectionProxy extends ReflectionProxy< Package > {
+	private String name;
+	public PackageReflectionProxy( String name ) {
+		this.name = name;
 	}
-	public MemberReflectionProxy( E e, Class<?> declaringCls ) {
-		super( e );
-		this.declaringClassReflectionProxy = new ClassReflectionProxy( declaringCls );
+	public PackageReflectionProxy( Package pckg ) {
+		super( pckg );
+		this.name = pckg.getName();
 	}
 	@Override
 	public int hashCode() {
-		return this.declaringClassReflectionProxy.hashCode();
+		return this.name.hashCode();
 	}
 	@Override
 	public boolean equals( Object o ) {
-		MemberReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, MemberReflectionProxy.class );
+		PackageReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, PackageReflectionProxy.class );
 		if( other != null ) {
-			return this.declaringClassReflectionProxy.equals( other.declaringClassReflectionProxy );
+			return this.name.equals( other.name );
 		} else {
 			return false;
 		}
 	}
-	public ClassReflectionProxy getDeclaringClassReflectionProxy() {
-		return this.declaringClassReflectionProxy;
+	public String getName() {
+		return this.name;
+	}
+	@Override
+	protected Package reify() {
+		return Package.getPackage( this.name );
 	}
 }

@@ -26,19 +26,15 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldReflectionProxy extends MemberReflectionProxy {
-	private java.lang.reflect.Field fld;
+public class FieldReflectionProxy extends MemberReflectionProxy< java.lang.reflect.Field > {
 	private String name;
-
 	public FieldReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name ) {
 		super( declaringClassReflectionProxy );
 		this.name = name;
 	}
 	public FieldReflectionProxy( java.lang.reflect.Field fld ) {
-		super( fld.getDeclaringClass() );
-		this.fld = fld;
-		this.name = this.fld.getName();
-		this.isAttempted = true;
+		super( fld, fld.getDeclaringClass() );
+		this.name = fld.getName();
 	}
 
 	@Override
@@ -58,13 +54,8 @@ public class FieldReflectionProxy extends MemberReflectionProxy {
 	public String getName() {
 		return this.name;
 	}
-	public java.lang.reflect.Field getFld() {
-		if( this.isAttempted ) {
-			//pass
-		} else {
-			this.fld = this.getDeclaringClassReflectionProxy().getFld( name );
-			this.isAttempted = true;
-		}
-		return this.fld;
+	@Override
+	protected java.lang.reflect.Field reify() {
+		return this.getDeclaringClassReflectionProxy().getFld( name );
 	}
 }

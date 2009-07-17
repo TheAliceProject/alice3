@@ -26,14 +26,14 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InvocableReflectionProxy extends MemberReflectionProxy {
+public abstract class InvocableReflectionProxy< E > extends MemberReflectionProxy< E > {
 	protected ClassReflectionProxy[] parameterClassReflectionProxies;
 	public InvocableReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, ClassReflectionProxy[] parameterClassReflectionProxies ) {
 		super( declaringClassReflectionProxy );
 		this.parameterClassReflectionProxies = parameterClassReflectionProxies;
 	}
-	public InvocableReflectionProxy( Class<?> declaringCls, Class<?>[] parameterClses ) {
-		super( declaringCls );
+	public InvocableReflectionProxy( E e, Class<?> declaringCls, Class<?>[] parameterClses ) {
+		super( e, declaringCls );
 		this.parameterClassReflectionProxies = ClassReflectionProxy.create( parameterClses );
 	}
 	@Override
@@ -51,7 +51,7 @@ public abstract class InvocableReflectionProxy extends MemberReflectionProxy {
 			if( super.equals( other ) ) {
 				if( this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length ) {
 					for( int i=0; i<this.parameterClassReflectionProxies.length; i++ ) {
-						if( this.parameterClassReflectionProxies[ i ] == other.parameterClassReflectionProxies[ i ] ) {
+						if( this.parameterClassReflectionProxies[ i ].equals( other.parameterClassReflectionProxies[ i ] ) ) {
 							//pass
 						} else {
 							return false;
@@ -73,5 +73,14 @@ public abstract class InvocableReflectionProxy extends MemberReflectionProxy {
 		return this.parameterClassReflectionProxies;
 	}
 	
-	protected abstract java.lang.annotation.Annotation[][] getParameterAnnotations();
+	protected abstract java.lang.annotation.Annotation[][] getReifiedParameterAnnotations();
+	public final java.lang.annotation.Annotation[][] getParameterAnnotations() {
+		java.lang.annotation.Annotation[][] rv = this.getReifiedParameterAnnotations();
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new java.lang.annotation.Annotation[ this.parameterClassReflectionProxies.length ][];
+		}
+		return rv;
+	}
 }
