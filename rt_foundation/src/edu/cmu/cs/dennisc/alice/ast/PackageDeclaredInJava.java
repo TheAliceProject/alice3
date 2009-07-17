@@ -27,37 +27,42 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class PackageDeclaredInJava extends AbstractPackage {
-	private static java.util.Map< Package, PackageDeclaredInJava > s_map;
-	/*package-private*/ static PackageDeclaredInJava get( Package pckg ) {
-		if( pckg != null ) {
-			if( s_map != null ) {
-				//pass
-			} else {
-				s_map = new java.util.HashMap< Package, PackageDeclaredInJava >();				
-			}
-			PackageDeclaredInJava rv = s_map.get( pckg );
+	private static java.util.Map< PackageReflectionProxy, PackageDeclaredInJava > s_map = new java.util.HashMap< PackageReflectionProxy, PackageDeclaredInJava >();
+
+	private PackageReflectionProxy packageReflectionProxy;
+
+	public static PackageDeclaredInJava get( PackageReflectionProxy packageReflectionProxy ) {
+		if( packageReflectionProxy != null ) {
+			PackageDeclaredInJava rv = s_map.get( packageReflectionProxy );
 			if( rv != null ) {
 				//pass
 			} else {
-				rv = new PackageDeclaredInJava( pckg );
+				rv = new PackageDeclaredInJava( packageReflectionProxy );
+				s_map.put( packageReflectionProxy, rv );
 			}
 			return rv;
 		} else {
 			return null;
 		}
 	}
-
-	private Package m_pckg;
-	private PackageDeclaredInJava( Package pckg ) {
-		m_pckg = pckg;
+	public static PackageDeclaredInJava get( Package pckg ) {
+		return get( new PackageReflectionProxy( pckg ) );
 	}
+	private PackageDeclaredInJava( PackageReflectionProxy packageReflectionProxy ) {
+		this.packageReflectionProxy = packageReflectionProxy;
+	}
+
+	public PackageReflectionProxy getPackageReflectionProxy() {
+		return this.packageReflectionProxy;
+	}
+
 	@Override
 	public boolean isDeclaredInAlice() {
 		return false;
 	}
 	@Override
 	public String getName() {
-		return m_pckg.getName();
+		return this.packageReflectionProxy.getName();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {
@@ -65,9 +70,10 @@ public class PackageDeclaredInJava extends AbstractPackage {
 	}
 	
 	@Override
-	public boolean isEquivalentTo( Object other ) {
-		if( other instanceof PackageDeclaredInJava ) {
-			return m_pckg.equals( ((PackageDeclaredInJava)other).m_pckg );
+	public boolean isEquivalentTo( Object o ) {
+		PackageDeclaredInJava other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, PackageDeclaredInJava.class );
+		if( other != null ) {
+			return this.packageReflectionProxy.equals( other.packageReflectionProxy );
 		} else {
 			return false;
 		}

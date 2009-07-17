@@ -117,82 +117,6 @@ public class TypeDeclaredInJava extends AbstractType {
 		}
 		return rv;
 	}
-	
-//	public static FieldDeclaredInJavaWithField getField( FieldReflectionProxy fieldReflectionProxy ) {
-//		return getField( fieldReflectionProxy.getFld() );
-//	}
-//	public static FieldDeclaredInJavaWithGetterAndSetter getField( MethodReflectionProxy getterReflectionProxy, MethodReflectionProxy setterReflectionProxy ) {
-//		return getField( getterReflectionProxy.getMthd(), setterReflectionProxy.getMthd() );
-//	}
-//	public static FieldDeclaredInJavaWithField getField( java.lang.reflect.Field fld ) {
-//		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( fld.getDeclaringClass() );
-//		for( AbstractField field : typeDeclaredInJava.fields ) {
-//			if( field instanceof FieldDeclaredInJavaWithField ) {
-//				FieldDeclaredInJavaWithField fieldDeclaredInJavaWithField = (FieldDeclaredInJavaWithField)field;
-//				if( fld.equals( fieldDeclaredInJavaWithField.getFld() ) ) {
-//					return fieldDeclaredInJavaWithField;
-//				}
-//			}
-//		}
-//		assert false : fld;
-//		return null;
-//	}
-//	public static FieldDeclaredInJavaWithGetterAndSetter getField( java.lang.reflect.Method gttr, java.lang.reflect.Method sttr ) {
-//		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( gttr.getDeclaringClass() );
-//		for( AbstractField field : typeDeclaredInJava.fields ) {
-//			if( field instanceof FieldDeclaredInJavaWithGetterAndSetter ) {
-//				FieldDeclaredInJavaWithGetterAndSetter fieldDeclaredInJavaWithGetterAndSetter = (FieldDeclaredInJavaWithGetterAndSetter)field;
-//				if( gttr.equals( fieldDeclaredInJavaWithGetterAndSetter.getGttr() ) ) {
-//					assert sttr.equals( fieldDeclaredInJavaWithGetterAndSetter.getSttr() ) : sttr;
-//					return fieldDeclaredInJavaWithGetterAndSetter;
-//				}
-//			}
-//		}
-//		assert false : gttr;
-//		return null;
-//	}
-//
-//	public static ConstructorDeclaredInJava getConstructor( java.lang.reflect.Constructor< ? > cnstrctr ) {
-//		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( cnstrctr.getDeclaringClass() );
-//		for( AbstractConstructor constructor : typeDeclaredInJava.constructors ) {
-//			ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)constructor;
-//			if( cnstrctr.equals( constructorDeclaredInJava.getCnstrctr() ) ) {
-//				return constructorDeclaredInJava;
-//			}
-//		}
-//		assert false : cnstrctr;
-//		return null;
-//	}
-//	public static ConstructorDeclaredInJava getConstructor( ConstructorReflectionProxy cnstrctr ) {
-//		return getConstructor( cnstrctr.getCnstrctr() );
-//	}
-//	public static MethodDeclaredInJava getMethod( java.lang.reflect.Method mthd ) {
-//		//System.err.println( "searching for: " + mthd.getName() );
-//		TypeDeclaredInJava typeDeclaredInJava = TypeDeclaredInJava.get( mthd.getDeclaringClass() );
-//		for( AbstractMethod method : typeDeclaredInJava.methods ) {
-//			//System.err.println( "checking: " + method.getName() );
-//			if( method.getName().equals( mthd.getName() ) ) {
-//				//System.err.println( "FOUND: " + mthd.getName() );
-//				MethodDeclaredInJava methodDeclaredInJava = (MethodDeclaredInJava)method;
-//				MethodDeclaredInJava m = methodDeclaredInJava;
-//				while( m != null ) {
-//					if( mthd.equals( m.getMthd() ) ) {
-//						//System.err.println( "__FOUND__: " + mthd.getName() );
-//						return m;
-//					}
-//					m = (MethodDeclaredInJava)m.getNextShorterInChain();
-//				}
-//			}
-//		}
-////		assert false : mthd;
-////		return null;
-//		//System.err.println( "NOT FOUND:" + mthd.getName() );
-//		//Thread.dumpStack();
-//		return new MethodDeclaredInJava( mthd );
-//	}
-//	public static MethodDeclaredInJava getMethod( MethodReflectionProxy methodReflectionProxy ) {
-//		return getMethod( methodReflectionProxy.getMthd() );
-//	}
 
 	private static boolean isMask( int modifiers, int required ) {
 		return (modifiers & required) != 0;
@@ -249,12 +173,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 	@Override
 	public AbstractPackage getPackage() {
-		Class< ? > cls = this.classReflectionProxy.getReification();
-		if( cls != null ) {
-			return PackageDeclaredInJava.get( cls.getPackage() );
-		} else {
-			return null;
-		}
+		return PackageDeclaredInJava.get( this.classReflectionProxy.getPackageReflectionProxy() );
 	}
 	@Override
 	public AbstractType getSuperType() {

@@ -216,16 +216,16 @@ public class FileUtilities {
 	}
 
 
-	private static String SNAPSHOT_ENTRY_NAME = "snapshot.png";
-	@Deprecated
-	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file, final java.awt.Image snapshotImage ) throws java.io.IOException {
-		writeProject( file, project, new edu.cmu.cs.dennisc.zip.DataSource() {
-			public String getName() {
-				return SNAPSHOT_ENTRY_NAME;
-			}
-			public void write( java.io.OutputStream os ) throws java.io.IOException {
-				edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, os, snapshotImage );
-			}
-		} );
-	}
+//	private static String SNAPSHOT_ENTRY_NAME = "snapshot.png";
+//	@Deprecated
+//	public static void writeProject( edu.cmu.cs.dennisc.alice.Project project, java.io.File file, final java.awt.Image snapshotImage ) throws java.io.IOException {
+//		writeProject( file, project, new edu.cmu.cs.dennisc.zip.DataSource() {
+//			public String getName() {
+//				return SNAPSHOT_ENTRY_NAME;
+//			}
+//			public void write( java.io.OutputStream os ) throws java.io.IOException {
+//				edu.cmu.cs.dennisc.image.ImageUtilities.write( edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, os, snapshotImage );
+//			}
+//		} );
+//	}
 }
