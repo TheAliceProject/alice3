@@ -38,8 +38,7 @@ public class JIRAUtilities {
 		}
 	}
 	public static String getPriority() {
-		//Unspecified
-		return "6";
+		return "6"; //Unspecified
 	}
 	public static String ensureStringWithinLimit( String s, int limit ) {
 		if( s.length() > limit ) {
@@ -48,5 +47,4 @@ public class JIRAUtilities {
 			return s;
 		}
 	}
-	
 }
