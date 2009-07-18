@@ -46,30 +46,31 @@ class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActio
 				getIDE().getSceneEditor().handleFieldCreation( declaringType, field, person );
 			}
 		}
-		
-//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
-//		CreateFieldFromGalleryPane createFieldPane = new CreateFieldFromGalleryPane( declaringType, this.file );
-//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
-//		if( field != null ) {
-//			//declaringType.fields.add( field );
-//			
-//			getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
-//		}
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo CreatePersonActionOperation" );
-//		zoot.ZFrame frame = new zoot.ZFrame() {
-//			@Override
-//			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-//			}
-//			@Override
-//			protected void handleQuit( java.util.EventObject e ) {
-//				this.dispose();
-//			}
-//		};
-//		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
-//		frame.getContentPane().add( new org.alice.stageide.personeditor.PersonEditor() );
-//		frame.setVisible( true );
+
+		//		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
+		//		CreateFieldFromGalleryPane createFieldPane = new CreateFieldFromGalleryPane( declaringType, this.file );
+		//		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
+		//		if( field != null ) {
+		//			//declaringType.fields.add( field );
+		//			
+		//			getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
+		//		}
+		//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo CreatePersonActionOperation" );
+		//		zoot.ZFrame frame = new zoot.ZFrame() {
+		//			@Override
+		//			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
+		//			}
+		//			@Override
+		//			protected void handleQuit( java.util.EventObject e ) {
+		//				this.dispose();
+		//			}
+		//		};
+		//		frame.setSize( new java.awt.Dimension( 1024, 768 ) );
+		//		frame.getContentPane().add( new org.alice.stageide.personeditor.PersonEditor() );
+		//		frame.setVisible( true );
 	}
 }
+
 class CreateTextActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public CreateTextActionOperation() {
 		this.putValue( javax.swing.Action.NAME, "Create Text..." );
@@ -84,35 +85,82 @@ class CreateTextActionOperation extends org.alice.ide.operations.AbstractActionO
 			field.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
 			field.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
 			getIDE().getSceneEditor().handleFieldCreation( getIDE().getSceneType(), field, text );
-			
+
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle text", text );
 			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
 			actionContext.commit();
 		} else {
 			actionContext.cancel();
 		}
-		
+
 	}
 }
+
 abstract class CreateInstanceFromFileActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	protected abstract java.io.File getInitialDirectory();
+
+	private void showMessageDialog( java.io.File file, boolean isValidZip ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Unable to create instance from file " );
+		sb.append( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ) );
+		sb.append( ".\n\n" );
+		sb.append( getIDE().getApplicationName() );
+		sb.append( " is able to create instances from class files saved by " );
+		sb.append( getIDE().getApplicationName() );
+		sb.append( ".\n\nLook for files with an " );
+		sb.append( edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION );
+		sb.append( " extension." );
+		javax.swing.JOptionPane.showMessageDialog( org.alice.ide.IDE.getSingleton(), sb.toString(), "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE );
+	}
 	public void perform( zoot.ActionContext actionContext ) {
 		java.io.File directory = this.getInitialDirectory();
 		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog( this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION, false );
 		if( file != null ) {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2c" ) ) {
-				javax.swing.JOptionPane.showMessageDialog( org.alice.ide.IDE.getSingleton(), "Alice3 does not load Alice2 characters", "Cannot read file", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+				javax.swing.JOptionPane.showMessageDialog( org.alice.ide.IDE.getSingleton(), "Alice3 does not load Alice2 characters", "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE );
 				actionContext.cancel();
+			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION.toLowerCase() ) ) {
+				javax.swing.JOptionPane.showMessageDialog( this.getIDE(), file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION + " extension.", "Incorrect File Type", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			} else {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType( file );
-				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
-				org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( declaringType, type );
-				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
-				if( field != null ) {
-					getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
-					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-					actionContext.commit();
+				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION.toLowerCase() );
+				java.util.zip.ZipFile zipFile;
+				try {
+					zipFile = new java.util.zip.ZipFile( file );
+				} catch( java.io.IOException ioe ) {
+					if( isWorthyOfException ) {
+						throw new RuntimeException( file.getAbsolutePath(), ioe );
+					} else {
+						this.showMessageDialog( file, false );
+						zipFile = null;
+					}
+				}
+				if( zipFile != null ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractType type;
+					try {
+						type = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType( zipFile );
+					} catch( java.io.IOException ioe ) {
+						if( isWorthyOfException ) {
+							throw new RuntimeException( file.getAbsolutePath(), ioe );
+						} else {
+							this.showMessageDialog( file, true );
+							type = null;
+						}
+					}
+					if( type != null ) {
+						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
+						org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( declaringType, type );
+						edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( getIDE(), "Create New Instance", true );
+						if( field != null ) {
+							getIDE().getSceneEditor().handleFieldCreation( declaringType, field, createFieldPane.createInstanceInJava() );
+							actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
+							actionContext.commit();
+						} else {
+							actionContext.cancel();
+						}
+					} else {
+						actionContext.cancel();
+					}
 				} else {
 					actionContext.cancel();
 				}
@@ -122,6 +170,7 @@ abstract class CreateInstanceFromFileActionOperation extends org.alice.ide.opera
 		}
 	}
 }
+
 class CreateMyInstance extends CreateInstanceFromFileActionOperation {
 	public CreateMyInstance() {
 		this.putValue( javax.swing.Action.NAME, "My Classes..." );
@@ -131,6 +180,7 @@ class CreateMyInstance extends CreateInstanceFromFileActionOperation {
 		return this.getIDE().getMyTypesDirectory();
 	}
 }
+
 class CreateTextbookInstance extends CreateInstanceFromFileActionOperation {
 	public CreateTextbookInstance() {
 		this.putValue( javax.swing.Action.NAME, "Textbook Classes..." );
@@ -143,6 +193,7 @@ class CreateTextbookInstance extends CreateInstanceFromFileActionOperation {
 
 class GalleryFileActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private java.io.File file;
+
 	public GalleryFileActionOperation( java.io.File file ) {
 		this.file = file;
 	}
@@ -160,8 +211,9 @@ class GalleryFileActionOperation extends org.alice.ide.operations.AbstractAction
  * @author Dennis Cosgrove
  */
 public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGalleryBrowser {
-	private java.util.Map<String, String> map;
-	public GalleryBrowser( java.io.File thumbnailRoot, java.util.Map<String, String> map ) {
+	private java.util.Map< String, String > map;
+
+	public GalleryBrowser( java.io.File thumbnailRoot, java.util.Map< String, String > map ) {
 		this.map = map;
 		this.initialize( thumbnailRoot );
 		zoot.ZButton createPersonButton = new zoot.ZButton( new CreatePersonActionOperation() );
@@ -174,16 +226,16 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		createPersonButton.setIcon( new javax.swing.ImageIcon( image ) );
 		createPersonButton.setHorizontalTextPosition( javax.swing.SwingConstants.CENTER );
 		createPersonButton.setVerticalTextPosition( javax.swing.SwingConstants.BOTTOM );
-		
+
 		swing.Pane fromFilePane = new swing.Pane();
 		fromFilePane.setLayout( new java.awt.GridLayout( 2, 1, 0, 4 ) );
 		fromFilePane.add( createMyInstanceButton );
 		fromFilePane.add( createTextbookInstanceButton );
-		
+
 		swing.BorderPane buttonPane = new swing.BorderPane();
 		buttonPane.add( fromFilePane, java.awt.BorderLayout.NORTH );
 		buttonPane.add( createTextButton, java.awt.BorderLayout.SOUTH );
-		
+
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackground( new java.awt.Color( 220, 220, 255 ) );
 		this.add( createPersonButton, java.awt.BorderLayout.WEST );
@@ -207,12 +259,11 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	public java.awt.Dimension getPreferredSize() {
 		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 256 );
 	}
-	
+
 	public static void main( String[] args ) {
-		
+
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		
-		
+
 		java.io.File thumbnailRoot = new java.io.File( org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails" );
 		zoot.ZFrame frame = new zoot.ZFrame() {
 			@Override

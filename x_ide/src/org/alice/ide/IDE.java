@@ -712,7 +712,7 @@ public abstract class IDE extends zoot.ZFrame {
 		updateBugReportSubmissionTitle( sb );
 		return sb.toString();
 	}
-	protected String getApplicationName() {
+	public String getApplicationName() {
 		return "Alice";
 	}
 	protected String getVersionText() {
@@ -1044,21 +1044,24 @@ public abstract class IDE extends zoot.ZFrame {
 
 	public java.util.List< ? extends zoot.DropReceptor > createListOfPotentialDropReceptors( zoot.ZDragComponent source ) {
 		assert source != null;
-		if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
-			org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
-			return getCodeEditorInFocus().createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
-		} else {
-			java.util.List< zoot.DropReceptor > rv = new java.util.LinkedList< zoot.DropReceptor >();
-			org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
-			if( codeEditor != null ) {
+		org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
+		if( codeEditor != null ) {
+			if( source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance ) {
+				org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
+				return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
+			} else {
+				java.util.List< zoot.DropReceptor > rv = new java.util.LinkedList< zoot.DropReceptor >();
 				rv.add( codeEditor );
+				//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
+				//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
+				//					rv.add( dropReceptor );
+				//				}
+				//			}
+				return rv;
 			}
-			//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
-			//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
-			//					rv.add( dropReceptor );
-			//				}
-			//			}
-			return rv;
+		} else {
+			//todo: investigate
+			return new java.util.LinkedList< zoot.DropReceptor >();
 		}
 	}
 
@@ -1384,6 +1387,20 @@ public abstract class IDE extends zoot.ZFrame {
 		fireProjectOpened( e );
 	}
 
+	private void showMessageDialog( java.io.File file, boolean isValidZip ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Unable to open project from file " );
+		sb.append( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ) );
+		sb.append( ".\n\n" );
+		sb.append( this.getApplicationName() );
+		sb.append( " is able to open projects from files saved by " );
+		sb.append( this.getApplicationName() );
+		sb.append( ".\n\nLook for files with an " );
+		sb.append( edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION );
+		sb.append( " extension." );
+		javax.swing.JOptionPane.showMessageDialog( org.alice.ide.IDE.getSingleton(), sb.toString(), "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE );
+	}
+	
 	public java.io.File getFile() {
 		return this.file;
 	}
@@ -1392,14 +1409,42 @@ public abstract class IDE extends zoot.ZFrame {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2w" ) ) {
 				javax.swing.JOptionPane.showMessageDialog( this, "Alice3 does not load Alice2 worlds", "Cannot read file", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
+				javax.swing.JOptionPane.showMessageDialog( this, file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			} else {
+				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION.toLowerCase() );
+				java.util.zip.ZipFile zipFile;
 				try {
-					edu.cmu.cs.dennisc.alice.Project project = edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( file );
-					this.setProject( project );
-					this.file = file;
-					this.updateTitle();
-				} catch( Throwable t ) {
-					throw new RuntimeException( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ), t );
+					zipFile = new java.util.zip.ZipFile( file );
+				} catch( java.io.IOException ioe ) {
+					if( isWorthyOfException ) {
+						throw new RuntimeException( file.getAbsolutePath(), ioe );
+					} else {
+						this.showMessageDialog( file, false );
+						zipFile = null;
+					}
+				}
+				if( zipFile != null ) {
+					edu.cmu.cs.dennisc.alice.Project project;
+					try {
+						project = edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( zipFile );
+					} catch( java.io.IOException ioe ) {
+						if( isWorthyOfException ) {
+							throw new RuntimeException( file.getAbsolutePath(), ioe );
+						} else {
+							this.showMessageDialog( file, true );
+							project = null;
+						}
+					}
+					if( project != null ) {
+						this.setProject( project );
+						this.file = file;
+						this.updateTitle();
+					} else {
+						//actionContext.cancel();
+					}
+				} else {
+					//actionContext.cancel();
 				}
 			}
 		} else {

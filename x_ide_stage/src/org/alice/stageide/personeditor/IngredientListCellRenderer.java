@@ -45,6 +45,7 @@ abstract class IngredientListCellRenderer< E > extends swing.ListCellRenderer< E
 
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus ) {
+		assert rv != null;
 		if( value != null ) {
 			String clsName = value.getClass().getSimpleName();
 			String enumConstantName = value.toString();
