@@ -67,6 +67,7 @@ public class SOAPUtilities {
 			environment.append( ";\n" );
 		}
 		remoteIssue.setEnvironment( jiraReport.getEnvironment() );
+		remoteIssue.setPriority( edu.cmu.cs.dennisc.jira.JIRAUtilities.getPriority() );
 		return remoteIssue;
 	}
 

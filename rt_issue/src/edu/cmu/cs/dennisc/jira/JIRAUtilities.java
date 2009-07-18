@@ -37,6 +37,10 @@ public class JIRAUtilities {
 			throw new RuntimeException();
 		}
 	}
+	public static String getPriority() {
+		//Unspecified
+		return "6";
+	}
 	public static String ensureStringWithinLimit( String s, int limit ) {
 		if( s.length() > limit ) {
 			return s.substring( 0, limit+1 );

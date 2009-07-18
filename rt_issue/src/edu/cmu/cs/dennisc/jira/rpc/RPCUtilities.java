@@ -87,6 +87,7 @@ public class RPCUtilities {
 	    customFields.add( createCustomField( 10000, jiraReport.getSteps() ) );
 	    customFields.add( createCustomField( 10001, jiraReport.getException() ) );
 	    rv.put( "customFieldValues", customFields );
+		rv.put( "priority", edu.cmu.cs.dennisc.jira.JIRAUtilities.getPriority() );
 		return (redstone.xmlrpc.XmlRpcStruct)client.invoke( "jira1.createIssue", new Object[] { token, rv } );
 	}
 	public static String getKey( XmlRpcStruct issue ) {
