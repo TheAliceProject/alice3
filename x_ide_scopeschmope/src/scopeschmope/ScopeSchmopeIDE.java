@@ -20,7 +20,7 @@ public class ScopeSchmopeIDE extends org.alice.stageide.StageIDE {
 		this.setLocale( new java.util.Locale( "en", "US", "scopeschmope" ) );
 	}
 	@Override
-	protected String getApplicationName() {
+	public String getApplicationName() {
 		return "ScopeSchmope";
 	}
 	@Override
