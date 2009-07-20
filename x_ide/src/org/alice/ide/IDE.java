@@ -23,6 +23,8 @@
 package org.alice.ide;
 
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
+import edu.cmu.cs.dennisc.animation.Program;
 
 /**
  * @author Dennis Cosgrove
@@ -2027,4 +2029,5 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 
 	public abstract boolean isInstanceCreationAllowableFor( TypeDeclaredInAlice typeInAlice );
+	public abstract Program createRuntimeProgram( VirtualMachine vm, TypeDeclaredInAlice sceneType, int frameRate );
 }

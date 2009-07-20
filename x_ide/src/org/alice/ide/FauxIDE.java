@@ -57,6 +57,10 @@ public class FauxIDE extends IDE {
 	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
 		return true;
 	}
+	@Override
+	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, int frameRate ) {
+		return null;
+	}
 	public static void main( String[] args ) {
 		org.alice.ide.LaunchUtilities.launch( FauxIDE.class, null, args );
 	}

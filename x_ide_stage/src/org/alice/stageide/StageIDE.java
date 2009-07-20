@@ -396,4 +396,28 @@ public class StageIDE extends org.alice.ide.IDE {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = typeInAlice.getFirstTypeEncounteredDeclaredInJava();
 		return false == edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getReification(), org.alice.apis.moveandturn.Scene.class, org.alice.apis.moveandturn.AbstractCamera.class );
 	}
+	@Override
+	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram(edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, final int frameRate ) {
+		return new MoveAndTurnRuntimeProgram(sceneType, vm)
+		{
+			@Override
+			protected java.awt.Component createSpeedMultiplierControlPanel() 
+			{
+				return null;
+			}
+			@Override
+			protected edu.cmu.cs.dennisc.animation.Animator createAnimator() 
+			{
+				return new edu.cmu.cs.dennisc.animation.FrameBasedAnimator( frameRate );
+			}
+
+			@Override
+			protected void postRun() 
+			{
+				super.postRun();
+				this.setMovieEncoder( null );
+			}
+		};
+	}
+	
 }
