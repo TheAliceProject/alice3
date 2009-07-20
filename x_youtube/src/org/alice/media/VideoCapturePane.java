@@ -876,7 +876,10 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 
 	private void close()
 	{
-		this.recordedMovieFile.delete();
+		if (this.recordedMovieFile != null)
+		{
+			this.recordedMovieFile.delete();
+		}
 		this.onClose();
 	}
 	
