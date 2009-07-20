@@ -306,4 +306,7 @@ public class FileUtilities {
 			assert file.delete() : file;
 		}
 	}
+	public static void delete( String path ) {
+		delete( new java.io.File( path ) );
+	}
 }
