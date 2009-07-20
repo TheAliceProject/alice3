@@ -286,6 +286,7 @@ public class FileUtilities {
 	}
 
 	public static void copyFile( java.io.File in, java.io.File out ) throws java.io.IOException {
+		createParentDirectoriesIfNecessary( out );
 		java.nio.channels.FileChannel inChannel = new java.io.FileInputStream(in).getChannel();
 		java.nio.channels.FileChannel outChannel = new java.io.FileOutputStream(out).getChannel();
 		inChannel.transferTo(0, inChannel.size(), outChannel);
@@ -297,13 +298,24 @@ public class FileUtilities {
 	}
 	
 	public static void delete( java.io.File file ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "deleting", file );
 		if( file.exists() ) {
 			if( file.isDirectory() ) {
 				for( java.io.File f : file.listFiles() ) {
 					delete( f );
 				}
 			}
-			assert file.delete() : file;
+			boolean isSuccessful = file.delete();
+			assert isSuccessful : file;
+//			if( isSuccessful ) {
+//				//pass 
+//			} else {
+//				throw new RuntimeException( file.getAbsolutePath() );
+//			}
+			assert file.exists() == false : file;
+//			if( file.exists() ) {
+//				throw new RuntimeException( file.getAbsolutePath() );
+//			}
 		}
 	}
 	public static void delete( String path ) {
