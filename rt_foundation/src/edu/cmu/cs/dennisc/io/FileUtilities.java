@@ -284,4 +284,26 @@ public class FileUtilities {
 			}
 		};
 	}
+
+	public static void copyFile( java.io.File in, java.io.File out ) throws java.io.IOException {
+		java.nio.channels.FileChannel inChannel = new java.io.FileInputStream(in).getChannel();
+		java.nio.channels.FileChannel outChannel = new java.io.FileOutputStream(out).getChannel();
+		inChannel.transferTo(0, inChannel.size(), outChannel);
+		inChannel.close();
+		outChannel.close();
+	}
+	public static void copyFile( String inPath, String outPath ) throws java.io.IOException {
+		copyFile( new java.io.File( inPath ), new java.io.File( outPath ) );
+	}
+	
+	public static void delete( java.io.File file ) {
+		if( file.exists() ) {
+			if( file.isDirectory() ) {
+				for( java.io.File f : file.listFiles() ) {
+					delete( f );
+				}
+			}
+			assert file.delete() : file;
+		}
+	}
 }
