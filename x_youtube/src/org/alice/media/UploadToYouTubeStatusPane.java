@@ -105,17 +105,17 @@ public class UploadToYouTubeStatusPane extends JDialog implements YouTubeListene
 		this.uploader = uploader;
 		this.status = UploadStatus.Waiting;
 		
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload00.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload01.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload02.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload03.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload04.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload05.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload06.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload07.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload08.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload09.png" )) );
-		images.add( new ImageIcon( this.getClass().getResource( "images/upload10.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload00.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload01.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload02.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload03.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload04.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload05.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload06.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload07.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload08.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload09.png" )) );
+		images.add( new ImageIcon( UploadToYouTubeStatusPane.class.getResource( "images/upload10.png" )) );
 		
 		this.imageLabel = new JLabel(images.get(0));
 		

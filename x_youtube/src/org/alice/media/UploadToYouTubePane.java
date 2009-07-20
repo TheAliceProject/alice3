@@ -187,7 +187,7 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 				0 ) //ipadY
 				);
 		
-		this.uploadIcon = new ImageIcon( this.getClass().getResource( "images/upload_to_youtube.png" ));
+		this.uploadIcon = new ImageIcon( UploadToYouTubePane.class.getResource( "images/upload_to_youtube.png" ));
 		this.uploadButton = new JButton(this.uploadIcon);
 		this.uploadButton.addActionListener( this );
 		this.uploadButton.setEnabled( false );

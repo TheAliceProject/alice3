@@ -25,7 +25,6 @@ package org.alice.media;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -41,7 +40,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -51,35 +49,25 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 
-import org.alice.media.UploadToYouTubeStatusPane.UploadStatus;
 import org.alice.media.encoder.EncoderListener;
 import org.alice.media.encoder.ImagesToMOVEncoder;
-import org.alice.stageide.MoveAndTurnRuntimeProgram;
 import org.jdesktop.swingworker.SwingWorker;
 
-import com.google.gdata.data.media.mediarss.MediaPlayer;
-import com.google.gdata.data.youtube.VideoEntry;
-import com.google.gdata.data.youtube.YouTubeMediaGroup;
-
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
+import edu.cmu.cs.dennisc.alice.Project;
+import edu.cmu.cs.dennisc.animation.Program;
 import edu.cmu.cs.dennisc.swing.FileSelectionPane;
-import edu.cmu.cs.dennisc.swing.Hyperlink;
 
 import swing.LineAxisPane;
-import zoot.ZFrame;
-import zoot.ZHyperlink;
 
 /**
  * @author David Culyba
  */
 
-public class VideoCapturePane extends LineAxisPane implements ActionListener, DocumentListener, EncoderListener{
+public abstract class VideoCapturePane extends LineAxisPane implements ActionListener, DocumentListener, EncoderListener{
 	
 	private class OwnerPane extends javax.swing.JPanel {
 		public OwnerPane() {
@@ -93,56 +81,6 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		public java.awt.Dimension getMaximumSize() {
 			return this.getPreferredSize();
 		} 
-	}
-	
-	private class RecordableRuntimeProgram extends MoveAndTurnRuntimeProgram
-	{
-		
-		public RecordableRuntimeProgram(TypeDeclaredInAlice sceneType, VirtualMachine vm)
-		{
-			super(sceneType, vm);
-		}
-		
-		@Override
-		protected java.awt.Component createSpeedMultiplierControlPanel() {
-			return null;
-		}
-		@Override
-		protected edu.cmu.cs.dennisc.animation.Animator createAnimator() {
-			return new edu.cmu.cs.dennisc.animation.FrameBasedAnimator( FRAME_RATE );
-		}
-		@Override
-		protected void run() {
-			VideoCapturePane.this.onWorldStart();
-			super.run();
-			this.setMovieEncoder( null );
-		}
-		
-		@Override
-		public void showInAWTContainer( java.awt.Container awtContainer, String[] args ) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "showInAWTContainer", awtContainer, args );
-			setArgs( args );
-			init();
-			awtContainer.setLayout( new java.awt.GridLayout( 1, 1 ) );
-			
-			awtContainer.add( this );
-			if( awtContainer instanceof javax.swing.JComponent ) {
-				((javax.swing.JComponent)awtContainer).revalidate();
-			}
-			awtContainer.repaint();
-		}
-		
-		public void runWorld()
-		{
-			javax.swing.SwingUtilities.invokeLater( new Runnable() {
-				public void run() {
-					java.awt.Container contentPane = RecordableRuntimeProgram.this.getContentPane();
-					contentPane.repaint();
-					RecordableRuntimeProgram.this.start();
-				}
-			} );
-		}
-		
 	}
 	
 	private class MovieFileSelectionPane extends FileSelectionPane
@@ -187,7 +125,6 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		
 	};
 	
-	private static final float FRAME_RATE = 24;
 	private static final Color ERROR_COLOR = Color.RED;
 	private static final Color NEUTRAL_TEXT_COLOR = Color.BLACK;
 	private static final Color NEUTRAL_LABEL_COLOR = Color.GRAY;
@@ -196,13 +133,14 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 	
 	private MovieFileSelectionPane fileSelectionPane = new MovieFileSelectionPane();
 	private OwnerPane pane = new OwnerPane();
-	private edu.cmu.cs.dennisc.alice.Project project;
-	private RecordableRuntimeProgram rtProgram;
+	private Project project;
+	private Program rtProgram;
 	private boolean isRestart = false;
 	private UploadToYouTubePane youTubeUploaderPane;
 	private File recordedMovieFile;
 	private File savedMovieFile;
 	private MoviePlayer moviePlayer;
+	private int frameRate = 24;
 	
 	private JButton recordButton;
 	private ImageIcon recordIcon;
@@ -244,22 +182,12 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 	private static final String NO_RECORDING_STATUS = "Ready to record.";
 	private static final String YOUTUBE_NOT_UPLOADED_STATUS = "Not uploaded to YouTube.";
 	
-	private String getDefaultDirectory()
-	{
-		return edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory().getAbsolutePath();
-	}
 	
-	private String getDefaultFilename()
-	{
-		if (this.project != null)
-		{
-			
-		}
-		return "testMovie";
-	}
 	
-	public VideoCapturePane(edu.cmu.cs.dennisc.alice.Project project) {
+	public VideoCapturePane(Project project, int frameRate) {
 		this.project = project;
+		this.frameRate = frameRate;
+		this.rtProgram = this.createProgram( this.project );
 		
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
 		Frame frame = null;
@@ -274,19 +202,17 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		
 		this.youTubeUploaderPane = new UploadToYouTubePane(frame);
 		
-		this.encoder = new ImagesToMOVEncoder((int)FRAME_RATE);
+		this.encoder = new ImagesToMOVEncoder(this.frameRate);
 		this.encoder.addListener( this );
 		//this.encoder = new SeriesOfImagesMovieEncoder("C:/movie_dump", "test", "0000", "png");
 		
-		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.project.getProgramType().getDeclaredFields().get( 0 ).getValueType();
-		this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
-		rtProgram.showInAWTContainer( this.pane, new String[] {} );
+		
+		showWorldInContainer(VideoCapturePane.this.pane);
 		
 		this.recordButton = new JButton();
 		this.recordButton.setOpaque(false);
-		this.recordIcon = new ImageIcon( this.getClass().getResource( "images/rec_button.png" ));
-		this.stopIcon = new ImageIcon( this.getClass().getResource( "images/stop_button.png" ));
+		this.recordIcon = new ImageIcon( VideoCapturePane.class.getResource( "images/rec_button.png" ));
+		this.stopIcon = new ImageIcon( VideoCapturePane.class.getResource( "images/stop_button.png" ));
 		this.recordButton.setIcon( this.recordIcon );
 		
 		this.pathLabel = new JLabel(getDefaultDirectory());
@@ -323,7 +249,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		this.statusLabel2.setPreferredSize( labelSize );
 		this.statusLabel2.setMinimumSize( labelSize );
 		
-		this.exportToYouTubeButton =  new JButton(new ImageIcon( this.getClass().getResource( "images/export_to_youtube.png" )));
+		this.exportToYouTubeButton =  new JButton(new ImageIcon( VideoCapturePane.class.getResource( "images/export_to_youtube.png" )));
 		this.exportToYouTubeButton.addActionListener( this );
 		this.exportToYouTubeButton.setEnabled( true );
 
@@ -639,6 +565,10 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 		this.revalidate();
 		//this.recordButton.getAction().setEnabled( false );
 	}
+
+	abstract protected Program createProgram(Project project);
+	
+	abstract protected void onClose();
 	
 	private void record() {
 		//
@@ -672,7 +602,7 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 					VideoCapturePane.this.isRestart = true;
 				}
 				VideoCapturePane.this.rtProgram.setMovieEncoder( VideoCapturePane.this.encoder );
-				VideoCapturePane.this.rtProgram.runWorld();
+				VideoCapturePane.this.runWorld();
 				return Boolean.TRUE;
 			}
 			
@@ -682,17 +612,47 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 			}
 		};
 		worker.execute();
-		
-		
+	}
+	
+	private String getDefaultDirectory()
+	{
+		return edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory().getAbsolutePath();
+	}
+	
+	private String getDefaultFilename()
+	{
+		return "testMovie";
+	}
+	
+	protected void showWorldInContainer(java.awt.Container awtContainer)
+	{
+		this.rtProgram.setArgs(  new String[] {} );
+		this.rtProgram.init();
+		awtContainer.setLayout( new java.awt.GridLayout( 1, 1 ) );
+		awtContainer.add( this.rtProgram );
+		if( awtContainer instanceof javax.swing.JComponent ) {
+			((javax.swing.JComponent)awtContainer).revalidate();
+		}
+		awtContainer.repaint();
+	}
+	
+	protected void runWorld()
+	{
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				java.awt.Container contentPane = VideoCapturePane.this.rtProgram.getContentPane();
+				contentPane.repaint();
+				VideoCapturePane.this.onWorldStart();
+				VideoCapturePane.this.rtProgram.start();
+			}
+		} );
 	}
 	
 	private void restartWorld()
 	{
 		this.pane.removeAll();
-		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)VideoCapturePane.this.project.getProgramType().getDeclaredFields().get( 0 ).getValueType();
-		this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
-		this.rtProgram.showInAWTContainer( VideoCapturePane.this.pane, new String[] {} );
+		this.rtProgram = this.createProgram( this.project );
+		showWorldInContainer(VideoCapturePane.this.pane);
 	}
 	
 	private void onWorldStart()
@@ -717,23 +677,6 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 	
 	private void stop() {
 		this.rtProgram.setClosed( true );
-	}
-	
-	public static void main( String[] args ) {
-		zoot.ZFrame frame = new zoot.ZFrame() {
-			@Override
-			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
-			}
-			@Override
-			public void handleQuit( java.util.EventObject e ) {
-				System.exit( 0 );
-			}
-		};
-		File projectFile = new File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "movieTest.a3p" );
-		edu.cmu.cs.dennisc.alice.Project project = edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject(projectFile);
-		frame.getContentPane().add( new VideoCapturePane(project) );
-		frame.pack();
-		frame.setVisible( true );
 	}
 
 	private void uploadToYouTube()
@@ -933,10 +876,8 @@ public class VideoCapturePane extends LineAxisPane implements ActionListener, Do
 
 	private void close()
 	{
-		this.setVisible( false );
 		this.recordedMovieFile.delete();
-		//VERY VERY TEMPORARY
-		System.exit( 0 );
+		this.onClose();
 	}
 	
 	private File getMovieFile()
