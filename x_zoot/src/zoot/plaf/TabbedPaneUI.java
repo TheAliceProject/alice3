@@ -30,6 +30,7 @@ public class TabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
 	private zoot.ZTabbedPane tabbedPane;
 
 	public TabbedPaneUI( zoot.ZTabbedPane tabbedPane ) {
+		super( tabbedPane.getContentAreaColor() );
 		this.tabbedPane = tabbedPane;
 	}
 	@Override

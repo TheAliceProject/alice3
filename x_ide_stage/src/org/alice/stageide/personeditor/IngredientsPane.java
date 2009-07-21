@@ -48,7 +48,7 @@ abstract class IngredientsPane extends swing.BorderPane {
 	
 	private zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane() {
 		@Override
-		protected java.awt.Color getContentAreaColor() {
+		public java.awt.Color getContentAreaColor() {
 			return BACKGROUND_COLOR;
 		}
 	};

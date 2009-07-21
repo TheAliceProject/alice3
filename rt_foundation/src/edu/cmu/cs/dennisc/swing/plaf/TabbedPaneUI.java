@@ -175,6 +175,11 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		public void mouseDragged( java.awt.event.MouseEvent e ) {
 		}
 	}
+	
+	private java.awt.Color contentAreaColor;
+	public TabbedPaneUI( java.awt.Color contentAreaColor ) {
+		this.contentAreaColor = contentAreaColor;
+	}
 
 	@Override
 	protected void installDefaults() {
@@ -279,8 +284,9 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		java.awt.Color prev = g.getColor();
 		try {
 			//g.setColor( this.darkShadow );
-			java.awt.Color color = javax.swing.UIManager.getColor( "TabbedPane.contentAreaColor" );
-			g.setColor( color );
+//			java.awt.Color color = javax.swing.UIManager.getColor( "TabbedPane.contentAreaColor" );
+//			g.setColor( color );
+			g.setColor( this.contentAreaColor );
 			java.awt.Rectangle bounds = g.getClipBounds();
 			g.fillRect( bounds.x, bounds.y, bounds.width, bounds.height );
 		} finally {

@@ -39,13 +39,14 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		return new zoot.plaf.TabbedPaneUI( this );
 	}
 	
-	protected java.awt.Color getContentAreaColor() {
+	public java.awt.Color getContentAreaColor() {
 		return  new java.awt.Color( 63, 63, 81 );
 	}
 	
 	@Override
 	public void updateUI() {
-		javax.swing.UIManager.put("TabbedPane.contentAreaColor", this.getContentAreaColor() );
+		//javax.swing.UIManager.put("TabbedPane.contentAreaColor", this.getContentAreaColor() );
+		//javax.swing.UIManager.put("TabbedPane.contentAreaColor", null );
 		this.setUI( this.createTabbedPaneUI() );
 	}
 	public ActionOperation getTabCloseOperation() {
