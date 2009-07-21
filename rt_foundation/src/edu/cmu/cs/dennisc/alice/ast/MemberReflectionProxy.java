@@ -43,7 +43,7 @@ public abstract class MemberReflectionProxy< E > extends ReflectionProxy< E > {
 	public boolean equals( Object o ) {
 		MemberReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, MemberReflectionProxy.class );
 		if( other != null ) {
-			return this.declaringClassReflectionProxy.equals( other.declaringClassReflectionProxy );
+			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.declaringClassReflectionProxy, other.declaringClassReflectionProxy );
 		} else {
 			return false;
 		}

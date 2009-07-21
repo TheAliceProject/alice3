@@ -45,7 +45,7 @@ public class FieldReflectionProxy extends MemberReflectionProxy< java.lang.refle
 	public boolean equals( Object o ) {
 		FieldReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, FieldReflectionProxy.class );
 		if( other != null ) {
-			return super.equals( other ) && this.name.equals( other.name );
+			return super.equals( other ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.name, other.name );
 		} else {
 			return false;
 		}

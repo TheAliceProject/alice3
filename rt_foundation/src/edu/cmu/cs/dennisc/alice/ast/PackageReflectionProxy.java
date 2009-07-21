@@ -43,7 +43,7 @@ public class PackageReflectionProxy extends ReflectionProxy< Package > {
 	public boolean equals( Object o ) {
 		PackageReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, PackageReflectionProxy.class );
 		if( other != null ) {
-			return this.name.equals( other.name );
+			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.name, other.name );
 		} else {
 			return false;
 		}

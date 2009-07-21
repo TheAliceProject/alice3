@@ -51,7 +51,7 @@ public abstract class InvocableReflectionProxy< E > extends MemberReflectionProx
 			if( super.equals( other ) ) {
 				if( this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length ) {
 					for( int i=0; i<this.parameterClassReflectionProxies.length; i++ ) {
-						if( this.parameterClassReflectionProxies[ i ].equals( other.parameterClassReflectionProxies[ i ] ) ) {
+						if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.parameterClassReflectionProxies[ i ], other.parameterClassReflectionProxies[ i ] ) ) {
 							//pass
 						} else {
 							return false;
