@@ -28,20 +28,19 @@ import edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities;
  * @author Dennis Cosgrove
  */
 public class ConstructorInfo extends MemberWithParametersInfo {
-	private transient java.lang.reflect.Constructor< ? > m_cnstrctr;
-	public ConstructorInfo( java.lang.reflect.Constructor cnstrctr, String[] parameterNames ) {
-		super( cnstrctr.getDeclaringClass(), cnstrctr.getParameterTypes(), parameterNames );
-		m_cnstrctr = cnstrctr;
+	private transient java.lang.reflect.Constructor< ? > cnstrctr = null;
+	public ConstructorInfo( ClassInfo classInfo, String[] parameterClassNames, String[] parameterNames ) {
+		super( classInfo, parameterClassNames, parameterNames );
 	}
 	public ConstructorInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	public java.lang.reflect.Constructor< ? > getCnstrctr() {
-		if( m_cnstrctr != null ) {
+		if( this.cnstrctr != null ) {
 			//pass
 		} else {
-			m_cnstrctr = ReflectionUtilities.getConstructor( getDeclaringCls(), getParameterClses() );
+			this.cnstrctr = ReflectionUtilities.getConstructor( getDeclaringCls(), getParameterClses() );
 		}
-		return m_cnstrctr;
+		return this.cnstrctr;
 	}
 }

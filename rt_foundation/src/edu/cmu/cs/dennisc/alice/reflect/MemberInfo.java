@@ -28,27 +28,20 @@ import edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities;
  * @author Dennis Cosgrove
  */
 public abstract class MemberInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private transient Class<?> m_declaringCls;
-	private String m_declaringClsName;
-	public MemberInfo( Class<?> declaringCls ) {
-		m_declaringCls = declaringCls;
-		m_declaringClsName = m_declaringCls.getName();
+	private ClassInfo declaringClassInfo;
+	public MemberInfo( ClassInfo declaringClassInfo ) {
+		this.declaringClassInfo = declaringClassInfo;
 	}
 	public MemberInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		decode( binaryDecoder );
 	}
 	protected Class<?> getDeclaringCls() {
-		if( m_declaringCls != null ) {
-			//pass
-		} else {
-			m_declaringCls = ReflectionUtilities.getClassForName( m_declaringClsName );
-		}
-		return m_declaringCls;
+		return this.declaringClassInfo.getCls();
 	}
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		m_declaringClsName = binaryDecoder.decodeString();
+		this.declaringClassInfo = ClassInfo.forName( binaryDecoder.decodeString() );
 	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( m_declaringClsName );
+		binaryEncoder.encode( this.declaringClassInfo.getClsName() );
 	}
 }

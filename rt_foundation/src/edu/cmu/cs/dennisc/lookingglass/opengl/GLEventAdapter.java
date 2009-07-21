@@ -477,7 +477,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	//todo: investigate not being invoked
 	public void init( javax.media.opengl.GLAutoDrawable drawable ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
 		initialize( drawable );
 	}
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {

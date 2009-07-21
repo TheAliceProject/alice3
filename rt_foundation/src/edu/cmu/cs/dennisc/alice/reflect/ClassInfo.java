@@ -28,72 +28,82 @@ import edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities;
  * @author Dennis Cosgrove
  */
 public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private transient boolean m_isGetClassForNamAlreadyAttempted = false;
-	private transient Class<?> m_cls;
-	private String m_clsName;
+	private transient boolean isGetClassForNamAlreadyAttempted = false;
+	private String clsName;
+	private transient Class<?> cls;
 
-	private java.util.List< ConstructorInfo > m_constructorInfos = new java.util.LinkedList< ConstructorInfo >();
-	private java.util.List< MethodInfo > m_methodInfos = new java.util.LinkedList< MethodInfo >();
+	private java.util.List< ConstructorInfo > constructorInfos = new java.util.LinkedList< ConstructorInfo >();
+	private java.util.List< MethodInfo > methodInfos = new java.util.LinkedList< MethodInfo >();
 	
-	public ClassInfo( Class<?> cls ) {
-		m_cls = cls;
-		m_clsName = m_cls.getName();
+	private static java.util.Map< String, ClassInfo > map = new java.util.HashMap< String, ClassInfo >();
+	public static ClassInfo forName( String clsName ) {
+		ClassInfo rv = map.get( clsName );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new ClassInfo( clsName );
+		}
+		return rv;
+	}
+	private ClassInfo( String clsName ) {
+		this.clsName = clsName;
 	}
 	public ClassInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		decode( binaryDecoder );
 	}
 	
+	public String getClsName() {
+		return this.clsName;
+	}
+	
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		binaryEncoder.encode( m_clsName );
-		binaryEncoder.encode( edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( m_constructorInfos, ConstructorInfo.class ) );
-		binaryEncoder.encode( edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( m_methodInfos, MethodInfo.class ) );
+		binaryEncoder.encode( this.clsName );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( this.methodInfos, MethodInfo.class ) );
 	}
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		m_clsName = binaryDecoder.decodeString();
-		edu.cmu.cs.dennisc.util.CollectionUtilities.set( m_constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
-		edu.cmu.cs.dennisc.util.CollectionUtilities.set( m_methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
+		this.clsName = binaryDecoder.decodeString();
+		edu.cmu.cs.dennisc.util.CollectionUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
+		edu.cmu.cs.dennisc.util.CollectionUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
 	}
 	protected Class<?> getCls() {
-		if( m_isGetClassForNamAlreadyAttempted ) {
+		if( this.isGetClassForNamAlreadyAttempted ) {
 			//pass
 		} else {
-			m_isGetClassForNamAlreadyAttempted = true;
-//			if( m_cls != null ) {
+			this.isGetClassForNamAlreadyAttempted = true;
+//			if( this.cls != null ) {
 //				//pass
 //			} else {
 				try {
-					m_cls = ReflectionUtilities.getClassForName( m_clsName );
+					this.cls = ReflectionUtilities.getClassForName( this.clsName );
+					assert this.cls != null : this.clsName;
 				} catch( Throwable t ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( t, m_clsName );
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( t, this.clsName );
 				}
 //			}
 		}
-		return m_cls;
+		return this.cls;
 	}
-	public void add( java.lang.reflect.Constructor< ? > cnstrctr, String[] parameterNames ) {
-		assert m_cls != null;
-		assert cnstrctr.getDeclaringClass().equals( m_cls );
-		ConstructorInfo constructorInfo = new ConstructorInfo( cnstrctr, parameterNames );
-		m_constructorInfos.add( constructorInfo );
+	public void addConstructorInfo( String[] parameterClassNames, String[] parameterNames ) {
+		ConstructorInfo constructorInfo = new ConstructorInfo( this, parameterClassNames, parameterNames );
+		this.constructorInfos.add( constructorInfo );
 	}
-	public void add( java.lang.reflect.Method mthd, String[] parameterNames ) {
-		assert m_cls != null;
-		assert mthd.getDeclaringClass().equals( m_cls );
-		MethodInfo methodInfo = new MethodInfo( mthd, parameterNames );
-		m_methodInfos.add( methodInfo );
+	public void addMethodInfo( String name, String[] parameterClassNames, String[] parameterNames ) {
+		MethodInfo methodInfo = new MethodInfo( this, name, parameterClassNames, parameterNames );
+		this.methodInfos.add( methodInfo );
 	}
 
 	public Iterable< ConstructorInfo > getConstructorInfos() {
-		return m_constructorInfos;
+		return this.constructorInfos;
 	}
 	public Iterable< MethodInfo > getMethodInfos() {
-		return m_methodInfos;
+		return this.methodInfos;
 	}
 	
-	private java.util.Set< MethodInfo > m_outOfDateMethodInfos = new java.util.HashSet< MethodInfo >();
+	private java.util.Set< MethodInfo > outOfDateMethodInfos = new java.util.HashSet< MethodInfo >();
 	public MethodInfo lookupInfo( java.lang.reflect.Method mthd ) {
 		for( MethodInfo methodInfo : getMethodInfos() ) {
-			if( m_outOfDateMethodInfos.contains( methodInfo ) ) {
+			if( this.outOfDateMethodInfos.contains( methodInfo ) ) {
 				//pass
 			} else {
 				try {
@@ -102,8 +112,7 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 						return methodInfo;
 					}
 				} catch( RuntimeException re ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "no such method", methodInfo, "on Class", m_cls );
-					m_outOfDateMethodInfos.add( methodInfo ); 
+					this.outOfDateMethodInfos.add( methodInfo ); 
 				}
 			}
 		}

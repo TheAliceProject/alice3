@@ -22,47 +22,38 @@
  */
 package edu.cmu.cs.dennisc.alice.reflect;
 
-import edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities;
-
 /**
  * @author Dennis Cosgrove
  */
 public class MethodInfo extends MemberWithParametersInfo {
-	private transient java.lang.reflect.Method m_mthd;
-	private transient boolean m_isNonExistent = false;
-	private String m_name;
-	public MethodInfo( java.lang.reflect.Method mthd, String[] parameterNames ) {
-		super( mthd.getDeclaringClass(), mthd.getParameterTypes(), parameterNames );
-		m_mthd = mthd;
-		m_name = m_mthd.getName();
+	private transient java.lang.reflect.Method mthd;
+	private String name;
+	public MethodInfo( ClassInfo classInfo, String name, String[] parameterClassNames, String[] parameterNames ) {
+		super( classInfo, parameterClassNames, parameterNames );
+		this.name = name;
 	}
 	public MethodInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	
 	public java.lang.reflect.Method getMthd() {
-		if( m_mthd != null || m_isNonExistent ) {
+		if( this.mthd != null ) {
 			//pass
 		} else {
-			try {
-				m_mthd = ReflectionUtilities.getMethod( getDeclaringCls(), m_name, getParameterClses() );
-			} catch( RuntimeException re ) {
-				m_mthd = null;
-				m_isNonExistent = true;
-			}
+			this.mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( getDeclaringCls(), this.name, getParameterClses() );
 		}
-		return m_mthd;
+		return this.mthd;
 	}
 
 	@Override
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super.decode( binaryDecoder );
-		m_name = binaryDecoder.decodeString();
+		this.name = binaryDecoder.decodeString();
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		binaryEncoder.encode( m_name );
+		binaryEncoder.encode( this.name );
 	}
 
 	@Override
@@ -70,7 +61,7 @@ public class MethodInfo extends MemberWithParametersInfo {
 		StringBuffer sb = new StringBuffer();
 		sb.append( getClass().getName() );
 		sb.append( "[name=" );
-		sb.append( m_name );
+		sb.append( this.name );
 		sb.append( "]" );
 		return sb.toString();
 	}

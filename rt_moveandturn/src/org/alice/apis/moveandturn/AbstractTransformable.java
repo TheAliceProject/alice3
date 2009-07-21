@@ -24,7 +24,6 @@
 package org.alice.apis.moveandturn;
 
 import edu.cmu.cs.dennisc.alice.annotations.*;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 
 /**
  * @author Dennis Cosgrove
@@ -42,10 +41,10 @@ public abstract class AbstractTransformable extends Composite {
 	public abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGAbstractTransformable();
 
 	@PropertyGetterTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
-	public AffineMatrix4x4 getLocalTransformation() {
+	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 getLocalTransformation() {
 		return getSGAbstractTransformable().getLocalTransformation();
 	}
-	public void setLocalTransformation( AffineMatrix4x4 transformation ) {
+	public void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 transformation ) {
 		getSGAbstractTransformable().setLocalTransformation( transformation );
 	}
 
@@ -364,7 +363,7 @@ public abstract class AbstractTransformable extends Composite {
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 m0 = getTransformation( asSeenBy );
 				perform( new edu.cmu.cs.dennisc.math.animation.AffineMatrix4x4Animation( duration, style, m0, pointOfView ) {
 					@Override
-					protected void updateValue( AffineMatrix4x4 pointOfView ) {
+					protected void updateValue( edu.cmu.cs.dennisc.math.AffineMatrix4x4 pointOfView ) {
 						setPointOfView( pointOfView, sgReferenceFrame );
 					}
 				} );
@@ -601,7 +600,7 @@ public abstract class AbstractTransformable extends Composite {
 
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void moveAndOrientTo( ReferenceFrame target, Number duration, Style style ) {
-		setPointOfView( AffineMatrix4x4.accessIdentity(), duration, target, style );
+		setPointOfView( edu.cmu.cs.dennisc.math.AffineMatrix4x4.accessIdentity(), duration, target, style );
 	}
 	@MethodTemplate(visibility = Visibility.CHAINED )
 	public void moveAndOrientTo( ReferenceFrame target, Number duration ) {

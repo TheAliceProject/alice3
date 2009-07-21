@@ -37,30 +37,30 @@ public final class ClassInfoManager {
 				s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
 					@Override
 					protected ClassInfo initialize() {
-						try {
-							return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( f, ClassInfo.class );
-						} catch( Exception e ) {
-							return null;
-						}
+						return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( f, ClassInfo.class );
 					}
 				} );
+//				ClassInfo classInfo = s_map.get( clsName ).get();
+//				for( MethodInfo methodInfo : classInfo.getMethodInfos() ) {
+//					try {
+//						java.lang.reflect.Method mthd = methodInfo.getMthd();
+//					} catch( RuntimeException re ) {
+//						re.printStackTrace();
+//					}
+//				}
 			}
 		} else {
 			try {
 				final java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file ); 
 				java.util.Enumeration< ? extends java.util.zip.ZipEntry > e = zipFile.entries();
 				while( e.hasMoreElements() ) {
-					final java.util.zip.ZipEntry zipEntry = e.nextElement();
-					String clsName = edu.cmu.cs.dennisc.io.FileUtilities.getBaseName( zipFile.getName() );
+					java.util.zip.ZipEntry zipEntry = e.nextElement();
+					final java.io.InputStream is = zipFile.getInputStream( zipEntry );
+					String clsName = edu.cmu.cs.dennisc.io.FileUtilities.getBaseName( zipEntry.getName() );
 					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
 						@Override
 						protected edu.cmu.cs.dennisc.alice.reflect.ClassInfo initialize() {
-							try {
-								return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( zipFile.getInputStream( zipEntry ), ClassInfo.class );
-							//} catch( java.io.IOException ioe ) {
-							} catch( Exception e ) {
-								return null;
-							}
+							return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary( is, ClassInfo.class );
 						}
 					} );
 				}
@@ -96,6 +96,12 @@ public final class ClassInfoManager {
 		}
 	}
 	public static Iterable< MethodInfo > getMethodInfos( Class<?> cls ) {
+		if( s_map.isEmpty() ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "EMPTY", cls.getName() );
+			if( cls.getName().contains( "Model" ) ) {
+				Thread.dumpStack();
+			}
+		}
 		ClassInfo clsInfo = get( cls );
 		if( clsInfo != null ) {
 			return clsInfo.getMethodInfos();

@@ -71,7 +71,7 @@ public class TypeDeclaredInJava extends AbstractType {
 									set.add( mthd );
 								}
 							} catch( RuntimeException re ) {
-								edu.cmu.cs.dennisc.print.PrintUtilities.println( "no such method", methodInfo, "on Class", cls );
+								//edu.cmu.cs.dennisc.print.PrintUtilities.println( "no such method", methodInfo, "on ", cls );
 								//re.printStackTrace();
 							}
 						}

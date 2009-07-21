@@ -28,48 +28,43 @@ import edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities;
  * @author Dennis Cosgrove
  */
 public abstract class MemberWithParametersInfo extends MemberInfo {
-	private transient Class<?>[] m_parameterClses;
-	private String[] m_parameterClsNames;
-	private String[] m_parameterNames;
-	public MemberWithParametersInfo( Class<?> declaringCls, Class<?>[] parameterClses, String[] parameterNames ) {
-		super( declaringCls );
-		m_parameterClses = parameterClses;
-		m_parameterClsNames = new String[ m_parameterClses.length ];
-		int i = 0;
-		for( Class< ? > cls : m_parameterClses ) {
-			m_parameterClsNames[ i++ ] = cls.getName();
-		}
-		m_parameterNames = parameterNames;
+	private transient Class<?>[] parameterClses;
+	private String[] parameterClassNames;
+	private String[] parameterNames;
+	public MemberWithParametersInfo( ClassInfo declaringClassInfo, String[] parameterClassNames, String[] parameterNames ) {
+		super( declaringClassInfo );
+		this.parameterClassNames = parameterClassNames;
+		this.parameterNames = parameterNames;
 	}
 	public MemberWithParametersInfo( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	public Class<?>[] getParameterClses() {
-		if( m_parameterClses != null ) {
+		if( this.parameterClses != null ) {
 			//pass
 		} else {
-			m_parameterClses = new Class<?>[ m_parameterClsNames.length ];
+			this.parameterClses = new Class<?>[ this.parameterClassNames.length ];
 			int i = 0;
-			for( String name : m_parameterClsNames ) {
-				m_parameterClses[ i++ ] = ReflectionUtilities.getClassForName( name );
+			for( String name : this.parameterClassNames ) {
+				this.parameterClses[ i++ ] = ReflectionUtilities.getClassForName( name );
 			}
 		}
-		return m_parameterClses;
+		return this.parameterClses;
 	}
 	public String[] getParameterNames() {
-		return m_parameterNames;
+		return this.parameterNames;
 	}
 	@Override
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super.decode( binaryDecoder );
-		m_parameterClsNames = binaryDecoder.decodeStringArray();
-		m_parameterNames = binaryDecoder.decodeStringArray();
+		this.parameterClassNames = binaryDecoder.decodeStringArray();
+		this.parameterNames = binaryDecoder.decodeStringArray();
 	}
 	@Override
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		super.encode( binaryEncoder );
-		binaryEncoder.encode( m_parameterClsNames );
-		binaryEncoder.encode( m_parameterNames );
+		binaryEncoder.encode( this.parameterClassNames );
+		binaryEncoder.encode( this.parameterNames );
 	}
 	
 }

@@ -236,8 +236,8 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 					return LookingGlassFactory.this.step();
 				}
 			};
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "lightweight count:", this.lightweightOnscreenLookingGlasses.size() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "heavyweight count:", this.heavyweightOnscreenLookingGlasses.size() );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "lightweight count:", this.lightweightOnscreenLookingGlasses.size() );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "heavyweight count:", this.heavyweightOnscreenLookingGlasses.size() );
 //			javax.swing.SwingUtilities.invokeLater( new Runnable() {
 //				public void run() {
 					LookingGlassFactory.this.animator.start();
