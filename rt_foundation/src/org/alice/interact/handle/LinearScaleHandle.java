@@ -100,9 +100,17 @@ public class LinearScaleHandle extends LinearDragHandle{
 	protected Vector3 getUniformResizeOffset()
 	{
 		AxisAlignedBox bbox = getManipulatedObjectBox();
-		Vector3 handleOffset = new Vector3(bbox.getMaximum());
-		handleOffset.z = 0;
-		handleOffset.x *= -1;
+		Vector3 handleOffset;
+		if (bbox != null)
+		{
+			handleOffset = new Vector3(bbox.getMaximum());
+			handleOffset.z = 0;
+			handleOffset.x *= -1;
+		}
+		else
+		{
+			handleOffset = new Vector3(1, 1, 0);
+		}
 		return handleOffset;
 	}
 	
@@ -114,7 +122,7 @@ public class LinearScaleHandle extends LinearDragHandle{
 	}
 	
 	@Override
-	public void positionRelativeToObject( Composite object ) {
+	public void positionRelativeToObject( ) {
 		if (this.dragDescription.direction == MovementDirection.RESIZE)
 		{
 			this.dragAxis = this.getUniformResizeDirection();
@@ -127,7 +135,7 @@ public class LinearScaleHandle extends LinearDragHandle{
 		}
 		this.setTransformation( objectTransformation, this.getReferenceFrame() );
 		Vector3 handleOffset = new Vector3(this.dragAxis);
-		handleOffset.multiply( this.getHandleLength(this.manipulatedObject) );
+		handleOffset.multiply( this.getHandleLength() );
 		this.setTranslationOnly( handleOffset, this.getReferenceFrame() );
 	}
 	

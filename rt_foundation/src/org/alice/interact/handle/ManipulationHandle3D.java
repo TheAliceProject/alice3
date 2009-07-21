@@ -78,7 +78,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	{
 		public void propertyChanged( PropertyEvent e ) {
 			ManipulationHandle3D.this.setScale( ManipulationHandle3D.this.getObjectScale() );
-			ManipulationHandle3D.this.positionRelativeToObject( ManipulationHandle3D.this.manipulatedObject );
+			ManipulationHandle3D.this.positionRelativeToObject();
 		}
 
 		public void propertyChanging( PropertyEvent e ) {
@@ -295,8 +295,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return this.getManipulatedObject();
 	}
 	
-	abstract public void positionRelativeToObject( Composite object );
-	abstract public void resizeToObject( Composite object );
+	abstract public void positionRelativeToObject();
+	abstract public void resizeToObject();
 	
 	protected void updateVisibleState(HandleRenderState renderState)
 	{
@@ -453,17 +453,28 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	protected AxisAlignedBox getManipulatedObjectBox()
 	{
+		AxisAlignedBox boundingBox = null;
 		if (this.manipulatedObject != null)
 		{
 			Object bbox = this.manipulatedObject.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
 			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
 			{
-				AxisAlignedBox boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
-				boundingBox.scale( this.getTransformableScale( this.manipulatedObject ) );
-				return boundingBox;
+				boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
+				if (boundingBox.isNaN())
+				{
+					boundingBox = null;
+				}
 			}
 		}
-		return null;
+		if (boundingBox == null)
+		{
+			boundingBox = new AxisAlignedBox(new Point3(-1, 0, -1), new Point3(1, 1, 1));
+		}
+		if (boundingBox != null)
+		{
+			boundingBox.scale( this.getTransformableScale( this.manipulatedObject ) );
+		}
+		return boundingBox;
 	}
 	
 	public void setPickable(boolean isPickable)

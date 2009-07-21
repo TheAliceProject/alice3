@@ -83,13 +83,13 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	}
 	
 	@Override
-	public void positionRelativeToObject( Composite object ) {
+	public void positionRelativeToObject() {
 		this.setTransformation( this.getTransformationForAxis( this.rotationAxis ), this.getReferenceFrame() );
 		this.setTranslationOnly( this.handleOffset, this.getReferenceFrame() );
 	}
 
 	public void propertyChanged( PropertyEvent e ) {
-		this.positionRelativeToObject( this.getManipulatedObject() );		
+		this.positionRelativeToObject();		
 	}
 
 	public void propertyChanging( PropertyEvent e ) {

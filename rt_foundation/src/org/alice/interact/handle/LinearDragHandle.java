@@ -31,6 +31,7 @@ import org.alice.interact.condition.MovementDescription;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
@@ -100,61 +101,33 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	protected void setSize(double size)
 	{
 		this.distanceFromOrigin = size;
-		this.positionRelativeToObject( this.getManipulatedObject() );
+		this.positionRelativeToObject();
 	}
 	
-	protected double getHandleLength( Composite object )
+	protected double getHandleLength()
 	{
-		if (object != null)
+		if (this.manipulatedObject != null)
 		{
-			Object bbox = object.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY );
-			if (bbox instanceof edu.cmu.cs.dennisc.math.AxisAlignedBox)
+			AxisAlignedBox boundingBox = this.getManipulatedObjectBox();
+			Vector3 desiredHandleValues = new Vector3(0.0d, 0.0d, 0.0d);
+			Point3 max = boundingBox.getMaximum();
+			Point3 min = boundingBox.getMinimum();
+			Vector3 extents[] = new Vector3[6];
+			extents[0] = new Vector3(max.x, 0, 0);
+			extents[1] = new Vector3(0, max.y, 0);
+			extents[2] = new Vector3(0, 0, max.z);
+			extents[3] = new Vector3(min.x, 0, 0);
+			extents[4] = new Vector3(0, min.y, 0);
+			extents[5] = new Vector3(0, 0, min.z);
+			for (int i=0; i<extents.length; i++)
 			{
-				AxisAlignedBox boundingBox = new AxisAlignedBox((edu.cmu.cs.dennisc.math.AxisAlignedBox)bbox);
-				if (object instanceof Transformable)
+				double axisDot = Vector3.calculateDotProduct( this.dragAxis, extents[i] );
+				if (axisDot > 0.0d)
 				{
-					boundingBox.scale( this.getTransformableScale( (Transformable)object ) );
+					desiredHandleValues.add( Vector3.createMultiplication( extents[i], this.dragAxis ) );
 				}
-
-				Vector3 desiredHandleValues = new Vector3(0.0d, 0.0d, 0.0d);
-				Vector3 extents[] = { new Vector3(boundingBox.getMaximum()), new Vector3(boundingBox.getMinimum()) };
-				for (int i=0; i<extents.length; i++)
-				{
-					double axisDot = Vector3.calculateDotProduct( this.dragAxis, extents[i] );
-					if (axisDot > 0.0d)
-					{
-						desiredHandleValues.add( Vector3.createMultiplication( extents[i], this.dragAxis ) );
-					}
-//					if (Math.signum( extents[i].x ) == Math.signum( this.dragAxis.x ))
-//						if ( Math.abs(extents[i].x) > Math.abs(desiredHandleValues.x) )
-//							desiredHandleValues.x = extents[i].x;
-//					
-//					if (Math.signum( extents[i].y ) == Math.signum( this.dragAxis.y ))
-//						if ( Math.abs(extents[i].y) > Math.abs(desiredHandleValues.y) )
-//							desiredHandleValues.y = extents[i].y;
-//					
-//					if (Math.signum( extents[i].z ) == Math.signum( this.dragAxis.z ))
-//						if ( Math.abs(extents[i].z) > Math.abs(desiredHandleValues.z) )
-//							desiredHandleValues.z = extents[i].z;
-				}
-				
-//				double xLength = desiredHandleValues.x / this.dragAxis.x;
-//				if (Double.isNaN( xLength ))
-//					xLength = 0.0d;
-//				double yLength = desiredHandleValues.y / this.dragAxis.y;
-//				if (Double.isNaN( yLength ))
-//					yLength = 0.0d;
-//				double zLength = desiredHandleValues.z / this.dragAxis.z;
-//				if (Double.isNaN( zLength ))
-//					zLength = 0.0d;
-//				
-//				double length = Math.max( xLength, Math.max( yLength, zLength ) );
-//				if (length < MIN_LENGTH)
-//				{
-//					length = MIN_LENGTH;
-//				}
-				return desiredHandleValues.calculateMagnitude();
 			}
+			return desiredHandleValues.calculateMagnitude();
 		}
 		return 0.0d;
 	}
@@ -186,7 +159,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		super.updateVisibleState(renderState);
 		if (this.manipulatedObject != null && this.lengthAnimation != null)
 		{
-			double endHandleLength = this.isRenderable() ? this.getHandleLength( this.manipulatedObject ) : 0.0d;
+			double endHandleLength = this.isRenderable() ? this.getHandleLength() : 0.0d;
 			this.lengthAnimation.setTarget( endHandleLength );
 		}
 	}
@@ -225,9 +198,9 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 	
 	@Override
-	public void positionRelativeToObject( Composite object )
+	public void positionRelativeToObject()
 	{
-		if (object != null)
+		if (this.manipulatedObject != null)
 		{
 			Vector3 translation = Vector3.createMultiplication( this.dragAxis, this.distanceFromOrigin + this.offsetPadding );
 			this.setTransformation( this.getTransformationForAxis( this.dragAxis ), this.getReferenceFrame() );
@@ -236,11 +209,11 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 
 	@Override
-	 public void resizeToObject( Composite object )
+	 public void resizeToObject()
 	{
-		if (object != null)
+		if (this.manipulatedObject != null)
 		{
-			double handleLength = this.getHandleLength( object );
+			double handleLength = this.getHandleLength();
 			this.setSize( handleLength );
 			if (this.lengthAnimation != null)
 			{
@@ -251,7 +224,7 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	}
 	
 	public void propertyChanged( PropertyEvent e ) {
-		this.positionRelativeToObject( this.getManipulatedObject() );		
+		this.positionRelativeToObject();		
 	}
 
 	public void propertyChanging( PropertyEvent e ) {
