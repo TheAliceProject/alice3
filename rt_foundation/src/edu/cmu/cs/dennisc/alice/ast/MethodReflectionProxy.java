@@ -47,7 +47,7 @@ public class MethodReflectionProxy extends InvocableReflectionProxy< java.lang.r
 		MethodReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, MethodReflectionProxy.class );
 		if( other != null ) {
 			if( super.equals( other ) ) {
-				return this.name == other.name;
+				return this.name.equals( other.name );
 			} else {
 				return false;
 			}

@@ -96,12 +96,12 @@ public final class ClassInfoManager {
 		}
 	}
 	public static Iterable< MethodInfo > getMethodInfos( Class<?> cls ) {
-		if( s_map.isEmpty() ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "EMPTY", cls.getName() );
-			if( cls.getName().contains( "Model" ) ) {
-				Thread.dumpStack();
-			}
-		}
+//		if( s_map.isEmpty() ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "EMPTY", cls.getName() );
+//			if( cls.getName().contains( "Model" ) ) {
+//				Thread.dumpStack();
+//			}
+//		}
 		ClassInfo clsInfo = get( cls );
 		if( clsInfo != null ) {
 			return clsInfo.getMethodInfos();
