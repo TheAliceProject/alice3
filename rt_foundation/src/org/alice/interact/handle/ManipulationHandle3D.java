@@ -427,6 +427,10 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 
 	protected double getObjectScale()
 	{
+		if (this.manipulatedObject == null)
+		{
+			return 1.0d;
+		}
 		final double VOLUME_NORMALIZER = 1d;
 		AxisAlignedBox bbox = this.getManipulatedObjectBox();
 		if (bbox == null)
