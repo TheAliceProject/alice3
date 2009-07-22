@@ -88,9 +88,7 @@ public class YouTubeLoginPanel extends JPanel implements ActionListener, Documen
 		this.loginPanel.setLayout( new GridBagLayout() );
 		
 		this.userNameField = new JTextField(24);
-		this.userNameField.setText( "culyba@gmail.com" );
 		this.passwordField = new JPasswordField(24);
-		this.passwordField.setText("bkmdlmc");
 		this.loginButton = new JButton("Login");
 		this.loginStatus = new JLabel("Not logged in.");
 		this.loginStatus.setForeground( NEUTRAL_COLOR );
