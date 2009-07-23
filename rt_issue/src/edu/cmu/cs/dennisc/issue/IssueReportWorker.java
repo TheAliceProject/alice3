@@ -99,23 +99,23 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 				} catch( Exception eC ) {
 					eC.printStackTrace();
 					this.process( "FAILED.\n" );
-					this.process( "* sending secure mail (on secure smtp port)... " );
-					try {
-						this.sendMail( true, null );
-						this.process( "SUCCEEDED.\n" );
-					} catch( Exception e2 ) {
-						e2.printStackTrace();
-						this.process( "FAILED.\n" );
-						this.process( "* sending secure mail (on http port)... " );
-						try {
-							this.sendMail( true, 80 );
-							this.process( "SUCCEEDED.\n" );
-						} catch( Exception e3 ) {
-							e3.printStackTrace();
+//					this.process( "* sending secure mail (on secure smtp port)... " );
+//					try {
+//						this.sendMail( true, null );
+//						this.process( "SUCCEEDED.\n" );
+//					} catch( Exception eD ) {
+//						eD.printStackTrace();
+//						this.process( "FAILED.\n" );
+//						this.process( "* sending secure mail (on http port)... " );
+//						try {
+//							this.sendMail( true, 80 );
+//							this.process( "SUCCEEDED.\n" );
+//						} catch( Exception eE ) {
+//							eE.printStackTrace();
 							this.process( "FAILED.\n" );
 							return false;
-						}
-					}
+//						}
+//					}
 				}
 			}
 		}
