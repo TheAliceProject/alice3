@@ -70,12 +70,14 @@ import swing.LineAxisPane;
 public abstract class VideoCapturePane extends LineAxisPane implements ActionListener, DocumentListener, EncoderListener{
 	
 	private class OwnerPane extends javax.swing.JPanel {
-		public OwnerPane() {
+		private Dimension customPreferredSize;
+		public OwnerPane(Dimension preferredSize) {
+			this.customPreferredSize = new Dimension(preferredSize);
 			setBackground( java.awt.Color.DARK_GRAY );
 		}
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return new java.awt.Dimension( 640, 480 );
+			return new java.awt.Dimension(this.customPreferredSize);
 		}
 		@Override
 		public java.awt.Dimension getMaximumSize() {
@@ -130,9 +132,10 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 	private static final Color NEUTRAL_LABEL_COLOR = Color.GRAY;
 	private static final Color ACTIVE_LABEL_COLOR = Color.BLACK;
 	private static final Color HAPPY_COLOR = new Color(0f, .6f, 0f);
+	private static final Dimension worldSize = new Dimension(512, 384);
 	
 	private MovieFileSelectionPane fileSelectionPane = new MovieFileSelectionPane();
-	private OwnerPane pane = new OwnerPane();
+	private OwnerPane worldPane = new OwnerPane(worldSize);
 	private Project project;
 	private Program rtProgram;
 	private boolean isRestart = false;
@@ -170,6 +173,7 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 	private JPanel playPanel;
 	private JPanel previewPanel;
 	private CardLayout worldPanelCardLayout;
+	private boolean youTubeInitialized = false;
 	
 	private static final String SAVE_KEY = "SAVE";
 	private static final String RECORD_KEY = "RECORD";
@@ -201,13 +205,14 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		}
 		
 		this.youTubeUploaderPane = new UploadToYouTubePane(frame);
+		youTubeInitialized = this.youTubeUploaderPane.init();
 		
 		this.encoder = new ImagesToMOVEncoder(this.frameRate);
 		this.encoder.addListener( this );
 		//this.encoder = new SeriesOfImagesMovieEncoder("C:/movie_dump", "test", "0000", "png");
 		
 		
-		showWorldInContainer(VideoCapturePane.this.pane);
+		showWorldInContainer(VideoCapturePane.this.worldPane);
 		
 		this.recordButton = new JButton();
 		this.recordButton.setOpaque(false);
@@ -251,7 +256,7 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		
 		this.exportToYouTubeButton =  new JButton(new ImageIcon( VideoCapturePane.class.getResource( "images/export_to_youtube.png" )));
 		this.exportToYouTubeButton.addActionListener( this );
-		this.exportToYouTubeButton.setEnabled( true );
+		this.exportToYouTubeButton.setEnabled( this.youTubeInitialized );
 
 		JPanel recordButtonHolder = new JPanel();
 		recordButtonHolder.setOpaque(false);
@@ -283,13 +288,25 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		this.recordAgain.addActionListener( this );
 		
 		this.moviePlayer = new MoviePlayer();
-		Dimension playerSize = this.pane.getPreferredSize();
+		Dimension playerSize = this.worldPane.getPreferredSize();
 		Dimension previewSize = new Dimension();
 		previewSize.setSize( playerSize.width, playerSize.height + 30 );
 		this.moviePlayer.setPreferredSize( previewSize );
 		this.moviePlayer.setMinimumSize( previewSize );
 		this.moviePlayer.setMaximumSize( previewSize );
-		
+		this.previewPanel = new JPanel();
+		this.previewPanel.setLayout( new BorderLayout() );
+		JPanel movieHolder = new JPanel();
+//		movieHolder.setPreferredSize( previewSize );
+//		movieHolder.setMinimumSize( previewSize );
+//		movieHolder.setMaximumSize( previewSize );
+		movieHolder.setBorder( BorderFactory.createEmptyBorder(0,6,0,0) );
+		movieHolder.add( this.moviePlayer );
+		JLabel previewLabel = new JLabel("Preview Movie");
+		previewLabel.setFont( previewLabel.getFont().deriveFont( 18f ));
+		previewLabel.setBorder( BorderFactory.createEmptyBorder( 6,12,6,6 ) );
+		this.previewPanel.add( previewLabel, BorderLayout.NORTH );
+		this.previewPanel.add( movieHolder, BorderLayout.CENTER );
 		
 		
 		this.playPanel = new JPanel();
@@ -298,25 +315,13 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		worldHolder.setPreferredSize( previewSize );
 		worldHolder.setMinimumSize( previewSize );
 		worldHolder.setMaximumSize( previewSize );
-		worldHolder.add( this.pane );
+		worldHolder.setBorder( BorderFactory.createEmptyBorder(0,6,0,0) );
+		worldHolder.add( this.worldPane );
 		JLabel recordLabel = new JLabel("Record World");
 		recordLabel.setFont( recordLabel.getFont().deriveFont( 18f ));
 		recordLabel.setBorder( BorderFactory.createEmptyBorder( 6,12,6,6 ) );
 		this.playPanel.add( recordLabel, BorderLayout.NORTH );
 		this.playPanel.add( worldHolder, BorderLayout.CENTER );
-		
-		this.previewPanel = new JPanel();
-		this.previewPanel.setLayout( new BorderLayout() );
-		JPanel movieHolder = new JPanel();
-		movieHolder.setPreferredSize( previewSize );
-		movieHolder.setMinimumSize( previewSize );
-		movieHolder.setMaximumSize( previewSize );
-		movieHolder.add( this.moviePlayer );
-		JLabel previewLabel = new JLabel("Preview Movie");
-		previewLabel.setFont( previewLabel.getFont().deriveFont( 18f ));
-		previewLabel.setBorder( BorderFactory.createEmptyBorder( 6,12,6,6 ) );
-		this.previewPanel.add( previewLabel, BorderLayout.NORTH );
-		this.previewPanel.add( movieHolder, BorderLayout.CENTER );
 		
 		this.worldPanel = new JPanel();
 		this.worldPanelCardLayout = new CardLayout();
@@ -650,9 +655,9 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 	
 	private void restartWorld()
 	{
-		this.pane.removeAll();
+		this.worldPane.removeAll();
 		this.rtProgram = this.createProgram( this.project );
-		showWorldInContainer(VideoCapturePane.this.pane);
+		showWorldInContainer(VideoCapturePane.this.worldPane);
 	}
 	
 	private void onWorldStart()
@@ -947,7 +952,7 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		this.statusLabel.setText( "Successfully recorded movie!");
 		this.statusLabel2.setForeground( this.statusLabel.getForeground() );
 		this.statusLabel2.setText( this.statusLabel.getText() );
-		this.exportToYouTubeButton.setEnabled( true );
+		this.exportToYouTubeButton.setEnabled( this.youTubeInitialized );
 		this.controlPanelCardLayout.show( this.controlPanel, SAVE_KEY );
 		this.worldPanelCardLayout.show( this.worldPanel, PREVIEW_KEY );
 		

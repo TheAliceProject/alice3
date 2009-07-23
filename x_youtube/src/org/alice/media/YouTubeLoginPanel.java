@@ -314,6 +314,11 @@ public class YouTubeLoginPanel extends JPanel implements ActionListener, Documen
 					}
 					catch (AuthenticationException e)
 					{
+                        e.printStackTrace();
+                        System.out.println(e.getAuthHeader());
+                        System.out.println(e.getExtendedHelp());
+                        System.out.println(e.getInternalReason());
+                        System.out.println(e.getMessage());
 						YouTubeLoginPanel.this.loginStatus.setText( e.getMessage() );
 						YouTubeLoginPanel.this.loginStatus.setForeground( ERROR_COLOR );
 						YouTubeLoginPanel.this.isLoggedIn = false;
