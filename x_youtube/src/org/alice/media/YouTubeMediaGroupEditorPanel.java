@@ -247,12 +247,15 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 				categoryString = DEFAULT_CATEGORY;
 			}
 		}
-		for (int i=0; i<termStrings.size(); i++)
+		if (termStrings != null)
 		{
-			if (termStrings.get( i ).equalsIgnoreCase( categoryString ))
+			for (int i=0; i<termStrings.size(); i++)
 			{
-				this.categories.setSelectedIndex( i );
-				break;
+				if (termStrings.get( i ).equalsIgnoreCase( categoryString ))
+				{
+					this.categories.setSelectedIndex( i );
+					break;
+				}
 			}
 		}
 		if (ytMediaGroup != null)
@@ -264,11 +267,12 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 	
 	public boolean initialize()
 	{
+		boolean success = false;
 		if (categoryStrings == null || termStrings == null)
 		{
-			initializeCategories();
+			success = initializeCategories();
 		}
-		if (categoryStrings != null && termStrings != null)
+		if (success)
 		{
 			this.categories.removeAllItems();
 			for (String s : categoryStrings)
@@ -280,7 +284,7 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 		return false;
 	}
 	
-	private static void initializeCategories()
+	private static boolean initializeCategories()
 	{
 		try
 		{
@@ -343,12 +347,14 @@ public class YouTubeMediaGroupEditorPanel extends JPanel {
 			}
 			categoryStrings = labels;
 			termStrings = terms;
+			return true;
 		}
 		catch (IOException e)
 		{
 			categoryStrings = null;
 			termStrings = null;
 		}
+		return false;
 	}
 	
 	public void enableUI(boolean enable)

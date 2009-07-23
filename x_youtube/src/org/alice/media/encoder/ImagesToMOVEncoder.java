@@ -296,7 +296,10 @@ public class ImagesToMOVEncoder implements ControllerListener, DataSinkListener,
 		// TODO Auto-generated method stub
 		this.hasStarted = false;
 		this.isRunning = false;
-		this.ids.doneAddingImages();
+		if (this.ids != null)
+		{
+			this.ids.doneAddingImages();
+		}
 		// Wait for EndOfStream event.
 		waitForFileDone();
 		// Cleanup.

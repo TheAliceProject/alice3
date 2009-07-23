@@ -88,6 +88,7 @@ public class YouTubeLoginPanel extends JPanel implements ActionListener, Documen
 		this.loginPanel.setLayout( new GridBagLayout() );
 		
 		this.userNameField = new JTextField(24);
+        this.userNameField.setText("culyba@gmail.com");
 		this.passwordField = new JPasswordField(24);
 		this.loginButton = new JButton("Login");
 		this.loginStatus = new JLabel("Not logged in.");
@@ -314,6 +315,11 @@ public class YouTubeLoginPanel extends JPanel implements ActionListener, Documen
 					}
 					catch (AuthenticationException e)
 					{
+                        e.printStackTrace();
+                        System.out.println(e.getAuthHeader());
+                        System.out.println(e.getExtendedHelp());
+                        System.out.println(e.getInternalReason());
+                        System.out.println(e.getMessage());
 						YouTubeLoginPanel.this.loginStatus.setText( e.getMessage() );
 						YouTubeLoginPanel.this.loginStatus.setForeground( ERROR_COLOR );
 						YouTubeLoginPanel.this.isLoggedIn = false;

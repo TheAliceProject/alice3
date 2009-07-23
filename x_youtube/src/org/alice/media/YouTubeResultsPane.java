@@ -198,6 +198,10 @@ public class YouTubeResultsPane extends JPanel {
 	
 	public void setResults(YouTubeEvent event)
 	{
+		if (event == null)
+		{
+			return;
+		}
 		if (event.getType() == YouTubeEvent.EventType.UPLOAD_SUCCESS )
 		{
 			VideoEntry videoEntry = (VideoEntry)event.getMoreInfo();

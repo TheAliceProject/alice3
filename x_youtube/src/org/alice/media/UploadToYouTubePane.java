@@ -111,11 +111,6 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 		this.loginPanel.addYouTubeListener( this );
 		
 		this.infoPanel = new YouTubeMediaGroupEditorPanel();
-		this.infoPanel.initialize();
-		YouTubeMediaGroup mg = this.videoEntry.getOrCreateMediaGroup();
-		mg.getCategories().add(new MediaCategory(YouTubeNamespace.DEVELOPER_TAG_SCHEME, ALICE_DEVELOPER_TAG)); 
-		mg.setPrivate( true );
-		this.infoPanel.setMediaGroup( mg );
 		this.infoPanel.addDocumentListener( this );
 
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
@@ -276,6 +271,20 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 	{
 		this(owner);
 		this.setVideo( videoFile, thumbnail );
+	}
+	
+	public boolean init()
+	{
+		boolean success = this.infoPanel.initialize();
+		if (success)
+		{
+			YouTubeMediaGroup mg = this.videoEntry.getOrCreateMediaGroup();
+			mg.getCategories().add(new MediaCategory(YouTubeNamespace.DEVELOPER_TAG_SCHEME, ALICE_DEVELOPER_TAG)); 
+			mg.setPrivate( true );
+			this.infoPanel.setMediaGroup( mg );
+		}
+		return success;
+		
 	}
 	
 	public void setVideo(File videoFile, Image thumbnail)
