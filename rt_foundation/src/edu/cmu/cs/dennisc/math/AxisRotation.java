@@ -202,7 +202,9 @@ public class AxisRotation implements Orientation, edu.cmu.cs.dennisc.codec.Binar
 			}
 		} else {
 			double c = ( m00 + m11 + m22 - 1  ) * 0.5;
-			assert Math.abs( c ) <= 1.0;
+			assert Math.abs( c ) <= 1.0 + EpsilonUtilities.REASONABLE_EPSILON;
+			c = Math.max( c, -1.0 );
+			c = Math.min( c, 1.0 );
 			thetaInRadians = Math.acos( c );
 			if( Double.isNaN( thetaInRadians ) ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING AxisRotationD isNaN" );
