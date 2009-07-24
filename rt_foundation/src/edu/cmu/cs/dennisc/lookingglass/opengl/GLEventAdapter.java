@@ -25,6 +25,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
 
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -477,11 +479,11 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	//todo: investigate not being invoked
 	public void init( javax.media.opengl.GLAutoDrawable drawable ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
 		initialize( drawable );
 	}
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
 		assert drawable == m_drawable;
 	
 		//m_lookingGlass.commitAnyPendingChanges();
