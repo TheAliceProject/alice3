@@ -34,184 +34,135 @@ public class Box extends Model {
 	protected edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
 		return m_sgBox;
 	}
-
-	public abstract class Distance {
-		protected double m_value;
-		public Distance( Double value ) {
-			m_value = value;
+	public Double getLeft() {
+		return m_sgBox.xMinimum.getValue();
+	}
+	public void setLeft( Number value, Number duration, Style style ) {
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			m_sgBox.xMinimum.setValue( value.doubleValue() );
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getLeft(), value.doubleValue() ) {
+				@Override
+				protected void updateValue( Double d ) {
+					m_sgBox.xMinimum.setValue( d );
+				}
+			} );
 		}
 	}
-	public abstract class DistanceRightOrLeft extends Distance {
-		public DistanceRightOrLeft( Double value ) {
-			super( value );
-		}
-		public Double getAsDistanceRight() {
-			return m_value;
-		}
-		public Double getAsDistanceLeft() {
-			return -m_value;
-		}
-	}
-	public class DistanceRight extends DistanceRightOrLeft {
-		public DistanceRight( Double distance ) {
-			super( distance );
-		}
-	}
-	public class DistanceLeft extends DistanceRightOrLeft {
-		public DistanceLeft( Double distance ) {
-			super( -distance );
-		}
-	}
-
-	public abstract class DistanceUpOrDown extends Distance {
-		public DistanceUpOrDown( Double value ) {
-			super( value );
-		}
-		public Double getAsDistanceUp() {
-			return m_value;
-		}
-		public Double getAsDistanceDown() {
-			return -m_value;
-		}
-	}
-	public class DistanceUp extends DistanceUpOrDown {
-		public DistanceUp( Double distance ) {
-			super( distance );
-		}
-	}
-	public class DistanceDown extends DistanceUpOrDown {
-		public DistanceDown( Double distance ) {
-			super( -distance );
-		}
-	}
-	
-	public abstract class DistanceBackwardOrForward extends Distance {
-		public DistanceBackwardOrForward( Double value ) {
-			super( value );
-		}
-		public Double getAsDistanceBackward() {
-			return m_value;
-		}
-		public Double getAsDistanceForward() {
-			return -m_value;
-		}
-	}
-	public class DistanceBackward extends DistanceBackwardOrForward {
-		public DistanceBackward( Double distance ) {
-			super( distance );
-		}
-	}
-	public class DistanceForward extends DistanceBackwardOrForward {
-		public DistanceForward( Double distance ) {
-			super( -distance );
-		}
-	}
-
-	public DistanceRightOrLeft getLeft() {
-		return new DistanceRight( m_sgBox.xMinimum.getValue() );
-	}
-	public void setLeft( DistanceRightOrLeft value, Number duration, Style style ) {
-		perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getLeft().getAsDistanceRight(), value.getAsDistanceRight() ) {
-			@Override
-			protected void updateValue( Double d ) {
-				m_sgBox.xMinimum.setValue( d );
-			}
-		} );
-	}
-	public void setLeft( DistanceRightOrLeft value, Number duration ) {
+	public void setLeft( Number value, Number duration ) {
 		setLeft( value, duration, DEFAULT_STYLE );
 	}
-	public void setLeft( DistanceRightOrLeft value ) {
+	public void setLeft( Number value ) {
 		setLeft( value, DEFAULT_DURATION );
 	}
 
-	public DistanceRightOrLeft getRight() {
-		return new DistanceRight( m_sgBox.xMaximum.getValue() );
+	public Double getRight() {
+		return m_sgBox.xMaximum.getValue();
 	}
-	public void setRight( DistanceRightOrLeft value, Number duration, Style style ) {
-		perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getRight().getAsDistanceRight(), value.getAsDistanceRight() ) {
-			@Override
-			protected void updateValue( Double d ) {
-				m_sgBox.xMaximum.setValue( d );
-			}
-		} );
+	public void setRight( Number value, Number duration, Style style ) {
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			m_sgBox.xMaximum.setValue( value.doubleValue() );
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getRight(), value.doubleValue() ) {
+				@Override
+				protected void updateValue( Double d ) {
+					m_sgBox.xMaximum.setValue( d );
+				}
+			} );
+		}
 	}
-	public void setRight( DistanceRightOrLeft value, Number duration ) {
+	public void setRight( Number value, Number duration ) {
 		setRight( value, duration, DEFAULT_STYLE );
 	}
-	public void setRight( DistanceRightOrLeft value ) {
+	public void setRight( Number value ) {
 		setRight( value, DEFAULT_DURATION );
 	}
 
-	public DistanceUpOrDown getBottom() {
-		return new DistanceUp( m_sgBox.yMinimum.getValue() );
+	public Double getBottom() {
+		return m_sgBox.yMinimum.getValue();
 	}
-	public void setBottom( DistanceUpOrDown value, Number duration, Style style ) {
-		perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getBottom().getAsDistanceUp(), value.getAsDistanceUp() ) {
-			@Override
-			protected void updateValue( Double d ) {
-				m_sgBox.yMinimum.setValue( d );
-			}
-		} );
+	public void setBottom( Number value, Number duration, Style style ) {
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			m_sgBox.yMinimum.setValue( value.doubleValue() );
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getBottom(), value.doubleValue() ) {
+				@Override
+				protected void updateValue( Double d ) {
+					m_sgBox.yMinimum.setValue( d );
+				}
+			} );
+		}
 	}
-	public void setBottom( DistanceUpOrDown value, Number duration ) {
+	public void setBottom( Number value, Number duration ) {
 		setBottom( value, duration, DEFAULT_STYLE );
 	}
-	public void setBottom( DistanceUpOrDown value ) {
+	public void setBottom( Number value ) {
 		setBottom( value, DEFAULT_DURATION );
 	}
 
-	public DistanceUpOrDown getTop() {
-		return new DistanceUp( m_sgBox.yMaximum.getValue() );
+	public Double getTop() {
+		return m_sgBox.yMaximum.getValue();
 	}
-	public void setTop( DistanceUpOrDown value, Number duration, Style style ) {
-		perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getTop().getAsDistanceUp(), value.getAsDistanceUp() ) {
-			@Override
-			protected void updateValue( Double d ) {
-				m_sgBox.yMaximum.setValue( d );
-			}
-		} );
+	public void setTop( Number value, Number duration, Style style ) {
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			m_sgBox.yMaximum.setValue( value.doubleValue() );
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getTop(), value.doubleValue() ) {
+				@Override
+				protected void updateValue( Double d ) {
+					m_sgBox.yMaximum.setValue( d );
+				}
+			} );
+		}
 	}
-	public void setTop( DistanceUpOrDown value, Number duration ) {
+	public void setTop( Number value, Number duration ) {
 		setTop( value, duration, DEFAULT_STYLE );
 	}
-	public void setTop( DistanceUpOrDown value ) {
+	public void setTop( Number value ) {
 		setTop( value, DEFAULT_DURATION );
 	}
 
-	public DistanceBackwardOrForward getFront() {
-		return new DistanceBackward( m_sgBox.zMinimum.getValue() );
+	public Double getFront() {
+		return m_sgBox.zMinimum.getValue();
 	}
-	public void setFront( DistanceBackwardOrForward value, Number duration, Style style ) {
-		perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getFront().getAsDistanceBackward(), value.getAsDistanceBackward() ) {
-			@Override
-			protected void updateValue( Double d ) {
-				m_sgBox.zMinimum.setValue( d );
-			}
-		} );
+	public void setFront( Number value, Number duration, Style style ) {
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			m_sgBox.zMinimum.setValue( value.doubleValue() );
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getFront(), value.doubleValue() ) {
+				@Override
+				protected void updateValue( Double d ) {
+					m_sgBox.zMinimum.setValue( d );
+				}
+			} );
+		}
 	}
-	public void setFront( DistanceBackwardOrForward value, Number duration ) {
+	public void setFront( Number value, Number duration ) {
 		setFront( value, duration, DEFAULT_STYLE );
 	}
-	public void setFront( DistanceBackwardOrForward value ) {
+	public void setFront( Number value ) {
 		setFront( value, DEFAULT_DURATION );
 	}
 
-	public DistanceBackwardOrForward getBack() {
-		return new DistanceBackward( m_sgBox.zMaximum.getValue() );
+	public Double getBack() {
+		return m_sgBox.zMaximum.getValue();
 	}
-	public void setBack( DistanceBackwardOrForward value, Number duration, Style style ) {
-		perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getBack().getAsDistanceBackward(), value.getAsDistanceBackward() ) {
-			@Override
-			protected void updateValue( Double d ) {
-				m_sgBox.zMaximum.setValue( d );
-			}
-		} );
+	public void setBack( Number value, Number duration, Style style ) {
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( duration, RIGHT_NOW ) ) {
+			m_sgBox.zMaximum.setValue( value.doubleValue() );
+		} else {
+			perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( adjustDurationIfNecessary( duration ), style, getBack(), value.doubleValue() ) {
+				@Override
+				protected void updateValue( Double d ) {
+					m_sgBox.zMaximum.setValue( d );
+				}
+			} );
+		}
 	}
-	public void setBack( DistanceBackwardOrForward value, Number duration ) {
+	public void setBack( Number value, Number duration ) {
 		setBack( value, duration, DEFAULT_STYLE );
 	}
-	public void setBack( DistanceBackwardOrForward value ) {
+	public void setBack( Number value ) {
 		setBack( value, DEFAULT_DURATION );
 	}
 }
