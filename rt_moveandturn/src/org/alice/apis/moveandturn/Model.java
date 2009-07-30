@@ -104,6 +104,10 @@ public abstract class Model extends Transformable {
 	
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public edu.cmu.cs.dennisc.math.Matrix3x3 getOriginalScale() { 
+		return m_originalScale;
+	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public Double getResizeWidthAmount() { 
 		return m_sgVisual.scale.getValue().right.x / m_originalScale.right.x;
 	}
