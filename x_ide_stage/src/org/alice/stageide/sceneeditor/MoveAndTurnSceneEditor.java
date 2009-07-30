@@ -371,6 +371,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				} else {
 					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 					edu.cmu.cs.dennisc.math.AxisAlignedBox box = model.getAxisAlignedMinimumBoundingBox();
+					edu.cmu.cs.dennisc.math.Matrix3x3 scale = model.getOriginalScale();
+					if( scale != null && scale.isNaN()==false && scale.isIdentity()==false ) {
+						edu.cmu.cs.dennisc.math.Matrix3x3 scaleInv = new edu.cmu.cs.dennisc.math.Matrix3x3( scale );
+						scaleInv.invert();
+						box.scale( scaleInv );
+					}
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println();
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println();
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println( model );
