@@ -23,11 +23,10 @@
 
 package edu.cmu.cs.dennisc.math;
 
-//todo: implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable
 /**
  * @author Dennis Cosgrove
  */
-public class Sphere {
+public class Sphere implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public final edu.cmu.cs.dennisc.math.Point3 center = edu.cmu.cs.dennisc.math.Point3.createNaN();
 	public double radius = Double.NaN;
 	public Sphere() {
@@ -39,6 +38,18 @@ public class Sphere {
 	}
 	public Sphere( Sphere other ) {
 		set( other );
+	}
+	public Sphere( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		decode( binaryDecoder );
+	}
+	
+	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
+		binaryEncoder.encode( this.center );
+		binaryEncoder.encode( this.radius );
+	}
+	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+		binaryDecoder.decodeBinaryEncodableAndDecodable( this.center );
+		this.radius = binaryDecoder.decodeDouble();
 	}
 	@Override
 	public boolean equals( Object o ) {
