@@ -47,6 +47,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
@@ -59,6 +60,7 @@ import org.jdesktop.swingworker.SwingWorker;
 
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Program;
+import edu.cmu.cs.dennisc.io.FileUtilities;
 import edu.cmu.cs.dennisc.swing.FileSelectionPane;
 
 import swing.LineAxisPane;
@@ -68,6 +70,13 @@ import swing.LineAxisPane;
  */
 
 public abstract class VideoCapturePane extends LineAxisPane implements ActionListener, DocumentListener, EncoderListener{
+	
+	private enum CaptureState
+	{
+		RECORD,
+		PREVIEW,
+		SAVE,
+	}
 	
 	private class OwnerPane extends javax.swing.JPanel {
 		private Dimension customPreferredSize;
@@ -157,10 +166,12 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 	private JPanel youTubeControlPanel;
 	private JButton exportToYouTubeButton;
 	private CardLayout youTubeCardLayout;
-	private JButton doneButton;
+	private JButton cancelButton;
+	private JButton nextButton;
+	private JButton backButton;
+	private JButton finishButton;
 	private JButton saveButton;
 	private JLabel saveStatus;
-	private JButton recordAgain;
 	private YouTubeResultsPane youTubeResultPane;
 	
 	
@@ -172,8 +183,11 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 	private JPanel worldPanel;
 	private JPanel playPanel;
 	private JPanel previewPanel;
+	private JPanel previewControlPanel;
 	private CardLayout worldPanelCardLayout;
 	private boolean youTubeInitialized = false;
+	
+	private CaptureState state = CaptureState.RECORD;
 	
 	private static final String SAVE_KEY = "SAVE";
 	private static final String RECORD_KEY = "RECORD";
@@ -228,8 +242,15 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		this.browseButton = new JButton("Browse...");
 		this.browseButton.addActionListener( this );
 		
-		this.doneButton = new JButton("Done");
-		this.doneButton.addActionListener( this );
+		this.cancelButton = new JButton("Cancel");
+		this.cancelButton.addActionListener( this );
+		this.nextButton = new JButton("Next");
+		this.nextButton.addActionListener( this );
+		this.backButton = new JButton("Back");
+		this.backButton.addActionListener( this );
+		this.finishButton = new JButton("Finish");
+		this.finishButton.addActionListener( this );
+		
 		
 		JLabel statusTitle = new JLabel("Recording status:");
 		statusTitle.setForeground( Color.GRAY );
@@ -284,9 +305,6 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		this.saveStatus.setMinimumSize( saveDimension );
 		this.saveStatus.setPreferredSize( saveDimension );
 		
-		this.recordAgain = new JButton("Record again");
-		this.recordAgain.addActionListener( this );
-		
 		this.moviePlayer = new MoviePlayer();
 		Dimension playerSize = this.worldPane.getPreferredSize();
 		Dimension previewSize = new Dimension();
@@ -297,11 +315,22 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		this.previewPanel = new JPanel();
 		this.previewPanel.setLayout( new BorderLayout() );
 		JPanel movieHolder = new JPanel();
-//		movieHolder.setPreferredSize( previewSize );
-//		movieHolder.setMinimumSize( previewSize );
-//		movieHolder.setMaximumSize( previewSize );
+		movieHolder.setLayout( new GridBagLayout() );
 		movieHolder.setBorder( BorderFactory.createEmptyBorder(0,6,0,0) );
-		movieHolder.add( this.moviePlayer );
+		movieHolder.add( this.moviePlayer , 
+				new GridBagConstraints( 
+				0, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets( 8, 0, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
 		JLabel previewLabel = new JLabel("Preview Movie");
 		previewLabel.setFont( previewLabel.getFont().deriveFont( 18f ));
 		previewLabel.setBorder( BorderFactory.createEmptyBorder( 6,12,6,6 ) );
@@ -312,11 +341,25 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		this.playPanel = new JPanel();
 		this.playPanel.setLayout( new BorderLayout());
 		JPanel worldHolder = new JPanel();
+		worldHolder.setLayout( new GridBagLayout() );
 		worldHolder.setPreferredSize( previewSize );
 		worldHolder.setMinimumSize( previewSize );
 		worldHolder.setMaximumSize( previewSize );
 		worldHolder.setBorder( BorderFactory.createEmptyBorder(0,6,0,0) );
-		worldHolder.add( this.worldPane );
+		worldHolder.add( this.worldPane , 
+				new GridBagConstraints( 
+				0, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets( 8, 0, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
 		JLabel recordLabel = new JLabel("Record World");
 		recordLabel.setFont( recordLabel.getFont().deriveFont( 18f ));
 		recordLabel.setBorder( BorderFactory.createEmptyBorder( 6,12,6,6 ) );
@@ -338,6 +381,17 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		this.savePanel = new JPanel();
 		this.savePanel.setOpaque(false);
 		this.savePanel.setLayout( new GridBagLayout() );
+		
+//		this.previewControlPanel = new JPanel();
+//		this.previewControlPanel.setOpaque( false );
+//		this.previewControlPanel.setLayout( new GridBagLayout() );
+//		JTextArea previewInstructions = new JTextArea();
+//		previewInstructions.setEditable( false );
+//		previewInstructions.setOpaque( false );
+//		previewInstructions.setBorder(null);
+//		previewInstructions.setText( "Preview your video )
+		
+		
 		
 		this.controlPanelCardLayout = new CardLayout();
 		this.controlPanel = new JPanel();
@@ -487,52 +541,112 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 				0, //ipadX
 				0 ) //ipadY
 				);
-		this.savePanel.add( this.recordAgain , 
-				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.SOUTHWEST, //anchor 
-				GridBagConstraints.NONE, //fill
-				new Insets( 2, 2, 2, 2 ), //insets
-				0, //ipadX
-				0 ) //ipadY
-				);
 		
-		JPanel sidePanel = new JPanel();
-		sidePanel.setLayout(new GridBagLayout() );
-		gridY = 0;
-		sidePanel.add( this.controlPanel , 
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout( new GridBagLayout() );
+		buttonPanel.add( Box.createHorizontalGlue() , 
 				new GridBagConstraints( 
 				0, //gridX
-				gridY++, //gridY
+				0, //gridY
 				1, //gridWidth
 				1, //gridHeight
-				0.0, //weightX
+				1.0, //weightX
 				1.0, //weightY
-				GridBagConstraints.CENTER, //anchor 
-				GridBagConstraints.BOTH, //fill
+				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.HORIZONTAL, //fill
 				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);
-		sidePanel.add( this.doneButton, 
+		buttonPanel.add( this.backButton , 
 				new GridBagConstraints( 
-				0, //gridX
-				gridY++, //gridY
+				1, //gridX
+				0, //gridY
 				1, //gridWidth
 				1, //gridHeight
 				0.0, //weightX
-				0.0, //weightY
-				GridBagConstraints.SOUTHEAST, //anchor 
+				1.0, //weightY
+				GridBagConstraints.EAST, //anchor 
 				GridBagConstraints.NONE, //fill
-				new Insets( 0, 0, 8, 8 ), //insets
+				new Insets( 0, 0, 0, 0 ), //insets
 				0, //ipadX
 				0 ) //ipadY
 				);
+		buttonPanel.add( this.nextButton , 
+				new GridBagConstraints( 
+				2, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.EAST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets( 0, 8, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		buttonPanel.add( this.finishButton , 
+				new GridBagConstraints( 
+				3, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.EAST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets( 0, 8, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		buttonPanel.add( this.cancelButton , 
+				new GridBagConstraints( 
+				4, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.EAST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets( 0, 16, 0, 0 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		
+//		JPanel sidePanel = new JPanel();
+//		sidePanel.setLayout(new GridBagLayout() );
+//		gridY = 0;
+//		sidePanel.add( this.controlPanel , 
+//				new GridBagConstraints( 
+//				0, //gridX
+//				gridY++, //gridY
+//				1, //gridWidth
+//				1, //gridHeight
+//				0.0, //weightX
+//				1.0, //weightY
+//				GridBagConstraints.CENTER, //anchor 
+//				GridBagConstraints.BOTH, //fill
+//				new Insets( 0, 0, 0, 0 ), //insets
+//				0, //ipadX
+//				0 ) //ipadY
+//				);
+//		sidePanel.add( buttonPanel, 
+//				new GridBagConstraints( 
+//				0, //gridX
+//				gridY++, //gridY
+//				1, //gridWidth
+//				1, //gridHeight
+//				0.0, //weightX
+//				0.0, //weightY
+//				GridBagConstraints.SOUTHEAST, //anchor 
+//				GridBagConstraints.HORIZONTAL, //fill
+//				new Insets( 0, 0, 8, 8 ), //insets
+//				0, //ipadX
+//				0 ) //ipadY
+//				);
+	
 		
 		this.setLayout( new GridBagLayout() );
 		this.add( this.worldPanel , 
@@ -550,7 +664,7 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 				0 ) //ipadY
 				);
 		
-		this.add( sidePanel , 
+		this.add( this.controlPanel , 
 				new GridBagConstraints( 
 				1, //gridX
 				0, //gridY
@@ -564,6 +678,30 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 				0, //ipadX
 				0 ) //ipadY
 				);
+		this.add( buttonPanel , 
+				new GridBagConstraints( 
+				0, //gridX
+				1, //gridY
+				2, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.SOUTHEAST, //anchor 
+				GridBagConstraints.HORIZONTAL, //fill
+				new Insets( 0, 0, 8, 8 ), //insets
+				0, //ipadX
+				0 ) //ipadY
+				);
+		
+		this.cancelButton.setEnabled( true );		
+		this.nextButton.setEnabled( false );
+		this.finishButton.setEnabled( false );
+		this.backButton.setEnabled( false );
+		
+		this.cancelButton.addActionListener( this );
+		this.nextButton.addActionListener( this );
+		this.finishButton.addActionListener( this );
+		this.backButton.addActionListener( this );
 		this.fileNameField.addActionListener( this );
 		this.recordButton.addActionListener( this );
 		this.fileNameField.getDocument().addDocumentListener( this );
@@ -627,6 +765,50 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 	private String getDefaultFilename()
 	{
 		return "testMovie";
+	}
+	
+	protected void setState(CaptureState state)
+	{
+		if (this.state != state)
+		{
+			this.state = state;
+			
+			switch (this.state)
+			{
+				case RECORD : 
+				{
+					this.cancelButton.setEnabled( true );
+					boolean hasNext = this.recordedMovieFile != null && FileUtilities.existsAndHasLengthGreaterThanZero( this.recordedMovieFile );
+					this.nextButton.setEnabled(hasNext);
+					this.finishButton.setEnabled( false );
+					this.backButton.setEnabled( false );
+					
+					this.setRecordMode();
+				}
+				break;
+				case PREVIEW : 
+				{
+					this.cancelButton.setEnabled( true );
+					boolean hasNext = this.recordedMovieFile != null && FileUtilities.existsAndHasLengthGreaterThanZero( this.recordedMovieFile );
+					this.nextButton.setEnabled(hasNext);
+					this.finishButton.setEnabled( false );
+					this.backButton.setEnabled( true );
+				}
+				break;
+				case SAVE :
+				{
+					this.cancelButton.setEnabled( true );
+					this.nextButton.setEnabled(false);
+					this.finishButton.setEnabled( true );
+					this.backButton.setEnabled( true );
+					
+					this.setSaveMode();
+					
+					
+				}
+				break;
+			}
+		}
 	}
 	
 	protected void showWorldInContainer(java.awt.Container awtContainer)
@@ -869,13 +1051,27 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		{
 			this.uploadToYouTube();
 		}
-		else if (e.getSource() == this.doneButton)
+		else if (e.getSource() == this.cancelButton)
 		{
 			this.close();
 		}
-		else if (e.getSource() == this.recordAgain)
+		else if (e.getSource() == this.finishButton)
 		{
-			setRecordMode();
+			this.close();
+		}
+		else if (e.getSource() == this.nextButton)
+		{
+			if (this.state == CaptureState.RECORD)
+			{
+				this.setState( CaptureState.SAVE );
+			}
+		}
+		else if (e.getSource() == this.backButton)
+		{
+			if (this.state == CaptureState.SAVE)
+			{
+				this.setState( CaptureState.RECORD );
+			}
 		}
 	}
 
@@ -977,7 +1173,7 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 			javax.swing.SwingUtilities.invokeLater( new Runnable(){
 				public void run() {
 					VideoCapturePane.this.moviePlayer.setMovie( VideoCapturePane.this.recordedMovieFile );
-					VideoCapturePane.this.setSaveMode();
+					VideoCapturePane.this.setState( CaptureState.SAVE );
 				}
 			});
 			
