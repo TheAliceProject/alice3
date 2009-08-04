@@ -16,18 +16,25 @@ class SVNPackage:
 	def isNew(self):
 		return self.previousRevision != self.newRevision
 
-class Repository:
-	def __init__(self, url, username, password, localRoot):
+class SVNConnection:
+	def __init__(self, url, username, password, keyFile = None):
 		self.url = url
+		self.svnUrl = core.SVNURL.parseURIDecoded( self.url );
 		if (self.url.startswith("http")):
 			self.type = "http"
 		elif (self.url.startswith("svn")):
 			self.type = "svn"
 		self.username = username
 		self.password = password
-		self.localRoot = localRoot
+		self.keyFile = keyFile
 		self.clientManager = self.getClientManager()
 		self.repository = self.connectToRepository()
+
+	def getAuthManager(self):
+		if (self.type == "http"):
+			return core.auth.BasicAuthenticationManager(self.username, self.password)
+		elif (self.type == "svn"):
+			return core.auth.BasicAuthenticationManager(self.username, self.keyFile, self.password, self.svnUrl.getPort())
 
 	def getClientManager(self):
 		try:
@@ -37,7 +44,8 @@ class Repository:
 				core.internal.io.svn.SVNRepositoryFactoryImpl.setup()
 		except core.SVNException, e:
 			print "error setting up repository", e
-		authManager = core.wc.SVNWCUtil.createDefaultAuthenticationManager(self.username, self.password)
+
+		authManager = self.getAuthManager()
 		options = core.wc.SVNWCUtil.createDefaultOptions( True )
 		return core.wc.SVNClientManager.newInstance(options, authManager)
 
@@ -53,11 +61,21 @@ class Repository:
 		repository = None
 		try:
 			urlObj = core.SVNURL.parseURIDecoded( self.url );
+#			protocol = urlObj.getProtocol()
+#			userInfo = urlObj.getUserInfo()
+#			host = urlObj.getHost()
+#			port = urlObj.getPort()
+#			path = urlObj.getPath()
+#			uriEncoded = True
+#			urlObj = core.SVNURL.create(protocol, userInfo, host, 15217, path, uriEncoded)
 			repository = core.io.SVNRepositoryFactory.create( urlObj )
-			authManager = core.wc.SVNWCUtil.createDefaultAuthenticationManager(self.username, self.password)
+			authManager = self.getAuthManager()
 			repository.setAuthenticationManager( authManager )
-			print "Repository Root: ", repository.getRepositoryRoot( True )
-			print "Repository UUID: " + repository.getRepositoryUUID( True )
+			try:
+				print "Repository Root: ", repository.getRepositoryRoot( True )
+				print "Repository UUID: " + repository.getRepositoryUUID( True )
+			except (Exception), e:
+				print e
 			nodeKind = repository.checkPath( "" ,  -1 )
 			if ( nodeKind == core.SVNNodeKind.NONE ):
 				print "There is no entry at '" + url + "'."
@@ -71,9 +89,21 @@ class Repository:
 
 		return repository
 
+	def getFullURL(self, path):
+		return core.SVNURL.parseURIDecoded( self.url + path );
+
+	def relocateWorkingCopy(self, workingCopyDir, newURL):
+		updateClient = self.clientManager.getUpdateClient()
+		updateClient.setIgnoreExternals( False )
+		localFile = java.io.File( workingCopyDir )
+		print "switching "+str(localFile)+ " to url: "+str(newURL)
+		updateClient.doSwitch(localFile, newURL, core.wc.SVNRevision.HEAD, True)
 
 	def getRemoteRevision( self, path):
-		entries = self.repository.getDir( path, -1 , None, None)
+		try:
+			entries = self.repository.getDir( path, -1 , None, None)
+		except:
+			return 0 #if we can't find the remote dir, return a version of 0
 		iterator = entries.iterator()
 		latestRevision = 0
 		while (iterator.hasNext()):
@@ -99,26 +129,69 @@ class Repository:
 					newPath = entry.getName()
 				self.listEntries( newPath )
 
-	def updateCode_CmdLine(self, path):
-		cmdarray = [
-					"C:/subversion/svn",
-					"update",
-					self.localRoot + path,
-				]
-		binDir = java.io.File( "C:/" )
-		result = EXEC_METHOD( binDir, cmdarray )
-		print result
-
-	def updatePath( self, path):
-		localFile = java.io.File( self.localRoot,  path )
+	def updatePathToRevision( self, localDir, revision):
+		localFile = java.io.File( localDir )
 		updateClient = self.clientManager.getUpdateClient()
 		updateClient.setIgnoreExternals( False )
 		print "updating "+localFile.getAbsolutePath()
-		return updateClient.doUpdate( localFile, core.wc.SVNRevision.HEAD, True )
+		return updateClient.doUpdate( localFile, revision, True )
 
-	def getLocalCommittedRevision(self, path):
-		localFile = java.io.File( self.localRoot, path )
-		print "getting revision of "+localFile.getAbsolutePath()
-		statusClient = self.clientManager.getStatusClient()
-		localStatus = statusClient.doStatus(localFile, True)
-		return localStatus.getCommittedRevision().getNumber()
+	def commitChanges(self, dir):
+	    commitClient = self.clientManager.getCommitClient()
+	    javaFile = java.io.File(dir)
+	    files = [javaFile]
+	    commitClient.doCommit(files, False, "Automated commit", None, None, False, True, core.SVNDepth.INFINITY)
+
+
+
+class Repository:
+	def __init__(self, previousBranch, currentBranch, relativePath, localDir, shouldRelocate = True):
+		self.previousBranch = previousBranch
+		self.currentBranch = currentBranch
+		self.relativePath = relativePath
+		self.localDir = localDir
+		self.shouldRelocate = shouldRelocate
+		if (self.previousBranch != None and self.currentBranch != None and self.shouldRelocate):
+			print "trying to relocate "+self.localDir+" from "+str(self.previousBranch.getFullURL(self.relativePath)) + " to "+str(self.currentBranch.getFullURL(self.relativePath))
+			self.previousBranch.relocateWorkingCopy(self.localDir, self.currentBranch.getFullURL(self.relativePath))
+			print "relocated!"
+		else:
+			print "previous branch: "+str(self.previousBranch) + " and current branch: "+str(self.currentBranch)
+
+	def getPreviousRevision( self ):
+		if (self.previousBranch != None):
+			return self.previousBranch.getRemoteRevision(self.relativePath)
+		else:
+			return -1
+
+	def getCurrentRevision( self ):
+		if (self.currentBranch != None):
+			return self.currentBranch.getRemoteRevision(self.relativePath)
+		else:
+			return -1
+
+#	def updateCode_CmdLine(self, path):
+#		cmdarray = [
+#					"C:/subversion/svn",
+#					"update",
+#					self.localRoot + path,
+#				]
+#		binDir = java.io.File( "C:/" )
+#		result = EXEC_METHOD( binDir, cmdarray )
+#		print result
+
+	def isNew(self):
+		oldRevision = self.getPreviousRevision()
+		newRevision = self.getCurrentRevision()
+		return (newRevision > oldRevision)
+
+	def syncCodeToHead( self ):
+		return self.currentBranch.updatePathToRevision( self.localDir, core.wc.SVNRevision.HEAD)
+
+	def syncCodeToRevision( self, revision ):
+		return self.currentBranch.updatePathToRevision( self.localDir, revision)
+
+	def commitChanges(self):
+	    self.currentBranch.commitChanges(self.localDir)
+
+

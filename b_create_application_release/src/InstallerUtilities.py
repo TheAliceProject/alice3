@@ -1,3 +1,4 @@
+import BuildObject
 import os.path
 import os,sys
 import shutil
@@ -36,6 +37,7 @@ class InstallComponent:
 	ALICE_COMPONENT_CLOSER_TEMPLATE = "C:/AliceBuild/InstallerTemplates/AliceCloserTemplate"
 	COMPONENT_PATH = "ext/components/products"
 	INFRA_TEMPLATE = "C:/AliceBuild/InstallerTemplates/infraTemplate"
+	MULTI_PLATFORM_INFRA_TEMPLATE = "C:/AliceBuild/InstallerTemplates/MultiplatformInfraTemplate"
 	ALICE_INFRA_TEMPLATE = "C:/AliceBuild/InstallerTemplates/AliceInfraTemplate"
 	ALICE_INFRA_CLOSER_TEMPLATE = "C:/AliceBuild/InstallerTemplates/AliceCloserInfraTemplate"
 	INFRA_PATH = "ext/infra/build/products"
@@ -46,6 +48,8 @@ class InstallComponent:
 	PRODUCT_DIRECTORY_KEY = "_ProductDirectory_"
 	VISIBLE_NAME_KEY = "_VisibleProductName_"
 	DATA_PATH_KEY = "_DataPath_"
+	WINDOWS_DATA_PATH_KEY = "_WindowsDataPath_"
+	MAC_DATA_PATH_KEY = "_MacDataPath_"
 	INSTALL_LOCATION_KEY = "_InstallLocation_"
 	VERSION_KEY = "_VersionNumber_"
 	IS_ZIP_KEY = "_IsZip_"
@@ -60,25 +64,29 @@ class InstallComponent:
 	def __init__(self, buildObject):
 		self.name = buildObject.name
 		self.version = buildObject.versionNum
-		self.dataPath = "file:/"+buildObject.dataLocation
-		self.id = makeValidID(self.name)
 		self.isLauncher = buildObject.isMainInstallObject
+		self.replacementMap = []
 		self.isCloser = buildObject.isCloser
-		if (self.isLauncher or self.isCloser):
-			self.platform = buildObject.platform
+		self.isMultiPlatform = buildObject.isMultiPlatform
+		self.platform = buildObject.platform
+		if (self.isMultiPlatform):
+			for platform in BuildObject.MultiPlatformBuildObject.PLATFORMS:
+				self.addStringReplacement((BuildObject.MultiPlatformBuildObject.PLATFORMS_TO_KEYS[platform], "file:/"+buildObject.getDataLocation(platform)))
 		else:
-			self.platform = None
+			self.dataPath = "file:/"+buildObject.dataLocation
+			self.addStringReplacement((InstallComponent.DATA_PATH_KEY, self.dataPath))
+		self.id = makeValidID(self.name)
+		
+		
 
 		self.productDir = self.id
 		self.isZip = buildObject.isZip
-	
-		self.replacementMap = []
 		self.setIsZip(self.isZip)
 		self.addStringReplacement((InstallComponent.PRODUCT_ID_KEY, self.id))
 		self.addStringReplacement((InstallComponent.PRODUCT_NAME_KEY, self.name))
 		self.addStringReplacement((InstallComponent.PRODUCT_DIRECTORY_KEY, self.productDir))
 		self.addStringReplacement((InstallComponent.VERSION_KEY, str(self.version)))
-		self.addStringReplacement((InstallComponent.DATA_PATH_KEY, self.dataPath))
+		
 
 	def hasKey(self, key):
 		for toFind, replacement in self.replacementMap:
@@ -131,6 +139,7 @@ class InstallComponent:
 		self.addStringReplacement((InstallComponent.DEFAULT_INSTALL_DIRECTORY, defaultDirectory))
 
 	def setInstallPath(self, installPath):
+		print self.name + " set install path to "+str(installPath)
 		self.removeKey(InstallComponent.INSTALL_LOCATION_KEY)
 		self.addStringReplacement((InstallComponent.INSTALL_LOCATION_KEY, installPath))
 
@@ -188,6 +197,8 @@ class InstallComponent:
 			infraTemplate = InstallComponent.ALICE_INFRA_TEMPLATE
 		elif (self.isCloser):
 			infraTemplate = InstallComponent.ALICE_INFRA_CLOSER_TEMPLATE
+		elif (self.isMultiPlatform):
+			infraTemplate = InstallComponent.MULTI_PLATFORM_INFRA_TEMPLATE
 
 		FileUtilities.copyDir(infraTemplate, self.infraDir)
 		FileUtilities.renameDirs(self.replacementMap, self.infraDir)
@@ -201,13 +212,13 @@ class InstallerProject:
 	CLEAN_TEMPLATE = "C:/AliceBuild/InstallerTemplates/cleanTemplate.template"
 	BUILD_KEY = "<!--BuildProduct-->"
 	BUILD_TEMPLATE = "C:/AliceBuild/InstallerTemplates/buildTemplate.template"
-#	BUNDLE_KEY = "<!--BundleComponent-->"
-	WINDOWS_BUNDLE_KEY = "<!--WindowsBundleComponent-->"
+	#BUNDLE_KEY = "<!--BundleComponent-->"
 	MAC_BUNDLE_KEY = "<!--MacBundleComponent-->"
+	WINDOWS_BUNDLE_KEY = "<!--WindowsBundleComponent-->"
 	BUNDLE_TEMPLATE = "C:/AliceBuild/InstallerTemplates/bundleTemplate.template"
-#	LIMITED_BUNDLE_KEY = "<!--LimitedBundleComponent-->"
-	WINDOWS_LIMITED_BUNDLE_KEY = "<!--WindowsLimitedBundleComponent-->"
+	#LIMITED_BUNDLE_KEY = "<!--LimitedBundleComponent-->"
 	MAC_LIMITED_BUNDLE_KEY = "<!--MacLimitedBundleComponent-->"
+	WINDOWS_LIMITED_BUNDLE_KEY = "<!--WindowsLimitedBundleComponent-->"
 
 	def __init__(self, name, version):
 		self.components = []
@@ -248,23 +259,42 @@ class InstallerProject:
 		for component in self.components:
 			component.makeNewInstaller(self.projectDir)
 			cleanString += FileUtilities.replaceInString(cleanTemplateString, component.replacementMap) +"\n"
-			macBundleString += FileUtilities.replaceInString(bundleTemplateString, component.replacementMap) +"\n"
-			windowsBundleString += FileUtilities.replaceInString(bundleTemplateString, component.replacementMap) +"\n"
+
+			componentBundleString = FileUtilities.replaceInString(bundleTemplateString, component.replacementMap) +"\n"
+			if (component.platform == BuildObject.PlatformSpecificBuildObject.WINDOWS_PLATFORM):
+				windowsBundleString += componentBundleString
+			elif (component.platform == BuildObject.PlatformSpecificBuildObject.MAC_PLATFORM):
+				macBundleString += componentBundleString
+			else:
+				macBundleString += componentBundleString
+				windowsBundleString += componentBundleString
 			buildString += FileUtilities.replaceInString(buildTemplateString, component.replacementMap) +"\n"
 			if (component.version == self.version):
-				windowsLimitedBundleString += FileUtilities.replaceInString(bundleTemplateString, component.replacementMap) +"\n"
-				macLimitedBundleString += FileUtilities.replaceInString(bundleTemplateString, component.replacementMap) +"\n"
+				if (component.platform == BuildObject.PlatformSpecificBuildObject.WINDOWS_PLATFORM):
+					windowsLimitedBundleString += componentBundleString
+				elif (component.platform == BuildObject.PlatformSpecificBuildObject.MAC_PLATFORM):
+					macLimitedBundleString += componentBundleString
+				else:
+					macLimitedBundleString += componentBundleString
+					windowsLimitedBundleString += componentBundleString
 		for launcherComponent in self.launcherComponents:
 			launcherComponent.makeNewInstaller(self.projectDir)
 			cleanString += FileUtilities.replaceInString(cleanTemplateString, launcherComponent.replacementMap) +"\n"
 			buildString += FileUtilities.replaceInString(buildTemplateString, launcherComponent.replacementMap) +"\n"
+
 			launcherBundleString = FileUtilities.replaceInString(bundleTemplateString, launcherComponent.replacementMap) +"\n"
-			if (launcherComponent.platform == "windows"):
+
+			if (launcherComponent.platform == BuildObject.PlatformSpecificBuildObject.WINDOWS_PLATFORM):
 				windowsBundleString += launcherBundleString
 				windowsLimitedBundleString += launcherBundleString
-			elif (launcherComponent.platform == "mac"):
+			elif (launcherComponent.platform == BuildObject.PlatformSpecificBuildObject.MAC_PLATFORM):
 				macBundleString += launcherBundleString
 				macLimitedBundleString += launcherBundleString
+			else:
+				macBundleString += launcherBundleString
+				windowsBundleString += launcherBundleString
+				macLimitedBundleString += launcherBundleString
+				windowsLimitedBundleString += launcherBundleString
 
 		replacementMap = [
 			(InstallComponent.PRODUCT_NAME_KEY, self.name),
@@ -272,9 +302,9 @@ class InstallerProject:
 			(InstallerProject.CLEAN_KEY, cleanString),
 			(InstallerProject.BUILD_KEY, buildString),
 			(InstallerProject.WINDOWS_BUNDLE_KEY, windowsBundleString),
-			(InstallerProject.MAC_BUNDLE_KEY, macBundleString),
 			(InstallerProject.WINDOWS_LIMITED_BUNDLE_KEY, windowsLimitedBundleString),
-			(InstallerProject.MAC_LIMITED_BUNDLE_KEY, macLimitedBundleString)
+			(InstallerProject.MAC_BUNDLE_KEY, macBundleString),
+			(InstallerProject.MAC_LIMITED_BUNDLE_KEY, macLimitedBundleString),
 			]
 
 		FileUtilities.replaceStringsInFile(replacementMap, self.projectDir + "/" + InstallerProject.BUILD_XML_FILE)

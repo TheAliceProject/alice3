@@ -27,7 +27,9 @@ def getStringFromFile(fileName):
 	return toReturn
 
 def deleteDir(dir):
-	shutil.rmtree(dir)
+	javaDir = java.io.File(dir)
+	if (javaDir.exists() and javaDir.isDirectory()):
+		shutil.rmtree(dir)
 
 def replaceInString(string, replacementMap):
 	toReturn = string[:]
@@ -58,19 +60,27 @@ def ignoreSVN(dir, dirContents):
 	return toCopy
 
 def copyDirIgnoreSVN(srcDir, newDir):
-	makeDirsForFile(newDir)
-	copyDirIgnoreSVN_Helper(srcDir, newDir)
+	copyDirIgnoreFolders(srcDir, newDir, [".svn"])
 
-def copyDirIgnoreSVN_Helper(srcDir, newDir):
-	if (not srcDir.endswith(".svn")):
+def copyDirIgnoreFolders(srcDir, newDir, foldersToIgnore):
+	makeDirsForFile(newDir)
+	copyDirIgnoreIgnoreFolders_Helper(srcDir, newDir, foldersToIgnore)
+
+def copyDirIgnoreIgnoreFolders_Helper(srcDir, newDir, foldersToIgnore):
+	isValidDir = True
+	for f in foldersToIgnore:
+		if (srcDir.endswith(f)):
+			isValidDir = False
+			break
+	if (isValidDir):
 		names = os.listdir(srcDir)
-		os.mkdir(newDir)
+		makeDir(newDir)
 		for name in names:
 			srcname = os.path.join(srcDir, name)
 			dstname = os.path.join(newDir, name)
 			try:
 				if os.path.isdir(srcname):
-					copyDirIgnoreSVN(srcname, dstname)
+					copyDirIgnoreIgnoreFolders_Helper(srcname, dstname, foldersToIgnore)
 				else:
 					shutil.copy2(srcname, dstname)
 			except (IOError, os.error), why:

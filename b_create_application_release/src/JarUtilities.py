@@ -3,6 +3,7 @@ import edu
 import BuildJava
 import FileUtilities
 import BuildObject
+import os
 
 __author__="Dave Culyba"
 __date__ ="$May 5, 2009 2:27:34 PM$"
@@ -22,16 +23,19 @@ class JarBuildObject(BuildObject.BuildObject):
 		return self.getBaseOutputDirectory() + "/" + self.getRelativeLocation() + self.name + JarBuildObject.JAR_EXTENSION
 
 	def buildObject(self):
-		for package in self.packages:
-			projectDir = java.io.File( self.sourceDir, package.name  )
+		for repository in self.repositories:
+			projectDir = java.io.File( repository.localDir )
 			BuildJava.buildProject(projectDir)
 		self.dataLocation = self.getOutputPath()
 		FileUtilities.makeDirsForFile(self.dataLocation)
 		option = "cvf"
-		for package in self.packages:
-			binDir = java.io.File( self.sourceDir, package.name + "/bin" )
+		for repository in self.repositories:
+			binPath = repository.localDir + "/bin"
+			binDir = java.io.File( binPath )
 			print binDir
-			for directory in package.dirs:
+			subDirs = os.listdir(binPath)
+			for directory in subDirs:
+				print "Addding "+binPath+"/"+directory+" to "+self.name
 				cmdarray = [
 					JAR_CMD,
 					option,
@@ -43,6 +47,7 @@ class JarBuildObject(BuildObject.BuildObject):
 				option = "uvf"
 				print result
 		self.isZip = False
+		self.buildSuccessful = True
 
 
 		

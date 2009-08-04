@@ -11,10 +11,8 @@ VERSION_SEPARATOR = "_"
 VERSION_EXTENSION = ".txt"
 
 class VersionNum:
-	def __init__(self):
-		self.vals = [0,0,0,0,0]
-		self.major = self.vals[0]
-		self.minor = self.vals[4]
+	def __init__(self, versionString = "0.0.0.0.0"):
+		self.initFromString(versionString)
 
 	def initFromString(self, versionString):
 		versionStrings = versionString.split('.')
@@ -28,6 +26,9 @@ class VersionNum:
 		self.vals = vals[:]
 		self.major = self.vals[0]
 		self.minor = self.vals[4]
+
+	def getAliceFormat(self):
+	    return str(self.vals[0])+".beta."+str(self.vals[2])+str(self.vals[3])+str(self.vals[4])
 
 	def __repr__(self):
 		return str(self.vals[0])+"."+str(self.vals[1])+"."+str(self.vals[2])+"."+str(self.vals[3])+"."+str(self.vals[4])
@@ -103,9 +104,13 @@ class SingleVersion:
 		return self.version <= other.version
 
 	def __eq__(self, other):
+		if (other == None):
+			return False
 		return self.version == other.version
 
 	def __ne__(self, other):
+		if (other == None):
+			return True
 		return self.version != other.version
 
 	def __gt__(self, other):
@@ -187,11 +192,20 @@ class VersionInfo:
 		for version in self.versions:
 			print version
 
-	def getLatestVersion(self):
-		if (len(self.versions) > 0):
-			return self.versions[len(self.versions) - 1]
-		else:
-			return None
+	def getLatestVersion(self, currentVersion):
+		latestVersion = None
+		for versionComponent in self.versions:
+			if (versionComponent.version < currentVersion):
+				latestVersion = versionComponent
+			else:
+				break
+		return latestVersion
+
+	def getVersion(self, version):
+		for versionComponent in self.versions:
+			if (versionComponent.version == version):
+				return versionComponent
+		return None
 
 	def getNewVersionNum(self):
 		if (len(self.versions) > 0):

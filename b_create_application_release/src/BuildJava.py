@@ -14,5 +14,26 @@ def buildProject(projectDir):
 				ANT_CMD
 				]
 	print "trying to exec in "+str(projectDir)
+	cleanProject(projectDir)
+	return EXEC_METHOD( projectDir, cmdarray )
+
+def cleanProject(projectDir):
+	cmdarray = [
+				CMD_WINDOW_CMD,
+				"/c",
+				ANT_CMD,
+				"clean"
+				]
+	print "trying to exec in "+str(projectDir)
+	return EXEC_METHOD( projectDir, cmdarray )
+
+def commandProject(projectDir, cmd):
+	cmdarray = [
+				CMD_WINDOW_CMD,
+				"/c",
+				ANT_CMD,
+				cmd
+				]
+	print "trying to exec in "+str(projectDir)
 	return EXEC_METHOD( projectDir, cmdarray )
 
