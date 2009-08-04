@@ -62,16 +62,6 @@ public abstract class PrintUtilities {
 				java.nio.FloatBuffer.class, 
 				java.nio.DoubleBuffer.class,
 				Printable.class
-//				edu.cmu.cs.dennisc.math.Tuple3.class, 
-//				edu.cmu.cs.dennisc.math.Tuple4.class, 
-//				edu.cmu.cs.dennisc.math.UnitQuaternion.class, 
-//				edu.cmu.cs.dennisc.math.AxisRotation.class, 
-//				edu.cmu.cs.dennisc.math.EulerNumbers.class, 
-//				edu.cmu.cs.dennisc.math.EulerAngles.class, 
-//				edu.cmu.cs.dennisc.math.Matrix3x3.class, 
-//				edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.class, 
-//				edu.cmu.cs.dennisc.math.Matrix4x4.class,
-//				edu.cmu.cs.dennisc.math.AffineMatrix4x4.class
 		};
 		for( Class<?> cls : classes ) {
 			s_classToAppendMethod.put( cls, getMethod( "append", cls  ) );

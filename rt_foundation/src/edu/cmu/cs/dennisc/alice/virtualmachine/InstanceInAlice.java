@@ -93,6 +93,9 @@ public class InstanceInAlice {
 	public Object getInstanceInJava() {
 		return m_instanceInJava;
 	}
+	public <E> E getInstanceInJava( Class<E> cls ) {
+		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( m_instanceInJava, cls );
+	}
 	public Object get( FieldDeclaredInAlice field ) {
 		return m_map.get( field );
 	}
