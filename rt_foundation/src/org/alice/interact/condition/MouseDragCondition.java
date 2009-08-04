@@ -80,11 +80,11 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 	@Override
 	public boolean justStarted( InputState currentState, InputState previousState ) 
 	{
-		if (testClick(currentState) && !testMouse(previousState))
+		if (testClick(currentState) && !testInputs(previousState))
 		{
 			this.mouseDownLocation = new Point(currentState.getMouseLocation());
 		}
-		if (testMouse(currentState))
+		if (testInputs(currentState))
 		{
 			if (this.mouseDownLocation != null &&  currentState.getMouseLocation().distance( this.mouseDownLocation ) >= MIN_MOUSE_MOVE)
 			{
@@ -108,7 +108,7 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 	
 	protected boolean testClick(InputState state)
 	{
-		if (testMouse(state))
+		if (testInputs(state))
 		{
 			return testPick(state);
 		}

@@ -43,6 +43,7 @@ import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.property.event.PropertyEvent;
 import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.Component;
@@ -51,6 +52,7 @@ import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
+//import org.alice.apis.moveandturn.Model;
 
 /**
  * @author David Culyba
@@ -496,6 +498,11 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	}
 	
 	public void setHandleActive( boolean active ) {
+//		if (active && this.manipulatedObject == null)
+//		{
+//			PrintUtilities.println("HANDLES ARE NOT ASSIGNED AND BEING SET TO VISIBLE");
+////			return;
+//		}
 		this.state.setActive(active);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 		
@@ -508,6 +515,11 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	}
 
 	public void setHandleVisible( boolean visible ) {
+//		if (visible && this.manipulatedObject == null)
+//		{
+//			PrintUtilities.println("HANDLES ARE NOT ASSIGNED AND BEING SET TO VISIBLE");
+////			return;
+//		}
 		this.state.setVisible(visible);
 		this.updateVisibleState( HandleRenderState.getStateForHandle( this ) );
 	}

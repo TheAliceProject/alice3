@@ -124,6 +124,12 @@ public abstract class AbstractManipulator {
 		
 	}
 	
+	@Override
+	public String toString()
+	{
+		return this.getClass().toString() + ":"+this.hashCode();
+	}
+	
 	public abstract boolean doStartManipulator( InputState startInput );
 	
 	public abstract void doDataUpdateManipulator( InputState currentInput, InputState previousInput );

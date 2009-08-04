@@ -48,6 +48,7 @@ import org.alice.interact.manipulator.CameraInformedManipulator;
 
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
@@ -224,10 +225,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		//End manipulators first
 		for (int i=0; i<toEnd.size(); i++)
 		{
+//			PrintUtilities.println("Ending: "+toEnd.get(i) + " because of "+this.currentInputState);
 			toEnd.get( i ).endManipulator( this.currentInputState, this.previousInputState );
 		}
 		for (int i=0; i<toStart.size(); i++)
 		{
+//			PrintUtilities.println("Beginning: "+toStart.get(i) + " because of "+this.currentInputState);
 			toStart.get( i ).startManipulator( this.currentInputState );
 		}
 		for (int i=0; i<toUpdate.size(); i++)
