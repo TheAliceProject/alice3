@@ -363,6 +363,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		super.putFieldForInstanceInJava( instanceInJava, field );
 		if( instanceInJava instanceof org.alice.apis.moveandturn.Transformable ) {
 			org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instanceInJava;
+			transformable.realizeIfNecessary();
 			edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = transformable.getSGTransformable();
 			if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
 				org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;

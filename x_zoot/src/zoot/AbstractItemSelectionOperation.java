@@ -81,11 +81,9 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 		return this.comboBoxModel;
 	}
 	public void handleKeyPressed( java.awt.event.KeyEvent e ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( e.getKeyCode(), e.getModifiersEx() );
 		int N = this.comboBoxModel.getSize();
 		for( int i=0; i<N; i++ ) {
 			javax.swing.KeyStroke acceleratorI = this.getAcceleratorForConfiguringSwing( i );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( i, acceleratorI.getKeyCode(), acceleratorI.getModifiers() );
 			if( acceleratorI != null ) {
 				if( e.getKeyCode() == acceleratorI.getKeyCode() && e.getModifiersEx() == acceleratorI.getModifiers() ) {
 					this.getButtonModelForConfiguringSwing( i ).setSelected( true );

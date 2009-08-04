@@ -105,6 +105,15 @@ public abstract class Transformable extends AbstractTransformable {
 	protected void realize() {
 		m_isRealized = true;
 	}
+	
+	@PropertyGetterTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public void realizeIfNecessary() {
+		if( m_isRealized ) {
+			//pass
+		} else {
+			this.realize();
+		}
+	}
 
 	@Override
 	public void setName( String name ) {
@@ -142,11 +151,7 @@ public abstract class Transformable extends AbstractTransformable {
 		}
 		
 		if( vehicle != null ) {
-			if( m_isRealized ) {
-				//pass
-			} else {
-				realize();
-			}
+			this.realizeIfNecessary();
 			vehicle.addComponent( this );
 			if( absolute != null ) {
 				m_sgTransformable.setTransformation( absolute, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );
@@ -155,13 +160,7 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	protected void handleVehicleChange( Composite vehicle ) {
 		if( vehicle != null ) {
-			
-			if( m_isRealized ) {
-				//pass
-			} else {
-				realize();
-				m_isRealized = true;
-			}
+			this.realizeIfNecessary();
 	
 //			if( previousVehicle != null ) {
 //				absolute = m_sgTransformable.getTransformation( edu.cmu.cs.dennisc.scenegraph.AsSeenBy.SCENE );

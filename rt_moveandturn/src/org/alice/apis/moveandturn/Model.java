@@ -71,7 +71,6 @@ public abstract class Model extends Transformable {
 	
 	@Override
 	protected void realize() {
-		super.realize();
 		m_originalScale.setValue( m_sgVisual.scale.getValue() );
 		createSGGeometryIfNecessary();
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = getSGGeometry();
@@ -81,6 +80,7 @@ public abstract class Model extends Transformable {
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: no geometry: ", this );
 		}
+		super.realize();
 	}
 	
 	private java.util.List< org.alice.apis.moveandturn.event.MouseButtonListener > mouseButtonListeners = new java.util.LinkedList< org.alice.apis.moveandturn.event.MouseButtonListener >();
