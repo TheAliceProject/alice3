@@ -50,29 +50,35 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 
 	protected void uploadToJIRAViaRPC() throws Exception {
 		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
-		final boolean STREAM_MESSAGES = true;
-		redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( this.reportSubmissionConfiguration.getJIRAViaRPCServer(), STREAM_MESSAGES );
-		Object token = this.reportSubmissionConfiguration.getJIRAViaRPCAuthenticator().login( client );
-		try {
-			redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.createIssue( jiraReport, client, token );
-			this.key = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.getKey( remote );
-		} finally {
-			client.invoke( "jira1.logout", new Object[] { token } );
+		if( jiraReport != null ) {
+			final boolean STREAM_MESSAGES = true;
+			redstone.xmlrpc.XmlRpcClient client = new redstone.xmlrpc.XmlRpcClient( this.reportSubmissionConfiguration.getJIRAViaRPCServer(), STREAM_MESSAGES );
+			Object token = this.reportSubmissionConfiguration.getJIRAViaRPCAuthenticator().login( client );
+			try {
+				redstone.xmlrpc.XmlRpcStruct remote = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.createIssue( jiraReport, client, token );
+				this.key = edu.cmu.cs.dennisc.jira.rpc.RPCUtilities.getKey( remote );
+			} finally {
+				client.invoke( "jira1.logout", new Object[] { token } );
+			}
 		}
 	}
 	protected void uploadToJIRAViaSOAP() throws Exception {
 		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
-		com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-		com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
-		String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
-	    com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
-	    this.key = result.getKey();
-		service.logout( token );
+		if( jiraReport != null ) {
+			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
+			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
+			String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
+		    com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
+		    this.key = result.getKey();
+			service.logout( token );
+		}
 	}
 
 	protected void sendMail( boolean isTransportLayerSecurityDesired, Integer portOverride ) throws Exception {
 		MailReport mailReport = this.issueReportGenerator.generateIssueForSMTP();
-		edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.reportSubmissionConfiguration.getMailServer(), this.reportSubmissionConfiguration.getMailAuthenticator(), mailReport.getReplyTo(), mailReport.getReplyToPersonal(), this.reportSubmissionConfiguration.getMailRecipient(), mailReport.getSubject(), mailReport.getBody(), mailReport.getAttachments() );
+		if( mailReport != null ) {
+			edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.reportSubmissionConfiguration.getMailServer(), this.reportSubmissionConfiguration.getMailAuthenticator(), mailReport.getReplyTo(), mailReport.getReplyToPersonal(), this.reportSubmissionConfiguration.getMailRecipient(), mailReport.getSubject(), mailReport.getBody(), mailReport.getAttachments() );
+		}
 	    this.key = null;
 	}
 	@Override
