@@ -48,6 +48,33 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 		this.process( edu.cmu.cs.dennisc.util.CollectionUtilities.createArrayList( chunks ) );
 	}
 
+	protected boolean uploadToJIRAViaSOAP() throws Exception {
+		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
+		if( jiraReport != null ) {
+			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
+			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
+			String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
+		    com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
+
+		    boolean rv;
+		    //todo?
+		    try {
+		    	boolean isBase64EncodingDesired = false;
+		    	edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.addAttachments( result, jiraReport, service, token, isBase64EncodingDesired );
+		    	rv = true;
+		    } catch( java.rmi.RemoteException re ) {
+		    	re.printStackTrace();
+		    	rv = false;
+		    }
+		    
+		    this.key = result.getKey();
+			service.logout( token );
+
+			return rv;
+		} else {
+			throw new Exception( "pass" );
+		}
+	}
 	protected void uploadToJIRAViaRPC() throws Exception {
 		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForRPC();
 		if( jiraReport != null ) {
@@ -60,17 +87,8 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 			} finally {
 				client.invoke( "jira1.logout", new Object[] { token } );
 			}
-		}
-	}
-	protected void uploadToJIRAViaSOAP() throws Exception {
-		JIRAReport jiraReport = this.issueReportGenerator.generateIssueForSOAP();
-		if( jiraReport != null ) {
-			com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
-			com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( this.reportSubmissionConfiguration.getJIRAViaSOAPServer() );
-			String token = this.reportSubmissionConfiguration.getJIRAViaSOAPAuthenticator().login( service );
-		    com.atlassian.jira.rpc.soap.client.RemoteIssue result = edu.cmu.cs.dennisc.jira.soap.SOAPUtilities.createIssue( jiraReport, service, token );
-		    this.key = result.getKey();
-			service.logout( token );
+		} else {
+			throw new Exception( "pass" );
 		}
 	}
 
@@ -78,16 +96,30 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 		MailReport mailReport = this.issueReportGenerator.generateIssueForSMTP();
 		if( mailReport != null ) {
 			edu.cmu.cs.dennisc.mail.MailUtilities.sendMail( isTransportLayerSecurityDesired, portOverride, this.reportSubmissionConfiguration.getMailServer(), this.reportSubmissionConfiguration.getMailAuthenticator(), mailReport.getReplyTo(), mailReport.getReplyToPersonal(), this.reportSubmissionConfiguration.getMailRecipient(), mailReport.getSubject(), mailReport.getBody(), mailReport.getAttachments() );
+		    this.key = null;
+		} else {
+			throw new Exception( "pass" );
 		}
-	    this.key = null;
 	}
 	@Override
 	protected Boolean doInBackground() throws Exception {
 		this.process( "attempting to submit bug report...\n" );
 		try {
 			this.process( "* uploading directly to database... " );
-			this.uploadToJIRAViaSOAP();
-			this.process( "SUCCEEDED.\n" );
+			boolean isSuccessAttachment = this.uploadToJIRAViaSOAP();
+			if( isSuccessAttachment ) {
+				this.process( "SUCCEEDED.\n" );
+			} else {
+				this.process( "PARTIALLY SUCCEEDED (attachments failed).\n" );
+				this.process( "* sending mail (on smtp port)... " );
+				try {
+					this.sendMail( false, null );
+					this.process( "SUCCEEDED.\n" );
+				} catch( Exception eC ) {
+					eC.printStackTrace();
+					this.process( "FAILED.\n" );
+				}
+			}
 		} catch( Exception eA ) {
 			eA.printStackTrace();
 			try {
@@ -145,7 +177,7 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 				}
 				this.progressPane.handleDone( isSuccessful, urlResult );
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "isSuccessful is null" );
+				System.out.println( "IssueReportWorker: isSuccessful is null." );
 			}
 		} catch( java.util.concurrent.ExecutionException ee ) {
 			ee.printStackTrace();

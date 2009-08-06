@@ -79,20 +79,50 @@ public class SOAPUtilities {
 		remoteIssue.setAffectsVersions( remoteAffectsVersions );
 		com.atlassian.jira.rpc.soap.client.RemoteIssue rv = service.createIssue( token, remoteIssue );
 		
+//		java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = jiraReport.getAttachments();
+//		if( attachments != null && attachments.size() > 0 ) {
+//			try {
+//				final int N = attachments.size();
+//				String[] names = new String[ N ];
+//				//byte[][] data = new byte[ N ][];
+//				String[] base64s = new String[ N ];
+//				for( int i=0; i<N; i++ ) {		
+//					edu.cmu.cs.dennisc.issue.Attachment attachmentI = attachments.get( i );
+//					names[ i ] = attachmentI.getFileName();
+//					//data[ i ] = attachmentI.getBytes();
+//					byte[] data = attachmentI.getBytes();
+//					assert data != null;
+//					base64s[ i ] = org.apache.axis.encoding.Base64.encode( data );
+//				}
+//				//service.addAttachmentsToIssue( token, rv.getKey(), names, data );
+//				service.addBase64EncodedAttachmentsToIssue( token, rv.getKey(), names, base64s );
+//			} catch( Exception e ) {
+//				e.printStackTrace();
+//			}
+//		}
+		return rv;
+	}
+	public static com.atlassian.jira.rpc.soap.client.RemoteIssue addAttachments( com.atlassian.jira.rpc.soap.client.RemoteIssue rv, edu.cmu.cs.dennisc.jira.JIRAReport jiraReport, com.atlassian.jira.rpc.soap.client.JiraSoapService service, String token, boolean isBase64EncodingDesired ) throws java.rmi.RemoteException {
 		java.util.List< edu.cmu.cs.dennisc.issue.Attachment > attachments = jiraReport.getAttachments();
 		if( attachments != null && attachments.size() > 0 ) {
-			try {
-				final int N = attachments.size();
-				String[] names = new String[ N ];
-				byte[][] data = new byte[ N ][];
-				for( int i=0; i<N; i++ ) {		
-					edu.cmu.cs.dennisc.issue.Attachment attachmentI = attachments.get( i );
-					names[ i ] = attachmentI.getFileName();
-					data[ i ] = attachmentI.getBytes();
+			final int N = attachments.size();
+			String[] names = new String[ N ];
+			byte[][] data = new byte[ N ][];
+			String[] base64s = new String[ N ];
+			for( int i=0; i<N; i++ ) {		
+				edu.cmu.cs.dennisc.issue.Attachment attachmentI = attachments.get( i );
+				names[ i ] = attachmentI.getFileName();
+				data[ i ] = attachmentI.getBytes();
+				assert data[ i ] != null;
+				if( isBase64EncodingDesired ) {
+					base64s[ i ] = org.apache.axis.encoding.Base64.encode( data[ i ] );
+					data[ i ] = null;
 				}
+			}
+			if( isBase64EncodingDesired ) {
+				service.addBase64EncodedAttachmentsToIssue( token, rv.getKey(), names, base64s );
+			} else {
 				service.addAttachmentsToIssue( token, rv.getKey(), names, data );
-			} catch( Exception e ) {
-				e.printStackTrace();
 			}
 		}
 		return rv;
