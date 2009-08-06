@@ -401,10 +401,15 @@ public class InstallerErrorDialog extends JDialog implements ActionListener, Rep
 	 * @param args
 	 */
 	public static void main( String[] args ) {
-//		String logFileName = "20090616151938.log"; //small log
-		String logFileName = "20090616151432.log"; //medium log
-//		String logFileName = "20090722172456.log"; //large log
-		InstallerErrorDialog errorDialog = new InstallerErrorDialog(null, new File("C:/Users/Administrator/.alice/log/"+logFileName));
+		String logFileName = "20090627145529.log"; //large log
+		String userDirectoryPath = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory().getParent();
+		File file = new File( userDirectoryPath + "/.alice/log/"+logFileName);
+		assert file.exists();
+		InstallerErrorDialog errorDialog = new InstallerErrorDialog(null, file );
+////		String logFileName = "20090616151938.log"; //small log
+//		String logFileName = "20090616151432.log"; //medium log
+////		String logFileName = "20090722172456.log"; //large log
+//		InstallerErrorDialog errorDialog = new InstallerErrorDialog(null, new File("C:/Users/Administrator/.alice/log/"+logFileName));
 		errorDialog.setVisible( true );
 		System.out.println("Should submit? "+errorDialog.shouldSubmit());
 		System.exit( 0 );
