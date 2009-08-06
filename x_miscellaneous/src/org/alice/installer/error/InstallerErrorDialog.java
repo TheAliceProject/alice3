@@ -34,12 +34,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -255,33 +259,31 @@ public class InstallerErrorDialog extends JDialog implements ActionListener, Rep
 
 	private class LogAttachment implements Attachment
 	{
-
 		public byte[] getBytes() {
 			if (InstallerErrorDialog.this.logFile != null && InstallerErrorDialog.this.logFile.canRead())
 			{
-				long lengthL = (int)InstallerErrorDialog.this.logFile.length();
-				int length = 0;
-				if (lengthL > Integer.MAX_VALUE)
-				{
-					return null;
-				}
-				length = (int)lengthL;
-			    byte[] array = new byte[length];
+				byte[] buf = new byte[1024];
 			    try
 			    {
-				    InputStream in = new FileInputStream(InstallerErrorDialog.this.logFile);  
-				    int offset = 0;  
-				    while (offset < length) {  
-				        int count = in.read(array, offset, (length - offset));  
-				        offset += count;  
-				    }  
+				    InputStream in = new FileInputStream(InstallerErrorDialog.this.logFile);
+				    ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+				    ZipOutputStream zipStream = new ZipOutputStream(byteStream);
+				    zipStream.putNextEntry( new ZipEntry("LogFile.txt") );
+				    int len;
+		            while ((len = in.read(buf)) > 0) {
+		            	zipStream.write(buf, 0, len);
+		            } 
+		            zipStream.closeEntry();
+		            zipStream.close();
 				    in.close();
+				    byte[] byteArray = byteStream.toByteArray();
+//				    System.out.println("compressed from "+InstallerErrorDialog.this.logFile.length() + " to "+byteArray.length);
+				    return byteArray;
 			    }
 			    catch (IOException e)
 			    {
 			    	return null;
 			    }
-			    return array;  
 			}
 			return null;
 		}
@@ -391,8 +393,8 @@ public class InstallerErrorDialog extends JDialog implements ActionListener, Rep
 	 * @param args
 	 */
 	public static void main( String[] args ) {
-		String logFileName = "20090616151938.log"; //small log
-		//String logFileName = "20090722172456.log"; //large log
+//		String logFileName = "20090616151938.log"; //small log
+		String logFileName = "20090722172456.log"; //large log
 		InstallerErrorDialog errorDialog = new InstallerErrorDialog(null, new File("C:/Users/Administrator/.alice/log/"+logFileName));
 		errorDialog.setVisible( true );
 		System.out.println("Should submit? "+errorDialog.shouldSubmit());
