@@ -90,10 +90,26 @@ public abstract class TextureAdapter<E extends edu.cmu.cs.dennisc.texture.Textur
 
 	protected abstract com.sun.opengl.util.texture.Texture newTexture( com.sun.opengl.util.texture.Texture currentTexture );
 	public com.sun.opengl.util.texture.Texture getTexture( RenderContext rc ) {
-		if( isDirty() || m_glTexture == null || rc.gl.glIsTexture( m_glTexture.getTextureObject() ) == false ) {
+		boolean isNewTextureRequired;
+		if( m_glTexture != null ) {
+			if( isDirty() ) {
+				isNewTextureRequired = true;
+			} else {
+				int textureObject = m_glTexture.getTextureObject();
+				isNewTextureRequired = rc.gl.glIsTexture( textureObject ) == false;
+			}
+		} else {
+			isNewTextureRequired = true;
+		}
+		if( isNewTextureRequired ) {
 			com.sun.opengl.util.texture.Texture glTexture = newTexture( m_glTexture );
 			if( m_glTexture != glTexture ) {
+				if( m_glTexture != null ) {
+					m_glTexture.dispose();
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println( "DISPOSED: ", m_glTexture.getTextureObject() );
+				}
 				m_glTexture = glTexture;
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "GENERATED: ", m_glTexture.getTextureObject() );
 				rc.put( this, m_glTexture );
 			}
 			m_isDirty = false;

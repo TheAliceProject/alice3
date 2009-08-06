@@ -442,7 +442,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 				} else {
 					source.hideDropProxyIfNecessary();
 				}
-			} else if( source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
+			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
 				source.hideDropProxyIfNecessary();
 				if( this.currentUnder != null ) {
 					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
