@@ -277,7 +277,7 @@ public class InstallerErrorDialog extends JDialog implements ActionListener, Rep
 		            zipStream.close();
 				    in.close();
 				    byte[] byteArray = byteStream.toByteArray();
-//				    System.out.println("compressed from "+InstallerErrorDialog.this.logFile.length() + " to "+byteArray.length);
+				    System.out.println("compressed from "+InstallerErrorDialog.this.logFile.length() + " to "+byteArray.length);
 				    return byteArray;
 			    }
 			    catch (IOException e)
@@ -291,7 +291,7 @@ public class InstallerErrorDialog extends JDialog implements ActionListener, Rep
 		public String getFileName() {
 			if (InstallerErrorDialog.this.logFile != null)
 			{
-				return InstallerErrorDialog.this.logFile.getName();
+				return "LogFile.zip";
 			}
 			return null;
 		}
@@ -368,10 +368,18 @@ public class InstallerErrorDialog extends JDialog implements ActionListener, Rep
 	}
 	
 	public JIRAReport generateIssueForRPC() {
-		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
-		return rv;
+//		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
+//		return rv;
+		return null;
 	}
+	
+	private static final long MAX_JIRA_UPLOAD = 1500000;
+	
 	public JIRAReport generateIssueForSOAP() {
+		if (this.logFile.length() > MAX_JIRA_UPLOAD)
+		{
+			return null;
+		}
 		edu.cmu.cs.dennisc.jira.JIRAReport rv = this.generateIssue();
 		this.addAttachments( rv );
 		return rv;
@@ -394,7 +402,8 @@ public class InstallerErrorDialog extends JDialog implements ActionListener, Rep
 	 */
 	public static void main( String[] args ) {
 //		String logFileName = "20090616151938.log"; //small log
-		String logFileName = "20090722172456.log"; //large log
+		String logFileName = "20090616151432.log"; //medium log
+//		String logFileName = "20090722172456.log"; //large log
 		InstallerErrorDialog errorDialog = new InstallerErrorDialog(null, new File("C:/Users/Administrator/.alice/log/"+logFileName));
 		errorDialog.setVisible( true );
 		System.out.println("Should submit? "+errorDialog.shouldSubmit());
