@@ -39,6 +39,7 @@ class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActio
 	}
 
 	public void perform(zoot.ActionContext actionContext) {
+		final org.alice.ide.IDE ide = getIDE();
 		class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
 			public PersonCreatorDialog(javax.swing.JDialog owner) {
 				super(owner);
@@ -61,13 +62,13 @@ class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActio
 								PersonCreatorDialog.this.setVisible( false );
 							}
 						};
-						org.alice.apis.stage.Person person = personEditorInputPane.showInJDialog(getIDE());
+						org.alice.apis.stage.Person person = personEditorInputPane.showInJDialog(ide);
 						if (person != null) {
-							edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
+							edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
 							CreateFieldFromPersonPane createFieldFromPersonPane = new CreateFieldFromPersonPane(declaringType, person);
-							edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.showInJDialog(getIDE());
+							edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.showInJDialog(ide);
 							if (field != null) {
-								getIDE().getSceneEditor().handleFieldCreation(declaringType, field, person);
+								ide.getSceneEditor().handleFieldCreation(declaringType, field, person);
 							}
 						}
 						return true;
@@ -88,7 +89,7 @@ class CreatePersonActionOperation extends org.alice.ide.operations.AbstractActio
 				return false;
 			}
 		}
-		PersonCreatorDialog dialog = new PersonCreatorDialog(this.getIDE());
+		PersonCreatorDialog dialog = new PersonCreatorDialog(ide);
 		dialog.pack();
 		dialog.setVisible(true);
 		dialog.createAndExecuteWorker();
