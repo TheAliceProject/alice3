@@ -17,5 +17,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch_gallery_generated"/>
 	<classpathentry kind="lib" path="/jar_jogl/lib/gluegen-rt.jar"/>
 	<classpathentry kind="lib" path="/jar_jogl/lib/jogl.jar"/>
+	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
