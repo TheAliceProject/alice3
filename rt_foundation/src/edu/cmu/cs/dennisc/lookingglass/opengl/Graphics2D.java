@@ -645,10 +645,14 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	private void glSetColor( java.awt.Color color ) {
 		assert color != null;
-		m_renderContext.gl.glColor3ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue() );
+		//m_renderContext.gl.glColor3ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue() );
+		m_renderContext.gl.glColor4ub( (byte)color.getRed(), (byte)color.getGreen(), (byte)color.getBlue(), (byte)color.getAlpha() );
 		if( color.getAlpha() != 255 ) {
+			m_renderContext.gl.glEnable( javax.media.opengl.GL.GL_BLEND );
+			m_renderContext.gl.glBlendFunc( javax.media.opengl.GL.GL_SRC_ALPHA, javax.media.opengl.GL.GL_ONE_MINUS_SRC_ALPHA );
 			m_renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, color.getAlpha() / 255.0f );
 		} else {
+			m_renderContext.gl.glDisable( javax.media.opengl.GL.GL_BLEND );
 			m_renderContext.gl.glPixelTransferf( GL.GL_ALPHA_SCALE, 1.0f );
 		}
 	}
