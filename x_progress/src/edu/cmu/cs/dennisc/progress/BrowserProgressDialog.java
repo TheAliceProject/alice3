@@ -57,7 +57,7 @@ public class BrowserProgressDialog extends ProgressDialog {
 		return new Worker() {
 			@Override
 			protected Boolean doInBackground() throws Exception {
-				this.publish("attempting to open web browser to:\n");
+				this.publish("attempting to open web page in browser:\n");
 				this.publish(BrowserProgressDialog.this.url);
 				try {
 					edu.cmu.cs.dennisc.browser.BrowserUtilities.browse(BrowserProgressDialog.this.url);
