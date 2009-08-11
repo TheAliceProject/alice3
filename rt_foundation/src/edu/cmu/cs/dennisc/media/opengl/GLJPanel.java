@@ -627,7 +627,13 @@ public class GLJPanel extends JPanel implements GLAutoDrawable {
 			} );
 		} else {
 			if( !hardwareAccelerationDisabled ) {
-				pbuffer.display();
+				try {
+					pbuffer.display();
+				} catch( GLException gle ) {
+					pbuffer = null;
+					initialize();
+					repaint();
+				}
 			} else {
 				drawableHelper.invokeGL( offscreenDrawable, offscreenContext, displayAction, initAction );
 			}
