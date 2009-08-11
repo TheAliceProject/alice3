@@ -25,20 +25,28 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HTMLMessageOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class BrowserOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private String url;
+	public BrowserOperation( String url ) {
+		this.url = url;
+	}
 	protected abstract String getTitle(); 
 	protected abstract int getMessageType();
-	protected abstract StringBuffer getMessage( StringBuffer sb ); 
+//	protected abstract StringBuffer getMessage( StringBuffer sb ); 
 	public final void perform( zoot.ActionContext actionContext ) {
-		String title = this.getTitle();
-		edu.cmu.cs.dennisc.ui.html.HTMLPane htmlPane = new edu.cmu.cs.dennisc.ui.html.HTMLPane();
-		StringBuffer sb = new StringBuffer();
-		sb.append( "<html>" );
-		getMessage( sb );
-		sb.append( "</html>" );
-		htmlPane.setText( sb.toString() );
-		htmlPane.setOpaque( false );
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), htmlPane, this.getTitle(), this.getMessageType() );
+//		edu.cmu.cs.dennisc.ui.html.HTMLPane htmlPane = new edu.cmu.cs.dennisc.ui.html.HTMLPane();
+//		StringBuffer sb = new StringBuffer();
+//		sb.append( "<html>" );
+//		getMessage( sb );
+//		sb.append( "</html>" );
+//		htmlPane.setText( sb.toString() );
+//		htmlPane.setOpaque( false );
+//		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), htmlPane, this.getTitle(), this.getMessageType() );
+		edu.cmu.cs.dennisc.browser.BrowserProgressDialog dialog = new edu.cmu.cs.dennisc.browser.BrowserProgressDialog( this.getIDE(), this.url);
+		dialog.createAndExecuteWorker();
+		dialog.pack();
+		dialog.setVisible( true );
+		
 		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
 		actionContext.commit();
 	}

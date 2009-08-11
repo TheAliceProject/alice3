@@ -25,22 +25,23 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class ReleaseNotesOperation extends HTMLMessageOperation {
+public class ReleaseNotesOperation extends BrowserOperation {
 	public ReleaseNotesOperation() {
+		super( "http://kenai.com/projects/alice/pages/ReleaseNotes" );
 		this.putValue( javax.swing.Action.NAME, "Release Notes..." );
 	}
-	@Override
-	protected StringBuffer getMessage( StringBuffer rv ) {
-		String url = "http://kenai.com/projects/alice/pages/ReleaseNotes";
-		rv.append( "Release notes are available " );
-		rv.append( "<a href=\"" );
-		rv.append( url );
-		rv.append( "\">" );
-		rv.append( "on the web" );
-		rv.append( "</a>" );
-		rv.append( "." );
-		return rv;
-	}
+//	@Override
+//	protected StringBuffer getMessage( StringBuffer rv ) {
+//		String url = "http://kenai.com/projects/alice/pages/ReleaseNotes";
+//		rv.append( "Release notes are available " );
+//		rv.append( "<a href=\"" );
+//		rv.append( url );
+//		rv.append( "\">" );
+//		rv.append( "on the web" );
+//		rv.append( "</a>" );
+//		rv.append( "." );
+//		return rv;
+//	}
 	@Override
 	protected String getTitle() {
 		return "Release Notes";

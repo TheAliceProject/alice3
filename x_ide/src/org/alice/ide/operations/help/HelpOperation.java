@@ -25,23 +25,24 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class HelpOperation extends HTMLMessageOperation {
+public class HelpOperation extends BrowserOperation {
 	public HelpOperation() {
+		super( "http://kenai.com/projects/alice/pages/Help" );
 		this.putValue( javax.swing.Action.NAME, "Help..." );
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
 	}
-	@Override
-	protected StringBuffer getMessage( StringBuffer rv ) {
-		String url = "http://kenai.com/projects/alice/pages/Help";
-		rv.append( "Help is available " );
-		rv.append( "<a href=\"" );
-		rv.append( url );
-		rv.append( "\">" );
-		rv.append( "on the web" );
-		rv.append( "</a>" );
-		rv.append( "." );
-		return rv;
-	}
+//	@Override
+//	protected StringBuffer getMessage( StringBuffer rv ) {
+//		String url = "http://kenai.com/projects/alice/pages/Help";
+//		rv.append( "Help is available " );
+//		rv.append( "<a href=\"" );
+//		rv.append( url );
+//		rv.append( "\">" );
+//		rv.append( "on the web" );
+//		rv.append( "</a>" );
+//		rv.append( "." );
+//		return rv;
+//	}
 	@Override
 	protected String getTitle() {
 		return "Help";
