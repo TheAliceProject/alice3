@@ -46,6 +46,10 @@ public class Program extends org.alice.apis.moveandturn.Program {
 			this.moveAndTurnSceneEditor.initializeLightweightOnscreenLookingGlass( lightweightOnscreenLookingGlass );
 		}
 	}
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCameraForCreatingThumbnails() {
+		return this.getOnscreenLookingGlass().getCameraAt( 0 );
+	}
+	
 //	@Override
 //	protected void preRun() {
 //		super.preRun();

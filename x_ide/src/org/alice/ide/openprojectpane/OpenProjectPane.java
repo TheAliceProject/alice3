@@ -99,18 +99,45 @@ class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCe
 	@Override
 	protected javax.swing.JLabel updateLabel( javax.swing.JLabel rv, Object value ) {
 		java.io.File file = (java.io.File)value;
+		javax.swing.Icon icon;
+		
+		
+		
+		//todo: remove
 		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file );
 		if( path != null ) {
-			rv.setText( file.getName() );
 			String snapshotPath = path.substring( 0, path.length()-3 ) + "png";
-			javax.swing.Icon icon;
 			if( edu.cmu.cs.dennisc.io.FileUtilities.existsAndHasLengthGreaterThanZero( snapshotPath ) ) {
 				icon = new javax.swing.ImageIcon( snapshotPath );
 			} else {
+				icon = null;
+			}
+		} else {
+			icon = null;
+		}
+		
+		
+		
+		if( icon != null ) {
+			//pass
+		} else {
+			try {
+				java.util.zip.ZipFile zipFile = new java.util.zip.ZipFile( file );
+				java.util.zip.ZipEntry zipEntry = zipFile.getEntry( "thumbnail.png" );
+				if( zipEntry != null ) {
+					java.io.InputStream is = zipFile.getInputStream( zipEntry );
+					java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
+					icon = new javax.swing.ImageIcon( image );
+				} else {
+					icon = NOT_AVAILABLE_ICON;
+				}
+				zipFile.close();
+			} catch( Throwable t ) {
 				icon = NOT_AVAILABLE_ICON;
 			}
-			rv.setIcon( icon );
 		}
+		rv.setText( file.getName() );
+		rv.setIcon( icon );
 		return rv;
 	}
 }

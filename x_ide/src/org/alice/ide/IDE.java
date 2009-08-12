@@ -1640,11 +1640,40 @@ public abstract class IDE extends zoot.ZFrame {
 	protected void restoreProjectProperties() {
 		this.sceneEditor.restoreProjectProperties();
 	}
+	
+	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;
+	
 	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.alice.Project project = getProject();
 		this.generateCodeForSceneSetUp();
 		this.preserveProjectProperties();
-		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( file, project );
+		
+		edu.cmu.cs.dennisc.zip.DataSource[] dataSources;
+		try {
+			final java.awt.image.BufferedImage thumbnailImage = createThumbnail();
+			if( thumbnailImage != null ) {
+				if( thumbnailImage.getWidth() > 0 && thumbnailImage.getHeight() > 0 ) {
+					//pass
+				} else {
+					throw new RuntimeException();
+				}
+			} else {
+				throw new NullPointerException();
+			}
+			dataSources = new edu.cmu.cs.dennisc.zip.DataSource[] {
+					new edu.cmu.cs.dennisc.zip.DataSource() {
+						public String getName() {
+							return "thumbnail.png";
+						}
+						public void write(java.io.OutputStream os) throws java.io.IOException {
+							edu.cmu.cs.dennisc.image.ImageUtilities.write(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, os, thumbnailImage);
+						}
+					}
+			};
+		} catch( Throwable t ) {
+			dataSources = new edu.cmu.cs.dennisc.zip.DataSource[] {};
+		}
+		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( file, project, dataSources );
 		this.file = file;
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
 		this.updateHistoryLengthAtLastFileOperation();

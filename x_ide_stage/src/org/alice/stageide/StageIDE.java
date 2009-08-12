@@ -419,5 +419,35 @@ public class StageIDE extends org.alice.ide.IDE {
 			}
 		};
 	}
+	private static final int THUMBNAIL_WIDTH = 160;
+	private static final int THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH*3/4;
+	private edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
+	@Override
+	protected java.awt.image.BufferedImage createThumbnail() throws java.lang.Throwable {
+		if( offscreenLookingGlass != null ) {
+			//pass
+		} else {
+			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass(null);
+			offscreenLookingGlass.setSize( THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT );
+		}
+		org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor moveAndTurnSceneEditor = (org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor)this.getSceneEditor();
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = moveAndTurnSceneEditor.getSGCameraForCreatingThumbnails();
+		boolean isClearingAndAddingRequired;
+		if( offscreenLookingGlass.getCameraCount() == 1 ) {
+			if( offscreenLookingGlass.getCameraAt( 0 ) == sgCamera ) {
+				isClearingAndAddingRequired = false;
+			} else {
+				isClearingAndAddingRequired = true;
+			}
+		} else {
+			isClearingAndAddingRequired = true;
+		}
+		if( isClearingAndAddingRequired ) {
+			offscreenLookingGlass.clearCameras();
+			offscreenLookingGlass.addCamera( sgCamera );
+		}
+		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBuffer();
+		return rv;
+	}
 	
 }

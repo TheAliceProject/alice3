@@ -61,6 +61,10 @@ public class FauxIDE extends IDE {
 	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, int frameRate ) {
 		return null;
 	}
+	@Override
+	protected java.awt.image.BufferedImage createThumbnail() throws java.lang.Throwable {
+		return null;
+	}
 	public static void main( String[] args ) {
 		org.alice.ide.LaunchUtilities.launch( FauxIDE.class, null, args );
 	}
