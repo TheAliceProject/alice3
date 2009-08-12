@@ -6,5 +6,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn_generated"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/x_zoot"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch_gallery_generated"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

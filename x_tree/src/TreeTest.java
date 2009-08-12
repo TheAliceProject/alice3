@@ -121,6 +121,7 @@ class FieldTreeNode extends AbstractTreeNode {
 		rv.add( type.getDeclaredFields() );
 		TypeDeclaredInJava typeJava = type.getFirstTypeEncounteredDeclaredInJava();
 		Class<?> cls = typeJava.getClassReflectionProxy().getReification();
+		assert cls != null;
 		if( Model.class.isAssignableFrom(cls)) {
 			Class<?>[] innerClses = cls.getDeclaredClasses();
 			for( Class<?> innerCls : innerClses ) {
@@ -178,7 +179,7 @@ public class TreeTest {
 				int N = treePath.getPathCount();
 				if( N > 0 ) {
 					Object last = treePath.getPathComponent( N-1 );
-					PrintUtilities.println( last, last.getClass() );
+					PrintUtilities.println( last, last.getClass().getName() );
 				}
 			}
 		} );
@@ -191,10 +192,14 @@ public class TreeTest {
 		
 	}
 	public static void main(String[] args) {
-		File root = FileUtilities.getMyProjectsDirectory( "Alice3" );
-		File file = new File( root, "a.a3p" );
-		Project project = FileUtilities.readProject( file );
-		TypeDeclaredInAlice programType = (TypeDeclaredInAlice)project.getProgramType();
-		showTreeFor( (FieldDeclaredInAlice)programType.fields.get( 0 ) );
+		javax.swing.SwingUtilities.invokeLater( new Runnable(){
+			public void run() {
+				File root = FileUtilities.getMyProjectsDirectory( "Alice3" );
+				File file = new File( root, "a.a3p" );
+				Project project = FileUtilities.readProject( file );
+				TypeDeclaredInAlice programType = (TypeDeclaredInAlice)project.getProgramType();
+				showTreeFor( (FieldDeclaredInAlice)programType.fields.get( 0 ) );
+			}
+		} );
 	}
 }
