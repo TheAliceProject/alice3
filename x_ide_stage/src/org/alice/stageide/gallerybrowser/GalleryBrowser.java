@@ -22,8 +22,6 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-import edu.cmu.cs.dennisc.browser.BrowserProgressDialog;
-
 /**
  * @author Dennis Cosgrove
  */
