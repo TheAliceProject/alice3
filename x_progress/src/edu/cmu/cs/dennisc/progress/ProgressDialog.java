@@ -113,7 +113,7 @@ public abstract class ProgressDialog extends javax.swing.JDialog {
 						return new Worker() {
 							@Override
 							protected Boolean doInBackground() throws Exception {
-								final int N = 10;
+								final int N = 32;
 								for (int i = 0; i < N; i++) {
 									this.setPortionCompleted(i / (double)N);
 									this.publish(Integer.toString(i) + "\n");
