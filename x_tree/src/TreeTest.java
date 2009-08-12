@@ -125,9 +125,11 @@ class FieldTreeNode extends AbstractTreeNode {
 		if( Model.class.isAssignableFrom(cls)) {
 			Class<?>[] innerClses = cls.getDeclaredClasses();
 			for( Class<?> innerCls : innerClses ) {
-				PrintUtilities.println(innerCls);
+				//PrintUtilities.println(innerCls);
 				if( innerCls.getSimpleName().equals("Part")) {
-					rv.add( innerCls.getEnumConstants() );
+					Object[] constants = innerCls.getEnumConstants();
+//					edu.cmu.cs.dennisc.lang.ArrayUtilities.reverseInPlace( constants );
+					rv.add( constants );
 				}
 			}
 		}
