@@ -66,14 +66,16 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		try {
 			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
 		} catch( UnsatisfiedLinkError ule ) {
-			final String JAVA_LIBRARY_PATH = "java.library.path";
+			//final String JAVA_LIBRARY_PATH = "java.library.path";
 			//String pathOriginal = System.getProperty( JAVA_LIBRARY_PATH );
 			StringBuffer sb = new StringBuffer();
 			String libraryPath;
 			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
 				libraryPath = "\"/Applications/Alice3Beta/ext/jogl/lib/macosx-universal\"";
-			} else {
+			} else if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
 				libraryPath = "\"/Program Files/Alice3Beta/ext/jogl/lib/windows-i586\"";
+			} else {
+				libraryPath = "?/Alice3Beta/ext/jogl/lib/?";
 			}
 			sb.append( "-ea -Xmx1024m -Djava.library.path=" + libraryPath );
 			
@@ -274,7 +276,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		return holg;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass createOffscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlassToShareContextWith ) {
-		assert lookingGlassToShareContextWith instanceof AbstractLookingGlass;
+		assert lookingGlassToShareContextWith == null || lookingGlassToShareContextWith instanceof AbstractLookingGlass;
 		OffscreenLookingGlass olg = new OffscreenLookingGlass( this, (AbstractLookingGlass)lookingGlassToShareContextWith );
 		olg.addReleaseListener( this );
 		synchronized( this.offscreenLookingGlasses ) {

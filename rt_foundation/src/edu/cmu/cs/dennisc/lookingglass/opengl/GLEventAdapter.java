@@ -31,12 +31,12 @@ import edu.cmu.cs.dennisc.print.PrintUtilities;
  * @author Dennis Cosgrove
  */
 class SelectionBufferInfo {
-	private float m_zFront;
-	private float m_zBack;
-	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual;
-	private boolean m_isFrontFacing;
-	private edu.cmu.cs.dennisc.scenegraph.Geometry m_sgGeometry;
-	private int m_subElement;
+	private float zFront;
+	private float zBack;
+	private edu.cmu.cs.dennisc.scenegraph.Visual sgVisual;
+	private boolean isFrontFacing;
+	private edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry;
+	private int subElement;
 
 	public SelectionBufferInfo( PickContext pc, java.nio.IntBuffer intBuffer, int offset ) {
 		int nameCount = intBuffer.get( offset + 0 );
@@ -46,8 +46,8 @@ class SelectionBufferInfo {
 		long zFrontAsLong = zFrontAsInt;
 		zFrontAsLong &= RenderContext.MAX_UNSIGNED_INTEGER;
 
-		m_zFront = (float)zFrontAsLong;
-		m_zFront /= (float)RenderContext.MAX_UNSIGNED_INTEGER;
+		this.zFront = (float)zFrontAsLong;
+		this.zFront /= (float)RenderContext.MAX_UNSIGNED_INTEGER;
 
 		long zBackAsLong = zBackAsInt;
 		zBackAsLong &= RenderContext.MAX_UNSIGNED_INTEGER;
@@ -58,39 +58,39 @@ class SelectionBufferInfo {
 //		pc.gl.glGetIntegerv( GL.GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
 //		edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectionBufferInfo:", atDepth[ 0 ], Long.toHexString( atClearValue[ 0 ] ), Long.toHexString( RenderContext.MAX_UNSIGNED_INTEGER ), Integer.toHexString( zFrontAsInt ), Long.toHexString( zFrontAsLong ), Integer.toHexString( zBackAsInt ), Long.toHexString( zBackAsLong )  );
 
-		m_zBack = (float)zBackAsLong;
-		m_zBack /= (float)RenderContext.MAX_UNSIGNED_INTEGER;
+		this.zBack = (float)zBackAsLong;
+		this.zBack /= (float)RenderContext.MAX_UNSIGNED_INTEGER;
 
 		if( nameCount == 4 ) {
 			int key = intBuffer.get( offset + 3 );
 			VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter = pc.getPickVisualAdapterForName( key );
 			if( visualAdapter != null ) {
-				m_sgVisual = visualAdapter.m_element;
-				m_isFrontFacing = intBuffer.get( offset + 4 ) == 1;
-				m_sgGeometry = m_sgVisual.geometries.getValue()[ ( intBuffer.get( offset + 5 ) ) ];
-				m_subElement = intBuffer.get( offset + 6 );
+				this.sgVisual = visualAdapter.m_element;
+				this.isFrontFacing = intBuffer.get( offset + 4 ) == 1;
+				this.sgGeometry = this.sgVisual.geometries.getValue()[ ( intBuffer.get( offset + 5 ) ) ];
+				this.subElement = intBuffer.get( offset + 6 );
 			}
 		}
 	}
 
 	public float getZFront() {
-		return m_zFront;
+		return this.zFront;
 	}
 	public float getZBack() {
-		return m_zBack;
+		return this.zBack;
 	}
 
 	public edu.cmu.cs.dennisc.scenegraph.Visual getSGVisual() {
-		return m_sgVisual;
+		return this.sgVisual;
 	}
 	public boolean isFrontFacing() {
-		return m_isFrontFacing;
+		return this.isFrontFacing;
 	}
 	public edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
-		return m_sgGeometry;
+		return this.sgGeometry;
 	}
 	public int getSubElement() {
-		return m_subElement;
+		return this.subElement;
 	}
 }
 
@@ -98,21 +98,21 @@ class SelectionBufferInfo {
  * @author Dennis Cosgrove
  */
 class GLEventAdapter implements javax.media.opengl.GLEventListener {
-	private AbstractLookingGlass m_lookingGlass;
-	private javax.media.opengl.GLAutoDrawable m_drawable;
-	private RenderContext m_renderContext = new RenderContext();
-	private PickContext m_pickContext = new PickContext();
-	private int m_width;
-	private int m_height;
+	private AbstractLookingGlass lookingGlass;
+	private javax.media.opengl.GLAutoDrawable drawable;
+	private RenderContext renderContext = new RenderContext();
+	private PickContext pickContext = new PickContext();
+	private int width;
+	private int height;
 
-	private PickParameters m_pickParameters = null;
-	private java.awt.image.BufferedImage m_rvColorBuffer = null;
-	private java.nio.FloatBuffer m_rvDepthBuffer = null;
+	private PickParameters pickParameters = null;
+	private java.awt.image.BufferedImage rvColorBuffer = null;
+	private java.nio.FloatBuffer rvDepthBuffer = null;
 
 	private static final int SELECTION_CAPACITY = 256;
-	private java.nio.IntBuffer m_selectionAsIntBuffer = null;
+	private java.nio.IntBuffer selectionAsIntBuffer = null;
 
-	private boolean m_isDisplayIgnoredDueToPreviousException = false;
+	private boolean isDisplayIgnoredDueToPreviousException = false;
 
 	private class ReusableLookingGlassRenderEvent extends edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent {
 		public ReusableLookingGlassRenderEvent( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, Graphics2D g ) {
@@ -130,116 +130,116 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			getGraphics2D().dispose();
 		}
 	}
-	private ReusableLookingGlassRenderEvent m_reusableLookingGlassRenderEvent;
+	private ReusableLookingGlassRenderEvent reusableLookingGlassRenderEvent;
 
 	public GLEventAdapter( AbstractLookingGlass lookingGlass ) {
-		m_lookingGlass = lookingGlass;
-		m_reusableLookingGlassRenderEvent = new ReusableLookingGlassRenderEvent( m_lookingGlass, new Graphics2D( m_renderContext ) );
+		this.lookingGlass = lookingGlass;
+		this.reusableLookingGlassRenderEvent = new ReusableLookingGlassRenderEvent( this.lookingGlass, new Graphics2D( this.renderContext ) );
 
 		final int SIZEOF_INT = 4;
 		java.nio.ByteBuffer byteBuffer = java.nio.ByteBuffer.allocateDirect( SIZEOF_INT * SELECTION_CAPACITY );
 		byteBuffer.order( java.nio.ByteOrder.nativeOrder() );
-		m_selectionAsIntBuffer = byteBuffer.asIntBuffer();
+		this.selectionAsIntBuffer = byteBuffer.asIntBuffer();
 	}
 
-	private boolean m_isListening;
+	private boolean isListening;
 
 	public boolean isListening() {
-		return m_isListening;
+		return this.isListening;
 	}
 	public void startListening( javax.media.opengl.GLAutoDrawable drawable ) {
-		if( m_isListening ) {
-			assert drawable == m_drawable;
+		if( this.isListening ) {
+			assert drawable == this.drawable;
 			System.err.println( "request GLEventAdapter.startListening( drawable ) ignored; already listening." );
 		} else {
-			m_isListening = true;
-			m_drawable = drawable;
-			m_drawable.addGLEventListener( this );
+			this.isListening = true;
+			this.drawable = drawable;
+			this.drawable.addGLEventListener( this );
 		}
 	}
 	public void stopListening( javax.media.opengl.GLAutoDrawable drawable ) {
-		assert drawable == m_drawable;
-		if( m_isListening ) {
-			m_isListening = false;
+		assert drawable == this.drawable;
+		if( this.isListening ) {
+			this.isListening = false;
 			drawable.removeGLEventListener( this );
 		} else {
 			System.err.println( "request GLEventAdapter.stopListening( drawable ) ignored; already not listening." );
 		}
-		m_drawable = null;
+		this.drawable = null;
 	}
 
 //	private void paintOverlay() {
-//		edu.cmu.cs.dennisc.lookingglass.Overlay overlay = m_lookingGlass.getOverlay();
+//		edu.cmu.cs.dennisc.lookingglass.Overlay overlay = this.lookingGlass.getOverlay();
 //		if( overlay != null ) {
 //			
-//			m_renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
-//			m_renderContext.gl.glPushMatrix();
-//			m_renderContext.gl.glLoadIdentity();
-//			m_renderContext.gl.glOrtho( 0, m_lookingGlass.getWidth() - 1, m_lookingGlass.getHeight() - 1, 0, -1, 1 );
-//			m_renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
-//			m_renderContext.gl.glPushMatrix();
-//			m_renderContext.gl.glLoadIdentity();
+//			this.renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
+//			this.renderContext.gl.glPushMatrix();
+//			this.renderContext.gl.glLoadIdentity();
+//			this.renderContext.gl.glOrtho( 0, this.lookingGlass.getWidth() - 1, this.lookingGlass.getHeight() - 1, 0, -1, 1 );
+//			this.renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
+//			this.renderContext.gl.glPushMatrix();
+//			this.renderContext.gl.glLoadIdentity();
 //
-//			m_renderContext.gl.glDisable( GL.GL_DEPTH_TEST );
-//			m_renderContext.gl.glDisable( GL.GL_LIGHTING );
-//			m_renderContext.gl.glDisable( GL.GL_CULL_FACE );
-//			m_renderContext.setDiffuseColorTextureAdapter( null );
-//			m_renderContext.setBumpTextureAdapter( null );
+//			this.renderContext.gl.glDisable( GL.GL_DEPTH_TEST );
+//			this.renderContext.gl.glDisable( GL.GL_LIGHTING );
+//			this.renderContext.gl.glDisable( GL.GL_CULL_FACE );
+//			this.renderContext.setDiffuseColorTextureAdapter( null );
+//			this.renderContext.setBumpTextureAdapter( null );
 //
 //			
 //			try {
-//				overlay.paint( m_lookingGlass );
-//				m_renderContext.gl.glFlush();
+//				overlay.paint( this.lookingGlass );
+//				this.renderContext.gl.glFlush();
 //			} finally {
-//				m_renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
-//				m_renderContext.gl.glPopMatrix();
-//				m_renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
-//				m_renderContext.gl.glPopMatrix();
+//				this.renderContext.gl.glMatrixMode( GL.GL_PROJECTION );
+//				this.renderContext.gl.glPopMatrix();
+//				this.renderContext.gl.glMatrixMode( GL.GL_MODELVIEW );
+//				this.renderContext.gl.glPopMatrix();
 //			}
 //		}
 //	}
 	
 	private void performRender() {
-		if( m_lookingGlass.isRenderingEnabled() ) {
-			m_renderContext.actuallyForgetTexturesIfNecessary();
-			m_renderContext.actuallyForgetDisplayListsIfNecessary();
-			if( m_isDisplayIgnoredDueToPreviousException ) {
+		if( this.lookingGlass.isRenderingEnabled() ) {
+			this.renderContext.actuallyForgetTexturesIfNecessary();
+			this.renderContext.actuallyForgetDisplayListsIfNecessary();
+			if( this.isDisplayIgnoredDueToPreviousException ) {
 				//pass
 			} else {
 				try {
 					//todo: separate clearing and rendering
-					m_reusableLookingGlassRenderEvent.prologue();
+					this.reusableLookingGlassRenderEvent.prologue();
 					try {
-						m_lookingGlass.fireCleared( m_reusableLookingGlassRenderEvent );
+						this.lookingGlass.fireCleared( this.reusableLookingGlassRenderEvent );
 					} finally {
-						m_reusableLookingGlassRenderEvent.epilogue();
+						this.reusableLookingGlassRenderEvent.epilogue();
 					}
-					if( m_lookingGlass.getCameraCount() > 0 ) {
-						m_renderContext.initialize();
-						Iterable< edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameras = m_lookingGlass.accessCameras();
+					if( this.lookingGlass.getCameraCount() > 0 ) {
+						this.renderContext.initialize();
+						Iterable< edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameras = this.lookingGlass.accessCameras();
 						synchronized( cameras ) {
 							for( edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera : cameras ) {
 								AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapterI = AdapterFactory.getAdapterFor( camera );
-								cameraAdapterI.performClearAndRenderOffscreen( m_renderContext, m_width, m_height );
+								cameraAdapterI.performClearAndRenderOffscreen( this.renderContext, this.width, this.height );
 							}
 						}
-						m_renderContext.renderLetterboxingIfNecessary( m_width, m_height );
+						this.renderContext.renderLetterboxingIfNecessary( this.width, this.height );
 					} else {
-						m_renderContext.gl.glClearColor( 0, 0, 0, 1 );
-						m_renderContext.gl.glClear( GL.GL_COLOR_BUFFER_BIT );
+						this.renderContext.gl.glClearColor( 0, 0, 0, 1 );
+						this.renderContext.gl.glClear( GL.GL_COLOR_BUFFER_BIT );
 					}
-					m_reusableLookingGlassRenderEvent.prologue();
+					this.reusableLookingGlassRenderEvent.prologue();
 					try {
-						m_lookingGlass.fireRendered( m_reusableLookingGlassRenderEvent );
+						this.lookingGlass.fireRendered( this.reusableLookingGlassRenderEvent );
 					} finally {
-						m_reusableLookingGlassRenderEvent.epilogue();
+						this.reusableLookingGlassRenderEvent.epilogue();
 					}
-					if( m_rvColorBuffer != null || m_rvDepthBuffer != null ) {
-						m_renderContext.captureBuffers( m_rvColorBuffer, m_rvDepthBuffer );
+					if( this.rvColorBuffer != null || this.rvDepthBuffer != null ) {
+						this.renderContext.captureBuffers( this.rvColorBuffer, this.rvDepthBuffer );
 					}
 				} catch( RuntimeException re ) {
 					System.err.println( "rendering will be disabled due to exception" );
-					m_isDisplayIgnoredDueToPreviousException = true;
+					this.isDisplayIgnoredDueToPreviousException = true;
 					throw re;
 				}
 			}
@@ -247,27 +247,27 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	}
 
 	private void performPick() {
-		edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver = m_pickParameters.getPickObserver();
+		edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver = this.pickParameters.getPickObserver();
 		if( pickObserver != null ) {
 			pickObserver.prePick();
 			ChangeHandler.handleBufferedChanges();
 		}
-		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = m_pickParameters.getSGCamera();
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = this.pickParameters.getSGCamera();
 		AbstractCameraAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > cameraAdapter = AdapterFactory.getAdapterFor( sgCamera );
 
-		m_selectionAsIntBuffer.rewind();
-		m_pickContext.gl.glSelectBuffer( SELECTION_CAPACITY, m_selectionAsIntBuffer );
+		this.selectionAsIntBuffer.rewind();
+		this.pickContext.gl.glSelectBuffer( SELECTION_CAPACITY, this.selectionAsIntBuffer );
 
-		m_pickContext.gl.glRenderMode( GL.GL_SELECT );
-		m_pickContext.gl.glInitNames();
+		this.pickContext.gl.glRenderMode( GL.GL_SELECT );
+		this.pickContext.gl.glInitNames();
 
-		java.awt.Rectangle actualViewport = m_lookingGlass.getActualViewport( sgCamera );
-		m_pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
-		cameraAdapter.performPick( m_pickContext, m_pickParameters, actualViewport );
-		m_pickContext.gl.glFlush();
+		java.awt.Rectangle actualViewport = this.lookingGlass.getActualViewport( sgCamera );
+		this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
+		cameraAdapter.performPick( this.pickContext, this.pickParameters, actualViewport );
+		this.pickContext.gl.glFlush();
 
-		m_selectionAsIntBuffer.rewind();
-		int length = m_pickContext.gl.glRenderMode( GL.GL_RENDER );
+		this.selectionAsIntBuffer.rewind();
+		int length = this.pickContext.gl.glRenderMode( GL.GL_RENDER );
 
 		//todo: invesigate negative length
 		//assert length >= 0;
@@ -276,7 +276,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			SelectionBufferInfo[] selectionBufferInfos = new SelectionBufferInfo[ length ];
 			int offset = 0;
 			for( int i = 0; i < length; i++ ) {
-				selectionBufferInfos[ i ] = new SelectionBufferInfo( m_pickContext, m_selectionAsIntBuffer, offset );
+				selectionBufferInfos[ i ] = new SelectionBufferInfo( this.pickContext, this.selectionAsIntBuffer, offset );
 				offset += 7;
 			}
 
@@ -305,8 +305,8 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 			for( int i=0; i<length; i++ ) {
 				//todo: perform trimmed math
 				
-				double x = m_pickParameters.getX();
-				double y = m_pickParameters.getFlippedY( actualViewport );
+				double x = this.pickParameters.getX();
+				double y = this.pickParameters.getFlippedY( actualViewport );
 
 				edu.cmu.cs.dennisc.math.Matrix4x4 m = new edu.cmu.cs.dennisc.math.Matrix4x4();
 				m.translation.set( actualViewport.width - 2*(x-actualViewport.x), actualViewport.height - 2*(y-actualViewport.y), 0, 1 );
@@ -326,7 +326,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				m.transform( v );
 
 				edu.cmu.cs.dennisc.math.Point3 xyzInSource = new edu.cmu.cs.dennisc.math.Point3( v.x/v.w, v.y/v.w, v.z/v.w );
-				m_pickParameters.addPickResult( sgCamera, selectionBufferInfos[ i ].getSGVisual(), selectionBufferInfos[ i ].isFrontFacing(), selectionBufferInfos[ i ].getSGGeometry(), selectionBufferInfos[ i ].getSubElement(), xyzInSource );
+				this.pickParameters.addPickResult( sgCamera, selectionBufferInfos[ i ].getSGVisual(), selectionBufferInfos[ i ].isFrontFacing(), selectionBufferInfos[ i ].getSGGeometry(), selectionBufferInfos[ i ].getSubElement(), xyzInSource );
 			}
 		}
 		if( pickObserver != null ) {
@@ -338,41 +338,51 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
 		assert sgCamera != null;
-		assert m_drawable != null;
-		m_drawable.setAutoSwapBufferMode( false );
+		assert this.drawable != null;
+		this.drawable.setAutoSwapBufferMode( false );
 		try {
-			m_pickParameters = new PickParameters( m_drawable, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-			m_drawable.display();
-			return m_pickParameters.accessFrontMostPickResult();
+			this.pickParameters = new PickParameters( this.drawable, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
+			this.drawable.display();
+			return this.pickParameters.accessFrontMostPickResult();
 		} finally {
-			m_drawable.setAutoSwapBufferMode( true );
-			m_pickParameters = null;
+			this.drawable.setAutoSwapBufferMode( true );
+			this.pickParameters = null;
 		}
 	}
 	public java.util.List< edu.cmu.cs.dennisc.lookingglass.PickResult > pickAll( edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
 		assert sgCamera != null;
-		m_drawable.setAutoSwapBufferMode( false );
+		this.drawable.setAutoSwapBufferMode( false );
 		try {
-			m_pickParameters = new PickParameters( m_drawable, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
-			m_drawable.display();
-			return m_pickParameters.accessAllPickResults();
+			this.pickParameters = new PickParameters( this.drawable, sgCamera, xPixel, yPixel, isSubElementRequired, pickObserver );
+			this.drawable.display();
+			return this.pickParameters.accessAllPickResults();
 		} finally {
-			m_drawable.setAutoSwapBufferMode( true );
-			m_pickParameters = null;
+			this.drawable.setAutoSwapBufferMode( true );
+			this.pickParameters = null;
 		}
 	}
 
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
-		if( m_width > 0 && m_height > 0 ) {
-			return new java.awt.image.BufferedImage( m_width, m_height, type );
+		if( this.drawable != null ) {
+			if( this.width != this.drawable.getWidth() || this.height != this.drawable.getHeight() ) {
+				PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
+				this.width = this.drawable.getWidth();
+				this.height = this.drawable.getHeight();
+			}
+		} else {
+			PrintUtilities.println( "warning: drawable null" );
+		}
+		
+		if( this.width > 0 && this.height > 0 ) {
+			return new java.awt.image.BufferedImage( this.width, this.height, type );
 		} else {
 			return null;
 		}
 	}
 	public java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer() {
 //		boolean isClearedToCreateImage;
-//		if( this.m_renderContext.gl != null ) {
-//			String extensions = this.m_renderContext.gl.glGetString( GL.GL_EXTENSIONS );
+//		if( this.this.renderContext.gl != null ) {
+//			String extensions = this.this.renderContext.gl.glGetString( GL.GL_EXTENSIONS );
 //			if( extensions != null ) {
 //				boolean isABGRExtensionSupported = extensions.contains( "GL_EXT_abgr" );
 //				if( isABGRExtensionSupported ) {
@@ -413,13 +423,13 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	}
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
 		if( rv != null ) {
-			m_rvColorBuffer = rv;
-			m_drawable.setAutoSwapBufferMode( false );
+			this.rvColorBuffer = rv;
+			this.drawable.setAutoSwapBufferMode( false );
 			try {
-				m_drawable.display();
+				this.drawable.display();
 			} finally {
-				m_rvColorBuffer = null;
-				m_drawable.setAutoSwapBufferMode( true );
+				this.rvColorBuffer = null;
+				this.drawable.setAutoSwapBufferMode( true );
 			}
 		}
 		return rv;
@@ -428,36 +438,36 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		return createBufferedImageForUseAsColorBuffer( java.awt.image.BufferedImage.TYPE_4BYTE_ABGR );
 	}
 	public java.nio.FloatBuffer createFloatBufferForUseAsDepthBuffer() {
-		return java.nio.FloatBuffer.allocate( m_width * m_height );
+		return java.nio.FloatBuffer.allocate( this.width * this.height );
 	}
 	public java.nio.FloatBuffer getDepthBuffer( java.nio.FloatBuffer rv ) {
-		m_rvDepthBuffer = rv;
-		m_drawable.setAutoSwapBufferMode( false );
+		this.rvDepthBuffer = rv;
+		this.drawable.setAutoSwapBufferMode( false );
 		try {
-			m_drawable.display();
+			this.drawable.display();
 		} finally {
-			m_rvDepthBuffer = null;
-			m_drawable.setAutoSwapBufferMode( true );
+			this.rvDepthBuffer = null;
+			this.drawable.setAutoSwapBufferMode( true );
 		}
 		return rv;
 	}
 
 	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
-		m_rvColorBuffer = rv;
-		m_rvDepthBuffer = depthBuffer;
-		m_drawable.setAutoSwapBufferMode( false );
+		this.rvColorBuffer = rv;
+		this.rvDepthBuffer = depthBuffer;
+		this.drawable.setAutoSwapBufferMode( false );
 		try {
-			m_drawable.display();
+			this.drawable.display();
 		} finally {
-			m_rvColorBuffer = null;
-			m_rvDepthBuffer = null;
-			m_drawable.setAutoSwapBufferMode( true );
+			this.rvColorBuffer = null;
+			this.rvDepthBuffer = null;
+			this.drawable.setAutoSwapBufferMode( true );
 		}
 		return rv;
 	}
 	
 	private void initialize( javax.media.opengl.GLAutoDrawable drawable ) {
-		assert drawable == m_drawable;
+		assert drawable == this.drawable;
 		GL gl = drawable.getGL();
 		
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
@@ -472,9 +482,9 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				drawable.setGL( gl );
 			}
 		}
-		m_renderContext.setGL( gl );
-		m_pickContext.setGL( gl );
-		m_lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( m_lookingGlass, m_drawable.getWidth(), m_drawable.getHeight() ) );
+		this.renderContext.setGL( gl );
+		this.pickContext.setGL( gl );
+		this.lookingGlass.fireInitialized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent( this.lookingGlass, this.drawable.getWidth(), this.drawable.getHeight() ) );
 	}
 
 	//todo: investigate not being invoked
@@ -484,43 +494,43 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	}
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
 //		edu.cmu.cs.dennisc.print.PrintUtilities.println( "display:", drawable );
-		assert drawable == m_drawable;
+		assert drawable == this.drawable;
 	
-		//m_lookingGlass.commitAnyPendingChanges();
+		//this.lookingGlass.commitAnyPendingChanges();
 		//todo?
 		GL gl = drawable.getGL();
-		if( m_renderContext.gl != null || m_pickContext.gl != null ) {
+		if( this.renderContext.gl != null || this.pickContext.gl != null ) {
 			//pass
 		} else {
 			initialize( drawable );
 		}
 		
-//		if( m_width > 0 && m_height > 0 ) {
+//		if( this.width > 0 && this.height > 0 ) {
 //			//pass
 //		} else {
-//			m_width = drawable.getWidth();
-//			m_height = drawable.getHeight();
+//			this.width = drawable.getWidth();
+//			this.height = drawable.getHeight();
 //		}
-		if( m_pickParameters != null ) {
+		if( this.pickParameters != null ) {
 			//todo?
-			m_pickContext.setGL( gl );
+			this.pickContext.setGL( gl );
 			performPick();
 		} else {
 			//todo?
-			m_renderContext.setGL( gl );
+			this.renderContext.setGL( gl );
 			performRender();
-			//m_lookingGlass.fireDisplayed( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassEvent( m_lookingGlass, width, height ) );
+			//this.lookingGlass.fireDisplayed( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassEvent( this.lookingGlass, width, height ) );
 		}
 	}
 	public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
-		assert drawable == m_drawable;
-		m_width = width;
-		m_height = height;
-		m_lookingGlass.fireResized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent( m_lookingGlass, width, height ) );
+		assert drawable == this.drawable;
+		this.width = width;
+		this.height = height;
+		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent( this.lookingGlass, width, height ) );
 	}
 	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
-		assert drawable == m_drawable;
-		m_lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent( m_lookingGlass, modeChanged, deviceChanged ) );
+		assert drawable == this.drawable;
+		this.lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent( this.lookingGlass, modeChanged, deviceChanged ) );
 	}
 }
