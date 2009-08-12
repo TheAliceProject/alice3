@@ -32,8 +32,8 @@ public class GalleryRootUtilities {
 		java.io.File rv = null;
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
 		String rootPathUserPreference = userPreferences.get( ROOT_PATH_KEY, null );
-		java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( cls );
-		String rootPathSystemPreference = systemPreferences.get( ROOT_PATH_KEY, null );
+//		java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( cls );
+//		String rootPathSystemPreference = systemPreferences.get( ROOT_PATH_KEY, null );
 		do {
 			java.util.List< String > potentialPaths = new java.util.LinkedList< String >();
 			
@@ -65,9 +65,9 @@ public class GalleryRootUtilities {
 			if( rootPathUserPreference != null ) {
 				potentialPaths.add( rootPathUserPreference );
 			}
-			if( rootPathSystemPreference != null ) {
-				potentialPaths.add( rootPathSystemPreference );
-			}
+//			if( rootPathSystemPreference != null ) {
+//				potentialPaths.add( rootPathSystemPreference );
+//			}
 			
 			for( String path : potentialPaths ) {
 				java.io.File directory = new java.io.File( path );
@@ -106,7 +106,7 @@ public class GalleryRootUtilities {
 			String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( rv );
 			try {
 				userPreferences.put( ROOT_PATH_KEY, path );
-				systemPreferences.put( ROOT_PATH_KEY, path );
+				//systemPreferences.put( ROOT_PATH_KEY, path );
 			} catch( Exception e ) {
 				e.printStackTrace();
 			}
