@@ -10,15 +10,15 @@ public class JarUtilities {
 		}
 		return null;
 	}
-	public static java.util.List<String> getEntryNames( java.util.jar.JarFile jarFile ) {
-		java.util.List<String> rv = new java.util.LinkedList<String>();
-		java.util.Enumeration< java.util.jar.JarEntry > e = jarFile.entries();
-		while( e.hasMoreElements() ) {
-			java.util.jar.JarEntry jarEntry = e.nextElement();
-			rv.add( jarEntry.getName() );
-		}
-		return rv;
-	}
+//	public static java.util.List<String> getEntryNames( java.util.jar.JarFile jarFile ) {
+//		java.util.List<String> rv = new java.util.LinkedList<String>();
+//		java.util.Enumeration< java.util.jar.JarEntry > e = jarFile.entries();
+//		while( e.hasMoreElements() ) {
+//			java.util.jar.JarEntry jarEntry = e.nextElement();
+//			rv.add( jarEntry.getName() );
+//		}
+//		return rv;
+//	}
 	
 	public static void main(String[] args) throws Exception {
 		edu.cmu.cs.dennisc.print.PrintUtilities.printlns( edu.cmu.cs.dennisc.lang.ClassPathUtilities.getClassPath() );
