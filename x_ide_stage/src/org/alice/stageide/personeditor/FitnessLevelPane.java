@@ -34,6 +34,6 @@ class FitnessLevelPane extends swing.BorderPane {
 	}
 
 	public void setFitnessLevel( Double fitnessLevel ) {
-		this.slider.setValue( (int)(fitnessLevel*100) );
+		this.slider.setValue( (int)((fitnessLevel+0.005)*100) );
 	}
 }
