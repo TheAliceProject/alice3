@@ -51,12 +51,12 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 	protected GalleryModel() {
 	}
 	public GalleryModel( String path ) {
-		long t0 = System.currentTimeMillis();
+		//long t0 = System.currentTimeMillis();
 		java.io.File directory = new java.io.File( new java.io.File( s_galleryRootDirectory, CHILD_NAME ), GRANDCHILD_NAME );
 		java.io.File file = new java.io.File( directory, path + ".zip" );
 		assert file.exists() : path;
 		edu.cmu.cs.dennisc.codec.CodecUtilities.decodeZippedReferenceableBinary( this, file.getAbsolutePath(), "element.bin" );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( System.currentTimeMillis() - t0 );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( System.currentTimeMillis() - t0 );
 		this.realizeIfNecessary();
 	}
 	@PropertyGetterTemplate(visibility = Visibility.TUCKED_AWAY)

@@ -750,12 +750,17 @@ public abstract class Transformable extends AbstractTransformable {
 
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void setWidth( Number amount, Number duration, SetSizePolicy setSizePolicy, HowMuch howMuch, Style style ) {
-		double factor = amount.doubleValue() / getWidth();
-		assert Double.isNaN( factor ) == false;
-		if( setSizePolicy.isAspectRatioPreserved() ) {
-			resize( factor, duration, howMuch, style );
+		double width = this.getWidth();
+		if( width > 0.0 ) {
+			double factor = amount.doubleValue() / width;
+			assert Double.isNaN( factor ) == false;
+			if( setSizePolicy.isAspectRatioPreserved() ) {
+				resize( factor, duration, howMuch, style );
+			} else {
+				resizeWidth( factor, duration, setSizePolicy.getResizePolicy(), howMuch, style );
+			}
 		} else {
-			resizeWidth( factor, duration, setSizePolicy.getResizePolicy(), howMuch, style );
+			throw new ArithmeticException( edu.cmu.cs.dennisc.alice.virtualmachine.ExceptionDetailUtilities.createExceptionDetail( "unable to set the width of object that has zero width to begin with.") );
 		}
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
@@ -776,12 +781,17 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void setHeight( Number amount, Number duration, SetSizePolicy setSizePolicy, HowMuch howMuch, Style style ) {
-		double factor = amount.doubleValue() / getHeight();
-		assert Double.isNaN( factor ) == false;
-		if( setSizePolicy.isAspectRatioPreserved() ) {
-			resize( factor, duration, howMuch, style );
+		double height = this.getHeight();
+		if( height > 0.0 ) {
+			double factor = amount.doubleValue() / height;
+			assert Double.isNaN( factor ) == false;
+			if( setSizePolicy.isAspectRatioPreserved() ) {
+				resize( factor, duration, howMuch, style );
+			} else {
+				resizeHeight( factor, duration, setSizePolicy.getResizePolicy(), howMuch, style );
+			}
 		} else {
-			resizeHeight( factor, duration, setSizePolicy.getResizePolicy(), howMuch, style );
+			throw new ArithmeticException( edu.cmu.cs.dennisc.alice.virtualmachine.ExceptionDetailUtilities.createExceptionDetail( "unable to set the height of object that has zero height to begin with.") );
 		}
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
@@ -802,12 +812,17 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void setDepth( Number amount, Number duration, SetSizePolicy setSizePolicy, HowMuch howMuch, Style style ) {
-		double factor = amount.doubleValue() / getDepth();
-		assert Double.isNaN( factor ) == false;
-		if( setSizePolicy.isAspectRatioPreserved() ) {
-			resize( factor, duration, howMuch, style );
+		double depth = this.getDepth();
+		if( depth > 0.0 ) {
+			double factor = amount.doubleValue() / depth;
+			assert Double.isNaN( factor ) == false;
+			if( setSizePolicy.isAspectRatioPreserved() ) {
+				resize( factor, duration, howMuch, style );
+			} else {
+				resizeDepth( factor, duration, setSizePolicy.getResizePolicy(), howMuch, style );
+			}
 		} else {
-			resizeDepth( factor, duration, setSizePolicy.getResizePolicy(), howMuch, style );
+			throw new ArithmeticException( edu.cmu.cs.dennisc.alice.virtualmachine.ExceptionDetailUtilities.createExceptionDetail( "unable to set the depth of object that has zero depth to begin with.") );
 		}
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
