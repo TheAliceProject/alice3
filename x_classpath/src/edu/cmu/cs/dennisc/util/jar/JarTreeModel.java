@@ -1,128 +1,116 @@
 package edu.cmu.cs.dennisc.util.jar;
 
 class TreeNode extends javax.swing.tree.DefaultMutableTreeNode  {
-	private String[] parts;
-	public TreeNode( String[] parts ) {
-		this.parts = parts;
+	private String filePath;
+	public TreeNode( String filePath ) {
+		this.filePath = filePath;
 	}
-	protected String[] getParts() {
-		return this.parts;
+	protected String getFilePath() {
+		return this.filePath;
 	}
 	@Override
-	public java.lang.String toString() {
-		return java.util.Arrays.toString( this.parts );
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		//sb.append( this.getClass().getName() );
+		sb.append( this.getClass().getSimpleName() );
+		sb.append( "[" );
+		sb.append( this.filePath );
+		sb.append( "]" );
+		return sb.toString();
 	}
 }
 
 class PackageTreeNode extends TreeNode  {
-	public PackageTreeNode( String[] parts ) {
-		super( parts );
+	public PackageTreeNode( String filePath ) {
+		super( filePath );
 	}
 	@Override
 	public boolean getAllowsChildren() {
 		return true;
 	}
-	public String getPackageName() {
-		StringBuffer sb = new StringBuffer();
-		for( String part : this.getParts() ) {
-			sb.append( part );
-			sb.append( "." );
-		}
-		if( sb.length() > 0 ) {
-			sb.deleteCharAt( sb.length() - 1 );
-		}
-		return sb.toString();
+	public Package getPackage() {
+		String packageName = this.getFilePath().replace( '/', '.' );
+		return Package.getPackage( packageName );
 	}
 }
 
 abstract class FileTreeNode extends TreeNode  {
-	public FileTreeNode( String[] parts ) {
-		super( parts );
+	public FileTreeNode( String filePath ) {
+		super( filePath );
 	}
-	public String getName() {
-		StringBuffer sb = new StringBuffer();
-		for( String part : this.getParts() ) {
-			sb.append( part );
-			sb.append( "." );
-		}
-		sb.delete( sb.length() - ".class.".length(), sb.length() );
-		return sb.toString();
+	@Override
+	public boolean getAllowsChildren() {
+		return false;
 	}
-	
 }
 
 class ClassTreeNode extends FileTreeNode  {
-	public ClassTreeNode( String[] parts ) {
-		super( parts );
+	public ClassTreeNode( String filePath ) {
+		super( filePath );
+	}
+	public Class<?> getCls() {
+		String s = this.getFilePath().replace( '/', '.' );
+		String className = s.substring( 0, s.length()- 6 );
+		try {
+			return edu.cmu.cs.dennisc.lang.ClassUtilities.forName( className );
+		} catch( ClassNotFoundException cnfe ) {
+			return null;
+		}
 	}
 }
 
 class ResourceTreeNode extends TreeNode  {
-	public ResourceTreeNode( String[] parts ) {
-		super( parts );
+	public ResourceTreeNode( String filePath ) {
+		super( filePath );
 	}
 }
 
 public class JarTreeModel extends javax.swing.tree.DefaultTreeModel {
+	private static final String ROOT_NAME = "";
+	private static String getParentKey( String childKey ) {
+		String rv;
+		int index = childKey.lastIndexOf( "/", childKey.length()-2 );
+		if( index != -1 ) {
+			rv = childKey.substring(0,index+1);
+		} else { 
+			rv = ROOT_NAME;
+		}
+		return rv;
+	}
 	public JarTreeModel( java.util.jar.JarFile jarFile ) {
-		super( new PackageTreeNode( new String[] {} ) );
+		super( new PackageTreeNode( ROOT_NAME ) );
 		java.util.Map<String, TreeNode> map = new java.util.HashMap<String, TreeNode>();
-		map.put( "", (PackageTreeNode)this.getRoot());
+		map.put( ROOT_NAME, (PackageTreeNode)this.getRoot());
 		java.util.Enumeration< java.util.jar.JarEntry > e = jarFile.entries();
 		while( e.hasMoreElements() ) {
 			java.util.jar.JarEntry jarEntry = e.nextElement();
 			String entryName = jarEntry.getName();
-			String[] parts = entryName.split( "/" );
-			assert parts.length > 0;
-			
-			if( parts[ 0 ].equals( "META-INF" ) ) {
+			if( entryName.startsWith( "META-INF" ) ) {
 				//pass
-
-			
-			//todo: remove
-			} else if( entryName.startsWith( "com" ) ) {
-				//pass
-			
-			
-			
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.printlns( entryName, entryName.startsWith( "com" ) );
-				String last = parts[ parts.length - 1 ];
 				TreeNode node;
 				if( jarEntry.isDirectory() ) {
-					node = new PackageTreeNode( parts );
+					node = new PackageTreeNode( entryName );
 				} else {
-					if( last.endsWith( ".class" ) ) {
-						node = new ClassTreeNode( parts );
+					if( entryName.endsWith( ".class" ) ) {
+						node = new ClassTreeNode( entryName );
 					} else {
-						node = new ResourceTreeNode( parts );
+						node = new ResourceTreeNode( entryName );
 					}
 				}
 				map.put(entryName, node);
 			}
 		}
 		for( String key : map.keySet() ) {
-			if( key.length() == 0 ) {
+			if( key.equals( ROOT_NAME ) ) {
 				//pass
 			} else {
 				TreeNode child = map.get( key );
 				assert child != null;
-				String parentKey;
-				int index = key.lastIndexOf( "/", key.length()-2 );
-				if( index != -1 ) {
-					parentKey = key.substring(0,index+1);
-				} else { 
-					parentKey = "";
-				}
-				TreeNode parent = map.get( parentKey );
+				String parentKey = getParentKey( key );
+				TreeNode parent = map.get( getParentKey( key ) );
 				if( parent != null ) {
-					try {
-						parent.add(child);
-					} catch( IllegalArgumentException iae ) {
-						System.err.println( parent );
-						System.err.println( child );
-						iae.printStackTrace();
-					}
+					parent.add(child);
 				} else {
 					System.err.println( "cannot find parent key: " + parentKey );
 				}
@@ -134,9 +122,11 @@ public class JarTreeModel extends javax.swing.tree.DefaultTreeModel {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			@Override
 			public void run() {
+				javax.swing.JTree tree = new javax.swing.JTree( new JarTreeModel(jarFile) );
+				tree.setRootVisible( false );
 				javax.swing.JFrame frame = new javax.swing.JFrame();
 				frame.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
-				frame.getContentPane().add( new javax.swing.JTree( new JarTreeModel(jarFile)) );
+				frame.getContentPane().add( new javax.swing.JScrollPane( tree ) );
 				frame.pack();
 				frame.setVisible(true);
 			}

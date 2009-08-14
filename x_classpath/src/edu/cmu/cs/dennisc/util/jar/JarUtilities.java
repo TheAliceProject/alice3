@@ -19,10 +19,39 @@ public class JarUtilities {
 //		}
 //		return rv;
 //	}
-	
+	public static java.util.List< java.util.jar.JarEntry > getResources( java.util.jar.JarFile jarFile, Package pckg, String extension, boolean isRecursionDesired ) {
+		String suffix;
+		if( extension.startsWith( "." ) ) {
+			suffix = extension;
+		} else {
+			suffix = "." + extension;
+		}
+		String packageName = pckg.getName();
+		String prefix = packageName.replace( '.', '/' );
+		java.util.List< java.util.jar.JarEntry > rv = new java.util.LinkedList<java.util.jar.JarEntry>();
+		java.util.Enumeration< java.util.jar.JarEntry > e = jarFile.entries();
+		while( e.hasMoreElements() ) {
+			java.util.jar.JarEntry jarEntry = e.nextElement();
+			if( jarEntry.isDirectory() ) {
+				//pass
+			} else {
+				String entryName = jarEntry.getName();
+				if( entryName.startsWith( prefix ) ) {
+					if( entryName.endsWith( suffix ) ) {
+						if( isRecursionDesired || entryName.substring( prefix.length()+1 ).indexOf( '/' ) == -1 ) {
+							rv.add( jarEntry );
+						}
+					}
+				}
+			}
+		}
+		return rv;
+	}
 	public static void main(String[] args) throws Exception {
-		edu.cmu.cs.dennisc.print.PrintUtilities.printlns( edu.cmu.cs.dennisc.lang.ClassPathUtilities.getClassPath() );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.printlns( edu.cmu.cs.dennisc.lang.ClassPathUtilities.getClassPath() );
 		java.util.jar.JarFile jarFile = getJarFileOnClassPathNamed("mail.jar");
-		javax.swing.tree.TreeModel treeModel = new JarTreeModel(jarFile);
+		for( java.util.jar.JarEntry entry : getResources(jarFile, javax.mail.Flags.class.getPackage(), "class", false) ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( entry );
+		}
 	}
 }
