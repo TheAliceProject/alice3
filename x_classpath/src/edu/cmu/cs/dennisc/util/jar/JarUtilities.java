@@ -19,14 +19,13 @@ public class JarUtilities {
 //		}
 //		return rv;
 //	}
-	public static java.util.List< java.util.jar.JarEntry > getResources( java.util.jar.JarFile jarFile, Package pckg, String extension, boolean isRecursionDesired ) {
+	public static java.util.List< java.util.jar.JarEntry > getResources( java.util.jar.JarFile jarFile, String packageName, String extension, boolean isRecursionDesired ) {
 		String suffix;
 		if( extension.startsWith( "." ) ) {
 			suffix = extension;
 		} else {
 			suffix = "." + extension;
 		}
-		String packageName = pckg.getName();
 		String prefix = packageName.replace( '.', '/' );
 		java.util.List< java.util.jar.JarEntry > rv = new java.util.LinkedList<java.util.jar.JarEntry>();
 		java.util.Enumeration< java.util.jar.JarEntry > e = jarFile.entries();
@@ -46,6 +45,9 @@ public class JarUtilities {
 			}
 		}
 		return rv;
+	}
+	public static java.util.List< java.util.jar.JarEntry > getResources( java.util.jar.JarFile jarFile, Package pckg, String extension, boolean isRecursionDesired ) {
+		return getResources(jarFile, pckg.getName(), extension, isRecursionDesired);
 	}
 	public static void main(String[] args) throws Exception {
 //		edu.cmu.cs.dennisc.print.PrintUtilities.printlns( edu.cmu.cs.dennisc.lang.ClassPathUtilities.getClassPath() );
