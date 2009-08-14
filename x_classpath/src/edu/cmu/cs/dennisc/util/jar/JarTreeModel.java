@@ -72,11 +72,9 @@ public class JarTreeModel extends javax.swing.tree.DefaultTreeModel {
 		while( e.hasMoreElements() ) {
 			java.util.jar.JarEntry jarEntry = e.nextElement();
 			String entryName = jarEntry.getName();
-			edu.cmu.cs.dennisc.print.PrintUtilities.printlns( entryName );
 			String[] parts = entryName.split( "/" );
 			assert parts.length > 0;
 			
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( parts[ 0 ] );
 			if( parts[ 0 ].equals( "META-INF" ) ) {
 				//pass
 
@@ -88,6 +86,7 @@ public class JarTreeModel extends javax.swing.tree.DefaultTreeModel {
 			
 			
 			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.printlns( entryName, entryName.startsWith( "com" ) );
 				String last = parts[ parts.length - 1 ];
 				TreeNode node;
 				if( jarEntry.isDirectory() ) {
@@ -109,7 +108,7 @@ public class JarTreeModel extends javax.swing.tree.DefaultTreeModel {
 				TreeNode child = map.get( key );
 				assert child != null;
 				String parentKey;
-				int index = key.lastIndexOf( "/" );
+				int index = key.lastIndexOf( "/", key.length()-2 );
 				if( index != -1 ) {
 					parentKey = key.substring(0,index+1);
 				} else { 
