@@ -35,4 +35,24 @@ public class KeyEvent extends edu.cmu.cs.dennisc.pattern.event.Event< java.awt.C
 	public org.alice.apis.moveandturn.Key getKey() {
 		return org.alice.apis.moveandturn.Key.get( e );
 	}
+	
+	public Boolean isKey( org.alice.apis.moveandturn.Key key ) {
+		return this.getKey() == key;
+	}
+//	public Boolean isKey( org.alice.apis.moveandturn.Key... keys ) {
+//		for( org.alice.apis.moveandturn.Key key : keys ) {
+//			if( this.isKey( key ) ) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
+	public Boolean isLetter() {
+		char ch = this.e.getKeyChar();
+		return Character.isLetter( ch );
+	}
+	public Boolean isDigit() {
+		char ch = this.e.getKeyChar();
+		return Character.isDigit( ch );
+	}
 }

@@ -1174,6 +1174,9 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 	
+	protected boolean areEnumConstantsDesired( edu.cmu.cs.dennisc.alice.ast.AbstractType enumType ) {
+		return true;
+	}
 	public void addFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( type != null ) {
 			if( this.previousExpression != null ) {
@@ -1205,7 +1208,7 @@ public abstract class IDE extends zoot.ZFrame {
 					enumType = null;
 				}
 			}
-			if( enumType != null ) {
+			if( enumType != null && this.areEnumConstantsDesired( enumType ) ) {
 				org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner constantsOwningFillerInner = getExpressionFillerInnerFor( (Class< ? extends Enum >)enumType.getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
 				constantsOwningFillerInner.addFillIns( blank );
 			}

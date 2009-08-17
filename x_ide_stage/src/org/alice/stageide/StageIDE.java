@@ -90,7 +90,14 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 		return null;
 	}
-	
+	@Override
+	protected boolean areEnumConstantsDesired( edu.cmu.cs.dennisc.alice.ast.AbstractType enumType ) {
+		if( enumType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Key.class ) ) {
+			return false;
+		} else {
+			return super.areEnumConstantsDesired( enumType );
+		}
+	}
 	@Override
 	protected void addCustomFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super.addCustomFillIns( blank, type );
@@ -103,6 +110,36 @@ public class StageIDE extends org.alice.ide.IDE {
 						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonEvent.class );
 						if( parameter.getValueType() == typeMouseButtonEvent ) {
 							String[] methodNames = new String[] { "getModelAtMouseLocation", "getPartAtMouseLocation" };
+							for( String methodName : methodNames ) {
+								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
+								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
+								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
+							}
+						}
+					}
+				}
+			} else if( type.isAssignableFrom( Boolean.class ) ) {
+				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+				if( enclosingMethod != null ) {
+					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
+						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyEvent.class );
+						if( parameter.getValueType() == typeMouseButtonEvent ) {
+//							String[] methodNames = new String[] { "isKey", "isLetter", "isDigit" };
+//							Class<?>[][] parameterClses = new Class<?>[][] { new Class<?>[]{ org.alice.apis.moveandturn.Key.class }, new Class<?>[]{}, new Class<?>[]{} };
+//							for( int i=0; i<methodNames.length; i++ ) {
+//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodNames[ i ], parameterClses[ i ] );
+//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+//								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
+//								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
+//							}
+
+							{ 
+								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( "isKey", org.alice.apis.moveandturn.Key.class );
+								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+								blank.addFillIn( new org.alice.ide.cascade.MethodInvocationFillIn( expression, method ) );
+							}
+							String[] methodNames = new String[] { "isLetter", "isDigit" };
 							for( String methodName : methodNames ) {
 								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
 								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
@@ -373,6 +410,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
 		super.addExpressionFillerInners( rv );
 		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );
+		rv.add( new org.alice.stageide.cascade.fillerinners.KeyFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.MouseButtonListenerFillerInner() );
