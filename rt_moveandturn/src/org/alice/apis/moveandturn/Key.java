@@ -225,8 +225,7 @@ public enum Key {
 	}
 	public static Key get( java.awt.event.KeyEvent e ) {
 		return KeyMap.map.get( e.getKeyCode() );
-	}
-	
+	}	
 //	public static void main( String[] args ) throws Exception {
 //		for( java.lang.reflect.Field field : java.awt.event.KeyEvent.class.getDeclaredFields() ) {
 //			String name = field.getName();
