@@ -52,9 +52,10 @@ class PluginObject:
 		shutil.copy(moveAndTurnJarPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+MOVEANDTURN_JAR)
 		shutil.copy(stageJarPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+STORYTELLING_JAR)
 
-	def getLibraries(self, windowsDir, macDir):
+	def getLibraries(self, windowsDir, macDir, linuxDir):
 		MAC_FILE = "libjni_nebulous.jnilib"
 		WINDOWS_FILE = "jni_nebulous.dll"
+		LINUX_FILE = "libjni_nebulous.so"
 
 		#LIBRARY_LIB_DIR = "AliceProjectWizard/release/modules/lib/"
 		#MODULE_LIB_DIR = "Alice3PluginSuite/build/cluster/modules/lib/"
@@ -64,6 +65,7 @@ class PluginObject:
 
 		#SUITE_MODULE_MAC_DIR = "Alice3PluginSuite/build/cluster/libs/storytelling.jar-natives-macosx-universal/"
 		LIBRARY_MAC_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-macosx-universal/"
+		LIBRARY_LINUX_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-linux-i586/"
 
 		#shutil.copy(windowsDir+WINDOWS_FILE, PluginObject.PROJECT_ROOT+LIBRARY_LIB_DIR+WINDOWS_FILE)
 		#shutil.copy(windowsDir+WINDOWS_FILE, PluginObject.PROJECT_ROOT+MODULE_LIB_DIR+WINDOWS_FILE)
@@ -74,6 +76,8 @@ class PluginObject:
 		#shutil.copy(macDir+MAC_FILE, PluginObject.PROJECT_ROOT+MODULE_LIB_DIR+MAC_FILE)
 		#shutil.copy(macDir+MAC_FILE, PluginObject.PROJECT_ROOT+SUITE_MODULE_MAC_DIR+MAC_FILE)
 		shutil.copy(macDir+MAC_FILE, PluginObject.PROJECT_ROOT+LIBRARY_MAC_DIR+MAC_FILE)
+
+		shutil.copy(linuxDir+LINUX_FILE, PluginObject.PROJECT_ROOT+LIBRARY_LINUX_DIR+LINUX_FILE)
 
 
 	def makeNBMs(self):

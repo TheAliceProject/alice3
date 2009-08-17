@@ -50,6 +50,7 @@ class InstallComponent:
 	DATA_PATH_KEY = "_DataPath_"
 	WINDOWS_DATA_PATH_KEY = "_WindowsDataPath_"
 	MAC_DATA_PATH_KEY = "_MacDataPath_"
+	LINUX_DATA_PATH_KEY = "_LinuxDataPath_"
 	INSTALL_LOCATION_KEY = "_InstallLocation_"
 	VERSION_KEY = "_VersionNumber_"
 	IS_ZIP_KEY = "_IsZip_"
@@ -215,10 +216,12 @@ class InstallerProject:
 	#BUNDLE_KEY = "<!--BundleComponent-->"
 	MAC_BUNDLE_KEY = "<!--MacBundleComponent-->"
 	WINDOWS_BUNDLE_KEY = "<!--WindowsBundleComponent-->"
+	LINUX_BUNDLE_KEY = "<!--LinuxBundleComponent-->"
 	BUNDLE_TEMPLATE = "C:/AliceBuild/InstallerTemplates/bundleTemplate.template"
 	#LIMITED_BUNDLE_KEY = "<!--LimitedBundleComponent-->"
 	MAC_LIMITED_BUNDLE_KEY = "<!--MacLimitedBundleComponent-->"
 	WINDOWS_LIMITED_BUNDLE_KEY = "<!--WindowsLimitedBundleComponent-->"
+	LINUX_LIMITED_BUNDLE_KEY = "<!--LinuxLimitedBundleComponent-->"
 
 	def __init__(self, name, version):
 		self.components = []
@@ -251,9 +254,11 @@ class InstallerProject:
 		cleanString = ""
 		windowsBundleString = ""
 		macBundleString = ""
+		linuxBundleString = ""
 		buildString = ""
 		windowsLimitedBundleString = ""
 		macLimitedBundleString = ""
+		linuxLimitedBundleString = ""
 
 		
 		for component in self.components:
@@ -265,7 +270,10 @@ class InstallerProject:
 				windowsBundleString += componentBundleString
 			elif (component.platform == BuildObject.PlatformSpecificBuildObject.MAC_PLATFORM):
 				macBundleString += componentBundleString
+			elif (component.platform == BuildObject.PlatformSpecificBuildObject.LINUX_PLATFORM):
+				linuxBundleString += componentBundleString
 			else:
+				linuxBundleString += componentBundleString
 				macBundleString += componentBundleString
 				windowsBundleString += componentBundleString
 			buildString += FileUtilities.replaceInString(buildTemplateString, component.replacementMap) +"\n"
@@ -274,7 +282,10 @@ class InstallerProject:
 					windowsLimitedBundleString += componentBundleString
 				elif (component.platform == BuildObject.PlatformSpecificBuildObject.MAC_PLATFORM):
 					macLimitedBundleString += componentBundleString
+				elif (component.platform == BuildObject.PlatformSpecificBuildObject.LINUX_PLATFORM):
+					linuxLimitedBundleString += componentBundleString
 				else:
+					linuxLimitedBundleString += componentBundleString
 					macLimitedBundleString += componentBundleString
 					windowsLimitedBundleString += componentBundleString
 		for launcherComponent in self.launcherComponents:
@@ -290,7 +301,12 @@ class InstallerProject:
 			elif (launcherComponent.platform == BuildObject.PlatformSpecificBuildObject.MAC_PLATFORM):
 				macBundleString += launcherBundleString
 				macLimitedBundleString += launcherBundleString
+			elif (launcherComponent.platform == BuildObject.PlatformSpecificBuildObject.LINUX_PLATFORM):
+				linuxBundleString += launcherBundleString
+				linuxLimitedBundleString += launcherBundleString
 			else:
+				linuxBundleString += launcherBundleString
+				linuxLimitedBundleString += launcherBundleString
 				macBundleString += launcherBundleString
 				windowsBundleString += launcherBundleString
 				macLimitedBundleString += launcherBundleString
@@ -305,6 +321,8 @@ class InstallerProject:
 			(InstallerProject.WINDOWS_LIMITED_BUNDLE_KEY, windowsLimitedBundleString),
 			(InstallerProject.MAC_BUNDLE_KEY, macBundleString),
 			(InstallerProject.MAC_LIMITED_BUNDLE_KEY, macLimitedBundleString),
+			(InstallerProject.LINUX_BUNDLE_KEY, linuxBundleString),
+			(InstallerProject.LINUX_LIMITED_BUNDLE_KEY, linuxLimitedBundleString),
 			]
 
 		FileUtilities.replaceStringsInFile(replacementMap, self.projectDir + "/" + InstallerProject.BUILD_XML_FILE)

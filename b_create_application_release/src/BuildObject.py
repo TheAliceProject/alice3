@@ -121,6 +121,7 @@ class ZipBuildObject(BuildObject):
 class PlatformSpecificBuildObject(ZipBuildObject):
 	WINDOWS_PLATFORM = "windows"
 	MAC_PLATFORM = "mac"
+	LINUX_PLATFORM = "linux"
 
 	def __init__(self, name, platform, repositories, outputDir):
 		ZipBuildObject.__init__(self, name, repositories, outputDir)
@@ -130,8 +131,8 @@ class PlatformSpecificBuildObject(ZipBuildObject):
 class MultiPlatformBuildObject(BuildObject):
 	
 
-	PLATFORMS = [PlatformSpecificBuildObject.WINDOWS_PLATFORM, PlatformSpecificBuildObject.MAC_PLATFORM]
-	PLATFORMS_TO_KEYS = {PlatformSpecificBuildObject.WINDOWS_PLATFORM:"_WindowsDataPath_", PlatformSpecificBuildObject.MAC_PLATFORM:"_MacDataPath_"}
+	PLATFORMS = [PlatformSpecificBuildObject.WINDOWS_PLATFORM, PlatformSpecificBuildObject.MAC_PLATFORM, PlatformSpecificBuildObject.LINUX_PLATFORM]
+	PLATFORMS_TO_KEYS = {PlatformSpecificBuildObject.WINDOWS_PLATFORM:"_WindowsDataPath_", PlatformSpecificBuildObject.MAC_PLATFORM:"_MacDataPath_", PlatformSpecificBuildObject.LINUX_PLATFORM:"_LinuxDataPath_"}
 
 	def __init__(self, name):
 		BuildObject.__init__(self, name, "", "")
