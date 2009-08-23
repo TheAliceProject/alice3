@@ -108,8 +108,25 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 	@Override
 	public String getName() {
 		java.lang.reflect.Method gttr = this.getterReflectionProxy.getReification();
-		assert gttr != null;
-		return edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( gttr );
+		if( gttr != null ) {
+			return edu.cmu.cs.dennisc.property.PropertyUtilities.getPropertyNameForGetter( gttr );
+		} else {
+			final String NAME_FOR_UNKNOWN = "UNKNOWN";
+			String name = this.getterReflectionProxy.getName();
+			if( name != null ) {
+				if( name.startsWith( "get" ) ) {
+					return name.substring( 3 );
+				} else {
+					if( name.startsWith( "is" ) ) {
+						return "I" + name.substring( 1 );
+					} else {
+						return NAME_FOR_UNKNOWN;
+					}
+				}
+			} else {
+				return NAME_FOR_UNKNOWN;
+			}
+		}
 	}
 	@Override
 	public AbstractType getValueType() {
