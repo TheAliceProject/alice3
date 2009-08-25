@@ -3,6 +3,8 @@ from org.tmatesoft.svn import core
 import java
 
 
+IS_CONNECTED = True
+
 __author__="Dave Culyba"
 __date__ ="$May 5, 2009 2:24:57 PM$"
 
@@ -71,18 +73,19 @@ class SVNConnection:
 			repository = core.io.SVNRepositoryFactory.create( urlObj )
 			authManager = self.getAuthManager()
 			repository.setAuthenticationManager( authManager )
-			try:
-				print "Repository Root: ", repository.getRepositoryRoot( True )
-				print "Repository UUID: " + repository.getRepositoryUUID( True )
-			except (Exception), e:
-				print e
-			nodeKind = repository.checkPath( "" ,  -1 )
-			if ( nodeKind == core.SVNNodeKind.NONE ):
-				print "There is no entry at '" + url + "'."
-				return None
-			elif ( nodeKind == core.SVNNodeKind.FILE ):
-				print "The entry at '" + url + "' is a file while a directory was expected."
-				return None
+			if (IS_CONNECTED):
+			    try:
+				    print "Repository Root: ", repository.getRepositoryRoot( True )
+				    print "Repository UUID: " + repository.getRepositoryUUID( True )
+			    except (Exception), e:
+				    print e
+			    nodeKind = repository.checkPath( "" ,  -1 )
+			    if ( nodeKind == core.SVNNodeKind.NONE ):
+				    print "There is no entry at '" + url + "'."
+				    return None
+			    elif ( nodeKind == core.SVNNodeKind.FILE ):
+				    print "The entry at '" + url + "' is a file while a directory was expected."
+				    return None
 		except core.SVNException, e:
 			print "error connecting to repository", e
 			return None
@@ -93,11 +96,15 @@ class SVNConnection:
 		return core.SVNURL.parseURIDecoded( self.url + path );
 
 	def relocateWorkingCopy(self, workingCopyDir, newURL):
+	    if (IS_CONNECTED):
 		updateClient = self.clientManager.getUpdateClient()
 		updateClient.setIgnoreExternals( False )
 		localFile = java.io.File( workingCopyDir )
 		print "switching "+str(localFile)+ " to url: "+str(newURL)
-		updateClient.doSwitch(localFile, newURL, core.wc.SVNRevision.HEAD, True)
+		try:
+		    updateClient.doSwitch(localFile, newURL, core.wc.SVNRevision.HEAD, True)
+		except:
+		    print "Failed to relocate copy. I hope you know what you're doing."
 
 	def getRemoteRevision( self, path):
 		try:
@@ -130,17 +137,25 @@ class SVNConnection:
 				self.listEntries( newPath )
 
 	def updatePathToRevision( self, localDir, revision):
+	    if (IS_CONNECTED):
 		localFile = java.io.File( localDir )
 		updateClient = self.clientManager.getUpdateClient()
 		updateClient.setIgnoreExternals( False )
 		print "updating "+localFile.getAbsolutePath()
-		return updateClient.doUpdate( localFile, revision, True )
+		try:
+		    return updateClient.doUpdate( localFile, revision, True )
+		except:
+		    print "Failed to update directory."
 
 	def commitChanges(self, dir):
-	    commitClient = self.clientManager.getCommitClient()
-	    javaFile = java.io.File(dir)
-	    files = [javaFile]
-	    commitClient.doCommit(files, False, "Automated commit", None, None, False, True, core.SVNDepth.INFINITY)
+	    if (IS_CONNECTED):
+		commitClient = self.clientManager.getCommitClient()
+		javaFile = java.io.File(dir)
+		files = [javaFile]
+		try:
+		    commitClient.doCommit(files, False, "Automated commit", None, None, False, True, core.SVNDepth.INFINITY)
+		except:
+		    print "Failed to commit files"
 
 
 
@@ -181,9 +196,12 @@ class Repository:
 #		print result
 
 	def isNew(self):
+	    if (IS_CONNECTED):
 		oldRevision = self.getPreviousRevision()
 		newRevision = self.getCurrentRevision()
 		return (newRevision > oldRevision)
+	    else:
+		return False;
 
 	def syncCodeToHead( self ):
 		return self.currentBranch.updatePathToRevision( self.localDir, core.wc.SVNRevision.HEAD)

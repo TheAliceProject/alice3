@@ -15,6 +15,7 @@ class BuildObject:
 		self.versionNum = None
 		self.outputDir = outputDir
 		self.repositories = []
+		print "HERFE!"
 		for repository in repositories:
 			self.addRepository(repository)
 		self.dataLocation = None
@@ -125,6 +126,7 @@ class PlatformSpecificBuildObject(ZipBuildObject):
 
 	def __init__(self, name, platform, repositories, outputDir):
 		ZipBuildObject.__init__(self, name, repositories, outputDir)
+		print "making platform specific object"
 		self.platform = platform
 
 
@@ -155,6 +157,8 @@ class MultiPlatformBuildObject(BuildObject):
 				platform.buildObject()
 			if (not platform.buildSuccessful):
 				badBuild = True
+				print "FAILED on cross platform build of "+str(platform.platform)
+
 		self.buildSuccessful = not badBuild
 
 	def setVersionNum(self, versionNum):
@@ -163,18 +167,25 @@ class MultiPlatformBuildObject(BuildObject):
 			platform.setVersionNum(versionNum)
 
 	def getOutputPath(self, platformID):
-		for platform in self.platformObjects:
-			if (platform.platform == platformID):
-				return platform.getOutputPath()
-		return ""
+	    print "getting output path for "+str(platformID)
+	    for platform in self.platformObjects:
+		    if (platform.platform == platformID):
+			    print "Found output path: "+str(platform.getOutputPath())
+			    return platform.getOutputPath()
+	    print "output path not found."
+	    return ""
 
 	def initFromExistingVersion(self, versionNum):
 		return False
 
 	def getDataLocation(self, platformID):
+		print "getting data location for "+str(platformID)
 		for platform in self.platformObjects:
+			print "Checking "+str(platform.platform)
 			if (platform.platform == platformID):
+				print "Found data location: "+str(platform.dataLocation)
 				return platform.dataLocation
+		print "data location not found."
 		return ""
 
 	def addPlatform(self, platformBuildObject):

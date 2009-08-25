@@ -22,36 +22,39 @@ class PluginObject:
 		self.outputDir = self.outputDir + str(version) +"/"
 
 	def getJars(self, jarObjects):
-		FOUNDATION_JAR="foundation.jar"
-		WALKANDTOUCH_JAR="lg_walkandtouch.jar"
-		MOVEANDTURN_JAR="moveandturn.jar"
-		STORYTELLING_JAR="storytelling.jar"
+	    foundationJarPath = ""
+	    walkAndTouchJarPath = ""
+	    moveAndTurnJarPath = ""
+	    stageJarPath = ""
+	    for jarObject in jarObjects:
+		    if (jarObject.name == "foundation"):
+			    foundationJarPath = jarObject.getOutputPath()
+			    print "Found foundation jar: "+foundationJarPath
+		    elif (jarObject.name == "lg_walkandtouch"):
+			    walkAndTouchJarPath = jarObject.getOutputPath()
+			    print "Found lg_walkandtouch jar: "+walkAndTouchJarPath
+		    elif (jarObject.name == "moveandturn"):
+			    moveAndTurnJarPath = jarObject.getOutputPath()
+			    print "Found moveandturn jar: "+moveAndTurnJarPath
+		    elif (jarObject.name == "stage"):
+			    stageJarPath = jarObject.getOutputPath()
+			    print "Found stage jar: "+stageJarPath
+	    self.getJarsFromPaths(foundationJarPath, walkAndTouchJarPath, moveAndTurnJarPath, stageJarPath)
+		
 
-		foundationJarPath = ""
-		walkAndTouchJarPath = ""
-		moveAndTurnJarPath = ""
-		stageJarPath = ""
-		for jarObject in jarObjects:
-			if (jarObject.name == "foundation"):
-				foundationJarPath = jarObject.getOutputPath()
-				print "Found foundation jar: "+foundationJarPath
-			elif (jarObject.name == "lg_walkandtouch"):
-				walkAndTouchJarPath = jarObject.getOutputPath()
-				print "Found lg_walkandtouch jar: "+walkAndTouchJarPath
-			elif (jarObject.name == "moveandturn"):
-				moveAndTurnJarPath = jarObject.getOutputPath()
-				print "Found moveandturn jar: "+moveAndTurnJarPath
-			elif (jarObject.name == "stage"):
-				stageJarPath = jarObject.getOutputPath()
-				print "Found stage jar: "+stageJarPath
+	def getJarsFromPaths(self, foundationPath, walkAndTouchPath, moveAndTurnPath, storyTellingPath):
+	    FOUNDATION_JAR="foundation.jar"
+	    WALKANDTOUCH_JAR="lg_walkandtouch.jar"
+	    MOVEANDTURN_JAR="moveandturn.jar"
+	    STORYTELLING_JAR="storytelling.jar"
 
-		ALICE_WIZARD_INSTALL_ROOT="AliceProjectWizard/release/libs/"
+	    ALICE_WIZARD_INSTALL_ROOT="AliceProjectWizard/release/libs/"
 
-		shutil.copy(foundationJarPath,PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+FOUNDATION_JAR)
-		shutil.copy(walkAndTouchJarPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+WALKANDTOUCH_JAR)
-		shutil.copy(moveAndTurnJarPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+MOVEANDTURN_JAR)
-		shutil.copy(stageJarPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+STORYTELLING_JAR)
-
+	    shutil.copy(foundationPath,PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+FOUNDATION_JAR)
+	    shutil.copy(walkAndTouchPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+WALKANDTOUCH_JAR)
+	    shutil.copy(moveAndTurnPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+MOVEANDTURN_JAR)
+	    shutil.copy(storyTellingPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+STORYTELLING_JAR)
+	    
 	def getLibraries(self, windowsDir, macDir, linuxDir):
 		MAC_FILE = "libjni_nebulous.jnilib"
 		WINDOWS_FILE = "jni_nebulous.dll"

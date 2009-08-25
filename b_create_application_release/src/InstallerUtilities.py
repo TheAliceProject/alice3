@@ -129,6 +129,7 @@ class InstallComponent:
 			self.addStringReplacement((InstallComponent.IS_ZIP_KEY, "true"))
 		else:
 			self.addStringReplacement((InstallComponent.IS_ZIP_KEY, "false"))
+		self.isZip = isZip
 	
 	def setProductDirectory(self, directory):
 		self.productDir = directory
@@ -169,6 +170,9 @@ class InstallComponent:
 			self.addStringReplacement((InstallComponent.INSTALL_LOCATION_KEY, ""))
 		if (not self.hasKey(InstallComponent.IS_ZIP_KEY)):
 			self.addStringReplacement((InstallComponent.IS_ZIP_KEY, "false"))
+			self.isZip = False
+
+		print self.name+" IS ZIP "+str(self.isZip)
 
 		if (os.path.exists(self.componentDir)):
 			print self.componentDir + " already exists, deleting it."
