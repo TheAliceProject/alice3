@@ -248,6 +248,8 @@ public abstract class IDE extends zoot.ZFrame {
 		return false;
 	}
 	
+	private org.alice.ide.operations.view.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.view.IsMemoryUsageShowingOperation();
+	
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
 	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
@@ -611,6 +613,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
 
+		javax.swing.JMenu viewMenu = zoot.ZManager.createMenu( "View", java.awt.event.KeyEvent.VK_V, this.isMemoryUsageShowingOperation );
 		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isOmissionOfThisForFieldAccessesDesiredOperation, this.isExpressionTypeFeedbackDesiredOperation, this.isDefaultFieldNameGenerationDesiredOperation );
 		windowMenu.add( setLocaleMenu );
 		
@@ -652,6 +655,7 @@ public abstract class IDE extends zoot.ZFrame {
 		rv.add( fileMenu );
 		rv.add( editMenu );
 		rv.add( runMenu );
+		rv.add( viewMenu );
 		rv.add( windowMenu );
 		rv.add( helpMenu );
 		return rv;
