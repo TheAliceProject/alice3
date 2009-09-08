@@ -4,6 +4,7 @@ import os
 import shutil
 import edu
 import zipfile
+import jarray
 JAR_CMD = "C:/Java/jdk1.5.0_18/bin/jar"
 EXEC_METHOD = eval( "edu.cmu.cs.dennisc.lang.RuntimeUtilities.exec" )
 
@@ -114,6 +115,37 @@ def zipDir_Helper(srcDir, zipFile, basePath):
 
 		except (IOError, os.error), why:
 			print "Can't write %s to %s: %s" % (`srcname`, `zipFile`, str(why))
+
+def extractZip(zipPath, outputPath):
+    zipFile = java.util.zip.ZipFile(zipPath)
+    entries  = zipFile.entries()
+    while (entries.hasMoreElements()):
+	entry = entries.nextElement()
+	entryPath = outputPath +"/"+entry.getName()
+	if (entry.isDirectory()):
+	    makeDir(entryPath)
+	else:
+	    makeDirsForFile(entryPath)
+	    inStream = zipFile.getInputStream(entry)
+	    outStream = java.io.BufferedOutputStream( java.io.FileOutputStream(entryPath) )
+	    buffer = jarray.zeros(1024, 'b')
+	    len = inStream.read(buffer)
+	    while ( len  >= 0):
+		outStream.write(buffer, 0, len)
+		len = inStream.read(buffer)
+	    inStream.close()
+	    outStream.close()
+    zipFile.close()
+
+def extractZipToDir(zipPath, outputPath):
+    zipFile = zipfile.ZipFile(zipPath, "r")
+    for zipName in zipFile.namelist():
+	fileData = zipFile.read(zipName)
+	outFileName = outputPath + "/" + zipName
+	makeDirsForFile(outFileName)
+	outFile = open(outFileName, "w")
+	outFile.write(fileData)
+	outFile.close()
 
 def zipDir(srcDir, zipName):
 	print "zip src dir: "+srcDir+", zip name: "+zipName

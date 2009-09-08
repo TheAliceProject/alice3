@@ -5,6 +5,8 @@ import shutil
 import FileUtilities
 import java
 import BuildJava
+import zipfile
+import org
 
 __author__="Dave Culyba"
 __date__ ="$May 7, 2009 3:10:42 PM$"
@@ -70,16 +72,20 @@ class InstallComponent:
 		self.isCloser = buildObject.isCloser
 		self.isMultiPlatform = buildObject.isMultiPlatform
 		self.platform = buildObject.platform
+		self.dataLocation = ""
+		self.dataLocations = {}
 		if (self.isMultiPlatform):
 			for platform in BuildObject.MultiPlatformBuildObject.PLATFORMS:
 				self.addStringReplacement((BuildObject.MultiPlatformBuildObject.PLATFORMS_TO_KEYS[platform], "file:/"+buildObject.getDataLocation(platform)))
+				self.dataLocations[platform] = buildObject.getDataLocation(platform)
 		else:
 			self.dataPath = "file:/"+buildObject.dataLocation
+			self.dataLocation = buildObject.dataLocation
 			self.addStringReplacement((InstallComponent.DATA_PATH_KEY, self.dataPath))
 		self.id = makeValidID(self.name)
 		
 		
-
+		self.installPath = ""
 		self.productDir = self.id
 		self.isZip = buildObject.isZip
 		self.setIsZip(self.isZip)
@@ -142,6 +148,7 @@ class InstallComponent:
 
 	def setInstallPath(self, installPath):
 		print self.name + " set install path to "+str(installPath)
+		self.installPath = installPath
 		self.removeKey(InstallComponent.INSTALL_LOCATION_KEY)
 		self.addStringReplacement((InstallComponent.INSTALL_LOCATION_KEY, installPath))
 
@@ -155,6 +162,24 @@ class InstallComponent:
 
 	def addStringReplacement(self, stringReplacement):
 		self.replacementMap.append(stringReplacement)
+
+	def expandToDir(self, dir, platform):
+	    installDir = dir + "/" +self.installPath
+	    print "trying to expand "+self.name +" to "+installDir
+	    FileUtilities.makeDir(installDir)
+	    dataPath = ""
+	    if (self.isMultiPlatform):
+		dataPath = self.dataLocations[platform]
+	    else:
+		dataPath = self.dataLocation
+	    if (self.isZip):
+		FileUtilities.extractZip(dataPath, installDir)
+	    else:
+		if (os.path.isdir(dataPath)):
+		    FileUtilities.copyDir(dataPath, installDir)
+		else:
+		    shutil.copy2(dataPath, installDir)
+
 
 	def makeNewInstaller(self, dir):
 		print self.productDir
@@ -238,6 +263,108 @@ class InstallerProject:
 			self.launcherComponents.append(component)
 		else:
 			self.components.append(component)
+
+	def expandToDir(self, baseDir):
+	    
+	    baseVersionDir = baseDir + "/" + self.name+"_"+str(self.version)
+	    zipSourceDir = baseVersionDir + "/tempZip"
+#	    if (os.path.exists(zipSourceDir)):
+#		print zipSourceDir + " already exists, deleting it."
+#		shutil.rmtree(zipSourceDir)
+	    installDir = zipSourceDir + "/Alice3Beta"
+	    for component in self.components:
+		if (component.isMultiPlatform):
+		    for platform in BuildObject.MultiPlatformBuildObject.PLATFORMS:
+			component.expandToDir(installDir, platform)
+		else:
+		    component.expandToDir(installDir, None)
+		for launcherComponent in self.launcherComponents:
+		    if (launcherComponent.isMultiPlatform):
+			for platform in BuildObject.MultiPlatformBuildObject.PLATFORMS:
+			    launcherComponent.expandToDir(installDir, platform)
+		    else:
+			launcherComponent.expandToDir(installDir, None)
+
+	    for platform in ["windows", "windows64", "mac", "linux", "linux64"]:
+		isMac = platform.find( "mac" ) != -1
+		isLinux = platform.find("linux") != -1
+		isWindows = platform.find("windows") != -1
+		is64Bit = platform.find("64") != -1
+		launcherFilename = ""
+		if( isMac ):
+		    launcherFilename = "Info.plist"
+		elif ( isLinux ):
+		    launcherFilename = "alice.sh"
+		else:
+		    launcherFilename = "Alice.bat"
+
+		launchGenerator = org.alice.closercomponent.LaunchGenerator()
+		launchGenerator.setOS(platform)
+		launchGenerator.setInstallDirectory(java.io.File(installDir))
+
+		foldersToInclude = ["ext", "application", "lib", "Alice.app"]
+		foldersToExclude = ["classes", "classinfos", "projects", "jython"]
+		files = org.alice.closercomponent.LaunchGenerator.getFilesInDir(java.io.File(installDir), foldersToInclude, foldersToExclude, True)
+		jars = []
+		nativelibs = []
+		launcher = None
+		for file in files:
+		    fileName = file.getName()
+		    print fileName
+		    parentFile = file.getParent()
+		    #print parentFile
+		    parentName = parentFile
+		    if (fileName.endswith("jar")):
+			jars.append(file)
+		    elif (fileName.endswith("so") and isLinux and parentName.find("linux") != -1):
+			print " linux lib in dir "+parentName
+			if (parentName.find("64") >= 0 and is64Bit):
+			    print "  is 64bit!"
+			    nativelibs.append(file.getParentFile())
+			elif (parentName.find("586") >= 0 and not is64Bit):
+			    print "  is regular!"
+			    nativelibs.append(file.getParentFile())
+			else:
+			    print "  rejected!"
+		    elif (fileName.endswith("dll") and isWindows):
+			if (parentName.find("64") == -1):
+			    nativelibs.append(file.getParentFile())
+		    elif (fileName.endswith("lib") and isMac):
+			if (parentName.find("ppc") == -1):
+			    nativelibs.append(file.getParentFile())
+		    elif (fileName.find(launcherFilename) >= 0):
+			launcher = file
+		for jar in jars:
+		    launchGenerator.addToClassPath(jar)
+		for libDir in nativelibs:
+		    launchGenerator.addToLibraryPath(libDir)
+		launchGenerator.setMainClassName( "org.alice.stageide.EntryPoint" )
+		if (launcher != None):
+		    try:
+			if (is64Bit):
+			    launcherFilename = launcher.getName()
+			    parentFile = launcher.getParent()
+			    pieces = launcherFilename.split(".")
+			    newName = pieces[len(pieces)-2]+"64bit."+pieces[len(pieces)-1]
+			    newFile = java.io.File(parentFile, newName)
+			    print "creating file: "+newFile.toString()
+			    newFile.createNewFile()
+			    launcher = newFile
+			launchGenerator.encode( launcher, True )
+		    except Exception, inst:
+			print "encoding failed: "+str(inst)
+		else:
+		    print "############################### Failed to find launcher "+launcherFilename
+
+
+	    zipDir = baseVersionDir + "/zips"
+	    zipFile = zipDir + "/Alice3Beta_"+str(self.version)+".zip"
+	    FileUtilities.makeDirsForFile(zipFile)
+	    javaFile = java.io.File(zipFile)
+	    if (not javaFile.exists()):
+		javaFile.createNewFile()
+	    FileUtilities.zipDir(zipSourceDir, zipFile)
+#	    FileUtilities.deleteDir(zipSourceDir)
 
 	def writeToFile(self, baseDir):
 		#copy the template to the new location
