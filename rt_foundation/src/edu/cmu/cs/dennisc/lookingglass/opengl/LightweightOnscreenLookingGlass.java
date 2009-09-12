@@ -33,7 +33,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		private Throwable prevThrowable = null;
 		
 		public RenderPane() {
-			super( LightweightOnscreenLookingGlass.this.createCapabilities(), LightweightOnscreenLookingGlass.getGLCapabilitiesChooser(), null );
+			super( LookingGlassFactory.createDesiredGLCapabilities(), LookingGlassFactory.getGLCapabilitiesChooser(), null );
 		}
 		@Override
 		public void display() {

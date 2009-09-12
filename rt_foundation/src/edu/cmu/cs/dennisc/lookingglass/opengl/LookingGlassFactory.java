@@ -23,8 +23,6 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import javax.media.opengl.GL;
-
 /**
  * @author Dennis Cosgrove
  */
@@ -64,14 +62,6 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	static {
 		try {
 			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
-			if( unused.canCreateGLPbuffer() ) {
-//				javax.media.opengl.GLDrawable glDrawable = unused.createExternalGLDrawable();
-//				unused.getGLDrawable(arg0, arg1, arg2);
-				javax.media.opengl.GLPbuffer glPbuffer = unused.createGLPbuffer( new javax.media.opengl.GLCapabilities(), new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
-				glPbuffer.getContext().makeCurrent();
-				String vendor = glPbuffer.getGL().glGetString( javax.media.opengl.GL.GL_VENDOR );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "GL_VENDOR", vendor );
-			}
 		} catch( UnsatisfiedLinkError ule ) {
 			//final String JAVA_LIBRARY_PATH = "java.library.path";
 			//String pathOriginal = System.getProperty( JAVA_LIBRARY_PATH );
@@ -126,7 +116,71 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	
 	//todo: just force start and stop? or rename methods
 	private int automaticDisplayCount = 0;
+	//private GLCapabilities glCapabilities;
+	/*package-private*/ static javax.media.opengl.GLCapabilities createDesiredGLCapabilities() {
+		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
+		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
+		if( chooser instanceof edu.cmu.cs.dennisc.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
+			rv.setHardwareAccelerated( false );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
+			rv.setDepthBits( 32 );
+		}
+		return rv;
+	}
 	
+	private static javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser;
+	/*package-private*/ static javax.media.opengl.GLCapabilitiesChooser getGLCapabilitiesChooser() {
+		if( glCapabilitiesChooser != null ) {
+			//pass
+		} else {
+			boolean isSlowAndSteadyDesired = false;
+			String isSlowAndSteadyDesiredText = System.getProperty( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
+			if( isSlowAndSteadyDesiredText != null ) {
+				if( isSlowAndSteadyDesiredText.equalsIgnoreCase( "true" ) ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired:", isSlowAndSteadyDesiredText );
+					isSlowAndSteadyDesired = true;
+				}
+			} else {
+				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+					try {
+						ConformanceTestResults conformanceTestResults = ConformanceTestResults.getSingleton();
+						if( conformanceTestResults.isValid() ) {
+							if( conformanceTestResults.isPickFunctioningCorrectly() ) {
+								//pass
+							} else {
+								isSlowAndSteadyDesired = true;
+							}
+						}
+					} catch( Throwable t ) {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle ConformanceTestResults failure" );
+						t.printStackTrace();
+					}
+				}
+			}
+			if( isSlowAndSteadyDesired ) {
+				glCapabilitiesChooser = new edu.cmu.cs.dennisc.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser();
+			} else {
+				glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
+			}
+		}
+		return glCapabilitiesChooser;
+	}
+	
+	/*package-private*/ javax.media.opengl.GLCanvas createGLCanvas() {
+		return new javax.media.opengl.GLCanvas( createDesiredGLCapabilities(), getGLCapabilitiesChooser(), null, null );
+	}
+	/*package-private*/ javax.media.opengl.GLJPanel createGLJPanel() {
+		return new javax.media.opengl.GLJPanel( createDesiredGLCapabilities(), getGLCapabilitiesChooser(), null );
+	}
+	/*package-private*/ javax.media.opengl.GLPbuffer createGLPbuffer( int width, int height, javax.media.opengl.GLContext share ) {
+		javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
+		if (glDrawableFactory.canCreateGLPbuffer()) {
+			return glDrawableFactory.createGLPbuffer(createDesiredGLCapabilities(), getGLCapabilitiesChooser(), width, height, share);
+		} else {
+			throw new RuntimeException("cannot create pbuffer");
+		}
+	}
+
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent automaticDisplayEvent = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent( this ) {
 		@Override
 		public boolean isReservedForReuse() {

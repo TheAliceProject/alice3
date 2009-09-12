@@ -31,8 +31,7 @@ class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 
 	/*package-private*/ HeavyweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
-		javax.media.opengl.GLCapabilities glCapabilities = this.createCapabilities();
-		m_glCanvas = new javax.media.opengl.GLCanvas( glCapabilities, HeavyweightOnscreenLookingGlass.getGLCapabilitiesChooser(), null, null );
+		m_glCanvas = LookingGlassFactory.getSingleton().createGLCanvas();
 		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
 		//m_glCanvas.setAutoSwapBufferMode( false );
 		m_glCanvas.addComponentListener( new java.awt.event.ComponentListener() {

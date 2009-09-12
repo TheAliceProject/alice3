@@ -240,6 +240,7 @@ public class GLJPanel extends JPanel implements GLAutoDrawable {
 		}
 		offscreenCaps.setDoubleBuffered( false );
 		this.chooser = ((chooser != null) ? chooser : new DefaultGLCapabilitiesChooser());
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "chooser:", chooser );
 		this.shareWith = shareWith;
 	}
 
@@ -864,12 +865,22 @@ public class GLJPanel extends JPanel implements GLAutoDrawable {
 		if( !oglPipelineEnabled ) {
 			// Initialize either the hardware-accelerated rendering path or
 			// the lightweight rendering path
+			
 			if( !hardwareAccelerationDisabled ) {
 				if( GLDrawableFactory.getFactory().canCreateGLPbuffer() ) {
 					if( pbuffer != null ) {
 						throw new InternalError( "Creating pbuffer twice without destroying it (memory leak / correctness bug)" );
 					}
 					try {
+//						GLCapabilitiesChooser glChooser;
+//						if( offscreenCaps.getHardwareAccelerated() ) {
+//							glChooser = null;
+//						} else {
+//							glChooser = this.chooser;
+//						}
+//						
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "glChooser:", glChooser );
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "offscreenCaps:", offscreenCaps );
 						pbuffer = GLDrawableFactory.getFactory().createGLPbuffer( offscreenCaps, null, pbufferWidth, pbufferHeight, shareWith );
 						updater = new Updater();
 						pbuffer.addGLEventListener( updater );

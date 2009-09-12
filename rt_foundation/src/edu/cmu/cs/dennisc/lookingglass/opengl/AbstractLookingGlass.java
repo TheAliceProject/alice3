@@ -75,55 +75,6 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 	public edu.cmu.cs.dennisc.lookingglass.LookingGlassFactory getLookingGlassFactory() {
 		return m_lookingGlassFactory;
 	}
-
-	//private GLCapabilities glCapabilities;
-	protected GLCapabilities createCapabilities() {
-		GLCapabilities rv = new GLCapabilities();
-		//this.glCapabilities = new GLCapabilities();
-		String isSlowAndSteadyDesired = System.getProperty( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
-		if( isSlowAndSteadyDesired != null ) {
-			if( isSlowAndSteadyDesired.equalsIgnoreCase( "true" ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired:", isSlowAndSteadyDesired );
-				rv.setHardwareAccelerated( false );
-			}
-		}
-		//rv.setDepthBits( 32 );
-		//rv.setHardwareAccelerated( true );
-		//rv.setDepthBits( 24 );
-		//rv.setSampleBuffers( true );
-		//this.glCapabilities.setDepthBits( 37 );
-		PrintUtilities.println( "pre cap:", rv );
-		return rv;
-	}
-	
-	private static javax.media.opengl.GLCapabilitiesChooser glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser() {
-		@Override
-		public int chooseCapabilities(javax.media.opengl.GLCapabilities desired, javax.media.opengl.GLCapabilities[] available, int windowSystemRecommendedChoice) {
-			int rv = super.chooseCapabilities(desired, available, windowSystemRecommendedChoice);
-			PrintUtilities.println( "desired", desired );
-			int i=0;
-			for( javax.media.opengl.GLCapabilities a : available ) {
-				char cRecommended;
-				if( i == windowSystemRecommendedChoice ) {
-					cRecommended = '*';
-				} else {
-					cRecommended = '_';
-				}
-				char cSelected;
-				if( i == rv ) {
-					cSelected = '*';
-				} else {
-					cSelected = '_';
-				}
-				PrintUtilities.println( cRecommended, cSelected, a );
-				i++;
-			}
-			return rv;
-		}
-	};
-	protected static javax.media.opengl.GLCapabilitiesChooser getGLCapabilitiesChooser() {
-		return AbstractLookingGlass.glCapabilitiesChooser;
-	}
 	
 	//private java.util.List< TextureGraphicsCommit > m_pendingTextureGraphicsCommits = new java.util.LinkedList< TextureGraphicsCommit >();
 
@@ -518,7 +469,7 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 
 	public edu.cmu.cs.dennisc.lookingglass.PickResult pickFrontMost( int xPixel, int yPixel, boolean isSubElementRequired, edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver ) {
 		GLCapabilities glCapabilities = this.getGLAutoDrawable().getChosenGLCapabilities();
-		PrintUtilities.println( "glCapabilities", glCapabilities );
+		//PrintUtilities.println( "glCapabilities", glCapabilities );
 		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = getCameraAtPixel( xPixel, yPixel );
 		edu.cmu.cs.dennisc.lookingglass.PickResult rv;
 		if( sgCamera != null ) {
