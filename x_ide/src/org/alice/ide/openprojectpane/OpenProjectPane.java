@@ -268,27 +268,25 @@ abstract class DirectoryListPane extends TabPane {
 			}
 		}
 	};
+	
+	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
+		@Override
+		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+			if( quoteClickCountUnquote == 2 ) {
+				DirectoryListPane.this.fireOKButtonIfPossible();
+			}
+		}
+	};
+	
 	public DirectoryListPane() {
 		this.refresh();
 		this.list.setOpaque( false );
 		this.list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
 		this.list.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
 		this.list.setVisibleRowCount( -1 );
-		this.list.addMouseListener( new java.awt.event.MouseListener() {
-			public void mouseClicked( java.awt.event.MouseEvent e ) {
-				if( e.getClickCount() == 2 ) {
-					DirectoryListPane.this.fireOKButtonIfPossible();
-				}
-			}
-			public void mouseEntered( java.awt.event.MouseEvent e ) {
-			}
-			public void mouseExited(java.awt.event.MouseEvent e) {
-			}
-			public void mousePressed(java.awt.event.MouseEvent e) {
-			}
-			public void mouseReleased(java.awt.event.MouseEvent e) {
-			}
-		} );
+		
+		this.list.addMouseListener( this.mouseAdapter );
+		this.list.addMouseMotionListener( this.mouseAdapter );
 		this.list.addKeyListener( new java.awt.event.KeyListener() {
 			public void keyPressed( java.awt.event.KeyEvent e ) {
 				if( e.getKeyCode() == java.awt.event.KeyEvent.VK_F5 ) {

@@ -23,7 +23,7 @@
 
 package edu.cmu.cs.dennisc.lookingglass.opengl;
 
-import edu.cmu.cs.dennisc.lookingglass.opengl.Animator.ThreadDeferenceAction;
+import javax.media.opengl.GL;
 
 /**
  * @author Dennis Cosgrove
@@ -55,7 +55,6 @@ class WaitingRunnable implements Runnable {
 		}
 	}
 }
-
 /**
  * @author Dennis Cosgrove
  */
@@ -65,6 +64,14 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	static {
 		try {
 			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
+			if( unused.canCreateGLPbuffer() ) {
+//				javax.media.opengl.GLDrawable glDrawable = unused.createExternalGLDrawable();
+//				unused.getGLDrawable(arg0, arg1, arg2);
+				javax.media.opengl.GLPbuffer glPbuffer = unused.createGLPbuffer( new javax.media.opengl.GLCapabilities(), new javax.media.opengl.DefaultGLCapabilitiesChooser(), 1, 1, null );
+				glPbuffer.getContext().makeCurrent();
+				String vendor = glPbuffer.getGL().glGetString( javax.media.opengl.GL.GL_VENDOR );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "GL_VENDOR", vendor );
+			}
 		} catch( UnsatisfiedLinkError ule ) {
 			//final String JAVA_LIBRARY_PATH = "java.library.path";
 			//String pathOriginal = System.getProperty( JAVA_LIBRARY_PATH );
@@ -144,8 +151,8 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		s_singleton = this;
 	}
 
-	public ThreadDeferenceAction step() {
-		ThreadDeferenceAction rv = ThreadDeferenceAction.SLEEP;
+	public Animator.ThreadDeferenceAction step() {
+		Animator.ThreadDeferenceAction rv = Animator.ThreadDeferenceAction.SLEEP;
 		synchronized( this.toBeReleased ) {
 			for( edu.cmu.cs.dennisc.pattern.Releasable releasable : this.toBeReleased ) {
 				if( releasable instanceof OnscreenLookingGlass ) {
@@ -184,7 +191,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 								//lg.getGLAutoDrawable().display();
 								lg.repaint();
 //								edu.cmu.cs.dennisc.print.PrintUtilities.println( lg, System.currentTimeMillis() );
-								rv = ThreadDeferenceAction.YIELD;
+								rv = Animator.ThreadDeferenceAction.YIELD;
 							}
 						}
 					}
@@ -196,7 +203,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 									//lg.getGLAutoDrawable().display();
 									lg.repaint();
 									//edu.cmu.cs.dennisc.print.PrintUtilities.println( lg );
-									rv = ThreadDeferenceAction.YIELD;
+									rv = Animator.ThreadDeferenceAction.YIELD;
 								}
 							}
 						}

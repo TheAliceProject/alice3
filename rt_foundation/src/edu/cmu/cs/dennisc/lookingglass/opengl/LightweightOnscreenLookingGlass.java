@@ -29,7 +29,12 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass{
 //	class RenderPane extends javax.media.opengl.GLJPanel {
 	class RenderPane extends edu.cmu.cs.dennisc.media.opengl.GLJPanel {
+		
 		private Throwable prevThrowable = null;
+		
+		public RenderPane() {
+			super( LightweightOnscreenLookingGlass.this.createCapabilities(), LightweightOnscreenLookingGlass.getGLCapabilitiesChooser(), null );
+		}
 		@Override
 		public void display() {
 			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {

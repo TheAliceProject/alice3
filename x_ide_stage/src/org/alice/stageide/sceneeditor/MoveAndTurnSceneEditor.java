@@ -308,7 +308,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "force repaint" );
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass().repaint();
+				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
+				if( onscreenLookingGlass != null ) { 
+					onscreenLookingGlass.repaint();
+				}
 			}
 		} );
 	}

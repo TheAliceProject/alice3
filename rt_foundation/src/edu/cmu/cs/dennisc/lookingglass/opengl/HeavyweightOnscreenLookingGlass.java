@@ -31,16 +31,9 @@ class HeavyweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 
 	/*package-private*/ HeavyweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
-		javax.media.opengl.GLCapabilities glCapabilities = new javax.media.opengl.GLCapabilities();
-		String isSlowAndSteadyDesired = System.getProperty( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
-		if( isSlowAndSteadyDesired != null ) {
-			if( isSlowAndSteadyDesired.equalsIgnoreCase( "true" ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired:", isSlowAndSteadyDesired );
-				glCapabilities.setHardwareAccelerated( false );
-			}
-		}
-		
-		m_glCanvas = new javax.media.opengl.GLCanvas( glCapabilities );
+		javax.media.opengl.GLCapabilities glCapabilities = this.createCapabilities();
+		m_glCanvas = new javax.media.opengl.GLCanvas( glCapabilities, HeavyweightOnscreenLookingGlass.getGLCapabilitiesChooser(), null, null );
+		//m_glCanvas.getChosenGLCapabilities().getDepthBits();
 		//m_glCanvas.setAutoSwapBufferMode( false );
 		m_glCanvas.addComponentListener( new java.awt.event.ComponentListener() {
 			public void componentShown( java.awt.event.ComponentEvent e ) {

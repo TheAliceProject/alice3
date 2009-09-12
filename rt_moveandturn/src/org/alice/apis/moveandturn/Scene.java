@@ -166,7 +166,7 @@ public class Scene extends Composite {
 		}
 	}
 	
-	private void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
+	private void handleMouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 		if( this.isMouseButtonListenerInExistence() ) {
 			synchronized( this.mouseButtonListeners ) {
 				final org.alice.apis.moveandturn.event.MouseButtonEvent mbe = new org.alice.apis.moveandturn.event.MouseButtonEvent( e, this );
@@ -268,8 +268,8 @@ public class Scene extends Composite {
 
 	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
 		@Override
-		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e ) {
-			Scene.this.handleMouseQuoteClickedUnquote( e );
+		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+			Scene.this.handleMouseQuoteClickedUnquote( e, quoteClickCountUnquote );
 		}
 	};
 	private java.awt.event.KeyListener keyAdapter = new java.awt.event.KeyListener() {

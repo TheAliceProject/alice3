@@ -26,11 +26,16 @@ package edu.cmu.cs.dennisc.awt.event;
  * @author Dennis Cosgrove
  */
 public abstract class LenientMouseClickAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
-	protected abstract void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e );
+	protected abstract void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote );
 	private boolean isWithinThreshold = false;
 	private int xPressed = -1;
 	private int yPressed = -1;
 	private long whenPressed = -1;
+	
+	private static final long CLICK_THRESHOLD_MILLIS = 1000; //todo: query windowing system 
+	private long whenLastClick = -1;
+	private int count = 0;
+	
 	private void updateWithinThreshold( java.awt.event.MouseEvent e ) {
 		int xDelta = e.getX() - xPressed;
 		int yDelta = e.getY() - yPressed;
@@ -51,9 +56,16 @@ public abstract class LenientMouseClickAdapter implements java.awt.event.MouseLi
 	}
 	public final void mouseReleased( java.awt.event.MouseEvent e ) {
 		this.updateWithinThreshold( e );
-		long whenDelta = e.getWhen() - this.whenPressed;
+		long when = e.getWhen();
+		long whenDelta = when - this.whenPressed;
 		if( this.isWithinThreshold && whenDelta < 500 ) {
-			this.mouseQuoteClickedUnquote( e );
+			if( this.whenLastClick != -1 && ( this.whenLastClick > when-CLICK_THRESHOLD_MILLIS ) ) {
+				this.count++;
+			} else {
+				this.count = 1;
+			}
+			this.mouseQuoteClickedUnquote( e, this.count );
+			this.whenLastClick = when;
 		}
 	}
 	public final void mouseClicked( java.awt.event.MouseEvent e ) {

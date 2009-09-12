@@ -54,14 +54,14 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 		} else {
 			javax.media.opengl.GLDrawableFactory glDrawableFactory = javax.media.opengl.GLDrawableFactory.getFactory();
 			if (glDrawableFactory.canCreateGLPbuffer()) {
-				javax.media.opengl.GLCapabilities glCapabilities = new javax.media.opengl.GLCapabilities();
+				javax.media.opengl.GLCapabilities glCapabilities = this.createCapabilities();
 				javax.media.opengl.GLContext share;
 				if (this.lookingGlassToShareContextWith != null) {
 					share = this.lookingGlassToShareContextWith.getGLAutoDrawable().getContext();
 				} else {
 					share = null;
 				}
-				this.glPbuffer = glDrawableFactory.createGLPbuffer(glCapabilities, null, width, height, share);
+				this.glPbuffer = glDrawableFactory.createGLPbuffer(glCapabilities, OffscreenLookingGlass.getGLCapabilitiesChooser(), width, height, share);
 				assert this.glPbuffer != null;
 			} else {
 				throw new RuntimeException("cannot create pbuffer");
