@@ -35,4 +35,10 @@ public class TriangleArrayAdapter extends VertexGeometryAdapter< edu.cmu.cs.denn
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
     	pickPrimative( pc, javax.media.opengl.GL.GL_TRIANGLES );
 	}    
+	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+		//todo
+		rv.setNaN();
+		return rv;
+	}
 }

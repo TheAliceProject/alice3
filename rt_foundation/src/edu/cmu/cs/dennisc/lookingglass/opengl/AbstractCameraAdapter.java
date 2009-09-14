@@ -90,7 +90,7 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 			sceneAdapter.renderScene( rc, this, m_backgroundAdapter );
 		}
 	}
-	public void performPick( PickContext pc, PickParameters pickParameters, java.awt.Rectangle actualViewport ) {
+	public void performPick( PickContext pc, PickParameters pickParameters, java.awt.Rectangle actualViewport, ConformanceTestResults conformanceTestResults ) {
 		SceneAdapter sceneAdapter = getSceneAdapter();
 		if( sceneAdapter != null ) {
 
@@ -109,7 +109,7 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 			
 			setupProjection( pc, actualViewport );
 
-			pc.pickScene( this, sceneAdapter, pickParameters );
+			pc.pickScene( this, sceneAdapter, pickParameters, conformanceTestResults );
 		}
 	}
 	@Override
@@ -119,7 +119,7 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 	public void renderOpaque( RenderContext rc ) {
 	}
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters ) {
+	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 	}
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {

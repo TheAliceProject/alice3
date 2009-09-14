@@ -25,75 +25,6 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 import javax.media.opengl.GL;
 
-import edu.cmu.cs.dennisc.print.PrintUtilities;
-
-/**
- * @author Dennis Cosgrove
- */
-class SelectionBufferInfo {
-	private float zFront;
-	private float zBack;
-	private edu.cmu.cs.dennisc.scenegraph.Visual sgVisual;
-	private boolean isFrontFacing;
-	private edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry;
-	private int subElement;
-
-	public SelectionBufferInfo( PickContext pc, java.nio.IntBuffer intBuffer, int offset ) {
-		int nameCount = intBuffer.get( offset + 0 );
-		int zFrontAsInt = intBuffer.get( offset + 1 );
-		int zBackAsInt = intBuffer.get( offset + 2 );
-
-		long zFrontAsLong = zFrontAsInt;
-		zFrontAsLong &= RenderContext.MAX_UNSIGNED_INTEGER;
-
-		this.zFront = (float)zFrontAsLong;
-		this.zFront /= (float)RenderContext.MAX_UNSIGNED_INTEGER;
-
-		long zBackAsLong = zBackAsInt;
-		zBackAsLong &= RenderContext.MAX_UNSIGNED_INTEGER;
-		
-//		int[] atDepth = { -1 };
-//		pc.gl.glGetIntegerv( GL.GL_DEPTH_BITS, atDepth, 0 );
-//		int[] atClearValue = { -1 };
-//		pc.gl.glGetIntegerv( GL.GL_DEPTH_CLEAR_VALUE, atClearValue, 0 );
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectionBufferInfo:", atDepth[ 0 ], Long.toHexString( atClearValue[ 0 ] ), Long.toHexString( RenderContext.MAX_UNSIGNED_INTEGER ), Integer.toHexString( zFrontAsInt ), Long.toHexString( zFrontAsLong ), Integer.toHexString( zBackAsInt ), Long.toHexString( zBackAsLong )  );
-
-		this.zBack = (float)zBackAsLong;
-		this.zBack /= (float)RenderContext.MAX_UNSIGNED_INTEGER;
-
-		if( nameCount == 4 ) {
-			int key = intBuffer.get( offset + 3 );
-			VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> visualAdapter = pc.getPickVisualAdapterForName( key );
-			if( visualAdapter != null ) {
-				this.sgVisual = visualAdapter.m_element;
-				this.isFrontFacing = intBuffer.get( offset + 4 ) == 1;
-				this.sgGeometry = this.sgVisual.geometries.getValue()[ ( intBuffer.get( offset + 5 ) ) ];
-				this.subElement = intBuffer.get( offset + 6 );
-			}
-		}
-	}
-
-	public float getZFront() {
-		return this.zFront;
-	}
-	public float getZBack() {
-		return this.zBack;
-	}
-
-	public edu.cmu.cs.dennisc.scenegraph.Visual getSGVisual() {
-		return this.sgVisual;
-	}
-	public boolean isFrontFacing() {
-		return this.isFrontFacing;
-	}
-	public edu.cmu.cs.dennisc.scenegraph.Geometry getSGGeometry() {
-		return this.sgGeometry;
-	}
-	public int getSubElement() {
-		return this.subElement;
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -246,7 +177,14 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 	}
 
+	private static ConformanceTestResults conformanceTestResults = null;
 	private void performPick() {
+		if( conformanceTestResults != null ) {
+			//pass
+		} else {
+			conformanceTestResults = new ConformanceTestResults( this.pickContext.gl );
+		}
+		
 		edu.cmu.cs.dennisc.lookingglass.PickObserver pickObserver = this.pickParameters.getPickObserver();
 		if( pickObserver != null ) {
 			pickObserver.prePick();
@@ -263,7 +201,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 		java.awt.Rectangle actualViewport = this.lookingGlass.getActualViewport( sgCamera );
 		this.pickContext.gl.glViewport( actualViewport.x, actualViewport.y, actualViewport.width, actualViewport.height );
-		cameraAdapter.performPick( this.pickContext, this.pickParameters, actualViewport );
+		cameraAdapter.performPick( this.pickContext, this.pickParameters, actualViewport, conformanceTestResults );
 		this.pickContext.gl.glFlush();
 
 		this.selectionAsIntBuffer.rewind();
@@ -280,31 +218,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				offset += 7;
 			}
 
-			if( length > 1 ) {
-				float front0 = selectionBufferInfos[ 0 ].getZFront();
-				boolean isDifferentiated = false;
-				for( int i=1; i<length; i++ ) {
-					if( front0 == selectionBufferInfos[ i ].getZFront() ) {
-						//pass
-					} else {
-						isDifferentiated = true;
-						break;
-					}
-				}
-				if( isDifferentiated ) {
-					java.util.Arrays.sort( selectionBufferInfos, new java.util.Comparator< SelectionBufferInfo >() {
-						public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
-							return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
-						}
-					} );
-				} else {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: account for video card driver bug" );
-				}
-			}
-
-			for( int i=0; i<length; i++ ) {
-				//todo: perform trimmed math
-				
+			if( conformanceTestResults.isPickFunctioningCorrectly() ) {
 				double x = this.pickParameters.getX();
 				double y = this.pickParameters.getFlippedY( actualViewport );
 
@@ -317,16 +231,73 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				
 				m.applyMultiplication( p );
 				m.invert();
-				
-				double z = selectionBufferInfos[ i ].getZFront();
-				z *= 2;
-				z -= 1;
+				for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
+					selectionBufferInfo.updatePointInSource( m );
+				}
+			} else {
+				edu.cmu.cs.dennisc.math.Ray ray = new edu.cmu.cs.dennisc.math.Ray();
+				ray.setNaN();
+				cameraAdapter.getRayAtPixel( ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
+				edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
+				for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
+					selectionBufferInfo.updatePointInSource( ray, inverseAbsoluteTransformation );
+				}
+			}
 
-				edu.cmu.cs.dennisc.math.Vector4 v = new edu.cmu.cs.dennisc.math.Vector4( 0, 0, z, 1 );
-				m.transform( v );
-
-				edu.cmu.cs.dennisc.math.Point3 xyzInSource = new edu.cmu.cs.dennisc.math.Point3( v.x/v.w, v.y/v.w, v.z/v.w );
-				this.pickParameters.addPickResult( sgCamera, selectionBufferInfos[ i ].getSGVisual(), selectionBufferInfos[ i ].isFrontFacing(), selectionBufferInfos[ i ].getSGGeometry(), selectionBufferInfos[ i ].getSubElement(), xyzInSource );
+			if( length > 1 ) {
+//				float front0 = selectionBufferInfos[ 0 ].getZFront();
+//				boolean isDifferentiated = false;
+//				for( int i=1; i<length; i++ ) {
+//					if( front0 == selectionBufferInfos[ i ].getZFront() ) {
+//						//pass
+//					} else {
+//						isDifferentiated = true;
+//						break;
+//					}
+//				}
+//				java.util.Comparator< SelectionBufferInfo > comparator;
+//				if( isDifferentiated ) {
+//					comparator = new java.util.Comparator< SelectionBufferInfo >() {
+//						public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
+//							return Float.compare( sbi1.getZFront(), sbi2.getZFront() );
+//						}
+//					};
+//				} else {
+//					if( conformanceTestResults.isPickFunctioningCorrectly() ) {
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: conformance test reports pick is functioning correctly" );
+//						comparator = null;
+//					} else { 
+//						edu.cmu.cs.dennisc.math.Ray ray = new edu.cmu.cs.dennisc.math.Ray();
+//						ray.setNaN();
+//						cameraAdapter.getRayAtPixel( ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
+//						for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
+//							selectionBufferInfo.updatePointInSource( ray );
+//						}
+//						comparator = new java.util.Comparator< SelectionBufferInfo >() {
+//							public int compare( SelectionBufferInfo sbi1, SelectionBufferInfo sbi2 ) {
+//								return Double.compare( sbi1.getPointInSource().z, sbi2.getPointInSource().z );
+//							}
+//						};
+//					}
+//				}
+				java.util.Comparator< SelectionBufferInfo > comparator;
+				if( conformanceTestResults.isPickFunctioningCorrectly() ) {
+					comparator = new java.util.Comparator<SelectionBufferInfo>() {
+						public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
+							return Float.compare(sbi1.getZFront(), sbi2.getZFront());
+						}
+					};
+				} else {
+					comparator = new java.util.Comparator<SelectionBufferInfo>() {
+						public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
+							return Double.compare(sbi1.getPointInSource().z, sbi2.getPointInSource().z);
+						}
+					};
+				}
+				java.util.Arrays.sort( selectionBufferInfos, comparator );
+			}
+			for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
+				this.pickParameters.addPickResult( sgCamera, selectionBufferInfo.getSGVisual(), selectionBufferInfo.isFrontFacing(), selectionBufferInfo.getSGGeometry(), selectionBufferInfo.getSubElement(), selectionBufferInfo.getPointInSource() );
 			}
 		}
 		if( pickObserver != null ) {
@@ -365,12 +336,12 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	private java.awt.image.BufferedImage createBufferedImageForUseAsColorBuffer( int type ) {
 		if( this.drawable != null ) {
 			if( this.width != this.drawable.getWidth() || this.height != this.drawable.getHeight() ) {
-				PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: createBufferedImageForUseAsColorBuffer size mismatch" );
 				this.width = this.drawable.getWidth();
 				this.height = this.drawable.getHeight();
 			}
 		} else {
-			PrintUtilities.println( "warning: drawable null" );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: drawable null" );
 		}
 		
 		if( this.width > 0 && this.height > 0 ) {

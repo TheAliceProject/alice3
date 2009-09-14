@@ -28,4 +28,16 @@ public class ModelAdapter< E extends Model > extends edu.cmu.cs.dennisc.lookingg
 //		}
 		m_element.render();
 	}
+	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+		edu.cmu.cs.dennisc.math.Vector3 direction = edu.cmu.cs.dennisc.math.Vector3.createNegation( m.translation );
+		direction.y = 0.0;
+		if( direction.calculateMagnitudeSquared() == 0.0 ) {
+			rv.setNaN();
+		} else {
+			direction.normalize();
+			edu.cmu.cs.dennisc.lookingglass.opengl.GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0,0,0, direction.x, 0, direction.z );
+		}
+		return rv;
+	}
 }

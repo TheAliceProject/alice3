@@ -234,4 +234,11 @@ public class TextAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 			super.propertyChanged( property );
 		}
 	}
+	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+		edu.cmu.cs.dennisc.math.Vector3 alignmentOffset = m_element.getAlignmentOffset();
+		double zFront = alignmentOffset.z;
+		//todo: no reason to believe it hit the front 
+		return GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0, 0, zFront, 0, 0, -1);
+	}
 }

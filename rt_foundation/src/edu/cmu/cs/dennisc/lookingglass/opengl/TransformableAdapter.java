@@ -65,11 +65,11 @@ public class TransformableAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Trans
 	
 	
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters ) {
+	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 		pc.gl.glPushMatrix();
 		try {
 			pc.gl.glMultMatrixd( m_localTransformationBuffer );
-			super.pick( pc, pickParameters );
+			super.pick( pc, pickParameters, conformanceTestResults );
 		} finally {
 			pc.gl.glPopMatrix();
 		}

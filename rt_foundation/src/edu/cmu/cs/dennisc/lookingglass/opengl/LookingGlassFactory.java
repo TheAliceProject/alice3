@@ -140,22 +140,22 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 					edu.cmu.cs.dennisc.print.PrintUtilities.println( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired:", isSlowAndSteadyDesiredText );
 					isSlowAndSteadyDesired = true;
 				}
-			} else {
-				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
-					try {
-						ConformanceTestResults conformanceTestResults = ConformanceTestResults.getSingleton();
-						if( conformanceTestResults.isValid() ) {
-							if( conformanceTestResults.isPickFunctioningCorrectly() ) {
-								//pass
-							} else {
-								isSlowAndSteadyDesired = true;
-							}
-						}
-					} catch( Throwable t ) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle ConformanceTestResults failure" );
-						t.printStackTrace();
-					}
-				}
+//			} else {
+//				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+//					try {
+//						ConformanceTestResults conformanceTestResults = ConformanceTestResults.getSingleton();
+//						if( conformanceTestResults.isValid() ) {
+//							if( conformanceTestResults.isPickFunctioningCorrectly() ) {
+//								//pass
+//							} else {
+//								isSlowAndSteadyDesired = true;
+//							}
+//						}
+//					} catch( Throwable t ) {
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle ConformanceTestResults failure" );
+//						t.printStackTrace();
+//					}
+//				}
 			}
 			if( isSlowAndSteadyDesired ) {
 				glCapabilitiesChooser = new edu.cmu.cs.dennisc.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser();

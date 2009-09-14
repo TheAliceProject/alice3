@@ -34,6 +34,6 @@ public abstract class AffectorAdapter< E extends edu.cmu.cs.dennisc.scenegraph.A
 	public void renderOpaque( RenderContext rc  ) {
 	}
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters ) {
+	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 	}
 }

@@ -97,4 +97,20 @@ public abstract class GeometryAdapter< E extends edu.cmu.cs.dennisc.scenegraph.G
 		pc.gl.glEnd();
 		pickGeometry( pc, isSubElementRequired );
 	}
+
+	protected static edu.cmu.cs.dennisc.math.Point3 getIntersectionInSourceFromPlaneInLocal( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, double px, double py, double pz, double nx, double ny, double nz ) {
+		edu.cmu.cs.dennisc.math.Point3 position = new edu.cmu.cs.dennisc.math.Point3( px, py, pz );
+		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( nx, ny, nz );
+		m.transform( position );
+		m.transform( direction );
+		edu.cmu.cs.dennisc.math.Plane plane = new edu.cmu.cs.dennisc.math.Plane( position, direction );
+		if( plane.isNaN() ) {
+			rv.setNaN();
+		} else {
+			double t = plane.intersect(ray);
+			ray.getPointAlong( rv, t );
+		}
+		return rv;
+	}
+	public abstract edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement);
 }

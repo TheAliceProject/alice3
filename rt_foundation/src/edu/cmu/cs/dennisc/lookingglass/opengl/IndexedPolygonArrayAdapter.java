@@ -97,4 +97,21 @@ public abstract class IndexedPolygonArrayAdapter< E extends edu.cmu.cs.dennisc.s
 			super.propertyChanged( property );
 		}
 	}
+	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+		if( subElement != -1 ) {
+			int indicesPerPolygon = getIndicesPerPolygon();
+			int[] polygonData = m_element.polygonData.getValue();
+			int index = subElement * indicesPerPolygon; 
+			if( 0 <= index && index < polygonData.length ) {
+				edu.cmu.cs.dennisc.scenegraph.Vertex v = accessVertexAt( polygonData[ index ] );				
+				GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, v.position.x, v.position.y, v.position.z, v.normal.x, v.normal.y, v.normal.z );
+			} else {
+				rv.setNaN();
+			}
+		} else {
+			rv.setNaN();
+		}
+		return rv;
+	}
 }

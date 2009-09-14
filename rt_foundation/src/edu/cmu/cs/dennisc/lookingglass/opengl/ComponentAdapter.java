@@ -146,6 +146,6 @@ public abstract class ComponentAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 	public abstract void renderGhost( RenderContext rc, GhostAdapter root );
 	public abstract void renderOpaque( RenderContext rc );
 	public abstract void setup( RenderContext rc );
-	public abstract void pick( PickContext pc, PickParameters pickParameters );
+	public abstract void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults );
 
 }

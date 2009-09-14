@@ -45,6 +45,15 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 //		return m_geometryAdapter;
 //	}
 	
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformationOfSource, int geometryIndex, int subElement) {
+		if( 0 <= geometryIndex && geometryIndex < m_geometryAdapters.length ) {
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 absoluteTransformation = this.m_element.getAbsoluteTransformation();
+			edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createMultiplication(inverseAbsoluteTransformationOfSource, absoluteTransformation);
+			m_geometryAdapters[ geometryIndex ].getIntersectionInSource( rv, ray, m, subElement );
+		}
+		return rv;
+	}
+
 	private boolean isEthereal() {
 		if( m_frontFacingAppearanceAdapter != null ) {
 			if( m_frontFacingAppearanceAdapter.isEthereal() ) {
@@ -195,8 +204,11 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 	}
 
 	@Override
-	public void pick( PickContext pc, PickParameters pickParameters ) {
+	public void pick( PickContext pc, PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 		if( isActuallyShowing() && isEthereal() == false) {
+			
+			boolean isSubElementActuallyRequired = pickParameters.isSubElementRequired() || conformanceTestResults.isPickFunctioningCorrectly()==false;
+			
 			if( m_isScaleIdentity ) {
 				//pass
 			} else {
@@ -212,7 +224,7 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 				synchronized( m_geometryAdapters ) {
 					for( int i=0; i<m_geometryAdapters.length; i++ ) {
 						pc.gl.glPushName( i );
-						m_geometryAdapters[ i ].pick( pc, pickParameters.isSubElementRequired() );
+						m_geometryAdapters[ i ].pick( pc, isSubElementActuallyRequired );
 						pc.gl.glPopName();
 					}
 				}
@@ -224,7 +236,7 @@ public class VisualAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Visual > ext
 				synchronized( m_geometryAdapters ) {
 					for( int i=0; i<m_geometryAdapters.length; i++ ) {
 						pc.gl.glPushName( i );
-						m_geometryAdapters[ i ].pick( pc, pickParameters.isSubElementRequired() );
+						m_geometryAdapters[ i ].pick( pc, isSubElementActuallyRequired );
 						pc.gl.glPopName();
 					}
 				}

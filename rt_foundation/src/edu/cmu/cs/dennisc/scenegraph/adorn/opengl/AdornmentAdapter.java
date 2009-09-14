@@ -22,6 +22,8 @@
  */
 package edu.cmu.cs.dennisc.scenegraph.adorn.opengl;
 
+import edu.cmu.cs.dennisc.lookingglass.opengl.ConformanceTestResults;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -52,7 +54,7 @@ public abstract class AdornmentAdapter extends edu.cmu.cs.dennisc.lookingglass.o
 	}
 
 	@Override
-	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters ) {
+	public void pick( edu.cmu.cs.dennisc.lookingglass.opengl.PickContext pc, edu.cmu.cs.dennisc.lookingglass.opengl.PickParameters pickParameters, ConformanceTestResults conformanceTestResults ) {
 		//todo?
 		//pass
 	}
