@@ -98,6 +98,21 @@ public class TorusAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.To
 		glTorus( pc, false );
 		pc.gl.glPopName();
 	}
+	
+	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+		//todo: solve for intersection with actual torus as opposed to just the plane
+		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 0 );
+		edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane coordinatePlane = this.m_element.coordinatePlane.getValue();
+		if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.XY ) {
+			direction.z = 1;
+		} else if( coordinatePlane == edu.cmu.cs.dennisc.scenegraph.Torus.CoordinatePlane.YZ ) {
+			direction.x = 1;
+		} else {
+			direction.y = 1;
+		}
+		return GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, 0, 0, 0, direction.x, direction.y, direction.z);
+	}
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.majorRadius ) {

@@ -40,6 +40,23 @@ public class SphereAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.S
 		glSphere( rc );
 	}
 	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+		//assuming ray unit length
+		
+		edu.cmu.cs.dennisc.math.Point3 origin = new edu.cmu.cs.dennisc.math.Point3( 0,0,0 );
+		edu.cmu.cs.dennisc.math.Vector3 dst = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( ray.accessOrigin(), origin );
+		double b = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( dst, ray.accessDirection() );
+		double c = edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( dst, dst ) - m_radius;
+		double d = b*b -c;
+		if( d > 0 ) {
+			double t = -b - Math.sqrt( d );
+			ray.getPointAlong(rv, t);
+		} else {
+			rv.setNaN();
+		}
+		return rv;
+	}
+	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
 		int name;
 		if( isSubElementRequired ) {

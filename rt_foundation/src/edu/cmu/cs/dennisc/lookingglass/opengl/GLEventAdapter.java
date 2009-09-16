@@ -238,6 +238,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				edu.cmu.cs.dennisc.math.Ray ray = new edu.cmu.cs.dennisc.math.Ray();
 				ray.setNaN();
 				cameraAdapter.getRayAtPixel( ray, pickParameters.getX(), pickParameters.getY(), actualViewport);
+				ray.accessDirection().normalize();
 				edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformation = sgCamera.getInverseAbsoluteTransformation();
 				for( SelectionBufferInfo selectionBufferInfo : selectionBufferInfos ) {
 					selectionBufferInfo.updatePointInSource( ray, inverseAbsoluteTransformation );
@@ -290,7 +291,9 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 				} else {
 					comparator = new java.util.Comparator<SelectionBufferInfo>() {
 						public int compare(SelectionBufferInfo sbi1, SelectionBufferInfo sbi2) {
-							return Double.compare(sbi1.getPointInSource().z, sbi2.getPointInSource().z);
+							double z1 = -sbi1.getPointInSource().z;
+							double z2 = -sbi2.getPointInSource().z;
+							return Double.compare(z1, z2);
 						}
 					};
 				}

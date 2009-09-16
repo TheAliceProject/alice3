@@ -163,8 +163,9 @@ public class ConformanceTestResults {
 				if (nameCount == 1) {
 					int key = selectionAsIntBuffer.get(3);
 					if (key == KEY) {
-						//edu.cmu.cs.dennisc.print.PrintUtilities.println("key", key);
 						this.isPickFunctioningCorrectly = true;
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: remove setting isPickFunctioningCorrectly = false");
+//						this.isPickFunctioningCorrectly = false;
 					}
 				}
 			}

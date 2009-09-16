@@ -114,7 +114,10 @@ class SelectionBufferInfo {
 	
 	public void updatePointInSource( edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 inverseAbsoluteTransformationOfSource ) {
 		if( this.visualAdapter != null ) {
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePointInSource:" );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.pointInSource );
 			this.visualAdapter.getIntersectionInSource( this.pointInSource, ray, inverseAbsoluteTransformationOfSource, this.geometryIndex, this.subElement );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( this.pointInSource );
 		} else {
 			this.pointInSource.setNaN();
 		}

@@ -112,6 +112,124 @@ public class CylinderAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph
 	}
 	
 	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+		double bottomValue;
+		double topValue;
+		if( m_originAlignment == edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment.BOTTOM ) {
+			bottomValue = 0;
+			topValue = m_length;
+		} else if( m_originAlignment == edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment.CENTER ) {
+			bottomValue = -m_length * 0.5;
+			topValue = +m_length * 0.5;
+		} else if( m_originAlignment == edu.cmu.cs.dennisc.scenegraph.Cylinder.OriginAlignment.TOP ) {
+			bottomValue = m_length;
+			topValue = 0;
+		} else {
+			//todo?
+			throw new RuntimeException();
+		}
+
+		edu.cmu.cs.dennisc.math.Point3 cylinderPosition = new edu.cmu.cs.dennisc.math.Point3( 0,0,0 );
+		edu.cmu.cs.dennisc.math.Vector3 cylinderDirection = new edu.cmu.cs.dennisc.math.Vector3( 0,0,0 );
+
+		edu.cmu.cs.dennisc.math.Point3 cylinderTopPosition = new edu.cmu.cs.dennisc.math.Point3( 0,0,0 );
+		if( m_bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.POSITIVE_X ) {
+			cylinderDirection.x = 1;
+			cylinderPosition.x = bottomValue;
+			cylinderTopPosition.x = topValue;
+		} else if( m_bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.POSITIVE_Y ) {
+			cylinderDirection.y = 1;
+			cylinderPosition.y = bottomValue;
+			cylinderTopPosition.y = topValue;
+		} else if( m_bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.POSITIVE_Z ) {
+			cylinderDirection.z = 1;
+			cylinderPosition.z = bottomValue;
+			cylinderTopPosition.z = topValue;
+		} else if( m_bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.NEGATIVE_X ) {
+			cylinderDirection.x = -1;
+			cylinderPosition.x = -bottomValue;
+			cylinderTopPosition.x = -topValue;
+		} else if( m_bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.NEGATIVE_Y ) {
+			cylinderDirection.y = -1;
+			cylinderPosition.y = -bottomValue;
+			cylinderTopPosition.y = -topValue;
+		} else if( m_bottomToTopAxis == edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis.NEGATIVE_Z ) {
+			cylinderDirection.z = -1;
+			cylinderPosition.z = -bottomValue;
+			cylinderTopPosition.z = -topValue;
+		} else {
+			//todo?
+			throw new RuntimeException();
+		}
+		double maxRadius = Math.max( m_bottomRadius, m_topRadius );
+		m.transform( cylinderPosition );
+		m.transform( cylinderDirection );
+		
+		final boolean HANDLE_CONES_SEPARATELY = false;
+		double t = Double.NaN;
+		final double THRESHOLD = 0.01;
+		if( HANDLE_CONES_SEPARATELY && Math.abs( m_bottomRadius - m_topRadius ) < THRESHOLD ) {
+			edu.cmu.cs.dennisc.math.Vector3 originToOrigin = edu.cmu.cs.dennisc.math.Vector3.createSubtraction( ray.accessOrigin(), cylinderPosition );
+			edu.cmu.cs.dennisc.math.Vector3 rayDirection_X_cylinderDirection = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( ray.accessDirection(), cylinderDirection );
+			
+			double magnitude = rayDirection_X_cylinderDirection.calculateMagnitude();
+			
+			if( magnitude > edu.cmu.cs.dennisc.math.EpsilonUtilities.REASONABLE_EPSILON ) {
+				rayDirection_X_cylinderDirection.normalize();
+				double d = Math.abs( edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( originToOrigin, rayDirection_X_cylinderDirection ) );
+				if( d <= maxRadius ) {
+					edu.cmu.cs.dennisc.math.Vector3 originToOrigin_X_cylinderDirection = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( originToOrigin, cylinderDirection );
+					double a = -edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( originToOrigin_X_cylinderDirection, rayDirection_X_cylinderDirection ) / magnitude;
+
+					edu.cmu.cs.dennisc.math.Vector3 rayDirection_X_CylinderDirection___X_cylinderDirection = edu.cmu.cs.dennisc.math.Vector3.createCrossProduct( rayDirection_X_cylinderDirection, cylinderDirection );
+					rayDirection_X_CylinderDirection___X_cylinderDirection.normalize();
+					double b = Math.abs( Math.sqrt( maxRadius*maxRadius - d*d ) / edu.cmu.cs.dennisc.math.Vector3.calculateDotProduct( ray.accessDirection(), rayDirection_X_CylinderDirection___X_cylinderDirection ) );
+				
+					t = a-b;
+				}
+			}
+		} else {
+			//todo handle cones
+		}
+		if( Double.isNaN( t ) ) {
+			rv.setNaN();
+		} else {
+			ray.getPointAlong( rv, t );
+		}
+		
+
+		if( rv.isNaN() ) {
+			//todo: check to see if hit cap
+			edu.cmu.cs.dennisc.math.Point3 pTopCap;
+			edu.cmu.cs.dennisc.math.Point3 pBottomCap;
+			if( m_hasBottomCap && m_bottomRadius > 0 ) {
+				pBottomCap = new edu.cmu.cs.dennisc.math.Point3();
+				GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(pBottomCap, ray, m, cylinderPosition, cylinderDirection);
+			} else {
+				pBottomCap = null;
+			}
+			if( m_hasTopCap && m_topRadius > 0 ) {
+				pTopCap = new edu.cmu.cs.dennisc.math.Point3();
+				GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(pTopCap, ray, m, cylinderTopPosition, cylinderDirection);
+			} else {
+				pTopCap = null;
+			}
+			if( pBottomCap != null ) {
+				if( rv.isNaN() || rv.z > pBottomCap.z ) {
+					rv.set( pBottomCap );
+				}
+			}
+			if( pTopCap != null ) {
+				if( rv.isNaN() || rv.z > pTopCap.z ) {
+					rv.set( pTopCap );
+				}
+			}
+		}
+
+		return rv;
+	}
+
+	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.length ) {
 			m_length = m_element.length.getValue();

@@ -131,6 +131,42 @@ public class BoxAdapter extends ShapeAdapter< edu.cmu.cs.dennisc.scenegraph.Box 
 		pc.gl.glPopName();
 	}
 	@Override
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+		edu.cmu.cs.dennisc.math.Point3 origin = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
+		edu.cmu.cs.dennisc.math.Vector3 direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 0 );
+		switch( subElement ) {
+		case 0:
+			origin.x = m_xMin;
+			direction.x = -1;
+			break;
+		case 1:
+			origin.x = m_xMax;
+			direction.x = 1;
+			break;
+		case 2:
+			origin.y = m_yMin;
+			direction.y = -1;
+			break;
+		case 3:
+			origin.y = m_yMax;
+			direction.y = 1;
+			break;
+		case 4:
+			origin.z = m_zMin;
+			direction.z = -1;
+			break;
+		case 5:
+			origin.z = m_zMax;
+			direction.z = 1;
+			break;
+		default:
+			rv.setNaN();
+			return rv;
+		}
+		GeometryAdapter.getIntersectionInSourceFromPlaneInLocal(rv, ray, m, origin.x, origin.y, origin.z, direction.x, direction.y, direction.z);
+		return rv;
+	}
+	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.xMinimum ) {
 			m_xMin = m_element.xMinimum.getValue();
