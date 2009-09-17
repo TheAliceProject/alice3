@@ -38,15 +38,16 @@ public class ConformanceTestResults {
 //		}
 //		return ConformanceTestResults.singleton;
 //	}
+	private static final long FISHY_PICK_VALUE = PickContext.MAX_UNSIGNED_INTEGER/2+1;
 	
 	private static long convertZValueToLong( int zValue ) {
 		long rv = zValue;
-		rv &= RenderContext.MAX_UNSIGNED_INTEGER;
+		rv &= PickContext.MAX_UNSIGNED_INTEGER;
 		return rv;
 	}
 	private static float convertZValueToFloat( long zValue ) {
 		float zFront = (float)zValue;
-		zFront /= (float)RenderContext.MAX_UNSIGNED_INTEGER;
+		zFront /= (float)PickContext.MAX_UNSIGNED_INTEGER;
 		return zFront;
 	}
 
@@ -146,7 +147,7 @@ public class ConformanceTestResults {
 			long zFrontAsLong = convertZValueToLong( zFrontAsInt );
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsLong", "0x"+Long.toHexString(zFrontAsLong));
 			
-			if( zFrontAsLong != RenderContext.MAX_UNSIGNED_INTEGER && zFrontAsLong != 0 ) {
+			if( zFrontAsLong != FISHY_PICK_VALUE && zFrontAsLong != PickContext.MAX_UNSIGNED_INTEGER && zFrontAsLong != 0 ) {
 				//float zFront = convertZValueToFloat( zFrontAsLong );;
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFront", zFront);
 
@@ -157,7 +158,7 @@ public class ConformanceTestResults {
 					long zBackAsLong = convertZValueToLong( zBackAsInt );
 					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsLong", "0x"+Long.toHexString(zBackAsLong));
 					float zBack = convertZValueToFloat( zBackAsLong );;
-					edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
 				}
 				
 				if (nameCount == 1) {
@@ -171,7 +172,7 @@ public class ConformanceTestResults {
 			}
 		}
 		timer.mark( "processed" );
-		timer.stopAndPrintResults();
+		//timer.stopAndPrintResults();
 		this.isValid = true;
 	}
 

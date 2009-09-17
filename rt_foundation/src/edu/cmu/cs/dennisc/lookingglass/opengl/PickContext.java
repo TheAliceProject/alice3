@@ -29,6 +29,8 @@ import javax.media.opengl.GL;
  * @author Dennis Cosgrove
  */
 public class PickContext extends Context {
+	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
+
 	private java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> > m_pickNameMap = new java.util.HashMap< Integer, VisualAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Visual> >();
 	private PickParameters m_pickParameters;
 

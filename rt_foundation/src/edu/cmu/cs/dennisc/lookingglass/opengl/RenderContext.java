@@ -29,8 +29,6 @@ import javax.media.opengl.GL;
  * @author Dennis Cosgrove
  */
 public class RenderContext extends Context {
-	public static final long MAX_UNSIGNED_INTEGER = 0xFFFFFFFFL;
-
 	private int m_lastTime_nextLightID = GL.GL_LIGHT0;
 	private int m_nextLightID;
 	private boolean m_isFogEnabled;

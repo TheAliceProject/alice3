@@ -44,13 +44,13 @@ class SelectionBufferInfo {
 		int zBackAsInt = intBuffer.get( offset + 2 );
 
 		long zFrontAsLong = zFrontAsInt;
-		zFrontAsLong &= RenderContext.MAX_UNSIGNED_INTEGER;
+		zFrontAsLong &= PickContext.MAX_UNSIGNED_INTEGER;
 
 		this.zFront = (float)zFrontAsLong;
-		this.zFront /= (float)RenderContext.MAX_UNSIGNED_INTEGER;
+		this.zFront /= (float)PickContext.MAX_UNSIGNED_INTEGER;
 
 		long zBackAsLong = zBackAsInt;
-		zBackAsLong &= RenderContext.MAX_UNSIGNED_INTEGER;
+		zBackAsLong &= PickContext.MAX_UNSIGNED_INTEGER;
 		
 //		int[] atDepth = { -1 };
 //		pc.gl.glGetIntegerv( GL.GL_DEPTH_BITS, atDepth, 0 );
@@ -59,7 +59,7 @@ class SelectionBufferInfo {
 //		edu.cmu.cs.dennisc.print.PrintUtilities.println( "SelectionBufferInfo:", atDepth[ 0 ], Long.toHexString( atClearValue[ 0 ] ), Long.toHexString( RenderContext.MAX_UNSIGNED_INTEGER ), Integer.toHexString( zFrontAsInt ), Long.toHexString( zFrontAsLong ), Integer.toHexString( zBackAsInt ), Long.toHexString( zBackAsLong )  );
 
 		this.zBack = (float)zBackAsLong;
-		this.zBack /= (float)RenderContext.MAX_UNSIGNED_INTEGER;
+		this.zBack /= (float)PickContext.MAX_UNSIGNED_INTEGER;
 
 		if( nameCount == 4 ) {
 			int key = intBuffer.get( offset + 3 );
