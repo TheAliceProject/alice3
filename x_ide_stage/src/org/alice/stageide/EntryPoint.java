@@ -44,6 +44,7 @@ class SplashIcon extends javax.swing.ImageIcon {
  */
 public class EntryPoint {
 	public static void main( final String[] args ) {
+		System.out.println( "version: " + edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() + " BETA" );
 		javax.swing.Icon icon = new SplashIcon( EntryPoint.class.getResource( "images/SplashScreen.png" ) );
 		java.awt.Window splashScreen = new edu.cmu.cs.dennisc.swing.SplashScreen( null, icon );
 		org.alice.ide.LaunchUtilities.launch( StageIDE.class, splashScreen, args );
