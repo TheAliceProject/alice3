@@ -731,8 +731,8 @@ public abstract class IDE extends zoot.ZFrame {
 		rv.append( this.getApplicationName() );
 		rv.append( " " );
 		rv.append( this.getVersionText() );
-		rv.append( " " );
-		rv.append( this.getVersionAdornment() ); 
+//		rv.append( " " );
+//		rv.append( this.getVersionAdornment() ); 
 		return rv;
 	}
 	protected StringBuffer updateTitle( StringBuffer rv ) {
