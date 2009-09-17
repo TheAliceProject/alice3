@@ -35,7 +35,7 @@ class SplashIcon extends javax.swing.ImageIcon {
 		int w = this.getIconWidth();
 		int h = this.getIconHeight();
 		g.setColor( new java.awt.Color( 0x379bd5 ) );
-		g.drawString( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() + " BETA", x + (int)(w*0.45), y + (int)(h*0.75) );
+		g.drawString( edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText()/* + " BETA"*/, x + (int)(w*0.45), y + (int)(h*0.75) );
 	}
 }
 
@@ -44,7 +44,7 @@ class SplashIcon extends javax.swing.ImageIcon {
  */
 public class EntryPoint {
 	public static void main( final String[] args ) {
-		System.out.println( "version: " + edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() + " BETA" );
+		System.out.println( "version: " + edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText()/* + " BETA" */);
 		javax.swing.Icon icon = new SplashIcon( EntryPoint.class.getResource( "images/SplashScreen.png" ) );
 		java.awt.Window splashScreen = new edu.cmu.cs.dennisc.swing.SplashScreen( null, icon );
 		org.alice.ide.LaunchUtilities.launch( StageIDE.class, splashScreen, args );
