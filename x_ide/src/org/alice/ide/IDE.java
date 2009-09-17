@@ -725,7 +725,8 @@ public abstract class IDE extends zoot.ZFrame {
 		return edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText();
 	}
 	protected String getVersionAdornment() {
-		return "BETA ";
+		//return "BETA";
+		return "";
 	}
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
 		rv.append( this.getApplicationName() );
