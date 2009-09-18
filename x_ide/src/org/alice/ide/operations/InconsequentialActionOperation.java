@@ -20,27 +20,37 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.edit;
+package org.alice.ide.operations;
 
+//todo: rename
 /**
  * @author Dennis Cosgrove
  */
-public class CopyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public CopyOperation() {
-		this.putValue( javax.swing.Action.NAME, "Copy" );
-		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+public abstract class InconsequentialActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	public InconsequentialActionOperation() {
+	}
+	public InconsequentialActionOperation( javax.swing.ButtonModel model ) {
+		super( model );
+	}
+	protected abstract void performInternal(zoot.ActionContext actionContext);
+	public final void perform(zoot.ActionContext actionContext) {
+		performInternal(actionContext);
+		actionContext.commitAndInvokeRedoIfAppropriate();
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
-		String title = "Copy coming soon";
-		String message = "Copy is not yet implemented.  Apologies.";
-		message += "\n\nNOTE: one can copy by dragging with the ";
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
-			message += "Alt";
-		} else {
-			message += "Control";
-		}
-		message += " key pressed.";
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE );
+	public final boolean canRedo() {
+		return false;
+	}
+	@Override
+	public final boolean canUndo() {
+		return false;
+	}
+	@Override
+	public final boolean isSignificant() {
+		return false;
+	}
+	@Override
+	public final java.util.UUID getUndoManagerKey() {
+		return this.getIDE().getIDEUndoManagerKey();
 	}
 }

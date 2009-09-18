@@ -25,16 +25,15 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class WarningOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class WarningOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private boolean isSolicited;
 	public WarningOperation( boolean isSolicited ) {
 		this.putValue( javax.swing.Action.NAME, "Display Warning..." );
 		this.isSolicited = isSolicited;
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal( zoot.ActionContext actionContext ) {
 		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( this.isSolicited );
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), warningPane, "Alice3 is currently under development", javax.swing.JOptionPane.WARNING_MESSAGE ); 
-		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		actionContext.commit();
 	}
 }

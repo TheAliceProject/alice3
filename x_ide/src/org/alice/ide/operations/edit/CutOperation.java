@@ -25,15 +25,15 @@ package org.alice.ide.operations.edit;
 /**
  * @author Dennis Cosgrove
  */
-public class CutOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class CutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public CutOperation() {
 		this.putValue( javax.swing.Action.NAME, "Cut" );
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		String title = "Cut coming soon";
 		String message = "Cut is not yet implemented.  Apologies.";
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ); 
-		actionContext.cancel();
 	}
 }

@@ -34,11 +34,12 @@ import edu.cmu.cs.dennisc.animation.Program;
 /**
  * @author Dennis Cosgrove
  */
-public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ExportVideoUploadToYouTubeOperation() {
 		this.putValue( javax.swing.Action.NAME, "Export Video / Upload To YouTube\u2122..." );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		final int frameRate = 24;
 		
 		edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();
@@ -63,7 +64,5 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 
 		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, this.getIDE(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		dialog.setVisible( true );
-		//todo
-		//actionContext.commit();
 	}
 }

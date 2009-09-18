@@ -38,15 +38,23 @@ public class FieldItemSelectionOperation extends org.alice.ide.operations.Abstra
 //			//todo?
 //		}
 		this.nextField = singleSelectionContext.getNextSelection();
-		this.redo();
-		singleSelectionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		singleSelectionContext.commit();
+		singleSelectionContext.commitAndInvokeRedoIfAppropriate();
 	}
 	
+	@Override
 	public void redo() {
 		getIDE().setFieldSelection( this.nextField );
 	}
+	@Override
 	public void undo() {
 		getIDE().setFieldSelection( this.prevField );
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
+	}
+	@Override
+	public java.util.UUID getUndoManagerKey() {
+		return this.getIDE().getIDEUndoManagerKey();
 	}
 }

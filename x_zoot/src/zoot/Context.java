@@ -34,8 +34,9 @@ public interface Context< O extends Operation > {
 	public boolean isCommitted();
 	public boolean isCancelled();
 	public boolean isPending();
-	public void commit( javax.swing.undo.UndoableEdit edit );
-	public void commit();
+	public void commitAndInvokeRedoIfAppropriate();
+//	public void commit( javax.swing.undo.UndoableEdit edit );
+//	public void commit();
 	public void cancel();
 	public void setTaskObserver( edu.cmu.cs.dennisc.task.TaskObserver< ? > taskObserver );
 	public boolean isCancelWorthwhile();

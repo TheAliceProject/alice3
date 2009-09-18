@@ -167,6 +167,19 @@ class MyItemSelectionContext<E> extends AbstractContext< ItemSelectionOperation<
  * @author Dennis Cosgrove
  */
 public class ZManager {
+	
+	private static javax.swing.undo.UndoableEdit insignificantEdit = new javax.swing.undo.AbstractUndoableEdit() {
+		@Override
+		public boolean isSignificant() {
+			return false;
+		}
+	};
+	
+	public static javax.swing.undo.UndoableEdit getInsignificantEdit() {
+		return ZManager.insignificantEdit;
+	}
+	
+	
 	private static java.util.List< zoot.event.OperationListener > operationListeners = new java.util.LinkedList< zoot.event.OperationListener >();
 	private static java.util.List< zoot.event.EditListener > editListeners = new java.util.LinkedList< zoot.event.EditListener >();
 

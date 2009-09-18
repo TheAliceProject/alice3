@@ -25,15 +25,15 @@ package org.alice.ide.operations.edit;
 /**
  * @author Dennis Cosgrove
  */
-public class PasteOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class PasteOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public PasteOperation() {
 		this.putValue( javax.swing.Action.NAME, "Paste" );
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_V, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		String title = "Paste coming soon";
 		String message = "Paste is not yet implemented.  Apologies.";
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ); 
-		actionContext.cancel();
 	}
 }

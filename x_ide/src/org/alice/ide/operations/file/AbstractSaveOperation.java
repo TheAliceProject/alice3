@@ -31,9 +31,10 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 	protected abstract String getExtension();
 	protected abstract void save( java.io.File file ) throws java.io.IOException;
 	protected abstract String getInitialFilename();
+	
+	private java.io.File fileNext;
 	public void perform( zoot.ActionContext actionContext ) {
 		java.io.File filePrevious = this.getIDE().getFile();
-		java.io.File fileNext;
 		boolean isExceptionRaised;
 		do {
 			if( this.isPromptNecessary( filePrevious ) ) {
@@ -42,7 +43,7 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 				fileNext = filePrevious;
 			}
 			isExceptionRaised = false;
-			if( fileNext != null ) {
+			if( this.fileNext != null ) {
 				try {
 					this.save( fileNext );
 				} catch( java.io.IOException ioe ) {
@@ -52,12 +53,28 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 				if( isExceptionRaised ) {
 					//pass
 				} else {
-					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-					actionContext.commit();
+					actionContext.commitAndInvokeRedoIfAppropriate();
 				}
 			} else {
 				actionContext.cancel();
 			}
 		} while( isExceptionRaised );
+	}
+
+	@Override
+	public boolean canRedo() {
+		return false;
+	}
+	@Override
+	public boolean canUndo() {
+		return false;
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
+	}
+	@Override
+	public java.util.UUID getUndoManagerKey() {
+		return this.getIDE().getIDEUndoManagerKey();
 	}
 }

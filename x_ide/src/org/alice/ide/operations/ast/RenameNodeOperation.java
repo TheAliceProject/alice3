@@ -41,18 +41,18 @@ public abstract class RenameNodeOperation extends org.alice.ide.operations.Abstr
 		this.nextValue = renameNodePane.showInJDialog( this.getIDE() );
 		if( nextValue != null && nextValue.length() > 0 ) {
 			this.prevValue = nameProperty.getValue();
-			this.redo();
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-			actionContext.commit();
+			actionContext.commitAndInvokeRedoIfAppropriate();
 		} else {
 			actionContext.cancel();
 		}
 	}
 
-	public void redo() {
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
 		this.nameProperty.setValue( this.nextValue );
 	}
-	public void undo() {
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
 		this.nameProperty.setValue( this.prevValue );
 	}
 }

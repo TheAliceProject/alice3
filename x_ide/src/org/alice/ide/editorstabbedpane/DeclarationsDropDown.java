@@ -10,19 +10,22 @@ class OperatorFillIn extends cascade.SimpleFillIn< zoot.ActionOperation > {
 	}
 }
 
-class EditConstructorOperation extends org.alice.ide.operations.AbstractActionOperation {
+//todo
+class EditConstructorOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor;
 
 	public EditConstructorOperation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
 		this.constructor = constructor;
 		this.putValue( javax.swing.Action.NAME, "Edit Constructor" );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		this.getIDE().setFocusedCode( this.constructor );
 	}
 }
 
-class EditMethodOperation extends org.alice.ide.operations.AbstractActionOperation {
+//todo
+class EditMethodOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 
 	public EditMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
@@ -35,7 +38,8 @@ class EditMethodOperation extends org.alice.ide.operations.AbstractActionOperati
 		}
 		this.putValue( javax.swing.Action.NAME, sb.toString() );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		this.getIDE().setFocusedCode( this.method );
 	}
 }

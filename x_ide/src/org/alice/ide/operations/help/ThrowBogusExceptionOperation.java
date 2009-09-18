@@ -25,11 +25,12 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class ThrowBogusExceptionOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class ThrowBogusExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ThrowBogusExceptionOperation() {
 		this.putValue( javax.swing.Action.NAME, "Throw Bogus Exception..." );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
 	}
 }

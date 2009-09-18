@@ -25,9 +25,10 @@ package org.alice.ide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PostIssueOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class PostIssueOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType();
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		final org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
 
 		final javax.swing.JFrame owner = org.alice.ide.IDE.getSingleton();

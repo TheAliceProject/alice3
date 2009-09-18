@@ -40,14 +40,22 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		this.prevCode = getIDE().getFocusedCode();
-		this.redo();
-		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		actionContext.commit();
+		actionContext.commitAndInvokeRedoIfAppropriate();
 	}
-	public void redo() {
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
 		getIDE().setFocusedCode( this.nextCode );
 	}
-	public void undo() {
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
 		getIDE().setFocusedCode( this.prevCode );
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
+	}
+	@Override
+	public final java.util.UUID getUndoManagerKey() {
+		return this.getIDE().getIDEUndoManagerKey();
 	}
 }

@@ -26,8 +26,10 @@ package org.alice.stageide;
  * @author Dennis Cosgrove
  */
 class SplashIcon extends javax.swing.ImageIcon {
-	SplashIcon( java.net.URL url ) {
+	private String text;
+	SplashIcon( java.net.URL url, String text ) {
 		super( url );
+		this.text = text;
 	}
 	@Override
 	public synchronized void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
@@ -35,8 +37,7 @@ class SplashIcon extends javax.swing.ImageIcon {
 		int w = this.getIconWidth();
 		int h = this.getIconHeight();
 		g.setColor( new java.awt.Color( 0x379bd5 ) );
-		String text = edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText()/* + " BETA"*/;
-		g.drawString( text, x + (int)(w*0.45), y + (int)(h*0.75) );
+		g.drawString( this.text, x + (int)(w*0.45), y + (int)(h*0.75) );
 	}
 }
 
@@ -45,8 +46,9 @@ class SplashIcon extends javax.swing.ImageIcon {
  */
 public class EntryPoint {
 	public static void main( final String[] args ) {
-		System.out.println( "version: " + edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText()/* + " BETA" */ );
-		javax.swing.Icon icon = new SplashIcon( EntryPoint.class.getResource( "images/SplashScreen.png" ) );
+		String text = edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText()/* + " BETA"*/;
+		System.out.println( "version: " + text );
+		javax.swing.Icon icon = new SplashIcon( EntryPoint.class.getResource( "images/SplashScreen.png" ), text );
 		java.awt.Window splashScreen = new edu.cmu.cs.dennisc.swing.SplashScreen( null, icon );
 		org.alice.ide.LaunchUtilities.launch( StageIDE.class, splashScreen, args );
 	}

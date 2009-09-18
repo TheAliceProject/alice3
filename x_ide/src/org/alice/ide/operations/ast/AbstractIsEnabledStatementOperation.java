@@ -33,15 +33,23 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		this.prevValue = this.statement.isEnabled.getValue();
-		this.redo();
-		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-		actionContext.commit();
+		actionContext.commitAndInvokeRedoIfAppropriate();
 	}
 	protected abstract boolean getDesiredValue();
-	public final void redo() {
+	@Override
+	public final void redo() throws javax.swing.undo.CannotRedoException {
 		this.statement.isEnabled.setValue( this.getDesiredValue() );
 	}
-	public final void undo() {
+	@Override
+	public final void undo() throws javax.swing.undo.CannotUndoException {
 		this.statement.isEnabled.setValue( this.prevValue );
+	}
+	@Override
+	public boolean isSignificant() {
+		return true;
+	}
+	@Override
+	public java.util.UUID getUndoManagerKey() {
+		return this.getIDE().getCodeEditorUndoManagerKey();
 	}
 }

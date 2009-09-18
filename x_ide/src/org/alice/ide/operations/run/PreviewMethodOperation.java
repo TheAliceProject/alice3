@@ -25,13 +25,14 @@ package org.alice.ide.operations.run;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewMethodOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class PreviewMethodOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
 	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		this.putValue( javax.swing.Action.NAME, "Preview..." );
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
-	public void perform( final zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal() {
 		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate, 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
 		zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( this.procedureInvocationTemplate, null, mouseEvent );
 		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {

@@ -25,15 +25,16 @@ package org.alice.ide.operations.edit;
 /**
  * @author Dennis Cosgrove
  */
-public class RedoOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class RedoOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RedoOperation() {
 		this.putValue( javax.swing.Action.NAME, "Redo" );
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		String title = "Redo coming soon";
 		String message = "Redo is not yet implemented.  Apologies.";
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ); 
-		actionContext.cancel();
 	}
+	
 }

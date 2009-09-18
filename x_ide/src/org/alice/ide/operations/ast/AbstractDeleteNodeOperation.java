@@ -38,17 +38,21 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 	public void perform( zoot.ActionContext actionContext ) {
 		if( this.isClearToDelete( this.node ) ) {
 			this.index = this.owner.indexOf( this.node );
-			this.redo();
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-			actionContext.commit();
+			actionContext.commitAndInvokeRedoIfAppropriate();
 		} else {
 			actionContext.cancel();
 		}
 	}
-	public final void redo() {
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
 		this.owner.remove( this.index );
 	}
-	public final void undo() {
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
 		this.owner.add( this.index, this.node );
+	}
+	@Override
+	public boolean isSignificant() {
+		return true;
 	}
 }

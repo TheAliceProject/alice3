@@ -54,11 +54,26 @@ public abstract class AbstractOpenProjectOperation extends AbstractClearanceActi
 				} else {
 					this.getIDE().createProjectFromBootstrap();
 				}
-				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-				actionContext.commit();
+				actionContext.commitAndInvokeRedoIfAppropriate();
 			} else {
 				actionContext.cancel();
 			}
 		}
+	}
+	@Override
+	public boolean canRedo() {
+		return false;
+	}
+	@Override
+	public boolean canUndo() {
+		return false;
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
+	}
+	@Override
+	public java.util.UUID getUndoManagerKey() {
+		return this.getIDE().getIDEUndoManagerKey();
 	}
 }

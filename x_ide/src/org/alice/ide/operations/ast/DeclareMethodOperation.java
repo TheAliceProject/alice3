@@ -33,14 +33,12 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.Ab
 		this.type = type;
 	}
 	protected abstract CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	public void perform( zoot.ActionContext actionContext ) {
 		CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = this.createCreateMethodPane( this.type );
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.showInJDialog( getIDE() );
-		if( method != null ) {
-			this.type.methods.add( method );
-			actionContext.perform( new FocusCodeOperation( method ), null, zoot.ZManager.CANCEL_IS_FUTILE );
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-			actionContext.commit();
+		this.method = createMethodPane.showInJDialog( getIDE() );
+		if( this.method != null ) {
+			actionContext.commitAndInvokeRedoIfAppropriate();
 		} else {
 			actionContext.cancel();
 		}
@@ -53,5 +51,23 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.Ab
 //		} else {
 //			actionContext.cancel();
 //		}
+	}
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
+		this.type.methods.add( this.method );
+		actionContext.perform( new FocusCodeOperation( this.method ), null, zoot.ZManager.CANCEL_IS_FUTILE );
+	}
+	@Override
+	public boolean canUndo() {
+		return false;
+	}
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		int index = this.type.methods.indexOf( this.method );
+		if( index != -1 ) {
+			this.type.methods.remove( index );
+		} else {
+			throw new javax.swing.undo.CannotUndoException();
+		}
 	}
 }

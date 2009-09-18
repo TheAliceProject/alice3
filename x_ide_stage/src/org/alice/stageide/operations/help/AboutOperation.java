@@ -25,15 +25,14 @@ package org.alice.stageide.operations.help;
 /**
  * @author Dennis Cosgrove
  */
-public class AboutOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class AboutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public AboutOperation() {
 		this.putValue( javax.swing.Action.NAME, "About..." );
 		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_A );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), aboutPane, "About Alice 3", javax.swing.JOptionPane.PLAIN_MESSAGE );
-		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		actionContext.commit();
 	}
 }

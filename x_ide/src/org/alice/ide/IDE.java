@@ -468,6 +468,22 @@ public abstract class IDE extends zoot.ZFrame {
 		this.concealedBin.add( component );
 		this.concealedBin.revalidate();
 	}
+	
+	private java.util.UUID ideUndoManagerKey = java.util.UUID.randomUUID();
+	private java.util.UUID sceneEditorUndoManagerKey = java.util.UUID.randomUUID();
+	private java.util.UUID codeEditorUndoManagerKey = java.util.UUID.randomUUID();
+	public java.util.UUID getIDEUndoManagerKey() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ideUndoManagerKey:", this.ideUndoManagerKey );
+		return this.ideUndoManagerKey;
+	}
+	public java.util.UUID getSceneEditorUndoManagerKey() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: sceneEditorUndoManagerKey:", this.sceneEditorUndoManagerKey );
+		return this.sceneEditorUndoManagerKey;
+	}
+	public java.util.UUID getCodeEditorUndoManagerKey() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: codeEditorUndoManagerKey:", this.codeEditorUndoManagerKey );
+		return this.codeEditorUndoManagerKey;
+	}
 
 	private zoot.ActionOperation clearToProcedeWithChangedProjectOperation = new zoot.AbstractActionOperation() {
 		public void perform( zoot.ActionContext actionContext ) {
@@ -475,17 +491,31 @@ public abstract class IDE extends zoot.ZFrame {
 			if( option == javax.swing.JOptionPane.YES_OPTION ) {
 				zoot.ActionContext saveActionContext = actionContext.perform( IDE.this.saveOperation, null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				if( saveActionContext.isCommitted() ) {
-					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-					actionContext.commit();
+					actionContext.commitAndInvokeRedoIfAppropriate();
 				} else {
 					actionContext.cancel();
 				}
 			} else if( option == javax.swing.JOptionPane.NO_OPTION ) {
-				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-				actionContext.commit();
+				actionContext.commitAndInvokeRedoIfAppropriate();
 			} else {
 				actionContext.cancel();
 			}
+		}
+		@Override
+		public boolean canRedo() {
+			return false;
+		}
+		@Override
+		public boolean canUndo() {
+			return false;
+		}
+		@Override
+		public boolean isSignificant() {
+			return false;
+		}
+		@Override
+		public java.util.UUID getUndoManagerKey() {
+			return IDE.this.getIDEUndoManagerKey();
 		}
 	};
 
@@ -509,8 +539,7 @@ public abstract class IDE extends zoot.ZFrame {
 				
 				if( file != null ) {
 					actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
-					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-					actionContext.commit();
+					actionContext.commitAndInvokeRedoIfAppropriate();
 				} else {
 					if( IDE.this.getFile() == null ) {
 						javax.swing.JOptionPane.showMessageDialog( IDE.this, "Please select a project to open." );
@@ -519,6 +548,22 @@ public abstract class IDE extends zoot.ZFrame {
 					}
 				}
 			}
+		}
+		@Override
+		public boolean canRedo() {
+			return false;
+		}
+		@Override
+		public boolean canUndo() {
+			return false;
+		}
+		@Override
+		public boolean isSignificant() {
+			return false;
+		}
+		@Override
+		public java.util.UUID getUndoManagerKey() {
+			return IDE.this.getIDEUndoManagerKey();
 		}
 	}
 

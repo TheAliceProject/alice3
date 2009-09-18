@@ -25,5 +25,5 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface Operation {
+public interface Operation extends javax.swing.undo.UndoableEdit {
 }
