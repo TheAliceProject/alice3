@@ -49,11 +49,12 @@ class PasswordPane extends swing.PageAxisPane {
 }
 
 class LogInPane extends swing.PageAxisPane {
-	class TestLogInOperation extends zoot.AbstractActionOperation {
+	class TestLogInOperation extends zoot.InconsequentialActionOperation {
 		public TestLogInOperation() {
 			this.putValue( javax.swing.Action.NAME, "Log In" );
 		}
-		public void perform( zoot.ActionContext actionContext ) {
+		@Override
+		protected void performInternal( zoot.ActionContext actionContext ) {
 			try {
 				com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
@@ -127,15 +128,16 @@ class LogInPane extends swing.PageAxisPane {
 
 public class LogInStatusPane extends swing.CardPane {
 	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
-	class LogInOperation extends zoot.AbstractActionOperation {
+	class LogInOperation extends zoot.InconsequentialActionOperation {
 		public LogInOperation() {
 			this.putValue( javax.swing.Action.NAME, "Log In... (Optional)" );
 		}
-		public void perform( zoot.ActionContext actionContext ) {
+		@Override
+		protected void performInternal( zoot.ActionContext actionContext ) {
 			LogInPane pane = new LogInPane();
 			java.awt.Component owner = this.getSourceComponent( actionContext );
 			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-			edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( this.getSourceComponent( actionContext ) ) );
+			edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );
 			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
 			dialog.setVisible( true );
 			edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
@@ -146,11 +148,12 @@ public class LogInStatusPane extends swing.CardPane {
 		}
 	}
 
-	class LogOutOperation extends zoot.AbstractActionOperation {
+	class LogOutOperation extends zoot.InconsequentialActionOperation {
 		public LogOutOperation() {
 			this.putValue( javax.swing.Action.NAME, "Log Out" );
 		}
-		public void perform( zoot.ActionContext actionContext ) {
+		@Override
+		protected void performInternal( zoot.ActionContext actionContext ) {
 			edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			LogInStatusPane.this.show( OFF_KEY );
 		}

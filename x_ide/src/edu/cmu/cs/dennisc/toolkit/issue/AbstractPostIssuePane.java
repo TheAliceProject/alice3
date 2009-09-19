@@ -30,8 +30,13 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		public TypeSelectionOperation() {
 			super( edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
 		}
-		public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.jira.JIRAReport.Type > context ) {
+		@Override
+		protected void handleSelectionChange( edu.cmu.cs.dennisc.jira.JIRAReport.Type value ) {
 			AbstractPostIssuePane.this.refreshRows();
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
 		}
 	}
 

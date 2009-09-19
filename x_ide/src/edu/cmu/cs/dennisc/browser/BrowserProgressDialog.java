@@ -29,19 +29,21 @@ public class BrowserProgressDialog extends edu.cmu.cs.dennisc.progress.ProgressD
 	protected void addComponentsToPageAxisContentPane(java.awt.Container contentPane) {
 		super.addComponentsToPageAxisContentPane(contentPane);
 		
-		class CopyToClipboardOperation extends zoot.AbstractActionOperation {
+		class CopyToClipboardOperation extends zoot.InconsequentialActionOperation {
 			public CopyToClipboardOperation() {
 				this.putValue( javax.swing.Action.NAME, "Copy to Clipboard" );
 			}
-			public void perform(zoot.ActionContext actionContext) {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( BrowserProgressDialog.this.url );
 			}
 		}
-		class DismissOperation extends zoot.AbstractActionOperation {
+		class DismissOperation extends zoot.InconsequentialActionOperation {
 			public DismissOperation() {
 				this.putValue( javax.swing.Action.NAME, "Dismiss" );
 			}
-			public void perform(zoot.ActionContext actionContext) {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				BrowserProgressDialog.this.setVisible( false );
 			}
 		}
