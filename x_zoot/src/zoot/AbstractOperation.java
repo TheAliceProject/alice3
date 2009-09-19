@@ -44,5 +44,4 @@ public abstract class AbstractOperation extends javax.swing.undo.AbstractUndoabl
 	}
 	@Override
 	public abstract boolean isSignificant();
-	public abstract java.util.UUID getUndoManagerKey();
 }

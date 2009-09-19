@@ -139,7 +139,7 @@ public abstract class PathControl extends swing.LineAxisPane {
 		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
 		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
 
-		class SelectFileActionOperation extends zoot.AbstractActionOperation {
+		class SelectFileActionOperation extends zoot.InconsequentialActionOperation {
 			private java.io.File file;
 			public SelectFileActionOperation( java.io.File file ) {
 				this.file = file;
@@ -152,14 +152,13 @@ public abstract class PathControl extends swing.LineAxisPane {
 				}
 				this.putValue( javax.swing.Action.SMALL_ICON, icon );
 			}
-			public void perform( zoot.ActionContext actionContext ) {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				if( this.file.isDirectory() ) {
 					PathControl.this.handleSelectDirectory( this.file );
 				} else {
 					PathControl.this.handleSelectFile( this.file );
 				}
-				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-				actionContext.commit();
 			}
 		}
 

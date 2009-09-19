@@ -38,9 +38,7 @@ class FullBodyOutfitList extends AbstractArrayOfEnumConstantsList<Enum> {
 		return new FullBodyOutfitComboBoxModel( lifeStage, gender );
 	}
 	@Override
-	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<Enum> context ) {
-		PersonViewer.getSingleton().setFullBodyOutfit( (org.alice.apis.stage.FullBodyOutfit)context.getNextSelection() );
-		context.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		context.commit();
+	protected void handlePerformSelectionChange( Enum value ) {
+		PersonViewer.getSingleton().setFullBodyOutfit( (org.alice.apis.stage.FullBodyOutfit)value );
 	}
 }

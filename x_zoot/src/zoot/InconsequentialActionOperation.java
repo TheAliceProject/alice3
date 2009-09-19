@@ -20,12 +20,33 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package zoot.event;
+package zoot;
 
+//todo: rename
 /**
  * @author Dennis Cosgrove
  */
-public interface EditListener {
-	public void editCommitting( EditEvent e );
-	public void editCommitted( EditEvent e );
+public abstract class InconsequentialActionOperation extends AbstractActionOperation {
+	public InconsequentialActionOperation() {
+	}
+	public InconsequentialActionOperation( javax.swing.ButtonModel model ) {
+		super( model );
+	}
+	protected abstract void performInternal(zoot.ActionContext actionContext);
+	public final void perform(zoot.ActionContext actionContext) {
+		performInternal(actionContext);
+		actionContext.commitAndInvokeRedoIfAppropriate();
+	}
+	@Override
+	public final boolean canRedo() {
+		return false;
+	}
+	@Override
+	public final boolean canUndo() {
+		return false;
+	}
+	@Override
+	public final boolean isSignificant() {
+		return false;
+	}
 }

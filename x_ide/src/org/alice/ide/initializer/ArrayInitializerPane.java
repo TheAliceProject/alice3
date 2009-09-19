@@ -85,13 +85,33 @@ class ListPropertyComboBoxModel<E> extends javax.swing.AbstractListModel impleme
  */
 public class ArrayInitializerPane extends AbstractInitializerPane {
 	class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
+		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
+		private int index;
 		public AddItemOperation() {
 			this.putValue( javax.swing.Action.NAME, "Add" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
-			edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
-			ArrayInitializerPane.this.arrayExpressions.add( expression );
+			this.expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
+			this.index = ArrayInitializerPane.this.arrayExpressions.size();
+			actionContext.commitAndInvokeRedoIfAppropriate();
 		}
+		@Override
+		public void redo() throws javax.swing.undo.CannotRedoException {
+			ArrayInitializerPane.this.arrayExpressions.add( this.index, this.expression );
+		}
+		@Override
+		public void undo() throws javax.swing.undo.CannotUndoException {
+			if( ArrayInitializerPane.this.arrayExpressions.get( this.index ) == this.expression ) {
+				ArrayInitializerPane.this.arrayExpressions.remove( this.index );
+			} else {
+				throw new javax.swing.undo.CannotUndoException();
+			}
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
+		}
+		
 	}
 
 	class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
@@ -107,8 +127,26 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 
 	abstract class AbstractMoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
-		protected void swapWithNext( int index ) {
-			ArrayInitializerPane.this.swapWithNext( index );
+		private int aIndex;
+		private int bIndex;
+		private int selectedIndex;
+		@Override
+		public final void redo() throws javax.swing.undo.CannotRedoException {
+			ArrayInitializerPane.this.swap( this.aIndex, this.bIndex );
+		}
+		@Override
+		public final void undo() throws javax.swing.undo.CannotUndoException {
+			ArrayInitializerPane.this.swap( this.bIndex, this.aIndex );
+		}
+		protected abstract int getBIndex(int aIndex);
+		public final void perform(zoot.ActionContext actionContext) {
+			this.aIndex = ArrayInitializerPane.this.list.getSelectedIndex();
+			this.bIndex = this.getBIndex( this.aIndex );
+			actionContext.commitAndInvokeRedoIfAppropriate();
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
 		}
 	}
 
@@ -116,10 +154,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		public MoveItemUpOperation() {
 			this.putValue( javax.swing.Action.NAME, "Move Up" );
 		}
-		public void perform( zoot.ActionContext actionContext ) {
-			int index = ArrayInitializerPane.this.list.getSelectedIndex();
-			this.swapWithNext( index - 1 );
-			list.setSelectedIndex( index-1 );
+		@Override
+		public int getBIndex(int aIndex) {
+			return aIndex-1;
 		}
 	}
 
@@ -127,10 +164,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		public MoveItemDownOperation() {
 			this.putValue( javax.swing.Action.NAME, "Move Down" );
 		}
-		public void perform( zoot.ActionContext actionContext ) {
-			int index = ArrayInitializerPane.this.list.getSelectedIndex();
-			this.swapWithNext( index );
-			list.setSelectedIndex( index+1 );
+		@Override
+		public int getBIndex(int aIndex) {
+			return aIndex+1;
 		}
 	}
 
@@ -138,8 +174,13 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
 			super( comboBoxModel );
 		}
-		public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
-			ArrayInitializerPane.this.handleSelectionChange( context );
+		@Override
+		protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.Expression value) {
+			ArrayInitializerPane.this.handleSelectionChange( value );
+		}
+		@Override
+		public boolean isSignificant() {
+			return false;
 		}
 	}
 
@@ -312,11 +353,11 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.moveUpButton.setEnabled( isTypeValid && index > 0 );
 		this.moveDownButton.setEnabled( isTypeValid && index >= 0 && index < N - 1 );
 	}
-	private void handleSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.Expression > context ) {
+	private void handleSelectionChange( edu.cmu.cs.dennisc.alice.ast.Expression value ) {
 		this.updateButtons();
 	}
-	private void swapWithNext( int index ) {
-		if( index >= 0 ) {
+	private void swap( int aIndex, int bIndex ) {
+		if( aIndex >= 0 && bIndex >= 0 ) {
 			edu.cmu.cs.dennisc.alice.ast.Expression expression0 = this.arrayExpressions.get( index );
 			edu.cmu.cs.dennisc.alice.ast.Expression expression1 = this.arrayExpressions.get( index + 1 );
 			this.arrayExpressions.set( index, expression1, expression0 );

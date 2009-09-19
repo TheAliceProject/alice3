@@ -54,8 +54,4 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 	public boolean isSignificant() {
 		return false;
 	}
-	@Override
-	public final java.util.UUID getUndoManagerKey() {
-		return this.getIDE().getIDEUndoManagerKey();
-	}
 }

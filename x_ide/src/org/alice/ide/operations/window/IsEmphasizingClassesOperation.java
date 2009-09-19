@@ -31,9 +31,12 @@ public class IsEmphasizingClassesOperation extends org.alice.ide.operations.Abst
 		this.putValue( javax.swing.Action.NAME, "Is Emphasizing Classes" );
 		//this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
 	}
-	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-		this.getIDE().setEmphasizingClasses( booleanStateContext.getNextValue() );
-		booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		booleanStateContext.commit();
+	@Override
+	protected void handleStateChange(boolean value) {
+		this.getIDE().setEmphasizingClasses( value );
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
 	}
 }

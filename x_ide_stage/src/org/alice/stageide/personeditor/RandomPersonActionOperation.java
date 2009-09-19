@@ -22,16 +22,38 @@
  */
 package org.alice.stageide.personeditor;
 
+import org.alice.apis.stage.BaseEyeColor;
+import org.alice.apis.stage.BaseSkinTone;
+import org.alice.apis.stage.FullBodyOutfit;
+import org.alice.apis.stage.Gender;
+import org.alice.apis.stage.Hair;
+import org.alice.apis.stage.LifeStage;
+
 /**
  * @author Dennis Cosgrove
  */
 class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> prevState;
+	private edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> nextState;
+	
 	public RandomPersonActionOperation() {
 		this.putValue( javax.swing.Action.NAME, "Generate Random Selection" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		PersonViewer.getSingleton().randomize();
-		actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		actionContext.commit();
+		this.prevState = PersonViewer.getSingleton().getState();
+		this.nextState = PersonViewer.generateRandomState();
+		actionContext.commitAndInvokeRedoIfAppropriate();
+	}
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
+		PersonViewer.getSingleton().setState( this.nextState );
+	}
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		PersonViewer.getSingleton().setState( this.prevState );
+	}
+	@Override
+	public boolean isSignificant() {
+		return true;
 	}
 }

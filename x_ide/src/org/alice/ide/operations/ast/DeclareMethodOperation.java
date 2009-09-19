@@ -42,24 +42,11 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.Ab
 		} else {
 			actionContext.cancel();
 		}
-
-//		org.alice.ide.inputpanes.CreateTypedDeclarationPane createTypedDeclarationPane = new org.alice.ide.inputpanes.CreateTypedDeclarationPane( this.type );
-//		String name = createTypedDeclarationPane.showInJDialog( getIDE() );
-//		if( name != null && name.length() > 0 ) {
-//			//this.prevValue = this.localDeclaredInAlice.name.getValue();
-//			actionContext.commit();
-//		} else {
-//			actionContext.cancel();
-//		}
 	}
 	@Override
 	public void redo() throws javax.swing.undo.CannotRedoException {
 		this.type.methods.add( this.method );
 		actionContext.perform( new FocusCodeOperation( this.method ), null, zoot.ZManager.CANCEL_IS_FUTILE );
-	}
-	@Override
-	public boolean canUndo() {
-		return false;
 	}
 	@Override
 	public void undo() throws javax.swing.undo.CannotUndoException {

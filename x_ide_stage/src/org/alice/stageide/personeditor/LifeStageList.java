@@ -30,9 +30,7 @@ class LifeStageList extends AbstractList< org.alice.apis.stage.LifeStage > {
 		super( new EnumConstantsComboBoxModel( org.alice.apis.stage.LifeStage.class ) );
 	}
 	@Override
-	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<org.alice.apis.stage.LifeStage> context ) {
-		PersonViewer.getSingleton().setLifeStage( context.getNextSelection() );
-		context.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		context.commit();
+	protected void handlePerformSelectionChange( org.alice.apis.stage.LifeStage value ) {
+		PersonViewer.getSingleton().setLifeStage( value );
 	}
 }

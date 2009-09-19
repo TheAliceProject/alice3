@@ -30,9 +30,7 @@ class GenderList extends AbstractList< org.alice.apis.stage.Gender > {
 		super( new EnumConstantsComboBoxModel( org.alice.apis.stage.Gender.class ) );
 	}
 	@Override
-	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<org.alice.apis.stage.Gender> context ) {
-		PersonViewer.getSingleton().setGender( context.getNextSelection() );
-		context.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		context.commit();
+	protected void handlePerformSelectionChange( org.alice.apis.stage.Gender value ) {
+		PersonViewer.getSingleton().setGender( value );
 	}
 }

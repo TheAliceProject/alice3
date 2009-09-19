@@ -54,8 +54,13 @@ public abstract class TypeComboBox extends zoot.ZComboBox {
 		model.setSelectedItem( type );
 		
 		this.setItemSelectionOperation( new org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractType >( model ) {
-			public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.AbstractType > context ) {
+			@Override
+			protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractType value) {
 				TypeComboBox.this.handleTypeChange();
+			}
+			@Override
+			public boolean isSignificant() {
+				return true;
 			}
 		} );
 		//this.setModel( model );

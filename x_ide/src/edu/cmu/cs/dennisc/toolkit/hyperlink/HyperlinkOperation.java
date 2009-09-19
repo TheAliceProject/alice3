@@ -1,6 +1,6 @@
 package edu.cmu.cs.dennisc.toolkit.hyperlink;
 
-public class HyperlinkOperation extends zoot.AbstractActionOperation {
+public class HyperlinkOperation extends zoot.InconsequentialActionOperation {
 	private String url;
 
 	public HyperlinkOperation( String url ) {
@@ -12,7 +12,8 @@ public class HyperlinkOperation extends zoot.AbstractActionOperation {
 		this.putValue( javax.swing.Action.SHORT_DESCRIPTION, url );
 		this.putValue( javax.swing.Action.LONG_DESCRIPTION, url );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		try {
 			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
 		} catch( Exception e ) {

@@ -33,10 +33,13 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 			super( initialValue );
 			//this.putValue( javax.swing.Action.NAME, "is constant" );
 		}
-		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-			CreateDeclarationPane.this.handleIsReassignableChange( booleanStateContext );
-			booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-			booleanStateContext.commit();
+		@Override
+		protected void handleStateChange(boolean value) {
+			CreateDeclarationPane.this.handleIsReassignableChange( value );
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
 		}
 	}
 	class DeclarationNameTextField extends zoot.ZSuggestiveTextField {
@@ -273,7 +276,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 		this.declarationNameTextField.requestFocus();
 	}
 
-	protected void handleIsReassignableChange( zoot.BooleanStateContext booleanStateContext ) {
+	protected void handleIsReassignableChange( boolean value ) {
 		this.updateOKButton();
 	}
 	protected void handleDeclarationNameUpdate( javax.swing.event.DocumentEvent e ) {

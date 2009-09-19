@@ -30,8 +30,13 @@ abstract class AbstractList<E> extends zoot.ZList< E > {
 		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
 			super( comboBoxModel );
 		}
-		public void performSelectionChange( zoot.ItemSelectionContext<E> context ) {
-			AbstractList.this.handlePerformSelectionChange( context );
+		@Override
+		protected void handleSelectionChange(E value) {
+			AbstractList.this.handlePerformSelectionChange( value );
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
 		}
 	}
 
@@ -51,5 +56,5 @@ abstract class AbstractList<E> extends zoot.ZList< E > {
 	public E getSelectedTypedValue() {
 		return (E)this.getSelectedValue();
 	}
-	protected abstract void handlePerformSelectionChange( zoot.ItemSelectionContext<E> context );
+	protected abstract void handlePerformSelectionChange( E value );
 }

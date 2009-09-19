@@ -30,8 +30,11 @@ public class IsDefaultFieldNameGenerationDesiredOperation extends org.alice.ide.
 		super( initialValue );
 		this.putValue( javax.swing.Action.NAME, "Is Default Field Name Generation Desired" );
 	}
-	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-		booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		booleanStateContext.commit();
+	@Override
+	protected void handleStateChange(boolean value) {
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
 	}
 }

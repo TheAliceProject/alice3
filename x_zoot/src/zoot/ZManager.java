@@ -47,17 +47,17 @@ abstract class AbstractContext< E extends Operation > implements Context< E > {
 	public boolean isPending() {
 		return (this.isCommitted() || this.isCancelled()) == false;
 	}
-	public void commit() {
+	public void commitAndInvokeRedoIfAppropriate() {
 		assert this.isPending();
+		if( this.operation.canRedo() ) {
+			try {
+				this.operation.redo();
+			} catch( javax.swing.undo.CannotRedoException cre ) {
+				throw new RuntimeException( cre );
+			}
+		}
 		this.isCommitted = true;
-	}
-	public void commit( javax.swing.undo.UndoableEdit undoableEdit ) {
-		zoot.event.EditEvent e = new zoot.event.EditEvent( this.getOperation(), this, undoableEdit );
-		ZManager.fireEditCommitting( e );
-		undoableEdit.redo();
-		ZManager.fireEditCommitted( e );
-	}
-	
+	}	
 	public void cancel() {
 		assert this.isPending();
 		this.isCancelled = true;
@@ -181,7 +181,6 @@ public class ZManager {
 	
 	
 	private static java.util.List< zoot.event.OperationListener > operationListeners = new java.util.LinkedList< zoot.event.OperationListener >();
-	private static java.util.List< zoot.event.EditListener > editListeners = new java.util.LinkedList< zoot.event.EditListener >();
 
 	public static void addOperationListener( zoot.event.OperationListener l ) {
 		synchronized( ZManager.operationListeners ) {
@@ -209,31 +208,32 @@ public class ZManager {
 		}
 	}
 
-	public static void addEditListener( zoot.event.EditListener l ) {
-		synchronized( ZManager.editListeners ) {
-			ZManager.editListeners.add( l );
-		}
-	}
-	public static void removeEditListener( zoot.event.EditListener l ) {
-		synchronized( ZManager.editListeners ) {
-			ZManager.editListeners.remove( l );
-		}
-	}
-
-	protected static void fireEditCommitting( zoot.event.EditEvent e ) {
-		synchronized( ZManager.editListeners ) {
-			for( zoot.event.EditListener l : ZManager.editListeners ) {
-				l.editCommitting( e );
-			}
-		}
-	}
-	protected static void fireEditCommitted( zoot.event.EditEvent e ) {
-		synchronized( ZManager.editListeners ) {
-			for( zoot.event.EditListener l : ZManager.editListeners ) {
-				l.editCommitted( e );
-			}
-		}
-	}
+//	private static java.util.List< zoot.event.EditListener > editListeners = new java.util.LinkedList< zoot.event.EditListener >();
+//	public static void addEditListener( zoot.event.EditListener l ) {
+//		synchronized( ZManager.editListeners ) {
+//			ZManager.editListeners.add( l );
+//		}
+//	}
+//	public static void removeEditListener( zoot.event.EditListener l ) {
+//		synchronized( ZManager.editListeners ) {
+//			ZManager.editListeners.remove( l );
+//		}
+//	}
+//
+//	protected static void fireEditCommitting( zoot.event.EditEvent e ) {
+//		synchronized( ZManager.editListeners ) {
+//			for( zoot.event.EditListener l : ZManager.editListeners ) {
+//				l.editCommitting( e );
+//			}
+//		}
+//	}
+//	protected static void fireEditCommitted( zoot.event.EditEvent e ) {
+//		synchronized( ZManager.editListeners ) {
+//			for( zoot.event.EditListener l : ZManager.editListeners ) {
+//				l.editCommitted( e );
+//			}
+//		}
+//	}
 
 
 	//	private static void addToHistory( Operation operation ) {

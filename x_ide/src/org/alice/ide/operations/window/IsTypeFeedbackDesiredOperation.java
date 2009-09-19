@@ -30,9 +30,12 @@ public class IsTypeFeedbackDesiredOperation extends org.alice.ide.operations.Abs
 		super( initialValue );
 		this.putValue( javax.swing.Action.NAME, "Is Type Feedback Desired" );
 	}
-	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-		this.getIDE().setExpressionTypeFeedbackDesired( booleanStateContext.getNextValue() );
-		booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		booleanStateContext.commit();
+	@Override
+	protected void handleStateChange(boolean value) {
+		this.getIDE().setExpressionTypeFeedbackDesired( value );
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
 	}
 }

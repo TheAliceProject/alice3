@@ -191,10 +191,13 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 			super( false );
 			this.putValue( javax.swing.Action.NAME, "constrain to text" );
 		}
-		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-			CreateTextPane.this.instanceNameVC.setEditable( booleanStateContext.getNextValue() == false );
-			booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-			booleanStateContext.commit();
+		@Override
+		protected void handleStateChange(boolean value) {
+			CreateTextPane.this.instanceNameVC.setEditable( value == false );
+		}
+		@Override
+		public boolean isSignificant() {
+			return false;
 		}
 	}
 	private static java.awt.Component createLabel( String text ) {

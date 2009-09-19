@@ -32,11 +32,6 @@ public class SelectFieldActionOperation extends AbstractFieldActionOperation {
 	public void perform( zoot.ActionContext actionContext ) {
 		getIDE().setFieldSelection( this.getField() );
 	}
-	
-	@Override
-	public java.util.UUID getUndoManagerKey() {
-		return this.getIDE().getIDEUndoManagerKey();
-	}
 	@Override
 	public boolean isSignificant() {
 		return false;

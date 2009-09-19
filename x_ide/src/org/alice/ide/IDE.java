@@ -469,21 +469,26 @@ public abstract class IDE extends zoot.ZFrame {
 		this.concealedBin.revalidate();
 	}
 	
-	private java.util.UUID ideUndoManagerKey = java.util.UUID.randomUUID();
-	private java.util.UUID sceneEditorUndoManagerKey = java.util.UUID.randomUUID();
-	private java.util.UUID codeEditorUndoManagerKey = java.util.UUID.randomUUID();
-	public java.util.UUID getIDEUndoManagerKey() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ideUndoManagerKey:", this.ideUndoManagerKey );
-		return this.ideUndoManagerKey;
-	}
-	public java.util.UUID getSceneEditorUndoManagerKey() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: sceneEditorUndoManagerKey:", this.sceneEditorUndoManagerKey );
-		return this.sceneEditorUndoManagerKey;
-	}
-	public java.util.UUID getCodeEditorUndoManagerKey() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: codeEditorUndoManagerKey:", this.codeEditorUndoManagerKey );
-		return this.codeEditorUndoManagerKey;
-	}
+//	private java.util.UUID ideUndoManagerKey = java.util.UUID.randomUUID();
+//	private java.util.UUID sceneEditorUndoManagerKey = java.util.UUID.randomUUID();
+//	private java.util.UUID codeEditorUndoManagerKey = java.util.UUID.randomUUID();
+//	private java.util.UUID uncertainUndoManagerKey = java.util.UUID.randomUUID();
+//	public java.util.UUID getIDEUndoManagerKey() {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ideUndoManagerKey:", this.ideUndoManagerKey );
+//		return this.ideUndoManagerKey;
+//	}
+//	public java.util.UUID getSceneEditorUndoManagerKey() {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: sceneEditorUndoManagerKey:", this.sceneEditorUndoManagerKey );
+//		return this.sceneEditorUndoManagerKey;
+//	}
+//	public java.util.UUID getCodeEditorUndoManagerKey() {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: codeEditorUndoManagerKey:", this.codeEditorUndoManagerKey );
+//		return this.codeEditorUndoManagerKey;
+//	}
+//	public java.util.UUID getUncertainUndoManagerKey() {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: uncertainUndoManagerKey:", this.uncertainUndoManagerKey );
+//		return this.uncertainUndoManagerKey;
+//	}
 
 	private zoot.ActionOperation clearToProcedeWithChangedProjectOperation = new zoot.AbstractActionOperation() {
 		public void perform( zoot.ActionContext actionContext ) {
@@ -512,10 +517,6 @@ public abstract class IDE extends zoot.ZFrame {
 		@Override
 		public boolean isSignificant() {
 			return false;
-		}
-		@Override
-		public java.util.UUID getUndoManagerKey() {
-			return IDE.this.getIDEUndoManagerKey();
 		}
 	};
 
@@ -560,10 +561,6 @@ public abstract class IDE extends zoot.ZFrame {
 		@Override
 		public boolean isSignificant() {
 			return false;
-		}
-		@Override
-		public java.util.UUID getUndoManagerKey() {
-			return IDE.this.getIDEUndoManagerKey();
 		}
 	}
 
@@ -650,9 +647,13 @@ public abstract class IDE extends zoot.ZFrame {
 					return "null";
 				}
 			}
-			public void performSelectionChange( zoot.ItemSelectionContext< java.util.Locale > context ) {
-				IDE.this.setLocale( context.getNextSelection() );
-				context.commit();
+			@Override
+			protected void handleSelectionChange(java.util.Locale value) {
+				IDE.this.setLocale( value );
+			}
+			@Override
+			public boolean isSignificant() {
+				return false;
 			}
 		}
 

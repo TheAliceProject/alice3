@@ -30,6 +30,8 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	private javax.swing.Action[] actions;
 	private javax.swing.ButtonModel[] buttonModels;
 	private javax.swing.ComboBoxModel comboBoxModel;
+	private E prevValue;
+	private E nextValue;
 	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
 		this.comboBoxModel = comboBoxModel;
 		int N = this.comboBoxModel.getSize();
@@ -91,4 +93,34 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 			}
 		}
 	}
+
+	protected abstract void handleSelectionChange( E value );
+	
+	public final void performSelectionChange(zoot.ItemSelectionContext<E> context) {
+		this.prevValue = context.getPreviousSelection();
+		this.nextValue = context.getNextSelection();
+		context.commitAndInvokeRedoIfAppropriate();
+	}
+	
+	@Override
+	public final boolean canRedo() {
+		return true;
+	}
+	@Override
+	public final boolean canUndo() {
+		return true;
+	}
+	@Override
+	public final void redo() throws javax.swing.undo.CannotRedoException {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
+		this.comboBoxModel.setSelectedItem( this.nextValue );
+		this.handleSelectionChange( this.nextValue );
+	}
+	@Override
+	public final void undo() throws javax.swing.undo.CannotUndoException {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
+		this.comboBoxModel.setSelectedItem( this.prevValue );
+		this.handleSelectionChange( this.prevValue );
+	}
+	
 }

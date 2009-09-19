@@ -29,6 +29,7 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
  * @author Dennis Cosgrove
  */
 public abstract class ShiftParameterOperation extends AbstractCodeParameterOperation {
+	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	public ShiftParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
 		super( parametersProperty, parameter );
 	}
@@ -38,22 +39,40 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		return this.isAppropriate( this.getIndex(), this.getParameterCount() );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		this.method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 		if( method != null ) {
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
-			int aIndex = this.getIndexA();
-			int bIndex = aIndex + 1;
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "shift", aIndex, bIndex );
-			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice aParam = method.parameters.get( aIndex );
-			edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice bParam = method.parameters.get( bIndex );
-			method.parameters.set( aIndex, bParam, aParam );
-			for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
-				edu.cmu.cs.dennisc.alice.ast.Argument aArg = methodInvocation.arguments.get( aIndex );
-				edu.cmu.cs.dennisc.alice.ast.Argument bArg = methodInvocation.arguments.get( bIndex );
-				assert aArg.parameter.getValue() == aParam; 
-				assert bArg.parameter.getValue() == bParam ;
-				methodInvocation.arguments.set( aIndex, bArg, aArg );
-			}
+			actionContext.commitAndInvokeRedoIfAppropriate();
+		} else {
+			throw new RuntimeException();
 		}
+	}
+	private void swap( int aIndex, int bIndex ) {
+		java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
+		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice aParam = method.parameters.get( aIndex );
+		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice bParam = method.parameters.get( bIndex );
+		method.parameters.set( aIndex, bParam, aParam );
+		for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument aArg = methodInvocation.arguments.get( aIndex );
+			edu.cmu.cs.dennisc.alice.ast.Argument bArg = methodInvocation.arguments.get( bIndex );
+			assert aArg.parameter.getValue() == aParam; 
+			assert bArg.parameter.getValue() == bParam;
+			methodInvocation.arguments.set( aIndex, bArg, aArg );
+		}
+	}
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
+		int aIndex = this.getIndexA();
+		int bIndex = aIndex + 1;
+		swap( aIndex, bIndex );
+	}
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		int aIndex = this.getIndexA();
+		int bIndex = aIndex + 1;
+		swap( bIndex, aIndex );
+	}
+	@Override
+	public boolean isSignificant() {
+		return true;
 	}
 }

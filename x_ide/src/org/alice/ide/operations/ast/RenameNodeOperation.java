@@ -55,4 +55,8 @@ public abstract class RenameNodeOperation extends org.alice.ide.operations.Abstr
 	public void undo() throws javax.swing.undo.CannotUndoException {
 		this.nameProperty.setValue( this.prevValue );
 	}
+	@Override
+	public boolean isSignificant() {
+		return true;
+	}
 }

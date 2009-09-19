@@ -32,7 +32,7 @@ public class PreviewMethodOperation extends org.alice.ide.operations.Inconsequen
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
 	@Override
-	protected void performInternal() {
+	protected void performInternal( zoot.ActionContext actionContext ) {
 		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate, 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
 		zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( this.procedureInvocationTemplate, null, mouseEvent );
 		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {

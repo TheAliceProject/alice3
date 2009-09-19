@@ -38,9 +38,7 @@ class HairList extends AbstractArrayOfEnumConstantsList<Enum> {
 		return new HairComboBoxModel( lifeStage, gender, hairColor );
 	}
 	@Override
-	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<Enum> context ) {
-		PersonViewer.getSingleton().setHair( (org.alice.apis.stage.Hair)context.getNextSelection() );
-		context.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		context.commit();
+	protected void handlePerformSelectionChange( Enum value ) {
+		PersonViewer.getSingleton().setHair( (org.alice.apis.stage.Hair)value );
 	}
 }

@@ -30,8 +30,7 @@ class HairColorList extends AbstractList< String > {
 		super( new ArrayComboBoxModel( "BLACK", "BROWN", "RED", "BLOND", "GREY" ) );
 	}
 	@Override
-	protected void handlePerformSelectionChange( zoot.ItemSelectionContext<String> context ) {
-		PersonViewer.getSingleton().setHairColor( context.getNextSelection() );
-		context.cancel();
+	protected void handlePerformSelectionChange( String value ) {
+		PersonViewer.getSingleton().setHairColor( value );
 	}
 }

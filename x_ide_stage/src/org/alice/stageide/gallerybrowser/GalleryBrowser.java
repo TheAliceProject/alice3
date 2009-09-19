@@ -121,6 +121,10 @@ class CreateTextActionOperation extends org.alice.ide.operations.AbstractActionO
 }
 
 abstract class CreateInstanceFromFileActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
+	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+	private Object instanceInJava;
+	
 	protected abstract java.io.File getInitialDirectory();
 
 	private void showMessageDialog(java.io.File file, boolean isValidZip) {
@@ -140,6 +144,7 @@ abstract class CreateInstanceFromFileActionOperation extends org.alice.ide.opera
 	public void perform(zoot.ActionContext actionContext) {
 		java.io.File directory = this.getInitialDirectory();
 		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog(this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION, false);
+		
 		if (file != null) {
 			String lcFilename = file.getName().toLowerCase();
 			if (lcFilename.endsWith(".a2c")) {
@@ -174,13 +179,12 @@ abstract class CreateInstanceFromFileActionOperation extends org.alice.ide.opera
 						}
 					}
 					if (type != null) {
-						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = getIDE().getSceneType();
-						org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane(declaringType, type);
-						edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog(getIDE(), "Create New Instance", true);
-						if (field != null) {
-							getIDE().getSceneEditor().handleFieldCreation(declaringType, field, createFieldPane.createInstanceInJava());
-							actionContext.put(org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true);
-							actionContext.commit();
+						this.declaringType = getIDE().getSceneType();
+						org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( this.declaringType, type );
+						this.field = createFieldPane.showInJDialog(getIDE(), "Create New Instance", true);
+						if (this.field != null) {
+							this.instanceInJava = createFieldPane.createInstanceInJava();
+							actionContext.commitAndInvokeRedoIfAppropriate();
 						} else {
 							actionContext.cancel();
 						}
@@ -194,6 +198,22 @@ abstract class CreateInstanceFromFileActionOperation extends org.alice.ide.opera
 		} else {
 			actionContext.cancel();
 		}
+	}
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
+		this.getIDE().getSceneEditor().handleFieldCreation( this.declaringType, this.field, this.instanceInJava );
+	}
+	//todo
+	@Override
+	public boolean canUndo() {
+		return false;
+	}
+//	@Override
+//	public void undo() throws javax.swing.undo.CannotUndoException {
+//	}
+	@Override
+	public boolean isSignificant() {
+		return true;
 	}
 }
 

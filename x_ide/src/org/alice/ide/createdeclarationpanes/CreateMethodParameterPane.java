@@ -32,10 +32,13 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			super( false );
 			this.putValue( javax.swing.Action.NAME, "I understand that I need to update the invocations to this " + codeText + "." );
 		}
-		public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
+		@Override
+		protected void handleStateChange(boolean value) {
 			CreateMethodParameterPane.this.updateOKButton();
-			booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-			booleanStateContext.commit();
+		}
+		@Override
+		public boolean isSignificant() {
+			return false;
 		}
 	}
 

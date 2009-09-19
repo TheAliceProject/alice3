@@ -28,6 +28,8 @@ package org.alice.ide.createdeclarationpanes;
 import edu.cmu.cs.dennisc.alice.ast.AbstractType;
 import edu.cmu.cs.dennisc.alice.ast.DeclarationProperty;
 
+
+//todo: BooleanPropertyOperation
 class IsArrayStateOperation extends zoot.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
@@ -35,8 +37,13 @@ class IsArrayStateOperation extends zoot.AbstractBooleanStateOperation {
 		this.isArrayProperty = isArrayProperty;
 		this.putValue( javax.swing.Action.NAME, "is array" );
 	}
-	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-		this.isArrayProperty.setValue( booleanStateContext.getNextValue() );
+	@Override
+	protected void handleStateChange(boolean value) {
+		this.isArrayProperty.setValue( value );
+	}
+	@Override
+	public boolean isSignificant() {
+		return true;
 	}
 }
 

@@ -73,8 +73,4 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 	public boolean isSignificant() {
 		return false;
 	}
-	@Override
-	public java.util.UUID getUndoManagerKey() {
-		return this.getIDE().getIDEUndoManagerKey();
-	}
 }

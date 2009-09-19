@@ -23,24 +23,38 @@
 package org.alice.ide.codeeditor;
 
 class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
+	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+	private int index;
 
 	public DeleteStatementActionOperation( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		this.putValue( javax.swing.Action.NAME, "Delete" );
-		this.statement = abstractStatementPane.getStatement();
 		this.property = abstractStatementPane.getOwner();
+		this.statement = abstractStatementPane.getStatement();
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		int i = this.property.indexOf( this.statement );
-		if( i >= 0 ) {
-			this.property.remove( i );
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-			actionContext.commit();
-			getIDE().refreshUbiquitousPane();
+		this.index = this.property.indexOf( this.statement );
+		if( this.index >= 0 ) {
+			actionContext.commitAndInvokeRedoIfAppropriate();
 		} else {
 			throw new RuntimeException();
 		}
+	}
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
+		this.property.remove( this.index );
+		//todo: remove
+		this.getIDE().refreshUbiquitousPane();
+	}
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		this.property.add( this.index, this.statement );
+		//todo: remove
+		this.getIDE().refreshUbiquitousPane();
+	}
+	@Override
+	public boolean isSignificant() {
+		return true;
 	}
 }
 
@@ -62,9 +76,13 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	//		}
 	//		this.putValue( javax.swing.Action.NAME, text );
 	//	}
-	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-		this.statement.isEnabled.setValue( booleanStateContext.getNextValue() );
-		//		this.update();
+	@Override
+	protected void handleStateChange(boolean value) {
+		this.statement.isEnabled.setValue( value );
+	}
+	@Override
+	public boolean isSignificant() {
+		return true;
 	}
 }
 

@@ -26,35 +26,15 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class FieldItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.AbstractField > {
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField nextField;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractField prevField;
 	public FieldItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
 		super( comboBoxModel );
 	}
-	public void performSelectionChange( zoot.ItemSelectionContext< edu.cmu.cs.dennisc.alice.ast.AbstractField > singleSelectionContext ) {
-//		if( singleSelectionContext.isPreviousSelectionValid() ) {
-			this.prevField = singleSelectionContext.getPreviousSelection();
-//		} else {
-//			//todo?
-//		}
-		this.nextField = singleSelectionContext.getNextSelection();
-		singleSelectionContext.commitAndInvokeRedoIfAppropriate();
-	}
-	
 	@Override
-	public void redo() {
-		getIDE().setFieldSelection( this.nextField );
-	}
-	@Override
-	public void undo() {
-		getIDE().setFieldSelection( this.prevField );
+	protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractField value) {
+		getIDE().setFieldSelection( value);
 	}
 	@Override
 	public boolean isSignificant() {
 		return false;
-	}
-	@Override
-	public java.util.UUID getUndoManagerKey() {
-		return this.getIDE().getIDEUndoManagerKey();
 	}
 }

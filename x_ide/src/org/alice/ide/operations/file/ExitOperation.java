@@ -47,4 +47,16 @@ public class ExitOperation extends AbstractClearanceActionOperation {
 			System.exit( 0 );
 		}
 	}
+	@Override
+	public boolean canRedo() {
+		return false;
+	}
+	@Override
+	public boolean canUndo() {
+		return false;
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
+	}
 }

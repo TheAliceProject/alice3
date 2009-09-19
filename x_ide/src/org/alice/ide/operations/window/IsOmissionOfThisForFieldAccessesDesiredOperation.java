@@ -30,9 +30,12 @@ public class IsOmissionOfThisForFieldAccessesDesiredOperation extends org.alice.
 		super( initialValue );
 		this.putValue( javax.swing.Action.NAME, "Is Omission Of This For Field Accesses Desired" );
 	}
-	public void performStateChange( zoot.BooleanStateContext booleanStateContext ) {
-		this.getIDE().setOmittingThisFieldAccesses( booleanStateContext.getNextValue() );
-		booleanStateContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-		booleanStateContext.commit();
+	@Override
+	protected void handleStateChange(boolean value) {
+		this.getIDE().setOmittingThisFieldAccesses( value );
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
 	}
 }

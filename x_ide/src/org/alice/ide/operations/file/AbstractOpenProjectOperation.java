@@ -72,8 +72,4 @@ public abstract class AbstractOpenProjectOperation extends AbstractClearanceActi
 	public boolean isSignificant() {
 		return false;
 	}
-	@Override
-	public java.util.UUID getUndoManagerKey() {
-		return this.getIDE().getIDEUndoManagerKey();
-	}
 }

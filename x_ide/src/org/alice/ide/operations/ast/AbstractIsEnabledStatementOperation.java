@@ -48,8 +48,4 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	public boolean isSignificant() {
 		return true;
 	}
-	@Override
-	public java.util.UUID getUndoManagerKey() {
-		return this.getIDE().getCodeEditorUndoManagerKey();
-	}
 }

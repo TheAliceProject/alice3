@@ -49,8 +49,4 @@ public abstract class InconsequentialActionOperation extends org.alice.ide.opera
 	public final boolean isSignificant() {
 		return false;
 	}
-	@Override
-	public final java.util.UUID getUndoManagerKey() {
-		return this.getIDE().getIDEUndoManagerKey();
-	}
 }

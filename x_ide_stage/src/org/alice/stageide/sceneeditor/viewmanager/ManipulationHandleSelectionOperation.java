@@ -59,9 +59,12 @@ public class ManipulationHandleSelectionOperation extends zoot.AbstractItemSelec
 		this.dragAdapter = dragAdapter;
 	}
 	
-	public void performSelectionChange( zoot.ItemSelectionContext< HandleSet > context ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "performSelectionChange:", context.getNextSelection() );
-		this.dragAdapter.setHandleSet( context.getNextSelection() );
-		context.commit();
+	@Override
+	protected void handleSelectionChange(org.alice.interact.handle.HandleSet value) {
+		this.dragAdapter.setHandleSet( value );
+	}
+	@Override
+	public boolean isSignificant() {
+		return false;
 	}
 }
