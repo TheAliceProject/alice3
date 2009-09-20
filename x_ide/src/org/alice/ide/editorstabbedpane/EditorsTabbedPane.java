@@ -132,8 +132,9 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
  */
 public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide.event.IDEListener {
 	public EditorsTabbedPane() {
-		this.setTabCloseOperation( new org.alice.ide.operations.AbstractActionOperation() {
-			public void perform( zoot.ActionContext actionContext ) {
+		this.setTabCloseOperation( new org.alice.ide.operations.InconsequentialActionOperation() {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				EditorsTabbedPane.this.remove( EditorsTabbedPane.this.getSelectedIndex() );
 				EditorsTabbedPane.this.updateFocusedCode();
 			}

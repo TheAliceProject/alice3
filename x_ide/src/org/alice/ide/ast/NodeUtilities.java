@@ -299,4 +299,32 @@ public class NodeUtilities {
 //		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = nextLongerMethod.getParameters();
 //		return parameters.get( parameters.size()-1 );
 //	}
+	
+	public static java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > removeParameter( java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > rv, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations ) {
+		assert rv != null;
+		assert method.parameters.get( index ) == parameterDeclaredInAlice;
+		rv.clear();
+		method.parameters.remove( index );
+		for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument argument = methodInvocation.arguments.remove( index );
+			if( argument != null ) {
+				rv.put( methodInvocation, argument );
+			}
+		}
+		return rv;
+	}
+	public static void addParameter( java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterDeclaredInAlice, int index, java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations ) {
+		method.parameters.add( index, parameterDeclaredInAlice );
+		for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
+			edu.cmu.cs.dennisc.alice.ast.Argument argument = map.get( methodInvocation );
+			if( argument != null ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addParameter" );
+				argument = new edu.cmu.cs.dennisc.alice.ast.Argument( parameterDeclaredInAlice, new edu.cmu.cs.dennisc.alice.ast.NullLiteral() );
+			}
+			methodInvocation.arguments.add( index, argument );
+		}
+	}
+	
 }

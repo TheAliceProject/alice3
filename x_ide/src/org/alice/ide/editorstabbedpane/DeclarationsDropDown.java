@@ -227,11 +227,12 @@ class ProjectBlank extends cascade.Blank {
 	}
 }
 
-class RootOperation extends org.alice.ide.operations.AbstractActionOperation {
+class RootOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RootOperation() {
 		this.putValue( javax.swing.Action.NAME, "All" );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
 		java.awt.Component component = (java.awt.Component)actionContext.getEvent().getSource();
 		int x = 0;//component.getWidth();
 		int y = component.getHeight();

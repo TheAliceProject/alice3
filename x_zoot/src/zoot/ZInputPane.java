@@ -158,20 +158,24 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 		dialog.setTitle( title );
 		dialog.setModal( isModal );
 
-		class OKOperation extends AbstractActionOperation {
+		//todo
+		class OKOperation extends InconsequentialActionOperation {
 			public OKOperation() {
 				this.putValue( javax.swing.Action.NAME, "OK" );
 			}
-			public void perform( zoot.ActionContext actionContext ) {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				ZInputPane.this.setOK( true );
 				dialog.setVisible( false );
 			}
 		}
-		class CancelOperation extends AbstractActionOperation {
+		//todo
+		class CancelOperation extends InconsequentialActionOperation {
 			public CancelOperation() {
 				this.putValue( javax.swing.Action.NAME, "Cancel" );
 			}
-			public void perform( zoot.ActionContext actionContext ) {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				ZInputPane.this.setOK( false );
 				dialog.setVisible( false );
 			}

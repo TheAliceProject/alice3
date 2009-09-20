@@ -71,8 +71,4 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		int bIndex = aIndex + 1;
 		swap( bIndex, aIndex );
 	}
-	@Override
-	public boolean isSignificant() {
-		return true;
-	}
 }

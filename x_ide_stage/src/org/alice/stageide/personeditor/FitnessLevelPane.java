@@ -22,6 +22,25 @@
  */
 package org.alice.stageide.personeditor;
 
+
+/**
+ * @author Dennis Cosgrove
+ */
+//todo: note, not really inconsequential
+class FitnessLevelActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private javax.swing.JSlider slider;
+	private int value;
+	public FitnessLevelActionOperation( javax.swing.JSlider slider, int value, String name ) {
+		this.slider = slider;
+		this.value = value;
+		this.putValue( javax.swing.Action.NAME, name );
+	}
+	@Override
+	protected void performInternal(zoot.ActionContext actionContext) {
+		this.slider.setValue( this.value );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */

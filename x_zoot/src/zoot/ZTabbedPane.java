@@ -89,13 +89,13 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 		}
 
 		//SingleSelectionOperation tabSelectionOperation = null;
-		AbstractActionOperation tabCloseOperation = new AbstractActionOperation() {
-			public void perform( ActionContext actionContext ) {
+		AbstractActionOperation tabCloseOperation = new InconsequentialActionOperation() {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				java.util.EventObject e = actionContext.getEvent();
 				if( e instanceof zoot.event.TabEvent ) {
 					zoot.event.TabEvent te = (zoot.event.TabEvent)e;
 					te.getTypedSource().remove( te.getIndex() );
-					actionContext.commit();
 				} else {
 					actionContext.cancel();
 				}

@@ -35,7 +35,11 @@ public abstract class InconsequentialActionOperation extends AbstractActionOpera
 	protected abstract void performInternal(zoot.ActionContext actionContext);
 	public final void perform(zoot.ActionContext actionContext) {
 		performInternal(actionContext);
-		actionContext.commitAndInvokeRedoIfAppropriate();
+		if( actionContext.isCancelled() ) {
+			//pass
+		} else {
+			actionContext.commitAndInvokeRedoIfAppropriate();
+		}
 	}
 	@Override
 	public final boolean canRedo() {

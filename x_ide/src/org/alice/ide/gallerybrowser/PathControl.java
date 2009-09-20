@@ -28,23 +28,21 @@ package org.alice.ide.gallerybrowser;
 public abstract class PathControl extends swing.LineAxisPane {
 	class DirectoryControl extends swing.BorderPane {
 		private static final int ARROW_SIZE = 10;
-		class SelectDirectoryActionOperation extends zoot.AbstractActionOperation {
+		class SelectDirectoryActionOperation extends zoot.InconsequentialActionOperation {
 			public SelectDirectoryActionOperation() {
 				this.putValue( javax.swing.Action.NAME, PathControl.this.getTextFor( DirectoryControl.this.file ) );
 			}
-			public void perform( zoot.ActionContext actionContext ) {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				PathControl.this.handleSelectDirectory( DirectoryControl.this.file );
-				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-				actionContext.commit();
 			}
 		}
-		class SelectChildDirectoryActionOperation extends zoot.AbstractActionOperation /*implements zoot.ResponseOperation*/ {
+		class SelectChildDirectoryActionOperation extends zoot.InconsequentialActionOperation /*implements zoot.ResponseOperation*/ {
 			//public void respond( java.util.EventObject e ) {
 			//}
-			public void perform( zoot.ActionContext actionContext ) {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				DirectoryControl.this.handleSelectChildDirectory();
-				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-				actionContext.commit();
 			}
 		}
 		private zoot.ZButton selectButton;

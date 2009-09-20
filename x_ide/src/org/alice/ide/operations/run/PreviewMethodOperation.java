@@ -32,7 +32,8 @@ public class PreviewMethodOperation extends org.alice.ide.operations.Inconsequen
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
 	@Override
-	protected void performInternal( zoot.ActionContext actionContext ) {
+	protected void performInternal( final zoot.ActionContext actionContext ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: PreviewMethodOperation" );
 		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate, 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
 		zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( this.procedureInvocationTemplate, null, mouseEvent );
 		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
@@ -41,8 +42,7 @@ public class PreviewMethodOperation extends org.alice.ide.operations.Inconsequen
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
 				methodInvocation.expression.setValue( null );
 				PreviewMethodOperation.this.getIDE().handlePreviewMethod( actionContext, methodInvocation );
-				actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-				actionContext.commit();
+				actionContext.commitAndInvokeRedoIfAppropriate();
 			}
 			public void handleCancelation() {
 				actionContext.cancel();

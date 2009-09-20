@@ -27,4 +27,8 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode();
+	@Override
+	public boolean isSignificant() {
+		return true;
+	}
 }

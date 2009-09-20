@@ -25,39 +25,36 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareMethodParameterOperation extends DeclareParameterOperation {
+public class DeclareMethodParameterOperation extends AbstractCodeOperation {
+	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
+	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
+	private int index;
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
 	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( method );
+		this.method = method;
+		this.putValue( javax.swing.Action.NAME, "Add Parameter..." );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
+		return this.method;
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.getCode();
-		java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
-		org.alice.ide.createdeclarationpanes.CreateMethodParameterPane createMethodParameterPane = new org.alice.ide.createdeclarationpanes.CreateMethodParameterPane( method, methodInvocations );
-		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.showInJDialog( getIDE() );
-		if( parameter != null ) {
-			this.getCode().getParamtersProperty().add( parameter );
-			for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
-				methodInvocation.arguments.add( new edu.cmu.cs.dennisc.alice.ast.Argument( parameter, new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) );
-			}
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-			actionContext.commit();
+		this.method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.getCode();
+		org.alice.ide.createdeclarationpanes.CreateMethodParameterPane createMethodParameterPane = new org.alice.ide.createdeclarationpanes.CreateMethodParameterPane( method, this.getIDE().getMethodInvocations( method ) );
+		this.parameter = createMethodParameterPane.showInJDialog( getIDE() );
+		if( this.parameter != null ) {
+			this.index = method.parameters.size();
+			actionContext.commitAndInvokeRedoIfAppropriate();
 		} else {
 			actionContext.cancel();
 		}
 	}
-	
-//	def perform( self ):
-//		self._index = self._code.parameters.size()
-//		self._invocations = self.getIDE().getInvocations( self._code )
-//		self.redo()
-//	def undo( self ):
-//		self._code.parameters.remove( self._index )
-//		for invocation in self._invocations:
-//			invocation.arguments.remove( self._index )
-//	def redo( self ):
-//		self._code.parameters.add( [ self._param ] )
-//		for invocation in self._invocations:
-//			argument = alice.ast.Argument( self._param, alice.ast.NullLiteral() )
-//			invocation.arguments.add( [ argument ] )
-	
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
+		org.alice.ide.ast.NodeUtilities.addParameter( this.map, this.method, this.parameter, this.index, this.getIDE().getMethodInvocations( this.method ) );
+	}
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		org.alice.ide.ast.NodeUtilities.removeParameter( this.map, this.method, this.parameter, this.index, this.getIDE().getMethodInvocations( this.method ) );
+	}
 }

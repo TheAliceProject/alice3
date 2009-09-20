@@ -29,24 +29,28 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
  * @author Dennis Cosgrove
  */
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
+	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
+	private int index;
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
 	public DeleteParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		super( parametersProperty, parameter );
 		this.putValue( javax.swing.Action.NAME, "Delete" );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
-		if( method != null ) {
+		this.method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		this.index = this.method.parameters.indexOf( this.getParameter() );
+		if( this.method != null && this.index >= 0 ) {
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ParameterAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ParameterAccess >( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) {
 				@Override
 				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess ) {
 					return parameterAccess.parameter.getValue() == getParameter();
 				}
 			};
-			method.crawl( crawler, false );
+			this.method.crawl( crawler, false );
 			java.util.List< edu.cmu.cs.dennisc.alice.ast.ParameterAccess > parameterAccesses = crawler.getList();
 			final int N_ACCESSES = parameterAccesses.size();
 
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
+			java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( this.method );
 			final int N_INVOCATIONS = methodInvocations.size();
 			if( N_ACCESSES > 0 ) {
 				StringBuffer sb = new StringBuffer();
@@ -70,7 +74,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			} else {
 				if( N_INVOCATIONS > 0 ) {
 					String codeText;
-					if( method.isProcedure() ) {
+					if( this.method.isProcedure() ) {
 						codeText = "procedure";
 					} else {
 						codeText = "function";
@@ -104,48 +108,19 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			if( actionContext.isCancelled() ) {
 				//pass
 			} else {
-				int index = method.parameters.indexOf( this.getParameter() );
-				if( index >= 0 ) {
-					method.parameters.remove( index );
-					for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
-						methodInvocation.arguments.remove( index );
-					}
-					actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-					actionContext.commit();
-				}
+				actionContext.commitAndInvokeRedoIfAppropriate();
 			}
 		} else {
-			//todo
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DeleteParameterOperation" );
+			actionContext.cancel();
 		}
 	}
-//	def prepare( self, e, observer ):
-//		invocations = self.getIDE().getInvocations( self._code )
-//		if len( invocations ):
-//			if self._code.isProcedure():
-//				methodText = "procedure"
-//			else:
-//				methodText = "function"
-//			message = "There are invocations to this %s.\nDeleting this parameter will also delete the arguments from those invocations.\nWould you like to continue with the deletion?" % methodText
-//			result = javax.swing.JOptionPane.showConfirmDialog(self.getIDE(), message, "Delete Parameter", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION )
-//			if result == javax.swing.JOptionPane.YES_OPTION:
-//				pass
-//			else:
-//				return alice.ide.Operation.PreparationResult.CANCEL
-//		return alice.ide.Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY
-//
-//	def perform( self ):
-//		self._index = self._code.parameters.indexOf( self._paramteter )
-//		invocations = self.getIDE().getInvocations( self._code )
-//		self._map = {}
-//		for invocation in invocations:
-//			self._map[ invocation ] = invocation.arguments.get( self._index )
-//		self.redo()
-//	def redo( self ):
-//		self._code.parameters.remove( self._index )
-//		for invocation in self._map.keys():
-//			invocation.arguments.remove( self._index )
-//	def undo( self ):
-//		self._code.parameters.add( self._index, [ self._paramteter ] )
-//		for invocation, argument in self._map.items():
-//			invocation.arguments.add( self._index, [ argument ] )
+	@Override
+	public void redo() throws javax.swing.undo.CannotRedoException {
+		org.alice.ide.ast.NodeUtilities.removeParameter( this.map, this.method, this.getParameter(), this.index, this.getIDE().getMethodInvocations( this.method ) );
+	}
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		org.alice.ide.ast.NodeUtilities.addParameter( this.map, this.method, this.getParameter(), this.index, this.getIDE().getMethodInvocations( this.method ) );
+	}
 }

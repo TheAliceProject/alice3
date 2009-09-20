@@ -28,8 +28,11 @@ package org.alice.ide.templates;
 public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
 	public ExpressionTemplate() {
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
-		this.setPopupOperation( new org.alice.ide.operations.AbstractActionOperation() {
-			public void perform( zoot.ActionContext actionContext ) {
+		
+		//todo
+		this.setPopupOperation( new org.alice.ide.operations.InconsequentialActionOperation() {
+			@Override
+			protected void performInternal(zoot.ActionContext actionContext) {
 				actionContext.cancel();
 			}
 		} );
