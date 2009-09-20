@@ -30,7 +30,7 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 		super( field );
 		this.putValue( javax.swing.Action.NAME, "Edit..." );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		this.getMoveAndTurnSceneEditor().editPerson( this.getField() );
-	}
+//	public void perform( zoot.ActionContext actionContext ) {
+//		this.getMoveAndTurnSceneEditor().editPerson( this.getField() );
+//	}
 }

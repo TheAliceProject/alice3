@@ -725,29 +725,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//this.cameraNavigationDragAdapter.setEnabled( this.isCameraNavigationDragAdapterEnabledStack.pop() );
 	}
 
-	public void orientToUpright( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		org.alice.apis.moveandturn.AbstractTransformable transformable = this.getInstanceInJavaForField( field, org.alice.apis.moveandturn.AbstractTransformable.class );
-		if( transformable != null ) {
-			transformable.orientToUpright();
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "orientToUpright", field );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "orientToUpright", this.getInstanceInJavaForField( field ) );
-		}
-	}
-	public void placeOnTopOfGround( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		org.alice.apis.moveandturn.Model model = this.getInstanceInJavaForField( field, org.alice.apis.moveandturn.Model.class );
-		if( model != null ) {
-			org.alice.apis.moveandturn.Scene scene = model.getScene();
-			assert scene != null;
-			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = model.getAxisAlignedMinimumBoundingBox();
-			edu.cmu.cs.dennisc.math.Point3 position = model.getPosition( scene );
-			position.y = -bb.getYMinimum();
-			model.moveTo( scene.createOffsetStandIn( position ) );
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "placeOnTopOfGround", field );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "placeOnTopOfGround", this.getInstanceInJavaForField( field ) );
-		}
-	}
+	
 	@Override
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 		this.controlsForOverlayPane.updateFieldLabels();

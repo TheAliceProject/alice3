@@ -25,12 +25,15 @@ package org.alice.stageide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class OrientToUprightActionOperation extends AbstractFieldTileActionOperation {
+public class OrientToUprightActionOperation extends TransformableFieldTileActionOperation {
 	public OrientToUprightActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
 		this.putValue( javax.swing.Action.NAME, "Orient to Upright" );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		this.getMoveAndTurnSceneEditor().orientToUpright( this.getField() );
+	@Override
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = transformable.getSGAbstractTransformable().getAbsoluteTransformation();
+		edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 axes = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createFromStandUp( m.orientation );
+		return new edu.cmu.cs.dennisc.math.AffineMatrix4x4( axes, m.translation );
 	}
 }

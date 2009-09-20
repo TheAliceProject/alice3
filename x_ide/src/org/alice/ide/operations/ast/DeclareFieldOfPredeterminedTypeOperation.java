@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOfPredeterminedTypeOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class DeclareFieldOfPredeterminedTypeOperation extends AbstractDeclareFieldOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType;
 	public DeclareFieldOfPredeterminedTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
@@ -34,7 +34,12 @@ public class DeclareFieldOfPredeterminedTypeOperation extends org.alice.ide.oper
 		this.putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( this.valueType ) );
 		this.putValue( javax.swing.Action.NAME, "Declare New Instance..." );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		this.getIDE().declareFieldOfPredeterminedType( this.ownerType, this.valueType, actionContext );
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+		return this.ownerType;
 	}
+//	@Override
+//	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
+//		this.getIDE().declareFieldOfPredeterminedType( this.ownerType, this.valueType, actionContext );
+//	}
 }

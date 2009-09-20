@@ -25,21 +25,19 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
+public class DeclareFieldOperation extends AbstractDeclareFieldOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		this.ownerType = ownerType;
 		this.putValue( javax.swing.Action.NAME, "Declare Property..." );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		org.alice.ide.createdeclarationpanes.CreateFieldPane createMethodPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( this.ownerType );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createMethodPane.showInJDialog( getIDE() );
-		if( field != null ) {
-			this.ownerType.fields.add( field );
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+		return this.ownerType;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+		org.alice.ide.createdeclarationpanes.CreateFieldPane createMethodPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( ownerType );
+		return createMethodPane.showInJDialog( getIDE() );
 	}
 }

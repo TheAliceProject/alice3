@@ -25,12 +25,25 @@ package org.alice.stageide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class PlaceOnTopOfGroundActionOperation extends AbstractFieldTileActionOperation {
+public class PlaceOnTopOfGroundActionOperation extends TransformableFieldTileActionOperation {
 	public PlaceOnTopOfGroundActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
 		this.putValue( javax.swing.Action.NAME, "Place on top of Ground" );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
-		this.getMoveAndTurnSceneEditor().placeOnTopOfGround( this.getField() );
+	@Override
+	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
+		org.alice.apis.moveandturn.Model model = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( transformable, org.alice.apis.moveandturn.Model.class ); 
+		if( model != null ) {
+			org.alice.apis.moveandturn.Scene scene = model.getScene();
+			assert scene != null;
+			edu.cmu.cs.dennisc.math.AxisAlignedBox bb = model.getAxisAlignedMinimumBoundingBox();
+			edu.cmu.cs.dennisc.math.Point3 position = model.getPosition( scene );
+			position.y = -bb.getYMinimum();
+		} else {
+			rv.setNaN();
+		}
+		return rv;
 	}
+	
 }

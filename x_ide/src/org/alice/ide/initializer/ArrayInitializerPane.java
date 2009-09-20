@@ -115,39 +115,60 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 
 	class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
+		private int index;
+		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		public RemoveItemOperation() {
 			this.putValue( javax.swing.Action.NAME, "Remove" );
 		}
 		public void perform( zoot.ActionContext actionContext ) {
-			int index = ArrayInitializerPane.this.list.getSelectedIndex();
-			if( index >= 0 ) {
-				ArrayInitializerPane.this.arrayExpressions.remove( index );
+			this.index = ArrayInitializerPane.this.list.getSelectedIndex();
+			this.expression = ArrayInitializerPane.this.list.getModel().getElementAt( this.index );
+			actionContext.commitAndInvokeRedoIfAppropriate();
+		}
+		@Override
+		public void redo() throws javax.swing.undo.CannotRedoException {
+			if( ArrayInitializerPane.this.arrayExpressions.get( this.index ) == this.expression ) {
+				ArrayInitializerPane.this.arrayExpressions.remove( this.index );
+			} else {
+				throw new javax.swing.undo.CannotRedoException();
 			}
 		}
+		@Override
+		public void undo() throws javax.swing.undo.CannotUndoException {
+			ArrayInitializerPane.this.arrayExpressions.add( this.index, this.expression );
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
+		}
 	}
-
 	abstract class AbstractMoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
-		private int aIndex;
-		private int bIndex;
-		private int selectedIndex;
+		private int index;
+		private void swapWithNext( int index ) {
+			ArrayInitializerPane.this.swapWithNext( index );
+		}
 		@Override
 		public final void redo() throws javax.swing.undo.CannotRedoException {
-			ArrayInitializerPane.this.swap( this.aIndex, this.bIndex );
+			ArrayInitializerPane.this.swapWithNext( this.index );
+			ArrayInitializerPane.this.swapWithNext( this.index + this.getRedoSelectionIndexDelta() );
 		}
 		@Override
 		public final void undo() throws javax.swing.undo.CannotUndoException {
-			ArrayInitializerPane.this.swap( this.bIndex, this.aIndex );
+			ArrayInitializerPane.this.swapWithNext( this.index );
+			ArrayInitializerPane.this.swapWithNext( this.index + this.getUndoSelectionIndexDelta() );
 		}
-		protected abstract int getBIndex(int aIndex);
+		protected abstract int getIndex( int selectedIndex );
+		protected abstract int getRedoSelectionIndexDelta();
+		protected abstract int getUndoSelectionIndexDelta();
 		public final void perform(zoot.ActionContext actionContext) {
-			this.aIndex = ArrayInitializerPane.this.list.getSelectedIndex();
-			this.bIndex = this.getBIndex( this.aIndex );
+			this.index = this.getIndex( ArrayInitializerPane.this.list.getSelectedIndex() );
 			actionContext.commitAndInvokeRedoIfAppropriate();
 		}
 		@Override
 		public boolean isSignificant() {
 			return true;
 		}
+		
 	}
 
 	class MoveItemUpOperation extends AbstractMoveItemOperation {
@@ -155,8 +176,16 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.putValue( javax.swing.Action.NAME, "Move Up" );
 		}
 		@Override
-		public int getBIndex(int aIndex) {
-			return aIndex-1;
+		protected int getIndex(int selectedIndex) {
+			return selectedIndex-1;
+		}
+		@Override
+		public int getRedoSelectionIndexDelta() {
+			return 0;
+		}
+		@Override
+		public int getUndoSelectionIndexDelta() {
+			return 1;
 		}
 	}
 
@@ -165,8 +194,16 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.putValue( javax.swing.Action.NAME, "Move Down" );
 		}
 		@Override
-		public int getBIndex(int aIndex) {
-			return aIndex+1;
+		protected int getIndex(int selectedIndex) {
+			return selectedIndex;
+		}
+		@Override
+		public int getRedoSelectionIndexDelta() {
+			return 1;
+		}
+		@Override
+		public int getUndoSelectionIndexDelta() {
+			return 0;
 		}
 	}
 
@@ -253,6 +290,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 				}
 			}
 		}
+				
 		public void refresh() {
 			int N = ArrayInitializerPane.this.arrayExpressions.size();
 			int M = this.group.getButtonCount();
@@ -356,8 +394,8 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	private void handleSelectionChange( edu.cmu.cs.dennisc.alice.ast.Expression value ) {
 		this.updateButtons();
 	}
-	private void swap( int aIndex, int bIndex ) {
-		if( aIndex >= 0 && bIndex >= 0 ) {
+	private void swapWithNext( int index ) {
+		if( index >= 0 ) {
 			edu.cmu.cs.dennisc.alice.ast.Expression expression0 = this.arrayExpressions.get( index );
 			edu.cmu.cs.dennisc.alice.ast.Expression expression1 = this.arrayExpressions.get( index + 1 );
 			this.arrayExpressions.set( index, expression1, expression0 );

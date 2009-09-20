@@ -61,7 +61,8 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 		}
 		return rv;
 	}
-	protected <E> E getInstanceInJavaForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Class<E> cls ) {
+	//todo: reduce visibility?
+	public <E> E getInstanceInJavaForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Class<E> cls ) {
 		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( getInstanceInJavaForField( field ), cls );
 	}
 	

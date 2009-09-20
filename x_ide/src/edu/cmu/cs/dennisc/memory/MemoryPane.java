@@ -19,12 +19,13 @@ public class MemoryPane extends swing.BorderPane {
 		labels.add( label0, java.awt.BorderLayout.WEST );
 		labels.add( labelMax, java.awt.BorderLayout.EAST );
 		this.add( labels, java.awt.BorderLayout.SOUTH );
+		this.setPreferredSize( new java.awt.Dimension( 300, 80 ) );
+
 	}
 	
 	public static void main(String[] args) {
 		javax.swing.JFrame frame = new javax.swing.JFrame();
 		frame.getContentPane().add( new MemoryPane() );
-		frame.setSize( 300, 80 );
 		frame.setDefaultCloseOperation( javax.swing.WindowConstants.EXIT_ON_CLOSE );
 		frame.setVisible( true );
 	}

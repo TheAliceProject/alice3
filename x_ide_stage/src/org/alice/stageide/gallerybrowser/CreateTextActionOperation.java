@@ -22,7 +22,10 @@
  */
 package org.alice.stageide.gallerybrowser;
 
-public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > {
+/**
+ * @author Dennis Cosgrove
+ */
+class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > {
 	class FamilyList extends javax.swing.JList {
 		public FamilyList() {
 			this.setListData( new String[] { "Serif", "SansSerif" } );
@@ -272,3 +275,28 @@ public class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.
 		System.exit( 0 );
 	}
 }	
+
+
+/**
+ * @author Dennis Cosgrove
+ */
+class CreateTextActionOperation extends AbstractDeclareFieldOperation {
+	public CreateTextActionOperation() {
+		this.putValue(javax.swing.Action.NAME, "Create Text...");
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
+		CreateTextPane createTextPane = new CreateTextPane();
+		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog(getIDE(), "Create Text", true);
+		if (text != null) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor(org.alice.apis.moveandturn.Text.class);
+			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(type);
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice(text.getName(), type, initializer);
+			field.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
+			field.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
+			return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, text );
+		} else {
+			return null;
+		}
+	}
+}

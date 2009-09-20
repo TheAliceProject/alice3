@@ -20,24 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.stageide.operations.ast;
+package org.alice.stageide.gallerybrowser;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractFieldTileActionOperation extends org.alice.ide.operations.ast.AbstractFieldActionOperation {
-	public AbstractFieldTileActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( field );
+class CreateMyInstance extends CreateInstanceFromFileActionOperation {
+	public CreateMyInstance() {
+		this.putValue(javax.swing.Action.NAME, "My Classes...");
 	}
-	
-	//todo: remove
-	protected org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
-		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( getIDE().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
-	}
-	
-	
+
 	@Override
-	public boolean isSignificant() {
-		return true;
+	protected java.io.File getInitialDirectory() {
+		return this.getIDE().getMyTypesDirectory();
 	}
 }
