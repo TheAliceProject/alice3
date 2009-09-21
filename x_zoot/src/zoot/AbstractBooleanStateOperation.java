@@ -70,7 +70,7 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 	}
 	protected abstract void handleStateChange( boolean value );
 	@Override
-	public final boolean canRedo() {
+	public final boolean canDoOrRedo() {
 		return true;
 	}
 	@Override
@@ -78,7 +78,7 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 		return true;
 	}
 	@Override
-	public final void redo() throws javax.swing.undo.CannotRedoException {
+	public final void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		this.buttonModel.setSelected( this.nextValue );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
 		this.handleStateChange( this.nextValue );

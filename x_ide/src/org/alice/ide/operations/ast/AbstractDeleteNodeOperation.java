@@ -44,7 +44,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 		}
 	}
 	@Override
-	public void redo() throws javax.swing.undo.CannotRedoException {
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		this.owner.remove( this.index );
 	}
 	@Override

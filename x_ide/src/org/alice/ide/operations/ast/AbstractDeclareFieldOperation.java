@@ -45,7 +45,7 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 		return true;
 	}
 	@Override
-	public void redo() throws javax.swing.undo.CannotRedoException {
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
 		ownerType.fields.add( this.index, this.field );
 	}

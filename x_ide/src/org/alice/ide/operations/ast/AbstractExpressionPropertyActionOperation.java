@@ -25,28 +25,26 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreOperation extends org.alice.ide.operations.AbstractActionOperation implements zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression >{
-	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
-	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
-	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation;
-	public FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
-		assert expressionStatement != null;
-		this.expressionStatement = expressionStatement;
+public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.AbstractActionOperation implements zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression > {
+	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
+	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
+	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
+	public AbstractExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		this.expressionProperty = expressionProperty;
+	}
+	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
+		return this.expressionProperty;
 	}
 	public void perform( zoot.ActionContext actionContext ) {
 		actionContext.pend( this );
 	}
+	protected abstract void initializeInternal( zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 	public void initialize( zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
-		this.prevMethodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.prevMethodInvocation.method.getValue();
-		this.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
-		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = this.nextLongerMethod.getParameters();
-		edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-		this.getIDE().promptUserForMore( lastParameter, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
+		this.prevExpression = this.expressionProperty.getValue();
+		this.initializeInternal(context, taskObserver, this.prevExpression);
 	}
 	public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression expression) {
-		this.nextMethodInvocation = org.alice.ide.ast.NodeUtilities.createNextMethodInvocation( this.prevMethodInvocation, expression, this.nextLongerMethod );
+		this.nextExpression = expression;
 		//todo: remove?
 		getIDE().unsetPreviousExpression();
 	}
@@ -57,11 +55,11 @@ public class FillInMoreOperation extends org.alice.ide.operations.AbstractAction
 	
 	@Override
 	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		expressionStatement.expression.setValue( this.nextMethodInvocation );
+		this.expressionProperty.setValue( this.nextExpression );
 	}
 	@Override
 	public void undo() throws javax.swing.undo.CannotUndoException {
-		expressionStatement.expression.setValue( this.prevMethodInvocation );
+		this.expressionProperty.setValue( this.prevExpression );
 	}
 	@Override
 	public boolean isSignificant() {

@@ -61,7 +61,7 @@ public abstract class AbstractOpenProjectOperation extends AbstractClearanceActi
 		}
 	}
 	@Override
-	public boolean canRedo() {
+	public boolean canDoOrRedo() {
 		return false;
 	}
 	@Override

@@ -38,8 +38,14 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractDeclareFie
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
 		return this.ownerType;
 	}
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
-//		this.getIDE().declareFieldOfPredeterminedType( this.ownerType, this.valueType, actionContext );
-//	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
+		if( this.getIDE().isDeclareFieldOfPredeterminedTypeSupported( ownerType ) ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
+			org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getClassReflectionProxy().getReification() );
+			return createFieldPane.showInJDialog( this.getIDE(), "Create New Instance", true );
+		} else {
+			return null;
+		}
+	}
 }

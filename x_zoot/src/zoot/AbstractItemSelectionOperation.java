@@ -103,7 +103,7 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	}
 	
 	@Override
-	public final boolean canRedo() {
+	public final boolean canDoOrRedo() {
 		return true;
 	}
 	@Override
@@ -111,7 +111,7 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 		return true;
 	}
 	@Override
-	public final void redo() throws javax.swing.undo.CannotRedoException {
+	public final void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
 		this.comboBoxModel.setSelectedItem( this.nextValue );
 		this.handleSelectionChange( this.nextValue );

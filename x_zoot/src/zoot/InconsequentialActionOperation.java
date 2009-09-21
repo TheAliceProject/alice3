@@ -42,7 +42,7 @@ public abstract class InconsequentialActionOperation extends AbstractActionOpera
 		}
 	}
 	@Override
-	public final boolean canRedo() {
+	public final boolean canDoOrRedo() {
 		return false;
 	}
 	@Override
@@ -52,5 +52,13 @@ public abstract class InconsequentialActionOperation extends AbstractActionOpera
 	@Override
 	public final boolean isSignificant() {
 		return false;
+	}
+	@Override
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+		throw new javax.swing.undo.CannotRedoException();
+	}
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		throw new javax.swing.undo.CannotUndoException();
 	}
 }

@@ -57,7 +57,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 		this.transformable.moveAndOrientTo( scene.createOffsetStandIn( this.nextPOV.getInternal() ) );
 	}
 	@Override
-	public void redo() throws javax.swing.undo.CannotRedoException {
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		this.setAbsolutePOV( this.nextPOV );
 	}
 	@Override

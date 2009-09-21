@@ -402,41 +402,49 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
 				if( this.currentUnder != null ) {
 					final zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
-					class DropOperation extends org.alice.ide.operations.AbstractActionOperation {
+					class DropOperation extends org.alice.ide.operations.AbstractActionOperation implements zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Statement > {
+						private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 						public void perform( final zoot.ActionContext actionContext ) {
-							edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver = new edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement>() {
-								public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-									if( statement != null ) {
-										statementListPropertyPane.getProperty().add( index, statement );
-										getIDE().markChanged( "drop statement template" );
-										CodeEditor.this.refresh();
-										actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-										actionContext.commit();
-										source.hideDropProxyIfNecessary();
-										CodeEditor.this.resetScrollPane( viewPosition );
-//										javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//											public void run() {
-//												edu.cmu.cs.dennisc.print.PrintUtilities.println( "resetting viewPosition", viewPosition );
-//												CodeEditor.this.scrollPane.getViewport().setViewPosition( viewPosition );
-//												CodeEditor.this.repaint();
-//											}
-//										} );
-									} else {
-										this.handleCancelation();
-									}
-								}
-								public void handleCancelation() {
-									actionContext.cancel();
-									source.hideDropProxyIfNecessary();
-								}
-							};
-							actionContext.setTaskObserver( taskObserver );
+							actionContext.pend( this );
+						}
+						public void initialize( zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver ) {
 							edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 							if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
 								edu.cmu.cs.dennisc.alice.ast.BlockStatement block = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
 								statementTemplate.createStatement( dragAndDropEvent, block, taskObserver );
 							}
 						}
+						public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Statement statement) {
+							if( statement != null ) {
+								this.statement = statement;
+							}
+							source.hideDropProxyIfNecessary();
+						}
+						public void handleCancelation() {
+							source.hideDropProxyIfNecessary();
+						}
+						
+						@Override
+						public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+							statementListPropertyPane.getProperty().add( index, statement );
+							CodeEditor.this.refresh();
+							CodeEditor.this.resetScrollPane( viewPosition );
+						}
+						@Override
+						public void undo() throws javax.swing.undo.CannotUndoException {
+							if( statementListPropertyPane.getProperty().get( index ) == statement ) {
+								statementListPropertyPane.getProperty().remove( index );
+								CodeEditor.this.refresh();
+								CodeEditor.this.resetScrollPane( viewPosition );
+							} else {
+								throw new javax.swing.undo.CannotUndoException();
+							}
+						}
+						@Override
+						public boolean isSignificant() {
+							return true;
+						}
+						
 					}
 					dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				} else {
@@ -445,41 +453,117 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
 				source.hideDropProxyIfNecessary();
 				if( this.currentUnder != null ) {
+					final zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
 					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
-					edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
-					edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
-					edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
+					final edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
+					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
+					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
+					final int prevIndex = prevOwner.indexOf( statement );
+					final int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
 
-					int prevIndex = prevOwner.indexOf( statement );
-					int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
-
+					//todo: rename
+					abstract class ActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+						protected void refresh() {
+							CodeEditor.this.refresh();
+							CodeEditor.this.resetScrollPane( viewPosition );
+						}
+						protected abstract void performInternal( zoot.ActionContext actionContext );
+						protected abstract void redoInternal() throws javax.swing.undo.CannotRedoException;
+						protected abstract void undoInternal() throws javax.swing.undo.CannotRedoException;
+						public final void perform( final zoot.ActionContext actionContext ) {
+							actionContext.commitAndInvokeRedoIfAppropriate();
+						}
+						@Override
+						public final void doOrRedo() throws javax.swing.undo.CannotRedoException {
+							redoInternal();
+							this.refresh();
+						}
+						@Override
+						public final void undo() throws javax.swing.undo.CannotUndoException {
+							undoInternal();
+							this.refresh();
+						}
+						@Override
+						public final boolean isSignificant() {
+							return true;
+						}
+					}
+					zoot.ActionOperation operation;
 					if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-						nextOwner.add( nextIndex, (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement ) );
+						class CopyOperation extends ActionOperation {
+							private edu.cmu.cs.dennisc.alice.ast.Statement copy;
+							@Override
+							protected void performInternal(zoot.ActionContext actionContext) {
+								this.copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
+							}
+							@Override
+							protected void redoInternal() throws javax.swing.undo.CannotRedoException {
+								nextOwner.add( nextIndex, this.copy );
+							}
+							@Override
+							protected void undoInternal() throws javax.swing.undo.CannotUndoException {
+								if( nextOwner.get( nextIndex ) == this.copy ) {
+									nextOwner.remove( nextIndex );
+								} else {
+									throw new javax.swing.undo.CannotUndoException();
+								}
+							}
+						}
+						operation = new CopyOperation();
 					} else {
 						if( prevOwner == nextOwner ) {
 							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
-								//pass
+								operation = null;
 							} else {
-								prevOwner.remove( prevIndex );
-								if( prevIndex < nextIndex ) {
-									nextIndex--;
+								class ReorderOperation extends ActionOperation {
+									@Override
+									protected void performInternal(zoot.ActionContext actionContext) {
+									}
+									@Override
+									protected void redoInternal() throws javax.swing.undo.CannotRedoException {
+										prevOwner.remove( prevIndex );
+										int index;
+										if( prevIndex < nextIndex ) {
+											index = nextIndex-1;
+										} else {
+											index = nextIndex;
+										}
+										nextOwner.add( index, statement );
+									}
+									@Override
+									protected void undoInternal() throws javax.swing.undo.CannotUndoException {
+										nextOwner.remove( nextIndex );
+										int index;
+										if( nextIndex < prevIndex ) {
+											index = prevIndex-1;
+										} else {
+											index = prevIndex;
+										}
+										prevOwner.add( index, statement );
+									}
 								}
-								nextOwner.add( nextIndex, statement );
+								operation = new ReorderOperation();
 							}
 						} else {
-							prevOwner.remove( prevIndex );
-							nextOwner.add( nextIndex, statement );
+							class ReparentOperation extends ActionOperation {
+								@Override
+								protected void performInternal(zoot.ActionContext actionContext) {
+								}
+								@Override
+								protected void redoInternal() throws javax.swing.undo.CannotRedoException {
+									prevOwner.remove( prevIndex );
+									nextOwner.add( nextIndex, statement );
+								}
+								@Override
+								protected void undoInternal() throws javax.swing.undo.CannotUndoException {
+									prevOwner.add( prevIndex, statement );
+									nextOwner.remove( nextIndex );
+								}
+							}
+							operation = new ReparentOperation();
 						}
 					}
-					getIDE().markChanged( "drop statement" );
-					this.refresh();
-					CodeEditor.this.resetScrollPane( viewPosition );
-//					javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//						public void run() {
-//							CodeEditor.this.scrollPane.getViewport().setViewPosition( viewPosition );
-//							CodeEditor.this.repaint();
-//						}
-//					} );
+					dragAndDropContext.perform( operation, dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				}
 			}
 		}

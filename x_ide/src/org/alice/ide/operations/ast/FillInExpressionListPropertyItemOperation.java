@@ -25,10 +25,12 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillInExpressionListPropertyItemOperation extends org.alice.ide.operations.AbstractActionOperation {
+public abstract class FillInExpressionListPropertyItemOperation extends org.alice.ide.operations.AbstractActionOperation implements zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression > {
 //	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
+	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
+	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 	public FillInExpressionListPropertyItemOperation( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
 		//this.type = type;
 		this.index = index;
@@ -36,17 +38,34 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getFillInType();
-		edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.expressionListProperty.get( FillInExpressionListPropertyItemOperation.this.index );
-		getIDE().promptUserForExpression( type, prevExpression, (java.awt.event.MouseEvent)actionContext.getEvent(), new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression >() {
-			public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression e ) {
-				FillInExpressionListPropertyItemOperation.this.expressionListProperty.set( FillInExpressionListPropertyItemOperation.this.index, e );
-				getIDE().unsetPreviousExpression();
-				getIDE().markChanged( "expression menu" );
-			}
-			public void handleCancelation() {
-				getIDE().unsetPreviousExpression();
-			}			
-		} );
+		actionContext.pend( this );
 	}
+	public void initialize( zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
+		this.prevExpression = this.expressionListProperty.get( this.index );
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getFillInType();
+		getIDE().promptUserForExpression( type, this.prevExpression, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
+	}
+	public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression expression) {
+		this.nextExpression = expression;
+		//todo: remove?
+		getIDE().unsetPreviousExpression();
+	}
+	public void handleCancelation() {
+		//todo: remove?
+		getIDE().unsetPreviousExpression();
+	}
+	
+	@Override
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+		this.expressionListProperty.set( this.index, this.nextExpression );
+	}
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		this.expressionListProperty.set( this.index, this.prevExpression );
+	}
+	@Override
+	public boolean isSignificant() {
+		return true;
+	}
+
 }

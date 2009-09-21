@@ -37,7 +37,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	}
 	protected abstract boolean getDesiredValue();
 	@Override
-	public final void redo() throws javax.swing.undo.CannotRedoException {
+	public final void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		this.statement.isEnabled.setValue( this.getDesiredValue() );
 	}
 	@Override

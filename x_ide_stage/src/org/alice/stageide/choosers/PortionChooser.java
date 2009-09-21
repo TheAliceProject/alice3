@@ -34,8 +34,20 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 			if( inputPane != null ) {
 				inputPane.updateOKButton();
 			}
-			boundedRangeContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, false );
-			boundedRangeContext.commit();
+			boundedRangeContext.commitAndInvokeRedoIfAppropriate();
+		}
+		@Override
+		public boolean canDoOrRedo() {
+			return false;
+		}
+		@Override
+		public boolean canUndo() {
+			return false;
+		}
+		@Override
+		public boolean isSignificant() {
+			//todo
+			return false;
 		}
 	}
 	private zoot.ZSlider slider = new zoot.ZSlider( new PortionOperation() );

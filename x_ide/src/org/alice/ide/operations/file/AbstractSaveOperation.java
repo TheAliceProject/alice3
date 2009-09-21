@@ -62,7 +62,7 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 	}
 
 	@Override
-	public boolean canRedo() {
+	public boolean canDoOrRedo() {
 		return false;
 	}
 	@Override

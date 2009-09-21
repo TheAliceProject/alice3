@@ -507,7 +507,7 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		}
 		@Override
-		public boolean canRedo() {
+		public boolean canDoOrRedo() {
 			return false;
 		}
 		@Override
@@ -551,7 +551,7 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		}
 		@Override
-		public boolean canRedo() {
+		public boolean canDoOrRedo() {
 			return false;
 		}
 		@Override
@@ -1615,11 +1615,11 @@ public abstract class IDE extends zoot.ZFrame {
 		this.isMarkedChanged = true;
 		this.updateTitle();
 	}
-	@Deprecated
-	public void markChanged( String description ) {
-		this.markChanged();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: convert change to operation ( " + description + " )" );
-	}
+//	@Deprecated
+//	public void markChanged( String description ) {
+//		this.markChanged();
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: convert change to operation ( " + description + " )" );
+//	}
 
 	//	protected void addToHistory( Operation operation ) {
 	//		this.history.push( operation );
@@ -2056,19 +2056,10 @@ public abstract class IDE extends zoot.ZFrame {
 		return edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class, "edu.cmu.cs.dennisc.alice.ast.Templates" );
 	}
 
-	public void declareFieldOfPredeterminedType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType, zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
-		org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane( ownerType, typeInJava.getClassReflectionProxy().getReification() );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog( this, "Create New Instance", true );
-		if( field != null ) {
-			this.getSceneEditor().handleFieldCreation( ownerType, field, createFieldPane.createInstanceInJava() );
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-			actionContext.commit();
-		} else {
-			actionContext.cancel();
-		}
+	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
+		return true;
 	}
-
+	
 	//	def _isFieldNameFree( self, name ):
 	//		sceneType = self.getSceneType()
 	//		if sceneType:

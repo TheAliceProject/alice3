@@ -96,7 +96,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			actionContext.commitAndInvokeRedoIfAppropriate();
 		}
 		@Override
-		public void redo() throws javax.swing.undo.CannotRedoException {
+		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 			ArrayInitializerPane.this.arrayExpressions.add( this.index, this.expression );
 		}
 		@Override
@@ -122,11 +122,11 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		}
 		public void perform( zoot.ActionContext actionContext ) {
 			this.index = ArrayInitializerPane.this.list.getSelectedIndex();
-			this.expression = ArrayInitializerPane.this.list.getModel().getElementAt( this.index );
+			this.expression = ArrayInitializerPane.this.list.getItemAt( this.index );
 			actionContext.commitAndInvokeRedoIfAppropriate();
 		}
 		@Override
-		public void redo() throws javax.swing.undo.CannotRedoException {
+		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 			if( ArrayInitializerPane.this.arrayExpressions.get( this.index ) == this.expression ) {
 				ArrayInitializerPane.this.arrayExpressions.remove( this.index );
 			} else {
@@ -148,7 +148,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			ArrayInitializerPane.this.swapWithNext( index );
 		}
 		@Override
-		public final void redo() throws javax.swing.undo.CannotRedoException {
+		public final void doOrRedo() throws javax.swing.undo.CannotRedoException {
 			ArrayInitializerPane.this.swapWithNext( this.index );
 			ArrayInitializerPane.this.swapWithNext( this.index + this.getRedoSelectionIndexDelta() );
 		}
@@ -289,6 +289,10 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 					model.setSelected( false );
 				}
 			}
+		}
+		
+		public edu.cmu.cs.dennisc.alice.ast.Expression getItemAt( int index ) {
+			return ArrayInitializerPane.this.arrayExpressions.get( index );
 		}
 				
 		public void refresh() {

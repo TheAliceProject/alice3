@@ -57,35 +57,42 @@ class EditMethodOperation extends org.alice.ide.operations.InconsequentialAction
 
 class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
+//	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] prevArray;
 
 	public EditFieldsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		this.type = type;
 		this.putValue( javax.swing.Action.NAME, "Edit Properties..." );
 	}
 	public void perform( zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] array = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[ this.type.fields.size() ];
-		this.type.fields.toArray( array );
-		EditFieldsPane editFieldsPane = new EditFieldsPane( this.type );
-		Boolean isAccepted = editFieldsPane.showInJDialog( getIDE() );
-		if( isAccepted != null ) {
-//			for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : fields ) {
-//				if( this.type.fields.contains( field ) ) {
-//					//pass
-//				} else {
-//					this.type.fields.add( field );
-//				}
+//		this.prevArray = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[ this.type.fields.size() ];
+//		this.type.fields.toArray( this.prevArray );
+//
+//		EditFieldsPane editFieldsPane = new EditFieldsPane( this.type );
+//		Boolean isAccepted = editFieldsPane.showInJDialog( getIDE() );
+//		if( isAccepted != null ) {
+//			actionContext.commitAndInvokeRedoIfAppropriate();
+//		} else {
+//			int N = this.type.fields.size();
+////			this.type.fields.set( 0, array );
+//			if( array.length < N ) {
+////				this.type.fields.remove( array.length, N-1 );
+//				javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo: handle cancel.  apologies." );
 //			}
-			actionContext.put( org.alice.ide.IDE.IS_PROJECT_CHANGED_KEY, true );
-			actionContext.commit();
-		} else {
-			int N = this.type.fields.size();
-//			this.type.fields.set( 0, array );
-			if( array.length < N ) {
-//				this.type.fields.remove( array.length, N-1 );
-				javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo: handle cancel.  apologies." );
-			}
-			actionContext.cancel();
-		}
+//			actionContext.cancel();
+//		}
+		actionContext.commitAndInvokeRedoIfAppropriate();
+	}
+	@Override
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+		javax.swing.JOptionPane.showMessageDialog( null, "todo" );
+	}
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		javax.swing.JOptionPane.showMessageDialog( null, "todo" );
+	}
+	@Override
+	public boolean isSignificant() {
+		return true;
 	}
 }
 

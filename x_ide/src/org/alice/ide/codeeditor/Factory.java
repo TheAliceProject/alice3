@@ -41,7 +41,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		}
 	}
 	@Override
-	public void redo() throws javax.swing.undo.CannotRedoException {
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		this.property.remove( this.index );
 		//todo: remove
 		this.getIDE().refreshUbiquitousPane();

@@ -22,6 +22,29 @@
  */
 package zoot;
 
+/**
+ * @author Dennis Cosgrove
+ */
+class TaskObserver< E > implements edu.cmu.cs.dennisc.task.TaskObserver< E > {
+	private Context<? extends Operation> context;
+	private Resolver<E> resolver;
+	public TaskObserver( Context<? extends Operation> context, Resolver<E> resolver ) {
+		this.context = context;
+		this.resolver = resolver;
+	}
+	public final void handleCompletion(E e) {
+		this.resolver.handleCompletion(e);
+		this.context.commitAndInvokeRedoIfAppropriate();
+	}
+	public final void handleCancelation() {
+		this.resolver.handleCancelation();
+		this.context.cancel();
+	}
+}
+
+/**
+ * @author Dennis Cosgrove
+ */
 abstract class AbstractContext< E extends Operation > implements Context< E > {
 	private E operation;
 	private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
@@ -49,20 +72,22 @@ abstract class AbstractContext< E extends Operation > implements Context< E > {
 	}
 	public void commitAndInvokeRedoIfAppropriate() {
 		assert this.isPending();
-		if( this.operation.canRedo() ) {
+		if( this.operation.canDoOrRedo() ) {
 			try {
-				this.operation.redo();
+				this.operation.doOrRedo();
 			} catch( javax.swing.undo.CannotRedoException cre ) {
 				throw new RuntimeException( cre );
 			}
 		}
 		this.isCommitted = true;
-	}	
+	}
+	public void pend(zoot.Resolver<?> resolver) {
+		TaskObserver taskObserver = new TaskObserver(this, resolver); 
+		resolver.initialize( this, taskObserver );
+	}
 	public void cancel() {
 		assert this.isPending();
 		this.isCancelled = true;
-	}
-	public void setTaskObserver( edu.cmu.cs.dennisc.task.TaskObserver< ? > taskObserver ) {
 	}
 	public boolean isCancelWorthwhile() {
 		return isCancelWorthwhile;

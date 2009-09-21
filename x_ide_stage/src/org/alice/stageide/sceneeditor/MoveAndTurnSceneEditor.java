@@ -221,7 +221,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
 		assert instance instanceof org.alice.apis.moveandturn.Transformable;
 		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
-		declaringType.fields.add( field );
+		//declaringType.fields.add( field );
 		this.putInstanceForField( field, transformable );
 		this.getIDE().setFieldSelection( field );
 		final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.program.getScene().findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
@@ -235,7 +235,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		} else {
 			this.program.getScene().addComponent( transformable );
 		}
-		getIDE().markChanged( "scene program addInstance" );
+		//getIDE().markChanged( "scene program addInstance" );
 	}
 	private void getGoodLookAtShowInstanceAndReturnCamera( org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera, org.alice.apis.moveandturn.Model model ) {
 		this.pushAndSetCameraNavigationDragAdapterEnabled( false );
@@ -736,14 +736,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignoring: setRenderingEnabled", isRenderingEnabled );
 	}
 
-	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		org.alice.apis.stage.Person person = this.getInstanceInJavaForField( field, org.alice.apis.stage.Person.class );
-		if( person != null ) {
-			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
-			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE() );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( result );
-		}
-	}
+//	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+//		org.alice.apis.stage.Person person = this.getInstanceInJavaForField( field, org.alice.apis.stage.Person.class );
+//		if( person != null ) {
+//			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
+//			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE() );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( result );
+//		}
+//	}
 	
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCameraForCreatingThumbnails() {
 		return this.program.getSGCameraForCreatingThumbnails();

@@ -116,7 +116,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 		}
 	}
 	@Override
-	public void redo() throws javax.swing.undo.CannotRedoException {
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		org.alice.ide.ast.NodeUtilities.removeParameter( this.map, this.method, this.getParameter(), this.index, this.getIDE().getMethodInvocations( this.method ) );
 	}
 	@Override

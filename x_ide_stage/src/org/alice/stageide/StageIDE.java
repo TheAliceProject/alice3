@@ -421,12 +421,13 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 	@Override
-	public void declareFieldOfPredeterminedType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType, zoot.ActionContext actionContext ) {
+	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 		if( typeInJava == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) ) {
 			javax.swing.JOptionPane.showMessageDialog( this, "todo" );
+			return false;
 		} else {
-			super.declareFieldOfPredeterminedType( ownerType, valueType, actionContext );
+			return super.isDeclareFieldOfPredeterminedTypeSupported( valueType );
 		}
 	}
 	@Override

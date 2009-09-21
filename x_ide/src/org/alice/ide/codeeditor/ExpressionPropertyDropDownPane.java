@@ -22,6 +22,8 @@
  */
 package org.alice.ide.codeeditor;
 
+import org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -30,7 +32,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 	public ExpressionPropertyDropDownPane( java.awt.Component prefixPane, java.awt.Component component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		super( prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
-		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionPropertyOperation( this.expressionProperty ) );
+		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation( this.expressionProperty ) );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
@@ -58,24 +60,13 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 		if( source.getSubject() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
 			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source.getSubject();
 			final zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( source, ExpressionPropertyDropDownPane.this, eSource );
-			class DropOperation extends org.alice.ide.operations.AbstractActionOperation {
-				public void perform( final zoot.ActionContext actionContext ) {
-					edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver = new edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression>() {
-						public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-							if( expression != null ) {
-								ExpressionPropertyDropDownPane.this.expressionProperty.setValue( expression );
-								source.hideDropProxyIfNecessary();
-							} else {
-								this.handleCancelation();
-							}
-						}
-						public void handleCancelation() {
-							actionContext.cancel();
-							source.hideDropProxyIfNecessary();
-						}
-					};
-					actionContext.setTaskObserver( taskObserver );
-					expressionCreatorPane.createExpression( dragAndDropEvent, ExpressionPropertyDropDownPane.this.expressionProperty, taskObserver );
+			class DropOperation extends AbstractExpressionPropertyActionOperation {
+				public DropOperation() {
+					super( ExpressionPropertyDropDownPane.this.expressionProperty );
+				}
+				@Override
+				protected void initializeInternal(zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
+					expressionCreatorPane.createExpression( dragAndDropEvent, this.getExpressionProperty(), taskObserver );
 				}
 			}
 			dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );

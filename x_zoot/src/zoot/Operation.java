@@ -25,5 +25,10 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public interface Operation extends javax.swing.undo.UndoableEdit {
+public interface Operation {
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException;
+	public void undo() throws javax.swing.undo.CannotUndoException;
+	public boolean canDoOrRedo();
+	public boolean canUndo();
+	public boolean isSignificant();
 }

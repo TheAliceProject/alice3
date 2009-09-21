@@ -25,7 +25,7 @@ package zoot;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractOperation extends javax.swing.undo.AbstractUndoableEdit implements Operation {
+public abstract class AbstractOperation implements Operation {
 	protected java.awt.Component getSourceComponent( Context< ? > context ) {
 		if( context != null ) {
 			java.util.EventObject e = context.getEvent();
@@ -34,14 +34,20 @@ public abstract class AbstractOperation extends javax.swing.undo.AbstractUndoabl
 			return null;
 		}
 	}
-	@Override
-	public void redo() throws javax.swing.undo.CannotRedoException {
-		throw new javax.swing.undo.CannotRedoException();
+	public boolean canDoOrRedo() {
+		return true;
 	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		throw new javax.swing.undo.CannotUndoException();
+	public boolean canUndo() {
+		return true;
 	}
-	@Override
+//	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+//		throw new javax.swing.undo.CannotRedoException();
+//	}
+//	public void undo() throws javax.swing.undo.CannotUndoException {
+//		throw new javax.swing.undo.CannotUndoException();
+//	}
+	
 	public abstract boolean isSignificant();
+	public abstract void doOrRedo() throws javax.swing.undo.CannotRedoException;
+	public abstract void undo() throws javax.swing.undo.CannotUndoException;
 }

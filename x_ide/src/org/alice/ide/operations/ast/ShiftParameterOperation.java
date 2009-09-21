@@ -60,7 +60,7 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		}
 	}
 	@Override
-	public void redo() throws javax.swing.undo.CannotRedoException {
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		int aIndex = this.getIndexA();
 		int bIndex = aIndex + 1;
 		swap( aIndex, bIndex );

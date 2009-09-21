@@ -48,7 +48,7 @@ public class ExitOperation extends AbstractClearanceActionOperation {
 		}
 	}
 	@Override
-	public boolean canRedo() {
+	public boolean canDoOrRedo() {
 		return false;
 	}
 	@Override

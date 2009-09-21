@@ -36,7 +36,8 @@ public interface Context< O extends Operation > {
 	public boolean isPending();
 	public void commitAndInvokeRedoIfAppropriate();
 	public void cancel();
-	public void setTaskObserver( edu.cmu.cs.dennisc.task.TaskObserver< ? > taskObserver );
+	//todo: rename
+	public void pend( Resolver<?> resolver );
 	public boolean isCancelWorthwhile();
 	public ActionContext perform( ActionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile );
 	public ItemSelectionContext perform( ItemSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection );

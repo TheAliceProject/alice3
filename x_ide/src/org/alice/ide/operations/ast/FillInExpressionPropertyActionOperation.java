@@ -20,41 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations;
+package org.alice.ide.operations.ast;
 
-//todo: rename
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InconsequentialActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public InconsequentialActionOperation() {
-	}
-	public InconsequentialActionOperation( javax.swing.ButtonModel model ) {
-		super( model );
-	}
-	protected abstract void performInternal(zoot.ActionContext actionContext);
-	public final void perform(zoot.ActionContext actionContext) {
-		performInternal(actionContext);
-		actionContext.commitAndInvokeRedoIfAppropriate();
+public class FillInExpressionPropertyActionOperation extends AbstractExpressionPropertyActionOperation {
+	public FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( expressionProperty );
 	}
 	@Override
-	public final boolean canDoOrRedo() {
-		return false;
-	}
-	@Override
-	public final boolean canUndo() {
-		return false;
-	}
-	@Override
-	public final boolean isSignificant() {
-		return false;
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		throw new javax.swing.undo.CannotRedoException();
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		throw new javax.swing.undo.CannotUndoException();
+	protected void initializeInternal(zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getExpressionProperty().getExpressionType();
+		getIDE().promptUserForExpression( type, prevExpression, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
 	}
 }

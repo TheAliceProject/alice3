@@ -50,7 +50,7 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 		}
 	}
 	@Override
-	public void redo() throws javax.swing.undo.CannotRedoException {
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		org.alice.ide.ast.NodeUtilities.addParameter( this.map, this.method, this.parameter, this.index, this.getIDE().getMethodInvocations( this.method ) );
 	}
 	@Override

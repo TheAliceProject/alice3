@@ -44,7 +44,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.Ab
 		}
 	}
 	@Override
-	public void redo() throws javax.swing.undo.CannotRedoException {
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 		this.type.methods.add( this.method );
 		this.getIDE().setFocusedCode( this.method );
 	}
