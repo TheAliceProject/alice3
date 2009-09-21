@@ -56,6 +56,7 @@ public class ConformanceTestResults {
 	private String renderer;
 	private String[] extensions;
 	
+	private boolean isAttempted;
 	private boolean isPickFunctioningCorrectly;
 	private boolean isValid;
 
@@ -75,112 +76,110 @@ public class ConformanceTestResults {
 	}
 
 	private void inititialize( GL gl ) {
-		edu.cmu.cs.dennisc.timing.Timer timer = new edu.cmu.cs.dennisc.timing.Timer();
-		timer.start();
-		timer.mark( gl );
-
 		this.version = gl.glGetString(javax.media.opengl.GL.GL_VERSION);
 		this.vendor = gl.glGetString(javax.media.opengl.GL.GL_VENDOR);
 		this.renderer = gl.glGetString(javax.media.opengl.GL.GL_RENDERER);
-
 		String extensionsText = gl.glGetString(javax.media.opengl.GL.GL_EXTENSIONS);
 		this.extensions = extensionsText.split( " " );
-		
-		//int n = GetUtilities.getInteger(gl, GL.GL_NUM_EXTENSIONS);
-		
-		final int SELECTION_CAPACITY = 256;
-		final int SIZEOF_INT = 4;
-		java.nio.ByteBuffer byteBuffer = java.nio.ByteBuffer.allocateDirect(SIZEOF_INT * SELECTION_CAPACITY);
-		byteBuffer.order(java.nio.ByteOrder.nativeOrder());
-		java.nio.IntBuffer selectionAsIntBuffer = byteBuffer.asIntBuffer();
-
-		final float XY = 2.0f;
-		final float Z = 0.5f;
-		final int KEY = 11235;
-
-		gl.glSelectBuffer(SELECTION_CAPACITY, selectionAsIntBuffer);
-		gl.glRenderMode(GL.GL_SELECT);
-
-		gl.glClearDepth(1.0f);
-		gl.glDepthFunc( GL.GL_LEQUAL );
-		gl.glEnable( GL.GL_DEPTH_TEST );
-
-		gl.glDisable(GL.GL_CULL_FACE);
-
-		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
-		gl.glInitNames();
-
-		gl.glMatrixMode(GL.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glOrtho(-1, +1, -1, +1, -1, +1);
-		gl.glViewport(0, 0, 1, 1);
-
-		gl.glLoadIdentity();
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-		gl.glLoadIdentity();
-
-		gl.glPushName(KEY);
-
-		gl.glBegin(GL.GL_QUAD_STRIP);
-		gl.glVertex3f(-XY, -XY, Z);
-		gl.glVertex3f(+XY, -XY, Z);
-		gl.glVertex3f(+XY, +XY, Z);
-		gl.glVertex3f(-XY, +XY, Z);
-		gl.glEnd();
-
-		gl.glFlush();
-
-		gl.glPopName();
-
-		timer.mark( "picked" );
-
-		selectionAsIntBuffer.rewind();
-		int length = gl.glRenderMode(GL.GL_RENDER);
-
-		if (length == 1) {
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println("length", length);
-			int nameCount = selectionAsIntBuffer.get(0);
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println("nameCount", nameCount);
-			
-			int zFrontAsInt = selectionAsIntBuffer.get(1);
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsInt", "0x"+Integer.toHexString(zFrontAsInt));
-			long zFrontAsLong = convertZValueToLong( zFrontAsInt );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsLong", "0x"+Long.toHexString(zFrontAsLong));
-			
-			if( zFrontAsLong != FISHY_PICK_VALUE && zFrontAsLong != PickContext.MAX_UNSIGNED_INTEGER && zFrontAsLong != 0 ) {
-				//float zFront = convertZValueToFloat( zFrontAsLong );;
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFront", zFront);
-
-				boolean IS_BACK_VALUE_OF_CONCERN = false;
-				if( IS_BACK_VALUE_OF_CONCERN ) {
-					int zBackAsInt = selectionAsIntBuffer.get(2);
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsInt", "0x"+Integer.toHexString(zBackAsInt));
-					long zBackAsLong = convertZValueToLong( zBackAsInt );
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsLong", "0x"+Long.toHexString(zBackAsLong));
-					float zBack = convertZValueToFloat( zBackAsLong );;
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
-				}
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+			if( this.vendor != null && this.vendor.toLowerCase().contains( "intel" ) ) {
+				this.isAttempted = true;
+				//int n = GetUtilities.getInteger(gl, GL.GL_NUM_EXTENSIONS);
 				
-				if (nameCount == 1) {
-					int key = selectionAsIntBuffer.get(3);
-					if (key == KEY) {
-						this.isPickFunctioningCorrectly = true;
-//						edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: remove setting isPickFunctioningCorrectly = false");
-//						this.isPickFunctioningCorrectly = false;
+				final int SELECTION_CAPACITY = 256;
+				final int SIZEOF_INT = 4;
+				java.nio.ByteBuffer byteBuffer = java.nio.ByteBuffer.allocateDirect(SIZEOF_INT * SELECTION_CAPACITY);
+				byteBuffer.order(java.nio.ByteOrder.nativeOrder());
+				java.nio.IntBuffer selectionAsIntBuffer = byteBuffer.asIntBuffer();
+
+				final float XY = 2.0f;
+				final float Z = 0.5f;
+				final int KEY = 11235;
+
+				gl.glSelectBuffer(SELECTION_CAPACITY, selectionAsIntBuffer);
+				gl.glRenderMode(GL.GL_SELECT);
+
+				gl.glClearDepth(1.0f);
+				gl.glDepthFunc( GL.GL_LEQUAL );
+				gl.glEnable( GL.GL_DEPTH_TEST );
+
+				gl.glDisable(GL.GL_CULL_FACE);
+
+				gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
+				gl.glInitNames();
+
+				gl.glMatrixMode(GL.GL_PROJECTION);
+				gl.glLoadIdentity();
+				gl.glOrtho(-1, +1, -1, +1, -1, +1);
+				gl.glViewport(0, 0, 1, 1);
+
+				gl.glLoadIdentity();
+				gl.glMatrixMode(GL.GL_MODELVIEW);
+				gl.glLoadIdentity();
+
+				gl.glPushName(KEY);
+
+				gl.glBegin(GL.GL_QUAD_STRIP);
+				gl.glVertex3f(-XY, -XY, Z);
+				gl.glVertex3f(+XY, -XY, Z);
+				gl.glVertex3f(+XY, +XY, Z);
+				gl.glVertex3f(-XY, +XY, Z);
+				gl.glEnd();
+
+				gl.glFlush();
+
+				gl.glPopName();
+
+				selectionAsIntBuffer.rewind();
+				int length = gl.glRenderMode(GL.GL_RENDER);
+
+				if (length == 1) {
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println("length", length);
+					int nameCount = selectionAsIntBuffer.get(0);
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println("nameCount", nameCount);
+					
+					int zFrontAsInt = selectionAsIntBuffer.get(1);
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsInt", "0x"+Integer.toHexString(zFrontAsInt));
+					long zFrontAsLong = convertZValueToLong( zFrontAsInt );
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFrontAsLong", "0x"+Long.toHexString(zFrontAsLong));
+					
+					if( zFrontAsLong != FISHY_PICK_VALUE && zFrontAsLong != PickContext.MAX_UNSIGNED_INTEGER && zFrontAsLong != 0 ) {
+						//float zFront = convertZValueToFloat( zFrontAsLong );;
+						//edu.cmu.cs.dennisc.print.PrintUtilities.println("zFront", zFront);
+
+						boolean IS_BACK_VALUE_OF_CONCERN = false;
+						if( IS_BACK_VALUE_OF_CONCERN ) {
+							int zBackAsInt = selectionAsIntBuffer.get(2);
+							//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsInt", "0x"+Integer.toHexString(zBackAsInt));
+							long zBackAsLong = convertZValueToLong( zBackAsInt );
+							//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBackAsLong", "0x"+Long.toHexString(zBackAsLong));
+							float zBack = convertZValueToFloat( zBackAsLong );;
+							//edu.cmu.cs.dennisc.print.PrintUtilities.println("zBack", zBack);
+						}
+						
+						if (nameCount == 1) {
+							int key = selectionAsIntBuffer.get(3);
+							if (key == KEY) {
+								this.isPickFunctioningCorrectly = true;
+//								edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: remove setting isPickFunctioningCorrectly = false");
+//								this.isPickFunctioningCorrectly = false;
+							}
+						}
 					}
 				}
+				this.isValid = true;
 			}
 		}
-		timer.mark( "processed" );
-		//timer.stopAndPrintResults();
-		this.isValid = true;
 	}
 
+	public boolean isAttempted() {
+		return this.isAttempted;
+	}
 	public boolean isValid() {
 		return this.isValid;
 	}
 	public boolean isPickFunctioningCorrectly() {
-		return this.isPickFunctioningCorrectly;
+		return this.isAttempted==false || this.isValid==false || this.isPickFunctioningCorrectly;
 	}
 	
 	
