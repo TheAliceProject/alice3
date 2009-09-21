@@ -48,6 +48,10 @@ public abstract class AbstractOperation implements Operation {
 //	}
 	
 	public abstract boolean isSignificant();
-	public abstract void doOrRedo() throws javax.swing.undo.CannotRedoException;
-	public abstract void undo() throws javax.swing.undo.CannotUndoException;
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+		throw new javax.swing.undo.CannotRedoException();
+	}
+	public void undo() throws javax.swing.undo.CannotUndoException {
+		throw new javax.swing.undo.CannotUndoException();
+	}
 }
