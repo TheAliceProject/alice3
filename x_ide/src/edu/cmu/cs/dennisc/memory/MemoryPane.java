@@ -20,7 +20,6 @@ public class MemoryPane extends swing.BorderPane {
 		labels.add( labelMax, java.awt.BorderLayout.EAST );
 		this.add( labels, java.awt.BorderLayout.SOUTH );
 		this.setPreferredSize( new java.awt.Dimension( 300, 80 ) );
-
 	}
 	
 	public static void main(String[] args) {

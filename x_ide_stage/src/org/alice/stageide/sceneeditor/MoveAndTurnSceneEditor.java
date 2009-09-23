@@ -554,7 +554,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( attribute instanceof Enum ) {
 			return createExpression( (Enum)attribute );
 		} else {
-			throw new RuntimeException( "todo" );
+			throw new RuntimeException( "todo handle org.alice.apis.moveandturn.font.Attribute that is not an Enum" );
 		}
 	}
 

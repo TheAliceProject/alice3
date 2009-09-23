@@ -29,6 +29,7 @@ public abstract class IsFrameShowingOperation extends org.alice.ide.operations.A
 				public void windowClosed(java.awt.event.WindowEvent e) {
 				}
 			} );
+			this.frame.pack();
 		}
 		return this.frame;
 	}

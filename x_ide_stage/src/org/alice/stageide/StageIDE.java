@@ -424,7 +424,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 		if( typeInJava == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) ) {
-			javax.swing.JOptionPane.showMessageDialog( this, "todo" );
+			javax.swing.JOptionPane.showMessageDialog( this, "todo: isDeclareFieldOfPredeterminedTypeSupported" );
 			return false;
 		} else {
 			return super.isDeclareFieldOfPredeterminedTypeSupported( valueType );

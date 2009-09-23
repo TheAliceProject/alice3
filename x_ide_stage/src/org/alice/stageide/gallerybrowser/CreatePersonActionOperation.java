@@ -94,7 +94,7 @@ class CreatePersonActionOperation extends AbstractDeclareFieldOperation {
 		dialog.setVisible(true);
 		dialog.createAndExecuteWorker();
 		
-		javax.swing.JOptionPane.showMessageDialog( null, "todo" );
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: CreatePersonActionOperation" );
 		return null;
 	}
 }

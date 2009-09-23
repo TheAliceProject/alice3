@@ -84,11 +84,11 @@ class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperati
 	}
 	@Override
 	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo" );
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation doOrRedo" );
 	}
 	@Override
 	public void undo() throws javax.swing.undo.CannotUndoException {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo" );
+		javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation undo" );
 	}
 	@Override
 	public boolean isSignificant() {
