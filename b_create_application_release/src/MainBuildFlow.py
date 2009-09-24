@@ -50,8 +50,8 @@ SSH_KEY_PASSPHRASE = "bkmdlmc"
 
 FORCE_NEW_VERSION = True
 FORCE_NEW_COMPONENTS = False
-OLD_VERSION = VersionUtilities.VersionNum("3.0.0.0.60")
-NEW_VERSION = VersionUtilities.VersionNum("3.0.0.0.61")
+OLD_VERSION = VersionUtilities.VersionNum("3.0.0.62.0")
+NEW_VERSION = VersionUtilities.VersionNum("3.0.0.0.63")
 
 PREVIOUS_JAR_HTTP_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3/branches/"+str(OLD_VERSION)+"/"
 PREVIOUS_JAR_SSH_SVN_URL = "svn+ssh://culybad@invent.cse.wustl.edu/project/invent/lookingglass/svn/"
@@ -162,6 +162,7 @@ componentMap = {
 
 FORCE_NEW_VERSION = [
 "lg_walkandtouch",
+"aliceData",
 #"windowsauxiliary",
 #"foundation",
 #"moveandturn",
@@ -189,6 +190,7 @@ LINUX_CLOSER_REPOSITORY = SVNUtilities.Repository(previousBuildRepository, curre
 ALICE_INSTALLER_ID = "alice"
 BUILD_OUTPUT_DIR = "C:/AliceVersions"
 INSTALLERS_DIR = "C:/AliceInstallers"
+ZIPS_DIR = "C:/AliceZips"
 DEFAULT_INSTALL_DIR_NAME = "Alice3Beta"
 JAR_SRC_DIR = "C:/AliceSource/"
 
@@ -298,7 +300,7 @@ print "Last version was "+str(lastVersion)
 if (lastVersion == None):
     needNewComponents = True
 
-USE_EXISTING_DATA = True
+USE_EXISTING_DATA = False
 currentVersionInfo = versionInfo.getVersion(NEW_VERSION)
 canUseExistingData = currentVersionInfo != None
 usingExistingData = USE_EXISTING_DATA and canUseExistingData
@@ -463,7 +465,7 @@ if (needNewVersion):
 			minVersion = VersionUtilities.VersionNum()
 			minVersion.setVals([3,0,0,0,0])
 			maxVersion = VersionUtilities.VersionNum()
-			maxVersion.setVals([3,0,0,1,0])
+			maxVersion.setVals([3,0,1,0,0])
 			dependencyName = InstallerUtilities.makeValidID(launcherBuildObject.name)
 
 			buildComponent.setDependency(dependencyName, minVersion, maxVersion)
@@ -496,7 +498,7 @@ if (needNewVersion):
 		minVersion = VersionUtilities.VersionNum()
 		minVersion.setVals([3,0,0,0,0])
 		maxVersion = VersionUtilities.VersionNum()
-		maxVersion.setVals([3,0,0,1,0])
+		maxVersion.setVals([3,0,1,0,0])
 		for prodID in dependencies:
 			closerDependenciesString += "product.requirements."+str(count)+".uid="+prodID+"\n"
 			closerDependenciesString += "product.requirements."+str(count)+".version-lower="+str(minVersion)+"\n"
@@ -509,24 +511,27 @@ if (needNewVersion):
 		mainInstaller.setDefaultInstallDirectoryName(DEFAULT_INSTALL_DIR_NAME)
 
 	print "Creating installer zips "+str(installer.version)
-	installer.expandToDir(INSTALLERS_DIR)
+	installer.expandToDir(ZIPS_DIR)
 	print "Made zips."
 
 
-#	print "Creating installer "+str(installer.version)
-#	installer.writeToFile(INSTALLERS_DIR)
-#	print "Made installer: "+installer.projectDir
-#
-#print "Making NetBeans plugins..."
-#ALICE_PLUGIN_FOLDER = "C:/AlicePlugins/"
-#PLUGIN_OLD_VERSION = VersionUtilities.VersionNum("3.0.0.0.60")
-#PLUGIN_NEW_VERSION = VersionUtilities.VersionNum("3.0.0.61.1")
-#plugin = NetbeansPluginUtilities.PluginObject(ALICE_PLUGIN_FOLDER, PLUGIN_NEW_VERSION, PLUGIN_OLD_VERSION)
-##plugin.getJars(jarObjects)
+	print "Creating installer "+str(installer.version)
+	installer.writeToFile(INSTALLERS_DIR)
+	print "Made installer: "+installer.projectDir
+
+print "Making NetBeans plugins..."
+ALICE_PLUGIN_FOLDER = "C:/AlicePlugins/"
+PLUGIN_OLD_VERSION = OLD_VERSION
+PLUGIN_OLD_VERSION = VersionUtilities.VersionNum("3.0.0.61.2")
+
+PLUGIN_NEW_VERSION = NEW_VERSION
+#PLUGIN_NEW_VERSION = VersionUtilities.VersionNum("3.0.0.61.2")
+plugin = NetbeansPluginUtilities.PluginObject(ALICE_PLUGIN_FOLDER, PLUGIN_NEW_VERSION, PLUGIN_OLD_VERSION)
+plugin.getJars(jarObjects)
 #plugin.getJarsFromPaths("C:/AliceVersions/3.0.0.0.61/lib/3.0.0.0.61/foundation.jar", "C:/AliceVersions/3.0.0.0.61/lib/3.0.0.0.61/lg_walkandtouch.jar", "C:/AliceVersions/3.0.0.0.61/lib/3.0.0.0.61/moveandturn.jar", "C:/AliceVersions/3.0.0.0.59/lib/3.0.0.0.59/stage.jar")
-#plugin.getLibraries("C:/AliceNative/WindowsNative/application/windows-i586/", "C:/AliceNative/MacNative/application/macosx-universal/", "C:/AliceNative/LinuxNative/application/linux-i586/")
-#plugin.makeNBMs()
-#print "Made NetBeans plugins."
+plugin.getLibraries("C:/AliceNative/WindowsNative/application/windows-i586/", "C:/AliceNative/WindowsNative/application/windows-amd64/", "C:/AliceNative/MacNative/application/macosx-universal/", "C:/AliceNative/LinuxNative/application/linux-i586/", "C:/AliceNative/LinuxNative/application/linux-amd64/")
+plugin.makeNBMs()
+print "Made NetBeans plugins."
 
 
 

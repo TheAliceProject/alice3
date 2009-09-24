@@ -327,7 +327,9 @@ class InstallerProject:
 			else:
 			    print "  rejected!"
 		    elif (fileName.endswith("dll") and isWindows):
-			if (parentName.find("64") == -1):
+			if (parentName.find("64") >= 0 and is64Bit):
+			    nativelibs.append(file.getParentFile())
+			elif (parentName.find("586") >= 0 and not is64Bit):
 			    nativelibs.append(file.getParentFile())
 		    elif (fileName.endswith("lib") and isMac):
 			if (parentName.find("ppc") == -1):
@@ -350,7 +352,7 @@ class InstallerProject:
 			    print "creating file: "+newFile.toString()
 			    newFile.createNewFile()
 			    launcher = newFile
-			launchGenerator.encode( launcher, True )
+			launchGenerator.encode( launcher, True, False )
 		    except Exception, inst:
 			print "encoding failed: "+str(inst)
 		else:

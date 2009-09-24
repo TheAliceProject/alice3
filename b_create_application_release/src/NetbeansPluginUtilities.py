@@ -55,32 +55,21 @@ class PluginObject:
 	    shutil.copy(moveAndTurnPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+MOVEANDTURN_JAR)
 	    shutil.copy(storyTellingPath, PluginObject.PROJECT_ROOT+ALICE_WIZARD_INSTALL_ROOT+STORYTELLING_JAR)
 	    
-	def getLibraries(self, windowsDir, macDir, linuxDir):
+	def getLibraries(self, windowsDir, windows64Dir, macDir, linuxDir, linux64Dir):
 		MAC_FILE = "libjni_nebulous.jnilib"
 		WINDOWS_FILE = "jni_nebulous.dll"
 		LINUX_FILE = "libjni_nebulous.so"
-
-		#LIBRARY_LIB_DIR = "AliceProjectWizard/release/modules/lib/"
-		#MODULE_LIB_DIR = "Alice3PluginSuite/build/cluster/modules/lib/"
-
-		#SUITE_MODULE_WINDOWS_DIR = "Alice3PluginSuite/build/cluster/libs/storytelling.jar-natives-windows-i586/"
 		LIBRARY_WINDOWS_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-windows-i586/"
-
-		#SUITE_MODULE_MAC_DIR = "Alice3PluginSuite/build/cluster/libs/storytelling.jar-natives-macosx-universal/"
+		LIBRARY_WINDOWS64_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-windows-amd64/"
 		LIBRARY_MAC_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-macosx-universal/"
 		LIBRARY_LINUX_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-linux-i586/"
+		LIBRARY_LINUX64_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-linux-amd64/"
 
-		#shutil.copy(windowsDir+WINDOWS_FILE, PluginObject.PROJECT_ROOT+LIBRARY_LIB_DIR+WINDOWS_FILE)
-		#shutil.copy(windowsDir+WINDOWS_FILE, PluginObject.PROJECT_ROOT+MODULE_LIB_DIR+WINDOWS_FILE)
-		#shutil.copy(windowsDir+WINDOWS_FILE, PluginObject.PROJECT_ROOT+SUITE_MODULE_WINDOWS_DIR+WINDOWS_FILE)
 		shutil.copy(windowsDir+WINDOWS_FILE, PluginObject.PROJECT_ROOT+LIBRARY_WINDOWS_DIR+WINDOWS_FILE)
-
-		#shutil.copy(macDir+MAC_FILE, PluginObject.PROJECT_ROOT+LIBRARY_LIB_DIR+MAC_FILE)
-		#shutil.copy(macDir+MAC_FILE, PluginObject.PROJECT_ROOT+MODULE_LIB_DIR+MAC_FILE)
-		#shutil.copy(macDir+MAC_FILE, PluginObject.PROJECT_ROOT+SUITE_MODULE_MAC_DIR+MAC_FILE)
+		shutil.copy(windows64Dir+WINDOWS_FILE, PluginObject.PROJECT_ROOT+LIBRARY_WINDOWS64_DIR+WINDOWS_FILE)
 		shutil.copy(macDir+MAC_FILE, PluginObject.PROJECT_ROOT+LIBRARY_MAC_DIR+MAC_FILE)
-
 		shutil.copy(linuxDir+LINUX_FILE, PluginObject.PROJECT_ROOT+LIBRARY_LINUX_DIR+LINUX_FILE)
+		shutil.copy(linux64Dir+LINUX_FILE, PluginObject.PROJECT_ROOT+LIBRARY_LINUX64_DIR+LINUX_FILE)
 
 
 	def makeNBMs(self):
