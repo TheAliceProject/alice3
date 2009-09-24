@@ -34,7 +34,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
 
-	public static String IS_PROJECT_CHANGED_KEY = "IS_PROJECT_AFFECTED_KEY";
+	//public static String IS_PROJECT_CHANGED_KEY = "IS_PROJECT_AFFECTED_KEY";
 
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
@@ -386,15 +386,18 @@ public abstract class IDE extends zoot.ZFrame {
 				if( context.isCommitted() ) {
 					//todo:
 					//Boolean isProjectChanged = context.get( IDE.IS_PROJECT_CHANGED_KEY, Boolean.class );
-					Boolean isProjectChanged = (Boolean)context.get( IDE.IS_PROJECT_CHANGED_KEY );
-					if( isProjectChanged != null ) {
-						if( isProjectChanged ) {
-							IDE.this.markChanged();
-						}
-					} else {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: mark IDE.IS_PROJECT_CHANGED_KEY:", e );
+					if( context.getOperation().isSignificant() ) {
 						IDE.this.markChanged();
 					}
+//					Boolean isProjectChanged = (Boolean)context.get( IDE.IS_PROJECT_CHANGED_KEY );
+//					if( isProjectChanged != null ) {
+//						if( isProjectChanged ) {
+//							IDE.this.markChanged();
+//						}
+//					} else {
+//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: mark IDE.IS_PROJECT_CHANGED_KEY:", e );
+//						IDE.this.markChanged();
+//					}
 //					edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
 //					zoot.Operation source = e.getTypedSource();
 //					if( source instanceof org.alice.ide.operations.file.AbstractSaveProjectOperation || source instanceof org.alice.ide.operations.file.AbstractOpenProjectOperation ) {
