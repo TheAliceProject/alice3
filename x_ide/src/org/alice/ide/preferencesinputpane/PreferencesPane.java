@@ -32,6 +32,9 @@ public class PreferencesPane extends edu.cmu.cs.dennisc.croquet.FormPane {
 		this.prefs = java.util.prefs.Preferences.userNodeForPackage( clsWithinPackage );
 		this.preferences = preferences;
 	}
+	public String getTitle() {
+		return this.prefs.absolutePath();
+	}
 	@Override
 	protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {
 		for( edu.cmu.cs.dennisc.preference.Preference<?> preference : preferences ) {
