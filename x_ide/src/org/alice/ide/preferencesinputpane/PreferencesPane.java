@@ -26,14 +26,16 @@ package org.alice.ide.preferencesinputpane;
  * @author Dennis Cosgrove
  */
 public class PreferencesPane extends edu.cmu.cs.dennisc.croquet.FormPane {
+	private String title;
 	private java.util.prefs.Preferences prefs;
 	private java.util.List< edu.cmu.cs.dennisc.preference.Preference<?> > preferences;
-	public PreferencesPane( Class<?> clsWithinPackage, java.util.List< edu.cmu.cs.dennisc.preference.Preference<?> > preferences ) {
+	public PreferencesPane( String title, Class<?> clsWithinPackage, java.util.List< edu.cmu.cs.dennisc.preference.Preference<?> > preferences ) {
+		this.title = title;
 		this.prefs = java.util.prefs.Preferences.userNodeForPackage( clsWithinPackage );
 		this.preferences = preferences;
 	}
 	public String getTitle() {
-		return this.prefs.absolutePath();
+		return this.title;
 	}
 	@Override
 	protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {

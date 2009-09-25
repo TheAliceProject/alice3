@@ -55,9 +55,10 @@ public class PreferencesInputPane extends zoot.ZInputPane<Void> {
 		} );
 		this.splitPane.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
 		this.splitPane.setRightComponent( new javax.swing.JLabel( "please select" ) );
+		this.splitPane.setDividerLocation( 200 );
 		this.setLayout( new java.awt.BorderLayout() );
 		this.add( this.splitPane, java.awt.BorderLayout.CENTER );
-		this.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
+		this.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
 	}
 	@Override
 	protected Void getActualInputValue() {
@@ -66,7 +67,11 @@ public class PreferencesInputPane extends zoot.ZInputPane<Void> {
 	public static void main(String[] args) {
 		java.util.List<edu.cmu.cs.dennisc.preference.Preference<?>> generalPreferences = new java.util.LinkedList<edu.cmu.cs.dennisc.preference.Preference<?>>();
 		generalPreferences.add( new edu.cmu.cs.dennisc.preference.BooleanPreference( "isDefaultFieldNameGenerationDesired", false ) );
-		PreferencesPane generalPreferencesPane = new PreferencesPane( org.alice.ide.IDE.class, generalPreferences);
+		PreferencesPane generalPreferencesPane = new PreferencesPane( "General", org.alice.ide.IDE.class, generalPreferences);
+
+		PreferencesPane everydayPreferencesPane = new PreferencesPane( "Everyday", org.alice.ide.IDE.class, generalPreferences );
+		PreferencesPane javaPreferencesPane = new PreferencesPane( "Java", org.alice.ide.IDE.class, generalPreferences );
+		
 		javax.swing.tree.TreeNode root = new javax.swing.tree.DefaultMutableTreeNode( generalPreferencesPane );
 		javax.swing.tree.TreeModel treeModel = new javax.swing.tree.DefaultTreeModel( root );
 		PreferencesInputPane inputPane = new PreferencesInputPane( treeModel );
