@@ -31,7 +31,7 @@ public class PortionFillerInner extends org.alice.ide.cascade.fillerinners.Insta
 		super( org.alice.apis.moveandturn.Portion.class );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 ) ) ); 
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.1 ) ) ); 

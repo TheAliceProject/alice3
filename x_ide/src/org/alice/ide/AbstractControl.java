@@ -25,7 +25,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractControl extends zoot.ZControl {
+public abstract class AbstractControl extends edu.cmu.cs.dennisc.zoot.ZControl {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

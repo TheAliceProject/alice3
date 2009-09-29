@@ -22,9 +22,9 @@
  */
 package org.alice.ide.warningpane;
 
-public class WarningPane extends swing.PageAxisPane {
+public class WarningPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	public WarningPane( boolean isSolicited ) {
-		zoot.ZLabel label = zoot.ZLabel.acquire(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
+		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
 
 		StringBuffer sb = new StringBuffer();
 		sb.append( "<html><body>" );
@@ -46,13 +46,13 @@ public class WarningPane extends swing.PageAxisPane {
 		this.add( editorPane );
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
 		
-		class FurtherInfoPane extends swing.RowsSpringPane {
+		class FurtherInfoPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPane {
 			public FurtherInfoPane() {
 				super( 8, 4 );
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 			}
 			private java.awt.Component createLabel( String text ) {
-				zoot.ZLabel rv = zoot.ZLabel.acquire( text );
+				edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text );
 				rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 				return rv;
 			}

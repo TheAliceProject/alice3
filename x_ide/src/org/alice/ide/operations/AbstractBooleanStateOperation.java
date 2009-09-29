@@ -25,7 +25,7 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractBooleanStateOperation extends zoot.AbstractBooleanStateOperation {
+public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanStateOperation {
 	public AbstractBooleanStateOperation( Boolean initialValue ) {
 		super( initialValue );
 	}

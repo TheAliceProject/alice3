@@ -35,7 +35,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 		this.putValue( javax.swing.Action.NAME, "Delete" );
 	}
 	protected abstract boolean isClearToDelete( E node );
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		if( this.isClearToDelete( this.node ) ) {
 			this.index = this.owner.indexOf( this.node );
 			actionContext.commitAndInvokeRedoIfAppropriate();

@@ -42,7 +42,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 			return true;
 		}
 	}
-	class DeclarationNameTextField extends zoot.ZSuggestiveTextField {
+	class DeclarationNameTextField extends edu.cmu.cs.dennisc.zoot.ZSuggestiveTextField {
 		public DeclarationNameTextField() {
 			super( "", "" );
 			this.setFont( this.getFont().deriveFont( 18.0f ) );
@@ -72,7 +72,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	}
 
 	private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( null, false );
-	private zoot.ZCheckBox isReassignableCheckBox;
+	private edu.cmu.cs.dennisc.zoot.ZCheckBox isReassignableCheckBox;
 	private TypePane typePane;
 	private DeclarationNameTextField declarationNameTextField = new DeclarationNameTextField();
 	private InitializerPane initializerPane;
@@ -159,7 +159,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	}
 	protected final java.awt.Component createIsReassignableComponent() {
 		if( isIsReassignableComponentDesired() ) {
-			this.isReassignableCheckBox = new zoot.ZCheckBox( new IsReassignableStateOperation( this.getIsReassignableInitialState() ) ) {
+			this.isReassignableCheckBox = new edu.cmu.cs.dennisc.zoot.ZCheckBox( new IsReassignableStateOperation( this.getIsReassignableInitialState() ) ) {
 				@Override
 				public String getText() {
 					if( this.isSelected() ) {

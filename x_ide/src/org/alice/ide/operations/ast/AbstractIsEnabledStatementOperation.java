@@ -31,7 +31,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	public AbstractIsEnabledStatementOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		this.statement = statement;
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		this.prevValue = this.statement.isEnabled.getValue();
 		actionContext.commitAndInvokeRedoIfAppropriate();
 	}

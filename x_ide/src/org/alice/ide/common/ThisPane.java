@@ -53,7 +53,7 @@ public class ThisPane extends AccessiblePane {
 	};
 
 	public ThisPane() {
-		zoot.ZLabel label = zoot.ZLabel.acquire( getIDE().getTextForThis() );
+		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( getIDE().getTextForThis() );
 		this.add( label );
 		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
@@ -95,7 +95,7 @@ public class ThisPane extends AccessiblePane {
 		super.paint( g );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		if( this.type == TYPE_FOR_NULL ) {
-			g2.setPaint( zoot.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

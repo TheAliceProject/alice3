@@ -90,7 +90,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		public AddItemOperation() {
 			this.putValue( javax.swing.Action.NAME, "Add" );
 		}
-		public void perform( zoot.ActionContext actionContext ) {
+		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			this.expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
 			this.index = ArrayInitializerPane.this.arrayExpressions.size();
 			actionContext.commitAndInvokeRedoIfAppropriate();
@@ -120,7 +120,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		public RemoveItemOperation() {
 			this.putValue( javax.swing.Action.NAME, "Remove" );
 		}
-		public void perform( zoot.ActionContext actionContext ) {
+		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			this.index = ArrayInitializerPane.this.list.getSelectedIndex();
 			this.expression = ArrayInitializerPane.this.list.getItemAt( this.index );
 			actionContext.commitAndInvokeRedoIfAppropriate();
@@ -160,7 +160,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		protected abstract int getIndex( int selectedIndex );
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
-		public final void perform(zoot.ActionContext actionContext) {
+		public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 			this.index = this.getIndex( ArrayInitializerPane.this.list.getSelectedIndex() );
 			actionContext.commitAndInvokeRedoIfAppropriate();
 		}
@@ -248,12 +248,12 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	//		}
 	//	}
 
-	class ExpressionList extends swing.GridBagPane {
+	class ExpressionList extends edu.cmu.cs.dennisc.croquet.GridBagPane {
 		private java.awt.Component glue = javax.swing.Box.createGlue();
 		private javax.swing.ButtonGroup group;
 		private java.awt.GridBagConstraints gbc;
 
-		public ExpressionList( zoot.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > itemSelectionOperation ) {
+		public ExpressionList( edu.cmu.cs.dennisc.zoot.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > itemSelectionOperation ) {
 			//			super( itemSelectionOperation );
 			this.group = new javax.swing.ButtonGroup();
 			this.gbc = new java.awt.GridBagConstraints();
@@ -333,10 +333,10 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions;
 
-	private zoot.ZButton addButton = new zoot.ZButton( new AddItemOperation() );
-	private zoot.ZButton removeButton = new zoot.ZButton( new RemoveItemOperation() );
-	private zoot.ZButton moveUpButton = new zoot.ZButton( new MoveItemUpOperation() );
-	private zoot.ZButton moveDownButton = new zoot.ZButton( new MoveItemDownOperation() );
+	private edu.cmu.cs.dennisc.zoot.ZButton addButton = new edu.cmu.cs.dennisc.zoot.ZButton( new AddItemOperation() );
+	private edu.cmu.cs.dennisc.zoot.ZButton removeButton = new edu.cmu.cs.dennisc.zoot.ZButton( new RemoveItemOperation() );
+	private edu.cmu.cs.dennisc.zoot.ZButton moveUpButton = new edu.cmu.cs.dennisc.zoot.ZButton( new MoveItemUpOperation() );
+	private edu.cmu.cs.dennisc.zoot.ZButton moveDownButton = new edu.cmu.cs.dennisc.zoot.ZButton( new MoveItemDownOperation() );
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 
@@ -360,7 +360,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.updateButtons();
 
-		swing.GridBagPane buttonPane = new swing.GridBagPane();
+		edu.cmu.cs.dennisc.croquet.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.GridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;

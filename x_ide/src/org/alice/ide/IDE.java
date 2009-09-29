@@ -29,7 +29,7 @@ import edu.cmu.cs.dennisc.animation.Program;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IDE extends zoot.ZFrame {
+public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
@@ -145,7 +145,7 @@ public abstract class IDE extends zoot.ZFrame {
 		
 	}
 
-	private swing.ConcealedBin concealedBin = new swing.ConcealedBin();
+	private edu.cmu.cs.dennisc.croquet.ConcealedBin concealedBin = new edu.cmu.cs.dennisc.croquet.ConcealedBin();
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
@@ -293,7 +293,7 @@ public abstract class IDE extends zoot.ZFrame {
 	private javax.swing.JSplitPane root;
 	private javax.swing.JSplitPane left;
 
-	class RightPane extends swing.GridBagPane {
+	class RightPane extends edu.cmu.cs.dennisc.croquet.GridBagPane {
 		public RightPane() {
 			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 			gbc.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
@@ -378,11 +378,11 @@ public abstract class IDE extends zoot.ZFrame {
 
 		this.promptForLicenseAgreements();
 
-		zoot.ZManager.addOperationListener( new zoot.event.OperationListener() {
-			public void operationPerforming( zoot.event.OperationEvent e ) {
+		edu.cmu.cs.dennisc.zoot.ZManager.addOperationListener( new edu.cmu.cs.dennisc.zoot.event.OperationListener() {
+			public void operationPerforming( edu.cmu.cs.dennisc.zoot.event.OperationEvent e ) {
 			}
-			public void operationPerformed( zoot.event.OperationEvent e ) {
-				zoot.Context context = e.getContext();
+			public void operationPerformed( edu.cmu.cs.dennisc.zoot.event.OperationEvent e ) {
+				edu.cmu.cs.dennisc.zoot.Context context = e.getContext();
 				if( context.isCommitted() ) {
 					//todo:
 					//Boolean isProjectChanged = context.get( IDE.IS_PROJECT_CHANGED_KEY, Boolean.class );
@@ -493,11 +493,11 @@ public abstract class IDE extends zoot.ZFrame {
 //		return this.uncertainUndoManagerKey;
 //	}
 
-	private zoot.ActionOperation clearToProcedeWithChangedProjectOperation = new zoot.AbstractActionOperation() {
-		public void perform( zoot.ActionContext actionContext ) {
+	private edu.cmu.cs.dennisc.zoot.ActionOperation clearToProcedeWithChangedProjectOperation = new edu.cmu.cs.dennisc.zoot.AbstractActionOperation() {
+		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			int option = javax.swing.JOptionPane.showConfirmDialog( IDE.this, "Your program has been modified.  Would you like to save it?", "Save changed project?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
 			if( option == javax.swing.JOptionPane.YES_OPTION ) {
-				zoot.ActionContext saveActionContext = actionContext.perform( IDE.this.saveOperation, null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+				edu.cmu.cs.dennisc.zoot.ActionContext saveActionContext = actionContext.perform( IDE.this.saveOperation, null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				if( saveActionContext.isCommitted() ) {
 					actionContext.commitAndInvokeRedoIfAppropriate();
 				} else {
@@ -523,17 +523,17 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	};
 
-	public zoot.ActionOperation getClearToProcedeWithChangedProjectOperation() {
+	public edu.cmu.cs.dennisc.zoot.ActionOperation getClearToProcedeWithChangedProjectOperation() {
 		return this.clearToProcedeWithChangedProjectOperation;
 	}
 
-	class SelectProjectOperation extends zoot.AbstractActionOperation {
+	class SelectProjectOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		private boolean isNew;
 
 		public SelectProjectOperation( boolean isNew ) {
 			this.isNew = isNew;
 		}
-		public void perform( zoot.ActionContext actionContext ) {
+		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane();
 			openProjectPane.selectAppropriateTab( this.isNew );
 			while( actionContext.isPending() ) {
@@ -567,10 +567,10 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 
-	private zoot.ActionOperation selectNewProjectOperation = new SelectProjectOperation( true );
-	private zoot.ActionOperation selectOpenProjectOperation = new SelectProjectOperation( false );
+	private edu.cmu.cs.dennisc.zoot.ActionOperation selectNewProjectOperation = new SelectProjectOperation( true );
+	private edu.cmu.cs.dennisc.zoot.ActionOperation selectOpenProjectOperation = new SelectProjectOperation( false );
 
-	public zoot.ActionOperation getSelectProjectToOpenOperation( boolean isNew ) {
+	public edu.cmu.cs.dennisc.zoot.ActionOperation getSelectProjectToOpenOperation( boolean isNew ) {
 		if( isNew ) {
 			return this.selectNewProjectOperation;
 		} else {
@@ -581,25 +581,25 @@ public abstract class IDE extends zoot.ZFrame {
 	protected javax.swing.JMenuBar createMenuBar() {
 		javax.swing.JMenuBar rv = new javax.swing.JMenuBar();
 
-		javax.swing.JMenu fileMenu = zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, 
+		javax.swing.JMenu fileMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, 
 				this.newProjectOperation, 
 				new org.alice.ide.operations.file.OpenProjectOperation(), 
 				this.saveOperation, 
 				new org.alice.ide.operations.file.SaveAsProjectOperation(), 
-				zoot.ZManager.MENU_SEPARATOR,
+				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR,
 				new org.alice.ide.operations.file.RevertProjectOperation(), 
-				zoot.ZManager.MENU_SEPARATOR, 
+				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, 
 				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(),
-				zoot.ZManager.MENU_SEPARATOR, 
+				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, 
 				this.exitOperation );
-		javax.swing.JMenu editMenu = zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, 
+		javax.swing.JMenu editMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, 
 				new org.alice.ide.operations.edit.UndoOperation(), 
 				new org.alice.ide.operations.edit.RedoOperation(), 
-				zoot.ZManager.MENU_SEPARATOR, 
+				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, 
 				new org.alice.ide.operations.edit.CutOperation(),
 				new org.alice.ide.operations.edit.CopyOperation(), 
 				new org.alice.ide.operations.edit.PasteOperation() );
-		javax.swing.JMenu runMenu = zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, 
+		javax.swing.JMenu runMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, 
 				this.runOperation );
 
 		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
@@ -660,34 +660,34 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		}
 
-		javax.swing.JMenu setLocaleMenu = zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
+		javax.swing.JMenu setLocaleMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
 
-		javax.swing.JMenu viewMenu = zoot.ZManager.createMenu( "View", java.awt.event.KeyEvent.VK_V, this.isMemoryUsageShowingOperation );
-		javax.swing.JMenu windowMenu = zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isOmissionOfThisForFieldAccessesDesiredOperation, this.isExpressionTypeFeedbackDesiredOperation, this.isDefaultFieldNameGenerationDesiredOperation );
+		javax.swing.JMenu viewMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "View", java.awt.event.KeyEvent.VK_V, this.isMemoryUsageShowingOperation );
+		javax.swing.JMenu windowMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isOmissionOfThisForFieldAccessesDesiredOperation, this.isExpressionTypeFeedbackDesiredOperation, this.isDefaultFieldNameGenerationDesiredOperation );
 		windowMenu.add( setLocaleMenu );
 		
-		java.util.List< zoot.Operation > helpOperations = new java.util.LinkedList< zoot.Operation >();
+		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > helpOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
 		helpOperations.add( new org.alice.ide.operations.help.HelpOperation() );
-		helpOperations.add( zoot.ZManager.MENU_SEPARATOR );
+		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		
 		
 		boolean isBogusExceptionGenerationDesired = "true".equals( System.getProperty( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) );
 		
 		if( isBogusExceptionGenerationDesired ) {
 			helpOperations.add( new org.alice.ide.operations.help.ThrowBogusExceptionOperation() );
-			helpOperations.add( zoot.ZManager.MENU_SEPARATOR );
+			helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		}
 		helpOperations.add( new org.alice.ide.operations.help.ReportBugOperation() );
 		helpOperations.add( new org.alice.ide.operations.help.SuggestImprovementOperation() );
 		helpOperations.add( new org.alice.ide.operations.help.RequestNewFeatureOperation() );
-		helpOperations.add( zoot.ZManager.MENU_SEPARATOR );
+		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		helpOperations.add( new org.alice.ide.operations.help.ReleaseNotesOperation() );
-		helpOperations.add( zoot.ZManager.MENU_SEPARATOR );
+		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		helpOperations.add( new org.alice.ide.operations.help.WarningOperation( true ) );
-		helpOperations.add( zoot.ZManager.MENU_SEPARATOR );
+		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		helpOperations.add( this.createAboutOperation() );
 		
-		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, helpOperations );
+		javax.swing.JMenu helpMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, helpOperations );
 //		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, 
 //				new org.alice.ide.operations.help.HelpOperation(), 
 //				zoot.ZManager.MENU_SEPARATOR,
@@ -710,7 +710,7 @@ public abstract class IDE extends zoot.ZFrame {
 		return rv;
 	}
 
-	protected abstract zoot.ActionOperation createAboutOperation();
+	protected abstract edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation();
 
 	public boolean isJava() {
 		return getLocale().getVariant().equals( "java" );
@@ -810,7 +810,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private ComponentStencil stencil;
 	private java.util.List< ? extends java.awt.Component > holes = null;
-	private zoot.ZDragComponent potentialDragSource;
+	private edu.cmu.cs.dennisc.zoot.ZDragComponent potentialDragSource;
 	private java.awt.Component currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
@@ -913,7 +913,7 @@ public abstract class IDE extends zoot.ZFrame {
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
 
-	public void showStencilOver( zoot.ZDragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void showStencilOver( edu.cmu.cs.dennisc.zoot.ZDragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = codeEditor.createListOfPotentialDropReceptors( type );
@@ -944,26 +944,26 @@ public abstract class IDE extends zoot.ZFrame {
 		}
 	}
 
-	public void handleDragStarted( zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		this.potentialDragSource = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 		this.sceneEditor.setRenderingEnabled( false );
 	}
-	public void handleDragEnteredDropReceptor( zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 	}
-	public void handleDragExitedDropReceptor( zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		this.currentDropReceptorComponent = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
 	}
-	public void handleDragStopped( zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		this.sceneEditor.setRenderingEnabled( true );
 	}
 
@@ -1008,33 +1008,33 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private javax.swing.ButtonModel runButtonModel = new javax.swing.DefaultButtonModel();
 
-	private zoot.ActionOperation newProjectOperation = new org.alice.ide.operations.file.NewProjectOperation();
-	private zoot.ActionOperation runOperation = this.createRunOperation( this.runButtonModel );
-	private zoot.ActionOperation exitOperation = this.createExitOperation();
-	private zoot.ActionOperation saveOperation = this.createSaveOperation();
+	private edu.cmu.cs.dennisc.zoot.ActionOperation newProjectOperation = new org.alice.ide.operations.file.NewProjectOperation();
+	private edu.cmu.cs.dennisc.zoot.ActionOperation runOperation = this.createRunOperation( this.runButtonModel );
+	private edu.cmu.cs.dennisc.zoot.ActionOperation exitOperation = this.createExitOperation();
+	private edu.cmu.cs.dennisc.zoot.ActionOperation saveOperation = this.createSaveOperation();
 
-	protected zoot.ActionOperation createRunOperation( javax.swing.ButtonModel model ) {
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation createRunOperation( javax.swing.ButtonModel model ) {
 		return new org.alice.ide.operations.run.RunOperation( model );
 	}
-	protected zoot.ActionOperation createExitOperation() {
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation createExitOperation() {
 		return new org.alice.ide.operations.file.ExitOperation();
 	}
-	protected zoot.ActionOperation createSaveOperation() {
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation createSaveOperation() {
 		return new org.alice.ide.operations.file.SaveProjectOperation();
 	}
-	public final zoot.ActionOperation getRunOperation() {
+	public final edu.cmu.cs.dennisc.zoot.ActionOperation getRunOperation() {
 		return this.runOperation;
 	}
-	public final zoot.ActionOperation getExitOperation() {
+	public final edu.cmu.cs.dennisc.zoot.ActionOperation getExitOperation() {
 		return this.exitOperation;
 	}
-	public final zoot.ActionOperation getSaveOperation() {
+	public final edu.cmu.cs.dennisc.zoot.ActionOperation getSaveOperation() {
 		return this.saveOperation;
 	}
 
-	public abstract void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
-	public abstract void handlePreviewMethod( zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
-	public final void handleRun( zoot.ActionContext context ) {
+	public abstract void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
+	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
+	public final void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context ) {
 		if( this.project != null ) {
 			this.generateCodeForSceneSetUp();
 			this.handleRun( context, this.getSceneType() );
@@ -1067,8 +1067,8 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	protected abstract void promptForLicenseAgreements();
 
-	public void performIfAppropriate( zoot.ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
-		zoot.ZManager.performIfAppropriate( actionOperation, e, isCancelWorthwhile );
+	public void performIfAppropriate( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
+		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( actionOperation, e, isCancelWorthwhile );
 	}
 
 	private java.awt.Window splashScreen;
@@ -1088,7 +1088,7 @@ public abstract class IDE extends zoot.ZFrame {
 		if( this.file != null ) {
 			//pass
 		} else {
-			this.performIfAppropriate( this.newProjectOperation, null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			this.performIfAppropriate( this.newProjectOperation, null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 		}
 	}
 	@Override
@@ -1101,7 +1101,7 @@ public abstract class IDE extends zoot.ZFrame {
 	}
 	//	protected abstract void handleWindowClosing();
 
-	public java.util.List< ? extends zoot.DropReceptor > createListOfPotentialDropReceptors( zoot.ZDragComponent source ) {
+	public java.util.List< ? extends edu.cmu.cs.dennisc.zoot.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
 		assert source != null;
 		org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
 		if( codeEditor != null ) {
@@ -1109,7 +1109,7 @@ public abstract class IDE extends zoot.ZFrame {
 				org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
 				return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
 			} else {
-				java.util.List< zoot.DropReceptor > rv = new java.util.LinkedList< zoot.DropReceptor >();
+				java.util.List< edu.cmu.cs.dennisc.zoot.DropReceptor > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.DropReceptor >();
 				rv.add( codeEditor );
 				//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
 				//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
@@ -1120,17 +1120,17 @@ public abstract class IDE extends zoot.ZFrame {
 			}
 		} else {
 			//todo: investigate
-			return new java.util.LinkedList< zoot.DropReceptor >();
+			return new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.DropReceptor >();
 		}
 	}
 
-	private boolean addSeparatorIfNecessary( cascade.Blank blank, String text, boolean isNecessary ) {
+	private boolean addSeparatorIfNecessary( edu.cmu.cs.dennisc.cascade.Blank blank, String text, boolean isNecessary ) {
 		if( isNecessary ) {
 			blank.addSeparator( text );
 		}
 		return false;
 	}
-	protected void addFillInAndPossiblyPartFills( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
+	protected void addFillInAndPossiblyPartFills( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
 	}
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > getVariables( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
@@ -1152,7 +1152,7 @@ public abstract class IDE extends zoot.ZFrame {
 			return null;
 		}
 	}
-	protected void addExpressionBonusFillInsForType( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected void addExpressionBonusFillInsForType( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
 		if( codeInFocus != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = this.getTypeInScope();
@@ -1214,13 +1214,13 @@ public abstract class IDE extends zoot.ZFrame {
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getEnumTypeForInterfaceType( edu.cmu.cs.dennisc.alice.ast.AbstractType interfaceType ) {
 		return null;
 	}
-	protected void addFillInsForObjectType( cascade.Blank blank ) {
+	protected void addFillInsForObjectType( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
 		blank.addFillIn( new org.alice.ide.cascade.StringConcatenationFillIn() );
 	}
-	protected void addCustomFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected void addCustomFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 	}
 	
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -1234,7 +1234,7 @@ public abstract class IDE extends zoot.ZFrame {
 	protected boolean areEnumConstantsDesired( edu.cmu.cs.dennisc.alice.ast.AbstractType enumType ) {
 		return true;
 	}
-	public void addFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( type != null ) {
 			if( this.previousExpression != null ) {
 				if( this.previousExpression.getType().isAssignableTo( type ) ) {
@@ -1278,11 +1278,11 @@ public abstract class IDE extends zoot.ZFrame {
 			if( blank.getChildren().size() > 0 ) {
 				//pass
 			} else {
-				blank.addFillIn( new cascade.CancelFillIn( "sorry.  no fillins found for " + type.getName() + ". canceling." ) );
+				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "sorry.  no fillins found for " + type.getName() + ". canceling." ) );
 			}
 		} else {
 			//todo:
-			blank.addFillIn( new cascade.CancelFillIn( "type is <unset>.  canceling." ) );
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "type is <unset>.  canceling." ) );
 		}
 
 	}
@@ -1296,12 +1296,12 @@ public abstract class IDE extends zoot.ZFrame {
 
 	private edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = null;
 
-	private cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
+	private edu.cmu.cs.dennisc.cascade.Blank createExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression ) {
 		this.previousExpression = prevExpression;
 		return new org.alice.ide.cascade.ExpressionBlank( type );
 	}
-	private cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, final boolean isArrayLengthDesired ) {
-		cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] > rv = new cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
+	private edu.cmu.cs.dennisc.cascade.FillIn createExpressionsFillIn( final edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, final boolean isArrayLengthDesired ) {
+		edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] > rv = new edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
 			@Override
 			protected void addChildren() {
 				int N = types.length;
@@ -1315,8 +1315,8 @@ public abstract class IDE extends zoot.ZFrame {
 			public edu.cmu.cs.dennisc.alice.ast.Expression[] getValue() {
 				edu.cmu.cs.dennisc.alice.ast.Expression[] rv = new edu.cmu.cs.dennisc.alice.ast.Expression[ this.getChildren().size() ];
 				int i = 0;
-				for( cascade.Node child : this.getChildren() ) {
-					rv[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((cascade.Blank)child).getSelectedFillIn().getValue();
+				for( edu.cmu.cs.dennisc.cascade.Node child : this.getChildren() ) {
+					rv[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((edu.cmu.cs.dennisc.cascade.Blank)child).getSelectedFillIn().getValue();
 					i++;
 				}
 				return rv;
@@ -1325,8 +1325,8 @@ public abstract class IDE extends zoot.ZFrame {
 			public edu.cmu.cs.dennisc.alice.ast.Expression[] getTransientValue() {
 				edu.cmu.cs.dennisc.alice.ast.Expression[] rv = new edu.cmu.cs.dennisc.alice.ast.Expression[ this.getChildren().size() ];
 				int i = 0;
-				for( cascade.Node child : this.getChildren() ) {
-					rv[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((cascade.Blank)child).getSelectedFillIn().getTransientValue();
+				for( edu.cmu.cs.dennisc.cascade.Node child : this.getChildren() ) {
+					rv[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((edu.cmu.cs.dennisc.cascade.Blank)child).getSelectedFillIn().getTransientValue();
 					i++;
 				}
 				return rv;
@@ -1335,23 +1335,23 @@ public abstract class IDE extends zoot.ZFrame {
 		return rv;
 	}
 	public void promptUserForExpressions( edu.cmu.cs.dennisc.alice.ast.AbstractType[] types, boolean isArrayLengthDesired, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > taskObserver ) {
-		cascade.FillIn fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
+		edu.cmu.cs.dennisc.cascade.FillIn fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
 		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
 	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
-		cascade.Blank blank = createExpressionBlank( type, prevExpression );
+		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
 	public void promptUserForMore( final edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		final String parameterName = parameter.getName();
-		cascade.Blank blank;
+		edu.cmu.cs.dennisc.cascade.Blank blank;
 		if( parameterName != null ) {
-			blank = new cascade.Blank() {
+			blank = new edu.cmu.cs.dennisc.cascade.Blank() {
 				@Override
 				protected void addChildren() {
-					cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > menuFillIn = new cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( parameterName ) {
+					edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > menuFillIn = new edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( parameterName ) {
 						@Override
-						protected void addChildrenToBlank( cascade.Blank blank ) {
+						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 							org.alice.ide.IDE.getSingleton().addFillIns( blank, parameter.getValueType() );
 						}
 					};
@@ -1600,7 +1600,7 @@ public abstract class IDE extends zoot.ZFrame {
 		fireTransientSelectionChanged( e );
 	}
 
-	private java.util.Stack< zoot.Operation > history = new java.util.Stack< zoot.Operation >();
+	private java.util.Stack< edu.cmu.cs.dennisc.zoot.Operation > history = new java.util.Stack< edu.cmu.cs.dennisc.zoot.Operation >();
 	private int historyLengthAtLastFileOperation = 0;
 	private boolean isMarkedChanged = false;
 
@@ -2044,7 +2044,7 @@ public abstract class IDE extends zoot.ZFrame {
 		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory( this.getSubPath() );
 	}
 
-	public zoot.ActionOperation getRestartOperation() {
+	public edu.cmu.cs.dennisc.zoot.ActionOperation getRestartOperation() {
 		//todo
 		return this.getRunOperation();
 	}

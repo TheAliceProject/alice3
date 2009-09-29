@@ -27,14 +27,14 @@ package org.alice.ide.cascade.fillerinners;
  */
 public abstract class ExpressionFillerInner {
 	protected static final edu.cmu.cs.dennisc.alice.ast.TypeExpression RANDOM_UTILITIES_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( org.alice.random.RandomUtilities.class );
-	protected static void addNodeChildForMethod( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, String methodName, Class... parameterClses ) {
+	protected static void addNodeChildForMethod( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, String methodName, Class... parameterClses ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = typeExpression.value.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
 		org.alice.ide.cascade.MethodInvocationFillIn methodInvocationFillIn = new org.alice.ide.cascade.MethodInvocationFillIn( typeExpression, method );
 		blank.addFillIn( methodInvocationFillIn );
 	}
-	protected static void addNodeChildForField( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, Class<?> valueCls, String fieldName ) {
+	protected static void addNodeChildForField( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, Class<?> valueCls, String fieldName ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = typeExpression.value.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( valueCls, fieldName );
 		assert field != null : fieldName;
@@ -55,10 +55,10 @@ public abstract class ExpressionFillerInner {
 		return this.type.isAssignableTo( type );
 	}
 
-	protected void addExpressionFillIn( cascade.Blank blank, Object... args ) {
+	protected void addExpressionFillIn( edu.cmu.cs.dennisc.cascade.Blank blank, Object... args ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstanceForArguments( this.cls, args );
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( expression ) ); 
 	}
 	
-	public abstract void addFillIns( cascade.Blank blank );
+	public abstract void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank );
 }

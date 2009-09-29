@@ -94,7 +94,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( zoot.ZLabel.acquire( ";" ) );
+			this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( ";" ) );
 		}
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		ExpressionStatementPane.this.revalidate();

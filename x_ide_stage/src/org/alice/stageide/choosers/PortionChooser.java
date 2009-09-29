@@ -28,9 +28,9 @@ package org.alice.stageide.choosers;
  * @author Dennis Cosgrove
  */
 public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.Portion > {
-	class PortionOperation extends zoot.AbstractBoundedRangeOperation {
-		public void perform( zoot.BoundedRangeContext boundedRangeContext ) {
-			zoot.ZInputPane< ? > inputPane = PortionChooser.this.getInputPane();
+	class PortionOperation extends edu.cmu.cs.dennisc.zoot.AbstractBoundedRangeOperation {
+		public void perform( edu.cmu.cs.dennisc.zoot.BoundedRangeContext boundedRangeContext ) {
+			edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane = PortionChooser.this.getInputPane();
 			if( inputPane != null ) {
 				inputPane.updateOKButton();
 			}
@@ -50,7 +50,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 			return false;
 		}
 	}
-	private zoot.ZSlider slider = new zoot.ZSlider( new PortionOperation() );
+	private edu.cmu.cs.dennisc.zoot.ZSlider slider = new edu.cmu.cs.dennisc.zoot.ZSlider( new PortionOperation() );
 	private java.awt.Component[] components = {this.slider};
 	public PortionChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();

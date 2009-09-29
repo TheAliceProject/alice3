@@ -99,7 +99,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	protected void addCustomFillIns( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	protected void addCustomFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super.addCustomFillIns( blank, type );
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression != null ) {
@@ -157,7 +157,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
 		if( icon != null ) {
-			return zoot.ZLabel.acquire( icon );
+			return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( icon );
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
@@ -206,9 +206,9 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
 					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
-						return new swing.LineAxisPane( 
+						return new edu.cmu.cs.dennisc.croquet.LineAxisPane( 
 								factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ),
-								zoot.ZLabel.acquire( " revolutions" )
+								edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " revolutions" )
 						);
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
 						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );
@@ -267,7 +267,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	
 	@Override
-	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+	public void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
 		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
 		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
@@ -277,7 +277,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	public void handlePreviewMethod( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+	public void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 		this.generateCodeForSceneSetUp();
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldSelection();
 		if( field == this.getSceneField() ) {
@@ -308,7 +308,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();
 	}
 	@Override
-	protected zoot.ActionOperation createAboutOperation() {
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation() {
 		return new org.alice.stageide.operations.help.AboutOperation();
 	}
 
@@ -350,7 +350,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	protected void addFillInAndPossiblyPartFills( cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
+	protected void addFillInAndPossiblyPartFills( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
 		super.addFillInAndPossiblyPartFills( blank, expression, type, type2 );
 		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;

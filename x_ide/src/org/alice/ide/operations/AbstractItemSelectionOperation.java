@@ -25,7 +25,7 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractItemSelectionOperation<E> extends zoot.AbstractItemSelectionOperation<E> {
+public abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.zoot.AbstractItemSelectionOperation<E> {
 	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
 		super( comboBoxModel );
 	}

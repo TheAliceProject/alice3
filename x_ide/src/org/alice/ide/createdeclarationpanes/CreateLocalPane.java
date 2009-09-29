@@ -38,7 +38,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	
 	
 	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
-	private zoot.ZLabel declarationTextLabel = this.createDeclarationTextLabel();
+	private edu.cmu.cs.dennisc.zoot.ZLabel declarationTextLabel = this.createDeclarationTextLabel();
 		
 	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		super( new org.alice.ide.namevalidators.LocalNameValidator( block ) );
@@ -61,8 +61,8 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		return true;
 	}
 
-	private zoot.ZLabel createDeclarationTextLabel() {
-		zoot.ZLabel rv = zoot.ZLabel.acquire( "Local" );
+	private edu.cmu.cs.dennisc.zoot.ZLabel createDeclarationTextLabel() {
+		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Local" );
 		rv.setFontToScaledFont( 1.2f );
 		return rv;
 	}
@@ -74,7 +74,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		} else {
 			name = "unknown";
 		}
-		zoot.ZLabel rv = zoot.ZLabel.acquire( name );
+		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( name );
 		rv.setFontToScaledFont( 1.2f );
 		return rv;
 	}

@@ -1,7 +1,7 @@
 package org.alice.ide.editorstabbedpane;
 
-class OperatorFillIn extends cascade.SimpleFillIn< zoot.ActionOperation > {
-	public OperatorFillIn( zoot.ActionOperation actionOperation ) {
+class OperatorFillIn extends edu.cmu.cs.dennisc.cascade.SimpleFillIn< edu.cmu.cs.dennisc.zoot.ActionOperation > {
+	public OperatorFillIn( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation ) {
 		super( actionOperation );
 	}
 	@Override
@@ -19,7 +19,7 @@ class EditConstructorOperation extends org.alice.ide.operations.InconsequentialA
 		this.putValue( javax.swing.Action.NAME, "Edit Constructor" );
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		this.getIDE().setFocusedCode( this.constructor );
 	}
 }
@@ -39,7 +39,7 @@ class EditMethodOperation extends org.alice.ide.operations.InconsequentialAction
 		this.putValue( javax.swing.Action.NAME, sb.toString() );
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		this.getIDE().setFocusedCode( this.method );
 	}
 }
@@ -63,7 +63,7 @@ class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperati
 		this.type = type;
 		this.putValue( javax.swing.Action.NAME, "Edit Properties..." );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 //		this.prevArray = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[ this.type.fields.size() ];
 //		this.type.fields.toArray( this.prevArray );
 //
@@ -96,7 +96,7 @@ class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperati
 	}
 }
 
-abstract class MembersFillIn extends cascade.MenuFillIn< zoot.ActionOperation > {
+abstract class MembersFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.zoot.ActionOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 
 	public MembersFillIn( String text, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
@@ -129,7 +129,7 @@ abstract class MethodsFillIn extends MembersFillIn {
 		return rv;
 	}
 	@Override
-	protected void addChildrenToBlank( cascade.Blank blank ) {
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.getType().methods ) {
 			if( this.isDesired( method ) ) {
 				blank.addFillIn( new OperatorFillIn( new EditMethodOperation( method ) ) );
@@ -148,7 +148,7 @@ class ProceduresFillIn extends MethodsFillIn {
 		return method.isProcedure();
 	}
 	@Override
-	protected void addChildrenToBlank( cascade.Blank blank ) {
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		super.addChildrenToBlank( blank );
 		blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareProcedureOperation( this.getType() ) ) );
 	}
@@ -163,7 +163,7 @@ class FunctionsFillIn extends MethodsFillIn {
 		return method.isFunction();
 	}
 	@Override
-	protected void addChildrenToBlank( cascade.Blank blank ) {
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		super.addChildrenToBlank( blank );
 		blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareFunctionOperation( this.getType() ) ) );
 	}
@@ -187,7 +187,7 @@ class FunctionsFillIn extends MethodsFillIn {
 //	}
 //}
 
-class TypeFillIn extends cascade.MenuFillIn< zoot.ActionOperation > {
+class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.zoot.ActionOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 
 	public TypeFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
@@ -199,7 +199,7 @@ class TypeFillIn extends cascade.MenuFillIn< zoot.ActionOperation > {
 		return new org.alice.ide.common.TypeComponent( this.type );
 	}
 	@Override
-	protected void addChildrenToBlank( cascade.Blank blank ) {
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		if( this.type != null ) {
 			blank.addFillIn( new ProceduresFillIn( this.type ) );
 			blank.addFillIn( new FunctionsFillIn( this.type ) );
@@ -207,12 +207,12 @@ class TypeFillIn extends cascade.MenuFillIn< zoot.ActionOperation > {
 			blank.addSeparator();
 			blank.addFillIn( new OperatorFillIn( new EditFieldsOperation( this.type ) ) );
 		} else {
-			blank.addFillIn( new cascade.CancelFillIn( "type is not set.  canceling." ) );
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "type is not set.  canceling." ) );
 		}
 	}
 }
 
-class ProjectBlank extends cascade.Blank {
+class ProjectBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 	private edu.cmu.cs.dennisc.alice.Project project;
 
 	public ProjectBlank( edu.cmu.cs.dennisc.alice.Project project ) {
@@ -239,15 +239,15 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 		this.putValue( javax.swing.Action.NAME, "All" );
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		java.awt.Component component = (java.awt.Component)actionContext.getEvent().getSource();
 		int x = 0;//component.getWidth();
 		int y = component.getHeight();
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
 		if( project != null ) {
-			new ProjectBlank( project ).showPopupMenu( component, x, y, new edu.cmu.cs.dennisc.task.TaskObserver< zoot.ActionOperation >() {
-				public void handleCompletion( zoot.ActionOperation actionOperation ) {
-					zoot.ZManager.performIfAppropriate( actionOperation, null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			new ProjectBlank( project ).showPopupMenu( component, x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.zoot.ActionOperation >() {
+				public void handleCompletion( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation ) {
+					edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( actionOperation, null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				}
 				public void handleCancelation() {
 				}
@@ -283,9 +283,9 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 //}
 
 class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
-	private zoot.ZLabel label = zoot.ZLabel.acquire();
+	private edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire();
 
-	public OperationDropDown( zoot.ActionOperation leftButtonPressOperation ) {
+	public OperationDropDown( edu.cmu.cs.dennisc.zoot.ActionOperation leftButtonPressOperation ) {
 		this.setLeftButtonPressOperation( leftButtonPressOperation );
 		this.add( this.label );
 		this.updateLabel();

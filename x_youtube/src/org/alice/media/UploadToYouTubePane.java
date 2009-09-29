@@ -59,10 +59,10 @@ import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeNamespace;
 
+import edu.cmu.cs.dennisc.croquet.Pane;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.zoot.ZLabel;
 
-import swing.Pane;
-import zoot.ZLabel;
 
 /**
  * @author David Culyba
@@ -342,7 +342,7 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 	}
 	
 	public static void main( String[] args ) {
-		zoot.ZFrame frame = new zoot.ZFrame() {
+		edu.cmu.cs.dennisc.zoot.ZFrame frame = new edu.cmu.cs.dennisc.zoot.ZFrame() {
 			@Override
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}

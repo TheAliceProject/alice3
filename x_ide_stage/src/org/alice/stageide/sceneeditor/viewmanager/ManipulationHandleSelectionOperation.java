@@ -32,7 +32,7 @@ import org.alice.interact.handle.HandleSet;
 /**
  * @author David Culyba
  */
-public class ManipulationHandleSelectionOperation extends zoot.AbstractItemSelectionOperation< HandleSet > {
+public class ManipulationHandleSelectionOperation extends edu.cmu.cs.dennisc.zoot.AbstractItemSelectionOperation< HandleSet > {
 	private AbstractDragAdapter dragAdapter;
 	
 	public ManipulationHandleSelectionOperation(AbstractDragAdapter dragAdapter) {

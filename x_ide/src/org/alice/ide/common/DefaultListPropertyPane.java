@@ -32,7 +32,7 @@ public class DefaultListPropertyPane extends AbstractListPropertyPane< edu.cmu.c
 	}
 	@Override
 	protected javax.swing.JComponent createComponent( Object instance ) {
-		return zoot.ZLabel.acquire( instance.toString() );
+		return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( instance.toString() );
 	}
 }
 

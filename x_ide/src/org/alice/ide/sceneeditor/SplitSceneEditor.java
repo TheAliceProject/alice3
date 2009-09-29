@@ -75,7 +75,7 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 	}
 }
 
-class Tree extends zoot.ZTree {
+class Tree extends edu.cmu.cs.dennisc.zoot.ZTree {
 	private TreeModel model = new TreeModel( null ); 
 	public Tree() {
 		super( new org.alice.ide.operations.ast.FieldItemSelectionOperation( new javax.swing.DefaultComboBoxModel() ) );
@@ -85,11 +85,11 @@ class Tree extends zoot.ZTree {
 }
 
 class LookingGlass extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
-	private zoot.ZCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
+	private edu.cmu.cs.dennisc.zoot.ZCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
 	public LookingGlass() {
 		this.setBackground( java.awt.Color.RED );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		this.isSceneEditorExpandedCheckBox = new zoot.ZCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
+		this.isSceneEditorExpandedCheckBox = new edu.cmu.cs.dennisc.zoot.ZCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
 		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 	}
 }

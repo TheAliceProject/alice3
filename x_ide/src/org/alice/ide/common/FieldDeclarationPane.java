@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationPane extends swing.LineAxisPane {
+public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		this.field = field;
@@ -35,7 +35,7 @@ public class FieldDeclarationPane extends swing.LineAxisPane {
 		} else {
 			text = "initialize ";
 		}
-		this.add( zoot.ZLabel.acquire( text ) );
+		this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text ) );
 		this.add( new TypeComponent( field.getValueType() ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		nameLabel.setFontToScaledFont( 1.5f );

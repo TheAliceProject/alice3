@@ -33,7 +33,7 @@ class ConditionalInfixExpressionOperatorFillIn extends InfixExpressionOperatorFi
 /**
  * @author Dennis Cosgrove
  */
-class ConditionalInfixExpressionOperatorBlank extends cascade.Blank {
+class ConditionalInfixExpressionOperatorBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 	@Override
 	protected void addChildren() {
 		this.addChild( new ConditionalInfixExpressionOperatorFillIn( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.AND ) );
@@ -52,7 +52,7 @@ public class ConditionalExpressionFillIn extends InfixExpressionFillIn< edu.cmu.
 		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
 	}
 	@Override
-	protected cascade.Blank createOperatorBlank() {
+	protected edu.cmu.cs.dennisc.cascade.Blank createOperatorBlank() {
 		return new ConditionalInfixExpressionOperatorBlank();
 	}
 	@Override

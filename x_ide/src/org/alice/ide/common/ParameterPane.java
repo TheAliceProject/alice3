@@ -43,10 +43,10 @@ public class ParameterPane extends AccessiblePane {
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, this.parameter );
 			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, this.parameter );
 			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, this.parameter );
-			this.setPopupOperation( new zoot.AbstractPopupActionOperation() {
+			this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.AbstractPopupActionOperation() {
 				@Override
-				protected java.util.List< zoot.Operation > getOperations() {
-					java.util.List< zoot.Operation > rv = new java.util.LinkedList< zoot.Operation >();
+				protected java.util.List< edu.cmu.cs.dennisc.zoot.Operation > getOperations() {
+					java.util.List< edu.cmu.cs.dennisc.zoot.Operation > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
 					rv.add( renameParameterOperation );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
 						rv.add( forwardShiftCodeParameterOperation );
@@ -54,13 +54,13 @@ public class ParameterPane extends AccessiblePane {
 					if( backwardShiftCodeParameterOperation.isIndexAppropriate() ) {
 						rv.add( backwardShiftCodeParameterOperation );
 					}
-					rv.add( zoot.ZManager.MENU_SEPARATOR );
+					rv.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 					rv.add( deleteParameterOperation );
 					return rv;
 				}
 			} );
 		} else {
-			this.setPopupOperation( new zoot.DefaultPopupActionOperation( renameParameterOperation ) );
+			this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( renameParameterOperation ) );
 		}
 	}
 	@Override

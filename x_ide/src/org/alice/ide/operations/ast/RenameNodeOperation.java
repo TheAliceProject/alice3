@@ -35,7 +35,7 @@ public abstract class RenameNodeOperation extends org.alice.ide.operations.Abstr
 		this.nodeNameValidator = nodeNameValidator;
 		this.putValue( javax.swing.Action.NAME, "Rename..." );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		org.alice.ide.renamenodepanes.RenameNodePane renameNodePane = new org.alice.ide.renamenodepanes.RenameNodePane( this.nodeNameValidator );
 		renameNodePane.setAndSelectNameText( this.nameProperty.getValue() );
 		this.nextValue = renameNodePane.showInJDialog( this.getIDE() );

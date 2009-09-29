@@ -19,7 +19,6 @@ import javax.swing.tree.TreePath;
 
 import org.alice.apis.moveandturn.Model;
 
-import zoot.ZFrame;
 
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.alice.ast.AbstractType;
@@ -28,6 +27,7 @@ import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava;
 import edu.cmu.cs.dennisc.alice.io.FileUtilities;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.zoot.ZFrame;
 
 class TreeNodeUtilities {
 	private static Map<Object, TreeNode> map = new HashMap<Object, TreeNode>();

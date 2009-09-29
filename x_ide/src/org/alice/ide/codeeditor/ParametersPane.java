@@ -49,7 +49,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
 		if( getIDE().isJava() ) {
-			this.add( zoot.ZLabel.acquire( "( " ) );
+			this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "( " ) );
 		} else {
 			int n = this.getProperty().size();
 			String text;
@@ -63,8 +63,8 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			default:
 				text = " with parameters: ";
 			}
-			zoot.ZLabel label = zoot.ZLabel.acquire( text );
-			label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
+			edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text );
+			label.setFontToDerivedFont( edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE );
 			this.add( label );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		}
@@ -72,7 +72,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	@Override
 	protected java.awt.Component createInterstitial( int i, int N ) {
 		if( i<N-1 ) {
-			return zoot.ZLabel.acquire( ", " );
+			return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( ", " );
 		} else {
 			return javax.swing.Box.createHorizontalStrut( 8 );
 		}
@@ -87,11 +87,11 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			if( method.isSignatureLocked.getValue() ) {
 				//pass
 			} else {
-				this.add( new zoot.ZButton( new org.alice.ide.operations.ast.DeclareMethodParameterOperation( method ) ) );
+				this.add( new edu.cmu.cs.dennisc.zoot.ZButton( new org.alice.ide.operations.ast.DeclareMethodParameterOperation( method ) ) );
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( zoot.ZLabel.acquire( " )" ) );
+			this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " )" ) );
 		}
 	}
 }

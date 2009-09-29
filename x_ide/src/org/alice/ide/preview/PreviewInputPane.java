@@ -25,13 +25,13 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewInputPane<E> extends zoot.ZInputPane< E > {
-	protected static zoot.ZLabel createLabel( String s ) {
-		zoot.ZLabel rv = zoot.ZLabel.acquire( s );
+public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.zoot.ZInputPane< E > {
+	protected static edu.cmu.cs.dennisc.zoot.ZLabel createLabel( String s ) {
+		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( s );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
 	}
-	class PreviewPane extends swing.BorderPane {
+	class PreviewPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 		public void refresh() {
 			edu.cmu.cs.dennisc.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
 			this.add( PreviewInputPane.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
@@ -79,7 +79,7 @@ public abstract class PreviewInputPane<E> extends zoot.ZInputPane< E > {
 		final java.awt.Component[] previewRow = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "preview:" ), this.previewPane );
 		final java.awt.Component[] spacerRow = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( this.spacer, null );
 		this.repaint();
-		return new swing.RowsSpringPane( 16, 4 ) {
+		return new edu.cmu.cs.dennisc.croquet.RowsSpringPane( 16, 4 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				assert previewRow != null;

@@ -30,13 +30,13 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.BooleanLiteral.class );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		this.addExpressionFillIn( blank, true );
 		this.addExpressionFillIn( blank, false );
 		blank.addSeparator();
-		blank.addFillIn( new cascade.MenuFillIn( "Random" ) {
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
 			@Override
-			protected void addChildrenToBlank(cascade.Blank blank) {
+			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextBoolean" );
 			}
 		} );
@@ -44,9 +44,9 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		blank.addFillIn( new org.alice.ide.cascade.LogicalComplementFillIn() );
 		blank.addFillIn( new org.alice.ide.cascade.ConditionalExpressionFillIn() );
 		blank.addSeparator();
-		blank.addFillIn( new cascade.MenuFillIn( "relational { ==, !=, <, <=, >=, > }" ) {
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "relational { ==, !=, <, <=, >=, > }" ) {
 			@Override
-			protected void addChildrenToBlank(cascade.Blank blank) {
+			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Boolean", Boolean.class ) );
 				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Real Number", Number.class ) );
 				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Integer", Integer.class ) );

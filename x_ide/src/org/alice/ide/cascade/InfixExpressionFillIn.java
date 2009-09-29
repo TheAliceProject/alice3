@@ -25,7 +25,7 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InfixExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends cascade.FillIn< E > {
+public abstract class InfixExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
 	private String menuText;
 	public InfixExpressionFillIn( String menuText ) {
 		this.menuText = menuText;
@@ -34,7 +34,7 @@ public abstract class InfixExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.
 		return org.alice.ide.IDE.getSingleton();
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getLeftOperandType();
-	protected abstract cascade.Blank createOperatorBlank();
+	protected abstract edu.cmu.cs.dennisc.cascade.Blank createOperatorBlank();
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getRightOperandType();
 	@Override
 	protected void addChildren() {
@@ -44,7 +44,7 @@ public abstract class InfixExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		return zoot.ZLabel.acquire( menuText );
+		return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( menuText );
 	}
 	
 	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, Object operator, edu.cmu.cs.dennisc.alice.ast.Expression right );

@@ -32,8 +32,8 @@ public abstract class InconsequentialActionOperation extends org.alice.ide.opera
 	public InconsequentialActionOperation( javax.swing.ButtonModel model ) {
 		super( model );
 	}
-	protected abstract void performInternal(zoot.ActionContext actionContext);
-	public final void perform(zoot.ActionContext actionContext) {
+	protected abstract void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext);
+	public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		performInternal(actionContext);
 		actionContext.commitAndInvokeRedoIfAppropriate();
 	}

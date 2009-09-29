@@ -25,7 +25,7 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationFillIn extends cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+public class MethodInvocationFillIn extends edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 //	private String description;
@@ -55,12 +55,12 @@ public class MethodInvocationFillIn extends cascade.FillIn< edu.cmu.cs.dennisc.a
 	
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getValue() {
-		java.util.List< cascade.Node > nodes = this.getChildren();
+		java.util.List< edu.cmu.cs.dennisc.cascade.Node > nodes = this.getChildren();
 		final int N = nodes.size();
 		edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
 		
 		for( int i=0; i<N; i++ ) {
-			argumentExpressions[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((cascade.Blank)nodes.get( i )).getSelectedFillIn().getValue();
+			argumentExpressions[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((edu.cmu.cs.dennisc.cascade.Blank)nodes.get( i )).getSelectedFillIn().getValue();
 		}
 		
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( null, this.method );
@@ -69,12 +69,12 @@ public class MethodInvocationFillIn extends cascade.FillIn< edu.cmu.cs.dennisc.a
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.MethodInvocation getTransientValue() {
-		java.util.List< cascade.Node > nodes = this.getChildren();
+		java.util.List< edu.cmu.cs.dennisc.cascade.Node > nodes = this.getChildren();
 		final int N = nodes.size();
 		edu.cmu.cs.dennisc.alice.ast.Expression[] argumentExpressions = new edu.cmu.cs.dennisc.alice.ast.Expression[ N ];
 		
 		for( int i=0; i<N; i++ ) {
-			argumentExpressions[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((cascade.Blank)nodes.get( i )).getSelectedFillIn().getTransientValue();
+			argumentExpressions[ i ] = (edu.cmu.cs.dennisc.alice.ast.Expression)((edu.cmu.cs.dennisc.cascade.Blank)nodes.get( i )).getSelectedFillIn().getTransientValue();
 		}
 		
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation rv = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( null, this.method );

@@ -1,6 +1,6 @@
 package org.alice.ide.editorstabbedpane;
 
-class FieldDeclarationsPane extends swing.PageAxisPane {
+class FieldDeclarationsPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
 		@Override
@@ -52,14 +52,14 @@ class FieldDeclarationsPane extends swing.PageAxisPane {
 /**
 * @author Dennis Cosgrove
 */
-public class EditFieldsPane extends zoot.ZInputPane< Boolean > {
+public class EditFieldsPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< Boolean > {
 	private FieldDeclarationsPane fieldDeclarationsPane;
 
 	//	private java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > list = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >();
 	public EditFieldsPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		this.setLayout( new java.awt.BorderLayout() );
 		this.fieldDeclarationsPane = new FieldDeclarationsPane( declaringType );
-		zoot.ZButton addButton = new zoot.ZButton( new org.alice.ide.operations.ast.DeclareFieldOperation( declaringType ) );
+		edu.cmu.cs.dennisc.zoot.ZButton addButton = new edu.cmu.cs.dennisc.zoot.ZButton( new org.alice.ide.operations.ast.DeclareFieldOperation( declaringType ) );
 
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( fieldDeclarationsPane );
 		scrollPane.setBorder( null );

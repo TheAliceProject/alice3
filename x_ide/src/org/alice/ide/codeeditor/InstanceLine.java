@@ -25,7 +25,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class InstanceLine extends swing.LineAxisPane {
+class InstanceLine extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
 	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 //		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
 //		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
@@ -36,7 +36,7 @@ class InstanceLine extends swing.LineAxisPane {
 //		this.add( b );
 		
 		this.add( javax.swing.Box.createHorizontalStrut( 16 ) );
-		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance: " );
+		edu.cmu.cs.dennisc.zoot.ZLabel a = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "current instance: " );
 //		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 		this.add( a );
 		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane();

@@ -48,7 +48,8 @@ import org.jdesktop.swingworker.SwingWorker;
 
 import com.google.gdata.util.ServiceException;
 
-import swing.Pane;
+import edu.cmu.cs.dennisc.croquet.Pane;
+
 
 /**
  * @author David Culyba

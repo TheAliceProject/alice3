@@ -29,7 +29,7 @@ public class SelectFieldActionOperation extends AbstractFieldActionOperation {
 	public SelectFieldActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		getIDE().setFieldSelection( this.getField() );
 	}
 	@Override

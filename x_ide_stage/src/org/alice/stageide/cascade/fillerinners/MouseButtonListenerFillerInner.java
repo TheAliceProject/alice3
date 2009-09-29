@@ -5,7 +5,7 @@ public class MouseButtonListenerFillerInner extends org.alice.ide.cascade.filler
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.MouseButtonListener.class ), edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] parameters = new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {
 				new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice( "e", org.alice.apis.moveandturn.event.MouseButtonEvent.class )
 		};

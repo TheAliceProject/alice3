@@ -30,7 +30,7 @@ public class ThrowBogusExceptionOperation extends org.alice.ide.operations.Incon
 		this.putValue( javax.swing.Action.NAME, "Throw Bogus Exception..." );
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
 	}
 }

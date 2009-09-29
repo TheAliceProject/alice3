@@ -22,7 +22,7 @@
  */
 package org.alice.ide.editorstabbedpane;
 
-class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
+class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 	private DeclarationsUIResource declarationsUIResource;
 	private java.awt.event.ComponentListener componentAdapter = new java.awt.event.ComponentListener() {
 		public void componentShown( java.awt.event.ComponentEvent e ) {
@@ -130,11 +130,11 @@ class EditorsTabbedPaneUI extends zoot.plaf.TabbedPaneUI {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide.event.IDEListener {
+public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane implements org.alice.ide.event.IDEListener {
 	public EditorsTabbedPane() {
 		this.setTabCloseOperation( new org.alice.ide.operations.InconsequentialActionOperation() {
 			@Override
-			protected void performInternal(zoot.ActionContext actionContext) {
+			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 				EditorsTabbedPane.this.remove( EditorsTabbedPane.this.getSelectedIndex() );
 				EditorsTabbedPane.this.updateFocusedCode();
 			}
@@ -151,7 +151,7 @@ public class EditorsTabbedPane extends zoot.ZTabbedPane implements org.alice.ide
 		this.setFont( f.deriveFont( f.getSize2D() * 1.25f ) );
 	}
 	@Override
-	protected zoot.plaf.TabbedPaneUI createTabbedPaneUI() {
+	protected edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI createTabbedPaneUI() {
 		return new EditorsTabbedPaneUI( this );
 	}
 	

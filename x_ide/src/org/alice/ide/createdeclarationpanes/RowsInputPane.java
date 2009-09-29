@@ -25,7 +25,7 @@ package org.alice.ide.createdeclarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowsInputPane< E > extends zoot.ZInputPane< E > {
+public abstract class RowsInputPane< E > extends edu.cmu.cs.dennisc.zoot.ZInputPane< E > {
 	private javax.swing.JPanel panel = new javax.swing.JPanel();
 	public RowsInputPane() {
 		this.setLayout( new java.awt.BorderLayout() );

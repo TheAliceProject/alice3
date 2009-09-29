@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.toolkit.issue;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractPostIssuePane extends IssueReportPane {
-	class TypeSelectionOperation extends zoot.EnumConstantSelectionOperation< edu.cmu.cs.dennisc.jira.JIRAReport.Type > {
+	class TypeSelectionOperation extends edu.cmu.cs.dennisc.zoot.EnumConstantSelectionOperation< edu.cmu.cs.dennisc.jira.JIRAReport.Type > {
 		public TypeSelectionOperation() {
 			super( edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
 		}
@@ -42,13 +42,13 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 
 	private TypeSelectionOperation typeSelectionOperation = new TypeSelectionOperation();
 	private javax.swing.JLabel labelType = createLabelForMultiLine( "type:" );
-	private javax.swing.JComboBox comboType = new zoot.ZComboBox( this.typeSelectionOperation ) {
+	private javax.swing.JComboBox comboType = new edu.cmu.cs.dennisc.zoot.ZComboBox( this.typeSelectionOperation ) {
 		@Override
 		public java.awt.Dimension getMaximumSize() {
 			return this.getPreferredSize();
 		}
 	};
-	private java.awt.Component[] rowType = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelType, new swing.LineAxisPane( comboType, javax.swing.Box.createHorizontalGlue() ) );
+	private java.awt.Component[] rowType = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelType, new edu.cmu.cs.dennisc.croquet.LineAxisPane( comboType, javax.swing.Box.createHorizontalGlue() ) );
 	
 	private javax.swing.JLabel labelEnvironment = createLabelForMultiLine( "environment:" );
 	private javax.swing.JTextArea textEnvironment = new javax.swing.JTextArea();

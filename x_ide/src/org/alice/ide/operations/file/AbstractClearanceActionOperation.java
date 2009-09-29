@@ -26,7 +26,7 @@ package org.alice.ide.operations.file;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractClearanceActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	protected zoot.ActionOperation getClearToProcedeWithChangedProjectOperation() {
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation getClearToProcedeWithChangedProjectOperation() {
 		return getIDE().getClearToProcedeWithChangedProjectOperation();
 	}
 }

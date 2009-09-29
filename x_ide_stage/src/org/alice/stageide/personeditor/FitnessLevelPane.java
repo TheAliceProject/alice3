@@ -36,7 +36,7 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 		this.putValue( javax.swing.Action.NAME, name );
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		this.slider.setValue( this.value );
 	}
 }
@@ -44,12 +44,12 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 /**
  * @author Dennis Cosgrove
  */
-class FitnessLevelPane extends swing.BorderPane {
+class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 	private FitnessLevelSlider slider = new FitnessLevelSlider();
 	public FitnessLevelPane() {
-		this.add( new zoot.ZButton( new FitnessLevelActionOperation( slider, 0, "SOFT" ) ), java.awt.BorderLayout.WEST );
+		this.add( new edu.cmu.cs.dennisc.zoot.ZButton( new FitnessLevelActionOperation( slider, 0, "SOFT" ) ), java.awt.BorderLayout.WEST );
 		this.add( this.slider, java.awt.BorderLayout.CENTER );
-		this.add( new zoot.ZButton( new FitnessLevelActionOperation( slider, 100, "CUT" ) ), java.awt.BorderLayout.EAST );
+		this.add( new edu.cmu.cs.dennisc.zoot.ZButton( new FitnessLevelActionOperation( slider, 100, "CUT" ) ), java.awt.BorderLayout.EAST );
 	}
 
 	public void setFitnessLevel( Double fitnessLevel ) {

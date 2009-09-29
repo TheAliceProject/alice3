@@ -32,7 +32,7 @@ public class WarningOperation extends org.alice.ide.operations.InconsequentialAc
 		this.isSolicited = isSolicited;
 	}
 	@Override
-	protected void performInternal( zoot.ActionContext actionContext ) {
+	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( this.isSolicited );
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), warningPane, "Alice3 is currently under development", javax.swing.JOptionPane.WARNING_MESSAGE ); 
 	}

@@ -36,7 +36,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
 
-class BogusModelManipulationModePane extends swing.PageAxisPane {
+class BogusModelManipulationModePane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	public BogusModelManipulationModePane() {
 		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
 		group.add( new javax.swing.JRadioButton( "rotateY", true ) );
@@ -51,7 +51,7 @@ class BogusModelManipulationModePane extends swing.PageAxisPane {
 	}
 }
 
-class BogusCameraViewPane extends swing.PageAxisPane {
+class BogusCameraViewPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	public BogusCameraViewPane() {
 		javax.swing.ButtonGroup group = new javax.swing.ButtonGroup();
 		group.add( new javax.swing.JRadioButton( "opening scene view", true ) );
@@ -63,7 +63,7 @@ class BogusCameraViewPane extends swing.PageAxisPane {
 	}
 }
 
-class SidePane extends swing.PageAxisPane {
+class SidePane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	private boolean isExpanded = false;
 	private ManipulationHandleControlPanel handleControlPanel;
 	

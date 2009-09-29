@@ -1,6 +1,6 @@
 package org.alice.ide.issue;
 
-public class HeaderPane extends swing.LineAxisPane {
+public class HeaderPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
 	public HeaderPane() {
 		this.setBackground( java.awt.Color.DARK_GRAY );
 		this.setOpaque( true );

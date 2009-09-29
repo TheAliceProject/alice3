@@ -38,7 +38,7 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 	public boolean isIndexAppropriate() {
 		return this.isAppropriate( this.getIndex(), this.getParameterCount() );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		this.method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 		if( method != null ) {
 			actionContext.commitAndInvokeRedoIfAppropriate();

@@ -25,7 +25,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class MembersTab extends swing.PageAxisPane {
+abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	public MembersTab() {
 		this.setOpaque( true );
 	}
@@ -139,7 +139,7 @@ class FieldsTab extends MembersTab {
 	}
 }
 
-class TabbedPane extends zoot.ZTabbedPane {
+class TabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 	private MembersTab[] membersTabs = { new ProceduresTab(), new FunctionsTab(), new FieldsTab() };
 	public TabbedPane() {
 		for( MembersTab membersTab : membersTabs ) {
@@ -147,7 +147,7 @@ class TabbedPane extends zoot.ZTabbedPane {
 		}
 	}
 	private void addMembersTab( MembersTab membersTab ) {
-		zoot.ZScrollPane scrollPane = new zoot.ZScrollPane( membersTab );
+		edu.cmu.cs.dennisc.zoot.ZScrollPane scrollPane = new edu.cmu.cs.dennisc.zoot.ZScrollPane( membersTab );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBackground( membersTab.getBackground() );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );

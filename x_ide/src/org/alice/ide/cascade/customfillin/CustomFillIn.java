@@ -25,7 +25,7 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends cascade.FillIn< E > {
+public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expression, F> extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
 	protected abstract org.alice.ide.choosers.ValueChooser< ? > createCustomPane();
 	protected abstract E createExpression( F value );
 
@@ -37,12 +37,12 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 	public E getValue() {
 		java.awt.Component owner = org.alice.ide.IDE.getSingleton();
 		org.alice.ide.choosers.ValueChooser< ? > customPane = this.createCustomPane();
-		zoot.ZInputPane< E > inputPane = new CustomInputPane( this, customPane );
+		edu.cmu.cs.dennisc.zoot.ZInputPane< E > inputPane = new CustomInputPane( this, customPane );
 		E value = inputPane.showInJDialog( owner );
 		if( value != null ) {
 			return value;
 		} else {
-			throw new cascade.CancelException( "" );
+			throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );
 		}
 	}
 

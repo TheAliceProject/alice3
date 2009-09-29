@@ -44,7 +44,7 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 		this.putValue( javax.swing.Action.NAME, "Edit..." );
 	}
 	
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		this.person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.stage.Person.class );
 		if( this.person != null ) {
 			this.prevGender = person.getGender(); 

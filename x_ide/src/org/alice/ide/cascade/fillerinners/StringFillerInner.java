@@ -30,7 +30,7 @@ public class StringFillerInner extends ExpressionFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ), edu.cmu.cs.dennisc.alice.ast.StringLiteral.class );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		this.addExpressionFillIn( blank, "hello" );
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );

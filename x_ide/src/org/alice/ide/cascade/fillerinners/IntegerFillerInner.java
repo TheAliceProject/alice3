@@ -30,7 +30,7 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.IntegerLiteral.class );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		this.addExpressionFillIn( blank, 0 );
 		this.addExpressionFillIn( blank, 1 );
 		this.addExpressionFillIn( blank, 2 );
@@ -44,18 +44,18 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
 		blank.addSeparator();
-		blank.addFillIn( new cascade.MenuFillIn( "Random" ) {
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
 			@Override
-			protected void addChildrenToBlank(cascade.Blank blank) {
+			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 				//addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFrom0ToNExclusive", java.lang.Integer.class );
 				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBExclusive", java.lang.Integer.class, java.lang.Integer.class );
 				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBInclusive", java.lang.Integer.class, java.lang.Integer.class );
 			}
 		} );
 		blank.addSeparator();
-		blank.addFillIn( new cascade.MenuFillIn( "Math" ) {
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Math" ) {
 			@Override
-			protected void addChildrenToBlank(cascade.Blank blank) {
+			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 				blank.addFillIn( new org.alice.ide.cascade.ArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, java.lang.Integer.class ) );
 				blank.addSeparator();
 				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", java.lang.Integer.TYPE );

@@ -31,7 +31,7 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		this.addExpressionFillIn( blank, 0.0 );
 		this.addExpressionFillIn( blank, 0.25 );
 		this.addExpressionFillIn( blank, 0.5 );
@@ -43,29 +43,29 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
 		blank.addSeparator();
-		blank.addFillIn( new cascade.MenuFillIn( "Random" ) {
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
 			@Override
-			protected void addChildrenToBlank(cascade.Blank blank) {
+			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class );
 				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "random" );
 			}
 		} );
 		blank.addSeparator();
-		blank.addFillIn( new cascade.MenuFillIn( "Math" ) {
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Math" ) {
 			@Override
-			protected void addChildrenToBlank(cascade.Blank blank) {
+			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
 				blank.addFillIn( new org.alice.ide.cascade.ArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, java.lang.Number.class ) );
 				blank.addSeparator();
-				blank.addFillIn( new cascade.MenuFillIn( "min, max" ) {
+				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "min, max" ) {
 					@Override
-					protected void addChildrenToBlank( cascade.Blank blank ) {
+					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", java.lang.Double.TYPE, java.lang.Double.TYPE );
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "max", java.lang.Double.TYPE, java.lang.Double.TYPE );
 					}
 				} );
-				blank.addFillIn( new cascade.MenuFillIn( "absolute value, round, ceiling, floor" ) {
+				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "absolute value, round, ceiling, floor" ) {
 					@Override
-					protected void addChildrenToBlank( cascade.Blank blank ) {
+					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", java.lang.Double.TYPE );
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "rint", java.lang.Double.TYPE );
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "ceil", java.lang.Double.TYPE );
@@ -73,17 +73,17 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 					}
 				} );
 				//blank.addSeparator();
-				blank.addFillIn( new cascade.MenuFillIn( "sqrt, pow" ) {
+				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "sqrt, pow" ) {
 					@Override
-					protected void addChildrenToBlank( cascade.Blank blank ) {
+					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "sqrt", java.lang.Double.TYPE );
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "pow", java.lang.Double.TYPE, java.lang.Double.TYPE );
 					}
 				} );
 				//blank.addSeparator();
-				blank.addFillIn( new cascade.MenuFillIn( "sin, cos, tan, asin, acos, atan, atan2, PI" ) {
+				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "sin, cos, tan, asin, acos, atan, atan2, PI" ) {
 					@Override
-					protected void addChildrenToBlank( cascade.Blank blank ) {
+					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "sin", java.lang.Double.TYPE );
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "cos", java.lang.Double.TYPE );
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "tan", java.lang.Double.TYPE );
@@ -95,9 +95,9 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 					}
 				} );
 				//blank.addSeparator();
-				blank.addFillIn( new cascade.MenuFillIn( "exp, log, E" ) {
+				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "exp, log, E" ) {
 					@Override
-					protected void addChildrenToBlank( cascade.Blank blank ) {
+					protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "exp", java.lang.Double.TYPE );
 						addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "log", java.lang.Double.TYPE );
 						addNodeChildForField( blank, MATH_TYPE_EXPRESSION, java.lang.Double.TYPE, "E" );

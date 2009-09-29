@@ -25,7 +25,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractComponent extends zoot.ZComponent {
+public abstract class AbstractComponent extends edu.cmu.cs.dennisc.zoot.ZComponent {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

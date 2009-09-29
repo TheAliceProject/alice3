@@ -25,9 +25,9 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooser<E> implements ValueChooser< E >, zoot.InputValidator {
+public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.cs.dennisc.zoot.InputValidator {
 	private static final String[] LABEL_TEXTS = { "value:" };
-	private zoot.ZInputPane< ? > inputPane;
+	private edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane;
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -42,10 +42,10 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, zoot.Inpu
 	public String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
-	public zoot.ZInputPane< ? > getInputPane() {
+	public edu.cmu.cs.dennisc.zoot.ZInputPane< ? > getInputPane() {
 		return this.inputPane;
 	}
-	public void setInputPane( zoot.ZInputPane< ? > inputPane ) {
+	public void setInputPane( edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane ) {
 		this.inputPane = inputPane;
 		this.inputPane.addOKButtonValidator( this );
 	}

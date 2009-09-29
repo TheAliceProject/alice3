@@ -54,7 +54,7 @@ public abstract class NameInputPane<E> extends RowsInputPane< E > {
 	@Override
 	protected java.util.List< java.awt.Component[] > createComponentRows() {
 		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-		zoot.ZLabel label = zoot.ZLabel.acquire();
+		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire();
 		label.setText( "name:" );
 		assert this.textField != null;
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {

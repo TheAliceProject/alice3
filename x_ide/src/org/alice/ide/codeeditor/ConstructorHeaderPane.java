@@ -30,13 +30,13 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 		super( constructorDeclaredInAlice );
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( zoot.ZLabel.acquire( "()" ) );
+			this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "()" ) );
 		} else {
-			this.add( zoot.ZLabel.acquire( "declare " ) );
-			zoot.ZLabel label = zoot.ZLabel.acquire( "constructor" );
+			this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "declare " ) );
+			edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "constructor" );
 			label.setFontToScaledFont( 1.5f );
 			this.add( label );
-			this.add( zoot.ZLabel.acquire( " on class " ) );
+			this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " on class " ) );
 			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.add( parametersPane );
 		}

@@ -32,8 +32,8 @@ public class EmptyStatementListAfforance extends org.alice.ide.common.StatementL
 	public EmptyStatementListAfforance() {
 		super( edu.cmu.cs.dennisc.alice.ast.Statement.class, javax.swing.BoxLayout.LINE_AXIS );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 16, 8, 48 ) );
-		zoot.ZLabel label = zoot.ZLabel.acquire( "drop statement here" );
-		label.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.EXTRA_LIGHT );
+		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "drop statement here" );
+		label.setFontToDerivedFont( edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.EXTRA_LIGHT );
 		this.add( label );
 	}
 	@Override

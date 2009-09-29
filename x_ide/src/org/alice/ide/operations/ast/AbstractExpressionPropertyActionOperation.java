@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.AbstractActionOperation implements zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.AbstractActionOperation implements edu.cmu.cs.dennisc.zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression > {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
@@ -35,11 +35,11 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		actionContext.pend( this );
 	}
-	protected abstract void initializeInternal( zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
-	public void initialize( zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
+	protected abstract void initializeInternal( edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+	public void initialize( edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
 		this.prevExpression = this.expressionProperty.getValue();
 		this.initializeInternal(context, taskObserver, this.prevExpression);
 	}

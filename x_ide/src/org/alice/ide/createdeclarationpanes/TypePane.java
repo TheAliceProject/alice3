@@ -30,7 +30,7 @@ import edu.cmu.cs.dennisc.alice.ast.DeclarationProperty;
 
 
 //todo: BooleanPropertyOperation
-class IsArrayStateOperation extends zoot.AbstractBooleanStateOperation {
+class IsArrayStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
 		super( isArrayProperty.getValue() );
@@ -47,10 +47,10 @@ class IsArrayStateOperation extends zoot.AbstractBooleanStateOperation {
 	}
 }
 
-public class TypePane extends swing.LineAxisPane {
+public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
 	private DeclarationProperty< AbstractType > typeProperty;
 	private org.alice.ide.common.TypeComboBox typeComboBox;
-	private zoot.ZCheckBox isArrayCheckBox;
+	private edu.cmu.cs.dennisc.zoot.ZCheckBox isArrayCheckBox;
 
 	public TypePane( DeclarationProperty< AbstractType > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isArrayCheckBoxEnabled ) {
 		assert typeProperty != null;
@@ -95,7 +95,7 @@ public class TypePane extends swing.LineAxisPane {
 			}
 		} );
 		
-		this.isArrayCheckBox = new zoot.ZCheckBox( new IsArrayStateOperation( isArrayProperty ) );
+		this.isArrayCheckBox = new edu.cmu.cs.dennisc.zoot.ZCheckBox( new IsArrayStateOperation( isArrayProperty ) );
 		this.isArrayCheckBox.setOpaque( false );
 		this.isArrayCheckBox.setEnabled( isArrayCheckBoxEnabled );
 		this.add( this.typeComboBox );

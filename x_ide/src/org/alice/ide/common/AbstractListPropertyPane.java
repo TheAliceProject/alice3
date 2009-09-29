@@ -91,7 +91,7 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 			if( o != null ) {
 				component = this.createComponent( o );
 			} else {
-				component = zoot.ZLabel.acquire( "null" );
+				component = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "null" );
 			}
 			this.add( component );
 			java.awt.Component interstitial = this.createInterstitial( i, N );

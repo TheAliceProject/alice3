@@ -32,7 +32,7 @@ public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.Expressio
 		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Key.class ), edu.cmu.cs.dennisc.alice.ast.FieldAccess.class );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		Key[] lettersAM = {
 				Key.A,
 				Key.B,
@@ -89,9 +89,9 @@ public class KeyFillerInner extends org.alice.ide.cascade.fillerinners.Expressio
 		final int N = names.length;
 		for( int i=0; i<N; i++ ) {
 			final Key[] keys = keySets[ i ];
-			blank.addFillIn( new cascade.MenuFillIn( names[ i ] ) {
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( names[ i ] ) {
 				@Override
-				protected void addChildrenToBlank( cascade.Blank blank ) {
+				protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 					for( Key key : keys ) {
 			 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = type.getDeclaredField( type, key.name() );
 			 			assert field.isPublicAccess() && field.isStatic() && field.isFinal();

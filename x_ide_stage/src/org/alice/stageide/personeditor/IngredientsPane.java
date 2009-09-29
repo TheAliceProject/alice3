@@ -25,8 +25,8 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientsPane extends swing.BorderPane {
-	private zoot.ZButton randomizeButton = new zoot.ZButton( new RandomPersonActionOperation() );
+abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
+	private edu.cmu.cs.dennisc.zoot.ZButton randomizeButton = new edu.cmu.cs.dennisc.zoot.ZButton( new RandomPersonActionOperation() );
 	private LifeStageList lifeStageList = new LifeStageList();
 	private GenderList genderList = new GenderList();
 	private FitnessLevelPane fitnessLevelPane = new FitnessLevelPane();
@@ -37,7 +37,7 @@ abstract class IngredientsPane extends swing.BorderPane {
 	private FullBodyOutfitList fullBodyOutfitList = new FullBodyOutfitList();
 	
 	private static java.awt.Component createLabel( String text ) {
-		zoot.ZLabel rv = zoot.ZLabel.acquire( text );
+		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
 	}
@@ -46,7 +46,7 @@ abstract class IngredientsPane extends swing.BorderPane {
 	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
 	private static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 	
-	private zoot.ZTabbedPane tabbedPane = new zoot.ZTabbedPane() {
+	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane() {
 		@Override
 		public java.awt.Color getContentAreaColor() {
 			return BACKGROUND_COLOR;
@@ -84,7 +84,7 @@ abstract class IngredientsPane extends swing.BorderPane {
 		this.baseEyeColorList.setOpaque( false );
 		
 		class ListCellRenderer implements javax.swing.ListCellRenderer {
-			private swing.BorderPane pane = new swing.BorderPane();
+			private edu.cmu.cs.dennisc.croquet.BorderPane pane = new edu.cmu.cs.dennisc.croquet.BorderPane();
 			private javax.swing.JLabel label = new javax.swing.JLabel();
 			public ListCellRenderer() {
 				label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
@@ -112,10 +112,10 @@ abstract class IngredientsPane extends swing.BorderPane {
 		this.hairColorList.setCellRenderer( listCellRenderer );
 		this.baseEyeColorList.setCellRenderer( listCellRenderer );
 
-		swing.BorderPane northPane = new swing.BorderPane();
+		edu.cmu.cs.dennisc.croquet.BorderPane northPane = new edu.cmu.cs.dennisc.croquet.BorderPane();
 		northPane.add( this.randomizeButton, java.awt.BorderLayout.NORTH );
 		
-		swing.RowsSpringPane ubiquitousPane = new swing.RowsSpringPane( 8, 8 ) {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPane ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPane( 8, 8 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "gender:" ), genderList ) );
@@ -129,7 +129,7 @@ abstract class IngredientsPane extends swing.BorderPane {
 //		hairPane.add( this.hairColorList, java.awt.BorderLayout.NORTH );
 //		hairPane.add( this.hairList, java.awt.BorderLayout.CENTER );
 		
-		swing.RowsSpringPane headPane = new swing.RowsSpringPane( 8, 8 ) {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPane headPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPane( 8, 8 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "hair:" ), hairColorList ) );
@@ -149,7 +149,7 @@ abstract class IngredientsPane extends swing.BorderPane {
 		scrollPane.setOpaque( false );
 		scrollPane.getViewport().setOpaque( false );
 
-		swing.BorderPane bodyPane = new swing.BorderPane( 8, 8 );
+		edu.cmu.cs.dennisc.croquet.BorderPane bodyPane = new edu.cmu.cs.dennisc.croquet.BorderPane( 8, 8 );
 		bodyPane.add( scrollPane, java.awt.BorderLayout.CENTER );
 		bodyPane.add( this.fitnessLevelPane, java.awt.BorderLayout.SOUTH );
 		

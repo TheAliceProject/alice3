@@ -25,7 +25,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > {
+class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.moveandturn.Text > {
 	class FamilyList extends javax.swing.JList {
 		public FamilyList() {
 			this.setListData( new String[] { "Serif", "SansSerif" } );
@@ -98,14 +98,14 @@ class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > 
 	private javax.swing.JTextField textVC;
 	private javax.swing.JTextField instanceNameVC;
 	//private javax.swing.JTextField classNameVC;
-	private zoot.ZCheckBox constrainInstanceNameToTextVC;
+	private edu.cmu.cs.dennisc.zoot.ZCheckBox constrainInstanceNameToTextVC;
 	//private javax.swing.JCheckBox constrainClassNameToInstanceNameVC;
 	
 	private javax.swing.JTextField heightTextField;
 	private FamilyList familyList;
 	private StyleList styleList;
 
-	private zoot.ZLabel sample;
+	private edu.cmu.cs.dennisc.zoot.ZLabel sample;
 	
 	
 	public CreateTextPane() {
@@ -113,7 +113,7 @@ class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 		this.setBackground( org.alice.ide.IDE.getSingleton().getFieldColor() );
 		this.setOpaque( true );
-		class TextField extends zoot.ZSuggestiveTextField {
+		class TextField extends edu.cmu.cs.dennisc.zoot.ZSuggestiveTextField {
 			public TextField( String text, String textForBlankCondition ) {
 				super( text, textForBlankCondition );
 			}
@@ -145,7 +145,7 @@ class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > 
 		} );
 		//this.instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this.handleInstanceNameChange ) );
 
-		this.constrainInstanceNameToTextVC = new zoot.ZCheckBox( new ConstrainInstanceNameToTextBooleanStateOperation() );
+		this.constrainInstanceNameToTextVC = new edu.cmu.cs.dennisc.zoot.ZCheckBox( new ConstrainInstanceNameToTextBooleanStateOperation() );
 		this.constrainInstanceNameToTextVC.setSelected( true );
 		this.constrainInstanceNameToTextVC.setOpaque( false );
 		this.heightTextField = new TextField( "1.0", " enter height in meters here" );
@@ -158,7 +158,7 @@ class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > 
 		this.familyList = new FamilyList();
 		this.styleList = new StyleList();
 	
-		this.sample = zoot.ZLabel.acquire( "AaBbYyZz" );
+		this.sample = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "AaBbYyZz" );
 		this.sample.setFontToScaledFont( 1.2f );
 		this.updateSample();
 		
@@ -176,7 +176,7 @@ class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > 
 		this.familyList.addListSelectionListener( listSelectionAdapter );
 		this.styleList.addListSelectionListener( listSelectionAdapter );
 		
-		swing.RowsSpringPane pane = new swing.RowsSpringPane( 16, 4 ) {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPane pane = new edu.cmu.cs.dennisc.croquet.RowsSpringPane( 16, 4 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				CreateTextPane.this.updateRows( rv );
@@ -205,7 +205,7 @@ class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > 
 	}
 	private static java.awt.Component createLabel( String text ) {
 		//javax.swing.JLabel rv = new javax.swing.JLabel( text );
-		zoot.ZLabel rv = zoot.ZLabel.acquire( text );
+		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.setOpaque( false );
@@ -216,7 +216,7 @@ class CreateTextPane extends zoot.ZInputPane< org.alice.apis.moveandturn.Text > 
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "text:" ), this.textVC, null ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "instance:" ), this.instanceNameVC, this.constrainInstanceNameToTextVC ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 24 ), null, null ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "letter height:" ), this.heightTextField, zoot.ZLabel.acquire( "(meters)" ) ) );
+		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "letter height:" ), this.heightTextField, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "(meters)" ) ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 4 ), null, null ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "family:" ), this.familyList, null ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "style:" ), this.styleList, null ) );

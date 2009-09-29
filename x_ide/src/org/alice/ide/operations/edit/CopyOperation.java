@@ -31,7 +31,7 @@ public class CopyOperation extends org.alice.ide.operations.InconsequentialActio
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		String title = "Copy coming soon";
 		String message = "Copy is not yet implemented.  Apologies.";
 		message += "\n\nNOTE: one can copy by dragging with the ";

@@ -25,7 +25,7 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StringConcatenationFillIn extends cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
+public class StringConcatenationFillIn extends edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
 	@Override
 	protected void addChildren() {
 		this.addChild( new ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) );

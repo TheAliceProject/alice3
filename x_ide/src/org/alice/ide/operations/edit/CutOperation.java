@@ -31,7 +31,7 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_X, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		String title = "Cut coming soon";
 		String message = "Cut is not yet implemented.  Apologies.";
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ); 

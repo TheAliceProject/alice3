@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-class TypeListCellRenderer extends swing.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+class TypeListCellRenderer extends edu.cmu.cs.dennisc.croquet.ListCellRenderer< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.alice.ast.AbstractType value, int index, boolean isSelected, boolean cellHasFocus ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
@@ -48,7 +48,7 @@ class TypeListCellRenderer extends swing.ListCellRenderer< edu.cmu.cs.dennisc.al
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypeComboBox extends zoot.ZComboBox {
+public abstract class TypeComboBox extends edu.cmu.cs.dennisc.zoot.ZComboBox {
 	public TypeComboBox( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		javax.swing.ComboBoxModel model = org.alice.ide.IDE.getSingleton().getTypeComboBoxModel();
 		model.setSelectedItem( type );

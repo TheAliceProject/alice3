@@ -31,16 +31,16 @@ public abstract class IngredientFillerInner extends org.alice.ide.cascade.filler
 	}
 	protected abstract Class<?>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender );
 	@Override
-	public final void addFillIns( cascade.Blank blank ) {
+	public final void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		final org.alice.apis.stage.LifeStage lifeStage = org.alice.apis.stage.LifeStage.ADULT;
 		for( final org.alice.apis.stage.Gender gender : org.alice.apis.stage.Gender.values() ) {
-			blank.addFillIn( new cascade.MenuFillIn( gender.name() ) {
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( gender.name() ) {
 				@Override
-				protected void addChildrenToBlank( cascade.Blank blank ) {
+				protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 					for( final Class<?> cls : getClses( lifeStage, gender ) ) {
-						blank.addFillIn( new cascade.MenuFillIn( cls.getSimpleName() ) {
+						blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( cls.getSimpleName() ) {
 							@Override
-							protected void addChildrenToBlank( cascade.Blank blank ) {
+							protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 								edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls );
 						 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 						 			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {

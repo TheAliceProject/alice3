@@ -36,7 +36,7 @@ public class RelationalExpressionFillIn extends InfixExpressionFillIn< edu.cmu.c
 		return this.type;
 	}
 	@Override
-	protected cascade.Blank createOperatorBlank() {
+	protected edu.cmu.cs.dennisc.cascade.Blank createOperatorBlank() {
 		return new RelationalInfixExpressionOperatorBlank( this.type );
 	}
 	@Override

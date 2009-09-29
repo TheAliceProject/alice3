@@ -22,7 +22,7 @@
  */
 package org.alice.ide.common;
 
-class MethodPane extends swing.BorderPane {
+class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 	public MethodPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 //		javax.swing.Box header = javax.swing.Box.createHorizontalBox();
 //		header.add( zoot.ZLabel.acquire( "declare procedure " ) );
@@ -51,16 +51,16 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		
 		if( getIDE().isJava() ) {
 			javax.swing.Box header = javax.swing.Box.createHorizontalBox();
-			header.add( zoot.ZLabel.acquire( "new " ) );
+			header.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "new " ) );
 			header.add( new TypeComponent( anonymousConstructor.getDeclaringType().getSuperType() ) );
-			header.add( zoot.ZLabel.acquire( "() {" ) );
+			header.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "() {" ) );
 			header.setAlignmentX( 0.0f );
 			this.add( header );
 		}
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.anonymousConstructor.getDeclaringType();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-			swing.Pane pane = new swing.Pane();
+			edu.cmu.cs.dennisc.croquet.Pane pane = new edu.cmu.cs.dennisc.croquet.Pane();
 			pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
 			int inset = 4;
 			int left = 4;
@@ -72,7 +72,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 			this.add( pane );
 		}
 		if( getIDE().isJava() ) {
-			this.add( zoot.ZLabel.acquire( "}" ) );
+			this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "}" ) );
 		}
 		this.setBackground( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
 	}

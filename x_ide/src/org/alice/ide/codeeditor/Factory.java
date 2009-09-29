@@ -32,7 +32,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		this.property = abstractStatementPane.getOwner();
 		this.statement = abstractStatementPane.getStatement();
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		this.index = this.property.indexOf( this.statement );
 		if( this.index >= 0 ) {
 			actionContext.commitAndInvokeRedoIfAppropriate();
@@ -121,10 +121,10 @@ public class Factory extends org.alice.ide.common.Factory {
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
 		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
-		abstractStatementPane.setPopupOperation( new zoot.DefaultPopupActionOperation( this.createPopupOperations( abstractStatementPane ) ) );
+		abstractStatementPane.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( this.createPopupOperations( abstractStatementPane ) ) );
 		return abstractStatementPane;
 	}
-	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+	protected java.util.List< edu.cmu.cs.dennisc.zoot.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.zoot.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
 			//pass
@@ -142,12 +142,12 @@ public class Factory extends org.alice.ide.common.Factory {
 				}
 			}
 		}
-		rv.add( zoot.ZManager.MENU_SEPARATOR );
+		rv.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		rv.add( new DeleteStatementActionOperation( abstractStatementPane ) );
 		return rv;
 	}
-	private java.util.List< zoot.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		return this.updatePopupOperations( new java.util.LinkedList< zoot.Operation >(), abstractStatementPane );
+	private java.util.List< edu.cmu.cs.dennisc.zoot.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >(), abstractStatementPane );
 	}
 
 }

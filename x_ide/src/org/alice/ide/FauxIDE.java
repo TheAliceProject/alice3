@@ -27,7 +27,7 @@ package org.alice.ide;
  */
 public class FauxIDE extends IDE {
 	@Override
-	protected zoot.ActionOperation createAboutOperation() {
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation() {
 		return null;
 	}
 	@Override
@@ -46,11 +46,11 @@ public class FauxIDE extends IDE {
 		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser( galleryRootDirectory );
 	}
 	@Override
-	public void handleRun( zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+	public void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		javax.swing.JOptionPane.showMessageDialog( this, "imagine the program running here..." );
 	}
 	@Override
-	public void handlePreviewMethod( zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+	public void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 		javax.swing.JOptionPane.showMessageDialog( this, "imagine testing method here..." );
 	}
 	@Override

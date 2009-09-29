@@ -30,7 +30,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	public DeclareLocalTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
 		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
-		this.add( zoot.ZLabel.acquire( this.getLabelText() ) );
+		this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( this.getLabelText() ) );
 		this.setToolTipText( "" );
 	}
 	
@@ -57,7 +57,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	}
 
 	@Override
-	public final void createStatement( final zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.alice.ast.BlockStatement block, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
+	public final void createStatement( final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.alice.ast.BlockStatement block, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {
 		class Worker extends org.jdesktop.swingworker.SwingWorker< edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement, Void > {
 			@Override
 			protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement doInBackground() throws java.lang.Exception {

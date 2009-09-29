@@ -38,7 +38,7 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
 		return this.method;
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		this.method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.getCode();
 		org.alice.ide.createdeclarationpanes.CreateMethodParameterPane createMethodParameterPane = new org.alice.ide.createdeclarationpanes.CreateMethodParameterPane( method, this.getIDE().getMethodInvocations( method ) );
 		this.parameter = createMethodParameterPane.showInJDialog( getIDE() );

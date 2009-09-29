@@ -31,7 +31,7 @@ public class AboutOperation extends org.alice.ide.operations.InconsequentialActi
 		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_A );
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), aboutPane, "About Alice 3", javax.swing.JOptionPane.PLAIN_MESSAGE );
 	}

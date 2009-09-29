@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationNameLabel extends zoot.ZLabel {
+public class DeclarationNameLabel extends edu.cmu.cs.dennisc.zoot.ZLabel {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration;
 
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {

@@ -30,8 +30,8 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		super( cls, javax.swing.BoxLayout.LINE_AXIS );
 	}
 
-	public abstract void createStatement( zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
-	private zoot.DragAndDropOperation dragAndDropOperation;
+	public abstract void createStatement( edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
+	private edu.cmu.cs.dennisc.zoot.DragAndDropOperation dragAndDropOperation;
 
 //	@Override
 //	protected boolean isFauxDragDesired() {
@@ -49,7 +49,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	//			}
 	//		};
 	//	}
-	protected zoot.DragAndDropOperation createDragAndDropOperation() {
+	protected edu.cmu.cs.dennisc.zoot.DragAndDropOperation createDragAndDropOperation() {
 		return new org.alice.ide.operations.DefaultDragAndDropOperation();
 	}
 	@Override
@@ -82,7 +82,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 			//pass
 		} else {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setPaint( zoot.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

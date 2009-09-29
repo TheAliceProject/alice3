@@ -28,7 +28,7 @@ package org.alice.ide.common;
 public abstract class LocalPane extends AccessiblePane {
 	public LocalPane( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {
 		this.add( new org.alice.ide.common.LocalNameLabel( local ) );
-		this.setPopupOperation( new zoot.DefaultPopupActionOperation(
+		this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation(
 				new org.alice.ide.operations.ast.RenameLocalDeclarationOperation( local ) 
 		) );
 	}

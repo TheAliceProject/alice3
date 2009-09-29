@@ -39,7 +39,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 		this.vm.invokeEntryPoint( this.sceneType.getDeclaredMethod( "run" ), this.sceneInstance );
 	}
 	
-	private zoot.ActionOperation getRestartOperation() {
+	private edu.cmu.cs.dennisc.zoot.ActionOperation getRestartOperation() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {
 			return ide.getRestartOperation();
@@ -54,7 +54,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	@Override
 	protected void restart( java.util.EventObject e ) {
 		javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
-		zoot.ZManager.performIfAppropriate( this.getRestartOperation(), null, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( this.getRestartOperation(), null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 	}
 	
 	@Override

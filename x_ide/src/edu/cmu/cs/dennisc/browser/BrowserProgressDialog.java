@@ -29,28 +29,28 @@ public class BrowserProgressDialog extends edu.cmu.cs.dennisc.progress.ProgressD
 	protected void addComponentsToPageAxisContentPane(java.awt.Container contentPane) {
 		super.addComponentsToPageAxisContentPane(contentPane);
 		
-		class CopyToClipboardOperation extends zoot.InconsequentialActionOperation {
+		class CopyToClipboardOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 			public CopyToClipboardOperation() {
 				this.putValue( javax.swing.Action.NAME, "Copy to Clipboard" );
 			}
 			@Override
-			protected void performInternal(zoot.ActionContext actionContext) {
+			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 				edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( BrowserProgressDialog.this.url );
 			}
 		}
-		class DismissOperation extends zoot.InconsequentialActionOperation {
+		class DismissOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 			public DismissOperation() {
 				this.putValue( javax.swing.Action.NAME, "Dismiss" );
 			}
 			@Override
-			protected void performInternal(zoot.ActionContext actionContext) {
+			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 				BrowserProgressDialog.this.setVisible( false );
 			}
 		}
 		
 		javax.swing.JPanel pane = new javax.swing.JPanel();
-		pane.add(new zoot.ZButton( new CopyToClipboardOperation() ));
-		pane.add(new zoot.ZButton( new DismissOperation() ));
+		pane.add(new edu.cmu.cs.dennisc.zoot.ZButton( new CopyToClipboardOperation() ));
+		pane.add(new edu.cmu.cs.dennisc.zoot.ZButton( new DismissOperation() ));
 		contentPane.add(pane);
 	}
 

@@ -42,7 +42,7 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesInputPane extends zoot.ZInputPane<Void> {
+public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Void> {
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private javax.swing.JTree tree = new javax.swing.JTree();
 	public PreferencesInputPane( javax.swing.tree.TreeModel treeModel ) {

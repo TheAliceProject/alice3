@@ -65,7 +65,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 //			} else {
 //				codeText = "constructor";
 //			}
-			this.checkBox = new zoot.ZCheckBox( new UnderstandingConfirmationOperation( codeText ) );
+			this.checkBox = new edu.cmu.cs.dennisc.zoot.ZCheckBox( new UnderstandingConfirmationOperation( codeText ) );
 			this.checkBox.setOpaque( false );
 			
 			StringBuffer sb = new StringBuffer();
@@ -93,13 +93,13 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			}
 			sb.append( " invocation.</body></html>" );
 
-			swing.PageAxisPane pane = new swing.PageAxisPane();
-			pane.add( zoot.ZLabel.acquire( sb.toString() ) );
+			edu.cmu.cs.dennisc.croquet.PageAxisPane pane = new edu.cmu.cs.dennisc.croquet.PageAxisPane();
+			pane.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( sb.toString() ) );
 			pane.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			pane.add( new swing.LineAxisPane( zoot.ZLabel.acquire( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+			pane.add( new edu.cmu.cs.dennisc.croquet.LineAxisPane( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
 			pane.add( javax.swing.Box.createVerticalStrut( 8 ) );
 			pane.add( this.checkBox );
-			return new java.awt.Component[] { zoot.ZLabel.acquire( "WARNING:" ), pane };
+			return new java.awt.Component[] { edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "WARNING:" ), pane };
 		} else {
 			this.checkBox = null;
 			return null;

@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillInExpressionListPropertyItemOperation extends org.alice.ide.operations.AbstractActionOperation implements zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class FillInExpressionListPropertyItemOperation extends org.alice.ide.operations.AbstractActionOperation implements edu.cmu.cs.dennisc.zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression > {
 //	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
@@ -37,10 +37,10 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 		this.expressionListProperty = expressionListProperty;
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		actionContext.pend( this );
 	}
-	public void initialize( zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
+	public void initialize( edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
 		this.prevExpression = this.expressionListProperty.get( this.index );
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getFillInType();
 		getIDE().promptUserForExpression( type, this.prevExpression, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );

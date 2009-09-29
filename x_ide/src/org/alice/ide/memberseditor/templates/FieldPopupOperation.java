@@ -25,7 +25,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldPopupOperation extends zoot.DefaultPopupActionOperation {
+public class FieldPopupOperation extends edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation {
 	public FieldPopupOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice methodInAlice ) {
 		super( 
 			new org.alice.ide.operations.ast.RenameFieldOperation( methodInAlice ),

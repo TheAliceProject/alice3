@@ -25,7 +25,7 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractActionOperation extends zoot.AbstractActionOperation {
+public abstract class AbstractActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 	public AbstractActionOperation() {
 	}
 	public AbstractActionOperation( javax.swing.ButtonModel model ) {

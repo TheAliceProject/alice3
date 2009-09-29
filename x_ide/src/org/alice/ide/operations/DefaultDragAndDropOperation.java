@@ -26,23 +26,23 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultDragAndDropOperation extends zoot.AbstractDragAndDropOperation {
+public class DefaultDragAndDropOperation extends edu.cmu.cs.dennisc.zoot.AbstractDragAndDropOperation {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends zoot.DropReceptor > createListOfPotentialDropReceptors( zoot.ZDragComponent dragSource ) {
+	public java.util.List< ? extends edu.cmu.cs.dennisc.zoot.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.zoot.ZDragComponent dragSource ) {
 		return getIDE().createListOfPotentialDropReceptors( dragSource );
 	}
-	public void handleDragStarted( zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragStarted( dragAndDropContext );
 	}
-	public void handleDragEnteredDropReceptor( zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
 	}
-	public void handleDragExitedDropReceptor( zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
 	}
-	public void handleDragStopped( zoot.DragAndDropContext dragAndDropContext ) {
+	public void handleDragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragStopped( dragAndDropContext );
 	}
 	@Override

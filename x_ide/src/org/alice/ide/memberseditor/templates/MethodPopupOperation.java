@@ -25,7 +25,7 @@ package org.alice.ide.memberseditor.templates;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodPopupOperation extends zoot.DefaultPopupActionOperation {
+public class MethodPopupOperation extends edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation {
 	public MethodPopupOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice ) {
 		super( 
 			new org.alice.ide.operations.ast.RenameMethodOperation( methodInAlice ),

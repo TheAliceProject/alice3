@@ -25,7 +25,7 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionBlank extends cascade.Blank {
+public class ExpressionBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 	private boolean isArrayLengthDesired;
 	public ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -38,7 +38,7 @@ public class ExpressionBlank extends cascade.Blank {
 	@Override
 	protected void addChildren() {
 		if( this.isArrayLengthDesired ) {
-			this.addFillIn( new cascade.FillIn() {
+			this.addFillIn( new edu.cmu.cs.dennisc.cascade.FillIn() {
 				@Override
 				public Object getValue() {
 					return null;
@@ -52,7 +52,7 @@ public class ExpressionBlank extends cascade.Blank {
 				}
 				@Override
 				protected javax.swing.JComponent getMenuProxy() {
-					return zoot.ZLabel.acquire( "length" );
+					return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "length" );
 				}
 			} );
 			this.addSeparator();

@@ -33,7 +33,7 @@ public class ConstantsOwningFillerInner extends ExpressionFillerInner {
 		this( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
 	@Override
-	public void addFillIns( cascade.Blank blank ) {
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getType();
  		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
  			if( field.isPublicAccess() && field.isStatic() && field.isFinal() ) {

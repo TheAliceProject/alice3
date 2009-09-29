@@ -39,7 +39,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 		this.putValue( javax.swing.Action.NAME, "Export Video / Upload To YouTube\u2122..." );
 	}
 	@Override
-	protected void performInternal(zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		final int frameRate = 24;
 		
 		edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();

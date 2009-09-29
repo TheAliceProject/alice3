@@ -1,10 +1,10 @@
 package edu.cmu.cs.dennisc.toolkit.login;
 
-class PasswordPane extends swing.PageAxisPane {
+class PasswordPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	private static final String HIDDEN_KEY = "HIDDEN_KEY";
 	private static final String EXPOSED_KEY = "EXPOSED_KEY";
 
-	class PasswordCardPane extends swing.CardPane {
+	class PasswordCardPane extends edu.cmu.cs.dennisc.croquet.CardPane {
 		private javax.swing.JPasswordField hidden = new javax.swing.JPasswordField() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
@@ -48,13 +48,13 @@ class PasswordPane extends swing.PageAxisPane {
 	}
 }
 
-class LogInPane extends swing.PageAxisPane {
-	class TestLogInOperation extends zoot.InconsequentialActionOperation {
+class LogInPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
+	class TestLogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public TestLogInOperation() {
 			this.putValue( javax.swing.Action.NAME, "Log In" );
 		}
 		@Override
-		protected void performInternal( zoot.ActionContext actionContext ) {
+		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			try {
 				com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator jiraSoapServiceLocator = new com.atlassian.jira.rpc.soap.client.JiraSoapServiceServiceLocator();
 				com.atlassian.jira.rpc.soap.client.JiraSoapService service = jiraSoapServiceLocator.getJirasoapserviceV2( new java.net.URL( "http://bugs.alice.org:8080/rpc/soap/jirasoapservice-v2" ) );
@@ -79,17 +79,17 @@ class LogInPane extends swing.PageAxisPane {
 		}
 	}
 
-	private zoot.ZTextField textUsername = new zoot.ZTextField();
+	private edu.cmu.cs.dennisc.zoot.ZTextField textUsername = new edu.cmu.cs.dennisc.zoot.ZTextField();
 	private PasswordPane passwordPane = new PasswordPane();
-	private zoot.ZButton logInButton = new zoot.ZButton( new TestLogInOperation() );
+	private edu.cmu.cs.dennisc.zoot.ZButton logInButton = new edu.cmu.cs.dennisc.zoot.ZButton( new TestLogInOperation() );
 	private java.awt.Component createLabel( String text ) {
-		zoot.ZLabel rv = zoot.ZLabel.acquire( text );
+		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
 	}
 	public LogInPane() {
-		swing.RowsSpringPane rowsPane = new swing.RowsSpringPane( 8, 4 ) {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPane rowsPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPane( 8, 4 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "Username:" ), textUsername ) );
@@ -98,13 +98,13 @@ class LogInPane extends swing.PageAxisPane {
 			}
 		};
 
-		swing.Pane signUpPane = new swing.Pane();
-		signUpPane.add( zoot.ZLabel.acquire( "Not a member?" ) );
+		edu.cmu.cs.dennisc.croquet.Pane signUpPane = new edu.cmu.cs.dennisc.croquet.Pane();
+		signUpPane.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Not a member?" ) );
 		edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation hyperlinkOperation = new edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation( "http://bugs.alice.org:8080/secure/Signup!default.jspa", "Sign up" );
-		signUpPane.add( new zoot.ZHyperlink( hyperlinkOperation ) );
-		signUpPane.add( zoot.ZLabel.acquire( "for an account." ) );
+		signUpPane.add( new edu.cmu.cs.dennisc.zoot.ZHyperlink( hyperlinkOperation ) );
+		signUpPane.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "for an account." ) );
 
-		swing.Pane buttonPane = new swing.Pane();
+		edu.cmu.cs.dennisc.croquet.Pane buttonPane = new edu.cmu.cs.dennisc.croquet.Pane();
 		buttonPane.add( this.logInButton );
 
 		signUpPane.setAlignmentX( javax.swing.JComponent.CENTER_ALIGNMENT );
@@ -120,20 +120,20 @@ class LogInPane extends swing.PageAxisPane {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 32, 8, 32 ) );
 	}
 	
-	public zoot.ZButton getLogInButton() {
+	public edu.cmu.cs.dennisc.zoot.ZButton getLogInButton() {
 		return this.logInButton;
 	}
 }
 
 
-public class LogInStatusPane extends swing.CardPane {
+public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.CardPane {
 	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
-	class LogInOperation extends zoot.InconsequentialActionOperation {
+	class LogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public LogInOperation() {
 			this.putValue( javax.swing.Action.NAME, "Log In... (Optional)" );
 		}
 		@Override
-		protected void performInternal( zoot.ActionContext actionContext ) {
+		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			LogInPane pane = new LogInPane();
 			java.awt.Component owner = this.getSourceComponent( actionContext );
 			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
@@ -148,12 +148,12 @@ public class LogInStatusPane extends swing.CardPane {
 		}
 	}
 
-	class LogOutOperation extends zoot.InconsequentialActionOperation {
+	class LogOutOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public LogOutOperation() {
 			this.putValue( javax.swing.Action.NAME, "Log Out" );
 		}
 		@Override
-		protected void performInternal( zoot.ActionContext actionContext ) {
+		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			edu.cmu.cs.dennisc.login.AccountManager.logOut( LogInStatusPane.BUGS_ALICE_ORG_KEY );
 			LogInStatusPane.this.show( OFF_KEY );
 		}
@@ -161,16 +161,16 @@ public class LogInStatusPane extends swing.CardPane {
 
 	private static final String OFF_KEY = "OFF_KEY";
 	private static final String ON_KEY = "ON_KEY";
-	private zoot.ZButton logInButton = new zoot.ZButton( new LogInOperation() );
-	private zoot.ZButton logOutButton = new zoot.ZButton( new LogOutOperation() );
+	private edu.cmu.cs.dennisc.zoot.ZButton logInButton = new edu.cmu.cs.dennisc.zoot.ZButton( new LogInOperation() );
+	private edu.cmu.cs.dennisc.zoot.ZButton logOutButton = new edu.cmu.cs.dennisc.zoot.ZButton( new LogOutOperation() );
 
-	class OffPane extends swing.LineAxisPane {
+	class OffPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
 		public OffPane() {
 			this.add( javax.swing.Box.createHorizontalGlue() );
 			this.add( logInButton );
 		}
 	}
-	class OnPane extends swing.LineAxisPane {
+	class OnPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
 		private javax.swing.JLabel nameLabel = new javax.swing.JLabel( "Full Name" ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {

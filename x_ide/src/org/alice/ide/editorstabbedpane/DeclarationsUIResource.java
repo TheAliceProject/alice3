@@ -1,6 +1,6 @@
 package org.alice.ide.editorstabbedpane;
 
-public class DeclarationsUIResource extends swing.LineAxisPane implements javax.swing.plaf.UIResource {
+public class DeclarationsUIResource extends edu.cmu.cs.dennisc.croquet.LineAxisPane implements javax.swing.plaf.UIResource {
 	public DeclarationsUIResource() {
 		this.add( new DeclarationsDropDown() );
 		this.add( new org.alice.ide.common.ThisPane() );

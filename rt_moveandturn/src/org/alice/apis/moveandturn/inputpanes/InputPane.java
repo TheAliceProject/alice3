@@ -25,17 +25,17 @@ package org.alice.apis.moveandturn.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputPane< E > extends zoot.ZInputPane< E > {
-	private zoot.ZLabel messageLabel;
+public abstract class InputPane< E > extends edu.cmu.cs.dennisc.zoot.ZInputPane< E > {
+	private edu.cmu.cs.dennisc.zoot.ZLabel messageLabel;
 	public InputPane( String message ) {
-		this.messageLabel = zoot.ZLabel.acquire( message );
+		this.messageLabel = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( message );
 		this.messageLabel.setFontToScaledFont( 1.5f );
 		final int INSET = 12;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 		this.setLayout( new java.awt.BorderLayout() );
 		this.add( this.messageLabel, java.awt.BorderLayout.NORTH );
 	}
-	protected zoot.ZLabel getMessageLabel() {
+	protected edu.cmu.cs.dennisc.zoot.ZLabel getMessageLabel() {
 		return this.messageLabel;
 	}
 	@Override

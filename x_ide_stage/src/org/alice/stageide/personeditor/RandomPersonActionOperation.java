@@ -39,7 +39,7 @@ class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActio
 	public RandomPersonActionOperation() {
 		this.putValue( javax.swing.Action.NAME, "Generate Random Selection" );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		this.prevState = PersonViewer.getSingleton().getState();
 		this.nextState = PersonViewer.generateRandomState();
 		actionContext.commitAndInvokeRedoIfAppropriate();

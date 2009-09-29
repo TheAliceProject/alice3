@@ -32,8 +32,9 @@ import javax.swing.JPanel;
 
 import org.alice.interact.AbstractDragAdapter;
 
-import zoot.ZLabel;
-import zoot.font.ZTextWeight;
+import edu.cmu.cs.dennisc.zoot.ZLabel;
+import edu.cmu.cs.dennisc.zoot.font.ZTextWeight;
+
 
 /**
  * @author David Culyba
@@ -52,7 +53,7 @@ public class ManipulationHandleControlPanel extends JPanel {
 		ZLabel title = ZLabel.acquire( "Handle Style", ZTextWeight.BOLD);
 		title.setFontToScaledFont( 1.5f );
 		this.add( title, BorderLayout.NORTH );
-		this.add(zoot.ZManager.createRadioButtons( this.handleSelectionOperation ), BorderLayout.CENTER);
+		this.add(edu.cmu.cs.dennisc.zoot.ZManager.createRadioButtons( this.handleSelectionOperation ), BorderLayout.CENTER);
 		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 	
@@ -60,13 +61,13 @@ public class ManipulationHandleControlPanel extends JPanel {
 	{
 		if (this.dragAdapter != null)
 		{
-			this.dragAdapter.getOnscreenLookingGlass().getAWTComponent().removeKeyListener( zoot.ZManager.createKeyListener( this.handleSelectionOperation ) );
+			this.dragAdapter.getOnscreenLookingGlass().getAWTComponent().removeKeyListener( edu.cmu.cs.dennisc.zoot.ZManager.createKeyListener( this.handleSelectionOperation ) );
 		}
 		this.dragAdapter = dragAdapter;
 		this.handleSelectionOperation.setDragAdapter( this.dragAdapter );
 		if (this.dragAdapter != null)
 		{
-			this.dragAdapter.getOnscreenLookingGlass().getAWTComponent().addKeyListener( zoot.ZManager.createKeyListener( this.handleSelectionOperation ) );
+			this.dragAdapter.getOnscreenLookingGlass().getAWTComponent().addKeyListener( edu.cmu.cs.dennisc.zoot.ZManager.createKeyListener( this.handleSelectionOperation ) );
 		}
 	}
 }

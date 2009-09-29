@@ -89,10 +89,10 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	
 	@Override
 	protected java.awt.Component createValueTypeComponent() {
-		swing.LineAxisPane valueTypeLine = new swing.LineAxisPane();
+		edu.cmu.cs.dennisc.croquet.LineAxisPane valueTypeLine = new edu.cmu.cs.dennisc.croquet.LineAxisPane();
 		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType ) );
 		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			valueTypeLine.add( zoot.ZLabel.acquire( " which extends ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
+			valueTypeLine.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " which extends ", edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.LIGHT ) );
 			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
 //			valueTypeLine.add( zoot.ZLabel.acquire( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
 		}
@@ -100,6 +100,6 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	}
 	@Override
 	protected java.awt.Component createInitializerComponent() {
-		return new swing.LineAxisPane( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
+		return new edu.cmu.cs.dennisc.croquet.LineAxisPane( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
 	}
 }

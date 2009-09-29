@@ -30,7 +30,7 @@ public class FillInExpressionPropertyActionOperation extends AbstractExpressionP
 		super( expressionProperty );
 	}
 	@Override
-	protected void initializeInternal(zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
+	protected void initializeInternal(edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getExpressionProperty().getExpressionType();
 		getIDE().promptUserForExpression( type, prevExpression, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
 	}

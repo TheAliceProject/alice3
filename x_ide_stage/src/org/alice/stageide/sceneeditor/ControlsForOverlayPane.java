@@ -95,7 +95,7 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 	}
 }
 
-class IsExpandedCheckBox extends zoot.ZCheckBox {
+class IsExpandedCheckBox extends edu.cmu.cs.dennisc.zoot.ZCheckBox {
 	private final int X_PAD = 16;
 	private final int Y_PAD = 8;
 
@@ -167,7 +167,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
 	private java.util.List< FieldTile > fieldTiles = new java.util.LinkedList< FieldTile >();
 	private IsExpandedCheckBox isSceneEditorExpandedCheckBox;
-	private zoot.ZButton runButton;
+	private edu.cmu.cs.dennisc.zoot.ZButton runButton;
 	private org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget;
 
 	public ControlsForOverlayPane( org.alice.interact.AbstractDragAdapter dragAdapter ) {
@@ -178,7 +178,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 
 		this.cameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.dragAdapter );
 		this.isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
-		this.runButton = new zoot.ZButton( ide.getRunOperation() );
+		this.runButton = new edu.cmu.cs.dennisc.zoot.ZButton( ide.getRunOperation() );
 		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 		this.setNorthEastComponent( this.runButton );
 		this.setSouthComponent( this.cameraNavigatorWidget );

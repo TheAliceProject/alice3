@@ -36,7 +36,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 		super( parametersProperty, parameter );
 		this.putValue( javax.swing.Action.NAME, "Delete" );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		this.method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 		this.index = this.method.parameters.indexOf( this.getParameter() );
 		if( this.method != null && this.index >= 0 ) {

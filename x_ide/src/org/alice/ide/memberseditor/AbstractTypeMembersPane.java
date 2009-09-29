@@ -25,7 +25,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
+abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	private static final int INDENT = 16;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
@@ -94,14 +94,14 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 	}
 	protected abstract java.awt.Component[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
 
-	protected abstract zoot.ZButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
-	protected abstract zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract edu.cmu.cs.dennisc.zoot.ZButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract edu.cmu.cs.dennisc.zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
 		this.removeAll();
 		if( this.typeComponent != null ) {
 			this.add( this.typeComponent );
 		}
-		swing.PageAxisPane page = new swing.PageAxisPane();
+		edu.cmu.cs.dennisc.croquet.PageAxisPane page = new edu.cmu.cs.dennisc.croquet.PageAxisPane();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {
 				java.awt.Component[] templates = this.createTemplates( field );
@@ -127,8 +127,8 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 		}
 		if( getIDE().isEmphasizingClasses() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			zoot.ZButton createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
-			zoot.ZButton editConstructorButton = this.createEditConstructorButton( typeInAlice );
+			edu.cmu.cs.dennisc.zoot.ZButton createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
+			edu.cmu.cs.dennisc.zoot.ZButton editConstructorButton = this.createEditConstructorButton( typeInAlice );
 			if( createAndAddMemberButton != null ) {
 				page.add( createAndAddMemberButton );
 			}
@@ -138,7 +138,7 @@ abstract class AbstractTypeMembersPane extends swing.PageAxisPane {
 		}
 		int pad;
 		if( page.getComponentCount() > 0 ) {
-			this.add( new swing.LineAxisPane( javax.swing.Box.createHorizontalStrut( INDENT ), page ) );
+			this.add( new edu.cmu.cs.dennisc.croquet.LineAxisPane( javax.swing.Box.createHorizontalStrut( INDENT ), page ) );
 			pad = 8;
 		} else {
 			pad = 2;

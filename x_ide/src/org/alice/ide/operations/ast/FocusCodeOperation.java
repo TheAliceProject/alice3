@@ -38,7 +38,7 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 		}
 		this.putValue( javax.swing.Action.NAME, name );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		this.prevCode = getIDE().getFocusedCode();
 		actionContext.commitAndInvokeRedoIfAppropriate();
 	}

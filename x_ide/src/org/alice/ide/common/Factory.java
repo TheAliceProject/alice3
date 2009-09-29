@@ -45,7 +45,7 @@ public abstract class Factory {
 		return new org.alice.ide.common.GetsPane( isTowardLeading );
 	}
 	protected java.awt.Component createTextComponent( String text ) { 
-		return zoot.ZLabel.acquire( text );
+		return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text );
 	}
 	public abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane );
 	protected abstract java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty );
@@ -69,7 +69,7 @@ public abstract class Factory {
 			} else if( "constant".equals( propertyName ) ) {
 				rv = this.createConstantDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = zoot.ZLabel.acquire( "TODO: handle underscore count 2: " + propertyName );
+				rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "TODO: handle underscore count 2: " + propertyName );
 			}
 		} else if( underscoreCount == 1 ) {
 			if( "variable".equals( propertyName ) ) {
@@ -77,7 +77,7 @@ public abstract class Factory {
 			} else if( "constant".equals( propertyName ) ) {
 				rv = new ConstantPane( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = zoot.ZLabel.acquire( "TODO: handle underscore count 1: " + propertyName );
+				rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "TODO: handle underscore count 1: " + propertyName );
 			}
 		} else {
 			rv = null;
@@ -126,7 +126,7 @@ public abstract class Factory {
 		return this.createGetsComponent( getsChunk.isTowardLeading() );
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return zoot.ZLabel.acquire( textChunk.getText() );
+		return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( textChunk.getText() );
 	}	
 	protected java.awt.Component createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
@@ -164,7 +164,7 @@ public abstract class Factory {
 				s = null;
 			}
 			//s = "<html><h1>" + s + "</h1></html>";
-			rv = zoot.ZLabel.acquire( s );
+			rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( s );
 		}
 		return rv;
 	}
@@ -179,7 +179,7 @@ public abstract class Factory {
 		} else if( chunk instanceof org.alice.ide.i18n.GetsChunk ) {
 			return createComponent( (org.alice.ide.i18n.GetsChunk)chunk, owner );
 		} else {
-			return zoot.ZLabel.acquire( "unhandled: " + chunk.toString() );
+			return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "unhandled: " + chunk.toString() );
 		}
 	}
 	protected int getPixelsPerIndent() {
@@ -190,7 +190,7 @@ public abstract class Factory {
 		org.alice.ide.i18n.Chunk[] chunks = line.getChunks();
 		assert chunks.length > 0;
 		if( indentCount > 0 || chunks.length > 1 ) {
-			swing.LineAxisPane rv = new swing.LineAxisPane();
+			edu.cmu.cs.dennisc.croquet.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.LineAxisPane();
 			if( indentCount > 0 ) {
 				rv.add( javax.swing.Box.createHorizontalStrut( indentCount * this.getPixelsPerIndent() ) );
 			}
@@ -213,7 +213,7 @@ public abstract class Factory {
 		assert N > 0;
 		if( N > 1 ) {
 			final boolean isLoop = lines[ N-1 ].isLoop();
-			swing.PageAxisPane pagePane = new swing.PageAxisPane() {
+			edu.cmu.cs.dennisc.croquet.PageAxisPane pagePane = new edu.cmu.cs.dennisc.croquet.PageAxisPane() {
 				@Override
 				public void paintComponent( java.awt.Graphics g ) {
 					super.paintComponent( g );
@@ -270,7 +270,7 @@ public abstract class Factory {
 				rv = createComponent( page, owner );
 //			}
 		} else {
-			rv = zoot.ZLabel.acquire( "todo: handle null" );
+			rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "todo: handle null" );
 		}
 		return rv;
 	}
@@ -306,7 +306,7 @@ public abstract class Factory {
 		java.awt.Component rv = new FieldAccessPane( this, fieldAccess );
 		java.awt.Component prefixPane = org.alice.ide.IDE.getSingleton().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 		if( prefixPane != null ) {
-			rv = new swing.LineAxisPane( prefixPane, rv );
+			rv = new edu.cmu.cs.dennisc.croquet.LineAxisPane( prefixPane, rv );
 		}
 		return rv;
 	}

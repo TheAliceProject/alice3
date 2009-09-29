@@ -25,7 +25,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDragComponent extends zoot.ZDragComponent {
+public abstract class AbstractDragComponent extends edu.cmu.cs.dennisc.zoot.ZDragComponent {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

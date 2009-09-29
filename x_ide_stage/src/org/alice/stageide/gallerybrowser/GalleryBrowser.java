@@ -31,10 +31,10 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	public GalleryBrowser(java.io.File thumbnailRoot, java.util.Map<String, String> map) {
 		this.map = map;
 		this.initialize(thumbnailRoot);
-		zoot.ZButton createPersonButton = new zoot.ZButton(new CreatePersonActionOperation());
-		zoot.ZButton createTextButton = new zoot.ZButton(new CreateTextActionOperation());
-		zoot.ZButton createMyInstanceButton = new zoot.ZButton(new CreateMyInstance());
-		zoot.ZButton createTextbookInstanceButton = new zoot.ZButton(new CreateTextbookInstance());
+		edu.cmu.cs.dennisc.zoot.ZButton createPersonButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreatePersonActionOperation());
+		edu.cmu.cs.dennisc.zoot.ZButton createTextButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateTextActionOperation());
+		edu.cmu.cs.dennisc.zoot.ZButton createMyInstanceButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateMyInstance());
+		edu.cmu.cs.dennisc.zoot.ZButton createTextbookInstanceButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateTextbookInstance());
 
 		java.io.InputStream is = GalleryBrowser.class.getResourceAsStream("images/create_person.png");
 		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
@@ -42,12 +42,12 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		createPersonButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		createPersonButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-		swing.Pane fromFilePane = new swing.Pane();
+		edu.cmu.cs.dennisc.croquet.Pane fromFilePane = new edu.cmu.cs.dennisc.croquet.Pane();
 		fromFilePane.setLayout(new java.awt.GridLayout(2, 1, 0, 4));
 		fromFilePane.add(createMyInstanceButton);
 		fromFilePane.add(createTextbookInstanceButton);
 
-		swing.BorderPane buttonPane = new swing.BorderPane();
+		edu.cmu.cs.dennisc.croquet.BorderPane buttonPane = new edu.cmu.cs.dennisc.croquet.BorderPane();
 		buttonPane.add(fromFilePane, java.awt.BorderLayout.NORTH);
 		buttonPane.add(createTextButton, java.awt.BorderLayout.SOUTH);
 
@@ -71,7 +71,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	@Override
 	protected void handleFileActivation(java.io.File file) {
 		assert file.isFile();
-		zoot.ZManager.performIfAppropriate(new GalleryFileActionOperation(file), null, zoot.ZManager.CANCEL_IS_WORTHWHILE);
+		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate(new GalleryFileActionOperation(file), null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE);
 	}
 
 	@Override
@@ -84,7 +84,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 
 		java.io.File thumbnailRoot = new java.io.File(org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails");
-		zoot.ZFrame frame = new zoot.ZFrame() {
+		edu.cmu.cs.dennisc.zoot.ZFrame frame = new edu.cmu.cs.dennisc.zoot.ZFrame() {
 			@Override
 			protected void handleWindowOpened(java.awt.event.WindowEvent e) {
 			}

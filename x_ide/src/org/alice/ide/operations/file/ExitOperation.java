@@ -29,12 +29,12 @@ public class ExitOperation extends AbstractClearanceActionOperation {
 	public ExitOperation() {
 		this.putValue( javax.swing.Action.NAME, "Exit" );
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		if( this.getIDE().isProjectUpToDateWithFile() ) {
 			//pass
 		} else {
 			java.util.EventObject e = null;
-			zoot.Context checkContext = actionContext.perform( this.getClearToProcedeWithChangedProjectOperation(), e, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			edu.cmu.cs.dennisc.zoot.Context checkContext = actionContext.perform( this.getClearToProcedeWithChangedProjectOperation(), e, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 			if( checkContext.isCommitted() ) {
 				//pass
 			} else {

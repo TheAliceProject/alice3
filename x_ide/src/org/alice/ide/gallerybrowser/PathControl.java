@@ -25,33 +25,33 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PathControl extends swing.LineAxisPane {
-	class DirectoryControl extends swing.BorderPane {
+public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
+	class DirectoryControl extends edu.cmu.cs.dennisc.croquet.BorderPane {
 		private static final int ARROW_SIZE = 10;
-		class SelectDirectoryActionOperation extends zoot.InconsequentialActionOperation {
+		class SelectDirectoryActionOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 			public SelectDirectoryActionOperation() {
 				this.putValue( javax.swing.Action.NAME, PathControl.this.getTextFor( DirectoryControl.this.file ) );
 			}
 			@Override
-			protected void performInternal(zoot.ActionContext actionContext) {
+			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 				PathControl.this.handleSelectDirectory( DirectoryControl.this.file );
 			}
 		}
-		class SelectChildDirectoryActionOperation extends zoot.InconsequentialActionOperation /*implements zoot.ResponseOperation*/ {
+		class SelectChildDirectoryActionOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation /*implements zoot.ResponseOperation*/ {
 			//public void respond( java.util.EventObject e ) {
 			//}
 			@Override
-			protected void performInternal(zoot.ActionContext actionContext) {
+			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 				DirectoryControl.this.handleSelectChildDirectory();
 			}
 		}
-		private zoot.ZButton selectButton;
-		private zoot.ZButton selectChildButton;
+		private edu.cmu.cs.dennisc.zoot.ZButton selectButton;
+		private edu.cmu.cs.dennisc.zoot.ZButton selectChildButton;
 		private java.io.File file;
 		public DirectoryControl( java.io.File file ) {
 			this.file = file;
-			this.selectButton = new zoot.ZButton( new SelectDirectoryActionOperation() );
-			this.selectChildButton = new zoot.ZButton( new SelectChildDirectoryActionOperation() ) {
+			this.selectButton = new edu.cmu.cs.dennisc.zoot.ZButton( new SelectDirectoryActionOperation() );
+			this.selectChildButton = new edu.cmu.cs.dennisc.zoot.ZButton( new SelectChildDirectoryActionOperation() ) {
 				@Override
 				protected void paintComponent(java.awt.Graphics g) {
 					super.paintComponent( g );
@@ -137,7 +137,7 @@ public abstract class PathControl extends swing.LineAxisPane {
 		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
 		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
 
-		class SelectFileActionOperation extends zoot.InconsequentialActionOperation {
+		class SelectFileActionOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 			private java.io.File file;
 			public SelectFileActionOperation( java.io.File file ) {
 				this.file = file;
@@ -151,7 +151,7 @@ public abstract class PathControl extends swing.LineAxisPane {
 				this.putValue( javax.swing.Action.SMALL_ICON, icon );
 			}
 			@Override
-			protected void performInternal(zoot.ActionContext actionContext) {
+			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 				if( this.file.isDirectory() ) {
 					PathControl.this.handleSelectDirectory( this.file );
 				} else {

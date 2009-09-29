@@ -55,7 +55,7 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.event.IDEListener, zoot.DropReceptor {
+public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPane implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.zoot.DropReceptor {
 	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
 	}
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
@@ -262,25 +262,25 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 			}
 		} );
 	}
-	public boolean isPotentiallyAcceptingOf( zoot.ZDragComponent source ) {
+	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
 			return false;
 		}
 	}
-	public void dragStarted( zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 	}
 
-	public void dragEntered( zoot.DragAndDropContext dragAndDropContext ) {
-		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+	public void dragEntered( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+		edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
 	}
 	private java.awt.Component getAsSeenBy() {
 		return this.scrollPane.getViewport().getView();
 	}
-	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( zoot.ZDragComponent source ) {
+	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
 		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
@@ -318,8 +318,8 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 		}
 		return rv;
 	}
-	public void dragUpdated( zoot.DragAndDropContext dragAndDropContext ) {
-		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+	public void dragUpdated( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+		edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( source, eSource, this.getAsSeenBy() );
@@ -391,9 +391,9 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 		this.repaint();
 
 	}
-	public void dragDropped( zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragDropped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		final java.awt.Point viewPosition = this.scrollPane.getViewport().getViewPosition();
-		final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+		final edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
@@ -401,13 +401,13 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
 				if( this.currentUnder != null ) {
-					final zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
-					class DropOperation extends org.alice.ide.operations.AbstractActionOperation implements zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Statement > {
+					final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
+					class DropOperation extends org.alice.ide.operations.AbstractActionOperation implements edu.cmu.cs.dennisc.zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Statement > {
 						private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-						public void perform( final zoot.ActionContext actionContext ) {
+						public void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 							actionContext.pend( this );
 						}
-						public void initialize( zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver ) {
+						public void initialize( edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Statement> taskObserver ) {
 							edu.cmu.cs.dennisc.property.PropertyOwner propertyOwner = statementListPropertyPane.getProperty().getOwner();
 							if( propertyOwner instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
 								edu.cmu.cs.dennisc.alice.ast.BlockStatement block = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)propertyOwner;
@@ -446,14 +446,14 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 						}
 						
 					}
-					dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+					dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				} else {
 					source.hideDropProxyIfNecessary();
 				}
 			} else if( source != null && source.getSubject() instanceof org.alice.ide.common.AbstractStatementPane ) {
 				source.hideDropProxyIfNecessary();
 				if( this.currentUnder != null ) {
-					final zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
+					final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
 					org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)source.getSubject();
 					final edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
@@ -467,10 +467,10 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 							CodeEditor.this.refresh();
 							CodeEditor.this.resetScrollPane( viewPosition );
 						}
-						protected abstract void performInternal( zoot.ActionContext actionContext );
+						protected abstract void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext );
 						protected abstract void redoInternal() throws javax.swing.undo.CannotRedoException;
 						protected abstract void undoInternal() throws javax.swing.undo.CannotRedoException;
-						public final void perform( final zoot.ActionContext actionContext ) {
+						public final void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 							actionContext.commitAndInvokeRedoIfAppropriate();
 						}
 						@Override
@@ -488,12 +488,12 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 							return true;
 						}
 					}
-					zoot.ActionOperation operation;
+					edu.cmu.cs.dennisc.zoot.ActionOperation operation;
 					if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 						class CopyOperation extends ActionOperation {
 							private edu.cmu.cs.dennisc.alice.ast.Statement copy;
 							@Override
-							protected void performInternal(zoot.ActionContext actionContext) {
+							protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 								this.copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
 							}
 							@Override
@@ -517,7 +517,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 							} else {
 								class ReorderOperation extends ActionOperation {
 									@Override
-									protected void performInternal(zoot.ActionContext actionContext) {
+									protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 									}
 									@Override
 									protected void redoInternal() throws javax.swing.undo.CannotRedoException {
@@ -547,7 +547,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 						} else {
 							class ReparentOperation extends ActionOperation {
 								@Override
-								protected void performInternal(zoot.ActionContext actionContext) {
+								protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 								}
 								@Override
 								protected void redoInternal() throws javax.swing.undo.CannotRedoException {
@@ -563,7 +563,7 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 							operation = new ReparentOperation();
 						}
 					}
-					dragAndDropContext.perform( operation, dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+					dragAndDropContext.perform( operation, dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				}
 			}
 		}
@@ -576,20 +576,20 @@ public class CodeEditor extends swing.PageAxisPane implements org.alice.ide.even
 			}
 		} );
 	}
-	public void dragExited( zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
+	public void dragExited( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		this.currentUnder = null;
 		this.repaint();
 		if( isDropRecipient ) {
 			//pass
 		} else {
-			final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+			final edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 			if( source != null ) {
 				source.hideDropProxyIfNecessary();
 			}
 		}
 	}
-	public void dragStopped( zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 	}
 //	@Override
 //	public void paint( java.awt.Graphics g ) {

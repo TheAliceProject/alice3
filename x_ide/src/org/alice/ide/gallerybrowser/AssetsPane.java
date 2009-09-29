@@ -25,7 +25,7 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AssetsPane extends swing.BorderPane {
+public abstract class AssetsPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 	private ThumbnailsPane thumbnailsPane;
 	private PathControl pathControl;
 

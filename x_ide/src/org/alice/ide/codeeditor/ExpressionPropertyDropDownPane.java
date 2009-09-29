@@ -27,7 +27,7 @@ import org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot.DropReceptor {
+public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.cmu.cs.dennisc.zoot.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 	public ExpressionPropertyDropDownPane( java.awt.Component prefixPane, java.awt.Component component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		super( prefixPane, component, null );
@@ -43,42 +43,42 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements zoot
 	}
 
 
-	public boolean isPotentiallyAcceptingOf( zoot.ZDragComponent source ) {
+	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}
-	public void dragStarted( zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 	}
-	public void dragEntered( zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragEntered( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 //		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 //		source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height );
 	}
-	public void dragUpdated( zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragUpdated( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 	}
-	public void dragDropped( zoot.DragAndDropContext dragAndDropContext ) {
-		final zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+	public void dragDropped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+		final edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		if( source.getSubject() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
 			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source.getSubject();
-			final zoot.event.DragAndDropEvent dragAndDropEvent = new zoot.event.DragAndDropEvent( source, ExpressionPropertyDropDownPane.this, eSource );
+			final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, ExpressionPropertyDropDownPane.this, eSource );
 			class DropOperation extends AbstractExpressionPropertyActionOperation {
 				public DropOperation() {
 					super( ExpressionPropertyDropDownPane.this.expressionProperty );
 				}
 				@Override
-				protected void initializeInternal(zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
+				protected void initializeInternal(edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
 					expressionCreatorPane.createExpression( dragAndDropEvent, this.getExpressionProperty(), taskObserver );
 				}
 			}
-			dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, zoot.ZManager.CANCEL_IS_WORTHWHILE );
+			dragAndDropContext.perform( new DropOperation(), dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 		} else {
 			source.hideDropProxyIfNecessary();
 		}
 	}
-	public void dragExited( zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
-		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+	public void dragExited( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
+		edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		source.hideDropProxyIfNecessary();
 	}
-	public void dragStopped( zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 	}
 	public java.awt.Component getAWTComponent() {
 		return this;

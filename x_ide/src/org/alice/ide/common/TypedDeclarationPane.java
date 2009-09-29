@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypedDeclarationPane extends swing.LineAxisPane  {
+public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane  {
 	public TypedDeclarationPane( java.awt.Component... components ) {
 		super( components );
 		this.setOpaque( true );

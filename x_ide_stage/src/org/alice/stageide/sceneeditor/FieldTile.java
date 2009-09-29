@@ -29,7 +29,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	private String text;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private org.alice.ide.operations.ast.SelectFieldActionOperation selectOperation;
-	private zoot.DefaultPopupActionOperation popupOperation;
+	private edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation popupOperation;
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
@@ -41,7 +41,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		assert field != null;
 		this.field = field;
 		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( this.field );
-		this.popupOperation = new zoot.DefaultPopupActionOperation( this.createPopupOperations() );
+		this.popupOperation = new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( this.createPopupOperations() );
 		this.setLeftButtonPressOperation( this.selectOperation );
 		this.setPopupOperation( this.popupOperation );
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
@@ -58,7 +58,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	protected int getInsetRight() {
 		return super.getInsetRight() + 4;
 	}
-	protected java.util.List< zoot.Operation > updatePopupOperations( java.util.List< zoot.Operation > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.zoot.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.zoot.Operation > rv ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
 		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
@@ -78,8 +78,8 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		}
 		return rv;
 	}
-	private java.util.List< zoot.Operation > createPopupOperations() {
-		return this.updatePopupOperations( new java.util.LinkedList< zoot.Operation >() );
+	private java.util.List< edu.cmu.cs.dennisc.zoot.Operation > createPopupOperations() {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >() );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
@@ -159,7 +159,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 			//pass
 		} else {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setPaint( zoot.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

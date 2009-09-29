@@ -32,7 +32,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		//todo
 		this.setPopupOperation( new org.alice.ide.operations.InconsequentialActionOperation() {
 			@Override
-			protected void performInternal(zoot.ActionContext actionContext) {
+			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 				actionContext.cancel();
 			}
 		} );
@@ -79,7 +79,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 			//pass
 		} else {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			g2.setPaint( zoot.PaintUtilities.getDisabledTexturePaint() );
+			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
 	}

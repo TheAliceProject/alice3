@@ -236,7 +236,7 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 	}
 	
 	public static void main( String[] args ) {
-		zoot.ZFrame frame = new zoot.ZFrame() {
+		edu.cmu.cs.dennisc.zoot.ZFrame frame = new edu.cmu.cs.dennisc.zoot.ZFrame() {
 			@Override
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}

@@ -39,7 +39,7 @@ class ArithmeticInfixExpressionOperatorFillIn extends InfixExpressionOperatorFil
 /**
  * @author Dennis Cosgrove
  */
-class ArithmeticInfixExpressionOperatorBlank extends cascade.Blank {
+class ArithmeticInfixExpressionOperatorBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType;
 	private Class<?> operandCls;
 	public ArithmeticInfixExpressionOperatorBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType, Class<?> operandCls ) {
@@ -74,7 +74,7 @@ public class ArithmeticExpressionFillIn extends InfixExpressionFillIn< edu.cmu.c
 		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( this.operandCls );
 	}
 	@Override
-	protected cascade.Blank createOperatorBlank() {
+	protected edu.cmu.cs.dennisc.cascade.Blank createOperatorBlank() {
 		return new ArithmeticInfixExpressionOperatorBlank( this.expressionType, this.operandCls );
 	}
 	@Override

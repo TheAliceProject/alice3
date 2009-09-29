@@ -25,7 +25,7 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalInfixExpressionOperatorBlank extends cascade.Blank {
+public class RelationalInfixExpressionOperatorBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType operandType;
 	public RelationalInfixExpressionOperatorBlank( edu.cmu.cs.dennisc.alice.ast.AbstractType operandType ) {
 		this.operandType = operandType;

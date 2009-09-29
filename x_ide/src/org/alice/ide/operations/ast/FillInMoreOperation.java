@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreOperation extends org.alice.ide.operations.AbstractActionOperation implements zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression >{
+public class FillInMoreOperation extends org.alice.ide.operations.AbstractActionOperation implements edu.cmu.cs.dennisc.zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression >{
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
 	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
@@ -34,10 +34,10 @@ public class FillInMoreOperation extends org.alice.ide.operations.AbstractAction
 		assert expressionStatement != null;
 		this.expressionStatement = expressionStatement;
 	}
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		actionContext.pend( this );
 	}
-	public void initialize( zoot.Context<? extends zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
+	public void initialize( edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
 		this.prevMethodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.prevMethodInvocation.method.getValue();
 		this.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();

@@ -34,7 +34,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 		this.putValue( javax.swing.Action.NAME, "Orient to Upright" );
 	}
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable );
-	public void perform( zoot.ActionContext actionContext ) {
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		this.transformable = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.moveandturn.AbstractTransformable.class );
 		if( this.transformable != null ) {
 			this.prevPOV = this.transformable.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
