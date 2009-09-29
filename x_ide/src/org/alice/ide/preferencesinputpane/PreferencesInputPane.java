@@ -25,19 +25,14 @@ package org.alice.ide.preferencesinputpane;
 /**
  * @author Dennis Cosgrove
  */
-class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
+class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.DefaultMutableTreeNodeTreeCellRenderer<PreferencesPane> {
 	@Override
-	public java.awt.Component getTreeCellRendererComponent(javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-		java.awt.Component rv = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( rv, javax.swing.JLabel.class );
-		if( label != null ) {
-			javax.swing.tree.DefaultMutableTreeNode treeNode = (javax.swing.tree.DefaultMutableTreeNode)value;
-			PreferencesPane preferencesPane = (PreferencesPane)treeNode.getUserObject();
-			label.setText( preferencesPane.getTitle() );
-		}
+	protected javax.swing.JLabel getListCellRendererComponentForUserObject(javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.ide.preferencesinputpane.PreferencesPane value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+		rv.setText( value.getTitle() );
 		return rv;
 	}
 }
+
 
 /**
  * @author Dennis Cosgrove
@@ -45,14 +40,26 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Void> {
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private javax.swing.JTree tree = new javax.swing.JTree();
+	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.croquet.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.PreferencesPane> {
+		@Override
+		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, org.alice.ide.preferencesinputpane.PreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.PreferencesPane newLeadValue) {
+//			if( oldLeadValue != null ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "oldLeadValue:", oldLeadValue.getTitle() );
+//			}
+			if( newLeadValue != null ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "newLeadValue:", newLeadValue.getTitle() );
+				int dividerLocation = PreferencesInputPane.this.splitPane.getDividerLocation();
+				PreferencesInputPane.this.splitPane.setRightComponent( newLeadValue );
+				PreferencesInputPane.this.splitPane.setDividerLocation( dividerLocation );
+			}
+		}
+	}
+
 	public PreferencesInputPane( javax.swing.tree.TreeModel treeModel ) {
 		this.tree.setModel( treeModel );
+		this.tree.setRootVisible( false );
 		this.tree.setCellRenderer( new TreeCellRenderer() );
-		this.tree.addTreeSelectionListener( new javax.swing.event.TreeSelectionListener() {
-			public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-			}
-		} );
+		this.tree.addTreeSelectionListener( new TreeSelectionAdapter() );
 		this.splitPane.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
 		this.splitPane.setRightComponent( new javax.swing.JLabel( "please select" ) );
 		this.splitPane.setDividerLocation( 200 );
@@ -65,16 +72,23 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		return null;
 	}
 	public static void main(String[] args) {
-		java.util.List<edu.cmu.cs.dennisc.preference.Preference<?>> generalPreferences = new java.util.LinkedList<edu.cmu.cs.dennisc.preference.Preference<?>>();
-		generalPreferences.add( new edu.cmu.cs.dennisc.preference.BooleanPreference( "isDefaultFieldNameGenerationDesired", false ) );
-		PreferencesPane generalPreferencesPane = new PreferencesPane( "General", org.alice.ide.IDE.class, generalPreferences);
-
-		PreferencesPane everydayPreferencesPane = new PreferencesPane( "Everyday", org.alice.ide.IDE.class, generalPreferences );
-		PreferencesPane javaPreferencesPane = new PreferencesPane( "Java", org.alice.ide.IDE.class, generalPreferences );
+		org.alice.ide.preferences.PreferencesNode rootPreferencesNode = new org.alice.ide.preferences.PreferencesNode() {};
+		PreferencesPane rootPreferencesPane = new PreferencesPane( "Root", rootPreferencesNode );
 		
-		javax.swing.tree.TreeNode root = new javax.swing.tree.DefaultMutableTreeNode( generalPreferencesPane );
+		PreferencesPane generalPreferencesPane = new PreferencesPane( "General", org.alice.ide.preferences.GeneralPreferencesNode.getSingleton() );
+		PreferencesPane languagePreferencesPane = new PreferencesPane( "Language", org.alice.ide.preferences.language.everyday.PreferencesNode.getSingleton() );
+		PreferencesPane everydayPreferencesPane = new PreferencesPane( "Everyday", org.alice.ide.preferences.language.everyday.PreferencesNode.getSingleton() );
+		PreferencesPane javaPreferencesPane = new PreferencesPane( "Java", org.alice.ide.preferences.language.java.PreferencesNode.getSingleton() );
+		
+		javax.swing.tree.DefaultMutableTreeNode root = new javax.swing.tree.DefaultMutableTreeNode( rootPreferencesPane );
+		root.add( new javax.swing.tree.DefaultMutableTreeNode( generalPreferencesPane ) );
+		javax.swing.tree.DefaultMutableTreeNode language = new javax.swing.tree.DefaultMutableTreeNode( languagePreferencesPane );
+		root.add( language );
+		language.add( new javax.swing.tree.DefaultMutableTreeNode( everydayPreferencesPane ) );
+		language.add( new javax.swing.tree.DefaultMutableTreeNode( javaPreferencesPane ) );
 		javax.swing.tree.TreeModel treeModel = new javax.swing.tree.DefaultTreeModel( root );
 		PreferencesInputPane inputPane = new PreferencesInputPane( treeModel );
 		inputPane.showInJDialog(null);
+		System.exit( 0 );
 	}
 }

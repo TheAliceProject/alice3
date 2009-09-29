@@ -5,7 +5,7 @@ public abstract class PreferencesNode {
 	public PreferencesNode( edu.cmu.cs.dennisc.preference.Preference<?>... preferences ) {
 		this.preferences = preferences;
 	}
-	public edu.cmu.cs.dennisc.preference.Preference<?>[] getPreferences() {
+	public final edu.cmu.cs.dennisc.preference.Preference<?>[] getPreferences() {
 		return this.preferences;
 	}
 }
