@@ -25,9 +25,9 @@ package org.alice.ide.preferencesinputpane;
 /**
  * @author Dennis Cosgrove
  */
-class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.DefaultMutableTreeNodeTreeCellRenderer<PreferencesPane> {
+class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.DefaultMutableTreeNodeTreeCellRenderer<OuterPreferencesPane> {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponentForUserObject(javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.ide.preferencesinputpane.PreferencesPane value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+	protected javax.swing.JLabel getListCellRendererComponentForUserObject(javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.ide.preferencesinputpane.OuterPreferencesPane value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 		rv.setText( value.getTitle() );
 		return rv;
 	}
@@ -40,9 +40,9 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.DefaultMutableTreeNode
 public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Void> {
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private javax.swing.JTree tree = new javax.swing.JTree();
-	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.croquet.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.PreferencesPane> {
+	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.croquet.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.OuterPreferencesPane> {
 		@Override
-		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, org.alice.ide.preferencesinputpane.PreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.PreferencesPane newLeadValue) {
+		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, org.alice.ide.preferencesinputpane.OuterPreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.OuterPreferencesPane newLeadValue) {
 //			if( oldLeadValue != null ) {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "oldLeadValue:", oldLeadValue.getTitle() );
 //			}
@@ -73,12 +73,12 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 	}
 	public static void main(String[] args) {
 		org.alice.ide.preferences.PreferencesNode rootPreferencesNode = new org.alice.ide.preferences.PreferencesNode() {};
-		PreferencesPane rootPreferencesPane = new PreferencesPane( "Root", rootPreferencesNode );
+		OuterPreferencesPane rootPreferencesPane = new OuterPreferencesPane( "Root", rootPreferencesNode );
 		
-		PreferencesPane generalPreferencesPane = new PreferencesPane( "General", org.alice.ide.preferences.GeneralPreferencesNode.getSingleton() );
-		PreferencesPane languagePreferencesPane = new PreferencesPane( "Perspective", org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
-		PreferencesPane everydayPreferencesPane = new PreferencesPane( "Exposure", org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
-		PreferencesPane javaPreferencesPane = new PreferencesPane( "Transition", org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() );
+		OuterPreferencesPane generalPreferencesPane = new OuterPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferencesNode.getSingleton() );
+		OuterPreferencesPane languagePreferencesPane = new OuterPreferencesPane( "Perspective", org.alice.ide.preferences.PerspectivePreferencesNode.getSingleton() );
+		OuterPreferencesPane everydayPreferencesPane = new OuterPreferencesPane( "Exposure", org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
+		OuterPreferencesPane javaPreferencesPane = new OuterPreferencesPane( "Transition", org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() );
 		
 		javax.swing.tree.DefaultMutableTreeNode root = new javax.swing.tree.DefaultMutableTreeNode( rootPreferencesPane );
 		root.add( new javax.swing.tree.DefaultMutableTreeNode( generalPreferencesPane ) );
