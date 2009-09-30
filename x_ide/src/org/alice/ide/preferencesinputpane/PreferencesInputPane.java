@@ -33,20 +33,18 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.DefaultMutableTreeNode
 	}
 }
 
-
-class PerspectiveInnerPreferencesPane extends InnerPreferencesPane {
-	public PerspectiveInnerPreferencesPane(java.lang.Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences) {
-		super(clsWithinPackage, preferences);
-	}
-}
-
 class PerspectiveOuterPreferencesPane extends OuterPreferencesPane {
 	public PerspectiveOuterPreferencesPane() {
 		super("Perspective", org.alice.ide.preferences.PerspectivePreferencesNode.getSingleton());
 	}
 	@Override
 	protected java.awt.Component createCenterComponent(java.lang.Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences) {
-		return new PerspectiveInnerPreferencesPane( clsWithinPackage, preferences );
+		edu.cmu.cs.dennisc.croquet.BorderPane rv = new edu.cmu.cs.dennisc.croquet.BorderPane();
+		InnerPreferencesPane innerPreferencesPane = new InnerPreferencesPane( clsWithinPackage, preferences );
+		edu.cmu.cs.dennisc.croquet.CardPane cardPane = new edu.cmu.cs.dennisc.croquet.CardPane();
+		rv.add( innerPreferencesPane, java.awt.BorderLayout.NORTH );
+		rv.add( cardPane, java.awt.BorderLayout.CENTER );
+		return rv;
 	}
 	@Override
 	protected boolean isCenterComponentScrollPaneDesired() {
@@ -92,18 +90,26 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		return null;
 	}
 	public static void main(String[] args) {
-		org.alice.ide.preferences.PreferencesNode rootPreferencesNode = new org.alice.ide.preferences.PreferencesNode() {};
+		org.alice.ide.preferences.PreferencesNode rootPreferencesNode = new org.alice.ide.preferences.PreferencesNode() {
+			@Override
+			public edu.cmu.cs.dennisc.preference.Preference<?>[] getPreferences() {
+				return new edu.cmu.cs.dennisc.preference.Preference<?>[] {};
+			}
+		};
 		OuterPreferencesPane rootPreferencesPane = new OuterPreferencesPane( "Root", rootPreferencesNode );
 		
 		OuterPreferencesPane generalPreferencesPane = new OuterPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferencesNode.getSingleton() );
-		OuterPreferencesPane languagePreferencesPane = new PerspectiveOuterPreferencesPane();
+		OuterPreferencesPane perspectivePreferencesPane = new PerspectiveOuterPreferencesPane();
 //		OuterPreferencesPane everydayPreferencesPane = new OuterPreferencesPane( "Exposure", org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
 //		OuterPreferencesPane javaPreferencesPane = new OuterPreferencesPane( "Transition", org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() );
 		
+		OuterPreferencesPane sceneEditorPreferencesPane = new OuterPreferencesPane( "Scene Editor", org.alice.ide.preferences.SceneEditorPreferencesNode.getSingleton() );
+
 		javax.swing.tree.DefaultMutableTreeNode root = new javax.swing.tree.DefaultMutableTreeNode( rootPreferencesPane );
 		root.add( new javax.swing.tree.DefaultMutableTreeNode( generalPreferencesPane ) );
-		javax.swing.tree.DefaultMutableTreeNode perspective = new javax.swing.tree.DefaultMutableTreeNode( languagePreferencesPane );
+		javax.swing.tree.DefaultMutableTreeNode perspective = new javax.swing.tree.DefaultMutableTreeNode( perspectivePreferencesPane );
 		root.add( perspective );
+		root.add( new javax.swing.tree.DefaultMutableTreeNode( sceneEditorPreferencesPane ) );
 //		perspective.add( new javax.swing.tree.DefaultMutableTreeNode( everydayPreferencesPane ) );
 //		perspective.add( new javax.swing.tree.DefaultMutableTreeNode( javaPreferencesPane ) );
 		javax.swing.tree.TreeModel treeModel = new javax.swing.tree.DefaultTreeModel( root );

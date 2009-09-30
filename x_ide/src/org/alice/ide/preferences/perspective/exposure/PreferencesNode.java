@@ -11,6 +11,9 @@ public class PreferencesNode extends org.alice.ide.preferences.perspective.Prefe
 		return singleton;
 	}
 	private PreferencesNode() {
-		super( true );
+	}
+	@Override
+	protected boolean isDefaultFieldNameGenerationDesiredByDefault() {
+		return true;
 	}
 }
