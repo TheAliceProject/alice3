@@ -48,6 +48,12 @@ public class PreferencesPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 			javax.swing.JCheckBox checkbox = new javax.swing.JCheckBox( booleanPreference.getKey() );
 			checkbox.setSelected( booleanPreference.getValue(this.prefs) );
 			rv = checkbox;
+		} else if( preference instanceof edu.cmu.cs.dennisc.preference.IntPreference ) {
+			edu.cmu.cs.dennisc.preference.IntPreference intPreference = (edu.cmu.cs.dennisc.preference.IntPreference)preference;
+			edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( preference.getKey() + ": " );
+			javax.swing.SpinnerNumberModel model = new javax.swing.SpinnerNumberModel( (int)intPreference.getValue( this.prefs ), 0, 16, 1 );
+			javax.swing.JSpinner spinner = new javax.swing.JSpinner( model );
+			rv = new edu.cmu.cs.dennisc.croquet.LineAxisPane( label, javax.swing.Box.createHorizontalStrut( 8 ), spinner );
 		} else {
 			rv = new javax.swing.JLabel( preference.getKey() );
 		}

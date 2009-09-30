@@ -1,6 +1,6 @@
-package org.alice.ide.preferences.language.everyday;
+package org.alice.ide.preferences.perspective.exposure;
 
-public class PreferencesNode extends org.alice.ide.preferences.language.PreferencesNode {
+public class PreferencesNode extends org.alice.ide.preferences.perspective.PreferencesNode {
 	private static PreferencesNode singleton;
 	public static PreferencesNode getSingleton() {
 		if( singleton != null ) {

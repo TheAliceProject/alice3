@@ -76,9 +76,9 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		PreferencesPane rootPreferencesPane = new PreferencesPane( "Root", rootPreferencesNode );
 		
 		PreferencesPane generalPreferencesPane = new PreferencesPane( "General", org.alice.ide.preferences.GeneralPreferencesNode.getSingleton() );
-		PreferencesPane languagePreferencesPane = new PreferencesPane( "Language", org.alice.ide.preferences.language.everyday.PreferencesNode.getSingleton() );
-		PreferencesPane everydayPreferencesPane = new PreferencesPane( "Everyday", org.alice.ide.preferences.language.everyday.PreferencesNode.getSingleton() );
-		PreferencesPane javaPreferencesPane = new PreferencesPane( "Java", org.alice.ide.preferences.language.java.PreferencesNode.getSingleton() );
+		PreferencesPane languagePreferencesPane = new PreferencesPane( "Perspective", org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
+		PreferencesPane everydayPreferencesPane = new PreferencesPane( "Exposure", org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
+		PreferencesPane javaPreferencesPane = new PreferencesPane( "Transition", org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() );
 		
 		javax.swing.tree.DefaultMutableTreeNode root = new javax.swing.tree.DefaultMutableTreeNode( rootPreferencesPane );
 		root.add( new javax.swing.tree.DefaultMutableTreeNode( generalPreferencesPane ) );
