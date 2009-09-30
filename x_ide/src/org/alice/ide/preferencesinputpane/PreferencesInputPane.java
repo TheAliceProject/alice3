@@ -34,6 +34,26 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.DefaultMutableTreeNode
 }
 
 
+class PerspectiveInnerPreferencesPane extends InnerPreferencesPane {
+	public PerspectiveInnerPreferencesPane(java.lang.Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences) {
+		super(clsWithinPackage, preferences);
+	}
+}
+
+class PerspectiveOuterPreferencesPane extends OuterPreferencesPane {
+	public PerspectiveOuterPreferencesPane() {
+		super("Perspective", org.alice.ide.preferences.PerspectivePreferencesNode.getSingleton());
+	}
+	@Override
+	protected java.awt.Component createCenterComponent(java.lang.Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences) {
+		return new PerspectiveInnerPreferencesPane( clsWithinPackage, preferences );
+	}
+	@Override
+	protected boolean isCenterComponentScrollPaneDesired() {
+		return false;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -42,7 +62,7 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 	private javax.swing.JTree tree = new javax.swing.JTree();
 	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.croquet.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.OuterPreferencesPane> {
 		@Override
-		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, org.alice.ide.preferencesinputpane.OuterPreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.OuterPreferencesPane newLeadValue) {
+		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, OuterPreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.OuterPreferencesPane newLeadValue) {
 //			if( oldLeadValue != null ) {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "oldLeadValue:", oldLeadValue.getTitle() );
 //			}
@@ -76,16 +96,16 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		OuterPreferencesPane rootPreferencesPane = new OuterPreferencesPane( "Root", rootPreferencesNode );
 		
 		OuterPreferencesPane generalPreferencesPane = new OuterPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferencesNode.getSingleton() );
-		OuterPreferencesPane languagePreferencesPane = new OuterPreferencesPane( "Perspective", org.alice.ide.preferences.PerspectivePreferencesNode.getSingleton() );
-		OuterPreferencesPane everydayPreferencesPane = new OuterPreferencesPane( "Exposure", org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
-		OuterPreferencesPane javaPreferencesPane = new OuterPreferencesPane( "Transition", org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() );
+		OuterPreferencesPane languagePreferencesPane = new PerspectiveOuterPreferencesPane();
+//		OuterPreferencesPane everydayPreferencesPane = new OuterPreferencesPane( "Exposure", org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
+//		OuterPreferencesPane javaPreferencesPane = new OuterPreferencesPane( "Transition", org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() );
 		
 		javax.swing.tree.DefaultMutableTreeNode root = new javax.swing.tree.DefaultMutableTreeNode( rootPreferencesPane );
 		root.add( new javax.swing.tree.DefaultMutableTreeNode( generalPreferencesPane ) );
-		javax.swing.tree.DefaultMutableTreeNode language = new javax.swing.tree.DefaultMutableTreeNode( languagePreferencesPane );
-		root.add( language );
-		language.add( new javax.swing.tree.DefaultMutableTreeNode( everydayPreferencesPane ) );
-		language.add( new javax.swing.tree.DefaultMutableTreeNode( javaPreferencesPane ) );
+		javax.swing.tree.DefaultMutableTreeNode perspective = new javax.swing.tree.DefaultMutableTreeNode( languagePreferencesPane );
+		root.add( perspective );
+//		perspective.add( new javax.swing.tree.DefaultMutableTreeNode( everydayPreferencesPane ) );
+//		perspective.add( new javax.swing.tree.DefaultMutableTreeNode( javaPreferencesPane ) );
 		javax.swing.tree.TreeModel treeModel = new javax.swing.tree.DefaultTreeModel( root );
 		PreferencesInputPane inputPane = new PreferencesInputPane( treeModel );
 		inputPane.showInJDialog(null);
