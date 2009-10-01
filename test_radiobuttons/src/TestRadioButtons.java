@@ -40,7 +40,7 @@ public class TestRadioButtons {
 			}
 		}
 
-		class LocaleItemSelectionOperation extends zoot.AbstractItemSelectionOperation< java.util.Locale > {
+		class LocaleItemSelectionOperation extends edu.cmu.cs.dennisc.zoot.AbstractItemSelectionOperation< java.util.Locale > {
 			public LocaleItemSelectionOperation() {
 				super( new LocaleComboBoxModel() );
 			}
@@ -52,15 +52,20 @@ public class TestRadioButtons {
 					return "null";
 				}
 			}
-			public void performSelectionChange( zoot.ItemSelectionContext< java.util.Locale > context ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "performSelectionChange:", context.getNextSelection() );
-				context.commit();
+			
+			@Override
+			protected void handleSelectionChange( java.util.Locale value ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "handleSelectionChange:", value );
+			}
+			@Override
+			public boolean isSignificant() {
+				return false;
 			}
 		}
 
 		final LocaleItemSelectionOperation localeItemSelectionOperation = new LocaleItemSelectionOperation();
-		javax.swing.JPanel radioButtons = zoot.ZManager.createRadioButtons( localeItemSelectionOperation );
-		zoot.ZFrame frame = new zoot.ZFrame() {
+		javax.swing.JPanel radioButtons = edu.cmu.cs.dennisc.zoot.ZManager.createRadioButtons( localeItemSelectionOperation );
+		edu.cmu.cs.dennisc.zoot.ZFrame frame = new edu.cmu.cs.dennisc.zoot.ZFrame() {
 			@Override
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}
