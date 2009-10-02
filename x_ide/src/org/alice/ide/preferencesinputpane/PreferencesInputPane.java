@@ -35,7 +35,7 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.DefaultMutableTreeNode
 
 class PerspectiveOuterPreferencesPane extends OuterPreferencesPane {
 	public PerspectiveOuterPreferencesPane() {
-		super("Perspective", org.alice.ide.preferences.PerspectivePreferencesNode.getSingleton());
+		super("Programming", org.alice.ide.preferences.PerspectivePreferencesNode.getSingleton());
 	}
 	@Override
 	protected java.awt.Component createCenterComponent(java.lang.Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences) {
