@@ -33,17 +33,91 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.DefaultMutableTreeNode
 	}
 }
 
+
+/**
+ * @author Dennis Cosgrove
+ */
 class PerspectiveOuterPreferencesPane extends OuterPreferencesPane {
+//	class ComboBoxModel extends javax.swing.DefaultComboBoxModel {
+//		public ComboBoxModel() {
+//			this.addElement( org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
+//			this.addElement( org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() );
+//		}
+//	}
+
+	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<InnerPreferencesPane> {
+//		public ItemSelectionOperation() {
+//			super( edu.cmu.cs.dennisc.croquet.CroquetUtilties.createDefaultComboBoxModel(
+//					org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton(),
+//					org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton()
+//			) );
+//		}
+		public ItemSelectionOperation( InnerPreferencesPane... panes ) {
+			super( new javax.swing.DefaultComboBoxModel( panes ) );
+		}
+		
+		@Override
+		protected void handleSelectionChange(InnerPreferencesPane value) {
+			String key;
+			if( value != null ) {
+				key = value.toString();
+			} else {
+				key = null;
+			}
+			if( PerspectiveOuterPreferencesPane.this.cardPane != null ) {
+				PerspectiveOuterPreferencesPane.this.cardPane.show( key );
+				PerspectiveOuterPreferencesPane.this.revalidate();
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( key );
+			}
+		}
+		@Override
+		public boolean isSignificant() {
+			//todo?
+			return false;
+		}
+	}
+
+	class List extends edu.cmu.cs.dennisc.zoot.ZList<org.alice.ide.preferences.perspective.PreferencesNode> {
+		class PerspectiveListCellRenderer extends edu.cmu.cs.dennisc.croquet.ListCellRenderer<org.alice.ide.preferences.perspective.PreferencesNode> {
+			@Override
+			protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, org.alice.ide.preferences.perspective.PreferencesNode value, int index, boolean isSelected, boolean cellHasFocus) {
+				rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+				rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
+//				String packageName = value.getClass().getPackage().getName();
+//				rv.setText( packageName.substring( packageName.lastIndexOf('.')+1 ) );
+				return rv;
+			}
+		}
+		public List( InnerPreferencesPane... panes ) {
+			super( new ItemSelectionOperation( panes ) );
+			this.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
+			this.setVisibleRowCount( 1 );
+			this.setOpaque( false );
+			//this.setCellRenderer( new PerspectiveListCellRenderer() );
+		}
+	}
+	private edu.cmu.cs.dennisc.croquet.CardPane cardPane;
 	public PerspectiveOuterPreferencesPane() {
 		super("Programming", org.alice.ide.preferences.PerspectivePreferencesNode.getSingleton());
 	}
+	
 	@Override
 	protected java.awt.Component createCenterComponent(java.lang.Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences) {
 		edu.cmu.cs.dennisc.croquet.BorderPane rv = new edu.cmu.cs.dennisc.croquet.BorderPane();
-		InnerPreferencesPane innerPreferencesPane = new InnerPreferencesPane( clsWithinPackage, preferences );
-		edu.cmu.cs.dennisc.croquet.CardPane cardPane = new edu.cmu.cs.dennisc.croquet.CardPane();
-		rv.add( innerPreferencesPane, java.awt.BorderLayout.NORTH );
-		rv.add( cardPane, java.awt.BorderLayout.CENTER );
+		
+		InnerPreferencesPane[] panes = new InnerPreferencesPane[] { 
+				new InnerPreferencesPane( org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() ),
+				new InnerPreferencesPane( org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() )
+		};
+		List list = new List( panes );
+		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "variant:" );
+		edu.cmu.cs.dennisc.croquet.LineAxisPane northPane = new edu.cmu.cs.dennisc.croquet.LineAxisPane( label, javax.swing.Box.createHorizontalStrut( 8 ), list );
+		this.cardPane = new edu.cmu.cs.dennisc.croquet.CardPane();
+		for( InnerPreferencesPane pane : panes ) {
+			this.cardPane.add( pane, pane.toString() );
+		}
+		rv.add( northPane, java.awt.BorderLayout.NORTH );
+		rv.add( this.cardPane, java.awt.BorderLayout.CENTER );
 		return rv;
 	}
 	@Override

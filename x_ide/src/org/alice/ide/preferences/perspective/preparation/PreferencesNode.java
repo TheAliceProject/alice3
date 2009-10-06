@@ -14,6 +14,10 @@ public class PreferencesNode extends org.alice.ide.preferences.perspective.Prefe
 	}
 	@Override
 	protected boolean isDefaultFieldNameGenerationDesiredByDefault() {
+		return false;
+	}
+	@Override
+	protected boolean isSyntaxNoiseDesiredByDefault() {
 		return true;
 	}
 }

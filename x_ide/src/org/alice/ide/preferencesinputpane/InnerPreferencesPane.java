@@ -66,4 +66,11 @@ public class InnerPreferencesPane extends edu.cmu.cs.dennisc.croquet.PageAxisPan
 		}
 		this.add( javax.swing.Box.createVerticalGlue() );
 	}
+	public InnerPreferencesPane( org.alice.ide.preferences.PreferencesNode preferencesNode ) {
+		this( preferencesNode.getClass(), preferencesNode.getPreferences() );
+	}
+	@Override
+	public String toString() {
+		return this.prefs.name();
+	}
 }

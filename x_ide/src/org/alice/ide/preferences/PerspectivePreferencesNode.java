@@ -20,6 +20,11 @@ public class PerspectivePreferencesNode extends PreferencesNode {
 			//todo?
 			return false;
 		}
+		@Override
+		protected boolean isSyntaxNoiseDesiredByDefault() {
+			//todo?
+			return false;
+		}
 	};
 	
 	private org.alice.ide.preferences.perspective.PreferencesNode[] availablePreferenceNodes = new org.alice.ide.preferences.perspective.PreferencesNode[] {
