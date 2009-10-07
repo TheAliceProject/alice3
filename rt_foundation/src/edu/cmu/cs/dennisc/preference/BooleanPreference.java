@@ -8,4 +8,8 @@ public class BooleanPreference extends Preference< Boolean > {
 	public Boolean getValue(java.util.prefs.Preferences preferences, String key, Boolean defaultValue) {
 		return preferences.getBoolean( key, defaultValue );
 	}
+	@Override
+	protected void setAndCommitValue(java.util.prefs.Preferences preferences, String key, Boolean nextValue) {
+		preferences.putBoolean(key, nextValue);
+	}
 }

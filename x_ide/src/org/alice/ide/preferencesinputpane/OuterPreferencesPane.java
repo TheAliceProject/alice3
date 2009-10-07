@@ -34,11 +34,71 @@ class TitlePane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	}
 }
 
+
 /**
  * @author Dennis Cosgrove
  */
 public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
+	class RestoreDefaultsActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+		private boolean isAll;
+		public RestoreDefaultsActionOperation() {
+			this.putValue( javax.swing.Action.NAME, "Restore Defaults" );
+		}
+		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+			String name = OuterPreferencesPane.this.getTitle();
+			
+			java.awt.Component parentComponent = this.getIDE();
+			String message = "To what extent would you like to restore defaults?";
+			String title = "Restore Defaults";
+			int optionType = javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;
+			int messageType = javax.swing.JOptionPane.QUESTION_MESSAGE;
+			javax.swing.Icon icon = null;
+			Object[] options = { "Only " + name + " Preferences", "All Preferences", "Cancel" };
+			Object initialValue = null; //options[ 0 ];
+			int result = javax.swing.JOptionPane.showOptionDialog(parentComponent, message, title, optionType, messageType, icon, options, initialValue );
+			switch( result ) {
+			case javax.swing.JOptionPane.YES_OPTION:
+			case javax.swing.JOptionPane.NO_OPTION:
+				this.isAll = result == javax.swing.JOptionPane.NO_OPTION;
+				actionContext.commitAndInvokeRedoIfAppropriate();
+				break;
+			default:
+				actionContext.cancel();
+			}
+		}
+		@Override
+		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+		}
+		@Override
+		public boolean canUndo() {
+			//todo
+			return false;
+		}
+		@Override
+		public void undo() throws javax.swing.undo.CannotUndoException {
+			throw new javax.swing.undo.CannotUndoException();
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
+		}
+	}
+
+	class ApplyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+		public ApplyActionOperation() {
+			this.putValue( javax.swing.Action.NAME, "Apply" );
+		}
+		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
+		}
+	}
+
 	private String title;
+	private RestoreDefaultsActionOperation restoreDefaultsActionOperation = new RestoreDefaultsActionOperation();
+	private ApplyActionOperation applyActionOperation = new ApplyActionOperation();
 	
 	private OuterPreferencesPane( String title, Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences ) {
 		this.title = title;
@@ -50,9 +110,9 @@ public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.BorderPane 
 		
 		edu.cmu.cs.dennisc.croquet.LineAxisPane buttonsPane = new edu.cmu.cs.dennisc.croquet.LineAxisPane(
 				javax.swing.Box.createHorizontalGlue(),
-				new javax.swing.JButton( "Restore Defaults" ),
+				new edu.cmu.cs.dennisc.zoot.ZButton( this.restoreDefaultsActionOperation ),
 				javax.swing.Box.createHorizontalStrut( 4 ),
-				new javax.swing.JButton( "Apply" )
+				new edu.cmu.cs.dennisc.zoot.ZButton( this.applyActionOperation )
 		);
 
 		if( this.isCenterComponentScrollPaneDesired() ) {

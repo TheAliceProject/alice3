@@ -38,20 +38,7 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.DefaultMutableTreeNode
  * @author Dennis Cosgrove
  */
 class PerspectiveOuterPreferencesPane extends OuterPreferencesPane {
-//	class ComboBoxModel extends javax.swing.DefaultComboBoxModel {
-//		public ComboBoxModel() {
-//			this.addElement( org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
-//			this.addElement( org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() );
-//		}
-//	}
-
 	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<InnerPreferencesPane> {
-//		public ItemSelectionOperation() {
-//			super( edu.cmu.cs.dennisc.croquet.CroquetUtilties.createDefaultComboBoxModel(
-//					org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton(),
-//					org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton()
-//			) );
-//		}
 		public ItemSelectionOperation( InnerPreferencesPane... panes ) {
 			super( new javax.swing.DefaultComboBoxModel( panes ) );
 		}
@@ -105,10 +92,12 @@ class PerspectiveOuterPreferencesPane extends OuterPreferencesPane {
 	protected java.awt.Component createCenterComponent(java.lang.Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences) {
 		edu.cmu.cs.dennisc.croquet.BorderPane rv = new edu.cmu.cs.dennisc.croquet.BorderPane();
 		
-		InnerPreferencesPane[] panes = new InnerPreferencesPane[] { 
-				new InnerPreferencesPane( org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() ),
-				new InnerPreferencesPane( org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() )
-		};
+		org.alice.ide.preferences.perspective.PreferencesNode[] preferencesNodes = org.alice.ide.preferences.PerspectivePreferencesNode.getSingleton().getAvailablePreferenceNodes();
+		final int N = preferencesNodes.length;
+		InnerPreferencesPane[] panes = new InnerPreferencesPane[ N ];
+		for( int i=0; i<N; i++ ){ 
+			panes[ i ] = new InnerPreferencesPane( preferencesNodes[ i ] );
+		}
 		List list = new List( panes );
 		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "variant:" );
 		edu.cmu.cs.dennisc.croquet.LineAxisPane northPane = new edu.cmu.cs.dennisc.croquet.LineAxisPane( label, javax.swing.Box.createHorizontalStrut( 8 ), list );
@@ -174,9 +163,6 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		
 		OuterPreferencesPane generalPreferencesPane = new OuterPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferencesNode.getSingleton() );
 		OuterPreferencesPane perspectivePreferencesPane = new PerspectiveOuterPreferencesPane();
-//		OuterPreferencesPane everydayPreferencesPane = new OuterPreferencesPane( "Exposure", org.alice.ide.preferences.perspective.exposure.PreferencesNode.getSingleton() );
-//		OuterPreferencesPane javaPreferencesPane = new OuterPreferencesPane( "Transition", org.alice.ide.preferences.perspective.preparation.PreferencesNode.getSingleton() );
-		
 		OuterPreferencesPane sceneEditorPreferencesPane = new OuterPreferencesPane( "Scene Editor", org.alice.ide.preferences.SceneEditorPreferencesNode.getSingleton() );
 
 		javax.swing.tree.DefaultMutableTreeNode root = new javax.swing.tree.DefaultMutableTreeNode( rootPreferencesPane );
@@ -184,8 +170,6 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		javax.swing.tree.DefaultMutableTreeNode perspective = new javax.swing.tree.DefaultMutableTreeNode( perspectivePreferencesPane );
 		root.add( perspective );
 		root.add( new javax.swing.tree.DefaultMutableTreeNode( sceneEditorPreferencesPane ) );
-//		perspective.add( new javax.swing.tree.DefaultMutableTreeNode( everydayPreferencesPane ) );
-//		perspective.add( new javax.swing.tree.DefaultMutableTreeNode( javaPreferencesPane ) );
 		javax.swing.tree.TreeModel treeModel = new javax.swing.tree.DefaultTreeModel( root );
 		PreferencesInputPane inputPane = new PreferencesInputPane( treeModel );
 		inputPane.showInJDialog(null);

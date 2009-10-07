@@ -8,4 +8,8 @@ public class DoublePreference extends Preference< Double > {
 	public Double getValue(java.util.prefs.Preferences preferences, String key, Double defaultValue) {
 		return preferences.getDouble( key, defaultValue );
 	}
+	@Override
+	protected void setAndCommitValue(java.util.prefs.Preferences preferences, String key, Double nextValue) {
+		preferences.putDouble(key, nextValue);
+	}
 }

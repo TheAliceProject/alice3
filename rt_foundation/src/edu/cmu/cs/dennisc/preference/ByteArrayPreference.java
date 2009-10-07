@@ -8,4 +8,8 @@ public class ByteArrayPreference extends Preference< byte[] > {
 	public byte[] getValue(java.util.prefs.Preferences preferences, String key, byte[] defaultValue) {
 		return preferences.getByteArray( key, defaultValue );
 	}
+	@Override
+	protected void setAndCommitValue(java.util.prefs.Preferences preferences, String key, byte[] nextValue) {
+		preferences.putByteArray(key, nextValue);
+	}
 }

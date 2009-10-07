@@ -8,4 +8,8 @@ public class LongPreference extends Preference< Long > {
 	public Long getValue(java.util.prefs.Preferences preferences, String key, Long defaultValue) {
 		return preferences.getLong( key, defaultValue );
 	}
+	@Override
+	protected void setAndCommitValue(java.util.prefs.Preferences preferences, String key, Long nextValue) {
+		preferences.putLong(key, nextValue);
+	}
 }

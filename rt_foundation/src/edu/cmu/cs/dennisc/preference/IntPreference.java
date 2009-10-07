@@ -8,4 +8,8 @@ public class IntPreference extends Preference< Integer > {
 	public Integer getValue(java.util.prefs.Preferences preferences, String key, Integer defaultValue) {
 		return preferences.getInt( key, defaultValue );
 	}
+	@Override
+	protected void setAndCommitValue(java.util.prefs.Preferences preferences, String key, Integer nextValue) {
+		preferences.putInt(key, nextValue);
+	}
 }

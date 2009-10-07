@@ -8,4 +8,8 @@ public class FloatPreference extends Preference< Float > {
 	public Float getValue(java.util.prefs.Preferences preferences, String key, Float defaultValue) {
 		return preferences.getFloat( key, defaultValue );
 	}
+	@Override
+	protected void setAndCommitValue(java.util.prefs.Preferences preferences, String key, Float nextValue) {
+		preferences.putFloat(key, nextValue);
+	}
 }
