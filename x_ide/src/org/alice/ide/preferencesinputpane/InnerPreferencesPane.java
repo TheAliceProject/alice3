@@ -22,33 +22,43 @@
  */
 package org.alice.ide.preferencesinputpane;
 
+abstract class PreferenceComponent< E > {
+	private edu.cmu.cs.dennisc.preference.Preference<E> preference;
+	public PreferenceComponent( edu.cmu.cs.dennisc.preference.Preference<E> preference ) {
+		this.preference = preference;
+	}
+	public void commit() {
+		
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
 public class InnerPreferencesPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
-	private static java.awt.Component createUIFor( edu.cmu.cs.dennisc.preference.Preference<?> preference, java.util.prefs.Preferences prefs ) {
+	private static java.awt.Component createUIFor( edu.cmu.cs.dennisc.preference.Preference<?> preference ) {
 		java.awt.Component rv;
 		if( preference instanceof edu.cmu.cs.dennisc.preference.BooleanPreference ) {
 			edu.cmu.cs.dennisc.preference.BooleanPreference booleanPreference = (edu.cmu.cs.dennisc.preference.BooleanPreference)preference;
 			javax.swing.JCheckBox checkbox = new javax.swing.JCheckBox( booleanPreference.getKey() );
-			checkbox.setSelected( booleanPreference.getValue(prefs) );
+			checkbox.setSelected( booleanPreference.getValue() );
 			rv = checkbox;
 		} else {
 			edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( preference.getKey() + ": " );
 			java.awt.Component editor;
 			if( preference instanceof edu.cmu.cs.dennisc.preference.IntPreference ) {
 				edu.cmu.cs.dennisc.preference.IntPreference intPreference = (edu.cmu.cs.dennisc.preference.IntPreference)preference;
-				javax.swing.SpinnerNumberModel model = new javax.swing.SpinnerNumberModel( (int)intPreference.getValue( prefs ), 0, 16, 1 );
+				javax.swing.SpinnerNumberModel model = new javax.swing.SpinnerNumberModel( (int)intPreference.getValue(), 0, 16, 1 );
 				javax.swing.JSpinner spinner = new javax.swing.JSpinner( model );
 				editor = spinner;
 			} else if( preference instanceof edu.cmu.cs.dennisc.preference.StringPreference ) {
 				edu.cmu.cs.dennisc.preference.StringPreference stringPreference = (edu.cmu.cs.dennisc.preference.StringPreference)preference;
 				javax.swing.JTextField textField = new javax.swing.JTextField();
-				textField.setText( stringPreference.getValue( prefs ) );
+				textField.setText( stringPreference.getValue() );
 				editor = textField;
 			} else {
 				javax.swing.JTextField textField = new javax.swing.JTextField();
-				textField.setText( "" + preference.getValue( prefs ) );
+				textField.setText( "" + preference.getValue() );
 				editor = textField;
 			}
 			rv = new edu.cmu.cs.dennisc.croquet.LineAxisPane( label, javax.swing.Box.createHorizontalStrut( 8 ), editor );
@@ -56,21 +66,17 @@ public class InnerPreferencesPane extends edu.cmu.cs.dennisc.croquet.PageAxisPan
 		return rv;
 	}
 
-	private java.util.prefs.Preferences prefs;
-	private edu.cmu.cs.dennisc.preference.Preference<?>[] preferences;
-	public InnerPreferencesPane( Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences ) {
-		this.prefs = java.util.prefs.Preferences.userNodeForPackage( clsWithinPackage );
-		this.preferences = preferences;
-		for( edu.cmu.cs.dennisc.preference.Preference<?> preference : this.preferences ) {
-			this.add( createUIFor( preference, this.prefs ) );
+	private edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences;
+	public InnerPreferencesPane( edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+		assert collectionOfPreferences != null;
+		this.collectionOfPreferences = collectionOfPreferences;
+		for( edu.cmu.cs.dennisc.preference.Preference<?> preference : this.collectionOfPreferences.getPreferences() ) {
+			this.add( createUIFor( preference ) );
 		}
 		this.add( javax.swing.Box.createVerticalGlue() );
 	}
-	public InnerPreferencesPane( org.alice.ide.preferences.PreferencesNode preferencesNode ) {
-		this( preferencesNode.getClass(), preferencesNode.getPreferences() );
-	}
 	@Override
 	public String toString() {
-		return this.prefs.name();
+		return this.collectionOfPreferences.getUtilPrefs().name();
 	}
 }

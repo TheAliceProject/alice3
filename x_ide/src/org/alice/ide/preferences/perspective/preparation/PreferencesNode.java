@@ -7,6 +7,7 @@ public class PreferencesNode extends org.alice.ide.preferences.perspective.Prefe
 			//pass
 		} else {
 			singleton = new PreferencesNode();
+			singleton.initialize();
 		}
 		return singleton;
 	}

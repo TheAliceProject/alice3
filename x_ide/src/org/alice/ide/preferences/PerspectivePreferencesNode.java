@@ -1,18 +1,24 @@
 package org.alice.ide.preferences;
 
-public class PerspectivePreferencesNode extends PreferencesNode {
+public class PerspectivePreferencesNode extends edu.cmu.cs.dennisc.preference.CollectionOfPreferences {
 	private static PerspectivePreferencesNode singleton;
 	public static PerspectivePreferencesNode getSingleton() {
 		if( singleton != null ) {
 			//pass
 		} else {
 			singleton = new PerspectivePreferencesNode();
+			singleton.initialize();
 		}
 		return singleton;
 	}
 	
-	public edu.cmu.cs.dennisc.preference.StringPreference activePerspective = new edu.cmu.cs.dennisc.preference.StringPreference( "activePerspective", "exposure" );
-	private edu.cmu.cs.dennisc.preference.Preference<?>[] preferences = new edu.cmu.cs.dennisc.preference.Preference<?>[] { activePerspective };
+	public final edu.cmu.cs.dennisc.preference.StringPreference activePerspective = new edu.cmu.cs.dennisc.preference.StringPreference( "exposure" );
+	@Override
+	protected edu.cmu.cs.dennisc.preference.Preference<?>[] setOrder(edu.cmu.cs.dennisc.preference.Preference<?>[] rv) {
+		assert rv.length == 1;
+		rv[ 0 ] = this.activePerspective;
+		return rv;
+	}
 
 	private org.alice.ide.preferences.perspective.PreferencesNode activeProxy = new org.alice.ide.preferences.perspective.PreferencesNode(){
 		@Override
@@ -36,9 +42,5 @@ public class PerspectivePreferencesNode extends PreferencesNode {
 	}
 	public org.alice.ide.preferences.perspective.PreferencesNode[] getAvailablePreferenceNodes() {
 		return this.availablePreferenceNodes;
-	}
-	@Override
-	public final edu.cmu.cs.dennisc.preference.Preference<?>[] getPreferences() {
-		return this.preferences;
 	}
 }

@@ -89,7 +89,7 @@ class PerspectiveOuterPreferencesPane extends OuterPreferencesPane {
 	}
 	
 	@Override
-	protected java.awt.Component createCenterComponent(java.lang.Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences) {
+	protected java.awt.Component createCenterComponent(edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
 		edu.cmu.cs.dennisc.croquet.BorderPane rv = new edu.cmu.cs.dennisc.croquet.BorderPane();
 		
 		org.alice.ide.preferences.perspective.PreferencesNode[] preferencesNodes = org.alice.ide.preferences.PerspectivePreferencesNode.getSingleton().getAvailablePreferenceNodes();
@@ -153,12 +153,9 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		return null;
 	}
 	public static void main(String[] args) {
-		org.alice.ide.preferences.PreferencesNode rootPreferencesNode = new org.alice.ide.preferences.PreferencesNode() {
-			@Override
-			public edu.cmu.cs.dennisc.preference.Preference<?>[] getPreferences() {
-				return new edu.cmu.cs.dennisc.preference.Preference<?>[] {};
-			}
-		};
+		edu.cmu.cs.dennisc.preference.CollectionOfPreferences rootPreferencesNode = new edu.cmu.cs.dennisc.preference.CollectionOfPreferences() {};
+		rootPreferencesNode.initialize();
+		
 		OuterPreferencesPane rootPreferencesPane = new OuterPreferencesPane( "Root", rootPreferencesNode );
 		
 		OuterPreferencesPane generalPreferencesPane = new OuterPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferencesNode.getSingleton() );

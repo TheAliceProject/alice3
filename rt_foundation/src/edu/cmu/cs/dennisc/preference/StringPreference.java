@@ -1,15 +1,15 @@
 package edu.cmu.cs.dennisc.preference;
 
 public class StringPreference extends Preference< String > {
-	public StringPreference( String key, String defaultValue ) {
-		super( key, defaultValue );
+	public StringPreference( String defaultValue ) {
+		super( defaultValue );
 	}
 	@Override
-	public String getValue(java.util.prefs.Preferences preferences, String key, String defaultValue) {
-		return preferences.get(key, defaultValue);
+	public String getValue(java.util.prefs.Preferences utilPrefs, String key, String defaultValue) {
+		return utilPrefs.get(key, defaultValue);
 	}
 	@Override
-	protected void setAndCommitValue(java.util.prefs.Preferences preferences, String key, String nextValue) {
-		preferences.put(key, nextValue);
+	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, String nextValue) {
+		utilPrefs.put(key, nextValue);
 	}
 }

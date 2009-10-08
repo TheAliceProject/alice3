@@ -100,13 +100,14 @@ public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.BorderPane 
 	private RestoreDefaultsActionOperation restoreDefaultsActionOperation = new RestoreDefaultsActionOperation();
 	private ApplyActionOperation applyActionOperation = new ApplyActionOperation();
 	
-	private OuterPreferencesPane( String title, Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences ) {
+	public OuterPreferencesPane( String title, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+		assert collectionOfPreferences != null;
 		this.title = title;
 		
 		edu.cmu.cs.dennisc.zoot.ZLabel titleComponent = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( this.title, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD );
 		titleComponent.setFontToScaledFont( 2.0f );
 
-		java.awt.Component centerComponent = this.createCenterComponent(clsWithinPackage, preferences);
+		java.awt.Component centerComponent = this.createCenterComponent(collectionOfPreferences);
 		
 		edu.cmu.cs.dennisc.croquet.LineAxisPane buttonsPane = new edu.cmu.cs.dennisc.croquet.LineAxisPane(
 				javax.swing.Box.createHorizontalGlue(),
@@ -124,9 +125,6 @@ public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.BorderPane 
 		this.add( centerComponent, java.awt.BorderLayout.CENTER );
 		this.add( buttonsPane, java.awt.BorderLayout.SOUTH );
 	}
-	public OuterPreferencesPane( String title, org.alice.ide.preferences.PreferencesNode preferencesNode ) {
-		this( title, preferencesNode.getClass(), preferencesNode.getPreferences() );
-	}
 	public String getTitle() {
 		return this.title;
 	}
@@ -138,8 +136,8 @@ public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.BorderPane 
 	protected boolean isCenterComponentScrollPaneDesired() {
 		return true;
 	}
-	protected java.awt.Component createCenterComponent( Class<?> clsWithinPackage, edu.cmu.cs.dennisc.preference.Preference<?>[] preferences ) {
-		return new InnerPreferencesPane( clsWithinPackage, preferences );
+	protected java.awt.Component createCenterComponent( edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+		return new InnerPreferencesPane( collectionOfPreferences );
 	}
 //	@Override
 //	protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {

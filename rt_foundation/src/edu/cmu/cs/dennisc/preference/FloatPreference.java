@@ -1,15 +1,15 @@
 package edu.cmu.cs.dennisc.preference;
 
 public class FloatPreference extends Preference< Float > {
-	public FloatPreference( String key, Float defaultValue ) {
-		super( key, defaultValue );
+	public FloatPreference( Float defaultValue ) {
+		super( defaultValue );
 	}
 	@Override
-	public Float getValue(java.util.prefs.Preferences preferences, String key, Float defaultValue) {
-		return preferences.getFloat( key, defaultValue );
+	public Float getValue(java.util.prefs.Preferences utilPrefs, String key, Float defaultValue) {
+		return utilPrefs.getFloat( key, defaultValue );
 	}
 	@Override
-	protected void setAndCommitValue(java.util.prefs.Preferences preferences, String key, Float nextValue) {
-		preferences.putFloat(key, nextValue);
+	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, Float nextValue) {
+		utilPrefs.putFloat(key, nextValue);
 	}
 }

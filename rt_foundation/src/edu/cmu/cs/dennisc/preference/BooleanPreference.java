@@ -1,15 +1,15 @@
 package edu.cmu.cs.dennisc.preference;
 
 public class BooleanPreference extends Preference< Boolean > {
-	public BooleanPreference( String key, Boolean defaultValue ) {
-		super( key, defaultValue );
+	public BooleanPreference( Boolean defaultValue ) {
+		super( defaultValue );
 	}
 	@Override
-	public Boolean getValue(java.util.prefs.Preferences preferences, String key, Boolean defaultValue) {
-		return preferences.getBoolean( key, defaultValue );
+	public Boolean getValue(java.util.prefs.Preferences utilPrefs, String key, Boolean defaultValue) {
+		return utilPrefs.getBoolean( key, defaultValue );
 	}
 	@Override
-	protected void setAndCommitValue(java.util.prefs.Preferences preferences, String key, Boolean nextValue) {
-		preferences.putBoolean(key, nextValue);
+	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, Boolean nextValue) {
+		utilPrefs.putBoolean(key, nextValue);
 	}
 }

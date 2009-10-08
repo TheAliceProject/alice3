@@ -1,12 +1,14 @@
 package org.alice.ide.preferences.perspective;
 
-public abstract class PreferencesNode extends org.alice.ide.preferences.PreferencesNode {
-	public edu.cmu.cs.dennisc.preference.BooleanPreference isDefaultFieldNameGenerationDesired = new edu.cmu.cs.dennisc.preference.BooleanPreference("isDefaultFieldNameGenerationDesired", this.isDefaultFieldNameGenerationDesiredByDefault());
-	public edu.cmu.cs.dennisc.preference.BooleanPreference isSyntaxNoiseDesired = new edu.cmu.cs.dennisc.preference.BooleanPreference("isSyntaxNoiseDesired", this.isSyntaxNoiseDesiredByDefault());
-	private edu.cmu.cs.dennisc.preference.Preference<?>[] preferences = new edu.cmu.cs.dennisc.preference.Preference<?>[] { this.isDefaultFieldNameGenerationDesired, this.isSyntaxNoiseDesired };
+public abstract class PreferencesNode extends edu.cmu.cs.dennisc.preference.CollectionOfPreferences {
+	public final edu.cmu.cs.dennisc.preference.BooleanPreference isDefaultFieldNameGenerationDesired = new edu.cmu.cs.dennisc.preference.BooleanPreference(this.isDefaultFieldNameGenerationDesiredByDefault());
+	public final edu.cmu.cs.dennisc.preference.BooleanPreference isSyntaxNoiseDesired = new edu.cmu.cs.dennisc.preference.BooleanPreference(this.isSyntaxNoiseDesiredByDefault());
 	@Override
-	public final edu.cmu.cs.dennisc.preference.Preference<?>[] getPreferences() {
-		return this.preferences;
+	protected edu.cmu.cs.dennisc.preference.Preference<?>[] setOrder(edu.cmu.cs.dennisc.preference.Preference<?>[] rv) {
+		assert rv.length == 2;
+		rv[ 0 ] = this.isDefaultFieldNameGenerationDesired;
+		rv[ 1 ] = this.isSyntaxNoiseDesired;
+		return rv;
 	}
 	protected abstract boolean isDefaultFieldNameGenerationDesiredByDefault();
 	protected abstract boolean isSyntaxNoiseDesiredByDefault();
