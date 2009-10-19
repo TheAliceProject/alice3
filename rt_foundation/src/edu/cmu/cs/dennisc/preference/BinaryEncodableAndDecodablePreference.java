@@ -25,16 +25,19 @@ package edu.cmu.cs.dennisc.preference;
 /**
  * @author Dennis Cosgrove
  */
-public class DoublePreference extends Preference< Double > {
-	public DoublePreference( Double defaultValue ) {
+public abstract class BinaryEncodableAndDecodablePreference< E extends edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable > extends Preference< E > {
+	public BinaryEncodableAndDecodablePreference( E defaultValue ) {
 		super( defaultValue );
 	}
+	protected abstract Class< E > getValueClass();
 	@Override
-	public Double getValue(java.util.prefs.Preferences utilPrefs, String key, Double defaultValue) {
-		return utilPrefs.getDouble( key, defaultValue );
+	public E getValue(java.util.prefs.Preferences utilPrefs, String key, E defaultValue ) {
+		byte[] defaultData = edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary(defaultValue);
+		byte[] currentData = utilPrefs.getByteArray( key, defaultData );
+		return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary(currentData, this.getValueClass() );
 	}
 	@Override
-	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, Double nextValue) {
-		utilPrefs.putDouble(key, nextValue);
+	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, E nextValue) {
+		utilPrefs.putByteArray(key, edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary(nextValue));
 	}
 }

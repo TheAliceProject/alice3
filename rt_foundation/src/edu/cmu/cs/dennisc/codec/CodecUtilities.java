@@ -106,6 +106,14 @@ public abstract class CodecUtilities {
 			return decodeBinary( rv, new java.io.File( path ) );
 		}
 	}
+	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, byte[] data ) {
+		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
+		return decodeBinary(rv, bais);
+	}
+	public static <E extends BinaryEncodableAndDecodable> E decodeBinary( byte[] data, Class<E> cls ) {
+		java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream( data );
+		return decodeBinary(bais, cls);
+	}
 
 	public static BinaryEncodableAndDecodable decodeZippedBinary( BinaryEncodableAndDecodable rv, java.util.zip.ZipFile file, java.util.zip.ZipEntry entry ) {
 		try {
@@ -159,6 +167,11 @@ public abstract class CodecUtilities {
 		} else {
 			encodeBinary( binaryEncodableAndDecodable, new java.io.File( path ) );
 		}
+	}
+	public static byte[] encodeBinary( BinaryEncodableAndDecodable binaryEncodableAndDecodable ) {
+		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+		encodeBinary(binaryEncodableAndDecodable, baos);
+		return baos.toByteArray();
 	}
 
 	public static void encodeZippedBinary( BinaryEncodableAndDecodable binaryEncodableAndDecodable, java.util.zip.ZipOutputStream zos, java.util.zip.ZipEntry entry ) {

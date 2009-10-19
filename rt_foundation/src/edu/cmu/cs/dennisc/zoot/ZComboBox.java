@@ -25,8 +25,8 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZComboBox extends javax.swing.JComboBox {
-	private ItemSelectionOperation itemSelectionOperation;
+public class ZComboBox<E> extends javax.swing.JComboBox {
+	private ItemSelectionOperation<E> itemSelectionOperation;
 	private java.awt.event.ItemListener itemAdapter = new java.awt.event.ItemListener() {
 		public void itemStateChanged( java.awt.event.ItemEvent e ) {
 			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
@@ -38,13 +38,13 @@ public class ZComboBox extends javax.swing.JComboBox {
 	};
 	public ZComboBox() {
 	}
-	public ZComboBox( ItemSelectionOperation itemSelectionOperation ) {
+	public ZComboBox( ItemSelectionOperation<E> itemSelectionOperation ) {
 		this.setItemSelectionOperation( itemSelectionOperation );
 	}
-	public ItemSelectionOperation getItemSelectionOperation() {
+	public ItemSelectionOperation<E> getItemSelectionOperation() {
 		return this.itemSelectionOperation;
 	}
-	public void setItemSelectionOperation( ItemSelectionOperation itemSelectionOperation ) {
+	public void setItemSelectionOperation( ItemSelectionOperation<E> itemSelectionOperation ) {
 		if( this.itemSelectionOperation != null ) {
 			this.removeItemListener( this.itemAdapter );
 			this.setModel( new javax.swing.DefaultComboBoxModel() );

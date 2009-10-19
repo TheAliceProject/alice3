@@ -25,16 +25,29 @@ package edu.cmu.cs.dennisc.preference;
 /**
  * @author Dennis Cosgrove
  */
-public class DoublePreference extends Preference< Double > {
-	public DoublePreference( Double defaultValue ) {
+public class UUIDPreference extends Preference< java.util.UUID > {
+	public UUIDPreference( java.util.UUID defaultValue ) {
 		super( defaultValue );
 	}
 	@Override
-	public Double getValue(java.util.prefs.Preferences utilPrefs, String key, Double defaultValue) {
-		return utilPrefs.getDouble( key, defaultValue );
+	public java.util.UUID getValue(java.util.prefs.Preferences utilPrefs, String key, java.util.UUID defaultValue) {
+		java.util.UUID rv;
+		String s = utilPrefs.get( key, null );
+		if( s != null ) {
+			rv = java.util.UUID.fromString(s);
+		} else {
+			rv = defaultValue;
+		}
+		return rv;
 	}
 	@Override
-	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, Double nextValue) {
-		utilPrefs.putDouble(key, nextValue);
+	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, java.util.UUID nextValue) {
+		String s;
+		if( nextValue != null ) {
+			s = nextValue.toString();
+		} else {
+			s = null;
+		}
+		utilPrefs.put(key, s);
 	}
 }

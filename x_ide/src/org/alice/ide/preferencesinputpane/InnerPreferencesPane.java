@@ -56,6 +56,34 @@ public class InnerPreferencesPane extends edu.cmu.cs.dennisc.croquet.PageAxisPan
 				javax.swing.JTextField textField = new javax.swing.JTextField();
 				textField.setText( stringPreference.getValue() );
 				editor = textField;
+			} else if( preference instanceof org.alice.ide.preferences.LocalePreference ) {
+				class LocaleSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<java.util.Locale> {
+					public LocaleSelectionOperation() {
+						super( new javax.swing.DefaultComboBoxModel( java.util.Locale.getAvailableLocales() ) );
+						this.getComboBoxModel().setSelectedItem( java.util.Locale.getDefault() );
+					}
+					
+					@Override
+					protected void handleSelectionChange(java.util.Locale value) {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( value );
+					}
+					@Override
+					public boolean isSignificant() {
+						//todo?
+						return false;
+					}
+				}
+				edu.cmu.cs.dennisc.zoot.ZComboBox<java.util.Locale> comboBox = new edu.cmu.cs.dennisc.zoot.ZComboBox<java.util.Locale>( new LocaleSelectionOperation() );
+				comboBox.setRenderer( new edu.cmu.cs.dennisc.croquet.ListCellRenderer<java.util.Locale>() {
+					@Override
+					protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, java.util.Locale value, int index, boolean isSelected, boolean cellHasFocus) {
+						if( value != null ) {
+							rv.setText( value.getDisplayName() );
+						}
+						return rv;
+					}
+				});
+				editor = comboBox;
 			} else {
 				javax.swing.JTextField textField = new javax.swing.JTextField();
 				textField.setText( "" + preference.getValue() );
@@ -77,6 +105,6 @@ public class InnerPreferencesPane extends edu.cmu.cs.dennisc.croquet.PageAxisPan
 	}
 	@Override
 	public String toString() {
-		return this.collectionOfPreferences.getUtilPrefs().name();
+		return this.collectionOfPreferences.getUtilPrefs().name() + " (built-in)";
 	}
 }

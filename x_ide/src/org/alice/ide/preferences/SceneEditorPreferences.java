@@ -1,12 +1,12 @@
 package org.alice.ide.preferences;
 
-public class SceneEditorPreferencesNode extends edu.cmu.cs.dennisc.preference.CollectionOfPreferences {
-	private static SceneEditorPreferencesNode singleton;
-	public static SceneEditorPreferencesNode getSingleton() {
+public class SceneEditorPreferences extends edu.cmu.cs.dennisc.preference.CollectionOfPreferences {
+	private static SceneEditorPreferences singleton;
+	public static SceneEditorPreferences getSingleton() {
 		if( singleton != null ) {
 			//pass
 		} else {
-			singleton = new SceneEditorPreferencesNode();
+			singleton = new SceneEditorPreferences();
 			singleton.initialize();
 		}
 		return singleton;
