@@ -30,7 +30,7 @@ public class FloatPreference extends Preference< Float > {
 		super( defaultValue );
 	}
 	@Override
-	public Float getValue(java.util.prefs.Preferences utilPrefs, String key, Float defaultValue) {
+	protected Float getValue(java.util.prefs.Preferences utilPrefs, String key, Float defaultValue) {
 		return utilPrefs.getFloat( key, defaultValue );
 	}
 	@Override

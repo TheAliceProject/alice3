@@ -30,7 +30,7 @@ public class ByteArrayPreference extends Preference< byte[] > {
 		super( defaultValue );
 	}
 	@Override
-	public byte[] getValue(java.util.prefs.Preferences utilPrefs, String key, byte[] defaultValue) {
+	protected byte[] getValue(java.util.prefs.Preferences utilPrefs, String key, byte[] defaultValue) {
 		return utilPrefs.getByteArray( key, defaultValue );
 	}
 	@Override

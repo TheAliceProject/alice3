@@ -30,7 +30,7 @@ public class BooleanPreference extends Preference< Boolean > {
 		super( defaultValue );
 	}
 	@Override
-	public Boolean getValue(java.util.prefs.Preferences utilPrefs, String key, Boolean defaultValue) {
+	protected Boolean getValue(java.util.prefs.Preferences utilPrefs, String key, Boolean defaultValue) {
 		return utilPrefs.getBoolean( key, defaultValue );
 	}
 	@Override

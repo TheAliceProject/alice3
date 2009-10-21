@@ -31,7 +31,7 @@ public abstract class BinaryEncodableAndDecodablePreference< E extends edu.cmu.c
 	}
 	protected abstract Class< E > getValueClass();
 	@Override
-	public E getValue(java.util.prefs.Preferences utilPrefs, String key, E defaultValue ) {
+	protected E getValue(java.util.prefs.Preferences utilPrefs, String key, E defaultValue ) {
 		byte[] defaultData = edu.cmu.cs.dennisc.codec.CodecUtilities.encodeBinary(defaultValue);
 		byte[] currentData = utilPrefs.getByteArray( key, defaultData );
 		return edu.cmu.cs.dennisc.codec.CodecUtilities.decodeBinary(currentData, this.getValueClass() );

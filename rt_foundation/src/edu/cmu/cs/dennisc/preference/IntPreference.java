@@ -30,7 +30,7 @@ public class IntPreference extends Preference< Integer > {
 		super( defaultValue );
 	}
 	@Override
-	public Integer getValue(java.util.prefs.Preferences utilPrefs, String key, Integer defaultValue) {
+	protected Integer getValue(java.util.prefs.Preferences utilPrefs, String key, Integer defaultValue) {
 		return utilPrefs.getInt( key, defaultValue );
 	}
 	@Override

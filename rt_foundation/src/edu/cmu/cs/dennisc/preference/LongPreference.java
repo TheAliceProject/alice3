@@ -30,7 +30,7 @@ public class LongPreference extends Preference< Long > {
 		super( defaultValue );
 	}
 	@Override
-	public Long getValue(java.util.prefs.Preferences utilPrefs, String key, Long defaultValue) {
+	protected Long getValue(java.util.prefs.Preferences utilPrefs, String key, Long defaultValue) {
 		return utilPrefs.getLong( key, defaultValue );
 	}
 	@Override

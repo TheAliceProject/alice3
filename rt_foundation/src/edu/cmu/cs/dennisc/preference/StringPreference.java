@@ -30,7 +30,7 @@ public class StringPreference extends Preference< String > {
 		super( defaultValue );
 	}
 	@Override
-	public String getValue(java.util.prefs.Preferences utilPrefs, String key, String defaultValue) {
+	protected String getValue(java.util.prefs.Preferences utilPrefs, String key, String defaultValue) {
 		return utilPrefs.get(key, defaultValue);
 	}
 	@Override

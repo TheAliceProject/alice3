@@ -30,7 +30,7 @@ public class UUIDPreference extends Preference< java.util.UUID > {
 		super( defaultValue );
 	}
 	@Override
-	public java.util.UUID getValue(java.util.prefs.Preferences utilPrefs, String key, java.util.UUID defaultValue) {
+	protected java.util.UUID getValue(java.util.prefs.Preferences utilPrefs, String key, java.util.UUID defaultValue) {
 		java.util.UUID rv;
 		String s = utilPrefs.get( key, null );
 		if( s != null ) {

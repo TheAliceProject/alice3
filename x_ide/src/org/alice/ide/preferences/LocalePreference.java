@@ -28,6 +28,7 @@ import edu.cmu.cs.dennisc.preference.Preference;
  * @author Dennis Cosgrove
  */
 public class LocalePreference extends Preference< java.util.Locale > {
+	private static final int VERSION = 1;
 	private static final String VERSION_SUFFIX = ".version";
 	private static final String LANGUAGE_SUFFIX = ".language";
 	private static final String COUNTRY_SUFFIX = ".country";
@@ -36,14 +37,18 @@ public class LocalePreference extends Preference< java.util.Locale > {
 		super( defaultValue );
 	}
 	@Override
-	public java.util.Locale getValue(java.util.prefs.Preferences utilPrefs, String key, java.util.Locale defaultValue ) {
+	protected java.util.Locale getValue(java.util.prefs.Preferences utilPrefs, String key, java.util.Locale defaultValue ) {
 		java.util.Locale rv;
-		//int version = utilPrefs.getInt(key+VERSION_SUFFIX,  0 );
-		String language = utilPrefs.get(key+LANGUAGE_SUFFIX, null);
-		if( language != null ) {
-			String country = utilPrefs.get(key+COUNTRY_SUFFIX, "");
-			String variant = utilPrefs.get(key+VARIANT_SUFFIX, "");
-			rv = new java.util.Locale( language, country, variant );
+		int version = utilPrefs.getInt(key+VERSION_SUFFIX,  0 );
+		if( version == 1 ) {
+			String language = utilPrefs.get(key+LANGUAGE_SUFFIX, null);
+			if( language != null ) {
+				String country = utilPrefs.get(key+COUNTRY_SUFFIX, "");
+				String variant = utilPrefs.get(key+VARIANT_SUFFIX, "");
+				rv = new java.util.Locale( language, country, variant );
+			} else {
+				rv = defaultValue;
+			}
 		} else {
 			rv = defaultValue;
 		}
@@ -51,8 +56,8 @@ public class LocalePreference extends Preference< java.util.Locale > {
 	}
 	@Override
 	protected void setAndCommitValue(java.util.prefs.Preferences utilPrefs, String key, java.util.Locale nextValue ) {
+		utilPrefs.putInt(key+VERSION_SUFFIX, VERSION );
 		if( nextValue != null ) {
-			utilPrefs.putInt(key+VERSION_SUFFIX,  0 );
 			utilPrefs.put(key+LANGUAGE_SUFFIX, nextValue.getLanguage());
 			utilPrefs.put(key+COUNTRY_SUFFIX, nextValue.getCountry());
 			utilPrefs.put(key+VARIANT_SUFFIX, nextValue.getVariant());
