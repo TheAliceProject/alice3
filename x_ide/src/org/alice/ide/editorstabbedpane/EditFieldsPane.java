@@ -1,6 +1,6 @@
 package org.alice.ide.editorstabbedpane;
 
-class FieldDeclarationsPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
+class FieldDeclarationsPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
 		@Override

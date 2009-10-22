@@ -25,7 +25,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.croquet.ListCellRenderer< E > {
+abstract class IngredientListCellRenderer< E > extends edu.cmu.cs.dennisc.croquet.swing.ListCellRenderer< E > {
 	private javax.swing.border.Border border = javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 );
 	protected abstract String getSubPath();
 	private String getIngredientPath( org.alice.apis.stage.SkinTone skinTone, String clsName, String enumConstantName ) {

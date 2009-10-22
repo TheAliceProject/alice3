@@ -20,16 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class DefaultMutableTreeNodeTreeCellRenderer<E> extends TreeCellRenderer<javax.swing.tree.DefaultMutableTreeNode> {
-	protected abstract javax.swing.JLabel getListCellRendererComponentForUserObject( javax.swing.JLabel rv, javax.swing.JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
-	@Override
-	protected final javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, javax.swing.tree.DefaultMutableTreeNode node, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		return this.getListCellRendererComponentForUserObject( rv, tree, (E)node.getUserObject(), sel, expanded, leaf, row, hasFocus );
-		
+public class GridBagPane extends Pane {
+	public GridBagPane() {
+		setLayout( new java.awt.GridBagLayout() );
 	}
 }

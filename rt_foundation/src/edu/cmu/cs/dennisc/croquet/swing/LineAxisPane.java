@@ -20,21 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane  {
-	public TypedDeclarationPane( java.awt.Component... components ) {
-		super( components );
-		this.setOpaque( true );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setForeground( java.awt.Color.GRAY );
-	}
-	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
-		g.drawRect( 0, 0, this.getWidth()-1, this.getHeight()-1);
+public class LineAxisPane extends BoxPane {
+	public LineAxisPane( java.awt.Component... components ) {
+		super( javax.swing.BoxLayout.LINE_AXIS );
+		for( java.awt.Component component : components ) {
+			this.add( component );
+			component.doLayout();
+		}
+		if( components.length > 0 ) {
+//			this.revalidate();
+			this.doLayout();
+		}
 	}
 }

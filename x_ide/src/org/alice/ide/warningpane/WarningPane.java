@@ -22,7 +22,7 @@
  */
 package org.alice.ide.warningpane;
 
-public class WarningPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
+public class WarningPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	public WarningPane( boolean isSolicited ) {
 		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
 
@@ -46,7 +46,7 @@ public class WarningPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 		this.add( editorPane );
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
 		
-		class FurtherInfoPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPane {
+		class FurtherInfoPane extends edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane {
 			public FurtherInfoPane() {
 				super( 8, 4 );
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );

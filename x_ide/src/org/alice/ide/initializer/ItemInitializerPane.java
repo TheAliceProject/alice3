@@ -25,7 +25,7 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-public class ItemInitializerPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
+public class ItemInitializerPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
 		this.add( new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, new org.alice.ide.common.ExpressionPropertyPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), initializerProperty ), initializerProperty ), java.awt.BorderLayout.WEST );
 	}

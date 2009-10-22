@@ -25,7 +25,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
+abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	private edu.cmu.cs.dennisc.zoot.ZButton randomizeButton = new edu.cmu.cs.dennisc.zoot.ZButton( new RandomPersonActionOperation() );
 	private LifeStageList lifeStageList = new LifeStageList();
 	private GenderList genderList = new GenderList();
@@ -84,7 +84,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 		this.baseEyeColorList.setOpaque( false );
 		
 		class ListCellRenderer implements javax.swing.ListCellRenderer {
-			private edu.cmu.cs.dennisc.croquet.BorderPane pane = new edu.cmu.cs.dennisc.croquet.BorderPane();
+			private edu.cmu.cs.dennisc.croquet.swing.BorderPane pane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
 			private javax.swing.JLabel label = new javax.swing.JLabel();
 			public ListCellRenderer() {
 				label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
@@ -112,10 +112,10 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 		this.hairColorList.setCellRenderer( listCellRenderer );
 		this.baseEyeColorList.setCellRenderer( listCellRenderer );
 
-		edu.cmu.cs.dennisc.croquet.BorderPane northPane = new edu.cmu.cs.dennisc.croquet.BorderPane();
+		edu.cmu.cs.dennisc.croquet.swing.BorderPane northPane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
 		northPane.add( this.randomizeButton, java.awt.BorderLayout.NORTH );
 		
-		edu.cmu.cs.dennisc.croquet.RowsSpringPane ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPane( 8, 8 ) {
+		edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane ubiquitousPane = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 8, 8 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "gender:" ), genderList ) );
@@ -129,7 +129,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 //		hairPane.add( this.hairColorList, java.awt.BorderLayout.NORTH );
 //		hairPane.add( this.hairList, java.awt.BorderLayout.CENTER );
 		
-		edu.cmu.cs.dennisc.croquet.RowsSpringPane headPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPane( 8, 8 ) {
+		edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane headPane = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 8, 8 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "hair:" ), hairColorList ) );
@@ -149,7 +149,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 		scrollPane.setOpaque( false );
 		scrollPane.getViewport().setOpaque( false );
 
-		edu.cmu.cs.dennisc.croquet.BorderPane bodyPane = new edu.cmu.cs.dennisc.croquet.BorderPane( 8, 8 );
+		edu.cmu.cs.dennisc.croquet.swing.BorderPane bodyPane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane( 8, 8 );
 		bodyPane.add( scrollPane, java.awt.BorderLayout.CENTER );
 		bodyPane.add( this.fitnessLevelPane, java.awt.BorderLayout.SOUTH );
 		

@@ -1,4 +1,4 @@
-package edu.cmu.cs.dennisc.croquet.event;
+package edu.cmu.cs.dennisc.croquet.swing.event;
 
 public abstract class TreeSelectionAdapter<E> implements javax.swing.event.TreeSelectionListener {
 	protected abstract void valueChanged(javax.swing.event.TreeSelectionEvent e, E oldLeadValue, E newLeadValue );

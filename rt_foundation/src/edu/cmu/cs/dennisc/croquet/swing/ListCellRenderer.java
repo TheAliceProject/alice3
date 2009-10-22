@@ -20,13 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GridBagPane extends Pane {
-	public GridBagPane() {
-		setLayout( new java.awt.GridBagLayout() );
+public abstract class ListCellRenderer<E> extends javax.swing.DefaultListCellRenderer {
+	protected abstract javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, E value, int index, boolean isSelected, boolean cellHasFocus );
+	@Override
+	public final java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		java.awt.Component rv = super.getListCellRendererComponent( list, value, index, isSelected, cellHasFocus );
+		if( rv instanceof javax.swing.JLabel ) {
+			getListCellRendererComponent( (javax.swing.JLabel)rv, list, (E)value, index, isSelected, cellHasFocus );
+		} else {
+			//todo
+		}
+		return rv;
 	}
 }

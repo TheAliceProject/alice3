@@ -25,7 +25,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
+abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	private static final int INDENT = 16;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
@@ -101,7 +101,7 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAx
 		if( this.typeComponent != null ) {
 			this.add( this.typeComponent );
 		}
-		edu.cmu.cs.dennisc.croquet.PageAxisPane page = new edu.cmu.cs.dennisc.croquet.PageAxisPane();
+		edu.cmu.cs.dennisc.croquet.swing.PageAxisPane page = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {
 				java.awt.Component[] templates = this.createTemplates( field );
@@ -138,7 +138,7 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAx
 		}
 		int pad;
 		if( page.getComponentCount() > 0 ) {
-			this.add( new edu.cmu.cs.dennisc.croquet.LineAxisPane( javax.swing.Box.createHorizontalStrut( INDENT ), page ) );
+			this.add( new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( javax.swing.Box.createHorizontalStrut( INDENT ), page ) );
 			pad = 8;
 		} else {
 			pad = 2;

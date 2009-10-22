@@ -20,7 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove

@@ -1,6 +1,6 @@
 package edu.cmu.cs.dennisc.memory;
 
-public class MemoryPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
+public class MemoryPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	private static final long K = 1024;
 	private static final long M = K*K;
 
@@ -15,7 +15,7 @@ public class MemoryPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
 		labelMax.setText( maxMB + "MB" );
 
 		this.add( memoryView, java.awt.BorderLayout.CENTER );
-		edu.cmu.cs.dennisc.croquet.BorderPane labels = new edu.cmu.cs.dennisc.croquet.BorderPane();
+		edu.cmu.cs.dennisc.croquet.swing.BorderPane labels = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
 		labels.add( label0, java.awt.BorderLayout.WEST );
 		labels.add( labelMax, java.awt.BorderLayout.EAST );
 		this.add( labels, java.awt.BorderLayout.SOUTH );

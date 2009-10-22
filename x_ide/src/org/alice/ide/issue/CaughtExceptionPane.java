@@ -65,7 +65,7 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 //		message.setAlignmentY( 0.5f );
 //		label.setAlignmentY( 0.5f );
 		
-		edu.cmu.cs.dennisc.croquet.LineAxisPane pane = new edu.cmu.cs.dennisc.croquet.LineAxisPane( meanQueen, javax.swing.Box.createHorizontalStrut( 16 ), message );
+		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane pane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( meanQueen, javax.swing.Box.createHorizontalStrut( 16 ), message );
 		pane.setBackground( java.awt.Color.DARK_GRAY );
 		pane.setOpaque( true );
 		this.add( pane, java.awt.BorderLayout.NORTH );

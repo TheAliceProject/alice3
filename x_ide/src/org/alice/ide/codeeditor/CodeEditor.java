@@ -55,7 +55,7 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPane implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.zoot.DropReceptor {
+public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.zoot.DropReceptor {
 	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
 	}
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {

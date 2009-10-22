@@ -22,7 +22,7 @@
  */
 package edu.cmu.cs.dennisc.zoot;
 
-public abstract class ZComponent extends edu.cmu.cs.dennisc.croquet.Pane {
+public abstract class ZComponent extends edu.cmu.cs.dennisc.croquet.swing.Pane {
 	protected abstract int getInsetTop();
 	protected abstract int getInsetLeft();
 	protected abstract int getInsetBottom();

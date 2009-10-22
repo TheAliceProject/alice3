@@ -248,7 +248,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	//		}
 	//	}
 
-	class ExpressionList extends edu.cmu.cs.dennisc.croquet.GridBagPane {
+	class ExpressionList extends edu.cmu.cs.dennisc.croquet.swing.GridBagPane {
 		private java.awt.Component glue = javax.swing.Box.createGlue();
 		private javax.swing.ButtonGroup group;
 		private java.awt.GridBagConstraints gbc;
@@ -360,7 +360,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.updateButtons();
 
-		edu.cmu.cs.dennisc.croquet.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.GridBagPane();
+		edu.cmu.cs.dennisc.croquet.swing.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.GridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;

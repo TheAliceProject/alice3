@@ -47,7 +47,7 @@ class IsArrayStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanState
 	}
 }
 
-public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
+public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 	private DeclarationProperty< AbstractType > typeProperty;
 	private org.alice.ide.common.TypeComboBox typeComboBox;
 	private edu.cmu.cs.dennisc.zoot.ZCheckBox isArrayCheckBox;

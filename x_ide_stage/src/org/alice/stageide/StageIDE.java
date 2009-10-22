@@ -206,7 +206,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
 					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
-						return new edu.cmu.cs.dennisc.croquet.LineAxisPane( 
+						return new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( 
 								factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ),
 								edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " revolutions" )
 						);

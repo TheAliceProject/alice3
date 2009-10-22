@@ -11,9 +11,30 @@ public class ProgrammingPreferences extends edu.cmu.cs.dennisc.preference.Collec
 		}
 		return singleton;
 	}
-	
-	public final edu.cmu.cs.dennisc.preference.UUIDPreference activePerspective = new edu.cmu.cs.dennisc.preference.UUIDPreference( org.alice.ide.preferences.programming.exposure.Configuration.getSingleton().getUUID() );
-	//public final ListOfCustomProgrammingPreferencesPreference listOfCustomProgrammingPreferencesPreference = new ListOfCustomProgrammingPreferencesPreference();
+
+	class CustomConfigurationsPreference extends edu.cmu.cs.dennisc.preference.ListPreference<org.alice.ide.preferences.programming.BinaryEncodableAndDecodableConfiguration> {
+		public CustomConfigurationsPreference() {
+			super( new java.util.LinkedList<org.alice.ide.preferences.programming.BinaryEncodableAndDecodableConfiguration>() );
+		}
+		@Override
+		protected int getItemVersion() {
+			return 1;
+		}
+		@Override
+		protected org.alice.ide.preferences.programming.BinaryEncodableAndDecodableConfiguration decode( int itemVersion, edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+			if( itemVersion == 1 ) {
+				return binaryDecoder.decodeBinaryEncodableAndDecodable(org.alice.ide.preferences.programming.BinaryEncodableAndDecodableConfiguration.class);
+			} else {
+				return null;
+			}
+		}
+		@Override
+		protected void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, org.alice.ide.preferences.programming.BinaryEncodableAndDecodableConfiguration item ) {
+			binaryEncoder.encode(item);
+		}
+	}
+	public final CustomConfigurationsPreference listOfCustomProgrammingPreferencesPreference = new CustomConfigurationsPreference();
+	public final edu.cmu.cs.dennisc.preference.UUIDPreference activePerspective = new edu.cmu.cs.dennisc.preference.UUIDPreference( org.alice.ide.preferences.programming.exposure.ExposureConfiguration.getSingleton().getUUID() );
 	public final transient edu.cmu.cs.dennisc.preference.BooleanPreference isDefaultFieldNameGenerationDesired = new edu.cmu.cs.dennisc.preference.BooleanPreference( true );
 	public final transient edu.cmu.cs.dennisc.preference.BooleanPreference isSyntaxNoiseDesired = new edu.cmu.cs.dennisc.preference.BooleanPreference( false );
 
@@ -27,8 +48,8 @@ public class ProgrammingPreferences extends edu.cmu.cs.dennisc.preference.Collec
 	}
 	
 	private org.alice.ide.preferences.programming.Configuration[] builtInPreferenceNodes = new org.alice.ide.preferences.programming.Configuration[] {
-			org.alice.ide.preferences.programming.exposure.Configuration.getSingleton(),
-			org.alice.ide.preferences.programming.preparation.Configuration.getSingleton()	
+			org.alice.ide.preferences.programming.exposure.ExposureConfiguration.getSingleton(),
+			org.alice.ide.preferences.programming.preparation.PreparationConfiguration.getSingleton()	
 	};
 	public org.alice.ide.preferences.programming.Configuration[] getBuiltInPreferenceNodes() {
 		return this.builtInPreferenceNodes;

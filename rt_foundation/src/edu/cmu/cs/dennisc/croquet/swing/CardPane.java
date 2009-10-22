@@ -20,16 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class PageAxisPane extends BoxPane {
-	public PageAxisPane( java.awt.Component... components ) {
-		super( javax.swing.BoxLayout.PAGE_AXIS );
-		for( java.awt.Component component : components ) {
-			this.add( component );
-		}
+public class CardPane extends Pane {
+	public CardPane() {
+		setLayout( new java.awt.CardLayout() );
+	}
+	public void show( String key ) {
+		((java.awt.CardLayout)this.getLayout()).show( this, key );
 	}
 }

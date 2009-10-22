@@ -20,21 +20,27 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
+package edu.cmu.cs.dennisc.croquet.swing;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane  {
-	public TypedDeclarationPane( java.awt.Component... components ) {
-		super( components );
-		this.setOpaque( true );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setForeground( java.awt.Color.GRAY );
+public abstract class RowsSpringPane extends edu.cmu.cs.dennisc.croquet.swing.Pane {
+	private int xPad;
+	private int yPad;
+	public RowsSpringPane( int xPad, int yPad ) {
+		this.xPad = xPad;
+		this.yPad = yPad;
 	}
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
-		g.drawRect( 0, 0, this.getWidth()-1, this.getHeight()-1);
+	public void addNotify() {
+		if( getLayout() instanceof javax.swing.SpringLayout ) {
+			//pass
+		} else {
+			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
+			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
+		}
+		super.addNotify();
+	}
+	protected abstract java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv );
+	private java.util.List< java.awt.Component[] > createComponentRows() {
+		return addComponentRows( new java.util.LinkedList< java.awt.Component[] >() );
 	}
 }

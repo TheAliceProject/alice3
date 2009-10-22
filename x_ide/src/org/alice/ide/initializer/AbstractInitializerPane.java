@@ -25,7 +25,7 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractInitializerPane extends edu.cmu.cs.dennisc.croquet.Pane {
+abstract class AbstractInitializerPane extends edu.cmu.cs.dennisc.croquet.swing.Pane {
 //	public abstract edu.cmu.cs.dennisc.alice.ast.Expression getInitializer();
 	public abstract void handleTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType type );
 //	protected abstract void handleInitializerChange();

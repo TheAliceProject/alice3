@@ -20,19 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FormPane extends edu.cmu.cs.dennisc.croquet.RowsSpringPane {
-	public FormPane() {
-		super(8, 8);
-	}
-
-	protected static java.awt.Component createLabel(String text) {
-		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire(text);
-		rv.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+public abstract class TreeCellRenderer<E> extends javax.swing.tree.DefaultTreeCellRenderer {
+	protected abstract javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
+	@Override
+	public final java.awt.Component getTreeCellRendererComponent( javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
+		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, sel, expanded, leaf, row, hasFocus );
+		if( rv instanceof javax.swing.JLabel ) {
+			getListCellRendererComponent( (javax.swing.JLabel)rv, tree, (E)value, sel, expanded, leaf, row, hasFocus );
+		} else {
+			//todo
+		}
 		return rv;
 	}
 }

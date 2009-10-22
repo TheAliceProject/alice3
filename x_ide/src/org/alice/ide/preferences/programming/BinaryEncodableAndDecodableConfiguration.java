@@ -19,11 +19,16 @@ public class BinaryEncodableAndDecodableConfiguration implements Configuration, 
 	}
 	public void decode(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
 		int version = binaryDecoder.decodeInt();
-		long mostSignificantBits =  binaryDecoder.decodeLong();
-		long leastSignificantBits =  binaryDecoder.decodeLong();
-		this.uuid = new java.util.UUID(mostSignificantBits, leastSignificantBits);
-		this.isDefaultFieldNameGenerationDesired = binaryDecoder.decodeBoolean();
-		this.isSyntaxNoiseDesired = binaryDecoder.decodeBoolean();
+		if( version == 1 ) {
+			long mostSignificantBits =  binaryDecoder.decodeLong();
+			long leastSignificantBits =  binaryDecoder.decodeLong();
+			this.uuid = new java.util.UUID(mostSignificantBits, leastSignificantBits);
+			this.isDefaultFieldNameGenerationDesired = binaryDecoder.decodeBoolean();
+			this.isSyntaxNoiseDesired = binaryDecoder.decodeBoolean();
+		} else {
+			//todo
+			assert false;
+		}
 	}
 	public void encode(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
 		assert this.uuid != null;
@@ -32,5 +37,9 @@ public class BinaryEncodableAndDecodableConfiguration implements Configuration, 
 		binaryEncoder.encode(this.uuid.getLeastSignificantBits());
 		binaryEncoder.encode(this.isDefaultFieldNameGenerationDesired);
 		binaryEncoder.encode(this.isSyntaxNoiseDesired);
+	}
+	@Override
+	public String toString() {
+		return "name";
 	}
 }

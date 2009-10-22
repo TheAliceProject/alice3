@@ -176,7 +176,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.
 		this.familyList.addListSelectionListener( listSelectionAdapter );
 		this.styleList.addListSelectionListener( listSelectionAdapter );
 		
-		edu.cmu.cs.dennisc.croquet.RowsSpringPane pane = new edu.cmu.cs.dennisc.croquet.RowsSpringPane( 16, 4 ) {
+		edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane pane = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 16, 4 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				CreateTextPane.this.updateRows( rv );

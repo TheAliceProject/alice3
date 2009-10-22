@@ -23,7 +23,7 @@
 
 package org.alice.ide.openprojectpane;
 
-abstract class TabPane extends edu.cmu.cs.dennisc.croquet.Pane {
+abstract class TabPane extends edu.cmu.cs.dennisc.croquet.swing.Pane {
 	//	protected boolean isTabEnabled() {
 	//		return this.isEnabled();
 	//	}

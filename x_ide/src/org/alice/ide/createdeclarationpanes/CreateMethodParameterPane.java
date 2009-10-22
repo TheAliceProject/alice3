@@ -93,10 +93,10 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			}
 			sb.append( " invocation.</body></html>" );
 
-			edu.cmu.cs.dennisc.croquet.PageAxisPane pane = new edu.cmu.cs.dennisc.croquet.PageAxisPane();
+			edu.cmu.cs.dennisc.croquet.swing.PageAxisPane pane = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane();
 			pane.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( sb.toString() ) );
 			pane.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			pane.add( new edu.cmu.cs.dennisc.croquet.LineAxisPane( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+			pane.add( new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
 			pane.add( javax.swing.Box.createVerticalStrut( 8 ) );
 			pane.add( this.checkBox );
 			return new java.awt.Component[] { edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "WARNING:" ), pane };

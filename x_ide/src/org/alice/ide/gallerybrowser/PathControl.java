@@ -25,8 +25,8 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
-	class DirectoryControl extends edu.cmu.cs.dennisc.croquet.BorderPane {
+public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+	class DirectoryControl extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		private static final int ARROW_SIZE = 10;
 		class SelectDirectoryActionOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 			public SelectDirectoryActionOperation() {

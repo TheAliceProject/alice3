@@ -22,7 +22,7 @@
  */
 package org.alice.ide.common;
 
-class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
+class MethodPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	public MethodPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 //		javax.swing.Box header = javax.swing.Box.createHorizontalBox();
 //		header.add( zoot.ZLabel.acquire( "declare procedure " ) );
@@ -60,7 +60,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.anonymousConstructor.getDeclaringType();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-			edu.cmu.cs.dennisc.croquet.Pane pane = new edu.cmu.cs.dennisc.croquet.Pane();
+			edu.cmu.cs.dennisc.croquet.swing.Pane pane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
 			pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
 			int inset = 4;
 			int left = 4;

@@ -24,7 +24,7 @@ package org.alice.ide.ubiquitouspane;
 
 import org.alice.ide.ubiquitouspane.templates.*;
 
-class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.BorderPane {
+class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
 	public void refresh() {
 		this.removeAll();
@@ -36,7 +36,7 @@ class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.BorderPane {
 	}
 }
 
-class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
+class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate > mapVariableToVariableAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate > mapVariableToVariableArrayAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate > mapParameterToParameterAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate >();
@@ -112,7 +112,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPane
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
+public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();

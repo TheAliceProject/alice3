@@ -145,7 +145,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		
 	}
 
-	private edu.cmu.cs.dennisc.croquet.ConcealedBin concealedBin = new edu.cmu.cs.dennisc.croquet.ConcealedBin();
+	private edu.cmu.cs.dennisc.croquet.swing.ConcealedBin concealedBin = new edu.cmu.cs.dennisc.croquet.swing.ConcealedBin();
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
@@ -293,7 +293,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	private javax.swing.JSplitPane root;
 	private javax.swing.JSplitPane left;
 
-	class RightPane extends edu.cmu.cs.dennisc.croquet.GridBagPane {
+	class RightPane extends edu.cmu.cs.dennisc.croquet.swing.GridBagPane {
 		public RightPane() {
 			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 			gbc.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;

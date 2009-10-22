@@ -26,7 +26,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane  {
+public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane  {
 	private edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression;
 	public AssignmentExpressionPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression ) {
 		this.assignmentExpression = assignmentExpression;
@@ -36,7 +36,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxi
 		javax.swing.JComponent parent;
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent = new edu.cmu.cs.dennisc.croquet.LineAxisPane();
+			parent = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
 			this.add( parent );
 			expression = arrayAccess.array.getValue();
 		} else {

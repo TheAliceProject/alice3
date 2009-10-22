@@ -89,7 +89,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	
 	@Override
 	protected java.awt.Component createValueTypeComponent() {
-		edu.cmu.cs.dennisc.croquet.LineAxisPane valueTypeLine = new edu.cmu.cs.dennisc.croquet.LineAxisPane();
+		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane valueTypeLine = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
 		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType ) );
 		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			valueTypeLine.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " which extends ", edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.LIGHT ) );
@@ -100,6 +100,6 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	}
 	@Override
 	protected java.awt.Component createInitializerComponent() {
-		return new edu.cmu.cs.dennisc.croquet.LineAxisPane( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
+		return new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
 	}
 }

@@ -20,32 +20,22 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Pane extends javax.swing.JPanel {
-	public Pane() {
-		this.setOpaque( false );
-		this.setDoubleBuffered( false );
-		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
-		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+public abstract class LocaleUtilities {
+	private LocaleUtilities() {
 	}
-//	@Override
-//	protected void finalize() throws Throwable {
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize " + this.getClass() );
-//		super.finalize();
-//	}
-	protected boolean isMaximumSizeClampedToPreferredSize() {
-		return true;
-	}
-	@Override
-	public java.awt.Dimension getMaximumSize() {
-		if( isMaximumSizeClampedToPreferredSize() ) {
-			return this.getPreferredSize();
-		} else {
-			return super.getMaximumSize();
+	private static java.util.Comparator<java.util.Locale> displayNameComparator = new java.util.Comparator<java.util.Locale>() {
+		@Override
+		public int compare(java.util.Locale o1, java.util.Locale o2) {
+			return o1.getDisplayName().compareTo(o2.getDisplayName());
 		}
+	};
+	public static java.util.Locale[] alphabetizeByDisplayName( java.util.Locale[] rv ) {
+		java.util.Arrays.sort( rv, displayNameComparator );
+		return rv;
 	}
 }

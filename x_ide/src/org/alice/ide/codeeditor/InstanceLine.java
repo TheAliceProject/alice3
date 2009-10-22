@@ -25,7 +25,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class InstanceLine extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
+class InstanceLine extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 //		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
 //		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );

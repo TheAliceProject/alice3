@@ -20,21 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class LineAxisPane extends BoxPane {
-	public LineAxisPane( java.awt.Component... components ) {
-		super( javax.swing.BoxLayout.LINE_AXIS );
-		for( java.awt.Component component : components ) {
-			this.add( component );
-			component.doLayout();
-		}
-		if( components.length > 0 ) {
-//			this.revalidate();
-			this.doLayout();
-		}
+public class ConcealedBin extends javax.swing.JPanel {
+//	public ConcealedBin() {
+//		this.setLayout( new java.awt.FlowLayout() );
+//	}
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		return new java.awt.Dimension( 0, 0 );
+	}
+//	@Override
+//	public java.awt.Dimension getMaximumSize() {
+//		return new java.awt.Dimension( 0, 0 );
+//	}
+	@Override
+	public void update( java.awt.Graphics g ) {
 	}
 }

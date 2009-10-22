@@ -1,10 +1,10 @@
 package edu.cmu.cs.dennisc.toolkit.login;
 
-class PasswordPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
+class PasswordPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	private static final String HIDDEN_KEY = "HIDDEN_KEY";
 	private static final String EXPOSED_KEY = "EXPOSED_KEY";
 
-	class PasswordCardPane extends edu.cmu.cs.dennisc.croquet.CardPane {
+	class PasswordCardPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
 		private javax.swing.JPasswordField hidden = new javax.swing.JPasswordField() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
@@ -48,7 +48,7 @@ class PasswordPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 	}
 }
 
-class LogInPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
+class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	class TestLogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public TestLogInOperation() {
 			this.putValue( javax.swing.Action.NAME, "Log In" );
@@ -89,7 +89,7 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 		return rv;
 	}
 	public LogInPane() {
-		edu.cmu.cs.dennisc.croquet.RowsSpringPane rowsPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPane( 8, 4 ) {
+		edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane rowsPane = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 8, 4 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "Username:" ), textUsername ) );
@@ -98,13 +98,13 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 			}
 		};
 
-		edu.cmu.cs.dennisc.croquet.Pane signUpPane = new edu.cmu.cs.dennisc.croquet.Pane();
+		edu.cmu.cs.dennisc.croquet.swing.Pane signUpPane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
 		signUpPane.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Not a member?" ) );
 		edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation hyperlinkOperation = new edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation( "http://bugs.alice.org:8080/secure/Signup!default.jspa", "Sign up" );
 		signUpPane.add( new edu.cmu.cs.dennisc.zoot.ZHyperlink( hyperlinkOperation ) );
 		signUpPane.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "for an account." ) );
 
-		edu.cmu.cs.dennisc.croquet.Pane buttonPane = new edu.cmu.cs.dennisc.croquet.Pane();
+		edu.cmu.cs.dennisc.croquet.swing.Pane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
 		buttonPane.add( this.logInButton );
 
 		signUpPane.setAlignmentX( javax.swing.JComponent.CENTER_ALIGNMENT );
@@ -126,7 +126,7 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 }
 
 
-public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.CardPane {
+public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
 	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
 	class LogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public LogInOperation() {
@@ -164,13 +164,13 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.CardPane {
 	private edu.cmu.cs.dennisc.zoot.ZButton logInButton = new edu.cmu.cs.dennisc.zoot.ZButton( new LogInOperation() );
 	private edu.cmu.cs.dennisc.zoot.ZButton logOutButton = new edu.cmu.cs.dennisc.zoot.ZButton( new LogOutOperation() );
 
-	class OffPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
+	class OffPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 		public OffPane() {
 			this.add( javax.swing.Box.createHorizontalGlue() );
 			this.add( logInButton );
 		}
 	}
-	class OnPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
+	class OnPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 		private javax.swing.JLabel nameLabel = new javax.swing.JLabel( "Full Name" ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {

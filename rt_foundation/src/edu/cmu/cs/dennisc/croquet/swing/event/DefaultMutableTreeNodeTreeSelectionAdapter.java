@@ -1,4 +1,4 @@
-package edu.cmu.cs.dennisc.croquet.event;
+package edu.cmu.cs.dennisc.croquet.swing.event;
 
 public abstract class DefaultMutableTreeNodeTreeSelectionAdapter<E> extends TreeSelectionAdapter< javax.swing.tree.DefaultMutableTreeNode > {
 	protected abstract void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, E oldLeadValue, E newLeadValue );

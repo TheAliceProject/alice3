@@ -42,12 +42,12 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		createPersonButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 		createPersonButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
-		edu.cmu.cs.dennisc.croquet.Pane fromFilePane = new edu.cmu.cs.dennisc.croquet.Pane();
+		edu.cmu.cs.dennisc.croquet.swing.Pane fromFilePane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
 		fromFilePane.setLayout(new java.awt.GridLayout(2, 1, 0, 4));
 		fromFilePane.add(createMyInstanceButton);
 		fromFilePane.add(createTextbookInstanceButton);
 
-		edu.cmu.cs.dennisc.croquet.BorderPane buttonPane = new edu.cmu.cs.dennisc.croquet.BorderPane();
+		edu.cmu.cs.dennisc.croquet.swing.BorderPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
 		buttonPane.add(fromFilePane, java.awt.BorderLayout.NORTH);
 		buttonPane.add(createTextButton, java.awt.BorderLayout.SOUTH);
 

@@ -48,7 +48,7 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 			return this.getPreferredSize();
 		}
 	};
-	private java.awt.Component[] rowType = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelType, new edu.cmu.cs.dennisc.croquet.LineAxisPane( comboType, javax.swing.Box.createHorizontalGlue() ) );
+	private java.awt.Component[] rowType = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelType, new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( comboType, javax.swing.Box.createHorizontalGlue() ) );
 	
 	private javax.swing.JLabel labelEnvironment = createLabelForMultiLine( "environment:" );
 	private javax.swing.JTextArea textEnvironment = new javax.swing.JTextArea();

@@ -20,27 +20,13 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.swing;
 
-public abstract class RowsSpringPane extends edu.cmu.cs.dennisc.croquet.Pane {
-	private int xPad;
-	private int yPad;
-	public RowsSpringPane( int xPad, int yPad ) {
-		this.xPad = xPad;
-		this.yPad = yPad;
-	}
-	@Override
-	public void addNotify() {
-		if( getLayout() instanceof javax.swing.SpringLayout ) {
-			//pass
-		} else {
-			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
-			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
-		}
-		super.addNotify();
-	}
-	protected abstract java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv );
-	private java.util.List< java.awt.Component[] > createComponentRows() {
-		return addComponentRows( new java.util.LinkedList< java.awt.Component[] >() );
+/**
+ * @author Dennis Cosgrove
+ */
+public class CroquetUtilties {
+	public static javax.swing.DefaultComboBoxModel createDefaultComboBoxModel( Object... items ) {
+		return new javax.swing.DefaultComboBoxModel( items );
 	}
 }

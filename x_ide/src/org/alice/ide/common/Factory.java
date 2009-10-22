@@ -190,7 +190,7 @@ public abstract class Factory {
 		org.alice.ide.i18n.Chunk[] chunks = line.getChunks();
 		assert chunks.length > 0;
 		if( indentCount > 0 || chunks.length > 1 ) {
-			edu.cmu.cs.dennisc.croquet.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.LineAxisPane();
+			edu.cmu.cs.dennisc.croquet.swing.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
 			if( indentCount > 0 ) {
 				rv.add( javax.swing.Box.createHorizontalStrut( indentCount * this.getPixelsPerIndent() ) );
 			}
@@ -213,7 +213,7 @@ public abstract class Factory {
 		assert N > 0;
 		if( N > 1 ) {
 			final boolean isLoop = lines[ N-1 ].isLoop();
-			edu.cmu.cs.dennisc.croquet.PageAxisPane pagePane = new edu.cmu.cs.dennisc.croquet.PageAxisPane() {
+			edu.cmu.cs.dennisc.croquet.swing.PageAxisPane pagePane = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane() {
 				@Override
 				public void paintComponent( java.awt.Graphics g ) {
 					super.paintComponent( g );
@@ -306,7 +306,7 @@ public abstract class Factory {
 		java.awt.Component rv = new FieldAccessPane( this, fieldAccess );
 		java.awt.Component prefixPane = org.alice.ide.IDE.getSingleton().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 		if( prefixPane != null ) {
-			rv = new edu.cmu.cs.dennisc.croquet.LineAxisPane( prefixPane, rv );
+			rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( prefixPane, rv );
 		}
 		return rv;
 	}

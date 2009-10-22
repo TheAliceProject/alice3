@@ -20,21 +20,32 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TreeCellRenderer<E> extends javax.swing.tree.DefaultTreeCellRenderer {
-	protected abstract javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTree tree, E value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus );
+public class Pane extends javax.swing.JPanel {
+	public Pane() {
+		this.setOpaque( false );
+		this.setDoubleBuffered( false );
+		this.setAlignmentX( java.awt.Component.LEFT_ALIGNMENT );
+		this.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
+	}
+//	@Override
+//	protected void finalize() throws Throwable {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "finalize " + this.getClass() );
+//		super.finalize();
+//	}
+	protected boolean isMaximumSizeClampedToPreferredSize() {
+		return true;
+	}
 	@Override
-	public final java.awt.Component getTreeCellRendererComponent( javax.swing.JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus ) {
-		java.awt.Component rv = super.getTreeCellRendererComponent( tree, value, sel, expanded, leaf, row, hasFocus );
-		if( rv instanceof javax.swing.JLabel ) {
-			getListCellRendererComponent( (javax.swing.JLabel)rv, tree, (E)value, sel, expanded, leaf, row, hasFocus );
+	public java.awt.Dimension getMaximumSize() {
+		if( isMaximumSizeClampedToPreferredSize() ) {
+			return this.getPreferredSize();
 		} else {
-			//todo
+			return super.getMaximumSize();
 		}
-		return rv;
 	}
 }

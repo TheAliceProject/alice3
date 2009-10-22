@@ -25,7 +25,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
+abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	public MembersTab() {
 		this.setOpaque( true );
 	}

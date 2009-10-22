@@ -25,7 +25,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.LineAxisPane {
+public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		this.field = field;

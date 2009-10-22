@@ -25,7 +25,7 @@ package org.alice.ide.preferencesinputpane;
 /**
  * @author Dennis Cosgrove
  */
-class TitlePane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
+class TitlePane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	public TitlePane( String title ) {
 		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( title, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD );
 		label.setFontToScaledFont( 2.0f );
@@ -38,7 +38,7 @@ class TitlePane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
 /**
  * @author Dennis Cosgrove
  */
-public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.BorderPane {
+public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	class RestoreDefaultsActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 		private boolean isAll;
 		public RestoreDefaultsActionOperation() {
@@ -109,7 +109,7 @@ public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.BorderPane 
 
 		java.awt.Component centerComponent = this.createCenterComponent(collectionOfPreferences);
 		
-		edu.cmu.cs.dennisc.croquet.LineAxisPane buttonsPane = new edu.cmu.cs.dennisc.croquet.LineAxisPane(
+		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane buttonsPane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
 				javax.swing.Box.createHorizontalGlue(),
 				new edu.cmu.cs.dennisc.zoot.ZButton( this.restoreDefaultsActionOperation ),
 				javax.swing.Box.createHorizontalStrut( 4 ),

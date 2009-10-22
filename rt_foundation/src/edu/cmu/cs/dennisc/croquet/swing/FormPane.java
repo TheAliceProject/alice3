@@ -20,13 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CroquetUtilties {
-	public static javax.swing.DefaultComboBoxModel createDefaultComboBoxModel( Object... items ) {
-		return new javax.swing.DefaultComboBoxModel( items );
+public abstract class FormPane extends edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane {
+	public FormPane() {
+		super(8, 8);
+	}
+
+	protected static java.awt.Component createColumn0Label(String text) {
+		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire(text);
+		rv.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+		return rv;
 	}
 }

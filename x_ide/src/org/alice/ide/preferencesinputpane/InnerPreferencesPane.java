@@ -22,20 +22,10 @@
  */
 package org.alice.ide.preferencesinputpane;
 
-abstract class PreferenceComponent< E > {
-	private edu.cmu.cs.dennisc.preference.Preference<E> preference;
-	public PreferenceComponent( edu.cmu.cs.dennisc.preference.Preference<E> preference ) {
-		this.preference = preference;
-	}
-	public void commit() {
-		
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
-public class InnerPreferencesPane extends edu.cmu.cs.dennisc.croquet.PageAxisPane {
+public class InnerPreferencesPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	private static java.awt.Component createUIFor( edu.cmu.cs.dennisc.preference.Preference<?> preference ) {
 		java.awt.Component rv;
 		if( preference instanceof edu.cmu.cs.dennisc.preference.BooleanPreference ) {
@@ -59,7 +49,7 @@ public class InnerPreferencesPane extends edu.cmu.cs.dennisc.croquet.PageAxisPan
 			} else if( preference instanceof org.alice.ide.preferences.LocalePreference ) {
 				class LocaleSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<java.util.Locale> {
 					public LocaleSelectionOperation() {
-						super( new javax.swing.DefaultComboBoxModel( java.util.Locale.getAvailableLocales() ) );
+						super( new javax.swing.DefaultComboBoxModel( edu.cmu.cs.dennisc.util.LocaleUtilities.alphabetizeByDisplayName( java.util.Locale.getAvailableLocales() ) ) );
 						this.getComboBoxModel().setSelectedItem( java.util.Locale.getDefault() );
 					}
 					
@@ -74,22 +64,14 @@ public class InnerPreferencesPane extends edu.cmu.cs.dennisc.croquet.PageAxisPan
 					}
 				}
 				edu.cmu.cs.dennisc.zoot.ZComboBox<java.util.Locale> comboBox = new edu.cmu.cs.dennisc.zoot.ZComboBox<java.util.Locale>( new LocaleSelectionOperation() );
-				comboBox.setRenderer( new edu.cmu.cs.dennisc.croquet.ListCellRenderer<java.util.Locale>() {
-					@Override
-					protected javax.swing.JLabel getListCellRendererComponent(javax.swing.JLabel rv, javax.swing.JList list, java.util.Locale value, int index, boolean isSelected, boolean cellHasFocus) {
-						if( value != null ) {
-							rv.setText( value.getDisplayName() );
-						}
-						return rv;
-					}
-				});
+				comboBox.setRenderer( new edu.cmu.cs.dennisc.croquet.util.LocaleDisplayNameListCellRenderer() );
 				editor = comboBox;
 			} else {
 				javax.swing.JTextField textField = new javax.swing.JTextField();
 				textField.setText( "" + preference.getValue() );
 				editor = textField;
 			}
-			rv = new edu.cmu.cs.dennisc.croquet.LineAxisPane( label, javax.swing.Box.createHorizontalStrut( 8 ), editor );
+			rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( label, javax.swing.Box.createHorizontalStrut( 8 ), editor );
 		}
 		return rv;
 	}
