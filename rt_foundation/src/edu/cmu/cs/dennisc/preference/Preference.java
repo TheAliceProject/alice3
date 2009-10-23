@@ -45,6 +45,10 @@ public abstract class Preference< E > {
 		}
 	}
 	
+	public boolean isTransient() {
+		return this.isTransient;
+	}
+	
 	public String getKey() {
 		return this.key;
 	}

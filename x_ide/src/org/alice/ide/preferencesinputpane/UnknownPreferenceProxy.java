@@ -25,12 +25,11 @@ package org.alice.ide.preferencesinputpane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreferenceComponent< E > {
-	private edu.cmu.cs.dennisc.preference.Preference<E> preference;
-	public PreferenceComponent( edu.cmu.cs.dennisc.preference.Preference<E> preference ) {
-		this.preference = preference;
+public class UnknownPreferenceProxy extends PreferenceLabeledPaneProxy<Object> {
+	public UnknownPreferenceProxy( edu.cmu.cs.dennisc.preference.Preference<Object> preference ) {
+		super( preference );
+		this.createPane( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "<no control available>" ) );
 	}
-	public void commit() {
-		
+	public void setAndCommitValue() {
 	}
 }

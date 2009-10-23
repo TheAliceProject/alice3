@@ -25,7 +25,7 @@ package org.alice.ide.preferencesinputpane;
 /**
  * @author Dennis Cosgrove
  */
-public class ProgrammingOuterPreferencesPane extends OuterPreferencesPane {
+public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.ide.preferences.programming.Configuration> {
 	class ConfigurationSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<org.alice.ide.preferences.programming.Configuration> {
 		public ConfigurationSelectionOperation( org.alice.ide.preferences.programming.Configuration... panes ) {
 			super( new javax.swing.DefaultComboBoxModel( panes ) );
@@ -33,7 +33,7 @@ public class ProgrammingOuterPreferencesPane extends OuterPreferencesPane {
 		
 		@Override
 		protected void handleSelectionChange(org.alice.ide.preferences.programming.Configuration value) {
-			ProgrammingOuterPreferencesPane.this.preview.updateValues(value);
+			ConfigurationPreferencePaneProxy.this.preview.updateValues(value);
 		}
 		@Override
 		public boolean isSignificant() {
@@ -80,7 +80,7 @@ public class ProgrammingOuterPreferencesPane extends OuterPreferencesPane {
 			this.isSyntaxNoiseDesiredLabel.setText( Boolean.toString( value.isSyntaxNoiseDesired() ).toUpperCase() );
 		}
 	}
-
+	private edu.cmu.cs.dennisc.croquet.swing.PageAxisPane pane;
 	private ConfigurationPreview preview;
 	
 	class EditVariantOperation extends org.alice.ide.operations.AbstractActionOperation {
@@ -131,13 +131,8 @@ public class ProgrammingOuterPreferencesPane extends OuterPreferencesPane {
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
 	}
-	
-	public ProgrammingOuterPreferencesPane() {
-		super("Programming", org.alice.ide.preferences.ProgrammingPreferences.getSingleton());
-	}
-	
-	@Override
-	protected java.awt.Component createCenterComponent(edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+	public ConfigurationPreferencePaneProxy( edu.cmu.cs.dennisc.preference.Preference<org.alice.ide.preferences.programming.Configuration> preference ) {
+		super( preference );
 		org.alice.ide.preferences.programming.Configuration[] configurations = org.alice.ide.preferences.ProgrammingPreferences.getSingleton().getBuiltInPreferenceNodes();
 		ConfigurationComboBox activeConfigurationComboBox = new ConfigurationComboBox( configurations );
 		activeConfigurationComboBox.setSelectedIndex( 0 );
@@ -158,7 +153,7 @@ public class ProgrammingOuterPreferencesPane extends OuterPreferencesPane {
 
 		this.preview = new ConfigurationPreview();
 		this.preview.updateValues( (org.alice.ide.preferences.programming.Configuration)activeConfigurationComboBox.getSelectedItem() );
-		edu.cmu.cs.dennisc.croquet.swing.PageAxisPane rv = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane(
+		this.pane = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane(
 				edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "active variant:" ),
 				javax.swing.Box.createVerticalStrut( 4 ),  
 				northTopPane, 
@@ -169,11 +164,12 @@ public class ProgrammingOuterPreferencesPane extends OuterPreferencesPane {
 				//javax.swing.Box.createVerticalStrut( 4 ),  
 				this.preview
 		);
-		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 4 ) );
-		return rv;
+		this.pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 4 ) );
 	}
-	@Override
-	protected boolean isCenterComponentScrollPaneDesired() {
-		return false;
+	public java.awt.Component getAWTComponent() {
+		return this.pane;
+	}
+	public void setAndCommitValue() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ConfigurationPreferencePaneProxy" );
 	}
 }

@@ -38,14 +38,14 @@ class TitlePane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 /**
  * @author Dennis Cosgrove
  */
-public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	class RestoreDefaultsActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 		private boolean isAll;
 		public RestoreDefaultsActionOperation() {
 			this.putValue( javax.swing.Action.NAME, "Restore Defaults" );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-			String name = OuterPreferencesPane.this.getTitle();
+			String name = CollectionOfPreferencesPane.this.getTitle();
 			
 			java.awt.Component parentComponent = this.getIDE();
 			String message = "To what extent would you like to restore defaults?";
@@ -100,15 +100,17 @@ public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.swing.Borde
 	private RestoreDefaultsActionOperation restoreDefaultsActionOperation = new RestoreDefaultsActionOperation();
 	private ApplyActionOperation applyActionOperation = new ApplyActionOperation();
 	
-	public OuterPreferencesPane( String title, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+	public CollectionOfPreferencesPane( String title, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
 		assert collectionOfPreferences != null;
 		this.title = title;
 		
 		edu.cmu.cs.dennisc.zoot.ZLabel titleComponent = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( this.title, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD );
 		titleComponent.setFontToScaledFont( 2.0f );
 
-		java.awt.Component centerComponent = this.createCenterComponent(collectionOfPreferences);
-		
+		edu.cmu.cs.dennisc.croquet.swing.PageAxisPane centerComponent = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane();
+		this.updateCenterComponent(centerComponent, collectionOfPreferences);
+		centerComponent.add( javax.swing.Box.createVerticalGlue() );
+
 		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane buttonsPane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
 				javax.swing.Box.createHorizontalGlue(),
 				new edu.cmu.cs.dennisc.zoot.ZButton( this.restoreDefaultsActionOperation ),
@@ -116,29 +118,46 @@ public class OuterPreferencesPane extends edu.cmu.cs.dennisc.croquet.swing.Borde
 				new edu.cmu.cs.dennisc.zoot.ZButton( this.applyActionOperation )
 		);
 
-		if( this.isCenterComponentScrollPaneDesired() ) {
-			centerComponent = wrapInScrollPane( centerComponent );
-		}
+		javax.swing.JScrollPane scrollPane = wrapInScrollPane( centerComponent );
 		
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.add( new TitlePane( this.title ), java.awt.BorderLayout.NORTH );
-		this.add( centerComponent, java.awt.BorderLayout.CENTER );
+		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 		this.add( buttonsPane, java.awt.BorderLayout.SOUTH );
 	}
 	public String getTitle() {
 		return this.title;
 	}
-	protected static java.awt.Component wrapInScrollPane( java.awt.Component component ) {
+	protected static javax.swing.JScrollPane wrapInScrollPane( java.awt.Component component ) {
 		javax.swing.JScrollPane rv = new javax.swing.JScrollPane( component );
 		rv.setBorder( null );
 		return rv;
 	}
-	protected boolean isCenterComponentScrollPaneDesired() {
-		return true;
+
+	protected PreferenceProxy createDefaultProxyFor( edu.cmu.cs.dennisc.preference.Preference preference ) {
+		if( preference instanceof edu.cmu.cs.dennisc.preference.BooleanPreference ) {
+			return new BooleanPreferenceCheckBoxProxy(preference);
+		} else if( preference instanceof org.alice.ide.preferences.LocalePreference ) {
+			return new LocalePreferenceComboBoxProxy( preference );
+		} else {
+			return new UnknownPreferenceProxy(preference);
+		}
 	}
-	protected java.awt.Component createCenterComponent( edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
-		return new InnerPreferencesPane( collectionOfPreferences );
+	
+	protected void updateCenterComponent( edu.cmu.cs.dennisc.croquet.swing.PageAxisPane centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+		for( edu.cmu.cs.dennisc.preference.Preference<?> preference : collectionOfPreferences.getPreferences() ) {
+			if( preference.isTransient() ) {
+				//pass
+			} else {
+				PreferenceProxy<?> proxy = this.createDefaultProxyFor(preference);
+				if( proxy != null ) {
+					centerComponent.add( proxy.getAWTComponent() );
+					centerComponent.add( javax.swing.Box.createVerticalStrut( 4 ) );
+				}
+			}
+		}
 	}
+	
 //	@Override
 //	protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {
 //		for( edu.cmu.cs.dennisc.preference.Preference<?> preference : preferences ) {

@@ -25,9 +25,9 @@ package org.alice.ide.preferencesinputpane;
 /**
  * @author Dennis Cosgrove
  */
-class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.DefaultMutableTreeNodeTreeCellRenderer<OuterPreferencesPane> {
+class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.DefaultMutableTreeNodeTreeCellRenderer<CollectionOfPreferencesPane> {
 	@Override
-	protected javax.swing.JLabel getListCellRendererComponentForUserObject(javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.ide.preferencesinputpane.OuterPreferencesPane value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+	protected javax.swing.JLabel getListCellRendererComponentForUserObject(javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 		rv.setText( value.getTitle() );
 		return rv;
 	}
@@ -39,9 +39,9 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.DefaultMutableTr
 public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Void> {
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private javax.swing.JTree tree = new javax.swing.JTree();
-	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.croquet.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.OuterPreferencesPane> {
+	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.croquet.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane> {
 		@Override
-		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, OuterPreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.OuterPreferencesPane newLeadValue) {
+		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, CollectionOfPreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane newLeadValue) {
 //			if( oldLeadValue != null ) {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( "oldLeadValue:", oldLeadValue.getTitle() );
 //			}
@@ -75,11 +75,29 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		edu.cmu.cs.dennisc.preference.CollectionOfPreferences rootPreferencesNode = new edu.cmu.cs.dennisc.preference.CollectionOfPreferences() {};
 		rootPreferencesNode.initialize();
 		
-		OuterPreferencesPane rootPreferencesPane = new OuterPreferencesPane( "Root", rootPreferencesNode );
+		CollectionOfPreferencesPane rootPreferencesPane = new CollectionOfPreferencesPane( "Root", rootPreferencesNode );
 		
-		OuterPreferencesPane generalPreferencesPane = new OuterPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferences.getSingleton() );
-		OuterPreferencesPane perspectivePreferencesPane = new ProgrammingOuterPreferencesPane();
-		OuterPreferencesPane sceneEditorPreferencesPane = new OuterPreferencesPane( "Scene Editor", org.alice.ide.preferences.SceneEditorPreferences.getSingleton() );
+		CollectionOfPreferencesPane generalPreferencesPane = new CollectionOfPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferences.getSingleton() ) {
+			@Override
+			protected org.alice.ide.preferencesinputpane.PreferenceProxy createDefaultProxyFor( edu.cmu.cs.dennisc.preference.Preference preference ) {
+				if( preference == org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectCount ) {
+					return new IntPreferenceSpinnerProxy( preference, 0, 16, 1 );
+				} else {
+					return super.createDefaultProxyFor( preference );
+				}
+			}
+		};
+		CollectionOfPreferencesPane perspectivePreferencesPane = new CollectionOfPreferencesPane("Programming", org.alice.ide.preferences.ProgrammingPreferences.getSingleton()) {
+			@Override
+			protected org.alice.ide.preferencesinputpane.PreferenceProxy createDefaultProxyFor( edu.cmu.cs.dennisc.preference.Preference preference ) {
+				if( preference == org.alice.ide.preferences.ProgrammingPreferences.getSingleton().activePerspective ) {
+					return new ConfigurationPreferencePaneProxy( preference );
+				} else {
+					return super.createDefaultProxyFor( preference );
+				}
+			}
+		};
+		CollectionOfPreferencesPane sceneEditorPreferencesPane = new CollectionOfPreferencesPane( "Scene Editor", org.alice.ide.preferences.SceneEditorPreferences.getSingleton() );
 
 		javax.swing.tree.DefaultMutableTreeNode root = new javax.swing.tree.DefaultMutableTreeNode( rootPreferencesPane );
 		root.add( new javax.swing.tree.DefaultMutableTreeNode( generalPreferencesPane ) );
