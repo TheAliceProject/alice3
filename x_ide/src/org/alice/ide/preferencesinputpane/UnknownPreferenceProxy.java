@@ -30,6 +30,7 @@ public class UnknownPreferenceProxy extends PreferenceLabeledPaneProxy<Object> {
 		super( preference );
 		this.createPane( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "<no control available>" ) );
 	}
+	@Override
 	public void setAndCommitValue() {
 	}
 }

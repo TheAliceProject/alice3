@@ -166,9 +166,11 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		);
 		this.pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 4 ) );
 	}
+	@Override
 	public java.awt.Component getAWTComponent() {
 		return this.pane;
 	}
+	@Override
 	public void setAndCommitValue() {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ConfigurationPreferencePaneProxy" );
 	}

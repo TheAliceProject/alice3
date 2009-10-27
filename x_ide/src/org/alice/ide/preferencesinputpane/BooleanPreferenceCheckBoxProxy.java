@@ -48,9 +48,11 @@ public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 		this.operation = new BooleanStateOperation();
 		this.checkBox = new edu.cmu.cs.dennisc.zoot.ZCheckBox(this.operation);
 	}
+	@Override
 	public java.awt.Component getAWTComponent() {
 		return this.checkBox;
 	}
+	@Override
 	public void setAndCommitValue() {
 		this.getPreference().setAndCommitValue( this.checkBox.isSelected() );
 	}

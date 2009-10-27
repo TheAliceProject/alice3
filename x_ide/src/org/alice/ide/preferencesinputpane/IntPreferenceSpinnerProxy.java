@@ -34,6 +34,7 @@ public class IntPreferenceSpinnerProxy extends PreferenceLabeledPaneProxy<Intege
 		this.spinner = new javax.swing.JSpinner( model );
 		this.createPane( spinner );
 	}
+	@Override
 	public void setAndCommitValue() {
 		this.getPreference().setAndCommitValue( (Integer)this.spinner.getValue() );
 	}

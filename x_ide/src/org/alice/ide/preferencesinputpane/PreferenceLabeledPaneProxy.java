@@ -39,6 +39,7 @@ public abstract class PreferenceLabeledPaneProxy< E > extends PreferenceProxy< E
 				control 
 		);
 	}
+	@Override
 	public final java.awt.Component getAWTComponent() {
 		assert this.pane != null;
 		return this.pane;

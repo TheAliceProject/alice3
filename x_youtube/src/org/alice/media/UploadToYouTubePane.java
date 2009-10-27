@@ -59,7 +59,7 @@ import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeNamespace;
 
-import edu.cmu.cs.dennisc.croquet.Pane;
+import edu.cmu.cs.dennisc.croquet.swing.Pane;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
 import edu.cmu.cs.dennisc.zoot.ZLabel;
 
