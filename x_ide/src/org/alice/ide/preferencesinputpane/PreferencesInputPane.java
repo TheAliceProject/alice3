@@ -90,8 +90,10 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		CollectionOfPreferencesPane perspectivePreferencesPane = new CollectionOfPreferencesPane("Programming", org.alice.ide.preferences.ProgrammingPreferences.getSingleton()) {
 			@Override
 			protected org.alice.ide.preferencesinputpane.PreferenceProxy createDefaultProxyFor( edu.cmu.cs.dennisc.preference.Preference preference ) {
-				if( preference == org.alice.ide.preferences.ProgrammingPreferences.getSingleton().activePerspective ) {
-					return new ConfigurationPreferencePaneProxy( preference );
+				if( preference == org.alice.ide.preferences.ProgrammingPreferences.getSingleton().listOfCustomProgrammingPreferencesPreference ) {
+					return null;
+				} else if( preference == org.alice.ide.preferences.ProgrammingPreferences.getSingleton().activePerspective ) {
+						return new ConfigurationPreferencePaneProxy( preference );
 				} else {
 					return super.createDefaultProxyFor( preference );
 				}

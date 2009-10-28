@@ -40,10 +40,11 @@ public class ProgrammingPreferences extends edu.cmu.cs.dennisc.preference.Collec
 
 	@Override
 	protected edu.cmu.cs.dennisc.preference.Preference<?>[] setOrder(edu.cmu.cs.dennisc.preference.Preference<?>[] rv) {
-		assert rv.length == 3;
-		rv[ 0 ] = this.activePerspective;
-		rv[ 1 ] = this.isDefaultFieldNameGenerationDesired;
-		rv[ 2 ] = this.isSyntaxNoiseDesired;
+		assert rv.length == 4;
+		rv[ 0 ] = this.listOfCustomProgrammingPreferencesPreference;
+		rv[ 1 ] = this.activePerspective;
+		rv[ 2 ] = this.isDefaultFieldNameGenerationDesired;
+		rv[ 3 ] = this.isSyntaxNoiseDesired;
 		return rv;
 	}
 	
