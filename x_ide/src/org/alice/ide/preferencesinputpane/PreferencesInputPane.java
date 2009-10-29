@@ -80,7 +80,7 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		CollectionOfPreferencesPane generalPreferencesPane = new CollectionOfPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferences.getSingleton() ) {
 			@Override
 			protected org.alice.ide.preferencesinputpane.PreferenceProxy createDefaultProxyFor( edu.cmu.cs.dennisc.preference.Preference preference ) {
-				if( preference == org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectCount ) {
+				if( preference == org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount ) {
 					return new IntPreferenceSpinnerProxy( preference, 0, 16, 1 );
 				} else {
 					return super.createDefaultProxyFor( preference );

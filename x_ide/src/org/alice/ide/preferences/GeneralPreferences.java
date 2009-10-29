@@ -13,12 +13,13 @@ public class GeneralPreferences extends edu.cmu.cs.dennisc.preference.Collection
 	}
 	
 	public final LocalePreference locale = new LocalePreference( java.util.Locale.getDefault() );
-	public final edu.cmu.cs.dennisc.preference.IntPreference recentProjectCount = new edu.cmu.cs.dennisc.preference.IntPreference( 4 );
+	public final edu.cmu.cs.dennisc.preference.IntPreference desiredRecentProjectCount = new edu.cmu.cs.dennisc.preference.IntPreference( 4 );
+	public final PathsPreference recentProjectPaths = new PathsPreference();
 	@Override
 	protected edu.cmu.cs.dennisc.preference.Preference<?>[] setOrder(edu.cmu.cs.dennisc.preference.Preference<?>[] rv) {
 		assert rv.length == 2;
 		rv[ 0 ] = this.locale;
-		rv[ 1 ] = this.recentProjectCount;
+		rv[ 1 ] = this.desiredRecentProjectCount;
 		return rv;
 	}
 }
