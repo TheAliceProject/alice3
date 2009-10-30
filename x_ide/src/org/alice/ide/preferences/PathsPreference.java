@@ -29,6 +29,11 @@ public class PathsPreference extends edu.cmu.cs.dennisc.preference.ListPreferenc
 	public PathsPreference() {
 		super( new java.util.LinkedList<String>() );
 	}
+	
+	public void clear() {
+		javax.swing.JOptionPane.showMessageDialog( null, "todo" );
+	}
+
 	@Override
 	protected int getItemVersion() {
 		return 1;

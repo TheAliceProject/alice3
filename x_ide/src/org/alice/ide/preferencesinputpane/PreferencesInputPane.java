@@ -77,14 +77,37 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		
 		CollectionOfPreferencesPane rootPreferencesPane = new CollectionOfPreferencesPane( "Root", rootPreferencesNode );
 		
+		
+		class ClearRecentProjectsOperation extends org.alice.ide.operations.AbstractActionOperation {
+			public ClearRecentProjectsOperation() {
+				this.putValue( javax.swing.Action.NAME, "Clear Recent Projects" );
+			}
+			@Override
+			public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+				org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
+			}
+			@Override
+			public boolean isSignificant() {
+				//todo
+				return false;
+			}
+		}
+		
 		CollectionOfPreferencesPane generalPreferencesPane = new CollectionOfPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferences.getSingleton() ) {
 			@Override
 			protected org.alice.ide.preferencesinputpane.PreferenceProxy createDefaultProxyFor( edu.cmu.cs.dennisc.preference.Preference preference ) {
 				if( preference == org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount ) {
 					return new IntPreferenceSpinnerProxy( preference, 0, 16, 1 );
+				} else if( preference == org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths ) {
+					return null;
 				} else {
 					return super.createDefaultProxyFor( preference );
 				}
+			}
+			@Override
+			protected void updateCenterComponent( edu.cmu.cs.dennisc.croquet.swing.PageAxisPane centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+				super.updateCenterComponent( centerComponent, collectionOfPreferences );
+				centerComponent.add( new edu.cmu.cs.dennisc.zoot.ZButton( new ClearRecentProjectsOperation() ) );
 			}
 		};
 		CollectionOfPreferencesPane perspectivePreferencesPane = new CollectionOfPreferencesPane("Programming", org.alice.ide.preferences.ProgrammingPreferences.getSingleton()) {
