@@ -20,31 +20,36 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.apple;
 
-/**
- * @author Dennis Cosgrove
- */
-public class Adapter implements com.apple.eawt.ApplicationListener {
-	private edu.cmu.cs.dennisc.apple.event.ApplicationListener listener;
-	public Adapter( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) {
-		this.listener = listener;
+package org.alice.ide.openprojectpane;
+
+abstract class TabPane extends edu.cmu.cs.dennisc.croquet.swing.Pane {
+	//	protected boolean isTabEnabled() {
+	//		return this.isEnabled();
+	//	}
+	private edu.cmu.cs.dennisc.zoot.ZInputPane< java.io.File > inputPane;
+	public TabPane() {
+		this.setBackground( new java.awt.Color( 191, 191, 255 ) );
+		this.setOpaque( true );
+		final int INSET = 8;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-	public void handleOpenApplication( com.apple.eawt.ApplicationEvent e ) {
+	public void setInputPane( edu.cmu.cs.dennisc.zoot.ZInputPane< java.io.File > inputPane ) {
+		this.inputPane = inputPane;
 	}
-	public void handleReOpenApplication( com.apple.eawt.ApplicationEvent e ) {
+	public abstract java.io.File getSelectedFile();
+	public javax.swing.Icon getTabTitleIcon() {
+		return null;
 	}
-	public void handleOpenFile( com.apple.eawt.ApplicationEvent e ) {
+	public abstract String getTabTitleText();
+	protected void updateOKButton() {
+		if( this.inputPane != null ) {
+			this.inputPane.updateOKButton();
+		}
 	}
-	public void handlePrintFile( com.apple.eawt.ApplicationEvent e ) {
-	}
-	public void handleQuit( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleQuit( e );
-	}
-	public void handleAbout( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleAbout( e );
-	}
-	public void handlePreferences( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handlePreferences( e );
+	protected void fireOKButtonIfPossible() {
+		if( this.inputPane != null ) {
+			this.inputPane.fireOKButtonIfPossible();
+		}
 	}
 }

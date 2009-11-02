@@ -54,24 +54,7 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		}
 	}
 
-	public PreferencesInputPane( javax.swing.tree.TreeModel treeModel ) {
-		this.tree.setModel( treeModel );
-		this.tree.setRootVisible( false );
-		this.tree.setCellRenderer( new TreeCellRenderer() );
-		this.tree.addTreeSelectionListener( new TreeSelectionAdapter() );
-		this.splitPane.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
-		this.splitPane.setRightComponent( new javax.swing.JLabel( "please select" ) );
-		this.splitPane.setDividerLocation( 200 );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( this.splitPane, java.awt.BorderLayout.CENTER );
-		this.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		this.tree.setSelectionRow( 1 );
-	}
-	@Override
-	protected Void getActualInputValue() {
-		return null;
-	}
-	public static void main(String[] args) {
+	public PreferencesInputPane() {
 		edu.cmu.cs.dennisc.preference.CollectionOfPreferences rootPreferencesNode = new edu.cmu.cs.dennisc.preference.CollectionOfPreferences() {};
 		rootPreferencesNode.initialize();
 		
@@ -82,7 +65,6 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 			public ClearRecentProjectsOperation() {
 				this.putValue( javax.swing.Action.NAME, "Clear Recent Projects" );
 			}
-			@Override
 			public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 				org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
 			}
@@ -130,7 +112,25 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 		root.add( perspective );
 		root.add( new javax.swing.tree.DefaultMutableTreeNode( sceneEditorPreferencesPane ) );
 		javax.swing.tree.TreeModel treeModel = new javax.swing.tree.DefaultTreeModel( root );
-		PreferencesInputPane inputPane = new PreferencesInputPane( treeModel );
+
+		this.tree.setModel( treeModel );
+		this.tree.setRootVisible( false );
+		this.tree.setCellRenderer( new TreeCellRenderer() );
+		this.tree.addTreeSelectionListener( new TreeSelectionAdapter() );
+		this.splitPane.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
+		this.splitPane.setRightComponent( new javax.swing.JLabel( "please select" ) );
+		this.splitPane.setDividerLocation( 200 );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( this.splitPane, java.awt.BorderLayout.CENTER );
+		this.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
+		this.tree.setSelectionRow( 1 );
+	}
+	@Override
+	protected Void getActualInputValue() {
+		return null;
+	}
+	public static void main(String[] args) {
+		PreferencesInputPane inputPane = new PreferencesInputPane();
 		inputPane.showInJDialog(null);
 		System.exit( 0 );
 	}

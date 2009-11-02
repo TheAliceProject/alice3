@@ -17,9 +17,10 @@ public class GeneralPreferences extends edu.cmu.cs.dennisc.preference.Collection
 	public final PathsPreference recentProjectPaths = new PathsPreference();
 	@Override
 	protected edu.cmu.cs.dennisc.preference.Preference<?>[] setOrder(edu.cmu.cs.dennisc.preference.Preference<?>[] rv) {
-		assert rv.length == 2;
+		assert rv.length == 3;
 		rv[ 0 ] = this.locale;
 		rv[ 1 ] = this.desiredRecentProjectCount;
+		rv[ 2 ] = this.recentProjectPaths;
 		return rv;
 	}
 }

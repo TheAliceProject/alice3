@@ -88,6 +88,13 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 			@Override
 			protected void handleWindowOpened(java.awt.event.WindowEvent e) {
 			}
+			
+			@Override
+			protected void handleAbout( java.util.EventObject e ) {
+			}
+			@Override
+			protected void handlePreferences( java.util.EventObject e ) {
+			}
 
 			@Override
 			protected void handleQuit(java.util.EventObject e) {

@@ -22,6 +22,8 @@
  */
 package org.alice.ide;
 
+import java.util.EventObject;
+
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
 import edu.cmu.cs.dennisc.animation.Program;
@@ -660,11 +662,28 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			}
 		}
 
-		javax.swing.JMenu setLocaleMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
 
 		javax.swing.JMenu viewMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "View", java.awt.event.KeyEvent.VK_V, this.isMemoryUsageShowingOperation );
-		javax.swing.JMenu windowMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, this.isSceneEditorExpandedOperation, this.isEmphasizingClassesOperation, this.isOmissionOfThisForFieldAccessesDesiredOperation, this.isExpressionTypeFeedbackDesiredOperation, this.isDefaultFieldNameGenerationDesiredOperation );
-		windowMenu.add( setLocaleMenu );
+		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > windowOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
+		windowOperations.add( this.isSceneEditorExpandedOperation );
+		//windowOperations.add( this.isEmphasizingClassesOperation );
+		//windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
+		//windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
+		//windowOperations.add( this.isDefaultFieldNameGenerationDesiredOperation );
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			//pass
+		} else {
+			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+			windowOperations.add( this.getPreferencesOperation() );
+		}
+
+		javax.swing.JMenu windowMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( 
+				"Window", 
+				java.awt.event.KeyEvent.VK_W, 
+				windowOperations );
+
+		//javax.swing.JMenu setLocaleMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
+		//windowMenu.add( setLocaleMenu );
 		
 		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > helpOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
 		helpOperations.add( new org.alice.ide.operations.help.HelpOperation() );
@@ -684,23 +703,14 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		helpOperations.add( new org.alice.ide.operations.help.ReleaseNotesOperation() );
 		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		helpOperations.add( new org.alice.ide.operations.help.WarningOperation( true ) );
-		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		helpOperations.add( this.createAboutOperation() );
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			//pass
+		} else {
+			helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+			helpOperations.add( this.getAboutOperation() );
+		}
 		
 		javax.swing.JMenu helpMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, helpOperations );
-//		javax.swing.JMenu helpMenu = zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, 
-//				new org.alice.ide.operations.help.HelpOperation(), 
-//				zoot.ZManager.MENU_SEPARATOR,
-////				new org.alice.ide.operations.help.ThrowBogusExceptionOperation(),
-////				zoot.ZManager.MENU_SEPARATOR,
-//				new org.alice.ide.operations.help.ReportBugOperation(), 
-//				new org.alice.ide.operations.help.SuggestImprovementOperation(), 
-//				new org.alice.ide.operations.help.RequestNewFeatureOperation(), 
-//				zoot.ZManager.MENU_SEPARATOR,
-//				new org.alice.ide.operations.help.WarningOperation( true ), 
-//				zoot.ZManager.MENU_SEPARATOR,
-//				this.createAboutOperation() 
-//		);
 		rv.add( fileMenu );
 		rv.add( editMenu );
 		rv.add( runMenu );
@@ -709,9 +719,6 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		rv.add( helpMenu );
 		return rv;
 	}
-
-	protected abstract edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation();
-
 	public boolean isJava() {
 		return getLocale().getVariant().equals( "java" );
 	}
@@ -1012,6 +1019,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	private edu.cmu.cs.dennisc.zoot.ActionOperation runOperation = this.createRunOperation( this.runButtonModel );
 	private edu.cmu.cs.dennisc.zoot.ActionOperation exitOperation = this.createExitOperation();
 	private edu.cmu.cs.dennisc.zoot.ActionOperation saveOperation = this.createSaveOperation();
+	private edu.cmu.cs.dennisc.zoot.ActionOperation preferencesOperation = this.createPreferencesOperation();
+	private edu.cmu.cs.dennisc.zoot.ActionOperation aboutOperation = this.createAboutOperation();
 
 	protected edu.cmu.cs.dennisc.zoot.ActionOperation createRunOperation( javax.swing.ButtonModel model ) {
 		return new org.alice.ide.operations.run.RunOperation( model );
@@ -1022,6 +1031,11 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	protected edu.cmu.cs.dennisc.zoot.ActionOperation createSaveOperation() {
 		return new org.alice.ide.operations.file.SaveProjectOperation();
 	}
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation createPreferencesOperation() {
+		return new org.alice.ide.operations.preferences.PreferencesOperation();
+	}
+	protected abstract edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation();
+
 	public final edu.cmu.cs.dennisc.zoot.ActionOperation getRunOperation() {
 		return this.runOperation;
 	}
@@ -1030,6 +1044,12 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	}
 	public final edu.cmu.cs.dennisc.zoot.ActionOperation getSaveOperation() {
 		return this.saveOperation;
+	}
+	public final edu.cmu.cs.dennisc.zoot.ActionOperation getPreferencesOperation() {
+		return this.preferencesOperation;
+	}
+	public final edu.cmu.cs.dennisc.zoot.ActionOperation getAboutOperation() {
+		return this.aboutOperation;
 	}
 
 	public abstract void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
@@ -1090,6 +1110,14 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		} else {
 			this.performIfAppropriate( this.newProjectOperation, null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 		}
+	}
+	@Override
+	protected void handleAbout( java.util.EventObject e ) {
+		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( this.getAboutOperation(), e, true );
+	}
+	@Override
+	protected void handlePreferences( java.util.EventObject e ) {
+		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( this.getPreferencesOperation(), e, true );
 	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {

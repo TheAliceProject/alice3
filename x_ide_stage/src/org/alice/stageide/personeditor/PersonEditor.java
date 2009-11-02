@@ -86,6 +86,13 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}
 			@Override
+			protected void handleAbout( java.util.EventObject e ) {
+			}
+			@Override
+			protected void handlePreferences( java.util.EventObject e ) {
+			}
+
+			@Override
 			protected void handleQuit( java.util.EventObject e ) {
 				System.exit( 0 );
 			}

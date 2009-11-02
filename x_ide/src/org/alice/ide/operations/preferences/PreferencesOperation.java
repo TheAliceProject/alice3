@@ -20,31 +20,36 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.apple;
+package org.alice.ide.operations.preferences;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Adapter implements com.apple.eawt.ApplicationListener {
-	private edu.cmu.cs.dennisc.apple.event.ApplicationListener listener;
-	public Adapter( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) {
-		this.listener = listener;
+public class PreferencesOperation extends org.alice.ide.operations.AbstractActionOperation {
+	public PreferencesOperation() {
+		this.putValue( javax.swing.Action.NAME, "Preferences..." );
 	}
-	public void handleOpenApplication( com.apple.eawt.ApplicationEvent e ) {
+	
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		org.alice.ide.preferencesinputpane.PreferencesInputPane preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesInputPane();
+		preferencesInputPane.showInJDialog( this.getIDE() );
+//		if( this.method != null ) {
+//			this.prevCode = getIDE().getFocusedCode();
+			actionContext.commitAndInvokeRedoIfAppropriate();
+//		} else {
+//			actionContext.cancel();
+//		}
 	}
-	public void handleReOpenApplication( com.apple.eawt.ApplicationEvent e ) {
+	@Override
+	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 	}
-	public void handleOpenFile( com.apple.eawt.ApplicationEvent e ) {
+	@Override
+	public void undo() throws javax.swing.undo.CannotUndoException {
 	}
-	public void handlePrintFile( com.apple.eawt.ApplicationEvent e ) {
+	@Override
+	public boolean isSignificant() {
+		return false;
+//		return true;
 	}
-	public void handleQuit( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleQuit( e );
-	}
-	public void handleAbout( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleAbout( e );
-	}
-	public void handlePreferences( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handlePreferences( e );
-	}
+	
 }

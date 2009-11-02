@@ -20,31 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.apple;
 
-/**
- * @author Dennis Cosgrove
- */
-public class Adapter implements com.apple.eawt.ApplicationListener {
-	private edu.cmu.cs.dennisc.apple.event.ApplicationListener listener;
-	public Adapter( edu.cmu.cs.dennisc.apple.event.ApplicationListener listener ) {
-		this.listener = listener;
-	}
-	public void handleOpenApplication( com.apple.eawt.ApplicationEvent e ) {
-	}
-	public void handleReOpenApplication( com.apple.eawt.ApplicationEvent e ) {
-	}
-	public void handleOpenFile( com.apple.eawt.ApplicationEvent e ) {
-	}
-	public void handlePrintFile( com.apple.eawt.ApplicationEvent e ) {
-	}
-	public void handleQuit( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleQuit( e );
-	}
-	public void handleAbout( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handleAbout( e );
-	}
-	public void handlePreferences( com.apple.eawt.ApplicationEvent e ) {
-		this.listener.handlePreferences( e );
+package org.alice.ide.openprojectpane;
+
+abstract class DirectoryListPane extends ListPane {
+	@Override
+	protected java.lang.String getTextForZeroProjects() {
+		return "there are no projects in this directory";
 	}
 }

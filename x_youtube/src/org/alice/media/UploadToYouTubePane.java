@@ -347,6 +347,12 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}
 			@Override
+			protected void handleAbout( java.util.EventObject e ) {
+			}
+			@Override
+			protected void handlePreferences( java.util.EventObject e ) {
+			}
+			@Override
 			protected void handleQuit( java.util.EventObject e ) {
 				System.exit( 0 );
 			}
