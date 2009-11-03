@@ -245,13 +245,13 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io
 		return super.isOKButtonValid() && this.getActualInputValue() != null;
 	}
 	public static void main( String[] args ) {
-		java.util.List<String> paths = new java.util.LinkedList< String >();
-		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/b.a3p" );
-		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/a.a3p" );
-		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/c.a3p" );
-		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.setAndCommitValue( paths );
-		java.util.List<String> postPaths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( postPaths );
+//		java.util.List<String> paths = new java.util.LinkedList< String >();
+//		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/b.a3p" );
+//		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/a.a3p" );
+//		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/c.a3p" );
+//		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.setAndCommitValue( paths );
+//		java.util.List<String> postPaths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( postPaths );
 		
 		org.alice.ide.FauxIDE ide = new org.alice.ide.FauxIDE();
 		
