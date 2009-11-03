@@ -23,33 +23,29 @@
 
 package org.alice.ide.openprojectpane;
 
-abstract class TabPane extends edu.cmu.cs.dennisc.croquet.swing.Pane {
-	//	protected boolean isTabEnabled() {
-	//		return this.isEnabled();
-	//	}
-	private edu.cmu.cs.dennisc.zoot.ZInputPane< java.io.File > inputPane;
-	public TabPane() {
-		this.setBackground( new java.awt.Color( 191, 191, 255 ) );
-		this.setOpaque( true );
-		final int INSET = 8;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+class RecentPane extends ListPane {
+	@Override
+	public String getTabTitleText() {
+		return "Recent";
 	}
-	public void setInputPane( edu.cmu.cs.dennisc.zoot.ZInputPane< java.io.File > inputPane ) {
-		this.inputPane = inputPane;
+	@Override
+	protected String getTextForZeroProjects() {
+		return "there are no recent projects";
 	}
-	public abstract java.io.File getSelectedFile();
-	public javax.swing.Icon getTabTitleIcon() {
-		return null;
-	}
-	public abstract String getTabTitleText();
-	protected void updateOKButton() {
-		if( this.inputPane != null ) {
-			this.inputPane.updateOKButton();
+	@Override
+	protected java.io.File[] getFiles() {
+		java.util.List< String > paths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
+		java.io.File[] rv;
+		if( paths != null ) {
+			final int N = paths.size();
+			rv = new java.io.File[ N ];
+			for( int i=0; i<N; i++ ) {
+				rv[ i ] = new java.io.File( paths.get( i ) );
+			}
+		} else {
+			rv = new java.io.File[ 0 ];
 		}
-	}
-	protected void fireOKButtonIfPossible() {
-		if( this.inputPane != null ) {
-			this.inputPane.fireOKButtonIfPossible();
-		}
+		return rv;
 	}
 }
+

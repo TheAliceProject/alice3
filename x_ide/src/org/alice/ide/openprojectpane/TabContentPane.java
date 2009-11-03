@@ -26,21 +26,33 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-abstract class DirectoryListPane extends ListPane {
-	@Override
-	protected String getTextForZeroProjects() {
-		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( this.getDirectory() );
-		return "there are no projects in " + path;
+abstract class TabContentPane extends edu.cmu.cs.dennisc.croquet.swing.Pane {
+	//	protected boolean isTabEnabled() {
+	//		return this.isEnabled();
+	//	}
+	private edu.cmu.cs.dennisc.zoot.ZInputPane< java.io.File > inputPane;
+	public TabContentPane() {
+		this.setBackground( new java.awt.Color( 191, 191, 255 ) );
+		this.setOpaque( true );
+		final int INSET = 8;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-	protected abstract java.io.File getDirectory();
-	protected java.io.File[] getFiles() {
-		java.io.File directory = this.getDirectory();
-		java.io.File[] rv;
-		if( directory != null ) {
-			rv = edu.cmu.cs.dennisc.alice.io.FileUtilities.listProjectFiles( this.getDirectory() );
-		} else {
-			rv = new java.io.File[ 0 ];
+	public void setInputPane( edu.cmu.cs.dennisc.zoot.ZInputPane< java.io.File > inputPane ) {
+		this.inputPane = inputPane;
+	}
+	public abstract java.io.File getSelectedFile();
+	public javax.swing.Icon getTabTitleIcon() {
+		return null;
+	}
+	public abstract String getTabTitleText();
+	protected void updateOKButton() {
+		if( this.inputPane != null ) {
+			this.inputPane.updateOKButton();
 		}
-		return rv;
+	}
+	protected void fireOKButtonIfPossible() {
+		if( this.inputPane != null ) {
+			this.inputPane.fireOKButtonIfPossible();
+		}
 	}
 }

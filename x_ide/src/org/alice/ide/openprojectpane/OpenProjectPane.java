@@ -23,7 +23,7 @@
 
 package org.alice.ide.openprojectpane;
 
-abstract class ComingSoonTabPane extends TabPane {
+abstract class ComingSoonTabPane extends TabContentPane {
 	public ComingSoonTabPane() {
 		setEnabled( false );
 		setToolTipText( "coming soon" );
@@ -38,13 +38,6 @@ class TutorialPane extends ComingSoonTabPane {
 	@Override
 	public String getTabTitleText() {
 		return "Tutorial";
-	}
-}
-
-class RecentPane extends ComingSoonTabPane {
-	@Override
-	public String getTabTitleText() {
-		return "Recent";
 	}
 }
 
@@ -105,7 +98,7 @@ class TextbookPane extends ApplicationRootDirectoryListPane {
 	}
 }
 
-class FileSystemPane extends TabPane {
+class FileSystemPane extends TabContentPane {
 	private javax.swing.JTextField textField = new javax.swing.JTextField();
 	public FileSystemPane() {
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
@@ -166,22 +159,23 @@ class FileSystemPane extends TabPane {
  * @author Dennis Cosgrove
  */
 public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io.File > {
-	//private javax.swing.JTabbedPane tabbedPane = new javax.swing.JTabbedPane();
 	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane();
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private FileSystemPane fileSystemPane = new FileSystemPane();
 	private TemplatesPane templatesPane = new TemplatesPane();
+	private RecentPane recentPane = new RecentPane();
 	
-	private java.util.Map< TabPane, javax.swing.JScrollPane > mapTabPaneToScrollPane = new java.util.HashMap< TabPane, javax.swing.JScrollPane >();
+	private java.util.Map< TabContentPane, javax.swing.JScrollPane > mapTabPaneToScrollPane = new java.util.HashMap< TabContentPane, javax.swing.JScrollPane >();
 	public OpenProjectPane() {
-		TabPane[] tabPanes = new TabPane[] { 
+		TabContentPane[] tabPanes = new TabContentPane[] { 
 			myProjectsPane, 
+			recentPane, 
 			templatesPane, 
 			fileSystemPane, 
 			//new ExamplesPane(), 
 			//new TextbookPane() 
 		};
-		for( TabPane tabPane : tabPanes ) { 
+		for( TabContentPane tabPane : tabPanes ) { 
 			tabPane.setInputPane( this );
 			javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tabPane );
 			scrollPane.setOpaque( false );
@@ -203,14 +197,14 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.add( this.tabbedPane );
 	}
-	private TabPane getSelectedTabPane() {
+	private TabContentPane getSelectedTabPane() {
 		java.awt.Component selectedComponent = this.tabbedPane.getSelectedComponent();
 		if( selectedComponent instanceof javax.swing.JScrollPane ) {
 			javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)selectedComponent;
 			scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 			java.awt.Component view = scrollPane.getViewport().getView();
-			if( view instanceof TabPane ) {
-				return (TabPane)view;
+			if( view instanceof TabContentPane ) {
+				return (TabContentPane)view;
 			} else {
 				return null;
 			}
@@ -220,7 +214,7 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io
 	}
 	@Override
 	protected java.io.File getActualInputValue() {
-		TabPane tabPane = this.getSelectedTabPane();
+		TabContentPane tabPane = this.getSelectedTabPane();
 		if( tabPane != null ) {
 			return tabPane.getSelectedFile();
 		} else {
@@ -234,7 +228,7 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io
 		return new java.awt.Dimension( longerSideLength, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( longerSideLength ) );
 	}
 	public void selectAppropriateTab( boolean isNew ) {
-		TabPane tabPane;
+		TabContentPane tabPane;
 		if( isNew ) {
 			tabPane = this.templatesPane;
 		} else {
@@ -251,6 +245,14 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io
 		return super.isOKButtonValid() && this.getActualInputValue() != null;
 	}
 	public static void main( String[] args ) {
+		java.util.List<String> paths = new java.util.LinkedList< String >();
+		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/b.a3p" );
+		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/a.a3p" );
+		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/c.a3p" );
+		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.setAndCommitValue( paths );
+		java.util.List<String> postPaths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( postPaths );
+		
 		org.alice.ide.FauxIDE ide = new org.alice.ide.FauxIDE();
 		
 		OpenProjectPane openProjectPane = new OpenProjectPane();

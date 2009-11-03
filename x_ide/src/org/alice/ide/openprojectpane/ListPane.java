@@ -23,7 +23,10 @@
 
 package org.alice.ide.openprojectpane;
 
-abstract class ListPane extends TabPane {
+/**
+ * @author Dennis Cosgrove
+ */
+abstract class ListPane extends TabContentPane {
 	private javax.swing.JList list = new javax.swing.JList() {
 		@Override
 		public void paint(java.awt.Graphics g) {
@@ -83,23 +86,20 @@ abstract class ListPane extends TabPane {
 
 	protected abstract String getTextForZeroProjects();
 	
+	protected abstract java.io.File[] getFiles();
 	public void refresh() {
-		java.io.File directory = this.getDirectory();
-		java.io.File[] files;
-		if( directory != null ) {
-			files = edu.cmu.cs.dennisc.alice.io.FileUtilities.listProjectFiles( this.getDirectory() );
-		} else {
-			files = new java.io.File[ 0 ];
-		}
-		this.list.setListData( files );
+		this.list.setListData( this.getFiles() );
 	}
-
-	protected abstract java.io.File getDirectory();
 	@Override
 	public java.io.File getSelectedFile() {
 		Object selectedValue = this.list.getSelectedValue();
 		if( selectedValue instanceof java.io.File ) {
-			return (java.io.File)selectedValue;
+			java.io.File file = (java.io.File)selectedValue;
+			if( file.exists() ) {
+				return file;
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}

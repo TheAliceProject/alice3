@@ -69,7 +69,7 @@ public abstract class ListPreference< E > extends Preference< java.util.List< E 
 		if( listVersion == 1 ) {
 			int itemVersion = utilPrefs.getInt( key+ITEM_VERSION_SUFFIX, 0 );
 			byte[] defaultData = this.encode(defaultValue);
-			byte[] currentData = utilPrefs.getByteArray( key, defaultData );
+			byte[] currentData = utilPrefs.getByteArray( key+DATA_SUFFIX, defaultData );
 			return this.decode( itemVersion, currentData );
 		} else {
 			return defaultValue;

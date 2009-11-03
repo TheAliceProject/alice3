@@ -736,7 +736,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
 			return new java.io.File( "/Applications/" + this.getApplicationName() + ".app/Contents/Resources/Java/application" );
 		} else {
-			return new java.io.File( "/Program Files/" + this.getApplicationName() + "/" + this.getVersionText() + "/application" );
+			return new java.io.File( "/Program Files/" + this.getApplicationName() + "3Beta/application" );
 		}
 	}
 	private java.io.File getApplicationRootDirectory( String[] propertyKeys, String[] subPaths ) {
