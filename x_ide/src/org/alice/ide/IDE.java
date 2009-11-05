@@ -22,11 +22,80 @@
  */
 package org.alice.ide;
 
-import java.util.EventObject;
-
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
 import edu.cmu.cs.dennisc.animation.Program;
+
+
+class MenuItem extends javax.swing.JMenuItem {
+	private java.io.File file;
+	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			if( file != null ) {
+				IDE.getSingleton().loadProjectFrom( MenuItem.this.file );
+			}
+		}
+	};
+	public MenuItem( int i, java.io.File file ) {
+		this.file = file;
+		this.setText( i + ") " + this.file.getAbsolutePath() );
+		this.addActionListener( this.actionListener );
+	}
+//	@Override
+//	public void addNotify() {
+//		this.addActionListener( this.actionListener );
+//		super.addNotify();
+//	}
+//	
+//	@Override
+//	public void removeNotify() {
+//		this.removeActionListener( this.actionListener );
+//		super.removeNotify();
+//	}
+}
+
+class RecentProjectsMenu extends javax.swing.JMenu {
+//	private edu.cmu.cs.dennisc.preference.event.PreferenceListener< org.alice.ide.preferences.PathsPreference > preferenceListener = new edu.cmu.cs.dennisc.preference.event.PreferenceListener< org.alice.ide.preferences.PathsPreference >() {
+//		public void valueChanging( edu.cmu.cs.dennisc.preference.event.PreferenceEvent< org.alice.ide.preferences.PathsPreference > e ) {
+//		}
+//		public void valueChanged( edu.cmu.cs.dennisc.preference.event.PreferenceEvent< org.alice.ide.preferences.PathsPreference > e ) {
+//		}
+//	};
+	public RecentProjectsMenu() {
+		this.setText( "Open Recent Projects" );
+		this.addMenuListener( new javax.swing.event.MenuListener() {
+			public void menuSelected( javax.swing.event.MenuEvent e ) {
+				RecentProjectsMenu.this.handleMenuSelected( e );
+			}
+			public void menuDeselected( javax.swing.event.MenuEvent e ) {
+				RecentProjectsMenu.this.handleMenuDeselected( e );
+			}
+			public void menuCanceled( javax.swing.event.MenuEvent e ) {
+				RecentProjectsMenu.this.handleMenuCanceled( e );
+			}
+		} );
+	}
+	
+	private void handleMenuSelected( javax.swing.event.MenuEvent e ) {
+		this.removeAll();
+		org.alice.ide.preferences.PathsPreference pathsPreference = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths;
+		int i = 1;
+		for( String pathname : pathsPreference.getValue() ) {
+			java.io.File file = new java.io.File( pathname );
+			if( file.exists() ) {
+				this.add( new MenuItem( i, file ) );
+				i++;
+			}
+		}
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "menuSelected:", e );
+	}
+	private void handleMenuDeselected( javax.swing.event.MenuEvent e ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "menuDeselected:", e );
+	}
+	private void handleMenuCanceled( javax.swing.event.MenuEvent e ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "menuCanceled:", e );
+	}
+}
 
 /**
  * @author Dennis Cosgrove
@@ -583,9 +652,13 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	protected javax.swing.JMenuBar createMenuBar() {
 		javax.swing.JMenuBar rv = new javax.swing.JMenuBar();
 
+		RecentProjectsMenu recentProjectsMenu = new RecentProjectsMenu();
+		
 		javax.swing.JMenu fileMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, 
 				this.newProjectOperation, 
-				new org.alice.ide.operations.file.OpenProjectOperation(), 
+				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR,
+				new org.alice.ide.operations.file.OpenProjectOperation(),
+				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR,
 				this.saveOperation, 
 				new org.alice.ide.operations.file.SaveAsProjectOperation(), 
 				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR,
@@ -594,6 +667,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(),
 				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, 
 				this.exitOperation );
+
+		fileMenu.add( recentProjectsMenu, 3 );
+		
 		javax.swing.JMenu editMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, 
 				new org.alice.ide.operations.edit.UndoOperation(), 
 				new org.alice.ide.operations.edit.RedoOperation(), 
