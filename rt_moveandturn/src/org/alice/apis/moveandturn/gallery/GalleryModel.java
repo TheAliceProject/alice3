@@ -86,8 +86,8 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "clearPreferences" );
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( GalleryModel.class );
 			userPreferences.clear();
-			java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( GalleryModel.class );
-			systemPreferences.clear();
+			//java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( GalleryModel.class );
+			//systemPreferences.clear();
 		}
 	}
 }
