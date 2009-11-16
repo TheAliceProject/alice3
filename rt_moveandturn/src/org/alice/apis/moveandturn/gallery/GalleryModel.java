@@ -42,7 +42,7 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 	private static final String CHILD_NAME = "assets";
 	private static final String GRANDCHILD_NAME = "org.alice.apis.moveandturn.gallery";
 	static {
-		s_galleryRootDirectory = GalleryRootUtilities.calculateGalleryRootDirectory( GalleryModel.class, "/Alice/3.beta.0000/gallery", "gallery", "assets", "org.alice.apis.moveandturn.gallery", "Cannot find Alice Move & Turn Gallery", "Alice" );
+		s_galleryRootDirectory = GalleryRootUtilities.calculateGalleryRootDirectory( GalleryModel.class, "/Alice3Beta/gallery", "gallery", "assets", "org.alice.apis.moveandturn.gallery", "Alice Move & Turn Gallery", "Alice" );
 	}
 	public static java.io.File getGalleryRootDirectory() {
 		return s_galleryRootDirectory;

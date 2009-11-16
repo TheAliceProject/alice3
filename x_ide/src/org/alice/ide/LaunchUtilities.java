@@ -32,6 +32,8 @@ public class LaunchUtilities {
 				javax.swing.SwingUtilities.invokeAndWait( new Runnable() {
 					public void run() {
 						splashScreen.setVisible( true );
+						splashScreen.toBack();
+						splashScreen.repaint();
 					}
 				} );
 			} catch( InterruptedException ie ) {
@@ -57,6 +59,20 @@ public class LaunchUtilities {
 							}
 						}
 					}
+				} else {
+					StringBuffer sb = new StringBuffer();
+					sb.append( "-Dorg.alice.ide.IDE.install.dir=\"" );
+					if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+						sb.append( "/Program Files" );
+					} else if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+						sb.append( "/Applications" );
+					} else {
+						sb.append( System.getProperty( "user.home" ) );
+					}
+					sb.append( "/Alice3Beta\"" );
+					edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( sb.toString() );
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "The text below has been copied to the clipboard for your convenience." );
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( sb );
 				}
 				IDE ide = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cls );
 //				java.io.File applicationRootDirectory = ide.getApplicationRootDirectory();

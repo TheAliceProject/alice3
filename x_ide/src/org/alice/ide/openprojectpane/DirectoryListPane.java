@@ -33,6 +33,7 @@ abstract class DirectoryListPane extends ListPane {
 		return "there are no projects in " + path;
 	}
 	protected abstract java.io.File getDirectory();
+	@Override
 	protected java.io.File[] getFiles() {
 		java.io.File directory = this.getDirectory();
 		java.io.File[] rv;

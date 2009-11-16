@@ -27,7 +27,6 @@ package org.alice.apis.moveandturn.gallery;
  */
 public class GalleryRootUtilities {
 	private static final String ROOT_PATH_KEY = "rootPath";
-	private static final String GALLERY_VERSION_TEXT = "3.beta.0025";
 	public static java.io.File calculateGalleryRootDirectory( Class<?> cls, String subPath, String name, String childName, String grandchildName, String titleForPromptingUserToSpecifyOrInstall, String applicationName ) {
 		java.io.File rv = null;
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
@@ -41,7 +40,7 @@ public class GalleryRootUtilities {
 			if( installDirPath != null && installDirPath.length() > 0 ) {
 				java.io.File installDir = new java.io.File( installDirPath );
 				if( installDir != null && installDir.exists() ) {
-					potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( installDir ) + "/required/gallery/" + GALLERY_VERSION_TEXT );
+					potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( installDir ) + "/gallery" );
 				}
 			}
 
@@ -57,6 +56,7 @@ public class GalleryRootUtilities {
 			}
 			potentialPaths.add( "c:/Program Files" + subPath );
 			potentialPaths.add( "c:/Program Files (x86)" + subPath );
+			potentialPaths.add( System.getProperty( "user.home" ) + subPath );
 			
 			java.io.File userDir = new java.io.File( System.getProperty( "user.dir" ) );
 			if( userDir != null && userDir.exists() ) {
@@ -82,8 +82,10 @@ public class GalleryRootUtilities {
 				String expectedRoot;
 				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
 					expectedRoot = "c:/Program Files";
+				} else if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+					expectedRoot = "/Applications";
 				} else {
-					expectedRoot = "/Applications/Programming";
+					expectedRoot = System.getProperty( "user.home" );
 				}
 				int result = GalleryRootUtilities.promptUserToSpecifyOrInstall( expectedRoot + subPath, titleForPromptingUserToSpecifyOrInstall );
 				if( result == javax.swing.JOptionPane.YES_OPTION ) {
