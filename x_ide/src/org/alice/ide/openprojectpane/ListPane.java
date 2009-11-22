@@ -26,7 +26,7 @@ package org.alice.ide.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-abstract class ListPane extends TabContentPane {
+public abstract class ListPane extends TabContentPane {
 	private javax.swing.JList list = new javax.swing.JList() {
 		@Override
 		public void paint(java.awt.Graphics g) {
@@ -86,20 +86,16 @@ abstract class ListPane extends TabContentPane {
 
 	protected abstract String getTextForZeroProjects();
 	
-	protected abstract java.io.File[] getFiles();
+	protected abstract java.net.URI[] getURIs();
 	public void refresh() {
-		this.list.setListData( this.getFiles() );
+		this.list.setListData( this.getURIs() );
 	}
 	@Override
-	public java.io.File getSelectedFile() {
+	public java.net.URI getSelectedURI() {
 		Object selectedValue = this.list.getSelectedValue();
-		if( selectedValue instanceof java.io.File ) {
-			java.io.File file = (java.io.File)selectedValue;
-			if( file.exists() ) {
-				return file;
-			} else {
-				return null;
-			}
+		if( selectedValue instanceof java.net.URI ) {
+			java.net.URI uri = (java.net.URI)selectedValue;
+			return uri;
 		} else {
 			return null;
 		}

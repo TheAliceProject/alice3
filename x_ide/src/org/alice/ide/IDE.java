@@ -22,6 +22,8 @@
  */
 package org.alice.ide;
 
+import org.alice.ide.openprojectpane.TabContentPane;
+
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
 import edu.cmu.cs.dennisc.animation.Program;
@@ -605,22 +607,28 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			this.isNew = isNew;
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane();
+			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane( IDE.this.templatesPane );
 			openProjectPane.selectAppropriateTab( this.isNew );
 			while( actionContext.isPending() ) {
-				java.io.File file = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
-				
-				//todo: just load default project
-				
-				if( file != null ) {
-					actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
-					actionContext.commitAndInvokeRedoIfAppropriate();
-				} else {
-					if( IDE.this.getFile() == null ) {
-						javax.swing.JOptionPane.showMessageDialog( IDE.this, "Please select a project to open." );
+				java.net.URI uri = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
+				if( uri != null ) {
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( uri );
+					java.io.File file = new java.io.File( uri );
+
+					//todo: just load default project
+					
+					if( file != null ) {
+						actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
+						actionContext.commitAndInvokeRedoIfAppropriate();
 					} else {
-						actionContext.cancel();
+						if( IDE.this.getFile() == null ) {
+							javax.swing.JOptionPane.showMessageDialog( IDE.this, "Please select a project to open." );
+						} else {
+							actionContext.cancel();
+						}
 					}
+				} else {
+					actionContext.cancel();
 				}
 			}
 		}
@@ -638,6 +646,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		}
 	}
 
+	private TabContentPane templatesPane = this.createTemplatesPane();
+	protected abstract TabContentPane createTemplatesPane();
+	
 	private edu.cmu.cs.dennisc.zoot.ActionOperation selectNewProjectOperation = new SelectProjectOperation( true );
 	private edu.cmu.cs.dennisc.zoot.ActionOperation selectOpenProjectOperation = new SelectProjectOperation( false );
 

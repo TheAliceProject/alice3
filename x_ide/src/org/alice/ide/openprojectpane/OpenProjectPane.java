@@ -29,7 +29,7 @@ abstract class ComingSoonTabPane extends TabContentPane {
 		setToolTipText( "coming soon" );
 	}
 	@Override
-	public java.io.File getSelectedFile() {
+	public java.net.URI getSelectedURI() {
 		return null;
 	}
 }
@@ -65,16 +65,16 @@ abstract class ApplicationRootDirectoryListPane extends DirectoryListPane {
 	}
 }
 
-class TemplatesPane extends ApplicationRootDirectoryListPane {
-	@Override
-	public String getSubPath() {
-		return "projects/templates";
-	}
-	@Override
-	public String getTabTitleText() {
-		return "Templates";
-	}
-}
+//class TemplatesPane extends ApplicationRootDirectoryListPane {
+//	@Override
+//	public String getSubPath() {
+//		return "projects/templates";
+//	}
+//	@Override
+//	public String getTabTitleText() {
+//		return "Templates";
+//	}
+//}
 
 class ExamplesPane extends ApplicationRootDirectoryListPane {
 	@Override
@@ -140,11 +140,11 @@ class FileSystemPane extends TabContentPane {
 		}
 	}
 	@Override
-	public java.io.File getSelectedFile() {
+	public java.net.URI getSelectedURI() {
 		String path = this.textField.getText();
 		java.io.File file = new java.io.File( path );
 		if( file.exists() ) {
-			return file;
+			return file.toURI();
 		} else {
 			return null;
 		}
@@ -158,34 +158,37 @@ class FileSystemPane extends TabContentPane {
 /**
  * @author Dennis Cosgrove
  */
-public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io.File > {
+public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.net.URI > {
 	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane();
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
+	private TabContentPane templatesPane;
 	private FileSystemPane fileSystemPane = new FileSystemPane();
-	private TemplatesPane templatesPane = new TemplatesPane();
 	private RecentPane recentPane = new RecentPane();
 	
 	private java.util.Map< TabContentPane, javax.swing.JScrollPane > mapTabPaneToScrollPane = new java.util.HashMap< TabContentPane, javax.swing.JScrollPane >();
-	public OpenProjectPane() {
+	public OpenProjectPane( TabContentPane templatesPane ) {
+		this.templatesPane = templatesPane;
 		TabContentPane[] tabPanes = new TabContentPane[] { 
-			myProjectsPane, 
-			recentPane, 
-			templatesPane, 
-			fileSystemPane, 
+			this.myProjectsPane, 
+			this.recentPane, 
+			this.templatesPane, 
+			this.fileSystemPane, 
 			//new ExamplesPane(), 
 			//new TextbookPane() 
 		};
 		for( TabContentPane tabPane : tabPanes ) { 
-			tabPane.setInputPane( this );
-			javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tabPane );
-			scrollPane.setOpaque( false );
-			scrollPane.setBackground( tabPane.getBackground() );
-			scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-			//scrollPane.setHorizontalScrollBarPolicy( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
-			//scrollPane.setVerticalScrollBarPolicy( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
-			
-			this.mapTabPaneToScrollPane.put( tabPane, scrollPane );
-			this.tabbedPane.addTab( tabPane.getTabTitleText(), tabPane.getTabTitleIcon(), scrollPane );
+			if( tabPane != null ) {
+				tabPane.setInputPane( this );
+				javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tabPane );
+				scrollPane.setOpaque( false );
+				scrollPane.setBackground( tabPane.getBackground() );
+				scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+				//scrollPane.setHorizontalScrollBarPolicy( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+				//scrollPane.setVerticalScrollBarPolicy( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
+				
+				this.mapTabPaneToScrollPane.put( tabPane, scrollPane );
+				this.tabbedPane.addTab( tabPane.getTabTitleText(), tabPane.getTabTitleIcon(), scrollPane );
+			}
 		}
 //		this.tabbedPane.addVetoableChangeListener( new java.beans.VetoableChangeListener() {
 //			public void vetoableChange( java.beans.PropertyChangeEvent evt ) throws java.beans.PropertyVetoException {
@@ -197,6 +200,7 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.add( this.tabbedPane );
 	}
+	
 	private TabContentPane getSelectedTabPane() {
 		java.awt.Component selectedComponent = this.tabbedPane.getSelectedComponent();
 		if( selectedComponent instanceof javax.swing.JScrollPane ) {
@@ -213,10 +217,10 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io
 		}
 	}
 	@Override
-	protected java.io.File getActualInputValue() {
+	protected java.net.URI getActualInputValue() {
 		TabContentPane tabPane = this.getSelectedTabPane();
 		if( tabPane != null ) {
-			return tabPane.getSelectedFile();
+			return tabPane.getSelectedURI();
 		} else {
 			return null;
 		}
@@ -234,7 +238,9 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io
 		} else {
 			tabPane = this.myProjectsPane; //todo: recentPane?
 		}
-		this.tabbedPane.setSelectedComponent( this.mapTabPaneToScrollPane.get( tabPane ) );
+		if( tabPane != null ) {
+			this.tabbedPane.setSelectedComponent( this.mapTabPaneToScrollPane.get( tabPane ) );
+		}
 	}
 	public void refresh() {
 		this.myProjectsPane.refresh();
@@ -255,11 +261,11 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< java.io
 		
 		org.alice.ide.FauxIDE ide = new org.alice.ide.FauxIDE();
 		
-		OpenProjectPane openProjectPane = new OpenProjectPane();
+		OpenProjectPane openProjectPane = new OpenProjectPane( null );
 		openProjectPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		java.io.File file = openProjectPane.showInJDialog( null );
-		if( file != null ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( file );
+		java.net.URI uri = openProjectPane.showInJDialog( null );
+		if( uri != null ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( uri );
 		}
 		System.exit( 0 );
 	}

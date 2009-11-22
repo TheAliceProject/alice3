@@ -65,6 +65,10 @@ public class FauxIDE extends IDE {
 	protected java.awt.image.BufferedImage createThumbnail() throws java.lang.Throwable {
 		return null;
 	}
+	@Override
+	protected org.alice.ide.openprojectpane.TabContentPane createTemplatesPane() {
+		return null;
+	}
 	public static void main( String[] args ) {
 		org.alice.ide.LaunchUtilities.launch( FauxIDE.class, null, args );
 	}

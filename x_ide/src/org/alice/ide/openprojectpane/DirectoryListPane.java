@@ -34,13 +34,22 @@ abstract class DirectoryListPane extends ListPane {
 	}
 	protected abstract java.io.File getDirectory();
 	@Override
-	protected java.io.File[] getFiles() {
+	protected java.net.URI[] getURIs() {
 		java.io.File directory = this.getDirectory();
-		java.io.File[] rv;
+		java.net.URI[] rv;
 		if( directory != null ) {
-			rv = edu.cmu.cs.dennisc.alice.io.FileUtilities.listProjectFiles( this.getDirectory() );
+			java.io.File[] files = edu.cmu.cs.dennisc.alice.io.FileUtilities.listProjectFiles( this.getDirectory() );
+			final int N = files.length;
+			rv = new java.net.URI[ N ];
+			for( int i=0; i<N; i++ ) {
+				if( files[ i ] != null ) {
+					rv[ i ] = files[ i ].toURI();
+				} else {
+					rv[ i ] = null;
+				}
+			}
 		} else {
-			rv = new java.io.File[ 0 ];
+			rv = new java.net.URI[ 0 ];
 		}
 		return rv;
 	}
