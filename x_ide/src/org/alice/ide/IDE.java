@@ -607,7 +607,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			this.isNew = isNew;
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane( IDE.this.templatesPane );
+			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane( IDE.this.getTemplatesTabContentPane() );
 			openProjectPane.selectAppropriateTab( this.isNew );
 			while( actionContext.isPending() ) {
 				java.net.URI uri = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
@@ -646,8 +646,17 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		}
 	}
 
-	private TabContentPane templatesPane = this.createTemplatesPane();
+	private TabContentPane templatesPane;
 	protected abstract TabContentPane createTemplatesPane();
+	
+	private TabContentPane getTemplatesTabContentPane() {
+		if( this.templatesPane != null ) {
+			//pass
+		} else {
+			this.templatesPane = this.createTemplatesPane();
+		}
+		return this.templatesPane;
+	}
 	
 	private edu.cmu.cs.dennisc.zoot.ActionOperation selectNewProjectOperation = new SelectProjectOperation( true );
 	private edu.cmu.cs.dennisc.zoot.ActionOperation selectOpenProjectOperation = new SelectProjectOperation( false );
