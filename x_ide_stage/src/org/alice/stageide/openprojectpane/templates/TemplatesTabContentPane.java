@@ -3,21 +3,32 @@ package org.alice.stageide.openprojectpane.templates;
 public class TemplatesTabContentPane extends org.alice.ide.openprojectpane.ListPane {
 	private static java.net.URI[] uris;
 	static {
-		uris = new java.net.URI[ 6 ];
-		uris[ 0 ] = getURI( "DirtProject.a3p" );
-		uris[ 1 ] = getURI( "GrassyProject.a3p" );
-		uris[ 2 ] = getURI( "MoonProject.a3p" );
-		uris[ 3 ] = getURI( "SandyProject.a3p" );
-		uris[ 4 ] = getURI( "SeaProject.a3p" );
-		uris[ 5 ] = getURI( "SnowyProject.a3p" );
+		java.util.List< java.net.URI > list = new java.util.LinkedList< java.net.URI >();
+		String[] resourceNames = { "DirtProject.a3p", "GrassyProject.a3p", "MoonProject.a3p", "SandyProject.a3p", "SeaProject.a3p", "SnowyProject.a3p" };
+		for( String resourceName : resourceNames ) {
+			java.net.URI uri = getURI( resourceName );
+			if( uri != null ) {
+				list.add( uri );
+			}
+		}
+		TemplatesTabContentPane.uris = new java.net.URI[ list.size() ];
+		list.toArray( TemplatesTabContentPane.uris );
 	}
 
-	private static java.net.URI getURI( String resource ) {
+	private static java.net.URI getURI( String resourceName ) {
 		java.io.File applicationRootDirectory = org.alice.ide.IDE.getSingleton().getApplicationRootDirectory();
 		//java.io.File applicationRootDirectory = new java.io.File( "c:/Program Files/Alice3Beta" );
-		java.io.File file = new java.io.File( applicationRootDirectory, "projects/templates/" + resource );
-		return file.toURI();
-//		java.net.URL url = TemplatesTabContentPane.class.getResource( resource );
+		java.io.File file = new java.io.File( applicationRootDirectory, "projects/templates/" + resourceName );
+		if( file != null ) {
+			if( file.exists() ) {
+				return file.toURI();
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+//		java.net.URL url = TemplatesTabContentPane.class.getResource( resourceName );
 //		if( url != null ) {
 //			try {
 //				return url.toURI();
