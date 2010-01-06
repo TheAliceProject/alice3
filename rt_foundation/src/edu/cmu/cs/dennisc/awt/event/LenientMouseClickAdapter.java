@@ -87,7 +87,7 @@ public abstract class LenientMouseClickAdapter implements java.awt.event.MouseLi
 	public final void mouseClicked( java.awt.event.MouseEvent e ) {
 	}
 	public final void mouseMoved( java.awt.event.MouseEvent e ) {
-		//this.updateStillUnclick( e );
+		this.updateStillUnclick( e );
 	}
 	public final void mouseDragged( java.awt.event.MouseEvent e ) {
 		this.updateStillClick( e );
