@@ -45,6 +45,7 @@ public abstract class ListPane extends TabContentPane {
 	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "ListPane:", e.getPoint(), quoteClickCountUnquote );
 			if( quoteClickCountUnquote == 2 ) {
 				ListPane.this.fireOKButtonIfPossible();
 			}

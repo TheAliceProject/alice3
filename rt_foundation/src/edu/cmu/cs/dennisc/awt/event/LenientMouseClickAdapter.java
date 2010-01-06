@@ -27,21 +27,38 @@ package edu.cmu.cs.dennisc.awt.event;
  */
 public abstract class LenientMouseClickAdapter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 	protected abstract void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote );
-	private boolean isWithinThreshold = false;
-	private int xPressed = -1;
-	private int yPressed = -1;
-	private long whenPressed = -1;
+	private boolean isStillClick = false;
+	private boolean isStillUnclick = false;
+	private java.awt.event.MouseEvent ePressed = null;
+	private java.awt.event.MouseEvent eReleased = null;
 	
 	private static final long CLICK_THRESHOLD_MILLIS = 1000; //todo: query windowing system 
-	private long whenLastClick = -1;
+	private static final long CLICK_THRESHOLD_PIXELS_SQUARED = 25; //todo: query windowing system 
 	private int count = 0;
 	
-	private void updateWithinThreshold( java.awt.event.MouseEvent e ) {
-		int xDelta = e.getX() - xPressed;
-		int yDelta = e.getY() - yPressed;
-		int distanceSquared = xDelta*xDelta + yDelta*yDelta;
-		if( distanceSquared >= 25 ) {
-			this.isWithinThreshold = false;
+	private boolean isWithinThreshold( java.awt.event.MouseEvent eThen, java.awt.event.MouseEvent eNow ) {
+		if( eThen != null ) {
+			long whenDelta = eNow.getWhen() - eThen.getWhen();
+			if( whenDelta < CLICK_THRESHOLD_MILLIS ) {
+				int xDelta = eNow.getX() - eThen.getX();
+				int yDelta = eNow.getY() - eThen.getY();
+				int distanceSquared = xDelta*xDelta + yDelta*yDelta;
+				return distanceSquared <= CLICK_THRESHOLD_PIXELS_SQUARED;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	private void updateStillClick( java.awt.event.MouseEvent eNow ) {
+		if( this.isStillClick ) {
+			this.isStillClick = this.isWithinThreshold( this.ePressed, eNow );
+		}
+	}
+	private void updateStillUnclick( java.awt.event.MouseEvent eNow ) {
+		if( this.isStillUnclick ) {
+			this.isStillUnclick = this.isWithinThreshold( this.eReleased, eNow );
 		}
 	}
 	public final void mouseEntered( java.awt.event.MouseEvent e ) {
@@ -49,30 +66,30 @@ public abstract class LenientMouseClickAdapter implements java.awt.event.MouseLi
 	public final void mouseExited( java.awt.event.MouseEvent e ) {
 	}
 	public final void mousePressed( java.awt.event.MouseEvent e ) {
-		this.isWithinThreshold = true;
-		this.xPressed = e.getX();
-		this.yPressed = e.getY();
-		this.whenPressed = e.getWhen();
+		this.updateStillUnclick( e );
+		if( this.isStillUnclick ) {
+			//pass
+		} else {
+			this.count = 0; 
+		}
+		this.isStillClick = true;
+		this.ePressed = e;
 	}
 	public final void mouseReleased( java.awt.event.MouseEvent e ) {
-		this.updateWithinThreshold( e );
-		long when = e.getWhen();
-		long whenDelta = when - this.whenPressed;
-		if( this.isWithinThreshold && whenDelta < 500 ) {
-			if( this.whenLastClick != -1 && ( this.whenLastClick > when-CLICK_THRESHOLD_MILLIS ) ) {
-				this.count++;
-			} else {
-				this.count = 1;
-			}
+		this.updateStillClick( e );
+		if( this.isStillClick ) {
+			this.count++;
 			this.mouseQuoteClickedUnquote( e, this.count );
-			this.whenLastClick = when;
 		}
+		this.isStillUnclick = true;
+		this.eReleased = e;
 	}
 	public final void mouseClicked( java.awt.event.MouseEvent e ) {
 	}
 	public final void mouseMoved( java.awt.event.MouseEvent e ) {
+		//this.updateStillUnclick( e );
 	}
 	public final void mouseDragged( java.awt.event.MouseEvent e ) {
-		this.updateWithinThreshold( e );
+		this.updateStillClick( e );
 	}
 }
