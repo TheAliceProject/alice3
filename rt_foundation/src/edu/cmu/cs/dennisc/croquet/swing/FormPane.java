@@ -26,8 +26,11 @@ package edu.cmu.cs.dennisc.croquet.swing;
  * @author Dennis Cosgrove
  */
 public abstract class FormPane extends edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane {
+	public FormPane( int xPad, int yPad ) {
+		super( xPad, yPad );
+	}
 	public FormPane() {
-		super(8, 8);
+		this(8, 8);
 	}
 
 	protected static java.awt.Component createColumn0Label(String text) {

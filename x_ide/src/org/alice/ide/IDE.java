@@ -799,6 +799,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		helpOperations.add( new org.alice.ide.operations.help.ReleaseNotesOperation() );
 		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		helpOperations.add( new org.alice.ide.operations.help.WarningOperation( true ) );
+		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+		helpOperations.add( new org.alice.ide.operations.help.SystemPropertiesOperation() );
+		
 		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
 			//pass
 		} else {
