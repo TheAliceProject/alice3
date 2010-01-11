@@ -1,8 +1,6 @@
-#import zipfile
-#import sys
-#import FileUtilities
+#import NetbeansPluginUtilities
 #
-#
+#NetbeansPluginUtilities.PluginObject
 #
 #sys.exit(0)
 
@@ -50,29 +48,47 @@ SSH_KEY_PASSPHRASE = "bkmdlmc"
 
 FORCE_NEW_VERSION = True
 FORCE_NEW_COMPONENTS = False
-OLD_VERSION = VersionUtilities.VersionNum("3.0.0.62.0")
-NEW_VERSION = VersionUtilities.VersionNum("3.0.0.0.63")
+OLD_VERSION = VersionUtilities.VersionNum("3.0.0.0.63")
+NEW_VERSION = VersionUtilities.VersionNum("3.0.0.0.64")
+
+RELATIVE_TO_OLD_VERSION = True
+BUILD_FROM_TRUNK = False
 
 PREVIOUS_JAR_HTTP_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3/branches/"+str(OLD_VERSION)+"/"
-PREVIOUS_JAR_SSH_SVN_URL = "svn+ssh://culybad@invent.cse.wustl.edu/project/invent/lookingglass/svn/"
+PREVIOUS_JAR_SSH_SVN_URL = "svn+ssh://culybad@invent.cse.wustl.edu/project/invent/lookingglass/repos/trunk/"
 PREVIOUS_BUILD_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3_build/branches/"+str(OLD_VERSION)+"/"
 
 CURRENT_JAR_HTTP_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3/branches/"+str(NEW_VERSION)+"/"
-CURRENT_JAR_SSH_SVN_URL = "svn+ssh://culybad@invent.cse.wustl.edu/project/invent/lookingglass/svn/"
+CURRENT_JAR_SSH_SVN_URL = "svn+ssh://culybad@invent.cse.wustl.edu/project/invent/lookingglass/repos/trunk/"
 CURRENT_BUILD_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3_build/branches/"+str(NEW_VERSION)+"/"
+
+TRUNK_JAR_HTTP_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3/trunk/"
+TRUNK_JAR_SSH_SVN_URL = "svn+ssh://culybad@invent.cse.wustl.edu/project/invent/lookingglass/repos/trunk/"
+TRUNK_BUILD_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3_build/"
 
 INSTALLER_BUILD_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3_build/"
 
 
 ##NEW_VERSION = VersionUtilities.VersionNum("3.0.0.0.60")
-
-previousAliceSourceRepository = SVNUtilities.SVNConnection(PREVIOUS_JAR_HTTP_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
-previousWashUSourceRepository = SVNUtilities.SVNConnection(PREVIOUS_JAR_SSH_SVN_URL, SSH_SVN_USERNAME, SSH_KEY_PASSPHRASE, SSH_KEY_FILE)
-previousBuildRepository = SVNUtilities.SVNConnection(PREVIOUS_BUILD_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
-
-currentAliceSourceRepository = SVNUtilities.SVNConnection(CURRENT_JAR_HTTP_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
-currentWashUSourceRepository = SVNUtilities.SVNConnection(CURRENT_JAR_SSH_SVN_URL, SSH_SVN_USERNAME, SSH_KEY_PASSPHRASE, SSH_KEY_FILE)
-currentBuildRepository = SVNUtilities.SVNConnection(CURRENT_BUILD_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
+if (BUILD_FROM_TRUNK):
+    currentAliceSourceRepository = SVNUtilities.SVNConnection(TRUNK_JAR_HTTP_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
+    currentWashUSourceRepository = SVNUtilities.SVNConnection(TRUNK_JAR_SSH_SVN_URL, SSH_SVN_USERNAME, SSH_KEY_PASSPHRASE, SSH_KEY_FILE)
+    currentBuildRepository = SVNUtilities.SVNConnection(TRUNK_BUILD_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
+    previousAliceSourceRepository = None
+    previousWashUSourceRepository = None
+    previousBuildRepository = None
+else:
+    if (RELATIVE_TO_OLD_VERSION):
+	previousAliceSourceRepository = SVNUtilities.SVNConnection(PREVIOUS_JAR_HTTP_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
+	previousWashUSourceRepository = SVNUtilities.SVNConnection(PREVIOUS_JAR_SSH_SVN_URL, SSH_SVN_USERNAME, SSH_KEY_PASSPHRASE, SSH_KEY_FILE)
+	previousBuildRepository = SVNUtilities.SVNConnection(PREVIOUS_BUILD_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
+    else:
+	previousAliceSourceRepository = None
+	previousWashUSourceRepository = None
+	previousBuildRepository = None
+    currentAliceSourceRepository = SVNUtilities.SVNConnection(CURRENT_JAR_HTTP_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
+    currentWashUSourceRepository = SVNUtilities.SVNConnection(CURRENT_JAR_SSH_SVN_URL, SSH_SVN_USERNAME, SSH_KEY_PASSPHRASE, SSH_KEY_FILE)
+    currentBuildRepository = SVNUtilities.SVNConnection(CURRENT_BUILD_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
 
 installerBuildRepository = SVNUtilities.SVNConnection(INSTALLER_BUILD_SVN_URL, HTTP_SVN_USERNAME, HTTP_SVN_PASSWORD)
 
@@ -162,12 +178,15 @@ componentMap = {
 
 FORCE_NEW_VERSION = [
 "lg_walkandtouch",
-"aliceData",
+#"aliceData",
 #"windowsauxiliary",
-#"foundation",
-#"moveandturn",
-#"stage",
-#"ide"
+"foundation",
+"moveandturn",
+"stage",
+"ide",
+"windowsnativelib",
+"macnativelib",
+"linuxnativelib"
 ]
 
 FORCE_VERSION = [
@@ -295,7 +314,6 @@ newVersionNum = NEW_VERSION
 print "New version num: "+str(newVersionNum)
 needNewComponents = FORCE_NEW_COMPONENTS
 lastVersion = versionInfo.getLatestVersion(newVersionNum)
-
 print "Last version was "+str(lastVersion)
 if (lastVersion == None):
     needNewComponents = True
@@ -307,9 +325,9 @@ usingExistingData = USE_EXISTING_DATA and canUseExistingData
 
 if (needNewVersion):
 	baseDir = BUILD_OUTPUT_DIR + "/" + str(newVersionNum)
-	if (not usingExistingData):
-	    FileUtilities.deleteDir(baseDir) #this checks to see if the directory exists, and deletes it if it's there
-	    FileUtilities.makeDir(baseDir)
+#	if (not usingExistingData):
+#	    FileUtilities.deleteDir(baseDir) #this checks to see if the directory exists, and deletes it if it's there
+#	    FileUtilities.makeDir(baseDir)
 	print "Making new version "+str(newVersionNum) + " at "+baseDir
 	newVersionObject = VersionUtilities.SingleVersion(newVersionNum)
 
@@ -359,7 +377,13 @@ if (needNewVersion):
 			if (buildObject.initFromExistingVersion(existingComponent.version)): #this returns true if the older version of the file exists
 			    newVersionObject.addComponent(existingComponent)
 			    initedObject = True
-			    print "successful init"
+			    print "successful init from existing data for "+buildObject.name
+		    elif (buildObject.name == "lg_walkandtouch"):
+			if (buildObject.initFromExistingVersion(NEW_VERSION)):
+			    newComponent = VersionUtilities.ComponentVersion(buildObject.name, NEW_VERSION)
+			    newVersionObject.addComponent(newComponent)
+			    initedObject = True
+			    print "successful init from existing data for "+buildObject.name
 		    if (not initedObject):
 			print "Making version "+str(newVersionNum)+" for component "+buildObject.name
 			buildObject.setVersionNum(newVersionNum)
@@ -465,7 +489,7 @@ if (needNewVersion):
 			minVersion = VersionUtilities.VersionNum()
 			minVersion.setVals([3,0,0,0,0])
 			maxVersion = VersionUtilities.VersionNum()
-			maxVersion.setVals([3,0,1,0,0])
+			maxVersion.setVals([4,0,0,0,0])
 			dependencyName = InstallerUtilities.makeValidID(launcherBuildObject.name)
 
 			buildComponent.setDependency(dependencyName, minVersion, maxVersion)
@@ -498,7 +522,7 @@ if (needNewVersion):
 		minVersion = VersionUtilities.VersionNum()
 		minVersion.setVals([3,0,0,0,0])
 		maxVersion = VersionUtilities.VersionNum()
-		maxVersion.setVals([3,0,1,0,0])
+		maxVersion.setVals([4,0,0,0,0])
 		for prodID in dependencies:
 			closerDependenciesString += "product.requirements."+str(count)+".uid="+prodID+"\n"
 			closerDependenciesString += "product.requirements."+str(count)+".version-lower="+str(minVersion)+"\n"
@@ -510,28 +534,28 @@ if (needNewVersion):
 	for mainInstaller in mainInstallers:
 		mainInstaller.setDefaultInstallDirectoryName(DEFAULT_INSTALL_DIR_NAME)
 
-	print "Creating installer zips "+str(installer.version)
-	installer.expandToDir(ZIPS_DIR)
-	print "Made zips."
+#	print "Creating installer zips "+str(installer.version)
+#	installer.expandToDir(ZIPS_DIR)
+#	print "Made zips."
 
 
 	print "Creating installer "+str(installer.version)
 	installer.writeToFile(INSTALLERS_DIR)
 	print "Made installer: "+installer.projectDir
 
-print "Making NetBeans plugins..."
-ALICE_PLUGIN_FOLDER = "C:/AlicePlugins/"
-PLUGIN_OLD_VERSION = OLD_VERSION
-PLUGIN_OLD_VERSION = VersionUtilities.VersionNum("3.0.0.61.2")
-
-PLUGIN_NEW_VERSION = NEW_VERSION
-#PLUGIN_NEW_VERSION = VersionUtilities.VersionNum("3.0.0.61.2")
-plugin = NetbeansPluginUtilities.PluginObject(ALICE_PLUGIN_FOLDER, PLUGIN_NEW_VERSION, PLUGIN_OLD_VERSION)
-plugin.getJars(jarObjects)
-#plugin.getJarsFromPaths("C:/AliceVersions/3.0.0.0.61/lib/3.0.0.0.61/foundation.jar", "C:/AliceVersions/3.0.0.0.61/lib/3.0.0.0.61/lg_walkandtouch.jar", "C:/AliceVersions/3.0.0.0.61/lib/3.0.0.0.61/moveandturn.jar", "C:/AliceVersions/3.0.0.0.59/lib/3.0.0.0.59/stage.jar")
-plugin.getLibraries("C:/AliceNative/WindowsNative/application/windows-i586/", "C:/AliceNative/WindowsNative/application/windows-amd64/", "C:/AliceNative/MacNative/application/macosx-universal/", "C:/AliceNative/LinuxNative/application/linux-i586/", "C:/AliceNative/LinuxNative/application/linux-amd64/")
-plugin.makeNBMs()
-print "Made NetBeans plugins."
+#print "Making NetBeans plugins..."
+#ALICE_PLUGIN_FOLDER = "C:/AlicePlugins/"
+##PLUGIN_OLD_VERSION = OLD_VERSION
+#PLUGIN_OLD_VERSION = VersionUtilities.VersionNum("3.0.0.64.1")
+#
+#PLUGIN_NEW_VERSION = NEW_VERSION
+#PLUGIN_NEW_VERSION = VersionUtilities.VersionNum("3.0.1.0.0")
+#plugin = NetbeansPluginUtilities.PluginObject(ALICE_PLUGIN_FOLDER, PLUGIN_NEW_VERSION, PLUGIN_OLD_VERSION, "C:/AliceDistribution/ext/jogl/lib")
+#plugin.getJars(jarObjects)
+##plugin.getJarsFromPaths("C:/AliceVersions/3.0.0.0.64/lib/3.0.0.0.64/foundation.jar", "C:/AliceVersions/3.0.0.0.64/lib/3.0.0.0.64/lg_walkandtouch.jar", "C:/AliceVersions/3.0.0.0.64/lib/3.0.0.0.64/moveandturn.jar", "C:/AliceVersions/3.0.0.0.64/lib/3.0.0.0.64/stage.jar")
+#plugin.getLibraries("C:/AliceNative/WindowsNative/application/windows-i586/", "C:/AliceNative/WindowsNative/application/windows-amd64/", "C:/AliceNative/MacNative/application/macosx-universal/", "C:/AliceNative/LinuxNative/application/linux-i586/", "C:/AliceNative/LinuxNative/application/linux-amd64/")
+#plugin.makeNBMs()
+#print "Made NetBeans plugins."
 
 
 

@@ -81,10 +81,10 @@ class SVNConnection:
 				    print e
 			    nodeKind = repository.checkPath( "" ,  -1 )
 			    if ( nodeKind == core.SVNNodeKind.NONE ):
-				    print "There is no entry at '" + url + "'."
+				    print "There is no entry at '" + self.url + "'."
 				    return None
 			    elif ( nodeKind == core.SVNNodeKind.FILE ):
-				    print "The entry at '" + url + "' is a file while a directory was expected."
+				    print "The entry at '" + self.url + "' is a file while a directory was expected."
 				    return None
 		except core.SVNException, e:
 			print "error connecting to repository", e
@@ -166,9 +166,14 @@ class Repository:
 		self.relativePath = relativePath
 		self.localDir = localDir
 		self.shouldRelocate = shouldRelocate
-		if (self.previousBranch != None and self.currentBranch != None and self.shouldRelocate):
+		if (self.currentBranch != None and self.shouldRelocate):
+		    if (self.previousBranch != None):
 			print "trying to relocate "+self.localDir+" from "+str(self.previousBranch.getFullURL(self.relativePath)) + " to "+str(self.currentBranch.getFullURL(self.relativePath))
 			self.previousBranch.relocateWorkingCopy(self.localDir, self.currentBranch.getFullURL(self.relativePath))
+			print "relocated!"
+		    else:
+			print "trying to relocate "+self.localDir+" from "+str(self.currentBranch.getFullURL(self.relativePath)) + " to "+str(self.currentBranch.getFullURL(self.relativePath))
+			self.currentBranch.relocateWorkingCopy(self.localDir, self.currentBranch.getFullURL(self.relativePath))
 			print "relocated!"
 		else:
 			print "previous branch: "+str(self.previousBranch) + " and current branch: "+str(self.currentBranch)

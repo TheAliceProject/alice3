@@ -285,7 +285,7 @@ class InstallerProject:
 		    else:
 			launcherComponent.expandToDir(installDir, None)
 
-	    for platform in ["windows", "windows64", "mac", "linux", "linux64"]:
+	    for platform in ["windows", "mac", "linux", "linux64"]:
 		isMac = platform.find( "mac" ) != -1
 		isLinux = platform.find("linux") != -1
 		isWindows = platform.find("windows") != -1
@@ -335,6 +335,7 @@ class InstallerProject:
 			if (parentName.find("ppc") == -1):
 			    nativelibs.append(file.getParentFile())
 		    elif (fileName.find(launcherFilename) >= 0):
+			print "Found launcher file: "+str(file)
 			launcher = file
 		for jar in jars:
 		    launchGenerator.addToClassPath(jar)
@@ -352,7 +353,10 @@ class InstallerProject:
 			    print "creating file: "+newFile.toString()
 			    newFile.createNewFile()
 			    launcher = newFile
-			launchGenerator.encode( launcher, True, False )
+			useJRE = False
+			if (isWindows and not is64Bit):
+			    useJRE = True
+			launchGenerator.encode( launcher, True, useJRE )
 		    except Exception, inst:
 			print "encoding failed: "+str(inst)
 		else:
