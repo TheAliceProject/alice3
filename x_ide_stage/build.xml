@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="x_ide_stage">
+    <property environment="env"/>
+    <property name="rt_foundation.location" value="../rt_foundation"/>
+    <property name="rt_issue.location" value="../rt_issue"/>
+    <property name="rt_storytelling_private.location" value="../rt_storytelling_private"/>
+    <property name="x_ide_i18n.location" value="../x_ide_i18n"/>
+    <property name="x_ide_private.location" value="../x_ide_private"/>
+    <property name="rt_moveandturn.location" value="../rt_moveandturn"/>
+    <property name="rt_moveandturn_generated.location" value="../rt_moveandturn_generated"/>
+    <property name="rt_storytelling_generated_depended_upon.location" value="../rt_storytelling_generated_depended_upon"/>
+    <property name="rt_storytelling.location" value="../rt_storytelling"/>
+    <property name="x_zoot.location" value="../x_zoot"/>
+    <property name="x_youtube.location" value="../x_youtube"/>
+    <property name="x_ide.location" value="../x_ide"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.5"/>
+    <property name="source" value="1.5"/>
+    <path id="rt_foundation.classpath">
+        <pathelement location="${rt_foundation.location}/bin"/>
+        <pathelement location="${rt_foundation.location}/../jar_walkandtouch/lg_walkandtouch.jar"/>
+        <pathelement location="${rt_foundation.location}/../jar_jogl/lib/gluegen-rt.jar"/>
+        <pathelement location="${rt_foundation.location}/../jar_jogl/lib/jogl.jar"/>
+        <pathelement location="${rt_foundation.location}/../jar_apple/AppleJavaExtensions.jar"/>
+        <pathelement location="${rt_foundation.location}/../jar_swingworker/swing-worker-1.2.jar"/>
+    </path>
+    <path id="rt_issue.classpath">
+        <pathelement location="${rt_issue.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <pathelement location="${rt_issue.location}/../jar_swingworker/swing-worker-1.2.jar"/>
+        <pathelement location="${rt_issue.location}/../jar_mail/mail.jar"/>
+        <pathelement location="${rt_issue.location}/../jar_mail/lib/smtp.jar"/>
+        <pathelement location="${rt_issue.location}/../jar_rpc/xmlrpc-client-1.1.jar"/>
+        <pathelement location="${rt_issue.location}/../jar_jaf/activation.jar"/>
+        <pathelement location="${rt_issue.location}/../jar_jira/jira-soapclient-4.0-with-dependencies.jar"/>
+    </path>
+    <path id="x_zoot.classpath">
+        <pathelement location="${x_zoot.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <pathelement location="${x_zoot.location}/../jar_swingworker/swing-worker-1.2.jar"/>
+    </path>
+    <path id="rt_moveandturn.classpath">
+        <pathelement location="${rt_moveandturn.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="x_zoot.classpath"/>
+    </path>
+    <path id="rt_moveandturn_generated.classpath">
+        <pathelement location="${rt_moveandturn_generated.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="rt_moveandturn.classpath"/>
+    </path>
+    <path id="rt_storytelling_generated_depended_upon.classpath">
+        <pathelement location="${rt_storytelling_generated_depended_upon.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="rt_moveandturn.classpath"/>
+    </path>
+    <path id="rt_storytelling_private.classpath">
+        <pathelement location="${rt_storytelling_private.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+    </path>
+    <path id="rt_storytelling.classpath">
+        <pathelement location="${rt_storytelling.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="rt_moveandturn.classpath"/>
+        <path refid="rt_storytelling_generated_depended_upon.classpath"/>
+        <path refid="rt_storytelling_private.classpath"/>
+    </path>
+    <path id="x_ide_i18n.classpath">
+        <pathelement location="${x_ide_i18n.location}/bin"/>
+    </path>
+    <path id="x_ide_private.classpath">
+        <pathelement location="${x_ide_private.location}/bin"/>
+        <pathelement location="${x_ide_private.location}/../jar_rpc/xmlrpc-client-1.1.jar"/>
+        <pathelement location="${x_ide_private.location}/../jar_mail/mail.jar"/>
+        <pathelement location="${x_ide_private.location}/../jar_mail/lib/smtp.jar"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="rt_issue.classpath"/>
+        <pathelement location="${x_ide_private.location}/../jar_jaf/activation.jar"/>
+        <pathelement location="${x_ide_private.location}/../jar_jira/jira-soapclient-4.0-with-dependencies.jar"/>
+    </path>
+    <path id="x_youtube.classpath">
+        <pathelement location="${x_youtube.location}/bin"/>
+        <path refid="x_zoot.classpath"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="rt_moveandturn.classpath"/>
+        <pathelement location="${x_youtube.location}/../jar_swingworker/swing-worker-1.2.jar"/>
+        <pathelement location="${x_youtube.location}/../jar_youtube/google-collect-1.0-rc1.jar"/>
+        <pathelement location="${x_youtube.location}/../jar_youtube/jmf.jar"/>
+        <pathelement location="${x_youtube.location}/../jar_youtube/youtube.jar"/>
+    </path>
+    <path id="x_ide.classpath">
+        <pathelement location="${x_ide.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="rt_issue.classpath"/>
+        <path refid="x_ide_i18n.classpath"/>
+        <path refid="x_ide_private.classpath"/>
+        <path refid="x_zoot.classpath"/>
+        <pathelement location="${x_ide.location}/../jar_swingworker/swing-worker-1.2.jar"/>
+        <pathelement location="${x_ide.location}/../jar_mail/mail.jar"/>
+        <pathelement location="${x_ide.location}/../jar_jira/jira-soapclient-4.0-with-dependencies.jar"/>
+        <pathelement location="${x_ide.location}/../jar_rpc/xmlrpc-client-1.1.jar"/>
+        <path refid="x_youtube.classpath"/>
+    </path>
+    <path id="x_ide_stage.classpath">
+        <pathelement location="bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="rt_issue.classpath"/>
+        <path refid="rt_moveandturn.classpath"/>
+        <path refid="rt_moveandturn_generated.classpath"/>
+        <path refid="rt_storytelling.classpath"/>
+        <path refid="rt_storytelling_generated_depended_upon.classpath"/>
+        <path refid="rt_storytelling_private.classpath"/>
+        <path refid="x_ide.classpath"/>
+        <path refid="x_ide_i18n.classpath"/>
+        <path refid="x_ide_private.classpath"/>
+        <path refid="x_zoot.classpath"/>
+        <pathelement location="../jar_jogl/lib/gluegen-rt.jar"/>
+        <pathelement location="../jar_jogl/lib/jogl.jar"/>
+        <pathelement location="../jar_swingworker/swing-worker-1.2.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src" excludes="**/*.launch, **/*.java"/>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="${rt_foundation.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_issue.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_storytelling_private.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${x_ide_i18n.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${x_ide_private.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_moveandturn.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_moveandturn_generated.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_storytelling_generated_depended_upon.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_storytelling.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${x_zoot.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${x_youtube.location}/build.xml" inheritAll="false" target="clean"/>
+        <ant antfile="${x_ide.location}/build.xml" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="${rt_foundation.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_issue.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_storytelling_private.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${x_ide_i18n.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${x_ide_private.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_moveandturn.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_moveandturn_generated.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_storytelling_generated_depended_upon.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_storytelling.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${x_zoot.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${x_youtube.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${x_ide.location}/build.xml" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="x_ide_stage.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+    <target name="EntryPoint">
+        <java classname="org.alice.stageide.EntryPoint" dir="../AliceWorkingDir/" failonerror="true" fork="yes">
+            <jvmarg line="-ea -Xmx1024m -Djava.library.path=&quot;/AliceWorkingDir/ext/jogl/lib/windows-i586;/AliceWorkingDir/application/windows-i586&quot;"/>
+            <classpath refid="x_ide_stage.classpath"/>
+        </java>
+    </target>
+</project>
