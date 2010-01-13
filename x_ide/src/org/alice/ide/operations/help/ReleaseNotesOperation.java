@@ -28,7 +28,7 @@ package org.alice.ide.operations.help;
 public class ReleaseNotesOperation extends BrowserOperation {
 	public ReleaseNotesOperation() {
 		super( "http://kenai.com/projects/alice/pages/ReleaseNotes" );
-		this.putValue( javax.swing.Action.NAME, "Release Notes..." );
+		this.putValue( javax.swing.Action.NAME, "Browse Release Notes..." );
 	}
 //	@Override
 //	protected StringBuffer getMessage( StringBuffer rv ) {
