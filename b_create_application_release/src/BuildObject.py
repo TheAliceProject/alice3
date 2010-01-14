@@ -2,6 +2,7 @@ import BuildObject
 import os
 import FileUtilities
 import java
+import shutil
 
 __author__="Dave Culyba"
 __date__ ="$May 11, 2009 4:58:50 PM$"
@@ -69,6 +70,25 @@ class BuildObject:
 			self.buildSuccessful = True
 			print "build object "+self.name+" is located at "+self.dataLocation
 			return True
+		else:
+			self.versionNum = None
+			self.dataLocation = None
+			self.buildSuccessful = False
+			return False
+	
+	def forceFromExistingVersion(self, versionNum, path):
+		self.setVersionNum(versionNum)
+		if (os.path.exists(path)):
+		    destinationPath = self.getOutputPath()
+		    FileUtilities.makeDirsForFile(destinationPath)
+		    if (os.path.isdir(path)):
+			FileUtilities.copyDir(path, destinationPath)
+		    else:
+			shutil.copy2(path, destinationPath)
+		    self.dataLocation = path
+		    self.buildSuccessful = True
+		    print "build object "+self.name+" is located at "+self.dataLocation
+		    return True
 		else:
 			self.versionNum = None
 			self.dataLocation = None

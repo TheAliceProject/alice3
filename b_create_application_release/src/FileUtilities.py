@@ -5,6 +5,7 @@ import shutil
 import edu
 import zipfile
 import jarray
+import re
 JAR_CMD = "C:/Java/jdk1.5.0_18/bin/jar"
 EXEC_METHOD = eval( "edu.cmu.cs.dennisc.lang.RuntimeUtilities.exec" )
 
@@ -45,6 +46,41 @@ def replaceStringsInFile(replacementMap,filePath):
 
 	for s in input:
 		for findStr, replaceStr in replacementMap:
+			s = s.replace(findStr,replaceStr)
+		output.write(s)
+	output.close()
+	input.close()
+	os.remove(filePath)
+	os.rename(tempName,filePath)
+
+def regexReplaceInString(string, replacementMap):
+	toReturn = string[:]
+	for findStr, replaceStr in replacementMap:
+		print "trying to replace "+findStr+" with "+replaceStr
+		regex = re.compile(findStr)
+		result = regex.findall(toReturn)
+		if (result != None):
+		    for exMatch in result:
+			print " found: "+exMatch
+		toReturn = regex.sub(replaceStr, toReturn)
+		toReturn = toReturn.replace(findStr, replaceStr)
+	return toReturn
+    
+def regexReplaceStringsInFile(replacementMap,filePath):
+	tempName=filePath+'~~~'
+
+	print "Searching "+filePath
+	input = open(filePath)
+	output = open(tempName,'w')
+	for s in input:
+		for findStr, replaceStr in replacementMap:
+			#print "trying to replace "+findStr+" with "+replaceStr
+			regex = re.compile(findStr)
+			result = regex.findall(s)
+			if (result != None):
+			    for exMatch in result:
+				print " found: "+exMatch
+			s = regex.sub(replaceStr, s)
 			s = s.replace(findStr,replaceStr)
 		output.write(s)
 	output.close()
@@ -172,11 +208,22 @@ def replaceStringsInFilesMatching((replacementMap, fileNames), dirr, filess):
 					replaceStringsInFile(replacementMap,dirr+'/'+child)
 					continue
 
+def regexReplaceStringsInFilesMatching((replacementMap, fileNames), dirr, filess):
+	for child in filess:
+		if os.path.isfile(dirr+'/'+child):
+			for fileName in fileNames:
+				if (fileName == child):
+					regexReplaceStringsInFile(replacementMap,dirr+'/'+child)
+					continue
+
 def replaceStringsInDir(replacementMap, path):
 	os.path.walk(path, replaceStrings, replacementMap)
 
 def replaceStringsInFiles(replacementMap, path, fileNames):
 	os.path.walk(path, replaceStringsInFilesMatching, (replacementMap, fileNames))
+
+def regexReplaceStringsInFiles(replacementMap, path, fileNames):
+	os.path.walk(path, regexReplaceStringsInFilesMatching, (replacementMap, fileNames))
 
 def renameDirs(replacementMap, rootDir):
 	if (os.path.isdir(rootDir)):

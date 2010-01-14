@@ -14,10 +14,10 @@ __date__ ="$Jun 26, 2009 5:49:01 PM$"
 class PluginObject:
 	PROJECT_ROOT = "C:/AliceBuild/AliceNetbeansPlugin/"
 
-	def __init__(self, outputDir, version, oldVersion, joglDir):
+	def __init__(self, outputDir, version, joglDir):
 		self.outputDir = outputDir
 		self.version = version
-		self.oldVersion = oldVersion
+		self.versionPattern = "\d+\.\d+\.\d+\.\d+\.\d+"
 		self.joglDir = joglDir
 		if (not self.outputDir.endswith("/")):
 			self.outputDir = self.outputDir + "/"
@@ -67,13 +67,14 @@ class PluginObject:
 
 	    self.getJOGLJars()
 
-	def getLibraries(self, windowsDir, windows64Dir, macDir, linuxDir, linux64Dir):
+	def getLibraries(self, windowsDir, windows64Dir, macUniversalDir, mac104Dir, linuxDir, linux64Dir):
 		MAC_FILE = "libjni_nebulous.jnilib"
 		WINDOWS_FILE = "jni_nebulous.dll"
 		LINUX_FILE = "libjni_nebulous.so"
 		LIBRARY_WINDOWS_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-windows-i586/"
 		LIBRARY_WINDOWS64_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-windows-amd64/"
-		LIBRARY_MAC_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-macosx-universal/"
+		LIBRARY_MAC_UNIVERSAL_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-macosx-universal/"
+		LIBRARY_MAC_10_4_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-macosx-10.4/"
 		LIBRARY_LINUX_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-linux-i586/"
 		LIBRARY_LINUX64_DIR = "AliceProjectWizard/release/libs/stage.jar-natives-linux-amd64/"
 
@@ -82,6 +83,7 @@ class PluginObject:
 		JOGL_LINUX_64BIT_DIR = self.joglDir + "/linux-amd64"
 		JOGL_LINUX_32BIT_DIR = self.joglDir + "/linux-i586"
 		JOGL_MAC_UNIVERSAL_DIR = self.joglDir + "/macosx-universal"
+		JOGL_MAC_10_4_DIR = self.joglDir + "/macosx-universal" #JOGL uses the same library for this
 
 		FileUtilities.makeDirsForFile(PluginObject.PROJECT_ROOT+LIBRARY_WINDOWS_DIR+WINDOWS_FILE)
 		shutil.copy(windowsDir+WINDOWS_FILE, PluginObject.PROJECT_ROOT+LIBRARY_WINDOWS_DIR+WINDOWS_FILE)
@@ -91,9 +93,13 @@ class PluginObject:
 		shutil.copy(windows64Dir+WINDOWS_FILE, PluginObject.PROJECT_ROOT+LIBRARY_WINDOWS64_DIR+WINDOWS_FILE)
 		FileUtilities.copyDir(JOGL_WINDOWS_64BIT_DIR, PluginObject.PROJECT_ROOT+LIBRARY_WINDOWS64_DIR)
 
-		FileUtilities.makeDirsForFile(PluginObject.PROJECT_ROOT+LIBRARY_MAC_DIR+MAC_FILE)
-		shutil.copy(macDir+MAC_FILE, PluginObject.PROJECT_ROOT+LIBRARY_MAC_DIR+MAC_FILE)
-		FileUtilities.copyDir(JOGL_MAC_UNIVERSAL_DIR, PluginObject.PROJECT_ROOT+LIBRARY_MAC_DIR)
+		FileUtilities.makeDirsForFile(PluginObject.PROJECT_ROOT+LIBRARY_MAC_UNIVERSAL_DIR+MAC_FILE)
+		shutil.copy(macUniversalDir+MAC_FILE, PluginObject.PROJECT_ROOT+LIBRARY_MAC_UNIVERSAL_DIR+MAC_FILE)
+		FileUtilities.copyDir(JOGL_MAC_UNIVERSAL_DIR, PluginObject.PROJECT_ROOT+LIBRARY_MAC_UNIVERSAL_DIR)
+
+		FileUtilities.makeDirsForFile(PluginObject.PROJECT_ROOT+LIBRARY_MAC_10_4_DIR+MAC_FILE)
+		shutil.copy(mac104Dir+MAC_FILE, PluginObject.PROJECT_ROOT+LIBRARY_MAC_10_4_DIR+MAC_FILE)
+		FileUtilities.copyDir(JOGL_MAC_10_4_DIR, PluginObject.PROJECT_ROOT+LIBRARY_MAC_10_4_DIR)
 
 		FileUtilities.makeDirsForFile(PluginObject.PROJECT_ROOT+LIBRARY_LINUX_DIR+LINUX_FILE)
 		shutil.copy(linuxDir+LINUX_FILE, PluginObject.PROJECT_ROOT+LIBRARY_LINUX_DIR+LINUX_FILE)
@@ -105,7 +111,7 @@ class PluginObject:
 
 
 	def makeNBMs(self):
-		FileUtilities.replaceStringsInFiles([(str(self.oldVersion), str(self.version))], "C:/AliceBuild/AliceNetbeansPlugin", ["manifest.mf", "org-alice-alice3.xml", "org-alice-netbeans-aliceprojectwizard.xml"])
+		FileUtilities.regexReplaceStringsInFiles([(str(self.versionPattern), str(self.version))], "C:/AliceBuild/AliceNetbeansPlugin", ["manifest.mf", "org-alice-alice3.xml", "org-alice-netbeans-aliceprojectwizard.xml"])
 
 		BuildJava.cleanProject(java.io.File(PluginObject.PROJECT_ROOT+"Alice3PluginSuite"))
 		BuildJava.buildProject(java.io.File(PluginObject.PROJECT_ROOT+"Alice3PluginSuite"))

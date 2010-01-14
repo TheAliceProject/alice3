@@ -103,8 +103,8 @@ class SVNConnection:
 		print "switching "+str(localFile)+ " to url: "+str(newURL)
 		try:
 		    updateClient.doSwitch(localFile, newURL, core.wc.SVNRevision.HEAD, True)
-		except:
-		    print "Failed to relocate copy. I hope you know what you're doing."
+		except Exception, why:
+		    print "Failed to relocate copy. I hope you know what you're doing: "+str(why)
 
 	def getRemoteRevision( self, path):
 		try:

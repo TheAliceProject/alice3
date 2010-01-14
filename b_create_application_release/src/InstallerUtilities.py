@@ -237,6 +237,7 @@ class InstallComponent:
 class InstallerProject:
 	BASE_INSTALLER_TEMPLATE = "C:/AliceBuild/InstallerTemplates/installerTemplate"
 	BUILD_XML_FILE = "build/build.xml"
+	BUILD_PROPERTIES_FILE = "build/build.properties"
 	BUILD_DIR = "build"
 	CLEAN_KEY = "<!--CleanProducts-->"
 	CLEAN_TEMPLATE = "C:/AliceBuild/InstallerTemplates/cleanTemplate.template"
@@ -251,12 +252,15 @@ class InstallerProject:
 	MAC_LIMITED_BUNDLE_KEY = "<!--MacLimitedBundleComponent-->"
 	WINDOWS_LIMITED_BUNDLE_KEY = "<!--WindowsLimitedBundleComponent-->"
 	LINUX_LIMITED_BUNDLE_KEY = "<!--LinuxLimitedBundleComponent-->"
+	WEB_DATA_URL_KEY = "<!--WebDataURL-->"
+	DEFAULT_WEB_DATA_URL = "http://www.alice.org/downloads/installerData"
 
-	def __init__(self, name, version):
+	def __init__(self, name, version, webDataURL = DEFAULT_WEB_DATA_URL):
 		self.components = []
 		self.launcherComponents = []
 		self.name = name
 		self.version = version
+		self.webDataURL = webDataURL
 
 	def addComponent(self, component):
 		if (component.isLauncher):
@@ -449,7 +453,7 @@ class InstallerProject:
 				macLimitedBundleString += launcherBundleString
 				windowsLimitedBundleString += launcherBundleString
 
-		replacementMap = [
+		xmlReplacementMap = [
 			(InstallComponent.PRODUCT_NAME_KEY, self.name),
 			(InstallComponent.VERSION_KEY, str(self.version)),
 			(InstallerProject.CLEAN_KEY, cleanString),
@@ -462,7 +466,14 @@ class InstallerProject:
 			(InstallerProject.LINUX_LIMITED_BUNDLE_KEY, linuxLimitedBundleString),
 			]
 
-		FileUtilities.replaceStringsInFile(replacementMap, self.projectDir + "/" + InstallerProject.BUILD_XML_FILE)
+		FileUtilities.replaceStringsInFile(xmlReplacementMap, self.projectDir + "/" + InstallerProject.BUILD_XML_FILE)
+
+		propertiesReplacementMap = [
+			(InstallerProject.WEB_DATA_URL_KEY, self.webDataURL),
+			]
+
+		FileUtilities.replaceStringsInFile(propertiesReplacementMap, self.projectDir + "/" + InstallerProject.BUILD_PROPERTIES_FILE)
+
 		projectDirJavaFile = java.io.File( self.projectDir, InstallerProject.BUILD_DIR  )
 		BuildJava.buildProject(projectDirJavaFile)
 
