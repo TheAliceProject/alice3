@@ -124,10 +124,10 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 				rv.add( createComponentRowForSystemProperty( "sun.arch.data.model" ) );
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 8 ), null ) );
 				for( String propertyName : new String[] { "java.class.path", "java.library.path" } ) {				
-					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createColumn0Label( propertyName+":" ), new edu.cmu.cs.dennisc.zoot.ZButton( new PathPropertyOperation(propertyName) ) ) );
+					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createColumn0Label( propertyName+":" ), new edu.cmu.cs.dennisc.zoot.ZHyperlink( new PathPropertyOperation(propertyName) ) ) );
 				}
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 8 ), null ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, new edu.cmu.cs.dennisc.zoot.ZButton( new AllSystemPropertiesOperation() ) ) );
+				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, new edu.cmu.cs.dennisc.zoot.ZHyperlink( new AllSystemPropertiesOperation() ) ) );
 				return rv;
 			}
 		};
