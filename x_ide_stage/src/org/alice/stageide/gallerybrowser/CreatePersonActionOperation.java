@@ -21,12 +21,13 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 package org.alice.stageide.gallerybrowser;
+
 /**
  * @author Dennis Cosgrove
  */
 class CreateFieldFromPersonPane extends org.alice.ide.createdeclarationpanes.CreateLargelyPredeterminedFieldPane {
-	public CreateFieldFromPersonPane(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.stage.Person person) {
-		super(declaringType, person.getClass(), null);
+	public CreateFieldFromPersonPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.stage.Person person ) {
+		super( declaringType, person.getClass(), null );
 	}
 }
 
@@ -34,67 +35,21 @@ class CreateFieldFromPersonPane extends org.alice.ide.createdeclarationpanes.Cre
  * @author Dennis Cosgrove
  */
 class CreatePersonActionOperation extends AbstractDeclareFieldOperation {
-	public CreatePersonActionOperation() {
-		this.putValue(javax.swing.Action.NAME, "Create Person...");
+	private org.alice.apis.stage.Person person;
+	public CreatePersonActionOperation( org.alice.apis.stage.Person person ) {
+		this.person = person;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
-		final org.alice.ide.IDE ide = getIDE();
-		class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
-			public PersonCreatorDialog(javax.swing.JDialog owner) {
-				super(owner);
-			}
-
-			public PersonCreatorDialog(javax.swing.JFrame owner) {
-				super(owner);
-			}
-
-			@Override
-			protected edu.cmu.cs.dennisc.progress.ProgressDialog.Worker createWorker() {
-				class PersonCreatorWorker extends edu.cmu.cs.dennisc.progress.ProgressDialog.Worker {
-					@Override
-					protected Boolean doInBackground() throws Exception {
-						this.publish("opening person creator...");
-						org.alice.stageide.personeditor.PersonEditorInputPane personEditorInputPane = new org.alice.stageide.personeditor.PersonEditorInputPane(null) {
-							@Override
-							public void addNotify() {
-								super.addNotify();
-								PersonCreatorDialog.this.setVisible( false );
-							}
-						};
-						org.alice.apis.stage.Person person = personEditorInputPane.showInJDialog(ide);
-						if (person != null) {
-							edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
-							CreateFieldFromPersonPane createFieldFromPersonPane = new CreateFieldFromPersonPane(declaringType, person);
-							edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.showInJDialog(ide);
-							if (field != null) {
-								ide.getSceneEditor().handleFieldCreation(declaringType, field, person);
-							}
-						}
-						return true;
-					}
-				}
-				return new PersonCreatorWorker();
-			}
-
-			@Override
-			protected void handleDone(Boolean result) {
-//				if (result) {
-//					this.setVisible(false);
-//				}
-			}
-
-			@Override
-			protected boolean isProgressBarDesired() {
-				return false;
-			}
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = ide.getSceneType();
+		CreateFieldFromPersonPane createFieldFromPersonPane = new CreateFieldFromPersonPane( declaringType, person );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromPersonPane.showInJDialog( ide );
+		if( field != null ) {
+			//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
+			return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, this.person );
+		} else {
+			return null;
 		}
-		PersonCreatorDialog dialog = new PersonCreatorDialog(ide);
-		dialog.pack();
-		dialog.setVisible(true);
-		dialog.createAndExecuteWorker();
-		
-		javax.swing.JOptionPane.showMessageDialog( null, "todo: CreatePersonActionOperation" );
-		return null;
 	}
 }

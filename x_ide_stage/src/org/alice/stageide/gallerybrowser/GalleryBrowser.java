@@ -31,7 +31,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	public GalleryBrowser(java.io.File thumbnailRoot, java.util.Map<String, String> map) {
 		this.map = map;
 		this.initialize(thumbnailRoot);
-		edu.cmu.cs.dennisc.zoot.ZButton createPersonButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreatePersonActionOperation());
+		edu.cmu.cs.dennisc.zoot.ZButton createPersonButton = new edu.cmu.cs.dennisc.zoot.ZButton(new IndirectCreatePersonActionOperation());
 		edu.cmu.cs.dennisc.zoot.ZButton createTextButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateTextActionOperation());
 		edu.cmu.cs.dennisc.zoot.ZButton createMyInstanceButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateMyInstance());
 		edu.cmu.cs.dennisc.zoot.ZButton createTextbookInstanceButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateTextbookInstance());
