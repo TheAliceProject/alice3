@@ -40,7 +40,6 @@ public class SystemUtilities {
 	public static byte[] getPropertiesAsXMLByteArray() {
 		return getPropertiesAsXMLByteArrayOutputStream().toByteArray();
 	}
-
 	public static String getPropertiesAsXMLString() {
 		return getPropertiesAsXMLByteArrayOutputStream().toString();
 	}

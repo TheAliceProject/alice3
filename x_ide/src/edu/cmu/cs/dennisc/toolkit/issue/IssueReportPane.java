@@ -37,6 +37,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 		rv.add( "os.name" );
 		rv.add( "os.arch" );
 		rv.add( "os.version" );
+		rv.add( "sun.arch.data.model" );
 		return rv;
 	}
 
