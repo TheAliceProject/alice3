@@ -1,6 +1,7 @@
 
 from org.tmatesoft.svn import core
 import java
+import FileUtilities
 
 
 IS_CONNECTED = True
@@ -94,6 +95,14 @@ class SVNConnection:
 
 	def getFullURL(self, path):
 		return core.SVNURL.parseURIDecoded( self.url + path );
+
+	def checkout(self, localDir, remoteDir, revision):
+	     if (IS_CONNECTED):
+		updateClient = self.clientManager.getUpdateClient()
+		updateClient.setIgnoreExternals( False )
+		checkoutUrl = core.SVNURL.parseURIDecoded( self.url + remoteDir +"/" );
+		print localDir
+		updateClient.doCheckout( checkoutUrl, localDir, core.wc.SVNRevision.HEAD, revision, core.SVNDepth.INFINITY, True )
 
 	def relocateWorkingCopy(self, workingCopyDir, newURL):
 	    if (IS_CONNECTED):
@@ -207,6 +216,14 @@ class Repository:
 		return (newRevision > oldRevision)
 	    else:
 		return False;
+
+	def checkoutCurrent(self, cleanFirst=True):
+	    print "Preparing to checkout "+self.relativePath + " to "+self.localDir
+	    if (cleanFirst):
+		print "Cleaning "+self.localDir
+		FileUtilities.deleteDir(self.localDir)
+	    print "Checking out "+self.relativePath + " to "+self.localDir
+	    return self.currentBranch.checkout( java.io.File(self.localDir), self.relativePath, core.wc.SVNRevision.HEAD)
 
 	def syncCodeToHead( self ):
 		return self.currentBranch.updatePathToRevision( self.localDir, core.wc.SVNRevision.HEAD)

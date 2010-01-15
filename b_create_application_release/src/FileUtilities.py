@@ -31,7 +31,7 @@ def getStringFromFile(fileName):
 def deleteDir(dir):
 	javaDir = java.io.File(dir)
 	if (javaDir.exists() and javaDir.isDirectory()):
-		shutil.rmtree(dir)
+	    shutil.rmtree(dir)
 
 def replaceInString(string, replacementMap):
 	toReturn = string[:]

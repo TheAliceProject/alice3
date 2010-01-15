@@ -97,86 +97,86 @@ INSTALLER_BUILD_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3_build/
 #
 #PLATFORMS = ["mac", "windows", "linux"]
 #
-#componentMap = {
-#	("macauxiliary", "auxiliary") : [
+#componentList = [
+#	( ("macauxiliary", "auxiliary"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceAuxiliary/MacAuxiliary", "C:/AliceAuxiliary/MacAuxiliary")
-#	],
-#	("windowsauxiliary", "auxiliary") : [
+#	] ),
+#	( ("windowsauxiliary", "auxiliary"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceAuxiliary/WindowsAuxiliary", "C:/AliceAuxiliary/WindowsAuxiliary")
-#	],
-#	("linuxauxiliary", "auxiliary") : [
+#	] ),
+#	( ("linuxauxiliary", "auxiliary"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceAuxiliary/LinuxAuxiliary", "C:/AliceAuxiliary/LinuxAuxiliary")
-#	],
-#	("macnativelib", "auxiliary") : [
+#	] ),
+#	( ("macnativelib", "auxiliary"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceNativeLibraries/MacNative", "C:/AliceNative/MacNative")
-#	],
-#	("windowsnativelib", "auxiliary") : [
+#	] ),
+#	( ("windowsnativelib", "auxiliary"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceNativeLibraries/WindowsNative", "C:/AliceNative/WindowsNative")
-#	],
-#	("linuxnativelib", "auxiliary") : [
+#	] ),
+#	( ("linuxnativelib", "auxiliary"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceNativeLibraries/LinuxNative", "C:/AliceNative/LinuxNative")
-#	],
-#	("aliceData", "aliceData") : [
+#	] ),
+#	( ("aliceData", "aliceData"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceBaseApplication", "C:/AliceDistribution")
-#	],
-#	("AliceClassicGallery", "gallery") : [
+#	] ),
+#	( ("AliceClassicGallery", "gallery"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceGalleries/org.alice.apis.moveandturn.gallery", "C:/AliceGalleries/org.alice.apis.moveandturn.gallery")
-#	],
-#	("AliceLookingGlassGallery", "gallery") : [
+#	] ),
+#	( ("AliceLookingGlassGallery", "gallery"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceGalleries/edu.wustl.cse.lookingglass.apis.walkandtouch.gallery", "C:/AliceGalleries/edu.wustl.cse.lookingglass.apis.walkandtouch.gallery")
-#	],
-#	("AliceSimsGallery" , "gallery") : [
+#	] ),
+#	( ("AliceSimsGallery" , "gallery"), [
 #		SVNUtilities.Repository(previousBuildRepository, currentBuildRepository, "AliceGalleries/org.alice.apis.stage", "C:/AliceGalleries/org.alice.apis.stage")
-#	],
-#	("foundation", "jar") : [
+#	] ),
+#	( ("foundation", "jar"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_foundation", "C:/AliceSource/rt_foundation"),
-#	],
-#	("moveandturn", "jar") : [
+#	] ),
+#	( ("moveandturn", "jar"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_moveandturn", "C:/AliceSource/rt_moveandturn"),
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_moveandturn_generated", "C:/AliceSource/rt_moveandturn_generated"),
-#	],
-#	("lg_walkandtouch", "jar") : [
+#	] ),
+#	( ("lg_walkandtouch", "jar"), [
 #		SVNUtilities.Repository(previousWashUSourceRepository, currentWashUSourceRepository, "lg_walkandtouch", "C:/AliceSource/lg_walkandtouch"),
 #		SVNUtilities.Repository(previousWashUSourceRepository, currentWashUSourceRepository, "lg_walkandtouch_gallery_generated", "C:/AliceSource/lg_walkandtouch_gallery_generated"),
-#	],
-#	("stage", "jar") : [
+#	] ),
+#	( ("stage", "jar"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_storytelling", "C:/AliceSource/rt_storytelling"),
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_storytelling_private", "C:/AliceSource/rt_storytelling_private"),
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_storytelling_generated_depended_upon", "C:/AliceSource/rt_storytelling_generated_depended_upon")
-#	],
-#	("ide", "jar") : [
+#	] ),
+#	( ("ide", "jar"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_issue", "C:/AliceSource/rt_issue"),
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_ide", "C:/AliceSource/x_ide"),
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_ide_stage", "C:/AliceSource/x_ide_stage"),
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_ide_i18n", "C:/AliceSource/x_ide_i18n"),
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_ide_private", "C:/AliceSource/x_ide_private"),
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_youtube", "C:/AliceSource/x_youtube")
-#	],
-#	("jar_swingworker", "external") : [
+#	] ),
+#	( ("jar_swingworker", "external"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_swingworker", "C:/AliceSource/jar_swingworker"),
-#	],
-#	("jar_jogl", "external") : [
+#	] ),
+#	( ("jar_jogl", "external"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_jogl", "C:/AliceSource/jar_jogl"),
-#	],
-#	("jar_mail", "external") : [
+#	] ),
+#	( ("jar_mail", "external"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_mail", "C:/AliceSource/jar_mail"),
-#	],
-#	("jar_rpc", "external") : [
+#	] ),
+#	( ("jar_rpc", "external"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_rpc", "C:/AliceSource/jar_rpc"),
-#	],
-#	("jar_apple", "external") : [
+#	] ),
+#	( ("jar_apple", "external"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_apple", "C:/AliceSource/jar_apple"),
-#	],
-#	("jar_jaf", "external") : [
+#	] ),
+#	( ("jar_jaf", "external"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_jaf", "C:/AliceSource/jar_jaf"),
-#	],
-#	("jar_jira", "external") : [
+#	] ),
+#	( ("jar_jira", "external"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_jira", "C:/AliceSource/jar_jira"),
-#	],
-#	("jar_youtube", "external") : [
+#	] ),
+#	( ("jar_youtube", "external"), [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_youtube", "C:/AliceSource/jar_youtube"),
-#	],
-#}
+#	] ),
+#]
 #
 #FORCE_NEW_VERSION = [
 #"lg_walkandtouch",
@@ -266,7 +266,7 @@ INSTALLER_BUILD_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3_build/
 #FOUNDATION_OBJECT = None
 #
 #print "Checking and pulling source data from source control..."
-#for (componentName, componentType), repositories in componentMap.items():
+#for (componentName, componentType), repositories in componentList:
 #	print componentName, componentType
 #	currentBuildObject = None
 #	if (componentType == "jar"):
