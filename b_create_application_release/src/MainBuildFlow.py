@@ -130,7 +130,6 @@ INSTALLER_BUILD_SVN_URL = "https://alma.andrew.ad.cmu.edu:8443/svn/alice3_build/
 #	],
 #	("foundation", "jar") : [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_foundation", "C:/AliceSource/rt_foundation"),
-#		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_zoot", "C:/AliceSource/x_zoot"),
 #	],
 #	("moveandturn", "jar") : [
 #		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_moveandturn", "C:/AliceSource/rt_moveandturn"),

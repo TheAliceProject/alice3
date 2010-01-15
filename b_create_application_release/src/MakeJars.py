@@ -19,7 +19,7 @@ __date__ ="$Jan 14, 2010 4:58:39 PM$"
 HTTP_SVN_USERNAME = "dculyba"
 HTTP_SVN_PASSWORD = "bkmdlmc"
 SSH_SVN_USERNAME = "culybad"
-SSH_KEY_FILE = java.io.File("C:/putty/washU_private.key")
+SSH_KEY_FILE = java.io.File("C:/AliceSource/b_create_application_release/washU_private.key")
 SSH_KEY_PASSPHRASE = "bkmdlmc"
 
 BUILD_FROM_TRUNK = True
@@ -62,7 +62,6 @@ previousWashUSourceRepository = None
 componentMap = {
 	("foundation", "jar") : [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_foundation", "C:/AliceSource/rt_foundation", SYNC_SOURCE),
-		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_zoot", "C:/AliceSource/x_zoot", SYNC_SOURCE),
 	],
 	("moveandturn", "jar") : [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_moveandturn", "C:/AliceSource/rt_moveandturn", SYNC_SOURCE),
