@@ -1,3 +1,9 @@
+print "having difficulties?"
+print "install ant."
+print "JAVA_HOME set?"
+print "dave's JAVA_HOME?"
+print "build.xmls for lg?"
+
 import JarUtilities
 import SVNUtilities
 import VersionUtilities
@@ -19,7 +25,7 @@ __date__ ="$Jan 14, 2010 4:58:39 PM$"
 HTTP_SVN_USERNAME = "dculyba"
 HTTP_SVN_PASSWORD = "bkmdlmc"
 SSH_SVN_USERNAME = "culybad"
-SSH_KEY_FILE = java.io.File("C:/AliceSource/b_create_application_release/washU_private.key")
+SSH_KEY_FILE = java.io.File("C:/putty/washU_private.key")
 SSH_KEY_PASSPHRASE = "bkmdlmc"
 
 BUILD_FROM_TRUNK = True
@@ -28,8 +34,9 @@ VERSION_TO_MAKE = VersionUtilities.VersionNum("3.0.0.0.65")
 JAR_SRC_DIR = "C:/AliceSource/"
 BUILD_OUTPUT_DIR = "C:/AliceJars"
 
+#sys.stdout = sys.stderr
 
-SYNC_SOURCE = False
+SYNC_SOURCE = True
 BUILD_CODE = True
 
 
@@ -59,56 +66,56 @@ previousAliceSourceRepository = None
 previousWashUSourceRepository = None
 
 
-componentMap = {
-	("foundation", "jar") : [
+componentList = [
+	( ("foundation", "jar"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_foundation", "C:/AliceSource/rt_foundation", SYNC_SOURCE),
-	],
-	("moveandturn", "jar") : [
+	] ),
+	( ("moveandturn", "jar"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_moveandturn", "C:/AliceSource/rt_moveandturn", SYNC_SOURCE),
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_moveandturn_generated", "C:/AliceSource/rt_moveandturn_generated", SYNC_SOURCE),
-	],
-	("lg_walkandtouch", "jar") : [
+	] ),
+	( ("lg_walkandtouch", "jar"), [
 		SVNUtilities.Repository(previousWashUSourceRepository, currentWashUSourceRepository, "lg_walkandtouch", "C:/AliceSource/lg_walkandtouch", SYNC_SOURCE),
 		SVNUtilities.Repository(previousWashUSourceRepository, currentWashUSourceRepository, "lg_walkandtouch_gallery_generated", "C:/AliceSource/lg_walkandtouch_gallery_generated", SYNC_SOURCE),
-	],
-	("stage", "jar") : [
+	] ),
+	( ("stage", "jar"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_storytelling", "C:/AliceSource/rt_storytelling", SYNC_SOURCE),
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_storytelling_private", "C:/AliceSource/rt_storytelling_private", SYNC_SOURCE),
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_storytelling_generated_depended_upon", "C:/AliceSource/rt_storytelling_generated_depended_upon", SYNC_SOURCE)
-	],
-	("ide", "jar") : [
+	] ),
+	( ("ide", "jar"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "rt_issue", "C:/AliceSource/rt_issue", SYNC_SOURCE),
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_ide", "C:/AliceSource/x_ide", SYNC_SOURCE),
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_ide_stage", "C:/AliceSource/x_ide_stage", SYNC_SOURCE),
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_ide_i18n", "C:/AliceSource/x_ide_i18n", SYNC_SOURCE),
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_ide_private", "C:/AliceSource/x_ide_private", SYNC_SOURCE),
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "x_youtube", "C:/AliceSource/x_youtube", SYNC_SOURCE)
-	],
-	("jar_swingworker", "external") : [
+	] ),
+	( ("jar_swingworker", "external"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_swingworker", "C:/AliceSource/jar_swingworker", SYNC_SOURCE),
-	],
-	("jar_jogl", "external") : [
+	] ),
+	( ("jar_jogl", "external"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_jogl", "C:/AliceSource/jar_jogl", SYNC_SOURCE),
-	],
-	("jar_mail", "external") : [
+	] ),
+	( ("jar_mail", "external"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_mail", "C:/AliceSource/jar_mail", SYNC_SOURCE),
-	],
-	("jar_rpc", "external") : [
+	] ),
+	( ("jar_rpc", "external"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_rpc", "C:/AliceSource/jar_rpc", SYNC_SOURCE),
-	],
-	("jar_apple", "external") : [
+	] ),
+	( ("jar_apple", "external"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_apple", "C:/AliceSource/jar_apple", SYNC_SOURCE),
-	],
-	("jar_jaf", "external") : [
+	] ),
+	( ("jar_jaf", "external"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_jaf", "C:/AliceSource/jar_jaf", SYNC_SOURCE),
-	],
-	("jar_jira", "external") : [
+	] ),
+	( ("jar_jira", "external"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_jira", "C:/AliceSource/jar_jira", SYNC_SOURCE),
-	],
-	("jar_youtube", "external") : [
+	] ),
+	( ("jar_youtube", "external"), [
 		SVNUtilities.Repository(previousAliceSourceRepository, currentAliceSourceRepository, "jar_youtube", "C:/AliceSource/jar_youtube", SYNC_SOURCE),
-	],
-}
+	] ),
+]
 
 buildObjects = []
 
@@ -120,7 +127,7 @@ REVISION_TO_USE = HEAD_REVISION
 jarObjects = []
 
 print "Checking and pulling source data from source control..."
-for (componentName, componentType), repositories in componentMap.items():
+for (componentName, componentType), repositories in componentList:
 	print componentName, componentType
 	currentBuildObject = None
 	if (componentType == "jar"):
