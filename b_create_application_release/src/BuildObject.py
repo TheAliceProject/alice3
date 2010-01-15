@@ -16,7 +16,6 @@ class BuildObject:
 		self.versionNum = None
 		self.outputDir = outputDir
 		self.repositories = []
-		print "HERFE!"
 		for repository in repositories:
 			self.addRepository(repository)
 		self.dataLocation = None

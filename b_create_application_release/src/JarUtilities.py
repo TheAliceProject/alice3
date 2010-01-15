@@ -22,10 +22,11 @@ class JarBuildObject(BuildObject.BuildObject):
 	def getOutputPath(self):
 		return self.getBaseOutputDirectory() + "/" + self.getRelativeLocation() + self.name + JarBuildObject.JAR_EXTENSION
 
-	def buildObject(self):
-		for repository in self.repositories:
-			projectDir = java.io.File( repository.localDir )
-			BuildJava.buildProject(projectDir)
+	def buildObject(self, compileCode=True):
+		if (compileCode):
+		    for repository in self.repositories:
+			    projectDir = java.io.File( repository.localDir )
+			    BuildJava.buildProject(projectDir)
 		self.dataLocation = self.getOutputPath()
 		FileUtilities.makeDirsForFile(self.dataLocation)
 		option = "cvf"
