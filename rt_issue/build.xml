@@ -1,74 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- You may freely edit this file. See commented blocks below for -->
-<!-- some examples of how to customize the build. -->
-<!-- (If you delete it and reopen the project it will be recreated.) -->
-<!-- By default, only the Clean and Build commands use this build script. -->
-<!-- Commands such as Run, Debug, and Test only use this build script if -->
-<!-- the Compile on Save feature is turned off for the project. -->
-<!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
-<!-- in the project's Project Properties dialog box.-->
-<project name="rt_issue" default="default" basedir=".">
-    <description>Builds, tests, and runs the project rt_issue.</description>
-    <import file="nbproject/build-impl.xml"/>
-    <!--
-
-    There exist several targets which are by default empty and which can be 
-    used for execution of your tasks. These targets are usually executed 
-    before and after some main targets. They are: 
-
-      -pre-init:                 called before initialization of project properties
-      -post-init:                called after initialization of project properties
-      -pre-compile:              called before javac compilation
-      -post-compile:             called after javac compilation
-      -pre-compile-single:       called before javac compilation of single file
-      -post-compile-single:      called after javac compilation of single file
-      -pre-compile-test:         called before javac compilation of JUnit tests
-      -post-compile-test:        called after javac compilation of JUnit tests
-      -pre-compile-test-single:  called before javac compilation of single JUnit test
-      -post-compile-test-single: called after javac compilation of single JUunit test
-      -pre-jar:                  called before JAR building
-      -post-jar:                 called after JAR building
-      -post-clean:               called after cleaning build products
-
-    (Targets beginning with '-' are not intended to be called on their own.)
-
-    Example of inserting an obfuscator after compilation could look like this:
-
-        <target name="-post-compile">
-            <obfuscate>
-                <fileset dir="${build.classes.dir}"/>
-            </obfuscate>
-        </target>
-
-    For list of available properties check the imported 
-    nbproject/build-impl.xml file. 
-
-
-    Another way to customize the build is by overriding existing main targets.
-    The targets of interest are: 
-
-      -init-macrodef-javac:     defines macro for javac compilation
-      -init-macrodef-junit:     defines macro for junit execution
-      -init-macrodef-debug:     defines macro for class debugging
-      -init-macrodef-java:      defines macro for class execution
-      -do-jar-with-manifest:    JAR building (if you are using a manifest)
-      -do-jar-without-manifest: JAR building (if you are not using a manifest)
-      run:                      execution of project 
-      -javadoc-build:           Javadoc generation
-      test-report:              JUnit report generation
-
-    An example of overriding the target for project execution could look like this:
-
-        <target name="run" depends="rt_issue-impl.jar">
-            <exec dir="bin" executable="launcher.exe">
-                <arg file="${dist.jar}"/>
-            </exec>
-        </target>
-
-    Notice that the overridden target depends on the jar target and not only on 
-    the compile target as the regular run target does. Again, for a list of available 
-    properties which you can use, check the target you are overriding in the
-    nbproject/build-impl.xml file. 
-
-    -->
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="rt_issue">
+    <property environment="env"/>
+    <property name="jar_swingworker.location" value="../jar_swingworker"/>
+    <property name="jar_mail.location" value="../jar_mail"/>
+    <property name="jar_rpc.location" value="../jar_rpc"/>
+    <property name="jar_jaf.location" value="../jar_jaf"/>
+    <property name="jar_jira.location" value="../jar_jira"/>
+    <property name="jar_jogl.location" value="../jar_jogl"/>
+    <property name="jar_apple.location" value="../jar_apple"/>
+    <property name="x_ide.location" value="../x_ide"/>
+    <property name="x_ide_private.location" value="../x_ide_private"/>
+    <property name="x_ide_stage.location" value="../x_ide_stage"/>
+    <property name="rt_foundation.location" value="../rt_foundation"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.5"/>
+    <property name="source" value="1.5"/>
+    <path id="rt_foundation.classpath">
+        <pathelement location="${rt_foundation.location}/bin"/>
+        <pathelement location="${jar_jogl.location}/lib/gluegen-rt.jar"/>
+        <pathelement location="${jar_jogl.location}/lib/jogl.jar"/>
+        <pathelement location="${jar_apple.location}/AppleJavaExtensions.jar"/>
+        <pathelement location="${jar_swingworker.location}/swing-worker-1.2.jar"/>
+    </path>
+    <path id="rt_issue.classpath">
+        <pathelement location="bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <pathelement location="${jar_swingworker.location}/swing-worker-1.2.jar"/>
+        <pathelement location="${jar_mail.location}/mail.jar"/>
+        <pathelement location="${jar_mail.location}/lib/smtp.jar"/>
+        <pathelement location="${jar_rpc.location}/xmlrpc-client-1.1.jar"/>
+        <pathelement location="${jar_jaf.location}/activation.jar"/>
+        <pathelement location="${jar_jira.location}/jira-soapclient-4.0-with-dependencies.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall">
+        <ant antfile="${rt_foundation.location}/build.xml" dir="${rt_foundation.location}" inheritAll="false" target="clean"/>
+    </target>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects">
+        <ant antfile="${rt_foundation.location}/build.xml" dir="${rt_foundation.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="rt_issue.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
+        <ant antfile="${x_ide.location}/build.xml" dir="${x_ide.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${x_ide.location}/build.xml" dir="${x_ide.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${x_ide_private.location}/build.xml" dir="${x_ide_private.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${x_ide_private.location}/build.xml" dir="${x_ide_private.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${x_ide_stage.location}/build.xml" dir="${x_ide_stage.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${x_ide_stage.location}/build.xml" dir="${x_ide_stage.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+    </target>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
 </project>
