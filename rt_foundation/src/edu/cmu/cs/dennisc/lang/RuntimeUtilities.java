@@ -59,10 +59,16 @@ class StreamHandler extends Thread {
  * @author Dennis Cosgrove
  */
 public class RuntimeUtilities {
-	public static int exec( java.io.File workingDirectory, String... cmds ) {
+	public static int exec( java.io.File workingDirectory, java.util.Map< String, String > environment, String... cmds ) {
 		ProcessBuilder processBuilder = new ProcessBuilder( cmds );
 		if( workingDirectory != null ) {
 			processBuilder.directory( workingDirectory );
+		}
+		if( environment != null ) {
+			java.util.Map< String, String > map = processBuilder.environment();
+			for( String key : environment.keySet() ) {
+				map.put( key, environment.get( key ) );
+			}
 		}
 		try {
 			Process process = processBuilder.start();
@@ -76,6 +82,9 @@ public class RuntimeUtilities {
 		} catch( InterruptedException ie ) {
 			throw new RuntimeException( ie );
 		}
+	}
+	public static int exec( java.io.File workingDirectory, String... cmds ) {
+		return exec( workingDirectory, null, cmds );
 	}
 	public static int exec( String... cmds ) {
 		return exec( null, cmds );

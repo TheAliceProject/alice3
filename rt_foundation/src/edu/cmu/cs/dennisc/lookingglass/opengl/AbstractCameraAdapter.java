@@ -89,6 +89,11 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 			rc.setViewportAndAddToClearRect( actualViewport );
 			sceneAdapter.renderScene( rc, this, m_backgroundAdapter );
 		}
+		for( edu.cmu.cs.dennisc.layer.Layer layer : m_element.postRenderLayers ) {
+			for( edu.cmu.cs.dennisc.layer.Graphic graphic : layer.getGraphics() ) {
+				
+			}
+		}
 	}
 	public void performPick( PickContext pc, PickParameters pickParameters, java.awt.Rectangle actualViewport, ConformanceTestResults conformanceTestResults ) {
 		SceneAdapter sceneAdapter = getSceneAdapter();
@@ -125,6 +130,8 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.background ) {
 			m_backgroundAdapter = AdapterFactory.getAdapterFor( m_element.background.getValue() );
+		} else if( property == m_element.postRenderLayers ) {
+			//pass
 		} else {
 			super.propertyChanged( property );
 		}
