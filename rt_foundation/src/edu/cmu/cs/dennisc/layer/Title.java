@@ -1,6 +1,7 @@
 package edu.cmu.cs.dennisc.layer;
 
 public abstract class Title extends ShapeEnclosedText {
+	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f getDefaultTextColor() {
 		return edu.cmu.cs.dennisc.color.Color4f.WHITE;
 	}
