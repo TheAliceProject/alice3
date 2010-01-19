@@ -21,22 +21,19 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package edu.cmu.cs.dennisc.scenegraph.event;
+package edu.cmu.cs.dennisc.scenegraph.graphics;
 
-/**
- * @author Dennis Cosgrove
- */
-public abstract class ChildEvent<P,C> extends edu.cmu.cs.dennisc.pattern.event.Event< P > {
-	private C m_child;
-	public ChildEvent( P source, C child ) {
-		super( source );
-		m_child = child;
-	}
-	public C getChild() {
-		return m_child;
+public abstract class Title extends ShapeEnclosedText {
+	@Override
+	protected edu.cmu.cs.dennisc.color.Color4f getDefaultTextColor() {
+		return edu.cmu.cs.dennisc.color.Color4f.WHITE;
 	}
 	@Override
-	public String toString() {
-		return getClass().getName() + "[source=" + source + ",child=" + m_child + "]";
+	protected edu.cmu.cs.dennisc.color.Color4f getDefaultFillColor() {
+		return edu.cmu.cs.dennisc.color.Color4f.BLACK;
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.color.Color4f getDefaultOutlineColor() {
+		return null;
 	}
 }

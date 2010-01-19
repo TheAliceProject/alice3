@@ -28,7 +28,7 @@ package edu.cmu.cs.dennisc.scenegraph;
  */
 public abstract class AbstractCamera extends Leaf {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty< Background > background = new edu.cmu.cs.dennisc.property.InstanceProperty< Background >( this, null );
-	public final edu.cmu.cs.dennisc.property.ListProperty< edu.cmu.cs.dennisc.layer.Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.ListProperty< edu.cmu.cs.dennisc.layer.Layer >( this );
+	public final edu.cmu.cs.dennisc.property.ListProperty< Layer > postRenderLayers = new edu.cmu.cs.dennisc.property.ListProperty< Layer >( this );
 
 	public java.awt.Point transformToAWT( java.awt.Point rv, edu.cmu.cs.dennisc.math.Vector4 xyzw, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
 		return transformToAWT( rv, xyzw, lookingGlass, this );

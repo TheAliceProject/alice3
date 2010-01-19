@@ -28,7 +28,7 @@ package edu.cmu.cs.dennisc.scenegraph;
  */
 public abstract class Composite extends Component {
 	private java.util.List< Component > m_children = new java.util.LinkedList< Component >();
-	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener > m_childrenListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener >();
+	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > m_childrenListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener >();
 
 	@Override
 	public void accept( edu.cmu.cs.dennisc.pattern.Visitor visitor ) {
@@ -70,10 +70,10 @@ public abstract class Composite extends Component {
 		synchronized( m_children ) {
 			m_children.add( child );
 		}
-		edu.cmu.cs.dennisc.scenegraph.event.ChildAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ChildAddedEvent( this, child );
+		edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent( this, child );
 		synchronized( m_childrenListeners ) {
-			for( edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener childrenListener : m_childrenListeners ) {
-				childrenListener.childAdded( e );
+			for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : m_childrenListeners ) {
+				childrenListener.componentAdded( e );
 			}
 		}
 		//todo: investigate
@@ -86,10 +86,10 @@ public abstract class Composite extends Component {
 		synchronized( m_children ) {
 			m_children.remove( child );
 		}
-		edu.cmu.cs.dennisc.scenegraph.event.ChildRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ChildRemovedEvent( this, child );
+		edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent( this, child );
 		synchronized( m_childrenListeners ) {
-			for( edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener childrenListener : m_childrenListeners ) {
-				childrenListener.childRemoved( e );
+			for( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener : m_childrenListeners ) {
+				childrenListener.componentRemoved( e );
 			}
 		}
 		//todo: investigate
@@ -131,19 +131,19 @@ public abstract class Composite extends Component {
 		return m_children;
 	}
 
-	public void addChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener childrenListener ) {
+	public void addChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
 		//System.err.println( "addChildrenListener: " + Thread.currentThread() );
 		synchronized( m_childrenListeners ) {
 			m_childrenListeners.add( childrenListener );
 		}
 	}
-	public void removeChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener childrenListener ) {
+	public void removeChildrenListener( edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener childrenListener ) {
 		//System.err.println( "removeChildrenListener: " + Thread.currentThread() );
 		synchronized( m_childrenListeners ) {
 			m_childrenListeners.remove( childrenListener );
 		}
 	}
-	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener > getChildrenListenerIterable() {
+	public Iterable< edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener > getChildrenListenerIterable() {
 		return m_childrenListeners;
 	}
 

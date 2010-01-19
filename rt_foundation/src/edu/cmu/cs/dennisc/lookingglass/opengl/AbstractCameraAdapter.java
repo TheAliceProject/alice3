@@ -30,7 +30,8 @@ import javax.media.opengl.GL;
  */
 public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.scenegraph.AbstractCamera > extends LeafAdapter< E > {
 	private BackgroundAdapter m_backgroundAdapter = null;
-
+	private LayerAdapter[] m_layerAdapters = null;
+	
 	private java.awt.Rectangle m_specifiedViewport = null;
 	private boolean m_isLetterboxedAsOpposedToDistorted = true;
 
@@ -81,17 +82,17 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 
 	public void performClearAndRenderOffscreen( RenderContext rc, int width, int height ) {
 		SceneAdapter sceneAdapter = getSceneAdapter();
+		java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), width, height );
 		if( sceneAdapter != null ) {
-			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), width, height );
 			rc.gl.glMatrixMode( GL.GL_PROJECTION );
 			rc.gl.glLoadIdentity();
 			setupProjection( rc, actualViewport );
 			rc.setViewportAndAddToClearRect( actualViewport );
 			sceneAdapter.renderScene( rc, this, m_backgroundAdapter );
 		}
-		for( edu.cmu.cs.dennisc.layer.Layer layer : m_element.postRenderLayers ) {
-			for( edu.cmu.cs.dennisc.layer.Graphic graphic : layer.getGraphics() ) {
-				
+		if( this.m_layerAdapters != null ) {
+			for( LayerAdapter layerAdapter : this.m_layerAdapters ) {
+				layerAdapter.render( rc, actualViewport, this.m_element );
 			}
 		}
 	}

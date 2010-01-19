@@ -182,6 +182,13 @@ public abstract class AdapterFactory {
 		return (TextureAdapter)getAdapterForElement( texture );
 	}
 
+	public static LayerAdapter getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Layer sgLayer ) {
+		return (LayerAdapter)getAdapterForElement( sgLayer );
+	}
+	public static GraphicAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Graphic > getAdapterFor( edu.cmu.cs.dennisc.scenegraph.Graphic sgGraphic ) {
+		return (GraphicAdapter< ? extends edu.cmu.cs.dennisc.scenegraph.Graphic >)getAdapterForElement( sgGraphic );
+	}
+	
 	public static <E extends AbstractElementAdapter> E[] getAdaptersFor( edu.cmu.cs.dennisc.pattern.AbstractElement[] sgElements, Class< ? extends E > componentType ) {
 		if( sgElements != null ) {
 			E[] proxies = (E[])java.lang.reflect.Array.newInstance( componentType, sgElements.length );

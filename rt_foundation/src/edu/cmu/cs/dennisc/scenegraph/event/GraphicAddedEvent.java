@@ -26,8 +26,8 @@ package edu.cmu.cs.dennisc.scenegraph.event;
 /**
  * @author Dennis Cosgrove
  */
-public class ChildRemovedEvent extends ChildEvent {
-	public ChildRemovedEvent( edu.cmu.cs.dennisc.scenegraph.Composite source, edu.cmu.cs.dennisc.scenegraph.Component child ) {
+public class GraphicAddedEvent extends GraphicEvent {
+	public GraphicAddedEvent( edu.cmu.cs.dennisc.scenegraph.Layer source, edu.cmu.cs.dennisc.scenegraph.Graphic child ) {
 		super( source, child );
 	}
 }

@@ -21,22 +21,11 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package edu.cmu.cs.dennisc.scenegraph.event;
+package edu.cmu.cs.dennisc.lookingglass.opengl;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ChildEvent<P,C> extends edu.cmu.cs.dennisc.pattern.event.Event< P > {
-	private C m_child;
-	public ChildEvent( P source, C child ) {
-		super( source );
-		m_child = child;
-	}
-	public C getChild() {
-		return m_child;
-	}
-	@Override
-	public String toString() {
-		return getClass().getName() + "[source=" + source + ",child=" + m_child + "]";
-	}
+public abstract class GraphicAdapter< E extends edu.cmu.cs.dennisc.scenegraph.Graphic > extends ElementAdapter< E > {
+	protected abstract void render( RenderContext rc, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, edu.cmu.cs.dennisc.scenegraph.Layer layer );
 }

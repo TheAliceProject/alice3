@@ -21,12 +21,24 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package edu.cmu.cs.dennisc.scenegraph.event;
+package edu.cmu.cs.dennisc.scenegraph;
 
-/**
- * @author Dennis Cosgrove
- */
-public interface ChildrenListener {
-    public void childAdded( ChildAddedEvent childrenEvent );
-    public void childRemoved( ChildRemovedEvent childrenEvent );
+public abstract class Graphic extends edu.cmu.cs.dennisc.scenegraph.Element {
+	private Layer layer;
+	public Layer getParent() {
+		return this.layer;
+	}
+	public void setParent( Layer parent ) {
+		if( this.layer != parent ) {
+			if( this.layer != null ) {
+				this.layer.removeGraphicAndFireListeners( this );
+			}
+			this.layer = parent;
+			if( this.layer != null ) {
+				this.layer.addGraphicAndFireListeners( this );
+			}
+//			fireAbsoluteTransformationChange();
+//			fireHierarchyChanged();
+		}
+	}
 }

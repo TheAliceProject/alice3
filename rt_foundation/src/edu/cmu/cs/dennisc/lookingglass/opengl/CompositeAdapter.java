@@ -55,12 +55,12 @@ public abstract class CompositeAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 		}
 	}
 
-	public static void handleChildAdded( edu.cmu.cs.dennisc.scenegraph.event.ChildAddedEvent e ) {
+	public static void handleChildAdded( edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e ) {
 		CompositeAdapter compositeAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > childAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		compositeAdapter.handleChildAdded( childAdapter );
 	}
-	public static void handleChildRemoved( edu.cmu.cs.dennisc.scenegraph.event.ChildRemovedEvent e ) {
+	public static void handleChildRemoved( edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e ) {
 		CompositeAdapter compositeAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > childAdapter = AdapterFactory.getAdapterFor( e.getChild() );
 		compositeAdapter.handleChildRemoved( childAdapter );

@@ -76,10 +76,10 @@ public abstract class ChangeHandler {
 			ComponentAdapter.handleAbsoluteTransformationChanged( absoluteTransformationEvent.getTypedSource() );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent ) {
 			ComponentAdapter.handleHierarchyChanged( (edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent)event );
-		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.ChildAddedEvent ) {
-			CompositeAdapter.handleChildAdded( (edu.cmu.cs.dennisc.scenegraph.event.ChildAddedEvent)event );
-		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.ChildRemovedEvent ) {
-			CompositeAdapter.handleChildRemoved( (edu.cmu.cs.dennisc.scenegraph.event.ChildRemovedEvent)event );
+		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent ) {
+			CompositeAdapter.handleChildAdded( (edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent)event );
+		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent ) {
+			CompositeAdapter.handleChildRemoved( (edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.texture.event.TextureEvent ) {
 			TextureAdapter.handleTextureChanged( (edu.cmu.cs.dennisc.texture.event.TextureEvent)event );
 		} else {
@@ -116,11 +116,11 @@ public abstract class ChangeHandler {
 		}
 	};
 
-	private static edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener s_childrenListener = new edu.cmu.cs.dennisc.scenegraph.event.ChildrenListener() {
-		public void childAdded( edu.cmu.cs.dennisc.scenegraph.event.ChildAddedEvent e ) {
+	private static edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener s_childrenListener = new edu.cmu.cs.dennisc.scenegraph.event.ComponentsListener() {
+		public void componentAdded( edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e ) {
 			handleOrBufferEvent( e );
 		}
-		public void childRemoved( edu.cmu.cs.dennisc.scenegraph.event.ChildRemovedEvent e ) {
+		public void componentRemoved( edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e ) {
 			handleOrBufferEvent( e );
 		}
 	};

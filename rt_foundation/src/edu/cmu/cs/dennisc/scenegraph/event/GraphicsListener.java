@@ -26,17 +26,7 @@ package edu.cmu.cs.dennisc.scenegraph.event;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ChildEvent<P,C> extends edu.cmu.cs.dennisc.pattern.event.Event< P > {
-	private C m_child;
-	public ChildEvent( P source, C child ) {
-		super( source );
-		m_child = child;
-	}
-	public C getChild() {
-		return m_child;
-	}
-	@Override
-	public String toString() {
-		return getClass().getName() + "[source=" + source + ",child=" + m_child + "]";
-	}
+public interface GraphicsListener {
+    public void graphicAdded( GraphicAddedEvent e );
+    public void graphicRemoved( GraphicRemovedEvent e );
 }
