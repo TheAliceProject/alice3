@@ -62,7 +62,7 @@ public abstract class Transformable extends AbstractTransformable {
 				//			float y = (float)( offsetAsSeenByViewport.y / offsetAsSeenByViewport.w );
 				
 				out_originOfTail.setLocation( p );
-				out_bodyConnectionLocationOfTail.setLocation( 300f, 100f );
+				out_bodyConnectionLocationOfTail.setLocation( 200f, 100f );
 				out_textBoundsOffset.setLocation( 0f, 0f );
 			}
 		};
