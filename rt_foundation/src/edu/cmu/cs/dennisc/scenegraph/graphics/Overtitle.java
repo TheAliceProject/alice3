@@ -20,20 +20,8 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.apis.moveandturn.graphic;
 
-/**
- * @author Dennis Cosgrove
- */
-public class WhisperBubble extends SpeechBubble {
-	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 2, java.awt.BasicStroke.CAP_BUTT, java.awt.BasicStroke.JOIN_ROUND, 0, new float[] { 8 }, 0 );
+package edu.cmu.cs.dennisc.scenegraph.graphics;
 
-	public WhisperBubble( String text, java.awt.Font font, java.awt.Color foregroundColor, java.awt.Color backgroundColor, java.awt.Color outlineColor, Originator originator ) {
-		super( text, font, foregroundColor, backgroundColor, outlineColor, originator );
-	}
-
-	@Override
-	protected java.awt.Stroke getStroke() {
-		return STROKE;
-	}
+public class Overtitle extends Title {
 }

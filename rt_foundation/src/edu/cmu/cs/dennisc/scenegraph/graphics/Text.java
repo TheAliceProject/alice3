@@ -23,10 +23,10 @@
 
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
-import edu.cmu.cs.dennisc.scenegraph.Graphic;
-
-public abstract class Text extends Graphic {
+public abstract class Text extends edu.cmu.cs.dennisc.scenegraph.Graphic {
 	public edu.cmu.cs.dennisc.property.StringProperty text = new edu.cmu.cs.dennisc.property.StringProperty( this, "" );
 	public edu.cmu.cs.dennisc.color.property.Color4fProperty textColor = new edu.cmu.cs.dennisc.color.property.Color4fProperty( this, this.getDefaultTextColor(), false );
+	public edu.cmu.cs.dennisc.property.InstanceProperty< java.awt.Font > font = new edu.cmu.cs.dennisc.property.InstanceProperty< java.awt.Font >( this, this.getDefaultFont() );
 	protected abstract edu.cmu.cs.dennisc.color.Color4f getDefaultTextColor();
+	protected abstract java.awt.Font getDefaultFont();
 }

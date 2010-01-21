@@ -82,17 +82,20 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 
 	public void performClearAndRenderOffscreen( RenderContext rc, int width, int height ) {
 		SceneAdapter sceneAdapter = getSceneAdapter();
-		java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), width, height );
 		if( sceneAdapter != null ) {
+			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), width, height );
 			rc.gl.glMatrixMode( GL.GL_PROJECTION );
 			rc.gl.glLoadIdentity();
 			setupProjection( rc, actualViewport );
 			rc.setViewportAndAddToClearRect( actualViewport );
 			sceneAdapter.renderScene( rc, this, m_backgroundAdapter );
 		}
+	}
+	public void postRender( RenderContext rc, int width, int height, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.lookingglass.Graphics2D g2 ) {
 		if( this.m_layerAdapters != null ) {
+			java.awt.Rectangle actualViewport = getActualViewport( new java.awt.Rectangle(), width, height );
 			for( LayerAdapter layerAdapter : this.m_layerAdapters ) {
-				layerAdapter.render( rc, actualViewport, this.m_element );
+				layerAdapter.render( g2, lookingGlass, actualViewport, this.m_element );
 			}
 		}
 	}
@@ -132,7 +135,7 @@ public abstract class AbstractCameraAdapter< E extends edu.cmu.cs.dennisc.sceneg
 		if( property == m_element.background ) {
 			m_backgroundAdapter = AdapterFactory.getAdapterFor( m_element.background.getValue() );
 		} else if( property == m_element.postRenderLayers ) {
-			//pass
+			m_layerAdapters = AdapterFactory.getAdaptersFor( m_element.postRenderLayers.getValue(), LayerAdapter.class );
 		} else {
 			super.propertyChanged( property );
 		}

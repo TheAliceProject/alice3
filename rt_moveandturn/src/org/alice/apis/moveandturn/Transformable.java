@@ -32,18 +32,19 @@ public abstract class Transformable extends AbstractTransformable {
 
 	private edu.cmu.cs.dennisc.scenegraph.Transformable m_sgTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 
-	private org.alice.apis.moveandturn.graphic.Originator m_originator = createOriginator();
+	private edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator m_originator = createOriginator();
 	
-	protected org.alice.apis.moveandturn.graphic.Originator createOriginator() {
-		return new org.alice.apis.moveandturn.graphic.Originator() {
-			public java.awt.geom.Point2D calculateOriginOfTail( org.alice.apis.moveandturn.graphic.Bubble bubble, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
+	protected edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator createOriginator() {
+		return new edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator() {
+			public void calculate( java.awt.geom.Point2D.Float out_originOfTail, java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail, java.awt.geom.Point2D.Float out_textBoundsOffset, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble,
+					edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.geom.Rectangle2D textBounds ) {
 				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
 				edu.cmu.cs.dennisc.math.AxisAlignedBox bb = Transformable.this.getAxisAlignedMinimumBoundingBox();
-				if( bubble instanceof org.alice.apis.moveandturn.graphic.SpeechBubble ) {
+				if( bubble instanceof edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble ) {
 					offsetAsSeenBySubject.x = ( bb.getXMinimum() + bb.getXMaximum() ) * 0.5;
 					offsetAsSeenBySubject.y = ( bb.getYMinimum() + bb.getYMaximum() ) * 0.75;
 					offsetAsSeenBySubject.z = bb.getZMinimum();
-				} else if( bubble instanceof org.alice.apis.moveandturn.graphic.ThoughtBubble ) {
+				} else if( bubble instanceof edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble ) {
 					offsetAsSeenBySubject.x = ( bb.getXMinimum() + bb.getXMaximum() ) * 0.5;
 					offsetAsSeenBySubject.y = bb.getYMaximum();
 					offsetAsSeenBySubject.z = ( bb.getZMinimum() + bb.getZMaximum() ) * 0.5;
@@ -53,19 +54,16 @@ public abstract class Transformable extends AbstractTransformable {
 					offsetAsSeenBySubject.z = ( bb.getZMinimum() + bb.getZMaximum() ) * 0.5;
 				}
 				offsetAsSeenBySubject.w = 1.0;
-
+	
 				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenByCamera = Transformable.this.getSGTransformable().transformTo_New( offsetAsSeenBySubject, sgCamera );
 				//			edu.cmu.cs.dennisc.math.Vector4d offsetAsSeenByViewport = m_camera.transformToViewport( m_lookingGlass, offsetAsSeenByCamera );
 				java.awt.Point p = sgCamera.transformToAWT_New( offsetAsSeenByCamera, lookingGlass );
 				//			float x = (float)( offsetAsSeenByViewport.x / offsetAsSeenByViewport.w );
 				//			float y = (float)( offsetAsSeenByViewport.y / offsetAsSeenByViewport.w );
-				return new java.awt.geom.Point2D.Float( p.x, p.y );
-			}
-			public java.awt.geom.Point2D calculateBodyConnectionLocationOfTail( org.alice.apis.moveandturn.graphic.Bubble bubble, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-				return new java.awt.geom.Point2D.Float( 200f, 100f );
-			}
-			public java.awt.geom.Point2D calculateTextBoundsOffset( org.alice.apis.moveandturn.graphic.Bubble bubble, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-				return new java.awt.geom.Point2D.Float( 0f, 0f );
+				
+				out_originOfTail.setLocation( p );
+				out_bodyConnectionLocationOfTail.setLocation( 300f, 100f );
+				out_textBoundsOffset.setLocation( 0f, 0f );
 			}
 		};
 	}
@@ -248,10 +246,10 @@ public abstract class Transformable extends AbstractTransformable {
 	
 	private org.alice.apis.moveandturn.Font DEFAULT_FONT = new org.alice.apis.moveandturn.Font().deriveScaledFont( 2.0f );
 	
-	protected void displayBubble( org.alice.apis.moveandturn.graphic.Bubble bubble, Number duration ) {
+	protected void displayBubble( edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble, Number duration ) {
 		SceneOwner owner = this.getOwner();
 		if( owner != null ) {
-			perform( new org.alice.apis.moveandturn.graphic.animation.BubbleAnimation( owner, bubble, 0.2, duration.doubleValue(), 0.2 ) );
+			perform( new org.alice.apis.moveandturn.graphic.animation.BubbleAnimation( this, 0.2, duration.doubleValue(), 0.2, bubble ) );
 		} else {
 			//todo
 			javax.swing.JOptionPane.showMessageDialog( null, "unable to display bubble" );
@@ -259,7 +257,14 @@ public abstract class Transformable extends AbstractTransformable {
 	}
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void say( String text, Number duration, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
-		displayBubble( new org.alice.apis.moveandturn.graphic.SayBubble( text, font.getAsAWTFont(), textColor.getInternal().getAsAWTColor(), bubbleFillColor.getInternal().getAsAWTColor(), bubbleOutlineColor.getInternal().getAsAWTColor(), m_originator ), duration );
+		edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble();
+		bubble.text.setValue(text);
+		bubble.font.setValue(font.getAsAWTFont());
+		bubble.textColor.setValue(textColor.getInternal());
+		bubble.fillColor.setValue(bubbleFillColor.getInternal());
+		bubble.outlineColor.setValue(bubbleOutlineColor.getInternal());
+		bubble.originator.setValue( m_originator );
+		displayBubble( bubble, duration );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void say( String text, Number duration, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor ) {
@@ -286,7 +291,14 @@ public abstract class Transformable extends AbstractTransformable {
 
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void think( String text, Number duration, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor, Color bubbleOutlineColor ) {
-		displayBubble( new org.alice.apis.moveandturn.graphic.ThoughtBubble( text, font.getAsAWTFont(), textColor.getInternal().getAsAWTColor(), bubbleFillColor.getInternal().getAsAWTColor(), bubbleOutlineColor.getInternal().getAsAWTColor(), m_originator ), duration );
+		edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble bubble = new edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble();
+		bubble.text.setValue(text);
+		bubble.font.setValue(font.getAsAWTFont());
+		bubble.textColor.setValue(textColor.getInternal());
+		bubble.fillColor.setValue(bubbleFillColor.getInternal());
+		bubble.outlineColor.setValue(bubbleOutlineColor.getInternal());
+		bubble.originator.setValue( m_originator );
+		displayBubble( bubble, duration );
 	}
 	@MethodTemplate( visibility=Visibility.CHAINED )
 	public void think( String text, Number duration, org.alice.apis.moveandturn.Font font, Color textColor, Color bubbleFillColor ) {

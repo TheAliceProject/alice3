@@ -28,41 +28,41 @@ package org.alice.apis.moveandturn;
  */
 public abstract class Program extends edu.cmu.cs.dennisc.animation.Program implements SceneOwner {
 	private Scene m_scene = null;
-	private java.util.List<org.alice.apis.moveandturn.graphic.Graphic> m_liveGraphics = new java.util.LinkedList<org.alice.apis.moveandturn.graphic.Graphic>();
-	private java.util.List<org.alice.apis.moveandturn.graphic.Graphic> m_finishedGraphics = new java.util.LinkedList<org.alice.apis.moveandturn.graphic.Graphic>();
+//	private java.util.List<org.alice.apis.moveandturn.graphic.Graphic> m_liveGraphics = new java.util.LinkedList<org.alice.apis.moveandturn.graphic.Graphic>();
+//	private java.util.List<org.alice.apis.moveandturn.graphic.Graphic> m_finishedGraphics = new java.util.LinkedList<org.alice.apis.moveandturn.graphic.Graphic>();
 	private double m_simulationSpeedFactor = 1;
 	private boolean m_isPreInitialized = false;
 
-	private edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener m_lookingGlassListener = new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter() {
-		@Override
-		public void rendered( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent e ) {
-			super.rendered( e );
-			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2 = e.getGraphics2D();
-
-			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass = e.getTypedSource();
-			if( lookingGlass.getCameraCount() > 0 ) {
-				edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
-				assert sgCamera != null;
-				synchronized( m_liveGraphics ) {
-					for( org.alice.apis.moveandturn.graphic.Graphic graphic : m_liveGraphics ) {
-						graphic.paint( g2, lookingGlass, sgCamera );
-					}
-				}
-			}
-			synchronized( m_finishedGraphics ) {
-				for( org.alice.apis.moveandturn.graphic.Graphic graphic : m_finishedGraphics ) {
-					graphic.forgetIfNecessary( g2 );
-				}
-				m_finishedGraphics.clear();
-			}
-		}
-	};
+//	private edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener m_lookingGlassListener = new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassAdapter() {
+//		@Override
+//		public void rendered( edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent e ) {
+//			super.rendered( e );
+//			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2 = e.getGraphics2D();
+//
+//			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass = e.getTypedSource();
+//			if( lookingGlass.getCameraCount() > 0 ) {
+//				edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = lookingGlass.getCameraAt( 0 );
+//				assert sgCamera != null;
+//				synchronized( m_liveGraphics ) {
+//					for( org.alice.apis.moveandturn.graphic.Graphic graphic : m_liveGraphics ) {
+//						graphic.paint( g2, lookingGlass, sgCamera );
+//					}
+//				}
+//			}
+//			synchronized( m_finishedGraphics ) {
+//				for( org.alice.apis.moveandturn.graphic.Graphic graphic : m_finishedGraphics ) {
+//					graphic.forgetIfNecessary( g2 );
+//				}
+//				m_finishedGraphics.clear();
+//			}
+//		}
+//	};
 	
 	@Override
 	protected void preInitialize() {
 		super.preInitialize();
 		m_simulationSpeedFactor = Double.POSITIVE_INFINITY;
-		getOnscreenLookingGlass().addLookingGlassListener( m_lookingGlassListener );
+//		getOnscreenLookingGlass().addLookingGlassListener( m_lookingGlassListener );
 		m_isPreInitialized = true;
 		if( m_scene != null ) {
 			m_scene.setOwner( this );
@@ -83,19 +83,19 @@ public abstract class Program extends edu.cmu.cs.dennisc.animation.Program imple
 	}
 
 	
-	public void addGraphicToOverlay( org.alice.apis.moveandturn.graphic.Graphic graphic ) {
-		synchronized( m_liveGraphics ) {
-			m_liveGraphics.add( graphic );
-		}
-	}
-	public void removeGraphicFromOverlay( org.alice.apis.moveandturn.graphic.Graphic graphic ) {
-		synchronized( m_liveGraphics ) {
-			m_liveGraphics.remove( graphic );
-		}
-		synchronized( m_finishedGraphics ) {
-			m_finishedGraphics.add( graphic );
-		}
-	}
+//	public void addGraphicToOverlay( org.alice.apis.moveandturn.graphic.Graphic graphic ) {
+//		synchronized( m_liveGraphics ) {
+//			m_liveGraphics.add( graphic );
+//		}
+//	}
+//	public void removeGraphicFromOverlay( org.alice.apis.moveandturn.graphic.Graphic graphic ) {
+//		synchronized( m_liveGraphics ) {
+//			m_liveGraphics.remove( graphic );
+//		}
+//		synchronized( m_finishedGraphics ) {
+//			m_finishedGraphics.add( graphic );
+//		}
+//	}
 
 	//todo
 	public Scene getScene() {

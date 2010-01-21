@@ -43,34 +43,28 @@ public abstract class CompositeAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 		}
 	}
 
-	public void handleChildAdded( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > childAdapter ) {
+	public void handleComponentAdded( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > childAdapter ) {
 		synchronized( m_componentAdapters ) {
 			m_componentAdapters.add( childAdapter );
 		}
 		// PrintUtilities.outln( getSceneAdapter(), " " );
 	}
-	public void handleChildRemoved( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > childAdapter ) {
+	public void handleComponentRemoved( ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > childAdapter ) {
 		synchronized( m_componentAdapters ) {
 			m_componentAdapters.remove( childAdapter );
 		}
 	}
 
-	public static void handleChildAdded( edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e ) {
+	public static void handleComponentAdded( edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent e ) {
 		CompositeAdapter compositeAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > childAdapter = AdapterFactory.getAdapterFor( e.getChild() );
-		compositeAdapter.handleChildAdded( childAdapter );
+		compositeAdapter.handleComponentAdded( childAdapter );
 	}
-	public static void handleChildRemoved( edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e ) {
+	public static void handleComponentRemoved( edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent e ) {
 		CompositeAdapter compositeAdapter = AdapterFactory.getAdapterFor( e.getTypedSource() );
 		ComponentAdapter<? extends edu.cmu.cs.dennisc.scenegraph.Component > childAdapter = AdapterFactory.getAdapterFor( e.getChild() );
-		compositeAdapter.handleChildRemoved( childAdapter );
+		compositeAdapter.handleComponentRemoved( childAdapter );
 	}
-
-	//	Iterable<ComponentAdapter> accessChildAdapters() {
-	//		synchronized( m_children ) {
-	//			return m_children;
-	//		}
-	//	}
 
 	@Override
 	public void initialize( E sgE ) {
@@ -78,7 +72,7 @@ public abstract class CompositeAdapter< E extends edu.cmu.cs.dennisc.scenegraph.
 		Iterable< edu.cmu.cs.dennisc.scenegraph.Component > sgComponents = m_element.accessComponents();
 		synchronized( sgComponents ) {
 			for( edu.cmu.cs.dennisc.scenegraph.Component sgComponent : sgComponents ) {
-				handleChildAdded( AdapterFactory.getAdapterFor( sgComponent ) );
+				handleComponentAdded( AdapterFactory.getAdapterFor( sgComponent ) );
 			}
 		}
 	}

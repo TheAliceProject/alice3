@@ -20,12 +20,19 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.apis.moveandturn.graphic;
+package org.alice.apis.moveandturn.graphic.animation;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Graphic {
-	public void paint( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera );
-	public void forgetIfNecessary( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2 );
+public abstract class DurationOverlayGraphicAnimation extends OverlayGraphicAnimation {
+	private double m_duration;
+	public DurationOverlayGraphicAnimation( org.alice.apis.moveandturn.Composite composite, double duration ) {
+		super( composite );
+		m_duration = duration;
+	}
+	@Override
+	protected double update(double tDeltaSincePrologue, double tDeltaSinceLastUpdate, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver) {
+		return m_duration - tDeltaSincePrologue;
+	}
 }

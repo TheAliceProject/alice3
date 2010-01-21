@@ -77,4 +77,15 @@ public abstract class AbstractCamera extends Transformable {
 		assert lg != null;
 		return lg.getActualProjectionMatrix( getSGCamera() );
 	}
+	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
+	public edu.cmu.cs.dennisc.scenegraph.Layer getPostRenderLayer() {
+		edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera = this.getSGCamera();
+		if( sgCamera.postRenderLayers.getLength() == 0 ) {
+			edu.cmu.cs.dennisc.scenegraph.Layer[] layers = {
+				new edu.cmu.cs.dennisc.scenegraph.Layer()
+			};
+			sgCamera.postRenderLayers.setValue( layers );
+		}
+		return sgCamera.postRenderLayers.getValue()[ 0 ];
+	}
 }

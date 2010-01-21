@@ -26,20 +26,27 @@ package org.alice.apis.moveandturn.graphic.animation;
  * @author Dennis Cosgrove
  */
 public abstract class OverlayGraphicAnimation extends edu.cmu.cs.dennisc.animation.AbstractAnimation {
-	private org.alice.apis.moveandturn.SceneOwner m_owner;
-	public OverlayGraphicAnimation( org.alice.apis.moveandturn.SceneOwner owner ) {
-		assert owner != null;
-		m_owner = owner;
+	private org.alice.apis.moveandturn.Composite m_composite;
+	private edu.cmu.cs.dennisc.scenegraph.Layer m_sgLayer;
+	private edu.cmu.cs.dennisc.scenegraph.Graphic m_sgGraphic;
+	public OverlayGraphicAnimation( org.alice.apis.moveandturn.Composite composite ) {
+		assert composite != null;
+		m_composite = composite;
 	}
 	
-	protected abstract org.alice.apis.moveandturn.graphic.Graphic getOverlayGraphic();
+	protected abstract edu.cmu.cs.dennisc.scenegraph.Graphic getSGGraphic();
 	
 	@Override
 	protected void prologue() {
-		m_owner.addGraphicToOverlay( getOverlayGraphic() );
+		org.alice.apis.moveandturn.AbstractCamera camera = m_composite.findFirstCamera();
+		m_sgLayer = camera.getPostRenderLayer();
+		m_sgGraphic = this.getSGGraphic();
+		assert m_sgLayer != null;
+		assert m_sgGraphic != null;
+		m_sgGraphic.setParent( m_sgLayer );
 	}
 	@Override
 	protected void epilogue() {
-		m_owner.removeGraphicFromOverlay( getOverlayGraphic() );
+		m_sgGraphic.setParent( null );
 	}
 }

@@ -34,6 +34,10 @@ public abstract class Title extends ShapeEnclosedText {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f getDefaultOutlineColor() {
-		return null;
+		return edu.cmu.cs.dennisc.color.Color4f.createNaN();
+	}
+	@Override
+	protected java.awt.Font getDefaultFont() {
+		return new java.awt.Font( null, java.awt.Font.PLAIN, 24 );
 	}
 }

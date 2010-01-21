@@ -77,9 +77,13 @@ public abstract class ChangeHandler {
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent ) {
 			ComponentAdapter.handleHierarchyChanged( (edu.cmu.cs.dennisc.scenegraph.event.HierarchyEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent ) {
-			CompositeAdapter.handleChildAdded( (edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent)event );
+			CompositeAdapter.handleComponentAdded( (edu.cmu.cs.dennisc.scenegraph.event.ComponentAddedEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent ) {
-			CompositeAdapter.handleChildRemoved( (edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent)event );
+			CompositeAdapter.handleComponentRemoved( (edu.cmu.cs.dennisc.scenegraph.event.ComponentRemovedEvent)event );
+		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent ) {
+			LayerAdapter.handleGraphicAdded( (edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent)event );
+		} else if( event instanceof edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent ) {
+			LayerAdapter.handleGraphicRemoved( (edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent)event );
 		} else if( event instanceof edu.cmu.cs.dennisc.texture.event.TextureEvent ) {
 			TextureAdapter.handleTextureChanged( (edu.cmu.cs.dennisc.texture.event.TextureEvent)event );
 		} else {
@@ -124,6 +128,14 @@ public abstract class ChangeHandler {
 			handleOrBufferEvent( e );
 		}
 	};
+	private static edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener s_graphicsListener = new edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener() {
+		public void graphicAdded( edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e ) {
+			handleOrBufferEvent( e );
+		}
+		public void graphicRemoved( edu.cmu.cs.dennisc.scenegraph.event.GraphicRemovedEvent e ) {
+			handleOrBufferEvent( e );
+		}
+	};
 	private static edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener s_absoluteTransformationListener = new edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener() {
 		public void absoluteTransformationChanged( edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent e ) {
 			handleOrBufferEvent( e );
@@ -157,6 +169,8 @@ public abstract class ChangeHandler {
 				if( element instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 					((edu.cmu.cs.dennisc.scenegraph.Composite)element).addChildrenListener( s_childrenListener );
 				}
+			} else if( element instanceof edu.cmu.cs.dennisc.scenegraph.Layer ) {
+				((edu.cmu.cs.dennisc.scenegraph.Layer)element).addGraphicsListener( s_graphicsListener );
 			}
 		} else if( element instanceof edu.cmu.cs.dennisc.texture.Texture ) {
 			((edu.cmu.cs.dennisc.texture.Texture)element).addTextureListener( s_textureListener );
@@ -172,6 +186,8 @@ public abstract class ChangeHandler {
 				if( element instanceof edu.cmu.cs.dennisc.scenegraph.Composite ) {
 					((edu.cmu.cs.dennisc.scenegraph.Composite)element).removeChildrenListener( s_childrenListener );
 				}
+			} else if( element instanceof edu.cmu.cs.dennisc.scenegraph.Layer ) {
+				((edu.cmu.cs.dennisc.scenegraph.Layer)element).removeGraphicsListener( s_graphicsListener );
 			}
 		} else if( element instanceof edu.cmu.cs.dennisc.texture.Texture ) {
 			((edu.cmu.cs.dennisc.texture.Texture)element).removeTextureListener( s_textureListener );

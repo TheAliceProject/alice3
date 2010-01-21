@@ -235,6 +235,15 @@ public abstract class Composite extends Element implements ReferenceFrame {
 	}
 	public abstract Scene getScene();
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
+	public final AbstractCamera findFirstCamera() {
+		Scene scene = this.getScene();
+		if( scene != null ) {
+			return scene.findFirstMatch( AbstractCamera.class );
+		} else {
+			return null;
+		}
+	}
+	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public abstract SceneOwner getOwner();
 	@MethodTemplate(visibility = Visibility.TUCKED_AWAY)
 	public edu.cmu.cs.dennisc.lookingglass.LookingGlass getLookingGlass() {

@@ -23,11 +23,6 @@
 
 package edu.cmu.cs.dennisc.scenegraph;
 
-import javax.media.opengl.GL;
-
-import edu.cmu.cs.dennisc.lookingglass.opengl.RenderContext;
-import edu.cmu.cs.dennisc.lookingglass.opengl.SceneAdapter;
-
 public class Layer extends Element {
 	private java.util.List< Graphic > graphics = java.util.Collections.synchronizedList( new java.util.LinkedList< Graphic >() );
 	private java.util.List< edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener > graphicsListeners = java.util.Collections.synchronizedList( new java.util.LinkedList< edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener >() );
@@ -45,6 +40,13 @@ public class Layer extends Element {
 		return this.graphics;
 	}
 	
+	public void addGraphicsListener( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l ) {
+		this.graphicsListeners.add( l );
+	}
+	public void removeGraphicsListener( edu.cmu.cs.dennisc.scenegraph.event.GraphicsListener l ) {
+		this.graphicsListeners.remove( l );
+	}
+
 	/*package-private*/ void addGraphicAndFireListeners( Graphic graphic ) {
 		this.graphics.add( graphic );
 		edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent e = new edu.cmu.cs.dennisc.scenegraph.event.GraphicAddedEvent( this, graphic );

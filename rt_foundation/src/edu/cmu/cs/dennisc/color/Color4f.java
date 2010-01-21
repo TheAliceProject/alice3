@@ -114,7 +114,11 @@ public class Color4f implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecod
 	}
 	
 	public java.awt.Color getAsAWTColor() {
-		return new java.awt.Color( red, green, blue, alpha );
+		if( this.isNaN() ) {
+			return null;
+		} else {
+			return new java.awt.Color( red, green, blue, alpha );
+		}
 	}
 	public float[] getAsArray( float[] rv ) {
 		rv[ 0 ] = red;

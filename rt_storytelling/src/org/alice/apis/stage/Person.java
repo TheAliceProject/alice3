@@ -32,16 +32,17 @@ public abstract class Person extends Model {
 	
 	//todo: remove when bounding box works
 	@Override
-	protected org.alice.apis.moveandturn.graphic.Originator createOriginator() {
-		return new org.alice.apis.moveandturn.graphic.Originator() {
-			public java.awt.geom.Point2D calculateOriginOfTail( org.alice.apis.moveandturn.graphic.Bubble bubble, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
+	protected edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator createOriginator() {
+		return new edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator() {
+			public void calculate( java.awt.geom.Point2D.Float out_originOfTail, java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail, java.awt.geom.Point2D.Float out_textBoundsOffset, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble,
+					edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.geom.Rectangle2D textBounds ) {
 				double height = Person.this.getHeight();
 				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
-				if( bubble instanceof org.alice.apis.moveandturn.graphic.SpeechBubble ) {
+				if( bubble instanceof edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble ) {
 					offsetAsSeenBySubject.x = 0.0;
 					offsetAsSeenBySubject.y = height*0.9;
 					offsetAsSeenBySubject.z = -0.25;
-				} else if( bubble instanceof org.alice.apis.moveandturn.graphic.ThoughtBubble ) {
+				} else if( bubble instanceof edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble ) {
 					offsetAsSeenBySubject.x = 0.0;
 					offsetAsSeenBySubject.y = height*1.1;
 					offsetAsSeenBySubject.z = 0.0;
@@ -56,17 +57,14 @@ public abstract class Person extends Model {
 				offsetAsSeenBySubject.w = 1.0;
 
 				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenByCamera = Person.this.getSGTransformable().transformTo_New( offsetAsSeenBySubject, sgCamera );
-				//			edu.cmu.cs.dennisc.math.Vector4d offsetAsSeenByViewport = m_camera.transformToViewport( m_lookingGlass, offsetAsSeenByCamera );
+				
 				java.awt.Point p = sgCamera.transformToAWT_New( offsetAsSeenByCamera, lookingGlass );
 				//			float x = (float)( offsetAsSeenByViewport.x / offsetAsSeenByViewport.w );
 				//			float y = (float)( offsetAsSeenByViewport.y / offsetAsSeenByViewport.w );
-				return new java.awt.geom.Point2D.Float( p.x, p.y );
-			}
-			public java.awt.geom.Point2D calculateBodyConnectionLocationOfTail( org.alice.apis.moveandturn.graphic.Bubble bubble, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-				return new java.awt.geom.Point2D.Float( 300f, 100f );
-			}
-			public java.awt.geom.Point2D calculateTextBoundsOffset( org.alice.apis.moveandturn.graphic.Bubble bubble, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass ) {
-				return new java.awt.geom.Point2D.Float( 0f, 0f );
+				
+				out_originOfTail.setLocation( p );
+				out_bodyConnectionLocationOfTail.setLocation( 300f, 100f );
+				out_textBoundsOffset.setLocation( 0f, 0f );
 			}
 		};
 	}

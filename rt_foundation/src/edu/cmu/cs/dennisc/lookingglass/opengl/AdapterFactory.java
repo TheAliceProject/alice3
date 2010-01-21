@@ -42,8 +42,10 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
 public abstract class AdapterFactory {
 	private static java.util.Map< edu.cmu.cs.dennisc.pattern.AbstractElement, AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >> s_elementToAdapterMap = new java.util.HashMap< edu.cmu.cs.dennisc.pattern.AbstractElement, AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >>();
 	private static java.util.Map< Class< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >, Class< ? extends AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >>> s_classToAdapterClassMap = new java.util.HashMap< Class< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >, Class< ? extends AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >>>();
-	private static final String RENDERER_PACKAGE_NAME = ElementAdapter.class.getPackage().getName();
 	private static final String SCENEGRAPH_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.Element.class.getPackage().getName();
+	private static final String RENDERER_PACKAGE_NAME = ElementAdapter.class.getPackage().getName();
+	private static final String SCENEGRAPH_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.scenegraph.graphics.Text.class.getPackage().getName();
+	private static final String RENDERER_GRAPHICS_PACKAGE_NAME = edu.cmu.cs.dennisc.lookingglass.opengl.graphics.TextAdapter.class.getPackage().getName();
 
 	static {
 		register( edu.cmu.cs.dennisc.texture.BufferedImageTexture.class, BufferedImageTextureAdapter.class );
@@ -58,18 +60,23 @@ public abstract class AdapterFactory {
 		if( cls != null ) {
 			//pass
 		} else {
+			StringBuffer sb = new StringBuffer();
 			while( sgClass != null ) {
 				Package sgPackage = sgClass.getPackage();
 				if( sgPackage != null && sgPackage.getName().equals( SCENEGRAPH_PACKAGE_NAME ) ) {
+					sb.append( RENDERER_PACKAGE_NAME );
 					break;
 				} else if( sgClass == edu.cmu.cs.dennisc.texture.CustomTexture.class ) {
+					sb.append( RENDERER_PACKAGE_NAME );
+					break;
+				} else if( sgPackage != null && sgPackage.getName().equals( SCENEGRAPH_GRAPHICS_PACKAGE_NAME ) ) {
+					sb.append( RENDERER_GRAPHICS_PACKAGE_NAME );
 					break;
 				} else {
 					sgClass = sgClass.getSuperclass();
 				}
 			}
 			assert sgClass != null;
-			StringBuffer sb = new StringBuffer( RENDERER_PACKAGE_NAME );
 			sb.append( '.' );
 			sb.append( sgClass.getSimpleName() );
 			sb.append( "Adapter" );

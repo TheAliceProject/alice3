@@ -24,6 +24,22 @@
 package edu.cmu.cs.dennisc.scenegraph.graphics;
 
 public abstract class Bubble extends ShapeEnclosedText {
+	public interface Originator {
+		public void calculate(
+				java.awt.geom.Point2D.Float out_originOfTail,
+				java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail,
+				java.awt.geom.Point2D.Float out_textBoundsOffset,
+				Bubble bubble, 
+				edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
+				java.awt.Rectangle actualViewport, 
+				edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
+				java.awt.geom.Rectangle2D textBounds
+		);
+	}
+	public edu.cmu.cs.dennisc.property.InstanceProperty<Originator> originator = new edu.cmu.cs.dennisc.property.InstanceProperty<Originator>( this, null );
+	//todo: better name
+	public edu.cmu.cs.dennisc.property.DoubleProperty portion = new edu.cmu.cs.dennisc.property.DoubleProperty( this, 0.0 );
+	
 	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f getDefaultTextColor() {
 		return edu.cmu.cs.dennisc.color.Color4f.BLACK;
@@ -35,5 +51,9 @@ public abstract class Bubble extends ShapeEnclosedText {
 	@Override
 	protected edu.cmu.cs.dennisc.color.Color4f getDefaultOutlineColor() {
 		return edu.cmu.cs.dennisc.color.Color4f.BLACK;
+	}
+	@Override
+	protected java.awt.Font getDefaultFont() {
+		return new java.awt.Font( null, java.awt.Font.PLAIN, 12 );
 	}
 }
