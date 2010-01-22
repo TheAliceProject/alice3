@@ -732,8 +732,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 	@Override
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
-		this.program.getOnscreenLookingGlass().setRenderingEnabled( isRenderingEnabled );
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignoring: setRenderingEnabled", isRenderingEnabled );
+		//this.program.getOnscreenLookingGlass().setRenderingEnabled( isRenderingEnabled );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignoring: setRenderingEnabled", isRenderingEnabled );
 	}
 
 //	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
