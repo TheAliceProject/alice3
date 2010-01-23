@@ -263,8 +263,21 @@ public class ThoughtBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scen
 	}
 
 	@Override
-	protected void render( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, java.lang.String text, java.awt.Font font, java.awt.geom.Rectangle2D textBounds,
-			java.awt.Color textColor, java.awt.Color fillColor, java.awt.Color outlineColor, java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Point2D.Float bodyConnectionLocationOfTail, java.awt.geom.Point2D.Float textBoundsOffset, double portion ) {
+	protected void render( 
+			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, 
+			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
+			java.awt.Rectangle actualViewport, 
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
+			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
+			java.awt.Font font, 
+			java.awt.Color textColor, 
+			java.awt.Color fillColor, 
+			java.awt.Color outlineColor,
+			java.awt.geom.Point2D.Float originOfTail,
+			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
+			java.awt.geom.Point2D.Float textBoundsOffset,
+			double portion,
+			double widthGuide ) {
 		java.awt.Stroke stroke = g2.getStroke();
 		g2.setStroke( STROKE );
 
@@ -293,7 +306,7 @@ public class ThoughtBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scen
 				//pass
 			} else {
 				m_bumpyBubble = new BumpyBubble();
-				m_bumpyBubble.setMessage( text );
+				m_bumpyBubble.setMessage( multilineText.getText() );
 				m_bumpyBubble.setFont( font );
 				m_bumpyBubble.initialize( g2 );
 				m_bumpyBubble.applyTranslation( bodyConnectionLocationOfTail.getX()+textBoundsOffset.getX(), bodyConnectionLocationOfTail.getY()+textBoundsOffset.getY() );

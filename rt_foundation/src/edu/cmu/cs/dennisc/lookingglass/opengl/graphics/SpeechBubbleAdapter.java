@@ -24,10 +24,32 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 	
 
 	@Override
-	protected void render( edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, java.lang.String text, java.awt.Font font, java.awt.geom.Rectangle2D textBounds,
-			java.awt.Color textColor, java.awt.Color fillColor, java.awt.Color outlineColor, java.awt.geom.Point2D.Float originOfTail, java.awt.geom.Point2D.Float bodyConnectionLocationOfTail, java.awt.geom.Point2D.Float textBoundsOffset, double portion ) {
+	protected void render( 
+			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, 
+			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
+			java.awt.Rectangle actualViewport, 
+			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
+			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
+			java.awt.Font font, 
+			java.awt.Color textColor, 
+			java.awt.Color fillColor, 
+			java.awt.Color outlineColor,
+			java.awt.geom.Point2D.Float originOfTail,
+			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
+			java.awt.geom.Point2D.Float textBoundsOffset,
+			double portion,
+			double widthGuide ) {
 		assert originOfTail != null;
 		assert bodyConnectionLocationOfTail != null;
+		
+		g2.setFont( font );
+		java.awt.geom.Dimension2D textSize = multilineText.getDimension( g2, widthGuide );
+		java.awt.geom.Rectangle2D textBounds = new java.awt.geom.Rectangle2D.Double( 
+				textBoundsOffset.x, 
+				textBoundsOffset.y, 
+				textSize.getWidth(), 
+				textSize.getHeight() );
+
 		
 //		java.awt.Stroke stroke = g2.getStroke();
 //		g2.setStroke( getStroke() );
@@ -80,10 +102,17 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 		if( portion < 1.0 ) {
 			//pass
 		} else {
-			int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );
-			int yPixel = (int)( bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - 10 );
-			g2.setColor( textColor );
-			g2.drawString( text, xPixel, yPixel );
+			g2.setFont( font );
+			
+			double xT = bodyConnectionLocationOfTail.getX();
+			double yT = bodyConnectionLocationOfTail.getY() - textBounds.getHeight();
+			g2.translate( xT, yT );
+			multilineText.paint( g2, widthGuide, edu.cmu.cs.dennisc.awt.MultilineText.Alignment.LEADING, textBounds );
+			g2.translate( -xT, -yT );
+//			int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );
+//			int yPixel = (int)( bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - 10 );
+//			g2.setColor( textColor );
+//			g2.drawString( text, xPixel, yPixel );
 		}
 
 //		g2.setStroke( stroke );

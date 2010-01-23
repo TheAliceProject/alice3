@@ -33,7 +33,7 @@ public abstract class Bubble extends ShapeEnclosedText {
 				edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
 				java.awt.Rectangle actualViewport, 
 				edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
-				java.awt.geom.Rectangle2D textBounds
+				java.awt.geom.Dimension2D textSize
 		);
 	}
 	public edu.cmu.cs.dennisc.property.InstanceProperty<Originator> originator = new edu.cmu.cs.dennisc.property.InstanceProperty<Originator>( this, null );

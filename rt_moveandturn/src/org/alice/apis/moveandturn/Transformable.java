@@ -36,8 +36,16 @@ public abstract class Transformable extends AbstractTransformable {
 	
 	protected edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator createOriginator() {
 		return new edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator() {
-			public void calculate( java.awt.geom.Point2D.Float out_originOfTail, java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail, java.awt.geom.Point2D.Float out_textBoundsOffset, edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble,
-					edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, java.awt.Rectangle actualViewport, edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, java.awt.geom.Rectangle2D textBounds ) {
+			public void calculate( 
+					java.awt.geom.Point2D.Float out_originOfTail, 
+					java.awt.geom.Point2D.Float out_bodyConnectionLocationOfTail, 
+					java.awt.geom.Point2D.Float out_textBoundsOffset, 
+					edu.cmu.cs.dennisc.scenegraph.graphics.Bubble bubble,
+					edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
+					java.awt.Rectangle actualViewport, 
+					edu.cmu.cs.dennisc.scenegraph.AbstractCamera sgCamera, 
+					java.awt.geom.Dimension2D textSize 
+				) {
 				edu.cmu.cs.dennisc.math.Vector4 offsetAsSeenBySubject = new edu.cmu.cs.dennisc.math.Vector4();
 				edu.cmu.cs.dennisc.math.AxisAlignedBox bb = Transformable.this.getAxisAlignedMinimumBoundingBox();
 				if( bubble instanceof edu.cmu.cs.dennisc.scenegraph.graphics.SpeechBubble ) {
