@@ -31,47 +31,62 @@ public class MultilineText {
 		CENTER,
 		TRAILING
 	}
+	class Line {
+		private String paragraph;
+		private java.awt.font.TextLayout textLayout;
+		private int startIndex;
+		private int endIndex;
+		public Line( String paragraph, java.awt.font.TextLayout textLayout, int startIndex, int endIndex ) {
+			this.paragraph = paragraph;
+			this.textLayout = textLayout;
+			this.startIndex = startIndex;
+			this.endIndex = endIndex;
+		}
+		public void draw( java.awt.Graphics2D g2, float x, float y ) {
+			g2.drawString( this.paragraph.substring( this.startIndex, this.endIndex ), x, y );
+		}
+	}
+
 	private String text;
 	private String[] paragraphs;
 	private java.awt.FontMetrics fm;
 	private double widthGuide;
-	private java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, java.awt.geom.Rectangle2D > > lineRectPairs;
+	private java.util.List< Line > lines;
 	private java.awt.geom.Dimension2D aggregateSize;
 	public MultilineText( String text ) {
 		assert text != null;
 		this.text = text;
-		this.paragraphs = this.text.split( "\n" );
+		this.paragraphs = this.text.split( "\r\n|\r|\n" );
 	}
 	
 	public String getText() {
 		return this.text;
 	}
-	private static float getLineSpacing( String line, java.awt.Graphics g, java.awt.FontMetrics fm ) {
-		java.awt.font.LineMetrics lm = fm.getLineMetrics( line, g );
-		return lm.getLeading();
-	}
 	private void updateBoundsIfNecessary( java.awt.Graphics g, double widthGuide ) {
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		java.awt.font.FontRenderContext frc = g2.getFontRenderContext();
 		java.awt.FontMetrics fm = g.getFontMetrics();
-		if( this.lineRectPairs == null || this.aggregateSize == null || this.fm != fm || this.widthGuide != widthGuide ) {
-			this.lineRectPairs = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.Tuple2< String, java.awt.geom.Rectangle2D > >();
+		if( this.lines == null || this.aggregateSize == null || this.fm != fm || this.widthGuide != widthGuide ) {
+			this.lines = new java.util.LinkedList< Line >();
 			for( String paragraph : paragraphs ) {
-				java.awt.geom.Rectangle2D bounds = null;
-				int n = paragraph.length();
-//				while( n>0 ) {
-					bounds = fm.getStringBounds( paragraph, 0, n, g );
-//					if( bounds.getWidth() < widthMax ) {
-//						break;
-//					}
-//				}
-					this.lineRectPairs.add( new edu.cmu.cs.dennisc.pattern.Tuple2< String, java.awt.geom.Rectangle2D >( paragraph, bounds ) );
+				java.text.AttributedString as = new java.text.AttributedString( paragraph );
+				as.addAttribute( java.awt.font.TextAttribute.FONT, g.getFont() );
+				java.text.AttributedCharacterIterator aci = as.getIterator();
+				
+				java.awt.font.LineBreakMeasurer lineBreakMeasurer = new java.awt.font.LineBreakMeasurer( aci, frc );
+				while( lineBreakMeasurer.getPosition() < paragraph.length() ) {
+					int start = lineBreakMeasurer.getPosition();
+					java.awt.font.TextLayout textLayout = lineBreakMeasurer.nextLayout( (float)widthGuide );
+					int end = lineBreakMeasurer.getPosition();
+					this.lines.add( new Line( paragraph, textLayout, start, end ) );
+				}
 			}
-			assert this.lineRectPairs.size() > 0;
+			assert this.lines.size() > 0;
 			this.aggregateSize = new java.awt.Dimension( 0, 0 );
-			for( edu.cmu.cs.dennisc.pattern.Tuple2< String, java.awt.geom.Rectangle2D > lineRectPair : this.lineRectPairs ) {
-				String line = lineRectPair.getA();
-				java.awt.geom.Rectangle2D rect = lineRectPair.getB();
+			for( Line line : this.lines ) {
+				java.awt.geom.Rectangle2D rect = line.textLayout.getBounds();
 				double width = Math.max( aggregateSize.getWidth(), rect.getWidth() );
-				double height = aggregateSize.getHeight() + rect.getHeight() + getLineSpacing( line, g, fm );
+				double height = aggregateSize.getHeight() + line.textLayout.getAscent() + line.textLayout.getDescent() + line.textLayout.getLeading();
 				aggregateSize.setSize( width, height );
 			}
 			
@@ -86,13 +101,13 @@ public class MultilineText {
 	public void paint( java.awt.Graphics g, double widthGuide, Alignment alignment, double xBound, double yBound, double widthBound, double heightBound ) {
 		this.updateBoundsIfNecessary( g, widthGuide );
 		java.awt.geom.Dimension2D size = this.getDimension( g, widthGuide );
-		double x = xBound;
-		double y = yBound + ( heightBound - size.getHeight() ) * 0.5;
-		for( edu.cmu.cs.dennisc.pattern.Tuple2< String, java.awt.geom.Rectangle2D > lineRectPair : this.lineRectPairs ) {
-			String line = lineRectPair.getA();
-			java.awt.geom.Rectangle2D rect = lineRectPair.getB();
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-			
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+		float x = (float)xBound;
+		float y = (float)(yBound + ( heightBound - size.getHeight() ) * 0.5);
+		for( Line line : this.lines ) {
+			y += line.textLayout.getAscent();
+
+			java.awt.geom.Rectangle2D rect = line.textLayout.getBounds();
 			float xPixel = (float)(x - rect.getX());
 			float yPixel = (float)(y - rect.getY());
 			
@@ -101,9 +116,8 @@ public class MultilineText {
 			} else if( alignment == Alignment.TRAILING ) {
 				xPixel += widthBound - (float)rect.getWidth();
 			}
-			g2.drawString( line, xPixel, yPixel );
-			y += rect.getHeight();
-			y += MultilineText.getLineSpacing( line, g2, fm );
+			line.draw( g2, xPixel, yPixel );
+			y += line.textLayout.getDescent() + line.textLayout.getLeading();
 		}
 		assert alignment != null;
 	}

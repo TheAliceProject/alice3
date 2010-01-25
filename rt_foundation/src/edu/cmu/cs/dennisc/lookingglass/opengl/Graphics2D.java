@@ -432,7 +432,14 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 
 	@Override
 	public void drawGlyphVector( java.awt.font.GlyphVector g, float x, float y ) {
-		throw new RuntimeException( "todo: use drawString( String, float, float ) for now" );
+		int n = g.getNumGlyphs();
+		this.translate( x, y );
+		for( int i=0; i<n; i++ ) {
+			java.awt.Shape shapeI = g.getGlyphOutline( i );
+			this.fill( shapeI );
+		}
+		this.translate( -x, -y );
+		//throw new RuntimeException( "todo: use drawString( String, float, float ) for now" );
 	}
 
 	//	private static java.awt.Stroke s_stroke = new java.awt.BasicStroke( 0 );
