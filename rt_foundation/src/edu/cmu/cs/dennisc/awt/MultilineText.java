@@ -50,7 +50,7 @@ public class MultilineText {
 	private String text;
 	private String[] paragraphs;
 	private java.awt.FontMetrics fm;
-	private double widthGuide;
+	private float widthGuide;
 	private java.util.List< Line > lines;
 	private java.awt.geom.Dimension2D aggregateSize;
 	public MultilineText( String text ) {
@@ -62,7 +62,7 @@ public class MultilineText {
 	public String getText() {
 		return this.text;
 	}
-	private void updateBoundsIfNecessary( java.awt.Graphics g, double widthGuide ) {
+	private void updateBoundsIfNecessary( java.awt.Graphics g, float widthGuide ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		java.awt.font.FontRenderContext frc = g2.getFontRenderContext();
 		java.awt.FontMetrics fm = g.getFontMetrics();
@@ -94,11 +94,11 @@ public class MultilineText {
 			this.widthGuide = widthGuide;
 		}
 	}
-	public java.awt.geom.Dimension2D getDimension( java.awt.Graphics g, double widthGuide ) {
+	public java.awt.geom.Dimension2D getDimension( java.awt.Graphics g, float widthGuide ) {
 		this.updateBoundsIfNecessary( g, widthGuide );
 		return this.aggregateSize;
 	}
-	public void paint( java.awt.Graphics g, double widthGuide, Alignment alignment, double xBound, double yBound, double widthBound, double heightBound ) {
+	public void paint( java.awt.Graphics g, float widthGuide, Alignment alignment, double xBound, double yBound, double widthBound, double heightBound ) {
 		this.updateBoundsIfNecessary( g, widthGuide );
 		java.awt.geom.Dimension2D size = this.getDimension( g, widthGuide );
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
@@ -121,7 +121,7 @@ public class MultilineText {
 		}
 		assert alignment != null;
 	}
-	public void paint( java.awt.Graphics g, double widthGuide, Alignment alignment, java.awt.geom.Rectangle2D bounds ) {
+	public void paint( java.awt.Graphics g, float widthGuide, Alignment alignment, java.awt.geom.Rectangle2D bounds ) {
 		this.paint( g, widthGuide, alignment, bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight() );
 	}
 }

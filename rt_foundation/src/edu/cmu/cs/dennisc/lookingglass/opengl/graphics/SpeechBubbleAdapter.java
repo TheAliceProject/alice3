@@ -38,7 +38,7 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
 			java.awt.geom.Point2D.Float textBoundsOffset,
 			double portion,
-			double widthGuide ) {
+			float widthGuide ) {
 		assert originOfTail != null;
 		assert bodyConnectionLocationOfTail != null;
 		

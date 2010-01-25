@@ -4,8 +4,8 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 	private java.awt.geom.Point2D.Float originOfTail = new java.awt.geom.Point2D.Float();
 	private java.awt.geom.Point2D.Float bodyConnectionLocationOfTail = new java.awt.geom.Point2D.Float();
 	private java.awt.geom.Point2D.Float textBoundsOffset = new java.awt.geom.Point2D.Float();
-	protected double getWidthGuide( java.awt.Rectangle actualViewport ) {
-		return actualViewport.getWidth() * 0.5; 
+	protected float getWidthGuide( java.awt.Rectangle actualViewport ) {
+		return (float)( actualViewport.getWidth() * 0.5 ); 
 	}
 	protected abstract void render( 
 			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, 
@@ -21,7 +21,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
 			java.awt.geom.Point2D.Float textBoundsOffset,
 			double portion,
-			double widthGuide );
+			float widthGuide );
 	@Override
 	protected void render( 
 			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, 
@@ -36,7 +36,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator originator = this.m_element.originator.getValue();
 		if( originator != null ) {
 			g2.setFont( font );
-			double widthGuide = this.getWidthGuide( actualViewport );
+			float widthGuide = this.getWidthGuide( actualViewport );
 			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, widthGuide );
 			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.m_element, lookingGlass, actualViewport, camera, size );
 			this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, fillColor, outlineColor, originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, m_element.portion.getValue(), widthGuide );

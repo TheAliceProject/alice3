@@ -277,7 +277,7 @@ public class ThoughtBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scen
 			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
 			java.awt.geom.Point2D.Float textBoundsOffset,
 			double portion,
-			double widthGuide ) {
+			float widthGuide ) {
 		java.awt.Stroke stroke = g2.getStroke();
 		g2.setStroke( STROKE );
 

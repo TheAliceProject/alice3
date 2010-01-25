@@ -88,10 +88,10 @@ public abstract class Tuple2 implements edu.cmu.cs.dennisc.codec.BinaryEncodable
 	}
 
 	public boolean isWithinEpsilonOfUnitLengthSquared( double epsilon ) {
-		return EpsilonUtilities.isWithinEpsilon( calculateMagnitudeSquared(), 1.0, epsilon );
+		return EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( calculateMagnitudeSquared(), epsilon );
 	}
 	public boolean isWithinReasonableEpsilonOfUnitLengthSquared() {
-		return isWithinEpsilonOfUnitLengthSquared( EpsilonUtilities.REASONABLE_EPSILON_FOR_SQUARED_VALUES );
+		return isWithinEpsilonOfUnitLengthSquared( EpsilonUtilities.REASONABLE_EPSILON );
 	}
 
 	public void set( Tuple2 other ) {

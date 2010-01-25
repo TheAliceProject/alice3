@@ -118,7 +118,7 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 		return right.isWithinEpsilonOfUnitLengthSquared( epsilon ) && up.isWithinEpsilonOfUnitLengthSquared( epsilon ) && backward.isWithinEpsilonOfUnitLengthSquared( epsilon );
 	}
 	public boolean isWithinReasonableEpsilonOfUnitLengthSquared() {
-		return isWithinEpsilonOfUnitLengthSquared( EpsilonUtilities.REASONABLE_EPSILON_FOR_SQUARED_VALUES );
+		return isWithinEpsilonOfUnitLengthSquared( EpsilonUtilities.REASONABLE_EPSILON );
 	}
 	
 	protected void setValue( AbstractMatrix3x3 other ) {

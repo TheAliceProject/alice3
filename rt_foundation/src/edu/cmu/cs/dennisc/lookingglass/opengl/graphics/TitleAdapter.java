@@ -3,8 +3,8 @@ package edu.cmu.cs.dennisc.lookingglass.opengl.graphics;
 public abstract class TitleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graphics.Title> extends ShapeEnclosedTextAdapter< E > {
 	protected static final float VERTICAL_MARGIN_TIMES_2 = 20.0f;
 	private java.awt.geom.Rectangle2D.Float backgroundBounds = new java.awt.geom.Rectangle2D.Float();
-	protected double getWidthGuide( java.awt.Rectangle actualViewport ) {
-		return actualViewport.getWidth() * 0.9; 
+	protected float getWidthGuide( java.awt.Rectangle actualViewport ) {
+		return (float)( actualViewport.getWidth() * 0.9 ); 
 	}
 	protected abstract java.awt.geom.Rectangle2D.Float getFillBounds( java.awt.geom.Rectangle2D.Float rv, java.awt.Rectangle actualViewport, java.awt.geom.Dimension2D multilineTextSize );
 	@Override
@@ -19,7 +19,7 @@ public abstract class TitleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graph
 			java.awt.Color fillColor, 
 			java.awt.Color outlineColor ) {	
 		synchronized( this.backgroundBounds ) {
-			double widthGuide = this.getWidthGuide( actualViewport );
+			float widthGuide = this.getWidthGuide( actualViewport );
 			g2.setFont( font );
 			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, widthGuide );
 			this.getFillBounds( this.backgroundBounds, actualViewport, size );

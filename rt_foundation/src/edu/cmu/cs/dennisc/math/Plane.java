@@ -65,7 +65,8 @@ public class Plane {
 	//Kept private to avoid confusion on order
 	private void set( double xPosition, double yPosition, double zPosition, double xNormal, double yNormal, double zNormal ) {
 		final double EPSILON = 0.01;
-		assert EpsilonUtilities.isWithinEpsilon( Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal ), 1.0, EPSILON );
+		assert EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal ), EPSILON );
+		//assert EpsilonUtilities.isWithinEpsilon( Tuple3.calculateMagnitudeSquared( xNormal, yNormal, zNormal ), 1.0, EPSILON );
 		set( xNormal, yNormal, zNormal, -(xNormal*xPosition + yNormal*yPosition + zNormal*zPosition) );
 	}
 	public void set( edu.cmu.cs.dennisc.math.Point3 position, edu.cmu.cs.dennisc.math.Vector3 normal ) {
