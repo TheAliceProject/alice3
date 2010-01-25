@@ -37,7 +37,7 @@ public class EpsilonUtilities {
 	public final static float MINIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_1_IN_SQUARED_SPACE_FLOAT = (float)MINIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_1_IN_SQUARED_SPACE;
 	public final static float MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_1_IN_SQUARED_SPACE_FLOAT = (float)MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_1_IN_SQUARED_SPACE;
 	public final static float MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE_FLOAT = (float)MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE;
-	//public final static float REASONABLE_EPSILON_FOR_SQUARED_VALUES_FLOAT = (float)REASONABLE_EPSILON_FOR_SQUARED_VALUES;
+
 	public static boolean isWithinEpsilon( Number a, double b, double epsilon ) {
 		return Math.abs( a.doubleValue()-b ) < epsilon;
 	}
@@ -51,19 +51,6 @@ public class EpsilonUtilities {
 		return isWithinEpsilon( a, b, REASONABLE_EPSILON_FLOAT );
 	}
 	
-	public static boolean isWithinReasonableEpsilonOf1InSquaredSpace( double a ) {
-		return MINIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_1_IN_SQUARED_SPACE < a && a < MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE;
-	}
-	public static boolean isWithinReasonableEpsilonOf0InSquaredSpace( double a ) {
-		return a < MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE;
-	}
-	public static boolean isWithinReasonableEpsilonOf1InSquaredSpace( float a ) {
-		return MINIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_1_IN_SQUARED_SPACE_FLOAT < a && a < MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE_FLOAT;
-	}
-	public static boolean isWithinReasonableEpsilonOf0InSquaredSpace( float a ) {
-		return a < MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE_FLOAT;
-	}
-
 	public static boolean isWithinEpsilonOf1InSquaredSpace( double a, double epsilon ) {
 		final double min = 1.0-epsilon;
 		final double max = 1.0+epsilon;
@@ -79,5 +66,18 @@ public class EpsilonUtilities {
 	}
 	public static boolean isWithinEpsilonOf0InSquaredSpace( float a, float epsilon ) {
 		return a < epsilon*epsilon;
+	}
+
+	public static boolean isWithinReasonableEpsilonOf1InSquaredSpace( double a ) {
+		return MINIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_1_IN_SQUARED_SPACE < a && a < MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE;
+	}
+	public static boolean isWithinReasonableEpsilonOf0InSquaredSpace( double a ) {
+		return a < MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE;
+	}
+	public static boolean isWithinReasonableEpsilonOf1InSquaredSpace( float a ) {
+		return MINIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_1_IN_SQUARED_SPACE_FLOAT < a && a < MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE_FLOAT;
+	}
+	public static boolean isWithinReasonableEpsilonOf0InSquaredSpace( float a ) {
+		return a < MAXIMUM_FOR_WITHIN_REASONABLE_EPSILON_OF_0_IN_SQUARED_SPACE_FLOAT;
 	}
 }
