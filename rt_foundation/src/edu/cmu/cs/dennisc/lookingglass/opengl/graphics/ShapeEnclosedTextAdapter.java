@@ -11,6 +11,7 @@ public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scen
 			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
 			java.awt.Font font, 
 			java.awt.Color textColor,
+			float wrapWidth,
 			java.awt.Color fillColor, 
 			java.awt.Color outlineColor );
 	@Override
@@ -21,8 +22,9 @@ public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scen
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
 			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
 			java.awt.Font font,
-			java.awt.Color textColor ) {
-		this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, this.fillColor, this.outlineColor );
+			java.awt.Color textColor,
+			float wrapWidth ) {
+		this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, wrapWidth, this.fillColor, this.outlineColor );
 	}
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {

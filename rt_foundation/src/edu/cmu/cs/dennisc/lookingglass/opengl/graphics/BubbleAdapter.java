@@ -4,7 +4,8 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 	private java.awt.geom.Point2D.Float originOfTail = new java.awt.geom.Point2D.Float();
 	private java.awt.geom.Point2D.Float bodyConnectionLocationOfTail = new java.awt.geom.Point2D.Float();
 	private java.awt.geom.Point2D.Float textBoundsOffset = new java.awt.geom.Point2D.Float();
-	protected float getWidthGuide( java.awt.Rectangle actualViewport ) {
+	@Override
+	protected float getWrapWidth( java.awt.Rectangle actualViewport ) {
 		return (float)( actualViewport.getWidth() * 0.5 ); 
 	}
 	protected abstract void render( 
@@ -15,13 +16,13 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
 			java.awt.Font font, 
 			java.awt.Color textColor, 
+			float wrapWidth,
 			java.awt.Color fillColor, 
 			java.awt.Color outlineColor,
 			java.awt.geom.Point2D.Float originOfTail,
 			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
 			java.awt.geom.Point2D.Float textBoundsOffset,
-			double portion,
-			float widthGuide );
+			double portion );
 	@Override
 	protected void render( 
 			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, 
@@ -31,15 +32,15 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
 			java.awt.Font font, 
 			java.awt.Color textColor,
+			float wrapWidth,
 			java.awt.Color fillColor, 
 			java.awt.Color outlineColor ) {		
 		edu.cmu.cs.dennisc.scenegraph.graphics.Bubble.Originator originator = this.m_element.originator.getValue();
 		if( originator != null ) {
 			g2.setFont( font );
-			float widthGuide = this.getWidthGuide( actualViewport );
-			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, widthGuide );
+			java.awt.geom.Dimension2D size = multilineText.getDimension( g2, wrapWidth );
 			originator.calculate( originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, this.m_element, lookingGlass, actualViewport, camera, size );
-			this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, fillColor, outlineColor, originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, m_element.portion.getValue(), widthGuide );
+			this.render( g2, lookingGlass, actualViewport, camera, multilineText, font, textColor, wrapWidth, fillColor, outlineColor, originOfTail, bodyConnectionLocationOfTail, textBoundsOffset, m_element.portion.getValue() );
 		}
 	}
 	@Override

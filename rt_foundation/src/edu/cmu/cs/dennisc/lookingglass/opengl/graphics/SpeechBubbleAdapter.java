@@ -32,18 +32,18 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
 			java.awt.Font font, 
 			java.awt.Color textColor, 
+			float wrapWidth,
 			java.awt.Color fillColor, 
 			java.awt.Color outlineColor,
 			java.awt.geom.Point2D.Float originOfTail,
 			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
 			java.awt.geom.Point2D.Float textBoundsOffset,
-			double portion,
-			float widthGuide ) {
+			double portion ) {
 		assert originOfTail != null;
 		assert bodyConnectionLocationOfTail != null;
 		
 		g2.setFont( font );
-		java.awt.geom.Dimension2D textSize = multilineText.getDimension( g2, widthGuide );
+		java.awt.geom.Dimension2D textSize = multilineText.getDimension( g2, wrapWidth );
 		java.awt.geom.Rectangle2D textBounds = new java.awt.geom.Rectangle2D.Double( 
 				textBoundsOffset.x, 
 				textBoundsOffset.y, 
@@ -107,7 +107,7 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 			double xT = bodyConnectionLocationOfTail.getX();
 			double yT = bodyConnectionLocationOfTail.getY() - textBounds.getHeight();
 			g2.translate( xT, yT );
-			multilineText.paint( g2, widthGuide, edu.cmu.cs.dennisc.awt.MultilineText.Alignment.LEADING, textBounds );
+			multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.awt.TextAlignment.LEADING, textBounds );
 			g2.translate( -xT, -yT );
 //			int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );
 //			int yPixel = (int)( bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - 10 );

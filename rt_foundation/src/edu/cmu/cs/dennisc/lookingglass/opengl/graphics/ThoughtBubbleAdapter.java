@@ -1,9 +1,15 @@
 package edu.cmu.cs.dennisc.lookingglass.opengl.graphics;
 
+
 /**
  * @author Dennis Cosgrove
  */
 class BumpyBubble extends edu.cmu.cs.dennisc.awt.geom.Composite {
+//	class EllipseWrappedMultilineText extends edu.cmu.cs.dennisc.awt.geom.MultilineText {
+//		public EllipseWrappedMultilineText( String text, java.awt.Font font, edu.cmu.cs.dennisc.awt.TextAlignment alignment, java.awt.Paint paint ) {
+//			super( text, font, alignment, paint );
+//		}
+//	}
 	class Bump extends edu.cmu.cs.dennisc.awt.geom.Shape {
 		private double m_xHalfLength;
 		private double m_yHalfLength;
@@ -111,25 +117,25 @@ class BumpyBubble extends edu.cmu.cs.dennisc.awt.geom.Composite {
 	private static edu.cmu.cs.dennisc.math.SineCosineCache s_sineCosineCache = new edu.cmu.cs.dennisc.math.SineCosineCache( 8 ); 
 	
 	public void initialize( java.awt.Graphics2D g2 ) {
-		g2.setFont( m_font );
-		java.awt.geom.Rectangle2D bound = g2.getFontMetrics().getStringBounds( m_message, g2 );
+		edu.cmu.cs.dennisc.awt.geom.MultilineText multilineText = new edu.cmu.cs.dennisc.awt.geom.MultilineText( m_message, m_font, edu.cmu.cs.dennisc.awt.TextAlignment.LEADING, g2.getPaint() );
+		multilineText.setWrapWidth( 400.0f );
+		java.awt.geom.Rectangle2D bound = multilineText.getBounds( g2 );
 		
-		//java.awt.geom.Ellipse2D ellipse = getBoundingEllipse( bound );
 		java.awt.geom.Ellipse2D ellipse = new java.awt.geom.Ellipse2D.Double();
 		ellipse.setFrame( bound );
 		
 		double xHalfBoxLength = ellipse.getWidth() / 2;
 		double yHalfBoxLength = ellipse.getHeight() / 2;
 
-
 		java.util.List< Bump > bumps = new java.util.LinkedList< Bump >();
 		
 		double thetaCurr = 0;
 		
-		while( thetaCurr < PI_TIMES_2 - 0.1 ) {
-			double unit = 30;
-			double xHalfEllipseLength = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( unit * 1.2, unit * 1.6 );
-			double yHalfEllipseLength = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( unit * 0.8, unit * 1.2 );
+		double xUnit = 30;//xHalfBoxLength * 0.25;
+		double yUnit = 30;//yHalfBoxLength * 0.25;
+		while( thetaCurr < PI_TIMES_2 - 0.05 ) {
+			double xHalfEllipseLength = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( xUnit * 1.2, xUnit * 1.6 );
+			double yHalfEllipseLength = edu.cmu.cs.dennisc.random.RandomUtilities.nextDoubleInRange( yUnit * 0.8, yUnit * 1.2 );
 
 			final double THETA_STEP = 0.1;
 			double s = 0;
@@ -167,10 +173,10 @@ class BumpyBubble extends edu.cmu.cs.dennisc.awt.geom.Composite {
 		}
 
 		
-//		edu.cmu.cs.dennisc.toolkit.geom.Ellipse background = new edu.cmu.cs.dennisc.toolkit.geom.Ellipse( xHalfBoxLength, yHalfBoxLength );
-//		background.setDrawn( true );
-//		background.setFilled( false );
-//		add( background );
+		edu.cmu.cs.dennisc.awt.geom.Ellipse background = new edu.cmu.cs.dennisc.awt.geom.Ellipse( xHalfBoxLength, yHalfBoxLength );
+		background.setDrawn( false );
+		background.setFilled( true );
+		add( background );
 
 		
 		java.awt.geom.Point2D.Double ptSrc = new java.awt.geom.Point2D.Double();
@@ -222,9 +228,7 @@ class BumpyBubble extends edu.cmu.cs.dennisc.awt.geom.Composite {
 				}
 			}
 		}
-		
-		edu.cmu.cs.dennisc.awt.geom.Text text = new edu.cmu.cs.dennisc.awt.geom.Text( m_message, m_font );
-		add( text );
+		add( multilineText );
 	}
 }
 
@@ -271,13 +275,13 @@ public class ThoughtBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scen
 			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
 			java.awt.Font font, 
 			java.awt.Color textColor, 
+			float wrapWidth,
 			java.awt.Color fillColor, 
 			java.awt.Color outlineColor,
 			java.awt.geom.Point2D.Float originOfTail,
 			java.awt.geom.Point2D.Float bodyConnectionLocationOfTail,
 			java.awt.geom.Point2D.Float textBoundsOffset,
-			double portion,
-			float widthGuide ) {
+			double portion ) {
 		java.awt.Stroke stroke = g2.getStroke();
 		g2.setStroke( STROKE );
 
