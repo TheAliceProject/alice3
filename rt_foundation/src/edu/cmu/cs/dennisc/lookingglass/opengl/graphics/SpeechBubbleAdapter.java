@@ -74,10 +74,11 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 		path.quadTo( controlX, controlY, originX, originY );
 		path.closePath();
 
-		final double IPAD = 12f;
+		final double IPAD = font.getSize2D()*0.333f;
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "IPAD:", IPAD );
 		java.awt.geom.RoundRectangle2D.Double roundRect = new java.awt.geom.RoundRectangle2D.Double();
 		roundRect.x = textBounds.getX() + bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() - IPAD;
-		roundRect.y = textBounds.getY() + bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - textBounds.getHeight() + 10 - IPAD;
+		roundRect.y = textBounds.getY() + bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - textBounds.getHeight() - IPAD;
 		roundRect.width =  textBounds.getWidth() + IPAD + IPAD;
 		roundRect.height =  textBounds.getHeight() + IPAD + IPAD;
 		roundRect.arcwidth = IPAD;
@@ -107,6 +108,9 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 			double xT = bodyConnectionLocationOfTail.getX();
 			double yT = bodyConnectionLocationOfTail.getY() - textBounds.getHeight();
 			g2.translate( xT, yT );
+//			g2.setPaint( java.awt.Color.RED );
+//			g2.draw( textBounds );
+//			g2.setPaint( java.awt.Color.BLACK );
 			multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.awt.TextAlignment.LEADING, textBounds );
 			g2.translate( -xT, -yT );
 //			int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );

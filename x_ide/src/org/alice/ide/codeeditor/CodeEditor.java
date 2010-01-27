@@ -563,7 +563,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 							operation = new ReparentOperation();
 						}
 					}
-					dragAndDropContext.perform( operation, dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
+					if( operation != null ) {
+						dragAndDropContext.perform( operation, dragAndDropEvent, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
+					}
 				}
 			}
 		}
