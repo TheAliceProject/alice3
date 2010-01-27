@@ -238,20 +238,20 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			acquireRenderingLock();
 			try {
 				ChangeHandler.pushRenderingMode();
-				try {
-					if( ChangeHandler.getEventCountSinceLastReset() > 0 || isJustCreatedOnscreenLookingGlassAccountedFor == false ) {
-						ChangeHandler.resetEventCount();
-						isJustCreatedOnscreenLookingGlassAccountedFor = true;
-						synchronized( this.heavyweightOnscreenLookingGlasses ) {
-							for( OnscreenLookingGlass lg : this.heavyweightOnscreenLookingGlasses ) {
-								if( isDisplayDesired( lg ) ) {
-									//lg.getGLAutoDrawable().display();
-									lg.repaint();
-//									edu.cmu.cs.dennisc.print.PrintUtilities.println( lg, System.currentTimeMillis() );
-									rv = Animator.ThreadDeferenceAction.YIELD;
-								}
-							}
+				synchronized( this.heavyweightOnscreenLookingGlasses ) {
+					for( OnscreenLookingGlass lg : this.heavyweightOnscreenLookingGlasses ) {
+						if( isDisplayDesired( lg ) ) {
+							//lg.getGLAutoDrawable().display();
+							lg.repaint();
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( lg, System.currentTimeMillis() );
+							rv = Animator.ThreadDeferenceAction.YIELD;
 						}
+					}
+				}
+				try {
+					if( ChangeHandler.getEventCountSinceLastReset() > 0 /*|| isJustCreatedOnscreenLookingGlassAccountedFor == false*/ ) {
+						ChangeHandler.resetEventCount();
+						//isJustCreatedOnscreenLookingGlassAccountedFor = true;
 						synchronized( this.lightweightOnscreenLookingGlasses ) {
 							for( OnscreenLookingGlass lg : this.lightweightOnscreenLookingGlasses ) {
 								if( isDisplayDesired( lg ) ) {
@@ -322,14 +322,14 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	}
 	
 	//todo: remove this hack
-	private boolean isJustCreatedOnscreenLookingGlassAccountedFor = false;
+	//private boolean isJustCreatedOnscreenLookingGlassAccountedFor = false;
 	public edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass createLightweightOnscreenLookingGlass() {
 		LightweightOnscreenLookingGlass lolg = new LightweightOnscreenLookingGlass( this );
 		lolg.addReleaseListener( this );
 		synchronized( this.lightweightOnscreenLookingGlasses ) {
 			this.lightweightOnscreenLookingGlasses.add( lolg );
 		}
-		this.isJustCreatedOnscreenLookingGlassAccountedFor = false;
+		//this.isJustCreatedOnscreenLookingGlassAccountedFor = false;
 		return lolg;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.HeavyweightOnscreenLookingGlass createHeavyweightOnscreenLookingGlass() {
@@ -338,7 +338,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		synchronized( this.heavyweightOnscreenLookingGlasses ) {
 			this.heavyweightOnscreenLookingGlasses.add( holg );
 		}
-		this.isJustCreatedOnscreenLookingGlassAccountedFor = false;
+		//this.isJustCreatedOnscreenLookingGlassAccountedFor = false;
 		return holg;
 	}
 	public edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass createOffscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlassToShareContextWith ) {
