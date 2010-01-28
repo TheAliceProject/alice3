@@ -20,21 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.apis.moveandturn;
+package org.alice.stageide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
-	private edu.cmu.cs.dennisc.resource.Resource resource;
-	public AudioSource( edu.cmu.cs.dennisc.resource.Resource resource ) {
-		this.resource = resource;
+public class AudioSourceFillerInner extends org.alice.ide.cascade.fillerinners.InstanceCreationFillerInner {
+	public AudioSourceFillerInner() {
+		super( org.alice.apis.moveandturn.AudioSource.class );
 	}
-	public edu.cmu.cs.dennisc.resource.Resource getResource() {
-		return this.resource;
+	@Override
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+//		for( edu.cmu.cs.dennisc.resource.Resource resource : {} ) {
+//		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.125 ) ) ); 
+//		}
+		blank.addSeparator();
+		blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn() );
 	}
-//	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-//	}
-//	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//	}
 }

@@ -20,21 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.apis.moveandturn;
+package edu.cmu.cs.dennisc.alice.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
-	private edu.cmu.cs.dennisc.resource.Resource resource;
-	public AudioSource( edu.cmu.cs.dennisc.resource.Resource resource ) {
-		this.resource = resource;
+public class Resource extends Node {
+	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
+	public Resource() {
 	}
-	public edu.cmu.cs.dennisc.resource.Resource getResource() {
-		return this.resource;
+	public Resource( String name ) {
+		this.name.setValue( name );
 	}
-//	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-//	}
-//	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//	}
 }

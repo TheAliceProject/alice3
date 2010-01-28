@@ -103,6 +103,9 @@ public abstract class Program extends edu.cmu.cs.dennisc.animation.Program imple
 	}
 	public void setScene( Scene scene ) {
 		if( m_scene != scene ) {
+			if( m_scene != null ) {
+				m_scene.setOwner( null );
+			}
 			m_scene = scene;
 			if( m_isPreInitialized ) {
 				if( m_scene != null ) {
