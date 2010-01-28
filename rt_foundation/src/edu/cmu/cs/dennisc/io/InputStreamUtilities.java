@@ -20,17 +20,45 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.apis.moveandturn;
+package edu.cmu.cs.dennisc.io;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioSource extends Element {
-	private edu.cmu.cs.dennisc.resource.Resource resource;
-	public AudioSource( edu.cmu.cs.dennisc.resource.Resource resource ) {
-		this.resource = resource;
-	}
-	public edu.cmu.cs.dennisc.resource.Resource getResource() {
-		return this.resource;
+public class InputStreamUtilities {
+	public static byte[] getBytes( java.io.InputStream is ) throws java.io.IOException {
+		byte[] buffer = null;
+		java.io.ByteArrayOutputStream baos = null;
+		while( true ) {
+			int n = is.available();
+			if( buffer != null ) {
+				// handle the previous iteration
+				if( baos != null ) {
+					//pass
+				} else {
+					// it is the second iteration
+					if( n > 0 ) {
+						// more than one buffer so we use a ByteArrayOutputStream
+						baos = new java.io.ByteArrayOutputStream();
+					} else {
+						// there is one and only one buffer, so simply return it
+						return buffer;
+					}
+				}
+				// will only get here if there are 2 or more buffers
+				baos.write( buffer );
+			}
+			if( n > 0 ) {
+				buffer = new byte[ n ];
+				int offset = 0;
+				while( offset<n ) {
+					offset += is.read( buffer, offset, n-offset ); 
+				}
+				assert offset == n;
+			} else {
+				break;
+			}
+		}
+		return baos.toByteArray();
 	}
 }
