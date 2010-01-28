@@ -562,4 +562,17 @@ public abstract class Composite extends Element implements ReferenceFrame {
 		this.closeProgramInCaseOfNull( rv );
 		return rv;
 	}
+	
+	@MethodTemplate(visibility = Visibility.PRIME_TIME)
+	public void play( AudioSource audioSource ) {
+		javax.media.Player player = edu.cmu.cs.dennisc.media.Manager.getPlayer( audioSource.getURL() );
+		player.addControllerListener( new javax.media.ControllerListener() {
+			public void controllerUpdate( javax.media.ControllerEvent e ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+			}
+		} );
+		player.start();
+		//todo
+	}
+	
 }

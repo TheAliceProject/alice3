@@ -1,0 +1,782 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+  <!--#config timefmt="%d-%b-%y" -->
+  <TITLE>JMF 2.1.1 - Supported Formats</TITLE>
+  <META NAME="keywords" CONTENT="JMF, formats, Java Media Framework">
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="8B4513" VLINK="8B4513" >
+
+<!-- page headline -->
+<A NAME="JMFFormats"></A>
+<FONT SIZE="+2">
+Supported Media Formats and Capture Devices
+</FONT>
+<BR>
+
+<!-- end page headline -->
+
+<!-- optional subnav links -->
+<!-- end optional subnav links -->
+
+<!-- main page content -->
+<p>
+This page lists the  <a href="#Formats">media formats</a> supported
+in the JMF 2.1.1 FCS implementation, the 
+<a href="#RTPFormats">RTP formats</a> this implementation can 
+receive and transmit, and the 
+<a href="#Capturers">capture devices</a> that it supports.
+
+<p>
+<A NAME="Formats"></A>
+<TABLE BORDER=0 COLS=1 WIDTH="100%" BGCOLOR="#CC9966" NOSAVE >
+<TR>
+<TD><FONT SIZE=+2>Supported Media Formats</FONT></TD>
+</TR>
+</TABLE>
+
+
+<p>
+JMF supports audio sample rates from 8KHz to 48KHz. Note that
+cross-platform version of JMF only supports the following
+rates: 8, 11.025, 11.127, 16, 22.05, 22.254, 32, 44.1, and 48 KHz.
+
+<p>
+The JMF 2.1.1 Reference Implementation supports the media types and
+formats listed in the  table below. In this table:
+
+<ul>
+<LI>
+<b>D</b> indicates the format can be decoded and presented.</LI>
+<LI>
+<b>E</b> indicates the media stream can be encoded in the format.</LI>
+<LI>
+<b>read</b> indicates the media type can be used as input (read from a file)</LI>
+<LI>
+<b>write</b> indicates the media type can be generated as output (written to a file)</LI>
+</ul>
+
+<p>
+
+<TABLE BORDER=1>
+
+<TR>
+<TH ALIGN=CENTER><B><FONT SIZE=+1>Media Type</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>JMF 2.1.1</FONT><br>
+<FONT SIZE=-1>Cross Platform Version</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>JMF 2.1.1</FONT><br>
+<FONT SIZE=-1>Solaris/Linux Performance Pack</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>JMF 2.1.1</FONT><br>
+<FONT SIZE=-1>Windows Performance Pack</FONT></B></TD>
+
+</TR>
+
+<TR>
+<TD><B>AIFF (.aiff)</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+</TR>
+
+<TR>
+<TD>8-bit mono/stereo linear&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>16-bit mono/stereo linear&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>G.711 (U-law)&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>A-law&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD>IMA4 ADPCM</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD><B>AVI (.avi)</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+</TR>
+
+<TR>
+<TD>Audio: 8-bit mono/stereo linear&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Audio: 16-bit mono/stereo linear&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Audio: DVI ADPCM compressed&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Audio: G.711 (U-law)&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Audio: A-law&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD>Audio: GSM mono</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Audio: ACM**</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Video: Cinepak&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD>Video: MJPEG (422)</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E&nbsp;</TD>
+</TR>
+
+<TR>
+<TD>Video: RGB</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E&nbsp;</TD>
+</TR>
+
+<TR>
+<TD>Video: YUV</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E&nbsp;</TD>
+</TR>
+
+<TR>
+<TD>Video: VCM**</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD><B>GSM (.gsm)</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+</TR>
+
+<TR>
+<TD>GSM mono audio</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD><B>HotMedia (.mvr)</B></TD>
+<TD ALIGN=CENTER><B>read only</B></TD>
+<TD ALIGN=CENTER><B>read only</B></TD>
+<TD ALIGN=CENTER><B>read only</B></TD>
+</TR>
+
+<TR>
+<TD>IBM HotMedia</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD><B>MIDI (.mid)</B></TD>
+<TD ALIGN=CENTER><B>read only</B></TD>
+<TD ALIGN=CENTER><B>read only</B></TD>
+<TD ALIGN=CENTER><B>read only</B></TD>
+</TR>
+
+<TR>
+<TD>Type 1 & 2 MIDI</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD><B>MPEG-1 Video (.mpg)</B></TD>
+<TD ALIGN=CENTER><B>-</B></TD>
+<TD ALIGN=CENTER><B>read only</B></TD>
+<TD ALIGN=CENTER><B>read only</B></TD>
+</TR>
+
+<TR>
+<TD>Multiplexed System stream&nbsp;</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD>Video-only stream&nbsp;</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD><B>MPEG Layer II Audio (.mp2)</B></TD>
+<TD ALIGN=CENTER><B>read only</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+</TR>
+
+<TR>
+<TD>MPEG layer 1, 2 audio&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD><B>QuickTime (.mov)</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+</TR>
+
+<TR>
+<TD>Audio: 8 bits mono/stereo linear&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Audio: 16 bits mono/stereo linear</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Audio: G.711 (U-law)&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Audio: A-law&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD>Audio: GSM mono&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Audio: IMA4 ADPCM&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Video: Cinepak&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD>Video: H.261</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD>Video: H.263&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Video: JPEG (420, 422, 444)&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>Video: RGB</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD><B>Sun Audio (.au)</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+</TR>
+
+<TR>
+<TD>8 bits mono/stereo linear&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>16 bits mono/stereo linear&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>G.711 (U-law)</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>A-law&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD><B>Wave (.wav)</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+<TD ALIGN=CENTER><B>read/write</B></TD>
+</TR>
+
+<TR>
+<TD>8-bit mono/stereo linear&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>16-bit mono/stereo linear&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>G.711 (U-law)</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>A-law&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD>GSM mono&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>DVI ADPCM</TD>
+<TD ALIGN=CENTER>D,E</TD>
+<TD ALIGN=CENTER>D,E&nbsp;</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+
+<TR>
+<TD>MS ADPCM</TD>
+<TD ALIGN=CENTER>D</TD>
+<TD ALIGN=CENTER>D&nbsp;</TD>
+<TD ALIGN=CENTER>D</TD>
+</TR>
+
+<TR>
+<TD>ACM**</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>D,E</TD>
+</TR>
+</TABLE>
+
+<P>Notes:
+
+<UL>
+
+<LI>
+ACM** - Window's Audio Compression Manager
+support. Tested for these formats: A-law, GSM610, MSNAudio, MSADPCM, Truespeech,
+mp3, PCM, Voxware AC8, Voxware AC10.</LI>
+
+<LI>
+VCM** - Window's Video Compression Manager
+support.&nbsp; Tested for these formats: IV41, IV51, VGPX, WINX, YV12,
+I263, CRAM, MPG4.</LI>
+</UL>
+
+<p>
+<A NAME="RTPFormats"></A>
+<TABLE BORDER=0 COLS=1 WIDTH="100%" BGCOLOR="#CC9966" NOSAVE >
+<TR>
+<TD><FONT SIZE=+2>RTP Formats</FONT></TD>
+</TR>
+</TABLE>
+
+<p>
+The JMF 2.1.1 Reference Implementation can receive and transmit the
+following RTP formats:
+
+<ul>
+<LI>
+<b>R</b> indicates that the format can be decoded and presented.</LI>
+<LI>
+<b>T</b> indicates that media streams can be encoded and transmitted in the format.</LI>
+</ul>
+
+<p>
+<TABLE BORDER >
+
+<TD ALIGN=CENTER><B><FONT SIZE=+1>Media Type</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>RTP</FONT><br>
+<FONT SIZE=-1>Payload</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>JMF 2.1.1</FONT><br>
+<FONT SIZE=-1>Cross Platform Version</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>JMF 2.1.1</FONT><br>
+<FONT SIZE=-1>Solaris/Linux Performance Pack</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>JMF 2.1.1</FONT><br>
+<FONT SIZE=-1>Windows Performance Pack</FONT></B></TD>
+
+</TR>
+
+<TR>
+<TD>Audio: G.711 (U-law) 8 kHz&nbsp;</TD>
+<TD ALIGN=CENTER>0</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+<TR>
+<TD>Audio: GSM mono&nbsp;</TD>
+<TD ALIGN=CENTER>3</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+<TR>
+<TD>Audio: G.723 mono</TD>
+<TD ALIGN=CENTER>4</TD>
+<TD ALIGN=CENTER>R</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+<TR>
+<TD>Audio: 4-bit mono DVI 8 kHz&nbsp;</TD>
+<TD ALIGN=CENTER>5</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+<TR>
+<TD>Audio: 4-bit mono DVI 11.025 kHz&nbsp;</TD>
+<TD ALIGN=CENTER>16</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+<TR>
+<TD>Audio: 4-bit mono DVI 22.05 kHz&nbsp;</TD>
+<TD ALIGN=CENTER>17</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+<TR>
+<TD>Audio: MPEG Layer I, II&nbsp;</TD>
+<TD ALIGN=CENTER>14</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+<!-- REMOVE UNTIL JMF 2.1 FCS - NEED LEGAL PERMISSION TO USE
+<TR>
+<TD>Audio: G.728 mono</TD>
+<TD ALIGN=CENTER>15</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+--->
+
+<!-- REMOVE UNTIL JMF 2.X FCS - NEED LEGAL PERMISSION TO USE
+<TR>
+<TD>Audio: G.729 mono</TD>
+<TD ALIGN=CENTER>18</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+--->
+
+<TR>
+<TD>Video: JPEG (420, 422, 444)*&nbsp;</TD>
+<TD ALIGN=CENTER>26</TD>
+<TD ALIGN=CENTER>R</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+<TR>
+<TD>Video: H.261&nbsp;</TD>
+<TD ALIGN=CENTER>31</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>R</TD>
+<TD ALIGN=CENTER>R</TD>
+</TR>
+
+<TR>
+<TD>Video: H.263**</TD>
+<TD ALIGN=CENTER>34</TD>
+<TD ALIGN=CENTER>Mode A Only</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+<TR>
+<TD>Video: MPEG-I***</TD>
+<TD ALIGN=CENTER>32</TD>
+<TD ALIGN=CENTER>T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+<TD ALIGN=CENTER>R,T</TD>
+</TR>
+
+</table>
+
+<P>* JPEG/RTP can only be transmitted in video dimensions
+that are in multiple of 8 pixels.&nbsp;
+</p>
+
+<P>** H.263/RTP can only be transmitted in 3 different video dimensions:
+SQCIF (128x96), QCIF (176x144) and CIF (352x288).&nbsp;
+</p>
+
+<P>*** MPEG/RTP video can only be transmitted from pre-encoded MPEG
+content, i.e. from an MPEG-encoded file or MPEG enabled capture source.
+Real-time software MPEG encoding is not feasible for RTP transmission.&nbsp;
+</p>
+
+<p>
+<A NAME="Capturers"></A>
+<TABLE BORDER=0 COLS=1 WIDTH="100%" BGCOLOR="#CC9966" NOSAVE >
+<TR>
+<TD><FONT SIZE=+2>Capture Devices</FONT></TD>
+</TR>
+</TABLE>
+<p>
+<p>
+The JMF 2.1.1 Reference Implementation supports SunVideo /
+SunVideoPlus capture devices on Solaris. On Windows, most capture
+devices that have VFW drivers are supported. On Linux, devices that
+have a Video4Linux driver are expected to work, but not extensively
+ tested. The table below lists
+the capture devices known to work with this release.
+
+<p>
+<TABLE BORDER >
+<TR>
+<TD ALIGN=CENTER><B><FONT SIZE=+1>Capturer</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>JMF 2.1.1</FONT><br>
+<FONT SIZE=-1>Cross Platform Version</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>JMF 2.1.1</FONT><br>
+<FONT SIZE=-1>Solaris Performance Pack</FONT></B></TD>
+
+<TH ALIGN=CENTER><B><FONT SIZE=+1>JMF 2.1.1</FONT><br>
+<FONT SIZE=-1>Windows Performance Pack</FONT></B></TD>
+
+</TR>
+
+<TR>
+<TD>JavaSound (16-bit, 44100, 22050, 11025Hz, 8000Hz linear)</TD>
+<TD ALIGN=CENTER><B>X (J2SE 1.3+)</B></TD>
+<TD ALIGN=CENTER><B>X</B></TD>
+<TD ALIGN=CENTER><B>X</B></TD>
+</TR>
+
+<TR>
+<TD>SunVideo</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>X</TD>
+<TD ALIGN=CENTER>-</TD>
+</TR>
+
+<TR>
+<TD>SunVideoPlus</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>X</TD>
+<TD ALIGN=CENTER>-</TD>
+</TR>
+
+<TR>
+<TD>VFW</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>X</TD>
+</TR>
+
+<TR>
+<TD>Intel Create &amp; Share</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>Win9x</TD>
+</TR>
+
+<TR>
+<TD>Diamond Supra Video Kit; Share</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>Win98</TD>
+</TR>
+
+<TR>
+<TD>QuickCam VC (camera)</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>WinNT</TD>
+</TR>
+
+<TR>
+<TD>e-cam (camera)</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>WinNT, 9X</TD>
+</TR>
+
+<TR>
+<TD>Winnow Videum</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>WinNT, 9X</TD>
+</TR>
+
+<TR>
+<TD>Creative Web Cam II</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>Win9X</TD>
+</TR>
+
+<TR>
+<TD>Miro Video DC30</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>Win9X</TD>
+</TR>
+
+<TR>
+<TD>Iomega Buz</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>Win9X</TD>
+</TR>
+
+<TR>
+<TD>QuickCam Home USB (Camera)</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>Win98</TD>
+</TR>
+
+<TR>
+<TD>Smart Video Recorder III</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>-</TD>
+<TD ALIGN=CENTER>Win9X</TD>
+</TR>
+
+</TABLE>
+
+<!-- end main page content -->
+
+</BODY>
+</HTML>

@@ -6,5 +6,7 @@
 	<classpathentry kind="lib" path="/jar_jogl/lib/jogl.jar"/>
 	<classpathentry kind="lib" path="/jar_apple/AppleJavaExtensions.jar"/>
 	<classpathentry kind="lib" path="/jar_swingworker/swing-worker-1.2.jar"/>
+	<classpathentry kind="lib" path="/jar_jmf/JMF-2.1.1e/lib/jmf.jar"/>
+	<classpathentry kind="lib" path="/jar_jmfmp3/lib/ext/mp3plugin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
