@@ -102,6 +102,7 @@ class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 }
 
 public class Manager {
+	private static java.util.Map< java.net.URL, javax.media.protocol.DataSource > urlToDataSourceMap = new java.util.HashMap< java.net.URL, javax.media.protocol.DataSource >();
 	private static java.util.Map< String, String > extensionToContentTypeMap;
 	static {
 		System.out.print( "Attempting to register mp3 capability... " );
@@ -113,19 +114,26 @@ public class Manager {
 	}
 
 	public static javax.media.Player getPlayer( edu.cmu.cs.dennisc.resource.Resource resource ) {
-		//todo
 		java.net.URL url = resource.getURL();
-		try {
-			byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( resource.getInputStream() );
+		javax.media.protocol.DataSource dataSource = Manager.urlToDataSourceMap.get( url );
+		if( dataSource != null ) {
+			//pass
+		} else {
+			byte[] data;
+			try {
+				data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( resource.getInputStream() );
+			} catch( java.io.IOException ioe ) {
+				throw new RuntimeException( url.toExternalForm(), ioe );
+			}
 			String path = url.getPath();
 			String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( path );
 			String contentType = Manager.extensionToContentTypeMap.get( extension.toLowerCase() );
 			assert contentType != null : extension;
-			//javax.media.protocol.DataSource dataSource = javax.media.Manager.createDataSource( resource.getURL() );
-			javax.media.protocol.DataSource dataSource = new ByteArrayDataSource( data, contentType );
+			dataSource = new ByteArrayDataSource( data, contentType );
+			Manager.urlToDataSourceMap.put( url, dataSource );
+		}
+		try {
 			return javax.media.Manager.createPlayer( dataSource );
-//		} catch( javax.media.NoDataSourceException ndse ) {
-//			throw new RuntimeException( url.toExternalForm(), ndse );
 		} catch( javax.media.NoPlayerException npe ) {
 			throw new RuntimeException( url.toExternalForm(), npe );
 		} catch( java.io.IOException ioe ) {
