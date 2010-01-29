@@ -31,9 +31,16 @@ public class AudioSourceFillerInner extends org.alice.ide.cascade.fillerinners.I
 	}
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-//		for( edu.cmu.cs.dennisc.resource.Resource resource : {} ) {
-//		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.125 ) ) ); 
-//		}
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.resource.Resource > map = ide.getResourceMap();
+		for( edu.cmu.cs.dennisc.alice.ast.Resource resource : map.keySet() ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( resource );
+			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, edu.cmu.cs.dennisc.resource.Resource.class );
+			edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resource );
+			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
+			edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
+			blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 ) ) ); 
+		}
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn() );
 	}
