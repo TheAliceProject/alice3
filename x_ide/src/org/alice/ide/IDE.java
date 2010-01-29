@@ -2235,4 +2235,12 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 
 	public abstract boolean isInstanceCreationAllowableFor( TypeDeclaredInAlice typeInAlice );
 	public abstract Program createRuntimeProgram( VirtualMachine vm, TypeDeclaredInAlice sceneType, int frameRate );
+
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.resource.Resource > resourceMap = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.resource.Resource >();
+	public void addResource( edu.cmu.cs.dennisc.alice.ast.Resource resource, edu.cmu.cs.dennisc.resource.FileResource fileResource ) {
+		this.resourceMap.put( resource, fileResource  );
+	}
+	public java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.resource.Resource > getResourceMap() {
+		return this.resourceMap;
+	}
 }

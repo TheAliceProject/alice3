@@ -41,6 +41,8 @@ public abstract class VirtualMachine {
 	}
 
 	
+	
+	
 	protected abstract Object getThis();
 
 	protected abstract void pushFrame( InstanceInAlice instance, java.util.Map<edu.cmu.cs.dennisc.alice.ast.AbstractParameter,Object> map );
@@ -66,6 +68,17 @@ public abstract class VirtualMachine {
 //	}
 
 	
+	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.resource.Resource > resourceMap;
+	public void setResourceMap( java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.resource.Resource > resourceMap ) {
+		this.resourceMap = resourceMap;
+	}
+	protected edu.cmu.cs.dennisc.resource.Resource getResource( edu.cmu.cs.dennisc.alice.ast.Resource resource ) {
+		if( this.resourceMap != null ) {
+			return this.resourceMap.get( resource );
+		} else {
+			return null;
+		}
+	}
 	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments ) {
 		pushCurrentThread( null );
 		try {
@@ -556,6 +569,10 @@ public abstract class VirtualMachine {
 	protected Object evaluateTypeLiteral( edu.cmu.cs.dennisc.alice.ast.TypeLiteral typeLiteral ) {
 		return typeLiteral.value.getValue();
 	}
+	protected Object evaluateResourceExpression( edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression ) {
+		edu.cmu.cs.dennisc.alice.ast.Resource resource = resourceExpression.resource.getValue();
+		return this.getResource( resource );
+	}
 	protected Object evaluateEntryPointTypeExpression( edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression entryPointTypeExpression ) {
 		return this.entryPointType;
 	}
@@ -617,6 +634,8 @@ public abstract class VirtualMachine {
 				return this.evaluateTypeExpression( (edu.cmu.cs.dennisc.alice.ast.TypeExpression)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeLiteral ) {
 				return this.evaluateTypeLiteral( (edu.cmu.cs.dennisc.alice.ast.TypeLiteral)expression );
+			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression ) {
+				return this.evaluateResourceExpression( (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)expression );
 			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression ) {
 				return this.evaluateEntryPointTypeExpression( (edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression)expression );
 			} else {

@@ -31,6 +31,7 @@ public interface SceneOwner {
 	public void setSimulationSpeedFactor( Number simulationSpeedFactor );
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass();
 	public void perform( edu.cmu.cs.dennisc.animation.Animation animation, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver );
+	public void start( edu.cmu.cs.dennisc.media.Player player );
 //	public void addGraphicToOverlay( org.alice.apis.moveandturn.graphic.Graphic graphic );
 //	public void removeGraphicFromOverlay( org.alice.apis.moveandturn.graphic.Graphic graphic );
 }

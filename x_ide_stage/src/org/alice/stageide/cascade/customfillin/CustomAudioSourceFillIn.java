@@ -37,7 +37,14 @@ public class CustomAudioSourceFillIn extends edu.cmu.cs.dennisc.cascade.FillIn< 
 		//edu.cmu.cs.dennisc.resource.ClassResource classResource = null;
 		String filename = fileDialog.getFile();
 		if( filename != null ) {
+			java.io.File directory = new java.io.File( fileDialog.getDirectory() );
+			java.io.File file = new java.io.File( directory, filename );
+			edu.cmu.cs.dennisc.resource.FileResource fileResource = new edu.cmu.cs.dennisc.resource.FileResource( file );
 			edu.cmu.cs.dennisc.alice.ast.Resource resource = new edu.cmu.cs.dennisc.alice.ast.Resource( filename );
+			
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			ide.addResource( resource, fileResource );
+			
 			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, edu.cmu.cs.dennisc.resource.Resource.class );
 			edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resource );
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );

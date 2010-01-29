@@ -66,7 +66,7 @@ public class MethodDeclaredInAlice extends AbstractMethod implements CodeDeclare
 	
 	@Override
 	public String getName() {
-		return name.getValue();
+		return this.name.getValue();
 	}
 	@Override
 	public edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists() {

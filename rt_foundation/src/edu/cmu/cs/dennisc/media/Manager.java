@@ -1,5 +1,30 @@
+/*
+ * Copyright (c) 2006-2009, Carnegie Mellon University. All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are
+ * met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 
+ * 3. Products derived from the software may not be called "Alice",
+ *    nor may "Alice" appear in their name, without prior written
+ *    permission of Carnegie Mellon University.
+ * 
+ * 4. All advertising materials mentioning features or use of this software
+ *    must display the following acknowledgement:
+ *    "This product includes software developed by Carnegie Mellon University"
+ */
 package edu.cmu.cs.dennisc.media;
 
+/**
+ * @author Dennis Cosgrove
+ */
 class ByteArraySeekablePullSourceStream implements javax.media.protocol.PullSourceStream, javax.media.protocol.Seekable {
 	private static final javax.media.protocol.ContentDescriptor RAW_CONTENT_DISCRIPTOR = new javax.media.protocol.ContentDescriptor( javax.media.protocol.ContentDescriptor.RAW );
 	private byte[] data;
@@ -113,7 +138,7 @@ public class Manager {
 		Manager.extensionToContentTypeMap.put( "au", javax.media.protocol.FileTypeDescriptor.BASIC_AUDIO );
 	}
 
-	public static javax.media.Player getPlayer( edu.cmu.cs.dennisc.resource.Resource resource ) {
+	public static Player getPlayer( edu.cmu.cs.dennisc.resource.Resource resource ) {
 		java.net.URL url = resource.getURL();
 		javax.media.protocol.DataSource dataSource = Manager.urlToDataSourceMap.get( url );
 		if( dataSource != null ) {
@@ -133,7 +158,7 @@ public class Manager {
 			Manager.urlToDataSourceMap.put( url, dataSource );
 		}
 		try {
-			return javax.media.Manager.createPlayer( dataSource );
+			return new Player( javax.media.Manager.createPlayer( dataSource ) );
 		} catch( javax.media.NoPlayerException npe ) {
 			throw new RuntimeException( url.toExternalForm(), npe );
 		} catch( java.io.IOException ioe ) {

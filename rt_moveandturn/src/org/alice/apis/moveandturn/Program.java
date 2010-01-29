@@ -81,7 +81,27 @@ public abstract class Program extends edu.cmu.cs.dennisc.animation.Program imple
 	public void setSimulationSpeedFactor( Number simulationSpeedFactor ) {
 		m_simulationSpeedFactor = simulationSpeedFactor.doubleValue();
 	}
-
+	
+	private java.util.List< edu.cmu.cs.dennisc.media.Player > startedPlayers = new java.util.LinkedList< edu.cmu.cs.dennisc.media.Player >();
+	public void start( edu.cmu.cs.dennisc.media.Player player ) {
+		if( this.isClosed() ) {
+			throw new edu.cmu.cs.dennisc.program.ProgramClosedException();
+		}
+		synchronized( this.startedPlayers ) {
+			this.startedPlayers.add( player );
+			player.start();
+		}
+	}
+	@Override
+	protected void handleWindowClosed( java.awt.event.WindowEvent e ) {
+		super.handleWindowClosed( e );
+		synchronized( this.startedPlayers ) {
+			for( edu.cmu.cs.dennisc.media.Player player : this.startedPlayers ) {
+				player.stop();
+			}
+			this.startedPlayers.clear();
+		}
+	}
 	
 //	public void addGraphicToOverlay( org.alice.apis.moveandturn.graphic.Graphic graphic ) {
 //		synchronized( m_liveGraphics ) {

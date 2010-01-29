@@ -20,20 +20,25 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.ast;
+package edu.cmu.cs.dennisc.media;
 
 /**
  * @author Dennis Cosgrove
  */
-public class Resource extends Node {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public Resource() {
+public class Player {
+	private javax.media.Player player;
+	public Player( javax.media.Player player ) {
+		this.player = player;
+		this.player.addControllerListener( new javax.media.ControllerListener() {
+			public void controllerUpdate( javax.media.ControllerEvent e ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+			}
+		} );
 	}
-	public Resource( String name ) {
-		this.name.setValue( name );
+	public void start() {
+		this.player.start();
 	}
-	@Override
-	public String getName() {
-		return this.name.getValue();
+	public void stop() {
+		this.player.stop();
 	}
 }
