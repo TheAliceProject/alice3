@@ -61,4 +61,20 @@ public class InputStreamUtilities {
 		}
 		return baos.toByteArray();
 	}
+	public static byte[] getBytes( java.io.File file ) throws java.io.IOException{
+		java.io.FileInputStream fis = new java.io.FileInputStream( file );
+		try {
+			return getBytes( fis );
+		} finally {
+			fis.close();
+		}
+	}
+	public static byte[] getBytes( Class< ? > cls, String resourceName ) throws java.io.IOException{
+		java.io.InputStream is = cls.getResourceAsStream( resourceName );
+		try {
+			return getBytes( is );
+		} finally {
+			is.close();
+		}
+	}
 }

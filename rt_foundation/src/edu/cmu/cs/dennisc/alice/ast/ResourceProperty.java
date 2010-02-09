@@ -25,15 +25,8 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class Resource extends Node {
-	public edu.cmu.cs.dennisc.property.StringProperty name = new edu.cmu.cs.dennisc.property.StringProperty( this, null );
-	public Resource() {
-	}
-	public Resource( String name ) {
-		this.name.setValue( name );
-	}
-	@Override
-	public String getName() {
-		return this.name.getValue();
+public class ResourceProperty extends edu.cmu.cs.dennisc.property.InstanceProperty< org.alice.virtualmachine.Resource > {
+	public ResourceProperty( edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
+		super( owner, null );
 	}
 }

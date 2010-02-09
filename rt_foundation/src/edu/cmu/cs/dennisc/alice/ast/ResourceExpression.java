@@ -26,15 +26,15 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class ResourceExpression extends Expression {
-	public NodeProperty< Resource > resource = new NodeProperty< Resource >( this );
+	public edu.cmu.cs.dennisc.alice.ast.ResourceProperty resource = new edu.cmu.cs.dennisc.alice.ast.ResourceProperty( this );
 	public ResourceExpression() {
 	}
-	public ResourceExpression( Resource resource ) {
+	public ResourceExpression( org.alice.virtualmachine.Resource resource ) {
 		this.resource.setValue( resource );
 	}
 	@Override
 	public AbstractType getType() {
 		//todo
-		return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.resource.Resource.class );
+		return TypeDeclaredInJava.get( org.alice.virtualmachine.Resource.class );
 	}
 }

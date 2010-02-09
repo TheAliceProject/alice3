@@ -259,11 +259,24 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 			for( Object item : collection ) {
 				rv.appendChild( encodeValue( item, xmlDocument, set ) );
 			}
+//		} else if( value instanceof org.alice.virtualmachine.Resource ) {
+//			org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
+//			rv = xmlDocument.createElement( "resource" );
+//			java.util.UUID uuid = resource.getUUID();
+//			assert uuid != null;
+//			rv.setAttribute( CodecConstants.UUID_ATTRIBUTE, uuid.toString() );
 		} else {
 			rv = xmlDocument.createElement( "value" );
 			if( value != null ) {
 				rv.setAttribute( CodecConstants.TYPE_ATTRIBUTE, value.getClass().getName() );
-				rv.appendChild( xmlDocument.createTextNode( value.toString() ) );
+				String text;
+				if( value instanceof org.alice.virtualmachine.Resource ) {
+					org.alice.virtualmachine.Resource resource = (org.alice.virtualmachine.Resource)value;
+					text = resource.getUUID().toString();
+				} else {
+					text = value.toString();
+				}
+				rv.appendChild( xmlDocument.createTextNode( text ) );
 			} else {
 				rv.setAttribute( "isNull", "true" );
 			}

@@ -93,6 +93,12 @@ public class Decoder {
 					collection.add( decodeValue( xmlItem, map ) );
 				}
 				rv = collection;
+//			} else if( tagName.equals( "resource" ) ) {
+//				String uuidText = xmlValue.getAttribute( CodecConstants.UUID_ATTRIBUTE );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "uuidText", uuidText );
+//				java.util.UUID uuid = java.util.UUID.fromString( uuidText );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "uuid", uuid );
+//				rv = org.alice.virtualmachine.Resource.get( uuid );
 			} else if( tagName.equals( "value" ) ) {
 				Class< ? > cls = getCls( xmlValue );
 				String textContent = xmlValue.getTextContent();

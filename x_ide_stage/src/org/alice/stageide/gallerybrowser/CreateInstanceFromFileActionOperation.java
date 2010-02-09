@@ -70,7 +70,10 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractDeclareFiel
 				if (zipFile != null) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 					try {
-						type = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType(zipFile);
+						edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set<org.alice.virtualmachine.Resource> > tuple = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType(zipFile);
+						type = tuple.getA();
+						
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );
 					} catch (java.io.IOException ioe) {
 						if (isWorthyOfException) {
 							throw new RuntimeException(file.getAbsolutePath(), ioe);

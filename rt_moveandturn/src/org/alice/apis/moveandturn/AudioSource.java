@@ -26,11 +26,11 @@ package org.alice.apis.moveandturn;
  * @author Dennis Cosgrove
  */
 public class AudioSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
-	private edu.cmu.cs.dennisc.resource.Resource resource;
-	public AudioSource( edu.cmu.cs.dennisc.resource.Resource resource ) {
+	private org.alice.virtualmachine.Resource resource;
+	public AudioSource( org.alice.virtualmachine.Resource resource ) {
 		this.resource = resource;
 	}
-	public edu.cmu.cs.dennisc.resource.Resource getResource() {
+	public org.alice.virtualmachine.Resource getResource() {
 		return this.resource;
 	}
 //	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {

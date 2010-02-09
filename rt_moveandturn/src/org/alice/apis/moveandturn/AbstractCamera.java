@@ -52,7 +52,13 @@ public abstract class AbstractCamera extends Transformable {
 	@Override
 	protected void handleOwnerChange( SceneOwner owner ) {
 		super.handleOwnerChange( owner );
-		setLookingGlass( owner.getOnscreenLookingGlass() );
+		edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass;
+		if( owner != null ) {
+			lookingGlass = owner.getOnscreenLookingGlass();
+		} else {
+			lookingGlass = null;
+		}
+		setLookingGlass( lookingGlass );
 	}
 
 	@Override

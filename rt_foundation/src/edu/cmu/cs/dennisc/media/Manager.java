@@ -124,10 +124,16 @@ class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 	public Object[] getControls() {
 		return null;
 	}
+	
+	@Override
+	public java.lang.String toString() {
+		return ByteArrayDataSource.class.getName() + "[contentType=" + this.contentType + "]";
+	}
 }
 
 public class Manager {
-	private static java.util.Map< java.net.URL, javax.media.protocol.DataSource > urlToDataSourceMap = new java.util.HashMap< java.net.URL, javax.media.protocol.DataSource >();
+//	private static java.util.Map< java.net.URL, javax.media.protocol.DataSource > urlToDataSourceMap = new java.util.HashMap< java.net.URL, javax.media.protocol.DataSource >();
+	private static java.util.Map< org.alice.virtualmachine.Resource, javax.media.protocol.DataSource > resourceToDataSourceMap = new java.util.HashMap< org.alice.virtualmachine.Resource, javax.media.protocol.DataSource >();
 	private static java.util.Map< String, String > extensionToContentTypeMap;
 	static {
 		System.out.print( "Attempting to register mp3 capability... " );
@@ -138,31 +144,54 @@ public class Manager {
 		Manager.extensionToContentTypeMap.put( "au", javax.media.protocol.FileTypeDescriptor.BASIC_AUDIO );
 	}
 
-	public static Player getPlayer( edu.cmu.cs.dennisc.resource.Resource resource ) {
-		java.net.URL url = resource.getURL();
-		javax.media.protocol.DataSource dataSource = Manager.urlToDataSourceMap.get( url );
+	public static String getContentType( String path ) {
+		String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( path );
+		String contentType = Manager.extensionToContentTypeMap.get( extension.toLowerCase() );
+		return contentType;
+	}
+//	public static Player getPlayer( edu.cmu.cs.dennisc.alice.Resource resource ) {
+//		java.net.URL url = resource.getURL();
+//		javax.media.protocol.DataSource dataSource = Manager.urlToDataSourceMap.get( url );
+//		if( dataSource != null ) {
+//			//pass
+//		} else {
+//			byte[] data;
+//			try {
+//				data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( resource.getInputStream() );
+//			} catch( java.io.IOException ioe ) {
+//				throw new RuntimeException( url.toExternalForm(), ioe );
+//			}
+//			String path = url.getPath();
+//			String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( path );
+//			String contentType = Manager.extensionToContentTypeMap.get( extension.toLowerCase() );
+//			assert contentType != null : extension;
+//			dataSource = new ByteArrayDataSource( data, contentType );
+//			Manager.urlToDataSourceMap.put( url, dataSource );
+//		}
+//		try {
+//			return new Player( javax.media.Manager.createPlayer( dataSource ) );
+//		} catch( javax.media.NoPlayerException npe ) {
+//			throw new RuntimeException( url.toExternalForm(), npe );
+//		} catch( java.io.IOException ioe ) {
+//			throw new RuntimeException( url.toExternalForm(), ioe );
+//		}
+//	}
+	public static Player getPlayer( org.alice.virtualmachine.Resource resource ) {
+		assert resource != null;
+		javax.media.protocol.DataSource dataSource = Manager.resourceToDataSourceMap.get( resource );
 		if( dataSource != null ) {
 			//pass
 		} else {
-			byte[] data;
-			try {
-				data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( resource.getInputStream() );
-			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( url.toExternalForm(), ioe );
-			}
-			String path = url.getPath();
-			String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( path );
-			String contentType = Manager.extensionToContentTypeMap.get( extension.toLowerCase() );
-			assert contentType != null : extension;
-			dataSource = new ByteArrayDataSource( data, contentType );
-			Manager.urlToDataSourceMap.put( url, dataSource );
+			dataSource = new ByteArrayDataSource( resource.getData(), resource.getContentType() );
+			Manager.resourceToDataSourceMap.put( resource, dataSource );
 		}
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "getPlayer", dataSource );
 		try {
 			return new Player( javax.media.Manager.createPlayer( dataSource ) );
 		} catch( javax.media.NoPlayerException npe ) {
-			throw new RuntimeException( url.toExternalForm(), npe );
+			throw new RuntimeException( resource.toString(), npe );
 		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( url.toExternalForm(), ioe );
+			throw new RuntimeException( resource.toString(), ioe );
 		}
 	}
 }

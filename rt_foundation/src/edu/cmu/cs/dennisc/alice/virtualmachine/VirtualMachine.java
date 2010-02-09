@@ -68,17 +68,17 @@ public abstract class VirtualMachine {
 //	}
 
 	
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.resource.Resource > resourceMap;
-	public void setResourceMap( java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.resource.Resource > resourceMap ) {
-		this.resourceMap = resourceMap;
-	}
-	protected edu.cmu.cs.dennisc.resource.Resource getResource( edu.cmu.cs.dennisc.alice.ast.Resource resource ) {
-		if( this.resourceMap != null ) {
-			return this.resourceMap.get( resource );
-		} else {
-			return null;
-		}
-	}
+//	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.alice.resource.Resource > resourceMap;
+//	public void setResourceMap( java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.alice.resource.Resource > resourceMap ) {
+//		this.resourceMap = resourceMap;
+//	}
+//	protected edu.cmu.cs.dennisc.alice.resource.Resource getResource( edu.cmu.cs.dennisc.alice.ast.Resource resource ) {
+//		if( this.resourceMap != null ) {
+//			return this.resourceMap.get( resource );
+//		} else {
+//			return null;
+//		}
+//	}
 	public void invokeEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method, Object instance, Object... arguments ) {
 		pushCurrentThread( null );
 		try {
@@ -570,8 +570,7 @@ public abstract class VirtualMachine {
 		return typeLiteral.value.getValue();
 	}
 	protected Object evaluateResourceExpression( edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression ) {
-		edu.cmu.cs.dennisc.alice.ast.Resource resource = resourceExpression.resource.getValue();
-		return this.getResource( resource );
+		return resourceExpression.resource.getValue();
 	}
 	protected Object evaluateEntryPointTypeExpression( edu.cmu.cs.dennisc.alice.ast.EntryPointTypeExpression entryPointTypeExpression ) {
 		return this.entryPointType;

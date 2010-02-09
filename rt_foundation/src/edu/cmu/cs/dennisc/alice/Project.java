@@ -22,6 +22,8 @@
  */
 package edu.cmu.cs.dennisc.alice;
 
+import org.alice.virtualmachine.Resource;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -174,8 +176,15 @@ public class Project {
 		}
 	}
 	
+	private java.util.Set< Resource > resources = java.util.Collections.synchronizedSet( new java.util.HashSet< Resource >() );
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType programType = null;
 	private Properties properties = new Properties();
+	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType, java.util.Set< Resource > resources ) {
+		this( programType );
+		synchronized( this.resources ) {
+			this.resources.addAll( resources );
+		}
+	}
 	public Project( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
 		setProgramType( programType );
 	}
@@ -187,6 +196,20 @@ public class Project {
 	}
 	public Properties getProperties() {
 		return this.properties;
+	}
+	
+	public void addResource( Resource resource ) {
+		synchronized( this.resources ) {
+			this.resources.add( resource );
+		}
+	}
+	public void deleteResource( Resource resource ) {
+		synchronized( this.resources ) {
+			this.resources.remove( resource );
+		}
+	}
+	public java.util.Set< Resource > getResources() {
+		return this.resources;
 	}
 //	/*public*/private void setProperties( Properties properties ) {
 //		if( properties != null ) {

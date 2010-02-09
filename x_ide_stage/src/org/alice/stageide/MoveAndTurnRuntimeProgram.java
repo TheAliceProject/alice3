@@ -29,7 +29,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	}
 	@Override
 	protected void initialize() {
-		this.vm.setResourceMap( org.alice.ide.IDE.getSingleton().getResourceMap() );
+		//this.vm.setResources( org.alice.ide.IDE.getSingleton().getResources() );
 		this.sceneInstance = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)this.vm.createInstanceEntryPoint( this.sceneType );
 		org.alice.apis.moveandturn.Scene scene = (org.alice.apis.moveandturn.Scene)this.sceneInstance.getInstanceInJava();
 		this.setScene( scene );
