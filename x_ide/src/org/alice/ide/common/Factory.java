@@ -99,6 +99,8 @@ public abstract class Factory {
 					} else {
 						rv = new NodePropertyPane( this, (edu.cmu.cs.dennisc.alice.ast.NodeProperty< ? >)property );
 					}
+				} else if( property instanceof edu.cmu.cs.dennisc.alice.ast.ResourceProperty ) {
+					rv = new ResourcePropertyPane( this, (edu.cmu.cs.dennisc.alice.ast.ResourceProperty)property );
 				} else if( property instanceof edu.cmu.cs.dennisc.property.ListProperty< ? > ) {
 					if( property instanceof edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? > ) {
 						if( property instanceof edu.cmu.cs.dennisc.alice.ast.StatementListProperty ) {
@@ -150,6 +152,10 @@ public abstract class Factory {
 		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.AbstractConstructor && methodName.equals( "getDeclaringType" ) ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = (edu.cmu.cs.dennisc.alice.ast.AbstractConstructor)owner;
 			rv = new org.alice.ide.common.TypeComponent( constructor.getDeclaringType() );
+//		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression && methodName.equals( "getResourceName" ) ) {
+//			edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)owner;
+//			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
+//			rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "resource " + resource.getName() );
 		} else {
 			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
 			Object o = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( owner, mthd );

@@ -232,7 +232,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		return null;
 	}
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		return expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression == false;
+		return ( expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression || expression instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression ) == false;
 	}
 	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		//todo:
