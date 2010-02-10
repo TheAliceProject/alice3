@@ -22,36 +22,19 @@
  */
 package edu.cmu.cs.dennisc.media;
 
-/**
- * @author Dennis Cosgrove
- */
-public class Player {
-	private javax.media.Player player;
-	public Player( javax.media.Player player ) {
-		this.player = player;
-	}
-	public void prefetch() {
-		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
-		javax.media.ControllerListener controllerListener = new javax.media.ControllerListener() {
-			public void controllerUpdate( javax.media.ControllerEvent e ) {
-				if( e instanceof javax.media.TransitionEvent ) {
-					javax.media.TransitionEvent transitionEvent = (javax.media.TransitionEvent)e;
-					int currentState = transitionEvent.getCurrentState();
-					int targetState = transitionEvent.getTargetState();
-					if( currentState == targetState ) {
-            			try {
-        					barrier.await();
-            			} catch( InterruptedException ie ) {
-            				throw new RuntimeException( ie );
-            			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-            				throw new RuntimeException( bbe );
-            			}
-					}
-				}
+class StateControllerListener implements javax.media.ControllerListener {
+	private java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
+	public void controllerUpdate( javax.media.ControllerEvent e ) {
+		if( e instanceof javax.media.TransitionEvent ) {
+			javax.media.TransitionEvent transitionEvent = (javax.media.TransitionEvent)e;
+			int currentState = transitionEvent.getCurrentState();
+			int targetState = transitionEvent.getTargetState();
+			if( currentState == targetState ) {
+				this.await();
 			}
-		};
-		this.player.addControllerListener( controllerListener );
-		this.player.prefetch();
+		}
+	}
+	public void await() {
 		try {
 			barrier.await();
 		} catch( InterruptedException ie ) {
@@ -59,9 +42,47 @@ public class Player {
 		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
 			throw new RuntimeException( bbe );
 		}
+	}
+}
+
+/**
+ * @author Dennis Cosgrove
+ */
+public class Player {
+	private javax.media.Player player;
+	private double fromTime;
+	private double toTime;
+	public Player( javax.media.Player player, double fromTime, double toTime ) {
+		this.player = player;
+		this.fromTime = fromTime;
+		this.toTime = toTime;
+	}
+	public void prefetch() {
+		StateControllerListener controllerListener = new StateControllerListener();
+		this.player.addControllerListener( controllerListener );
+		this.player.prefetch();
+		controllerListener.await();
+		this.player.removeControllerListener( controllerListener );
+	}
+	public void realize() {
+		StateControllerListener controllerListener = new StateControllerListener();
+		this.player.addControllerListener( controllerListener );
+		this.player.realize();
+		controllerListener.await();
 		this.player.removeControllerListener( controllerListener );
 	}
 	public void start() {
+		this.realize();
+		if( Double.isNaN( this.fromTime ) ) {
+			//pass
+		} else {
+			this.player.setMediaTime( new javax.media.Time( this.fromTime ) );
+		}
+		if( Double.isNaN( this.toTime ) ) {
+			//pass
+		} else {
+			this.player.setStopTime( new javax.media.Time( this.toTime ) );
+		}
 		this.player.start();
 	}
 	public void stop() {
@@ -70,7 +91,8 @@ public class Player {
 	
 	public double getTimeRemaining() {
 		javax.media.Time duration = this.player.getDuration();
-		javax.media.Time time = this.player.getMediaTime();
-		return duration.getSeconds() - time.getSeconds();
+		javax.media.Time stop = this.player.getStopTime();
+		javax.media.Time curr = this.player.getMediaTime();
+		return Math.min( duration.getSeconds(), stop.getSeconds() ) - curr.getSeconds();
 	}
 }

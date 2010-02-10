@@ -39,9 +39,6 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 			return null;
 		}
 	}
-	public String[] getLabelTexts() {
-		return LABEL_TEXTS;
-	}
 	public edu.cmu.cs.dennisc.zoot.ZInputPane< ? > getInputPane() {
 		return this.inputPane;
 	}
@@ -49,4 +46,19 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 		this.inputPane = inputPane;
 		this.inputPane.addOKButtonValidator( this );
 	}
+	
+	protected String[] getLabelTexts() {
+		return LABEL_TEXTS;
+	}
+	protected abstract java.awt.Component[] getComponents();
+	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
+		String[] labelTexts = this.getLabelTexts();
+		java.awt.Component[] components = this.getComponents();
+		final int N = labelTexts.length;
+		for( int i=0; i<N; i++ ) {
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( labelTexts[ i ] ), components[ i ] ) );
+		}
+		return rv;
+	}
+	
 }

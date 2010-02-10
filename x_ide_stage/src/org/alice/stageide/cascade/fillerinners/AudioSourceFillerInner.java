@@ -35,10 +35,7 @@ public class AudioSourceFillerInner extends org.alice.ide.cascade.fillerinners.I
 		Iterable< org.alice.virtualmachine.Resource > resources = ide.getResources();
 		assert resources != null;
 		synchronized( resources ) {
-//			java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.alice.resource.Resource > map = ide.getResourceMap();
-//			for( edu.cmu.cs.dennisc.alice.ast.Resource resource : map.keySet() ) {
 			for( org.alice.virtualmachine.Resource resource : resources ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( resource );
 				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.Resource.class );
 				edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resource );
 				edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );

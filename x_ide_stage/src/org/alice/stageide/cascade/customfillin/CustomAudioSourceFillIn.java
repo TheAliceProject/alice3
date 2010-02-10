@@ -38,13 +38,25 @@ public class CustomAudioSourceFillIn extends org.alice.ide.cascade.customfillin.
 	protected edu.cmu.cs.dennisc.alice.ast.InstanceCreation createExpression( org.alice.apis.moveandturn.AudioSource value ) {
 		org.alice.virtualmachine.Resource resource = value.getResource();
 		
+		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		ide.getProject().addResource( resource );
 		
-		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.Resource.class );
 		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resource );
-		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-		edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 );
+		if( Double.isNaN( value.getFromTime() ) ) {
+			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.Resource.class );
+			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
+			edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
+			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 );
+		} else {
+			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.Resource.class, Number.class, Number.class );
+			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
+			edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
+			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter1 = constructor.getParameters().get( 1 );
+			edu.cmu.cs.dennisc.alice.ast.Argument argument1 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter1, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value.getFromTime() ) );
+			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter2 = constructor.getParameters().get( 2 );
+			edu.cmu.cs.dennisc.alice.ast.Argument argument2 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter2, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value.getToTime() ) );
+			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0, argument1, argument2 );
+		}
 	}
 }

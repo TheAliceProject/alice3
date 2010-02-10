@@ -194,7 +194,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	protected final java.awt.Component[] createIsReassignableRow() {
 		java.awt.Component component = this.createIsReassignableComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "is re-assignable:" ), component );
+			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "is re-assignable:" ), component );
 		} else {
 			return null;
 		}
@@ -207,14 +207,14 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	protected final java.awt.Component[] createValueTypeRow() {
 		java.awt.Component component = this.createValueTypeComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( this.getValueTypeText() ), component );
+			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( this.getValueTypeText() ), component );
 		} else {
 			return null;
 		}
 	}
 
 	protected final java.awt.Component[] createNameRow() {
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "name:" ), this.declarationNameTextField );
+		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "name:" ), this.declarationNameTextField );
 	}
 	
 	protected abstract boolean isEditableInitializerComponentDesired();
@@ -229,7 +229,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	protected final java.awt.Component[] createInitializerRow() {
 		java.awt.Component component = this.createInitializerComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "initializer:" ), component );
+			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "initializer:" ), component );
 		} else {
 			return null;
 		}

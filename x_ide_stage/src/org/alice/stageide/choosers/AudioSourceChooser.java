@@ -64,8 +64,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			javax.swing.JComponent rv = new edu.cmu.cs.dennisc.croquet.swing.FormPane() {
 				@Override
 				protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createColumn0Label( "from marker:" ), getSliderFrom() ) );
-					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createColumn0Label( "to marker:" ), getSliderTo() ) );
+					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "from marker:" ), getSliderFrom() ) );
+					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "to marker:" ), getSliderTo() ) );
 					return rv;
 				}
 			};
@@ -77,7 +77,20 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	private IsMarkedExpandPane isMarkedExpandPane = new IsMarkedExpandPane();
 	private javax.swing.JSlider sliderFrom;
 	private javax.swing.JSlider sliderTo;
-	private javax.swing.JButton preview = new javax.swing.JButton( "preview" );
+	
+	class TestOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
+		public TestOperation() {
+			this.putValue( javax.swing.Action.NAME, "test" );
+		}
+		@Override
+		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			org.alice.apis.moveandturn.AudioSource audioSource = getValue();
+			edu.cmu.cs.dennisc.media.MediaPlayerAnimation mediaPlayerAnimation = edu.cmu.cs.dennisc.media.Manager.createMediaPlayerAnimation( audioSource.getResource(), audioSource.getFromTime(), audioSource.getToTime() );
+			mediaPlayerAnimation.update( 0.0, null );
+		}
+	};
+	private TestOperation testOperation = new TestOperation();
+	private edu.cmu.cs.dennisc.zoot.ZButton test = new edu.cmu.cs.dennisc.zoot.ZButton( testOperation );
 
 	private javax.swing.JSlider getSliderFrom() {
 		if( this.sliderFrom != null ) {
@@ -98,11 +111,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public AudioSourceChooser() {
 		this.getSliderFrom().setValue( 0 );
 		this.getSliderTo().setValue( 100 );
-		this.isMarkedExpandPane.addItemListener( new java.awt.event.ItemListener() {
-			public void itemStateChanged( java.awt.event.ItemEvent e ) {
-				AudioSourceChooser.this.getInputPane().updateOKButton();
-			}
-		} );
+		
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
 			edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)previousExpression;
@@ -121,10 +130,26 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			bogusNode.bogusProperty.setValue( exp0 );
 			
 			if( n==3 ) {
-				//todo
+				//getSliderFrom().setValue(  );
+				//getSliderTo().setValue(  );
 			}
 			
 		}
+		this.getSliderTo().addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				AudioSourceChooser.this.getInputPane().updateOKButton();
+			}
+		} );
+		this.getSliderFrom().addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				AudioSourceChooser.this.getInputPane().updateOKButton();
+			}
+		} );
+		this.isMarkedExpandPane.addItemListener( new java.awt.event.ItemListener() {
+			public void itemStateChanged( java.awt.event.ItemEvent e ) {
+				AudioSourceChooser.this.getInputPane().updateOKButton();
+			}
+		} );
 	}
 	public String getTitleDefault() {
 		return "Enter Custom Audio Source";
@@ -135,15 +160,26 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	}
 	@Override
 	public String[] getLabelTexts() {
-		return new String[] { "resource:", "", "" };
+		return new String[] { "resource:", "extent:" };
 	}
 	public java.awt.Component[] getComponents() {
 		this.dropDown = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, new org.alice.ide.common.ExpressionPropertyPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), bogusNode.bogusProperty ), bogusNode.bogusProperty );
-		return new java.awt.Component[] { this.dropDown, this.isMarkedExpandPane, this.preview };
+		return new java.awt.Component[] { this.dropDown, this.isMarkedExpandPane };
+	}
+	@Override
+	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
+		super.updateRows( rv );
+		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
+		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( this.test, null ) );
+		return rv;
 	}
 	public org.alice.apis.moveandturn.AudioSource getValue() {
 		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
-		return new org.alice.apis.moveandturn.AudioSource( resourceExpression.resource.getValue() );
+		if( this.isMarkedExpandPane.isSelected() ) {
+			return new org.alice.apis.moveandturn.AudioSource( resourceExpression.resource.getValue(), getSliderFrom().getValue()/100.0, getSliderTo().getValue()/100.0 );
+		} else {
+			return new org.alice.apis.moveandturn.AudioSource( resourceExpression.resource.getValue() );
+		}
 	}
 	public static void main( String[] args ) {
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();

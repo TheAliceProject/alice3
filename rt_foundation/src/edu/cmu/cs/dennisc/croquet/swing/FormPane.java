@@ -32,10 +32,4 @@ public abstract class FormPane extends edu.cmu.cs.dennisc.croquet.swing.RowsSpri
 	public FormPane() {
 		this(8, 8);
 	}
-
-	protected static java.awt.Component createColumn0Label(String text) {
-		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire(text);
-		rv.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-		return rv;
-	}
 }

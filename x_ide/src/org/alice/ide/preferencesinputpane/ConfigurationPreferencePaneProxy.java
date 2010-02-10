@@ -69,8 +69,8 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		@Override
 		protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {
 			this.ensureLabelsExist();
-			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createColumn0Label( "isDefaultFieldNameGenerationDesired:" ), this.isDefaultFieldNameGenerationDesiredLabel ) );
-			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createColumn0Label( "isSyntaxNoiseDesired:" ), this.isSyntaxNoiseDesiredLabel ) );
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "isDefaultFieldNameGenerationDesired:" ), this.isDefaultFieldNameGenerationDesiredLabel ) );
+			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "isSyntaxNoiseDesired:" ), this.isSyntaxNoiseDesiredLabel ) );
 			return rv;
 		}
 		

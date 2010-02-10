@@ -87,6 +87,11 @@ public class SpringUtilities {
 //		constraints.setConstraint( javax.swing.SpringLayout.SOUTH, ySpring );
 //		return layout;
 //	}
+	public static java.awt.Component createColumn0Label(String text) {
+		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire(text);
+		rv.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+		return rv;
+	}
 	
 	public static java.awt.Component[] createRow( java.awt.Component... rv ) {
 		for( int i=0; i<rv.length; i++ ) {

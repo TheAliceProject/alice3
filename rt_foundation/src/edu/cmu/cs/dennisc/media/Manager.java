@@ -76,8 +76,8 @@ public class Manager {
 			throw new RuntimeException( resource.toString(), ioe );
 		}
 	}
-	public static MediaPlayerAnimation createMediaPlayerAnimation( org.alice.virtualmachine.Resource resource ) {
-		return new MediaPlayerAnimation( new Player( getPlayer( resource ) ) );
+	public static MediaPlayerAnimation createMediaPlayerAnimation( org.alice.virtualmachine.Resource resource, double fromTime, double toTime ) {
+		return new MediaPlayerAnimation( new Player( getPlayer( resource ), fromTime, toTime ) );
 	}
 
 }

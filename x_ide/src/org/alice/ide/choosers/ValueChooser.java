@@ -30,8 +30,9 @@ package org.alice.ide.choosers;
 public interface ValueChooser<E> {
 	public String getTitleDefault();
 	public void setInputPane( edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane );
-	public String[] getLabelTexts();
-	public java.awt.Component[] getComponents();
+	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv );
+//	public String[] getLabelTexts();
+//	public java.awt.Component[] getComponents();
 	public E getValue();
 }
 
