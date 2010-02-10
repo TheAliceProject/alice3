@@ -96,9 +96,6 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 	protected boolean isRestartSupported() {
 		return false;
 	}
-	@Override
-	protected void restart( java.util.EventObject e ) {
-	}
 	
 	@Override
 	public java.awt.Dimension getPreferredSize() {

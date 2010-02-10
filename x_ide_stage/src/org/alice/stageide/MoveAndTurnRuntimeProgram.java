@@ -54,6 +54,7 @@ public class MoveAndTurnRuntimeProgram extends org.alice.apis.moveandturn.Progra
 	}
 	@Override
 	protected void restart( java.util.EventObject e ) {
+		super.restart( e );
 		javax.swing.SwingUtilities.getRoot( this ).setVisible( false );
 		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( this.getRestartOperation(), null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 	}

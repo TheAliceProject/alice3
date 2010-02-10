@@ -50,11 +50,9 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	}
 	
 	
-	protected boolean isRestartSupported() {
-		return false;
-	}
+	protected abstract boolean isRestartSupported();
 	protected void restart( java.util.EventObject e ) {
-		throw new RuntimeException();
+		this.animator.complete( null );
 	}
 
 	private Object monitor = new Object();
@@ -138,6 +136,11 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 		setMovieEncoder( null );
 	}
 
+	@Override
+	protected void handleWindowClosed( java.awt.event.WindowEvent e ) {
+		super.handleWindowClosed( e );
+		this.animator.complete( null );
+	}
 	public void perform( Animation animation, AnimationObserver animationObserver ) {
 		if( this.isClosed() ) {
 			throw new edu.cmu.cs.dennisc.program.ProgramClosedException();

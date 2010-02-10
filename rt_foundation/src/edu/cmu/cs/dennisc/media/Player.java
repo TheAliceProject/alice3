@@ -29,16 +29,48 @@ public class Player {
 	private javax.media.Player player;
 	public Player( javax.media.Player player ) {
 		this.player = player;
-		this.player.addControllerListener( new javax.media.ControllerListener() {
+	}
+	public void prefetch() {
+		final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
+		javax.media.ControllerListener controllerListener = new javax.media.ControllerListener() {
 			public void controllerUpdate( javax.media.ControllerEvent e ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+				if( e instanceof javax.media.TransitionEvent ) {
+					javax.media.TransitionEvent transitionEvent = (javax.media.TransitionEvent)e;
+					int currentState = transitionEvent.getCurrentState();
+					int targetState = transitionEvent.getTargetState();
+					if( currentState == targetState ) {
+            			try {
+        					barrier.await();
+            			} catch( InterruptedException ie ) {
+            				throw new RuntimeException( ie );
+            			} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+            				throw new RuntimeException( bbe );
+            			}
+					}
+				}
 			}
-		} );
+		};
+		this.player.addControllerListener( controllerListener );
+		this.player.prefetch();
+		try {
+			barrier.await();
+		} catch( InterruptedException ie ) {
+			throw new RuntimeException( ie );
+		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+			throw new RuntimeException( bbe );
+		}
+		this.player.removeControllerListener( controllerListener );
 	}
 	public void start() {
 		this.player.start();
 	}
 	public void stop() {
 		this.player.stop();
+	}
+	
+	public double getTimeRemaining() {
+		javax.media.Time duration = this.player.getDuration();
+		javax.media.Time time = this.player.getMediaTime();
+		return duration.getSeconds() - time.getSeconds();
 	}
 }

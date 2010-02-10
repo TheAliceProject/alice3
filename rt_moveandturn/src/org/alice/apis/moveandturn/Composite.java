@@ -566,13 +566,6 @@ public abstract class Composite extends Element implements ReferenceFrame {
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void play( AudioSource audioSource ) {
 		org.alice.virtualmachine.Resource resource = audioSource.getResource();
-		edu.cmu.cs.dennisc.media.Player player = edu.cmu.cs.dennisc.media.Manager.getPlayer( resource );		
-		SceneOwner owner = getOwner();
-		if( owner != null ) {
-			owner.start( player );
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: play owner==null" );
-		}
+		this.perform( edu.cmu.cs.dennisc.media.Manager.createMediaPlayerAnimation( resource ) );		
 	}
-	
 }

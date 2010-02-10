@@ -26,14 +26,7 @@ package edu.cmu.cs.dennisc.animation;
  * @author Dennis Cosgrove
  */
 public interface Animation {
-	
-	
-	
-	//todo: rename?
-	public void initialize();
-	
-	
-	
+	public void reset();
 	public double update( double tCurrent, AnimationObserver animationObserver );
 	public void complete( AnimationObserver animationObserver );
 }

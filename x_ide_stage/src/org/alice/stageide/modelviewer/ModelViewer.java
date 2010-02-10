@@ -49,6 +49,11 @@ abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
 	@Override
 	protected void run() {
 	}
+	
+	@Override
+	protected boolean isRestartSupported() {
+		return false;
+	}
 }
 /**
  * @author Dennis Cosgrove

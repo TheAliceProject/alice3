@@ -101,4 +101,8 @@ public class Program extends org.alice.apis.moveandturn.Program {
 	protected void run() {
 	}
 	
+	@Override
+	protected boolean isRestartSupported() {
+		return false;
+	}
 }

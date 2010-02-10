@@ -100,16 +100,17 @@ public class RigidBodyAnimation implements edu.cmu.cs.dennisc.animation.Animatio
 		m_sgTransformable = sgTransformable;
 		m_translation1.set( m1.translation );
 		m_orientation1.setValue( m1.orientation );
+		this.reset();
 	}
-	public void initialize() {
-		m_function.initialize( m_sgTransformable.getLocalTransformation() );
+	private double m_tPrev;
+	public void reset() {
+		m_tPrev = Double.NaN;
 	}
 
-	private double m_tPrev = Double.NaN;
 
 	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
 		if( Double.isNaN( m_tPrev ) ) {
-			//pass
+			m_function.initialize( m_sgTransformable.getLocalTransformation() );
 		} else {
 			double tDelta = m_tPrev - tCurrent;
 			edu.cmu.cs.dennisc.math.rungekutta.RungeKuttaUtilities.rk4( m_function, m_tPrev, tDelta );

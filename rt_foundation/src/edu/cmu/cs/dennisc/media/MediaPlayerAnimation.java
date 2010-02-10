@@ -20,19 +20,33 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.animation;
+package edu.cmu.cs.dennisc.media;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Animator {
-	public double getCurrentTime();
-	public double getSpeedFactor();
-	public void setSpeedFactor( double speedFactor );
-	public boolean isUpdateRequired();
-	public void update();
-	public void invokeLater( Animation animation, AnimationObserver animationObserver );
-	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, java.lang.reflect.InvocationTargetException;
-	public void invokeAndWait_ThrowRuntimeExceptionsIfNecessary( Animation animation, AnimationObserver animationObserver );
-	public void complete( AnimationObserver animationObserver );
+public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animation {
+	private Player player;
+	private boolean isStarted = false;
+
+	public MediaPlayerAnimation( Player player ) {
+		this.player = player;
+		this.isStarted = false;
+	}
+	public void reset() {
+		this.isStarted = false;
+	}
+	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		if( this.isStarted ) {
+			//pass
+		} else {
+			this.player.prefetch();
+			this.player.start();
+			this.isStarted = true;
+		}
+		return this.player.getTimeRemaining();
+	}
+	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
+		this.player.stop();
+	}
 }

@@ -31,8 +31,8 @@ public class InOrderAnimation extends CompositeAnimation {
 		super( animations );
 	}
 	@Override
-	public void initialize() {
-		super.initialize();
+	public void reset() {
+		super.reset();
 		m_index = 0;
 	}
 	public double update( double tCurrent, AnimationObserver animationObserver ) {

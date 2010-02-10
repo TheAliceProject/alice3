@@ -32,16 +32,16 @@ public abstract class CompositeAnimation implements Animation {
 	}
 	protected void setAnimations( Animation[] animations ) {
 		m_animations = animations;
-		initialize();
+		this.reset();
 	}
 	
 	public Animation[] getAnimations() {
 		return m_animations;
 	}
 	
-	public void initialize() {
+	public void reset() {
 		for( Animation animation : m_animations ) {
-			animation.initialize();
+			animation.reset();
 		}
 	}
 	public void complete( AnimationObserver animationObserver ) {

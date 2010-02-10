@@ -41,7 +41,7 @@ public class RunnableAnimation implements Animation {
 		m_runnable = runnable;
 	}
 
-	public void initialize() {
+	public void reset() {
 	}
 	
 	public double update( double tCurrent, AnimationObserver animationObserver ) {

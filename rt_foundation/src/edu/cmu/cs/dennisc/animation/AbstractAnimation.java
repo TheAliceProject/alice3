@@ -27,6 +27,7 @@ package edu.cmu.cs.dennisc.animation;
  */
 public abstract class AbstractAnimation implements Animation {
 	private enum State {
+		INITIALIZE_IS_REQUIRED,
 		PROLOGUE_IS_REQUIRED,
 		UPDATE_IS_REQUIRED,
 		EPILOGUE_IS_REQUIRED,
@@ -36,19 +37,21 @@ public abstract class AbstractAnimation implements Animation {
 	private double m_t0 = Double.NaN;
 	private double m_tPrevious = Double.NaN;
 	
-	public AbstractAnimation() {
-		initialize();
-	}
+//	public AbstractAnimation() {
+//		initialize();
+//	}
 
-	public void initialize() {
-		m_state = State.PROLOGUE_IS_REQUIRED;
-		m_t0 = Double.NaN;
-		m_tPrevious = Double.NaN;
-	}
-	
-	public double update( double tCurrent, AnimationObserver animationObserver ) {
+	public final void reset() {
+		m_state = State.INITIALIZE_IS_REQUIRED;
+	}	
+	public final double update( double tCurrent, AnimationObserver animationObserver ) {
 		double tRemaining = Double.NaN;
 		if( m_state != State.COMPLETED ) {
+			if( m_state == State.INITIALIZE_IS_REQUIRED ) {
+				m_t0 = Double.NaN;
+				m_tPrevious = Double.NaN;
+				m_state = State.PROLOGUE_IS_REQUIRED;
+			}
 			if( m_state == State.PROLOGUE_IS_REQUIRED ) {
 				m_t0 = tCurrent;
 				prologue();
