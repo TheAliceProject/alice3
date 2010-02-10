@@ -33,7 +33,7 @@ public class ImportNewAudioResourceFillIn extends ImportNewResourceFillIn {
 	
 	@Override
 	protected String getContentType( String path ) {
-		return edu.cmu.cs.dennisc.media.Manager.getContentType( path );
+		return edu.cmu.cs.dennisc.media.MediaFactory.getContentType( path );
 	}
 	
 	@Override

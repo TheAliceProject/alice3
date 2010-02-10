@@ -148,4 +148,9 @@ public abstract class Program extends edu.cmu.cs.dennisc.animation.Program imple
 //			m_bubbles.remove( bubble );
 //		}
 //	}
+	
+	@Override
+	protected boolean isRestartSupported() {
+		return false;
+	}
 }

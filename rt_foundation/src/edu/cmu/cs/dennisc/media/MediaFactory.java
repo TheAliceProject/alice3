@@ -25,25 +25,25 @@ package edu.cmu.cs.dennisc.media;
 /**
  * @author Dennis Cosgrove
  */
-public class Manager {
+public class MediaFactory {
 	private static java.util.Map< org.alice.virtualmachine.Resource, javax.media.protocol.DataSource > resourceToDataSourceMap = new java.util.HashMap< org.alice.virtualmachine.Resource, javax.media.protocol.DataSource >();
 	private static java.util.Map< String, String > extensionToContentTypeMap;
 	static {
 		System.out.print( "Attempting to register mp3 capability... " );
 		com.sun.media.codec.audio.mp3.JavaDecoder.main( new String[] {} );
-		Manager.extensionToContentTypeMap = new java.util.HashMap< String, String >();
-		Manager.extensionToContentTypeMap.put( "mp3", javax.media.protocol.FileTypeDescriptor.MPEG_AUDIO );
-		Manager.extensionToContentTypeMap.put( "wav", javax.media.protocol.FileTypeDescriptor.WAVE );
-		Manager.extensionToContentTypeMap.put( "au", javax.media.protocol.FileTypeDescriptor.BASIC_AUDIO );
+		MediaFactory.extensionToContentTypeMap = new java.util.HashMap< String, String >();
+		MediaFactory.extensionToContentTypeMap.put( "mp3", javax.media.protocol.FileTypeDescriptor.MPEG_AUDIO );
+		MediaFactory.extensionToContentTypeMap.put( "wav", javax.media.protocol.FileTypeDescriptor.WAVE );
+		MediaFactory.extensionToContentTypeMap.put( "au", javax.media.protocol.FileTypeDescriptor.BASIC_AUDIO );
 	}
 
 	public static String getContentType( String path ) {
 		String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( path );
-		String contentType = Manager.extensionToContentTypeMap.get( extension.toLowerCase() );
+		String contentType = MediaFactory.extensionToContentTypeMap.get( extension.toLowerCase() );
 		return contentType;
 	}
 	public static boolean isAcceptableContentType( String contentType ) {
-		return Manager.extensionToContentTypeMap.containsValue( contentType );
+		return MediaFactory.extensionToContentTypeMap.containsValue( contentType );
 	}
 	
 	public static java.io.FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
@@ -61,12 +61,12 @@ public class Manager {
 	
 	private static javax.media.Player getPlayer( org.alice.virtualmachine.Resource resource ) {
 		assert resource != null;
-		javax.media.protocol.DataSource dataSource = Manager.resourceToDataSourceMap.get( resource );
+		javax.media.protocol.DataSource dataSource = MediaFactory.resourceToDataSourceMap.get( resource );
 		if( dataSource != null ) {
 			//pass
 		} else {
 			dataSource = new edu.cmu.cs.dennisc.media.protocol.ByteArrayDataSource( resource.getData(), resource.getContentType() );
-			Manager.resourceToDataSourceMap.put( resource, dataSource );
+			MediaFactory.resourceToDataSourceMap.put( resource, dataSource );
 		}
 		try {
 			return javax.media.Manager.createPlayer( dataSource );

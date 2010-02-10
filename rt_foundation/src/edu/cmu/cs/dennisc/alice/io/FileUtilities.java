@@ -139,7 +139,6 @@ public class FileUtilities {
 					if( data != null ) {
 						java.util.UUID uuid = java.util.UUID.fromString( uuidText );
 						org.alice.virtualmachine.Resource resource = org.alice.virtualmachine.Resource.get( uuid );
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "readResources", resource.hashCode(), name, contentType );
 						resource.setName( name );
 						resource.setContentType( contentType );
 						resource.setData( data );

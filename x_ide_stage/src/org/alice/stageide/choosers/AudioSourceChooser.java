@@ -85,7 +85,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		@Override
 		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			org.alice.apis.moveandturn.AudioSource audioSource = getValue();
-			edu.cmu.cs.dennisc.media.MediaPlayerAnimation mediaPlayerAnimation = edu.cmu.cs.dennisc.media.Manager.createMediaPlayerAnimation( audioSource.getResource(), audioSource.getFromTime(), audioSource.getToTime() );
+			edu.cmu.cs.dennisc.media.MediaPlayerAnimation mediaPlayerAnimation = edu.cmu.cs.dennisc.media.MediaFactory.createMediaPlayerAnimation( audioSource.getResource(), audioSource.getFromTime(), audioSource.getToTime() );
 			mediaPlayerAnimation.update( 0.0, null );
 		}
 	};

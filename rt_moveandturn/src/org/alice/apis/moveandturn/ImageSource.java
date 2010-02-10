@@ -20,22 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.cascade.fillerinners;
+package org.alice.apis.moveandturn;
 
 /**
  * @author Dennis Cosgrove
  */
-public class AudioResourceFillerInner extends ResourceFillerInner {
-	@Override
-	protected boolean isContentTypeAcceptable( String contentType ) {
-		if( contentType != null ) {
-			return edu.cmu.cs.dennisc.media.MediaFactory.isAcceptableContentType( contentType );
-		} else {
-			return false;
-		}
+public class ImageSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
+	private org.alice.virtualmachine.Resource resource;
+	public ImageSource( org.alice.virtualmachine.Resource resource ) {
+		this.resource = resource;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.cascade.FillIn< ? > createImportNewResourceFillIn() {
-		return new org.alice.ide.cascade.customfillin.ImportNewAudioResourceFillIn();
+	public org.alice.virtualmachine.Resource getResource() {
+		return this.resource;
 	}
 }

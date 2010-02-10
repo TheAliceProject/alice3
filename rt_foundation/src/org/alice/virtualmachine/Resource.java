@@ -25,6 +25,7 @@ public class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameable {
 	private Resource( java.util.UUID uuid ) {
 		this.uuid = uuid;
 	}
+
 	public Resource( Class<?> cls, String resourceName, String contentType ) {
 		this.uuid = null;
 		try {
@@ -32,12 +33,23 @@ public class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameable {
 			this.setData( data );
 			this.setName( resourceName );
 			this.setContentType( contentType );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "content type:", contentType );
 		} catch( java.io.IOException ioe ) {
 			throw new RuntimeException( resourceName, ioe );
 		}
 	}
-
+	public Resource( java.io.File file, String contentType ) {
+		this.uuid = java.util.UUID.randomUUID();
+		String resourceName = file.getName();
+		try {
+			byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( file );
+			this.setData( data );
+			this.setName( resourceName );
+			this.setContentType( contentType );
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( resourceName, ioe );
+		}
+	}
+	
 	public java.util.UUID getUUID() {
 		return this.uuid;
 	}

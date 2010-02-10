@@ -36,7 +36,7 @@ public abstract class ImportNewResourceFillIn extends edu.cmu.cs.dennisc.cascade
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression getValue() {
 		java.awt.FileDialog fileDialog = new java.awt.FileDialog( org.alice.ide.IDE.getSingleton() );
-		fileDialog.setFilenameFilter( edu.cmu.cs.dennisc.media.Manager.createFilenameFilter( true ) );
+		fileDialog.setFilenameFilter( edu.cmu.cs.dennisc.media.MediaFactory.createFilenameFilter( true ) );
 		//todo?
 		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
 			fileDialog.setFile( this.getInitialFileText() );
@@ -53,7 +53,6 @@ public abstract class ImportNewResourceFillIn extends edu.cmu.cs.dennisc.cascade
 
 				try {
 					byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( file );
-					//edu.cmu.cs.dennisc.alice.resource.FileResource fileResource = new edu.cmu.cs.dennisc.alice.resource.FileResource( file );
 					org.alice.virtualmachine.Resource resource = org.alice.virtualmachine.Resource.get( java.util.UUID.randomUUID() );
 					resource.setName( filename );
 					resource.setContentType( contentType );
