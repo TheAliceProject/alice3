@@ -276,7 +276,8 @@ public abstract class Factory {
 				rv = createComponent( page, owner );
 //			}
 		} else {
-			rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "todo: handle null" );
+			//rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "todo: handle null" );
+			rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( org.alice.ide.IDE.getSingleton().getTextForNull() );
 		}
 		return rv;
 	}

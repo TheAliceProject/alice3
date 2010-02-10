@@ -47,15 +47,7 @@ public class TypeComponent extends DeclarationNameLabel {
 	private boolean isRollover = false;
 	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super( type );
-		String typeName;
-		if( type != null ) {
-			//typeName = type.getName() + " " + type.hashCode();
-			typeName = type.getName();
-		} else {
-			typeName = "<unset>";
-		}
 		this.setCursor( java.awt.Cursor.getDefaultCursor() );
-		this.setToolTipText( "class: " + typeName );
 		this.setBorder( TypeBorder.getSingletonFor( type ) );
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
@@ -77,6 +69,20 @@ public class TypeComponent extends DeclarationNameLabel {
 //			);
 		}
 	}
+	public TypeComponent( edu.cmu.cs.dennisc.alice.ast.AbstractType type, boolean isToolTipDesired ) {
+		this( type );
+		if( isToolTipDesired ) {
+			String typeName;
+			if( type != null ) {
+				//typeName = type.getName() + " " + type.hashCode();
+				typeName = type.getName();
+			} else {
+				typeName = "<unset>";
+			}
+			this.setToolTipText( "class: " + typeName );
+		}
+	}
+
 	@Override
 	public void addNotify() {
 		super.addNotify();

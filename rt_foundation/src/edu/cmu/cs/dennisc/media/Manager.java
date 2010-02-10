@@ -42,6 +42,23 @@ public class Manager {
 		String contentType = Manager.extensionToContentTypeMap.get( extension.toLowerCase() );
 		return contentType;
 	}
+	public static boolean isAcceptableContentType( String contentType ) {
+		return Manager.extensionToContentTypeMap.containsValue( contentType );
+	}
+	
+	public static java.io.FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
+		return new java.io.FilenameFilter() {
+			public boolean accept( java.io.File dir, String name ) {
+				java.io.File file = new java.io.File( dir, name );
+				if( file.isDirectory() ) {
+					return areDirectoriesAccepted;
+				} else {
+					return getContentType( name ) != null;
+				}
+			}
+		};
+	}
+	
 	private static javax.media.Player getPlayer( org.alice.virtualmachine.Resource resource ) {
 		assert resource != null;
 		javax.media.protocol.DataSource dataSource = Manager.resourceToDataSourceMap.get( resource );
@@ -62,4 +79,5 @@ public class Manager {
 	public static MediaPlayerAnimation createMediaPlayerAnimation( org.alice.virtualmachine.Resource resource ) {
 		return new MediaPlayerAnimation( new Player( getPlayer( resource ) ) );
 	}
+
 }

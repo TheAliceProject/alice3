@@ -20,31 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
+package org.alice.ide.cascade.customfillin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ResourcePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.alice.ast.ResourceProperty > {
-	private edu.cmu.cs.dennisc.zoot.ZLabel label;
-	public ResourcePropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ResourceProperty property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
-	}
+public class ImportNewAudioResourceFillIn extends ImportNewResourceFillIn {
 	@Override
-	protected void refresh() {
-		if( this.label != null ) {
-			//pass
-		} else {
-			this.label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire();
-			this.add( this.label );
-		}
-		org.alice.virtualmachine.Resource resource = getProperty().getValue();
-		String text;
-		if( resource != null ) {
-			text = resource.getName();
-		} else {
-			text = org.alice.ide.IDE.getSingleton().getTextForNull();
-		}
-		this.label.setText( text );
+	protected String getInitialFileText() {
+		return "*.mp3;*.wav;*.au";
+	}
+	
+	@Override
+	protected String getContentType( String path ) {
+		return edu.cmu.cs.dennisc.media.Manager.getContentType( path );
+	}
+	
+	@Override
+	protected java.lang.String getMenuText() {
+		return "Import New Audio Resource...";
 	}
 }

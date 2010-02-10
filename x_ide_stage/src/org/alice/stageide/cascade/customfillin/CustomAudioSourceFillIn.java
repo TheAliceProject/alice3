@@ -25,59 +25,26 @@ package org.alice.stageide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomAudioSourceFillIn extends edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation > {
+public class CustomAudioSourceFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, org.alice.apis.moveandturn.AudioSource > {
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getTransientValue() {
-		return null;
+	protected String getMenuProxyText() {
+		return "Custom Audio Source...";
 	}
 	@Override
-	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {
-		java.awt.FileDialog fileDialog = new java.awt.FileDialog( org.alice.ide.IDE.getSingleton() );
-		fileDialog.setFilenameFilter( new java.io.FilenameFilter() {
-			public boolean accept( java.io.File dir, String name ) {
-				return true;
-			}
-		} );
-		fileDialog.setVisible( true );
-		//edu.cmu.cs.dennisc.resource.ClassResource classResource = null;
-		String filename = fileDialog.getFile();
-		if( filename != null ) {
-			String contentType = edu.cmu.cs.dennisc.media.Manager.getContentType( filename );
-			if( contentType != null ) {
-				java.io.File directory = new java.io.File( fileDialog.getDirectory() );
-				java.io.File file = new java.io.File( directory, filename );
-
-				try {
-					byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( file );
-					//edu.cmu.cs.dennisc.alice.resource.FileResource fileResource = new edu.cmu.cs.dennisc.alice.resource.FileResource( file );
-					org.alice.virtualmachine.Resource resource = org.alice.virtualmachine.Resource.get( java.util.UUID.randomUUID() );
-					resource.setName( filename );
-					resource.setContentType( contentType );
-					resource.setData( data );
-	
-					org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-					ide.getProject().addResource( resource );
-					
-					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.Resource.class );
-					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resource );
-					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-					edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-					return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 );
-				} catch( java.io.IOException ioe ) {
-					throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );			
-				}
-			} else {
-				throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );			
-			}
-		} else {
-			throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );			
-		}
+	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
+		return new org.alice.stageide.choosers.AudioSourceChooser();
 	}
 	@Override
-	protected void addChildren() {
-	}
-	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		return new javax.swing.JLabel( "New Resource..." );
+	protected edu.cmu.cs.dennisc.alice.ast.InstanceCreation createExpression( org.alice.apis.moveandturn.AudioSource value ) {
+		org.alice.virtualmachine.Resource resource = value.getResource();
+		
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		ide.getProject().addResource( resource );
+		
+		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.Resource.class );
+		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resource );
+		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
+		edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
+		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 );
 	}
 }

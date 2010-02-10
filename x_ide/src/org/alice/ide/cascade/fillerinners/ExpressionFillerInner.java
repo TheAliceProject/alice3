@@ -42,10 +42,13 @@ public abstract class ExpressionFillerInner {
 	}
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
-	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls;
-	public ExpressionFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls ) {
+	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > expressionCls;
+	public ExpressionFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > expressionCls ) {
 		this.type = type;
-		this.cls = cls;
+		this.expressionCls = expressionCls;
+	}
+	public ExpressionFillerInner( Class<?> cls, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > expressionCls ) {
+		this(  edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ), expressionCls );
 	}
 
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getType() {
@@ -56,7 +59,7 @@ public abstract class ExpressionFillerInner {
 	}
 
 	protected void addExpressionFillIn( edu.cmu.cs.dennisc.cascade.Blank blank, Object... args ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstanceForArguments( this.cls, args );
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstanceForArguments( this.expressionCls, args );
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( expression ) ); 
 	}
 	

@@ -537,6 +537,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		rv.add( new org.alice.ide.cascade.fillerinners.IntegerFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.BooleanFillerInner() );
 		rv.add( new org.alice.ide.cascade.fillerinners.StringFillerInner() );
+		rv.add( new org.alice.ide.cascade.fillerinners.AudioResourceFillerInner() );
 		return rv;
 	}
 
@@ -2048,6 +2049,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 				return new java.awt.Color( 0xDEEBD3 );
 			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
 				return new java.awt.Color( 0xbdcfb3 );
+			} else if( edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class.isAssignableFrom( cls ) ) {
+				return new java.awt.Color( 0xffffff );
 			} else {
 				if( edu.cmu.cs.dennisc.alice.ast.NullLiteral.class.isAssignableFrom( cls ) ) {
 					return java.awt.Color.RED;

@@ -27,7 +27,7 @@ package edu.cmu.cs.dennisc.swing;
  * @author Dennis Cosgrove
  */
 
-public abstract class ExpandPane extends javax.swing.JPanel {
+public abstract class ExpandPane extends javax.swing.AbstractButton {
 	class ToggleButton extends javax.swing.JToggleButton {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
@@ -61,8 +61,14 @@ public abstract class ExpandPane extends javax.swing.JPanel {
 	private javax.swing.JComponent center;
 
 	public ExpandPane() {
+		this.setModel( new javax.swing.DefaultButtonModel() );
 		this.toggle.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				ExpandPane.this.setSelected( toggle.isSelected() );
+			}
+		} );
+		this.addItemListener( new java.awt.event.ItemListener() {
+			public void itemStateChanged( java.awt.event.ItemEvent e ) {
 				ExpandPane.this.handleToggled( e );
 			}
 		} );
@@ -90,14 +96,15 @@ public abstract class ExpandPane extends javax.swing.JPanel {
 	protected String getCollapsedButtonText() {
 		return ">>>";
 	}
-	private void handleToggled( java.awt.event.ActionEvent e ) {
-		if( this.toggle.isSelected() ) {
+	private void handleToggled( java.awt.event.ItemEvent e ) {
+		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
 			this.add( this.center, java.awt.BorderLayout.CENTER );
 			this.label.setText( this.getExpandedLabelText() );
 		} else {
 			this.remove( this.center );
 			this.label.setText( this.getCollapsedLabelText() );
 		}
+		//this.center.revalidate();
 		this.revalidate();
 		this.repaint();
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
