@@ -83,6 +83,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< org.alic
 			inputPane.updateOKButton();
 		}
 	}
+	@Override
 	public java.awt.Component[] getComponents() {
 		return this.components;
 	}

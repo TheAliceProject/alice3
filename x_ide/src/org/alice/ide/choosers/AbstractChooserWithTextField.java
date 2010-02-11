@@ -34,6 +34,7 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 	};
 	private java.awt.Component[] components = { this.textField };
 
+	@Override
 	public java.awt.Component[] getComponents() {
 		return this.components;
 	}

@@ -28,6 +28,7 @@ package org.alice.stageide.choosers;
 public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.AudioSource > {
 	class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty bogusProperty = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
+			@Override
 			public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
 				return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.virtualmachine.Resource.class );
 			}
@@ -85,8 +86,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		@Override
 		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			org.alice.apis.moveandturn.AudioSource audioSource = getValue();
-			edu.cmu.cs.dennisc.media.MediaPlayerAnimation mediaPlayerAnimation = edu.cmu.cs.dennisc.media.MediaFactory.createMediaPlayerAnimation( audioSource.getAudioResource(), audioSource.getFromTime(), audioSource.getToTime() );
-			mediaPlayerAnimation.update( 0.0, null );
+			edu.cmu.cs.dennisc.media.Player player = edu.cmu.cs.dennisc.media.MediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getFromTime(), audioSource.getToTime() );
+			player.test( AudioSourceChooser.this.getInputPane() );
 		}
 	};
 	private TestOperation testOperation = new TestOperation();
@@ -162,6 +163,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public String[] getLabelTexts() {
 		return new String[] { "resource:", "extent:" };
 	}
+	@Override
 	public java.awt.Component[] getComponents() {
 		this.dropDown = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, new org.alice.ide.common.ExpressionPropertyPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), bogusNode.bogusProperty ), bogusNode.bogusProperty );
 		return new java.awt.Component[] { this.dropDown, this.isMarkedExpandPane };
@@ -187,7 +189,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			double duration = audioResource.getDuration();
 			if( Double.isNaN( duration ) ) {
 				//todo:
-				edu.cmu.cs.dennisc.media.MediaFactory.createMediaPlayerAnimation( audioResource, Double.NaN, Double.NaN );
+				edu.cmu.cs.dennisc.media.MediaFactory.createPlayer( audioResource, Double.NaN, Double.NaN );
 
 				
 				duration = audioResource.getDuration();

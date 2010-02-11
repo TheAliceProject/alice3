@@ -22,8 +22,20 @@
  */
 package edu.cmu.cs.dennisc.media;
 
-class StateControllerListener implements javax.media.ControllerListener {
+abstract class BarrierControllerListener implements javax.media.ControllerListener {
 	private java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( 2 );
+	public void await() {
+		try {
+			barrier.await();
+		} catch( InterruptedException ie ) {
+			throw new RuntimeException( ie );
+		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
+			throw new RuntimeException( bbe );
+		}
+	}
+}
+
+class StateControllerListener extends BarrierControllerListener {
 	public void controllerUpdate( javax.media.ControllerEvent e ) {
 		if( e instanceof javax.media.TransitionEvent ) {
 			javax.media.TransitionEvent transitionEvent = (javax.media.TransitionEvent)e;
@@ -34,13 +46,13 @@ class StateControllerListener implements javax.media.ControllerListener {
 			}
 		}
 	}
-	public void await() {
-		try {
-			barrier.await();
-		} catch( InterruptedException ie ) {
-			throw new RuntimeException( ie );
-		} catch( java.util.concurrent.BrokenBarrierException bbe ) {
-			throw new RuntimeException( bbe );
+}
+
+class StopControllerListener extends BarrierControllerListener {
+	public void controllerUpdate( javax.media.ControllerEvent e ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+		if( e instanceof javax.media.StopEvent ) {
+			this.await();
 		}
 	}
 }
@@ -97,6 +109,41 @@ public class Player {
 		this.player.stop();
 	}
 	
+	public void test( java.awt.Component owner ) {
+		edu.cmu.cs.dennisc.croquet.swing.BorderPane content = new edu.cmu.cs.dennisc.croquet.swing.BorderPane() {
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+			}
+		};
+		
+		final javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createJDialog( owner, "test", true );
+		dialog.getContentPane().add( content, java.awt.BorderLayout.CENTER );
+		
+		this.realize();
+		java.awt.Component controlPanelComponent = player.getControlPanelComponent();
+		if( controlPanelComponent != null ) {
+			content.add( controlPanelComponent, java.awt.BorderLayout.SOUTH );
+		}
+		java.awt.Component visualComponent = player.getVisualComponent();
+		if( visualComponent != null ) {
+			content.add( visualComponent, java.awt.BorderLayout.CENTER );
+		}
+		dialog.pack();
+
+		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, owner );
+
+		new Thread() {
+			@Override
+			public void run() {
+				playUntilStop();
+				dialog.setVisible( false );
+			}
+		}.start();
+		dialog.setVisible( true );
+		this.stop();
+	}
+	
 	public double getDuration() {
 		return this.player.getDuration().getSeconds();
 	}
@@ -105,5 +152,12 @@ public class Player {
 		javax.media.Time stop = this.player.getStopTime();
 		javax.media.Time curr = this.player.getMediaTime();
 		return Math.min( duration.getSeconds(), stop.getSeconds() ) - curr.getSeconds();
+	}
+	public void playUntilStop() {
+		StopControllerListener controllerListener = new StopControllerListener();
+		this.player.addControllerListener( controllerListener );
+		this.start();
+		controllerListener.await();
+		this.player.removeControllerListener( controllerListener );
 	}
 }

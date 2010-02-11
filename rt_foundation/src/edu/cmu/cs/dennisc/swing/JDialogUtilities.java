@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.swing;
  * @author Dennis Cosgrove
  */
 public class JDialogUtilities {
-	public static javax.swing.JDialog createPackedJDialog( java.awt.Component content, java.awt.Component ownerComponent, String title, boolean isModal, int closeOperation ) {
+	public static javax.swing.JDialog createJDialog( java.awt.Component ownerComponent, String title, boolean isModal ) {
 		javax.swing.JDialog rv;
 		java.awt.Component root;
 		if( ownerComponent != null ) {
@@ -43,7 +43,10 @@ public class JDialogUtilities {
 		}
 		rv.setTitle( title );
 		rv.setModal( isModal );
-
+		return rv;
+	}
+	public static javax.swing.JDialog createPackedJDialog( java.awt.Component content, java.awt.Component ownerComponent, String title, boolean isModal, int closeOperation ) {
+		javax.swing.JDialog rv = createJDialog( ownerComponent, title, isModal );
 		rv.getContentPane().add( content );
 		rv.pack();
 		rv.setDefaultCloseOperation( closeOperation );

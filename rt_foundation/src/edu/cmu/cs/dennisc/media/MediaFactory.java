@@ -76,13 +76,16 @@ public class MediaFactory {
 			throw new RuntimeException( audioResource.toString(), ioe );
 		}
 	}
-	public static MediaPlayerAnimation createMediaPlayerAnimation( org.alice.virtualmachine.resources.AudioResource audioResource, double fromTime, double toTime ) {
+	public static Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double fromTime, double toTime ) {
 		Player player = new Player( getPlayer( audioResource ), fromTime, toTime );
 		if( Double.isNaN( audioResource.getDuration() ) ) {
 			player.realize();
 			audioResource.setDuration( player.getDuration() );
 		}
-		return new MediaPlayerAnimation( player );
+		return player;
 	}
+//	public static MediaPlayerAnimation createMediaPlayerAnimation( org.alice.virtualmachine.resources.AudioResource audioResource, double fromTime, double toTime ) {
+//		return new MediaPlayerAnimation( createPlayer( audioResource, fromTime, toTime ) );
+//	}
 
 }

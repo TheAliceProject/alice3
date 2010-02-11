@@ -85,6 +85,7 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 	public String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
+	@Override
 	public java.awt.Component[] getComponents() {
 		return this.components;
 	}
