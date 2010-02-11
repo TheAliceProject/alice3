@@ -22,209 +22,32 @@
  */
 package org.alice.apis.stage;
 
-public abstract class IngredientUtilities {
-	private static java.util.Map< Class<? extends Ingredient>, Class<? extends Ingredient>[] > s_map;
-	static {
-		s_map = new java.util.HashMap< Class<? extends Ingredient>, Class<? extends Ingredient>[] >();
-		s_map.put( 
-			MaleAdultHair.class,
-			new Class/*< ? extends MaleAdultHair >*/[] {
-				//MaleAdultHairBeanie.class ,
-				MaleAdultHairCloseCrop.class ,
-				MaleAdultHairCornRows.class ,
-				MaleAdultHairCrewCut.class ,
-				//MaleAdultHairCurlyWild.class ,
-				MaleAdultHairDreadlockLong.class ,
-				MaleAdultHairGibs.class ,
-				//MaleAdultHairHatFedora.class ,
-				MaleAdultHairHatFedoraCasual.class ,
-				MaleAdultHairMulletLong.class ,
-				MaleAdultHairPeak.class ,
-				MaleAdultHairPompodore.class ,
-				MaleAdultHairSemiBald.class ,
-				//MaleAdultHairShocked.class ,
-				MaleAdultHairShortCombed.class ,
-				MaleAdultHairShortSpikey.class ,
-				MaleAdultHairTopHat.class , 
-				//MaleAdultHairBald.class
-			}
-		);
-		s_map.put( 
-			FemaleAdultFullBodyOutfit.class,
-			new Class/*< ? extends FemaleAdultFullBodyOutfit >*/[] {
-				FemaleAdultFullBodyOutfitAmbulanceDriver.class ,
-				FemaleAdultFullBodyOutfitApron.class ,
-				FemaleAdultFullBodyOutfitBartender.class ,
-				FemaleAdultFullBodyOutfitBurglar.class ,
-				FemaleAdultFullBodyOutfitBusDriver.class ,
-				FemaleAdultFullBodyOutfitChef.class ,
-				FemaleAdultFullBodyOutfitClerk.class ,
-				FemaleAdultFullBodyOutfitCoach.class ,
-				FemaleAdultFullBodyOutfitCop.class ,
-				FemaleAdultFullBodyOutfitDeliveryPerson.class ,
-				FemaleAdultFullBodyOutfitDress.class ,
-				FemaleAdultFullBodyOutfitDressAboveKnee.class ,
-				FemaleAdultFullBodyOutfitDressAboveKneeHooded.class ,
-				FemaleAdultFullBodyOutfitDressAboveKneeSuit.class ,
-				FemaleAdultFullBodyOutfitDressChina.class ,
-				FemaleAdultFullBodyOutfitDressFormalLong.class ,
-				FemaleAdultFullBodyOutfitDressGothic.class ,
-				FemaleAdultFullBodyOutfitDressKorean.class ,
-				FemaleAdultFullBodyOutfitDressLongHug.class ,
-				FemaleAdultFullBodyOutfitDressLongLoose.class ,
-				////FemaleAdultFullBodyOutfitDressLongTwo.class ,
-//				FemaleAdultFullBodyOutfitExterminator.class ,
-				FemaleAdultFullBodyOutfitFastFood.class ,
-				FemaleAdultFullBodyOutfitFurCoatShortDressShoes.class ,
-				FemaleAdultFullBodyOutfitGardener.class ,
-				FemaleAdultFullBodyOutfitJacketHighCollar.class ,
-				FemaleAdultFullBodyOutfitJacketShortDressBoots.class ,
-				FemaleAdultFullBodyOutfitJacketShortDressShoes.class ,
-				FemaleAdultFullBodyOutfitJacketShortDressSlitShoes.class ,
-				FemaleAdultFullBodyOutfitJacketTurtleSweaterDressBoots.class ,
-				FemaleAdultFullBodyOutfitKTDream.class ,
-				FemaleAdultFullBodyOutfitLabcoat.class ,
-				FemaleAdultFullBodyOutfitLeatherJacket.class ,
-				FemaleAdultFullBodyOutfitMailDelivery.class ,
-				FemaleAdultFullBodyOutfitMaternityShirtPants.class ,
-				FemaleAdultFullBodyOutfitMechanic.class ,
-				FemaleAdultFullBodyOutfitMilitaryOfficer.class ,
-				FemaleAdultFullBodyOutfitMRacer.class ,
-				//FemaleAdultFullBodyOutfitNaked.class ,
-				FemaleAdultFullBodyOutfitNightgown.class ,
-				FemaleAdultFullBodyOutfitOrderly.class ,
-				FemaleAdultFullBodyOutfitOverShirtPantsSandals.class ,
-				FemaleAdultFullBodyOutfitPajamasClassic.class ,
-				FemaleAdultFullBodyOutfitPirate.class ,
-				FemaleAdultFullBodyOutfitPizzaDelivery.class ,
-				FemaleAdultFullBodyOutfitPowerSuit.class ,
-				FemaleAdultFullBodyOutfitScrubs.class ,
-				FemaleAdultFullBodyOutfitServer.class ,
-				FemaleAdultFullBodyOutfitShirtUntuckedOxford.class ,
-				////FemaleAdultFullBodyOutfitShortDressBoots.class ,
-//				FemaleAdultFullBodyOutfitShortDressShoes.class ,
-				FemaleAdultFullBodyOutfitSlickSuit.class ,
-				FemaleAdultFullBodyOutfitSocialWorker.class ,
-				FemaleAdultFullBodyOutfitSoldier.class ,
-				FemaleAdultFullBodyOutfitSuit.class ,
-				FemaleAdultFullBodyOutfitSundress.class ,
-				////FemaleAdultFullBodyOutfitSuspendersTights.class ,
-				FemaleAdultFullBodyOutfitSwat.class ,
-				FemaleAdultFullBodyOutfitSweats.class ,
-				////FemaleAdultFullBodyOutfitSwimwear.class ,
-				////FemaleAdultFullBodyOutfitSwimwearCleavage.class ,
-				////FemaleAdultFullBodyOutfitSwimwearSporty.class ,
-				FemaleAdultFullBodyOutfitTracksuit.class ,
-				FemaleAdultFullBodyOutfitTurtleSweaterDressShoes.class ,
-				FemaleAdultFullBodyOutfitTweedJacket.class ,
-				////FemaleAdultFullBodyOutfitUnderwear.class ,
-				////FemaleAdultFullBodyOutfitWarrior.class ,
-//				UnisexAdultFullBodyOutfitAstronaut.class ,
-//				UnisexAdultFullBodyOutfitLlama.class ,
-//				UnisexAdultFullBodyOutfiteton.class 
-			}
-		);
-		s_map.put( 
-			MaleAdultFullBodyOutfit.class,
-			new Class/*< ? extends MaleAdultFullBodyOutfit >*/[] {
-				MaleAdultFullBodyOutfitAmbulanceDriver.class ,
-				MaleAdultFullBodyOutfitApron.class ,
-				MaleAdultFullBodyOutfitBartender.class ,
-				MaleAdultFullBodyOutfitBurglar.class ,
-				MaleAdultFullBodyOutfitBusDriver.class ,
-				MaleAdultFullBodyOutfitChef.class ,
-				MaleAdultFullBodyOutfitClerk.class ,
-				MaleAdultFullBodyOutfitClosedCoatLongPants.class ,
-				MaleAdultFullBodyOutfitCoach.class ,
-				MaleAdultFullBodyOutfitCop.class ,
-				MaleAdultFullBodyOutfitCouture.class ,
-				MaleAdultFullBodyOutfitDeliveryPerson.class ,
-				MaleAdultFullBodyOutfitDressKorean.class ,
-				MaleAdultFullBodyOutfitExterminator.class ,
-				MaleAdultFullBodyOutfitFancySuit.class ,
-				MaleAdultFullBodyOutfitFastFood.class ,
-				MaleAdultFullBodyOutfitGardener.class ,
-				MaleAdultFullBodyOutfitGothTeeShirt.class ,
-				MaleAdultFullBodyOutfitHiphopHood.class ,
-				MaleAdultFullBodyOutfitHoodedSweatShirtBoardShorts.class ,
-				MaleAdultFullBodyOutfitHoodedSweatShirtPants.class ,
-				MaleAdultFullBodyOutfitKilt.class ,
-				MaleAdultFullBodyOutfitLabcoat.class ,
-				MaleAdultFullBodyOutfitLongCoat.class ,
-				MaleAdultFullBodyOutfitLooseOpenCoatPants.class ,
-				MaleAdultFullBodyOutfitMailDelivery.class ,
-				MaleAdultFullBodyOutfitManMaid.class ,
-				MaleAdultFullBodyOutfitMaternityComfy.class ,
-				MaleAdultFullBodyOutfitMechanic.class ,
-				MaleAdultFullBodyOutfitMRacer.class ,
-				//MaleAdultFullBodyOutfitNaked.class ,
-				MaleAdultFullBodyOutfitOpenCoatJeans.class ,
-				MaleAdultFullBodyOutfitOpenCoatLongPants.class ,
-				MaleAdultFullBodyOutfitOpenShirtPants.class ,
-				MaleAdultFullBodyOutfitOpenSportcoatLongPants.class ,
-				MaleAdultFullBodyOutfitOrderly.class ,
-				MaleAdultFullBodyOutfitOveralls.class ,
-				MaleAdultFullBodyOutfitOverhangTshirt.class ,
-				//MaleAdultFullBodyOutfitOverhangTshirtGamespot.class ,
-				//MaleAdultFullBodyOutfitOverhangTshirtGamespy.class ,
-				MaleAdultFullBodyOutfitOverhangTshirtLongShorts.class ,
-				MaleAdultFullBodyOutfitOverShirtPantsShoes.class ,
-				MaleAdultFullBodyOutfitPajamas.class ,
-				MaleAdultFullBodyOutfitPajamasBoxers.class ,
-				MaleAdultFullBodyOutfitPajamasDrawstring.class ,
-				MaleAdultFullBodyOutfitPirate.class ,
-				MaleAdultFullBodyOutfitPizzaDelivery.class ,
-				MaleAdultFullBodyOutfitPowerSuit.class ,
-				MaleAdultFullBodyOutfitPunk.class ,
-				MaleAdultFullBodyOutfitScrubs.class ,
-				MaleAdultFullBodyOutfitServer.class ,
-				MaleAdultFullBodyOutfitShirtFlares.class ,
-				MaleAdultFullBodyOutfitShirtUntuckedSaddle.class ,
-				MaleAdultFullBodyOutfitShorts.class ,
-//				MaleAdultFullBodyOutfitShrink.class ,
-				MaleAdultFullBodyOutfitSlickSuit.class ,
-				MaleAdultFullBodyOutfitSloppySuit.class ,
-				MaleAdultFullBodyOutfitSoldier.class ,
-				MaleAdultFullBodyOutfitSuit.class ,
-				MaleAdultFullBodyOutfitSwat.class ,
-				MaleAdultFullBodyOutfitSweats.class ,
-				MaleAdultFullBodyOutfitTrackSuit.class ,
-				MaleAdultFullBodyOutfitTrenchCoatPantsBoots.class ,
-				MaleAdultFullBodyOutfitTweedJacket.class ,
-				////MaleAdultFullBodyOutfitUnderwear.class ,
-//				UnisexAdultFullBodyOutfitAstronaut.class ,
-//				UnisexAdultFullBodyOutfitLlama.class ,
-//				UnisexAdultFullBodyOutfiteton.class 
-			}
-		);
-		s_map.put( 
-			FemaleAdultHair.class,
-			new Class/*< ? extends FemaleAdultHair >*/[] {
-//				FemaleAdultHairBeanie.class ,
-				FemaleAdultHairBraids.class ,
-				FemaleAdultHairCornRowsLong.class ,
-				FemaleAdultHairDreadlockShort.class ,
-				FemaleAdultHairFeather.class ,
-				FemaleAdultHairGetFabulous.class ,
-				FemaleAdultHairPoofs.class ,
-				FemaleAdultHairRosettes.class ,
-				FemaleAdultHairShocked.class ,
-				FemaleAdultHairShortSlick.class , 
-//				FemaleAdultHairBald.class
-			}
-		);
+public abstract class IngredientUtilities<E extends Ingredient> {
+	private java.util.Map< Class< ? extends E >, Class< ? extends E >[] > mapInterfaceClsToImplementingClses = new java.util.HashMap< Class<? extends E>, Class<? extends E>[] >();
+
+	protected void add( Class< ? extends E > interfaceCls, Class< ? extends E >... implementingClses ) {
+		this.mapInterfaceClsToImplementingClses.put( interfaceCls, implementingClses );
 	}
-	private IngredientUtilities() {
+
+	protected abstract Class< ? extends E > getUnisexIntefaceClass( LifeStage lifeStage );
+	protected abstract Class< ? extends E > getGenderedIntefaceClass( LifeStage lifeStage, Gender gender );
+	public Class< ? extends E >[] getImplementingClasses( LifeStage lifeStage, Gender gender ) {
+		Class< ? extends E > interfaceClsUnisex = this.getUnisexIntefaceClass( lifeStage );
+		Class< ? extends E > interfaceClsGendered = this.getGenderedIntefaceClass( lifeStage, gender );
+
+		Class< ? extends E >[] enumClsesUnisex = this.mapInterfaceClsToImplementingClses.get( interfaceClsUnisex );
+		Class< ? extends E >[] enumClsesGendered = this.mapInterfaceClsToImplementingClses.get( interfaceClsGendered );
+
+		Class< ? extends E >[] rv = enumClsesGendered;
+
+		return rv;
 	}
-	public static <E extends Ingredient> Class<E>[] get( Class< E > cls ) {
-		return (Class<E>[])s_map.get( cls );
+	public Class< ? extends E > getRandomClass( LifeStage lifeStage, Gender gender ) {
+		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( getImplementingClasses( lifeStage, gender ) );
 	}
-	public static <E extends Ingredient> Class<E> getRandomClass( Class< E > cls ) {
-		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( get( cls ) );
-	}
-	public static <E extends Ingredient> E getRandomEnumConstant( Class< E > cls ) {
+	public E getRandomEnumConstant( LifeStage lifeStage, Gender gender ) {
 		while( true ) {
-			Class enumCls = getRandomClass( cls );
+			Class enumCls = getRandomClass( lifeStage, gender );
 			E rv = (E)edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( enumCls );
 			if( rv != null ) {
 				return rv;
@@ -232,18 +55,15 @@ public abstract class IngredientUtilities {
 		}
 	}
 	
-	public static boolean isApplicable( FullBodyOutfit outfit, LifeStage lifeStage, Gender gender ) {
-		assert outfit != null;
+	public boolean isApplicable( E e, LifeStage lifeStage, Gender gender ) {
+		assert e != null;
 		assert lifeStage != null;
 		assert gender != null;
-		Class<? extends FullBodyOutfit> cls = lifeStage.getFullBodyOutfitInterface( gender );
-		return cls.isAssignableFrom( outfit.getClass() );
+		Class< ? extends E > interfaceClsUnisex = this.getUnisexIntefaceClass( lifeStage );
+		Class< ? extends E > interfaceClsGendered = this.getGenderedIntefaceClass( lifeStage, gender );
+		Class<?> eCls = e.getClass();
+		//todo?
+		return /*interfaceClsUnisex.isAssignableFrom( eCls ) ||*/ interfaceClsGendered.isAssignableFrom( eCls );
 	}
-	public static boolean isApplicable( Hair hair, LifeStage lifeStage, Gender gender ) {
-		assert hair != null;
-		assert lifeStage != null;
-		assert gender != null;
-		Class<? extends Hair> cls = lifeStage.getHairInterface( gender );
-		return cls.isAssignableFrom( hair.getClass() );
-	}
+	
 }

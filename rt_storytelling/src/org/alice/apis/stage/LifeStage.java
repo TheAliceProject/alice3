@@ -35,21 +35,35 @@ public enum LifeStage {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
 	}
 	
-	private static edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends FullBodyOutfit> > s_mapFullBodyOutfit;
-	private static edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends Hair> > s_mapHair;
+	private static java.util.Map< LifeStage, Class<? extends FullBodyOutfit> > s_mapLifeStageUnisexFullBodyOutfit;
+	private static java.util.Map< LifeStage, Class<? extends Hair> > s_mapLifeStageUnisexHair;
+	private static edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends FullBodyOutfit> > s_mapLifeStageGenderFullBodyOutfit;
+	private static edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends Hair> > s_mapLifeStageGenderHair;
 	static {
-		s_mapFullBodyOutfit = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends FullBodyOutfit> >();
-		s_mapFullBodyOutfit.put( LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class );
-		s_mapFullBodyOutfit.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class );
+		s_mapLifeStageUnisexFullBodyOutfit = new java.util.HashMap< LifeStage, Class<? extends FullBodyOutfit> >();
+		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.ADULT, AdultFullBodyOutfit.class );
 
-		s_mapHair = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends Hair> >();
-		s_mapHair.put( LifeStage.ADULT, Gender.MALE, MaleAdultHair.class );
-		s_mapHair.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultHair.class );
+		s_mapLifeStageUnisexHair = new java.util.HashMap< LifeStage, Class<? extends Hair> >();
+		s_mapLifeStageUnisexHair.put( LifeStage.ADULT, AdultHair.class );
+		
+		s_mapLifeStageGenderFullBodyOutfit = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends FullBodyOutfit> >();
+		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class );
+		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class );
+
+		s_mapLifeStageGenderHair = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends Hair> >();
+		s_mapLifeStageGenderHair.put( LifeStage.ADULT, Gender.MALE, MaleAdultHair.class );
+		s_mapLifeStageGenderHair.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultHair.class );
 	}
-	public Class<? extends FullBodyOutfit> getFullBodyOutfitInterface( Gender gender ) {	
-		return s_mapFullBodyOutfit.get( this, gender );
+	public Class<? extends FullBodyOutfit> getGenderedFullBodyOutfitInterfaceClass( Gender gender ) {	
+		return s_mapLifeStageGenderFullBodyOutfit.get( this, gender );
 	}
-	public Class<? extends Hair> getHairInterface( Gender gender ) {	
-		return s_mapHair.get( this, gender );
+	public Class<? extends Hair> getGenderedHairInterfaceClass( Gender gender ) {	
+		return s_mapLifeStageGenderHair.get( this, gender );
+	}
+	public Class<? extends FullBodyOutfit> getUnisexFullBodyOutfitInterfaceClass() {	
+		return s_mapLifeStageUnisexFullBodyOutfit.get( this );
+	}
+	public Class<? extends Hair> getUnisexHairInterfaceClass() {	
+		return s_mapLifeStageUnisexHair.get( this );
 	}
 };

@@ -51,8 +51,12 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private Double fitnessLevel = 0.5;
 
 	private PersonViewer() {
-		this.mapToMap.put( LifeStage.ADULT, Gender.FEMALE, new FemaleAdult() );
-		this.mapToMap.put( LifeStage.ADULT, Gender.MALE, new MaleAdult() );
+		Adult femaleAdult = new Adult();
+		femaleAdult.setGender( Gender.FEMALE );
+		Adult maleAdult = new Adult();
+		maleAdult.setGender( Gender.MALE );
+		this.mapToMap.put( LifeStage.ADULT, Gender.FEMALE, femaleAdult );
+		this.mapToMap.put( LifeStage.ADULT, Gender.MALE, maleAdult );
 		this.mapToMap.get( LifeStage.ADULT, Gender.FEMALE ).getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 		this.mapToMap.get( LifeStage.ADULT, Gender.MALE ).getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 
@@ -67,8 +71,8 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 				gender,
 				BaseSkinTone.getRandom(),
 				BaseEyeColor.getRandom(),
-				IngredientUtilities.getRandomEnumConstant( lifeStage.getFullBodyOutfitInterface( gender ) ),
-				IngredientUtilities.getRandomEnumConstant( lifeStage.getHairInterface( gender ) ),
+				FullBodyOutfitUtilities.getSingleton().getRandomEnumConstant( lifeStage, gender ),
+				HairUtilities.getSingleton().getRandomEnumConstant( lifeStage, gender ),
 				Math.random()
 		);
 	}
@@ -143,14 +147,14 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 					person.setSkinTone( this.baseSkinTone );
 					if( this.fitnessLevel != null ) {
 						person.setFitnessLevel( this.fitnessLevel, org.alice.apis.stage.Person.RIGHT_NOW );
-						if( this.fullBodyOutfit != null && IngredientUtilities.isApplicable( this.fullBodyOutfit, this.lifeStage, this.gender ) ) {
+						if( this.fullBodyOutfit != null && FullBodyOutfitUtilities.getSingleton().isApplicable( this.fullBodyOutfit, this.lifeStage, this.gender ) ) {
 							//pass
 						} else {
 							Outfit outfit = person.getOutfit();
 							if( outfit instanceof FullBodyOutfit ) {
 								this.fullBodyOutfit = ( FullBodyOutfit )outfit;
 							} else {
-								this.fullBodyOutfit = IngredientUtilities.getRandomEnumConstant( this.lifeStage.getFullBodyOutfitInterface( this.gender ) );
+								this.fullBodyOutfit = FullBodyOutfitUtilities.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
 							}
 						}
 						person.setOutfit( this.fullBodyOutfit );
@@ -159,14 +163,14 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 				if( this.baseEyeColor != null ) {
 					person.setEyeColor( this.baseEyeColor );
 				}
-				if( this.hair != null && IngredientUtilities.isApplicable( this.hair, this.lifeStage, this.gender ) ) {
+				if( this.hair != null && HairUtilities.getSingleton().isApplicable( this.hair, this.lifeStage, this.gender ) ) {
 					//pass
 				} else {
 					Hair hair = person.getHair();
 					if( hair != null ) {
 						this.hair = hair;
 					} else {
-						this.hair = IngredientUtilities.getRandomEnumConstant( this.lifeStage.getHairInterface( this.gender ) );
+						this.hair = HairUtilities.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
 					}
 				}
 				person.setHair( this.hair );

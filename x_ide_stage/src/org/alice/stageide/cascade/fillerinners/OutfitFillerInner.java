@@ -31,6 +31,6 @@ public class OutfitFillerInner extends IngredientFillerInner {
 	}
 	@Override
 	protected Class<? extends org.alice.apis.stage.Ingredient>[] getClses( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender ) {
-		return org.alice.apis.stage.IngredientUtilities.get( lifeStage.getFullBodyOutfitInterface( gender ) );
+		return org.alice.apis.stage.FullBodyOutfitUtilities.getSingleton().getImplementingClasses( lifeStage, gender );
 	}
 }
