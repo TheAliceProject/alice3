@@ -44,6 +44,7 @@ public class Billboard extends Transformable {
 				vertex.normal.set( 0, 0, k );
 			}
 			this.update( 1.0 );
+			this.sgAppearance.setDiffuseColorTextureClamped( true );
 			this.sgGeometry.vertices.setValue( this.sgVertices );
 			this.frontFacingAppearance.setValue( this.sgAppearance );
 			this.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgGeometry } );
@@ -101,6 +102,13 @@ public class Billboard extends Transformable {
 		}
 		public void setTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
 			this.frontFacingAppearance.getValue().setDiffuseColorTexture( texture );
+			boolean isDiffuseColorTextureAlphaBlended;
+			if( texture != null ) {
+				isDiffuseColorTextureAlphaBlended = texture.isPotentiallyAlphaBlended();
+			} else {
+				isDiffuseColorTextureAlphaBlended = false;
+			}
+			this.sgAppearance.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
 		}
 	}
 

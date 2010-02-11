@@ -104,6 +104,12 @@ public class MultipleAppearance extends Appearance {
 			singleAppearance.setDiffuseColorTextureAlphaBlended( isDiffuseColorTextureAlphaBlended );
 		}
 	}
+	@Override
+	public void setDiffuseColorTextureClamped( boolean isDiffuseColorTextureClamped ) {
+		for( SingleAppearance singleAppearance : singleAppearances.getValue() ) {
+			singleAppearance.setDiffuseColorTextureClamped( isDiffuseColorTextureClamped );
+		}
+	}
 
 	@Override
 	public void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture ) {

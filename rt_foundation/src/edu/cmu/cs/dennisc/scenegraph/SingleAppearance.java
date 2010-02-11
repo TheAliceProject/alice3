@@ -58,6 +58,7 @@ public class SingleAppearance extends Appearance {
 	public final edu.cmu.cs.dennisc.property.FloatProperty specularHighlightExponent = new edu.cmu.cs.dennisc.property.FloatProperty( this, 0.0f );
 	public final edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture > diffuseColorTexture = new edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture >( this, null );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isDiffuseColorTextureAlphaBlended = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
+	public final edu.cmu.cs.dennisc.property.BooleanProperty isDiffuseColorTextureClamped = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 	public final edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture > bumpTexture = new edu.cmu.cs.dennisc.property.InstanceProperty< edu.cmu.cs.dennisc.texture.Texture >( this, null );
 	public final edu.cmu.cs.dennisc.property.BooleanProperty isEthereal = new edu.cmu.cs.dennisc.property.BooleanProperty( this, false );
 
@@ -111,6 +112,10 @@ public class SingleAppearance extends Appearance {
 	@Override
 	public void setDiffuseColorTextureAlphaBlended( boolean isDiffuseColorTextureAlphaBlended ) {
 		this.isDiffuseColorTextureAlphaBlended.setValue( isDiffuseColorTextureAlphaBlended );
+	}
+	@Override
+	public void setDiffuseColorTextureClamped( boolean isDiffuseColorTextureClamped ) {
+		this.isDiffuseColorTextureClamped.setValue( isDiffuseColorTextureClamped );
 	}
 
 	@Override

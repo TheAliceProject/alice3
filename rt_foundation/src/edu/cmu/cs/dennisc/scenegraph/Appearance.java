@@ -37,6 +37,7 @@ public abstract class Appearance extends Element {
 	public abstract void setShadingStyle( ShadingStyle shadingStyle );
 	public abstract void setDiffuseColorTexture( edu.cmu.cs.dennisc.texture.Texture diffuseColorTexture );
 	public abstract void setDiffuseColorTextureAlphaBlended( boolean isDiffuseColorTextureAlphaBlended  );
+	public abstract void setDiffuseColorTextureClamped( boolean isDiffuseColorTextureClamped );
 	public abstract void setBumpTexture( edu.cmu.cs.dennisc.texture.Texture bumpTexture );
 	public abstract void setEthereal( boolean isEthereal  );
 }

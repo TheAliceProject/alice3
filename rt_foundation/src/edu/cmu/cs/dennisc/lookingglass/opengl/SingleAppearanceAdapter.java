@@ -42,6 +42,7 @@ public class SingleAppearanceAdapter extends AppearanceAdapter< edu.cmu.cs.denni
 	private int m_polygonMode;
 	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> m_diffuseColorTextureAdapter;
 	private boolean m_isDiffuseColorTextureAlphaBlended;
+	private boolean m_isDiffuseColorTextureClamped;
 	private TextureAdapter<? extends edu.cmu.cs.dennisc.texture.Texture> m_bumpTextureAdapter;
 	private boolean m_isEthereal;
 
@@ -75,7 +76,7 @@ public class SingleAppearanceAdapter extends AppearanceAdapter< edu.cmu.cs.denni
 		}
 		rc.setColor( m_diffuse, m_opacity );
 		rc.gl.glPolygonMode( face, m_polygonMode );
-		rc.setDiffuseColorTextureAdapter( m_diffuseColorTextureAdapter );
+		rc.setDiffuseColorTextureAdapter( m_diffuseColorTextureAdapter, m_isDiffuseColorTextureClamped );
 		rc.setBumpTextureAdapter( m_bumpTextureAdapter );
 		//todo
 		if( m_isEthereal ) {
@@ -135,6 +136,8 @@ public class SingleAppearanceAdapter extends AppearanceAdapter< edu.cmu.cs.denni
 			m_diffuseColorTextureAdapter = AdapterFactory.getAdapterFor( m_element.diffuseColorTexture.getValue() );
 		} else if( property == m_element.isDiffuseColorTextureAlphaBlended ) {
 			m_isDiffuseColorTextureAlphaBlended = m_element.isDiffuseColorTextureAlphaBlended.getValue();
+		} else if( property == m_element.isDiffuseColorTextureClamped ) {
+			m_isDiffuseColorTextureClamped = m_element.isDiffuseColorTextureClamped.getValue();
 		} else if( property == m_element.bumpTexture ) {
 			m_bumpTextureAdapter = AdapterFactory.getAdapterFor( m_element.bumpTexture.getValue() );
 		} else if( property == m_element.isEthereal ) {

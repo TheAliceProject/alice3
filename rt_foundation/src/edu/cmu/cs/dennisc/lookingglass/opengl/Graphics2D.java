@@ -96,7 +96,7 @@ public class Graphics2D extends edu.cmu.cs.dennisc.lookingglass.Graphics2D {
 		m_renderContext.gl.glDisable( GL.GL_LIGHTING );
 		m_renderContext.gl.glDisable( GL.GL_CULL_FACE );
 
-		m_renderContext.setDiffuseColorTextureAdapter( null );
+		m_renderContext.setDiffuseColorTextureAdapter( null, false );
 		m_renderContext.setBumpTextureAdapter( null );
 
 		m_renderContext.gl.glPolygonMode( GL.GL_FRONT_AND_BACK, GL.GL_FILL );

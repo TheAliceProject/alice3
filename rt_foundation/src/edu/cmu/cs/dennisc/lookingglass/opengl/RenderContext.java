@@ -414,16 +414,16 @@ public class RenderContext extends Context {
 		m_textureBindingMap.put( textureAdapter, glTexture );
 	}
 
-	public void setDiffuseColorTextureAdapter( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > diffuseColorTextureAdapter ) {
+	public void setDiffuseColorTextureAdapter( TextureAdapter< ? extends edu.cmu.cs.dennisc.texture.Texture > diffuseColorTextureAdapter, boolean isDiffuseColorTextureClamped ) {
 		if( diffuseColorTextureAdapter != null && diffuseColorTextureAdapter.isValid() ) {
 			gl.glEnable( GL.GL_TEXTURE_2D );
 			if( m_currDiffuseColorTextureAdapter != diffuseColorTextureAdapter ) {
 				com.sun.opengl.util.texture.Texture texture = diffuseColorTextureAdapter.getTexture( this );
 				texture.bind();
 				texture.enable();
-				//todo: allow clamp
-				gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT );
-				gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT );
+				int value = isDiffuseColorTextureClamped ? GL.GL_CLAMP : GL.GL_REPEAT;
+				gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, value );
+				gl.glTexParameteri( GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, value );
 				m_currDiffuseColorTextureAdapter = diffuseColorTextureAdapter;
 			}
 		} else {
