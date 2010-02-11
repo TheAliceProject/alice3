@@ -69,4 +69,25 @@ public class SystemUtilities {
 	public static boolean isWindows() {
 		return SystemUtilities.platform == Platform.WINDOWS;
 	}
+	
+	public static <E> E[] returnArray( Class<E> componentType, E... rv ) {
+		return rv;
+	}
+	public static <E> E[] createArray( Class<E> componentType, E[]... arrays ) {
+		int n = 0;
+		for( E[] array : arrays ) {
+			if( array != null ) {
+				n += array.length;
+			}
+		}
+		E[] rv = (E[])edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newArrayInstance( componentType, n );
+		int offset = 0;
+		for( E[] array : arrays ) {
+			if( array != null ) {
+				System.arraycopy( array, 0, rv, offset, array.length );
+				offset += array.length;
+			}
+		}
+		return rv;
+	}
 }

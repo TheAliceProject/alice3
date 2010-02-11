@@ -23,14 +23,16 @@
 package org.alice.apis.stage;
 
 public abstract class IngredientUtilities<E extends Ingredient> {
-	private java.util.Map< Class< ? extends E >, Class< ? extends E >[] > mapInterfaceClsToImplementingClses = new java.util.HashMap< Class<? extends E>, Class<? extends E>[] >();
+	private java.util.Map< Class< ? extends E >, Class< ? extends E >[] > mapInterfaceClsToImplementingClses = new java.util.HashMap< Class< ? extends E >, Class< ? extends E >[] >();
 
 	protected void add( Class< ? extends E > interfaceCls, Class< ? extends E >... implementingClses ) {
 		this.mapInterfaceClsToImplementingClses.put( interfaceCls, implementingClses );
 	}
 
+	protected abstract Class< Class< ? extends E > > getImplementingClassesReturnValueComponentType();
 	protected abstract Class< ? extends E > getUnisexIntefaceClass( LifeStage lifeStage );
 	protected abstract Class< ? extends E > getGenderedIntefaceClass( LifeStage lifeStage, Gender gender );
+
 	public Class< ? extends E >[] getImplementingClasses( LifeStage lifeStage, Gender gender ) {
 		Class< ? extends E > interfaceClsUnisex = this.getUnisexIntefaceClass( lifeStage );
 		Class< ? extends E > interfaceClsGendered = this.getGenderedIntefaceClass( lifeStage, gender );
@@ -38,9 +40,7 @@ public abstract class IngredientUtilities<E extends Ingredient> {
 		Class< ? extends E >[] enumClsesUnisex = this.mapInterfaceClsToImplementingClses.get( interfaceClsUnisex );
 		Class< ? extends E >[] enumClsesGendered = this.mapInterfaceClsToImplementingClses.get( interfaceClsGendered );
 
-		Class< ? extends E >[] rv = enumClsesGendered;
-
-		return rv;
+		return edu.cmu.cs.dennisc.lang.SystemUtilities.createArray( this.getImplementingClassesReturnValueComponentType(), enumClsesGendered, enumClsesUnisex );
 	}
 	public Class< ? extends E > getRandomClass( LifeStage lifeStage, Gender gender ) {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( getImplementingClasses( lifeStage, gender ) );
@@ -48,22 +48,24 @@ public abstract class IngredientUtilities<E extends Ingredient> {
 	public E getRandomEnumConstant( LifeStage lifeStage, Gender gender ) {
 		while( true ) {
 			Class enumCls = getRandomClass( lifeStage, gender );
-			E rv = (E)edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( enumCls );
-			if( rv != null ) {
-				return rv;
+			if( enumCls.isEnum() ) {
+				E rv = (E)edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( enumCls );
+				if( rv != null ) {
+					return rv;
+				}
 			}
 		}
 	}
-	
+
 	public boolean isApplicable( E e, LifeStage lifeStage, Gender gender ) {
 		assert e != null;
 		assert lifeStage != null;
 		assert gender != null;
 		Class< ? extends E > interfaceClsUnisex = this.getUnisexIntefaceClass( lifeStage );
 		Class< ? extends E > interfaceClsGendered = this.getGenderedIntefaceClass( lifeStage, gender );
-		Class<?> eCls = e.getClass();
+		Class< ? > eCls = e.getClass();
 		//todo?
-		return /*interfaceClsUnisex.isAssignableFrom( eCls ) ||*/ interfaceClsGendered.isAssignableFrom( eCls );
+		return /*interfaceClsUnisex.isAssignableFrom( eCls ) ||*/interfaceClsGendered.isAssignableFrom( eCls );
 	}
-	
+
 }

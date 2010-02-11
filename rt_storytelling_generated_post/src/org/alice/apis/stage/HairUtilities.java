@@ -64,7 +64,11 @@ public class HairUtilities extends IngredientUtilities< Hair > {
 	//					FemaleAdultHairBald.class
 		);
 	}
-
+	
+	@Override
+	protected Class< Class< ? extends Hair > > getImplementingClassesReturnValueComponentType() {
+		return (Class< Class< ? extends Hair > >)Hair.class.getClass();
+	}
 	@Override
 	protected Class< ? extends Hair > getUnisexIntefaceClass( LifeStage lifeStage ) {
 		return lifeStage.getUnisexHairInterfaceClass();

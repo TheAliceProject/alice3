@@ -30,11 +30,11 @@ public class FullBodyOutfitUtilities extends IngredientUtilities< FullBodyOutfit
 	}
 
 	private FullBodyOutfitUtilities() {
-		this.add( AdultFullBodyOutfit.class,
-							UnisexAdultFullBodyOutfitAstronaut.class ,
-							UnisexAdultFullBodyOutfitLlama.class ,
-							UnisexAdultFullBodyOutfiteton.class
-		);
+//		this.add( AdultFullBodyOutfit.class,
+//							UnisexAdultFullBodyOutfitAstronaut.class ,
+//							UnisexAdultFullBodyOutfitLlama.class ,
+//							UnisexAdultFullBodyOutfiteton.class
+//		);
 
 		this.add( FemaleAdultFullBodyOutfit.class,
 							FemaleAdultFullBodyOutfitAmbulanceDriver.class ,
@@ -174,6 +174,10 @@ public class FullBodyOutfitUtilities extends IngredientUtilities< FullBodyOutfit
 		);
 	}
 
+	@Override
+	protected Class< Class< ? extends FullBodyOutfit > > getImplementingClassesReturnValueComponentType() {
+		return (Class< Class< ? extends FullBodyOutfit > >)FullBodyOutfit.class.getClass();
+	}
 	@Override
 	protected Class< ? extends FullBodyOutfit > getUnisexIntefaceClass( LifeStage lifeStage ) {
 		return lifeStage.getUnisexFullBodyOutfitInterfaceClass();
