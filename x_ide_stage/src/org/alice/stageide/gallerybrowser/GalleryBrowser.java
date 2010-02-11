@@ -33,6 +33,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		this.initialize(thumbnailRoot);
 		edu.cmu.cs.dennisc.zoot.ZButton createPersonButton = new edu.cmu.cs.dennisc.zoot.ZButton(new IndirectCreatePersonActionOperation());
 		edu.cmu.cs.dennisc.zoot.ZButton createTextButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateTextActionOperation());
+		edu.cmu.cs.dennisc.zoot.ZButton createBillboardButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateBillboardActionOperation());
 		edu.cmu.cs.dennisc.zoot.ZButton createMyInstanceButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateMyInstance());
 		edu.cmu.cs.dennisc.zoot.ZButton createTextbookInstanceButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateTextbookInstance());
 
@@ -47,9 +48,14 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		fromFilePane.add(createMyInstanceButton);
 		fromFilePane.add(createTextbookInstanceButton);
 
+		edu.cmu.cs.dennisc.croquet.swing.Pane bonusPane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
+		bonusPane.setLayout(new java.awt.GridLayout(2, 1, 0, 4));
+		bonusPane.add(createBillboardButton);
+		bonusPane.add(createTextButton);
+
 		edu.cmu.cs.dennisc.croquet.swing.BorderPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
 		buttonPane.add(fromFilePane, java.awt.BorderLayout.NORTH);
-		buttonPane.add(createTextButton, java.awt.BorderLayout.SOUTH);
+		buttonPane.add(bonusPane, java.awt.BorderLayout.SOUTH);
 
 		// this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4,
 		// 4 ) );

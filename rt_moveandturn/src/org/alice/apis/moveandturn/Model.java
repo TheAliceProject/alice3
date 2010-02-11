@@ -28,7 +28,7 @@ import edu.cmu.cs.dennisc.alice.annotations.*;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Model extends Transformable {
+public abstract class Model extends AbstractModel {
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< Scale > VISUAL_SCALE_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< Scale >( Model.class, "VisualScale" );
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< Color > COLOR_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< Color >( Model.class, "Color" );
 	public static final edu.cmu.cs.dennisc.property.GetterSetterProperty< Double > OPACITY_PROPERTY = new edu.cmu.cs.dennisc.property.GetterSetterProperty< Double >( Model.class, "Opacity" );
@@ -43,7 +43,6 @@ public abstract class Model extends Transformable {
 	private edu.cmu.cs.dennisc.scenegraph.Visual m_sgVisual = new edu.cmu.cs.dennisc.scenegraph.Visual();
 	private edu.cmu.cs.dennisc.scenegraph.SingleAppearance m_sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
 
-	private edu.cmu.cs.dennisc.math.Matrix3x3 m_originalScale = edu.cmu.cs.dennisc.math.Matrix3x3.createIdentity();
 	private java.util.List< SurfaceTexture > m_potentialSurfaceTextures = new java.util.LinkedList< SurfaceTexture >();
 	
 
@@ -60,6 +59,7 @@ public abstract class Model extends Transformable {
 	
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@Override
 	public edu.cmu.cs.dennisc.scenegraph.Visual getSGVisual() {
 		return m_sgVisual;
 	}
@@ -71,7 +71,6 @@ public abstract class Model extends Transformable {
 	
 	@Override
 	protected void realize() {
-		m_originalScale.setValue( m_sgVisual.scale.getValue() );
 		createSGGeometryIfNecessary();
 		edu.cmu.cs.dennisc.scenegraph.Geometry sgGeometry = getSGGeometry();
 		if( sgGeometry != null ) {
@@ -104,20 +103,16 @@ public abstract class Model extends Transformable {
 	
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
-	public edu.cmu.cs.dennisc.math.Matrix3x3 getOriginalScale() { 
-		return m_originalScale;
-	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public Double getResizeWidthAmount() { 
-		return m_sgVisual.scale.getValue().right.x / m_originalScale.right.x;
+		return m_sgVisual.scale.getValue().right.x / getOriginalScale().right.x;
 	}
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public Double getResizeHeightAmount() { 
-		return m_sgVisual.scale.getValue().up.y / m_originalScale.up.y;
+		return m_sgVisual.scale.getValue().up.y / getOriginalScale().up.y;
 	}
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public Double getResizeDepthAmount() { 
-		return m_sgVisual.scale.getValue().backward.z / m_originalScale.backward.z;
+		return m_sgVisual.scale.getValue().backward.z / getOriginalScale().backward.z;
 	}
 
 	private Model getPartNamed( String name ) {

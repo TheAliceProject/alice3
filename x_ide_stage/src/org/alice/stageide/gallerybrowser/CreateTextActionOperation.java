@@ -285,7 +285,7 @@ class CreateTextActionOperation extends AbstractDeclareFieldOperation {
 		this.putValue(javax.swing.Action.NAME, "Create Text...");
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
 		CreateTextPane createTextPane = new CreateTextPane();
 		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog(getIDE(), "Create Text", true);
 		if (text != null) {

@@ -25,7 +25,7 @@ package org.alice.apis.moveandturn;
 /**
  * @author Dennis Cosgrove
  */
-public class Billboard extends Transformable {
+public class Billboard extends AbstractModel {
 	class Face extends edu.cmu.cs.dennisc.scenegraph.Visual {
 		private edu.cmu.cs.dennisc.scenegraph.SingleAppearance sgAppearance = new edu.cmu.cs.dennisc.scenegraph.SingleAppearance();
 		private edu.cmu.cs.dennisc.scenegraph.QuadArray sgGeometry = new edu.cmu.cs.dennisc.scenegraph.QuadArray();
@@ -38,6 +38,9 @@ public class Billboard extends Transformable {
 		private boolean isFront;
 		
 		public Face( boolean isFront ) {
+			putElement( this );
+			putElement( this.sgAppearance );
+			putElement( this.sgGeometry );
 			this.isFront = isFront;
 			float k = this.getK();
 			for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : sgVertices ) {
@@ -114,8 +117,6 @@ public class Billboard extends Transformable {
 
 	public Billboard() {
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = this.getSGTransformable();
-		putElement( this.sgFrontFace );
-		putElement( this.sgBackFace );
 		this.sgFrontFace.setParent( sgTransformable );
 		this.sgBackFace.setParent( sgTransformable );
 	}
@@ -124,6 +125,11 @@ public class Billboard extends Transformable {
 	private ImageSource frontImageSource;
 	private ImageSource backImageSource;
 
+	@Override
+	protected edu.cmu.cs.dennisc.scenegraph.Visual getSGVisual() {
+		return this.sgFrontFace;
+	}
+	
 	public ImageSource getFrontImageSource() {
 		return this.frontImageSource;
 	}

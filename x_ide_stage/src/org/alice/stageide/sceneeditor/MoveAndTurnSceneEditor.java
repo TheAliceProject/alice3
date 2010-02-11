@@ -351,7 +351,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.controlsForOverlayPane.focusedCodeChanged( e );
 	}
 
-	private static boolean isGround( org.alice.apis.moveandturn.Model model ) {
+	private static boolean isGround( org.alice.apis.moveandturn.AbstractModel model ) {
 		Class[] clses = { Ground.class, GrassyGround.class, DirtGround.class, MoonSurface.class, SandyGround.class, SeaSurface.class, SnowyGround.class };
 		for( Class< ? extends org.alice.apis.moveandturn.PolygonalModel > cls : clses ) {
 			if( cls.isAssignableFrom( model.getClass() ) ) {
@@ -368,8 +368,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instanceInJava;
 			transformable.realizeIfNecessary();
 			edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = transformable.getSGTransformable();
-			if( instanceInJava instanceof org.alice.apis.moveandturn.Model ) {
-				org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instanceInJava;
+			if( instanceInJava instanceof org.alice.apis.moveandturn.AbstractModel ) {
+				org.alice.apis.moveandturn.AbstractModel model = (org.alice.apis.moveandturn.AbstractModel)instanceInJava;
 				if( MoveAndTurnSceneEditor.isGround( model ) ) {
 					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.GROUND );
 				} else {
@@ -381,14 +381,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 						scaleInv.invert();
 						box.scale( scaleInv );
 					}
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( model );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println( box );
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
-//					edu.cmu.cs.dennisc.print.PrintUtilities.println();
 					sgTransformable.putBonusDataFor( org.alice.interact.GlobalDragAdapter.BOUNDING_BOX_KEY, box );
-					//edu.cmu.cs.dennisc.print.PrintUtilities.println( sgTransformable.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY ) );
 				}
 			} else if( transformable instanceof org.alice.apis.moveandturn.Light ) {
 				org.alice.apis.moveandturn.Light light = (org.alice.apis.moveandturn.Light)instanceInJava;
