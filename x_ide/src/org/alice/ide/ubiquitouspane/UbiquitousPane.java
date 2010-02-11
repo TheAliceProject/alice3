@@ -121,6 +121,7 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPan
 	private ConditionalStatementTemplate conditionalStatementTemplate = new ConditionalStatementTemplate();
 	private DoTogetherTemplate doTogetherTemplate = new DoTogetherTemplate();
 	private EachInArrayTogetherTemplate eachInArrayTogetherTemplate = new EachInArrayTogetherTemplate();
+	private DoInThreadTemplate doInThreadTemplate = new DoInThreadTemplate();
 	private DeclareLocalTemplate declareLocalTemplate = new DeclareLocalTemplate();
 	private CommentTemplate commentTemplate = new CommentTemplate();
 	
@@ -141,6 +142,8 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPan
 		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
 		this.add( this.doTogetherTemplate );
 		this.add( this.eachInArrayTogetherTemplate );
+		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
+		this.add( this.doInThreadTemplate );
 		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
 		this.add( this.declareLocalTemplate );
 		this.add( this.transientStatementsWrapper );

@@ -177,7 +177,7 @@ public class Scene extends Composite {
 						new Thread() {
 							@Override
 							public void run() {
-								Program.invokeAndCatchProgramClosedException( new Runnable() {
+								edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine.invokeAndCatchProgramClosedException( new Runnable() {
 									public void run() {
 										mouseButtonListener.mouseButtonClicked( mbe );
 									}
@@ -189,7 +189,7 @@ public class Scene extends Composite {
 						new Thread() {
 							@Override
 							public void run() {
-								Program.invokeAndCatchProgramClosedException( new Runnable() {
+								edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine.invokeAndCatchProgramClosedException( new Runnable() {
 									public void run() {
 										mouseButtonListener.mouseButtonClicked( mbe );
 									}
@@ -240,7 +240,7 @@ public class Scene extends Composite {
 					new Thread() {
 						@Override
 						public void run() {
-							Program.invokeAndCatchProgramClosedException( new Runnable() {
+							edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine.invokeAndCatchProgramClosedException( new Runnable() {
 								public void run() {
 									keyListener.keyPressed( ke );
 								}
@@ -253,7 +253,7 @@ public class Scene extends Composite {
 						new Thread() {
 							@Override
 							public void run() {
-								Program.invokeAndCatchProgramClosedException( new Runnable() {
+								edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine.invokeAndCatchProgramClosedException( new Runnable() {
 									public void run() {
 										keyListener.keyPressed( ke );
 									}

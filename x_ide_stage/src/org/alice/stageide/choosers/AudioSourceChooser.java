@@ -204,7 +204,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public static void main( String[] args ) {
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		try {
-			org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn fillIn = new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn();
+			org.alice.stageide.cascade.customfillin.CustomizeAudioSourceFillIn fillIn = new org.alice.stageide.cascade.customfillin.CustomizeAudioSourceFillIn();
 			if( fillIn != null ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( fillIn.getValue() );
 			}

@@ -69,6 +69,7 @@ public class MediaFactory {
 			MediaFactory.audioResourceToDataSourceMap.put( audioResource, dataSource );
 		}
 		try {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getPlayer", audioResource );
 			return javax.media.Manager.createPlayer( dataSource );
 		} catch( javax.media.NoPlayerException npe ) {
 			throw new RuntimeException( audioResource.toString(), npe );

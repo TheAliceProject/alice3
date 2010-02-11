@@ -41,6 +41,9 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.DoTogether createDoTogether() {
 		return new edu.cmu.cs.dennisc.alice.ast.DoTogether( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.DoInThread createDoInThread() {
+		return new edu.cmu.cs.dennisc.alice.ast.DoInThread( new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
+	}
 	public static edu.cmu.cs.dennisc.alice.ast.Comment createComment() {
 		return new edu.cmu.cs.dennisc.alice.ast.Comment();
 	}

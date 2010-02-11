@@ -22,10 +22,50 @@
  */
 package edu.cmu.cs.dennisc.alice.virtualmachine;
 
+import edu.cmu.cs.dennisc.program.ProgramClosedException;
+
 /**
  * @author Dennis Cosgrove
  */
 public abstract class VirtualMachine {
+	private static boolean isProgramClosedException( Throwable t ) {
+		if( t instanceof ProgramClosedException ) {
+			return true;
+		} else {
+			Throwable cause = t.getCause();
+			if( cause != null ) {
+				return isProgramClosedException( cause );
+			} else {
+				return false;
+			}
+			//unnecessary: getTargetException() is equivalent to getCause() according to docs
+//			boolean rv;
+//			if( cause != null ) {
+//				rv = isProgramClosedException( cause );
+//			} else {
+//				rv = false;
+//			}
+//			if( t instanceof java.lang.reflect.InvocationTargetException ) {
+//				java.lang.reflect.InvocationTargetException ite = (java.lang.reflect.InvocationTargetException)t;
+//				return rv || isProgramClosedException( ite.getTargetException() );
+//			} else {
+//				return rv;
+//			}
+		}
+	}
+	
+	public static void invokeAndCatchProgramClosedException( Runnable runnable ) {
+		try {
+			runnable.run();
+		} catch( RuntimeException re ) {
+			if( isProgramClosedException( re ) ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "note: ProgramClosedException caught." );
+			} else {
+				throw re;
+			}
+		}
+	}
+
 	@Deprecated
 	public Object getAccessForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		return get( field, instance );
@@ -702,6 +742,28 @@ public abstract class VirtualMachine {
 	protected void executeDoInOrder( edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder ) throws ReturnException {
 		executeBlockStatement( doInOrder.body.getValue() );
 	}
+	protected void executeDoInThread( final edu.cmu.cs.dennisc.alice.ast.DoInThread doInThread ) throws ReturnException {
+		final Thread parentThread = Thread.currentThread();
+		new edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString() {
+			@Override
+			public void run() {
+				pushCurrentThread( parentThread );
+				try {
+					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine.invokeAndCatchProgramClosedException( new Runnable() {
+						public void run() {
+							try {
+								execute( doInThread.body.getValue() );
+							} catch( ReturnException re ) {
+								//todo
+							}
+						}
+					} );
+				} finally {
+					popCurrentThread();
+				}
+			}
+		}.start();
+	}
 	protected void executeDoTogether( edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether ) throws ReturnException {
 		edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatement = doTogether.body.getValue();
 		//todo?
@@ -842,6 +904,8 @@ public abstract class VirtualMachine {
 				this.executeDoTogether( (edu.cmu.cs.dennisc.alice.ast.DoTogether)statement );
 			} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.DoInOrder ) {
 				this.executeDoInOrder( (edu.cmu.cs.dennisc.alice.ast.DoInOrder)statement );
+			} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.DoInThread ) {
+				this.executeDoInThread( (edu.cmu.cs.dennisc.alice.ast.DoInThread)statement );
 			} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
 				this.executeExpressionStatement( (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement );
 			} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ForEachInArrayLoop ) {

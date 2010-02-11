@@ -25,10 +25,10 @@ package org.alice.stageide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomAudioSourceFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, org.alice.apis.moveandturn.AudioSource > {
+public class CustomizeAudioSourceFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, org.alice.apis.moveandturn.AudioSource > {
 	@Override
 	protected String getMenuProxyText() {
-		return "Custom Audio Source...";
+		return "Customize Audio Source...";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
