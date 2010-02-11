@@ -71,8 +71,8 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 				gender,
 				BaseSkinTone.getRandom(),
 				BaseEyeColor.getRandom(),
-				FullBodyOutfitUtilities.getSingleton().getRandomEnumConstant( lifeStage, gender ),
-				HairUtilities.getSingleton().getRandomEnumConstant( lifeStage, gender ),
+				FullBodyOutfitManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
+				HairManager.getSingleton().getRandomEnumConstant( lifeStage, gender ),
 				Math.random()
 		);
 	}
@@ -147,14 +147,14 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 					person.setSkinTone( this.baseSkinTone );
 					if( this.fitnessLevel != null ) {
 						person.setFitnessLevel( this.fitnessLevel, org.alice.apis.stage.Person.RIGHT_NOW );
-						if( this.fullBodyOutfit != null && FullBodyOutfitUtilities.getSingleton().isApplicable( this.fullBodyOutfit, this.lifeStage, this.gender ) ) {
+						if( this.fullBodyOutfit != null && FullBodyOutfitManager.getSingleton().isApplicable( this.fullBodyOutfit, this.lifeStage, this.gender ) ) {
 							//pass
 						} else {
 							Outfit outfit = person.getOutfit();
 							if( outfit instanceof FullBodyOutfit ) {
 								this.fullBodyOutfit = ( FullBodyOutfit )outfit;
 							} else {
-								this.fullBodyOutfit = FullBodyOutfitUtilities.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
+								this.fullBodyOutfit = FullBodyOutfitManager.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
 							}
 						}
 						person.setOutfit( this.fullBodyOutfit );
@@ -163,14 +163,14 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 				if( this.baseEyeColor != null ) {
 					person.setEyeColor( this.baseEyeColor );
 				}
-				if( this.hair != null && HairUtilities.getSingleton().isApplicable( this.hair, this.lifeStage, this.gender ) ) {
+				if( this.hair != null && HairManager.getSingleton().isApplicable( this.hair, this.lifeStage, this.gender ) ) {
 					//pass
 				} else {
 					Hair hair = person.getHair();
 					if( hair != null ) {
 						this.hair = hair;
 					} else {
-						this.hair = HairUtilities.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
+						this.hair = HairManager.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
 					}
 				}
 				person.setHair( this.hair );

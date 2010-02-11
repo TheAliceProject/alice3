@@ -22,14 +22,14 @@
  */
 package org.alice.apis.stage;
 
-public class FullBodyOutfitUtilities extends IngredientUtilities< FullBodyOutfit > {
-	private static FullBodyOutfitUtilities singleton = new FullBodyOutfitUtilities();
+public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
+	private static FullBodyOutfitManager singleton = new FullBodyOutfitManager();
 
-	public static FullBodyOutfitUtilities getSingleton() {
+	public static FullBodyOutfitManager getSingleton() {
 		return singleton;
 	}
 
-	private FullBodyOutfitUtilities() {
+	private FullBodyOutfitManager() {
 //		this.add( AdultFullBodyOutfit.class,
 //							UnisexAdultFullBodyOutfitAstronaut.class ,
 //							UnisexAdultFullBodyOutfitLlama.class ,
@@ -175,15 +175,15 @@ public class FullBodyOutfitUtilities extends IngredientUtilities< FullBodyOutfit
 	}
 
 	@Override
-	protected Class< Class< ? extends FullBodyOutfit > > getImplementingClassesReturnValueComponentType() {
-		return (Class< Class< ? extends FullBodyOutfit > >)FullBodyOutfit.class.getClass();
+	protected Class<Class<? extends FullBodyOutfit>> getImplementingClassesComponentType() {
+		return (Class<Class<? extends FullBodyOutfit>>)FullBodyOutfit.class.getClass();
 	}
 	@Override
-	protected Class< ? extends FullBodyOutfit > getUnisexIntefaceClass( LifeStage lifeStage ) {
+	protected Class<? extends FullBodyOutfit> getUnisexIntefaceClass( LifeStage lifeStage ) {
 		return lifeStage.getUnisexFullBodyOutfitInterfaceClass();
 	};
 	@Override
-	protected Class< ? extends FullBodyOutfit > getGenderedIntefaceClass( LifeStage lifeStage, Gender gender ) {
+	protected Class<? extends FullBodyOutfit> getGenderedIntefaceClass( LifeStage lifeStage, Gender gender ) {
 		return lifeStage.getGenderedFullBodyOutfitInterfaceClass( gender );
 	}
 }

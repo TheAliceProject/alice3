@@ -27,7 +27,7 @@ package org.alice.stageide.personeditor;
  */
 class HairComboBoxModel extends ArrayOfEnumConstantsComboBoxModel {
 	public HairComboBoxModel( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, final String hairColor ) {
-		super( org.alice.apis.stage.HairUtilities.getSingleton().getImplementingClasses( lifeStage, gender ), new edu.cmu.cs.dennisc.pattern.Criterion< Enum >() {
+		super( org.alice.apis.stage.HairManager.getSingleton().getImplementingClasses( lifeStage, gender ), new edu.cmu.cs.dennisc.pattern.Criterion< Enum >() {
 			public boolean accept( Enum e ) {
 				return e.name().equals( hairColor );
 			}

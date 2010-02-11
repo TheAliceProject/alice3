@@ -22,14 +22,14 @@
  */
 package org.alice.apis.stage;
 
-public class HairUtilities extends IngredientUtilities< Hair > {
-	private static HairUtilities singleton = new HairUtilities();
+public class HairManager extends IngredientManager<Hair> {
+	private static HairManager singleton = new HairManager();
 
-	public static HairUtilities getSingleton() {
+	public static HairManager getSingleton() {
 		return singleton;
 	}
 
-	private HairUtilities() {
+	private HairManager() {
 		this.add( MaleAdultHair.class,
 						//MaleAdultHairBeanie.class ,
 						MaleAdultHairCloseCrop.class ,
@@ -66,15 +66,15 @@ public class HairUtilities extends IngredientUtilities< Hair > {
 	}
 	
 	@Override
-	protected Class< Class< ? extends Hair > > getImplementingClassesReturnValueComponentType() {
-		return (Class< Class< ? extends Hair > >)Hair.class.getClass();
+	protected Class<Class<? extends Hair>> getImplementingClassesComponentType() {
+		return (Class<Class<? extends Hair>>)Hair.class.getClass();
 	}
 	@Override
-	protected Class< ? extends Hair > getUnisexIntefaceClass( LifeStage lifeStage ) {
+	protected Class<? extends Hair> getUnisexIntefaceClass( LifeStage lifeStage ) {
 		return lifeStage.getUnisexHairInterfaceClass();
 	};
 	@Override
-	protected Class< ? extends Hair > getGenderedIntefaceClass( LifeStage lifeStage, Gender gender ) {
+	protected Class<? extends Hair> getGenderedIntefaceClass( LifeStage lifeStage, Gender gender ) {
 		return lifeStage.getGenderedHairInterfaceClass( gender );
 	}
 }
