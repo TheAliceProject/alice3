@@ -85,7 +85,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		@Override
 		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			org.alice.apis.moveandturn.AudioSource audioSource = getValue();
-			edu.cmu.cs.dennisc.media.MediaPlayerAnimation mediaPlayerAnimation = edu.cmu.cs.dennisc.media.MediaFactory.createMediaPlayerAnimation( audioSource.getResource(), audioSource.getFromTime(), audioSource.getToTime() );
+			edu.cmu.cs.dennisc.media.MediaPlayerAnimation mediaPlayerAnimation = edu.cmu.cs.dennisc.media.MediaFactory.createMediaPlayerAnimation( audioSource.getAudioResource(), audioSource.getFromTime(), audioSource.getToTime() );
 			mediaPlayerAnimation.update( 0.0, null );
 		}
 	};
@@ -173,18 +173,41 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( this.test, null ) );
 		return rv;
 	}
+	
+	private static java.text.NumberFormat tFormat = new java.text.DecimalFormat( "0.00" );
+	private static double getT( javax.swing.JSlider slider, double duration ) {
+		double t = duration*(slider.getValue()/100.0);
+		return Double.parseDouble( tFormat.format( t ) );
+	}
+	
 	public org.alice.apis.moveandturn.AudioSource getValue() {
 		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
+		org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resourceExpression.resource.getValue();
 		if( this.isMarkedExpandPane.isSelected() ) {
-			return new org.alice.apis.moveandturn.AudioSource( resourceExpression.resource.getValue(), getSliderFrom().getValue()/100.0, getSliderTo().getValue()/100.0 );
+			double duration = audioResource.getDuration();
+			if( Double.isNaN( duration ) ) {
+				//todo:
+				edu.cmu.cs.dennisc.media.MediaFactory.createMediaPlayerAnimation( audioResource, Double.NaN, Double.NaN );
+
+				
+				duration = audioResource.getDuration();
+			}
+			double from = getT( getSliderFrom(), duration );
+			double to = getT( getSliderTo(), duration );
+			return new org.alice.apis.moveandturn.AudioSource( audioResource, from, to );
 		} else {
-			return new org.alice.apis.moveandturn.AudioSource( resourceExpression.resource.getValue() );
+			return new org.alice.apis.moveandturn.AudioSource( audioResource );
 		}
 	}
 	public static void main( String[] args ) {
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn fillIn = new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( fillIn.getValue() );
+		try {
+			org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn fillIn = new org.alice.stageide.cascade.customfillin.CustomAudioSourceFillIn();
+			if( fillIn != null ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( fillIn.getValue() );
+			}
+		} catch( edu.cmu.cs.dennisc.cascade.CancelException ce ) {
+		}
 	}
 	
 }

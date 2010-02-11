@@ -29,7 +29,7 @@ class StateControllerListener implements javax.media.ControllerListener {
 			javax.media.TransitionEvent transitionEvent = (javax.media.TransitionEvent)e;
 			int currentState = transitionEvent.getCurrentState();
 			int targetState = transitionEvent.getTargetState();
-			if( currentState == targetState ) {
+			if( currentState >= targetState ) {
 				this.await();
 			}
 		}
@@ -58,18 +58,26 @@ public class Player {
 		this.toTime = toTime;
 	}
 	public void prefetch() {
-		StateControllerListener controllerListener = new StateControllerListener();
-		this.player.addControllerListener( controllerListener );
-		this.player.prefetch();
-		controllerListener.await();
-		this.player.removeControllerListener( controllerListener );
+		if( this.player.getState() >= javax.media.Player.Prefetched ) {
+			//pass
+		} else {
+			StateControllerListener controllerListener = new StateControllerListener();
+			this.player.addControllerListener( controllerListener );
+			this.player.prefetch();
+			controllerListener.await();
+			this.player.removeControllerListener( controllerListener );
+		}
 	}
 	public void realize() {
-		StateControllerListener controllerListener = new StateControllerListener();
-		this.player.addControllerListener( controllerListener );
-		this.player.realize();
-		controllerListener.await();
-		this.player.removeControllerListener( controllerListener );
+		if( this.player.getState() >= javax.media.Player.Realized ) {
+			//pass
+		} else {
+			StateControllerListener controllerListener = new StateControllerListener();
+			this.player.addControllerListener( controllerListener );
+			this.player.realize();
+			controllerListener.await();
+			this.player.removeControllerListener( controllerListener );
+		}
 	}
 	public void start() {
 		this.realize();
@@ -89,6 +97,9 @@ public class Player {
 		this.player.stop();
 	}
 	
+	public double getDuration() {
+		return this.player.getDuration().getSeconds();
+	}
 	public double getTimeRemaining() {
 		javax.media.Time duration = this.player.getDuration();
 		javax.media.Time stop = this.player.getStopTime();

@@ -29,7 +29,7 @@ public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerin
 	public ResourceFillerInner() {
 		super( org.alice.virtualmachine.Resource.class, edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class );
 	}
-	protected abstract boolean isContentTypeAcceptable( String contentType );
+	protected abstract edu.cmu.cs.dennisc.alice.ast.ResourceExpression createResourceExpressionIfAppropriate( org.alice.virtualmachine.Resource resource );
 	protected abstract edu.cmu.cs.dennisc.cascade.FillIn< ? > createImportNewResourceFillIn();
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
@@ -38,11 +38,9 @@ public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerin
 		assert resources != null;
 		synchronized( resources ) {
 			for( org.alice.virtualmachine.Resource resource : resources ) {
-				if( resource != null ) {
-					if( this.isContentTypeAcceptable( resource.getContentType() ) ) {
-						edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resource );
-						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( resourceExpression ) ); 
-					}
+				edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = this.createResourceExpressionIfAppropriate( resource );
+				if( resourceExpression != null ) {
+					blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( resourceExpression ) ); 
 				}
 			}
 		}

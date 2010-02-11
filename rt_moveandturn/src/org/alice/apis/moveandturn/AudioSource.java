@@ -26,14 +26,14 @@ package org.alice.apis.moveandturn;
  * @author Dennis Cosgrove
  */
 public class AudioSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
-	private org.alice.virtualmachine.Resource resource;
+	private org.alice.virtualmachine.resources.AudioResource audioResource;
 	private double fromTime;
 	private double toTime;
-	public AudioSource( org.alice.virtualmachine.Resource resource ) {
-		this( resource, null, null );
+	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+		this( audioResource, null, null );
 	}
-	public AudioSource( org.alice.virtualmachine.Resource resource, Number fromTime, Number toTime ) {
-		this.resource = resource;
+	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, Number fromTime, Number toTime ) {
+		this.audioResource = audioResource;
 		if( fromTime != null ) {
 			this.fromTime = fromTime.doubleValue();
 		} else {
@@ -45,8 +45,8 @@ public class AudioSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 			this.toTime = Double.NaN;
 		}
 	}
-	public org.alice.virtualmachine.Resource getResource() {
-		return this.resource;
+	public org.alice.virtualmachine.resources.AudioResource getAudioResource() {
+		return this.audioResource;
 	}
 	public Double getFromTime() {
 		return this.fromTime;

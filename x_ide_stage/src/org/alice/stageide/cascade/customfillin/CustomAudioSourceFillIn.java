@@ -36,20 +36,20 @@ public class CustomAudioSourceFillIn extends org.alice.ide.cascade.customfillin.
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.InstanceCreation createExpression( org.alice.apis.moveandturn.AudioSource value ) {
-		org.alice.virtualmachine.Resource resource = value.getResource();
+		org.alice.virtualmachine.resources.AudioResource audioResource = value.getAudioResource();
 		
 		
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		ide.getProject().addResource( resource );
+		ide.getProject().addResource( audioResource );
 		
-		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resource );
+		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );
 		if( Double.isNaN( value.getFromTime() ) ) {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.Resource.class );
+			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class );
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
 			edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
 			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 );
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.Resource.class, Number.class, Number.class );
+			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AudioSource.class, org.alice.virtualmachine.resources.AudioResource.class, Number.class, Number.class );
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
 			edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter1 = constructor.getParameters().get( 1 );

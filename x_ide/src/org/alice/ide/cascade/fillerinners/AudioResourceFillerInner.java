@@ -27,11 +27,11 @@ package org.alice.ide.cascade.fillerinners;
  */
 public class AudioResourceFillerInner extends ResourceFillerInner {
 	@Override
-	protected boolean isContentTypeAcceptable( String contentType ) {
-		if( contentType != null ) {
-			return edu.cmu.cs.dennisc.media.MediaFactory.isAcceptableContentType( contentType );
+	protected edu.cmu.cs.dennisc.alice.ast.ResourceExpression createResourceExpressionIfAppropriate( org.alice.virtualmachine.Resource resource ) {
+		if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
+			return new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, (org.alice.virtualmachine.resources.AudioResource)resource );
 		} else {
-			return false;
+			return null;
 		}
 	}
 	@Override

@@ -53,7 +53,10 @@ public abstract class ImportNewResourceFillIn extends edu.cmu.cs.dennisc.cascade
 
 				try {
 					byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( file );
-					org.alice.virtualmachine.Resource resource = org.alice.virtualmachine.Resource.get( java.util.UUID.randomUUID() );
+					
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ImportNewResourceFillIn" );
+					
+					org.alice.virtualmachine.resources.AudioResource resource = org.alice.virtualmachine.resources.AudioResource.valueOf( java.util.UUID.randomUUID().toString() );
 					resource.setName( filename );
 					resource.setContentType( contentType );
 					resource.setData( data );
@@ -61,7 +64,7 @@ public abstract class ImportNewResourceFillIn extends edu.cmu.cs.dennisc.cascade
 					org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 					ide.getProject().addResource( resource );
 					
-					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( resource );
+					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, resource );
 					return resourceExpression;
 				} catch( java.io.IOException ioe ) {
 					throw new edu.cmu.cs.dennisc.cascade.CancelException( "" );			

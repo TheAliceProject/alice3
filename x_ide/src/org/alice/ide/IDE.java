@@ -1868,38 +1868,6 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		saveProjectTo( new java.io.File( path ) );
 	}
 
-	//	private static java.util.ResourceBundle getResourceBundleForASTColors( java.util.Locale locale ) {
-	//		String baseName = "edu.cmu.cs.dennisc.alice.ast.Colors";
-	//		return java.util.ResourceBundle.getBundle( baseName, locale );
-	//	}
-
-	//	private static java.awt.Color toColor( String s ) {
-	//		java.awt.Color rv;
-	//		//String s = resourceBundle.getString( key );
-	//		if( s.startsWith( "0x" ) ) {
-	//			int i = Integer.parseInt( s.substring( 2 ), 16 );
-	//			rv = new java.awt.Color( i );
-	//		} else {
-	//			String[] rgbStrings = s.split( " " );
-	//			int r = Integer.parseInt( rgbStrings[ 0 ] );
-	//			int g = Integer.parseInt( rgbStrings[ 1 ] );
-	//			int b = Integer.parseInt( rgbStrings[ 2 ] );
-	//			rv = new java.awt.Color( r, g, b );
-	//		}
-	//		return rv;
-	//	}
-	//
-	//	public static java.awt.Color getColorForASTClass( Class< ? > cls ) {
-	//		return toColor( edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "edu.cmu.cs.dennisc.alice.ast.Colors", javax.swing.JComponent.getDefaultLocale() ) );
-	//	}
-	//	public static java.awt.Color getColorForASTInstance( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-	//		if( node != null ) {
-	//			return getColorForASTClass( node.getClass() );
-	//		} else {
-	//			return java.awt.Color.RED;
-	//		}
-	//	}
-
 	@Deprecated
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
 		edu.cmu.cs.dennisc.alice.Project project = getProject();
@@ -2247,11 +2215,4 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			return null;
 		}
 	}
-//	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.alice.resource.Resource > resourceMap = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.alice.resource.Resource >();
-//	public void addResource( edu.cmu.cs.dennisc.alice.ast.Resource resource, edu.cmu.cs.dennisc.alice.resource.FileResource fileResource ) {
-//		this.resourceMap.put( resource, fileResource  );
-//	}
-//	public java.util.Map< edu.cmu.cs.dennisc.alice.ast.Resource, edu.cmu.cs.dennisc.alice.resource.Resource > getResourceMap() {
-//		return this.resourceMap;
-//	}
 }

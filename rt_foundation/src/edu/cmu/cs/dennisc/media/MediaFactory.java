@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.media;
  * @author Dennis Cosgrove
  */
 public class MediaFactory {
-	private static java.util.Map< org.alice.virtualmachine.Resource, javax.media.protocol.DataSource > resourceToDataSourceMap = new java.util.HashMap< org.alice.virtualmachine.Resource, javax.media.protocol.DataSource >();
+	private static java.util.Map< org.alice.virtualmachine.resources.AudioResource, javax.media.protocol.DataSource > audioResourceToDataSourceMap = new java.util.HashMap< org.alice.virtualmachine.resources.AudioResource, javax.media.protocol.DataSource >();
 	private static java.util.Map< String, String > extensionToContentTypeMap;
 	static {
 		System.out.print( "Attempting to register mp3 capability... " );
@@ -59,25 +59,30 @@ public class MediaFactory {
 		};
 	}
 	
-	private static javax.media.Player getPlayer( org.alice.virtualmachine.Resource resource ) {
-		assert resource != null;
-		javax.media.protocol.DataSource dataSource = MediaFactory.resourceToDataSourceMap.get( resource );
+	private static javax.media.Player getPlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+		assert audioResource != null;
+		javax.media.protocol.DataSource dataSource = MediaFactory.audioResourceToDataSourceMap.get( audioResource );
 		if( dataSource != null ) {
 			//pass
 		} else {
-			dataSource = new edu.cmu.cs.dennisc.media.protocol.ByteArrayDataSource( resource.getData(), resource.getContentType() );
-			MediaFactory.resourceToDataSourceMap.put( resource, dataSource );
+			dataSource = new edu.cmu.cs.dennisc.media.protocol.ByteArrayDataSource( audioResource.getData(), audioResource.getContentType() );
+			MediaFactory.audioResourceToDataSourceMap.put( audioResource, dataSource );
 		}
 		try {
 			return javax.media.Manager.createPlayer( dataSource );
 		} catch( javax.media.NoPlayerException npe ) {
-			throw new RuntimeException( resource.toString(), npe );
+			throw new RuntimeException( audioResource.toString(), npe );
 		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( resource.toString(), ioe );
+			throw new RuntimeException( audioResource.toString(), ioe );
 		}
 	}
-	public static MediaPlayerAnimation createMediaPlayerAnimation( org.alice.virtualmachine.Resource resource, double fromTime, double toTime ) {
-		return new MediaPlayerAnimation( new Player( getPlayer( resource ), fromTime, toTime ) );
+	public static MediaPlayerAnimation createMediaPlayerAnimation( org.alice.virtualmachine.resources.AudioResource audioResource, double fromTime, double toTime ) {
+		Player player = new Player( getPlayer( audioResource ), fromTime, toTime );
+		if( Double.isNaN( audioResource.getDuration() ) ) {
+			player.realize();
+			audioResource.setDuration( player.getDuration() );
+		}
+		return new MediaPlayerAnimation( player );
 	}
 
 }

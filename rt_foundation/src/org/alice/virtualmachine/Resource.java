@@ -1,32 +1,14 @@
 package org.alice.virtualmachine;
 
-public class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameable {
-	
-	private static java.util.Map< java.util.UUID, Resource > uuidToResourceMap = new java.util.HashMap< java.util.UUID, Resource >(); 
-	public static Resource get( java.util.UUID uuid ) {
-		Resource rv = uuidToResourceMap.get( uuid );
-		if( rv != null ) {
-			//pass
-		} else {
-			rv = new Resource( uuid );
-			uuidToResourceMap.put( uuid, rv );
-		}
-		return rv;
-	}
-	public static Resource valueOf( String s ) {
-		java.util.UUID uuid = java.util.UUID.fromString( s );
-		return get( uuid );
-	}	
-	
+public abstract class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameable {
 	private java.util.UUID uuid;
 	private String contentType;
 	private byte[] data;
 
-	private Resource( java.util.UUID uuid ) {
+	protected Resource( java.util.UUID uuid ) {
 		this.uuid = uuid;
 	}
-
-	public Resource( Class<?> cls, String resourceName, String contentType ) {
+	protected Resource( Class<?> cls, String resourceName, String contentType ) {
 		this.uuid = null;
 		try {
 			byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( cls, resourceName );
@@ -37,7 +19,7 @@ public class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameable {
 			throw new RuntimeException( resourceName, ioe );
 		}
 	}
-	public Resource( java.io.File file, String contentType ) {
+	protected Resource( java.io.File file, String contentType ) {
 		this.uuid = java.util.UUID.randomUUID();
 		String resourceName = file.getName();
 		try {
@@ -64,6 +46,17 @@ public class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameable {
 	}
 	public void setData( byte[] data ) {
 		this.data = data;
+	}
+	
+	private static String XML_NAME_ATTRIBUTE = "name";
+	private static String XML_CONTENT_TYPE_ATTRIBUTE = "contentType";
+	public void decodeAttributes( org.w3c.dom.Element xmlElement ) {
+		this.setName( xmlElement.getAttribute( XML_NAME_ATTRIBUTE ) );
+		this.setContentType( xmlElement.getAttribute( XML_CONTENT_TYPE_ATTRIBUTE ) );
+	}
+	public void encodeAttributes( org.w3c.dom.Element xmlElement ) {
+		xmlElement.setAttribute( XML_NAME_ATTRIBUTE, this.getName() );
+		xmlElement.setAttribute( XML_CONTENT_TYPE_ATTRIBUTE, this.getContentType() );
 	}
 	@Override
 	public String toString() {

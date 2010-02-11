@@ -26,6 +26,8 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class ResourcePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.alice.ast.ResourceProperty > {
+	private static java.text.NumberFormat durationFormat = new java.text.DecimalFormat( "0.00" );
+	
 	private edu.cmu.cs.dennisc.zoot.ZLabel label;
 	public ResourcePropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ResourceProperty property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
@@ -39,12 +41,29 @@ public class ResourcePropertyPane extends AbstractPropertyPane< edu.cmu.cs.denni
 			this.add( this.label );
 		}
 		org.alice.virtualmachine.Resource resource = getProperty().getValue();
-		String text;
+		StringBuffer sb = new StringBuffer();
 		if( resource != null ) {
-			text = resource.getName();
+			sb.append( "<html>" );
+			//sb.append( "<b>" );
+			sb.append( resource.getName() );
+			//sb.append( "</b>" );
+			if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
+				org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
+				double duration = audioResource.getDuration();
+				if( Double.isNaN( duration ) ) {
+					//pass
+				} else {
+					sb.append( "<font color=\"gray\">" );
+					sb.append( "<i>" );
+					sb.append( " (" + durationFormat.format( duration ) + "s) " ) ;
+					sb.append( "</i>" );
+					sb.append( "</font>" );
+				}
+			}
+			sb.append( "</html>" );
 		} else {
-			text = org.alice.ide.IDE.getSingleton().getTextForNull();
+			sb.append( org.alice.ide.IDE.getSingleton().getTextForNull() );
 		}
-		this.label.setText( text );
+		this.label.setText( sb.toString() );
 	}
 }
