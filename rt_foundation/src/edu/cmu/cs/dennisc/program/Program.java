@@ -117,7 +117,7 @@ public abstract class Program extends javax.swing.JApplet {
 				Program.this.semaphore.acquireUninterruptibly();
 				if( Program.this.isInitializationSuccessful ) {
 					Program.this.preRun();
-					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine.invokeAndCatchProgramClosedException( new Runnable() {
+					edu.cmu.cs.dennisc.alice.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
 						public void run() {
 							Program.this.run();
 						}

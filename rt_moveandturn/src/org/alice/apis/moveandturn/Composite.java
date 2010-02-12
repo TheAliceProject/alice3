@@ -530,7 +530,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 					root.setVisible( false );
 				}
 			}
-			throw new edu.cmu.cs.dennisc.program.ProgramClosedException();
+			throw new edu.cmu.cs.dennisc.alice.ProgramClosedException();
 		}
 	}
 

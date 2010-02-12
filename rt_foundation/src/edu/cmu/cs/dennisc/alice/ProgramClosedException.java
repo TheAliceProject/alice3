@@ -20,12 +20,51 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.program;
+package edu.cmu.cs.dennisc.alice;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ProgramClosedException extends RuntimeException {
+	private static boolean isProgramClosedException( Throwable t ) {
+		if( t instanceof ProgramClosedException ) {
+			return true;
+		} else {
+			Throwable cause = t.getCause();
+			if( cause != null ) {
+				return isProgramClosedException( cause );
+			} else {
+				return false;
+			}
+			//unnecessary: getTargetException() is equivalent to getCause() according to docs
+//			boolean rv;
+//			if( cause != null ) {
+//				rv = isProgramClosedException( cause );
+//			} else {
+//				rv = false;
+//			}
+//			if( t instanceof java.lang.reflect.InvocationTargetException ) {
+//				java.lang.reflect.InvocationTargetException ite = (java.lang.reflect.InvocationTargetException)t;
+//				return rv || isProgramClosedException( ite.getTargetException() );
+//			} else {
+//				return rv;
+//			}
+		}
+	}
+	
+	public static void invokeAndCatchProgramClosedException( Runnable runnable ) {
+		try {
+			runnable.run();
+		} catch( RuntimeException re ) {
+			if( isProgramClosedException( re ) ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "note: ProgramClosedException caught." );
+			} else {
+				throw re;
+			}
+		}
+	}
+
+	
 	public ProgramClosedException() {
 	}
 	public ProgramClosedException( String message ) {
@@ -34,5 +73,4 @@ public class ProgramClosedException extends RuntimeException {
 	public ProgramClosedException( String message, Throwable cause ) {
 		super( message, cause );
 	}
-
 }

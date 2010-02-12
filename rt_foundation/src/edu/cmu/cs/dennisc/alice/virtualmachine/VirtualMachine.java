@@ -22,50 +22,12 @@
  */
 package edu.cmu.cs.dennisc.alice.virtualmachine;
 
-import edu.cmu.cs.dennisc.program.ProgramClosedException;
+import edu.cmu.cs.dennisc.alice.ProgramClosedException;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class VirtualMachine {
-	private static boolean isProgramClosedException( Throwable t ) {
-		if( t instanceof ProgramClosedException ) {
-			return true;
-		} else {
-			Throwable cause = t.getCause();
-			if( cause != null ) {
-				return isProgramClosedException( cause );
-			} else {
-				return false;
-			}
-			//unnecessary: getTargetException() is equivalent to getCause() according to docs
-//			boolean rv;
-//			if( cause != null ) {
-//				rv = isProgramClosedException( cause );
-//			} else {
-//				rv = false;
-//			}
-//			if( t instanceof java.lang.reflect.InvocationTargetException ) {
-//				java.lang.reflect.InvocationTargetException ite = (java.lang.reflect.InvocationTargetException)t;
-//				return rv || isProgramClosedException( ite.getTargetException() );
-//			} else {
-//				return rv;
-//			}
-		}
-	}
-	
-	public static void invokeAndCatchProgramClosedException( Runnable runnable ) {
-		try {
-			runnable.run();
-		} catch( RuntimeException re ) {
-			if( isProgramClosedException( re ) ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "note: ProgramClosedException caught." );
-			} else {
-				throw re;
-			}
-		}
-	}
-
 	@Deprecated
 	public Object getAccessForSceneEditor( edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		return get( field, instance );
@@ -749,7 +711,7 @@ public abstract class VirtualMachine {
 			public void run() {
 				pushCurrentThread( parentThread );
 				try {
-					edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine.invokeAndCatchProgramClosedException( new Runnable() {
+					edu.cmu.cs.dennisc.alice.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
 						public void run() {
 							try {
 								execute( doInThread.body.getValue() );
