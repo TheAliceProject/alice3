@@ -59,7 +59,7 @@ public class MediaFactory {
 		};
 	}
 	
-	private static javax.media.Player getPlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+	private static javax.media.Player acquirePlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {
 		assert audioResource != null;
 		javax.media.protocol.DataSource dataSource = MediaFactory.audioResourceToDataSourceMap.get( audioResource );
 		if( dataSource != null ) {
@@ -69,7 +69,7 @@ public class MediaFactory {
 			MediaFactory.audioResourceToDataSourceMap.put( audioResource, dataSource );
 		}
 		try {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getPlayer", audioResource );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "MediaFactory.acquirePlayer", audioResource );
 			return javax.media.Manager.createPlayer( dataSource );
 		} catch( javax.media.NoPlayerException npe ) {
 			throw new RuntimeException( audioResource.toString(), npe );
@@ -77,16 +77,16 @@ public class MediaFactory {
 			throw new RuntimeException( audioResource.toString(), ioe );
 		}
 	}
-	public static Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double fromTime, double toTime ) {
-		Player player = new Player( getPlayer( audioResource ), fromTime, toTime );
+	public static Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime, double stopTime ) {
+		Player player = new Player( acquirePlayer( audioResource ), volume, startTime, stopTime );
 		if( Double.isNaN( audioResource.getDuration() ) ) {
 			player.realize();
 			audioResource.setDuration( player.getDuration() );
 		}
 		return player;
 	}
-//	public static MediaPlayerAnimation createMediaPlayerAnimation( org.alice.virtualmachine.resources.AudioResource audioResource, double fromTime, double toTime ) {
-//		return new MediaPlayerAnimation( createPlayer( audioResource, fromTime, toTime ) );
+//	public static MediaPlayerAnimation createMediaPlayerAnimation( org.alice.virtualmachine.resources.AudioResource audioResource, double startTime, double toTime ) {
+//		return new MediaPlayerAnimation( createPlayer( audioResource, startTime, toTime ) );
 //	}
 
 }

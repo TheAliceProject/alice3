@@ -37,6 +37,10 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 				edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod parameterDeclaredInJavaMethod = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaMethod)parameter;
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava methodDeclaredInJava = parameterDeclaredInJavaMethod.getMethod();
 				rv = methodDeclaredInJava.isParameterInShortestChainedMethod( parameterDeclaredInJavaMethod ) == false;
+			} else if( parameter instanceof edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor ) {
+				edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInJavaConstructor)parameter;
+				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructorDeclaredInJava = parameterDeclaredInJavaConstructor.getConstructor();
+				rv = constructorDeclaredInJava.isParameterInShortestChainedConstructor( parameterDeclaredInJavaConstructor ) == false;
 			} else {
 				rv = true;
 			}

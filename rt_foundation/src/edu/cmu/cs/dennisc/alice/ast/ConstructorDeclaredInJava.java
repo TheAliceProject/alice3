@@ -94,6 +94,12 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 
 	private ConstructorDeclaredInJava nextLongerInChain = null;
 
+	public boolean isParameterInShortestChainedConstructor( ParameterDeclaredInJavaConstructor parameterDeclaredInJavaConstructor ) {
+		int index = parameterDeclaredInJavaConstructor.getIndex();
+		ConstructorDeclaredInJava constructorDeclaredInJava = (ConstructorDeclaredInJava)getShortestInChain();
+		return index < constructorDeclaredInJava.getParameters().size();
+	}
+	
 	@Override
 	public AbstractMember getNextLongerInChain() {
 		return this.nextLongerInChain;

@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class DoubleLiteral extends AbstractValueLiteral {
-	public edu.cmu.cs.dennisc.property.DoubleProperty value = new edu.cmu.cs.dennisc.property.DoubleProperty( this, null );
+	public edu.cmu.cs.dennisc.property.DoubleProperty value = new edu.cmu.cs.dennisc.property.DoubleProperty( this, null, true );
 	public DoubleLiteral() {
 	}
 	public DoubleLiteral( Double value ) {

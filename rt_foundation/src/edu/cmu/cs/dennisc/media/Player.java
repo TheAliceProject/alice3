@@ -62,12 +62,14 @@ class StopControllerListener extends BarrierControllerListener {
  */
 public class Player {
 	private javax.media.Player player;
-	private double fromTime;
-	private double toTime;
-	public Player( javax.media.Player player, double fromTime, double toTime ) {
+	private double volume;
+	private double startTime;
+	private double stopTime;
+	public Player( javax.media.Player player, double volume, double startTime, double stopTime ) {
 		this.player = player;
-		this.fromTime = fromTime;
-		this.toTime = toTime;
+		this.volume = volume;
+		this.startTime = startTime;
+		this.stopTime = stopTime;
 	}
 	public void prefetch() {
 		if( this.player.getState() >= javax.media.Player.Prefetched ) {
@@ -93,15 +95,15 @@ public class Player {
 	}
 	public void start() {
 		this.realize();
-		if( Double.isNaN( this.fromTime ) ) {
+		if( Double.isNaN( this.startTime ) ) {
 			//pass
 		} else {
-			this.player.setMediaTime( new javax.media.Time( this.fromTime ) );
+			this.player.setMediaTime( new javax.media.Time( this.startTime ) );
 		}
-		if( Double.isNaN( this.toTime ) ) {
+		if( Double.isNaN( this.stopTime ) ) {
 			//pass
 		} else {
-			this.player.setStopTime( new javax.media.Time( this.toTime ) );
+			this.player.setStopTime( new javax.media.Time( this.stopTime ) );
 		}
 		this.player.start();
 	}

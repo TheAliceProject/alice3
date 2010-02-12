@@ -22,36 +22,67 @@
  */
 package org.alice.apis.moveandturn;
 
+import edu.cmu.cs.dennisc.alice.annotations.*;
+
 /**
  * @author Dennis Cosgrove
  */
 public class AudioSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
+	public static final Double DEFAULT_VOLUME = 1.0;
+	public static final Double DEFAULT_START_TIME = 0.0;
 	private org.alice.virtualmachine.resources.AudioResource audioResource;
-	private double fromTime;
-	private double toTime;
-	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource ) {
-		this( audioResource, null, null );
-	}
-	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, Number fromTime, Number toTime ) {
+	private Double volume;
+	private Double startTime;
+	private Double stopTime;
+	@ConstructorTemplate( visibility=Visibility.PRIME_TIME )
+	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, Number volume, Number startTime, Number stopTime ) {
 		this.audioResource = audioResource;
-		if( fromTime != null ) {
-			this.fromTime = fromTime.doubleValue();
-		} else {
-			this.fromTime = Double.NaN;
-		}
-		if( toTime != null ) {
-			this.toTime = toTime.doubleValue();
-		} else {
-			this.toTime = Double.NaN;
-		}
+		this.setVolume( volume );
+		this.setStartTime( startTime );
+		this.setStopTime( stopTime );
 	}
+	@ConstructorTemplate( visibility=Visibility.CHAINED )
+	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, Number volume, Number startTime ) {
+		this( audioResource, volume, startTime, Double.NaN );
+	}
+	@ConstructorTemplate( visibility=Visibility.CHAINED )
+	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, Number volume ) {
+		this( audioResource, volume, DEFAULT_START_TIME );
+	}
+	@ConstructorTemplate( visibility=Visibility.CHAINED )
+	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+		this( audioResource, DEFAULT_VOLUME );
+	}
+	
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public org.alice.virtualmachine.resources.AudioResource getAudioResource() {
 		return this.audioResource;
 	}
-	public Double getFromTime() {
-		return this.fromTime;
+
+	public Double getVolume() {
+		return this.volume;
 	}
-	public Double getToTime() {
-		return this.toTime;
+	private void setVolume( Number volume ) {
+		this.volume = volume.doubleValue();
+	}
+	public Double getStartTime() {
+		return this.startTime;
+	}
+	private void setStartTime( Number startTime) {
+		if( startTime != null ) {
+			this.startTime = startTime.doubleValue();
+		} else {
+			this.startTime = Double.NaN;
+		}
+	}
+	public Double getStopTime() {
+		return this.stopTime;
+	}
+	private void setStopTime( Number stopTime) {
+		if( stopTime != null ) {
+			this.stopTime = stopTime.doubleValue();
+		} else {
+			this.stopTime = Double.NaN;
+		}
 	}
 }
