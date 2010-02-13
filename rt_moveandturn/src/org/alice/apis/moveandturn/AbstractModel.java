@@ -41,5 +41,17 @@ public abstract class AbstractModel extends Transformable {
 	public edu.cmu.cs.dennisc.math.Matrix3x3 getOriginalScale() { 
 		return m_originalScale;
 	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public Double getResizeWidthAmount() { 
+		return getSGVisual().scale.getValue().right.x / getOriginalScale().right.x;
+	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public Double getResizeHeightAmount() { 
+		return getSGVisual().scale.getValue().up.y / getOriginalScale().up.y;
+	}
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	public Double getResizeDepthAmount() { 
+		return getSGVisual().scale.getValue().backward.z / getOriginalScale().backward.z;
+	}
 	
 }

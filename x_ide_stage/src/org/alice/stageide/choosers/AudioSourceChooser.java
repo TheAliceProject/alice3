@@ -36,7 +36,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty bogusProperty = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 			@Override
 			public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
-				return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.virtualmachine.Resource.class );
+				return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.virtualmachine.resources.AudioResource.class );
 			}
 		};
 		@Override
@@ -134,7 +134,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	@Override
 	public java.awt.Component[] getComponents() {
 		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getCodeFactory();
-		this.dropDown = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, factory.createExpressionPropertyPane( bogusNode.bogusProperty, null ), bogusNode.bogusProperty );
+//		this.dropDown = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, factory.createExpressionPropertyPane( bogusNode.bogusProperty, null ), bogusNode.bogusProperty );
+		this.dropDown = factory.createExpressionPropertyPane( bogusNode.bogusProperty, null );
 		return new java.awt.Component[] { 
 				this.dropDown, 
 				new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane( javax.swing.Box.createVerticalStrut( 16 ), this.volumeSlider ), 
@@ -153,26 +154,25 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public org.alice.apis.moveandturn.AudioSource getValue() {
 		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
 		org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resourceExpression.resource.getValue();
-		double duration = audioResource.getDuration();
-		if( Double.isNaN( duration ) ) {
-			//todo:
-			edu.cmu.cs.dennisc.media.MediaFactory.createPlayer( audioResource, 1.0, Double.NaN, Double.NaN );
-
-			
-			duration = audioResource.getDuration();
-		}
 		double volume = this.volumeSlider.getValue() / 100.0;
 		double start;
-		if( this.startSlider.getValue() == this.startSlider.getMinimum() ) {
-			start = 0.0;
-		} else {
-			start = getT( this.startSlider, duration );
-		}
 		double stop;
-		if( this.stopSlider.getValue() == this.stopSlider.getMaximum() ) {
+		double duration = audioResource.getDuration();
+		if( Double.isNaN( duration ) ) {
+			//todo
+			start = 0.0;
 			stop = Double.NaN;
 		} else {
-			stop = getT( this.stopSlider, duration );
+			if( this.startSlider.getValue() == this.startSlider.getMinimum() ) {
+				start = 0.0;
+			} else {
+				start = getT( this.startSlider, duration );
+			}
+			if( this.stopSlider.getValue() == this.stopSlider.getMaximum() ) {
+				stop = Double.NaN;
+			} else {
+				stop = getT( this.stopSlider, duration );
+			}
 		}
 		return new org.alice.apis.moveandturn.AudioSource( audioResource, volume, start, stop );
 	}

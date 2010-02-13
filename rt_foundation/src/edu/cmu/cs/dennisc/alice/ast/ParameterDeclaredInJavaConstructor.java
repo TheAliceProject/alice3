@@ -42,7 +42,8 @@ public class ParameterDeclaredInJavaConstructor extends ParameterDeclaredInJava 
 				}
 			}
 		} catch( Throwable t ) {
-			t.printStackTrace();
+			//t.printStackTrace();
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "getParameterNameFor: ", constructorReflectionProxy, index );
 		}
 		return rv;
 	}

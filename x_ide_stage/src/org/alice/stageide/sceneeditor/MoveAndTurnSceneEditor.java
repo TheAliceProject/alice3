@@ -45,7 +45,7 @@ class BogusModelManipulationModePane extends edu.cmu.cs.dennisc.croquet.swing.Pa
 		group.add( new javax.swing.JRadioButton( "scale" ) );
 		group.add( new javax.swing.JRadioButton( "translateY" ) );
 		this.setBorder( javax.swing.BorderFactory.createTitledBorder( "models" ) );
-		for( java.util.Enumeration< javax.swing.AbstractButton > e = group.getElements(); e.hasMoreElements(); ) {
+		for( java.util.Enumeration<javax.swing.AbstractButton> e = group.getElements(); e.hasMoreElements(); ) {
 			this.add( e.nextElement() );
 		}
 	}
@@ -57,7 +57,7 @@ class BogusCameraViewPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane 
 		group.add( new javax.swing.JRadioButton( "opening scene view", true ) );
 		group.add( new javax.swing.JRadioButton( "working view" ) );
 		this.setBorder( javax.swing.BorderFactory.createTitledBorder( "camera" ) );
-		for( java.util.Enumeration< javax.swing.AbstractButton > e = group.getElements(); e.hasMoreElements(); ) {
+		for( java.util.Enumeration<javax.swing.AbstractButton> e = group.getElements(); e.hasMoreElements(); ) {
 			this.add( e.nextElement() );
 		}
 	}
@@ -66,10 +66,10 @@ class BogusCameraViewPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane 
 class SidePane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	private boolean isExpanded = false;
 	private ManipulationHandleControlPanel handleControlPanel;
-	
+
 	public SidePane() {
 		this.handleControlPanel = new ManipulationHandleControlPanel();
-		this.add(this.handleControlPanel);
+		this.add( this.handleControlPanel );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 	public boolean isExpanded() {
@@ -79,13 +79,12 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 		this.isExpanded = isExpanded;
 		this.revalidate();
 		this.repaint();
-				//this.doLayout();
+		//this.doLayout();
 	}
-	public void setDragAdapter(AbstractDragAdapter dragAdapter)
-	{
-		this.handleControlPanel.setDragAdapter(dragAdapter);
+	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+		this.handleControlPanel.setDragAdapter( dragAdapter );
 	}
-	
+
 }
 
 /**
@@ -96,11 +95,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	//private edu.cmu.cs.dennisc.lookingglass.util.CardPane cardPane;
 	private org.alice.stageide.sceneeditor.ControlsForOverlayPane controlsForOverlayPane;
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
-	
+
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 	private SidePane sidePane;
+
 	//private edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter = new edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter();
-	
+
 	public MoveAndTurnSceneEditor() {
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.sidePane = new SidePane();
@@ -134,7 +134,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}.start();
 	}
-	
+
 	private void initializeProgramAndDragAdapter() {
 		this.program.setArgs( new String[] {} );
 		this.program.init();
@@ -149,11 +149,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 
-		
 		//note: do not add the program... it is an applet and therefore heavyweight
 		this.splitPane.setLeftComponent( this.program.getOnscreenLookingGlass().getAWTComponent() );
-		
-		
+
 		this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 		edu.cmu.cs.dennisc.animation.Animator animator = this.program.getAnimator();
 		while( animator == null ) {
@@ -170,39 +168,38 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		} );
 
 		this.sidePane.setDragAdapter( this.globalDragAdapter );
-		
+
 		//this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
-		
-		
-//		this.program.setArgs( new String[] {} );
-//		this.program.init();
-//		this.program.start();
-//		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
-//		while( true ) {
-//			onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
-//			if( onscreenLookingGlass != null ) {
-//				break;
-//			} else {
-//				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
-//			}
-//		}
-//		this.cardPane = new edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass );
-//		this.splitPane.setLeftComponent( this.cardPane );
-//
-//		this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
-//		edu.cmu.cs.dennisc.animation.Animator animator = this.program.getAnimator();
-//		while( animator == null ) {
-//			edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
-//			animator = this.program.getAnimator();
-//		}
-//		this.globalDragAdapter.setAnimator( animator );
-//		this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
-//			public void selecting( org.alice.interact.event.SelectionEvent e ) {
-//			}
-//			public void selected( org.alice.interact.event.SelectionEvent e ) {
-//				MoveAndTurnSceneEditor.this.handleSelection( e );
-//			}
-//		} );
+
+		//		this.program.setArgs( new String[] {} );
+		//		this.program.init();
+		//		this.program.start();
+		//		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass;
+		//		while( true ) {
+		//			onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
+		//			if( onscreenLookingGlass != null ) {
+		//				break;
+		//			} else {
+		//				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+		//			}
+		//		}
+		//		this.cardPane = new edu.cmu.cs.dennisc.lookingglass.util.CardPane( onscreenLookingGlass );
+		//		this.splitPane.setLeftComponent( this.cardPane );
+		//
+		//		this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
+		//		edu.cmu.cs.dennisc.animation.Animator animator = this.program.getAnimator();
+		//		while( animator == null ) {
+		//			edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+		//			animator = this.program.getAnimator();
+		//		}
+		//		this.globalDragAdapter.setAnimator( animator );
+		//		this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
+		//			public void selecting( org.alice.interact.event.SelectionEvent e ) {
+		//			}
+		//			public void selected( org.alice.interact.event.SelectionEvent e ) {
+		//				MoveAndTurnSceneEditor.this.handleSelection( e );
+		//			}
+		//		} );
 	}
 	@Override
 	public void handleExpandContractChange( boolean isExpanded ) {
@@ -260,15 +257,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 
 	protected void updateSceneBasedOnScope() {
-//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
+		//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getIDE().getTypeInScope();
 		if( type != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
 			if( sceneField != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
 				boolean isSceneScope = type.isAssignableFrom( sceneType ) || this.sidePane.isExpanded();
-				
-				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneType.getDeclaredFields();
+
+				java.util.ArrayList<? extends edu.cmu.cs.dennisc.alice.ast.AbstractField> fields = sceneType.getDeclaredFields();
 
 				try {
 					edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera = this.getProgram().getOnscreenLookingGlass().getCameraAt( 0 );
@@ -309,7 +306,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = MoveAndTurnSceneEditor.this.program.getOnscreenLookingGlass();
-				if( onscreenLookingGlass != null ) { 
+				if( onscreenLookingGlass != null ) {
 					onscreenLookingGlass.repaint();
 				}
 			}
@@ -353,7 +350,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	private static boolean isGround( org.alice.apis.moveandturn.AbstractModel model ) {
 		Class[] clses = { Ground.class, GrassyGround.class, DirtGround.class, MoonSurface.class, SandyGround.class, SeaSurface.class, SnowyGround.class };
-		for( Class< ? extends org.alice.apis.moveandturn.PolygonalModel > cls : clses ) {
+		for( Class<? extends org.alice.apis.moveandturn.PolygonalModel> cls : clses ) {
 			if( cls.isAssignableFrom( model.getClass() ) ) {
 				return true;
 			}
@@ -376,7 +373,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 					sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 					edu.cmu.cs.dennisc.math.AxisAlignedBox box = model.getAxisAlignedMinimumBoundingBox();
 					edu.cmu.cs.dennisc.math.Matrix3x3 scale = model.getOriginalScale();
-					if( scale != null && scale.isNaN()==false && scale.isIdentity()==false ) {
+					if( scale != null && scale.isNaN() == false && scale.isIdentity() == false ) {
 						edu.cmu.cs.dennisc.math.Matrix3x3 scaleInv = new edu.cmu.cs.dennisc.math.Matrix3x3( scale );
 						scaleInv.invert();
 						box.scale( scaleInv );
@@ -434,27 +431,27 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = null;
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice>() {
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> e ) {
 		}
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> e ) {
 		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> e ) {
 		}
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice> e ) {
 		}
-		public void removing( RemoveListPropertyEvent< FieldDeclaredInAlice > e ) {
+		public void removing( RemoveListPropertyEvent<FieldDeclaredInAlice> e ) {
 			MoveAndTurnSceneEditor.this.handleRemoved( e );
 		}
-		public void removed( RemoveListPropertyEvent< FieldDeclaredInAlice > e ) {
+		public void removed( RemoveListPropertyEvent<FieldDeclaredInAlice> e ) {
 		}
-		public void set( SetListPropertyEvent< FieldDeclaredInAlice > e ) {
+		public void set( SetListPropertyEvent<FieldDeclaredInAlice> e ) {
 		}
-		public void setting( SetListPropertyEvent< FieldDeclaredInAlice > e ) {
+		public void setting( SetListPropertyEvent<FieldDeclaredInAlice> e ) {
 		};
 	};
 
-	private void handleRemoved( RemoveListPropertyEvent< FieldDeclaredInAlice > e ) {
+	private void handleRemoved( RemoveListPropertyEvent<FieldDeclaredInAlice> e ) {
 		for( FieldDeclaredInAlice fieldDeclaredInAlice : e.getElements() ) {
 			org.alice.apis.moveandturn.Transformable transformable = this.getInstanceInJavaForField( fieldDeclaredInAlice, org.alice.apis.moveandturn.Transformable.class );
 			if( transformable != null ) {
@@ -553,7 +550,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Color color ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression rv = null;
-		Class< ? > cls = org.alice.apis.moveandturn.Color.class;
+		Class<?> cls = org.alice.apis.moveandturn.Color.class;
 		for( java.lang.reflect.Field fld : edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( cls, cls ) ) {
 			if( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( fld, null ).equals( color ) ) {
 				edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression = new edu.cmu.cs.dennisc.alice.ast.TypeExpression( cls );
@@ -572,34 +569,34 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createPositionExpression( edu.cmu.cs.dennisc.math.Point3 translation ) {
-		Class< ? > cls = org.alice.apis.moveandturn.Position.class;
+		Class<?> cls = org.alice.apis.moveandturn.Position.class;
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, Number.class, Number.class, Number.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( translation.x ), createExpression( translation.y ), createExpression( translation.z ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createQuaternionExpression( edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 orientation ) {
 		edu.cmu.cs.dennisc.math.UnitQuaternion q = new edu.cmu.cs.dennisc.math.UnitQuaternion( orientation );
-		Class< ? > cls = org.alice.apis.moveandturn.Quaternion.class;
-		java.lang.reflect.Constructor< ? > cnstrctr = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class, Number.class, Number.class );
+		Class<?> cls = org.alice.apis.moveandturn.Quaternion.class;
+		java.lang.reflect.Constructor<?> cnstrctr = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( cls, Number.class, Number.class, Number.class, Number.class );
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cnstrctr );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( q.x ), createExpression( q.y ), createExpression( q.z ), createExpression( q.w ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.PointOfView pointOfView ) {
-		Class< ? > cls = org.alice.apis.moveandturn.PointOfView.class;
+		Class<?> cls = org.alice.apis.moveandturn.PointOfView.class;
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.alice.apis.moveandturn.Orientation.class, org.alice.apis.moveandturn.Position.class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createQuaternionExpression( pointOfView.getInternal().orientation ), createPositionExpression( pointOfView.getInternal().translation ) );
 	}
 	private static edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Font font ) {
-		Class< ? > cls = org.alice.apis.moveandturn.Font.class;
+		Class<?> cls = org.alice.apis.moveandturn.Font.class;
 		edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, org.alice.apis.moveandturn.font.Attribute[].class );
 		return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, createExpression( font.getFamily() ), createExpression( font.getWeight() ), createExpression( font.getPosture() ) );
 	}
 
-	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? > parameterCls, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression,
+	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class<?> declarationCls, String methodName, Class<?> parameterCls, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression,
 			edu.cmu.cs.dennisc.alice.ast.Expression argumentExpression ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterCls );
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpression );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class< ? > declarationCls, String methodName, Class< ? >[] parameterClses, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression,
+	private static edu.cmu.cs.dennisc.alice.ast.ExpressionStatement createStatement( Class<?> declarationCls, String methodName, Class<?>[] parameterClses, edu.cmu.cs.dennisc.alice.ast.Expression instanceExpression,
 			edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = org.alice.ide.ast.NodeUtilities.lookupMethod( declarationCls, methodName, parameterClses );
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
@@ -614,58 +611,64 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)element;
 				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "setLocalPointOfView", org.alice.apis.moveandturn.PointOfView.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ),
 						MoveAndTurnSceneEditor.createExpression( transformable.getLocalPointOfView() ) ) );
-				if( instance instanceof org.alice.apis.moveandturn.Model ) {
-					org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)transformable;
-
-					double widthFactor = model.getResizeWidthAmount();
+				if( instance instanceof org.alice.apis.moveandturn.AbstractModel ) {
+					org.alice.apis.moveandturn.AbstractModel abstractModel = (org.alice.apis.moveandturn.AbstractModel)transformable;
+					
+					double widthFactor = abstractModel.getResizeWidthAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( widthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeWidth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeWidth", new Class<?>[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
 								.createInstanceExpression( isThis, field ), createExpression( widthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
-					double heightFactor = model.getResizeHeightAmount();
+					double heightFactor = abstractModel.getResizeHeightAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( heightFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeHeight", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeHeight", new Class<?>[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
 								.createInstanceExpression( isThis, field ), createExpression( heightFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
-					double depthFactor = model.getResizeDepthAmount();
+					double depthFactor = abstractModel.getResizeDepthAmount();
 					if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( depthFactor, 1 ) ) {
 						//pass
 					} else {
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeDepth", new Class< ? >[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
+						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Transformable.class, "resizeDepth", new Class<?>[] { Number.class, Number.class, org.alice.apis.moveandturn.ResizePolicy.class }, MoveAndTurnSceneEditor
 								.createInstanceExpression( isThis, field ), createExpression( depthFactor ), createExpression( 0.0 ), createExpression( org.alice.apis.moveandturn.ResizePolicy.PRESERVE_NOTHING ) ) );
 					}
-					if( model instanceof org.alice.apis.moveandturn.Text ) {
-						org.alice.apis.moveandturn.Text text = (org.alice.apis.moveandturn.Text)model;
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setValue", String.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text
-								.getValue() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setFont", org.alice.apis.moveandturn.Font.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
-								.createExpression( text.getFont() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setLetterHeight", Number.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text
-								.getLetterHeight() ) ) );
-					} else if( model instanceof org.alice.apis.stage.Person ) {
-						org.alice.apis.stage.Person person = (org.alice.apis.stage.Person)model;
-						if( person instanceof org.alice.apis.stage.MaleAdult || person instanceof org.alice.apis.stage.FemaleAdult ) {
-							//pass
-						} else {
-							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setGender", org.alice.apis.stage.Gender.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
-									.createExpression( (Enum)person.getGender() ) ) );
-						}
-						
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setHair", org.alice.apis.stage.Hair.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
-								.createExpression( (Enum)person.getHair() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setEyeColor", org.alice.apis.stage.EyeColor.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
-								.createExpression( (Enum)person.getEyeColor() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setSkinTone", org.alice.apis.stage.SkinTone.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
-								.createExpression( (Enum)person.getSkinTone() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setOutfit", org.alice.apis.stage.Outfit.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
-								.createExpression( (Enum)person.getOutfit() ) ) );
-						bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setFitnessLevel", Number.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
-								.createExpression( person.getFitnessLevel() ) ) );
+					if( instance instanceof org.alice.apis.moveandturn.Model ) {
+						org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)transformable;
 
+						if( model instanceof org.alice.apis.moveandturn.Text ) {
+							org.alice.apis.moveandturn.Text text = (org.alice.apis.moveandturn.Text)model;
+							bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setValue", String.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( text
+									.getValue() ) ) );
+							bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setFont", org.alice.apis.moveandturn.Font.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+									.createExpression( text.getFont() ) ) );
+							bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Text.class, "setLetterHeight", Number.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+									.createExpression( text.getLetterHeight() ) ) );
+						} else if( model instanceof org.alice.apis.stage.Person ) {
+							org.alice.apis.stage.Person person = (org.alice.apis.stage.Person)model;
+							if( person instanceof org.alice.apis.stage.MaleAdult || person instanceof org.alice.apis.stage.FemaleAdult ) {
+								//pass
+							} else {
+								bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setGender", org.alice.apis.stage.Gender.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+										.createExpression( (Enum)person.getGender() ) ) );
+							}
+
+							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setHair", org.alice.apis.stage.Hair.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+									.createExpression( (Enum)person.getHair() ) ) );
+							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setEyeColor", org.alice.apis.stage.EyeColor.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+									.createExpression( (Enum)person.getEyeColor() ) ) );
+							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setSkinTone", org.alice.apis.stage.SkinTone.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+									.createExpression( (Enum)person.getSkinTone() ) ) );
+							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setOutfit", org.alice.apis.stage.Outfit.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor
+									.createExpression( (Enum)person.getOutfit() ) ) );
+							bodyStatementsProperty.add( createStatement( org.alice.apis.stage.Person.class, "setFitnessLevel", Number.class, MoveAndTurnSceneEditor.createInstanceExpression( isThis, field ), MoveAndTurnSceneEditor.createExpression( person
+									.getFitnessLevel() ) ) );
+
+						}
+					} else if( instance instanceof org.alice.apis.moveandturn.Billboard ) {
+						org.alice.apis.moveandturn.Billboard billboard = (org.alice.apis.moveandturn.Billboard)transformable;
 					}
 				}
 				bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.Composite.class, "addComponent", org.alice.apis.moveandturn.Transformable.class, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), MoveAndTurnSceneEditor
@@ -679,25 +682,26 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 
 	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";
+
 	@Override
 	public void generateCodeForSetUp() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
-//		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( "performSceneEditorGeneratedSetUp" );
-//		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-//			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice =  this.getIDE().getPerformEditorGeneratedSetUpMethod();
-			edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
-			bodyStatementsProperty.clear();
-			bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
-			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-				this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
-			}
-			//bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
-//		} else {
-//			throw new RuntimeException();
-//		}
+		//		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = sceneField.getValueType();
+		//		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( "performSceneEditorGeneratedSetUp" );
+		//		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+		//			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getIDE().getPerformEditorGeneratedSetUpMethod();
+		edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
+		bodyStatementsProperty.clear();
+		bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
+		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
+		}
+		//bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
+		//		} else {
+		//			throw new RuntimeException();
+		//		}
 	}
 	@Override
 	public void preserveProjectProperties() {
@@ -718,7 +722,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//this.cameraNavigationDragAdapter.setEnabled( this.isCameraNavigationDragAdapterEnabledStack.pop() );
 	}
 
-	
 	@Override
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 		this.controlsForOverlayPane.updateFieldLabels();
@@ -729,15 +732,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignoring: setRenderingEnabled", isRenderingEnabled );
 	}
 
-//	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-//		org.alice.apis.stage.Person person = this.getInstanceInJavaForField( field, org.alice.apis.stage.Person.class );
-//		if( person != null ) {
-//			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
-//			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE() );
-//			edu.cmu.cs.dennisc.print.PrintUtilities.println( result );
-//		}
-//	}
-	
+	//	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	//		org.alice.apis.stage.Person person = this.getInstanceInJavaForField( field, org.alice.apis.stage.Person.class );
+	//		if( person != null ) {
+	//			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
+	//			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE() );
+	//			edu.cmu.cs.dennisc.print.PrintUtilities.println( result );
+	//		}
+	//	}
+
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCameraForCreatingThumbnails() {
 		return this.program.getSGCameraForCreatingThumbnails();
 	}

@@ -102,19 +102,6 @@ public abstract class Model extends AbstractModel {
 	}
 	
 	
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
-	public Double getResizeWidthAmount() { 
-		return m_sgVisual.scale.getValue().right.x / getOriginalScale().right.x;
-	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
-	public Double getResizeHeightAmount() { 
-		return m_sgVisual.scale.getValue().up.y / getOriginalScale().up.y;
-	}
-	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
-	public Double getResizeDepthAmount() { 
-		return m_sgVisual.scale.getValue().backward.z / getOriginalScale().backward.z;
-	}
-
 	private Model getPartNamed( String name ) {
 		assert name != null;
 		for( Transformable component : getComponentIterable() ) {

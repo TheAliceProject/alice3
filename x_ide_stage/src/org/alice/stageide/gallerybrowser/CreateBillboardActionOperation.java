@@ -42,6 +42,7 @@ class CreateBillboardActionOperation extends AbstractDeclareFieldOperation {
 				org.alice.apis.moveandturn.ImageSource frontImageSource = new org.alice.apis.moveandturn.ImageSource( frontImageResource );
 				org.alice.apis.moveandturn.Billboard billboard = new org.alice.apis.moveandturn.Billboard();
 				billboard.setFrontImageSource( frontImageSource );
+				
 				String name = "billboard";
 				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor(org.alice.apis.moveandturn.Billboard.class);
 				edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(type);

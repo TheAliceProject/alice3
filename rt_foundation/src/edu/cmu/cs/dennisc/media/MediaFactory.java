@@ -66,7 +66,21 @@ public class MediaFactory {
 	public static org.alice.virtualmachine.resources.AudioResource createAudioResource( java.io.File file ) throws java.io.IOException {
 		String contentType = getContentType( file );
 		if( contentType != null ) {
-			return new org.alice.virtualmachine.resources.AudioResource( file, contentType );
+			final org.alice.virtualmachine.resources.AudioResource rv = new org.alice.virtualmachine.resources.AudioResource( file, contentType );
+			Runnable runnable = new Runnable() {
+				public void run() {
+					Player player = new Player( acquirePlayer( rv ), 1.0, 0.0, Double.NaN );
+					player.realize();
+					rv.setDuration( player.getDuration() );
+				}
+			};
+			final boolean USE_THREAD_JUST_TO_BE_SORT_OF_SAFE = true;
+			if( USE_THREAD_JUST_TO_BE_SORT_OF_SAFE ) {
+				new Thread( runnable ).start();
+			} else {
+				runnable.run();
+			}
+			return rv;			
 		} else {
 			return null;
 		}
