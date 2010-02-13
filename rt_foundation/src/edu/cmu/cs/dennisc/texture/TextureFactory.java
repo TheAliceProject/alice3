@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.texture;
  * @author Dennis Cosgrove
  */
 public class TextureFactory {
-	private static java.util.Map< org.alice.virtualmachine.Resource, Texture > resourceToTextureMap = new java.util.HashMap< org.alice.virtualmachine.Resource, Texture >();
+	private static java.util.Map< org.alice.virtualmachine.resources.ImageResource, Texture > resourceToTextureMap = new java.util.HashMap< org.alice.virtualmachine.resources.ImageResource, Texture >();
 	private static java.util.Map< String, String > extensionToContentTypeMap;
 	
 	private static final String PNG_MIME_TYPE = "image/png";
@@ -68,14 +68,18 @@ public class TextureFactory {
 		};
 	}
 	
-	public static Texture getTexture( org.alice.virtualmachine.Resource resource, boolean isMipMappingDesired ) {
-		assert resource != null;
-		Texture texture = TextureFactory.resourceToTextureMap.get( resource );
+	public static Texture getTexture( org.alice.virtualmachine.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
+		assert imageResource != null;
+		Texture texture = TextureFactory.resourceToTextureMap.get( imageResource );
 		if( texture != null ) {
 			//pass
 		} else {
 			try {
-				java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read( new java.io.ByteArrayInputStream( resource.getData() ) );
+				java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read( new java.io.ByteArrayInputStream( imageResource.getData() ) );
+//				if( imageResource.getWidth() < 0 || imageResource.getHeight() < 0 ) {
+					imageResource.setWidth( bufferedImage.getWidth() );
+					imageResource.setHeight( bufferedImage.getHeight() );
+//				}
 				BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
 				bufferedImageTexture.setBufferedImage( bufferedImage );
 				bufferedImageTexture.setMipMappingDesired( isMipMappingDesired );
@@ -86,7 +90,7 @@ public class TextureFactory {
 
 			
 				texture = bufferedImageTexture;
-				TextureFactory.resourceToTextureMap.put( resource, texture );
+				TextureFactory.resourceToTextureMap.put( imageResource, texture );
 			} catch( java.io.IOException ioe ) {
 				//todo: return warning texture
 			}

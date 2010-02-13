@@ -25,10 +25,11 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class ResourcePropertyPane extends AbstractPropertyPane< edu.cmu.cs.dennisc.alice.ast.ResourceProperty > {
+public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennisc.alice.ast.ResourceProperty> {
 	private static java.text.NumberFormat durationFormat = new java.text.DecimalFormat( "0.00" );
-	
+
 	private edu.cmu.cs.dennisc.zoot.ZLabel label;
+
 	public ResourcePropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ResourceProperty property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
@@ -55,7 +56,18 @@ public class ResourcePropertyPane extends AbstractPropertyPane< edu.cmu.cs.denni
 				} else {
 					sb.append( "<font color=\"gray\">" );
 					sb.append( "<i>" );
-					sb.append( " (" + durationFormat.format( duration ) + "s) " ) ;
+					sb.append( " (" + durationFormat.format( duration ) + "s) " );
+					sb.append( "</i>" );
+					sb.append( "</font>" );
+				}
+			} else if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+				org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
+				int width = imageResource.getWidth();
+				int height = imageResource.getHeight();
+				if( width >= 0 && height >= 0 ) {
+					sb.append( "<font color=\"gray\">" );
+					sb.append( "<i>" );
+					sb.append( " (" + width + "x" + height + ") " );
 					sb.append( "</i>" );
 					sb.append( "</font>" );
 				}

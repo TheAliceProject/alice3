@@ -22,6 +22,7 @@
  */
 package org.alice.apis.moveandturn;
 
+//definitely feels like some double negatives going on here
 /**
  * @author Dennis Cosgrove
  */
@@ -46,14 +47,14 @@ public class Billboard extends AbstractModel {
 			for( edu.cmu.cs.dennisc.scenegraph.Vertex vertex : sgVertices ) {
 				vertex.normal.set( 0, 0, k );
 			}
-			this.update( 1.0 );
+			this.updateAspectRatio( 1.0 );
 			this.sgAppearance.setDiffuseColorTextureClamped( true );
 			this.sgGeometry.vertices.setValue( this.sgVertices );
 			this.frontFacingAppearance.setValue( this.sgAppearance );
 			this.geometries.setValue( new edu.cmu.cs.dennisc.scenegraph.Geometry[] { this.sgGeometry } );
 		}
 		
-		private void update( double widthToHeightAspectRatio ) { 
+		public void updateAspectRatio( double widthToHeightAspectRatio ) { 
 			double x = widthToHeightAspectRatio * 0.5;
 			
 			final float MIN_U = 0.0f;
@@ -65,46 +66,49 @@ public class Billboard extends AbstractModel {
 			v0.position.x = -x;
 			v0.position.y = 1;
 			v0.position.z = 0;
-			v0.textureCoordinate0.u = MIN_U;
+			v0.textureCoordinate0.u = MAX_U;
 			v0.textureCoordinate0.v = MAX_V;
 			
 			edu.cmu.cs.dennisc.scenegraph.Vertex v1 = sgVertices[ this.getIndex( 1 ) ];
 			v1.position.x = -x;
 			v1.position.y = 0;
 			v1.position.z = 0;
-			v1.textureCoordinate0.u = MIN_U;
+			v1.textureCoordinate0.u = MAX_U;
 			v1.textureCoordinate0.v = MIN_V;
 
 			edu.cmu.cs.dennisc.scenegraph.Vertex v2 = sgVertices[ this.getIndex( 2 ) ];
 			v2.position.x = +x;
 			v2.position.y = 0;
 			v2.position.z = 0;
-			v2.textureCoordinate0.u = MAX_U;
+			v2.textureCoordinate0.u = MIN_U;
 			v2.textureCoordinate0.v = MIN_V;
 
 			edu.cmu.cs.dennisc.scenegraph.Vertex v3 = sgVertices[ this.getIndex( 3 ) ];
 			v3.position.x = +x;
 			v3.position.y = 1;
 			v3.position.z = 0;
-			v3.textureCoordinate0.u = MAX_U;
+			v3.textureCoordinate0.u = MIN_U;
 			v3.textureCoordinate0.v = MAX_V;
 		}
 		private int getIndex( int i ) {
 			if( this.isFront ) {
-				return i;
-			} else {
 				return sgVertices.length - 1 - i;
+			} else {
+				return i;
 			}
 		}
 		private float getK() {
 			if( this.isFront ) {
-				return +1.0f;
-			} else {
 				return -1.0f;
+			} else {
+				return +1.0f;
 			}
 		}
+		public edu.cmu.cs.dennisc.texture.Texture getTexture() {
+			return this.sgAppearance.diffuseColorTexture.getValue();
+		}
 		public void setTexture( edu.cmu.cs.dennisc.texture.Texture texture ) {
-			this.frontFacingAppearance.getValue().setDiffuseColorTexture( texture );
+			this.sgAppearance.diffuseColorTexture.setValue( texture );
 			boolean isDiffuseColorTextureAlphaBlended;
 			if( texture != null ) {
 				isDiffuseColorTextureAlphaBlended = texture.isPotentiallyAlphaBlended();
@@ -129,7 +133,38 @@ public class Billboard extends AbstractModel {
 	protected edu.cmu.cs.dennisc.scenegraph.Visual getSGVisual() {
 		return this.sgFrontFace;
 	}
-	
+
+	private void updateAspectRatio() {
+		edu.cmu.cs.dennisc.texture.Texture frontTexture = this.sgFrontFace.getTexture();
+		edu.cmu.cs.dennisc.texture.Texture backTexture = this.sgBackFace.getTexture();
+
+		int width;
+		int height;
+		if( frontTexture != null ) {
+			width = frontTexture.getWidth();
+			height = frontTexture.getHeight();
+		} else {
+			width = -1;
+			height = -1;
+		}
+		if( width > 0 && height > 0 ) {
+			//pass
+		} else {
+			if( backTexture != null ) {
+				width = backTexture.getWidth();
+				height = backTexture.getHeight();
+			}
+		}
+		
+		double widthToHeightAspectRatio;
+		if( width > 0 && height > 0 ) {
+			widthToHeightAspectRatio = width / (double)height;
+		} else {
+			widthToHeightAspectRatio = 1.0;
+		}
+		this.sgFrontFace.updateAspectRatio( widthToHeightAspectRatio );
+		this.sgBackFace.updateAspectRatio( widthToHeightAspectRatio );
+	}
 	public ImageSource getFrontImageSource() {
 		return this.frontImageSource;
 	}
@@ -141,6 +176,7 @@ public class Billboard extends AbstractModel {
 		} else {
 			texture = null;
 		}
+		this.updateAspectRatio();
 		this.sgFrontFace.setTexture( texture );
 	}
 	public ImageSource getBackImageSource() {
@@ -154,13 +190,15 @@ public class Billboard extends AbstractModel {
 		} else {
 			texture = null;
 		}
+		this.updateAspectRatio();
 		this.sgBackFace.setTexture( texture );
 	}
 	
 	@Override
 	protected edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound updateCumulativeBound( edu.cmu.cs.dennisc.scenegraph.bound.CumulativeBound rv, edu.cmu.cs.dennisc.math.AffineMatrix4x4 trans, boolean isOriginIncluded ) {
 		super.updateCumulativeBound( rv, trans, isOriginIncluded );
-		//todo
+		rv.add( this.sgFrontFace, trans );
+		rv.add( this.sgBackFace, trans );
 		return rv;
 	}
 }
