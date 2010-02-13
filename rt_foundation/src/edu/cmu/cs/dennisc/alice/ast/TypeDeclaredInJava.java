@@ -52,23 +52,25 @@ public class TypeDeclaredInJava extends AbstractType {
 				s_map.put( classReflectionProxy, rv );
 				Class< ? > cls = classReflectionProxy.getReification();
 				if( cls != null ) {
+					//todo: handle constructors as methods are (set up chains...)
 					for( java.lang.reflect.Constructor< ? > cnstrctr : cls.getDeclaredConstructors() ) {
 						rv.constructors.add( ConstructorDeclaredInJava.get( cnstrctr ) );
 					}
+					
 					for( java.lang.reflect.Field fld : cls.getDeclaredFields() ) {
 						rv.fields.add( FieldDeclaredInJavaWithField.get( fld ) );
 					}
 
-					java.util.Set< java.lang.reflect.Method > set = null;
+					java.util.Set< java.lang.reflect.Method > methodSet = null;
 					Iterable< edu.cmu.cs.dennisc.alice.reflect.MethodInfo > methodInfos = edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.getMethodInfos( cls );
 					if( methodInfos != null ) {
-						set = new java.util.HashSet< java.lang.reflect.Method >();
+						methodSet = new java.util.HashSet< java.lang.reflect.Method >();
 						for( edu.cmu.cs.dennisc.alice.reflect.MethodInfo methodInfo : methodInfos ) {
 							try {
 								java.lang.reflect.Method mthd = methodInfo.getMthd();
 								if( mthd != null ) {
 									rv.handleMthd( mthd );
-									set.add( mthd );
+									methodSet.add( mthd );
 								}
 							} catch( RuntimeException re ) {
 								//edu.cmu.cs.dennisc.print.PrintUtilities.println( "no such method", methodInfo, "on ", cls );
@@ -77,7 +79,7 @@ public class TypeDeclaredInJava extends AbstractType {
 						}
 					}
 					for( java.lang.reflect.Method mthd : cls.getDeclaredMethods() ) {
-						if( set != null && set.contains( mthd ) ) {
+						if( methodSet != null && methodSet.contains( mthd ) ) {
 							//pass
 						} else {
 							rv.handleMthd( mthd );

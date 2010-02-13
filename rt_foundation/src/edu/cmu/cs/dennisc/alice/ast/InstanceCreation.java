@@ -49,4 +49,9 @@ public class InstanceCreation extends Expression {
 	public AbstractType getType() {
 		return constructor.getValue().getDeclaringType();
 	}
+
+	public boolean isValid() {
+		//todo
+		return true;
+	}
 }

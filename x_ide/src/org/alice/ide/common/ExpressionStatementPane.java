@@ -74,7 +74,6 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			this.add( this.getFactory().createComponent( expressionStatement.expression.getValue() ) );
 			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) { 
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
-				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
 				
 				if( methodInvocation.isValid() ) {
 					//pass
@@ -82,6 +81,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					this.setBackground( java.awt.Color.RED );
 				}
 				
+				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
 				//todo:
 				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
@@ -91,6 +91,28 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 						this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
 					}
 				}
+
+
+//			not worth while since instance creations are not normally (ever) the expression of an expression statements 				
+//			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) { 
+//				final edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
+//				
+//				if( instanceCreation.isValid() ) {
+//					//pass
+//				} else {
+//					this.setBackground( java.awt.Color.RED );
+//				}
+//				
+//				edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+//				//todo:
+//				if( this.getFactory() instanceof org.alice.ide.codeeditor.Factory ) {
+//					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = constructor.getNextLongerInChain();
+//					if( nextLonger != null ) {
+//						final edu.cmu.cs.dennisc.alice.ast.AbstractConstructor nextLongerAbstractConstructor = (edu.cmu.cs.dennisc.alice.ast.AbstractConstructor)nextLonger;
+//						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+//						this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
+//					}
+//				}
 			}
 		}
 		if( getIDE().isJava() ) {

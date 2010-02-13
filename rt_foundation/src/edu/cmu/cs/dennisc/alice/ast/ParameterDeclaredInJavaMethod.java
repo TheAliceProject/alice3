@@ -23,8 +23,6 @@
 
 package edu.cmu.cs.dennisc.alice.ast;
 
-import edu.cmu.cs.dennisc.alice.reflect.MethodInfo;
-
 //todo: name
 /**
  * @author Dennis Cosgrove
@@ -34,7 +32,7 @@ public class ParameterDeclaredInJavaMethod extends ParameterDeclaredInJava {
 		String rv = null;
 		edu.cmu.cs.dennisc.alice.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.get( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
 		if( classInfo != null ) {
-			MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
+			edu.cmu.cs.dennisc.alice.reflect.MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
 			if( methodInfo != null ) {
 				String[] parameterNames = methodInfo.getParameterNames();
 				if( parameterNames != null ) {

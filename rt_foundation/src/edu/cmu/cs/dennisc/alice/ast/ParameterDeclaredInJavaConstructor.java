@@ -29,14 +29,18 @@ package edu.cmu.cs.dennisc.alice.ast;
  */
 public class ParameterDeclaredInJavaConstructor extends ParameterDeclaredInJava {
 	private static String getParameterNameFor( ConstructorReflectionProxy constructorReflectionProxy, int index ) {
-		//todo
-//		edu.cmu.cs.dennisc.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.reflect.ClassInfoManager.get( cnstrctr.getDeclaringClass() );
-//		if( classInfo != null ) {
-//			return classInfo.getParameterNamesFor( cnstrctr )[ index ];
-//		} else {
-//			return "p" + index;
-//		}
-		return null;
+		String rv = null;
+		edu.cmu.cs.dennisc.alice.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.get( constructorReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
+		if( classInfo != null ) {
+			edu.cmu.cs.dennisc.alice.reflect.ConstructorInfo constructorInfo = classInfo.lookupInfo( constructorReflectionProxy.getReification() );
+			if( constructorInfo != null ) {
+				String[] parameterNames = constructorInfo.getParameterNames();
+				if( parameterNames != null ) {
+					rv = parameterNames[ index ];
+				}
+			}
+		}
+		return rv;
 	}
 	private ConstructorDeclaredInJava m_constructor;
 	private int m_index;

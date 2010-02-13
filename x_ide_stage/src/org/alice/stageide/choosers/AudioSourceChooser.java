@@ -115,7 +115,9 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	}
 	@Override
 	public java.awt.Component[] getComponents() {
-		this.dropDown = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, new org.alice.ide.common.ExpressionPropertyPane( org.alice.ide.IDE.getSingleton().getCodeFactory(), bogusNode.bogusProperty ), bogusNode.bogusProperty );
+		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getCodeFactory();
+		this.dropDown = factory.createExpressionPropertyPane( bogusNode.bogusProperty, null );
+		//this.dropDown = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, new org.alice.ide.common.ExpressionPropertyPane( factory, bogusNode.bogusProperty ), bogusNode.bogusProperty );
 		return new java.awt.Component[] { this.dropDown, this.volumeSlider, this.startSlider, this.stopSlider };
 	}
 	@Override
