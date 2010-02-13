@@ -81,7 +81,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 
 	
 	@Override
-	protected javax.swing.JComponent createComponent( Object instance ) {
+	protected java.awt.Component createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)instance;
 		return this.getFactory().createStatementPane( statement, getProperty() );
 	}

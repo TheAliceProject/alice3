@@ -20,19 +20,25 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
-
+package org.alice.ide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
-	public DefaultNodeListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+public class ImageResourceFillerInner extends ResourceFillerInner {
+	public ImageResourceFillerInner() {
+		super( org.alice.virtualmachine.resources.ImageResource.class );
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
-		return this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
+	protected edu.cmu.cs.dennisc.alice.ast.ResourceExpression createResourceExpressionIfAppropriate( org.alice.virtualmachine.Resource resource ) {
+		if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+			return new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.ImageResource.class, (org.alice.virtualmachine.resources.ImageResource)resource );
+		} else {
+			return null;
+		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.cascade.FillIn< ? > createImportNewResourceFillIn() {
+		return new org.alice.ide.cascade.customfillin.ImportNewImageResourceFillIn();
 	}
 }
-

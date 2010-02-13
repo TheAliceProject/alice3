@@ -26,11 +26,11 @@ package org.alice.apis.moveandturn;
  * @author Dennis Cosgrove
  */
 public class ImageSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
-	private org.alice.virtualmachine.Resource resource;
-	public ImageSource( org.alice.virtualmachine.Resource resource ) {
-		this.resource = resource;
+	private org.alice.virtualmachine.resources.ImageResource imageResource;
+	public ImageSource( org.alice.virtualmachine.resources.ImageResource imageResource ) {
+		this.imageResource = imageResource;
 	}
-	public org.alice.virtualmachine.Resource getResource() {
-		return this.resource;
+	public org.alice.virtualmachine.resources.ImageResource getImageResource() {
+		return this.imageResource;
 	}
 }

@@ -26,8 +26,8 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerinners.ExpressionFillerInner {
-	public ResourceFillerInner() {
-		super( org.alice.virtualmachine.Resource.class, edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class );
+	public ResourceFillerInner( Class< ? extends org.alice.virtualmachine.Resource> cls ) {
+		super( cls, edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.ResourceExpression createResourceExpressionIfAppropriate( org.alice.virtualmachine.Resource resource );
 	protected abstract edu.cmu.cs.dennisc.cascade.FillIn< ? > createImportNewResourceFillIn();
@@ -35,16 +35,17 @@ public abstract class ResourceFillerInner extends org.alice.ide.cascade.fillerin
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		java.util.Set< org.alice.virtualmachine.Resource > resources = ide.getResources();
-		assert resources != null;
-		synchronized( resources ) {
-			for( org.alice.virtualmachine.Resource resource : resources ) {
-				edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = this.createResourceExpressionIfAppropriate( resource );
-				if( resourceExpression != null ) {
-					blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( resourceExpression ) ); 
+		if( resources != null && resources.isEmpty() == false ) {
+			synchronized( resources ) {
+				for( org.alice.virtualmachine.Resource resource : resources ) {
+					edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = this.createResourceExpressionIfAppropriate( resource );
+					if( resourceExpression != null ) {
+						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( resourceExpression ) ); 
+					}
 				}
 			}
+			blank.addSeparator();
 		}
-		blank.addSeparator();
 		blank.addFillIn( this.createImportNewResourceFillIn() );
 	}
 }

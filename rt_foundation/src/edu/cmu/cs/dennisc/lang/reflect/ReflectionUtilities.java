@@ -146,7 +146,13 @@ public final class ReflectionUtilities {
 		try {
 			return cls.getConstructor( parameterClses );
 		} catch( NoSuchMethodException nsme ) {
-			throw new RuntimeException( cls.getName(), nsme );
+			StringBuffer sb = new StringBuffer();
+			sb.append( cls.getName() );
+			for( Class<?> parameterCls : parameterClses ) {
+				sb.append( " " );
+				sb.append( parameterCls.getName() );
+			}
+			throw new RuntimeException( sb.toString(), nsme );
 		}
 	}
 	public static <T> java.lang.reflect.Constructor< T > getDeclaredConstructor( Class< T > cls, Class<?>... parameterClses ) {

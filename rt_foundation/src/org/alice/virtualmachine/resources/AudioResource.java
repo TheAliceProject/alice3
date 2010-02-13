@@ -22,7 +22,7 @@ public class AudioResource extends org.alice.virtualmachine.Resource {
 	public AudioResource( Class<?> cls, String resourceName, String contentType ) {
 		super( cls, resourceName, contentType );
 	}
-	public AudioResource( java.io.File file, String contentType ) {
+	public AudioResource( java.io.File file, String contentType ) throws java.io.IOException {
 		super( file, contentType );
 	}
 	public double getDuration() {

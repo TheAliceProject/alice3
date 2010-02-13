@@ -20,19 +20,27 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
+package org.alice.ide.resource;
 
 
+//todo: rename
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
-	public DefaultNodeListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualmachine.resources.ImageResource> {
+	private static ImageResourcePrompter singleton = new ImageResourcePrompter();
+	public static ImageResourcePrompter getSingleton() {
+		return singleton;
+	}
+	private ImageResourcePrompter() {
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
-		return this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
+	protected String getInitialFileText() {
+		return "*.png;*.jpg;*.gif;*.bmp";
+	}
+	
+	@Override
+	protected org.alice.virtualmachine.resources.ImageResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
+		return edu.cmu.cs.dennisc.texture.TextureFactory.createImageResource( file );
 	}
 }
-

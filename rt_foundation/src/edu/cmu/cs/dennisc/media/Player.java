@@ -35,22 +35,45 @@ abstract class BarrierControllerListener implements javax.media.ControllerListen
 	}
 }
 
-class StateControllerListener extends BarrierControllerListener {
+//class StateControllerListener extends BarrierControllerListener {
+//	private int targetState;
+//	public StateControllerListener( int targetState ) {
+//		this.targetState = targetState;
+//	}
+//	public void controllerUpdate( javax.media.ControllerEvent e ) {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+//		if( e instanceof javax.media.TransitionEvent ) {
+//			javax.media.TransitionEvent transitionEvent = (javax.media.TransitionEvent)e;
+//			int currentState = transitionEvent.getCurrentState();
+//			if( currentState >= this.targetState ) {
+//				this.await();
+//			}
+//		}
+//	}
+//	@Override
+//	public void await() {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "awaiting:", this.targetState );
+//		super.await();
+//	}
+//}
+
+class PrefetchControllerListener extends BarrierControllerListener {
 	public void controllerUpdate( javax.media.ControllerEvent e ) {
-		if( e instanceof javax.media.TransitionEvent ) {
-			javax.media.TransitionEvent transitionEvent = (javax.media.TransitionEvent)e;
-			int currentState = transitionEvent.getCurrentState();
-			int targetState = transitionEvent.getTargetState();
-			if( currentState >= targetState ) {
-				this.await();
-			}
+		if( e instanceof javax.media.PrefetchCompleteEvent ) {
+			this.await();
 		}
 	}
 }
-
+class RealizeControllerListener extends BarrierControllerListener {
+	public void controllerUpdate( javax.media.ControllerEvent e ) {
+		if( e instanceof javax.media.RealizeCompleteEvent ) {
+			this.await();
+		}
+	}
+}
 class StopControllerListener extends BarrierControllerListener {
 	public void controllerUpdate( javax.media.ControllerEvent e ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+		//todo?
 		if( e instanceof javax.media.StopEvent ) {
 			this.await();
 		}
@@ -72,26 +95,18 @@ public class Player {
 		this.stopTime = stopTime;
 	}
 	public void prefetch() {
-		if( this.player.getState() >= javax.media.Player.Prefetched ) {
-			//pass
-		} else {
-			StateControllerListener controllerListener = new StateControllerListener();
-			this.player.addControllerListener( controllerListener );
-			this.player.prefetch();
-			controllerListener.await();
-			this.player.removeControllerListener( controllerListener );
-		}
+		PrefetchControllerListener controllerListener = new PrefetchControllerListener();
+		this.player.addControllerListener( controllerListener );
+		this.player.prefetch();
+		controllerListener.await();
+		this.player.removeControllerListener( controllerListener );
 	}
 	public void realize() {
-		if( this.player.getState() >= javax.media.Player.Realized ) {
-			//pass
-		} else {
-			StateControllerListener controllerListener = new StateControllerListener();
-			this.player.addControllerListener( controllerListener );
-			this.player.realize();
-			controllerListener.await();
-			this.player.removeControllerListener( controllerListener );
-		}
+		RealizeControllerListener controllerListener = new RealizeControllerListener();
+		this.player.addControllerListener( controllerListener );
+		this.player.realize();
+		controllerListener.await();
+		this.player.removeControllerListener( controllerListener );
 	}
 	public void start() {
 		this.realize();

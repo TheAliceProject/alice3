@@ -26,6 +26,9 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public class AudioResourceFillerInner extends ResourceFillerInner {
+	public AudioResourceFillerInner() {
+		super( org.alice.virtualmachine.resources.AudioResource.class );
+	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.ResourceExpression createResourceExpressionIfAppropriate( org.alice.virtualmachine.Resource resource ) {
 		if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {

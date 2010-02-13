@@ -137,7 +137,7 @@ public class Billboard extends AbstractModel {
 		this.frontImageSource = frontImageSource;
 		edu.cmu.cs.dennisc.texture.Texture texture;
 		if( this.frontImageSource != null ) {
-			texture = edu.cmu.cs.dennisc.texture.TextureFactory.getTexture( frontImageSource.getResource(), true );
+			texture = edu.cmu.cs.dennisc.texture.TextureFactory.getTexture( frontImageSource.getImageResource(), true );
 		} else {
 			texture = null;
 		}
@@ -150,7 +150,7 @@ public class Billboard extends AbstractModel {
 		this.backImageSource = backImageSource;
 		edu.cmu.cs.dennisc.texture.Texture texture;
 		if( this.backImageSource != null ) {
-			texture = edu.cmu.cs.dennisc.texture.TextureFactory.getTexture( backImageSource.getResource(), true );
+			texture = edu.cmu.cs.dennisc.texture.TextureFactory.getTexture( backImageSource.getImageResource(), true );
 		} else {
 			texture = null;
 		}

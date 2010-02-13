@@ -20,33 +20,31 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.media;
+package org.alice.ide.resource;
 
+//todo: rename
 /**
  * @author Dennis Cosgrove
  */
-public class MediaPlayerAnimation implements edu.cmu.cs.dennisc.animation.Animation {
-	private Player player;
-	private boolean isStarted = false;
-
-	public MediaPlayerAnimation( Player player ) {
-		this.player = player;
-		this.isStarted = false;
-	}
-	public void reset() {
-		this.isStarted = false;
-	}
-	public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		if( this.isStarted ) {
-			//pass
-		} else {
-			//this.player.prefetch();
-			this.player.start();
-			this.isStarted = true;
+public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resource> {
+	protected abstract String getInitialFileText();
+	protected abstract E createResourceFromFile( java.io.File file ) throws java.io.IOException;
+	public E promptUserForResource( java.awt.Component owner ) throws java.io.IOException {
+		java.awt.FileDialog fileDialog = new java.awt.FileDialog( org.alice.ide.IDE.getSingleton() );
+		fileDialog.setFilenameFilter( edu.cmu.cs.dennisc.media.MediaFactory.createFilenameFilter( true ) );
+		//todo?
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+			fileDialog.setFile( this.getInitialFileText() );
 		}
-		return this.player.getTimeRemaining();
-	}
-	public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-		this.player.stop();
+		fileDialog.setMode( java.awt.FileDialog.LOAD );
+		fileDialog.setVisible( true );
+		String filename = fileDialog.getFile();
+		if( filename != null ) {
+			java.io.File directory = new java.io.File( fileDialog.getDirectory() );
+			java.io.File file = new java.io.File( directory, filename );
+			return this.createResourceFromFile( file );
+		} else {
+			return null;			
+		}
 	}
 }

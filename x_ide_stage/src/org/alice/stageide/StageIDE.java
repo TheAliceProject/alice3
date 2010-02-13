@@ -2,6 +2,7 @@ package org.alice.stageide;
 
 public class StageIDE extends org.alice.ide.IDE {
 	public StageIDE() {
+		//a very short window...
 		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resize", org.alice.apis.moveandturn.Transformable.class );
 		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resizeWidth", org.alice.apis.moveandturn.Transformable.class );
 		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "resizeHeight", org.alice.apis.moveandturn.Transformable.class );
@@ -9,6 +10,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setWidth", org.alice.apis.moveandturn.Transformable.class );
 		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setHeight", org.alice.apis.moveandturn.Transformable.class );
 		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setDepth", org.alice.apis.moveandturn.Transformable.class );
+		//
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.alice.apis.moveandturn.Transformable.class );
 		this.addWindowStateListener( new java.awt.event.WindowStateListener() {
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
@@ -418,6 +420,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.AudioSourceFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.ImageSourceFillerInner() );
 		return rv;
 	}
 	

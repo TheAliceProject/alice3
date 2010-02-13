@@ -30,7 +30,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		super( factory, property );
 	}
 	@Override
-	protected javax.swing.JComponent createComponent( Object instance ) {
+	protected java.awt.Component createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
 		rv.setOpaque( true );
 		rv.setBackground( new java.awt.Color( 255, 255, 255, 127 ) );

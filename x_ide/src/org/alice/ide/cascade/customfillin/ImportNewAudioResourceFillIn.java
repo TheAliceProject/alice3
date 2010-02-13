@@ -25,19 +25,17 @@ package org.alice.ide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class ImportNewAudioResourceFillIn extends ImportNewResourceFillIn {
-	@Override
-	protected String getInitialFileText() {
-		return "*.mp3;*.wav;*.au";
-	}
-	
-	@Override
-	protected String getContentType( String path ) {
-		return edu.cmu.cs.dennisc.media.MediaFactory.getContentType( path );
-	}
-	
+public class ImportNewAudioResourceFillIn extends ImportNewResourceFillIn<org.alice.virtualmachine.resources.AudioResource> {
 	@Override
 	protected java.lang.String getMenuText() {
 		return "Import New Audio Resource...";
+	}
+	@Override
+	protected org.alice.ide.resource.ResourcePrompter<org.alice.virtualmachine.resources.AudioResource> getResourcePrompter() {
+		return org.alice.ide.resource.AudioResourcePrompter.getSingleton();
+	}
+	@Override
+	protected Class<org.alice.virtualmachine.resources.AudioResource> getResourceClass() {
+		return org.alice.virtualmachine.resources.AudioResource.class;
 	}
 }

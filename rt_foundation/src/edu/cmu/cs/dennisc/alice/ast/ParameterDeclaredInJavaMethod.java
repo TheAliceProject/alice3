@@ -30,15 +30,19 @@ package edu.cmu.cs.dennisc.alice.ast;
 public class ParameterDeclaredInJavaMethod extends ParameterDeclaredInJava {
 	private static String getParameterNameFor( MethodReflectionProxy methodReflectionProxy, int index ) {
 		String rv = null;
-		edu.cmu.cs.dennisc.alice.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.get( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
-		if( classInfo != null ) {
-			edu.cmu.cs.dennisc.alice.reflect.MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
-			if( methodInfo != null ) {
-				String[] parameterNames = methodInfo.getParameterNames();
-				if( parameterNames != null ) {
-					rv = parameterNames[ index ];
+		try {
+			edu.cmu.cs.dennisc.alice.reflect.ClassInfo classInfo = edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.get( methodReflectionProxy.getDeclaringClassReflectionProxy().getReification() );
+			if( classInfo != null ) {
+				edu.cmu.cs.dennisc.alice.reflect.MethodInfo methodInfo = classInfo.lookupInfo( methodReflectionProxy.getReification() );
+				if( methodInfo != null ) {
+					String[] parameterNames = methodInfo.getParameterNames();
+					if( parameterNames != null ) {
+						rv = parameterNames[ index ];
+					}
 				}
 			}
+		} catch( Throwable t ) {
+			t.printStackTrace();
 		}
 		return rv;
 	}

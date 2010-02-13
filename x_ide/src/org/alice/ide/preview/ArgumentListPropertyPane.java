@@ -20,19 +20,29 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
-
+package org.alice.ide.preview;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
-	public DefaultNodeListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgumentListPropertyPane {
+	public ArgumentListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty property ) {
+		super( factory, property );
 	}
 	@Override
 	protected java.awt.Component createComponent( Object instance ) {
-		return this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
+		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
+		String parameterName = argument.parameter.getValue().getName();
+		java.awt.Component expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
+		if( parameterName != null && parameterName.length() > 0 ) {
+			edu.cmu.cs.dennisc.croquet.swing.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
+			rv.setOpaque( false );
+			rv.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( parameterName + ": " ) );
+			rv.add( expressionComponent );
+			return rv;
+		} else {
+			return expressionComponent;
+		}
 	}
 }
-

@@ -93,4 +93,14 @@ public class TextureFactory {
 		}
 		return texture;
 	}
+	
+	public static org.alice.virtualmachine.resources.ImageResource createImageResource( java.io.File file ) throws java.io.IOException {
+		String contentType = getContentType( file );
+		if( contentType != null ) {
+			return new org.alice.virtualmachine.resources.ImageResource( file, contentType );
+		} else {
+			return null;
+		}
+	}
+	
 }

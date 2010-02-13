@@ -20,19 +20,26 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
-
+package org.alice.stageide.cascade.customfillin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
-	public DefaultNodeListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+public class ImportNewImageSourceFillIn extends ImportNewSourceFillIn< org.alice.apis.moveandturn.ImageSource, org.alice.virtualmachine.resources.ImageResource > {
+	@Override
+	protected String getMenuText() {
+		return "Import New Image Source...";
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
-		return this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
+	protected org.alice.ide.resource.ResourcePrompter<org.alice.virtualmachine.resources.ImageResource> getResourcePrompter() {
+		return org.alice.ide.resource.ImageResourcePrompter.getSingleton();
+	}
+	@Override
+	protected Class<org.alice.virtualmachine.resources.ImageResource> getResourceClass() {
+		return org.alice.virtualmachine.resources.ImageResource.class;
+	}
+	@Override
+	protected Class<org.alice.apis.moveandturn.ImageSource> getSourceClass() {
+		return org.alice.apis.moveandturn.ImageSource.class;
 	}
 }
-

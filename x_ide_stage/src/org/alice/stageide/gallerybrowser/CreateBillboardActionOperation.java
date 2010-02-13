@@ -31,13 +31,29 @@ class CreateBillboardActionOperation extends AbstractDeclareFieldOperation {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
-		org.alice.apis.moveandturn.Billboard billboard = new org.alice.apis.moveandturn.Billboard();
-		String name = "billboard";
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor(org.alice.apis.moveandturn.Billboard.class);
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(type);
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice(name, type, initializer);
-		field.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
-		field.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
-		return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, billboard );
+		org.alice.ide.resource.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.ImageResourcePrompter.getSingleton();
+		try {
+			org.alice.virtualmachine.resources.ImageResource frontImageResource = imageResourcePrompter.promptUserForResource( this.getIDE() );
+			if( frontImageResource != null ) {
+				edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();
+				if( project != null ) {
+					project.addResource( frontImageResource );
+				}
+				org.alice.apis.moveandturn.ImageSource frontImageSource = new org.alice.apis.moveandturn.ImageSource( frontImageResource );
+				org.alice.apis.moveandturn.Billboard billboard = new org.alice.apis.moveandturn.Billboard();
+				billboard.setFrontImageSource( frontImageSource );
+				String name = "billboard";
+				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor(org.alice.apis.moveandturn.Billboard.class);
+				edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(type);
+				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice(name, type, initializer);
+				field.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
+				field.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
+				return new edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object>( field, billboard );
+			} else {
+				return null;
+			}
+		} catch( java.io.IOException ioe ) {
+			throw new RuntimeException( ioe );
+		}
 	}
 }

@@ -19,17 +19,13 @@ public abstract class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameabl
 			throw new RuntimeException( resourceName, ioe );
 		}
 	}
-	protected Resource( java.io.File file, String contentType ) {
+	protected Resource( java.io.File file, String contentType ) throws java.io.IOException {
 		this.uuid = java.util.UUID.randomUUID();
 		String resourceName = file.getName();
-		try {
-			byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( file );
-			this.setData( data );
-			this.setName( resourceName );
-			this.setContentType( contentType );
-		} catch( java.io.IOException ioe ) {
-			throw new RuntimeException( resourceName, ioe );
-		}
+		byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( file );
+		this.setData( data );
+		this.setName( resourceName );
+		this.setContentType( contentType );
 	}
 	
 	public java.util.UUID getUUID() {

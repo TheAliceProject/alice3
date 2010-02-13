@@ -20,19 +20,22 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.common;
-
+package org.alice.ide.cascade.customfillin;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultNodeListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> > {
-	public DefaultNodeListPropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.NodeListProperty<?> property ) {
-		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
+public class ImportNewImageResourceFillIn extends ImportNewResourceFillIn<org.alice.virtualmachine.resources.ImageResource> {
+	@Override
+	protected java.lang.String getMenuText() {
+		return "Import New Image Resource...";
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
-		return this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)instance );
+	protected org.alice.ide.resource.ResourcePrompter<org.alice.virtualmachine.resources.ImageResource> getResourcePrompter() {
+		return org.alice.ide.resource.ImageResourcePrompter.getSingleton();
+	}
+	@Override
+	protected Class<org.alice.virtualmachine.resources.ImageResource> getResourceClass() {
+		return org.alice.virtualmachine.resources.ImageResource.class;
 	}
 }
-

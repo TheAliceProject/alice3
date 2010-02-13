@@ -55,8 +55,6 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	private javax.swing.JSlider volumeSlider = new javax.swing.JSlider();
 	private javax.swing.JSlider startSlider = new javax.swing.JSlider();
 	private javax.swing.JSlider stopSlider = new javax.swing.JSlider();
-//	private edu.cmu.cs.dennisc.zoot.ZLabel startValueLabel = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "?.??s" );
-//	private edu.cmu.cs.dennisc.zoot.ZLabel stopValueLabel = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "?.??s" );
 	
 	class TestOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public TestOperation() {
@@ -73,8 +71,28 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	private edu.cmu.cs.dennisc.zoot.ZButton test = new edu.cmu.cs.dennisc.zoot.ZButton( testOperation );
 
 	public AudioSourceChooser() {
+		this.volumeSlider.setValue( 100 );
+		this.volumeSlider.setMaximum( 200 );
 		this.startSlider.setValue( 0 );
 		this.stopSlider.setValue( 100 );
+		
+		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
+		labels.put( 0, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "0.0" ) );
+		labels.put( 100, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "1.0" ) );
+		labels.put( 200, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "2.0" ) );
+		this.volumeSlider.setLabelTable( labels );
+		this.volumeSlider.setPaintLabels( true );
+
+		this.volumeSlider.setSnapToTicks( true );
+		this.volumeSlider.setMinorTickSpacing( 10 );
+		this.volumeSlider.setMajorTickSpacing( 100 );
+		this.volumeSlider.setPaintTicks( true );
+		
+		this.volumeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				AudioSourceChooser.this.getInputPane().updateOKButton();
+			}
+		} );
 		this.startSlider.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				if( startSlider.getValue() > stopSlider.getValue() ) {
@@ -111,14 +129,18 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	}
 	@Override
 	public String[] getLabelTexts() {
-		return new String[] { "resource:", "volume:", "start marker:", "stop marker:" };
+		return new String[] { "resource:", "volume:", "", "start marker:", "stop marker:" };
 	}
 	@Override
 	public java.awt.Component[] getComponents() {
 		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getCodeFactory();
-		this.dropDown = factory.createExpressionPropertyPane( bogusNode.bogusProperty, null );
-		//this.dropDown = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, new org.alice.ide.common.ExpressionPropertyPane( factory, bogusNode.bogusProperty ), bogusNode.bogusProperty );
-		return new java.awt.Component[] { this.dropDown, this.volumeSlider, this.startSlider, this.stopSlider };
+		this.dropDown = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, factory.createExpressionPropertyPane( bogusNode.bogusProperty, null ), bogusNode.bogusProperty );
+		return new java.awt.Component[] { 
+				this.dropDown, 
+				new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane( javax.swing.Box.createVerticalStrut( 16 ), this.volumeSlider ), 
+				javax.swing.Box.createVerticalStrut( 16 ), 
+				this.startSlider, 
+				this.stopSlider };
 	}
 	@Override
 	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
@@ -139,7 +161,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			
 			duration = audioResource.getDuration();
 		}
-		double volume = 1.0;
+		double volume = this.volumeSlider.getValue() / 100.0;
 		double start;
 		if( this.startSlider.getValue() == this.startSlider.getMinimum() ) {
 			start = 0.0;

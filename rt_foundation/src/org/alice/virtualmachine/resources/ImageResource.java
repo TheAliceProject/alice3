@@ -23,7 +23,7 @@ public class ImageResource extends org.alice.virtualmachine.Resource {
 	public ImageResource( Class<?> cls, String resourceName, String contentType ) {
 		super( cls, resourceName, contentType );
 	}
-	public ImageResource( java.io.File file, String contentType ) {
+	public ImageResource( java.io.File file, String contentType ) throws java.io.IOException {
 		super( file, contentType );
 	}
 	public int getWidth() {

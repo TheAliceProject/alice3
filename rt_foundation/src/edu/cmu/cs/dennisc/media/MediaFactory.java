@@ -42,6 +42,9 @@ public class MediaFactory {
 		String contentType = MediaFactory.extensionToContentTypeMap.get( extension.toLowerCase() );
 		return contentType;
 	}
+	public static String getContentType( java.io.File file ) {
+		return getContentType( file.getName() );
+	}
 	public static boolean isAcceptableContentType( String contentType ) {
 		return MediaFactory.extensionToContentTypeMap.containsValue( contentType );
 	}
@@ -57,6 +60,16 @@ public class MediaFactory {
 				}
 			}
 		};
+	}
+	
+	
+	public static org.alice.virtualmachine.resources.AudioResource createAudioResource( java.io.File file ) throws java.io.IOException {
+		String contentType = getContentType( file );
+		if( contentType != null ) {
+			return new org.alice.virtualmachine.resources.AudioResource( file, contentType );
+		} else {
+			return null;
+		}
 	}
 	
 	private static javax.media.Player acquirePlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {

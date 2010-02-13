@@ -42,7 +42,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	}
 
 	@Override
-	protected javax.swing.JComponent createComponent( Object parameter ) {
+	protected java.awt.Component createComponent( Object parameter ) {
 		return new TypedParameterPane( getProperty(), (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter );
 	}
 	@Override
