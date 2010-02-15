@@ -407,14 +407,18 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		return createBufferedImageForUseAsColorBuffer( type );
 	}
 	public java.awt.image.BufferedImage getColorBuffer( java.awt.image.BufferedImage rv ) {
-		if( rv != null ) {
-			this.rvColorBuffer = rv;
-			this.drawable.setAutoSwapBufferMode( false );
-			try {
-				this.drawable.display();
-			} finally {
-				this.rvColorBuffer = null;
-				this.drawable.setAutoSwapBufferMode( true );
+		if( this.drawable.getContext() == javax.media.opengl.GLContext.getCurrent() ) {
+			this.renderContext.captureBuffers( rv, null );
+		} else {
+			if( rv != null ) {
+				this.rvColorBuffer = rv;
+				this.drawable.setAutoSwapBufferMode( false );
+				try {
+					this.drawable.display();
+				} finally {
+					this.rvColorBuffer = null;
+					this.drawable.setAutoSwapBufferMode( true );
+				}
 			}
 		}
 		return rv;
@@ -438,15 +442,19 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	}
 
 	public java.awt.image.BufferedImage getColorBufferWithTransparencyBasedOnDepthBuffer( java.awt.image.BufferedImage rv, java.nio.FloatBuffer depthBuffer ) {
-		this.rvColorBuffer = rv;
-		this.rvDepthBuffer = depthBuffer;
-		this.drawable.setAutoSwapBufferMode( false );
-		try {
-			this.drawable.display();
-		} finally {
-			this.rvColorBuffer = null;
-			this.rvDepthBuffer = null;
-			this.drawable.setAutoSwapBufferMode( true );
+		if( this.drawable.getContext() == javax.media.opengl.GLContext.getCurrent() ) {
+			this.renderContext.captureBuffers( rv, depthBuffer );
+		} else {
+			this.rvColorBuffer = rv;
+			this.rvDepthBuffer = depthBuffer;
+			this.drawable.setAutoSwapBufferMode( false );
+			try {
+				this.drawable.display();
+			} finally {
+				this.rvColorBuffer = null;
+				this.rvDepthBuffer = null;
+				this.drawable.setAutoSwapBufferMode( true );
+			}
 		}
 		return rv;
 	}
