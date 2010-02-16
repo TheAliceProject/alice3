@@ -73,14 +73,14 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 
 	public AudioSourceChooser() {
 		this.volumeSlider.setValue( 100 );
-		this.volumeSlider.setMaximum( 200 );
+		//this.volumeSlider.setMaximum( 200 );
 		this.startSlider.setValue( 0 );
 		this.stopSlider.setValue( 100 );
 		
 		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
 		labels.put( 0, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "0.0" ) );
 		labels.put( 100, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "1.0" ) );
-		labels.put( 200, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "2.0" ) );
+		//labels.put( 200, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "2.0" ) );
 		this.volumeSlider.setLabelTable( labels );
 		this.volumeSlider.setPaintLabels( true );
 
@@ -130,7 +130,12 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	}
 	@Override
 	public String[] getLabelTexts() {
-		return new String[] { "resource:", "volume:", "", "start marker:", "stop marker:" };
+		return new String[] { 
+				"resource:", 
+				"volume:", 
+				"", 
+				"start marker:", 
+				"stop marker:" };
 	}
 	@Override
 	public java.awt.Component[] getComponents() {

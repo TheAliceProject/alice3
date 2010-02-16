@@ -101,12 +101,12 @@ class StopControllerListener extends BarrierControllerListener {
  */
 public class Player extends edu.cmu.cs.dennisc.media.Player {
 	private javax.media.Player player;
-	private double volume;
+	private double volumeLevel;
 	private double startTime;
 	private double stopTime;
-	public Player( javax.media.Player player, double volume, double startTime, double stopTime ) {
+	public Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime ) {
 		this.player = player;
-		this.volume = volume;
+		this.volumeLevel = volumeLevel;
 		this.startTime = startTime;
 		this.stopTime = stopTime;
 	}
@@ -149,6 +149,8 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		} else {
 			this.player.setStopTime( new javax.media.Time( this.stopTime ) );
 		}
+//		javax.media.GainControl gainControl = this.player.getGainControl();
+//		gainControl.setLevel( (float)this.volumeLevel );
 		this.player.start();
 	}
 	@Override
