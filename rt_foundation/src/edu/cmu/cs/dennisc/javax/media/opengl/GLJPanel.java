@@ -38,7 +38,7 @@
  */
 
 //
-package edu.cmu.cs.dennisc.media.opengl;
+package edu.cmu.cs.dennisc.javax.media.opengl;
 
 // edits made by Dennis Cosgrove in order to have access to the buffered image 
 import javax.media.opengl.*;

@@ -37,7 +37,7 @@
  * and developed by Kenneth Bradley Russell and Christopher John Kline.
  */
 
-package edu.cmu.cs.dennisc.media.opengl;
+package edu.cmu.cs.dennisc.javax.media.opengl;
 
 //modified by Dennis Cosgrove in order to support disabling hardware acceleration 
 import com.sun.opengl.impl.Debug;

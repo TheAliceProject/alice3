@@ -20,7 +20,9 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.media;
+package edu.cmu.cs.dennisc.media.animation;
+
+import edu.cmu.cs.dennisc.media.Player;
 
 /**
  * @author Dennis Cosgrove

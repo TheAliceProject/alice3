@@ -41,6 +41,6 @@ public class AudioResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	
 	@Override
 	protected org.alice.virtualmachine.resources.AudioResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
-		return edu.cmu.cs.dennisc.media.MediaFactory.createAudioResource( file );
+		return edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createAudioResource( file );
 	}
 }

@@ -31,7 +31,7 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 	protected abstract E createResourceFromFile( java.io.File file ) throws java.io.IOException;
 	public E promptUserForResource( java.awt.Component owner ) throws java.io.IOException {
 		java.awt.FileDialog fileDialog = new java.awt.FileDialog( org.alice.ide.IDE.getSingleton() );
-		fileDialog.setFilenameFilter( edu.cmu.cs.dennisc.media.MediaFactory.createFilenameFilter( true ) );
+		fileDialog.setFilenameFilter( org.alice.virtualmachine.resources.AudioResource.createFilenameFilter( true ) );
 		//todo?
 		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
 			fileDialog.setFile( this.getInitialFileText() );

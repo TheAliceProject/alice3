@@ -120,7 +120,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	/*package-private*/ static javax.media.opengl.GLCapabilities createDesiredGLCapabilities() {
 		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
 		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
-		if( chooser instanceof edu.cmu.cs.dennisc.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
+		if( chooser instanceof edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
 			rv.setHardwareAccelerated( false );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
 			rv.setDepthBits( 32 );
@@ -158,7 +158,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 //				}
 			}
 			if( isSlowAndSteadyDesired ) {
-				glCapabilitiesChooser = new edu.cmu.cs.dennisc.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser();
+				glCapabilitiesChooser = new edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser();
 			} else {
 				glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
 			}
