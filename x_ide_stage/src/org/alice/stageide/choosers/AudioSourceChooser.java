@@ -73,16 +73,17 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 
 	public AudioSourceChooser() {
 		this.volumeSlider.setValue( 100 );
-		//this.volumeSlider.setMaximum( 200 );
+		this.volumeSlider.setMaximum( 200 );
 		this.startSlider.setValue( 0 );
 		this.stopSlider.setValue( 100 );
 		
 		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
-		labels.put( 0, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "0.0" ) );
-		labels.put( 100, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "1.0" ) );
-		//labels.put( 200, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "2.0" ) );
+		labels.put( 0, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Silent (0.0)" ) );
+		labels.put( 100, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Normal (1.0)" ) );
+		labels.put( 200, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Louder (2.0)" ) );
 		this.volumeSlider.setLabelTable( labels );
 		this.volumeSlider.setPaintLabels( true );
+		this.volumeSlider.setOrientation( javax.swing.SwingConstants.VERTICAL );
 
 		this.volumeSlider.setSnapToTicks( true );
 		this.volumeSlider.setMinorTickSpacing( 10 );
@@ -144,7 +145,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		this.dropDown = factory.createExpressionPropertyPane( bogusNode.bogusProperty, null );
 		return new java.awt.Component[] { 
 				this.dropDown, 
-				new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane( javax.swing.Box.createVerticalStrut( 16 ), this.volumeSlider ), 
+				new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( this.volumeSlider, javax.swing.Box.createHorizontalGlue() ), 
 				javax.swing.Box.createVerticalStrut( 16 ), 
 				this.startSlider, 
 				this.stopSlider };
