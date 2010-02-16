@@ -66,47 +66,27 @@ public class CustomizeAudioSourceFillIn extends org.alice.ide.cascade.customfill
 							Number.class, 
 							Number.class, 
 							Number.class );
-					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-					edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter1 = constructor.getParameters().get( 1 );
-					edu.cmu.cs.dennisc.alice.ast.Argument argument1 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter1, volumeLiteral );
-					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter2 = constructor.getParameters().get( 2 );
-					edu.cmu.cs.dennisc.alice.ast.Argument argument2 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter2, startTimeLiteral );
-					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter3 = constructor.getParameters().get( 3 );
-					edu.cmu.cs.dennisc.alice.ast.Argument argument3 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter3, stopTimeLiteral );
-					return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0, argument1, argument2, argument3 );
+					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, resourceExpression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
 				} else {
 					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
 							org.alice.apis.moveandturn.AudioSource.class, 
 							org.alice.virtualmachine.resources.AudioResource.class,
 							Number.class, 
 							Number.class );
-					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-					edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter1 = constructor.getParameters().get( 1 );
-					edu.cmu.cs.dennisc.alice.ast.Argument argument1 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter1, volumeLiteral );
-					edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter2 = constructor.getParameters().get( 2 );
-					edu.cmu.cs.dennisc.alice.ast.Argument argument2 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter2, startTimeLiteral );
-					return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0, argument1, argument2 );
+					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, resourceExpression, volumeLiteral, startTimeLiteral );
 				}
 			} else {
 				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
 						org.alice.apis.moveandturn.AudioSource.class, 
 						org.alice.virtualmachine.resources.AudioResource.class,
 						Number.class );
-				edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-				edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-				edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter1 = constructor.getParameters().get( 1 );
-				edu.cmu.cs.dennisc.alice.ast.Argument argument1 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter1, volumeLiteral );
-				return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0, argument1 );
+				return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, resourceExpression, volumeLiteral );
 			}
 		} else {
 			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
 					org.alice.apis.moveandturn.AudioSource.class, 
 					org.alice.virtualmachine.resources.AudioResource.class );
-			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter0 = constructor.getParameters().get( 0 );
-			edu.cmu.cs.dennisc.alice.ast.Argument argument0 = new edu.cmu.cs.dennisc.alice.ast.Argument( parameter0, resourceExpression );
-			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor, argument0 );
+			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, resourceExpression );
 		}
 	}
 }
