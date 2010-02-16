@@ -46,27 +46,33 @@ public class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 	}
 	@Override
 	public void connect() throws java.io.IOException {
-	}
-	@Override
-	public void start() throws java.io.IOException {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource connect" );
 	}
 	@Override
 	public void disconnect() {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource disconnect" );
+	}
+	@Override
+	public void start() throws java.io.IOException {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource start" );
+	}
+	@Override
+	public void stop() throws java.io.IOException {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource stop" );
 	}
 	@Override
 	public Object getControl( String parm1 ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource getControl", parm1 );
+		return null;
+	}
+	@Override
+	public Object[] getControls() {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArrayDataSource getControls" );
 		return null;
 	}
 	@Override
 	public javax.media.protocol.PullSourceStream[] getStreams() {
 		return new javax.media.protocol.PullSourceStream[] { new ByteArraySeekablePullSourceStream( this.data ) };
-	}
-	@Override
-	public void stop() throws java.io.IOException {
-	}
-	@Override
-	public Object[] getControls() {
-		return null;
 	}
 	
 	@Override

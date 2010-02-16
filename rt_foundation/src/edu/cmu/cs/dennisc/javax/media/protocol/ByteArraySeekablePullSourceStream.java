@@ -48,9 +48,11 @@ public class ByteArraySeekablePullSourceStream implements javax.media.protocol.P
 		return toRead;
 	}
 	public Object getControl( String controlType ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControl", controlType );
 		return null;
 	}
 	public Object[] getControls() {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ByteArraySeekablePullSourceStream getControls" );
 		return null;
 	}
 	public javax.media.protocol.ContentDescriptor getContentDescriptor() {

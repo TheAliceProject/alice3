@@ -80,6 +80,22 @@ class StopControllerListener extends BarrierControllerListener {
 	}
 }
 
+//class ScaledTimeBase implements javax.media.TimeBase {
+//	private javax.media.TimeBase originalTimeBase;
+//	private long scale;
+//	public ScaledTimeBase( javax.media.TimeBase originalTimeBase ) {
+//		this.originalTimeBase = originalTimeBase;
+//	}
+//	public long getNanoseconds() {
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "getNanoseconds" );
+//		return this.scale * this.originalTimeBase.getNanoseconds();
+//	}
+//	public javax.media.Time getTime() {
+//		//todo?
+//		return new javax.media.Time( this.getNanoseconds() );
+//	}
+//}
+
 /**
  * @author Dennis Cosgrove
  */
@@ -113,6 +129,16 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	@Override
 	public void start() {
 		this.realize();
+//		javax.media.TimeBase originalTimeBase = this.player.getTimeBase();
+//		javax.media.TimeBase scaledTimeBase = new ScaledTimeBase( originalTimeBase );
+//		try {
+//			this.player.setTimeBase( scaledTimeBase );
+//		} catch( javax.media.IncompatibleTimeBaseException itbe ) {
+//			throw new RuntimeException( itbe );
+//		}
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "time base:", this.player.getTimeBase() );
+//		this.player.setRate( 2.0f );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "rate:", this.player.getRate() );
 		if( Double.isNaN( this.startTime ) ) {
 			//pass
 		} else {
