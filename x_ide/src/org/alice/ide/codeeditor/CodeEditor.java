@@ -471,6 +471,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 						protected abstract void redoInternal() throws javax.swing.undo.CannotRedoException;
 						protected abstract void undoInternal() throws javax.swing.undo.CannotRedoException;
 						public final void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+							performInternal( actionContext );
 							actionContext.commitAndInvokeRedoIfAppropriate();
 						}
 						@Override
