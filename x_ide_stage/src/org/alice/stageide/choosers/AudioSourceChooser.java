@@ -46,7 +46,7 @@ class TimeSlider extends javax.swing.JSlider {
 		super.removeNotify();
 	}
 	private void updateValue() {
-		if( Double.isNaN( this.duration ) ) {
+		if( Double.isNaN( this.time ) || Double.isNaN( this.duration ) ) {
 			this.setValue( this.getMaximum() );
 		} else {
 			this.setValue( (int)((this.time/this.duration)*this.getMaximum()) );
@@ -68,8 +68,13 @@ class TimeSlider extends javax.swing.JSlider {
 		this.setEnabled( Double.isNaN( this.duration )==false );
 		this.updateValue();
 	}
+	private static java.text.NumberFormat format = new java.text.DecimalFormat( "0.00" );
 	public double getTime() {
-		return this.time;
+		if( Double.isNaN( this.time ) ) {
+			return this.time;
+		} else {
+			return Double.parseDouble( format.format( this.time ) );
+		}
 	}
 	public void setTime( double time ) {
 		this.time = time;
@@ -81,12 +86,6 @@ class TimeSlider extends javax.swing.JSlider {
  * @author Dennis Cosgrove
  */
 public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.AudioSource > {
-	private static java.text.NumberFormat tFormat = new java.text.DecimalFormat( "0.00" );
-	private static double getT( TimeSlider timeSlider ) {
-		double t = timeSlider.getTime();
-		return Double.parseDouble( tFormat.format( t ) );
-	}
-
 	class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 		private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty bogusProperty = new edu.cmu.cs.dennisc.alice.ast.ExpressionProperty( this ) {
 			@Override
@@ -282,12 +281,12 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			if( this.startTimeSlider.getValue() == this.startTimeSlider.getMinimum() ) {
 				start = 0.0;
 			} else {
-				start = getT( this.startTimeSlider );
+				start = this.startTimeSlider.getTime();
 			}
 			if( this.stopTimeSlider.getValue() == this.stopTimeSlider.getMaximum() ) {
 				stop = Double.NaN;
 			} else {
-				stop = getT( this.stopTimeSlider );
+				stop = this.stopTimeSlider.getTime();
 			}
 		}
 		return new org.alice.apis.moveandturn.AudioSource( audioResource, volume, start, stop );
