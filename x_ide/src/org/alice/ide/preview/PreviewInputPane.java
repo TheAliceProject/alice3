@@ -60,6 +60,7 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.zoot.ZInput
 
 	public PreviewInputPane() {
 		final int INSET = 16;
+		this.setLayout( new java.awt.BorderLayout() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
 	protected org.alice.ide.IDE getIDE() {
@@ -84,7 +85,7 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.zoot.ZInput
 		final java.awt.Component[] previewRow = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "preview:" ), this.previewPane );
 		final java.awt.Component[] spacerRow = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( this.spacer, null );
 		this.repaint();
-		return new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 16, 4 ) {
+		javax.swing.JComponent rv = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 16, 4 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				assert previewRow != null;
@@ -95,6 +96,8 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.zoot.ZInput
 				return rv;
 			}
 		};
+		rv.setAlignmentX( 0.0f );
+		return rv;
 	}
 	@Override
 	public void addNotify() {
@@ -103,7 +106,7 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.zoot.ZInput
 			//pass
 		} else {
 			this.rowsSpringPane = this.createRowsSpringPane();
-			this.add( this.rowsSpringPane, java.awt.BorderLayout.CENTER );
+			this.add( this.rowsSpringPane, java.awt.BorderLayout.WEST );
 		}
 		this.updateOKButton();
 	}
