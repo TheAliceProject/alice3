@@ -36,57 +36,68 @@ public class CustomizeAudioSourceFillIn extends org.alice.ide.cascade.customfill
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.InstanceCreation createExpression( org.alice.apis.moveandturn.AudioSource value ) {
-		org.alice.virtualmachine.resources.AudioResource audioResource = value.getAudioResource();
+		if( value != null ) {
+			org.alice.virtualmachine.resources.AudioResource audioResource = value.getAudioResource();
 
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
-		if( project != null ) {
-			project.addResource( audioResource );
-		}
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			if( project != null ) {
+				project.addResource( audioResource );
+			}
 
-		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );
+			edu.cmu.cs.dennisc.alice.ast.Expression arg0Expression;
+			if( audioResource != null ) {
+				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.ResourceExpression( org.alice.virtualmachine.resources.AudioResource.class, audioResource );				
+			} else {
+				arg0Expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
+			}
 
-		double volume = value.getVolume();
-		boolean isNotDefaultVolume = edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( volume, org.alice.apis.moveandturn.AudioSource.DEFAULT_VOLUME ) == false;
-		double startTime = value.getStartTime();
-		boolean isNotDefaultStartTime = edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( startTime, org.alice.apis.moveandturn.AudioSource.DEFAULT_START_TIME ) == false;
-		double stopTime = value.getStopTime();
-		boolean isNotDefaultStopTime = Double.isNaN( stopTime ) == false;
+			double volume = value.getVolume();
+			double startTime = value.getStartTime();
+			double stopTime = value.getStopTime();
 
-		if( isNotDefaultVolume || isNotDefaultStartTime || isNotDefaultStopTime ) {
-			edu.cmu.cs.dennisc.alice.ast.DoubleLiteral volumeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( volume );
-			if( isNotDefaultStartTime || isNotDefaultStopTime ) {
-				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral startTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( startTime );
-				if( isNotDefaultStopTime ) {
-					edu.cmu.cs.dennisc.alice.ast.DoubleLiteral stopTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( stopTime );
+			// apologies for the negative logic
+			boolean isNotDefaultVolume = org.alice.apis.moveandturn.AudioSource.isWithinReasonableEpsilonOfDefaultVolume( volume ) == false;
+			boolean isNotDefaultStartTime = org.alice.apis.moveandturn.AudioSource.isWithinReasonableEpsilonOfDefaultStartTime( startTime ) == false;
+			boolean isNotDefaultStopTime = org.alice.apis.moveandturn.AudioSource.isDefaultStopTime_aka_NaN( stopTime ) == false;
 
-					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
-							org.alice.apis.moveandturn.AudioSource.class, 
-							org.alice.virtualmachine.resources.AudioResource.class,
-							Number.class, 
-							Number.class, 
-							Number.class );
-					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, resourceExpression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
+			if( isNotDefaultVolume || isNotDefaultStartTime || isNotDefaultStopTime ) {
+				edu.cmu.cs.dennisc.alice.ast.DoubleLiteral volumeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( volume );
+				if( isNotDefaultStartTime || isNotDefaultStopTime ) {
+					edu.cmu.cs.dennisc.alice.ast.DoubleLiteral startTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( startTime );
+					if( isNotDefaultStopTime ) {
+						edu.cmu.cs.dennisc.alice.ast.DoubleLiteral stopTimeLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( stopTime );
+
+						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+								org.alice.apis.moveandturn.AudioSource.class, 
+								org.alice.virtualmachine.resources.AudioResource.class,
+								Number.class, 
+								Number.class, 
+								Number.class );
+						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral, stopTimeLiteral );
+					} else {
+						edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
+								org.alice.apis.moveandturn.AudioSource.class, 
+								org.alice.virtualmachine.resources.AudioResource.class,
+								Number.class, 
+								Number.class );
+						return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral, startTimeLiteral );
+					}
 				} else {
 					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
 							org.alice.apis.moveandturn.AudioSource.class, 
 							org.alice.virtualmachine.resources.AudioResource.class,
-							Number.class, 
 							Number.class );
-					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, resourceExpression, volumeLiteral, startTimeLiteral );
+					return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression, volumeLiteral );
 				}
 			} else {
 				edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
 						org.alice.apis.moveandturn.AudioSource.class, 
-						org.alice.virtualmachine.resources.AudioResource.class,
-						Number.class );
-				return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, resourceExpression, volumeLiteral );
+						org.alice.virtualmachine.resources.AudioResource.class );
+				return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, arg0Expression );
 			}
 		} else {
-			edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava constructor = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( 
-					org.alice.apis.moveandturn.AudioSource.class, 
-					org.alice.virtualmachine.resources.AudioResource.class );
-			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( constructor, resourceExpression );
+			return null;
 		}
 	}
 }

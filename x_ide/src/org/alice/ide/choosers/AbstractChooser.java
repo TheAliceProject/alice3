@@ -56,7 +56,15 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 		java.awt.Component[] components = this.getComponents();
 		final int N = labelTexts.length;
 		for( int i=0; i<N; i++ ) {
-			rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( labelTexts[ i ] ), components[ i ] ) );
+			rv.add( 
+					edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( 
+						edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( labelTexts[ i ] ), 
+						new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( 
+								components[ i ],
+								javax.swing.Box.createHorizontalGlue()
+						)
+					) 
+			);
 		}
 		return rv;
 	}

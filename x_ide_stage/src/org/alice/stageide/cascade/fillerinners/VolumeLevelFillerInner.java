@@ -20,23 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.media;
+package org.alice.stageide.cascade.fillerinners;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MediaFactory {
-	public static final double DEFAULT_VOLUME = 1.0;
-	public static final double DEFAULT_START_TIME = 0.0;
-	public static final double DEFAULT_STOP_TIME = Double.NaN;
-	public abstract Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime, double stopTime );
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime ) {
-		return createPlayer( audioResource, volume, startTime, DEFAULT_STOP_TIME );
+public class VolumeLevelFillerInner extends org.alice.ide.cascade.fillerinners.AbstractNumberFillerInner {
+	public VolumeLevelFillerInner() {
+		super( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.VolumeLevel.class ), edu.cmu.cs.dennisc.alice.ast.DoubleLiteral.class );
 	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume ) {
-		return createPlayer( audioResource, volume, DEFAULT_START_TIME );
-	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {
-		return createPlayer( audioResource, DEFAULT_VOLUME );
+	@Override
+	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+		this.addExpressionFillIn( blank, 0.0 );
+		this.addExpressionFillIn( blank, 0.25 );
+		this.addExpressionFillIn( blank, 0.5 );
+		this.addExpressionFillIn( blank, 1.0 );
+		this.addExpressionFillIn( blank, 2.0 );
+		blank.addSeparator();
+		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
 	}
 }

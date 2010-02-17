@@ -28,30 +28,48 @@ import edu.cmu.cs.dennisc.alice.annotations.*;
  * @author Dennis Cosgrove
  */
 public class AudioSource /*implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable*/ {
-	public static final Double DEFAULT_VOLUME = 1.0;
-	public static final Double DEFAULT_START_TIME = 0.0;
+	public static boolean isWithinReasonableEpsilonOfDefaultVolume( double volume ) {
+		return edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME, volume );
+	}
+	public static boolean isWithinReasonableEpsilonOfDefaultStartTime( double startTime ) {
+		return edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME, startTime );
+	}
+	public static boolean isDefaultStopTime_aka_NaN( double stopTime ) {
+		return Double.isNaN( stopTime );
+	}
+	
 	private org.alice.virtualmachine.resources.AudioResource audioResource;
 	private Double volume;
 	private Double startTime;
 	private Double stopTime;
 	@ConstructorTemplate( visibility=Visibility.PRIME_TIME )
-	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, Number volume, Number startTime, Number stopTime ) {
+	public AudioSource( 
+			org.alice.virtualmachine.resources.AudioResource audioResource, 
+			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=VolumeLevel.class )
+			Number volume, 
+			Number startTime, 
+			Number stopTime ) {
 		this.audioResource = audioResource;
 		this.setVolume( volume );
 		this.setStartTime( startTime );
 		this.setStopTime( stopTime );
 	}
 	@ConstructorTemplate( visibility=Visibility.CHAINED )
-	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, Number volume, Number startTime ) {
-		this( audioResource, volume, startTime, Double.NaN );
+	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, 
+			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=VolumeLevel.class )
+			Number volume, 
+			Number startTime ) {
+		this( audioResource, volume, startTime, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_STOP_TIME );
 	}
 	@ConstructorTemplate( visibility=Visibility.CHAINED )
-	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, Number volume ) {
-		this( audioResource, volume, DEFAULT_START_TIME );
+	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource, 
+			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=VolumeLevel.class )
+			Number volume ) {
+		this( audioResource, volume, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_START_TIME );
 	}
 	@ConstructorTemplate( visibility=Visibility.CHAINED )
 	public AudioSource( org.alice.virtualmachine.resources.AudioResource audioResource ) {
-		this( audioResource, DEFAULT_VOLUME );
+		this( audioResource, edu.cmu.cs.dennisc.media.MediaFactory.DEFAULT_VOLUME );
 	}
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )

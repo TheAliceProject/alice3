@@ -420,6 +420,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.AudioSourceFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.VolumeLevelFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.ImageSourceFillerInner() );
 		return rv;
 	}

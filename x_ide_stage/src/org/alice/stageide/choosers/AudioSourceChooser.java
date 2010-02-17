@@ -22,13 +22,68 @@
  */
 package org.alice.stageide.choosers;
 
+class TimeSlider extends javax.swing.JSlider {
+	private javax.swing.event.ChangeListener changeAdapter = new javax.swing.event.ChangeListener() {
+		public void stateChanged(javax.swing.event.ChangeEvent e) {
+			TimeSlider.this.updateTime();
+		}
+	};
+	private double duration;
+	private double time;
+	public TimeSlider() {
+		this.setMaximum( 1000 );
+		this.setDuration( Double.NaN );
+	}
+	
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.addChangeListener( this.changeAdapter );
+	}
+	@Override
+	public void removeNotify() {
+		this.removeChangeListener( this.changeAdapter );
+		super.removeNotify();
+	}
+	private void updateValue() {
+		if( Double.isNaN( this.duration ) ) {
+			this.setValue( this.getMaximum() );
+		} else {
+			this.setValue( (int)((this.time/this.duration)*this.getMaximum()) );
+		}
+	}
+	private void updateTime() {
+		if( Double.isNaN( this.duration ) ) {
+			//pass
+		} else {
+			this.time = this.getValue()*this.duration/this.getMaximum();
+		}
+	}
+	
+	public double getDuration() {
+		return this.duration;
+	}
+	public void setDuration( double duration ) {
+		this.duration = duration;
+		this.setEnabled( Double.isNaN( this.duration )==false );
+		this.updateValue();
+	}
+	public double getTime() {
+		return this.time;
+	}
+	public void setTime( double time ) {
+		this.time = time;
+		this.updateValue();
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
 public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.AudioSource > {
 	private static java.text.NumberFormat tFormat = new java.text.DecimalFormat( "0.00" );
-	private static double getT( javax.swing.JSlider slider, double duration ) {
-		double t = duration*(slider.getValue()/100.0);
+	private static double getT( TimeSlider timeSlider ) {
+		double t = timeSlider.getTime();
 		return Double.parseDouble( tFormat.format( t ) );
 	}
 
@@ -42,6 +97,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		@Override
 		public void firePropertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			super.firePropertyChanged( e );
+			AudioSourceChooser.this.startTimeSlider.setTime( 0.0 );
+			AudioSourceChooser.this.stopTimeSlider.setTime( Double.NaN );
 			edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane = AudioSourceChooser.this.getInputPane();
 			if( inputPane != null ) {
 				inputPane.updateOKButton();
@@ -52,9 +109,9 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	private BogusNode bogusNode = new BogusNode();
 	private java.awt.Component dropDown;
 	
-	private javax.swing.JSlider volumeSlider = new javax.swing.JSlider();
-	private javax.swing.JSlider startSlider = new javax.swing.JSlider();
-	private javax.swing.JSlider stopSlider = new javax.swing.JSlider();
+	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
+	private TimeSlider startTimeSlider = new TimeSlider();
+	private TimeSlider stopTimeSlider = new TimeSlider();
 	
 	class TestOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public TestOperation() {
@@ -71,63 +128,105 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	private TestOperation testOperation = new TestOperation();
 	private edu.cmu.cs.dennisc.zoot.ZButton test = new edu.cmu.cs.dennisc.zoot.ZButton( testOperation );
 
+	private static edu.cmu.cs.dennisc.alice.ast.Expression getArgumentExpressionAt( edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation, int index ) {
+		assert instanceCreation.arguments.size() >= index;
+		edu.cmu.cs.dennisc.alice.ast.Argument arg = instanceCreation.arguments.get( index );
+		assert arg != null;
+		return arg.expression.getValue();
+	}
 	public AudioSourceChooser() {
-		this.volumeSlider.setValue( 100 );
-		this.volumeSlider.setMaximum( 200 );
-		this.startSlider.setValue( 0 );
-		this.stopSlider.setValue( 100 );
-		
-		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
-		labels.put( 0, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Silent (0.0)" ) );
-		labels.put( 100, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Normal (1.0)" ) );
-		labels.put( 200, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Louder (2.0)" ) );
-		this.volumeSlider.setLabelTable( labels );
-		this.volumeSlider.setPaintLabels( true );
-		this.volumeSlider.setOrientation( javax.swing.SwingConstants.VERTICAL );
+		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = null;
+		org.alice.virtualmachine.resources.AudioResource audioResource = null;
+		double volumeLevel = 1.0;
+		double startTime = 0.0;
+		double stopTime = Double.NaN;
 
-		this.volumeSlider.setSnapToTicks( true );
-		this.volumeSlider.setMinorTickSpacing( 10 );
-		this.volumeSlider.setMajorTickSpacing( 100 );
-		this.volumeSlider.setPaintTicks( true );
-		
-		this.volumeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				AudioSourceChooser.this.getInputPane().updateOKButton();
-			}
-		} );
-		this.startSlider.addChangeListener( new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				if( startSlider.getValue() > stopSlider.getValue() ) {
-					stopSlider.setValue( startSlider.getValue() );
-				}
-				AudioSourceChooser.this.getInputPane().updateOKButton();
-			}
-		} );
-		this.stopSlider.addChangeListener( new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				if( startSlider.getValue() > stopSlider.getValue() ) {
-					startSlider.setValue( stopSlider.getValue() );
-				}
-				AudioSourceChooser.this.getInputPane().updateOKButton();
-			}
-		} );
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
 			edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)previousExpression;
-			
 			int n = instanceCreation.arguments.size();
-			
-			edu.cmu.cs.dennisc.alice.ast.Argument arg0 =  instanceCreation.arguments.get( 0 );
-			edu.cmu.cs.dennisc.alice.ast.Expression exp0 = arg0.expression.getValue();
-			bogusNode.bogusProperty.setValue( exp0 );
+			if( n > 0 ) {
+				edu.cmu.cs.dennisc.alice.ast.Expression expression0 = getArgumentExpressionAt( instanceCreation, 0 );
+				if( expression0 instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression ) {
+					resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)expression0;
+					org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
+					if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
+						audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
+					}
+					if( n > 1 ) {
+						if( n > 2 ) {
+							if( n > 3 ) {
+								edu.cmu.cs.dennisc.alice.ast.Expression expression3 = getArgumentExpressionAt( instanceCreation, 3 );
+								if( expression3 instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
+									edu.cmu.cs.dennisc.alice.ast.DoubleLiteral stopTimeLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)expression3;
+									stopTime = stopTimeLiteral.value.getValue();
+								}
+							}
+							edu.cmu.cs.dennisc.alice.ast.Expression expression2 = getArgumentExpressionAt( instanceCreation, 2 );
+							if( expression2 instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
+								edu.cmu.cs.dennisc.alice.ast.DoubleLiteral startTimeLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)expression2;
+								startTime = startTimeLiteral.value.getValue();
+							}
+						}
+						edu.cmu.cs.dennisc.alice.ast.Expression expression1 = getArgumentExpressionAt( instanceCreation, 1 );
+						if( expression1 instanceof edu.cmu.cs.dennisc.alice.ast.DoubleLiteral ) {
+							edu.cmu.cs.dennisc.alice.ast.DoubleLiteral volumeLevelLiteral = (edu.cmu.cs.dennisc.alice.ast.DoubleLiteral)expression1;
+							volumeLevel = volumeLevelLiteral.value.getValue();
+						}
+					}
+				}
+			}
 		}
+		this.bogusNode.bogusProperty.setValue( resourceExpression );
+		this.volumeLevelControl.setVolumeLevel( volumeLevel );
+		this.startTimeSlider.setTime( startTime );
+		this.stopTimeSlider.setTime( stopTime );
+
+		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getCodeFactory();
+		this.dropDown = factory.createExpressionPropertyPane( bogusNode.bogusProperty, null );
+		
+		if( audioResource != null ) {
+			double duration = audioResource.getDuration();
+			if( Double.isNaN( duration ) ) {
+				//pass
+			} else {
+				this.startTimeSlider.setDuration( duration );
+				this.stopTimeSlider.setDuration( duration );
+			}
+		}
+
+		this.volumeLevelControl.addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				AudioSourceChooser.this.getInputPane().updateOKButton();
+			}
+		} );
+		this.startTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
+					stopTimeSlider.setValue( startTimeSlider.getValue() );
+				}
+				AudioSourceChooser.this.getInputPane().updateOKButton();
+			}
+		} );
+		this.stopTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
+			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
+					startTimeSlider.setValue( stopTimeSlider.getValue() );
+				}
+				AudioSourceChooser.this.getInputPane().updateOKButton();
+			}
+		} );
 	}
 	public String getTitleDefault() {
 		return "Enter Custom Audio Source";
 	}
 	public boolean isInputValid() {
 		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
-		return resourceExpression != null;
+		if( resourceExpression != null ) {
+			return resourceExpression.resource.getValue() instanceof org.alice.virtualmachine.resources.AudioResource;
+		} else {
+			return false;
+		}
 	}
 	@Override
 	public String[] getLabelTexts() {
@@ -140,15 +239,12 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	}
 	@Override
 	public java.awt.Component[] getComponents() {
-		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getCodeFactory();
-//		this.dropDown = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane( null, factory.createExpressionPropertyPane( bogusNode.bogusProperty, null ), bogusNode.bogusProperty );
-		this.dropDown = factory.createExpressionPropertyPane( bogusNode.bogusProperty, null );
 		return new java.awt.Component[] { 
 				this.dropDown, 
-				new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( this.volumeSlider, javax.swing.Box.createHorizontalGlue() ), 
+				new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( this.volumeLevelControl, javax.swing.Box.createHorizontalGlue() ), 
 				javax.swing.Box.createVerticalStrut( 16 ), 
-				this.startSlider, 
-				this.stopSlider };
+				this.startTimeSlider, 
+				this.stopTimeSlider };
 	}
 	@Override
 	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
@@ -159,26 +255,39 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	}
 		
 	public org.alice.apis.moveandturn.AudioSource getValue() {
-		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
-		org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resourceExpression.resource.getValue();
-		double volume = this.volumeSlider.getValue() / 100.0;
+		org.alice.virtualmachine.resources.AudioResource audioResource;
+		double volume = this.volumeLevelControl.getVolumeLevel();
 		double start;
 		double stop;
-		double duration = audioResource.getDuration();
+		double duration;
+		edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)bogusNode.bogusProperty.getValue();
+		if( resourceExpression != null ) {
+			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
+			if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
+				audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
+				duration = audioResource.getDuration();
+			} else {
+				audioResource = null;
+				duration = Double.NaN;
+			}
+		} else {
+			audioResource = null;
+			duration = Double.NaN;
+		}
 		if( Double.isNaN( duration ) ) {
 			//todo
 			start = 0.0;
 			stop = Double.NaN;
 		} else {
-			if( this.startSlider.getValue() == this.startSlider.getMinimum() ) {
+			if( this.startTimeSlider.getValue() == this.startTimeSlider.getMinimum() ) {
 				start = 0.0;
 			} else {
-				start = getT( this.startSlider, duration );
+				start = getT( this.startTimeSlider );
 			}
-			if( this.stopSlider.getValue() == this.stopSlider.getMaximum() ) {
+			if( this.stopTimeSlider.getValue() == this.stopTimeSlider.getMaximum() ) {
 				stop = Double.NaN;
 			} else {
-				stop = getT( this.stopSlider, duration );
+				stop = getT( this.stopTimeSlider );
 			}
 		}
 		return new org.alice.apis.moveandturn.AudioSource( audioResource, volume, start, stop );

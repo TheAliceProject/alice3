@@ -20,23 +20,30 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.media;
+package org.alice.stageide.choosers;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MediaFactory {
-	public static final double DEFAULT_VOLUME = 1.0;
-	public static final double DEFAULT_START_TIME = 0.0;
-	public static final double DEFAULT_STOP_TIME = Double.NaN;
-	public abstract Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime, double stopTime );
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime ) {
-		return createPlayer( audioResource, volume, startTime, DEFAULT_STOP_TIME );
+public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.VolumeLevel > {
+	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
+	private java.awt.Component[] components = {this.volumeLevelControl};
+	public VolumeLevelChooser() {
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
+		//todo
 	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume ) {
-		return createPlayer( audioResource, volume, DEFAULT_START_TIME );
+	@Override
+	public java.awt.Component[] getComponents() {
+		return this.components;
 	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {
-		return createPlayer( audioResource, DEFAULT_VOLUME );
+	public org.alice.apis.moveandturn.VolumeLevel getValue() {
+		return new org.alice.apis.moveandturn.VolumeLevel( this.volumeLevelControl.getVolumeLevel() );
+	}
+	public boolean isInputValid() {
+		return true;
+	}
+	public String getTitleDefault() {
+		return "Enter Custom Volume Level";
 	}
 }
+

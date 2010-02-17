@@ -25,24 +25,24 @@ package org.alice.stageide.cascade.customfillin;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomPortionFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, org.alice.apis.moveandturn.Portion > {
+public class CustomVolumeLevelFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, org.alice.apis.moveandturn.VolumeLevel > {
 	@Override
 	protected String getMenuProxyText() {
-		return "Custom Portion...";
+		return "Custom Volume Level...";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
-		return new org.alice.stageide.choosers.PortionChooser();
+		return new org.alice.stageide.choosers.VolumeLevelChooser();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.InstanceCreation createExpression( org.alice.apis.moveandturn.Portion value ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Portion.class );
-		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = type.getDeclaredConstructor( Number.class );
+	protected edu.cmu.cs.dennisc.alice.ast.InstanceCreation createExpression( org.alice.apis.moveandturn.VolumeLevel value ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.VolumeLevel.class );
+		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = type.getDeclaredConstructor( org.alice.apis.moveandturn.VolumeLevel.class );
 		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
 		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor,
 				new edu.cmu.cs.dennisc.alice.ast.Argument(
 						parameter, 
-						new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value.getValue() )
+						new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value.doubleValue() )
 				)
 		);
 	}

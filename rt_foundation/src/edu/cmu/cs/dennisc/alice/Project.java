@@ -200,6 +200,9 @@ public class Project {
 	
 	public void addResource( Resource resource ) {
 		synchronized( this.resources ) {
+			if( this.resources.contains( resource ) ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "already contains resource:", resource );
+			}
 			this.resources.add( resource );
 		}
 	}

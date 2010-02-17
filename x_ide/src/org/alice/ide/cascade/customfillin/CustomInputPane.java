@@ -47,6 +47,7 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 		try {
 			expression = this.getActualInputValue();
 		} catch( RuntimeException re ) {
+			//re.printStackTrace();
 			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
 		}
 		return getIDE().getPreviewFactory().createExpressionPane( expression );

@@ -149,8 +149,21 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		} else {
 			this.player.setStopTime( new javax.media.Time( this.stopTime ) );
 		}
-//		javax.media.GainControl gainControl = this.player.getGainControl();
-//		gainControl.setLevel( (float)this.volumeLevel );
+		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( this.volumeLevel, 1.0 ) ) {
+			//pass
+		} else {
+			javax.media.GainControl gainControl = this.player.getGainControl();
+			float defaultVolumeLevel = gainControl.getLevel();
+			
+			float v = (float)( this.volumeLevel * defaultVolumeLevel );
+			
+			v = Math.max( v, 0.0f );
+			
+			final float MAX = 0.8f;  //should be 1.0f but for a bug in jmf
+			v = Math.min( v, MAX );
+			
+			gainControl.setLevel( v );
+		}
 		this.player.start();
 	}
 	@Override

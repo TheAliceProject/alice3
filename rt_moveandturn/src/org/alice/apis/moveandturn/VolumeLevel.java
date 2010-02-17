@@ -20,23 +20,31 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.media;
+package org.alice.apis.moveandturn;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MediaFactory {
-	public static final double DEFAULT_VOLUME = 1.0;
-	public static final double DEFAULT_START_TIME = 0.0;
-	public static final double DEFAULT_STOP_TIME = Double.NaN;
-	public abstract Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime, double stopTime );
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime ) {
-		return createPlayer( audioResource, volume, startTime, DEFAULT_STOP_TIME );
+public class VolumeLevel extends Number {
+	protected double m_value;
+
+	public VolumeLevel( Double value ) {
+		m_value = value;
 	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume ) {
-		return createPlayer( audioResource, volume, DEFAULT_START_TIME );
+	@Override 
+	public double doubleValue() {
+		return m_value;
 	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {
-		return createPlayer( audioResource, DEFAULT_VOLUME );
+	@Override
+	public float floatValue() {
+		return (float)m_value;
+	}
+	@Override
+	public int intValue() {
+		return (int)m_value;
+	}
+	@Override
+	public long longValue() {
+		return (long)m_value;
 	}
 }

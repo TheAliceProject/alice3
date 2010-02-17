@@ -20,23 +20,34 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.media;
+package org.alice.stageide.controls;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class MediaFactory {
-	public static final double DEFAULT_VOLUME = 1.0;
-	public static final double DEFAULT_START_TIME = 0.0;
-	public static final double DEFAULT_STOP_TIME = Double.NaN;
-	public abstract Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime, double stopTime );
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume, double startTime ) {
-		return createPlayer( audioResource, volume, startTime, DEFAULT_STOP_TIME );
+public class VolumeLevelControl extends javax.swing.JSlider {
+	public VolumeLevelControl() {
+		this.setValue( 100 );
+		this.setMaximum( 200 );
+
+		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
+		labels.put( 0, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Silent (0.0)" ) );
+		labels.put( 100, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Normal (1.0)" ) );
+		labels.put( 200, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "Louder (2.0)" ) );
+		this.setLabelTable( labels );
+		this.setPaintLabels( true );
+		this.setOrientation( javax.swing.SwingConstants.VERTICAL );
+
+		this.setSnapToTicks( true );
+		this.setMinorTickSpacing( 10 );
+		this.setMajorTickSpacing( 100 );
+		this.setPaintTicks( true );
 	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource, double volume ) {
-		return createPlayer( audioResource, volume, DEFAULT_START_TIME );
+	
+	public double getVolumeLevel() {
+		return this.getValue() / 100.0;
 	}
-	public Player createPlayer( org.alice.virtualmachine.resources.AudioResource audioResource ) {
-		return createPlayer( audioResource, DEFAULT_VOLUME );
+	public void setVolumeLevel( double volumeLevel ) {
+		this.setValue( (int)(volumeLevel*100+0.5) );
 	}
 }

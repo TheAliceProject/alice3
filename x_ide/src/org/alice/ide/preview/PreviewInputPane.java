@@ -34,7 +34,12 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.zoot.ZInput
 	class PreviewPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		public void refresh() {
 			edu.cmu.cs.dennisc.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
-			this.add( PreviewInputPane.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
+//			java.awt.Component component = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
+//					PreviewInputPane.this.createPreviewSubComponent(),
+//					javax.swing.Box.createHorizontalGlue()
+//			);
+			java.awt.Component component = PreviewInputPane.this.createPreviewSubComponent();
+			this.add( component, java.awt.BorderLayout.WEST );
 			this.revalidate();
 			this.repaint();
 		}
