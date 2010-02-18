@@ -30,7 +30,6 @@ public class FixedJavaSoundRenderer extends com.sun.media.renderer.audio.JavaSou
 		final String OFFENDING_RENDERER_PLUGIN_NAME = com.sun.media.renderer.audio.JavaSoundRenderer.class.getName();
 		javax.media.Format[] rendererInputFormats = javax.media.PlugInManager.getSupportedInputFormats( OFFENDING_RENDERER_PLUGIN_NAME, javax.media.PlugInManager.RENDERER );
 		javax.media.Format[] rendererOutputFormats = javax.media.PlugInManager.getSupportedOutputFormats( OFFENDING_RENDERER_PLUGIN_NAME, javax.media.PlugInManager.RENDERER );
-		//should be only rendererInputFormats
 		if( rendererInputFormats != null || rendererOutputFormats != null ) {
 			final String REPLACEMENT_RENDERER_PLUGIN_NAME = FixedJavaSoundRenderer.class.getName();
 			javax.media.PlugInManager.removePlugIn( OFFENDING_RENDERER_PLUGIN_NAME, javax.media.PlugInManager.RENDERER );

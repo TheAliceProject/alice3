@@ -32,6 +32,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.swing.L
 		this.assignmentExpression = assignmentExpression;
 		edu.cmu.cs.dennisc.alice.ast.Expression left = this.assignmentExpression.leftHandSide.getValue();
 		
+		edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType;
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		javax.swing.JComponent parent;
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
@@ -48,7 +49,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.swing.L
 			org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( fieldAccess.field.getValue() );
 //			nameLabel.setFontToScaledFont( 1.5f );
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
-			edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType = field.getDesiredValueType();
+			desiredValueType = field.getDesiredValueType();
 			parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, null, desiredValueType ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
 				parent.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " . " ) );
@@ -56,11 +57,18 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.swing.L
 			parent.add( nameLabel );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression;
-			parent.add( new VariablePane( variableAccess.variable.getValue() ) );
+			edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = variableAccess.variable.getValue();
+			//todo?
+			//desiredValueType = variable.getDesiredValueType();
+			desiredValueType = null;
+			parent.add( new VariablePane( variable ) );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ParameterAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess = (edu.cmu.cs.dennisc.alice.ast.ParameterAccess)expression;
-			parent.add( new ParameterPane( null, (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameterAccess.parameter.getValue() ) );
+			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
+			desiredValueType = parameter.getDesiredValueType();
+			parent.add( new ParameterPane( null, (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter ) );
 		} else {
+			desiredValueType = null;
 			parent.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "TODO" ) );
 		}
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
@@ -74,6 +82,6 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.swing.L
 		} else {
 			parent.add( new org.alice.ide.common.GetsPane( true ) );
 		}
-		parent.add( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null ) );
+		parent.add( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null, desiredValueType ) );
 	}
 }

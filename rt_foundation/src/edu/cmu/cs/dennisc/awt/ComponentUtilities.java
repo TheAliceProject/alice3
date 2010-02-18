@@ -27,6 +27,16 @@ package edu.cmu.cs.dennisc.awt;
  * @author Dennis Cosgrove
  */
 public class ComponentUtilities {
+	public static void makeStandOut( java.awt.Component component ) {
+		if( component instanceof javax.swing.JComponent ) {
+			javax.swing.JComponent jComponent = (javax.swing.JComponent)component;
+			jComponent.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.RED, 4 ) );
+			jComponent.setOpaque( true );
+		}
+		component.setBackground( java.awt.Color.GREEN );
+	}
+	
+	
 	public static final edu.cmu.cs.dennisc.pattern.HowMuch DEFAULT_HOW_MUCH = edu.cmu.cs.dennisc.pattern.HowMuch.COMPONENT_AND_DESCENDANTS;
 	private static <E extends java.awt.Component> E getFirstToAccept( boolean isComponentACandidate, boolean isChildACandidate, boolean isGrandchildAndBeyondACandidate, java.awt.Component component, Class< E > cls, edu.cmu.cs.dennisc.pattern.Criterion< ? >... criterions ) {
 		assert component != null;
