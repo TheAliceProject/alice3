@@ -58,7 +58,7 @@ public class ImageFactory {
 
 			return rv;
 		} else {
-			return null;
+			throw new RuntimeException( "content type not found for " + file );
 		}
 	}
 

@@ -63,7 +63,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 			}
 			return rv;			
 		} else {
-			return null;
+			throw new RuntimeException( "content type not found for " + file );
 		}
 	}
 	

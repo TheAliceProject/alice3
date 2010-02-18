@@ -6,6 +6,7 @@ public class ImageResource extends org.alice.virtualmachine.Resource {
 	private static final String PNG_MIME_TYPE = "image/png";
 	private static final String JPEG_MIME_TYPE = "image/jpeg";
 	private static final String BMP_MIME_TYPE = "image/bmp";
+	private static final String GIF_MIME_TYPE = "image/gif";
 
 	static {
 		ImageResource.extensionToContentTypeMap = new java.util.HashMap< String, String >();
@@ -13,6 +14,7 @@ public class ImageResource extends org.alice.virtualmachine.Resource {
 		ImageResource.extensionToContentTypeMap.put( "jpg", JPEG_MIME_TYPE );
 		ImageResource.extensionToContentTypeMap.put( "jpeg", JPEG_MIME_TYPE );
 		ImageResource.extensionToContentTypeMap.put( "bmp", BMP_MIME_TYPE );
+		ImageResource.extensionToContentTypeMap.put( "gif", GIF_MIME_TYPE );
 	}
 
 	public static String getContentType( String path ) {
