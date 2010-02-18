@@ -30,6 +30,7 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 	static {
 		System.out.print( "Attempting to register mp3 capability... " );
 		com.sun.media.codec.audio.mp3.JavaDecoder.main( new String[] {} );
+		edu.cmu.cs.dennisc.javax.media.renderer.audio.FixedJavaSoundRenderer.usurpControlFromJavaSoundRenderer();
 	}
 
 	private static MediaFactory singleton;

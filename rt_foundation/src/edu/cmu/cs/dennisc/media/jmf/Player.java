@@ -104,7 +104,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	private double volumeLevel;
 	private double startTime;
 	private double stopTime;
-	public Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime ) {
+	/*package private*/ Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime ) {
 		this.player = player;
 		this.volumeLevel = volumeLevel;
 		this.startTime = startTime;
@@ -156,12 +156,8 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 			float defaultVolumeLevel = gainControl.getLevel();
 			
 			float v = (float)( this.volumeLevel * defaultVolumeLevel );
-			
 			v = Math.max( v, 0.0f );
-			
-			final float MAX = 0.8f;  //should be 1.0f but for a bug in jmf
-			v = Math.min( v, MAX );
-			
+			v = Math.min( v, 1.0f );
 			gainControl.setLevel( v );
 		}
 		this.player.start();
