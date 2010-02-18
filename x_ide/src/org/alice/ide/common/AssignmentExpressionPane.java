@@ -47,7 +47,9 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.swing.L
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
 			org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( fieldAccess.field.getValue() );
 //			nameLabel.setFontToScaledFont( 1.5f );
-			parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, null ) );
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType = field.getDesiredValueType();
+			parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, null, desiredValueType ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
 				parent.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " . " ) );
 			}

@@ -409,19 +409,32 @@ public class StageIDE extends org.alice.ide.IDE {
 //	}
 
 	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getActualTypeForDesiredParameterType( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		if( type.isAssignableTo( org.alice.apis.moveandturn.Angle.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
+		} else if( type.isAssignableTo( org.alice.apis.moveandturn.Portion.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
+		} else if( type.isAssignableTo( org.alice.apis.moveandturn.VolumeLevel.class ) ) {
+			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
+		} else {
+            return super.getActualTypeForDesiredParameterType( type );
+		}
+	}
+	
+	@Override
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
 		super.addExpressionFillerInners( rv );
 		rv.add( new org.alice.ide.cascade.fillerinners.ConstantsOwningFillerInner( org.alice.apis.moveandturn.Color.class ) );
 		rv.add( new org.alice.stageide.cascade.fillerinners.KeyFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.AngleFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.PortionFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.AudioSourceFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.VolumeLevelFillerInner() );
+		rv.add( new org.alice.stageide.cascade.fillerinners.ImageSourceFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.MouseButtonListenerFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.KeyListenerFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.OutfitFillerInner() );
 		rv.add( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.AudioSourceFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.VolumeLevelFillerInner() );
-		rv.add( new org.alice.stageide.cascade.fillerinners.ImageSourceFillerInner() );
 		return rv;
 	}
 	

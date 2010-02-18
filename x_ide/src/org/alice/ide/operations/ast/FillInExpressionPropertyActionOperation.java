@@ -26,12 +26,14 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class FillInExpressionPropertyActionOperation extends AbstractExpressionPropertyActionOperation {
-	public FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	private edu.cmu.cs.dennisc.alice.ast.AbstractType desiredType;
+	public FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredType ) {
 		super( expressionProperty );
+		this.desiredType = desiredType;
 	}
 	@Override
 	protected void initializeInternal(edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getExpressionProperty().getExpressionType();
-		getIDE().promptUserForExpression( type, prevExpression, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
+		//edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getExpressionProperty().getExpressionType();
+		getIDE().promptUserForExpression( this.desiredType, prevExpression, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
 	}
 }

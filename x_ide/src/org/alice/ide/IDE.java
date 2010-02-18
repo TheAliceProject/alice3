@@ -1251,12 +1251,12 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		}
 	}
 
-	private boolean addSeparatorIfNecessary( edu.cmu.cs.dennisc.cascade.Blank blank, String text, boolean isNecessary ) {
-		if( isNecessary ) {
-			blank.addSeparator( text );
-		}
-		return false;
-	}
+//	private boolean addSeparatorIfNecessary( edu.cmu.cs.dennisc.cascade.Blank blank, String text, boolean isNecessary ) {
+//		if( isNecessary ) {
+//			blank.addSeparator( text );
+//		}
+//		return false;
+//	}
 	protected void addFillInAndPossiblyPartFills( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
 	}
@@ -1279,31 +1279,45 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			return null;
 		}
 	}
+	
+	//todo: remove this
+	@Deprecated
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getActualTypeForDesiredParameterType( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return type;
+	}
+	
 	protected void addExpressionBonusFillInsForType( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
 		if( codeInFocus != null ) {
+
+			
+			//todo: fix
+			type = this.getActualTypeForDesiredParameterType( type );
+			
+			
+			
 			edu.cmu.cs.dennisc.alice.ast.AbstractType selectedType = this.getTypeInScope();
-			boolean isNecessary = true;
+			//boolean isNecessary = true;
 			if( type.isAssignableFrom( selectedType ) ) {
-				isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+				//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 				this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), selectedType, type );
 			}
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : selectedType.getDeclaredFields() ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = field.getValueType();
 				if( type.isAssignableFrom( fieldType ) ) {
-					isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 					edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
 					this.addFillInAndPossiblyPartFills( blank, fieldAccess, fieldType, type );
 				}
 				if( fieldType.isArray() ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType fieldComponentType = fieldType.getComponentType();
 					if( type.isAssignableFrom( fieldComponentType ) ) {
-						isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+						//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
 						//blank.addFillIn( new ArrayAccessFillIn( fieldType, fieldAccess ) );
 					}
 					if( type.isAssignableFrom( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) ) {
-						isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+						//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 						edu.cmu.cs.dennisc.alice.ast.Expression fieldAccess = new edu.cmu.cs.dennisc.alice.ast.FieldAccess( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), field );
 						edu.cmu.cs.dennisc.alice.ast.ArrayLength arrayLength = new edu.cmu.cs.dennisc.alice.ast.ArrayLength( fieldAccess );
 						blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.ArrayLength >( arrayLength ) );
@@ -1312,27 +1326,27 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			}
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
 				if( type.isAssignableFrom( parameter.getValueType() ) ) {
-					isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
 				}
 			}
 			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : getVariables( codeInFocus ) ) {
 				if( type.isAssignableFrom( variable.valueType.getValue() ) ) {
-					isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ), variable.valueType.getValue(), type );
 				}
 			}
 			for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : getConstants( codeInFocus ) ) {
 				if( type.isAssignableFrom( constant.valueType.getValue() ) ) {
-					isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
 					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant ), constant.valueType.getValue(), type );
 				}
 			}
-			if( isNecessary ) {
-				//pass
-			} else {
-				blank.addSeparator();
-			}
+//			if( isNecessary ) {
+//				//pass
+//			} else {
+//				blank.addSeparator();
+//			}
 		}
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
@@ -1371,7 +1385,6 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			}
 			this.addCustomFillIns( blank, type );
 			type = getTypeFor( type );
-
 			if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) {
 				this.addFillInsForObjectType( blank );
 			} else {
@@ -1397,7 +1410,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 				constantsOwningFillerInner.addFillIns( blank );
 			}
 
+			blank.addSeparator();
 			this.addExpressionBonusFillInsForType( blank, type );
+			blank.addSeparator();
 			if( type.isArray() ) {
 				blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomArrayFillIn() );
 			}
@@ -1479,7 +1494,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 					edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression > menuFillIn = new edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( parameterName ) {
 						@Override
 						protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-							org.alice.ide.IDE.getSingleton().addFillIns( blank, parameter.getValueType() );
+							org.alice.ide.IDE.getSingleton().addFillIns( blank, parameter.getDesiredValueType() );
 						}
 					};
 					this.addFillIn( menuFillIn );

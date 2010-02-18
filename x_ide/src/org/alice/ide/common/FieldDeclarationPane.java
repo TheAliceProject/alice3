@@ -47,7 +47,7 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineA
 		
 		java.awt.Component component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
 		if( factory instanceof org.alice.ide.memberseditor.Factory ) {
-			component = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane(null, component, field.initializer );
+			component = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane(null, component, field.initializer, field.getDesiredValueType() );
 		}
 		this.add( component );
 	}

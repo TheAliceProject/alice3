@@ -95,7 +95,7 @@ public class Factory extends org.alice.ide.common.Factory {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane ) {
+	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
 //		java.awt.Component rv = ide.getOverrideComponent( expression );
@@ -112,7 +112,7 @@ public class Factory extends org.alice.ide.common.Factory {
 			//				edu.cmu.cs.dennisc.alice.ast.AbstractParameter paramter = argument.parameter.getValue();
 			//				rv = new ArgumentExpressionPropertyDropDownPane( rv, expressionProperty, null, argument );
 			//			} else {
-			rv = new ExpressionPropertyDropDownPane( prefixPane, rv, expressionProperty );
+			rv = new ExpressionPropertyDropDownPane( prefixPane, rv, expressionProperty, desiredValueType );
 			//			}
 		}
 		return rv;

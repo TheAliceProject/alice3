@@ -43,6 +43,34 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 		this.children.add( node );
 	}
 
+	private void cleanUpUndesiredSeparators() {
+		 java.util.ListIterator< Node > listIterator = this.children.listIterator();
+		 boolean isSeparatorAcceptable = false;
+		 while( listIterator.hasNext() ) {
+			 Node node = listIterator.next();
+			 if( node instanceof SeparatorFillIn ) {
+				 if( isSeparatorAcceptable ) {
+					//pass 
+				 } else {
+					 listIterator.remove();
+				 }
+				 isSeparatorAcceptable = false;
+			 } else {
+				 isSeparatorAcceptable = true;
+			 }
+		 }
+		 
+		 //remove separators at the end (should only be a maximum of 1)
+		 final int N = this.children.size();
+		 for( int i=0; i<N; i++ ) {
+			 int index = N-i-1;
+			 if( this.children.get( index ) instanceof SeparatorFillIn ) {
+				 this.children.remove( index );
+			 } else {
+				 break;
+			 }
+		 }
+	}
 	protected abstract void addChildren();
 	public java.util.List<Node> getChildren() {
 		 if( this.children != null ) {
@@ -50,6 +78,7 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 		 } else {
 			 this.children = new java.util.LinkedList< Node >();
 			 this.addChildren();
+			 this.cleanUpUndesiredSeparators();
 		 }
 		 return this.children;
 	}

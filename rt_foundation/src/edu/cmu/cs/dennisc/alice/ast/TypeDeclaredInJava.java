@@ -33,6 +33,8 @@ public class TypeDeclaredInJava extends AbstractType {
 	public static final TypeDeclaredInJava BOOLEAN_PRIMITIVE_TYPE = get( Boolean.TYPE );
 	public static final TypeDeclaredInJava BOOLEAN_OBJECT_TYPE = get( Boolean.class );
 
+	public static final TypeDeclaredInJava NUMBER_OBJECT_TYPE = get( Number.class );
+
 	public static final TypeDeclaredInJava INTEGER_PRIMITIVE_TYPE = get( Integer.TYPE );
 	public static final TypeDeclaredInJava INTEGER_OBJECT_TYPE = get( Integer.class );
 	public static final TypeDeclaredInJava DOUBLE_PRIMITIVE_TYPE = get( Double.TYPE );

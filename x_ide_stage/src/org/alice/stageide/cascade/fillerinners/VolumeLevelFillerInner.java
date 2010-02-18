@@ -37,6 +37,6 @@ public class VolumeLevelFillerInner extends org.alice.ide.cascade.fillerinners.A
 		this.addExpressionFillIn( blank, 1.0 );
 		this.addExpressionFillIn( blank, 2.0 );
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
+		blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomVolumeLevelFillIn() );
 	}
 }

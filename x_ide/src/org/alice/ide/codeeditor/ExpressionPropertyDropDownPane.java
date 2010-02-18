@@ -29,19 +29,23 @@ import org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation;
  */
 public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.cmu.cs.dennisc.zoot.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyDropDownPane( java.awt.Component prefixPane, java.awt.Component component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( java.awt.Component prefixPane, java.awt.Component component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		super( prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
-		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation( this.expressionProperty ) );
+		if( desiredValueType != null ) {
+			//pass
+		} else {
+			desiredValueType = expressionProperty.getExpressionType();
+		}
+		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation( this.expressionProperty, desiredValueType ) );
+	}
+	@Deprecated
+	public ExpressionPropertyDropDownPane( java.awt.Component prefixPane, java.awt.Component component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		this( prefixPane, component, expressionProperty, null );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
-	
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getDesiredType() {
-		return this.expressionProperty.getExpressionType();
-	}
-
 
 	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
