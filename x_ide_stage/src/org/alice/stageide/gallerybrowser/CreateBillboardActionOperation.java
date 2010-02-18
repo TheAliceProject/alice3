@@ -24,28 +24,73 @@ package org.alice.stageide.gallerybrowser;
 
 class ImageView extends javax.swing.JComponent {
 	private java.awt.image.BufferedImage bufferedImage;
-	private int desiredHeight;
-	public ImageView( java.awt.image.BufferedImage bufferedImage, int desiredHeight ) {
+	private int desiredSize;
+	public ImageView( java.awt.image.BufferedImage bufferedImage, int desiredSize ) {
 		this.bufferedImage = bufferedImage;
-		this.desiredHeight = desiredHeight;
+		this.desiredSize = desiredSize;
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		if( this.bufferedImage != null ) {
 			double aspectRatio = this.bufferedImage.getWidth() / (double)this.bufferedImage.getHeight();
-			int height = this.desiredHeight;
-			int width = (int)(height * aspectRatio);
+			int width;
+			int height;
+			if( this.bufferedImage.getWidth() > (double)this.bufferedImage.getHeight() ) {
+				width = this.desiredSize;
+				height = (int)(width / aspectRatio);
+			} else {
+				height = this.desiredSize;
+				width = (int)(height * aspectRatio);
+			}
 			return new java.awt.Dimension( width, height );
 		} else {
 			return super.getPreferredSize();
 		}
 	}
+//	@Override
+//	public java.awt.Dimension getMaximumSize() {
+//		return this.getPreferredSize();
+//	}
 
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		//super.paintComponent( g );
 		if( this.bufferedImage != null ) {
-			g.drawImage( this.bufferedImage, 0, 0, this.getWidth(), this.getHeight(), 0, 0, this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this );
+			java.awt.Dimension preferredSize = this.getPreferredSize();
+
+//			int w;
+//			int h;
+//			double componentAspectRatio = this.getWidth() / (double)this.getHeight();
+//			double imageAspectRatio = this.bufferedImage.getWidth() / (double)this.bufferedImage.getHeight();
+//			if( componentAspectRatio > imageAspectRatio ) {
+//				if( this.getWidth() > this.getHeight() ) {
+//					w = this.getWidth();
+//					h = (int)(w / imageAspectRatio);
+//				} else {
+//					h = this.getHeight();
+//					w = (int)(h * imageAspectRatio);
+//				}
+//			} else {
+//				if( this.getWidth() > this.getHeight() ) {
+//					h = this.getHeight();
+//					w = (int)(h * imageAspectRatio);
+//				} else {
+//					w = this.getWidth();
+//					h = (int)(w / imageAspectRatio);
+//				}
+//			}
+			int w = (int)preferredSize.getWidth();
+			int h = (int)preferredSize.getHeight();
+//			int x = (this.getWidth() - w)/2;
+//			int y = (this.getHeight() - h)/2;
+			
+			int x = 0;
+			int y = 0;
+			
+//			g.setColor( java.awt.Color.BLACK );
+//			g.drawRect( x, y, w-1, h-1 );
+//			g.drawRect( 0, 0, this.getWidth()-1, this.getHeight()-1 );
+			g.drawImage( this.bufferedImage, x, y, x+w, y+h, 0, 0, this.bufferedImage.getWidth(), this.bufferedImage.getHeight(), this );
 		}
 	}
 }
@@ -62,8 +107,8 @@ class CreateFieldFromBillboardPane extends org.alice.ide.createdeclarationpanes.
 			if( imageResource != null ) {
 				java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
 				if( bufferedImage != null ) {
-					ImageView imageView = new ImageView( bufferedImage, 200 );
-					this.add( imageView, java.awt.BorderLayout.EAST );
+					ImageView imageView = new ImageView( bufferedImage, 240 );
+					this.add( new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( javax.swing.Box.createHorizontalStrut( 8 ), imageView ), java.awt.BorderLayout.EAST );
 				} else {
 					//todo?
 				}
