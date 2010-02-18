@@ -27,59 +27,16 @@ package edu.cmu.cs.dennisc.texture;
  */
 public class TextureFactory {
 	private static java.util.Map< org.alice.virtualmachine.resources.ImageResource, Texture > resourceToTextureMap = new java.util.HashMap< org.alice.virtualmachine.resources.ImageResource, Texture >();
-	private static java.util.Map< String, String > extensionToContentTypeMap;
-	
-	private static final String PNG_MIME_TYPE = "image/png";
-	private static final String JPEG_MIME_TYPE = "image/jpeg";
-	private static final String BMP_MIME_TYPE = "image/bmp";
-
-	static {
-		System.out.print( "Attempting to register mp3 capability... " );
-		com.sun.media.codec.audio.mp3.JavaDecoder.main( new String[] {} );
-		TextureFactory.extensionToContentTypeMap = new java.util.HashMap< String, String >();
-		TextureFactory.extensionToContentTypeMap.put( "png", PNG_MIME_TYPE );
-		TextureFactory.extensionToContentTypeMap.put( "jpg", JPEG_MIME_TYPE );
-		TextureFactory.extensionToContentTypeMap.put( "jpeg", JPEG_MIME_TYPE );
-		TextureFactory.extensionToContentTypeMap.put( "bmp", BMP_MIME_TYPE );
-	}
-
-	public static String getContentType( String path ) {
-		String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( path );
-		return TextureFactory.extensionToContentTypeMap.get( extension.toLowerCase() );
-	}
-	public static String getContentType( java.io.File file ) {
-		return getContentType( file.getName() );
-	}
-	
-	public static boolean isAcceptableContentType( String contentType ) {
-		return TextureFactory.extensionToContentTypeMap.containsValue( contentType );
-	}
-	
-	public static java.io.FilenameFilter createFilenameFilter( final boolean areDirectoriesAccepted ) {
-		return new java.io.FilenameFilter() {
-			public boolean accept( java.io.File dir, String name ) {
-				java.io.File file = new java.io.File( dir, name );
-				if( file.isDirectory() ) {
-					return areDirectoriesAccepted;
-				} else {
-					return getContentType( name ) != null;
-				}
-			}
-		};
-	}
 	
 	public static Texture getTexture( org.alice.virtualmachine.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
 		assert imageResource != null;
-		Texture texture = TextureFactory.resourceToTextureMap.get( imageResource );
-		if( texture != null ) {
+		Texture rv = TextureFactory.resourceToTextureMap.get( imageResource );
+		if( rv != null ) {
 			//pass
 		} else {
-			try {
-				java.awt.image.BufferedImage bufferedImage = javax.imageio.ImageIO.read( new java.io.ByteArrayInputStream( imageResource.getData() ) );
-//				if( imageResource.getWidth() < 0 || imageResource.getHeight() < 0 ) {
-					imageResource.setWidth( bufferedImage.getWidth() );
-					imageResource.setHeight( bufferedImage.getHeight() );
-//				}
+			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
+
+			if( bufferedImage != null ) {
 				BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
 				bufferedImageTexture.setBufferedImage( bufferedImage );
 				bufferedImageTexture.setMipMappingDesired( isMipMappingDesired );
@@ -89,22 +46,13 @@ public class TextureFactory {
 				bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
 
 			
-				texture = bufferedImageTexture;
-				TextureFactory.resourceToTextureMap.put( imageResource, texture );
-			} catch( java.io.IOException ioe ) {
-				//todo: return warning texture
+				rv = bufferedImageTexture;
+				TextureFactory.resourceToTextureMap.put( imageResource, rv );
+			} else {
+				//todo: warning texture
+				rv = null;
 			}
 		}
-		return texture;
+		return rv;
 	}
-	
-	public static org.alice.virtualmachine.resources.ImageResource createImageResource( java.io.File file ) throws java.io.IOException {
-		String contentType = getContentType( file );
-		if( contentType != null ) {
-			return new org.alice.virtualmachine.resources.ImageResource( file, contentType );
-		} else {
-			return null;
-		}
-	}
-	
 }

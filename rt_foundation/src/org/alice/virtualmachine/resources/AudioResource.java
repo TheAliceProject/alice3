@@ -56,10 +56,13 @@ public class AudioResource extends org.alice.virtualmachine.Resource {
 		super( cls, resourceName, contentType );
 	}
 	public AudioResource( Class<?> cls, String resourceName ) {
-		super( cls, resourceName, getContentType( resourceName ) );
+		this( cls, resourceName, getContentType( resourceName ) );
 	}
 	public AudioResource( java.io.File file, String contentType ) throws java.io.IOException {
 		super( file, contentType );
+	}
+	public AudioResource( java.io.File file ) throws java.io.IOException {
+		this( file, getContentType( file ) );
 	}
 	public double getDuration() {
 		return this.duration;

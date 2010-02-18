@@ -41,6 +41,6 @@ public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	
 	@Override
 	protected org.alice.virtualmachine.resources.ImageResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
-		return edu.cmu.cs.dennisc.texture.TextureFactory.createImageResource( file );
+		return edu.cmu.cs.dennisc.image.ImageFactory.createImageResource( file );
 	}
 }
