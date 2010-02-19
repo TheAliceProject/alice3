@@ -20,34 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.sceneeditor;
+package edu.cmu.cs.dennisc.croquet.swing;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FauxSceneEditor extends AbstractSceneEditor {
+public abstract class TableCellRenderer<E> extends javax.swing.table.DefaultTableCellRenderer {
+	protected abstract javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column );
 	@Override
-	public void generateCodeForSetUp() {
-		throw new RuntimeException();
-	}
-	@Override
-	public void preserveProjectProperties() {
-		throw new RuntimeException();
-	}
-	@Override
-	public void restoreProjectProperties() {
-		//pass
-	}
-	@Override
-	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
-	}
-	@Override
-	public void handleExpandContractChange( boolean isExpanded ) {
-	}
-	@Override
-	public void setRenderingEnabled( boolean isRenderingEnabled ) {
-	}
-	@Override
-	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
+	public final java.awt.Component getTableCellRendererComponent( javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column ) {
+		java.awt.Component rv = super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, column );
+		if( rv instanceof javax.swing.JLabel ) {
+			getTableCellRendererComponent( (javax.swing.JLabel)rv, table, (E)value, isSelected, hasFocus, row, column );
+		} else {
+			//todo
+		}
+		return rv;
 	}
 }

@@ -27,25 +27,26 @@ package edu.cmu.cs.dennisc.awt;
  */
 public class WindowUtilties {
 	public static void setLocationOnScreenToCenteredWithin( java.awt.Window window, java.awt.Component root ) {
-		int x = 0;
-		int y = 0;
-		if( root != null ) {
-			if( root.isShowing() ) {
-				java.awt.Dimension sizeDialog = window.getSize();
-				java.awt.Dimension sizeRoot = root.getSize();
-				java.awt.Point locationRoot = root.getLocationOnScreen();
-
-				x = locationRoot.x + (sizeRoot.width - sizeDialog.width) / 2;
-				y = locationRoot.y + (sizeRoot.height - sizeDialog.height) / 2;
-			}
+		java.awt.Dimension sizeDialog = window.getSize();
+		java.awt.Rectangle boundsRoot;
+		if( root != null && root.isShowing() ) {
+			java.awt.Point locationRoot = root.getLocationOnScreen();
+			java.awt.Dimension sizeRoot = root.getSize();
+			boundsRoot = new java.awt.Rectangle( locationRoot, sizeRoot );
+		} else {
+			//todo: handle multiple screens better?
+			boundsRoot = window.getGraphicsConfiguration().getBounds();
 		}
+		int x = boundsRoot.x + (boundsRoot.width - sizeDialog.width) / 2;
+		int y = boundsRoot.y + (boundsRoot.height - sizeDialog.height) / 2;
 		window.setLocation( x, y );
 		//ensureTopLeftCornerIsOnScreen( window );
 	}
 
 	public static void ensureTopLeftCornerIsOnScreen( final java.awt.Window window ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ensureTopLeftCornerIsOnScreen", window.isValid(), window.isVisible() );
 		assert window != null;
-		if( window.isValid() && window.isVisible() ) {
+		if( /*window.isValid() &&*/ window.isVisible() ) {
 			java.awt.Point ptScreen = window.getLocationOnScreen();
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( ptScreen );
 			if( ptScreen.x < 0 || ptScreen.y < 0 ) {

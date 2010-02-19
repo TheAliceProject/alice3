@@ -28,9 +28,30 @@ package edu.cmu.cs.dennisc.util;
 public abstract class CollectionUtilities {
 	private CollectionUtilities() {
 	}
+	public static <E extends Object> E[] createArray( java.util.Collection< E > collection, Class< E > cls, boolean isZeroLengthArrayDesiredForNull ) {
+		int size;
+		if( collection != null ) {
+			size = collection.size();
+		} else {
+			if( isZeroLengthArrayDesiredForNull ) {
+				size = 0;
+			} else {
+				size = -1;
+			}
+		}
+		E[] rv;
+		if( size >= 0  ) {
+			rv = (E[])java.lang.reflect.Array.newInstance( cls, size );
+		} else {
+			rv = null;
+		}
+		if( collection != null ) {
+			collection.toArray( rv );
+		}
+		return rv;
+	}
 	public static <E extends Object> E[] createArray( java.util.Collection< E > collection, Class< E > cls ) {
-		E[] rv = (E[])java.lang.reflect.Array.newInstance( cls, collection.size() );
-		return collection.toArray( rv );
+		return createArray( collection, cls, false );
 	}
 	public static <E extends Object> void set( java.util.Collection< E > collection, E... array ) {
 		collection.clear();

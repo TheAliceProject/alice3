@@ -33,13 +33,17 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 		return 3;
 	}
 	public int getRowCount() {
-		return this.resources.length;
+		if( this.resources != null ) {
+			return this.resources.length;
+		} else {
+			return 0;
+		}
 	}
 	@Override
 	public String getColumnName( int columnIndex ) {
 		switch( columnIndex ) {
 		case 0:
-			return "referenced?";
+			return "is referenced?";
 		case 1:
 			return "name";
 		case 2:
@@ -53,47 +57,92 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 		case 0:
 			return this.referencedResources.contains( this.resources[ rowIndex ] );
 		case 1:
-			return this.resources[ rowIndex ];
+			return this.resources[ rowIndex ].getName();
 		case 2:
-			return this.resources[ rowIndex ].getClass();
+			return this.resources[ rowIndex ];
 		default:
 			return null;
 		}
 	}
 }
 
-class IsReferencedTableCellRenderer extends javax.swing.table.DefaultTableCellRenderer {
-	public IsReferencedTableCellRenderer() {
-		this.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
-	}
+abstract class ResourceTableCellRenderer< E > extends edu.cmu.cs.dennisc.croquet.swing.TableCellRenderer< E > {
 	@Override
-	public java.awt.Component getTableCellRendererComponent( javax.swing.JTable table, java.lang.Object value, boolean isSelected, boolean hasFocus, int row, int column ) {
-		java.awt.Component rv = super.getTableCellRendererComponent( table, value, isSelected, hasFocus, row, column );
+	protected javax.swing.JLabel getTableCellRendererComponent(javax.swing.JLabel rv, javax.swing.JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column) {
+		rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
+		rv.setBorder( null );
 		return rv;
 	}
+}
+
+class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer< Boolean > {
 	@Override
-	public java.awt.Dimension getMaximumSize() {
-		return this.getPreferredSize();
+	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Boolean value, boolean isSelected, boolean hasFocus, int row, int column ) {
+		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
+		String text;
+		java.awt.Color foreground;
+		if( value ) {
+			foreground = java.awt.Color.BLACK;
+			text = "yes";
+		} else {
+			foreground = new java.awt.Color( 255, 0, 0 );
+			text = "NO";
+		}
+		rv.setText( text );
+		rv.setForeground( foreground );
+		return rv;
 	}
 }
+
+class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< org.alice.virtualmachine.Resource > {
+	@Override
+	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, org.alice.virtualmachine.Resource value, boolean isSelected, boolean hasFocus, int row, int column ) {
+		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
+		String text;
+		java.awt.Color foreground;
+		if( value != null ) {
+			foreground = java.awt.Color.BLACK;
+			text = value.getClass().getSimpleName();
+			final String RESOURCE_TEXT = "Resource";
+			if( text.endsWith( RESOURCE_TEXT ) ) {
+				text = text.substring( 0, text.length()-RESOURCE_TEXT.length() );
+			}
+//			text += " (";
+//			text += value.getContentType();
+//			text += ")";
+		} else {
+			foreground = new java.awt.Color( 255, 0, 0 );
+			text = "ERROR";
+		}
+		rv.setText( text );
+		rv.setForeground( foreground );
+		return rv;
+	}
+}
+
+class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice.virtualmachine.Resource > {
+}
+
 /**
  * @author Dennis Cosgrove
  */
 public class ResourcesPane extends org.alice.ide.Component {
-//	private edu.cmu.cs.dennisc.swing.List< org.alice.virtualmachine.Resource > list;
 	private javax.swing.JTable table = new javax.swing.JTable();
 	public ResourcesPane() {
 		this.setLayout( new java.awt.BorderLayout() );
-		org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( this.getIDE().getResources(), org.alice.virtualmachine.Resource.class );
-//		javax.swing.ListModel listModel = new edu.cmu.cs.dennisc.javax.swing.ArrayListModel( resources );
-//		this.list = new edu.cmu.cs.dennisc.swing.List< org.alice.virtualmachine.Resource >( listModel );
-		
+		org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( this.getIDE().getResources(), org.alice.virtualmachine.Resource.class, true );
 		java.util.Set< org.alice.virtualmachine.Resource > referencedResources = new java.util.HashSet< org.alice.virtualmachine.Resource >();
 		javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
 		table.setModel( tableModel );
 		javax.swing.table.TableColumn column0 = this.table.getColumn( this.table.getColumnName( 0 ) );
-		//column0.setMaxWidth( 16 );
-		column0.setCellRenderer( new IsReferencedTableCellRenderer() );
+		javax.swing.table.TableColumn column1 = this.table.getColumn( this.table.getColumnName( 1 ) );
+		javax.swing.table.TableColumn column2 = this.table.getColumn( this.table.getColumnName( 2 ) );
+		column0.setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
+		column1.setCellRenderer( new ResourceNameTableCellRenderer() );
+		column2.setCellRenderer( new ResourceTypeTableCellRenderer() );
+		column0.setPreferredWidth( 200 );
+		column1.setPreferredWidth( 400 );
+		column2.setPreferredWidth( 200 );
 		
 		this.add( new javax.swing.JScrollPane( this.table ), java.awt.BorderLayout.CENTER );
 	}
