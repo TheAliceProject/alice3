@@ -130,20 +130,24 @@ public class ResourcesPane extends org.alice.ide.Component {
 	private javax.swing.JTable table = new javax.swing.JTable();
 	public ResourcesPane() {
 		this.setLayout( new java.awt.BorderLayout() );
-		org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( this.getIDE().getResources(), org.alice.virtualmachine.Resource.class, true );
-		java.util.Set< org.alice.virtualmachine.Resource > referencedResources = new java.util.HashSet< org.alice.virtualmachine.Resource >();
-		javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
-		table.setModel( tableModel );
-		javax.swing.table.TableColumn column0 = this.table.getColumn( this.table.getColumnName( 0 ) );
-		javax.swing.table.TableColumn column1 = this.table.getColumn( this.table.getColumnName( 1 ) );
-		javax.swing.table.TableColumn column2 = this.table.getColumn( this.table.getColumnName( 2 ) );
-		column0.setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
-		column1.setCellRenderer( new ResourceNameTableCellRenderer() );
-		column2.setCellRenderer( new ResourceTypeTableCellRenderer() );
-		column0.setPreferredWidth( 200 );
-		column1.setPreferredWidth( 400 );
-		column2.setPreferredWidth( 200 );
-		
-		this.add( new javax.swing.JScrollPane( this.table ), java.awt.BorderLayout.CENTER );
+		edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();
+		if( project != null ) {
+			org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( project.getResources(), org.alice.virtualmachine.Resource.class, true );
+			java.util.Set< org.alice.virtualmachine.Resource > referencedResources = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getReferencedResources( project );
+			javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
+			table.setModel( tableModel );
+			javax.swing.table.TableColumn column0 = this.table.getColumn( this.table.getColumnName( 0 ) );
+			javax.swing.table.TableColumn column1 = this.table.getColumn( this.table.getColumnName( 1 ) );
+			javax.swing.table.TableColumn column2 = this.table.getColumn( this.table.getColumnName( 2 ) );
+			column0.setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
+			column1.setCellRenderer( new ResourceNameTableCellRenderer() );
+			column2.setCellRenderer( new ResourceTypeTableCellRenderer() );
+			column0.setPreferredWidth( 200 );
+			column1.setPreferredWidth( 400 );
+			column2.setPreferredWidth( 200 );
+		}
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.table );
+		this.add( scrollPane, java.awt.BorderLayout.CENTER );
+		//this.add( this.table, java.awt.BorderLayout.CENTER );
 	}
 }

@@ -32,7 +32,7 @@ public abstract class AbstractSaveProjectOperation extends AbstractSaveOperation
 	}
 	@Override
 	protected String getExtension() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION;
+		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION;
 	}
 	@Override
 	protected String getInitialFilename() {

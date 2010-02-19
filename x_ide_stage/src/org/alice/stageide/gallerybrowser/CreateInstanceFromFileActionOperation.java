@@ -37,7 +37,7 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractDeclareFiel
 		sb.append(" is able to create instances from class files saved by ");
 		sb.append(getIDE().getApplicationName());
 		sb.append(".\n\nLook for files with an ");
-		sb.append(edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION);
+		sb.append(edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION);
 		sb.append(" extension.");
 		javax.swing.JOptionPane.showMessageDialog(org.alice.ide.IDE.getSingleton(), sb.toString(), "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE);
 	}
@@ -45,17 +45,17 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractDeclareFiel
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
 		java.io.File directory = this.getInitialDirectory();
-		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog(this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION, false);
+		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog(this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false);
 
 		if (file != null) {
 			String lcFilename = file.getName().toLowerCase();
 			if (lcFilename.endsWith(".a2c")) {
 				javax.swing.JOptionPane.showMessageDialog(org.alice.ide.IDE.getSingleton(), "Alice3 does not load Alice2 characters", "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE);
-			} else if (lcFilename.endsWith(edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION.toLowerCase())) {
-				javax.swing.JOptionPane.showMessageDialog(this.getIDE(), file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION + " extension.", "Incorrect File Type",
+			} else if (lcFilename.endsWith(edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase())) {
+				javax.swing.JOptionPane.showMessageDialog(this.getIDE(), file.getAbsolutePath() + " appears to be a project file and not a class file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION + " extension.", "Incorrect File Type",
 						javax.swing.JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				boolean isWorthyOfException = lcFilename.endsWith(edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION.toLowerCase());
+				boolean isWorthyOfException = lcFilename.endsWith(edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase());
 				java.util.zip.ZipFile zipFile;
 				try {
 					zipFile = new java.util.zip.ZipFile(file);
@@ -70,7 +70,7 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractDeclareFiel
 				if (zipFile != null) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 					try {
-						edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set<org.alice.virtualmachine.Resource> > tuple = edu.cmu.cs.dennisc.alice.io.FileUtilities.readType(zipFile);
+						edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.util.Set<org.alice.virtualmachine.Resource> > tuple = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readType(zipFile);
 						type = tuple.getA();
 						
 						edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: add in resources" );

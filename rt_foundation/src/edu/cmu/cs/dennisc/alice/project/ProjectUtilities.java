@@ -20,12 +20,40 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.io;
+package edu.cmu.cs.dennisc.alice.project;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FileUtilities {
+public abstract class ProjectUtilities {
+	private ProjectUtilities() {
+	}
+
+	public static java.util.Set< org.alice.virtualmachine.Resource > getReferencedResources( edu.cmu.cs.dennisc.alice.Project project ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
+		java.util.Set< org.alice.virtualmachine.Resource > resources = project.getResources();
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ResourceExpression > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ResourceExpression >( edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class ) {
+			@Override
+			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression ) {
+				return true;
+			}
+		};
+		programType.crawl( crawler, true );
+		
+		java.util.Set< org.alice.virtualmachine.Resource > rv = new java.util.HashSet< org.alice.virtualmachine.Resource >();
+		for( edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression : crawler.getList() ) {
+			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
+			if( resources.contains( resource ) ) {
+				//pass
+			} else {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: adding missing resource", resource );
+				resources.add( resource );
+			}
+			rv.add( resource );
+		}
+		return rv;
+	}
+
 	public static final String PROJECT_EXTENSION = "a3p";
 	public static final String TYPE_EXTENSION = "a3c";
 	private static String PROPERTIES_ENTRY_NAME = "properties.bin";

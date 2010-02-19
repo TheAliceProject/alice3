@@ -38,7 +38,7 @@ public class SaveAsTypeOperation extends AbstractSaveOperation {
 	}
 	@Override
 	protected String getExtension() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION;
+		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION;
 	}
 	@Override
 	protected String getInitialFilename() {
@@ -46,7 +46,7 @@ public class SaveAsTypeOperation extends AbstractSaveOperation {
 	}
 	@Override
 	protected void save( java.io.File file ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeType( file, this.type );
+		edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeType( file, this.type );
 	}
 	@Override
 	protected boolean isPromptNecessary( java.io.File file ) {

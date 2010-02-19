@@ -1607,7 +1607,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		sb.append( " is able to open projects from files saved by " );
 		sb.append( this.getApplicationName() );
 		sb.append( ".\n\nLook for files with an " );
-		sb.append( edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION );
+		sb.append( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION );
 		sb.append( " extension." );
 		javax.swing.JOptionPane.showMessageDialog( org.alice.ide.IDE.getSingleton(), sb.toString(), "Cannot read file", javax.swing.JOptionPane.ERROR_MESSAGE );
 	}
@@ -1620,10 +1620,10 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			String lcFilename = file.getName().toLowerCase();
 			if( lcFilename.endsWith( ".a2w" ) ) {
 				javax.swing.JOptionPane.showMessageDialog( this, "Alice3 does not load Alice2 worlds", "Cannot read file", javax.swing.JOptionPane.INFORMATION_MESSAGE );
-			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.io.FileUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-				javax.swing.JOptionPane.showMessageDialog( this, file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
+				javax.swing.JOptionPane.showMessageDialog( this, file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			} else {
-				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.io.FileUtilities.PROJECT_EXTENSION.toLowerCase() );
+				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() );
 				java.util.zip.ZipFile zipFile;
 				try {
 					zipFile = new java.util.zip.ZipFile( file );
@@ -1638,7 +1638,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 				if( zipFile != null ) {
 					edu.cmu.cs.dennisc.alice.Project project;
 					try {
-						project = edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( zipFile );
+						project = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( zipFile );
 					} catch( java.io.IOException ioe ) {
 						if( isWorthyOfException ) {
 							throw new RuntimeException( file.getAbsolutePath(), ioe );
@@ -1882,7 +1882,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		} catch( Throwable t ) {
 			dataSources = new edu.cmu.cs.dennisc.zip.DataSource[] {};
 		}
-		edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( file, project, dataSources );
+		edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeProject( file, project, dataSources );
 		this.file = file;
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
 		this.updateHistoryLengthAtLastFileOperation();
@@ -2157,10 +2157,10 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		return rv.replaceAll( " ", "" );
 	}
 	public java.io.File getMyProjectsDirectory() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory( this.getSubPath() );
+		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyProjectsDirectory( this.getSubPath() );
 	}
 	public java.io.File getMyTypesDirectory() {
-		return edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyTypesDirectory( this.getSubPath() );
+		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyTypesDirectory( this.getSubPath() );
 	}
 
 	public edu.cmu.cs.dennisc.zoot.ActionOperation getRestartOperation() {
