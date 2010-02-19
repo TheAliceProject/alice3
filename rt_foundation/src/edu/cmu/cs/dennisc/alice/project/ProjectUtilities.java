@@ -253,8 +253,7 @@ public abstract class ProjectUtilities {
 		return name;
 	}
 	private static String generateEntryName( org.alice.virtualmachine.Resource resource, java.util.Set< String > usedEntryNames ) {
-		String validFilename = getValidName( resource.getName() );
-			
+		String validFilename = getValidName( resource.getOriginalFileName() );
 		final String DESIRED_DIRECTORY_NAME = "resources";
 		int i = 1;
 		while( true ) {

@@ -136,29 +136,17 @@ class ReplaceResourceOperation extends ComingSoonOperation {
 		this.putValue( javax.swing.Action.NAME, "Replace Content..." );
 	}
 }
-class RenameResourceOperation extends ComingSoonOperation {
-	public RenameResourceOperation() {
-		this.putValue( javax.swing.Action.NAME, "Rename..." );
-	}
-}
 
 /**
  * @author Dennis Cosgrove
  */
 public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	abstract class ResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
-		private org.alice.virtualmachine.Resource resource;
-		protected void addResource() {
-			this.getIDE().getProject().addResource( this.resource );
-			ResourcesPane.this.resetModel();
-		}
-		protected void removeResource() {
-			this.getIDE().getProject().removeResource( this.resource );
-			ResourcesPane.this.resetModel();
-		}
-		protected abstract org.alice.virtualmachine.Resource getResource();
+		protected org.alice.virtualmachine.Resource resource;
+		//todo: better name
+		protected abstract org.alice.virtualmachine.Resource selectResource();
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			this.resource = this.getResource();
+			this.resource = this.selectResource();
 			if( resource != null ) {
 				actionContext.commitAndInvokeRedoIfAppropriate();
 			} else {
@@ -170,7 +158,17 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 			return true;
 		}
 	}
-	abstract class AddResourceOperation extends ResourceOperation {
+	abstract class AddOrRemoveResourceOperation extends ResourceOperation {
+		protected void addResource() {
+			this.getIDE().getProject().addResource( this.resource );
+			ResourcesPane.this.resetModel();
+		}
+		protected void removeResource() {
+			this.getIDE().getProject().removeResource( this.resource );
+			ResourcesPane.this.resetModel();
+		}
+	}
+	abstract class AddResourceOperation extends AddOrRemoveResourceOperation {
 		public AddResourceOperation() {
 		}
 		@Override
@@ -188,7 +186,7 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 			this.putValue( javax.swing.Action.NAME, "Add Audio..." );
 		}
 		@Override
-		public org.alice.virtualmachine.Resource getResource() {
+		public org.alice.virtualmachine.Resource selectResource() {
 			try {
 				return AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
 			} catch( java.io.IOException ioe ) {
@@ -201,7 +199,7 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 			this.putValue( javax.swing.Action.NAME, "Add Image..." );
 		}
 		@Override
-		public org.alice.virtualmachine.Resource getResource() {
+		public org.alice.virtualmachine.Resource selectResource() {
 			try {
 				return ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
 			} catch( java.io.IOException ioe ) {
@@ -209,18 +207,13 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 			}
 		}
 	}
-	class RemoveResourceOperation extends ResourceOperation {
+	class RemoveResourceOperation extends AddOrRemoveResourceOperation {
 		public RemoveResourceOperation() {
 			this.putValue( javax.swing.Action.NAME, "Remove" );
 		}
 		@Override
-		public org.alice.virtualmachine.Resource getResource() {
-			int rowIndex = ResourcesPane.this.table.getSelectedRow();
-			if( rowIndex >= 0 ) {
-				return (org.alice.virtualmachine.Resource)ResourcesPane.this.table.getValueAt( rowIndex, 2 );
-			} else {
-				return null;
-			}
+		public org.alice.virtualmachine.Resource selectResource() {
+			return ResourcesPane.this.getSelectedResource();
 		}
 		@Override
 		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
@@ -229,6 +222,42 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		@Override
 		public void undo() throws javax.swing.undo.CannotUndoException {
 			this.addResource();
+		}
+	}
+	class RenameResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
+		protected org.alice.virtualmachine.Resource resource;
+		private String prevName;
+		private String nextName;
+		public RenameResourceOperation() {
+			this.putValue( javax.swing.Action.NAME, "Rename..." );
+		}
+		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			this.resource = ResourcesPane.this.getSelectedResource();
+			if( resource != null ) {
+				this.nextName = javax.swing.JOptionPane.showInputDialog( "new name:" );
+				if( this.nextName != null && this.nextName.length() > 0 ) {
+					this.prevName = this.resource.getName();
+					actionContext.commitAndInvokeRedoIfAppropriate();
+				} else {
+					actionContext.cancel();
+				}
+			} else {
+				actionContext.cancel();
+			}
+		}
+		@Override
+		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+			this.resource.setName( this.nextName );
+			ResourcesPane.this.table.repaint();
+		}
+		@Override
+		public void undo() throws javax.swing.undo.CannotUndoException {
+			this.resource.setName( this.prevName );
+			ResourcesPane.this.table.repaint();
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
 		}
 	}
 
@@ -261,17 +290,25 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 		
 		java.awt.Component pane = new edu.cmu.cs.dennisc.croquet.swing.SingleColumnPane(
-				new edu.cmu.cs.dennisc.zoot.ZButton( this.renameResourceOperation ),
-				new edu.cmu.cs.dennisc.zoot.ZButton( this.replaceResourceOperation ),
-				javax.swing.Box.createVerticalStrut( 8 ),
 				new edu.cmu.cs.dennisc.zoot.ZButton( this.addImageResourceOperation ),
 				new edu.cmu.cs.dennisc.zoot.ZButton( this.addAudioResourceOperation ),
-				new edu.cmu.cs.dennisc.zoot.ZButton( this.removeResourceOperation )
+				new edu.cmu.cs.dennisc.zoot.ZButton( this.removeResourceOperation ),
+				javax.swing.Box.createVerticalStrut( 8 ),
+				new edu.cmu.cs.dennisc.zoot.ZButton( this.renameResourceOperation ),
+				new edu.cmu.cs.dennisc.zoot.ZButton( this.replaceResourceOperation )
 		);
 		this.add( new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane( pane, javax.swing.Box.createGlue() ), java.awt.BorderLayout.EAST );
 		this.handleSelection();
 	}
 
+	private org.alice.virtualmachine.Resource getSelectedResource() {
+		int rowIndex = this.table.getSelectedRow();
+		if( rowIndex >= 0 ) {
+			return (org.alice.virtualmachine.Resource)this.table.getValueAt( rowIndex, 2 );
+		} else {
+			return null;
+		}
+	}
 	private void resetModel() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		if( ide != null ) {

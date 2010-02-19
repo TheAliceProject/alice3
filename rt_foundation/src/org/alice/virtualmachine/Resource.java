@@ -2,6 +2,7 @@ package org.alice.virtualmachine;
 
 public abstract class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameable {
 	private java.util.UUID uuid;
+	private String originalFileName;
 	private String contentType;
 	private byte[] data;
 
@@ -13,6 +14,7 @@ public abstract class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameabl
 		try {
 			byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( cls, resourceName );
 			this.setData( data );
+			this.setOriginalFileName( resourceName );
 			this.setName( resourceName );
 			this.setContentType( contentType );
 		} catch( java.io.IOException ioe ) {
@@ -24,6 +26,7 @@ public abstract class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameabl
 		String resourceName = file.getName();
 		byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( file );
 		this.setData( data );
+		this.setOriginalFileName( resourceName );
 		this.setName( resourceName );
 		this.setContentType( contentType );
 	}
@@ -43,15 +46,23 @@ public abstract class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameabl
 	public void setData( byte[] data ) {
 		this.data = data;
 	}
-	
+	public String getOriginalFileName() {
+		return this.originalFileName;
+	}
+	public void setOriginalFileName( String originalFileName ) {
+		this.originalFileName = originalFileName;
+	}
 	private static String XML_NAME_ATTRIBUTE = "name";
+	private static String XML_ORIGINAL_FILE_NAME_ATTRIBUTE = "originalFileName";
 	private static String XML_CONTENT_TYPE_ATTRIBUTE = "contentType";
 	public void decodeAttributes( org.w3c.dom.Element xmlElement ) {
 		this.setName( xmlElement.getAttribute( XML_NAME_ATTRIBUTE ) );
+		this.setOriginalFileName( xmlElement.getAttribute( XML_ORIGINAL_FILE_NAME_ATTRIBUTE ) );
 		this.setContentType( xmlElement.getAttribute( XML_CONTENT_TYPE_ATTRIBUTE ) );
 	}
 	public void encodeAttributes( org.w3c.dom.Element xmlElement ) {
 		xmlElement.setAttribute( XML_NAME_ATTRIBUTE, this.getName() );
+		xmlElement.setAttribute( XML_ORIGINAL_FILE_NAME_ATTRIBUTE, this.getOriginalFileName() );
 		xmlElement.setAttribute( XML_CONTENT_TYPE_ATTRIBUTE, this.getContentType() );
 	}
 	@Override
