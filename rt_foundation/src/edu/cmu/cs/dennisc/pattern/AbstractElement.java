@@ -49,7 +49,7 @@ public abstract class AbstractElement extends DefaultReleasable implements Namea
 	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
 		m_nameListeners.remove( nameListener );
 	}
-	public Iterable< edu.cmu.cs.dennisc.pattern.event.NameListener > accessNameListeners() {
+	public Iterable< edu.cmu.cs.dennisc.pattern.event.NameListener > getNameListeners() {
 		return m_nameListeners;
 	}
 

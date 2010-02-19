@@ -1,10 +1,12 @@
 package org.alice.virtualmachine;
 
-public abstract class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameable {
+public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, edu.cmu.cs.dennisc.pattern.NameChangeListenable {
 	private java.util.UUID uuid;
+	private String name;
 	private String originalFileName;
 	private String contentType;
 	private byte[] data;
+	private java.util.List< edu.cmu.cs.dennisc.pattern.event.NameListener > nameListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.event.NameListener >();
 
 	protected Resource( java.util.UUID uuid ) {
 		this.uuid = uuid;
@@ -30,6 +32,40 @@ public abstract class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameabl
 		this.setName( resourceName );
 		this.setContentType( contentType );
 	}
+	
+	public String getName() {
+		return this.name;
+	}
+	public void setName( String name ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( this.name, name ) ) {
+			synchronized( this.nameListeners ) {
+				edu.cmu.cs.dennisc.pattern.event.NameEvent nameEvent = new edu.cmu.cs.dennisc.pattern.event.NameEvent( this, name );
+				for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener : this.nameListeners ) {
+					nameListener.nameChanging( nameEvent );
+				}
+				this.name = name;
+				for( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener : this.nameListeners ) {
+					nameListener.nameChanged( nameEvent );
+				}
+			}
+		}
+	}
+	public void addNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
+		assert nameListener != null;
+		synchronized( this.nameListeners ) {
+			this.nameListeners.add( nameListener );
+		}
+	}
+	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener ) {
+		assert nameListener != null;
+		synchronized( this.nameListeners ) {
+			this.nameListeners.remove( nameListener );
+		}
+	}
+	public Iterable< edu.cmu.cs.dennisc.pattern.event.NameListener > getNameListeners() {
+		return this.nameListeners;
+	}
+	
 	
 	public java.util.UUID getUUID() {
 		return this.uuid;
@@ -68,15 +104,14 @@ public abstract class Resource extends edu.cmu.cs.dennisc.pattern.DefaultNameabl
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		//todo
-//		sb.append( Resource.class.getName() );
-//		sb.append( "[name=" );
+		sb.append( Resource.class.getName() );
+		sb.append( "[name=" );
 		sb.append( this.getName() );
-//		sb.append( ";contentType=" );
-//		sb.append( this.getContentType() );
-//		sb.append( ";uuid=" );
-//		sb.append( this.getUUID() );
-//		sb.append( "]" );
+		sb.append( ";contentType=" );
+		sb.append( this.getContentType() );
+		sb.append( ";uuid=" );
+		sb.append( this.getUUID() );
+		sb.append( "]" );
 		return sb.toString();
 	}
 }

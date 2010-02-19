@@ -29,5 +29,5 @@ package edu.cmu.cs.dennisc.pattern;
 public interface NameChangeListenable {
 	public void addNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener );
 	public void removeNameListener( edu.cmu.cs.dennisc.pattern.event.NameListener nameListener );
-	public Iterable< edu.cmu.cs.dennisc.pattern.event.NameListener > accessNameListeners();
+	public Iterable< edu.cmu.cs.dennisc.pattern.event.NameListener > getNameListeners();
 }
