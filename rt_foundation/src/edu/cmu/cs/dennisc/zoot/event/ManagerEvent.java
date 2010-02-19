@@ -20,19 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.zoot.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface Operation {
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException;
-	public void undo() throws javax.swing.undo.CannotUndoException;
-	public boolean canDoOrRedo();
-	public boolean canUndo();
-	public boolean isSignificant();
-	public boolean isEnabled();
-	public void setEnabled( boolean isEnabled );
-	public void addOperationEnabledChangeListener( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l );
-	public void removeOperationEnabledChangeListener( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l );
+public class ManagerEvent extends OperationEvent {
+	private edu.cmu.cs.dennisc.zoot.Context context;
+	public ManagerEvent( edu.cmu.cs.dennisc.zoot.Operation source, edu.cmu.cs.dennisc.zoot.Context context ) {
+		super( source );
+		this.context = context;
+	}
+	public edu.cmu.cs.dennisc.zoot.Context getContext() {
+		return this.context;
+	}
 }

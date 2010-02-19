@@ -240,7 +240,7 @@ public class GLJPanel extends JPanel implements GLAutoDrawable {
 		}
 		offscreenCaps.setDoubleBuffered( false );
 		this.chooser = ((chooser != null) ? chooser : new DefaultGLCapabilitiesChooser());
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "chooser:", chooser );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "chooser:", chooser );
 		this.shareWith = shareWith;
 	}
 

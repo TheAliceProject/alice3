@@ -54,4 +54,45 @@ public abstract class AbstractOperation implements Operation {
 	public void undo() throws javax.swing.undo.CannotUndoException {
 		throw new javax.swing.undo.CannotUndoException();
 	}
+	
+	public boolean isEnabled = true;
+	public boolean isEnabled() {
+		return this.isEnabled;
+	}
+	public void setEnabled( boolean isEnabled ) {
+		if( this.isEnabled != isEnabled ) {
+			edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent e = new edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent( this, this.isEnabled, isEnabled );
+			this.fireOperationEnabledChanging( e );
+			this.isEnabled = isEnabled;
+			this.fireOperationEnabledChanged( e );
+		}
+	}
+	private java.util.List< edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener > enabledListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener >();
+
+	public void addOperationEnabledChangeListener( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l ) {
+		synchronized( this.enabledListeners ) {
+			this.enabledListeners.add( l );
+		}
+	}
+	public void removeOperationEnabledChangeListener( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l ) {
+		synchronized( this.enabledListeners ) {
+			this.enabledListeners.remove( l );
+		}
+	}
+
+	private void fireOperationEnabledChanging( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent e ) {
+		synchronized( this.enabledListeners ) {
+			for( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l : this.enabledListeners ) {
+				l.operationEnabledChanging( e );
+			}
+		}
+	}
+	private void fireOperationEnabledChanged( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent e ) {
+		synchronized( this.enabledListeners ) {
+			for( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l : this.enabledListeners ) {
+				l.operationEnabledChanged( e );
+			}
+		}
+	}
+	
 }

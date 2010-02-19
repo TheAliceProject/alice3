@@ -25,7 +25,18 @@ package edu.cmu.cs.dennisc.zoot.event;
 /**
  * @author Dennis Cosgrove
  */
-public interface OperationListener {
-	public void operationPerforming( OperationEvent e );
-	public void operationPerformed( OperationEvent e );
+public abstract class OperationStateChangeEvent<E> extends OperationEvent {
+	private E fromState;
+	private E toState;
+	public OperationStateChangeEvent( edu.cmu.cs.dennisc.zoot.Operation source, E fromState, E toState ) {
+		super( source );
+		this.fromState = fromState;
+		this.toState = toState;
+	}
+	public E getFromState() {
+		return this.fromState;
+	}
+	public E getToState() {
+		return this.toState;
+	}
 }

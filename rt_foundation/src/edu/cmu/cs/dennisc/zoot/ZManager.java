@@ -205,29 +205,29 @@ public class ZManager {
 	}
 	
 	
-	private static java.util.List< edu.cmu.cs.dennisc.zoot.event.OperationListener > operationListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.event.OperationListener >();
+	private static java.util.List< edu.cmu.cs.dennisc.zoot.event.ManagerListener > managerListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.event.ManagerListener >();
 
-	public static void addOperationListener( edu.cmu.cs.dennisc.zoot.event.OperationListener l ) {
-		synchronized( ZManager.operationListeners ) {
-			ZManager.operationListeners.add( l );
+	public static void addOperationListener( edu.cmu.cs.dennisc.zoot.event.ManagerListener l ) {
+		synchronized( ZManager.managerListeners ) {
+			ZManager.managerListeners.add( l );
 		}
 	}
-	public static void removeOperationListener( edu.cmu.cs.dennisc.zoot.event.OperationListener l ) {
-		synchronized( ZManager.operationListeners ) {
-			ZManager.operationListeners.remove( l );
+	public static void removeOperationListener( edu.cmu.cs.dennisc.zoot.event.ManagerListener l ) {
+		synchronized( ZManager.managerListeners ) {
+			ZManager.managerListeners.remove( l );
 		}
 	}
 
-	protected static void fireOperationPerforming( edu.cmu.cs.dennisc.zoot.event.OperationEvent e ) {
-		synchronized( ZManager.operationListeners ) {
-			for( edu.cmu.cs.dennisc.zoot.event.OperationListener l : ZManager.operationListeners ) {
+	protected static void fireOperationPerforming( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
+		synchronized( ZManager.managerListeners ) {
+			for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.managerListeners ) {
 				l.operationPerforming( e );
 			}
 		}
 	}
-	protected static void fireOperationPerformed( edu.cmu.cs.dennisc.zoot.event.OperationEvent e ) {
-		synchronized( ZManager.operationListeners ) {
-			for( edu.cmu.cs.dennisc.zoot.event.OperationListener l : ZManager.operationListeners ) {
+	protected static void fireOperationPerformed( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
+		synchronized( ZManager.managerListeners ) {
+			for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.managerListeners ) {
 				l.operationPerformed( e );
 			}
 		}
@@ -292,7 +292,7 @@ public class ZManager {
 	public static BooleanStateContext performIfAppropriate( BooleanStateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
 		assert stateOperation != null;
 		BooleanStateContext rv = new MyBooleanStateContext( stateOperation, e, isCancelWorthwhile, previousValue, nextValue );
-		edu.cmu.cs.dennisc.zoot.event.OperationEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.OperationEvent( stateOperation, rv );
+		edu.cmu.cs.dennisc.zoot.event.ManagerEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.ManagerEvent( stateOperation, rv );
 		fireOperationPerforming( operationEvent );
 		stateOperation.performStateChange( rv );
 		fireOperationPerformed( operationEvent );
@@ -308,7 +308,7 @@ public class ZManager {
 	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert boundedRangeOperation != null;
 		BoundedRangeContext rv = new MyBoundedRangeContext( boundedRangeOperation, e, isCancelWorthwhile );
-		edu.cmu.cs.dennisc.zoot.event.OperationEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.OperationEvent( boundedRangeOperation, rv );
+		edu.cmu.cs.dennisc.zoot.event.ManagerEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.ManagerEvent( boundedRangeOperation, rv );
 		fireOperationPerforming( operationEvent );
 		boundedRangeOperation.perform( rv );
 		fireOperationPerformed( operationEvent );
@@ -317,7 +317,7 @@ public class ZManager {
 	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
 		ActionContext rv = new MyActionContext( actionOperation, e, isCancelWorthwhile );
-		edu.cmu.cs.dennisc.zoot.event.OperationEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.OperationEvent( actionOperation, rv );
+		edu.cmu.cs.dennisc.zoot.event.ManagerEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.ManagerEvent( actionOperation, rv );
 		fireOperationPerforming( operationEvent );
 		actionOperation.perform( rv );
 		fireOperationPerformed( operationEvent );
@@ -342,7 +342,7 @@ public class ZManager {
 	public static ItemSelectionContext performIfAppropriate( ItemSelectionOperation< ? > itemSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
 		assert itemSelectionOperation != null;
 		ItemSelectionContext rv = new MyItemSelectionContext( itemSelectionOperation, e, isCancelWorthwhile, previousSelection, nextSelection );
-		edu.cmu.cs.dennisc.zoot.event.OperationEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.OperationEvent( itemSelectionOperation, rv );
+		edu.cmu.cs.dennisc.zoot.event.ManagerEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.ManagerEvent( itemSelectionOperation, rv );
 		fireOperationPerforming( operationEvent );
 		itemSelectionOperation.performSelectionChange( rv );
 		fireOperationPerformed( operationEvent );

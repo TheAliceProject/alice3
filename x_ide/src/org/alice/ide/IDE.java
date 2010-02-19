@@ -451,10 +451,10 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 
 		this.promptForLicenseAgreements();
 
-		edu.cmu.cs.dennisc.zoot.ZManager.addOperationListener( new edu.cmu.cs.dennisc.zoot.event.OperationListener() {
-			public void operationPerforming( edu.cmu.cs.dennisc.zoot.event.OperationEvent e ) {
+		edu.cmu.cs.dennisc.zoot.ZManager.addOperationListener( new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
+			public void operationPerforming( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
 			}
-			public void operationPerformed( edu.cmu.cs.dennisc.zoot.event.OperationEvent e ) {
+			public void operationPerformed( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
 				edu.cmu.cs.dennisc.zoot.Context context = e.getContext();
 				if( context.isCommitted() ) {
 					//todo:

@@ -27,10 +27,28 @@ package edu.cmu.cs.dennisc.zoot;
  */
 public class ZButton extends javax.swing.JButton {
 	private ActionOperation actionOperation;
+	private edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener operationEnabledChangeAdapter = new edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener() {
+		public void operationEnabledChanging( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent e ) {
+		}
+		public void operationEnabledChanged( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent e ) {
+			ZButton.this.setEnabled( e.getToState() );
+		}
+	};
 	public ZButton( ActionOperation actionOperation ) {
 		this.actionOperation = actionOperation;
 		this.setAction( this.actionOperation.getActionForConfiguringSwing() );
 		//this.setModel( this.actionOperation.getButtonModel() );
+	}
+	@Override
+	public void addNotify() {
+		this.setEnabled( actionOperation.isEnabled() );
+		super.addNotify();
+		this.actionOperation.addOperationEnabledChangeListener( this.operationEnabledChangeAdapter );
+	}
+	@Override
+	public void removeNotify() {
+		this.actionOperation.removeOperationEnabledChangeListener( this.operationEnabledChangeAdapter );
+		super.removeNotify();
 	}
 	protected ActionOperation getActionOperation() {
 		return this.actionOperation;

@@ -123,31 +123,83 @@ class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< org.alice
 class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice.virtualmachine.Resource > {
 }
 
+abstract class ComingSoonOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	public ComingSoonOperation() {
+		this.setEnabled( false );
+	}
+	@Override
+	protected final void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), "Coming Soon" );
+	}
+}
+class AddResourceOperation extends ComingSoonOperation {
+	public AddResourceOperation() {
+		this.putValue( javax.swing.Action.NAME, "Add Resource..." );
+	}
+}
+class RemoveResourceOperation extends ComingSoonOperation {
+	public RemoveResourceOperation() {
+		this.putValue( javax.swing.Action.NAME, "Remove Resource" );
+	}
+}
+class ReplaceResourceOperation extends ComingSoonOperation {
+	public ReplaceResourceOperation() {
+		this.putValue( javax.swing.Action.NAME, "Replace Content..." );
+	}
+}
+class RenameResourceOperation extends ComingSoonOperation {
+	public RenameResourceOperation() {
+		this.putValue( javax.swing.Action.NAME, "Rename..." );
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
-public class ResourcesPane extends org.alice.ide.Component {
+public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	private javax.swing.JTable table = new javax.swing.JTable();
 	public ResourcesPane() {
-		this.setLayout( new java.awt.BorderLayout() );
-		edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();
-		if( project != null ) {
-			org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( project.getResources(), org.alice.virtualmachine.Resource.class, true );
-			java.util.Set< org.alice.virtualmachine.Resource > referencedResources = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getReferencedResources( project );
-			javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
-			table.setModel( tableModel );
-			javax.swing.table.TableColumn column0 = this.table.getColumn( this.table.getColumnName( 0 ) );
-			javax.swing.table.TableColumn column1 = this.table.getColumn( this.table.getColumnName( 1 ) );
-			javax.swing.table.TableColumn column2 = this.table.getColumn( this.table.getColumnName( 2 ) );
-			column0.setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
-			column1.setCellRenderer( new ResourceNameTableCellRenderer() );
-			column2.setCellRenderer( new ResourceTypeTableCellRenderer() );
-			column0.setPreferredWidth( 200 );
-			column1.setPreferredWidth( 400 );
-			column2.setPreferredWidth( 200 );
+		super( 8, 8 );
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		if( ide != null ) {
+			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+			if( project != null ) {
+				org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( project.getResources(), org.alice.virtualmachine.Resource.class, true );
+				java.util.Set< org.alice.virtualmachine.Resource > referencedResources = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getReferencedResources( project );
+				javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
+				table.setModel( tableModel );
+				javax.swing.table.TableColumn column0 = this.table.getColumn( this.table.getColumnName( 0 ) );
+				javax.swing.table.TableColumn column1 = this.table.getColumn( this.table.getColumnName( 1 ) );
+				javax.swing.table.TableColumn column2 = this.table.getColumn( this.table.getColumnName( 2 ) );
+				column0.setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
+				column1.setCellRenderer( new ResourceNameTableCellRenderer() );
+				column2.setCellRenderer( new ResourceTypeTableCellRenderer() );
+//				column0.setPreferredWidth( 200 );
+//				column1.setPreferredWidth( 400 );
+//				column2.setPreferredWidth( 200 );
+			}
 		}
+		//this.table.setCellSelectionEnabled( false );
+		this.table.setRowSelectionAllowed( true );
+		
+		javax.swing.table.JTableHeader tableHeader = this.table.getTableHeader();
+		tableHeader.setReorderingAllowed( false );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.table );
+		scrollPane.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
-		//this.add( this.table, java.awt.BorderLayout.CENTER );
+//		this.add( this.table, java.awt.BorderLayout.CENTER );
+		
+		javax.swing.JLabel label = new javax.swing.JLabel( "coming soon" );
+		label.setEnabled( false );
+		label.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
+		java.awt.Component pane = new edu.cmu.cs.dennisc.croquet.swing.SingleColumnPane(
+				label,
+				new edu.cmu.cs.dennisc.zoot.ZButton( new RenameResourceOperation() ),
+				new edu.cmu.cs.dennisc.zoot.ZButton( new ReplaceResourceOperation() ),
+				javax.swing.Box.createVerticalStrut( 8 ),
+				new edu.cmu.cs.dennisc.zoot.ZButton( new AddResourceOperation() ),
+				new edu.cmu.cs.dennisc.zoot.ZButton( new RemoveResourceOperation() )
+		);
+		this.add( new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane( pane, javax.swing.Box.createGlue() ), java.awt.BorderLayout.EAST );
 	}
 }

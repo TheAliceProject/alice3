@@ -25,13 +25,8 @@ package edu.cmu.cs.dennisc.zoot.event;
 /**
  * @author Dennis Cosgrove
  */
-public class OperationEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.zoot.Operation > {
-	private edu.cmu.cs.dennisc.zoot.Context context;
-	public OperationEvent( edu.cmu.cs.dennisc.zoot.Operation source, edu.cmu.cs.dennisc.zoot.Context context ) {
+public abstract class OperationEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.zoot.Operation > {
+	public OperationEvent( edu.cmu.cs.dennisc.zoot.Operation source ) {
 		super( source );
-		this.context = context;
-	}
-	public edu.cmu.cs.dennisc.zoot.Context getContext() {
-		return this.context;
 	}
 }
