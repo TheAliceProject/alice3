@@ -206,7 +206,7 @@ public class Project {
 			this.resources.add( resource );
 		}
 	}
-	public void deleteResource( Resource resource ) {
+	public void removeResource( Resource resource ) {
 		synchronized( this.resources ) {
 			this.resources.remove( resource );
 		}
