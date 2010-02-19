@@ -699,6 +699,10 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 				new org.alice.ide.operations.edit.CutOperation(),
 				new org.alice.ide.operations.edit.CopyOperation(), 
 				new org.alice.ide.operations.edit.PasteOperation() );
+
+		javax.swing.JMenu projectMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Project", java.awt.event.KeyEvent.VK_P, 
+				new org.alice.ide.operations.project.ManageResourcesOperation() 
+		);
 		javax.swing.JMenu runMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, 
 				this.runOperation );
 
@@ -761,7 +765,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		}
 
 
-		javax.swing.JMenu viewMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "View", java.awt.event.KeyEvent.VK_V, this.isMemoryUsageShowingOperation );
+		javax.swing.JMenu viewMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "View", java.awt.event.KeyEvent.VK_V, 
+				this.isMemoryUsageShowingOperation
+		);
 		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > windowOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
 		windowOperations.add( this.isSceneEditorExpandedOperation );
 		//windowOperations.add( this.isEmphasizingClassesOperation );
@@ -812,6 +818,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		javax.swing.JMenu helpMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, helpOperations );
 		rv.add( fileMenu );
 		rv.add( editMenu );
+		rv.add( projectMenu );
 		rv.add( runMenu );
 		rv.add( viewMenu );
 		rv.add( windowMenu );
