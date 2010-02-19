@@ -125,18 +125,6 @@ class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< org.alice
 class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice.virtualmachine.Resource > {
 }
 
-abstract class ComingSoonOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	@Override
-	protected final void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), "Coming Soon" );
-	}
-}
-class ReplaceResourceOperation extends ComingSoonOperation {
-	public ReplaceResourceOperation() {
-		this.putValue( javax.swing.Action.NAME, "Replace Content..." );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -261,6 +249,42 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		}
 	}
 
+	class ReplaceResourceContentOperation extends org.alice.ide.operations.AbstractActionOperation {
+		protected org.alice.virtualmachine.Resource resource;
+		private String prevOriginalFileName;
+		private String nextOriginalFileName;
+		private String prevContentType;
+		private String nextContentType;
+		private byte[] prevData;
+		private byte[] nextData;
+		public ReplaceResourceContentOperation() {
+			this.putValue( javax.swing.Action.NAME, "Replace Content..." );
+		}
+		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			this.resource = ResourcesPane.this.getSelectedResource();
+			if( resource != null ) {
+				javax.swing.JOptionPane.showMessageDialog( this.getIDE(), "coming soon" );
+				if( false ) {
+					actionContext.commitAndInvokeRedoIfAppropriate();
+				} else {
+					actionContext.cancel();
+				}
+			} else {
+				actionContext.cancel();
+			}
+		}
+		@Override
+		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+		}
+		@Override
+		public void undo() throws javax.swing.undo.CannotUndoException {
+		}
+		@Override
+		public boolean isSignificant() {
+			return true;
+		}
+	}
+
 	private javax.swing.JTable table = new javax.swing.JTable();
 	private javax.swing.event.ListSelectionListener listSelectionAdapter = new javax.swing.event.ListSelectionListener() {
 		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
@@ -272,7 +296,7 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		}
 	};
 	private RenameResourceOperation renameResourceOperation = new RenameResourceOperation();
-	private ReplaceResourceOperation replaceResourceOperation = new ReplaceResourceOperation();
+	private ReplaceResourceContentOperation replaceResourceOperation = new ReplaceResourceContentOperation();
 	private AddImageResourceOperation addImageResourceOperation = new AddImageResourceOperation();
 	private AddAudioResourceOperation addAudioResourceOperation = new AddAudioResourceOperation();
 	private RemoveResourceOperation removeResourceOperation = new RemoveResourceOperation();
