@@ -20,9 +20,10 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.resource;
+package org.alice.ide.resource.manager;
 
-import edu.cmu.cs.dennisc.zoot.ActionContext;
+import org.alice.ide.resource.prompter.AudioResourcePrompter;
+import org.alice.ide.resource.prompter.ImageResourcePrompter;
 
 class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	private org.alice.virtualmachine.Resource[] resources;
@@ -128,7 +129,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
 /**
  * @author Dennis Cosgrove
  */
-public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	abstract class ResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
 		protected org.alice.virtualmachine.Resource resource;
 		//todo: better name
@@ -149,11 +150,11 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	abstract class AddOrRemoveResourceOperation extends ResourceOperation {
 		protected void addResource() {
 			this.getIDE().getProject().addResource( this.resource );
-			ResourcesPane.this.resetModel();
+			ResourceManagerPane.this.resetModel();
 		}
 		protected void removeResource() {
 			this.getIDE().getProject().removeResource( this.resource );
-			ResourcesPane.this.resetModel();
+			ResourceManagerPane.this.resetModel();
 		}
 	}
 	abstract class AddResourceOperation extends AddOrRemoveResourceOperation {
@@ -201,7 +202,7 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		}
 		@Override
 		public org.alice.virtualmachine.Resource selectResource() {
-			return ResourcesPane.this.getSelectedResource();
+			return ResourceManagerPane.this.getSelectedResource();
 		}
 		@Override
 		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
@@ -220,9 +221,16 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 			this.putValue( javax.swing.Action.NAME, "Rename..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			this.resource = ResourcesPane.this.getSelectedResource();
+			this.resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
-				this.nextName = javax.swing.JOptionPane.showInputDialog( "new name:" );
+				org.alice.ide.name.RenamePane renamePane = new org.alice.ide.name.RenamePane( new org.alice.ide.name.validators.ResourceNameValidator( this.resource ) ) {
+					@Override
+					public java.awt.Dimension getPreferredSize() {
+						return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+					}
+				};
+				renamePane.setAndSelectNameText( this.resource.getName() );
+				this.nextName = renamePane.showInJDialog( this.getIDE(), "Rename Resource" );
 				if( this.nextName != null && this.nextName.length() > 0 ) {
 					this.prevName = this.resource.getName();
 					actionContext.commitAndInvokeRedoIfAppropriate();
@@ -236,12 +244,12 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		@Override
 		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 			this.resource.setName( this.nextName );
-			ResourcesPane.this.table.repaint();
+			ResourceManagerPane.this.table.repaint();
 		}
 		@Override
 		public void undo() throws javax.swing.undo.CannotUndoException {
 			this.resource.setName( this.prevName );
-			ResourcesPane.this.table.repaint();
+			ResourceManagerPane.this.table.repaint();
 		}
 		@Override
 		public boolean isSignificant() {
@@ -261,7 +269,7 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 			this.putValue( javax.swing.Action.NAME, "Replace Content..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			this.resource = ResourcesPane.this.getSelectedResource();
+			this.resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
 				javax.swing.JOptionPane.showMessageDialog( this.getIDE(), "coming soon" );
 				if( false ) {
@@ -291,7 +299,7 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 			if( e.getValueIsAdjusting() ) {
 				//pass
 			} else {
-				ResourcesPane.this.handleSelection();
+				ResourceManagerPane.this.handleSelection();
 			}
 		}
 	};
@@ -300,7 +308,7 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	private AddImageResourceOperation addImageResourceOperation = new AddImageResourceOperation();
 	private AddAudioResourceOperation addAudioResourceOperation = new AddAudioResourceOperation();
 	private RemoveResourceOperation removeResourceOperation = new RemoveResourceOperation();
-	public ResourcesPane() {
+	public ResourceManagerPane() {
 		super( 8, 8 );
 		this.resetModel();
 		//this.table.setRowSelectionAllowed( true );
@@ -376,5 +384,10 @@ public class ResourcesPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		this.table.getSelectionModel().removeListSelectionListener( this.listSelectionAdapter );
 		//this.table.getColumnModel().getSelectionModel().removeListSelectionListener( this.listSelectionAdapter );
 		super.removeNotify();
+	}
+	
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 400 );
 	}
 }

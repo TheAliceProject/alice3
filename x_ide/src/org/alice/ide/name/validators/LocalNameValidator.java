@@ -21,7 +21,7 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package org.alice.ide.namevalidators;
+package org.alice.ide.name.validators;
 
 public class LocalNameValidator extends TransientNameValidator {
 	private static edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local ) {

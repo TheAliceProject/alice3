@@ -31,8 +31,8 @@ public class ImportNewImageResourceFillIn extends ImportNewResourceFillIn<org.al
 		return "Import New Image Resource...";
 	}
 	@Override
-	protected org.alice.ide.resource.ResourcePrompter<org.alice.virtualmachine.resources.ImageResource> getResourcePrompter() {
-		return org.alice.ide.resource.ImageResourcePrompter.getSingleton();
+	protected org.alice.ide.resource.prompter.ResourcePrompter<org.alice.virtualmachine.resources.ImageResource> getResourcePrompter() {
+		return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
 	}
 	@Override
 	protected Class<org.alice.virtualmachine.resources.ImageResource> getResourceClass() {

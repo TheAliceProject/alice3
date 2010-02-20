@@ -33,7 +33,7 @@ public abstract class ImportNewSourceFillIn< E, F extends org.alice.virtualmachi
 	
 	protected abstract Class< E > getSourceClass();
 	protected abstract Class< F > getResourceClass();
-	protected abstract org.alice.ide.resource.ResourcePrompter<F> getResourcePrompter();
+	protected abstract org.alice.ide.resource.prompter.ResourcePrompter<F> getResourcePrompter();
 	protected abstract String getMenuText();
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {

@@ -21,27 +21,15 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package org.alice.ide.namevalidators;
+package org.alice.ide.name.validators;
 
-public class MethodNameValidator extends MemberNameValidator {
-	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( method, (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice)method.getDeclaringType() );
-	}
-	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type ) {
-		super( null, type );
+public class TypeNameValidator extends NodeNameValidator {
+	public TypeNameValidator( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( type );
 	}
 	@Override
 	protected boolean isNameAvailable( String name ) {
-		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
-		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.getType().methods ) {
-			if( method == node ) {
-				//pass
-			} else {
-				if( name.equals( method.name.getValue() ) ) {
-					return false;
-				}
-			}
-		}
+		//todo
 		return true;
 	}
 }

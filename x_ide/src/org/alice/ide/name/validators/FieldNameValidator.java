@@ -20,27 +20,31 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.resource;
 
+package org.alice.ide.name.validators;
 
-//todo: rename
-/**
- * @author Dennis Cosgrove
- */
-public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualmachine.resources.ImageResource> {
-	private static ImageResourcePrompter singleton = new ImageResourcePrompter();
-	public static ImageResourcePrompter getSingleton() {
-		return singleton;
+public class FieldNameValidator extends MemberNameValidator {
+	public FieldNameValidator( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		super( field, (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice)field.getDeclaringType() );
 	}
-	private ImageResourcePrompter() {
+	public FieldNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type ) {
+		super( null, type );
 	}
 	@Override
-	protected String getInitialFileText() {
-		return "*.png;*.jpg;*.gif;*.bmp";
-	}
-	
-	@Override
-	protected org.alice.virtualmachine.resources.ImageResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
-		return edu.cmu.cs.dennisc.image.ImageFactory.createImageResource( file );
+	protected boolean isNameAvailable( String name ) {
+		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
+		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type = this.getType();
+		assert type != null;
+		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : type.fields ) {
+			assert field != null;
+			if( field == node ) {
+				//pass
+			} else {
+				if( name.equals( field.name.getValue() ) ) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

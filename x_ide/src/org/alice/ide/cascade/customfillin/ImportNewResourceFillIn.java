@@ -31,7 +31,7 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 		return null;
 	}
 	protected abstract Class< E > getResourceClass();
-	protected abstract org.alice.ide.resource.ResourcePrompter<E> getResourcePrompter();
+	protected abstract org.alice.ide.resource.prompter.ResourcePrompter<E> getResourcePrompter();
 	protected abstract String getMenuText();
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.ResourceExpression getValue() {

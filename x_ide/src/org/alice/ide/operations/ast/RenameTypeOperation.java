@@ -27,7 +27,7 @@ package org.alice.ide.operations.ast;
  */
 public class RenameTypeOperation extends RenameNodeOperation {
 	public RenameTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type.name, new org.alice.ide.namevalidators.TypeNameValidator( type ) );
+		super( type.name, new org.alice.ide.name.validators.TypeNameValidator( type ) );
 		this.putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) );
 	}
 }

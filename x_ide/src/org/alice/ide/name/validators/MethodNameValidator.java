@@ -20,27 +20,28 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.resource;
 
+package org.alice.ide.name.validators;
 
-//todo: rename
-/**
- * @author Dennis Cosgrove
- */
-public class AudioResourcePrompter extends ResourcePrompter< org.alice.virtualmachine.resources.AudioResource> {
-	private static AudioResourcePrompter singleton = new AudioResourcePrompter();
-	public static AudioResourcePrompter getSingleton() {
-		return singleton;
+public class MethodNameValidator extends MemberNameValidator {
+	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		super( method, (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice)method.getDeclaringType() );
 	}
-	private AudioResourcePrompter() {
+	public MethodNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type ) {
+		super( null, type );
 	}
 	@Override
-	protected String getInitialFileText() {
-		return "*.mp3;*.wav;*.au";
-	}
-	
-	@Override
-	protected org.alice.virtualmachine.resources.AudioResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
-		return edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createAudioResource( file );
+	protected boolean isNameAvailable( String name ) {
+		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
+		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : this.getType().methods ) {
+			if( method == node ) {
+				//pass
+			} else {
+				if( name.equals( method.name.getValue() ) ) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

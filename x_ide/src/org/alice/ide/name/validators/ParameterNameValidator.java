@@ -21,35 +21,17 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package org.alice.ide.namevalidators;
+package org.alice.ide.name.validators;
 
-public abstract class NodeNameValidator {
-	private edu.cmu.cs.dennisc.alice.ast.Node node;
-	public NodeNameValidator( edu.cmu.cs.dennisc.alice.ast.Node node ) {
-		this.node = node;
+public class ParameterNameValidator extends TransientNameValidator {
+	private static edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		return (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)parameter.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.AbstractCode.class );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.Node getNode() {
-		return this.node;
+	public ParameterNameValidator( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
+		super( parameter, getCode( parameter ), null );
 	}
-	protected abstract boolean isNameAvailable( String name );
-	public final boolean isNameValid( String name ) {
-		if( name != null ) {
-			final int N = name.length();
-			if( N > 0 ) {
-				char c0 = name.charAt( 0 );
-				if( Character.isLetter( c0 ) || c0 == '_' ) {
-					for( int i=1; i<N; i++ ) {
-						char cI = name.charAt( i );
-						if( Character.isLetterOrDigit( cI ) || cI== '_' ) {
-							//pass
-						} else {
-							return false;
-						}
-					}
-					return this.isNameAvailable( name );
-				}
-			}
-		}
-		return false;
+	public ParameterNameValidator( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+		super( null, code, null );
 	}
+	
 }

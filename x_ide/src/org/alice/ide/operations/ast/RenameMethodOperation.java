@@ -27,6 +27,6 @@ package org.alice.ide.operations.ast;
  */
 public class RenameMethodOperation extends RenameNodeOperation{
 	public RenameMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( method.name, new org.alice.ide.namevalidators.MethodNameValidator( method ) );
+		super( method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
 	}
 }

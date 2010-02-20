@@ -126,7 +126,7 @@ class CreateBillboardActionOperation extends AbstractDeclareFieldOperation {
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		org.alice.ide.resource.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.ImageResourcePrompter.getSingleton();
+		org.alice.ide.resource.prompter.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
 		try {
 			org.alice.virtualmachine.resources.ImageResource frontImageResource = imageResourcePrompter.promptUserForResource( this.getIDE() );
 			if( frontImageResource != null ) {

@@ -20,32 +20,23 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
+package org.alice.ide.name;
 
-package org.alice.ide.namevalidators;
-
-public class FieldNameValidator extends MemberNameValidator {
-	public FieldNameValidator( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( field, (edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice)field.getDeclaringType() );
-	}
-	public FieldNameValidator( edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type ) {
-		super( null, type );
+/**
+ * @author Dennis Cosgrove
+ */
+public class RenamePane extends NameInputPane<String> {
+	private org.alice.ide.name.NameValidator nameValidator;
+	public RenamePane( org.alice.ide.name.NameValidator nameValidator ) {
+		this.nameValidator = nameValidator;
 	}
 	@Override
-	protected boolean isNameAvailable( String name ) {
-		assert name != null;
-		edu.cmu.cs.dennisc.alice.ast.Node node = this.getNode();
-		edu.cmu.cs.dennisc.alice.ast.AbstractTypeDeclaredInAlice type = this.getType();
-		assert type != null;
-		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : type.fields ) {
-			assert field != null;
-			if( field == node ) {
-				//pass
-			} else {
-				if( name.equals( field.name.getValue() ) ) {
-					return false;
-				}
-			}
-		}
-		return true;
+	protected String getActualInputValue() {
+		return this.getNameText();
+	}
+	
+	@Override
+	protected boolean isNameAcceptable( String name ) {
+		return this.nameValidator.isNameValidAndAvailable( name );
 	}
 }

@@ -27,16 +27,16 @@ package org.alice.ide.operations.ast;
  */
 public abstract class RenameNodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
-	private org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator;
+	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
 	private String prevValue;
 	private String nextValue;
-	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator ) {
+	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		this.nameProperty = nameProperty;
 		this.nodeNameValidator = nodeNameValidator;
 		this.putValue( javax.swing.Action.NAME, "Rename..." );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		org.alice.ide.renamenodepanes.RenameNodePane renameNodePane = new org.alice.ide.renamenodepanes.RenameNodePane( this.nodeNameValidator );
+		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( this.nodeNameValidator );
 		renameNodePane.setAndSelectNameText( this.nameProperty.getValue() );
 		this.nextValue = renameNodePane.showInJDialog( this.getIDE() );
 		if( nextValue != null && nextValue.length() > 0 ) {

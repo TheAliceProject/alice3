@@ -2200,10 +2200,18 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	//		return rv
 
 	private static String getAvailableFieldName( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, String baseName ) {
-		org.alice.ide.namevalidators.FieldNameValidator validator = new org.alice.ide.namevalidators.FieldNameValidator( declaringType );
+		org.alice.ide.name.validators.FieldNameValidator validator = new org.alice.ide.name.validators.FieldNameValidator( declaringType );
+		
+		if( validator.isNameValid( baseName ) ) {
+			//pass
+		} else {
+			baseName = "unnamed";
+			assert validator.isNameValid( baseName );
+		}
+		
 		int i = 2;
 		String rv = baseName;
-		while( validator.isNameValid( rv ) == false ) {
+		while( validator.isNameValidAndAvailable( rv ) == false ) {
 			rv = baseName + i;
 			i++;
 		}

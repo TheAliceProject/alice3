@@ -21,15 +21,12 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package org.alice.ide.namevalidators;
+package org.alice.ide.name;
 
-public class TypeNameValidator extends NodeNameValidator {
-	public TypeNameValidator( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type );
-	}
-	@Override
-	protected boolean isNameAvailable( String name ) {
-		//todo
-		return true;
+public abstract class NameValidator {
+	public abstract boolean isNameValid( String name );
+	protected abstract boolean isNameAvailable( String name );
+	public final boolean isNameValidAndAvailable( String name ) {
+		return this.isNameValid( name ) && this.isNameAvailable( name );
 	}
 }

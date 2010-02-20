@@ -31,8 +31,8 @@ public class ImportNewAudioResourceFillIn extends ImportNewResourceFillIn<org.al
 		return "Import New Audio Resource...";
 	}
 	@Override
-	protected org.alice.ide.resource.ResourcePrompter<org.alice.virtualmachine.resources.AudioResource> getResourcePrompter() {
-		return org.alice.ide.resource.AudioResourcePrompter.getSingleton();
+	protected org.alice.ide.resource.prompter.ResourcePrompter<org.alice.virtualmachine.resources.AudioResource> getResourcePrompter() {
+		return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton();
 	}
 	@Override
 	protected Class<org.alice.virtualmachine.resources.AudioResource> getResourceClass() {

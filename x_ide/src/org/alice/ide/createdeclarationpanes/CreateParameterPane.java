@@ -29,7 +29,7 @@ package org.alice.ide.createdeclarationpanes;
 public abstract class CreateParameterPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice> {
 	private edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code;
 	public CreateParameterPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
-		super( new org.alice.ide.namevalidators.ParameterNameValidator( code ) );
+		super( new org.alice.ide.name.validators.ParameterNameValidator( code ) );
 		this.code = code;
 		this.setBackground( getIDE().getParameterColor() );
 		

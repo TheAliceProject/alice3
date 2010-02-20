@@ -20,23 +20,27 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.renamenodepanes;
+package org.alice.ide.resource.prompter;
 
+
+//todo: rename
 /**
  * @author Dennis Cosgrove
  */
-public class RenameNodePane extends NameInputPane<String> {
-	private org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator;
-	public RenameNodePane( org.alice.ide.namevalidators.NodeNameValidator nodeNameValidator ) {
-		this.nodeNameValidator = nodeNameValidator;
+public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualmachine.resources.ImageResource> {
+	private static ImageResourcePrompter singleton = new ImageResourcePrompter();
+	public static ImageResourcePrompter getSingleton() {
+		return singleton;
+	}
+	private ImageResourcePrompter() {
 	}
 	@Override
-	protected String getActualInputValue() {
-		return this.getNameText();
+	protected String getInitialFileText() {
+		return "*.png;*.jpg;*.gif;*.bmp";
 	}
 	
 	@Override
-	protected boolean isNameAcceptable( String name ) {
-		return this.nodeNameValidator.isNameValid( name );
+	protected org.alice.virtualmachine.resources.ImageResource createResourceFromFile( java.io.File file ) throws java.io.IOException {
+		return edu.cmu.cs.dennisc.image.ImageFactory.createImageResource( file );
 	}
 }

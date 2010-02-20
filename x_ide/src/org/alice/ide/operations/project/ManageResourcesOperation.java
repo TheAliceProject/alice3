@@ -6,7 +6,7 @@ public class ManageResourcesOperation extends org.alice.ide.operations.Inconsequ
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		org.alice.ide.resource.ResourcesPane resourcesPane = new org.alice.ide.resource.ResourcesPane();
+		org.alice.ide.resource.manager.ResourceManagerPane resourcesPane = new org.alice.ide.resource.manager.ResourceManagerPane();
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), resourcesPane, "Project Resources", javax.swing.JOptionPane.PLAIN_MESSAGE, null );
 	}	
 }
