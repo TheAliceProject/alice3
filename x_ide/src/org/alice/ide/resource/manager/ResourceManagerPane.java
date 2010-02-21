@@ -149,12 +149,24 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 	}
 	abstract class AddOrRemoveResourceOperation extends ResourceOperation {
 		protected void addResource() {
-			this.getIDE().getProject().addResource( this.resource );
-			ResourceManagerPane.this.resetModel();
+			org.alice.ide.IDE ide = this.getIDE();
+			if( ide != null ) {
+				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+				if( ide != null ) {
+					project.addResource( this.resource );
+					ResourceManagerPane.this.resetModel();
+				}
+			}
 		}
 		protected void removeResource() {
-			this.getIDE().getProject().removeResource( this.resource );
-			ResourceManagerPane.this.resetModel();
+			org.alice.ide.IDE ide = this.getIDE();
+			if( ide != null ) {
+				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+				if( ide != null ) {
+					project.removeResource( this.resource );
+					ResourceManagerPane.this.resetModel();
+				}
+			}
 		}
 	}
 	abstract class AddResourceOperation extends AddOrRemoveResourceOperation {
@@ -258,21 +270,89 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 	}
 
 	class ReplaceResourceContentOperation extends org.alice.ide.operations.AbstractActionOperation {
+		class Capsule< E extends org.alice.virtualmachine.Resource > {
+			private String originalFileName;
+			//private String name;
+			private String contentType;
+			private byte[] data;
+			public Capsule( E resource ) {
+				this.originalFileName = resource.getOriginalFileName();
+				//this.name = resource.getName();
+				this.contentType = resource.getContentType();
+				this.data = resource.getData();
+			}
+			
+			public E update( E rv ) {
+				rv.setOriginalFileName( this.originalFileName );
+				//rv.setName( this.name );
+				rv.setContentType( this.contentType );
+				rv.setData( this.data );
+				return rv;
+			}
+		}
+		class ImageCapsule extends Capsule<org.alice.virtualmachine.resources.ImageResource> {
+			private int width;
+			private int height;
+			public ImageCapsule( org.alice.virtualmachine.resources.ImageResource imageResource ) {
+				super( imageResource );
+				this.width = imageResource.getWidth();
+				this.height = imageResource.getHeight();
+			}
+			@Override
+			public org.alice.virtualmachine.resources.ImageResource update( org.alice.virtualmachine.resources.ImageResource rv ) {
+				rv = super.update( rv );
+				rv.setWidth( this.width );
+				rv.setHeight( this.height );
+				return rv;
+			}
+		}
+		class AudioCapsule extends Capsule<org.alice.virtualmachine.resources.AudioResource> {
+			private double duration;
+			public AudioCapsule( org.alice.virtualmachine.resources.AudioResource audioResource ) {
+				super( audioResource );
+				this.duration = audioResource.getDuration();
+			}
+			@Override
+			public org.alice.virtualmachine.resources.AudioResource update( org.alice.virtualmachine.resources.AudioResource rv ) {
+				rv = super.update( rv );
+				rv.setDuration( this.duration );
+				return rv;
+			}
+		}
+		
 		protected org.alice.virtualmachine.Resource resource;
-		private String prevOriginalFileName;
-		private String nextOriginalFileName;
-		private String prevContentType;
-		private String nextContentType;
-		private byte[] prevData;
-		private byte[] nextData;
+		private Capsule prevCapsule;
+		private Capsule nextCapsule;
 		public ReplaceResourceContentOperation() {
 			this.putValue( javax.swing.Action.NAME, "Replace Content..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			this.resource = ResourceManagerPane.this.getSelectedResource();
-			if( resource != null ) {
-				javax.swing.JOptionPane.showMessageDialog( this.getIDE(), "coming soon" );
-				if( false ) {
+			if( this.resource != null ) {
+				if( this.resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+					org.alice.virtualmachine.resources.ImageResource prevImageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
+					try {
+						org.alice.virtualmachine.resources.ImageResource nextImageResource = ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
+						if( nextImageResource != null ) {
+							this.prevCapsule = new ImageCapsule( prevImageResource );
+							this.nextCapsule = new ImageCapsule( nextImageResource );
+						}
+					} catch( java.io.IOException ioe ) {
+						throw new RuntimeException( ioe );
+					}
+				} else if( this.resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+					org.alice.virtualmachine.resources.AudioResource prevAudioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
+					try {
+						org.alice.virtualmachine.resources.AudioResource nextAudioResource = AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
+						if( nextAudioResource != null ) {
+							this.prevCapsule = new AudioCapsule( prevAudioResource );
+							this.nextCapsule = new AudioCapsule( nextAudioResource );
+						}
+					} catch( java.io.IOException ioe ) {
+						throw new RuntimeException( ioe );
+					}
+				}
+				if( this.prevCapsule != null && this.nextCapsule != null ) {
 					actionContext.commitAndInvokeRedoIfAppropriate();
 				} else {
 					actionContext.cancel();
@@ -283,9 +363,11 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		}
 		@Override
 		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+			this.nextCapsule.update( this.resource );
 		}
 		@Override
 		public void undo() throws javax.swing.undo.CannotUndoException {
+			this.prevCapsule.update( this.resource );
 		}
 		@Override
 		public boolean isSignificant() {
