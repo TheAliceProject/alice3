@@ -28,6 +28,7 @@ package org.alice.stageide.personeditor;
 class LifeStageList extends AbstractList< org.alice.apis.stage.LifeStage > {
 	public LifeStageList() {
 		super( new EnumConstantsComboBoxModel( org.alice.apis.stage.LifeStage.class ) );
+		//super( new ArrayComboBoxModel( org.alice.apis.stage.LifeStage.CHILD, org.alice.apis.stage.LifeStage.ADULT ) );
 	}
 	@Override
 	protected void handlePerformSelectionChange( org.alice.apis.stage.LifeStage value ) {
