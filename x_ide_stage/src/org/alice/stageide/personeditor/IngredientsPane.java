@@ -118,6 +118,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 		edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane ubiquitousPane = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 8, 8 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
+				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "life stage:" ), lifeStageList ) );
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "gender:" ), genderList ) );
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "skin tone:" ), baseSkinToneList ) );
 				return rv;
