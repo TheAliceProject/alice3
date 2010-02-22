@@ -25,8 +25,42 @@ package edu.cmu.cs.dennisc.texture;
 /**
  * @author Dennis Cosgrove
  */
-public class TextureFactory {
+public final class TextureFactory {
 	private static java.util.Map< org.alice.virtualmachine.resources.ImageResource, Texture > resourceToTextureMap = new java.util.HashMap< org.alice.virtualmachine.resources.ImageResource, Texture >();
+	private static org.alice.virtualmachine.event.ResourceContentListener resourceContentListener = new org.alice.virtualmachine.event.ResourceContentListener() {
+		public void contentChanging( org.alice.virtualmachine.event.ResourceContentEvent e ) {
+		}
+		public void contentChanged( org.alice.virtualmachine.event.ResourceContentEvent e ) {
+			org.alice.virtualmachine.Resource resource = e.getTypedSource();
+			if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+				org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
+				java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
+				if( bufferedImage != null ) {
+					Texture texture = TextureFactory.resourceToTextureMap.get( e.getTypedSource() );
+					if( texture instanceof BufferedImageTexture ) {
+						BufferedImageTexture bufferedImageTexture = (BufferedImageTexture)texture;
+						TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
+					} else {
+						//todo
+					}
+				} else {
+					//todo
+				}
+			} else {
+				//todo
+			}
+		}
+	};
+	private TextureFactory() {
+	}
+	
+	private static void updateBufferedImageTexture( BufferedImageTexture bufferedImageTexture, java.awt.image.BufferedImage bufferedImage ) {
+		bufferedImageTexture.setBufferedImage( bufferedImage );
+		
+		//todo: handle java.awt.image.BufferedImage.BITMASK? 
+		boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency()==java.awt.image.BufferedImage.TRANSLUCENT;
+		bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
+	}
 	
 	public static Texture getTexture( org.alice.virtualmachine.resources.ImageResource imageResource, boolean isMipMappingDesired ) {
 		assert imageResource != null;
@@ -35,18 +69,15 @@ public class TextureFactory {
 			//pass
 		} else {
 			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
-
 			if( bufferedImage != null ) {
 				BufferedImageTexture bufferedImageTexture = new BufferedImageTexture();
-				bufferedImageTexture.setBufferedImage( bufferedImage );
 				bufferedImageTexture.setMipMappingDesired( isMipMappingDesired );
-				
-				//todo: handle java.awt.image.BufferedImage.BITMASK? 
-				boolean isPotenentiallyAlphaBlended = bufferedImage.getTransparency()==java.awt.image.BufferedImage.TRANSLUCENT;
-				bufferedImageTexture.setPotentiallyAlphaBlended( isPotenentiallyAlphaBlended );
-
-			
+				TextureFactory.updateBufferedImageTexture( bufferedImageTexture, bufferedImage );
 				rv = bufferedImageTexture;
+				
+				//todo: address order dependency w/ ImageFactory 
+				imageResource.addContentListener( TextureFactory.resourceContentListener );
+				
 				TextureFactory.resourceToTextureMap.put( imageResource, rv );
 			} else {
 				//todo: warning texture

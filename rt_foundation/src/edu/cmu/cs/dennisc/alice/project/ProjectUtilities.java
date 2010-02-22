@@ -165,8 +165,7 @@ public abstract class ProjectUtilities {
 						try {
 							Class< ? extends org.alice.virtualmachine.Resource > resourceCls = (Class< ? extends org.alice.virtualmachine.Resource >)edu.cmu.cs.dennisc.lang.ClassUtilities.forName( className );
 							org.alice.virtualmachine.Resource resource = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.valueOf( resourceCls, uuidText );
-							resource.decodeAttributes( xmlElement );
-							resource.setData( data );
+							resource.decodeAttributes( xmlElement, data );
 							rv.add( resource );
 						} catch( ClassNotFoundException cnfe ) {
 							edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: no class for name:", className );

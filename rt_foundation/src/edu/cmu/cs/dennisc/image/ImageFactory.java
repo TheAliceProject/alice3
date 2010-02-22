@@ -25,9 +25,25 @@ package edu.cmu.cs.dennisc.image;
 /**
  * @author Dennis Cosgrove
  */
-public class ImageFactory {
+public final class ImageFactory {
 	private static java.util.Map< org.alice.virtualmachine.resources.ImageResource, java.awt.image.BufferedImage > resourceToBufferedImageMap = new java.util.HashMap< org.alice.virtualmachine.resources.ImageResource, java.awt.image.BufferedImage >();
 
+	private static org.alice.virtualmachine.event.ResourceContentListener resourceContentListener = new org.alice.virtualmachine.event.ResourceContentListener() {
+		public void contentChanging( org.alice.virtualmachine.event.ResourceContentEvent e ) {
+		}
+		public void contentChanged( org.alice.virtualmachine.event.ResourceContentEvent e ) {
+			ImageFactory.forget( (org.alice.virtualmachine.resources.ImageResource)e.getTypedSource() );
+		}
+	};
+	
+	private ImageFactory() {
+	}
+
+	
+	public static void forget( org.alice.virtualmachine.resources.ImageResource imageResource ) {
+		ImageFactory.resourceToBufferedImageMap.remove( imageResource );
+		imageResource.removeContentListener( ImageFactory.resourceContentListener );
+	}
 	public static java.awt.image.BufferedImage getBufferedImage( org.alice.virtualmachine.resources.ImageResource imageResource ) {
 		assert imageResource != null;
 		java.awt.image.BufferedImage rv = ImageFactory.resourceToBufferedImageMap.get( imageResource );
@@ -40,6 +56,8 @@ public class ImageFactory {
 				imageResource.setWidth( rv.getWidth() );
 				imageResource.setHeight( rv.getHeight() );
 				//				}
+				
+				imageResource.addContentListener( ImageFactory.resourceContentListener );
 				ImageFactory.resourceToBufferedImageMap.put( imageResource, rv );
 			} catch( java.io.IOException ioe ) {
 				//todo: return warning texture

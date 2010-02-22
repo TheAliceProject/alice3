@@ -95,8 +95,8 @@ public class ImageResource extends org.alice.virtualmachine.Resource {
 		xmlElement.setAttribute( XML_HEIGHT_ATTRIBUTE, Integer.toString( this.height ) );
 	}
 	@Override
-	public void decodeAttributes( org.w3c.dom.Element xmlElement ) {
-		super.decodeAttributes( xmlElement );
+	public void decodeAttributes( org.w3c.dom.Element xmlElement, byte[] data ) {
+		super.decodeAttributes( xmlElement, data );
 		this.width = Integer.parseInt( xmlElement.getAttribute( XML_WIDTH_ATTRIBUTE ) );
 		this.height = Integer.parseInt( xmlElement.getAttribute( XML_HEIGHT_ATTRIBUTE ) );
 	}

@@ -377,8 +377,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 			public E update( E rv ) {
 				rv.setOriginalFileName( this.originalFileName );
 				//rv.setName( this.name );
-				rv.setContentType( this.contentType );
-				rv.setData( this.data );
+				rv.setContent( this.contentType, this.data );
 				return rv;
 			}
 		}

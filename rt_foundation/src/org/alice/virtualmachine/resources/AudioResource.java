@@ -77,8 +77,8 @@ public class AudioResource extends org.alice.virtualmachine.Resource {
 		xmlElement.setAttribute( XML_DURATION_ATTRIBUTE, Double.toString( this.duration ) );
 	}
 	@Override
-	public void decodeAttributes( org.w3c.dom.Element xmlElement ) {
-		super.decodeAttributes( xmlElement );
+	public void decodeAttributes( org.w3c.dom.Element xmlElement, byte[] data ) {
+		super.decodeAttributes( xmlElement, data );
 		this.duration = Double.parseDouble( xmlElement.getAttribute( XML_DURATION_ATTRIBUTE ) );
 	}
 }
