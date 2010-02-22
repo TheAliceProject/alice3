@@ -86,7 +86,7 @@ public abstract class ProgressDialog extends javax.swing.JDialog {
 				}
 				this.handleDone(result);
 			} catch( Exception e ) {
-				e.printStackTrace();
+				throw new RuntimeException( e );
 			}
 		}
 	}
