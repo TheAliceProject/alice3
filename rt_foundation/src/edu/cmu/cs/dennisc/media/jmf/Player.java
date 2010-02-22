@@ -105,40 +105,36 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	private double startTime;
 	private double stopTime;
 	/*package private*/ Player( javax.media.Player player, double volumeLevel, double startTime, double stopTime ) {
+		//assert player.getState() >= javax.media.Controller.Realized;
 		this.player = player;
 		this.volumeLevel = volumeLevel;
 		this.startTime = startTime;
 		this.stopTime = stopTime;
 	}
 	@Override
-	public void prefetch() {
-		PrefetchControllerListener controllerListener = new PrefetchControllerListener();
-		this.player.addControllerListener( controllerListener );
-		this.player.prefetch();
-		controllerListener.await();
-		this.player.removeControllerListener( controllerListener );
+	public void realize() {
+		if( this.player.getState() < javax.media.Controller.Realized ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "realize: ", this.player.getState() );
+			RealizeControllerListener controllerListener = new RealizeControllerListener();
+			this.player.addControllerListener( controllerListener );
+			this.player.realize();
+			controllerListener.await();
+			this.player.removeControllerListener( controllerListener );
+		}
 	}
 	@Override
-	public void realize() {
-		RealizeControllerListener controllerListener = new RealizeControllerListener();
-		this.player.addControllerListener( controllerListener );
-		this.player.realize();
-		controllerListener.await();
-		this.player.removeControllerListener( controllerListener );
+	public void prefetch() {
+		if( this.player.getState() < javax.media.Controller.Prefetched ) {
+			PrefetchControllerListener controllerListener = new PrefetchControllerListener();
+			this.player.addControllerListener( controllerListener );
+			this.player.prefetch();
+			controllerListener.await();
+			this.player.removeControllerListener( controllerListener );
+		}
 	}
 	@Override
 	public void start() {
 		this.realize();
-//		javax.media.TimeBase originalTimeBase = this.player.getTimeBase();
-//		javax.media.TimeBase scaledTimeBase = new ScaledTimeBase( originalTimeBase );
-//		try {
-//			this.player.setTimeBase( scaledTimeBase );
-//		} catch( javax.media.IncompatibleTimeBaseException itbe ) {
-//			throw new RuntimeException( itbe );
-//		}
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "time base:", this.player.getTimeBase() );
-//		this.player.setRate( 2.0f );
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "rate:", this.player.getRate() );
 		if( Double.isNaN( this.startTime ) ) {
 			//pass
 		} else {
@@ -188,6 +184,17 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	}
 
 	@Override
+	public java.awt.Component getControlPanelComponent() {
+		this.realize();
+		return this.player.getControlPanelComponent();
+	}
+	@Override
+	public java.awt.Component getVisualComponent() {
+		this.realize();
+		return this.player.getVisualComponent();
+	}
+	
+	@Override
 	public void test( java.awt.Component owner ) {
 		edu.cmu.cs.dennisc.croquet.swing.BorderPane content = new edu.cmu.cs.dennisc.croquet.swing.BorderPane() {
 			@Override
@@ -199,12 +206,11 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		final javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createJDialog( owner, "test", true );
 		dialog.getContentPane().add( content, java.awt.BorderLayout.CENTER );
 		
-		this.realize();
-		java.awt.Component controlPanelComponent = player.getControlPanelComponent();
+		java.awt.Component controlPanelComponent = this.getControlPanelComponent();
 		if( controlPanelComponent != null ) {
 			content.add( controlPanelComponent, java.awt.BorderLayout.SOUTH );
 		}
-		java.awt.Component visualComponent = player.getVisualComponent();
+		java.awt.Component visualComponent = this.getVisualComponent();
 		if( visualComponent != null ) {
 			content.add( visualComponent, java.awt.BorderLayout.CENTER );
 		}

@@ -34,6 +34,8 @@ public abstract class Player {
 	public abstract void playUntilStop();
 	public abstract void stop();
 
+	public abstract java.awt.Component getControlPanelComponent();
+	public abstract java.awt.Component getVisualComponent();
 	//todo: remove
 	public abstract void test( java.awt.Component owner );
 }

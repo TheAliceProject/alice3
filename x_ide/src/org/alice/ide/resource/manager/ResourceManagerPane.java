@@ -249,9 +249,14 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		}
 	}
 
-	abstract class RenameWithPreviewPane extends org.alice.ide.name.RenamePane {
-		public RenameWithPreviewPane( org.alice.virtualmachine.Resource resource ) {
+	abstract class RenameWithPreviewPane< E extends org.alice.virtualmachine.Resource > extends org.alice.ide.name.RenamePane {
+		private E resource;
+		public RenameWithPreviewPane( E resource ) {
 			super( new org.alice.ide.name.validators.ResourceNameValidator( resource ) );
+			this.resource = resource;
+		}
+		protected E getResource() {
+			return this.resource;
 		}
 		protected abstract java.awt.Component createPreviewComponent();
 		@Override
@@ -261,30 +266,48 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 			rv.add( new java.awt.Component[] { label, this.createPreviewComponent() } );
 			return rv;
 		}
-		@Override
-		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
-		}
+//		@Override
+//		public java.awt.Dimension getPreferredSize() {
+//			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+//		}
 	}
 	
 
-	class RenameWithImagePreviewPane extends RenameWithPreviewPane {
+	class RenameWithImagePreviewPane extends RenameWithPreviewPane<org.alice.virtualmachine.resources.ImageResource> {
 		public RenameWithImagePreviewPane( org.alice.virtualmachine.resources.ImageResource imageResource ) {
 			super( imageResource );
 		}
 		@Override
 		protected java.awt.Component createPreviewComponent() {
-			return new javax.swing.JButton( "TODO: image preview" );
+			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( this.getResource() );
+			return new edu.cmu.cs.dennisc.croquet.swing.ImageView( bufferedImage, 256 );
 		}
 	}
 
-	class RenameWithAudioPreviewPane extends RenameWithPreviewPane {
+	class RenameWithAudioPreviewPane extends RenameWithPreviewPane<org.alice.virtualmachine.resources.AudioResource> {
 		public RenameWithAudioPreviewPane( org.alice.virtualmachine.resources.AudioResource audioResource ) {
 			super( audioResource );
 		}
 		@Override
 		protected java.awt.Component createPreviewComponent() {
-			return new javax.swing.JButton( "TODO: audio preview" );
+			final edu.cmu.cs.dennisc.croquet.swing.BorderPane rv = new edu.cmu.cs.dennisc.croquet.swing.BorderPane() {
+				@Override
+				public java.awt.Dimension getPreferredSize() {
+					return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 256, 32 );
+				}
+			};
+			new Thread() {
+				@Override
+				public void run() {
+					edu.cmu.cs.dennisc.media.Player player = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton().createPlayer( RenameWithAudioPreviewPane.this.getResource() );
+					java.awt.Component component = player.getControlPanelComponent();
+					if( component != null ) {
+						rv.add( component );
+						rv.getRootPane().revalidate();
+					}
+				}
+			}.start();
+			return rv;
 		}
 	}
 
@@ -414,7 +437,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 					} catch( java.io.IOException ioe ) {
 						throw new RuntimeException( ioe );
 					}
-				} else if( this.resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+				} else if( this.resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
 					org.alice.virtualmachine.resources.AudioResource prevAudioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
 					try {
 						org.alice.virtualmachine.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );

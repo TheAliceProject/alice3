@@ -78,7 +78,9 @@ public class MediaFactory extends edu.cmu.cs.dennisc.media.MediaFactory {
 		}
 		try {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "MediaFactory.acquirePlayer", audioResource );
-			return javax.media.Manager.createPlayer( dataSource );
+			return javax.media.Manager.createRealizedPlayer( dataSource );
+		} catch( javax.media.CannotRealizeException cre ) {
+			throw new RuntimeException( audioResource.toString(), cre );
 		} catch( javax.media.NoPlayerException npe ) {
 			throw new RuntimeException( audioResource.toString(), npe );
 		} catch( java.io.IOException ioe ) {
