@@ -26,12 +26,11 @@ package org.alice.apis.stage;
  * @author Dennis Cosgrove
  */
 public enum LifeStage {
-//	TODDLER, 
-//	CHILD, 
-//	TEEN, 
-//	ADULT, 
-//	ELDER;
-	CHILD, ADULT;
+	TODDLER, 
+	CHILD, 
+	TEEN, 
+	ADULT, 
+	ELDER;
 	public static LifeStage getRandom() {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomEnumConstant( LifeStage.class );
 	}
