@@ -13,6 +13,7 @@ public class Manager {
 	static java.util.List< java.io.File > s_pendingBundles;
 	private static native void addBundlePath( String bundlePath );
 	private static native void removeBundlePath( String bundlePath );
+	private static native void setRawResourceDirectory( String rourcePath );
 	static {
 		try {
 			initializeIfNecessary();
@@ -85,6 +86,10 @@ public class Manager {
 	}
 	public static void resetLicensePromptDesiredToTrue() {
 		s_isLicensePromptDesired = true;
+	}
+	
+	public static void setRawResourcePath( java.io.File file ) {
+		Manager.setRawResourceDirectory( file.getAbsolutePath() );
 	}
 	
 	public static void addBundle( java.io.File file ) {
