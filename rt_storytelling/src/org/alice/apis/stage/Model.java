@@ -145,7 +145,7 @@ public abstract class Model extends org.alice.apis.moveandturn.Model {
 		}
 		@Override
 		public void run() {
-			edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( new Runnable() {
+			org.alice.virtualmachine.DoTogether.invokeAndWait( new Runnable() {
 				public void run() {
 					Model.this.routeTo( m_target );
 				}
@@ -160,7 +160,7 @@ public abstract class Model extends org.alice.apis.moveandturn.Model {
 
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void performStateTransition( FiniteStateMachine.StateAB state, Model b, FiniteStateMachine.BindingAB binding ) {
-		edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( 
+		org.alice.virtualmachine.DoTogether.invokeAndWait( 
 				new RouteToAndSetStateRunnable( this, state.getA(), b ), 
 				new SetStateRunnable( b, state.getB() ) 
 		);
@@ -169,7 +169,7 @@ public abstract class Model extends org.alice.apis.moveandturn.Model {
 	}
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void performStateTransition(  FiniteStateMachine.StateABC state, Model b, Model c, FiniteStateMachine.BindingABC binding ) {
-		edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( 
+		org.alice.virtualmachine.DoTogether.invokeAndWait( 
 				new RouteToAndSetStateRunnable( this, state.getA(), b ), 
 				new SetStateRunnable( b, state.getB() ),
 				new RouteToAndSetStateRunnable( c, state.getC(), b ) );

@@ -704,9 +704,10 @@ public abstract class VirtualMachine {
 	protected void executeDoInOrder( edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder ) throws ReturnException {
 		executeBlockStatement( doInOrder.body.getValue() );
 	}
+	private static int threadCount = 0;
 	protected void executeDoInThread( final edu.cmu.cs.dennisc.alice.ast.DoInThread doInThread ) throws ReturnException {
 		final Thread parentThread = Thread.currentThread();
-		new edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString() {
+		new edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString( org.alice.virtualmachine.ThreadGroupUtilities.getThreadGroup(), "DoInThread-"+(VirtualMachine.threadCount++) ) {
 			@Override
 			public void run() {
 				pushCurrentThread( parentThread );

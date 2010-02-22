@@ -54,7 +54,7 @@ public class ForEachTogether {
 			for( int i = 0; i < runnables.length; i++ ) {
 				runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, array[ i ] );
 			}
-			edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
 		}
 	}
 	public static <E extends Object> void invokeAndWait( Iterable<E> iterable, final ForEachRunnable< E > forEachRunnable ) {
@@ -73,6 +73,6 @@ public class ForEachTogether {
 			runnables[ i ] = new ForEachRunnableAdapter( forEachRunnable, value );
 			i++;
 		}
-		edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+		org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
 	}
 }

@@ -20,12 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.alice.virtualmachine;
+package org.alice.virtualmachine;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public interface ForEachRunnable< E > {
-	public void run( E value );
+public final class ThreadGroupUtilities {
+	private static ThreadGroup threadGroup = new ThreadGroup( "alice virtual machine thread group" );
+	private ThreadGroupUtilities() {
+	}
+	public static ThreadGroup getThreadGroup() {
+		return ThreadGroupUtilities.threadGroup;
+	}
 }

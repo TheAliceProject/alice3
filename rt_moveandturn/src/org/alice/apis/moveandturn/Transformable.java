@@ -378,7 +378,7 @@ public abstract class Transformable extends AbstractTransformable {
 					}
 				};
 			}
-			edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+			org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
 		}
 	}
 	

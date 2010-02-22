@@ -26,6 +26,7 @@ package org.alice.virtualmachine;
  * @author Dennis Cosgrove
  */
 public class DoTogether {
+	private static int threadCount = 0;
 	//todo 
 	public static void invokeAndWait( 
 			@edu.cmu.cs.dennisc.lang.ParameterAnnotation( isVariable=true )
@@ -41,7 +42,7 @@ public class DoTogether {
 			final java.util.List< RuntimeException > runtimeExceptions = new java.util.LinkedList< RuntimeException >();
 			final java.util.concurrent.CyclicBarrier barrier = new java.util.concurrent.CyclicBarrier( runnables.length + 1 );
 	    	for( final Runnable runnable : runnables ) {
-	            new edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString() {
+	            new edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString( ThreadGroupUtilities.getThreadGroup(), "DoTogether-"+(DoTogether.threadCount++) ) {
 	            	@Override
 	                public void run() {
 	            		try {

@@ -178,7 +178,7 @@ public abstract class Model extends AbstractModel {
 				}
 			};
 		}
-		edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+		org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
 	}
 	public void setColor( Color color, Number duration, Style style ) {
 		setColor( color, duration, style, DEFAULT_HOW_MUCH );
@@ -224,7 +224,7 @@ public abstract class Model extends AbstractModel {
 				}
 			};
 		}
-		edu.cmu.cs.dennisc.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
+		org.alice.virtualmachine.DoTogether.invokeAndWait( runnables );
 	}
 	public void setOpacity( 
 			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=Portion.class )
