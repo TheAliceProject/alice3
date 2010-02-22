@@ -25,7 +25,7 @@ package org.alice.apis.stage;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Elder extends Person {
+public class Elder extends Person {
 	public Elder( Gender gender ) { 
 		super( LifeStage.ELDER, gender );
 	}

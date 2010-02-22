@@ -28,7 +28,7 @@ import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Child extends Person {
+public class Child extends Person {
 	public enum StateA implements FiniteStateMachine.State {
 		HANDS_AT_SIDES,
 	}
