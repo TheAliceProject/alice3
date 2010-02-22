@@ -1162,7 +1162,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
 	public final void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context ) {
 		if( this.project != null ) {
-			this.generateCodeForSceneSetUp();
+			this.ensureProjectCodeUpToDate();
 			this.handleRun( context, this.getSceneType() );
 		} else {
 			javax.swing.JOptionPane.showMessageDialog( this, "Please open a project first." );
@@ -1839,9 +1839,13 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	public void loadProjectFrom( String path ) {
 		loadProjectFrom( new java.io.File( path ) );
 	}
-	protected void generateCodeForSceneSetUp() {
+	
+	public void ensureProjectCodeUpToDate() {
+		this.generateCodeForSceneSetUp();
+	}
+	
+	private void generateCodeForSceneSetUp() {
 		this.sceneEditor.generateCodeForSetUp();
-		;
 	}
 	protected void preserveProjectProperties() {
 		this.sceneEditor.preserveProjectProperties();
@@ -1854,7 +1858,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	
 	public void saveProjectTo( java.io.File file ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.alice.Project project = getProject();
-		this.generateCodeForSceneSetUp();
+		this.ensureProjectCodeUpToDate();
 		this.preserveProjectProperties();
 		
 		edu.cmu.cs.dennisc.zip.DataSource[] dataSources;

@@ -29,9 +29,11 @@ package org.alice.ide.resource.prompter;
 public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resource> {
 	protected abstract String getInitialFileText();
 	protected abstract E createResourceFromFile( java.io.File file ) throws java.io.IOException;
+	protected abstract String getFileDialogTitle();
 	public E promptUserForResource( java.awt.Component owner ) throws java.io.IOException {
 		java.awt.FileDialog fileDialog = new java.awt.FileDialog( org.alice.ide.IDE.getSingleton() );
 		fileDialog.setFilenameFilter( org.alice.virtualmachine.resources.AudioResource.createFilenameFilter( true ) );
+		fileDialog.setTitle( this.getFileDialogTitle() );
 		//todo?
 		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
 			fileDialog.setFile( this.getInitialFileText() );

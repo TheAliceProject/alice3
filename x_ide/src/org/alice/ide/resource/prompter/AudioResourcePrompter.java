@@ -38,6 +38,10 @@ public class AudioResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	protected String getInitialFileText() {
 		return "*.mp3;*.wav;*.au";
 	}
+	@Override
+	protected String getFileDialogTitle() {
+		return "Select Audio File To Import";
+	}
 	
 	@Override
 	protected org.alice.virtualmachine.resources.AudioResource createResourceFromFile( java.io.File file ) throws java.io.IOException {

@@ -38,6 +38,10 @@ public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	protected String getInitialFileText() {
 		return "*.png;*.jpg;*.gif;*.bmp";
 	}
+	@Override
+	protected String getFileDialogTitle() {
+		return "Select Image File To Import";
+	}
 	
 	@Override
 	protected org.alice.virtualmachine.resources.ImageResource createResourceFromFile( java.io.File file ) throws java.io.IOException {

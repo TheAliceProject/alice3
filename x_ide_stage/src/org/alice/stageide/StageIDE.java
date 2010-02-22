@@ -280,7 +280,7 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	@Override
 	public void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
-		this.generateCodeForSceneSetUp();
+		this.ensureProjectCodeUpToDate();
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldSelection();
 		if( field == this.getSceneField() ) {
 			field = null;
