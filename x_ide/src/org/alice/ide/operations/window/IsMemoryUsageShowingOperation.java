@@ -2,7 +2,7 @@ package org.alice.ide.operations.window;
 
 public class IsMemoryUsageShowingOperation extends IsFrameShowingOperation {
 	public IsMemoryUsageShowingOperation() {
-		this.putValue( javax.swing.Action.NAME, "Memory Usage" );
+		this.putValue( javax.swing.Action.NAME, "Show Memory Usage?" );
 	}
 	@Override
 	protected java.awt.Component createPane() {

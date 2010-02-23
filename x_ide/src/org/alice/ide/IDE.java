@@ -452,9 +452,16 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		assert IDE.singleton == null;
 		IDE.singleton = this;
 
+		edu.cmu.cs.dennisc.zoot.ZManager.addManagerListener( new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
+			public void operationPerforming( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
+			}
+			public void operationPerformed( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+			}
+		} );
 		this.promptForLicenseAgreements();
 
-		edu.cmu.cs.dennisc.zoot.ZManager.addOperationListener( new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
+		edu.cmu.cs.dennisc.zoot.ZManager.addManagerListener( new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
 			public void operationPerforming( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
 			}
 			public void operationPerformed( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
@@ -693,8 +700,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		javax.swing.JMenu runMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, this.runOperation );
 
 		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
-			private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ),
-			//new java.util.Locale( "en", "US", "complex" ), 
+			private java.util.Locale[] candidates = { 
+					new java.util.Locale( "en", "US", "alice" ),
 					new java.util.Locale( "en", "US", "java" ) };
 			private int selectedIndex;
 
@@ -737,7 +744,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			@Override
 			protected String getNameFor( int index, java.util.Locale locale ) {
 				if( locale != null ) {
-					return locale.getDisplayName();
+					return locale.getVariant();
 				} else {
 					return "null";
 				}
@@ -753,10 +760,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		}
 
 		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > windowOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
-		windowOperations.add( this.isSceneEditorExpandedOperation );
-		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		windowOperations.add( this.isMemoryUsageShowingOperation );
 
+		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		windowOperations.add( this.isEmphasizingClassesOperation );
 		windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 		windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
@@ -769,10 +774,15 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		//			windowOperations.add( this.getPreferencesOperation() );
 		//		}
 
+		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+		windowOperations.add( this.isMemoryUsageShowingOperation );
+		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+		windowOperations.add( this.isSceneEditorExpandedOperation );
+
 		javax.swing.JMenu windowMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, windowOperations );
 
-		javax.swing.JMenu setLocaleMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Set Locale", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
-		windowMenu.add( setLocaleMenu );
+		javax.swing.JMenu setLocaleMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Set Language", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
+		windowMenu.add( setLocaleMenu, 0 );
 
 		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > helpOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
 		helpOperations.add( new org.alice.ide.operations.help.HelpOperation() );

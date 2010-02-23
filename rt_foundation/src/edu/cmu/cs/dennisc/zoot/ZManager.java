@@ -207,12 +207,12 @@ public class ZManager {
 	
 	private static java.util.List< edu.cmu.cs.dennisc.zoot.event.ManagerListener > managerListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.event.ManagerListener >();
 
-	public static void addOperationListener( edu.cmu.cs.dennisc.zoot.event.ManagerListener l ) {
+	public static void addManagerListener( edu.cmu.cs.dennisc.zoot.event.ManagerListener l ) {
 		synchronized( ZManager.managerListeners ) {
 			ZManager.managerListeners.add( l );
 		}
 	}
-	public static void removeOperationListener( edu.cmu.cs.dennisc.zoot.event.ManagerListener l ) {
+	public static void removeManagerListener( edu.cmu.cs.dennisc.zoot.event.ManagerListener l ) {
 		synchronized( ZManager.managerListeners ) {
 			ZManager.managerListeners.remove( l );
 		}
