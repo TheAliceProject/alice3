@@ -1,4 +1,4 @@
-package org.alice.ide.operations.view;
+package org.alice.ide.operations.window;
 
 public abstract class IsFrameShowingOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private javax.swing.JFrame frame;

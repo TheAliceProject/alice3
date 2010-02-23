@@ -1,4 +1,4 @@
-package org.alice.ide.operations.view;
+package org.alice.ide.operations.window;
 
 public class IsMemoryUsageShowingOperation extends IsFrameShowingOperation {
 	public IsMemoryUsageShowingOperation() {

@@ -321,7 +321,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		return false;
 	}
 	
-	private org.alice.ide.operations.view.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.view.IsMemoryUsageShowingOperation();
+	private org.alice.ide.operations.window.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingOperation();
 	
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
@@ -765,11 +765,10 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		}
 
 
-		javax.swing.JMenu viewMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "View", java.awt.event.KeyEvent.VK_V, 
-				this.isMemoryUsageShowingOperation
-		);
 		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > windowOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
 		windowOperations.add( this.isSceneEditorExpandedOperation );
+		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+		windowOperations.add( this.isMemoryUsageShowingOperation );
 		//windowOperations.add( this.isEmphasizingClassesOperation );
 		//windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 		//windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
@@ -820,7 +819,6 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		rv.add( editMenu );
 		rv.add( projectMenu );
 		rv.add( runMenu );
-		rv.add( viewMenu );
 		rv.add( windowMenu );
 		rv.add( helpMenu );
 		return rv;
