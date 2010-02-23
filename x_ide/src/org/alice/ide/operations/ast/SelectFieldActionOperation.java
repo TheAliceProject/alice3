@@ -27,7 +27,7 @@ package org.alice.ide.operations.ast;
  */
 public class SelectFieldActionOperation extends AbstractFieldActionOperation {
 	public SelectFieldActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( field );
+		super( org.alice.ide.IDE.INTERFACE_GROUP, field );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		getIDE().setFieldSelection( this.getField() );

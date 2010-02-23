@@ -403,7 +403,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 				if( this.currentUnder != null ) {
 					final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
 					class DropOperation extends org.alice.ide.operations.AbstractActionOperation implements edu.cmu.cs.dennisc.zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Statement > {
+						
 						private edu.cmu.cs.dennisc.alice.ast.Statement statement;
+						public DropOperation() {
+							super( org.alice.ide.IDE.PROJECT_GROUP );
+						}
 						public void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 							actionContext.pend( this );
 						}
@@ -462,7 +466,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 					final int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
 
 					//todo: rename
-					abstract class ActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+					abstract class CodeOperation extends org.alice.ide.operations.AbstractActionOperation {
+						public CodeOperation() {
+							super( org.alice.ide.IDE.PROJECT_GROUP );
+						}
+						
 						protected void refresh() {
 							CodeEditor.this.refresh();
 							CodeEditor.this.resetScrollPane( viewPosition );
@@ -491,7 +499,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 					}
 					edu.cmu.cs.dennisc.zoot.ActionOperation operation;
 					if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
-						class CopyOperation extends ActionOperation {
+						class CopyOperation extends CodeOperation {
 							private edu.cmu.cs.dennisc.alice.ast.Statement copy;
 							@Override
 							protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
@@ -516,7 +524,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 							if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
 								operation = null;
 							} else {
-								class ReorderOperation extends ActionOperation {
+								class ReorderOperation extends CodeOperation {
 									@Override
 									protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 									}
@@ -546,7 +554,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 								operation = new ReorderOperation();
 							}
 						} else {
-							class ReparentOperation extends ActionOperation {
+							class ReparentOperation extends CodeOperation {
 								@Override
 								protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 								}

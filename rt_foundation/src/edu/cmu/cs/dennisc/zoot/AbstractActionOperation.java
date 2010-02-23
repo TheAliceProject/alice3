@@ -31,7 +31,8 @@ public abstract class AbstractActionOperation extends AbstractOperation implemen
 		}
 	};
 	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
-	public AbstractActionOperation() {
+	public AbstractActionOperation( java.util.UUID groupUUID ) {
+		super( groupUUID );
 		this.buttonModel.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				AbstractActionOperation.this.handleActionPerformed( e );

@@ -28,6 +28,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 	private int index;
 
 	public DeleteStatementActionOperation( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.putValue( javax.swing.Action.NAME, "Delete" );
 		this.property = abstractStatementPane.getOwner();
 		this.statement = abstractStatementPane.getStatement();

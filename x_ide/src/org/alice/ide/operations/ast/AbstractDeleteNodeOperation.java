@@ -30,6 +30,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
 	private int index;
 	public AbstractDeleteNodeOperation( E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.node = node;
 		this.owner = owner;
 		this.putValue( javax.swing.Action.NAME, "Delete" );

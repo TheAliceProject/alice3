@@ -27,6 +27,9 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class InconsequentialActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	public InconsequentialActionOperation() {
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
+	}
 	protected abstract void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext);
 	public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		performInternal(actionContext);

@@ -31,6 +31,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.AbstractAction
 	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
 	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation;
 	public FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
 		assert expressionStatement != null;
 		this.expressionStatement = expressionStatement;
 	}

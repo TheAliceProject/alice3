@@ -26,6 +26,7 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public interface Operation {
+	public java.util.UUID getGroupUUID();
 	public void doOrRedo() throws javax.swing.undo.CannotRedoException;
 	public void undo() throws javax.swing.undo.CannotUndoException;
 	public boolean canDoOrRedo();

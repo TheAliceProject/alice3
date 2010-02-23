@@ -83,7 +83,12 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	private edu.cmu.cs.dennisc.croquet.swing.PageAxisPane pane;
 	private ConfigurationPreview preview;
 	
-	class EditVariantOperation extends org.alice.ide.operations.AbstractActionOperation {
+	abstract class PreferencesActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+		public PreferencesActionOperation() {
+			super( org.alice.ide.IDE.PREFERENCES_GROUP );
+		}
+	}
+	class EditVariantOperation extends PreferencesActionOperation {
 		public EditVariantOperation() {
 			this.putValue( javax.swing.Action.NAME, "Edit..." );
 		}
@@ -95,7 +100,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
 	}
-	class RemoveVariantOperation extends org.alice.ide.operations.AbstractActionOperation {
+	class RemoveVariantOperation extends PreferencesActionOperation {
 		public RemoveVariantOperation() {
 			this.putValue( javax.swing.Action.NAME, "Remove" );
 		}
@@ -107,7 +112,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
 	}
-	class NewVariantOperation extends org.alice.ide.operations.AbstractActionOperation {
+	class NewVariantOperation extends PreferencesActionOperation {
 		public NewVariantOperation() {
 			this.putValue( javax.swing.Action.NAME, "New..." );
 		}
@@ -119,7 +124,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
 	}
-	class ImportVariantOperation extends org.alice.ide.operations.AbstractActionOperation {
+	class ImportVariantOperation extends PreferencesActionOperation {
 		public ImportVariantOperation() {
 			this.putValue( javax.swing.Action.NAME, "Import..." );
 		}

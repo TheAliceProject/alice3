@@ -32,7 +32,8 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	private javax.swing.ComboBoxModel comboBoxModel;
 	private E prevValue;
 	private E nextValue;
-	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
+	public AbstractItemSelectionOperation( java.util.UUID groupUUID, javax.swing.ComboBoxModel comboBoxModel ) {
+		super( groupUUID );
 		this.comboBoxModel = comboBoxModel;
 		int N = this.comboBoxModel.getSize();
 		this.actions = new javax.swing.Action[ N ];

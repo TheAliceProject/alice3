@@ -27,6 +27,7 @@ package org.alice.ide.operations.file;
  */
 public class RevertProjectOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public RevertProjectOperation() {
+		super( org.alice.ide.IDE.IO_GROUP );
 		this.putValue( javax.swing.Action.NAME, "Revert" );
 		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_R );
 	}

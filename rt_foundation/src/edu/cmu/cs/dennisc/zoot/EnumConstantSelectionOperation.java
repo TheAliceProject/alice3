@@ -35,7 +35,7 @@ class EnumComboBoxModel< E extends Enum > extends javax.swing.DefaultComboBoxMod
  * @author Dennis Cosgrove
  */
 public abstract class EnumConstantSelectionOperation< E extends Enum > extends AbstractItemSelectionOperation< E > {
-	public EnumConstantSelectionOperation( Class< E > cls ) {
-		super( new EnumComboBoxModel( cls ) );
+	public EnumConstantSelectionOperation( java.util.UUID groupUUID, Class< E > cls ) {
+		super( groupUUID, new EnumComboBoxModel( cls ) );
 	}
 }

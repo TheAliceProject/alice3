@@ -29,6 +29,10 @@ package org.alice.stageide.choosers;
  */
 public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.Portion > {
 	class PortionOperation extends edu.cmu.cs.dennisc.zoot.AbstractBoundedRangeOperation {
+		public PortionOperation() {
+			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
+		}
+		
 		public void perform( edu.cmu.cs.dennisc.zoot.BoundedRangeContext boundedRangeContext ) {
 			edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane = PortionChooser.this.getInputPane();
 			if( inputPane != null ) {

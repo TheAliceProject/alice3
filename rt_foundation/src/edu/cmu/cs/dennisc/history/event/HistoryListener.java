@@ -20,16 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package edu.cmu.cs.dennisc.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractFillInExpressionsOperation extends org.alice.ide.operations.AbstractActionOperation {
-	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType[] getExpressionTypes();
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType[] types = this.getExpressionTypes();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: AbstractFillInExpressionsOperation " );
-		//getIDE().promptUserForExpressions( types );
-	}
+public interface HistoryListener {
+	public void operationPushing( HistoryEvent e );
+	public void operationPushed( HistoryEvent e );
 }

@@ -20,16 +20,18 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.file;
+package edu.cmu.cs.dennisc.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractClearanceActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public AbstractClearanceActionOperation() {
-		super( org.alice.ide.IDE.IO_GROUP );
+public class HistoryEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.history.HistoryManager > {
+	private edu.cmu.cs.dennisc.zoot.event.ManagerEvent managerEvent;
+	public HistoryEvent( edu.cmu.cs.dennisc.history.HistoryManager source, edu.cmu.cs.dennisc.zoot.event.ManagerEvent managerEvent ) {
+		super( source );
+		this.managerEvent = managerEvent;
 	}
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation getClearToProcedeWithChangedProjectOperation() {
-		return getIDE().getClearToProcedeWithChangedProjectOperation();
+	public edu.cmu.cs.dennisc.zoot.event.ManagerEvent getManagerEvent() {
+		return managerEvent;
 	}
 }

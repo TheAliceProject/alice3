@@ -60,6 +60,7 @@ class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperati
 //	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] prevArray;
 
 	public EditFieldsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.type = type;
 		this.putValue( javax.swing.Action.NAME, "Edit Properties..." );
 	}

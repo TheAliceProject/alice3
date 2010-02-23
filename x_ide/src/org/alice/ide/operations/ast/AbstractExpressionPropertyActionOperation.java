@@ -30,6 +30,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 	public AbstractExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.expressionProperty = expressionProperty;
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {

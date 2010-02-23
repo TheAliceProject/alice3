@@ -27,6 +27,9 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public class DefaultDragAndDropOperation extends edu.cmu.cs.dennisc.zoot.AbstractDragAndDropOperation {
+	public DefaultDragAndDropOperation() {
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
+	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

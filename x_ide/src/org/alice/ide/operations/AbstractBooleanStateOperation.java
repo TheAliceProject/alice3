@@ -27,7 +27,7 @@ package org.alice.ide.operations;
  */
 public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanStateOperation {
 	public AbstractBooleanStateOperation( Boolean initialValue ) {
-		super( initialValue );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, initialValue );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

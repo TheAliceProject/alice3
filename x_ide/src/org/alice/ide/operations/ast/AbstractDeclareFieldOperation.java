@@ -30,6 +30,9 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 	private int index;
 	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
 	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
+	public AbstractDeclareFieldOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
+	}
 	public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
 		this.field = this.createField( ownerType );

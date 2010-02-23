@@ -26,6 +26,13 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOperation implements Operation {
+	private java.util.UUID groupUUID;
+	public AbstractOperation( java.util.UUID groupUUID ) {
+		this.groupUUID = groupUUID;
+	}
+	public java.util.UUID getGroupUUID() {
+		return this.groupUUID;
+	}
 	protected java.awt.Component getSourceComponent( Context< ? > context ) {
 		if( context != null ) {
 			java.util.EventObject e = context.getEvent();

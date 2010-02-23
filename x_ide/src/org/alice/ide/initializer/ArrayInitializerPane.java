@@ -88,6 +88,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		private int index;
 		public AddItemOperation() {
+			super( org.alice.ide.IDE.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Add" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -118,6 +119,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		private int index;
 		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		public RemoveItemOperation() {
+			super( org.alice.ide.IDE.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Remove" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -144,6 +146,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 	abstract class AbstractMoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		private int index;
+		public AbstractMoveItemOperation() {
+			super( org.alice.ide.IDE.PROJECT_GROUP );
+		}
 		private void swapWithNext( int index ) {
 			ArrayInitializerPane.this.swapWithNext( index );
 		}

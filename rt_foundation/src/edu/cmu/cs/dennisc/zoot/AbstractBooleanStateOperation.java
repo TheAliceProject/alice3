@@ -33,7 +33,8 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
-	public AbstractBooleanStateOperation( Boolean initialState ) {
+	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialState ) {
+		super( groupUUID );
 		this.buttonModel.setSelected( initialState );
 		this.buttonModel.addItemListener( new java.awt.event.ItemListener() {
 			public void itemStateChanged( java.awt.event.ItemEvent e ) {

@@ -192,6 +192,8 @@ class MyItemSelectionContext<E> extends AbstractContext< ItemSelectionOperation<
  * @author Dennis Cosgrove
  */
 public class ZManager {
+	@Deprecated
+	public static final java.util.UUID UNKNOWN_GROUP = java.util.UUID.fromString( "6e31d069-b4ed-4d10-a3af-bc009985c6e3" );
 	
 	private static javax.swing.undo.UndoableEdit insignificantEdit = new javax.swing.undo.AbstractUndoableEdit() {
 		@Override
@@ -206,7 +208,6 @@ public class ZManager {
 	
 	
 	private static java.util.List< edu.cmu.cs.dennisc.zoot.event.ManagerListener > managerListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.event.ManagerListener >();
-
 	public static void addManagerListener( edu.cmu.cs.dennisc.zoot.event.ManagerListener l ) {
 		synchronized( ZManager.managerListeners ) {
 			ZManager.managerListeners.add( l );

@@ -26,6 +26,9 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
+	public AbstractCodeOperation() {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
+	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode();
 	@Override
 	public boolean isSignificant() {

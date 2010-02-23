@@ -103,6 +103,11 @@ class RecentProjectsMenu extends javax.swing.JMenu {
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
+	public static final java.util.UUID PROJECT_GROUP = java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" );
+	public static final java.util.UUID PREFERENCES_GROUP = java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" );
+	public static final java.util.UUID IO_GROUP = java.util.UUID.fromString( "669018cd-2097-4568-9ce3-38cd102f6a2f" );
+	public static final java.util.UUID INTERFACE_GROUP = java.util.UUID.fromString( "9d0f4665-a40e-4e0c-9139-6f54f288c016" );
+	
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
@@ -451,14 +456,6 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
 		assert IDE.singleton == null;
 		IDE.singleton = this;
-
-		edu.cmu.cs.dennisc.zoot.ZManager.addManagerListener( new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
-			public void operationPerforming( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-			}
-			public void operationPerformed( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
-			}
-		} );
 		this.promptForLicenseAgreements();
 
 		edu.cmu.cs.dennisc.zoot.ZManager.addManagerListener( new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
@@ -578,7 +575,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	//		return this.uncertainUndoManagerKey;
 	//	}
 
-	private edu.cmu.cs.dennisc.zoot.ActionOperation clearToProcedeWithChangedProjectOperation = new edu.cmu.cs.dennisc.zoot.AbstractActionOperation() {
+	private edu.cmu.cs.dennisc.zoot.ActionOperation clearToProcedeWithChangedProjectOperation = new edu.cmu.cs.dennisc.zoot.AbstractActionOperation( IDE.IO_GROUP ) {
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			int option = javax.swing.JOptionPane.showConfirmDialog( IDE.this, "Your program has been modified.  Would you like to save it?", "Save changed project?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION );
 			if( option == javax.swing.JOptionPane.YES_OPTION ) {
@@ -616,6 +613,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		private boolean isNew;
 
 		public SelectProjectOperation( boolean isNew ) {
+			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
 			this.isNew = isNew;
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

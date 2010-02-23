@@ -28,7 +28,7 @@ package edu.cmu.cs.dennisc.toolkit.issue;
 public abstract class AbstractPostIssuePane extends IssueReportPane {
 	class TypeSelectionOperation extends edu.cmu.cs.dennisc.zoot.EnumConstantSelectionOperation< edu.cmu.cs.dennisc.jira.JIRAReport.Type > {
 		public TypeSelectionOperation() {
-			super( edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
+			super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, edu.cmu.cs.dennisc.jira.JIRAReport.Type.class );
 		}
 		@Override
 		protected void handleSelectionChange( edu.cmu.cs.dennisc.jira.JIRAReport.Type value ) {

@@ -148,6 +148,9 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer<org.alice.
  */
 public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	abstract class ResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
+		public ResourceOperation() {
+			super( org.alice.ide.IDE.PROJECT_GROUP );
+		}
 		protected org.alice.virtualmachine.Resource resource;
 
 		//todo: better name
@@ -318,6 +321,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		private String nextName;
 
 		public RenameResourceOperation() {
+			super( org.alice.ide.IDE.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Rename..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -421,6 +425,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		private Capsule nextCapsule;
 
 		public ReloadResourceOperation() {
+			super( org.alice.ide.IDE.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Reload Content..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

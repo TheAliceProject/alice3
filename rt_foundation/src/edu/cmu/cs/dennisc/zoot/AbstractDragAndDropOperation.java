@@ -26,4 +26,7 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDragAndDropOperation extends AbstractOperation implements DragAndDropOperation {
+	public AbstractDragAndDropOperation( java.util.UUID groupUUID ) {
+		super( groupUUID );
+	}
 }

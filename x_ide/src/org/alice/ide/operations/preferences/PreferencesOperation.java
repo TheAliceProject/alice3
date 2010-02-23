@@ -27,6 +27,7 @@ package org.alice.ide.operations.preferences;
  */
 public class PreferencesOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public PreferencesOperation() {
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
 		this.putValue( javax.swing.Action.NAME, "Preferences..." );
 	}
 	

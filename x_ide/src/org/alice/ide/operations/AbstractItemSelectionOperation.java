@@ -27,7 +27,7 @@ package org.alice.ide.operations;
  */
 public abstract class AbstractItemSelectionOperation<E> extends edu.cmu.cs.dennisc.zoot.AbstractItemSelectionOperation<E> {
 	public AbstractItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-		super( comboBoxModel );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, comboBoxModel );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

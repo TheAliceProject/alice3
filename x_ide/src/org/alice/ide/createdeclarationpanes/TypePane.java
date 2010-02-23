@@ -33,7 +33,7 @@ import edu.cmu.cs.dennisc.alice.ast.DeclarationProperty;
 class IsArrayStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
-		super( isArrayProperty.getValue() );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, isArrayProperty.getValue() );
 		this.isArrayProperty = isArrayProperty;
 		this.putValue( javax.swing.Action.NAME, "is array" );
 	}

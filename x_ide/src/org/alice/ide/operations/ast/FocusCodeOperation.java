@@ -29,6 +29,7 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode;
 	public FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+		super( org.alice.ide.IDE.INTERFACE_GROUP );
 		this.nextCode = nextCode;
 		String name;
 		if( nextCode instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {

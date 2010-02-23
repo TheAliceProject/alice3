@@ -29,6 +29,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 	private boolean prevValue;
 	public AbstractIsEnabledStatementOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.statement = statement;
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

@@ -26,6 +26,9 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+	public AbstractActionOperation( java.util.UUID groupUUID ) {
+		super( groupUUID );
+	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

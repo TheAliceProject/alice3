@@ -27,6 +27,9 @@ package edu.cmu.cs.dennisc.zoot;
  */
 public abstract class AbstractBoundedRangeOperation extends AbstractOperation implements BoundedRangeOperation {
 	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
+	public AbstractBoundedRangeOperation( java.util.UUID groupUUID ) {
+		super( groupUUID );
+	}
 	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
 		return this.boundedRangeModel;
 	}

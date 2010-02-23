@@ -145,7 +145,7 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 		} else {
 			if( isLast ) {
 				this.menuItem = new javax.swing.JMenuItem();
-				this.menuItem = new edu.cmu.cs.dennisc.zoot.ZMenuItem( new edu.cmu.cs.dennisc.zoot.AbstractActionOperation() {
+				this.menuItem = new edu.cmu.cs.dennisc.zoot.ZMenuItem( new edu.cmu.cs.dennisc.zoot.AbstractActionOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP ) {
 					public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 						Node.this.handleActionOperationPerformed( actionContext );
 					}
