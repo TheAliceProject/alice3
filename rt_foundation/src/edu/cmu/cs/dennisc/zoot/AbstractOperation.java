@@ -55,44 +55,49 @@ public abstract class AbstractOperation implements Operation {
 		throw new javax.swing.undo.CannotUndoException();
 	}
 	
-	public boolean isEnabled = true;
+	private boolean isEnabled = true;
 	public boolean isEnabled() {
 		return this.isEnabled;
 	}
 	public void setEnabled( boolean isEnabled ) {
 		if( this.isEnabled != isEnabled ) {
-			edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent e = new edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent( this, this.isEnabled, isEnabled );
-			this.fireOperationEnabledChanging( e );
 			this.isEnabled = isEnabled;
-			this.fireOperationEnabledChanged( e );
-		}
-	}
-	private java.util.List< edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener > enabledListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener >();
-
-	public void addOperationEnabledChangeListener( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l ) {
-		synchronized( this.enabledListeners ) {
-			this.enabledListeners.add( l );
-		}
-	}
-	public void removeOperationEnabledChangeListener( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l ) {
-		synchronized( this.enabledListeners ) {
-			this.enabledListeners.remove( l );
-		}
-	}
-
-	private void fireOperationEnabledChanging( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent e ) {
-		synchronized( this.enabledListeners ) {
-			for( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l : this.enabledListeners ) {
-				l.operationEnabledChanging( e );
+			synchronized( this.components ) {
+				for( javax.swing.JComponent component : this.components ) {
+					component.setEnabled( this.isEnabled );
+				}
 			}
 		}
 	}
-	private void fireOperationEnabledChanged( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeEvent e ) {
-		synchronized( this.enabledListeners ) {
-			for( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l : this.enabledListeners ) {
-				l.operationEnabledChanged( e );
+
+	private String toolTipText = null;
+	public String getToolTipText() {
+		return this.toolTipText;
+	}
+	public void setToolTipText( String toolTipText ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.toolTipText, toolTipText ) ) {
+			//pass
+		} else {
+			this.toolTipText = toolTipText;
+			synchronized( this.components ) {
+				for( javax.swing.JComponent component : this.components ) {
+					component.setToolTipText( this.toolTipText );
+				}
 			}
 		}
 	}
+	private java.util.List< javax.swing.JComponent > components = new java.util.LinkedList< javax.swing.JComponent >();
 	
+	public void addComponent( javax.swing.JComponent component ) {
+		synchronized( this.components ) {
+			this.components.add( component );
+			component.setEnabled( this.isEnabled );
+			component.setToolTipText( this.toolTipText );
+		}
+	}
+	public void removeComponent( javax.swing.JComponent component ) {
+		synchronized( this.components ) {
+			this.components.remove( component );
+		}
+	}
 }

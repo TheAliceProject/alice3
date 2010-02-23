@@ -547,15 +547,31 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 	}
 	private void handleSelection() {
 		int rowIndex = this.table.getSelectedRow();
-		this.renameResourceOperation.setEnabled( rowIndex >= 0 );
-		this.replaceResourceOperation.setEnabled( rowIndex >= 0 );
-		boolean isRemoveSupported;
-		if( rowIndex >= 0 ) {
-			isRemoveSupported = (false == (Boolean)this.table.getModel().getValueAt( rowIndex, ResourceTableModel.IS_REFERENCED_COLUMN_INDEX ));
+		boolean isSelected = rowIndex >= 0;
+		String renameAndReplaceToolTipText;
+
+		String removeToolTipText;
+		boolean isReferenced;
+		if( isSelected ) {
+			isReferenced = (Boolean)this.table.getModel().getValueAt( rowIndex, ResourceTableModel.IS_REFERENCED_COLUMN_INDEX );
+			renameAndReplaceToolTipText = null;
+			if( isReferenced ) {
+				removeToolTipText = null;
+			} else {
+				removeToolTipText = "cannot remove resources that are referenced"; 
+			}
 		} else {
-			isRemoveSupported = false;
+			isReferenced = false;
+			renameAndReplaceToolTipText = "select resource";
+			removeToolTipText = renameAndReplaceToolTipText; 
 		}
-		this.removeResourceOperation.setEnabled( isRemoveSupported );
+		this.renameResourceOperation.setEnabled( isSelected );
+		this.renameResourceOperation.setToolTipText( renameAndReplaceToolTipText );
+		this.replaceResourceOperation.setEnabled( isSelected );
+		this.replaceResourceOperation.setToolTipText( renameAndReplaceToolTipText );
+
+		this.removeResourceOperation.setEnabled( isReferenced );
+		this.removeResourceOperation.setToolTipText( removeToolTipText );
 	}
 
 	@Override

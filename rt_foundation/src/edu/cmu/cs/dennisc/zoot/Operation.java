@@ -33,6 +33,8 @@ public interface Operation {
 	public boolean isSignificant();
 	public boolean isEnabled();
 	public void setEnabled( boolean isEnabled );
-	public void addOperationEnabledChangeListener( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l );
-	public void removeOperationEnabledChangeListener( edu.cmu.cs.dennisc.zoot.event.OperationEnabledChangeListener l );
+	public String getToolTipText();
+	public void setToolTipText( String toolTipText );
+	public void addComponent( javax.swing.JComponent component );
+	public void removeComponent( javax.swing.JComponent component );
 }
