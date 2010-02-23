@@ -1440,4 +1440,13 @@ public class Adult extends Person {
 //	public void kickRoundhouse( HeavyPunchingBag heavyPunchingBag, Adult trainer ) {
 //		perform( CycleABC.ROUNDHOUSE_KICK, heavyPunchingBag, trainer, FiniteStateMachine.BindingABC.B_IS_BOUND_TO_C_ONLY );
 //	}
+	@Override
+	protected edu.cmu.cs.dennisc.math.AxisAlignedBox getLocalAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+		final double X = 0.208;
+		final double Y = 1.7;
+		final double Z = 0.131;
+		rv.setMinimum( -X, 0.0, -Z );
+		rv.setMaximum( +X,   Y, +Z );
+		return rv;
+	}	
 }

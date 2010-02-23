@@ -414,19 +414,13 @@ public abstract class Person extends Model {
 		return other.getPosition( this ).z < 0.0;
 	}
 
+	protected abstract edu.cmu.cs.dennisc.math.AxisAlignedBox getLocalAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv );
 	@MethodTemplate( visibility=Visibility.TUCKED_AWAY )
 	@Override
 	public edu.cmu.cs.dennisc.math.AxisAlignedBox getAxisAlignedMinimumBoundingBox( org.alice.apis.moveandturn.ReferenceFrame asSeenBy, org.alice.apis.moveandturn.HowMuch howMuch, org.alice.apis.moveandturn.OriginInclusionPolicy originPolicy ) {
 		edu.cmu.cs.dennisc.math.AxisAlignedBox rv = new edu.cmu.cs.dennisc.math.AxisAlignedBox();
-		double x = 0.208;
-		double y = 1.7;
-		double z = 0.131;
-		rv.setMinimum( -x, 0.0, -z );
-		rv.setMaximum( +x, y, +z );
-//		final double RADIUS = 0.4;
-//		final double HEIGHT = 3.0;
-//		rv.setMinimum( -RADIUS, 0.0, -RADIUS );
-//		rv.setMaximum( +RADIUS, HEIGHT, +RADIUS );
+		this.getLocalAxisAlignedMinimumBoundingBox( rv );
+		//todo: asSeenBy
 		return rv;
 	}
 	

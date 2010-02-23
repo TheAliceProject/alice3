@@ -44,4 +44,16 @@ public class Toddler extends Person {
 	protected FiniteStateMachine.State getNeutralState() {
 		return null;
 	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.math.AxisAlignedBox getLocalAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+		final double X = 0.208;
+		final double Y = 1.7;
+		final double Z = 0.131;
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Toddler getLocalAxisAlignedMinimumBoundingBox" );
+		rv.setMinimum( -X, 0.0, -Z );
+		rv.setMaximum( +X,   Y, +Z );
+		return rv;
+	}	
 }

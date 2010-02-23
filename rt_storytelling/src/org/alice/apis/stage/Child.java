@@ -382,4 +382,17 @@ public class Child extends Person {
 	public void wave() {
 		perform( Child.Cycle.WAVE );
 	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.math.AxisAlignedBox getLocalAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
+		final double X = 0.208;
+		final double Y = 1.7;
+		final double Z = 0.131;
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Child getLocalAxisAlignedMinimumBoundingBox" );
+		rv.setMinimum( -X, 0.0, -Z );
+		rv.setMaximum( +X,   Y, +Z );
+		return rv;
+	}	
+	
 }
