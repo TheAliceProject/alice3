@@ -21,6 +21,5 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 package org.alice.apis.stage;
-
 public interface Outfit extends Ingredient {
 }

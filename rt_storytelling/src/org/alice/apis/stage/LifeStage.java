@@ -42,17 +42,24 @@ public enum LifeStage {
 	static {
 		s_mapLifeStageUnisexFullBodyOutfit = new java.util.HashMap< LifeStage, Class<? extends FullBodyOutfit> >();
 		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.ADULT, AdultFullBodyOutfit.class );
+		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.CHILD, ChildFullBodyOutfit.class );
 
 		s_mapLifeStageUnisexHair = new java.util.HashMap< LifeStage, Class<? extends Hair> >();
 		s_mapLifeStageUnisexHair.put( LifeStage.ADULT, AdultHair.class );
+		s_mapLifeStageUnisexHair.put( LifeStage.CHILD, ChildHair.class );
+		
 		
 		s_mapLifeStageGenderFullBodyOutfit = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends FullBodyOutfit> >();
 		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.MALE, MaleAdultFullBodyOutfit.class );
 		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultFullBodyOutfit.class );
+		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.CHILD, Gender.MALE, MaleChildFullBodyOutfit.class );
+		s_mapLifeStageGenderFullBodyOutfit.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildFullBodyOutfit.class );
 
 		s_mapLifeStageGenderHair = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends Hair> >();
 		s_mapLifeStageGenderHair.put( LifeStage.ADULT, Gender.MALE, MaleAdultHair.class );
 		s_mapLifeStageGenderHair.put( LifeStage.ADULT, Gender.FEMALE, FemaleAdultHair.class );
+		s_mapLifeStageGenderHair.put( LifeStage.CHILD, Gender.MALE, MaleChildHair.class );
+		s_mapLifeStageGenderHair.put( LifeStage.CHILD, Gender.FEMALE, FemaleChildHair.class );
 	}
 	public Class<? extends FullBodyOutfit> getGenderedFullBodyOutfitInterfaceClass( Gender gender ) {	
 		return s_mapLifeStageGenderFullBodyOutfit.get( this, gender );

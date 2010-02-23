@@ -36,6 +36,32 @@ public class FullBodyOutfitManager extends IngredientManager<FullBodyOutfit> {
 //							UnisexAdultFullBodyOutfiteton.class
 //		);
 
+		this.add( FemaleChildFullBodyOutfit.class,
+
+				FemaleChildFullBodyOutfitBlazerPleats.class,
+				FemaleChildFullBodyOutfitCowGirlSkirt.class,
+				FemaleChildFullBodyOutfitDressAboveKneeCollar.class,
+				FemaleChildFullBodyOutfitDressFormal.class,
+				FemaleChildFullBodyOutfitDressShortBell.class,
+				FemaleChildFullBodyOutfitJacketDressFlare.class,
+				FemaleChildFullBodyOutfitTShirtPants.class
+			);
+			this.add( ChildFullBodyOutfit.class,
+
+				ChildFullBodyOutfitJumper.class,
+				ChildFullBodyOutfitNaked.class,
+				ChildFullBodyOutfitPirate.class,
+				ChildFullBodyOutfitPuffyPJ.class
+			);
+			this.add( MaleChildFullBodyOutfit.class,
+
+				MaleChildFullBodyOutfitBigShorts.class,
+				MaleChildFullBodyOutfitLongSweaterPants.class,
+				MaleChildFullBodyOutfitOverShirtShorts.class,
+				MaleChildFullBodyOutfitPulloverShirtPants.class,
+				MaleChildFullBodyOutfitShirtOverPants.class,
+				MaleChildFullBodyOutfitSportif.class
+			);
 		this.add( FemaleAdultFullBodyOutfit.class,
 							FemaleAdultFullBodyOutfitAmbulanceDriver.class ,
 							FemaleAdultFullBodyOutfitApron.class ,

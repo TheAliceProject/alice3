@@ -21,5 +21,11 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 package org.alice.apis.stage;
-public interface Hair extends Ingredient {
+public enum MaleChildFullBodyOutfitLongSweaterPants implements MaleChildFullBodyOutfit {
+	GREYSTRIPES,
+ 	BABYBLUESTRIPES,
+ 	BROWNSTRIPES,
+ 	GREENPATTERN,
+ 	GREENSTRIPES,
+ 	PURPLEPATTERN;
 }
