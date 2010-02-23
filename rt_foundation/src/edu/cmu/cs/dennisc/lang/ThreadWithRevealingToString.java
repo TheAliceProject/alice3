@@ -27,11 +27,11 @@ package edu.cmu.cs.dennisc.lang;
  */
 public class ThreadWithRevealingToString extends Thread {
 	public ThreadWithRevealingToString() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
 	}
 	public ThreadWithRevealingToString( ThreadGroup threadGroup, String name ) {
 		super( threadGroup, name );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getName() );
 	}
 	protected StringBuffer updateRepr( StringBuffer rv ) { 
 		rv.append( "id=" );

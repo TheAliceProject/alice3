@@ -454,9 +454,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 
 		edu.cmu.cs.dennisc.zoot.ZManager.addManagerListener( new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
 			public void operationPerforming( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
 			}
 			public void operationPerformed( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
 			}
 		} );
 		this.promptForLicenseAgreements();
@@ -492,7 +492,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			}
 		} );
 
-		this.runButtonModel.setEnabled( false );
+		this.runOperation.setEnabled( false );
 
 		this.sceneEditor = this.createSceneEditor();
 		this.galleryBrowser = this.createGalleryBrowser( this.getGalleryRootDirectory() );
@@ -701,7 +701,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 
 		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
 			private java.util.Locale[] candidates = { 
-					new java.util.Locale( "en", "US", "alice" ),
+					new java.util.Locale( "en", "US" ),
 					new java.util.Locale( "en", "US", "java" ) };
 			private int selectedIndex;
 
@@ -744,7 +744,12 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			@Override
 			protected String getNameFor( int index, java.util.Locale locale ) {
 				if( locale != null ) {
-					return locale.getVariant();
+					String variant = locale.getVariant();
+					if( variant != null && variant.length() > 0 ) {  //should not be null
+						return variant;
+					} else {
+						return "alice";
+					}
 				} else {
 					return "null";
 				}
@@ -1112,17 +1117,15 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		return dst;
 	}
 
-	private javax.swing.ButtonModel runButtonModel = new javax.swing.DefaultButtonModel();
-
 	private edu.cmu.cs.dennisc.zoot.ActionOperation newProjectOperation = new org.alice.ide.operations.file.NewProjectOperation();
-	private edu.cmu.cs.dennisc.zoot.ActionOperation runOperation = this.createRunOperation( this.runButtonModel );
+	private edu.cmu.cs.dennisc.zoot.ActionOperation runOperation = this.createRunOperation();
 	private edu.cmu.cs.dennisc.zoot.ActionOperation exitOperation = this.createExitOperation();
 	private edu.cmu.cs.dennisc.zoot.ActionOperation saveOperation = this.createSaveOperation();
 	private edu.cmu.cs.dennisc.zoot.ActionOperation preferencesOperation = this.createPreferencesOperation();
 	private edu.cmu.cs.dennisc.zoot.ActionOperation aboutOperation = this.createAboutOperation();
 
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation createRunOperation( javax.swing.ButtonModel model ) {
-		return new org.alice.ide.operations.run.RunOperation( model );
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation createRunOperation() {
+		return new org.alice.ide.operations.run.RunOperation();
 	}
 	protected edu.cmu.cs.dennisc.zoot.ActionOperation createExitOperation() {
 		return new org.alice.ide.operations.file.ExitOperation();
@@ -1587,7 +1590,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		org.alice.ide.event.ProjectOpenEvent e = new org.alice.ide.event.ProjectOpenEvent( this, this.project, project );
 		fireProjectOpening( e );
 		this.project = project;
-		this.runButtonModel.setEnabled( this.project != null );
+		this.runOperation.setEnabled( this.project != null );
 		fireProjectOpened( e );
 	}
 

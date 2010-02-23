@@ -28,15 +28,15 @@ package edu.cmu.cs.dennisc.zoot;
 public abstract class AbstractActionOperation extends AbstractOperation implements ActionOperation {
 	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			AbstractActionOperation.this.handleActionPerformed( e );
 		}
 	};
-	private javax.swing.ButtonModel buttonModel;
+	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
 	public AbstractActionOperation() {
-		this( new javax.swing.DefaultButtonModel() );
-	}
-	public AbstractActionOperation( javax.swing.ButtonModel buttonModel ) {
-		this.buttonModel = buttonModel;
+		this.buttonModel.addActionListener( new java.awt.event.ActionListener() {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				AbstractActionOperation.this.handleActionPerformed( e );
+			}
+		} );
 	}
 	public javax.swing.Action getActionForConfiguringSwing() {
 		return this.actionForConfiguringSwingComponents;

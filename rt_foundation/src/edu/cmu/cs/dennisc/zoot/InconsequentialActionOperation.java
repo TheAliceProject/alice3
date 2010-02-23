@@ -27,11 +27,6 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public abstract class InconsequentialActionOperation extends AbstractActionOperation {
-	public InconsequentialActionOperation() {
-	}
-	public InconsequentialActionOperation( javax.swing.ButtonModel model ) {
-		super( model );
-	}
 	protected abstract void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext);
 	public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		performInternal(actionContext);
