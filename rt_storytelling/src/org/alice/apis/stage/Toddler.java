@@ -26,8 +26,11 @@ package org.alice.apis.stage;
  * @author Dennis Cosgrove
  */
 public class Toddler extends Person {
-	public Toddler( Gender gender ) { 
+	protected Toddler( Gender gender ) { 
 		super( LifeStage.TODDLER, gender );
+	}
+	public Toddler() { 
+		this( null );
 	}
 	@Override
 	public Boolean isPregnant() {

@@ -45,8 +45,11 @@ public class Child extends Person {
 		}
 	}
 
-	public Child( Gender gender ) { 
+	protected Child( Gender gender ) { 
 		super( LifeStage.CHILD, gender );
+	}
+	public Child() { 
+		this( null );
 	}
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )

@@ -63,14 +63,18 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 			} else {
 				rv = new org.alice.apis.stage.Adult();
 			}
+		} else if( this.personViewer.getLifeStage() == org.alice.apis.stage.LifeStage.CHILD ) {
+			rv = new org.alice.apis.stage.Child();
+		} else {
+			rv = null;
+		}
+		if( rv != null ) {
 			rv.setGender( this.personViewer.getGender() );
 			rv.setHair( this.personViewer.getHair() );
 			rv.setSkinTone( this.personViewer.getBaseSkinTone() );
 			rv.setEyeColor( this.personViewer.getBaseEyeColor() );
 			rv.setFitnessLevel( this.personViewer.getFitnessLevel() );
 			rv.setOutfit( this.personViewer.getFullBodyOutfit() );
-		} else {
-			rv = null;
 		}
 		
 		return rv;

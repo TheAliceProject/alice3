@@ -46,4 +46,12 @@ public class MapToMap< A, B, E > {
 		 }
 		 innerMap.put( b, value );
 	}
+	
+	public java.util.Collection< E > values() {
+		java.util.List< E > rv = new java.util.LinkedList< E >();
+		for( java.util.Map< B, E > innerMap : m_outerMap.values() ) {
+			rv.addAll( innerMap.values() );
+		}
+		return rv;
+	}
 }

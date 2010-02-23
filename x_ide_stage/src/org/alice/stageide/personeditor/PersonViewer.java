@@ -53,13 +53,27 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	private PersonViewer() {
 		Adult femaleAdult = new Adult();
 		femaleAdult.setGender( Gender.FEMALE );
+		
 		Adult maleAdult = new Adult();
 		maleAdult.setGender( Gender.MALE );
+
+		Child femaleChild = new Child();
+		femaleChild.setGender( Gender.FEMALE );
+
+		Child maleChild = new Child();
+		maleChild.setGender( Gender.MALE );
+		
+		
 		this.mapToMap.put( LifeStage.ADULT, Gender.FEMALE, femaleAdult );
 		this.mapToMap.put( LifeStage.ADULT, Gender.MALE, maleAdult );
-		this.mapToMap.get( LifeStage.ADULT, Gender.FEMALE ).getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
-		this.mapToMap.get( LifeStage.ADULT, Gender.MALE ).getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
-
+		this.mapToMap.put( LifeStage.CHILD, Gender.FEMALE, femaleChild );
+		this.mapToMap.put( LifeStage.CHILD, Gender.MALE, femaleChild );
+		
+		
+		for( Person person : this.mapToMap.values() ) {
+			person.getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
+		}
+		
 		this.setState( PersonViewer.generateRandomState() );
 	}
 
