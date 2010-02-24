@@ -53,7 +53,6 @@ public class HistoryPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
 		}
 		public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hashCode:", e.getEdit().hashCode() );
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( -1 );
 			HistoryPane.this.list.repaint();

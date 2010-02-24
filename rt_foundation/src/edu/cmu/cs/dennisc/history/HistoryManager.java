@@ -56,22 +56,43 @@ public class HistoryManager {
 		}
 	}
 	
+	private static void beep() {
+		java.awt.Toolkit.getDefaultToolkit().beep();
+	}
 	public void undo() {
 		if( this.insertIndex > 0 ) {
 			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertIndex-1 );
-			commitEvent.getEdit().undo();
-			this.insertIndex--;
+			if( commitEvent != null ) {
+				edu.cmu.cs.dennisc.zoot.Edit edit = commitEvent.getEdit();
+				if( edit.canRedo() ) {
+					edit.undo();
+					this.insertIndex--;
+				} else {
+					beep();
+				}
+			} else {
+				beep();
+			}
 		} else {
-			java.awt.Toolkit.getDefaultToolkit().beep();
+			beep();
 		}
 	}
 	public void redo() {
 		if( this.insertIndex < this.stack.size() ) {
 			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertIndex );
-			commitEvent.getEdit().doOrRedo();
-			this.insertIndex++;
+			if( commitEvent != null ) {
+				edu.cmu.cs.dennisc.zoot.Edit edit = commitEvent.getEdit();
+				if( edit.canRedo() ) {
+					edit.doOrRedo( false );
+					this.insertIndex++;
+				} else {
+					beep();
+				}
+			} else {
+				beep();
+			}
 		} else {
-			java.awt.Toolkit.getDefaultToolkit().beep();
+			beep();
 		}
 	}
 	
