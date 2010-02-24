@@ -33,8 +33,4 @@ public class IsDefaultFieldNameGenerationDesiredOperation extends org.alice.ide.
 	@Override
 	protected void handleStateChange(boolean value) {
 	}
-	@Override
-	public boolean isSignificant() {
-		return false;
-	}
 }

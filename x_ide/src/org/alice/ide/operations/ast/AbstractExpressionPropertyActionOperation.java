@@ -25,10 +25,9 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.AbstractActionOperation implements edu.cmu.cs.dennisc.zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
-	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
+
 	public AbstractExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.expressionProperty = expressionProperty;
@@ -36,34 +35,54 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
 		return this.expressionProperty;
 	}
+
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		actionContext.pend( this );
+		class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
+			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
+
+			@Override
+			public void doOrRedo() {
+				expressionProperty.setValue( this.nextExpression );
+			}
+			@Override
+			public void undo() {
+				expressionProperty.setValue( this.prevExpression );
+			}
+
+			@Override
+			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+				//super.updatePresentation( rv );
+				rv.append( "set: " );
+				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, this.prevExpression, locale );
+				rv.append( " ===> " );
+				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, this.nextExpression, locale );
+				return rv;
+			}
+		}
+		actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+			public ExpressionPropertyEdit createEdit() {
+				return new ExpressionPropertyEdit();
+			}
+			public ExpressionPropertyEdit initialize( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context,
+					edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+				rv.prevExpression = AbstractExpressionPropertyActionOperation.this.expressionProperty.getValue();
+				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, taskObserver, rv.prevExpression );
+				return rv;
+			}
+			public ExpressionPropertyEdit handleCompletion( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+				//todo: remove?
+				getIDE().unsetPreviousExpression();
+				rv.nextExpression = expression;
+				return rv;
+			}
+			public void handleCancelation() {
+				//todo: remove?
+				getIDE().unsetPreviousExpression();
+			}
+		} );
 	}
-	protected abstract void initializeInternal( edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
-	public void initialize( edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
-		this.prevExpression = this.expressionProperty.getValue();
-		this.initializeInternal(context, taskObserver, this.prevExpression);
-	}
-	public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression expression) {
-		this.nextExpression = expression;
-		//todo: remove?
-		getIDE().unsetPreviousExpression();
-	}
-	public void handleCancelation() {
-		//todo: remove?
-		getIDE().unsetPreviousExpression();
-	}
-	
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.expressionProperty.setValue( this.nextExpression );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		this.expressionProperty.setValue( this.prevExpression );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
-	}
+	protected abstract void initializeInternal( edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver,
+			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+
 }

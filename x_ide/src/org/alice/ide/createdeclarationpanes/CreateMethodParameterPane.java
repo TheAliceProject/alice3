@@ -36,10 +36,6 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 		protected void handleStateChange(boolean value) {
 			CreateMethodParameterPane.this.updateOKButton();
 		}
-		@Override
-		public boolean isSignificant() {
-			return false;
-		}
 	}
 
 	private javax.swing.JCheckBox checkBox;

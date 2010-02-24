@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.zoot.event;
 /**
  * @author Dennis Cosgrove
  */
-public class ManagerEvent extends OperationEvent {
+public abstract class ManagerEvent extends OperationEvent {
 	private edu.cmu.cs.dennisc.zoot.Context context;
 	public ManagerEvent( edu.cmu.cs.dennisc.zoot.Operation source, edu.cmu.cs.dennisc.zoot.Context context ) {
 		super( source );

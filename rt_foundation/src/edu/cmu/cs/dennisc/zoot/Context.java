@@ -34,10 +34,13 @@ public interface Context< O extends Operation > {
 	public boolean isCommitted();
 	public boolean isCancelled();
 	public boolean isPending();
-	public void commitAndInvokeRedoIfAppropriate();
+	public void commitAndInvokeRedoIfAppropriate( Edit edit );
+	
+	//todo: commit( Runnable )
+	public void commit();
 	public void cancel();
 	//todo: rename
-	public void pend( Resolver<?> resolver );
+	public void pend( Resolver<?,?> resolver );
 	public boolean isCancelWorthwhile();
 	public ActionContext perform( ActionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile );
 	public ItemSelectionContext perform( ItemSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection );

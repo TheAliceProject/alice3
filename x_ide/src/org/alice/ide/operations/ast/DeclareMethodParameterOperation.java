@@ -27,9 +27,7 @@ package org.alice.ide.operations.ast;
  */
 public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	private edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter;
-	private int index;
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
+
 	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		this.method = method;
 		this.putValue( javax.swing.Action.NAME, "Add Parameter..." );
@@ -39,22 +37,23 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 		return this.method;
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.getCode();
 		org.alice.ide.createdeclarationpanes.CreateMethodParameterPane createMethodParameterPane = new org.alice.ide.createdeclarationpanes.CreateMethodParameterPane( method, this.getIDE().getMethodInvocations( method ) );
-		this.parameter = createMethodParameterPane.showInJDialog( getIDE() );
-		if( this.parameter != null ) {
-			this.index = method.parameters.size();
-			actionContext.commitAndInvokeRedoIfAppropriate();
+		final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.showInJDialog( getIDE() );
+		if( parameter != null ) {
+			final int index = method.parameters.size();
+			final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
+			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, getIDE().getMethodInvocations( method ) );
+				}
+				@Override
+				public void undo() {
+					org.alice.ide.ast.NodeUtilities.removeParameter( map, method, parameter, index, getIDE().getMethodInvocations( method ) );
+				}
+			} );
 		} else {
 			actionContext.cancel();
 		}
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		org.alice.ide.ast.NodeUtilities.addParameter( this.map, this.method, this.parameter, this.index, this.getIDE().getMethodInvocations( this.method ) );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		org.alice.ide.ast.NodeUtilities.removeParameter( this.map, this.method, this.parameter, this.index, this.getIDE().getMethodInvocations( this.method ) );
 	}
 }

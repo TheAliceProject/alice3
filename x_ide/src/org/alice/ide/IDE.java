@@ -328,6 +328,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	}
 
 	private org.alice.ide.operations.window.IsMemoryUsageShowingOperation isMemoryUsageShowingOperation = new org.alice.ide.operations.window.IsMemoryUsageShowingOperation();
+	private org.alice.ide.operations.window.IsHistoryShowingOperation isHistoryShowingOperation = new org.alice.ide.operations.window.IsHistoryShowingOperation();
 
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
@@ -458,33 +459,12 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		IDE.singleton = this;
 		this.promptForLicenseAgreements();
 
-		edu.cmu.cs.dennisc.zoot.ZManager.addManagerListener( new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
-			public void operationPerforming( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
+		edu.cmu.cs.dennisc.history.HistoryManager.get( IDE.PROJECT_GROUP ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
+			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
 			}
-			public void operationPerformed( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
-				edu.cmu.cs.dennisc.zoot.Context context = e.getContext();
-				if( context.isCommitted() ) {
-					//todo:
-					//Boolean isProjectChanged = context.get( IDE.IS_PROJECT_CHANGED_KEY, Boolean.class );
-					if( context.getOperation().isSignificant() ) {
-						IDE.this.markChanged();
-					}
-					//					Boolean isProjectChanged = (Boolean)context.get( IDE.IS_PROJECT_CHANGED_KEY );
-					//					if( isProjectChanged != null ) {
-					//						if( isProjectChanged ) {
-					//							IDE.this.markChanged();
-					//						}
-					//					} else {
-					//						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: mark IDE.IS_PROJECT_CHANGED_KEY:", e );
-					//						IDE.this.markChanged();
-					//					}
-					//					edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-					//					zoot.Operation source = e.getTypedSource();
-					//					if( source instanceof org.alice.ide.operations.file.AbstractSaveProjectOperation || source instanceof org.alice.ide.operations.file.AbstractOpenProjectOperation ) {
-					//						//pass
-					//					} else {
-					//						IDE.this.markChanged();
-					//					}
+			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
+				if( e.getEdit() != null ) {
+					IDE.this.markChanged();
 				}
 			}
 		} );
@@ -581,27 +561,15 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			if( option == javax.swing.JOptionPane.YES_OPTION ) {
 				edu.cmu.cs.dennisc.zoot.ActionContext saveActionContext = actionContext.perform( IDE.this.saveOperation, null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				if( saveActionContext.isCommitted() ) {
-					actionContext.commitAndInvokeRedoIfAppropriate();
+					actionContext.commit();
 				} else {
 					actionContext.cancel();
 				}
 			} else if( option == javax.swing.JOptionPane.NO_OPTION ) {
-				actionContext.commitAndInvokeRedoIfAppropriate();
+				actionContext.commit();
 			} else {
 				actionContext.cancel();
 			}
-		}
-		@Override
-		public boolean canDoOrRedo() {
-			return false;
-		}
-		@Override
-		public boolean canUndo() {
-			return false;
-		}
-		@Override
-		public boolean isSignificant() {
-			return false;
 		}
 	};
 
@@ -629,7 +597,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 
 					if( file != null ) {
 						actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
-						actionContext.commitAndInvokeRedoIfAppropriate();
+						actionContext.commit();
 					} else {
 						if( IDE.this.getFile() == null ) {
 							javax.swing.JOptionPane.showMessageDialog( IDE.this, "Please select a project to open." );
@@ -641,18 +609,6 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 					actionContext.cancel();
 				}
 			}
-		}
-		@Override
-		public boolean canDoOrRedo() {
-			return false;
-		}
-		@Override
-		public boolean canUndo() {
-			return false;
-		}
-		@Override
-		public boolean isSignificant() {
-			return false;
 		}
 	}
 
@@ -755,15 +711,14 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			@Override
 			protected void handleSelectionChange( java.util.Locale value ) {
 				IDE.this.setLocale( value );
-			}
-			@Override
-			public boolean isSignificant() {
-				return false;
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: support undo", this );
 			}
 		}
 
 		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > windowOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
 
+		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+		windowOperations.add( this.isHistoryShowingOperation );
 		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		windowOperations.add( this.isEmphasizingClassesOperation );
 		windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
@@ -781,7 +736,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		windowOperations.add( this.isMemoryUsageShowingOperation );
 		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		windowOperations.add( this.isSceneEditorExpandedOperation );
-
+	
+		
 		javax.swing.JMenu windowMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, windowOperations );
 
 		javax.swing.JMenu setLocaleMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Set Language", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );

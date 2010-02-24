@@ -28,8 +28,6 @@ package org.alice.ide.operations.ast;
 public abstract class RenameNodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
 	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
-	private String prevValue;
-	private String nextValue;
 	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.nameProperty = nameProperty;
@@ -39,25 +37,21 @@ public abstract class RenameNodeOperation extends org.alice.ide.operations.Abstr
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( this.nodeNameValidator );
 		renameNodePane.setAndSelectNameText( this.nameProperty.getValue() );
-		this.nextValue = renameNodePane.showInJDialog( this.getIDE() );
+		final String nextValue = renameNodePane.showInJDialog( this.getIDE() );
 		if( nextValue != null && nextValue.length() > 0 ) {
-			this.prevValue = nameProperty.getValue();
-			actionContext.commitAndInvokeRedoIfAppropriate();
+			final String prevValue = nameProperty.getValue();
+			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					RenameNodeOperation.this.nameProperty.setValue( nextValue );
+				}
+				@Override
+				public void undo() {
+					RenameNodeOperation.this.nameProperty.setValue( prevValue );
+				}
+			} );
 		} else {
 			actionContext.cancel();
 		}
-	}
-
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.nameProperty.setValue( this.nextValue );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		this.nameProperty.setValue( this.prevValue );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
 	}
 }

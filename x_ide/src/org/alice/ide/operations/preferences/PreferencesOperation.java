@@ -36,21 +36,9 @@ public class PreferencesOperation extends org.alice.ide.operations.AbstractActio
 		preferencesInputPane.showInJDialog( this.getIDE() );
 //		if( this.method != null ) {
 //			this.prevCode = getIDE().getFocusedCode();
-			actionContext.commitAndInvokeRedoIfAppropriate();
+			actionContext.commit();
 //		} else {
 //			actionContext.cancel();
 //		}
 	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-	}
-	@Override
-	public boolean isSignificant() {
-		return false;
-//		return true;
-	}
-	
 }

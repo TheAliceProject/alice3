@@ -69,11 +69,6 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 			public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 				org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
 			}
-			@Override
-			public boolean isSignificant() {
-				//todo
-				return false;
-			}
 		}
 		
 		CollectionOfPreferencesPane generalPreferencesPane = new CollectionOfPreferencesPane( "General", org.alice.ide.preferences.GeneralPreferences.getSingleton() ) {

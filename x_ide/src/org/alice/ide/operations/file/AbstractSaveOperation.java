@@ -53,7 +53,7 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 				if( isExceptionRaised ) {
 					//pass
 				} else {
-					actionContext.commitAndInvokeRedoIfAppropriate();
+					actionContext.commit();
 				}
 			} else {
 				actionContext.cancel();
@@ -61,16 +61,4 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 		} while( isExceptionRaised );
 	}
 
-	@Override
-	public boolean canDoOrRedo() {
-		return false;
-	}
-	@Override
-	public boolean canUndo() {
-		return false;
-	}
-	@Override
-	public boolean isSignificant() {
-		return false;
-	}
 }

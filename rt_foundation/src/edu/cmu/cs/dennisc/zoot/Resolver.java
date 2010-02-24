@@ -26,8 +26,9 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 //todo: rename
-public interface Resolver< E > {
-	public void initialize( Context<? extends Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<E> taskObserver );
-	public void handleCompletion(E e);
+public interface Resolver< E extends Edit, F > {
+	public E createEdit();
+	public E initialize( E rv, Context<? extends Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<F> taskObserver );
+	public E handleCompletion( E rv, F e );
 	public void handleCancelation();
 }

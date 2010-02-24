@@ -20,25 +20,28 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-
-package edu.cmu.cs.dennisc.alice.ast;
+package edu.cmu.cs.dennisc.zoot;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclaration extends Node {
-	public abstract boolean isDeclaredInAlice();
-	public abstract edu.cmu.cs.dennisc.property.StringProperty getNamePropertyIfItExists();
-	@Override
-	protected java.util.Set< AbstractDeclaration > fillInDeclarationSet( java.util.Set< AbstractDeclaration > rv, java.util.Set< Node > nodes ) {
-		rv.add( this );
-		return super.fillInDeclarationSet( rv, nodes );
+public abstract class AbstractEdit implements Edit {
+	public abstract void doOrRedo();
+	public abstract void undo();
+	public boolean canDoAndRedo() {
+		return true;
 	}
-	@Override
-	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
-		//return super.appendRepr( rv, locale );
-		rv.append( this.getName() );
-		return rv;
+	public boolean canUndo() {
+		return true;
 	}
 	
+	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( this.getClass().getSimpleName() );
+		return rv;
+	}
+	public final String getPresentation( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		this.updatePresentation( sb, locale );
+		return sb.toString();
+	}
 }

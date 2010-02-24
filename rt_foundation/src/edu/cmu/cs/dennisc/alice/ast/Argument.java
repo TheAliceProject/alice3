@@ -40,4 +40,12 @@ public class Argument extends Node {
 		this.parameter.setValue( parameter );
 		this.expression.setValue( expression );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		//return super.appendRepr( rv, locale );
+		Node.safeAppendRepr( rv, this.parameter.getValue(), locale );
+		rv.append( ": " );
+		Node.safeAppendRepr( rv, this.expression.getValue(), locale );
+		return rv;
+	}
 }

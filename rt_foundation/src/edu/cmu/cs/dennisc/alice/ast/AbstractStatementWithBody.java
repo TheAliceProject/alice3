@@ -34,4 +34,8 @@ public abstract class AbstractStatementWithBody extends Statement {
 	public AbstractStatementWithBody( BlockStatement body ) {
 		this.body.setValue( body );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		return rv;
+	}
 }

@@ -25,26 +25,6 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-class TaskObserver< E > implements edu.cmu.cs.dennisc.task.TaskObserver< E > {
-	private Context<? extends Operation> context;
-	private Resolver<E> resolver;
-	public TaskObserver( Context<? extends Operation> context, Resolver<E> resolver ) {
-		this.context = context;
-		this.resolver = resolver;
-	}
-	public final void handleCompletion(E e) {
-		this.resolver.handleCompletion(e);
-		this.context.commitAndInvokeRedoIfAppropriate();
-	}
-	public final void handleCancelation() {
-		this.resolver.handleCancelation();
-		this.context.cancel();
-	}
-}
-
-/**
- * @author Dennis Cosgrove
- */
 abstract class AbstractContext< E extends Operation > implements Context< E > {
 	private E operation;
 	private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
@@ -70,24 +50,47 @@ abstract class AbstractContext< E extends Operation > implements Context< E > {
 	public boolean isPending() {
 		return (this.isCommitted() || this.isCancelled()) == false;
 	}
-	public void commitAndInvokeRedoIfAppropriate() {
+	public void commitAndInvokeRedoIfAppropriate( Edit edit ) {
 		assert this.isPending();
-		if( this.operation.canDoOrRedo() ) {
-			try {
-				this.operation.doOrRedo();
-			} catch( javax.swing.undo.CannotRedoException cre ) {
-				throw new RuntimeException( cre );
-			}
+		edu.cmu.cs.dennisc.zoot.event.CommitEvent e = new edu.cmu.cs.dennisc.zoot.event.CommitEvent( this.operation, this, edit );
+		ZManager.fireOperationCommitting( e );
+		if( edit != null ) {
+			edit.doOrRedo();
 		}
 		this.isCommitted = true;
+		ZManager.fireOperationCommitted( e );
 	}
-	public void pend(edu.cmu.cs.dennisc.zoot.Resolver<?> resolver) {
-		TaskObserver taskObserver = new TaskObserver(this, resolver); 
-		resolver.initialize( this, taskObserver );
+	public void commit() {
+		this.commitAndInvokeRedoIfAppropriate( null );
+	}
+	public void pend(edu.cmu.cs.dennisc.zoot.Resolver<? extends Edit, ?> resolver) {
+		class PendTaskObserver< E extends Edit,F > implements edu.cmu.cs.dennisc.task.TaskObserver< F > {
+			private Context<? extends Operation> context;
+			private Resolver<E,F> resolver;
+			private E edit;
+			public PendTaskObserver( Context<? extends Operation> context, Resolver<E,F> resolver ) {
+				this.context = context;
+				this.resolver = resolver;
+				this.edit = this.resolver.createEdit();
+				this.edit = this.resolver.initialize( this.edit, this.context, this );
+			}
+			public void handleCompletion(F f) {
+				this.edit = this.resolver.handleCompletion( this.edit, f);
+				this.context.commitAndInvokeRedoIfAppropriate( this.edit );
+			}
+			public void handleCancelation() {
+				this.resolver.handleCancelation();
+				this.context.cancel();
+			}
+		}
+		new PendTaskObserver(this, resolver);
 	}
 	public void cancel() {
 		assert this.isPending();
+		edu.cmu.cs.dennisc.zoot.event.CancelEvent e = new edu.cmu.cs.dennisc.zoot.event.CancelEvent( this.operation, this );
+		ZManager.fireOperationCancelling( e );
 		this.isCancelled = true;
+		ZManager.fireOperationCancelled( e );
 	}
 	public boolean isCancelWorthwhile() {
 		return isCancelWorthwhile;
@@ -195,42 +198,49 @@ public class ZManager {
 	@Deprecated
 	public static final java.util.UUID UNKNOWN_GROUP = java.util.UUID.fromString( "6e31d069-b4ed-4d10-a3af-bc009985c6e3" );
 	
-	private static javax.swing.undo.UndoableEdit insignificantEdit = new javax.swing.undo.AbstractUndoableEdit() {
-		@Override
-		public boolean isSignificant() {
-			return false;
-		}
-	};
-	
-	public static javax.swing.undo.UndoableEdit getInsignificantEdit() {
-		return ZManager.insignificantEdit;
-	}
-	
-	
 	private static java.util.List< edu.cmu.cs.dennisc.zoot.event.ManagerListener > managerListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.event.ManagerListener >();
+	private static edu.cmu.cs.dennisc.zoot.event.ManagerListener[] managerListenerArray = null;
 	public static void addManagerListener( edu.cmu.cs.dennisc.zoot.event.ManagerListener l ) {
 		synchronized( ZManager.managerListeners ) {
 			ZManager.managerListeners.add( l );
+			ZManager.managerListenerArray = null;
 		}
 	}
 	public static void removeManagerListener( edu.cmu.cs.dennisc.zoot.event.ManagerListener l ) {
 		synchronized( ZManager.managerListeners ) {
 			ZManager.managerListeners.remove( l );
+			ZManager.managerListenerArray = null;
 		}
 	}
 
-	protected static void fireOperationPerforming( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
+	private static edu.cmu.cs.dennisc.zoot.event.ManagerListener[] getManagerListenerArray() {
 		synchronized( ZManager.managerListeners ) {
-			for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.managerListeners ) {
-				l.operationPerforming( e );
+			if( ZManager.managerListenerArray != null ) {
+				//pass
+			} else {
+				ZManager.managerListenerArray = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( ZManager.managerListeners, edu.cmu.cs.dennisc.zoot.event.ManagerListener.class );
 			}
+			return ZManager.managerListenerArray;
 		}
 	}
-	protected static void fireOperationPerformed( edu.cmu.cs.dennisc.zoot.event.ManagerEvent e ) {
-		synchronized( ZManager.managerListeners ) {
-			for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.managerListeners ) {
-				l.operationPerformed( e );
-			}
+	/*package-private*/ static void fireOperationCancelling( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
+		for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.getManagerListenerArray() ) {
+			l.operationCancelling( e );
+		}
+	}
+	/*package-private*/ static void fireOperationCancelled( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
+		for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.getManagerListenerArray() ) {
+			l.operationCancelled( e );
+		}
+	}
+	/*package-private*/ static void fireOperationCommitting( edu.cmu.cs.dennisc.zoot.event.CommitEvent e ) {
+		for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.getManagerListenerArray() ) {
+			l.operationCommitting( e );
+		}
+	}
+	/*package-private*/ static void fireOperationCommitted( edu.cmu.cs.dennisc.zoot.event.CommitEvent e ) {
+		for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.getManagerListenerArray() ) {
+			l.operationCommitted( e );
 		}
 	}
 
@@ -293,10 +303,7 @@ public class ZManager {
 	public static BooleanStateContext performIfAppropriate( BooleanStateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
 		assert stateOperation != null;
 		BooleanStateContext rv = new MyBooleanStateContext( stateOperation, e, isCancelWorthwhile, previousValue, nextValue );
-		edu.cmu.cs.dennisc.zoot.event.ManagerEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.ManagerEvent( stateOperation, rv );
-		fireOperationPerforming( operationEvent );
 		stateOperation.performStateChange( rv );
-		fireOperationPerformed( operationEvent );
 		return rv;
 	}
 
@@ -309,19 +316,13 @@ public class ZManager {
 	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert boundedRangeOperation != null;
 		BoundedRangeContext rv = new MyBoundedRangeContext( boundedRangeOperation, e, isCancelWorthwhile );
-		edu.cmu.cs.dennisc.zoot.event.ManagerEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.ManagerEvent( boundedRangeOperation, rv );
-		fireOperationPerforming( operationEvent );
 		boundedRangeOperation.perform( rv );
-		fireOperationPerformed( operationEvent );
 		return rv;
 	}
 	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
 		ActionContext rv = new MyActionContext( actionOperation, e, isCancelWorthwhile );
-		edu.cmu.cs.dennisc.zoot.event.ManagerEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.ManagerEvent( actionOperation, rv );
-		fireOperationPerforming( operationEvent );
 		actionOperation.perform( rv );
-		fireOperationPerformed( operationEvent );
 		return rv;
 		//		if( operation instanceof CancellableOperation ) {
 		//			CancellableOperation cancellableOperation = (CancellableOperation)operation;
@@ -343,10 +344,7 @@ public class ZManager {
 	public static ItemSelectionContext performIfAppropriate( ItemSelectionOperation< ? > itemSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, Object previousSelection, Object nextSelection ) {
 		assert itemSelectionOperation != null;
 		ItemSelectionContext rv = new MyItemSelectionContext( itemSelectionOperation, e, isCancelWorthwhile, previousSelection, nextSelection );
-		edu.cmu.cs.dennisc.zoot.event.ManagerEvent operationEvent = new edu.cmu.cs.dennisc.zoot.event.ManagerEvent( itemSelectionOperation, rv );
-		fireOperationPerforming( operationEvent );
 		itemSelectionOperation.performSelectionChange( rv );
-		fireOperationPerformed( operationEvent );
 		return rv;
 	}
 	//public static ZMenu createMenu( StateOperation< java.util.ArrayList< E > > stateOperation )

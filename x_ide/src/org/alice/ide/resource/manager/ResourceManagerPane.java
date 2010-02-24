@@ -27,9 +27,9 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	public static final int NAME_COLUMN_INDEX = 0;
 	public static final int TYPE_COLUMN_INDEX = 1;
 	private org.alice.virtualmachine.Resource[] resources;
-	private java.util.Set<org.alice.virtualmachine.Resource> referencedResources;
+	private java.util.Set< org.alice.virtualmachine.Resource > referencedResources;
 
-	public ResourceTableModel( org.alice.virtualmachine.Resource[] resources, java.util.Set<org.alice.virtualmachine.Resource> referencedResources ) {
+	public ResourceTableModel( org.alice.virtualmachine.Resource[] resources, java.util.Set< org.alice.virtualmachine.Resource > referencedResources ) {
 		this.resources = resources;
 		this.referencedResources = referencedResources;
 	}
@@ -70,7 +70,7 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	}
 }
 
-abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.croquet.swing.TableCellRenderer<E> {
+abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.croquet.swing.TableCellRenderer< E > {
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
@@ -79,7 +79,7 @@ abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.croquet.s
 	}
 }
 
-class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer<Boolean> {
+class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer< Boolean > {
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Boolean value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
@@ -98,9 +98,9 @@ class ResourceIsReferencedTableCellRenderer extends ResourceTableCellRenderer<Bo
 	}
 }
 
-class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer<Class<? extends org.alice.virtualmachine.Resource>> {
+class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer< Class< ? extends org.alice.virtualmachine.Resource >> {
 	@Override
-	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Class<? extends org.alice.virtualmachine.Resource> value, boolean isSelected, boolean hasFocus, int row, int column ) {
+	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, Class< ? extends org.alice.virtualmachine.Resource > value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
 		String text;
 		java.awt.Color foreground;
@@ -124,7 +124,7 @@ class ResourceTypeTableCellRenderer extends ResourceTableCellRenderer<Class<? ex
 	}
 }
 
-class ResourceNameTableCellRenderer extends ResourceTableCellRenderer<org.alice.virtualmachine.Resource> {
+class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice.virtualmachine.Resource > {
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, org.alice.virtualmachine.Resource value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv = super.getTableCellRendererComponent( rv, table, value, isSelected, hasFocus, row, column );
@@ -151,63 +151,51 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		public ResourceOperation() {
 			super( org.alice.ide.IDE.PROJECT_GROUP );
 		}
-		protected org.alice.virtualmachine.Resource resource;
+		protected abstract edu.cmu.cs.dennisc.zoot.Edit createEdit( org.alice.virtualmachine.Resource resource );
 
 		//todo: better name
 		protected abstract org.alice.virtualmachine.Resource selectResource();
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			this.resource = this.selectResource();
+			org.alice.virtualmachine.Resource resource = this.selectResource();
 			if( resource != null ) {
-				actionContext.commitAndInvokeRedoIfAppropriate();
+				actionContext.commitAndInvokeRedoIfAppropriate( this.createEdit( resource ) );
 			} else {
 				actionContext.cancel();
 			}
 		}
-		@Override
-		public boolean isSignificant() {
-			return true;
-		}
 	}
 
-	abstract class AddOrRemoveResourceOperation extends ResourceOperation {
-		protected void addResource() {
-			org.alice.ide.IDE ide = this.getIDE();
+	abstract class AddOrRemoveResourceEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+		protected void addResource( org.alice.virtualmachine.Resource resource ) {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 			if( ide != null ) {
 				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 				if( ide != null ) {
-					project.addResource( this.resource );
+					project.addResource( resource );
 					ResourceManagerPane.this.resetModel();
 				}
 			}
 		}
-		protected void removeResource() {
-			org.alice.ide.IDE ide = this.getIDE();
+		protected void removeResource( org.alice.virtualmachine.Resource resource ) {
+			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 			if( ide != null ) {
 				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 				if( ide != null ) {
-					project.removeResource( this.resource );
+					project.removeResource( resource );
 					ResourceManagerPane.this.resetModel();
 				}
 			}
 		}
 	}
 
-	class ImportResourceOperation extends AddOrRemoveResourceOperation {
+	class ImportResourceOperation extends ResourceOperation {
 		public ImportResourceOperation() {
 			this.putValue( javax.swing.Action.NAME, "Import..." );
 		}
 		@Override
 		public org.alice.virtualmachine.Resource selectResource() {
-			int result = javax.swing.JOptionPane.showOptionDialog( 
-					this.getIDE(), 
-					"What type of resource would you like to import?", 
-					"Select Type", 
-					javax.swing.JOptionPane.YES_NO_OPTION, 
-					javax.swing.JOptionPane.QUESTION_MESSAGE,
-					null, 
-					new String[] { "Import Audio...", "Import Image..." }, 
-					null 
-			);
+			int result = javax.swing.JOptionPane.showOptionDialog( this.getIDE(), "What type of resource would you like to import?", "Select Type", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, new String[] {
+					"Import Audio...", "Import Image..." }, null );
 			switch( result ) {
 			case javax.swing.JOptionPane.YES_OPTION:
 				try {
@@ -226,16 +214,21 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 			}
 		}
 		@Override
-		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-			this.addResource();
-		}
-		@Override
-		public void undo() throws javax.swing.undo.CannotUndoException {
-			this.removeResource();
+		public edu.cmu.cs.dennisc.zoot.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
+			return new AddOrRemoveResourceEdit() {
+				@Override
+				public void doOrRedo() {
+					this.addResource( resource );
+				}
+				@Override
+				public void undo() {
+					this.removeResource( resource );
+				}
+			};
 		}
 	}
 
-	class RemoveResourceOperation extends AddOrRemoveResourceOperation {
+	class RemoveResourceOperation extends ResourceOperation {
 		public RemoveResourceOperation() {
 			this.putValue( javax.swing.Action.NAME, "Remove" );
 		}
@@ -244,12 +237,17 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 			return ResourceManagerPane.this.getSelectedResource();
 		}
 		@Override
-		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-			this.removeResource();
-		}
-		@Override
-		public void undo() throws javax.swing.undo.CannotUndoException {
-			this.addResource();
+		public edu.cmu.cs.dennisc.zoot.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
+			return new AddOrRemoveResourceEdit() {
+				@Override
+				public void doOrRedo() {
+					this.removeResource( resource );
+				}
+				@Override
+				public void undo() {
+					this.addResource( resource );
+				}
+			};
 		}
 	}
 
@@ -265,8 +263,8 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		}
 		protected abstract java.awt.Component createPreviewComponent();
 		@Override
-		protected java.util.List<java.awt.Component[]> createComponentRows() {
-			java.util.List<java.awt.Component[]> rv = super.createComponentRows();
+		protected java.util.List< java.awt.Component[] > createComponentRows() {
+			java.util.List< java.awt.Component[] > rv = super.createComponentRows();
 			edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "preview:" );
 			rv.add( new java.awt.Component[] { label, this.createPreviewComponent() } );
 			return rv;
@@ -277,7 +275,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		//		}
 	}
 
-	class RenameWithImagePreviewPane extends RenameWithPreviewPane<org.alice.virtualmachine.resources.ImageResource> {
+	class RenameWithImagePreviewPane extends RenameWithPreviewPane< org.alice.virtualmachine.resources.ImageResource > {
 		public RenameWithImagePreviewPane( org.alice.virtualmachine.resources.ImageResource imageResource ) {
 			super( imageResource );
 		}
@@ -288,7 +286,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		}
 	}
 
-	class RenameWithAudioPreviewPane extends RenameWithPreviewPane<org.alice.virtualmachine.resources.AudioResource> {
+	class RenameWithAudioPreviewPane extends RenameWithPreviewPane< org.alice.virtualmachine.resources.AudioResource > {
 		public RenameWithAudioPreviewPane( org.alice.virtualmachine.resources.AudioResource audioResource ) {
 			super( audioResource );
 		}
@@ -316,52 +314,45 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 	}
 
 	class RenameResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
-		protected org.alice.virtualmachine.Resource resource;
-		private String prevName;
-		private String nextName;
-
 		public RenameResourceOperation() {
 			super( org.alice.ide.IDE.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Rename..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			this.resource = ResourceManagerPane.this.getSelectedResource();
-			if( this.resource != null ) {
+			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
+			if( resource != null ) {
 				org.alice.ide.name.RenamePane renamePane;
-				if( this.resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
-					org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)this.resource;
+				if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+					org.alice.virtualmachine.resources.ImageResource imageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
 					renamePane = new RenameWithImagePreviewPane( imageResource );
-				} else if( this.resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
-					org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)this.resource;
+				} else if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
+					org.alice.virtualmachine.resources.AudioResource audioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
 					renamePane = new RenameWithAudioPreviewPane( audioResource );
 				} else {
-					renamePane = new org.alice.ide.name.RenamePane( new org.alice.ide.name.validators.ResourceNameValidator( this.resource ) );
+					renamePane = new org.alice.ide.name.RenamePane( new org.alice.ide.name.validators.ResourceNameValidator( resource ) );
 				}
-				renamePane.setAndSelectNameText( this.resource.getName() );
-				this.nextName = renamePane.showInJDialog( this.getIDE(), "Rename Resource" );
-				if( this.nextName != null && this.nextName.length() > 0 ) {
-					this.prevName = this.resource.getName();
-					actionContext.commitAndInvokeRedoIfAppropriate();
+				renamePane.setAndSelectNameText( resource.getName() );
+				final String nextName = renamePane.showInJDialog( this.getIDE(), "Rename Resource" );
+				if( nextName != null && nextName.length() > 0 ) {
+					final String prevName = resource.getName();
+					actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+						@Override
+						public void doOrRedo() {
+							resource.setName( nextName );
+							ResourceManagerPane.this.table.repaint();
+						}
+						@Override
+						public void undo() {
+							resource.setName( prevName );
+							ResourceManagerPane.this.table.repaint();
+						}
+					} );
 				} else {
 					actionContext.cancel();
 				}
 			} else {
 				actionContext.cancel();
 			}
-		}
-		@Override
-		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-			this.resource.setName( this.nextName );
-			ResourceManagerPane.this.table.repaint();
-		}
-		@Override
-		public void undo() throws javax.swing.undo.CannotUndoException {
-			this.resource.setName( this.prevName );
-			ResourceManagerPane.this.table.repaint();
-		}
-		@Override
-		public boolean isSignificant() {
-			return true;
 		}
 	}
 
@@ -387,7 +378,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 			}
 		}
 
-		class ImageCapsule extends Capsule<org.alice.virtualmachine.resources.ImageResource> {
+		class ImageCapsule extends Capsule< org.alice.virtualmachine.resources.ImageResource > {
 			private int width;
 			private int height;
 
@@ -405,7 +396,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 			}
 		}
 
-		class AudioCapsule extends Capsule<org.alice.virtualmachine.resources.AudioResource> {
+		class AudioCapsule extends Capsule< org.alice.virtualmachine.resources.AudioResource > {
 			private double duration;
 
 			public AudioCapsule( org.alice.virtualmachine.resources.AudioResource audioResource ) {
@@ -420,60 +411,65 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 			}
 		}
 
-		protected org.alice.virtualmachine.Resource resource;
-		private Capsule prevCapsule;
-		private Capsule nextCapsule;
-
 		public ReloadResourceOperation() {
 			super( org.alice.ide.IDE.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Reload Content..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			this.resource = ResourceManagerPane.this.getSelectedResource();
-			if( this.resource != null ) {
-				if( this.resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
+			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
+			if( resource != null ) {
+				final Capsule prevCapsule;
+				final Capsule nextCapsule;
+				if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
 					org.alice.virtualmachine.resources.ImageResource prevImageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
 					try {
 						org.alice.virtualmachine.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
 						if( nextImageResource != null ) {
-							this.prevCapsule = new ImageCapsule( prevImageResource );
-							this.nextCapsule = new ImageCapsule( nextImageResource );
+							prevCapsule = new ImageCapsule( prevImageResource );
+							nextCapsule = new ImageCapsule( nextImageResource );
+						} else {
+							prevCapsule = null;
+							nextCapsule = null;
 						}
 					} catch( java.io.IOException ioe ) {
 						throw new RuntimeException( ioe );
 					}
-				} else if( this.resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
+				} else if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
 					org.alice.virtualmachine.resources.AudioResource prevAudioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
 					try {
 						org.alice.virtualmachine.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
 						if( nextAudioResource != null ) {
-							this.prevCapsule = new AudioCapsule( prevAudioResource );
-							this.nextCapsule = new AudioCapsule( nextAudioResource );
+							prevCapsule = new AudioCapsule( prevAudioResource );
+							nextCapsule = new AudioCapsule( nextAudioResource );
+						} else {
+							prevCapsule = null;
+							nextCapsule = null;
 						}
 					} catch( java.io.IOException ioe ) {
 						throw new RuntimeException( ioe );
 					}
+				} else {
+					prevCapsule = null;
+					nextCapsule = null;
 				}
-				if( this.prevCapsule != null && this.nextCapsule != null ) {
-					actionContext.commitAndInvokeRedoIfAppropriate();
+				if( prevCapsule != null && nextCapsule != null ) {
+					actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+						@Override
+						public void doOrRedo() {
+							nextCapsule.update( resource );
+						}
+						@Override
+						public void undo() {
+							prevCapsule.update( resource );
+						}
+
+					} );
 				} else {
 					actionContext.cancel();
 				}
 			} else {
 				actionContext.cancel();
 			}
-		}
-		@Override
-		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-			this.nextCapsule.update( this.resource );
-		}
-		@Override
-		public void undo() throws javax.swing.undo.CannotUndoException {
-			this.prevCapsule.update( this.resource );
-		}
-		@Override
-		public boolean isSignificant() {
-			return true;
 		}
 	}
 
@@ -535,13 +531,11 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		if( ide != null ) {
 			edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 			if( project != null ) {
-				
-				
+
 				ide.ensureProjectCodeUpToDate();
-				
-				
+
 				org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( project.getResources(), org.alice.virtualmachine.Resource.class, true );
-				java.util.Set<org.alice.virtualmachine.Resource> referencedResources = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getReferencedResources( project );
+				java.util.Set< org.alice.virtualmachine.Resource > referencedResources = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getReferencedResources( project );
 				javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
 				this.table.setModel( tableModel );
 				this.table.getColumn( this.table.getColumnName( ResourceTableModel.IS_REFERENCED_COLUMN_INDEX ) ).setCellRenderer( new ResourceIsReferencedTableCellRenderer() );
@@ -563,12 +557,12 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 			if( isReferenced ) {
 				removeToolTipText = null;
 			} else {
-				removeToolTipText = "cannot remove resources that are referenced"; 
+				removeToolTipText = "cannot remove resources that are referenced";
 			}
 		} else {
 			isReferenced = false;
 			renameAndReplaceToolTipText = "select resource";
-			removeToolTipText = renameAndReplaceToolTipText; 
+			removeToolTipText = renameAndReplaceToolTipText;
 		}
 		this.renameResourceOperation.setEnabled( isSelected );
 		this.renameResourceOperation.setToolTipText( renameAndReplaceToolTipText );

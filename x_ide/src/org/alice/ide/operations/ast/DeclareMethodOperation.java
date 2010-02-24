@@ -32,35 +32,30 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.Ab
 		this.type = type;
 	}
 	protected abstract org.alice.ide.createdeclarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode;
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		org.alice.ide.createdeclarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = this.createCreateMethodPane( this.type );
-		this.method = createMethodPane.showInJDialog( getIDE() );
-		if( this.method != null ) {
-			this.prevCode = getIDE().getFocusedCode();
-			actionContext.commitAndInvokeRedoIfAppropriate();
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.showInJDialog( getIDE() );
+		if( method != null ) {
+			final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
+			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					type.methods.add( method );
+					getIDE().setFocusedCode( method );
+				}
+				@Override
+				public void undo() {
+					int index = type.methods.indexOf( method );
+					if( index != -1 ) {
+						type.methods.remove( index );
+						getIDE().setFocusedCode( prevCode );
+					} else {
+						throw new javax.swing.undo.CannotUndoException();
+					}
+				}
+			} );
 		} else {
 			actionContext.cancel();
 		}
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.type.methods.add( this.method );
-		this.getIDE().setFocusedCode( this.method );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		int index = this.type.methods.indexOf( this.method );
-		if( index != -1 ) {
-			this.type.methods.remove( index );
-			this.getIDE().setFocusedCode( this.prevCode );
-		} else {
-			throw new javax.swing.undo.CannotUndoException();
-		}
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
 	}
 }

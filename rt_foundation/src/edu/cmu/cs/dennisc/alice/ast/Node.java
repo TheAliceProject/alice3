@@ -580,4 +580,24 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 		append( sb, new java.util.HashSet< Node >() );
 		return sb.toString();
 	}
+
+	public static StringBuffer safeAppendRepr( StringBuffer rv, Node node, java.util.Locale locale ) {
+		if( node != null ) {
+			node.appendRepr( rv, locale );
+		} else {
+			//todo?
+		}
+		return rv;
+	}
+	//todo: i18n
+	//protected abstract StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ); 
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( this.getClass().getSimpleName() );
+		return rv;
+	}
+	public final String getRepr( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		this.appendRepr( sb, locale );
+		return sb.toString();
+	}
 }

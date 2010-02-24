@@ -25,47 +25,63 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FillInMoreOperation extends org.alice.ide.operations.AbstractActionOperation implements edu.cmu.cs.dennisc.zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression >{
+public class FillInMoreOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
-	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
-	private edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation;
 	public FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP );
 		assert expressionStatement != null;
 		this.expressionStatement = expressionStatement;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		actionContext.pend( this );
-	}
-	public void initialize( edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
-		this.prevMethodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = this.prevMethodInvocation.method.getValue();
-		this.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
-		java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = this.nextLongerMethod.getParameters();
-		edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-		this.getIDE().promptUserForMore( lastParameter, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
-	}
-	public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression expression) {
-		this.nextMethodInvocation = org.alice.ide.ast.NodeUtilities.createNextMethodInvocation( this.prevMethodInvocation, expression, this.nextLongerMethod );
-		//todo: remove?
-		getIDE().unsetPreviousExpression();
-	}
-	public void handleCancelation() {
-		//todo: remove?
-		getIDE().unsetPreviousExpression();
-	}
 	
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		expressionStatement.expression.setValue( this.nextMethodInvocation );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		expressionStatement.expression.setValue( this.prevMethodInvocation );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		class MoreEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+			private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
+			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
+			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation;
+			@Override
+			public void doOrRedo() {
+				expressionStatement.expression.setValue( this.nextMethodInvocation );
+			}
+			@Override
+			public void undo() {
+				expressionStatement.expression.setValue( this.prevMethodInvocation );
+			}
+			@Override
+			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+				//super.updatePresentation( rv );
+				rv.append( "more: " );
+				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, nextLongerMethod, locale );
+				rv.append( " " );
+				final int N = this.nextMethodInvocation.arguments.size(); 
+				edu.cmu.cs.dennisc.alice.ast.Argument argument = this.nextMethodInvocation.arguments.get( N-1 );
+				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, argument, locale );
+				return rv;
+			}
+		}
+		actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+			public MoreEdit createEdit() {
+				return new MoreEdit();
+			}
+			public MoreEdit initialize( MoreEdit rv, edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+				rv.prevMethodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
+				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = rv.prevMethodInvocation.method.getValue();
+				rv.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
+				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = rv.nextLongerMethod.getParameters();
+				edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
+				getIDE().promptUserForMore( lastParameter, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
+
+				return rv;
+			}
+			public MoreEdit handleCompletion( MoreEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+				//todo: remove?
+				getIDE().unsetPreviousExpression();
+				rv.nextMethodInvocation = org.alice.ide.ast.NodeUtilities.createNextMethodInvocation( rv.prevMethodInvocation, expression, rv.nextLongerMethod );
+				return rv;
+			}
+			public void handleCancelation() {
+				//todo: remove?
+				getIDE().unsetPreviousExpression();
+			}
+		} );
 	}
 }

@@ -30,8 +30,4 @@ public abstract class AbstractCodeOperation extends org.alice.ide.operations.Abs
 		super( org.alice.ide.IDE.PROJECT_GROUP );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode();
-	@Override
-	public boolean isSignificant() {
-		return true;
-	}
 }

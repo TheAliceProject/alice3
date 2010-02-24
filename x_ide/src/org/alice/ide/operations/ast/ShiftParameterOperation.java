@@ -29,7 +29,6 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
  * @author Dennis Cosgrove
  */
 public abstract class ShiftParameterOperation extends AbstractCodeParameterOperation {
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 	public ShiftParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
 		super( parametersProperty, parameter );
 	}
@@ -39,14 +38,25 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		return this.isAppropriate( this.getIndex(), this.getParameterCount() );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		final int aIndex = this.getIndexA();
+		final int bIndex = aIndex + 1;
 		if( method != null ) {
-			actionContext.commitAndInvokeRedoIfAppropriate();
+			actionContext.commitAndInvokeRedoIfAppropriate(new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					swap( method, aIndex, bIndex );
+				}
+				@Override
+				public void undo() {
+					swap( method, bIndex, aIndex );
+				}
+			});
 		} else {
 			throw new RuntimeException();
 		}
 	}
-	private void swap( int aIndex, int bIndex ) {
+	private void swap( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, int aIndex, int bIndex ) {
 		java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
 		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice aParam = method.parameters.get( aIndex );
 		edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice bParam = method.parameters.get( bIndex );
@@ -54,21 +64,9 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		for( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation : methodInvocations ) {
 			edu.cmu.cs.dennisc.alice.ast.Argument aArg = methodInvocation.arguments.get( aIndex );
 			edu.cmu.cs.dennisc.alice.ast.Argument bArg = methodInvocation.arguments.get( bIndex );
-			assert aArg.parameter.getValue() == aParam; 
+			assert aArg.parameter.getValue() == aParam;
 			assert bArg.parameter.getValue() == bParam;
 			methodInvocation.arguments.set( aIndex, bArg, aArg );
 		}
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		int aIndex = this.getIndexA();
-		int bIndex = aIndex + 1;
-		swap( aIndex, bIndex );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		int aIndex = this.getIndexA();
-		int bIndex = aIndex + 1;
-		swap( bIndex, aIndex );
 	}
 }

@@ -5,12 +5,11 @@ public class IsMemoryUsageShowingOperation extends IsFrameShowingOperation {
 		this.putValue( javax.swing.Action.NAME, "Show Memory Usage?" );
 	}
 	@Override
+	protected String getTitle() {
+		return "Memory Usage";
+	}
+	@Override
 	protected java.awt.Component createPane() {
 		return new edu.cmu.cs.dennisc.memory.MemoryPane();
 	}
-	@Override
-	public boolean isSignificant() {
-		return false;
-	}
-	
 }

@@ -25,12 +25,10 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class FillInExpressionListPropertyItemOperation extends org.alice.ide.operations.AbstractActionOperation implements edu.cmu.cs.dennisc.zoot.Resolver< edu.cmu.cs.dennisc.alice.ast.Expression > {
+public abstract class FillInExpressionListPropertyItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 //	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
-	private int index;
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
-	private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
-	private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
+	private int index;
 	public FillInExpressionListPropertyItemOperation( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP );
 		//this.type = type;
@@ -39,34 +37,38 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		actionContext.pend( this );
+		class FillInExpressionEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
+			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
+			@Override
+			public void doOrRedo() {
+				expressionListProperty.set( index, this.nextExpression );
+			}
+			@Override
+			public void undo() {
+				expressionListProperty.set( index, this.prevExpression );
+			}
+		}
+		actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< FillInExpressionEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+			public FillInExpressionEdit createEdit() {
+				return new FillInExpressionEdit();
+			}
+			public FillInExpressionEdit initialize( FillInExpressionEdit rv, edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+				rv.prevExpression = expressionListProperty.get( index );
+				edu.cmu.cs.dennisc.alice.ast.AbstractType type = getFillInType();
+				getIDE().promptUserForExpression( type, rv.prevExpression, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
+				return rv;
+			}
+			public FillInExpressionEdit handleCompletion( FillInExpressionEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+				//todo: remove?
+				getIDE().unsetPreviousExpression();
+				rv.nextExpression = expression;
+				return rv;
+			}
+			public void handleCancelation() {
+				//todo: remove?
+				getIDE().unsetPreviousExpression();
+			}
+		} );
 	}
-	public void initialize( edu.cmu.cs.dennisc.zoot.Context<? extends edu.cmu.cs.dennisc.zoot.Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver ) {
-		this.prevExpression = this.expressionListProperty.get( this.index );
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getFillInType();
-		getIDE().promptUserForExpression( type, this.prevExpression, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
-	}
-	public void handleCompletion(edu.cmu.cs.dennisc.alice.ast.Expression expression) {
-		this.nextExpression = expression;
-		//todo: remove?
-		getIDE().unsetPreviousExpression();
-	}
-	public void handleCancelation() {
-		//todo: remove?
-		getIDE().unsetPreviousExpression();
-	}
-	
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.expressionListProperty.set( this.index, this.nextExpression );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		this.expressionListProperty.set( this.index, this.prevExpression );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
-	}
-
 }

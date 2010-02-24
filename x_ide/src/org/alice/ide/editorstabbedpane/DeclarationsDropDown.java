@@ -57,7 +57,7 @@ class EditMethodOperation extends org.alice.ide.operations.InconsequentialAction
 
 class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-//	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] prevArray;
+
 
 	public EditFieldsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP );
@@ -65,35 +65,33 @@ class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperati
 		this.putValue( javax.swing.Action.NAME, "Edit Properties..." );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-//		this.prevArray = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[ this.type.fields.size() ];
-//		this.type.fields.toArray( this.prevArray );
-//
-//		EditFieldsPane editFieldsPane = new EditFieldsPane( this.type );
-//		Boolean isAccepted = editFieldsPane.showInJDialog( getIDE() );
-//		if( isAccepted != null ) {
-//			actionContext.commitAndInvokeRedoIfAppropriate();
-//		} else {
+		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] prevArray;		
+		prevArray = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[ this.type.fields.size() ];
+		this.type.fields.toArray( prevArray );
+
+		EditFieldsPane editFieldsPane = new EditFieldsPane( this.type );
+		Boolean isAccepted = editFieldsPane.showInJDialog( getIDE() );
+		if( isAccepted != null ) {
+			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation doOrRedo" );
+				}
+				@Override
+				public void undo() {
+					javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation undo" );
+				}
+			} );
+		} else {
+			javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation cancel" );
 //			int N = this.type.fields.size();
 ////			this.type.fields.set( 0, array );
 //			if( array.length < N ) {
 ////				this.type.fields.remove( array.length, N-1 );
 //				javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo: handle cancel.  apologies." );
 //			}
-//			actionContext.cancel();
-//		}
-		actionContext.commitAndInvokeRedoIfAppropriate();
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation doOrRedo" );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation undo" );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
+			actionContext.cancel();
+		}
 	}
 }
 

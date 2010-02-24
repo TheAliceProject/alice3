@@ -33,26 +33,6 @@ public abstract class InconsequentialActionOperation extends org.alice.ide.opera
 	protected abstract void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext);
 	public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		performInternal(actionContext);
-		actionContext.commitAndInvokeRedoIfAppropriate();
-	}
-	@Override
-	public final boolean canDoOrRedo() {
-		return false;
-	}
-	@Override
-	public final boolean canUndo() {
-		return false;
-	}
-	@Override
-	public final boolean isSignificant() {
-		return false;
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		throw new javax.swing.undo.CannotRedoException();
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		throw new javax.swing.undo.CannotUndoException();
+		actionContext.commit();
 	}
 }

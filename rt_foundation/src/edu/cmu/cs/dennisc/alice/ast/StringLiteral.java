@@ -36,4 +36,11 @@ public class StringLiteral extends AbstractValueLiteral {
 	public AbstractType getType() {
 		return TypeDeclaredInJava.get( String.class );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( "\"" );
+		rv.append( this.value.getValue() );
+		rv.append( "\"" );
+		return rv;
+	}
 }

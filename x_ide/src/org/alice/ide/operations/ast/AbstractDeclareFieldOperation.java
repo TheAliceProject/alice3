@@ -26,8 +26,6 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private int index;
 	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
 	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
 	public AbstractDeclareFieldOperation() {
@@ -35,30 +33,35 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 	}
 	public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
-		this.field = this.createField( ownerType );
-		if( this.field != null ) {
-			this.index = ownerType.fields.size();
-			actionContext.commitAndInvokeRedoIfAppropriate();
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.createField( ownerType );
+		if( field != null ) {
+			class Edit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+				private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
+				private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+				private int index;
+				
+				public Edit( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index ) {
+					this.ownerType = ownerType;
+					this.field = field;
+					this.index = index;
+				}
+				@Override
+				public void doOrRedo() {
+					this.ownerType.fields.add( this.index, this.field );
+				}
+				@Override
+				public void undo() {
+					if( this.ownerType.fields.get( this.index ) == this.field ) {
+						this.ownerType.fields.remove( this.index );
+					} else {
+						throw new javax.swing.undo.CannotUndoException();
+					}
+				}
+			}
+			int index = ownerType.fields.size();
+			actionContext.commitAndInvokeRedoIfAppropriate( new Edit( ownerType, field, index ) );
 		} else {
 			actionContext.cancel();
-		}
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
-		ownerType.fields.add( this.index, this.field );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
-		if( ownerType.fields.get( this.index ) == this.field ) {
-			ownerType.fields.remove( this.index );
-		} else {
-			throw new javax.swing.undo.CannotUndoException();
 		}
 	}
 }

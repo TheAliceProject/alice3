@@ -29,28 +29,26 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
  * @author Dennis Cosgrove
  */
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-	private int index;
-	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
 	public DeleteParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		super( parametersProperty, parameter );
 		this.putValue( javax.swing.Action.NAME, "Delete" );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
-		this.index = this.method.parameters.indexOf( this.getParameter() );
-		if( this.method != null && this.index >= 0 ) {
+		final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+		final int index = method.parameters.indexOf( this.getParameter() );
+		if( method != null && index >= 0 ) {
 			edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ParameterAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ParameterAccess >( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) {
 				@Override
 				protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess ) {
 					return parameterAccess.parameter.getValue() == getParameter();
 				}
 			};
-			this.method.crawl( crawler, false );
+			method.crawl( crawler, false );
 			java.util.List< edu.cmu.cs.dennisc.alice.ast.ParameterAccess > parameterAccesses = crawler.getList();
 			final int N_ACCESSES = parameterAccesses.size();
 
-			java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( this.method );
+			java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = this.getIDE().getMethodInvocations( method );
 			final int N_INVOCATIONS = methodInvocations.size();
 			if( N_ACCESSES > 0 ) {
 				StringBuffer sb = new StringBuffer();
@@ -74,7 +72,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			} else {
 				if( N_INVOCATIONS > 0 ) {
 					String codeText;
-					if( this.method.isProcedure() ) {
+					if( method.isProcedure() ) {
 						codeText = "procedure";
 					} else {
 						codeText = "function";
@@ -108,19 +106,20 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			if( actionContext.isCancelled() ) {
 				//pass
 			} else {
-				actionContext.commitAndInvokeRedoIfAppropriate();
+				actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+					@Override
+					public void doOrRedo() {
+						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
+					}
+					@Override
+					public void undo() {
+						org.alice.ide.ast.NodeUtilities.addParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
+					}
+				} );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DeleteParameterOperation" );
 			actionContext.cancel();
 		}
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		org.alice.ide.ast.NodeUtilities.removeParameter( this.map, this.method, this.getParameter(), this.index, this.getIDE().getMethodInvocations( this.method ) );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		org.alice.ide.ast.NodeUtilities.addParameter( this.map, this.method, this.getParameter(), this.index, this.getIDE().getMethodInvocations( this.method ) );
 	}
 }

@@ -35,8 +35,4 @@ public class IsEmphasizingClassesOperation extends org.alice.ide.operations.Abst
 	protected void handleStateChange(boolean value) {
 		this.getIDE().setEmphasizingClasses( value );
 	}
-	@Override
-	public boolean isSignificant() {
-		return false;
-	}
 }

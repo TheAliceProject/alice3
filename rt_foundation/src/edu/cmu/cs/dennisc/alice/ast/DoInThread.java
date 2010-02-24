@@ -32,4 +32,9 @@ public class DoInThread extends AbstractStatementWithBody {
 	public DoInThread( BlockStatement body ) {
 		super( body );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( "do in thread" );
+		return super.appendRepr( rv, locale );
+	}
 }

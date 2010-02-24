@@ -51,4 +51,11 @@ public class FieldAccess extends Expression {
 	public AbstractType getType() {
 		return field.getValue().getValueType();
 	}
+	
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		//return super.appendRepr( rv, locale );
+		Node.safeAppendRepr( rv, this.field.getValue(), locale );
+		return rv;
+	}
 }

@@ -54,22 +54,10 @@ public abstract class AbstractOpenProjectOperation extends AbstractClearanceActi
 				} else {
 					this.getIDE().createProjectFromBootstrap();
 				}
-				actionContext.commitAndInvokeRedoIfAppropriate();
+				actionContext.commit();
 			} else {
 				actionContext.cancel();
 			}
 		}
-	}
-	@Override
-	public boolean canDoOrRedo() {
-		return false;
-	}
-	@Override
-	public boolean canUndo() {
-		return false;
-	}
-	@Override
-	public boolean isSignificant() {
-		return false;
 	}
 }

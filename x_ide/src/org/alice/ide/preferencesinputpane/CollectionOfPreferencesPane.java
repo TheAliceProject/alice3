@@ -61,27 +61,12 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.swin
 			case javax.swing.JOptionPane.YES_OPTION:
 			case javax.swing.JOptionPane.NO_OPTION:
 				this.isAll = result == javax.swing.JOptionPane.NO_OPTION;
-				actionContext.commitAndInvokeRedoIfAppropriate();
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo RestoreDefaultsActionOperation" );
+				actionContext.commit();
 				break;
 			default:
 				actionContext.cancel();
 			}
-		}
-		@Override
-		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		}
-		@Override
-		public boolean canUndo() {
-			//todo
-			return false;
-		}
-		@Override
-		public void undo() throws javax.swing.undo.CannotUndoException {
-			throw new javax.swing.undo.CannotUndoException();
-		}
-		@Override
-		public boolean isSignificant() {
-			return true;
 		}
 	}
 
@@ -91,10 +76,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.swin
 			this.putValue( javax.swing.Action.NAME, "Apply" );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		}
-		@Override
-		public boolean isSignificant() {
-			return true;
+			//todo
 		}
 	}
 

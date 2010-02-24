@@ -32,4 +32,9 @@ public class DoInOrder extends AbstractStatementWithBody {
 	public DoInOrder( BlockStatement body ) {
 		super( body );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( "do in order" );
+		return super.appendRepr( rv, locale );
+	}
 }

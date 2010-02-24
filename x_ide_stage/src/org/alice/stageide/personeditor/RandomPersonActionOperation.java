@@ -33,28 +33,22 @@ import org.alice.apis.stage.LifeStage;
  * @author Dennis Cosgrove
  */
 class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> prevState;
-	private edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> nextState;
-	
 	public RandomPersonActionOperation() {
 		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
 		this.putValue( javax.swing.Action.NAME, "Generate Random Selection" );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.prevState = PersonViewer.getSingleton().getState();
-		this.nextState = PersonViewer.generateRandomState();
-		actionContext.commitAndInvokeRedoIfAppropriate();
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		PersonViewer.getSingleton().setState( this.nextState );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		PersonViewer.getSingleton().setState( this.prevState );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
+		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> prevState = PersonViewer.getSingleton().getState();
+		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> nextState = PersonViewer.generateRandomState();
+		actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			@Override
+			public void doOrRedo() {
+				PersonViewer.getSingleton().setState( nextState );
+			}
+			@Override
+			public void undo() {
+				PersonViewer.getSingleton().setState( prevState );
+			}
+		} );
 	}
 }

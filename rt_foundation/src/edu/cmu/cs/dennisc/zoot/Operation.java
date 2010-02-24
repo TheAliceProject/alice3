@@ -27,15 +27,12 @@ package edu.cmu.cs.dennisc.zoot;
  */
 public interface Operation {
 	public java.util.UUID getGroupUUID();
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException;
-	public void undo() throws javax.swing.undo.CannotUndoException;
-	public boolean canDoOrRedo();
-	public boolean canUndo();
-	public boolean isSignificant();
 	public boolean isEnabled();
 	public void setEnabled( boolean isEnabled );
 	public String getToolTipText();
 	public void setToolTipText( String toolTipText );
 	public void addComponent( javax.swing.JComponent component );
 	public void removeComponent( javax.swing.JComponent component );
+	
+	public String getRepr( java.util.Locale locale );
 }

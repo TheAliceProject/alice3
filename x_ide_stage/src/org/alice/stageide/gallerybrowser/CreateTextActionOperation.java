@@ -197,10 +197,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.
 		@Override
 		protected void handleStateChange(boolean value) {
 			CreateTextPane.this.instanceNameVC.setEditable( value == false );
-		}
-		@Override
-		public boolean isSignificant() {
-			return false;
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
 		}
 	}
 	private static java.awt.Component createLabel( String text ) {

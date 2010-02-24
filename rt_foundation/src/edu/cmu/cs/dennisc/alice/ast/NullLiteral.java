@@ -31,4 +31,14 @@ public class NullLiteral extends AbstractLiteral {
 		//todo
 		return TypeDeclaredInJava.get( Object.class );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		//todo
+		if( "java".equals( locale.getVariant() ) ) {
+			rv.append( "null" );
+		} else {
+			rv.append( "None" );
+		}
+		return rv;
+	}
 }

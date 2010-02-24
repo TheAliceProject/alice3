@@ -149,21 +149,6 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 					public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 						Node.this.handleActionOperationPerformed( actionContext );
 					}
-					//todo
-					@Override
-					public boolean canDoOrRedo() {
-						return false;
-					}
-					//todo
-					@Override
-					public boolean canUndo() {
-						return false;
-					}
-					//todo
-					@Override
-					public boolean isSignificant() {
-						return false;
-					}
 				} );
 				//this.menuItem.addActionListener( this );
 			} else {

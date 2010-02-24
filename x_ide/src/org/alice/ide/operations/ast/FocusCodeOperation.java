@@ -27,7 +27,6 @@ package org.alice.ide.operations.ast;
  */
 public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode;
-	private edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode;
 	public FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
 		super( org.alice.ide.IDE.INTERFACE_GROUP );
 		this.nextCode = nextCode;
@@ -40,19 +39,16 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 		this.putValue( javax.swing.Action.NAME, name );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.prevCode = getIDE().getFocusedCode();
-		actionContext.commitAndInvokeRedoIfAppropriate();
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		getIDE().setFocusedCode( this.nextCode );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		getIDE().setFocusedCode( this.prevCode );
-	}
-	@Override
-	public boolean isSignificant() {
-		return false;
+		final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
+		actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			@Override
+			public void doOrRedo() {
+				getIDE().setFocusedCode( nextCode );
+			}
+			@Override
+			public void undo() {
+				getIDE().setFocusedCode( prevCode );
+			}
+		} );
 	}
 }

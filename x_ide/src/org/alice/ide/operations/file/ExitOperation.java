@@ -44,19 +44,9 @@ public class ExitOperation extends AbstractClearanceActionOperation {
 		if( actionContext.isCancelled() ) {
 			//pass
 		} else {
+			
+			//todo?
 			System.exit( 0 );
 		}
-	}
-	@Override
-	public boolean canDoOrRedo() {
-		return false;
-	}
-	@Override
-	public boolean canUndo() {
-		return false;
-	}
-	@Override
-	public boolean isSignificant() {
-		return false;
 	}
 }

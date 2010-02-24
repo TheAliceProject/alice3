@@ -2,14 +2,26 @@ package org.alice.ide.operations.window;
 
 public abstract class IsFrameShowingOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private javax.swing.JFrame frame;
+	public IsFrameShowingOperation( boolean initialValue ) {
+		super( initialValue );
+		//todo
+		if( initialValue ) {
+			javax.swing.SwingUtilities.invokeLater( new Runnable() {
+				public void run() {
+					handleStateChange( true );
+				}
+			} );
+		}
+	}
 	public IsFrameShowingOperation() {
-		super( false );
+		this( false );
 	}
 	private javax.swing.JFrame getFrame() {
 		if( this.frame != null ) {
 			//pass
 		} else {
 			this.frame = new javax.swing.JFrame();
+			this.frame.setTitle( this.getTitle() );
 			this.frame.getContentPane().add( this.createPane() );
 			this.frame.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
 			this.frame.addWindowListener( new java.awt.event.WindowListener() {
@@ -34,14 +46,11 @@ public abstract class IsFrameShowingOperation extends org.alice.ide.operations.A
 		return this.frame;
 	}
 	protected abstract java.awt.Component createPane();
+	protected abstract String getTitle();
 	@Override
 	protected final void handleStateChange(boolean value) {
 		javax.swing.JFrame frame = this.getFrame();
+		frame.setLocation( 1024, 0 );
 		frame.setVisible( value );
 	}
-	@Override
-	public boolean isSignificant() {
-		return false;
-	}
-	
 }

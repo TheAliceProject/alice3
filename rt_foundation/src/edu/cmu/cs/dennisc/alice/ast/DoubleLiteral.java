@@ -36,4 +36,9 @@ public class DoubleLiteral extends AbstractValueLiteral {
 	public AbstractType getType() {
 		return TypeDeclaredInJava.get( Double.class );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( this.value.getValue() );
+		return rv;
+	}
 }

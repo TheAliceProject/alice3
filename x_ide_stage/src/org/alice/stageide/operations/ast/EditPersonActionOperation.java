@@ -26,71 +26,67 @@ package org.alice.stageide.operations.ast;
  * @author Dennis Cosgrove
  */
 public class EditPersonActionOperation extends AbstractFieldTileActionOperation {
-	private org.alice.apis.stage.Person person;
-	private org.alice.apis.stage.Gender prevGender;
-	private org.alice.apis.stage.SkinTone prevSkinTone;
-	private org.alice.apis.stage.EyeColor prevEyeColor;
-	private org.alice.apis.stage.Outfit prevOutfit;
-	private org.alice.apis.stage.Hair prevHair;
-	private Double prevFitnessLevel;
-	private org.alice.apis.stage.Gender nextGender;
-	private org.alice.apis.stage.SkinTone nextSkinTone;
-	private org.alice.apis.stage.EyeColor nextEyeColor;
-	private org.alice.apis.stage.Outfit nextOutfit;
-	private org.alice.apis.stage.Hair nextHair;
-	private Double nextFitnessLevel;
 	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
 		this.putValue( javax.swing.Action.NAME, "Edit..." );
 	}
 	
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.stage.Person.class );
-		if( this.person != null ) {
-			this.prevGender = person.getGender(); 
-			this.prevSkinTone = person.getSkinTone(); 
-			this.prevEyeColor = person.getEyeColor(); 
-			this.prevOutfit = person.getOutfit(); 
-			this.prevHair = person.getHair(); 
-			this.prevFitnessLevel = person.getFitnessLevel(); 
+		final org.alice.apis.stage.Person person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.stage.Person.class );
+		if( person != null ) {
+			final org.alice.apis.stage.Gender prevGender;
+			final org.alice.apis.stage.SkinTone prevSkinTone;
+			final org.alice.apis.stage.EyeColor prevEyeColor;
+			final org.alice.apis.stage.Outfit prevOutfit;
+			final org.alice.apis.stage.Hair prevHair;
+			final Double prevFitnessLevel;
+			prevGender = person.getGender(); 
+			prevSkinTone = person.getSkinTone(); 
+			prevEyeColor = person.getEyeColor(); 
+			prevOutfit = person.getOutfit(); 
+			prevHair = person.getHair(); 
+			prevFitnessLevel = person.getFitnessLevel(); 
 
-			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( this.person );
+			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
 			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE() );
 			if( result != null ) {
-				this.nextGender = result.getGender();
-				this.nextSkinTone = result.getSkinTone();
-				this.nextEyeColor = result.getEyeColor();
-				this.nextOutfit = result.getOutfit();
-				this.nextHair = result.getHair();
-				this.nextFitnessLevel = result.getFitnessLevel();
-				actionContext.commitAndInvokeRedoIfAppropriate();
+				final org.alice.apis.stage.Gender nextGender;
+				final org.alice.apis.stage.SkinTone nextSkinTone;
+				final org.alice.apis.stage.EyeColor nextEyeColor;
+				final org.alice.apis.stage.Outfit nextOutfit;
+				final org.alice.apis.stage.Hair nextHair;
+				final Double nextFitnessLevel;
+				nextGender = result.getGender();
+				nextSkinTone = result.getSkinTone();
+				nextEyeColor = result.getEyeColor();
+				nextOutfit = result.getOutfit();
+				nextHair = result.getHair();
+				nextFitnessLevel = result.getFitnessLevel();
+				actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+					@Override
+					public void doOrRedo() {
+						EditPersonActionOperation.set( person, nextGender, nextSkinTone, nextEyeColor, nextOutfit, nextHair, nextFitnessLevel );
+					}
+					@Override
+					public void undo() {
+						EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
+					}
+				} );
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: remove" );
-				this.set( this.prevGender, this.prevSkinTone, this.prevEyeColor, this.prevOutfit, this.prevHair, this.prevFitnessLevel );
+				EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
 				actionContext.cancel();
 			}
 		} else {
 			actionContext.cancel();
 		}
 	}
-	private void set( org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.EyeColor eyeColor, org.alice.apis.stage.Outfit outfit, org.alice.apis.stage.Hair hair, Double fitnessLevel ) {
-		this.person.setGender( gender );
-		this.person.setSkinTone( skinTone );
-		this.person.setEyeColor( eyeColor );
-		this.person.setOutfit( outfit );
-		this.person.setHair( hair );
-		this.person.setFitnessLevel( fitnessLevel );
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.set( this.nextGender, this.nextSkinTone, this.nextEyeColor, this.nextOutfit, this.nextHair, this.nextFitnessLevel );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		this.set( this.prevGender, this.prevSkinTone, this.prevEyeColor, this.prevOutfit, this.prevHair, this.prevFitnessLevel );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
+	private static void set( org.alice.apis.stage.Person person, org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.EyeColor eyeColor, org.alice.apis.stage.Outfit outfit, org.alice.apis.stage.Hair hair, Double fitnessLevel ) {
+		person.setGender( gender );
+		person.setSkinTone( skinTone );
+		person.setEyeColor( eyeColor );
+		person.setOutfit( outfit );
+		person.setHair( hair );
+		person.setFitnessLevel( fitnessLevel );
 	}
 }

@@ -26,24 +26,33 @@ package org.alice.stageide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class TransformableFieldTileActionOperation extends AbstractFieldTileActionOperation {
-	private org.alice.apis.moveandturn.AbstractTransformable transformable;
-	private org.alice.apis.moveandturn.PointOfView prevPOV;
-	private org.alice.apis.moveandturn.PointOfView nextPOV;
 	public TransformableFieldTileActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
 		this.putValue( javax.swing.Action.NAME, "Orient to Upright" );
 	}
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable );
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.transformable = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.moveandturn.AbstractTransformable.class );
-		if( this.transformable != null ) {
-			this.prevPOV = this.transformable.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
-			this.nextPOV = new org.alice.apis.moveandturn.PointOfView( this.calculateNextAbsoluteTransformation( this.transformable ) );
-			if( this.nextPOV.getInternal().isNaN() ) {
+		final org.alice.apis.moveandturn.AbstractTransformable transformable;
+		final org.alice.apis.moveandturn.PointOfView prevPOV;
+		final org.alice.apis.moveandturn.PointOfView nextPOV;
+		transformable = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.moveandturn.AbstractTransformable.class );
+		if( transformable != null ) {
+			prevPOV = transformable.getPointOfView( org.alice.apis.moveandturn.AsSeenBy.SCENE );
+			nextPOV = new org.alice.apis.moveandturn.PointOfView( this.calculateNextAbsoluteTransformation( transformable ) );
+			if( nextPOV.getInternal().isNaN() ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation isNaN" );
 				actionContext.cancel();
 			} else {
-				actionContext.commitAndInvokeRedoIfAppropriate();
+				actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+					@Override
+					public void doOrRedo() {
+						setAbsolutePOV( transformable, nextPOV );
+					}
+					@Override
+					public void undo() {
+						setAbsolutePOV( transformable, prevPOV );
+					}
+				} );
 			}
 		} else {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation" );
@@ -51,17 +60,9 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 		}
 	}
 	
-	private void setAbsolutePOV( org.alice.apis.moveandturn.PointOfView pov ) {
-		org.alice.apis.moveandturn.Scene scene = this.transformable.getScene();
+	private static void setAbsolutePOV( org.alice.apis.moveandturn.AbstractTransformable transformable, org.alice.apis.moveandturn.PointOfView pov ) {
+		org.alice.apis.moveandturn.Scene scene = transformable.getScene();
 		assert scene != null;
-		this.transformable.moveAndOrientTo( scene.createOffsetStandIn( this.nextPOV.getInternal() ) );
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.setAbsolutePOV( this.nextPOV );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		this.setAbsolutePOV( this.prevPOV );
+		transformable.moveAndOrientTo( scene.createOffsetStandIn( pov.getInternal() ) );
 	}
 }

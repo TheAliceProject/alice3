@@ -85,93 +85,75 @@ class ListPropertyComboBoxModel<E> extends javax.swing.AbstractListModel impleme
  */
 public class ArrayInitializerPane extends AbstractInitializerPane {
 	class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
-		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
-		private int index;
 		public AddItemOperation() {
 			super( org.alice.ide.IDE.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Add" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			this.expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
-			this.index = ArrayInitializerPane.this.arrayExpressions.size();
-			actionContext.commitAndInvokeRedoIfAppropriate();
+			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
+			final int index = ArrayInitializerPane.this.arrayExpressions.size();
+			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					ArrayInitializerPane.this.arrayExpressions.add( index, expression );
+				}
+				@Override
+				public void undo() {
+					if( ArrayInitializerPane.this.arrayExpressions.get( index ) == expression ) {
+						ArrayInitializerPane.this.arrayExpressions.remove( index );
+					} else {
+						throw new javax.swing.undo.CannotUndoException();
+					}
+				}
+			});
 		}
-		@Override
-		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-			ArrayInitializerPane.this.arrayExpressions.add( this.index, this.expression );
-		}
-		@Override
-		public void undo() throws javax.swing.undo.CannotUndoException {
-			if( ArrayInitializerPane.this.arrayExpressions.get( this.index ) == this.expression ) {
-				ArrayInitializerPane.this.arrayExpressions.remove( this.index );
-			} else {
-				throw new javax.swing.undo.CannotUndoException();
-			}
-		}
-		@Override
-		public boolean isSignificant() {
-			return true;
-		}
-		
 	}
 
 	class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
-		private int index;
-		private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		public RemoveItemOperation() {
 			super( org.alice.ide.IDE.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Remove" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			this.index = ArrayInitializerPane.this.list.getSelectedIndex();
-			this.expression = ArrayInitializerPane.this.list.getItemAt( this.index );
-			actionContext.commitAndInvokeRedoIfAppropriate();
-		}
-		@Override
-		public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-			if( ArrayInitializerPane.this.arrayExpressions.get( this.index ) == this.expression ) {
-				ArrayInitializerPane.this.arrayExpressions.remove( this.index );
-			} else {
-				throw new javax.swing.undo.CannotRedoException();
-			}
-		}
-		@Override
-		public void undo() throws javax.swing.undo.CannotUndoException {
-			ArrayInitializerPane.this.arrayExpressions.add( this.index, this.expression );
-		}
-		@Override
-		public boolean isSignificant() {
-			return true;
+			final int index = ArrayInitializerPane.this.list.getSelectedIndex();
+			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ArrayInitializerPane.this.list.getItemAt( index );
+			actionContext.commitAndInvokeRedoIfAppropriate(new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					if( ArrayInitializerPane.this.arrayExpressions.get( index ) == expression ) {
+						ArrayInitializerPane.this.arrayExpressions.remove( index );
+					} else {
+						throw new javax.swing.undo.CannotRedoException();
+					}
+				}
+				@Override
+				public void undo() {
+					ArrayInitializerPane.this.arrayExpressions.add( index, expression );
+				}
+			});
 		}
 	}
 	abstract class AbstractMoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
-		private int index;
 		public AbstractMoveItemOperation() {
 			super( org.alice.ide.IDE.PROJECT_GROUP );
-		}
-		private void swapWithNext( int index ) {
-			ArrayInitializerPane.this.swapWithNext( index );
-		}
-		@Override
-		public final void doOrRedo() throws javax.swing.undo.CannotRedoException {
-			ArrayInitializerPane.this.swapWithNext( this.index );
-			ArrayInitializerPane.this.swapWithNext( this.index + this.getRedoSelectionIndexDelta() );
-		}
-		@Override
-		public final void undo() throws javax.swing.undo.CannotUndoException {
-			ArrayInitializerPane.this.swapWithNext( this.index );
-			ArrayInitializerPane.this.swapWithNext( this.index + this.getUndoSelectionIndexDelta() );
 		}
 		protected abstract int getIndex( int selectedIndex );
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
 		public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-			this.index = this.getIndex( ArrayInitializerPane.this.list.getSelectedIndex() );
-			actionContext.commitAndInvokeRedoIfAppropriate();
-		}
-		@Override
-		public boolean isSignificant() {
-			return true;
+			final int index = this.getIndex( ArrayInitializerPane.this.list.getSelectedIndex() );
+			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					ArrayInitializerPane.this.swapWithNext( index );
+					list.setSelectedIndex( index + getRedoSelectionIndexDelta() );
+				}
+				@Override
+				public void undo() {
+					ArrayInitializerPane.this.swapWithNext( index );
+					list.setSelectedIndex( index + getUndoSelectionIndexDelta() );
+				}
+			});
 		}
 		
 	}
@@ -219,10 +201,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		@Override
 		protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.Expression value) {
 			ArrayInitializerPane.this.handleSelectionChange( value );
-		}
-		@Override
-		public boolean isSignificant() {
-			return false;
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: handle undo/redo", this );
 		}
 	}
 

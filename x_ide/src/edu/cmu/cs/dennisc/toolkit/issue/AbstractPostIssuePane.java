@@ -33,10 +33,7 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		@Override
 		protected void handleSelectionChange( edu.cmu.cs.dennisc.jira.JIRAReport.Type value ) {
 			AbstractPostIssuePane.this.refreshRows();
-		}
-		@Override
-		public boolean isSignificant() {
-			return true;
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: support undo/redo", this );
 		}
 	}
 

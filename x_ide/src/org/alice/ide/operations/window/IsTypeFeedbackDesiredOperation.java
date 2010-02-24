@@ -34,8 +34,4 @@ public class IsTypeFeedbackDesiredOperation extends org.alice.ide.operations.Abs
 	protected void handleStateChange(boolean value) {
 		this.getIDE().setExpressionTypeFeedbackDesired( value );
 	}
-	@Override
-	public boolean isSignificant() {
-		return false;
-	}
 }

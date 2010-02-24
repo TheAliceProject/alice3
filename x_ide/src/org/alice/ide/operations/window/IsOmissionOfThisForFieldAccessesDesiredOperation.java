@@ -34,8 +34,4 @@ public class IsOmissionOfThisForFieldAccessesDesiredOperation extends org.alice.
 	protected void handleStateChange(boolean value) {
 		this.getIDE().setOmittingThisFieldAccesses( value );
 	}
-	@Override
-	public boolean isSignificant() {
-		return false;
-	}
 }

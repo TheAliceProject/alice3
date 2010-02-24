@@ -30,8 +30,6 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	private javax.swing.Action[] actions;
 	private javax.swing.ButtonModel[] buttonModels;
 	private javax.swing.ComboBoxModel comboBoxModel;
-	private E prevValue;
-	private E nextValue;
 	public AbstractItemSelectionOperation( java.util.UUID groupUUID, javax.swing.ComboBoxModel comboBoxModel ) {
 		super( groupUUID );
 		this.comboBoxModel = comboBoxModel;
@@ -98,30 +96,27 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 	protected abstract void handleSelectionChange( E value );
 	
 	public final void performSelectionChange(edu.cmu.cs.dennisc.zoot.ItemSelectionContext<E> context) {
-		this.prevValue = context.getPreviousSelection();
-		this.nextValue = context.getNextSelection();
-		context.commitAndInvokeRedoIfAppropriate();
+		class Edit extends AbstractEdit {
+			private E prevValue;
+			private E nextValue;
+			public Edit( E prevValue, E nextValue ) {
+				this.prevValue = prevValue;
+				this.nextValue = nextValue;
+			}
+			@Override
+			public void doOrRedo() {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
+				AbstractItemSelectionOperation.this.comboBoxModel.setSelectedItem( this.nextValue );
+				AbstractItemSelectionOperation.this.handleSelectionChange( this.nextValue );
+			}
+			@Override
+			public void undo() {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
+				AbstractItemSelectionOperation.this.comboBoxModel.setSelectedItem( this.prevValue );
+				AbstractItemSelectionOperation.this.handleSelectionChange( this.prevValue );
+			}
+		}
+		
+		context.commitAndInvokeRedoIfAppropriate( new Edit( context.getPreviousSelection(), context.getNextSelection() ) );
 	}
-	
-	@Override
-	public final boolean canDoOrRedo() {
-		return true;
-	}
-	@Override
-	public final boolean canUndo() {
-		return true;
-	}
-	@Override
-	public final void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
-		this.comboBoxModel.setSelectedItem( this.nextValue );
-		this.handleSelectionChange( this.nextValue );
-	}
-	@Override
-	public final void undo() throws javax.swing.undo.CannotUndoException {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
-		this.comboBoxModel.setSelectedItem( this.prevValue );
-		this.handleSelectionChange( this.prevValue );
-	}
-	
 }

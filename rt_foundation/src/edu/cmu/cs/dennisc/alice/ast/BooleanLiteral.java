@@ -36,4 +36,9 @@ public class BooleanLiteral extends AbstractValueLiteral {
 	public BooleanLiteral( Boolean value ) {
 		this.value.setValue( value );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( this.value.getValue() );
+		return rv;
+	}
 }

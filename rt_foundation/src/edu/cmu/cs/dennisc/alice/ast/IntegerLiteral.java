@@ -36,4 +36,9 @@ public class IntegerLiteral extends AbstractValueLiteral {
 	public AbstractType getType() {
 		return TypeDeclaredInJava.get( Integer.class );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( this.value.getValue() );
+		return rv;
+	}
 }

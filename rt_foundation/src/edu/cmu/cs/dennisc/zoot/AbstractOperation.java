@@ -41,26 +41,26 @@ public abstract class AbstractOperation implements Operation {
 			return null;
 		}
 	}
-	public boolean canDoOrRedo() {
-		return true;
-	}
-	public boolean canUndo() {
-		return true;
-	}
+//	public boolean canDoOrRedo() {
+//		return true;
+//	}
+//	public boolean canUndo() {
+//		return true;
+//	}
+////	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
+////		throw new javax.swing.undo.CannotRedoException();
+////	}
+////	public void undo() throws javax.swing.undo.CannotUndoException {
+////		throw new javax.swing.undo.CannotUndoException();
+////	}
+//	
+//	public abstract boolean isSignificant();
 //	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
 //		throw new javax.swing.undo.CannotRedoException();
 //	}
 //	public void undo() throws javax.swing.undo.CannotUndoException {
 //		throw new javax.swing.undo.CannotUndoException();
 //	}
-	
-	public abstract boolean isSignificant();
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		throw new javax.swing.undo.CannotRedoException();
-	}
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		throw new javax.swing.undo.CannotUndoException();
-	}
 	
 	private boolean isEnabled = true;
 	public boolean isEnabled() {
@@ -106,5 +106,17 @@ public abstract class AbstractOperation implements Operation {
 		synchronized( this.components ) {
 			this.components.remove( component );
 		}
+	}
+	
+	//todo: make abstract
+	protected StringBuffer updateRepr( StringBuffer rv, java.util.Locale locale ) { 
+		rv.append( this.getClass().getSimpleName() );
+		return rv;
+	}
+	
+	public final String getRepr( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		updateRepr( sb, locale );
+		return sb.toString();
 	}
 }

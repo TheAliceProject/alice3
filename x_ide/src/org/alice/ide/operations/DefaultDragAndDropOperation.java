@@ -48,9 +48,4 @@ public class DefaultDragAndDropOperation extends edu.cmu.cs.dennisc.zoot.Abstrac
 	public void handleDragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		getIDE().handleDragStopped( dragAndDropContext );
 	}
-	@Override
-	public boolean isSignificant() {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: DefaultDragAndDropOperation" );
-		return false;
-	}
 }

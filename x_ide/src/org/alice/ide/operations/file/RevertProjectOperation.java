@@ -33,24 +33,22 @@ public class RevertProjectOperation extends org.alice.ide.operations.AbstractAct
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this.getIDE(), "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE ) ) {
-			actionContext.commitAndInvokeRedoIfAppropriate();
+			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					getIDE().revert();
+				}
+				@Override
+				public void undo() {
+					throw new AssertionError();
+				}
+				@Override
+				public boolean canUndo() {
+					return false;
+				}
+			} );
 		} else {
 			actionContext.cancel();
 		}
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.getIDE().revert();
-	}
-	
-	//todo
-	@Override
-	public boolean canUndo() {
-		return false;
-	}
-	
-	@Override
-	public boolean isSignificant() {
-		return true;
 	}
 }

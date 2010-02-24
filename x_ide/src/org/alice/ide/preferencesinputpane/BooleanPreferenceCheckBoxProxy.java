@@ -33,13 +33,7 @@ public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 		}
 		@Override
 		protected void handleStateChange(boolean value) {
-			
 		}
-		@Override
-		public boolean isSignificant() {
-			return true;
-		}
-		
 	}
 	private BooleanStateOperation operation;
 	private edu.cmu.cs.dennisc.zoot.ZCheckBox checkBox;

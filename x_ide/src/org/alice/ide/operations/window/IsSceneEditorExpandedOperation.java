@@ -35,8 +35,4 @@ public class IsSceneEditorExpandedOperation extends org.alice.ide.operations.Abs
 	protected void handleStateChange(boolean value) {
 		this.getIDE().setSceneEditorExpanded( value );
 	}
-	@Override
-	public boolean isSignificant() {
-		return false;
-	}
 }

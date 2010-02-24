@@ -35,11 +35,6 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		protected void handleSelectionChange(org.alice.ide.preferences.programming.Configuration value) {
 			ConfigurationPreferencePaneProxy.this.preview.updateValues(value);
 		}
-		@Override
-		public boolean isSignificant() {
-			//todo?
-			return false;
-		}
 	}
 
 	class ConfigurationComboBox extends edu.cmu.cs.dennisc.zoot.ZComboBox {
@@ -92,22 +87,12 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		public EditVariantOperation() {
 			this.putValue( javax.swing.Action.NAME, "Edit..." );
 		}
-		@Override
-		public boolean isSignificant() {
-			//todo?
-			return false;
-		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
 	}
 	class RemoveVariantOperation extends PreferencesActionOperation {
 		public RemoveVariantOperation() {
 			this.putValue( javax.swing.Action.NAME, "Remove" );
-		}
-		@Override
-		public boolean isSignificant() {
-			//todo?
-			return false;
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
@@ -116,22 +101,12 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		public NewVariantOperation() {
 			this.putValue( javax.swing.Action.NAME, "New..." );
 		}
-		@Override
-		public boolean isSignificant() {
-			//todo?
-			return false;
-		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
 	}
 	class ImportVariantOperation extends PreferencesActionOperation {
 		public ImportVariantOperation() {
 			this.putValue( javax.swing.Action.NAME, "Import..." );
-		}
-		@Override
-		public boolean isSignificant() {
-			//todo?
-			return false;
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}

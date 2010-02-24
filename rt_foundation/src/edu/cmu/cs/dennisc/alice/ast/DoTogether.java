@@ -32,4 +32,9 @@ public class DoTogether extends AbstractStatementWithBody {
 	public DoTogether( BlockStatement body ) {
 		super( body );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( "do together" );
+		return super.appendRepr( rv, locale );
+	}
 }

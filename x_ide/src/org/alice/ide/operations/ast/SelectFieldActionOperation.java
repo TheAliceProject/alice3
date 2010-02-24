@@ -30,10 +30,16 @@ public class SelectFieldActionOperation extends AbstractFieldActionOperation {
 		super( org.alice.ide.IDE.INTERFACE_GROUP, field );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		getIDE().setFieldSelection( this.getField() );
-	}
-	@Override
-	public boolean isSignificant() {
-		return false;
+		final edu.cmu.cs.dennisc.alice.ast.AbstractField prevField = getIDE().getFieldSelection();
+		actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			@Override
+			public void doOrRedo() {
+				getIDE().setFieldSelection( getField() );
+			}
+			@Override
+			public void undo() {
+				getIDE().setFieldSelection( prevField );
+			}
+		} );
 	}
 }

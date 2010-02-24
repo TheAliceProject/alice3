@@ -26,8 +26,6 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractBooleanStateOperation extends AbstractOperation implements BooleanStateOperation {
-	private boolean prevValue;
-	private boolean nextValue;
 	private javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
@@ -65,29 +63,27 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 	}
 
 	public final void performStateChange(edu.cmu.cs.dennisc.zoot.BooleanStateContext booleanStateContext) {
-		this.prevValue = booleanStateContext.getPreviousValue();
-		this.nextValue = booleanStateContext.getNextValue();
-		booleanStateContext.commitAndInvokeRedoIfAppropriate();
+		class Edit extends AbstractEdit {
+			private boolean prevValue;
+			private boolean nextValue;
+			public Edit( boolean prevValue, boolean nextValue ) {
+				this.prevValue = prevValue;
+				this.nextValue = nextValue;
+			}
+			@Override
+			public void doOrRedo() {
+				AbstractBooleanStateOperation.this.buttonModel.setSelected( this.nextValue );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
+				AbstractBooleanStateOperation.this.handleStateChange( this.nextValue );
+			}
+			@Override
+			public void undo() {
+				AbstractBooleanStateOperation.this.buttonModel.setSelected( this.prevValue );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
+				AbstractBooleanStateOperation.this.handleStateChange( this.prevValue );
+			}
+		}
+		booleanStateContext.commitAndInvokeRedoIfAppropriate( new Edit( booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
 	}
 	protected abstract void handleStateChange( boolean value );
-	@Override
-	public final boolean canDoOrRedo() {
-		return true;
-	}
-	@Override
-	public final boolean canUndo() {
-		return true;
-	}
-	@Override
-	public final void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.buttonModel.setSelected( this.nextValue );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
-		this.handleStateChange( this.nextValue );
-	}
-	@Override
-	public final void undo() throws javax.swing.undo.CannotUndoException {
-		this.buttonModel.setSelected( this.prevValue );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
-		this.handleStateChange( this.prevValue );
-	}
 }

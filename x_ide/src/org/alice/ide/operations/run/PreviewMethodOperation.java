@@ -42,7 +42,7 @@ public class PreviewMethodOperation extends org.alice.ide.operations.Inconsequen
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
 				methodInvocation.expression.setValue( null );
 				PreviewMethodOperation.this.getIDE().handlePreviewMethod( actionContext, methodInvocation );
-				actionContext.commitAndInvokeRedoIfAppropriate();
+				actionContext.commit();
 			}
 			public void handleCancelation() {
 				actionContext.cancel();

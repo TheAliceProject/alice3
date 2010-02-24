@@ -63,4 +63,10 @@ public class CountLoop extends AbstractLoop {
 			this.constant.setValue( new ConstantDeclaredInAlice( null, Integer.class ) );
 		}
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( "count " );
+		Node.safeAppendRepr( rv, this.count.getValue(), locale );
+		return super.appendRepr( rv, locale );
+	}
 }

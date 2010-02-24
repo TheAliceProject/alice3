@@ -25,7 +25,6 @@ package org.alice.ide.codeeditor;
 class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	private int index;
 
 	public DeleteStatementActionOperation( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP );
@@ -34,28 +33,25 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		this.statement = abstractStatementPane.getStatement();
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.index = this.property.indexOf( this.statement );
-		if( this.index >= 0 ) {
-			actionContext.commitAndInvokeRedoIfAppropriate();
+		final int index = this.property.indexOf( this.statement );
+		if( index >= 0 ) {
+			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					property.remove( index );
+					//todo: remove
+					getIDE().refreshUbiquitousPane();
+				}
+				@Override
+				public void undo() {
+					property.add( index, statement );
+					//todo: remove
+					getIDE().refreshUbiquitousPane();
+				}
+			} );
 		} else {
 			throw new RuntimeException();
 		}
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.property.remove( this.index );
-		//todo: remove
-		this.getIDE().refreshUbiquitousPane();
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		this.property.add( this.index, this.statement );
-		//todo: remove
-		this.getIDE().refreshUbiquitousPane();
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
 	}
 }
 
@@ -78,12 +74,9 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	//		this.putValue( javax.swing.Action.NAME, text );
 	//	}
 	@Override
-	protected void handleStateChange(boolean value) {
+	protected void handleStateChange( boolean value ) {
 		this.statement.isEnabled.setValue( value );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
 	}
 }
 
@@ -99,12 +92,12 @@ public class Factory extends org.alice.ide.common.Factory {
 	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
-//		java.awt.Component rv = ide.getOverrideComponent( expression );
-//		if( rv != null ) {
-//			//pass
-//		} else {
-//			rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
-//		}
+		//		java.awt.Component rv = ide.getOverrideComponent( expression );
+		//		if( rv != null ) {
+		//			//pass
+		//		} else {
+		//			rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		//		}
 		java.awt.Component rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
 			//			Object owner = expressionProperty.getOwner();

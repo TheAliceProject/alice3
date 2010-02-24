@@ -40,4 +40,9 @@ public class TypeLiteral extends AbstractValueLiteral {
 		//todo
 		return TypeDeclaredInJava.get( value.getValue().getClass() );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( this.value.getValue() );
+		return rv;
+	}
 }

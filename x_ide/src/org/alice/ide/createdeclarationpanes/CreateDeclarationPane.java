@@ -36,10 +36,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 		@Override
 		protected void handleStateChange(boolean value) {
 			CreateDeclarationPane.this.handleIsReassignableChange( value );
-		}
-		@Override
-		public boolean isSignificant() {
-			return true;
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
 		}
 	}
 	class DeclarationNameTextField extends edu.cmu.cs.dennisc.zoot.ZSuggestiveTextField {

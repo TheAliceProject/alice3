@@ -36,12 +36,6 @@ public class LocalePreferenceComboBoxProxy extends PreferenceLabeledPaneProxy< j
 		protected void handleSelectionChange( java.util.Locale value ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( value );
 		}
-
-		@Override
-		public boolean isSignificant() {
-			// todo?
-			return false;
-		}
 	}
 
 	private LocaleSelectionOperation operation;

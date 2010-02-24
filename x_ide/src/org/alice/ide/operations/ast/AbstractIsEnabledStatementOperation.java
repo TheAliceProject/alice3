@@ -27,26 +27,24 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
-	private boolean prevValue;
+
 	public AbstractIsEnabledStatementOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.statement = statement;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.prevValue = this.statement.isEnabled.getValue();
-		actionContext.commitAndInvokeRedoIfAppropriate();
-	}
 	protected abstract boolean getDesiredValue();
-	@Override
-	public final void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.statement.isEnabled.setValue( this.getDesiredValue() );
-	}
-	@Override
-	public final void undo() throws javax.swing.undo.CannotUndoException {
-		this.statement.isEnabled.setValue( this.prevValue );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		final boolean nextValue = this.getDesiredValue();
+		final boolean prevValue = this.statement.isEnabled.getValue();
+		actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			@Override
+			public void doOrRedo() {
+				statement.isEnabled.setValue( nextValue );
+			}
+			@Override
+			public void undo() {
+				statement.isEnabled.setValue( prevValue );
+			}
+		} );
 	}
 }

@@ -26,6 +26,8 @@ package edu.cmu.cs.dennisc.zoot.event;
  * @author Dennis Cosgrove
  */
 public interface ManagerListener {
-	public void operationPerforming( ManagerEvent e );
-	public void operationPerformed( ManagerEvent e );
+	public void operationCommitting( CommitEvent e );
+	public void operationCommitted( CommitEvent e );
+	public void operationCancelling( CancelEvent e );
+	public void operationCancelled( CancelEvent e );
 }

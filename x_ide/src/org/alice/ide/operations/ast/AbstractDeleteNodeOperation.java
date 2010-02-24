@@ -28,7 +28,6 @@ package org.alice.ide.operations.ast;
 public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.alice.ast.Node > extends org.alice.ide.operations.AbstractActionOperation {
 	private E node;
 	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
-	private int index;
 	public AbstractDeleteNodeOperation( E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.node = node;
@@ -38,22 +37,19 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 	protected abstract boolean isClearToDelete( E node );
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		if( this.isClearToDelete( this.node ) ) {
-			this.index = this.owner.indexOf( this.node );
-			actionContext.commitAndInvokeRedoIfAppropriate();
+			final int index = this.owner.indexOf( this.node );
+			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo() {
+					owner.remove( index );
+				}
+				@Override
+				public void undo() {
+					owner.add( index, node );
+				}
+			} );
 		} else {
 			actionContext.cancel();
 		}
-	}
-	@Override
-	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-		this.owner.remove( this.index );
-	}
-	@Override
-	public void undo() throws javax.swing.undo.CannotUndoException {
-		this.owner.add( this.index, this.node );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
 	}
 }

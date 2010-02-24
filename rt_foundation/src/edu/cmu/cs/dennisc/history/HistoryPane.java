@@ -19,20 +19,46 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 	}
 };
 
-public class HistoryViewer extends javax.swing.JList {
+class HistoryCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.ListCellRenderer< edu.cmu.cs.dennisc.zoot.event.CommitEvent > {
+	@Override
+	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.zoot.event.CommitEvent value, int index, boolean isSelected, boolean cellHasFocus ) {
+		edu.cmu.cs.dennisc.zoot.Edit edit = value.getEdit();
+		
+		//todo
+		java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
+		
+		
+		rv.setText( edit.getPresentation( locale ) );
+		
+		int selectedIndex = list.getSelectedIndex();
+		if( selectedIndex >= 0 && index > selectedIndex ) {
+			rv.setEnabled( false );
+		} else {
+			rv.setEnabled( true );
+		}
+		return rv;
+	}
+}
+
+public class HistoryPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	private edu.cmu.cs.dennisc.history.event.HistoryListener historyListener = new edu.cmu.cs.dennisc.history.event.HistoryListener() {
 		public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
 		}
 		public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
-			HistoryViewer.this.historyStackModel.refresh();
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hashCode:", e.getEdit().hashCode() );
+			HistoryPane.this.historyStackModel.refresh();
 		}
 	};
 
+	private javax.swing.JList list = new javax.swing.JList();
 	private HistoryStackModel historyStackModel;
-	public HistoryViewer( java.util.UUID uuid ) {
+	public HistoryPane( java.util.UUID uuid ) {
 		HistoryManager historyManager = HistoryManager.get( uuid );
 		this.historyStackModel = new HistoryStackModel( historyManager );
-		this.setModel( this.historyStackModel );
+		this.list.setModel( this.historyStackModel );
+		this.list.setCellRenderer( new HistoryCellRenderer() );
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list );
+		this.add( scrollPane );
 	}
 	@Override
 	public void addNotify() {
@@ -43,5 +69,9 @@ public class HistoryViewer extends javax.swing.JList {
 	public void removeNotify() {
 		this.historyStackModel.getHistoryManager().removeHistoryListener( this.historyListener );
 		super.removeNotify();
+	}
+	@Override
+	public java.awt.Dimension getPreferredSize() {
+		return new java.awt.Dimension( 240, 768 );
 	}
 }

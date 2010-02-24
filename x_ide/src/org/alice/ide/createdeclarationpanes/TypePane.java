@@ -40,10 +40,7 @@ class IsArrayStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanState
 	@Override
 	protected void handleStateChange(boolean value) {
 		this.isArrayProperty.setValue( value );
-	}
-	@Override
-	public boolean isSignificant() {
-		return true;
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: support undo/redo", this );
 	}
 }
 
