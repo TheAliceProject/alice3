@@ -26,9 +26,9 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEdit implements Edit {
-	public abstract void doOrRedo();
+	public abstract void doOrRedo( boolean isDo );
 	public abstract void undo();
-	public boolean canDoAndRedo() {
+	public boolean canRedo() {
 		return true;
 	}
 	public boolean canUndo() {
@@ -41,6 +41,18 @@ public abstract class AbstractEdit implements Edit {
 	}
 	public final String getPresentation( java.util.Locale locale ) {
 		StringBuffer sb = new StringBuffer();
+		this.updatePresentation( sb, locale );
+		return sb.toString();
+	}
+	public String getRedoPresentation( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Redo:" );
+		this.updatePresentation( sb, locale );
+		return sb.toString();
+	}
+	public String getUndoPresentation( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Undo:" );
 		this.updatePresentation( sb, locale );
 		return sb.toString();
 	}

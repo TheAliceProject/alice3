@@ -31,9 +31,9 @@ public class SelectFieldActionOperation extends AbstractFieldActionOperation {
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final edu.cmu.cs.dennisc.alice.ast.AbstractField prevField = getIDE().getFieldSelection();
-		actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 			@Override
-			public void doOrRedo() {
+			public void doOrRedo( boolean isDo ) {
 				getIDE().setFieldSelection( getField() );
 			}
 			@Override

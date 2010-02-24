@@ -42,9 +42,9 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 		if( parameter != null ) {
 			final int index = method.parameters.size();
 			final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
-			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, getIDE().getMethodInvocations( method ) );
 				}
 				@Override

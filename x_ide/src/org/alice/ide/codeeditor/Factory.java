@@ -35,9 +35,9 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
-			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					property.remove( index );
 					//todo: remove
 					getIDE().refreshUbiquitousPane();

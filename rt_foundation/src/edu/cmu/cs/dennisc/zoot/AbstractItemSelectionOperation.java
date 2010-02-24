@@ -104,7 +104,7 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 				this.nextValue = nextValue;
 			}
 			@Override
-			public void doOrRedo() {
+			public void doOrRedo( boolean isDo ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
 				AbstractItemSelectionOperation.this.comboBoxModel.setSelectedItem( this.nextValue );
 				AbstractItemSelectionOperation.this.handleSelectionChange( this.nextValue );
@@ -117,6 +117,6 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 			}
 		}
 		
-		context.commitAndInvokeRedoIfAppropriate( new Edit( context.getPreviousSelection(), context.getNextSelection() ) );
+		context.commitAndInvokeDo( new Edit( context.getPreviousSelection(), context.getNextSelection() ) );
 	}
 }

@@ -71,7 +71,7 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 				this.nextValue = nextValue;
 			}
 			@Override
-			public void doOrRedo() {
+			public void doOrRedo( boolean isDo ) {
 				AbstractBooleanStateOperation.this.buttonModel.setSelected( this.nextValue );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
 				AbstractBooleanStateOperation.this.handleStateChange( this.nextValue );
@@ -83,7 +83,7 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 				AbstractBooleanStateOperation.this.handleStateChange( this.prevValue );
 			}
 		}
-		booleanStateContext.commitAndInvokeRedoIfAppropriate( new Edit( booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
+		booleanStateContext.commitAndInvokeDo( new Edit( booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
 	}
 	protected abstract void handleStateChange( boolean value );
 }

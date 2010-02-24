@@ -46,7 +46,7 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 					this.index = index;
 				}
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					this.ownerType.fields.add( this.index, this.field );
 				}
 				@Override
@@ -59,7 +59,7 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 				}
 			}
 			int index = ownerType.fields.size();
-			actionContext.commitAndInvokeRedoIfAppropriate( new Edit( ownerType, field, index ) );
+			actionContext.commitAndInvokeDo( new Edit( ownerType, field, index ) );
 		} else {
 			actionContext.cancel();
 		}

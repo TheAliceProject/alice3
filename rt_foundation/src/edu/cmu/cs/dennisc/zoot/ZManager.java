@@ -50,18 +50,18 @@ abstract class AbstractContext< E extends Operation > implements Context< E > {
 	public boolean isPending() {
 		return (this.isCommitted() || this.isCancelled()) == false;
 	}
-	public void commitAndInvokeRedoIfAppropriate( Edit edit ) {
+	public void commitAndInvokeDo( Edit edit ) {
 		assert this.isPending();
 		edu.cmu.cs.dennisc.zoot.event.CommitEvent e = new edu.cmu.cs.dennisc.zoot.event.CommitEvent( this.operation, this, edit );
 		ZManager.fireOperationCommitting( e );
 		if( edit != null ) {
-			edit.doOrRedo();
+			edit.doOrRedo( true );
 		}
 		this.isCommitted = true;
 		ZManager.fireOperationCommitted( e );
 	}
 	public void commit() {
-		this.commitAndInvokeRedoIfAppropriate( null );
+		this.commitAndInvokeDo( null );
 	}
 	public void pend(edu.cmu.cs.dennisc.zoot.Resolver<? extends Edit, ?> resolver) {
 		class PendTaskObserver< E extends Edit,F > implements edu.cmu.cs.dennisc.task.TaskObserver< F > {
@@ -76,7 +76,7 @@ abstract class AbstractContext< E extends Operation > implements Context< E > {
 			}
 			public void handleCompletion(F f) {
 				this.edit = this.resolver.handleCompletion( this.edit, f);
-				this.context.commitAndInvokeRedoIfAppropriate( this.edit );
+				this.context.commitAndInvokeDo( this.edit );
 			}
 			public void handleCancelation() {
 				this.resolver.handleCancelation();

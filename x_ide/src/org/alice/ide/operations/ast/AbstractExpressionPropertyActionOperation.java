@@ -42,7 +42,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 
 			@Override
-			public void doOrRedo() {
+			public void doOrRedo( boolean isDo ) {
 				expressionProperty.setValue( this.nextExpression );
 			}
 			@Override

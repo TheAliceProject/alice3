@@ -37,9 +37,9 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.Ab
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.showInJDialog( getIDE() );
 		if( method != null ) {
 			final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
-			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					type.methods.add( method );
 					getIDE().setFocusedCode( method );
 				}

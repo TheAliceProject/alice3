@@ -43,9 +43,9 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation isNaN" );
 				actionContext.cancel();
 			} else {
-				actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 					@Override
-					public void doOrRedo() {
+					public void doOrRedo( boolean isDo ) {
 						setAbsolutePOV( transformable, nextPOV );
 					}
 					@Override

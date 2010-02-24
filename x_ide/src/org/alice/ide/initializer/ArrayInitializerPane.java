@@ -92,9 +92,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
 			final int index = ArrayInitializerPane.this.arrayExpressions.size();
-			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					ArrayInitializerPane.this.arrayExpressions.add( index, expression );
 				}
 				@Override
@@ -117,9 +117,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			final int index = ArrayInitializerPane.this.list.getSelectedIndex();
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ArrayInitializerPane.this.list.getItemAt( index );
-			actionContext.commitAndInvokeRedoIfAppropriate(new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo(new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					if( ArrayInitializerPane.this.arrayExpressions.get( index ) == expression ) {
 						ArrayInitializerPane.this.arrayExpressions.remove( index );
 					} else {
@@ -142,9 +142,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		protected abstract int getUndoSelectionIndexDelta();
 		public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 			final int index = this.getIndex( ArrayInitializerPane.this.list.getSelectedIndex() );
-			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					ArrayInitializerPane.this.swapWithNext( index );
 					list.setSelectedIndex( index + getRedoSelectionIndexDelta() );
 				}

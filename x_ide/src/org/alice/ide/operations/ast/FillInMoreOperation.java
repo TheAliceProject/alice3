@@ -39,7 +39,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.AbstractAction
 			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
 			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation;
 			@Override
-			public void doOrRedo() {
+			public void doOrRedo( boolean isDo ) {
 				expressionStatement.expression.setValue( this.nextMethodInvocation );
 			}
 			@Override

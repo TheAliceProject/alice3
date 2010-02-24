@@ -40,9 +40,9 @@ class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActio
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> prevState = PersonViewer.getSingleton().getState();
 		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> nextState = PersonViewer.generateRandomState();
-		actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 			@Override
-			public void doOrRedo() {
+			public void doOrRedo( boolean isDo ) {
 				PersonViewer.getSingleton().setState( nextState );
 			}
 			@Override

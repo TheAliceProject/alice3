@@ -72,9 +72,9 @@ class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperati
 		EditFieldsPane editFieldsPane = new EditFieldsPane( this.type );
 		Boolean isAccepted = editFieldsPane.showInJDialog( getIDE() );
 		if( isAccepted != null ) {
-			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation doOrRedo" );
 				}
 				@Override

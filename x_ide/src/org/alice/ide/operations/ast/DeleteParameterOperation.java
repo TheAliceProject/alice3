@@ -106,9 +106,9 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 			if( actionContext.isCancelled() ) {
 				//pass
 			} else {
-				actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 					@Override
-					public void doOrRedo() {
+					public void doOrRedo( boolean isDo ) {
 						org.alice.ide.ast.NodeUtilities.removeParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
 					}
 					@Override

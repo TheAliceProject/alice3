@@ -40,9 +40,9 @@ public abstract class RenameNodeOperation extends org.alice.ide.operations.Abstr
 		final String nextValue = renameNodePane.showInJDialog( this.getIDE() );
 		if( nextValue != null && nextValue.length() > 0 ) {
 			final String prevValue = nameProperty.getValue();
-			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					RenameNodeOperation.this.nameProperty.setValue( nextValue );
 				}
 				@Override

@@ -411,7 +411,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 							class DropEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
 								private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 								@Override
-								public void doOrRedo() {
+								public void doOrRedo( boolean isDo ) {
 									statementListPropertyPane.getProperty().add( index, statement );
 									CodeEditor.this.refresh();
 									CodeEditor.this.resetScrollPane( viewPosition );
@@ -485,7 +485,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 							CodeEditor.this.resetScrollPane( viewPosition );
 						}
 						@Override
-						public final void doOrRedo() {
+						public final void doOrRedo( boolean isFirstTime ) {
 							this.redoInternal();
 							this.refreshAndResetScrollPane();
 						}
@@ -518,7 +518,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 										}
 									}
 								}
-								actionContext.commitAndInvokeRedoIfAppropriate( new CopyEdit() );
+								actionContext.commitAndInvokeDo( new CopyEdit() );
 							}
 						}
 						operation = new CopyOperation();
@@ -556,7 +556,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 												prevOwner.add( index, statement );
 											}
 										}
-										actionContext.commitAndInvokeRedoIfAppropriate( new ReorderEdit() );
+										actionContext.commitAndInvokeDo( new ReorderEdit() );
 									}
 								}
 								operation = new ReorderOperation();
@@ -579,7 +579,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 											nextOwner.remove( nextIndex );
 										}
 									}
-									actionContext.commitAndInvokeRedoIfAppropriate( new ReparentEdit() );
+									actionContext.commitAndInvokeDo( new ReparentEdit() );
 								}
 							}
 							operation = new ReparentOperation();

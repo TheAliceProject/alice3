@@ -36,9 +36,9 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final boolean nextValue = this.getDesiredValue();
 		final boolean prevValue = this.statement.isEnabled.getValue();
-		actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 			@Override
-			public void doOrRedo() {
+			public void doOrRedo( boolean isDo ) {
 				statement.isEnabled.setValue( nextValue );
 			}
 			@Override

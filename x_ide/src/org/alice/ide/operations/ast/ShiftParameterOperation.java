@@ -42,9 +42,9 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 		final int aIndex = this.getIndexA();
 		final int bIndex = aIndex + 1;
 		if( method != null ) {
-			actionContext.commitAndInvokeRedoIfAppropriate(new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo(new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					swap( method, aIndex, bIndex );
 				}
 				@Override

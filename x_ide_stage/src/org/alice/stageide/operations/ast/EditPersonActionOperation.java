@@ -62,9 +62,9 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 				nextOutfit = result.getOutfit();
 				nextHair = result.getHair();
 				nextFitnessLevel = result.getFitnessLevel();
-				actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 					@Override
-					public void doOrRedo() {
+					public void doOrRedo( boolean isDo ) {
 						EditPersonActionOperation.set( person, nextGender, nextSkinTone, nextEyeColor, nextOutfit, nextHair, nextFitnessLevel );
 					}
 					@Override

@@ -38,9 +38,9 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		if( this.isClearToDelete( this.node ) ) {
 			final int index = this.owner.indexOf( this.node );
-			actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					owner.remove( index );
 				}
 				@Override

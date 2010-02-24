@@ -26,10 +26,11 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public interface Edit {
-	public boolean canDoAndRedo();
+	public boolean canRedo();
 	public boolean canUndo();
-	public void doOrRedo();
+	public void doOrRedo( boolean isDo );
 	public void undo();
-	
 	public String getPresentation( java.util.Locale locale );
+	public String getUndoPresentation( java.util.Locale locale );
+	public String getRedoPresentation( java.util.Locale locale );
 }

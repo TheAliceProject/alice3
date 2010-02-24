@@ -40,9 +40,9 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
-		actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 			@Override
-			public void doOrRedo() {
+			public void doOrRedo( boolean isDo ) {
 				getIDE().setFocusedCode( nextCode );
 			}
 			@Override

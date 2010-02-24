@@ -34,7 +34,7 @@ public interface Context< O extends Operation > {
 	public boolean isCommitted();
 	public boolean isCancelled();
 	public boolean isPending();
-	public void commitAndInvokeRedoIfAppropriate( Edit edit );
+	public void commitAndInvokeDo( Edit edit );
 	
 	//todo: commit( Runnable )
 	public void commit();

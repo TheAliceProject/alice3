@@ -158,7 +158,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			org.alice.virtualmachine.Resource resource = this.selectResource();
 			if( resource != null ) {
-				actionContext.commitAndInvokeRedoIfAppropriate( this.createEdit( resource ) );
+				actionContext.commitAndInvokeDo( this.createEdit( resource ) );
 			} else {
 				actionContext.cancel();
 			}
@@ -217,7 +217,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		public edu.cmu.cs.dennisc.zoot.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					this.addResource( resource );
 				}
 				@Override
@@ -240,7 +240,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		public edu.cmu.cs.dennisc.zoot.Edit createEdit( final org.alice.virtualmachine.Resource resource ) {
 			return new AddOrRemoveResourceEdit() {
 				@Override
-				public void doOrRedo() {
+				public void doOrRedo( boolean isDo ) {
 					this.removeResource( resource );
 				}
 				@Override
@@ -335,9 +335,9 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 				final String nextName = renamePane.showInJDialog( this.getIDE(), "Rename Resource" );
 				if( nextName != null && nextName.length() > 0 ) {
 					final String prevName = resource.getName();
-					actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+					actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 						@Override
-						public void doOrRedo() {
+						public void doOrRedo( boolean isDo ) {
 							resource.setName( nextName );
 							ResourceManagerPane.this.table.repaint();
 						}
@@ -453,9 +453,9 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 					nextCapsule = null;
 				}
 				if( prevCapsule != null && nextCapsule != null ) {
-					actionContext.commitAndInvokeRedoIfAppropriate( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+					actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 						@Override
-						public void doOrRedo() {
+						public void doOrRedo( boolean isDo ) {
 							nextCapsule.update( resource );
 						}
 						@Override
