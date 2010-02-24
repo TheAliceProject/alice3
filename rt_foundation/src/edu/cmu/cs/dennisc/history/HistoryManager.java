@@ -76,7 +76,6 @@ public class HistoryManager {
 	}
 	
 	public void setInsertIndex( int nextInsertIndex ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "setInsertIndex", nextInsertIndex );
 		assert nextInsertIndex >= 0;
 		assert nextInsertIndex <= this.stack.size();
 		final int N = Math.abs( nextInsertIndex - this.insertIndex );
