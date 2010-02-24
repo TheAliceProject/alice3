@@ -6,10 +6,14 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 		this.historyManager = historyManager;
 	}
 	public int getSize() {
-		return historyManager.getStack().size();
+		return historyManager.getStack().size() + 1;
 	}
 	public Object getElementAt( int index ) {
-		return historyManager.getStack().elementAt( index );
+		if( index == 0 ) {
+			return null;
+		} else {
+			return historyManager.getStack().elementAt( index-1 );
+		}
 	}
 	public HistoryManager getHistoryManager() {
 		return this.historyManager;
@@ -22,19 +26,23 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 class HistoryCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.ListCellRenderer< edu.cmu.cs.dennisc.zoot.event.CommitEvent > {
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.zoot.event.CommitEvent value, int index, boolean isSelected, boolean cellHasFocus ) {
-		edu.cmu.cs.dennisc.zoot.Edit edit = value.getEdit();
-		
-		//todo
-		java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
-		
-		
-		rv.setText( edit.getPresentation( locale ) );
-		
-		int selectedIndex = list.getSelectedIndex();
-		if( selectedIndex >= 0 && index > selectedIndex ) {
-			rv.setEnabled( false );
+		if( index == 0 ) {
+			rv.setText( "Open Project" );
 		} else {
-			rv.setEnabled( true );
+			edu.cmu.cs.dennisc.zoot.Edit edit = value.getEdit();
+			
+			//todo
+			java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
+			
+			
+			rv.setText( edit.getPresentation( locale ) );
+			
+			int selectedIndex = list.getSelectedIndex();
+			if( selectedIndex >= 0 && index > selectedIndex ) {
+				rv.setEnabled( false );
+			} else {
+				rv.setEnabled( true );
+			}
 		}
 		return rv;
 	}
@@ -47,16 +55,28 @@ public class HistoryPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "hashCode:", e.getEdit().hashCode() );
 			HistoryPane.this.historyStackModel.refresh();
+			HistoryPane.this.list.setSelectedIndex( -1 );
+			HistoryPane.this.list.repaint();
 		}
 	};
 
 	private javax.swing.JList list = new javax.swing.JList();
 	private HistoryStackModel historyStackModel;
 	public HistoryPane( java.util.UUID uuid ) {
-		HistoryManager historyManager = HistoryManager.get( uuid );
+		final HistoryManager historyManager = HistoryManager.get( uuid );
 		this.historyStackModel = new HistoryStackModel( historyManager );
 		this.list.setModel( this.historyStackModel );
 		this.list.setCellRenderer( new HistoryCellRenderer() );
+		this.list.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+			public void valueChanged(javax.swing.event.ListSelectionEvent e) {
+				if( e.getValueIsAdjusting() ) {
+					//pass
+				} else {
+					historyManager.setInsertIndex(list.getSelectedIndex());
+					HistoryPane.this.list.repaint();
+				}
+			}
+		} );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list );
 		this.add( scrollPane );
 	}

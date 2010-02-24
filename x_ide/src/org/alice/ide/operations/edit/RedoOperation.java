@@ -32,9 +32,8 @@ public class RedoOperation extends org.alice.ide.operations.InconsequentialActio
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		String title = "Redo coming soon";
-		String message = "Redo is not yet implemented.  Apologies.";
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ); 
+		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.get( org.alice.ide.IDE.PROJECT_GROUP );
+		historyManager.redo();
 	}
 	
 }

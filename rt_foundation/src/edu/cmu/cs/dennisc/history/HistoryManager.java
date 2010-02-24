@@ -33,6 +33,7 @@ public class HistoryManager {
 		historyManager.push( commitEvent );
 	}
 	private java.util.Stack< edu.cmu.cs.dennisc.zoot.event.CommitEvent > stack = new java.util.Stack< edu.cmu.cs.dennisc.zoot.event.CommitEvent >();
+	private int insertIndex = 0;
 	private java.util.UUID uuid;
 	private HistoryManager( java.util.UUID uuid ) {
 		this.uuid = uuid;
@@ -48,10 +49,49 @@ public class HistoryManager {
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( operation.getGroupUUID(), this.uuid ) ) {
 			edu.cmu.cs.dennisc.history.event.HistoryEvent historyEvent = new edu.cmu.cs.dennisc.history.event.HistoryEvent( this, commitEvent.getEdit() );
 			this.fireOperationPushing( historyEvent );
+			this.stack.setSize( this.insertIndex );
 			this.stack.push( commitEvent );
+			this.insertIndex = this.stack.size();
 			this.fireOperationPushed( historyEvent );
 		}
 	}
+	
+	public void undo() {
+		if( this.insertIndex > 0 ) {
+			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertIndex-1 );
+			commitEvent.getEdit().undo();
+			this.insertIndex--;
+		} else {
+			java.awt.Toolkit.getDefaultToolkit().beep();
+		}
+	}
+	public void redo() {
+		if( this.insertIndex < this.stack.size() ) {
+			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertIndex );
+			commitEvent.getEdit().doOrRedo();
+			this.insertIndex++;
+		} else {
+			java.awt.Toolkit.getDefaultToolkit().beep();
+		}
+	}
+	
+	public void setInsertIndex( int nextInsertIndex ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "setInsertIndex", nextInsertIndex );
+		assert nextInsertIndex >= 0;
+		assert nextInsertIndex <= this.stack.size();
+		final int N = Math.abs( nextInsertIndex - this.insertIndex );
+		if( nextInsertIndex < this.insertIndex ) {
+			for( int i=0; i<N; i++ ) {
+				this.undo();
+			}
+		} else {
+			for( int i=0; i<N; i++ ) {
+				this.redo();
+			}
+		}
+		assert this.insertIndex == nextInsertIndex;
+	}
+	
 	private java.util.List< edu.cmu.cs.dennisc.history.event.HistoryListener > historyListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.history.event.HistoryListener >();
 	public void addHistoryListener( edu.cmu.cs.dennisc.history.event.HistoryListener l ) {
 		synchronized( this.historyListeners ) {
