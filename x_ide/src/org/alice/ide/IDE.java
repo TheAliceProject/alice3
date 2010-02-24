@@ -113,13 +113,13 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
 
 	//public static String IS_PROJECT_CHANGED_KEY = "IS_PROJECT_AFFECTED_KEY";
-
+	protected static final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 	static {
 		IDE.exceptionHandler = new org.alice.ide.issue.ExceptionHandler();
 		Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( "performSceneEditorGeneratedSetUp" );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( "performEditorGeneratedSetUp" );
-		performSceneEditorGeneratedSetUpMethodNameSet.add( "performGeneratedSetUp" );
+		performSceneEditorGeneratedSetUpMethodNameSet.add( GENERATED_SET_UP_METHOD_NAME );
 	}
 
 	public static IDE getSingleton() {

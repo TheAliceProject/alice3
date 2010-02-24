@@ -339,9 +339,8 @@ public class StageIDE extends org.alice.ide.IDE {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
 				
-				final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
 				final String CUSTOM_SET_UP_METHOD_NAME = "performMySetUp";
-				boolean isSetUpFixRequired = false;
+				boolean isSetUpMethodReplacementDesired = false;
 				java.util.Map< String, String > map = new java.util.HashMap< String, String >();
 				map.put( "performSceneEditorGeneratedSetUp", GENERATED_SET_UP_METHOD_NAME );
 				map.put( "performCustomPropertySetUp", CUSTOM_SET_UP_METHOD_NAME );
@@ -351,10 +350,10 @@ public class StageIDE extends org.alice.ide.IDE {
 						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
 						String value = map.get( key );
 						methodInAlice.name.setValue( value );
-						isSetUpFixRequired = true;
+						isSetUpMethodReplacementDesired = true;
 					}
 				}
-				if( isSetUpFixRequired ) {
+				if( isSetUpMethodReplacementDesired ) {
 					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = getDeclaredConstructor( sceneType );
 					final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = getDeclaredMethod( sceneType, "performSetUp" );
 					edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpGeneratedMethod = getDeclaredMethod( sceneType, GENERATED_SET_UP_METHOD_NAME );
