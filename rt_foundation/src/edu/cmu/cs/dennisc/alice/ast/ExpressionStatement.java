@@ -38,4 +38,9 @@ public class ExpressionStatement extends Statement {
 	public ExpressionStatement( Expression expression ) {
 		this.expression.setValue( expression );
 	}
+	@Override
+	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {
+		Node.safeAppendRepr( rv, this.expression.getValue(), locale );
+		return rv;
+	}
 }
