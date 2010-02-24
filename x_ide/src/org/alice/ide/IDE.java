@@ -119,6 +119,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		Thread.setDefaultUncaughtExceptionHandler( IDE.exceptionHandler );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( "performSceneEditorGeneratedSetUp" );
 		performSceneEditorGeneratedSetUpMethodNameSet.add( "performEditorGeneratedSetUp" );
+		performSceneEditorGeneratedSetUpMethodNameSet.add( "performGeneratedSetUp" );
 	}
 
 	public static IDE getSingleton() {
@@ -1856,12 +1857,32 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 	@Deprecated
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneField() {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = getProgramType();
-		if( programType != null ) {
-			return programType.fields.get( 0 );
+		return getSceneFieldFromProgramType( programType );
+	}
+	
+	@Deprecated
+	protected static edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneFieldFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+		if( programType instanceof TypeDeclaredInAlice ) {
+			TypeDeclaredInAlice programAliceType = (TypeDeclaredInAlice)programType;
+			if( programAliceType.fields.size() > 0 ) {
+				return programAliceType.fields.get( 0 );
+			} else {
+				return null;
+			}
 		} else {
 			return null;
 		}
 	}
+	@Deprecated
+	protected static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneTypeFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
+		if( programType instanceof TypeDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = getSceneFieldFromProgramType( programType );
+			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
+		} else {
+			return null;
+		}
+	}
+	
 	@Deprecated
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneType() {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = getSceneField();

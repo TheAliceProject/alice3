@@ -325,6 +325,83 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, String > mapTypeToText;
 
+	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getDeclaredMethod( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String name, Class<?>... paramClses ) {
+		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( type.getDeclaredMethod( name, paramClses ), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
+	}
+	private static edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice getDeclaredConstructor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, Class<?>... paramClses ) {
+		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( type.getDeclaredConstructor( paramClses ), edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice.class );
+	}
+	
+	@Override
+	public void setProject( edu.cmu.cs.dennisc.alice.Project project ) {
+		if( project != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = getSceneTypeFromProgramType( programType );
+			if( sceneType != null ) {
+				
+				final String GENERATED_SET_UP_METHOD_NAME = "performGeneratedSetUp";
+				final String CUSTOM_SET_UP_METHOD_NAME = "performMySetUp";
+				boolean isSetUpFixRequired = false;
+				java.util.Map< String, String > map = new java.util.HashMap< String, String >();
+				map.put( "performSceneEditorGeneratedSetUp", GENERATED_SET_UP_METHOD_NAME );
+				map.put( "performCustomPropertySetUp", CUSTOM_SET_UP_METHOD_NAME );
+				for( String key : map.keySet() ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = sceneType.getDeclaredMethod( key );
+					if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+						edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
+						String value = map.get( key );
+						methodInAlice.name.setValue( value );
+						isSetUpFixRequired = true;
+					}
+				}
+				if( isSetUpFixRequired ) {
+					edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = getDeclaredConstructor( sceneType );
+					final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = getDeclaredMethod( sceneType, "performSetUp" );
+					edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpGeneratedMethod = getDeclaredMethod( sceneType, GENERATED_SET_UP_METHOD_NAME );
+					edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpCustomMethod = getDeclaredMethod( sceneType, CUSTOM_SET_UP_METHOD_NAME );
+					if( constructor != null && setUpMethod != null && setUpGeneratedMethod != null && setUpCustomMethod != null ) {
+						edu.cmu.cs.dennisc.alice.ast.BlockStatement constructorBody = constructor.body.getValue();
+						if( constructorBody != null && constructorBody.statements.size() == 1 ) {
+							edu.cmu.cs.dennisc.alice.ast.BlockStatement setUpBody = setUpMethod.body.getValue();
+							if( setUpBody != null && setUpBody.statements.size() == 2 ) {
+								int index = sceneType.methods.indexOf( setUpMethod );
+								if( index >= 0 ) {									
+									edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ) {
+										@Override
+										protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice ) {
+											return methodDeclaredInAlice == setUpMethod;
+										}
+									};
+									programType.crawl( crawler, true );
+									if( crawler.getList().size() == 1 ) {
+										edu.cmu.cs.dennisc.alice.ast.Statement statement = constructorBody.statements.get( 0 );
+										if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
+											edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
+											edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
+											if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) {
+												edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
+												if( methodInvocation.method.getValue() == setUpMethod ) {
+													constructorBody.statements.clear();
+													constructorBody.statements.add(
+															org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), setUpGeneratedMethod ),
+															org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), setUpCustomMethod )
+													);
+													sceneType.methods.remove( index );
+												}
+											}
+										}
+									}
+								}
+							}
+							
+						}
+					}
+				}
+			}
+		}
+		super.setProject( project );
+	}
+	
 	@Override
 	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( mapTypeToText != null ) {
