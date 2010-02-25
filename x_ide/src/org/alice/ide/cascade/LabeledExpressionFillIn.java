@@ -25,13 +25,15 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviousExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends SimpleExpressionFillIn< E > {
-	public PreviousExpressionFillIn( E model ) {
+public class LabeledExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends SimpleExpressionFillIn< E > {
+	private String text;
+	public LabeledExpressionFillIn( E model, String text ) {
 		super( model );
+		this.text = text;
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "(current value)" );
+		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( this.text );
 		label.setFontToDerivedFont( edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.LIGHT );
 //		label.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
 //		label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
@@ -54,6 +56,7 @@ public class PreviousExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Ex
 		rv.add( s );
 		rv.add( javax.swing.Box.createHorizontalStrut( 16 ) );
 		rv.add( label );
+		rv.doLayout();
 		return rv;
 	}
 //	@Override

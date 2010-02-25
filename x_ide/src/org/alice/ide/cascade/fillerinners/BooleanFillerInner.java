@@ -31,25 +31,47 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 	}
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+		final edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator[] CONDITIONAL_OPERATORS = {
+				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.AND, 	
+				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.OR, 	
+		};
+		//todo: relational
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getPreviousExpression();
+		if( blank.getParentFillIn() == null ) {
+			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
+				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditionalInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)previousExpression;
+				edu.cmu.cs.dennisc.alice.ast.Expression leftOperand = previousConditionalInfixExpression.leftOperand.getValue();
+				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator prevOperator = previousConditionalInfixExpression.operator.getValue();
+				edu.cmu.cs.dennisc.alice.ast.Expression rightOperand = previousConditionalInfixExpression.rightOperand.getValue();
+				for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : CONDITIONAL_OPERATORS ) {
+					if( operator != prevOperator ) {
+						blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( leftOperand, operator, rightOperand ), "(replace operator)" ) );
+					}
+				}
+				blank.addSeparator();
+				blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( leftOperand, "(reduce to left operand only)" ) );
+				blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( rightOperand, "(reduce to right operand only)" ) );
+				blank.addSeparator();
+			} else if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.LogicalComplement ) {
+				edu.cmu.cs.dennisc.alice.ast.LogicalComplement previousLogicalComplement = (edu.cmu.cs.dennisc.alice.ast.LogicalComplement)previousExpression;
+				blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( previousLogicalComplement.operand.getValue(), "(reduce to inner operand only)" ) );
+				blank.addSeparator();
+			}
+		}
 		this.addExpressionFillIn( blank, true );
 		this.addExpressionFillIn( blank, false );
 		blank.addSeparator();
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getPreviousExpression();
 		blank.addFillIn( new org.alice.ide.cascade.LogicalComplementFillIn() );
-		if( previousExpression != null ) {
-			if( blank.getParentFillIn() == null ) {
+		if( blank.getParentFillIn() == null ) {
+			if( previousExpression != null ) {
 				blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplement >( new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( previousExpression ) ) );
 			}
 		}
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.ConditionalExpressionFillIn() );
-		if( previousExpression != null ) {
-			if( blank.getParentFillIn() == null ) {
-				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator[] operators = {
-						edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.AND, 	
-						edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.OR 	
-				};
-				for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : operators ) {
+		if( blank.getParentFillIn() == null ) {
+			if( previousExpression != null ) {
+				for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : CONDITIONAL_OPERATORS ) {
 					blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedConditionalInfixExpressionFillIn( previousExpression, operator ) );
 				}
 			}

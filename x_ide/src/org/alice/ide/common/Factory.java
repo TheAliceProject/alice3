@@ -131,7 +131,8 @@ public abstract class Factory {
 		return this.createGetsComponent( getsChunk.isTowardLeading() );
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( textChunk.getText() );
+		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( textChunk.getText() );
+		return rv;
 	}	
 	protected java.awt.Component createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
 		int underscoreCount = propertyChunk.getUnderscoreCount();
@@ -206,6 +207,7 @@ public abstract class Factory {
 			for( org.alice.ide.i18n.Chunk chunk : chunks ) {
 				java.awt.Component component = createComponent( chunk, owner );
 				assert component != null : chunk.toString();
+//				rv.setAlignmentY( 0.5f );
 				rv.add( component );
 			}
 			return rv;
@@ -356,9 +358,32 @@ public abstract class Factory {
 				
 				String value = resourceBundle.getString( e.name() );
 				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
-				rv = new ExpressionPane( infixExpression, this.createComponent( page, infixExpression ) );
+				java.awt.Component component = this.createComponent( page, infixExpression );
+				if( component instanceof java.awt.Container ) {
+					java.awt.Container container = (java.awt.Container)component;
+					for( java.awt.Component child : container.getComponents() ) {
+						if( child instanceof edu.cmu.cs.dennisc.zoot.ZLabel ) {
+							edu.cmu.cs.dennisc.zoot.ZLabel label = (edu.cmu.cs.dennisc.zoot.ZLabel)child;
+							String text = label.getText();
+							if( text.length() == 3 ) {
+								char c0 = text.charAt( 0 );
+								char c1 = text.charAt( 1 );
+								char c2 = text.charAt( 2 );
+								if( c0==' ' && c2 == ' ' ) {
+									if( Character.isLetterOrDigit( c1 ) ) {
+										//pass
+									} else {
+										label.setFontToScaledFont( 1.75f );
+									}
+								}
+							}
+							label.setFontToDerivedFont( edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD );
+							//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
+						}
+					}
+				}
+				rv = new ExpressionPane( infixExpression, component );
 				
-			//todo: handle Relational and Arithmetic
 			} else if( expression instanceof org.alice.ide.ast.EmptyExpression ) {
 				rv = new EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)expression );
 			} else if( expression instanceof org.alice.ide.ast.SelectedFieldExpression ) {
