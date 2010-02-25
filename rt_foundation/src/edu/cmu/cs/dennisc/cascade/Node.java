@@ -163,19 +163,25 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 		if( this.isMenuItemIconUpToDate() ) {
 			//pass
 		} else {
-			java.awt.Container container = this.menuItem;
 			javax.swing.JComponent component = this.getMenuProxy();
 			if( component != null ) {
-				//edu.cmu.cs.dennisc.swing.SwingUtilities.doLayoutTree( component );
-				edu.cmu.cs.dennisc.swing.SwingUtilities.invalidateTree( component );
-				edu.cmu.cs.dennisc.swing.SwingUtilities.doLayoutTree( component );
-				java.awt.Dimension size = component.getPreferredSize();
-				if( size.width > 0 && size.height > 0 ) {
-					this.menuItem.setIcon( edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component, container ) );
-					this.menuItem.setText( null );
+				if( component instanceof javax.swing.JLabel ) {
+					javax.swing.JLabel label = (javax.swing.JLabel)component;
+					this.menuItem.setText( label.getText() );
+					this.menuItem.setIcon( label.getIcon() );
 				} else {
-					this.menuItem.setIcon( null );
-					this.menuItem.setText( "unknown" );
+					edu.cmu.cs.dennisc.swing.SwingUtilities.invalidateTree( component );
+					edu.cmu.cs.dennisc.swing.SwingUtilities.doLayoutTree( component );
+//					edu.cmu.cs.dennisc.swing.SwingUtilities.revalidateTree( component );
+					java.awt.Dimension size = component.getPreferredSize();
+					if( size.width > 0 && size.height > 0 ) {
+						javax.swing.Icon icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component );
+						this.menuItem.setIcon( icon );
+						this.menuItem.setText( null );
+					} else {
+						this.menuItem.setIcon( null );
+						this.menuItem.setText( "unknown" );
+					}
 				}
 			} else {
 				this.menuItem.setIcon( null );

@@ -55,6 +55,18 @@ public class SwingUtilities {
 			}
 		}
 	}
+	public static void revalidateTree( java.awt.Component c ) {
+		if( c instanceof javax.swing.JComponent ) {
+			javax.swing.JComponent jc = (javax.swing.JComponent)c;
+			jc.revalidate();
+		}
+		if( c instanceof java.awt.Container ) {
+			java.awt.Container container = (java.awt.Container)c;
+			for( java.awt.Component component : container.getComponents() ) {
+				validateTree( component );
+			}
+		}
+	}
 	private static void paint( java.awt.Graphics g, java.awt.Component c, java.awt.Container p, int x, int y ) {
 		java.awt.Dimension size = c.getPreferredSize();
 		g.translate( x, y );
@@ -67,12 +79,13 @@ public class SwingUtilities {
 		}
 		g.translate( -x, -y );
 	}
-	public static void paint( java.awt.Graphics g, java.awt.Component c, java.awt.Container p ) {
+	private static void paint( java.awt.Graphics g, java.awt.Component c, java.awt.Container p ) {
 		//doLayout( c );
 		paint( g, c, p, 0, 0 );
 	}
 
-	public static javax.swing.Icon createIcon( java.awt.Component component, java.awt.Container p ) {
+	private static java.awt.Container container = new java.awt.Container();
+	public static javax.swing.Icon createIcon( java.awt.Component component ) {
 		javax.swing.Icon rv;
 		java.awt.Dimension size = component.getPreferredSize();
 		if( size.width > 0 && size.height > 0 ) {
@@ -80,7 +93,7 @@ public class SwingUtilities {
 			java.awt.Graphics g = image.getGraphics();
 //			g.setColor( java.awt.Color.RED );
 //			g.fillRect( 0, 0, size.width, size.height );
-			SwingUtilities.paint( g, component, p );
+			SwingUtilities.paint( g, component, container );
 			g.dispose();
 			rv = new javax.swing.ImageIcon( image );
 		} else {

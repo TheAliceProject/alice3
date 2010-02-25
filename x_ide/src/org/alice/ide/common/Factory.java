@@ -399,10 +399,12 @@ public abstract class Factory {
 //			} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AbstractLiteral ) {
 //				rv = this.createComponent( expression );
 			} else {
-				rv = this.createComponent( expression );
-//				if( org.alice.ide.IDE.getSingleton().isExpressionTypeFeedbackDesired() ) {
-					rv = new ExpressionPane( expression, rv );
-//				}
+				java.awt.Component component = this.createComponent( expression );
+				if( org.alice.ide.IDE.getSingleton().isExpressionTypeFeedbackDesired() ) {
+					rv = new ExpressionPane( expression, component );
+				} else {
+					rv = component;
+				}
 			}
 		}
 		return rv;

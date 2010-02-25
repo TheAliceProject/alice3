@@ -32,15 +32,18 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	@Override
 	protected java.awt.Component createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
-		String parameterName = argument.parameter.getValue().getName();
 		java.awt.Component expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
-		if( parameterName != null && parameterName.length() > 0 ) {
-			edu.cmu.cs.dennisc.croquet.swing.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
-			rv.setOpaque( false );
-			rv.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( parameterName + ": " ) );
-			rv.add( expressionComponent );
-			return rv;
+		final boolean IS_PARAMETER_NAME_DESIRED = false;
+		if( IS_PARAMETER_NAME_DESIRED ) {
+			String parameterName = argument.parameter.getValue().getName();
+			if( parameterName != null && parameterName.length() > 0 ) {
+				edu.cmu.cs.dennisc.croquet.swing.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
+				rv.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( parameterName + ": " ) );
+				rv.add( expressionComponent );
+				return rv;
+			} else {
+				return expressionComponent;
+			}
 		} else {
 			return expressionComponent;
 		}

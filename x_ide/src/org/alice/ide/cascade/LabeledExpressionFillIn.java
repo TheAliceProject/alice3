@@ -35,32 +35,6 @@ public class LabeledExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Exp
 	protected javax.swing.JComponent createMenuProxy() {
 		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( this.text );
 		label.setFontToDerivedFont( edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.LIGHT );
-//		label.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
-//		label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
-//		label.setAlignmentX( java.awt.Component.CENTER_ALIGNMENT );
-//		label.setAlignmentY( java.awt.Component.CENTER_ALIGNMENT );
-
-		javax.swing.JComponent s = super.createMenuProxy();
-		s.doLayout();
-		
-		javax.swing.JPanel rv = new javax.swing.JPanel();
-		
-		rv.setOpaque( false );
-		//rv.setBackground( java.awt.Color.RED );
-		
-//		rv.setLayout( new java.awt.BorderLayout() );
-//		rv.add( s, java.awt.BorderLayout.CENTER );
-//		rv.add( label, java.awt.BorderLayout.EAST );
-
-		rv.setLayout( new javax.swing.BoxLayout( rv, javax.swing.BoxLayout.LINE_AXIS ) );
-		rv.add( s );
-		rv.add( javax.swing.Box.createHorizontalStrut( 16 ) );
-		rv.add( label );
-		rv.doLayout();
-		return rv;
+		return new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( super.createMenuProxy(), javax.swing.Box.createHorizontalStrut( 16 ), label );
 	}
-//	@Override
-//	public E getValue() {
-//		return (E)this.getIDE().createCopy( super.getValue() );
-//	}
 }
