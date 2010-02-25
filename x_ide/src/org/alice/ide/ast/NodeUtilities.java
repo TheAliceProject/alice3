@@ -47,6 +47,15 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.Comment createComment() {
 		return new edu.cmu.cs.dennisc.alice.ast.Comment();
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType ) {
+		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( rightOperandType ), expressionType );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
+		return createIncompleteArithmeticInfixExpression( leftOperand, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( expressionCls ) );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
+		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+	}
 	
 	public static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createVariableDeclarationStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.Expression initializerExpression ) {
 		return new edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement(

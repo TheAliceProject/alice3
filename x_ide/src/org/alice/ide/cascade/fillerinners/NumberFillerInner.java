@@ -41,20 +41,10 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		this.addExpressionFillIn( blank, 10.0 );
 		this.addExpressionFillIn( blank, 100.0 );
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
-		blank.addSeparator();
-		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
-			@Override
-			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class );
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "random" );
-			}
-		} );
-		blank.addSeparator();
 		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Math" ) {
 			@Override
 			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-				blank.addFillIn( new org.alice.ide.cascade.ArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, java.lang.Number.class ) );
+				blank.addFillIn( new org.alice.ide.cascade.ArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE, Number.class ) );
 				blank.addSeparator();
 				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "min, max" ) {
 					@Override
@@ -105,6 +95,30 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 				} );
 			}
 		} );
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getPreviousExpression();
+		if( previousExpression != null ) {
+			if( blank.getParentFillIn() == null ) {
+				edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator[] operators = {
+						edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.PLUS, 	
+						edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.MINUS, 	
+						edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.TIMES, 	
+						edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.REAL_DIVIDE 	
+				};
+				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : operators ) {
+					blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedArithmeticInfixExpressionFillIn( previousExpression, operator, Double.class, Number.class ) );
+				}
+			}
+		}
 		//		self._addArithmeticFillIns( blank, ecc.dennisc.alice.ast.getType( java.lang.Double ), ecc.dennisc.alice.ast.getType( java.lang.Number ) )
+		blank.addSeparator();
+		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
+			@Override
+			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class );
+				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "random" );
+			}
+		} );
+		blank.addSeparator();
+		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
 	}
 }
