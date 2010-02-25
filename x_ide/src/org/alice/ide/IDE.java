@@ -1336,8 +1336,12 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 		if( type != null ) {
 			if( this.previousExpression != null ) {
 				if( this.previousExpression.getType().isAssignableTo( type ) ) {
-					blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( this.previousExpression, "(current value)" ) );
-					blank.addSeparator();
+					if( blank.getParentFillIn() != null ) {
+						//pass
+					} else {
+						blank.addFillIn( new org.alice.ide.cascade.LabeledExpressionFillIn( this.previousExpression, "(current value)" ) );
+						blank.addSeparator();
+					}
 				}
 			}
 			this.addCustomFillIns( blank, type );

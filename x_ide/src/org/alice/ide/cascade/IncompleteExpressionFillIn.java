@@ -25,19 +25,14 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class LogicalComplementFillIn extends UnaryExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplement > {
-	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		edu.cmu.cs.dennisc.alice.ast.LogicalComplement logicalComplement = org.alice.ide.ast.NodeUtilities.createIncompleteLogicalComplement();
-		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( logicalComplement );
+public abstract class IncompleteExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
+	protected final org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
 	}
 	
+	protected abstract E createIncomplete();
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getOperandType() {
-		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.LogicalComplement createValue( edu.cmu.cs.dennisc.alice.ast.Expression operand ) {
-		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( operand );
+	protected final javax.swing.JComponent createMenuProxy() {
+		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( this.createIncomplete() );
 	}
 }

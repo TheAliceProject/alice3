@@ -26,6 +26,12 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractNumberFillerInner extends ExpressionFillerInner {
+	protected static final edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator[] TRIMMED_ARITHMETIC_OPERATORS = {
+			edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.PLUS, 	
+			edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.MINUS, 	
+			edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.TIMES, 	
+			edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.REAL_DIVIDE 	
+	};
 	public AbstractNumberFillerInner( edu.cmu.cs.dennisc.alice.ast.AbstractType type, Class< ? extends edu.cmu.cs.dennisc.alice.ast.Expression > cls ) {
 		super( type, cls );
 	}

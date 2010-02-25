@@ -26,10 +26,6 @@ package org.alice.ide.cascade;
  * @author Dennis Cosgrove
  */
 public abstract class UnaryExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends edu.cmu.cs.dennisc.cascade.FillIn< E > {
-	private String menuText;
-	public UnaryExpressionFillIn( String menuText ) {
-		this.menuText = menuText;
-	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -37,12 +33,7 @@ public abstract class UnaryExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.
 	@Override
 	protected void addChildren() {
 		this.addChild( new ExpressionBlank( getOperandType() ) );
-	}
-	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( menuText );
-	}
-	
+	}	
 	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression operand );
 	@Override
 	public final E getValue() {

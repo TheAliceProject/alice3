@@ -61,20 +61,22 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		this.addExpressionFillIn( blank, true );
 		this.addExpressionFillIn( blank, false );
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.ide.cascade.LogicalComplementFillIn() );
 		if( blank.getParentFillIn() == null ) {
 			if( previousExpression != null ) {
 				blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplement >( new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( previousExpression ) ) );
 			}
 		}
+		blank.addFillIn( new org.alice.ide.cascade.LogicalComplementFillIn() );
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.ide.cascade.ConditionalExpressionFillIn() );
 		if( blank.getParentFillIn() == null ) {
 			if( previousExpression != null ) {
 				for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : CONDITIONAL_OPERATORS ) {
 					blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedConditionalInfixExpressionFillIn( previousExpression, operator ) );
 				}
 			}
+		}
+		for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
+			blank.addFillIn( new org.alice.ide.cascade.IncompleteConditionalExpressionFillIn( operator ) );
 		}
 		blank.addSeparator();
 		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "relational { ==, !=, <, <=, >=, > }" ) {

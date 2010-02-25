@@ -56,7 +56,9 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Math" ) {
 			@Override
 			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-				blank.addFillIn( new org.alice.ide.cascade.ArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, java.lang.Integer.class ) );
+				for( edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator.values() ) {
+					blank.addFillIn( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) );
+				}
 				blank.addSeparator();
 				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", java.lang.Integer.TYPE );
 				blank.addSeparator();

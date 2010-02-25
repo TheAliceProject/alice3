@@ -53,8 +53,20 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
 		return createIncompleteArithmeticInfixExpression( leftOperand, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( expressionCls ) );
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType ) {
+		return createIncompleteArithmeticInfixExpression( new org.alice.ide.ast.EmptyExpression( rightOperandType ), operator, rightOperandType, expressionType );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createIncompleteArithmeticInfixExpression( Class<?> leftOperandCls, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, Class<?> rightOperandCls, Class<?> expressionCls ) {
+		return createIncompleteArithmeticInfixExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( leftOperandCls ), operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( rightOperandCls ), edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( expressionCls ) );
+	}
 	public static edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( leftOperand, operator, new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createIncompleteConditionalInfixExpression( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator ) {
+		return createIncompleteConditionalInfixExpression( new org.alice.ide.ast.EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ), operator );
+	}
+	public static edu.cmu.cs.dennisc.alice.ast.LogicalComplement createIncompleteLogicalComplement() {
+		return new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) );
 	}
 	
 	public static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createVariableDeclarationStatement( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable, edu.cmu.cs.dennisc.alice.ast.Expression initializerExpression ) {
