@@ -36,19 +36,43 @@ class InfixExpressionOperatorFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Infi
 	@Override
 	public E getModel() {
 		E rv = super.getModel();
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank().getParentFillIn() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank().getParentFillIn().getBlankAt( 0 ) );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank().getParentFillIn().getBlankAt( 0 ).getSelectedFillIn() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank().getParentFillIn().getBlankAt( 0 ).getSelectedFillIn().getTransientValue() );
-		edu.cmu.cs.dennisc.alice.ast.Expression leftValue = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getParentBlank().getParentFillIn().getBlankAt( 0 ).getSelectedFillIn().getTransientValue();
-		if( leftValue != null ) {
-			//pass
-		} else {
-			leftValue = new org.alice.ide.ast.EmptyExpression( this.operandType );
+		edu.cmu.cs.dennisc.cascade.Blank parentBlank = this.getParentBlank();
+		if( parentBlank != null ) {
+			edu.cmu.cs.dennisc.cascade.FillIn<?> grandparentFillIn = parentBlank.getParentFillIn();
+			if( grandparentFillIn != null ) {
+				edu.cmu.cs.dennisc.cascade.Blank blank0 = grandparentFillIn.getBlankAt( 0 );
+				if( blank0 != null ) {
+					edu.cmu.cs.dennisc.cascade.FillIn<?> selectedFillIn = blank0.getSelectedFillIn();
+					if( selectedFillIn != null ) {
+						Object transientValue = selectedFillIn.getTransientValue();
+						edu.cmu.cs.dennisc.alice.ast.Expression leftValue;
+						if( transientValue != null ) {
+							if( transientValue instanceof edu.cmu.cs.dennisc.alice.ast.Expression ) {
+								leftValue = (edu.cmu.cs.dennisc.alice.ast.Expression)transientValue;
+							} else {
+								throw new AssertionError();
+							}
+						} else {
+							leftValue = null;
+						}
+						if( leftValue != null ) {
+							//pass
+						} else {
+							leftValue = new org.alice.ide.ast.EmptyExpression( this.operandType );
+						}
+						rv.leftOperand.setValue( leftValue );
+						return rv;
+					}
+				}
+			}
 		}
-		rv.leftOperand.setValue( leftValue );
-		return rv;
+		throw new AssertionError();
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank() );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank().getParentFillIn() );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank().getParentFillIn().getBlankAt( 0 ) );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank().getParentFillIn().getBlankAt( 0 ).getSelectedFillIn() );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( this.getParentBlank().getParentFillIn().getBlankAt( 0 ).getSelectedFillIn().getTransientValue() );
+//		edu.cmu.cs.dennisc.alice.ast.Expression leftValue = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getParentBlank().getParentFillIn().getBlankAt( 0 ).getSelectedFillIn().getTransientValue();
 	}
 	@Override
 	protected boolean isMenuItemIconUpToDate() {
