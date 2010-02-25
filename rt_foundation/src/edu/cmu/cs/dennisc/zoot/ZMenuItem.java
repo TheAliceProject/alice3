@@ -53,7 +53,7 @@ public class ZMenuItem extends javax.swing.JMenuItem {
 	}
 	@Override
 	public void removeNotify() {
-		super.removeNotify();
 		this.actionOperation.removeComponent( this );
+		super.removeNotify();
 	}
 }
