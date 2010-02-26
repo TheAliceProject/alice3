@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZMenuItem extends javax.swing.JMenuItem {
+/*package-private*/ class ZMenuItem extends javax.swing.JMenuItem {
 	private ActionOperation actionOperation;
 	public ZMenuItem( ActionOperation actionOperation ) {
 		this.setActionOperation( actionOperation );

@@ -72,9 +72,9 @@ public abstract class FillIn< E > extends Node {
 	}
 	
 	@Override
-	protected void handleActionOperationPerformed( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	protected void handleActionOperationPerformed() {
 		this.select();
-		super.handleActionOperationPerformed( actionContext );
+		super.handleActionOperationPerformed();
 	}
 
 	public abstract E getTransientValue();

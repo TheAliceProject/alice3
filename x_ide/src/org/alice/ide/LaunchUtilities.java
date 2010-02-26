@@ -88,16 +88,41 @@ public class LaunchUtilities {
 //						}
 //					}
 //				}
+				final int DEFAULT_WIDTH = 1000;
+				final int DEFAULT_HEIGHT = 740;
+				int xLocation = 0;
+				int yLocation = 0;
+				int width = DEFAULT_WIDTH;
+				int height = DEFAULT_HEIGHT;
+				boolean isMaximizationDesired = true;
 				if( args.length > 0 ) {
-					ide.loadProjectFrom( new java.io.File( args[ 0 ] ) );
-//				} else {
-//					ide.loadProjectFrom( new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "a.a3p" ) );
+					java.io.File file = new java.io.File( args[ 0 ] );
+					if( file.exists() ) {
+						ide.loadProjectFrom( file );
+					} else {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "file does not exist:", file );
+					}
+					if( args.length > 2 ) {
+						try {
+							xLocation = Integer.parseInt( args[ 1 ] );
+							yLocation = Integer.parseInt( args[ 2 ] );
+							if( args.length > 4 ) {
+								width = Integer.parseInt( args[ 3 ] );
+								height = Integer.parseInt( args[ 4 ] );
+							}
+							isMaximizationDesired = false;
+						} catch( NumberFormatException nfe ) {
+							xLocation = 0;
+							yLocation = 0;
+							width = DEFAULT_WIDTH;
+							height = DEFAULT_HEIGHT;
+						}
+					}
 				}
-				ide.setSize( 1000, 740 );
+				ide.setLocation( xLocation, yLocation );
+				ide.setSize( width, height );
 				
-				if( "false".equals( System.getProperty( IDE.class.getName() + ".isMaximized" ) ) ) {
-					//pass
-				} else {
+				if( isMaximizationDesired ) {
 					ide.maximize();
 				}
 				ide.setSplashScreen( splashScreen );

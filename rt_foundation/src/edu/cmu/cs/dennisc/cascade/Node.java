@@ -123,6 +123,11 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 		
 	}
 	
+	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
+		public void actionPerformed(java.awt.event.ActionEvent e) {
+			Node.this.handleActionOperationPerformed();
+		}
+	};
 	protected javax.swing.JComponent getMenuItem() {
 		boolean isLast = this.isLast();
 		if( this.menuItem != null ) {
@@ -133,7 +138,7 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 					javax.swing.JMenu menu = (javax.swing.JMenu)this.menuItem;
 					menu.removeMenuListener( this );
 				} else {
-					((edu.cmu.cs.dennisc.zoot.ZMenuItem)this.menuItem).setActionOperation( null );
+					this.menuItem.removeActionListener( this.actionListener );
 				}
 				this.menuItem = null;
 			}
@@ -145,12 +150,7 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 		} else {
 			if( isLast ) {
 				this.menuItem = new javax.swing.JMenuItem();
-				this.menuItem = new edu.cmu.cs.dennisc.zoot.ZMenuItem( new edu.cmu.cs.dennisc.zoot.AbstractActionOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP ) {
-					public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-						Node.this.handleActionOperationPerformed( actionContext );
-					}
-				} );
-				//this.menuItem.addActionListener( this );
+				this.menuItem.addActionListener( this.actionListener );
 			} else {
 				javax.swing.JMenu menu = new javax.swing.JMenu();
 				menu.addMenuListener( this  );
@@ -238,7 +238,7 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 	}
 
 	
-	protected void handleActionOperationPerformed( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	protected void handleActionOperationPerformed() {
 		this.getRootBlank().handleActionPerformed();
 	}
 	

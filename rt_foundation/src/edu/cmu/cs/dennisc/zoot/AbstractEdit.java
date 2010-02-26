@@ -42,6 +42,9 @@ public abstract class AbstractEdit implements Edit {
 	public final String getPresentation( java.util.Locale locale ) {
 		StringBuffer sb = new StringBuffer();
 		this.updatePresentation( sb, locale );
+		if( sb.length() == 0 ) {
+			sb.append( this.getClass().getSimpleName() );
+		}
 		return sb.toString();
 	}
 	public String getRedoPresentation( java.util.Locale locale ) {
