@@ -28,7 +28,6 @@ package org.alice.stageide.operations.ast;
 public abstract class TransformableFieldTileActionOperation extends AbstractFieldTileActionOperation {
 	public TransformableFieldTileActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
-		this.putValue( javax.swing.Action.NAME, "Orient to Upright" );
 	}
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable );
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -51,6 +50,12 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 					@Override
 					public void undo() {
 						setAbsolutePOV( transformable, prevPOV );
+					}
+					@Override
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						//todo
+						rv.append( getActionForConfiguringSwing().getValue( javax.swing.Action.NAME ) );
+						return rv;
 					}
 				} );
 			}

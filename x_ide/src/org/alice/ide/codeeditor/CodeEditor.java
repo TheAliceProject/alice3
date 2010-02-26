@@ -517,6 +517,12 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 											throw new javax.swing.undo.CannotUndoException();
 										}
 									}
+									@Override
+									protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+										rv.append( "copy code" );
+										return rv;
+									}
+									
 								}
 								actionContext.commitAndInvokeDo( new CopyEdit() );
 							}
@@ -555,6 +561,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 												}
 												prevOwner.add( index, statement );
 											}
+											@Override
+											protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+												rv.append( "move code" );
+												return rv;
+											}
 										}
 										actionContext.commitAndInvokeDo( new ReorderEdit() );
 									}
@@ -577,6 +588,11 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 										protected void undoInternal() {
 											prevOwner.add( prevIndex, statement );
 											nextOwner.remove( nextIndex );
+										}
+										@Override
+										protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+											rv.append( "move code" );
+											return rv;
 										}
 									}
 									actionContext.commitAndInvokeDo( new ReparentEdit() );

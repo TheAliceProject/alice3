@@ -20,33 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package edu.cmu.cs.dennisc.pattern;
 
 /**
  * @author Dennis Cosgrove
  */
-public class SelectFieldActionOperation extends AbstractFieldActionOperation {
-	public SelectFieldActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.IDE.INTERFACE_GROUP, field );
+
+public class NameableUtilities {
+	private NameableUtilities() {
+		throw new AssertionError();
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		final edu.cmu.cs.dennisc.alice.ast.AbstractField prevField = getIDE().getFieldSelection();
-		final edu.cmu.cs.dennisc.alice.ast.AbstractField nextField = getField();
-		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-			@Override
-			public void doOrRedo( boolean isDo ) {
-				getIDE().setFieldSelection( nextField );
-			}
-			@Override
-			public void undo() {
-				getIDE().setFieldSelection( prevField );
-			}
-			@Override
-			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-				rv.append( "Select Field" );
-				rv.append( edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, nextField, locale ) );
-				return rv;
-			}
-		} );
+	public static String safeGetName( Nameable nameable ) {
+		if( nameable != null ) { 
+			return nameable.getName();
+		} else {
+			return null;
+		}
 	}
 }

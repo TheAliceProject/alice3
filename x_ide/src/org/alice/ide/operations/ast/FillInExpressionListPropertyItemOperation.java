@@ -48,6 +48,14 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 			public void undo() {
 				expressionListProperty.set( index, this.prevExpression );
 			}
+			@Override
+			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				rv.append( "set: " );
+				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, this.prevExpression, locale);
+				rv.append( " ===> " );
+				edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, this.nextExpression, locale);
+				return rv;
+			}
 		}
 		actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< FillInExpressionEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public FillInExpressionEdit createEdit() {

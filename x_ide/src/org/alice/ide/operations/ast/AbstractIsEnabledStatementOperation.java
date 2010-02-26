@@ -45,6 +45,13 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 			public void undo() {
 				statement.isEnabled.setValue( prevValue );
 			}
+			
+			@Override
+			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				rv.append( "set enabled: " );
+				rv.append( nextValue );
+				return rv;
+			}
 		} );
 	}
 }

@@ -57,6 +57,12 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 						throw new javax.swing.undo.CannotUndoException();
 					}
 				}
+				@Override
+				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					rv.append( "declare:" );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, field, locale);
+					return rv;
+				}
 			}
 			int index = ownerType.fields.size();
 			actionContext.commitAndInvokeDo( new Edit( ownerType, field, index ) );

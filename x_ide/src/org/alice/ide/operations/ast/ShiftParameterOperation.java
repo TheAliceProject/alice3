@@ -51,6 +51,12 @@ public abstract class ShiftParameterOperation extends AbstractCodeParameterOpera
 				public void undo() {
 					swap( method, bIndex, aIndex );
 				}
+				@Override
+				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					rv.append( "Parameter" );
+					rv.append( getActionForConfiguringSwing().getValue( javax.swing.Action.NAME ) );
+					return rv;
+				}
 			});
 		} else {
 			throw new RuntimeException();

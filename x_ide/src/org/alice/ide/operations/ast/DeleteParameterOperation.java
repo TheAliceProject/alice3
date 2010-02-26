@@ -115,6 +115,12 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					public void undo() {
 						org.alice.ide.ast.NodeUtilities.addParameter( map, method, getParameter(), index, getIDE().getMethodInvocations( method ) );
 					}
+					@Override
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						rv.append( "delete:" );
+						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, getParameter(), locale);
+						return rv;
+					}
 				} );
 			}
 		} else {

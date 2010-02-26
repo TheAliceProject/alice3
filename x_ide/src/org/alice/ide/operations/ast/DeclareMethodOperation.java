@@ -53,6 +53,12 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.Ab
 						throw new javax.swing.undo.CannotUndoException();
 					}
 				}
+				@Override
+				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					rv.append( "declare:" );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, method, locale);
+					return rv;
+				}
 			} );
 		} else {
 			actionContext.cancel();

@@ -48,6 +48,12 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 					//todo: remove
 					getIDE().refreshUbiquitousPane();
 				}
+				@Override
+				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					rv.append( "delete:" );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, statement, locale);
+					return rv;
+				}
 			} );
 		} else {
 			throw new RuntimeException();

@@ -34,7 +34,8 @@ public abstract class AbstractEdit implements Edit {
 	public boolean canUndo() {
 		return true;
 	}
-	
+//	protected abstract StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale );
+
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
 		return rv;
 	}

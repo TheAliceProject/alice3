@@ -49,6 +49,14 @@ public abstract class RenameNodeOperation extends org.alice.ide.operations.Abstr
 				public void undo() {
 					RenameNodeOperation.this.nameProperty.setValue( prevValue );
 				}
+				@Override
+				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					rv.append( "rename: " );
+					rv.append( prevValue );
+					rv.append( " ===> " );
+					rv.append( nextValue );
+					return rv;
+				}
 			} );
 		} else {
 			actionContext.cancel();

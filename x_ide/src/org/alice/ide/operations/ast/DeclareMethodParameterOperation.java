@@ -51,6 +51,12 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 				public void undo() {
 					org.alice.ide.ast.NodeUtilities.removeParameter( map, method, parameter, index, getIDE().getMethodInvocations( method ) );
 				}
+				@Override
+				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					rv.append( "declare:" );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, parameter, locale);
+					return rv;
+				}
 			} );
 		} else {
 			actionContext.cancel();
