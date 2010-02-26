@@ -25,11 +25,10 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class LogicalComplementFillIn extends UnaryExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplement > {
+public class IncompleteLogicalComplementFillIn extends IncompleteUnaryExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplement > {
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		edu.cmu.cs.dennisc.alice.ast.LogicalComplement logicalComplement = org.alice.ide.ast.NodeUtilities.createIncompleteLogicalComplement();
-		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( logicalComplement );
+	protected edu.cmu.cs.dennisc.alice.ast.LogicalComplement createIncomplete() {
+		return org.alice.ide.ast.NodeUtilities.createIncompleteLogicalComplement();
 	}
 	
 	@Override

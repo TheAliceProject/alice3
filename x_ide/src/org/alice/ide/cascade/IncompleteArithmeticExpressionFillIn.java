@@ -37,7 +37,7 @@ public class IncompleteArithmeticExpressionFillIn extends IncompleteInfixExpress
 		return org.alice.ide.ast.NodeUtilities.createIncompleteArithmeticInfixExpression( leftOperandType, operator, rightOperandType, this.expressionType );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right ) {
+	protected edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ArithmeticInfixExpression( left, operator, right, this.expressionType );
 	}
 }

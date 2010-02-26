@@ -44,17 +44,17 @@ public abstract class IncompleteInfixExpressionFillIn< E extends edu.cmu.cs.denn
 	protected final E createIncomplete() {
 		return this.createIncomplete( this.leftOperandType, this.operator, this.rightOperandType );
 	}
-	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, O operator, edu.cmu.cs.dennisc.alice.ast.Expression right );
+	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, O operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType );
 	@Override
 	public final E getValue() {
 		edu.cmu.cs.dennisc.alice.ast.Expression left = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getValue();
 		edu.cmu.cs.dennisc.alice.ast.Expression right = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 1 ).getSelectedFillIn().getValue();
-		return this.createValue( left, this.operator, right );
+		return this.createValue( left, this.operator, right, this.leftOperandType, this.rightOperandType );
 	}
 	@Override
 	public E getTransientValue() {
 		edu.cmu.cs.dennisc.alice.ast.Expression left = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getTransientValue();
 		edu.cmu.cs.dennisc.alice.ast.Expression right = (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 1 ).getSelectedFillIn().getTransientValue();
-		return this.createValue( left, this.operator, right );
+		return this.createValue( left, this.operator, right, this.leftOperandType, this.rightOperandType );
 	}
 }

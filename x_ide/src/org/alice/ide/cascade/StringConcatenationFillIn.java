@@ -25,7 +25,7 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StringConcatenationFillIn extends edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
+public class StringConcatenationFillIn extends IncompleteExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
 	@Override
 	protected void addChildren() {
 		this.addChild( new ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) );
@@ -46,22 +46,7 @@ public class StringConcatenationFillIn extends edu.cmu.cs.dennisc.cascade.FillIn
 		return rv;
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		org.alice.ide.common.Factory factory = org.alice.ide.IDE.getSingleton().getPreviewFactory();
-		return (javax.swing.JComponent)factory.createExpressionPane( org.alice.ide.ast.NodeUtilities.createIncompleteStringConcatenation() );
+	protected edu.cmu.cs.dennisc.alice.ast.StringConcatenation createIncomplete() {
+		return org.alice.ide.ast.NodeUtilities.createIncompleteStringConcatenation();
 	}
-//	def addChildren( self ):
-//		instance = alice.ast.StringConcatenation()
-//		self.addChild( ExpressionPropertyBlank( instance.leftOperand ) )
-//		self.addChild( ExpressionPropertyBlank( instance.rightOperand ) )
-//	def getValue( self ):
-//		rv = alice.ast.StringConcatenation()
-//		rv.leftOperand.setValue( self.getChildren()[ 0 ].getSelectedFillIn().getValue() )
-//		rv.rightOperand.setValue( self.getChildren()[ 1 ].getSelectedFillIn().getValue() )
-//		return rv
-//	def createMenuProxy( self ):
-//		operandType = ecc.dennisc.alice.ast.getType( Object )
-//		leftValue = alice.ide.editors.code.EmptyExpression( operandType )
-//		rightValue = alice.ide.editors.code.EmptyExpression( operandType )
-//		return alice.ide.editors.code.ExpressionPane( alice.ast.StringConcatenation( leftValue, rightValue ) )
 }

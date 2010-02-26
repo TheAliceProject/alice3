@@ -139,7 +139,7 @@ public class StageIDE extends org.alice.ide.IDE {
 							{ 
 								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( "isKey", org.alice.apis.moveandturn.Key.class );
 								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
-								blank.addFillIn( new org.alice.ide.cascade.MethodInvocationFillIn( expression, method ) );
+								blank.addFillIn( new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( expression, method ) );
 							}
 							String[] methodNames = new String[] { "isLetter", "isDigit" };
 							for( String methodName : methodNames ) {
@@ -445,7 +445,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			if( paramCls !=null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
 				if( getPartMethod != null ) {
-					blank.addFillIn( new org.alice.ide.cascade.MethodInvocationFillIn( expression, getPartMethod ) );
+					blank.addFillIn( new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( expression, getPartMethod ) );
 				}
 			}
 		}

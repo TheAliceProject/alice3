@@ -25,14 +25,20 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class RelationalInfixExpressionOperatorFillIn extends InfixExpressionOperatorFillIn< edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression, edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator > {
-	private static edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression createRelationalInfixExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType operandType ) {
-		edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression rv = new edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression();
-		rv.leftOperandType.setValue( operandType );
-		rv.rightOperandType.setValue( operandType );
-		return rv;
+public abstract class IncompleteUnaryExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Expression > extends IncompleteExpressionFillIn< E > {
+	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getOperandType();
+	@Override
+	protected void addChildren() {
+		this.addChild( new ExpressionBlank( getOperandType() ) );
+	}	
+	protected abstract E createValue( edu.cmu.cs.dennisc.alice.ast.Expression operand );
+	@Override
+	public final E getValue() {
+		return this.createValue( (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getValue() );
 	}
-	public RelationalInfixExpressionOperatorFillIn( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.AbstractType operandType ) {
-		super( createRelationalInfixExpression( operandType ), Double.class, operator, Double.class );
+	@Override
+	public E getTransientValue() {
+		return this.createValue( (edu.cmu.cs.dennisc.alice.ast.Expression)this.getBlankAt( 0 ).getSelectedFillIn().getTransientValue() );
 	}
+	
 }

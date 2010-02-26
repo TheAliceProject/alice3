@@ -32,7 +32,7 @@ public abstract class ExpressionFillerInner {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = typeExpression.value.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
 		assert method != null : methodName;
-		org.alice.ide.cascade.MethodInvocationFillIn methodInvocationFillIn = new org.alice.ide.cascade.MethodInvocationFillIn( typeExpression, method );
+		org.alice.ide.cascade.IncompleteMethodInvocationFillIn methodInvocationFillIn = new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( typeExpression, method );
 		blank.addFillIn( methodInvocationFillIn );
 	}
 	protected static void addNodeChildForField( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, Class<?> valueCls, String fieldName ) {

@@ -62,7 +62,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		this.addExpressionFillIn( blank, true );
 		this.addExpressionFillIn( blank, false );
 		blank.addSeparator();
-			if( isTop ) {
+		if( isTop ) {
 	//			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
 	//			@Override
 	//			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
@@ -75,7 +75,7 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 			if( previousExpression != null ) {
 				blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplement >( new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( previousExpression ) ) );
 			}
-			blank.addFillIn( new org.alice.ide.cascade.LogicalComplementFillIn() );
+			blank.addFillIn( new org.alice.ide.cascade.IncompleteLogicalComplementFillIn() );
 			blank.addSeparator();
 			if( blank.getParentFillIn() == null ) {
 				if( previousExpression != null ) {
@@ -88,12 +88,20 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 				blank.addFillIn( new org.alice.ide.cascade.IncompleteConditionalExpressionFillIn( operator ) );
 			}
 			blank.addSeparator();
-			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "relational { ==, !=, <, <=, >=, > }" ) {
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Real Number) { ==, !=, <, <=, >=, > }" ) {
 				@Override
 				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-					blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Boolean", Boolean.class ) );
-					blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Real Number", Number.class ) );
-					blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Integer", Integer.class ) );
+					for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
+						blank.addFillIn( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( Number.class, operator ) );
+					}
+				}
+			} );
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (Integer) { ==, !=, <, <=, >=, > }" ) {
+				@Override
+				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+					for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.values() ) {
+						blank.addFillIn( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( Integer.class, operator ) );
+					}
 				}
 			} );
 			blank.addSeparator();

@@ -25,11 +25,11 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodInvocationFillIn extends edu.cmu.cs.dennisc.cascade.FillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
+public class IncompleteMethodInvocationFillIn extends IncompleteExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > {
 	private edu.cmu.cs.dennisc.alice.ast.Expression expression;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractMethod method;
 //	private String description;
-	public MethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	public IncompleteMethodInvocationFillIn( edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		assert expression != null;
 		assert method != null;
 		this.expression = expression;
@@ -48,9 +48,8 @@ public class MethodInvocationFillIn extends edu.cmu.cs.dennisc.cascade.FillIn< e
 		}
 	}
 	@Override
-	protected javax.swing.JComponent createMenuProxy() {
-		edu.cmu.cs.dennisc.alice.ast.MethodInvocation incompleteMethodInvocation = org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.expression, this.method );
-		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( incompleteMethodInvocation );
+	protected edu.cmu.cs.dennisc.alice.ast.MethodInvocation createIncomplete() {
+		return org.alice.ide.ast.NodeUtilities.createIncompleteMethodInvocation( this.expression, this.method );
 	}
 	
 	@Override

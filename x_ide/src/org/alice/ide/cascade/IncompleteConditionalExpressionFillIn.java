@@ -34,7 +34,7 @@ public class IncompleteConditionalExpressionFillIn extends IncompleteInfixExpres
 		return org.alice.ide.ast.NodeUtilities.createIncompleteConditionalInfixExpression( operator );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right ) {
+	protected edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression createValue( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator, edu.cmu.cs.dennisc.alice.ast.Expression right, edu.cmu.cs.dennisc.alice.ast.AbstractType leftOperandType, edu.cmu.cs.dennisc.alice.ast.AbstractType rightOperandType ) {
 		return new edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression( left, operator, right );
 	}
 	
