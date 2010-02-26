@@ -108,13 +108,10 @@ public class InstanceInAlice {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append( InstanceInAlice.class.getName() );
-		sb.append( "[type=" );
-		sb.append( m_type );
-		sb.append( ", instanceInJava=" );
-		sb.append( m_instanceInJava );
-		sb.append( " ]" );
-		return sb.toString();
+		if( m_instanceInJava != null ) {
+			return m_instanceInJava.toString();
+		} else {
+			return null;
+		}
 	}
 }

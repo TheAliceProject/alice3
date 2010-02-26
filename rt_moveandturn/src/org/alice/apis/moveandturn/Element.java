@@ -52,7 +52,12 @@ public class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyO
 	}
 
 	@Override
-	public String toString() {
-		return getClass().getName() + "[name=\"" + getName() + "\"]";
+	public final String toString() {
+		StringBuffer sb = new StringBuffer();
+//		sb.append( edu.cmu.cs.dennisc.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
+//		sb.append( "[name=\"" );
+		sb.append( this.getName() );
+//		sb.append(  "\"]" );
+		return sb.toString();
 	}
 }
