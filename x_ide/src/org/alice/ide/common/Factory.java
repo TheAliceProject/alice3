@@ -45,7 +45,7 @@ public abstract class Factory {
 		return new org.alice.ide.common.GetsPane( isTowardLeading );
 	}
 	protected java.awt.Component createTextComponent( String text ) { 
-		return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text );
+		return edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( text );
 	}
 	public abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType );
 	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane ) {
@@ -72,7 +72,7 @@ public abstract class Factory {
 			} else if( "constant".equals( propertyName ) ) {
 				rv = this.createConstantDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "TODO: handle underscore count 2: " + propertyName );
+				rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "TODO: handle underscore count 2: " + propertyName );
 			}
 		} else if( underscoreCount == 1 ) {
 			if( "variable".equals( propertyName ) ) {
@@ -80,7 +80,7 @@ public abstract class Factory {
 			} else if( "constant".equals( propertyName ) ) {
 				rv = new ConstantPane( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "TODO: handle underscore count 1: " + propertyName );
+				rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "TODO: handle underscore count 1: " + propertyName );
 			}
 		} else {
 			rv = null;
@@ -131,7 +131,7 @@ public abstract class Factory {
 		return this.createGetsComponent( getsChunk.isTowardLeading() );
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( textChunk.getText() );
+		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( textChunk.getText() );
 		return rv;
 	}	
 	protected java.awt.Component createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
@@ -159,7 +159,7 @@ public abstract class Factory {
 //		} else if( owner instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression && methodName.equals( "getResourceName" ) ) {
 //			edu.cmu.cs.dennisc.alice.ast.ResourceExpression resourceExpression = (edu.cmu.cs.dennisc.alice.ast.ResourceExpression)owner;
 //			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
-//			rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "resource " + resource.getName() );
+//			rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "resource " + resource.getName() );
 		} else {
 			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
 			Object o = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
@@ -174,7 +174,7 @@ public abstract class Factory {
 				s = null;
 			}
 			//s = "<html><h1>" + s + "</h1></html>";
-			rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( s );
+			rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( s );
 		}
 		return rv;
 	}
@@ -189,7 +189,7 @@ public abstract class Factory {
 		} else if( chunk instanceof org.alice.ide.i18n.GetsChunk ) {
 			return createComponent( (org.alice.ide.i18n.GetsChunk)chunk, owner );
 		} else {
-			return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "unhandled: " + chunk.toString() );
+			return edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "unhandled: " + chunk.toString() );
 		}
 	}
 	protected int getPixelsPerIndent() {
@@ -281,8 +281,8 @@ public abstract class Factory {
 				rv = createComponent( page, owner );
 //			}
 		} else {
-			//rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "todo: handle null" );
-			rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( org.alice.ide.IDE.getSingleton().getTextForNull() );
+			//rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "todo: handle null" );
+			rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( org.alice.ide.IDE.getSingleton().getTextForNull() );
 		}
 		return rv;
 	}
@@ -362,8 +362,8 @@ public abstract class Factory {
 				if( component instanceof java.awt.Container ) {
 					java.awt.Container container = (java.awt.Container)component;
 					for( java.awt.Component child : container.getComponents() ) {
-						if( child instanceof edu.cmu.cs.dennisc.zoot.ZLabel ) {
-							edu.cmu.cs.dennisc.zoot.ZLabel label = (edu.cmu.cs.dennisc.zoot.ZLabel)child;
+						if( child instanceof javax.swing.JLabel ) {
+							javax.swing.JLabel label = (javax.swing.JLabel)child;
 							String text = label.getText();
 							if( text.length() == 3 ) {
 								char c0 = text.charAt( 0 );
@@ -373,11 +373,11 @@ public abstract class Factory {
 									if( Character.isLetterOrDigit( c1 ) ) {
 										//pass
 									} else {
-										label.setFontToScaledFont( 1.75f );
+										edu.cmu.cs.dennisc.croquet.CroquetUtilities.setFontToScaledFont( label, 1.75f );
 									}
 								}
 							}
-							label.setFontToDerivedFont( edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD );
+							edu.cmu.cs.dennisc.croquet.CroquetUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD );
 							//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 						}
 					}

@@ -24,7 +24,7 @@ package org.alice.ide.warningpane;
 
 public class WarningPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	public WarningPane( boolean isSolicited ) {
-		edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
+		javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
 
 		StringBuffer sb = new StringBuffer();
 		sb.append( "<html><body>" );
@@ -52,7 +52,7 @@ public class WarningPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 			}
 			private java.awt.Component createLabel( String text ) {
-				edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text );
+				javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( text );
 				rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 				return rv;
 			}

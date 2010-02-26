@@ -61,7 +61,7 @@ import com.google.gdata.data.youtube.YouTubeNamespace;
 
 import edu.cmu.cs.dennisc.croquet.swing.Pane;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
-import edu.cmu.cs.dennisc.zoot.ZLabel;
+import javax.swing.JLabel;
 
 
 /**

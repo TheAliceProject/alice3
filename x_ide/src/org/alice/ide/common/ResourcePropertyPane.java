@@ -27,7 +27,7 @@ package org.alice.ide.common;
  */
 public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennisc.alice.ast.ResourceProperty> {
 	private static java.text.NumberFormat durationFormat = new java.text.DecimalFormat( "0.00" );
-	private edu.cmu.cs.dennisc.zoot.ZLabel label;
+	private javax.swing.JLabel label;
 	private org.alice.virtualmachine.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
 	public ResourcePropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ResourceProperty property ) {
@@ -69,7 +69,7 @@ public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennis
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire();
+			this.label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
 			this.add( this.label );
 		}
 		if( this.prevResource != null ) {

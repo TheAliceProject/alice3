@@ -35,10 +35,10 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineA
 		} else {
 			text = "initialize ";
 		}
-		this.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text ) );
+		this.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( text ) );
 		this.add( new TypeComponent( field.getValueType() ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
-		nameLabel.setFontToScaledFont( 1.5f );
+		edu.cmu.cs.dennisc.croquet.CroquetUtilities.setFontToScaledFont( nameLabel, 1.5f );
 		this.add( nameLabel );
 		this.add( new org.alice.ide.common.GetsPane( true ) );
 		

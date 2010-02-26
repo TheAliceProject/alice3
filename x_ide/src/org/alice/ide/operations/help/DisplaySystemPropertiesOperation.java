@@ -83,7 +83,7 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 					} else {
 						prefix = "";
 					}
-					rv[ i ] = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( prefix+"[" + i + "]:" ), edu.cmu.cs.dennisc.zoot.ZLabel.acquire( array[ i ] ) );
+					rv[ i ] = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( prefix+"[" + i + "]:" ), edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( array[ i ] ) );
 				}
 				return rv;
 			}
@@ -113,7 +113,7 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 			private java.awt.Component[] createComponentRowForSystemProperty( String name ) {
 				String value = System.getProperty( name );
 				assert value != null;
-				return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( name+":" ), edu.cmu.cs.dennisc.zoot.ZLabel.acquire( value ) );
+				return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( name+":" ), edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( value ) );
 			}
 			@Override
 			protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {

@@ -92,7 +92,7 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane valueTypeLine = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
 		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType ) );
 		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			valueTypeLine.add( edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " which extends ", edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.LIGHT ) );
+			valueTypeLine.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( " which extends ", edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.LIGHT ) );
 			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
 //			valueTypeLine.add( zoot.ZLabel.acquire( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
 		}

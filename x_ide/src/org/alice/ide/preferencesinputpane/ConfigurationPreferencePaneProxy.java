@@ -45,19 +45,19 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	}
 	
 	class ConfigurationPreview extends edu.cmu.cs.dennisc.croquet.swing.FormPane {
-		private edu.cmu.cs.dennisc.zoot.ZLabel isDefaultFieldNameGenerationDesiredLabel;
-		private edu.cmu.cs.dennisc.zoot.ZLabel isSyntaxNoiseDesiredLabel;
+		private javax.swing.JLabel isDefaultFieldNameGenerationDesiredLabel;
+		private javax.swing.JLabel isSyntaxNoiseDesiredLabel;
 		private void ensureLabelsExist() {
 			if( this.isDefaultFieldNameGenerationDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isDefaultFieldNameGenerationDesiredLabel = edu.cmu.cs.dennisc.zoot.ZLabel.acquire();
+				this.isDefaultFieldNameGenerationDesiredLabel = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
 				this.isDefaultFieldNameGenerationDesiredLabel.setForeground( java.awt.Color.GRAY );
 			}
 			if( this.isSyntaxNoiseDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isSyntaxNoiseDesiredLabel = edu.cmu.cs.dennisc.zoot.ZLabel.acquire();
+				this.isSyntaxNoiseDesiredLabel = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
 				this.isSyntaxNoiseDesiredLabel.setForeground( java.awt.Color.GRAY );
 			}
 		}
@@ -134,13 +134,13 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		this.preview = new ConfigurationPreview();
 		this.preview.updateValues( (org.alice.ide.preferences.programming.Configuration)activeConfigurationComboBox.getSelectedItem() );
 		this.pane = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane(
-				edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "active variant:" ),
+				edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "active variant:" ),
 				javax.swing.Box.createVerticalStrut( 4 ),  
 				northTopPane, 
 				javax.swing.Box.createVerticalStrut( 4 ),  
 				northBottomPane,
 				javax.swing.Box.createVerticalStrut( 32 ),
-				//edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "preview:" ),
+				//edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "preview:" ),
 				//javax.swing.Box.createVerticalStrut( 4 ),  
 				this.preview
 		);

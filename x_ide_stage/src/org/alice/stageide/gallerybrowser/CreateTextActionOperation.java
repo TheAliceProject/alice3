@@ -105,7 +105,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.
 	private FamilyList familyList;
 	private StyleList styleList;
 
-	private edu.cmu.cs.dennisc.zoot.ZLabel sample;
+	private javax.swing.JLabel sample;
 	
 	
 	public CreateTextPane() {
@@ -158,8 +158,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.
 		this.familyList = new FamilyList();
 		this.styleList = new StyleList();
 	
-		this.sample = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "AaBbYyZz" );
-		this.sample.setFontToScaledFont( 1.2f );
+		this.sample = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabelWithScaledFont( "AaBbYyZz", 1.2f );
 		this.updateSample();
 		
 		class ListSelectionAdapter implements javax.swing.event.ListSelectionListener {
@@ -202,7 +201,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.
 	}
 	private static java.awt.Component createLabel( String text ) {
 		//javax.swing.JLabel rv = new javax.swing.JLabel( text );
-		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( text );
+		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( text );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.setOpaque( false );
@@ -213,7 +212,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "text:" ), this.textVC, null ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "instance:" ), this.instanceNameVC, this.constrainInstanceNameToTextVC ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 24 ), null, null ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "letter height:" ), this.heightTextField, edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "(meters)" ) ) );
+		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "letter height:" ), this.heightTextField, edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "(meters)" ) ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 4 ), null, null ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "family:" ), this.familyList, null ) );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "style:" ), this.styleList, null ) );
@@ -227,12 +226,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.
 		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familyList.getFamilyAttribute();
 		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleList.getWeightAttribute();
 		org.alice.apis.moveandturn.font.PostureAttribute postureAttribute = this.styleList.getPostureAttribute();
-		
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		map.put( familyAttribute.getKey(), familyAttribute.getValue() );
-		map.put( weightAttribute.getKey(), weightAttribute.getValue() );
-		map.put( postureAttribute.getKey(), postureAttribute.getValue() );
-		this.sample.setFontToDerivedFont( map );
+		edu.cmu.cs.dennisc.croquet.CroquetUtilities.setFontToDerivedFont( this.sample, familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
 	}
 	@Override
 	public boolean isOKButtonValid() {

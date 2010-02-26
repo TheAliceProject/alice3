@@ -26,8 +26,8 @@ package org.alice.ide.preview;
  * @author Dennis Cosgrove
  */
 public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.zoot.ZInputPane< E > {
-//	protected static edu.cmu.cs.dennisc.zoot.ZLabel createLabel( String s ) {
-//		edu.cmu.cs.dennisc.zoot.ZLabel rv = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( s );
+//	protected static javax.swing.JLabel createLabel( String s ) {
+//		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( s );
 //		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 //		return rv;
 //	}

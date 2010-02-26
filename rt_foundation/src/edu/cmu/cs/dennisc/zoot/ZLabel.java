@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZLabel extends javax.swing.JLabel implements edu.cmu.cs.dennisc.pattern.Reusable {
+/*package-private*/ class ZLabel extends javax.swing.JLabel implements edu.cmu.cs.dennisc.pattern.Reusable {
 //	private static edu.cmu.cs.dennisc.pattern.AbstractPool< ZLabel > pool = new edu.cmu.cs.dennisc.pattern.AbstractPool< ZLabel >() {
 //		@Override
 //		protected zoot.ZLabel createInstance() {

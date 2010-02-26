@@ -27,7 +27,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	private UbiquitousStatementImplementor implementor;
-	private edu.cmu.cs.dennisc.zoot.ZLabel label;
+	private javax.swing.JLabel label;
 	public CascadingUbiquitousStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
 		super( cls );
 		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
@@ -54,7 +54,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 			//pass
 		} else {
 			//this.label = zoot.ZLabel.acquire( "<html><body>" + this.getLabelText() + "</body></html>" );
-			this.label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( this.getLabelText() );
+			this.label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( this.getLabelText() );
 			//this.label = zoot.ZLabel.acquire( "<html><body>\u2334</body></html>" );
 			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
 				this.label.setForeground( getIDE().getCommentForegroundColor() );

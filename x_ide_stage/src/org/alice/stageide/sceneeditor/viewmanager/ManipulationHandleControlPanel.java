@@ -32,10 +32,6 @@ import javax.swing.JPanel;
 
 import org.alice.interact.AbstractDragAdapter;
 
-import edu.cmu.cs.dennisc.zoot.ZLabel;
-import edu.cmu.cs.dennisc.zoot.font.ZTextWeight;
-
-
 /**
  * @author David Culyba
  */
@@ -50,8 +46,7 @@ public class ManipulationHandleControlPanel extends JPanel {
 		this.handleSelectionOperation = new ManipulationHandleSelectionOperation(dragAdapter);
 		this.setOpaque( false );
 		this.setLayout( new BorderLayout() );
-		ZLabel title = ZLabel.acquire( "Handle Style", ZTextWeight.BOLD);
-		title.setFontToScaledFont( 1.5f );
+		javax.swing.JLabel title = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabelWithScaledFont( "Handle Style", 1.5f, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD);
 		this.add( title, BorderLayout.NORTH );
 		this.add(edu.cmu.cs.dennisc.zoot.ZManager.createRadioButtons( this.handleSelectionOperation ), BorderLayout.CENTER);
 		this.setBorder( BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );

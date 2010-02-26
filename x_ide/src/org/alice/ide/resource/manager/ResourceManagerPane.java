@@ -265,7 +265,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		@Override
 		protected java.util.List< java.awt.Component[] > createComponentRows() {
 			java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-			edu.cmu.cs.dennisc.zoot.ZLabel label = edu.cmu.cs.dennisc.zoot.ZLabel.acquire( "preview:" );
+			javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "preview:" );
 			rv.add( new java.awt.Component[] { label, this.createPreviewComponent() } );
 			return rv;
 		}

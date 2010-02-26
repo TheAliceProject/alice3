@@ -107,16 +107,4 @@ public abstract class AbstractOperation implements Operation {
 			this.components.remove( component );
 		}
 	}
-	
-	//todo: make abstract
-	protected StringBuffer updateRepr( StringBuffer rv, java.util.Locale locale ) { 
-		rv.append( this.getClass().getSimpleName() );
-		return rv;
-	}
-	
-	public final String getRepr( java.util.Locale locale ) {
-		StringBuffer sb = new StringBuffer();
-		updateRepr( sb, locale );
-		return sb.toString();
-	}
 }

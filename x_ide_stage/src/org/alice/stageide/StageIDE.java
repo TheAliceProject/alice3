@@ -159,7 +159,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
 		if( icon != null ) {
-			return edu.cmu.cs.dennisc.zoot.ZLabel.acquire( icon );
+			return edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( icon );
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
@@ -210,7 +210,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
 						return new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( 
 								factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ),
-								edu.cmu.cs.dennisc.zoot.ZLabel.acquire( " revolutions" )
+								edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( " revolutions" )
 						);
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
 						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );

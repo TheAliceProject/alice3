@@ -33,6 +33,4 @@ public interface Operation {
 	public void setToolTipText( String toolTipText );
 	public void addComponent( javax.swing.JComponent component );
 	public void removeComponent( javax.swing.JComponent component );
-	
-	public String getRepr( java.util.Locale locale );
 }
