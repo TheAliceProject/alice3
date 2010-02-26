@@ -2220,4 +2220,18 @@ public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
 			return null;
 		}
 	}
+
+	private java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > > nameClsPairsForRelationalFillIns = null;
+	public java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > > updateNameClsPairsForRelationalFillIns( java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > > rv ) {
+		return rv;
+	}
+	public Iterable< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > > getNameClsPairsForRelationalFillIns() {
+		if( this.nameClsPairsForRelationalFillIns != null ) {
+			//pass
+		} else {
+			this.nameClsPairsForRelationalFillIns = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.Tuple2<String,Class<?>> >();
+			this.updateNameClsPairsForRelationalFillIns( this.nameClsPairsForRelationalFillIns );
+		}
+		return this.nameClsPairsForRelationalFillIns;
+	}
 }

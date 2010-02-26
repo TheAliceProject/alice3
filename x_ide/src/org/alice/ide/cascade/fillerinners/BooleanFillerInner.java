@@ -36,7 +36,8 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.OR, 	
 		};
 		//todo: relational
-		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getPreviousExpression();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = ide.getPreviousExpression();
 		final boolean isTop = blank.getParentFillIn() == null;
 		if( isTop ) {
 			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
@@ -104,6 +105,21 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 					}
 				}
 			} );
+			
+			final edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator[] TRIMMED_RELATIONAL_OPERATORS = {
+					edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.EQUALS,
+					edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator.NOT_EQUALS,
+			};
+			for( final edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > tuple : ide.getNameClsPairsForRelationalFillIns() ) {
+				blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Relational (" + tuple.getA() + ") { ==, != }" ) {
+					@Override
+					protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+						for( edu.cmu.cs.dennisc.alice.ast.RelationalInfixExpression.Operator operator : TRIMMED_RELATIONAL_OPERATORS ) {
+							blank.addFillIn( new org.alice.ide.cascade.IncompleteRelationalExpressionFillIn( tuple.getB(), operator ) );
+						}
+					}
+				} );
+			}
 			blank.addSeparator();
 		}
 	}
