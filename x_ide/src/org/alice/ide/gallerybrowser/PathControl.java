@@ -189,15 +189,14 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineA
 			}
 		}
 
-		javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+		java.util.List< edu.cmu.cs.dennisc.zoot.ActionOperation > operations = new java.util.LinkedList<edu.cmu.cs.dennisc.zoot.ActionOperation>();
 		for (java.io.File file : packages) {
-			SelectFileActionOperation operation = new SelectFileActionOperation(file);
-			popupMenu.add(operation.getActionForConfiguringSwing());
+			operations.add(new SelectFileActionOperation(file));
 		}
 		for (java.io.File file : classes) {
-			SelectFileActionOperation operation = new SelectFileActionOperation(file);
-			popupMenu.add(operation.getActionForConfiguringSwing());
+			operations.add(new SelectFileActionOperation(file));
 		}
+		javax.swing.JPopupMenu popupMenu = edu.cmu.cs.dennisc.zoot.ZManager.createPopupMenu( operations );
 		edu.cmu.cs.dennisc.swing.PopupMenuUtilities.showModal(popupMenu, invoker, 0, invoker.getHeight());
 	}
 }
