@@ -556,7 +556,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	private static final int THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH*3/4;
 	private edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
 	@Override
-	protected java.awt.image.BufferedImage createThumbnail() throws java.lang.Throwable {
+	protected java.awt.image.BufferedImage createThumbnail() throws Throwable {
 		if( offscreenLookingGlass != null ) {
 			//pass
 		} else {
@@ -586,5 +586,12 @@ public class StageIDE extends org.alice.ide.IDE {
 	@Override
 	protected org.alice.ide.openprojectpane.TabContentPane createTemplatesPane() {
 		return new org.alice.stageide.openprojectpane.templates.TemplatesTabContentPane();
+	}
+	
+	@Override
+	public java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >>> updateNameClsPairsForRelationalFillIns( java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >>> rv ) {
+		super.updateNameClsPairsForRelationalFillIns( rv );
+		//rv.add( new edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > >( "Key", org.alice.apis.moveandturn.Key.class ) );
+		return rv;
 	}
 }
