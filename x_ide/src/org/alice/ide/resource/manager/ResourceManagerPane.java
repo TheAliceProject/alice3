@@ -569,7 +569,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		this.replaceResourceOperation.setEnabled( isSelected );
 		this.replaceResourceOperation.setToolTipText( renameAndReplaceToolTipText );
 
-		this.removeResourceOperation.setEnabled( isReferenced );
+		this.removeResourceOperation.setEnabled( isReferenced==false );
 		this.removeResourceOperation.setToolTipText( removeToolTipText );
 	}
 
