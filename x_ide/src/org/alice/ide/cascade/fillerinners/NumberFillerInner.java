@@ -62,6 +62,18 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 		//this.addExpressionFillIn( blank, 100.0 );
 		blank.addSeparator();
 		if( isTop ) {
+//			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
+//			@Override
+//			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+//				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class );
+//				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "random" );
+//			}
+//		} );
+			String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
+			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = org.alice.ide.ast.NodeUtilities.createMethodInvocation( RANDOM_UTILITIES_TYPE_EXPRESSION, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 ) );
+			blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
+			addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, NEXT_DOUBLE_IN_RANGE_METHOD_NAME, java.lang.Number.class, java.lang.Number.class );
+			blank.addSeparator();
 			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Math" ) {
 				@Override
 				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
@@ -122,14 +134,6 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 							addNodeChildForField( blank, MATH_TYPE_EXPRESSION, java.lang.Double.TYPE, "E" );
 						}
 					} );
-				}
-			} );
-			blank.addSeparator();
-			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
-				@Override
-				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-					addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class );
-					addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "random" );
 				}
 			} );
 		}

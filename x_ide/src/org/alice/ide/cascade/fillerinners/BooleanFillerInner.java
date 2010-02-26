@@ -37,7 +37,8 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		};
 		//todo: relational
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getPreviousExpression();
-		if( blank.getParentFillIn() == null ) {
+		final boolean isTop = blank.getParentFillIn() == null;
+		if( isTop ) {
 			if( previousExpression instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression ) {
 				edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression previousConditionalInfixExpression = (edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression)previousExpression;
 				edu.cmu.cs.dennisc.alice.ast.Expression leftOperand = previousConditionalInfixExpression.leftOperand.getValue();
@@ -61,39 +62,41 @@ public class BooleanFillerInner extends ExpressionFillerInner {
 		this.addExpressionFillIn( blank, true );
 		this.addExpressionFillIn( blank, false );
 		blank.addSeparator();
-		if( blank.getParentFillIn() == null ) {
+			if( isTop ) {
+	//			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
+	//			@Override
+	//			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+	//				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextBoolean" );
+	//			}
+	//		} );
+			addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextBoolean" );
+			
+			blank.addSeparator();
 			if( previousExpression != null ) {
 				blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.LogicalComplement >( new edu.cmu.cs.dennisc.alice.ast.LogicalComplement( previousExpression ) ) );
 			}
-		}
-		blank.addFillIn( new org.alice.ide.cascade.LogicalComplementFillIn() );
-		blank.addSeparator();
-		if( blank.getParentFillIn() == null ) {
-			if( previousExpression != null ) {
-				for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : CONDITIONAL_OPERATORS ) {
-					blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedConditionalInfixExpressionFillIn( previousExpression, operator ) );
+			blank.addFillIn( new org.alice.ide.cascade.LogicalComplementFillIn() );
+			blank.addSeparator();
+			if( blank.getParentFillIn() == null ) {
+				if( previousExpression != null ) {
+					for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : CONDITIONAL_OPERATORS ) {
+						blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedConditionalInfixExpressionFillIn( previousExpression, operator ) );
+					}
 				}
 			}
-		}
-		for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
-			blank.addFillIn( new org.alice.ide.cascade.IncompleteConditionalExpressionFillIn( operator ) );
-		}
-		blank.addSeparator();
-		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "relational { ==, !=, <, <=, >=, > }" ) {
-			@Override
-			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Boolean", Boolean.class ) );
-				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Real Number", Number.class ) );
-				blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Integer", Integer.class ) );
+			for( edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator operator : edu.cmu.cs.dennisc.alice.ast.ConditionalInfixExpression.Operator.values() ) {
+				blank.addFillIn( new org.alice.ide.cascade.IncompleteConditionalExpressionFillIn( operator ) );
 			}
-		} );
-		blank.addSeparator();
-		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
-			@Override
-			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextBoolean" );
-			}
-		} );
-		blank.addSeparator();
+			blank.addSeparator();
+			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "relational { ==, !=, <, <=, >=, > }" ) {
+				@Override
+				protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
+					blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Boolean", Boolean.class ) );
+					blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Real Number", Number.class ) );
+					blank.addFillIn( new org.alice.ide.cascade.RelationalExpressionFillIn( "Integer", Integer.class ) );
+				}
+			} );
+			blank.addSeparator();
+		}
 	}
 }

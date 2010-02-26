@@ -26,7 +26,8 @@ package org.alice.ide.cascade.fillerinners;
  * @author Dennis Cosgrove
  */
 public abstract class ExpressionFillerInner {
-	protected static final edu.cmu.cs.dennisc.alice.ast.TypeExpression RANDOM_UTILITIES_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( org.alice.random.RandomUtilities.class );
+	protected static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava RANDOM_UTILITIES_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.random.RandomUtilities.class );
+	protected static final edu.cmu.cs.dennisc.alice.ast.TypeExpression RANDOM_UTILITIES_TYPE_EXPRESSION = org.alice.ide.ast.NodeUtilities.createTypeExpression( RANDOM_UTILITIES_TYPE );
 	protected static void addNodeChildForMethod( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.TypeExpression typeExpression, String methodName, Class... parameterClses ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = typeExpression.value.getValue();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = type.getDeclaredMethod( methodName, parameterClses );
