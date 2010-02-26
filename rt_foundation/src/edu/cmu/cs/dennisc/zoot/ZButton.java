@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZButton extends javax.swing.JButton {
+/*package-private*/ class ZButton extends javax.swing.JButton {
 	private ActionOperation actionOperation;
 	public ZButton( ActionOperation actionOperation ) {
 		this.actionOperation = actionOperation;
