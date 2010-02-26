@@ -30,14 +30,14 @@ public abstract class TabContentPane extends edu.cmu.cs.dennisc.croquet.swing.Pa
 	//	protected boolean isTabEnabled() {
 	//		return this.isEnabled();
 	//	}
-	private edu.cmu.cs.dennisc.zoot.ZInputPane< java.net.URI > inputPane;
+	private edu.cmu.cs.dennisc.croquet.KInputPane< java.net.URI > inputPane;
 	public TabContentPane() {
 		this.setBackground( new java.awt.Color( 191, 191, 255 ) );
 		this.setOpaque( true );
 		final int INSET = 8;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-	public void setInputPane( edu.cmu.cs.dennisc.zoot.ZInputPane< java.net.URI > inputPane ) {
+	public void setInputPane( edu.cmu.cs.dennisc.croquet.KInputPane< java.net.URI > inputPane ) {
 		this.inputPane = inputPane;
 	}
 	public abstract java.net.URI getSelectedURI();

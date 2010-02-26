@@ -21,20 +21,24 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.croquet;
+
+import edu.cmu.cs.dennisc.zoot.ActionContext;
+import edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation;
+import edu.cmu.cs.dennisc.zoot.InputValidator;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ZInputPane<E> extends javax.swing.JPanel {
+public abstract class KInputPane<E> extends javax.swing.JPanel {
 	private java.util.List< InputValidator > m_validators = new java.util.LinkedList< InputValidator >();
-	private ZButton m_okButton;
+	private javax.swing.JButton m_okButton;
 	
 	private javax.swing.JDialog m_dialog;
 
-	public ZInputPane() {
+	public KInputPane() {
 	}
-	public ZInputPane( InputValidator... validators ) {
+	public KInputPane( InputValidator... validators ) {
 		for( InputValidator validator : validators ) {
 			m_validators.add( validator );
 		}
@@ -43,10 +47,10 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 	public void updateSizeIfNecessary() {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				for( java.awt.Component component : ZInputPane.this.getComponents() ) {
+				for( java.awt.Component component : KInputPane.this.getComponents() ) {
 					component.invalidate();
 				}
-				ZInputPane.this.revalidate();
+				KInputPane.this.revalidate();
 				if( m_dialog != null ) {
 					java.awt.Dimension actualSize = m_dialog.getSize();
 					java.awt.Dimension preferredSize = m_dialog.getPreferredSize();
@@ -100,7 +104,7 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 		}
 	}
 
-	public void setOKButton( ZButton okButton ) {
+	public void setOKButton( javax.swing.JButton okButton ) {
 		m_okButton = okButton;
 		updateOKButton();
 	}
@@ -165,7 +169,7 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 			}
 			@Override
 			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-				ZInputPane.this.setOK( true );
+				KInputPane.this.setOK( true );
 				dialog.setVisible( false );
 			}
 		}
@@ -176,18 +180,18 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 			}
 			@Override
 			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-				ZInputPane.this.setOK( false );
+				KInputPane.this.setOK( false );
 				dialog.setVisible( false );
 			}
 		}
-		ZButton okButton = new ZButton( new OKOperation() );
+		javax.swing.JButton okButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new OKOperation() );
 
 		javax.swing.JPanel panel = new javax.swing.JPanel();
 		panel.setBackground( this.getBackground() );
 		panel.add( okButton );
 
 		if( this.isCancelDesired() ) {
-			ZButton cancelButton = new ZButton( new CancelOperation() );
+			javax.swing.JButton cancelButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new CancelOperation() );
 			panel.add( cancelButton );
 		} else {
 			dialog.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );
@@ -203,7 +207,7 @@ public abstract class ZInputPane<E> extends javax.swing.JPanel {
 				public void windowOpened( java.awt.event.WindowEvent e ) {
 				}
 				public void windowClosing( java.awt.event.WindowEvent e ) {
-					if( ZInputPane.this.isDisposeDesired( e ) ) {
+					if( KInputPane.this.isDisposeDesired( e ) ) {
 						e.getWindow().dispose();
 					}
 				}

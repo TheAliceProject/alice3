@@ -27,7 +27,7 @@ package org.alice.ide.choosers;
  */
 public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.cs.dennisc.zoot.InputValidator {
 	private static final String[] LABEL_TEXTS = { "value:" };
-	private edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane;
+	private edu.cmu.cs.dennisc.croquet.KInputPane< ? > inputPane;
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -39,10 +39,10 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 			return null;
 		}
 	}
-	public edu.cmu.cs.dennisc.zoot.ZInputPane< ? > getInputPane() {
+	public edu.cmu.cs.dennisc.croquet.KInputPane< ? > getInputPane() {
 		return this.inputPane;
 	}
-	public void setInputPane( edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane ) {
+	public void setInputPane( edu.cmu.cs.dennisc.croquet.KInputPane< ? > inputPane ) {
 		this.inputPane = inputPane;
 		this.inputPane.addOKButtonValidator( this );
 	}

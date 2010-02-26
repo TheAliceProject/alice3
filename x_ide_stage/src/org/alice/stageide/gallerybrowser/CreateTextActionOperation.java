@@ -25,7 +25,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.moveandturn.Text > {
+class CreateTextPane extends edu.cmu.cs.dennisc.croquet.KInputPane< org.alice.apis.moveandturn.Text > {
 	class FamilyList extends javax.swing.JList {
 		public FamilyList() {
 			this.setListData( new String[] { "Serif", "SansSerif" } );
@@ -113,7 +113,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 		this.setBackground( org.alice.ide.IDE.getSingleton().getFieldColor() );
 		this.setOpaque( true );
-		class TextField extends edu.cmu.cs.dennisc.zoot.ZSuggestiveTextField {
+		class TextField extends edu.cmu.cs.dennisc.croquet.KSuggestiveTextField {
 			public TextField( String text, String textForBlankCondition ) {
 				super( text, textForBlankCondition );
 			}
@@ -226,7 +226,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.
 		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familyList.getFamilyAttribute();
 		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleList.getWeightAttribute();
 		org.alice.apis.moveandturn.font.PostureAttribute postureAttribute = this.styleList.getPostureAttribute();
-		edu.cmu.cs.dennisc.croquet.CroquetUtilities.setFontToDerivedFont( this.sample, familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
+		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToDerivedFont( this.sample, familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
 	}
 	@Override
 	public boolean isOKButtonValid() {

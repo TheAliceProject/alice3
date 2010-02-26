@@ -26,7 +26,7 @@ package org.alice.ide.choosers;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E> {
-	private edu.cmu.cs.dennisc.zoot.ZSuggestiveTextField textField = new edu.cmu.cs.dennisc.zoot.ZSuggestiveTextField( "", "" ) {
+	private edu.cmu.cs.dennisc.croquet.KSuggestiveTextField textField = new edu.cmu.cs.dennisc.croquet.KSuggestiveTextField( "", "" ) {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
 			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
@@ -56,7 +56,7 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 		this.textField.selectAll();
 	}
 	@Override
-	public void setInputPane( final edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane ) {
+	public void setInputPane( final edu.cmu.cs.dennisc.croquet.KInputPane< ? > inputPane ) {
 		super.setInputPane( inputPane );
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {

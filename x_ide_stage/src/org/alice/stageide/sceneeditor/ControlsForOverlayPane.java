@@ -167,7 +167,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
 	private java.util.List< FieldTile > fieldTiles = new java.util.LinkedList< FieldTile >();
 	private IsExpandedCheckBox isSceneEditorExpandedCheckBox;
-	private edu.cmu.cs.dennisc.zoot.ZButton runButton;
+	private javax.swing.JButton runButton;
 	private org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget;
 
 	public ControlsForOverlayPane( org.alice.interact.AbstractDragAdapter dragAdapter ) {
@@ -178,7 +178,7 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 
 		this.cameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.dragAdapter );
 		this.isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
-		this.runButton = new edu.cmu.cs.dennisc.zoot.ZButton( ide.getRunOperation() );
+		this.runButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( ide.getRunOperation() );
 		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 		this.setNorthEastComponent( this.runButton );
 		this.setSouthComponent( this.cameraNavigatorWidget );

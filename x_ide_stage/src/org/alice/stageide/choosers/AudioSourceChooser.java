@@ -98,7 +98,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			super.firePropertyChanged( e );
 			AudioSourceChooser.this.startTimeSlider.setTime( 0.0 );
 			AudioSourceChooser.this.stopTimeSlider.setTime( Double.NaN );
-			edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane = AudioSourceChooser.this.getInputPane();
+			edu.cmu.cs.dennisc.croquet.KInputPane< ? > inputPane = AudioSourceChooser.this.getInputPane();
 			if( inputPane != null ) {
 				inputPane.updateOKButton();
 			}
@@ -125,7 +125,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		}
 	};
 	private TestOperation testOperation = new TestOperation();
-	private edu.cmu.cs.dennisc.zoot.ZButton test = new edu.cmu.cs.dennisc.zoot.ZButton( testOperation );
+	private javax.swing.JButton test = edu.cmu.cs.dennisc.zoot.ZManager.createButton( testOperation );
 
 	private static edu.cmu.cs.dennisc.alice.ast.Expression getArgumentExpressionAt( edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation, int index ) {
 		assert instanceCreation.arguments.size() >= index;

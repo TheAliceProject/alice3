@@ -65,7 +65,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		this.nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
-		edu.cmu.cs.dennisc.croquet.CroquetUtilities.setFontToScaledFont( this.nameLabel, 2.0f );
+		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this.nameLabel, 2.0f );
 
 		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
 			//pass

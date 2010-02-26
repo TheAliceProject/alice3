@@ -39,8 +39,8 @@ public class ZButton extends javax.swing.JButton {
 	}
 	@Override
 	public void removeNotify() {
-		super.removeNotify();
 		this.actionOperation.removeComponent( this );
+		super.removeNotify();
 	}
 	protected ActionOperation getActionOperation() {
 		return this.actionOperation;

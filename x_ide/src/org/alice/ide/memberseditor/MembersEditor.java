@@ -147,7 +147,7 @@ class TabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 		}
 	}
 	private void addMembersTab( MembersTab membersTab ) {
-		edu.cmu.cs.dennisc.zoot.ZScrollPane scrollPane = new edu.cmu.cs.dennisc.zoot.ZScrollPane( membersTab );
+		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( membersTab );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBackground( membersTab.getBackground() );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );

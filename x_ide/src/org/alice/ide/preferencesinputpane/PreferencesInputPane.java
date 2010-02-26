@@ -36,7 +36,7 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.DefaultMutableTr
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Void> {
+public class PreferencesInputPane extends edu.cmu.cs.dennisc.croquet.KInputPane<Void> {
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private javax.swing.JTree tree = new javax.swing.JTree();
 	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.croquet.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane> {
@@ -85,7 +85,7 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane<Voi
 			@Override
 			protected void updateCenterComponent( edu.cmu.cs.dennisc.croquet.swing.PageAxisPane centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
 				super.updateCenterComponent( centerComponent, collectionOfPreferences );
-				centerComponent.add( new edu.cmu.cs.dennisc.zoot.ZButton( new ClearRecentProjectsOperation() ) );
+				centerComponent.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new ClearRecentProjectsOperation() ) );
 			}
 		};
 		CollectionOfPreferencesPane perspectivePreferencesPane = new CollectionOfPreferencesPane("Programming", org.alice.ide.preferences.ProgrammingPreferences.getSingleton()) {

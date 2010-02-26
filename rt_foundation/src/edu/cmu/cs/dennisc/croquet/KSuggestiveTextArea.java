@@ -20,15 +20,15 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ZSuggestiveTextArea extends javax.swing.JTextArea {
+public class KSuggestiveTextArea extends javax.swing.JTextArea {
 	private String textForBlankCondition;
 
-	public ZSuggestiveTextArea( String text, String textForBlankCondition ) {
+	public KSuggestiveTextArea( String text, String textForBlankCondition ) {
 		super( text );
 		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
 		this.textForBlankCondition = textForBlankCondition;

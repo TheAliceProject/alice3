@@ -39,7 +39,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
 		}
 	}
-	class DeclarationNameTextField extends edu.cmu.cs.dennisc.zoot.ZSuggestiveTextField {
+	class DeclarationNameTextField extends edu.cmu.cs.dennisc.croquet.KSuggestiveTextField {
 		public DeclarationNameTextField() {
 			super( "", "" );
 			this.setFont( this.getFont().deriveFont( 18.0f ) );

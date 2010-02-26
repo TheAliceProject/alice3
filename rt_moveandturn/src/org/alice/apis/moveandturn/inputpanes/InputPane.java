@@ -25,7 +25,7 @@ package org.alice.apis.moveandturn.inputpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputPane< E > extends edu.cmu.cs.dennisc.zoot.ZInputPane< E > {
+public abstract class InputPane< E > extends edu.cmu.cs.dennisc.croquet.KInputPane< E > {
 	private javax.swing.JLabel messageLabel;
 	public InputPane( String message ) {
 		this.messageLabel = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabelWithScaledFont( message, 1.5f );

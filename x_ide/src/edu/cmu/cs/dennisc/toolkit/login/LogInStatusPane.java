@@ -81,7 +81,7 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 
 	private edu.cmu.cs.dennisc.zoot.ZTextField textUsername = new edu.cmu.cs.dennisc.zoot.ZTextField();
 	private PasswordPane passwordPane = new PasswordPane();
-	private edu.cmu.cs.dennisc.zoot.ZButton logInButton = new edu.cmu.cs.dennisc.zoot.ZButton( new TestLogInOperation() );
+	private javax.swing.JButton logInButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new TestLogInOperation() );
 	private java.awt.Component createLabel( String text ) {
 		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( text );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
@@ -120,7 +120,7 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 32, 8, 32 ) );
 	}
 	
-	public edu.cmu.cs.dennisc.zoot.ZButton getLogInButton() {
+	public javax.swing.JButton getLogInButton() {
 		return this.logInButton;
 	}
 }
@@ -161,8 +161,8 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
 
 	private static final String OFF_KEY = "OFF_KEY";
 	private static final String ON_KEY = "ON_KEY";
-	private edu.cmu.cs.dennisc.zoot.ZButton logInButton = new edu.cmu.cs.dennisc.zoot.ZButton( new LogInOperation() );
-	private edu.cmu.cs.dennisc.zoot.ZButton logOutButton = new edu.cmu.cs.dennisc.zoot.ZButton( new LogOutOperation() );
+	private javax.swing.JButton logInButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new LogInOperation() );
+	private javax.swing.JButton logOutButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new LogOutOperation() );
 
 	class OffPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 		public OffPane() {

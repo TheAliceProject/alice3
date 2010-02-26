@@ -317,10 +317,10 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions;
 
-	private edu.cmu.cs.dennisc.zoot.ZButton addButton = new edu.cmu.cs.dennisc.zoot.ZButton( new AddItemOperation() );
-	private edu.cmu.cs.dennisc.zoot.ZButton removeButton = new edu.cmu.cs.dennisc.zoot.ZButton( new RemoveItemOperation() );
-	private edu.cmu.cs.dennisc.zoot.ZButton moveUpButton = new edu.cmu.cs.dennisc.zoot.ZButton( new MoveItemUpOperation() );
-	private edu.cmu.cs.dennisc.zoot.ZButton moveDownButton = new edu.cmu.cs.dennisc.zoot.ZButton( new MoveItemDownOperation() );
+	private javax.swing.JButton addButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new AddItemOperation() );
+	private javax.swing.JButton removeButton =edu.cmu.cs.dennisc.zoot.ZManager.createButton( new RemoveItemOperation() );
+	private javax.swing.JButton moveUpButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new MoveItemUpOperation() );
+	private javax.swing.JButton moveDownButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new MoveItemDownOperation() );
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 

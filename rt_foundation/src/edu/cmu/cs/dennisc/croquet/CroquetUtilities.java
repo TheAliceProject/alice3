@@ -47,62 +47,27 @@ public class CroquetUtilities {
 	}
 	public static javax.swing.JLabel createLabel( String text, java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
 		javax.swing.JLabel rv = createLabel( text );
-		CroquetUtilities.setFontToDerivedFont( rv, map );
+		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToDerivedFont( rv, map );
 		return rv;
 	}
 	public static javax.swing.JLabel createLabel( String text, java.awt.font.TextAttribute attribute, Object value ) {
 		javax.swing.JLabel rv = createLabel( text );
-		CroquetUtilities.setFontToDerivedFont( rv, attribute, value );
+		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToDerivedFont( rv, attribute, value );
 		return rv;
 	}
 	public static javax.swing.JLabel createLabel( String text, edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? >... textAttributes ) {
 		javax.swing.JLabel rv = createLabel( text );
-		CroquetUtilities.setFontToDerivedFont( rv, textAttributes );
+		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToDerivedFont( rv, textAttributes );
 		return rv;
 	}
 	public static javax.swing.JLabel createLabelWithScaledFont( String text, float scaleFactor ) {
 		javax.swing.JLabel rv = createLabel( text );
-		CroquetUtilities.setFontToScaledFont( rv, scaleFactor );
+		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( rv, scaleFactor );
 		return rv;
 	}
 	public static javax.swing.JLabel createLabelWithScaledFont( String text, float scaleFactor, edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? >... textAttributes ) {
 		javax.swing.JLabel rv = createLabel( text, textAttributes );
-		CroquetUtilities.setFontToScaledFont( rv, scaleFactor );
+		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( rv, scaleFactor );
 		return rv;
-	}
-	
-	public static void setFontToDerivedFont( java.awt.Component component, java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
-		java.awt.Font font = component.getFont();
-		component.setFont( font.deriveFont( map ) );
-	}
-	public static void setFontToDerivedFont( java.awt.Component component, java.awt.font.TextAttribute attribute, Object value ) {
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		map.put( attribute, value );
-		setFontToDerivedFont( component, map );
-	}
-	public static void setFontToDerivedFont( java.awt.Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB ) {
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		map.put( attributeA, valueA );
-		map.put( attributeB, valueB );
-		setFontToDerivedFont( component, map );
-	}
-	public static void setFontToDerivedFont( java.awt.Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC ) {
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		map.put( attributeA, valueA );
-		map.put( attributeB, valueB );
-		map.put( attributeC, valueC );
-		setFontToDerivedFont( component, map );
-	}
-	public static void setFontToDerivedFont( java.awt.Component component, edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? >... textAttributes ) {
-		java.awt.Font font = component.getFont();
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		for( edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? > textAttribute : textAttributes ) {
-			map.put( textAttribute.getKey(), textAttribute.getValue() );
-		}
-		component.setFont( font.deriveFont( map ) );
-	}
-	public static void setFontToScaledFont( java.awt.Component component, float scaleFactor ) {
-		java.awt.Font font = component.getFont();
-		component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
 	}
 }

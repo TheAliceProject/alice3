@@ -25,7 +25,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonEditorInputPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< org.alice.apis.stage.Person > {
+public class PersonEditorInputPane extends edu.cmu.cs.dennisc.croquet.KInputPane< org.alice.apis.stage.Person > {
 	private org.alice.stageide.personeditor.PersonEditor personEditor; 
 	public PersonEditorInputPane( org.alice.apis.stage.Person person ) {
 		this.personEditor = new org.alice.stageide.personeditor.PersonEditor( person );

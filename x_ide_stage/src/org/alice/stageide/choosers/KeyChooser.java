@@ -78,7 +78,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< org.alic
 		} else {
 			this.keyReceiver.setText( NULL_TEXT );
 		}
-		edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane = this.getInputPane();
+		edu.cmu.cs.dennisc.croquet.KInputPane< ? > inputPane = this.getInputPane();
 		if( inputPane != null ) {
 			inputPane.updateOKButton();
 		}

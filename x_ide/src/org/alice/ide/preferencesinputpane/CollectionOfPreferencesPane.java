@@ -94,9 +94,9 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.swin
 
 		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane buttonsPane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
 				javax.swing.Box.createHorizontalGlue(),
-				new edu.cmu.cs.dennisc.zoot.ZButton( this.restoreDefaultsActionOperation ),
+				edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.restoreDefaultsActionOperation ),
 				javax.swing.Box.createHorizontalStrut( 4 ),
-				new edu.cmu.cs.dennisc.zoot.ZButton( this.applyActionOperation )
+				edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.applyActionOperation )
 		);
 
 		javax.swing.JScrollPane scrollPane = wrapInScrollPane( centerComponent );

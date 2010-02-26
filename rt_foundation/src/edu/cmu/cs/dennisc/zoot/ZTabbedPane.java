@@ -73,7 +73,7 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 	}
 
 	public static void main( String[] args ) {
-		class MonthPane extends ZLabel {
+		class MonthPane extends javax.swing.JLabel {
 			MonthPane( String text ) {
 				this.setText( text );
 				this.setOpaque( true );
@@ -84,7 +84,7 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 					color = new java.awt.Color( 0xb4ccaf );
 				}
 				this.setBackground( color );
-				this.setFontToScaledFont( 10.0f );
+				edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this, 10.0f );
 			}
 		}
 

@@ -20,12 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class ZScrollPane extends javax.swing.JScrollPane {
+public class KScrollPane extends javax.swing.JScrollPane {
 	public enum VerticalScrollbarPolicy {
 		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
 		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
@@ -44,15 +44,15 @@ public class ZScrollPane extends javax.swing.JScrollPane {
 			this.internal = internal;
 		}
 	}
-	public ZScrollPane() {
+	public KScrollPane() {
 	}
-	public ZScrollPane( java.awt.Component view ) {
+	public KScrollPane( java.awt.Component view ) {
 		super( view );
 	}
-	public ZScrollPane( java.awt.Component view, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
+	public KScrollPane( java.awt.Component view, VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		super( view, verticalScrollbarPolicy.internal, horizontalScrollbarPolicy.internal );
 	}
-	public ZScrollPane( VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
+	public KScrollPane( VerticalScrollbarPolicy verticalScrollbarPolicy, HorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
 		super( verticalScrollbarPolicy.internal, horizontalScrollbarPolicy.internal );
 	}
 }

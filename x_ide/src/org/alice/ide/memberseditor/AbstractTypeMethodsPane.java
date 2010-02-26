@@ -62,7 +62,7 @@ abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 					edu.cmu.cs.dennisc.alice.ast.AbstractCode code = (edu.cmu.cs.dennisc.alice.ast.AbstractCode)member;
 					if( code.isDeclaredInAlice() ) {
 						edu.cmu.cs.dennisc.croquet.swing.LineAxisPane line = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
-						edu.cmu.cs.dennisc.zoot.ZButton editButton = new edu.cmu.cs.dennisc.zoot.ZButton( new org.alice.ide.operations.ast.FocusCodeOperation( code ) );
+						javax.swing.JButton editButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.FocusCodeOperation( code ) );
 						line.add( editButton );
 						line.add( component );
 						component = line;

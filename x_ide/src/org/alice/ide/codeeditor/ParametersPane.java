@@ -86,7 +86,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			if( method.isSignatureLocked.getValue() ) {
 				//pass
 			} else {
-				this.add( new edu.cmu.cs.dennisc.zoot.ZButton( new org.alice.ide.operations.ast.DeclareMethodParameterOperation( method ) ) );
+				this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareMethodParameterOperation( method ) ) );
 			}
 		}
 		if( getIDE().isJava() ) {

@@ -49,8 +49,8 @@ public class BrowserProgressDialog extends edu.cmu.cs.dennisc.progress.ProgressD
 		}
 		
 		javax.swing.JPanel pane = new javax.swing.JPanel();
-		pane.add(new edu.cmu.cs.dennisc.zoot.ZButton( new CopyToClipboardOperation() ));
-		pane.add(new edu.cmu.cs.dennisc.zoot.ZButton( new DismissOperation() ));
+		pane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton( new CopyToClipboardOperation() ));
+		pane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton( new DismissOperation() ));
 		contentPane.add(pane);
 	}
 

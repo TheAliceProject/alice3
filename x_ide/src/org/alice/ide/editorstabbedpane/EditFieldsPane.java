@@ -52,14 +52,14 @@ class FieldDeclarationsPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPan
 /**
 * @author Dennis Cosgrove
 */
-public class EditFieldsPane extends edu.cmu.cs.dennisc.zoot.ZInputPane< Boolean > {
+public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boolean > {
 	private FieldDeclarationsPane fieldDeclarationsPane;
 
 	//	private java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > list = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >();
 	public EditFieldsPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		this.setLayout( new java.awt.BorderLayout() );
 		this.fieldDeclarationsPane = new FieldDeclarationsPane( declaringType );
-		edu.cmu.cs.dennisc.zoot.ZButton addButton = new edu.cmu.cs.dennisc.zoot.ZButton( new org.alice.ide.operations.ast.DeclareFieldOperation( declaringType ) );
+		javax.swing.JButton addButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareFieldOperation( declaringType ) );
 
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( fieldDeclarationsPane );
 		scrollPane.setBorder( null );

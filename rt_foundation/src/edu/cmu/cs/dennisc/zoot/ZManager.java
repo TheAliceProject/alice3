@@ -452,4 +452,9 @@ public class ZManager {
 		operations.toArray( array );
 		return createPopupMenu( array );
 	}
+	
+	
+	public static javax.swing.JButton createButton( ActionOperation actionOperation ) {
+		return new ZButton(actionOperation);
+	}
 }

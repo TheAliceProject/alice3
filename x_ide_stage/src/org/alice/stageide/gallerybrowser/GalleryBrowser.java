@@ -31,11 +31,11 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	public GalleryBrowser(java.io.File thumbnailRoot, java.util.Map<String, String> map) {
 		this.map = map;
 		this.initialize(thumbnailRoot);
-		edu.cmu.cs.dennisc.zoot.ZButton createPersonButton = new edu.cmu.cs.dennisc.zoot.ZButton(new IndirectCreatePersonActionOperation());
-		edu.cmu.cs.dennisc.zoot.ZButton createTextButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateTextActionOperation());
-		edu.cmu.cs.dennisc.zoot.ZButton createBillboardButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateBillboardActionOperation());
-		edu.cmu.cs.dennisc.zoot.ZButton createMyInstanceButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateMyInstance());
-		edu.cmu.cs.dennisc.zoot.ZButton createTextbookInstanceButton = new edu.cmu.cs.dennisc.zoot.ZButton(new CreateTextbookInstance());
+		javax.swing.JButton createPersonButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new IndirectCreatePersonActionOperation());
+		javax.swing.JButton createTextButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new CreateTextActionOperation());
+		javax.swing.JButton createBillboardButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new CreateBillboardActionOperation());
+		javax.swing.JButton createMyInstanceButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new CreateMyInstance());
+		javax.swing.JButton createTextbookInstanceButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new CreateTextbookInstance());
 
 		java.io.InputStream is = GalleryBrowser.class.getResourceAsStream("images/create_person.png");
 		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
@@ -90,7 +90,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 
 		java.io.File thumbnailRoot = new java.io.File(org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails");
-		edu.cmu.cs.dennisc.zoot.ZFrame frame = new edu.cmu.cs.dennisc.zoot.ZFrame() {
+		edu.cmu.cs.dennisc.croquet.KFrame frame = new edu.cmu.cs.dennisc.croquet.KFrame() {
 			@Override
 			protected void handleWindowOpened(java.awt.event.WindowEvent e) {
 			}

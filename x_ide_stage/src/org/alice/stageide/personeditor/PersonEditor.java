@@ -85,7 +85,7 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 	}
 	
 	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.zoot.ZFrame frame = new edu.cmu.cs.dennisc.zoot.ZFrame() {
+		edu.cmu.cs.dennisc.croquet.KFrame frame = new edu.cmu.cs.dennisc.croquet.KFrame() {
 			@Override
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}

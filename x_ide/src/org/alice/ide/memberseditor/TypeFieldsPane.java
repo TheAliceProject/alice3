@@ -34,11 +34,11 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.ZButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new edu.cmu.cs.dennisc.zoot.ZButton( new org.alice.ide.operations.ast.DeclareFieldOperation( type ) );
+	protected javax.swing.JButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareFieldOperation( type ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected javax.swing.JButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return null;
 	}
 	@Override

@@ -134,7 +134,7 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 //		edu.cmu.cs.dennisc.croquet.swing.PageAxisPane pane = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane(
 //			formPane,
 //			javax.swing.Box.createVerticalStrut( 16 ),
-//			new edu.cmu.cs.dennisc.zoot.ZButton( new AllSystemPropertiesOperation() ),
+//			new javax.swing.JButton( new AllSystemPropertiesOperation() ),
 //			javax.swing.Box.createVerticalStrut( 8 )
 //		);
 		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), formPane, "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE ); 

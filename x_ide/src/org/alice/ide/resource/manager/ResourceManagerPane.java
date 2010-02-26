@@ -512,8 +512,8 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 
-		java.awt.Component pane = new edu.cmu.cs.dennisc.croquet.swing.SingleColumnPane( new edu.cmu.cs.dennisc.zoot.ZButton( this.addResourceOperation ), new edu.cmu.cs.dennisc.zoot.ZButton( this.removeResourceOperation ), javax.swing.Box
-				.createVerticalStrut( 8 ), new edu.cmu.cs.dennisc.zoot.ZButton( this.renameResourceOperation ), new edu.cmu.cs.dennisc.zoot.ZButton( this.replaceResourceOperation ) );
+		java.awt.Component pane = new edu.cmu.cs.dennisc.croquet.swing.SingleColumnPane( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.addResourceOperation ),edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.removeResourceOperation ), javax.swing.Box
+				.createVerticalStrut( 8 ), edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.renameResourceOperation ), edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.replaceResourceOperation ) );
 		this.add( new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane( pane, javax.swing.Box.createGlue() ), java.awt.BorderLayout.EAST );
 		this.handleSelection();
 	}

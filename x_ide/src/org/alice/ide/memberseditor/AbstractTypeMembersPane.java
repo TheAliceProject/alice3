@@ -94,8 +94,8 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.swing.
 	}
 	protected abstract java.awt.Component[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
 
-	protected abstract edu.cmu.cs.dennisc.zoot.ZButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
-	protected abstract edu.cmu.cs.dennisc.zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract javax.swing.JButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract javax.swing.JButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
 		this.removeAll();
 		if( this.typeComponent != null ) {
@@ -127,8 +127,8 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.swing.
 		}
 		if( getIDE().isEmphasizingClasses() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			edu.cmu.cs.dennisc.zoot.ZButton createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
-			edu.cmu.cs.dennisc.zoot.ZButton editConstructorButton = this.createEditConstructorButton( typeInAlice );
+			javax.swing.JButton createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
+			javax.swing.JButton editConstructorButton = this.createEditConstructorButton( typeInAlice );
 			if( createAndAddMemberButton != null ) {
 				page.add( createAndAddMemberButton );
 			}

@@ -102,7 +102,7 @@ class RecentProjectsMenu extends javax.swing.JMenu {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IDE extends edu.cmu.cs.dennisc.zoot.ZFrame {
+public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	public static final java.util.UUID PROJECT_GROUP = java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" );
 	public static final java.util.UUID PREFERENCES_GROUP = java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" );
 	public static final java.util.UUID IO_GROUP = java.util.UUID.fromString( "669018cd-2097-4568-9ce3-38cd102f6a2f" );

@@ -25,7 +25,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class CommentLine extends edu.cmu.cs.dennisc.zoot.ZSuggestiveTextArea {
+class CommentLine extends edu.cmu.cs.dennisc.croquet.KSuggestiveTextArea {
 //class CommentLine extends javax.swing.JTextArea {
 	private edu.cmu.cs.dennisc.alice.ast.Comment comment;
 	public CommentLine( edu.cmu.cs.dennisc.alice.ast.Comment comment ) {

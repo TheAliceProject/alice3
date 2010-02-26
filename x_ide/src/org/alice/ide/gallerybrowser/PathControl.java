@@ -45,12 +45,12 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineA
 				DirectoryControl.this.handleSelectChildDirectory();
 			}
 		}
-		private edu.cmu.cs.dennisc.zoot.ZButton selectButton;
-		private edu.cmu.cs.dennisc.zoot.ZButton selectChildButton;
+		private javax.swing.JButton selectButton;
+		private javax.swing.JButton selectChildButton;
 		private java.io.File file;
 		public DirectoryControl( java.io.File file ) {
 			this.file = file;
-			this.selectButton = new edu.cmu.cs.dennisc.zoot.ZButton( new SelectDirectoryActionOperation() );
+			this.selectButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new SelectDirectoryActionOperation() );
 			this.selectChildButton = new edu.cmu.cs.dennisc.zoot.ZButton( new SelectChildDirectoryActionOperation() ) {
 				@Override
 				protected void paintComponent(java.awt.Graphics g) {
@@ -70,6 +70,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineA
 					return new java.awt.Dimension( SIZE, SIZE );
 				}
 			};
+
 			//selectChildButton.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 			this.add( this.selectButton, java.awt.BorderLayout.CENTER );
 			this.add( this.selectChildButton, java.awt.BorderLayout.EAST );

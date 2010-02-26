@@ -20,7 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.croquet;
 
 
 class ToolTipUI extends javax.swing.plaf.basic.BasicToolTipUI {
@@ -30,7 +30,7 @@ class ToolTipUI extends javax.swing.plaf.basic.BasicToolTipUI {
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize( javax.swing.JComponent c ) {
-		ZToolTip toolTip = (ZToolTip)c;
+		KToolTip toolTip = (KToolTip)c;
 		java.awt.Component subject = toolTip.getSubject();
 		if( subject != null ) {
 			edu.cmu.cs.dennisc.swing.SwingUtilities.invalidateTree( subject );
@@ -55,10 +55,10 @@ class ToolTipUI extends javax.swing.plaf.basic.BasicToolTipUI {
 /**
  * @author Dennis Cosgrove
  */
-public class ZToolTip extends javax.swing.JToolTip {
+public class KToolTip extends javax.swing.JToolTip {
 	private java.awt.Component subject;
 	
-	public ZToolTip( java.awt.Component subject ) {
+	public KToolTip( java.awt.Component subject ) {
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.setSubject( subject );
 		this.setOpaque( false );

@@ -34,7 +34,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 		}
 		
 		public void perform( edu.cmu.cs.dennisc.zoot.BoundedRangeContext boundedRangeContext ) {
-			edu.cmu.cs.dennisc.zoot.ZInputPane< ? > inputPane = PortionChooser.this.getInputPane();
+			edu.cmu.cs.dennisc.croquet.KInputPane< ? > inputPane = PortionChooser.this.getInputPane();
 			if( inputPane != null ) {
 				inputPane.updateOKButton();
 			}

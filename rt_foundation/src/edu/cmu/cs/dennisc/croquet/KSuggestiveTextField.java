@@ -20,28 +20,31 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.zoot;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-class SuggestiveTextFocusAdapter implements java.awt.event.FocusListener {
-	private javax.swing.text.JTextComponent textComponent;
+public class KSuggestiveTextField extends javax.swing.JTextField {
+	private String textForBlankCondition;
 
-	public SuggestiveTextFocusAdapter( javax.swing.text.JTextComponent textComponent ) {
-		this.textComponent = textComponent;
+	public KSuggestiveTextField( String text, String textForBlankCondition ) {
+		super( text );
+		this.setBorder( javax.swing.BorderFactory.createBevelBorder( javax.swing.border.BevelBorder.LOWERED ) );
+		this.textForBlankCondition = textForBlankCondition;
+		this.addFocusListener( new SuggestiveTextFocusAdapter( this ) );
+		//setToolTipText( this.textForBlankCondition );
 	}
-	public void focusGained( java.awt.event.FocusEvent e ) {
-		if( this.textComponent.getText().length() == 0 ) {
-			this.textComponent.repaint();
-		}
-		//this.textComponent.setBackground( new java.awt.Color( 230, 230, 255 ) );
+	@Override
+	public java.awt.Dimension getMaximumSize() {
+		java.awt.Dimension rv = super.getMaximumSize();
+		java.awt.Dimension preferred = getPreferredSize();
+		rv.height = preferred.height;
+		return rv;
 	}
-	public void focusLost( java.awt.event.FocusEvent e ) {
-		//Thread.dumpStack();
-		if( this.textComponent.getText().length() == 0 ) {
-			this.textComponent.repaint();
-		}
-		//this.textComponent.setBackground( java.awt.Color.WHITE );
+	@Override
+	protected void paintComponent( java.awt.Graphics g ) {
+		super.paintComponent( g );
+		SuggestiveTextUtilties.drawBlankTextIfNecessary( this, g, this.textForBlankCondition );
 	}
 }

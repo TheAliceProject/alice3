@@ -34,12 +34,12 @@ class TypeFunctionsPane extends AbstractTypeMethodsPane {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods, type.constructors };
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.ZButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new edu.cmu.cs.dennisc.zoot.ZButton( new org.alice.ide.operations.ast.DeclareFunctionOperation( type ) );
+	protected javax.swing.JButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareFunctionOperation( type ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.ZButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new edu.cmu.cs.dennisc.zoot.ZButton( new org.alice.ide.operations.ast.FocusCodeOperation( type.getDeclaredConstructor() ) );
+	protected javax.swing.JButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.FocusCodeOperation( type.getDeclaredConstructor() ) );
 	}
 	@Override
 	protected javax.swing.JComponent createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
