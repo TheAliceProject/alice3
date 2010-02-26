@@ -96,11 +96,15 @@ public class LaunchUtilities {
 				int height = DEFAULT_HEIGHT;
 				boolean isMaximizationDesired = true;
 				if( args.length > 0 ) {
-					java.io.File file = new java.io.File( args[ 0 ] );
-					if( file.exists() ) {
-						ide.loadProjectFrom( file );
+					if( "null".equalsIgnoreCase( args[ 0 ] ) ) {
+						//pass
 					} else {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "file does not exist:", file );
+						java.io.File file = new java.io.File( args[ 0 ] );
+						if( file.exists() ) {
+							ide.loadProjectFrom( file );
+						} else {
+							edu.cmu.cs.dennisc.print.PrintUtilities.println( "file does not exist:", file );
+						}
 					}
 					if( args.length > 2 ) {
 						try {
