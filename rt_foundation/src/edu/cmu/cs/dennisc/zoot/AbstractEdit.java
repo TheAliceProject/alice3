@@ -36,14 +36,34 @@ public abstract class AbstractEdit implements Edit {
 	}
 	
 	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-		rv.append( this.getClass().getSimpleName() );
 		return rv;
 	}
 	public final String getPresentation( java.util.Locale locale ) {
 		StringBuffer sb = new StringBuffer();
 		this.updatePresentation( sb, locale );
 		if( sb.length() == 0 ) {
-			sb.append( this.getClass().getSimpleName() );
+			Class<?> cls = this.getClass();
+			while( true ) {
+				String simpleName = cls.getSimpleName();
+				if( simpleName.length() > 0 ) {
+					sb.append( simpleName );
+					if( cls.equals( this.getClass() ) ) {
+						//pass
+					} else {
+						sb.append( " edit" );
+					}
+					break;
+				} else {
+					cls = cls.getEnclosingClass();
+				}
+				if( cls != null ) {
+					//pass
+				} else {
+					//this should not happen
+					sb.append( this.getClass().getName() );
+					break;
+				}
+			}
 		}
 		return sb.toString();
 	}

@@ -34,8 +34,9 @@ class HistoryCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.ListCellRende
 			//todo
 			java.util.Locale locale = javax.swing.JComponent.getDefaultLocale();
 			
-			
-			rv.setText( edit.getPresentation( locale ) );
+			String text = edit.getPresentation( locale );
+//			text = "edit: " + text;
+			rv.setText( text );
 			
 			int selectedIndex = list.getSelectedIndex();
 			if( selectedIndex >= 0 && index > selectedIndex ) {

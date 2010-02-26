@@ -2,7 +2,7 @@ package org.alice.ide.operations.window;
 
 public class IsHistoryShowingOperation extends IsFrameShowingOperation {
 	public IsHistoryShowingOperation() {
-		//super( true );
+		super( true );
 		this.putValue( javax.swing.Action.NAME, "Show History?" );
 	}
 	@Override

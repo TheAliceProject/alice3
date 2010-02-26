@@ -50,7 +50,7 @@ public abstract class IsFrameShowingOperation extends org.alice.ide.operations.A
 	@Override
 	protected final void handleStateChange(boolean value) {
 		javax.swing.JFrame frame = this.getFrame();
-		frame.setLocation( 1024, 0 );
+		//frame.setLocation( 1024, 0 );
 		frame.setVisible( value );
 	}
 }
