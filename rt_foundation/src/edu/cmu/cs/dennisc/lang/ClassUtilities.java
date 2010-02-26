@@ -107,4 +107,17 @@ public class ClassUtilities {
 		String simpleClassNames = packageNameAndSimpleClassNames.substring( index+1, n );
 		return simpleClassNames.split( "\\$" );
 	}
+	
+	public static String getTrimmedClassName( Class<?> cls ) {
+		if( cls != null ) {
+			if( cls.isMemberClass() ) {
+				Package pckg = cls.getPackage(); 
+				return cls.getName().substring( pckg.getName().length()+1 );
+			} else {
+				return cls.getSimpleName();
+			}
+		} else {
+			return null;
+		}
+	}
 }
