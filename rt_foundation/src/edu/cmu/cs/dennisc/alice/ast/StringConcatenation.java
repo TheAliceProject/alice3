@@ -30,13 +30,13 @@ public class StringConcatenation extends Expression {
 		@Override
 		public AbstractType getExpressionType() {
 			//todo: allow both objects?
-			return TypeDeclaredInJava.get( Object.class );
+			return TypeDeclaredInJava.OBJECT_TYPE;
 		}
 	};
 	public ExpressionProperty rightOperand = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType getExpressionType() {
-			return TypeDeclaredInJava.get( Object.class );
+			return TypeDeclaredInJava.OBJECT_TYPE;
 		}
 	};
 	public StringConcatenation() {

@@ -27,7 +27,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class ReturnStatementTemplate extends CascadingUbiquitousStatementTemplate {
 	public ReturnStatementTemplate() {
-		super( edu.cmu.cs.dennisc.alice.ast.ReturnStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) );
+		super( edu.cmu.cs.dennisc.alice.ast.ReturnStatement.class, org.alice.ide.ast.NodeUtilities.createIncompleteReturnStatement( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
 	}
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType getReturnType() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = getIDE().getFocusedCode();

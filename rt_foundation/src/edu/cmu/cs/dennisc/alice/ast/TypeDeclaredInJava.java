@@ -43,6 +43,9 @@ public class TypeDeclaredInJava extends AbstractType {
 	public static final TypeDeclaredInJava[] BOOLEAN_TYPES = { BOOLEAN_PRIMITIVE_TYPE, BOOLEAN_OBJECT_TYPE };
 	public static final TypeDeclaredInJava[] INTEGER_TYPES = { INTEGER_PRIMITIVE_TYPE, INTEGER_OBJECT_TYPE };
 	public static final TypeDeclaredInJava[] DOUBLE_TYPES = { DOUBLE_PRIMITIVE_TYPE, DOUBLE_OBJECT_TYPE };
+	
+	public static final TypeDeclaredInJava OBJECT_TYPE = get( Object.class );
+	
 
 	public static TypeDeclaredInJava get( ClassReflectionProxy classReflectionProxy ) {
 		if( classReflectionProxy != null ) {

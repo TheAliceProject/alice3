@@ -35,7 +35,7 @@ public class FieldAccess extends Expression {
 				return f.getDeclaringType();
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: field.getValue() == null" );
-				return TypeDeclaredInJava.get( Object.class );
+				return TypeDeclaredInJava.OBJECT_TYPE;
 			}
 		}
 	};

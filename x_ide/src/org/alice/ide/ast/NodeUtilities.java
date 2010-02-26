@@ -84,7 +84,7 @@ public class NodeUtilities {
 		);
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement createIncompleteVariableDeclarationStatement() {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
+		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
 		return createVariableDeclarationStatement( new edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice( "???", type ), new org.alice.ide.ast.EmptyExpression( type ) );
 	}
 
@@ -319,9 +319,11 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.StringConcatenation createStringConcatenation( edu.cmu.cs.dennisc.alice.ast.Expression left, edu.cmu.cs.dennisc.alice.ast.Expression right ) {
 		return new edu.cmu.cs.dennisc.alice.ast.StringConcatenation( left, right );
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.StringConcatenation createIncompleteStringConcatenation( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand ) {
+		return createStringConcatenation( leftOperand, new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
+	}
 	public static edu.cmu.cs.dennisc.alice.ast.StringConcatenation createIncompleteStringConcatenation() {
-		final edu.cmu.cs.dennisc.alice.ast.AbstractType OBJECT_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
-		return createStringConcatenation( new EmptyExpression( OBJECT_TYPE ), new EmptyExpression( OBJECT_TYPE ) );
+		return createIncompleteStringConcatenation( new EmptyExpression( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
 	}
 
 //	public static edu.cmu.cs.dennisc.alice.ast.AbstractParameter getNextParameter( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {

@@ -29,7 +29,7 @@ public class NullLiteral extends AbstractLiteral {
 	@Override
 	public AbstractType getType() {
 		//todo
-		return TypeDeclaredInJava.get( Object.class );
+		return TypeDeclaredInJava.OBJECT_TYPE;
 	}
 	@Override
 	protected StringBuffer appendRepr( StringBuffer rv, java.util.Locale locale ) {

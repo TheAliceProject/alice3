@@ -35,6 +35,13 @@ public class StringFillerInner extends ExpressionFillerInner {
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
 		blank.addSeparator();
-		blank.addFillIn( new org.alice.ide.cascade.StringConcatenationFillIn() );
+		final edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = org.alice.ide.IDE.getSingleton().getPreviousExpression();
+		final boolean isTop = blank.getParentFillIn() == null;
+		if( isTop ) {
+			if( previousExpression != null ) {
+				blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedStringConcatenationFillIn( previousExpression ) );
+			}
+			blank.addFillIn( new org.alice.ide.cascade.IncompleteStringConcatenationFillIn() );
+		}
 	}
 }

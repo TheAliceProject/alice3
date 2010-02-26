@@ -31,6 +31,6 @@ public class ThisExpression extends Expression {
 	public AbstractType getType() {
 		return this.getFirstAncestorAssignableTo( AbstractType.class );
 //		//todo
-//		return TypeDeclaredInJava.get( Object.class );
+//		return TypeDeclaredInJava.OBJECT_TYPE;
 	}
 }

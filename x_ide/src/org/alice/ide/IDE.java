@@ -1316,7 +1316,16 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomStringFillIn() );
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomDoubleFillIn() );
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
-		blank.addFillIn( new org.alice.ide.cascade.StringConcatenationFillIn() );
+		blank.addSeparator();
+		if( blank.getParentFillIn() != null ) {
+			//pass
+		} else {
+			if( this.previousExpression != null ) {
+				blank.addFillIn( new org.alice.ide.cascade.MostlyDeterminedStringConcatenationFillIn( this.previousExpression ) );
+			}
+			blank.addFillIn( new org.alice.ide.cascade.IncompleteStringConcatenationFillIn() );
+			blank.addSeparator();
+		}
 	}
 	protected void addCustomFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 	}
@@ -1335,7 +1344,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( type != null ) {
 			if( this.previousExpression != null ) {
-				if( this.previousExpression.getType().isAssignableTo( type ) ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType prevExpressionType = this.previousExpression.getType();
+				if( prevExpressionType != null && prevExpressionType.isAssignableTo( type ) ) {
 					if( blank.getParentFillIn() != null ) {
 						//pass
 					} else {

@@ -25,11 +25,11 @@ package org.alice.ide.cascade;
 /**
  * @author Dennis Cosgrove
  */
-public class StringConcatenationFillIn extends IncompleteExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
+public class IncompleteStringConcatenationFillIn extends IncompleteExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.StringConcatenation > {
 	@Override
 	protected void addChildren() {
-		this.addChild( new ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) );
-		this.addChild( new ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class ) ) );
+		this.addChild( new ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
+		this.addChild( new ExpressionBlank( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.StringConcatenation getValue() {

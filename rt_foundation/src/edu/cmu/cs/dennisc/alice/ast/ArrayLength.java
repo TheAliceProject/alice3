@@ -30,7 +30,7 @@ public class ArrayLength extends Expression {
 	public ExpressionProperty array = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType getExpressionType() {
-			return TypeDeclaredInJava.get( Object.class ).getArrayType();
+			return TypeDeclaredInJava.OBJECT_TYPE.getArrayType();
 		}
 	};
 

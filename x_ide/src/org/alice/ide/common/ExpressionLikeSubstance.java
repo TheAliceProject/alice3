@@ -88,7 +88,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		if( type != null ) {
 //			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 		} else {
-			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
+			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
 		}
 //		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE ) {
 //			return null;
@@ -129,7 +129,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	//		if( type != null ) {
 	//			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
 	//		} else {
-	//			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Object.class );
+	//			type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.OBJECT_TYPE;
 	//		}
 	//		edu.cmu.cs.dennisc.awt.BeveledShape rv = edu.cmu.cs.dennisc.alice.ui.BeveledShapeForType.createBeveledShapeFor( type, shape, DOCKING_BAY_INSET_LEFT, Math.min( getHeight()*0.5f, 16.0f ) );
 	//		return rv;
