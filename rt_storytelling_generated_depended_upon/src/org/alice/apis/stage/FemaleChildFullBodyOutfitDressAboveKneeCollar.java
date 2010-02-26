@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum FemaleChildFullBodyOutfitDressAboveKneeCollar implements FemaleChildFullBodyOutfit {
-	BLUE,
+	BLACK,
+ 	BLUE,
  	APPLE,
  	LEMON,
  	MAGENTA,

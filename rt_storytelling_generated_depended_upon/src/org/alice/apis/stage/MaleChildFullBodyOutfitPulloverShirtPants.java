@@ -22,6 +22,7 @@
  */
 package org.alice.apis.stage;
 public enum MaleChildFullBodyOutfitPulloverShirtPants implements MaleChildFullBodyOutfit {
-	REDSHIRTGREENJEANS,
+	BLUESHIRTBLUEJEANS,
+ 	REDSHIRTGREENJEANS,
  	KOW;
 }

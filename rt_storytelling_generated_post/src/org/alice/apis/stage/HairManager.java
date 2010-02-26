@@ -33,19 +33,20 @@ public class HairManager extends IngredientManager<Hair> {
 		this.add( FemaleChildHair.class,
 
 				FemaleChildHairBraids.class,
-				FemaleChildHairPoofs.class,
-				FemaleChildHairRosettes.class
+				FemaleChildHairRosettes.class,
+				FemaleChildHairPoofs.class
 			);
 			this.add( ChildHair.class,
 
+				ChildHairStraightWithTricornHat.class,
 				ChildHairBald.class,
 				ChildHairDreadlockShort.class,
-				ChildHairHatTricorn.class
+				ChildHairShocked.class
 			);
 			this.add( MaleChildHair.class,
 
-				MaleChildHairCloseCrop.class,
 				MaleChildHairGibs.class,
+				MaleChildHairCloseCrop.class,
 				MaleChildHairPompodore.class
 			);
 		this.add( MaleAdultHair.class,

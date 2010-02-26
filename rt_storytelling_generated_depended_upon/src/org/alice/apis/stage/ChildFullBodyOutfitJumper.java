@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum ChildFullBodyOutfitJumper implements ChildFullBodyOutfit {
-	YELLOWBLUEJEAN,
+	SHIRTOVERSHORTS,
+ 	YELLOWBLUEJEAN,
  	STRIPES,
  	TAN,
  	BLUE,

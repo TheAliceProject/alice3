@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum FemaleChildFullBodyOutfitDressFormal implements FemaleChildFullBodyOutfit {
-	PINKWHITE,
+	PINK,
+ 	PINKWHITE,
  	EMERALD,
  	PEACH,
  	PEACHWHITE;

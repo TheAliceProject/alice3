@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum MaleChildHairCloseCrop implements MaleChildHair {
-	BLOND,
+	BLACK,
+ 	BLOND,
  	BROWN,
  	RED;
 }

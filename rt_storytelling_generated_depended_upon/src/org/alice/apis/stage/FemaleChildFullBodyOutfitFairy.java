@@ -21,8 +21,6 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 package org.alice.apis.stage;
-public enum FemaleChildFullBodyOutfitCowGirlSkirt implements FemaleChildFullBodyOutfit {
-	REDBOOT,
- 	BLACKBOOT,
- 	BROWNBOOT;
+public enum FemaleChildFullBodyOutfitFairy implements FemaleChildFullBodyOutfit {
+	PINK;
 }

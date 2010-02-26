@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum FemaleChildFullBodyOutfitTShirtPants implements FemaleChildFullBodyOutfit {
-	JEANSGNOME,
+	JEANSBABYBLUE,
+ 	JEANSGNOME,
  	JEANSWRIGHT,
  	WHITESHIRTPINKPANTS,
  	PINKSHIRTPURPLEPANTS,

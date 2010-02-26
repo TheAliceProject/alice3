@@ -9,7 +9,10 @@
     <property name="jar_jogl.location" value="../jar_jogl"/>
     <property name="jar_apple.location" value="../jar_apple"/>
     <property name="jar_swingworker.location" value="../jar_swingworker"/>
+    <property name="jar_jmf.location" value="../jar_jmf"/>
+    <property name="jar_jmfmp3.location" value="../jar_jmfmp3"/>
     <property name="rt_storytelling.location" value="../rt_storytelling"/>
+    <property name="rt_storytelling_deprecated.location" value="../rt_storytelling_deprecated"/>
     <property name="x_ide_stage.location" value="../x_ide_stage"/>
     <property name="rt_foundation.location" value="../rt_foundation"/>
     <property name="debuglevel" value="source,lines,vars"/>
@@ -21,6 +24,8 @@
         <pathelement location="${jar_jogl.location}/lib/jogl.jar"/>
         <pathelement location="${jar_apple.location}/AppleJavaExtensions.jar"/>
         <pathelement location="${jar_swingworker.location}/swing-worker-1.2.jar"/>
+        <pathelement location="${jar_jmf.location}/JMF-2.1.1e/lib/jmf.jar"/>
+        <pathelement location="${jar_jmfmp3.location}/lib/ext/mp3plugin.jar"/>
     </path>
     <path id="rt_storytelling_private.classpath">
         <pathelement location="bin"/>
@@ -59,6 +64,12 @@
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
         <ant antfile="${rt_storytelling.location}/build.xml" dir="${rt_storytelling.location}" inheritAll="false" target="clean"/>
         <ant antfile="${rt_storytelling.location}/build.xml" dir="${rt_storytelling.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_storytelling_deprecated.location}/build.xml" dir="${rt_storytelling_deprecated.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_storytelling_deprecated.location}/build.xml" dir="${rt_storytelling_deprecated.location}" inheritAll="false" target="build">
             <propertyset>
                 <propertyref name="build.compiler"/>
             </propertyset>

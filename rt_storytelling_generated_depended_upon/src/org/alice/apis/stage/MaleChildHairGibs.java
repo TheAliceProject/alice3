@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum MaleChildHairGibs implements MaleChildHair {
-	BLOND,
+	BLACK,
+ 	BLOND,
  	BROWN,
  	RED;
 }

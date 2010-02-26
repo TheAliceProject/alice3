@@ -22,9 +22,5 @@
  */
 package org.alice.apis.stage;
 public enum ChildHairBald implements ChildHair {
-	SKIN_S2,
- 	SKIN_S3,
- 	SKIN_S4,
- 	SKIN_S5,
- 	BARE;
+	BARE;
 }

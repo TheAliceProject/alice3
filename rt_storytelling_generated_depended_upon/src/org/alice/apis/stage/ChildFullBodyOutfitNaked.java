@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum ChildFullBodyOutfitNaked implements ChildFullBodyOutfit {
-	TANKINIPINK,
+	TANKINIGREEN,
+ 	TANKINIPINK,
  	TANKINISTRIPES,
  	TROPICBERRYSWIM,
  	TROPICFIRESWIM,

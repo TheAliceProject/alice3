@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum FemaleChildFullBodyOutfitBlazerPleats implements FemaleChildFullBodyOutfit {
-	PVTSCHOOLRED,
+	PVTSCHOOLBLUE,
+ 	PVTSCHOOLRED,
  	PVTSCHOOLGREEN,
  	PVTSCHOOLBLUEREBEL;
 }

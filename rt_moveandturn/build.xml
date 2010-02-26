@@ -6,14 +6,18 @@
               as the first entry and export the buildfile again. -->
 <project basedir="." default="build" name="rt_moveandturn">
     <property environment="env"/>
+    <property name="jar_jmf.location" value="../jar_jmf"/>
     <property name="jar_jogl.location" value="../jar_jogl"/>
     <property name="jar_apple.location" value="../jar_apple"/>
     <property name="jar_swingworker.location" value="../jar_swingworker"/>
+    <property name="jar_jmfmp3.location" value="../jar_jmfmp3"/>
     <property name="lg_walkandtouch.location" value="../lg_walkandtouch"/>
     <property name="lg_walkandtouch_gallery_generated.location" value="../lg_walkandtouch_gallery_generated"/>
     <property name="rt_moveandturn_generated.location" value="../rt_moveandturn_generated"/>
     <property name="rt_storytelling.location" value="../rt_storytelling"/>
+    <property name="rt_storytelling_deprecated.location" value="../rt_storytelling_deprecated"/>
     <property name="rt_storytelling_generated_depended_upon.location" value="../rt_storytelling_generated_depended_upon"/>
+    <property name="rt_storytelling_generated_post.location" value="../rt_storytelling_generated_post"/>
     <property name="x_ide_stage.location" value="../x_ide_stage"/>
     <property name="x_youtube.location" value="../x_youtube"/>
     <property name="rt_foundation.location" value="../rt_foundation"/>
@@ -26,10 +30,13 @@
         <pathelement location="${jar_jogl.location}/lib/jogl.jar"/>
         <pathelement location="${jar_apple.location}/AppleJavaExtensions.jar"/>
         <pathelement location="${jar_swingworker.location}/swing-worker-1.2.jar"/>
+        <pathelement location="${jar_jmf.location}/JMF-2.1.1e/lib/jmf.jar"/>
+        <pathelement location="${jar_jmfmp3.location}/lib/ext/mp3plugin.jar"/>
     </path>
     <path id="rt_moveandturn.classpath">
         <pathelement location="bin"/>
         <path refid="rt_foundation.classpath"/>
+        <pathelement location="${jar_jmf.location}/JMF-2.1.1e/lib/jmf.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -86,8 +93,20 @@
                 <propertyref name="build.compiler"/>
             </propertyset>
         </ant>
+        <ant antfile="${rt_storytelling_deprecated.location}/build.xml" dir="${rt_storytelling_deprecated.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_storytelling_deprecated.location}/build.xml" dir="${rt_storytelling_deprecated.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
         <ant antfile="${rt_storytelling_generated_depended_upon.location}/build.xml" dir="${rt_storytelling_generated_depended_upon.location}" inheritAll="false" target="clean"/>
         <ant antfile="${rt_storytelling_generated_depended_upon.location}/build.xml" dir="${rt_storytelling_generated_depended_upon.location}" inheritAll="false" target="build">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_storytelling_generated_post.location}/build.xml" dir="${rt_storytelling_generated_post.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_storytelling_generated_post.location}/build.xml" dir="${rt_storytelling_generated_post.location}" inheritAll="false" target="build">
             <propertyset>
                 <propertyref name="build.compiler"/>
             </propertyset>

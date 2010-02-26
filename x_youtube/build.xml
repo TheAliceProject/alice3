@@ -8,8 +8,10 @@
     <property environment="env"/>
     <property name="jar_swingworker.location" value="../jar_swingworker"/>
     <property name="jar_youtube.location" value="../jar_youtube"/>
+    <property name="jar_jmf.location" value="../jar_jmf"/>
     <property name="jar_jogl.location" value="../jar_jogl"/>
     <property name="jar_apple.location" value="../jar_apple"/>
+    <property name="jar_jmfmp3.location" value="../jar_jmfmp3"/>
     <property name="x_ide.location" value="../x_ide"/>
     <property name="rt_foundation.location" value="../rt_foundation"/>
     <property name="rt_moveandturn.location" value="../rt_moveandturn"/>
@@ -22,10 +24,13 @@
         <pathelement location="${jar_jogl.location}/lib/jogl.jar"/>
         <pathelement location="${jar_apple.location}/AppleJavaExtensions.jar"/>
         <pathelement location="${jar_swingworker.location}/swing-worker-1.2.jar"/>
+        <pathelement location="${jar_jmf.location}/JMF-2.1.1e/lib/jmf.jar"/>
+        <pathelement location="${jar_jmfmp3.location}/lib/ext/mp3plugin.jar"/>
     </path>
     <path id="rt_moveandturn.classpath">
         <pathelement location="${rt_moveandturn.location}/bin"/>
         <path refid="rt_foundation.classpath"/>
+        <pathelement location="${jar_jmf.location}/JMF-2.1.1e/lib/jmf.jar"/>
     </path>
     <path id="x_youtube.classpath">
         <pathelement location="bin"/>
@@ -33,8 +38,8 @@
         <path refid="rt_moveandturn.classpath"/>
         <pathelement location="${jar_swingworker.location}/swing-worker-1.2.jar"/>
         <pathelement location="${jar_youtube.location}/google-collect-1.0-rc1.jar"/>
-        <pathelement location="${jar_youtube.location}/jmf.jar"/>
         <pathelement location="${jar_youtube.location}/youtube.jar"/>
+        <pathelement location="${jar_jmf.location}/JMF-2.1.1e/lib/jmf.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>

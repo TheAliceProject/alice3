@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum FemaleChildFullBodyOutfitDressShortBell implements FemaleChildFullBodyOutfit {
-	BANDWSTRIPEGOTHBOOTS,
+	BANDWSTRIPEGOTH,
+ 	BANDWSTRIPEGOTHBOOTS,
  	PINKPINKBOOTS,
  	REDWHITE,
  	BURGANDYWHITE;

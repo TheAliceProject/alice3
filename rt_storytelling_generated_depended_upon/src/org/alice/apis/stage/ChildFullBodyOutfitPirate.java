@@ -22,6 +22,7 @@
  */
 package org.alice.apis.stage;
 public enum ChildFullBodyOutfitPirate implements ChildFullBodyOutfit {
-	GREENSTRIPE,
+	REDSTRIPE,
+ 	GREENSTRIPE,
  	BLUESTRIPE;
 }

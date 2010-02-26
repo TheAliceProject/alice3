@@ -4,21 +4,19 @@
               To include a user specific buildfile here, simply create one in the same
               directory with the processing instruction <?eclipse.ant.import?>
               as the first entry and export the buildfile again. -->
-<project basedir="." default="build" name="x_ide_private">
+<project basedir="." default="build" name="rt_storytelling_generated_post">
     <property environment="env"/>
-    <property name="jar_rpc.location" value="../jar_rpc"/>
-    <property name="jar_mail.location" value="../jar_mail"/>
-    <property name="jar_jaf.location" value="../jar_jaf"/>
-    <property name="jar_jira.location" value="../jar_jira"/>
     <property name="jar_jogl.location" value="../jar_jogl"/>
     <property name="jar_apple.location" value="../jar_apple"/>
     <property name="jar_swingworker.location" value="../jar_swingworker"/>
     <property name="jar_jmf.location" value="../jar_jmf"/>
     <property name="jar_jmfmp3.location" value="../jar_jmfmp3"/>
-    <property name="x_ide.location" value="../x_ide"/>
     <property name="x_ide_stage.location" value="../x_ide_stage"/>
     <property name="rt_foundation.location" value="../rt_foundation"/>
-    <property name="rt_issue.location" value="../rt_issue"/>
+    <property name="rt_moveandturn.location" value="../rt_moveandturn"/>
+    <property name="rt_storytelling_generated_depended_upon.location" value="../rt_storytelling_generated_depended_upon"/>
+    <property name="rt_storytelling_private.location" value="../rt_storytelling_private"/>
+    <property name="rt_storytelling.location" value="../rt_storytelling"/>
     <property name="debuglevel" value="source,lines,vars"/>
     <property name="target" value="1.5"/>
     <property name="source" value="1.5"/>
@@ -31,25 +29,33 @@
         <pathelement location="${jar_jmf.location}/JMF-2.1.1e/lib/jmf.jar"/>
         <pathelement location="${jar_jmfmp3.location}/lib/ext/mp3plugin.jar"/>
     </path>
-    <path id="rt_issue.classpath">
-        <pathelement location="${rt_issue.location}/bin"/>
+    <path id="rt_moveandturn.classpath">
+        <pathelement location="${rt_moveandturn.location}/bin"/>
         <path refid="rt_foundation.classpath"/>
-        <pathelement location="${jar_swingworker.location}/swing-worker-1.2.jar"/>
-        <pathelement location="${jar_mail.location}/mail.jar"/>
-        <pathelement location="${jar_mail.location}/lib/smtp.jar"/>
-        <pathelement location="${jar_rpc.location}/xmlrpc-client-1.1.jar"/>
-        <pathelement location="${jar_jaf.location}/activation.jar"/>
-        <pathelement location="${jar_jira.location}/jira-soapclient-4.0-with-dependencies.jar"/>
+        <pathelement location="${jar_jmf.location}/JMF-2.1.1e/lib/jmf.jar"/>
     </path>
-    <path id="x_ide_private.classpath">
-        <pathelement location="bin"/>
-        <pathelement location="${jar_rpc.location}/xmlrpc-client-1.1.jar"/>
-        <pathelement location="${jar_mail.location}/mail.jar"/>
-        <pathelement location="${jar_mail.location}/lib/smtp.jar"/>
+    <path id="rt_storytelling_generated_depended_upon.classpath">
+        <pathelement location="${rt_storytelling_generated_depended_upon.location}/bin"/>
         <path refid="rt_foundation.classpath"/>
-        <path refid="rt_issue.classpath"/>
-        <pathelement location="${jar_jaf.location}/activation.jar"/>
-        <pathelement location="${jar_jira.location}/jira-soapclient-4.0-with-dependencies.jar"/>
+        <path refid="rt_moveandturn.classpath"/>
+    </path>
+    <path id="rt_storytelling_private.classpath">
+        <pathelement location="${rt_storytelling_private.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+    </path>
+    <path id="rt_storytelling.classpath">
+        <pathelement location="${rt_storytelling.location}/bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="rt_moveandturn.classpath"/>
+        <path refid="rt_storytelling_generated_depended_upon.classpath"/>
+        <path refid="rt_storytelling_private.classpath"/>
+    </path>
+    <path id="rt_storytelling_generated_post.classpath">
+        <pathelement location="bin"/>
+        <path refid="rt_foundation.classpath"/>
+        <path refid="rt_moveandturn.classpath"/>
+        <path refid="rt_storytelling.classpath"/>
+        <path refid="rt_storytelling_generated_depended_upon.classpath"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
@@ -65,7 +71,10 @@
     </target>
     <target depends="clean" name="cleanall">
         <ant antfile="${rt_foundation.location}/build.xml" dir="${rt_foundation.location}" inheritAll="false" target="clean"/>
-        <ant antfile="${rt_issue.location}/build.xml" dir="${rt_issue.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_moveandturn.location}/build.xml" dir="${rt_moveandturn.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_storytelling_generated_depended_upon.location}/build.xml" dir="${rt_storytelling_generated_depended_upon.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_storytelling_private.location}/build.xml" dir="${rt_storytelling_private.location}" inheritAll="false" target="clean"/>
+        <ant antfile="${rt_storytelling.location}/build.xml" dir="${rt_storytelling.location}" inheritAll="false" target="clean"/>
     </target>
     <target depends="build-subprojects,build-project" name="build"/>
     <target name="build-subprojects">
@@ -74,7 +83,22 @@
                 <propertyref name="build.compiler"/>
             </propertyset>
         </ant>
-        <ant antfile="${rt_issue.location}/build.xml" dir="${rt_issue.location}" inheritAll="false" target="build-project">
+        <ant antfile="${rt_moveandturn.location}/build.xml" dir="${rt_moveandturn.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_storytelling_generated_depended_upon.location}/build.xml" dir="${rt_storytelling_generated_depended_upon.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_storytelling_private.location}/build.xml" dir="${rt_storytelling_private.location}" inheritAll="false" target="build-project">
+            <propertyset>
+                <propertyref name="build.compiler"/>
+            </propertyset>
+        </ant>
+        <ant antfile="${rt_storytelling.location}/build.xml" dir="${rt_storytelling.location}" inheritAll="false" target="build-project">
             <propertyset>
                 <propertyref name="build.compiler"/>
             </propertyset>
@@ -84,16 +108,10 @@
         <echo message="${ant.project.name}: ${ant.file}"/>
         <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
             <src path="src"/>
-            <classpath refid="x_ide_private.classpath"/>
+            <classpath refid="rt_storytelling_generated_post.classpath"/>
         </javac>
     </target>
     <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
-        <ant antfile="${x_ide.location}/build.xml" dir="${x_ide.location}" inheritAll="false" target="clean"/>
-        <ant antfile="${x_ide.location}/build.xml" dir="${x_ide.location}" inheritAll="false" target="build">
-            <propertyset>
-                <propertyref name="build.compiler"/>
-            </propertyset>
-        </ant>
         <ant antfile="${x_ide_stage.location}/build.xml" dir="${x_ide_stage.location}" inheritAll="false" target="clean"/>
         <ant antfile="${x_ide_stage.location}/build.xml" dir="${x_ide_stage.location}" inheritAll="false" target="build">
             <propertyset>

@@ -21,8 +21,9 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 package org.alice.apis.stage;
-public enum ChildHairHatTricorn implements ChildHair {
-	STRAIGHT_BLOND,
- 	STRAIGHT_BROWN,
- 	STRAIGHT_RED;
+public enum ChildHairStraightWithTricornHat implements ChildHair {
+	BLACK,
+ 	BLOND,
+ 	BROWN,
+ 	RED;
 }

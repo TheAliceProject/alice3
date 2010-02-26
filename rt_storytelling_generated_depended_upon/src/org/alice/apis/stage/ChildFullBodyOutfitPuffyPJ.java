@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum ChildFullBodyOutfitPuffyPJ implements ChildFullBodyOutfit {
-	PINKTEDDYBEAR,
+	GREENTEDDYBEAR,
+ 	PINKTEDDYBEAR,
  	CREAMTEDDYBEAR,
  	DUCKIE,
  	UFO,

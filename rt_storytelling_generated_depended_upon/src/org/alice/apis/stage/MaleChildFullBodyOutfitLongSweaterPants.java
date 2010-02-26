@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum MaleChildFullBodyOutfitLongSweaterPants implements MaleChildFullBodyOutfit {
-	GREYSTRIPES,
+	COLORSTRIPES,
+ 	GREYSTRIPES,
  	BABYBLUESTRIPES,
  	BROWNSTRIPES,
  	GREENPATTERN,

@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum ChildHairDreadlockShort implements ChildHair {
-	BLACK,
+	BROWN,
+ 	BLACK,
  	RED,
  	BLOND;
 }

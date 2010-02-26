@@ -22,6 +22,7 @@
  */
 package org.alice.apis.stage;
 public enum FemaleChildFullBodyOutfitJacketDressFlare implements FemaleChildFullBodyOutfit {
-	HOUNDSTOOPINK,
+	GEOMETRICBEIGE,
+ 	HOUNDSTOOPINK,
  	ICEBLUE;
 }

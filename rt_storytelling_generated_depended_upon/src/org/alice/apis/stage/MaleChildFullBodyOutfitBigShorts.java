@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum MaleChildFullBodyOutfitBigShorts implements MaleChildFullBodyOutfit {
-	LEMONLIMESWIMTRUNKS,
+	BLUEHAWAIIANSWIMTRUNKS,
+ 	LEMONLIMESWIMTRUNKS,
  	REDSWIMTRUNKS,
  	STAINEDGLASSSWIMTRUNKS;
 }

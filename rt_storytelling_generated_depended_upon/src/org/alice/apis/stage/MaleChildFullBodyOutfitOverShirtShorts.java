@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum MaleChildFullBodyOutfitOverShirtShorts implements MaleChildFullBodyOutfit {
-	BLUE,
+	WHITE,
+ 	BLUE,
  	GREY,
  	RED;
 }

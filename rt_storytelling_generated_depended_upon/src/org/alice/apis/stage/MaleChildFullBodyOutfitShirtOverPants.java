@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum MaleChildFullBodyOutfitShirtOverPants implements MaleChildFullBodyOutfit {
-	RED,
+	BLACKSUN,
+ 	RED,
  	BLUE,
  	BLACK,
  	ASHLOGO,

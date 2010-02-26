@@ -22,7 +22,8 @@
  */
 package org.alice.apis.stage;
 public enum FemaleChildHairPoofs implements FemaleChildHair {
-	BLACK,
+	RED,
+ 	BLACK,
  	BLOND,
  	BROWN;
 }
