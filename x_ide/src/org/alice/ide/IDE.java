@@ -22,12 +22,6 @@
  */
 package org.alice.ide;
 
-import org.alice.ide.openprojectpane.TabContentPane;
-
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
-import edu.cmu.cs.dennisc.animation.Program;
-
 class MenuItem extends javax.swing.JMenuItem {
 	private java.io.File file;
 	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
@@ -128,8 +122,6 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice rv;
-
 		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : sceneType.methods ) {
 			if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
 				return method;
@@ -140,11 +132,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = this.getProgramType();
-
 		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
-		;
 		setUpMethod.body.getValue().statements.clear();
-
 		return rv;
 	}
 	public java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > getFieldAccesses( final edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
@@ -613,11 +602,11 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 	}
 
-	private TabContentPane templatesPane;
+	private org.alice.ide.openprojectpane.TabContentPane templatesPane;
 
-	protected abstract TabContentPane createTemplatesPane();
+	protected abstract org.alice.ide.openprojectpane.TabContentPane createTemplatesPane();
 
-	private TabContentPane getTemplatesTabContentPane() {
+	private org.alice.ide.openprojectpane.TabContentPane getTemplatesTabContentPane() {
 		if( this.templatesPane != null ) {
 			//pass
 		} else {
@@ -1876,8 +1865,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	
 	@Deprecated
 	protected static edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneFieldFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
-		if( programType instanceof TypeDeclaredInAlice ) {
-			TypeDeclaredInAlice programAliceType = (TypeDeclaredInAlice)programType;
+		if( programType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
+			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programAliceType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)programType;
 			if( programAliceType.fields.size() > 0 ) {
 				return programAliceType.fields.get( 0 );
 			} else {
@@ -1889,7 +1878,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	}
 	@Deprecated
 	protected static edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneTypeFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
-		if( programType instanceof TypeDeclaredInAlice ) {
+		if( programType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = getSceneFieldFromProgramType( programType );
 			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneField.getValueType();
 		} else {
@@ -2219,8 +2208,8 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		return "";
 	}
 
-	public abstract boolean isInstanceCreationAllowableFor( TypeDeclaredInAlice typeInAlice );
-	public abstract Program createRuntimeProgram( VirtualMachine vm, TypeDeclaredInAlice sceneType, int frameRate );
+	public abstract boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice );
+	public abstract edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, int frameRate );
 
 	public java.util.Set< org.alice.virtualmachine.Resource > getResources() {
 		edu.cmu.cs.dennisc.alice.Project project = this.getProject();
