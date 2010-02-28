@@ -26,7 +26,7 @@ package org.alice.apis.moveandturn;
  * @author Dennis Cosgrove
  */
 public class DistanceUp extends DistanceUpOrDown {
-	public DistanceUp( Double distance ) {
-		super( distance );
+	public DistanceUp( Number distance ) {
+		super( distance.doubleValue() );
 	}
 }

@@ -26,7 +26,7 @@ package org.alice.apis.moveandturn;
  * @author Dennis Cosgrove
  */
 public abstract class DistanceRightOrLeft extends Distance {
-	public DistanceRightOrLeft( Double value ) {
+	public DistanceRightOrLeft( double value ) {
 		super( value );
 	}
 	public Double getAsDistanceRight() {

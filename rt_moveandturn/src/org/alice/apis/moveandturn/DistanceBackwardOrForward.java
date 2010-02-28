@@ -26,7 +26,7 @@ package org.alice.apis.moveandturn;
  * @author Dennis Cosgrove
  */
 public abstract class DistanceBackwardOrForward extends Distance {
-	public DistanceBackwardOrForward( Double value ) {
+	public DistanceBackwardOrForward( double value ) {
 		super( value );
 	}
 	public Double getAsDistanceBackward() {

@@ -28,8 +28,8 @@ package org.alice.apis.moveandturn;
 public class VolumeLevel extends Number {
 	protected double m_value;
 
-	public VolumeLevel( Double value ) {
-		m_value = value;
+	public VolumeLevel( Number value ) {
+		m_value = value.doubleValue();
 	}
 	@Override 
 	public double doubleValue() {

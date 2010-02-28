@@ -26,7 +26,7 @@ package org.alice.apis.moveandturn;
  * @author Dennis Cosgrove
  */
 public abstract class DistanceUpOrDown extends Distance {
-	public DistanceUpOrDown( Double value ) {
+	public DistanceUpOrDown( double value ) {
 		super( value );
 	}
 	public Double getAsDistanceUp() {

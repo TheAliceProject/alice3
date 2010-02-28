@@ -28,7 +28,7 @@ package org.alice.apis.moveandturn;
 public abstract class Distance extends Number {
 	protected double m_value;
 
-	public Distance( Double value ) {
+	public Distance( double value ) {
 		m_value = value;
 	}
 	@Override
