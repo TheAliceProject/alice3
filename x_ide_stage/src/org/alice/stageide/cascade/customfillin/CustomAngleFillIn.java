@@ -28,7 +28,7 @@ import org.alice.stageide.choosers.AngleChooser;
 /**
  * @author Dennis Cosgrove
  */
-public class CustomAngleFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.InstanceCreation, org.alice.apis.moveandturn.Angle > {
+public class CustomAngleFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression, org.alice.apis.moveandturn.Angle > {
 	@Override
 	protected String getMenuProxyText() {
 		return "Custom Angle...";
@@ -38,15 +38,13 @@ public class CustomAngleFillIn extends org.alice.ide.cascade.customfillin.Custom
 		return new AngleChooser();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.InstanceCreation createExpression( org.alice.apis.moveandturn.Angle value ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.AngleInRevolutions.class );
-		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = type.getDeclaredConstructor( Number.class );
-		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-		return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor,
-				new edu.cmu.cs.dennisc.alice.ast.Argument(
-						parameter, 
-						new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value.getAsRevolutions() )
-				)
-		);
+	protected edu.cmu.cs.dennisc.alice.ast.Expression createExpression( org.alice.apis.moveandturn.Angle value ) {
+		edu.cmu.cs.dennisc.alice.ast.DoubleLiteral doubleLiteral = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( value.doubleValue() );
+		final boolean IS_LITERAL_DESIRED = true;
+		if( IS_LITERAL_DESIRED ) {
+			return doubleLiteral;
+		} else {
+			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.AngleInRevolutions.class, new Class<?>[] { Number.class }, doubleLiteral );
+		}
 	}
 }

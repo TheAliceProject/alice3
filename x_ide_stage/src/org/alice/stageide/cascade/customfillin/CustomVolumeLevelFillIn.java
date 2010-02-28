@@ -42,15 +42,6 @@ public class CustomVolumeLevelFillIn extends org.alice.ide.cascade.customfillin.
 			return doubleLiteral;
 		} else {
 			return org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.VolumeLevel.class, new Class<?>[] { Number.class }, doubleLiteral );
-//			edu.cmu.cs.dennisc.alice.ast.AbstractType type = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.VolumeLevel.class );
-//			edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = type.getDeclaredConstructor( Number.class );
-//			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-//			return new edu.cmu.cs.dennisc.alice.ast.InstanceCreation( constructor,
-//					new edu.cmu.cs.dennisc.alice.ast.Argument(
-//							parameter, 
-//							doubleLiteral
-//					)
-//			);
 		}
 	}
 }

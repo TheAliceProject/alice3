@@ -52,23 +52,12 @@ public class NumberFillerInner extends AbstractNumberFillerInner {
 				blank.addSeparator();
 			}
 		}
-		this.addExpressionFillIn( blank, 0.0 );
-		this.addExpressionFillIn( blank, 0.25 );
-		this.addExpressionFillIn( blank, 0.5 );
-		this.addExpressionFillIn( blank, 1.0 );
-		this.addExpressionFillIn( blank, 2.0 );
-		//this.addExpressionFillIn( blank, 5.0 );
-		this.addExpressionFillIn( blank, 10.0 );
-		//this.addExpressionFillIn( blank, 100.0 );
+		
+		for( double d : new double[] { 0.0, 0.25, 0.5, 1.0, 2.0, 10.0 } ) {
+			this.addExpressionFillIn( blank, d );
+		}
 		blank.addSeparator();
 		if( isTop ) {
-//			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
-//			@Override
-//			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-//				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextDoubleInRange", java.lang.Number.class, java.lang.Number.class );
-//				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "random" );
-//			}
-//		} );
 			String NEXT_DOUBLE_IN_RANGE_METHOD_NAME = "nextDoubleInRange";
 			edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = org.alice.ide.ast.NodeUtilities.createMethodInvocation( RANDOM_UTILITIES_TYPE_EXPRESSION, RANDOM_UTILITIES_TYPE.getDeclaredMethod( NEXT_DOUBLE_IN_RANGE_METHOD_NAME, Number.class, Number.class ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 ), new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 ) );
 			blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );

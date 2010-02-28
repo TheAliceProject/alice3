@@ -33,21 +33,9 @@ public class AngleFillerInner extends org.alice.ide.cascade.fillerinners.Instanc
 	}
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.125 ) ) ); 
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.25 ) ) ); 
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.5 ) ) ); 
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 ) ) ); 
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 2.0 ) ) ); 
-		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 4.0 ) ) ); 
-//		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getType();
-//		edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = type.getDeclaredConstructor( Number.class );
-//		edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = constructor.getParameters().get( 0 );
-//		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.125 ) );
-//		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.25 ) );
-//		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.5 ) );
-//		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 1.0 ) );
-//		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 2.0 ) );
-//		this.addInstanceCreationExpressionFillIn( blank, constructor, parameter, new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 4.0 ) );
+		for( double d : new double[] { 0.125, 0.25, 0.5, 1.0, 2.0, 4.0 } ) {
+			blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( d ) ) ); 
+		}
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.stageide.cascade.customfillin.CustomAngleFillIn() );
 	}

@@ -31,16 +31,9 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 	}
 	@Override
 	public void addFillIns( edu.cmu.cs.dennisc.cascade.Blank blank ) {
-		this.addExpressionFillIn( blank, 0 );
-		this.addExpressionFillIn( blank, 1 );
-		this.addExpressionFillIn( blank, 2 );
-		this.addExpressionFillIn( blank, 3 );
-//		this.addExpressionFillIn( blank, 4 );
-//		this.addExpressionFillIn( blank, 5 );
-//		this.addExpressionFillIn( blank, 6 );
-//		this.addExpressionFillIn( blank, 7 );
-//		this.addExpressionFillIn( blank, 8 );
-//		this.addExpressionFillIn( blank, 9 );
+		for( int i=0; i<4; i++ ) {
+			this.addExpressionFillIn( blank, i );
+		}
 		blank.addSeparator();
 		blank.addFillIn( new org.alice.ide.cascade.customfillin.CustomIntegerFillIn() );
 		blank.addSeparator();
