@@ -257,6 +257,9 @@ public class NodeUtilities {
 	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		return createInstanceCreation( type.getDeclaredConstructor() );
 	}
+	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( Class<?> cls, Class<?>[] parameterClses, edu.cmu.cs.dennisc.alice.ast.Expression... argumentExpressions ) {
+		return createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( cls, parameterClses ), argumentExpressions );
+	}
 	public static edu.cmu.cs.dennisc.alice.ast.InstanceCreation createInstanceCreation( Class<?> cls ) {
 		return createInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( cls ) );
 	}
