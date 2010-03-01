@@ -28,19 +28,19 @@ package org.alice.ide.preferencesinputpane;
 public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 	class BooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public BooleanStateOperation() {
-			super( BooleanPreferenceCheckBoxProxy.this.getPreference().getValue() );
+			super( org.alice.ide.IDE.PREFERENCES_GROUP, BooleanPreferenceCheckBoxProxy.this.getPreference().getValue() );
 			this.putValue( javax.swing.Action.NAME, BooleanPreferenceCheckBoxProxy.this.getPreference().getKey() );
 		}
 		@Override
-		protected void handleStateChange(boolean value) {
+		protected void handleStateChange( boolean value ) {
 		}
 	}
 	private BooleanStateOperation operation;
-	private edu.cmu.cs.dennisc.zoot.ZCheckBox checkBox;
+	private javax.swing.JCheckBox checkBox;
 	public BooleanPreferenceCheckBoxProxy( edu.cmu.cs.dennisc.preference.Preference<Boolean> preference ) {
 		super( preference );
 		this.operation = new BooleanStateOperation();
-		this.checkBox = new edu.cmu.cs.dennisc.zoot.ZCheckBox(this.operation);
+		this.checkBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox(this.operation);
 	}
 	@Override
 	public java.awt.Component getAWTComponent() {
@@ -48,6 +48,6 @@ public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 	}
 	@Override
 	public void setAndCommitValue() {
-		this.getPreference().setAndCommitValue( this.checkBox.isSelected() );
+		this.getPreference().setAndCommitValue( this.operation.getState() );
 	}
 }

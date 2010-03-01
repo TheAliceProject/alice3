@@ -27,10 +27,8 @@ package edu.cmu.cs.dennisc.zoot;
  */
 public abstract class AbstractBooleanStateOperation extends AbstractOperation implements BooleanStateOperation {
 	private javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
-	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-		}
-	};
+	private String trueText = null;
+	private String falseText = null;
 	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialState ) {
 		super( groupUUID );
 		this.buttonModel.setSelected( initialState );
@@ -55,12 +53,28 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 	public javax.swing.ButtonModel getButtonModel() {
 		return this.buttonModel;
 	}
-	public javax.swing.Action getActionForConfiguringSwing() {
-		return this.actionForConfiguringSwingComponents;
+	public String getTrueText() {
+		if( this.trueText != null ) {
+			return this.trueText;
+		} else {
+			return (String)this.getActionForConfiguringSwing().getValue( javax.swing.Action.NAME );
+		}
 	}
-	protected void putValue( String key, Object value ) {
-		this.actionForConfiguringSwingComponents.putValue( key, value );
+	public void setTrueText( String trueText ) {
+		this.trueText = trueText;
+		
 	}
+	public String getFalseText() {
+		if( this.falseText != null ) {
+			return this.falseText;
+		} else {
+			return (String)this.getActionForConfiguringSwing().getValue( javax.swing.Action.NAME );
+		}
+	}
+	public void setFalseText( String falseText ) {
+		this.trueText = falseText;
+	}
+	
 
 	public final void performStateChange(edu.cmu.cs.dennisc.zoot.BooleanStateContext booleanStateContext) {
 		class Edit extends AbstractEdit {
@@ -73,13 +87,11 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				AbstractBooleanStateOperation.this.buttonModel.setSelected( this.nextValue );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
 				AbstractBooleanStateOperation.this.handleStateChange( this.nextValue );
 			}
 			@Override
 			public void undo() {
 				AbstractBooleanStateOperation.this.buttonModel.setSelected( this.prevValue );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
 				AbstractBooleanStateOperation.this.handleStateChange( this.prevValue );
 			}
 		}

@@ -28,24 +28,10 @@ package edu.cmu.cs.dennisc.zoot;
 /*package-private*/ class ZMenuItem extends javax.swing.JMenuItem {
 	private ActionOperation actionOperation;
 	public ZMenuItem( ActionOperation actionOperation ) {
-		this.setActionOperation( actionOperation );
-	}
-	protected ActionOperation getActionOperation() {
-		return this.actionOperation;
-	}
-	public void setActionOperation( ActionOperation actionOperation ) {
-		if( this.actionOperation != null ) {
-			this.setAction( null );
-			//todo?
-			//this.setModel( null );
-		}
 		this.actionOperation = actionOperation;
-		if( this.actionOperation != null ) {
-			this.setAction( this.actionOperation.getActionForConfiguringSwing() );
-			this.setModel( this.actionOperation.getButtonModel() );
-		}
+		this.setAction( this.actionOperation.getActionForConfiguringSwing() );
+		this.setModel( this.actionOperation.getButtonModel() );
 	}
-
 	@Override
 	public void addNotify() {
 		this.actionOperation.addComponent( this );
@@ -53,7 +39,7 @@ package edu.cmu.cs.dennisc.zoot;
 	}
 	@Override
 	public void removeNotify() {
-		this.actionOperation.removeComponent( this );
 		super.removeNotify();
+		this.actionOperation.removeComponent( this );
 	}
 }

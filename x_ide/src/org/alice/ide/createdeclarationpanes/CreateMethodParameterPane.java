@@ -29,7 +29,7 @@ package org.alice.ide.createdeclarationpanes;
 public class CreateMethodParameterPane extends CreateParameterPane {
 	class UnderstandingConfirmationOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public UnderstandingConfirmationOperation( String codeText ) {
-			super( false );
+			super( org.alice.ide.IDE.INTERFACE_GROUP, false );
 			this.putValue( javax.swing.Action.NAME, "I understand that I need to update the invocations to this " + codeText + "." );
 		}
 		@Override
@@ -61,7 +61,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 //			} else {
 //				codeText = "constructor";
 //			}
-			this.checkBox = new edu.cmu.cs.dennisc.zoot.ZCheckBox( new UnderstandingConfirmationOperation( codeText ) );
+			this.checkBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( new UnderstandingConfirmationOperation( codeText ) );
 			this.checkBox.setOpaque( false );
 			
 			StringBuffer sb = new StringBuffer();

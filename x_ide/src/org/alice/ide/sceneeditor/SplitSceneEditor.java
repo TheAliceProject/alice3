@@ -85,11 +85,11 @@ class Tree extends edu.cmu.cs.dennisc.zoot.ZTree {
 }
 
 class LookingGlass extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
-	private edu.cmu.cs.dennisc.zoot.ZCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
+	private javax.swing.JCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
 	public LookingGlass() {
 		this.setBackground( java.awt.Color.RED );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		this.isSceneEditorExpandedCheckBox = new edu.cmu.cs.dennisc.zoot.ZCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
+		this.isSceneEditorExpandedCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
 		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 	}
 }

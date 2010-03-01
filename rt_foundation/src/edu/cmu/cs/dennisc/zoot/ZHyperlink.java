@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZHyperlink extends javax.swing.AbstractButton {
+/*package-private*/ class ZHyperlink extends javax.swing.AbstractButton {
 	private static java.util.Map< String, javax.swing.text.View > map = new java.util.HashMap< String, javax.swing.text.View >();
 	private static javax.swing.text.View createHTMLView( ZHyperlink hyperlink, java.awt.Color color ) {
 		String name = (String)hyperlink.getAction().getValue( javax.swing.Action.NAME );

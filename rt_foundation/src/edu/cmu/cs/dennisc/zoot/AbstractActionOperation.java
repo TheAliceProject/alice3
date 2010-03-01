@@ -26,10 +26,6 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractActionOperation extends AbstractOperation implements ActionOperation {
-	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-		}
-	};
 	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
 	public AbstractActionOperation( java.util.UUID groupUUID ) {
 		super( groupUUID );
@@ -39,14 +35,8 @@ public abstract class AbstractActionOperation extends AbstractOperation implemen
 			}
 		} );
 	}
-	public javax.swing.Action getActionForConfiguringSwing() {
-		return this.actionForConfiguringSwingComponents;
-	}
 	public javax.swing.ButtonModel getButtonModel() {
 		return this.buttonModel;
-	}
-	protected void putValue( String key, Object value ) {
-		this.actionForConfiguringSwingComponents.putValue( key, value );
 	}
 	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
 		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_WORTHWHILE );

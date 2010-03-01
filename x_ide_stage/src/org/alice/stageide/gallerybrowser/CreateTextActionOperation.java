@@ -98,7 +98,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.KInputPane< org.alice.ap
 	private javax.swing.JTextField textVC;
 	private javax.swing.JTextField instanceNameVC;
 	//private javax.swing.JTextField classNameVC;
-	private edu.cmu.cs.dennisc.zoot.ZCheckBox constrainInstanceNameToTextVC;
+	private javax.swing.JCheckBox constrainInstanceNameToTextVC;
 	//private javax.swing.JCheckBox constrainClassNameToInstanceNameVC;
 	
 	private javax.swing.JTextField heightTextField;
@@ -145,7 +145,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.KInputPane< org.alice.ap
 		} );
 		//this.instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this.handleInstanceNameChange ) );
 
-		this.constrainInstanceNameToTextVC = new edu.cmu.cs.dennisc.zoot.ZCheckBox( new ConstrainInstanceNameToTextBooleanStateOperation() );
+		this.constrainInstanceNameToTextVC = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( new ConstrainInstanceNameToTextBooleanStateOperation() );
 		this.constrainInstanceNameToTextVC.setSelected( true );
 		this.constrainInstanceNameToTextVC.setOpaque( false );
 		this.heightTextField = new TextField( "1.0", " enter height in meters here" );
@@ -190,13 +190,12 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.KInputPane< org.alice.ap
 	
 	class ConstrainInstanceNameToTextBooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
-			super( false );
+			super( org.alice.ide.IDE.INTERFACE_GROUP, false );
 			this.putValue( javax.swing.Action.NAME, "constrain to text" );
 		}
 		@Override
 		protected void handleStateChange(boolean value) {
 			CreateTextPane.this.instanceNameVC.setEditable( value == false );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
 		}
 	}
 	private static java.awt.Component createLabel( String text ) {

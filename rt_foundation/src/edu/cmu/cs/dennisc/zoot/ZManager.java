@@ -403,10 +403,9 @@ public class ZManager {
 
 	public static ActionOperation MENU_SEPARATOR = null;
 
-	private static javax.swing.JMenuItem createMenuItem( Operation operation ) {
+	private static javax.swing.JMenuItem createMenuItemOrCheckBoxMenuItem( Operation operation ) {
 		if( operation instanceof ActionOperation ) {
-			ActionOperation actionOperation = (ActionOperation)operation;
-			return new ZMenuItem( actionOperation );
+			return createMenuItem( (ActionOperation)operation );
 		} else if( operation instanceof BooleanStateOperation ) {
 			BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
 			return new ZCheckBoxMenuItem( booleanStateOperation );
@@ -422,7 +421,7 @@ public class ZManager {
 			if( operation == MENU_SEPARATOR ) {
 				rv.addSeparator();
 			} else {
-				rv.add( createMenuItem( operation ) );
+				rv.add( createMenuItemOrCheckBoxMenuItem( operation ) );
 			}
 		}
 		//todo?
@@ -440,7 +439,7 @@ public class ZManager {
 			if( operation == MENU_SEPARATOR ) {
 				rv.addSeparator();
 			} else {
-				rv.add( createMenuItem( operation ) );
+				rv.add( createMenuItemOrCheckBoxMenuItem( operation ) );
 			}
 		}
 		//todo?
@@ -456,5 +455,19 @@ public class ZManager {
 	
 	public static javax.swing.JButton createButton( ActionOperation actionOperation ) {
 		return new ZButton(actionOperation);
+	}
+	public static javax.swing.JMenuItem createMenuItem( ActionOperation actionOperation ) {
+		return new ZMenuItem(actionOperation);
+	}
+	public static javax.swing.AbstractButton createHyperlink( ActionOperation actionOperation ) {
+		return new ZHyperlink(actionOperation);
+	}
+
+
+	public static javax.swing.JCheckBox createCheckBox( BooleanStateOperation booleanStateOperation ) {
+		return new ZCheckBox(booleanStateOperation);
+	}
+	public static javax.swing.JCheckBoxMenuItem createCheckBoxMenuItem( BooleanStateOperation booleanStateOperation ) {
+		return new ZCheckBoxMenuItem(booleanStateOperation);
 	}
 }

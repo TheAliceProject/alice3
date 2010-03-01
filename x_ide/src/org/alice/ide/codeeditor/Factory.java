@@ -65,7 +65,7 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( statement.isEnabled.getValue() );
+		super( org.alice.ide.IDE.PROJECT_GROUP, statement.isEnabled.getValue() );
 		this.statement = statement;
 		this.putValue( javax.swing.Action.NAME, "Is Enabled" );
 		//update();

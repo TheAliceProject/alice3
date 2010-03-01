@@ -27,9 +27,8 @@ package org.alice.ide.operations.window;
  */
 public class IsEmphasizingClassesOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	public IsEmphasizingClassesOperation( Boolean initialValue ) {
-		super( initialValue );
+		super( org.alice.ide.IDE.PREFERENCES_GROUP, initialValue );
 		this.putValue( javax.swing.Action.NAME, "Is Emphasizing Classes" );
-		//this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
 	}
 	@Override
 	protected void handleStateChange(boolean value) {

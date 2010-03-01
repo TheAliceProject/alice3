@@ -30,7 +30,7 @@ import edu.cmu.cs.dennisc.alice.ast.DeclarationProperty;
 
 
 //todo: BooleanPropertyOperation
-class IsArrayStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanStateOperation {
+class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
 		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, isArrayProperty.getValue() );
@@ -40,14 +40,13 @@ class IsArrayStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanState
 	@Override
 	protected void handleStateChange(boolean value) {
 		this.isArrayProperty.setValue( value );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: support undo/redo", this );
 	}
 }
 
 public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 	private DeclarationProperty< AbstractType > typeProperty;
 	private org.alice.ide.common.TypeComboBox typeComboBox;
-	private edu.cmu.cs.dennisc.zoot.ZCheckBox isArrayCheckBox;
+	private javax.swing.JCheckBox isArrayCheckBox;
 
 	public TypePane( DeclarationProperty< AbstractType > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isArrayCheckBoxEnabled ) {
 		assert typeProperty != null;
@@ -92,7 +91,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 			}
 		} );
 		
-		this.isArrayCheckBox = new edu.cmu.cs.dennisc.zoot.ZCheckBox( new IsArrayStateOperation( isArrayProperty ) );
+		this.isArrayCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( new IsArrayStateOperation( isArrayProperty ) );
 		this.isArrayCheckBox.setOpaque( false );
 		this.isArrayCheckBox.setEnabled( isArrayCheckBoxEnabled );
 		this.add( this.typeComboBox );

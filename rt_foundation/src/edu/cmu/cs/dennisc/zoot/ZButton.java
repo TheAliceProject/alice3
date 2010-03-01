@@ -39,8 +39,8 @@ package edu.cmu.cs.dennisc.zoot;
 	}
 	@Override
 	public void removeNotify() {
-		this.actionOperation.removeComponent( this );
 		super.removeNotify();
+		this.actionOperation.removeComponent( this );
 	}
 	protected ActionOperation getActionOperation() {
 		return this.actionOperation;

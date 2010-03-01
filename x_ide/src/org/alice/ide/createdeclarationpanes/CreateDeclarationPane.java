@@ -30,7 +30,7 @@ import org.alice.ide.initializer.InitializerPane;
 public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.PreviewInputPane< E > {
 	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public IsReassignableStateOperation( boolean initialValue ) {
-			super( initialValue );
+			super( org.alice.ide.IDE.PROJECT_GROUP, initialValue );
 			//this.putValue( javax.swing.Action.NAME, "is constant" );
 		}
 		@Override
@@ -69,7 +69,7 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	}
 
 	private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( null, false );
-	private edu.cmu.cs.dennisc.zoot.ZCheckBox isReassignableCheckBox;
+	private IsReassignableStateOperation isReassignableStateOperation;
 	private TypePane typePane;
 	private DeclarationNameTextField declarationNameTextField = new DeclarationNameTextField();
 	private InitializerPane initializerPane;
@@ -123,8 +123,8 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 	}
 
 	protected boolean isReassignable() {
-		if( this.isReassignableCheckBox != null ) {
-			return this.isReassignableCheckBox.isSelected();
+		if( this.isReassignableStateOperation != null ) {
+			return this.isReassignableStateOperation.getState();
 		} else {
 			throw new RuntimeException( "override" );
 		}
@@ -155,23 +155,18 @@ public abstract class CreateDeclarationPane<E> extends org.alice.ide.preview.Pre
 		return true;
 	}
 	protected final java.awt.Component createIsReassignableComponent() {
+		javax.swing.JCheckBox rv;
 		if( isIsReassignableComponentDesired() ) {
-			this.isReassignableCheckBox = new edu.cmu.cs.dennisc.zoot.ZCheckBox( new IsReassignableStateOperation( this.getIsReassignableInitialState() ) ) {
-				@Override
-				public String getText() {
-					if( this.isSelected() ) {
-						return "yes";
-					} else {
-						return "no";
-					}
-				}
-			};
-			this.isReassignableCheckBox.setEnabled( this.isIsReassignableComponentEnabled() );
-			this.isReassignableCheckBox.setOpaque( false );
+			this.isReassignableStateOperation = new IsReassignableStateOperation( this.getIsReassignableInitialState() );
+			this.isReassignableStateOperation.setTrueText( "yes" );
+			this.isReassignableStateOperation.setFalseText( "no" );
+			this.isReassignableStateOperation.setEnabled( this.isIsReassignableComponentEnabled() );
+			rv = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( this.isReassignableStateOperation );
+			rv.setOpaque( false );
 		} else {
-			this.isReassignableCheckBox = null;
+			rv = null;
 		}
-		return this.isReassignableCheckBox;
+		return rv;
 	}
 	
 

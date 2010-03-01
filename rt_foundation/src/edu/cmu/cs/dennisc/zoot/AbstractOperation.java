@@ -26,6 +26,10 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOperation implements Operation {
+	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		}
+	};
 	private java.util.UUID groupUUID;
 	public AbstractOperation( java.util.UUID groupUUID ) {
 		this.groupUUID = groupUUID;
@@ -41,26 +45,14 @@ public abstract class AbstractOperation implements Operation {
 			return null;
 		}
 	}
-//	public boolean canDoOrRedo() {
-//		return true;
-//	}
-//	public boolean canUndo() {
-//		return true;
-//	}
-////	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-////		throw new javax.swing.undo.CannotRedoException();
-////	}
-////	public void undo() throws javax.swing.undo.CannotUndoException {
-////		throw new javax.swing.undo.CannotUndoException();
-////	}
-//	
-//	public abstract boolean isSignificant();
-//	public void doOrRedo() throws javax.swing.undo.CannotRedoException {
-//		throw new javax.swing.undo.CannotRedoException();
-//	}
-//	public void undo() throws javax.swing.undo.CannotUndoException {
-//		throw new javax.swing.undo.CannotUndoException();
-//	}
+
+	public final javax.swing.Action getActionForConfiguringSwing() {
+		return this.actionForConfiguringSwingComponents;
+	}
+	protected final void putValue( String key, Object value ) {
+		this.actionForConfiguringSwingComponents.putValue( key, value );
+	}
+	
 	
 	private boolean isEnabled = true;
 	public boolean isEnabled() {

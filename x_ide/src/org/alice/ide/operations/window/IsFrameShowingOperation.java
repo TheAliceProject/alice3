@@ -2,8 +2,8 @@ package org.alice.ide.operations.window;
 
 public abstract class IsFrameShowingOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private javax.swing.JFrame frame;
-	public IsFrameShowingOperation( boolean initialValue ) {
-		super( initialValue );
+	public IsFrameShowingOperation( java.util.UUID groupUUID, boolean initialValue ) {
+		super( groupUUID, initialValue );
 		//todo
 		if( initialValue ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {
@@ -13,8 +13,8 @@ public abstract class IsFrameShowingOperation extends org.alice.ide.operations.A
 			} );
 		}
 	}
-	public IsFrameShowingOperation() {
-		this( false );
+	public IsFrameShowingOperation( java.util.UUID groupUUID ) {
+		this( groupUUID, false );
 	}
 	private javax.swing.JFrame getFrame() {
 		if( this.frame != null ) {

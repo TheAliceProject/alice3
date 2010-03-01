@@ -25,14 +25,21 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-public class ZCheckBoxMenuItem extends javax.swing.JCheckBoxMenuItem {
-	private BooleanStateOperation operation;
-	public ZCheckBoxMenuItem( BooleanStateOperation operation ) {
-		this.operation = operation;
-		this.setAction( this.operation.getActionForConfiguringSwing() );
-		this.setModel( this.operation.getButtonModel() );
+/*package-private*/ class ZCheckBoxMenuItem extends javax.swing.JCheckBoxMenuItem {
+	private BooleanStateOperation booleanStateOperation;
+	public ZCheckBoxMenuItem( BooleanStateOperation booleanStateOperation ) {
+		this.booleanStateOperation = booleanStateOperation;
+		this.setAction( this.booleanStateOperation.getActionForConfiguringSwing() );
+		this.setModel( this.booleanStateOperation.getButtonModel() );
 	}
-	protected BooleanStateOperation getStateOperation() {
-		return this.operation;
+	@Override
+	public void addNotify() {
+		this.booleanStateOperation.addComponent( this );
+		super.addNotify();
+	}
+	@Override
+	public void removeNotify() {
+		super.removeNotify();
+		this.booleanStateOperation.removeComponent( this );
 	}
 }

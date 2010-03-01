@@ -26,8 +26,8 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanStateOperation {
-	public AbstractBooleanStateOperation( Boolean initialValue ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, initialValue );
+	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialValue ) {
+		super( groupUUID, initialValue );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
