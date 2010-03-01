@@ -90,6 +90,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.putValue( javax.swing.Action.NAME, "Add" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			assert ArrayInitializerPane.this.type != null;
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
 			final int index = ArrayInitializerPane.this.arrayExpressions.size();
 			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
@@ -317,10 +318,10 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions;
 
-	private javax.swing.JButton addButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new AddItemOperation() );
-	private javax.swing.JButton removeButton =edu.cmu.cs.dennisc.zoot.ZManager.createButton( new RemoveItemOperation() );
-	private javax.swing.JButton moveUpButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new MoveItemUpOperation() );
-	private javax.swing.JButton moveDownButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new MoveItemDownOperation() );
+	private AddItemOperation addItemOperation = new AddItemOperation();
+	private RemoveItemOperation removeItemOperation = new RemoveItemOperation();
+	private MoveItemUpOperation moveItemUpOperation = new MoveItemUpOperation();
+	private MoveItemDownOperation moveItemDownOperation = new MoveItemDownOperation();
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 
@@ -344,16 +345,20 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.updateButtons();
 
+		javax.swing.JButton addButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.addItemOperation );
+		javax.swing.JButton removeButton =edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.removeItemOperation );
+		javax.swing.JButton moveUpButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemUpOperation );
+		javax.swing.JButton moveDownButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemDownOperation );
 		edu.cmu.cs.dennisc.croquet.swing.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.GridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		buttonPane.add( this.addButton, gbc );
-		buttonPane.add( this.removeButton, gbc );
+		buttonPane.add( addButton, gbc );
+		buttonPane.add( removeButton, gbc );
 		gbc.insets.top = 8;
-		buttonPane.add( this.moveUpButton, gbc );
+		buttonPane.add( moveUpButton, gbc );
 		gbc.insets.top = 0;
-		buttonPane.add( this.moveDownButton, gbc );
+		buttonPane.add( moveDownButton, gbc );
 		gbc.weighty = 1.0;
 		buttonPane.add( javax.swing.Box.createGlue(), gbc );
 
@@ -371,13 +376,13 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	private void updateButtons() {
 		boolean isTypeValid = this.type != null && this.type.isArray();
-		this.addButton.setEnabled( isTypeValid );
+		this.addItemOperation.setEnabled( isTypeValid );
 		int index = this.list.getSelectedIndex();
 		final int N = this.list.getComponentCount()-1;
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( index, N );
-		this.removeButton.setEnabled( isTypeValid && index != -1 );
-		this.moveUpButton.setEnabled( isTypeValid && index > 0 );
-		this.moveDownButton.setEnabled( isTypeValid && index >= 0 && index < N - 1 );
+		this.removeItemOperation.setEnabled( isTypeValid && index != -1 );
+		this.moveItemUpOperation.setEnabled( isTypeValid && index > 0 );
+		this.moveItemDownOperation.setEnabled( isTypeValid && index >= 0 && index < N - 1 );
 	}
 	private void handleSelectionChange( edu.cmu.cs.dennisc.alice.ast.Expression value ) {
 		this.updateButtons();
