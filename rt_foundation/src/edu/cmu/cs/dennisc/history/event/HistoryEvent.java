@@ -25,13 +25,8 @@ package edu.cmu.cs.dennisc.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public class HistoryEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.history.HistoryManager > {
-	private edu.cmu.cs.dennisc.zoot.Edit edit;
-	public HistoryEvent( edu.cmu.cs.dennisc.history.HistoryManager source, edu.cmu.cs.dennisc.zoot.Edit edit ) {
+public abstract class HistoryEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.history.HistoryManager > {
+	public HistoryEvent( edu.cmu.cs.dennisc.history.HistoryManager source ) {
 		super( source );
-		this.edit = edit;
-	}
-	public edu.cmu.cs.dennisc.zoot.Edit getEdit() {
-		return this.edit;
 	}
 }

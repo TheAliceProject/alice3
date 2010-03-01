@@ -20,20 +20,24 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.edit;
+package edu.cmu.cs.dennisc.history.event;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RedoOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public RedoOperation() {
-		this.putValue( javax.swing.Action.NAME, "Redo" );
-		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+public class HistoryInsertionIndexEvent extends HistoryEvent {
+	private int prevIndex;
+	private int nextIndex;
+
+	public HistoryInsertionIndexEvent( edu.cmu.cs.dennisc.history.HistoryManager source, int prevIndex, int nextIndex ) {
+		super( source );
+		this.prevIndex = prevIndex;
+		this.nextIndex = nextIndex;
 	}
-	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
-		historyManager.performRedo();
+	public int getPrevIndex() {
+		return prevIndex;
 	}
-	
+	public int getNextIndex() {
+		return nextIndex;
+	}
 }

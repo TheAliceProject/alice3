@@ -449,13 +449,19 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		IDE.singleton = this;
 		this.promptForLicenseAgreements();
 
-		edu.cmu.cs.dennisc.history.HistoryManager.get( IDE.PROJECT_GROUP ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
-			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
+		edu.cmu.cs.dennisc.history.HistoryManager.getInstance( IDE.PROJECT_GROUP ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
+			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 			}
-			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
+			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
+				//todo
 				if( e.getEdit() != null ) {
 					IDE.this.markChanged();
 				}
+			}
+			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+			}
+			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+				//todo
 			}
 		} );
 

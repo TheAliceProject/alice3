@@ -26,6 +26,8 @@ package edu.cmu.cs.dennisc.history.event;
  * @author Dennis Cosgrove
  */
 public interface HistoryListener {
-	public void operationPushing( HistoryEvent e );
-	public void operationPushed( HistoryEvent e );
+	public void operationPushing( HistoryPushEvent e );
+	public void operationPushed( HistoryPushEvent e );
+	public void insertionIndexChanging( HistoryInsertionIndexEvent e );
+	public void insertionIndexChanged( HistoryInsertionIndexEvent e );
 }

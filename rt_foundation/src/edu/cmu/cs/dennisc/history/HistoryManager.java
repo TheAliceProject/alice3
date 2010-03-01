@@ -15,9 +15,10 @@ public class HistoryManager {
 	static {
 		edu.cmu.cs.dennisc.zoot.ZManager.addManagerListener( HistoryManager.managerListener );
 	}
-	
+
 	private static java.util.Map< java.util.UUID, HistoryManager > map = new java.util.HashMap< java.util.UUID, HistoryManager >();
-	public static HistoryManager get( java.util.UUID uuid ) {
+
+	public static HistoryManager getInstance( java.util.UUID uuid ) {
 		HistoryManager rv = HistoryManager.map.get( uuid );
 		if( rv != null ) {
 			//pass
@@ -28,13 +29,20 @@ public class HistoryManager {
 		return rv;
 	}
 	private static void handleOperationPerformed( edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent ) {
-		edu.cmu.cs.dennisc.zoot.Operation operation = commitEvent.getTypedSource();
-		HistoryManager historyManager = HistoryManager.get( operation.getGroupUUID() );
-		historyManager.push( commitEvent );
+		edu.cmu.cs.dennisc.zoot.Edit edit = commitEvent.getEdit();
+		if( edit != null ) {
+			edu.cmu.cs.dennisc.zoot.Operation operation = commitEvent.getTypedSource();
+			HistoryManager historyManager = HistoryManager.getInstance( operation.getGroupUUID() );
+			historyManager.push( commitEvent );
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "no edit to undo for", commitEvent );
+		}
 	}
+
 	private java.util.Stack< edu.cmu.cs.dennisc.zoot.event.CommitEvent > stack = new java.util.Stack< edu.cmu.cs.dennisc.zoot.event.CommitEvent >();
-	private int insertIndex = 0;
+	private int insertionIndex = 0;
 	private java.util.UUID uuid;
+
 	private HistoryManager( java.util.UUID uuid ) {
 		this.uuid = uuid;
 	}
@@ -47,26 +55,26 @@ public class HistoryManager {
 	private void push( edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent ) {
 		edu.cmu.cs.dennisc.zoot.Operation operation = commitEvent.getTypedSource();
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( operation.getGroupUUID(), this.uuid ) ) {
-			edu.cmu.cs.dennisc.history.event.HistoryEvent historyEvent = new edu.cmu.cs.dennisc.history.event.HistoryEvent( this, commitEvent.getEdit() );
-			this.fireOperationPushing( historyEvent );
-			this.stack.setSize( this.insertIndex );
+			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, commitEvent.getEdit() );
+			this.fireOperationPushing( historyPushEvent );
+			this.stack.setSize( this.insertionIndex );
 			this.stack.push( commitEvent );
-			this.insertIndex = this.stack.size();
-			this.fireOperationPushed( historyEvent );
+			this.setInsertionIndex( this.stack.size(), false );
+			this.fireOperationPushed( historyPushEvent );
 		}
 	}
-	
+
 	private static void beep() {
 		java.awt.Toolkit.getDefaultToolkit().beep();
 	}
-	public void undo() {
-		if( this.insertIndex > 0 ) {
-			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertIndex-1 );
+	private void undo() {
+		if( this.insertionIndex > 0 ) {
+			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertionIndex - 1 );
 			if( commitEvent != null ) {
 				edu.cmu.cs.dennisc.zoot.Edit edit = commitEvent.getEdit();
 				if( edit.canRedo() ) {
 					edit.undo();
-					this.insertIndex--;
+					this.insertionIndex--;
 				} else {
 					beep();
 				}
@@ -77,14 +85,18 @@ public class HistoryManager {
 			beep();
 		}
 	}
-	public void redo() {
-		if( this.insertIndex < this.stack.size() ) {
-			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertIndex );
+	private void redo() {
+		if( this.insertionIndex < this.stack.size() ) {
+			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertionIndex );
 			if( commitEvent != null ) {
 				edu.cmu.cs.dennisc.zoot.Edit edit = commitEvent.getEdit();
-				if( edit.canRedo() ) {
-					edit.doOrRedo( false );
-					this.insertIndex++;
+				if( edit != null ) {
+					if( edit.canRedo() ) {
+						edit.doOrRedo( false );
+						this.insertionIndex++;
+					} else {
+						beep();
+					}
 				} else {
 					beep();
 				}
@@ -95,24 +107,51 @@ public class HistoryManager {
 			beep();
 		}
 	}
-	
-	public void setInsertIndex( int nextInsertIndex ) {
-		assert nextInsertIndex >= 0;
-		assert nextInsertIndex <= this.stack.size();
-		final int N = Math.abs( nextInsertIndex - this.insertIndex );
-		if( nextInsertIndex < this.insertIndex ) {
-			for( int i=0; i<N; i++ ) {
-				this.undo();
-			}
-		} else {
-			for( int i=0; i<N; i++ ) {
-				this.redo();
+
+	public void performUndo() {
+		this.setInsertionIndex( this.insertionIndex - 1 );
+	}
+	public void performRedo() {
+		this.setInsertionIndex( this.insertionIndex + 1 );
+	}
+	public int getInsertionIndex() {
+		return this.insertionIndex;
+	}
+	private void setInsertionIndex( int nextInsertionIndex, boolean isActionDesired ) {
+		if( nextInsertionIndex >= 0 && nextInsertionIndex <= this.stack.size() ) {
+			if( this.insertionIndex != nextInsertionIndex ) {
+				edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e = new edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent( this, this.insertionIndex, nextInsertionIndex );
+				this.fireInsertionIndexChanging( e );
+
+				final int N = Math.abs( nextInsertionIndex - this.insertionIndex );
+				if( nextInsertionIndex < this.insertionIndex ) {
+					for( int i = 0; i < N; i++ ) {
+						if( isActionDesired ) {
+							this.undo();
+						} else {
+							this.insertionIndex--;
+						}
+					}
+				} else {
+					for( int i = 0; i < N; i++ ) {
+						if( isActionDesired ) {
+							this.redo();
+						} else {
+							this.insertionIndex++;
+						}
+					}
+				}
+				assert this.insertionIndex == nextInsertionIndex;
+				this.fireInsertionIndexChanged( e );
 			}
 		}
-		assert this.insertIndex == nextInsertIndex;
 	}
-	
+	public void setInsertionIndex( int nextInsertionIndex ) {
+		this.setInsertionIndex( nextInsertionIndex, true );
+	}
+
 	private java.util.List< edu.cmu.cs.dennisc.history.event.HistoryListener > historyListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.history.event.HistoryListener >();
+
 	public void addHistoryListener( edu.cmu.cs.dennisc.history.event.HistoryListener l ) {
 		synchronized( this.historyListeners ) {
 			this.historyListeners.add( l );
@@ -124,17 +163,31 @@ public class HistoryManager {
 		}
 	}
 
-	private void fireOperationPushing( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
+	private void fireOperationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 		synchronized( this.historyListeners ) {
 			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
 				l.operationPushing( e );
 			}
 		}
 	}
-	private void fireOperationPushed( edu.cmu.cs.dennisc.history.event.HistoryEvent e ) {
+	private void fireOperationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 		synchronized( this.historyListeners ) {
 			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
 				l.operationPushed( e );
+			}
+		}
+	}
+	private void fireInsertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+		synchronized( this.historyListeners ) {
+			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+				l.insertionIndexChanging( e );
+			}
+		}
+	}
+	private void fireInsertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
+		synchronized( this.historyListeners ) {
+			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+				l.insertionIndexChanged( e );
 			}
 		}
 	}

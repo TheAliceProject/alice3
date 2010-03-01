@@ -32,7 +32,7 @@ public class UndoOperation extends org.alice.ide.operations.InconsequentialActio
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.get( org.alice.ide.IDE.PROJECT_GROUP );
-		historyManager.undo();
+		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( org.alice.ide.IDE.PROJECT_GROUP );
+		historyManager.performUndo();
 	}
 }
