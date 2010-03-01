@@ -27,7 +27,7 @@ class HistoryCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.ListCellRende
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.zoot.event.CommitEvent value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( index == 0 ) {
-			rv.setText( "Open Project" );
+			rv.setText( "---open project---" );
 		} else {
 			edu.cmu.cs.dennisc.zoot.Edit edit = value.getEdit();
 			
@@ -61,6 +61,12 @@ public class HistoryPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 			HistoryPane.this.historyStackModel.refresh();
 			HistoryPane.this.list.setSelectedIndex( e.getNextIndex() );
 			HistoryPane.this.list.repaint();
+		}
+		public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+		}
+		public void cleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+			HistoryPane.this.historyStackModel.refresh();
+			HistoryPane.this.list.setSelectedIndex( 0 );
 		}
 	};
 

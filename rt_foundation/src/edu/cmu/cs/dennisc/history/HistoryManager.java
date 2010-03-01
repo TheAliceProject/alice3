@@ -35,7 +35,8 @@ public class HistoryManager {
 			HistoryManager historyManager = HistoryManager.getInstance( operation.getGroupUUID() );
 			historyManager.push( commitEvent );
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "no edit to undo for", commitEvent );
+			//todo?
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "no edit to undo for", commitEvent );
 		}
 	}
 
@@ -108,6 +109,13 @@ public class HistoryManager {
 		}
 	}
 
+	public void performClear() {
+		edu.cmu.cs.dennisc.history.event.HistoryClearEvent e = new edu.cmu.cs.dennisc.history.event.HistoryClearEvent( this );
+		this.fireClearing( e );
+		this.stack.clear();
+		this.insertionIndex = 0;
+		this.fireCleared( e );
+	}
 	public void performUndo() {
 		this.setInsertionIndex( this.insertionIndex - 1 );
 	}
@@ -188,6 +196,20 @@ public class HistoryManager {
 		synchronized( this.historyListeners ) {
 			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
 				l.insertionIndexChanged( e );
+			}
+		}
+	}
+	private void fireClearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+		synchronized( this.historyListeners ) {
+			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+				l.clearing( e );
+			}
+		}
+	}
+	private void fireCleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+		synchronized( this.historyListeners ) {
+			for( edu.cmu.cs.dennisc.history.event.HistoryListener l : this.historyListeners ) {
+				l.cleared( e );
 			}
 		}
 	}

@@ -101,7 +101,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	public static final java.util.UUID PREFERENCES_GROUP = java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" );
 	public static final java.util.UUID IO_GROUP = java.util.UUID.fromString( "669018cd-2097-4568-9ce3-38cd102f6a2f" );
 	public static final java.util.UUID INTERFACE_GROUP = java.util.UUID.fromString( "9d0f4665-a40e-4e0c-9139-6f54f288c016" );
-	
+
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static IDE singleton;
 	private static java.util.HashSet< String > performSceneEditorGeneratedSetUpMethodNameSet = new java.util.HashSet< String >();
@@ -151,8 +151,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	public java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > getMethodInvocations( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
 		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >(
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
 			@Override
 			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
 				return methodInvocation.method.getValue() == method;
@@ -229,7 +228,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		return null;
 	}
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		return (expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression || expression instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression ) == false;
+		return (expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression || expression instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression) == false;
 	}
 	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		//todo:
@@ -322,11 +321,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	private org.alice.ide.operations.window.IsSceneEditorExpandedOperation isSceneEditorExpandedOperation = new org.alice.ide.operations.window.IsSceneEditorExpandedOperation( false );
 	private org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation isExpressionTypeFeedbackDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsTypeFeedbackDesiredOperation.class, true );
-	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class,
-			false );
+	private org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation isOmissionOfThisForFieldAccessesDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsOmissionOfThisForFieldAccessesDesiredOperation.class, false );
 	private org.alice.ide.operations.window.IsEmphasizingClassesOperation isEmphasizingClassesOperation = createBooleanOperation( org.alice.ide.operations.window.IsEmphasizingClassesOperation.class, true );
-	private org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation isDefaultFieldNameGenerationDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation.class, this
-			.isDefaultFieldNameGenerationDesiredByDefault() );
+	private org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation isDefaultFieldNameGenerationDesiredOperation = createBooleanOperation( org.alice.ide.operations.window.IsDefaultFieldNameGenerationDesiredOperation.class, this.isDefaultFieldNameGenerationDesiredByDefault() );
 
 	public org.alice.ide.operations.window.IsSceneEditorExpandedOperation getIsSceneEditorExpandedOperation() {
 		return this.isSceneEditorExpandedOperation;
@@ -442,6 +439,25 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		return this.sceneEditor;
 	}
 
+	private int projectHistoryInsertionIndexOfCurrentFile = 0;
+
+	private boolean isProjectChanged() {
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( IDE.PROJECT_GROUP );
+		return this.projectHistoryInsertionIndexOfCurrentFile != projectHistoryManager.getInsertionIndex();
+	}
+	public boolean isProjectUpToDateWithFile() {
+		if( this.file != null ) {
+			return isProjectChanged() == false;
+		} else {
+			return true;
+		}
+	}
+	private void updateHistoryLengthAtLastFileOperation() {
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( IDE.PROJECT_GROUP );
+		this.projectHistoryInsertionIndexOfCurrentFile = projectHistoryManager.getInsertionIndex();
+		this.updateTitle();
+	}
+
 	public IDE() {
 		IDE.exceptionHandler.setTitle( this.getBugReportSubmissionTitle() );
 		IDE.exceptionHandler.setApplicationName( this.getApplicationName() );
@@ -453,15 +469,15 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 			}
 			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
-				//todo
-				if( e.getEdit() != null ) {
-					IDE.this.markChanged();
-				}
 			}
 			public void insertionIndexChanging( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
 			}
 			public void insertionIndexChanged( edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e ) {
-				//todo
+				updateTitle();
+			}
+			public void clearing( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
+			}
+			public void cleared( edu.cmu.cs.dennisc.history.event.HistoryClearEvent e ) {
 			}
 		} );
 
@@ -637,22 +653,19 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 		RecentProjectsMenu recentProjectsMenu = new RecentProjectsMenu();
 
-		javax.swing.JMenu fileMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, this.newProjectOperation, edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.file.OpenProjectOperation(),
-				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, this.saveOperation, new org.alice.ide.operations.file.SaveAsProjectOperation(), edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.file.RevertProjectOperation(),
-				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(), edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, this.exitOperation );
+		javax.swing.JMenu fileMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, this.newProjectOperation, edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.file.OpenProjectOperation(), edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, this.saveOperation, new org.alice.ide.operations.file.SaveAsProjectOperation(),
+				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.file.RevertProjectOperation(), edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(), edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, this.exitOperation );
 
 		fileMenu.add( recentProjectsMenu, 3 );
 
-		javax.swing.JMenu editMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, new org.alice.ide.operations.edit.UndoOperation(), new org.alice.ide.operations.edit.RedoOperation(),
-				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.edit.CutOperation(), new org.alice.ide.operations.edit.CopyOperation(), new org.alice.ide.operations.edit.PasteOperation() );
+		javax.swing.JMenu editMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, new org.alice.ide.operations.edit.UndoOperation(), new org.alice.ide.operations.edit.RedoOperation(), edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.edit.CutOperation(), new org.alice.ide.operations.edit.CopyOperation(),
+				new org.alice.ide.operations.edit.PasteOperation() );
 
 		javax.swing.JMenu projectMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Project", java.awt.event.KeyEvent.VK_P, new org.alice.ide.operations.project.ManageResourcesOperation() );
 		javax.swing.JMenu runMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, this.runOperation );
 
 		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
-			private java.util.Locale[] candidates = { 
-					new java.util.Locale( "en", "US" ),
-					new java.util.Locale( "en", "US", "java" ) };
+			private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "java" ) };
 			private int selectedIndex;
 
 			public LocaleComboBoxModel() {
@@ -695,7 +708,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 			protected String getNameFor( int index, java.util.Locale locale ) {
 				if( locale != null ) {
 					String variant = locale.getVariant();
-					if( variant != null && variant.length() > 0 ) {  //should not be null
+					if( variant != null && variant.length() > 0 ) { //should not be null
 						return variant;
 					} else {
 						return "alice";
@@ -732,8 +745,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		windowOperations.add( this.isMemoryUsageShowingOperation );
 		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		windowOperations.add( this.isSceneEditorExpandedOperation );
-	
-		
+
 		javax.swing.JMenu windowMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, windowOperations );
 
 		javax.swing.JMenu setLocaleMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Set Language", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
@@ -843,6 +855,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		rv.append( this.getVersionText() );
 		//		rv.append( " " );
 		//		rv.append( this.getVersionAdornment() ); 
+		rv.append( " " );
 		return rv;
 	}
 	protected StringBuffer updateTitle( StringBuffer rv ) {
@@ -851,7 +864,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 			rv.append( this.file.getAbsolutePath() );
 			rv.append( " " );
 		}
-		if( this.isChanged() ) {
+		if( this.isProjectChanged() ) {
 			rv.append( "*" );
 		}
 		return rv;
@@ -1214,14 +1227,12 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
 	}
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > getVariables( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >(
-				edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice.class );
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > getConstants( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice >(
-				edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice.class );
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice.class );
 		codeInFocus.crawl( crawler, false );
 		return crawler.getList();
 	}
@@ -1446,8 +1457,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		edu.cmu.cs.dennisc.cascade.FillIn fillIn = createExpressionsFillIn( types, isArrayLengthDesired );
 		fillIn.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
-	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, java.awt.event.MouseEvent e,
-			edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+	public void promptUserForExpression( edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression, java.awt.event.MouseEvent e, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
 		edu.cmu.cs.dennisc.cascade.Blank blank = createExpressionBlank( type, prevExpression );
 		blank.showPopupMenu( e.getComponent(), e.getX(), e.getY(), taskObserver );
 	}
@@ -1581,8 +1591,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 			if( lcFilename.endsWith( ".a2w" ) ) {
 				javax.swing.JOptionPane.showMessageDialog( this, "Alice3 does not load Alice2 worlds", "Cannot read file", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			} else if( lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION.toLowerCase() ) ) {
-				javax.swing.JOptionPane.showMessageDialog( this, file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION
-						+ " extension.", "Incorrect File Type", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+				javax.swing.JOptionPane.showMessageDialog( this, file.getAbsolutePath() + " appears to be a class file and not a project file.\n\nLook for files with an " + edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION + " extension.", "Incorrect File Type", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			} else {
 				boolean isWorthyOfException = lcFilename.endsWith( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION.toLowerCase() );
 				java.util.zip.ZipFile zipFile;
@@ -1710,65 +1719,10 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		fireTransientSelectionChanged( e );
 	}
 
-	private java.util.Stack< edu.cmu.cs.dennisc.zoot.Operation > history = new java.util.Stack< edu.cmu.cs.dennisc.zoot.Operation >();
-	private int historyLengthAtLastFileOperation = 0;
-	private boolean isMarkedChanged = false;
-
-	private boolean isChanged() {
-		return this.isMarkedChanged || this.history.size() > this.historyLengthAtLastFileOperation;
-	}
-	public boolean isProjectUpToDateWithFile() {
-		if( this.file != null ) {
-			return isChanged() == false;
-		} else {
-			return true;
-		}
-	}
-	private void markChanged() {
-		this.isMarkedChanged = true;
-		this.updateTitle();
-	}
-	//	@Deprecated
-	//	public void markChanged( String description ) {
-	//		this.markChanged();
-	//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: convert change to operation ( " + description + " )" );
-	//	}
-
-	//	protected void addToHistory( Operation operation ) {
-	//		this.history.push( operation );
-	//		updateTitle();
-	//	}
-	//	protected void handlePreparedOperation( Operation operation, java.util.EventObject e, java.util.List< java.util.EventObject > preparationUpdates, Operation.PreparationResult preparationResult ) {
-	//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "handlePreparedOperation", operation, preparationResult );
-	//		if( preparationResult != null ) {
-	//			if( preparationResult == Operation.PreparationResult.CANCEL ) {
-	//				//pass
-	//			} else {
-	//				operation.perform();
-	//				if( preparationResult == Operation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY ) {
-	//					addToHistory( operation );
-	//				}
-	//			}
-	//		}
-	//	}
-	//	public void performIfAppropriate( Operation operation, java.util.EventObject e ) {
-	//		final java.util.List< java.util.EventObject > preparationUpdates = new java.util.LinkedList< java.util.EventObject >();
-	//		Operation.PreparationResult preparationResult = operation.prepare( e, new Operation.PreparationObserver() {
-	//			public void update( java.util.EventObject e ) {
-	//				preparationUpdates.add( e );
-	//			}
-	//		} );
-	//		handlePreparedOperation( operation, e, preparationUpdates, preparationResult );
-	//	}
-
-	private void updateHistoryLengthAtLastFileOperation() {
-		//this.history.clear();
-		this.historyLengthAtLastFileOperation = this.history.size();
-		this.isMarkedChanged = false;
-		this.updateTitle();
-	}
 	public void loadProjectFrom( java.io.File file ) {
 		this.mapUUIDToNode.clear();
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( IDE.PROJECT_GROUP );
+		projectHistoryManager.performClear();
 		this.updateHistoryLengthAtLastFileOperation();
 		this.restoreProjectProperties();
 		setFile( file );
@@ -1868,7 +1822,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = getProgramType();
 		return getSceneFieldFromProgramType( programType );
 	}
-	
+
 	@Deprecated
 	protected static edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getSceneFieldFromProgramType( edu.cmu.cs.dennisc.alice.ast.AbstractType programType ) {
 		if( programType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
@@ -1891,7 +1845,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 			return null;
 		}
 	}
-	
+
 	@Deprecated
 	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getSceneType() {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = getSceneField();
@@ -2226,15 +2180,16 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 	}
 
-	private java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > > nameClsPairsForRelationalFillIns = null;
-	public java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > > updateNameClsPairsForRelationalFillIns( java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > > rv ) {
+	private java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > nameClsPairsForRelationalFillIns = null;
+
+	public java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > updateNameClsPairsForRelationalFillIns( java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > rv ) {
 		return rv;
 	}
-	public Iterable< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class<?> > > getNameClsPairsForRelationalFillIns() {
+	public Iterable< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? > > > getNameClsPairsForRelationalFillIns() {
 		if( this.nameClsPairsForRelationalFillIns != null ) {
 			//pass
 		} else {
-			this.nameClsPairsForRelationalFillIns = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.Tuple2<String,Class<?>> >();
+			this.nameClsPairsForRelationalFillIns = new java.util.LinkedList< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >> >();
 			this.updateNameClsPairsForRelationalFillIns( this.nameClsPairsForRelationalFillIns );
 		}
 		return this.nameClsPairsForRelationalFillIns;

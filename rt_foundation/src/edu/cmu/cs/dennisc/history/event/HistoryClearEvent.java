@@ -25,11 +25,11 @@ package edu.cmu.cs.dennisc.history.event;
 /**
  * @author Dennis Cosgrove
  */
-public interface HistoryListener {
-	public void operationPushing( HistoryPushEvent e );
-	public void operationPushed( HistoryPushEvent e );
-	public void insertionIndexChanging( HistoryInsertionIndexEvent e );
-	public void insertionIndexChanged( HistoryInsertionIndexEvent e );
-	public void clearing( HistoryClearEvent e );
-	public void cleared( HistoryClearEvent e );
+public class HistoryClearEvent extends HistoryEvent {
+	private int prevIndex;
+	private int nextIndex;
+
+	public HistoryClearEvent( edu.cmu.cs.dennisc.history.HistoryManager source ) {
+		super( source );
+	}
 }
