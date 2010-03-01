@@ -26,7 +26,7 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
-	private javax.swing.JButton randomizeButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new RandomPersonActionOperation() );
+	private RandomPersonActionOperation randomPersonActionOperation = new RandomPersonActionOperation();
 	private LifeStageList lifeStageList = new LifeStageList();
 	private GenderList genderList = new GenderList();
 	private FitnessLevelPane fitnessLevelPane = new FitnessLevelPane();
@@ -113,7 +113,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 		this.baseEyeColorList.setCellRenderer( listCellRenderer );
 
 		edu.cmu.cs.dennisc.croquet.swing.BorderPane northPane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
-		northPane.add( this.randomizeButton, java.awt.BorderLayout.NORTH );
+		northPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.randomPersonActionOperation ), java.awt.BorderLayout.NORTH );
 		
 		edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane ubiquitousPane = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 8, 8 ) {
 			@Override

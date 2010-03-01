@@ -408,7 +408,7 @@ public class ZManager {
 			return createMenuItem( (ActionOperation)operation );
 		} else if( operation instanceof BooleanStateOperation ) {
 			BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
-			return new ZCheckBoxMenuItem( booleanStateOperation );
+			return createCheckBoxMenuItem( booleanStateOperation );
 		} else {
 			throw new RuntimeException();
 		}

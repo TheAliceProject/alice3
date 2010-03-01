@@ -81,6 +81,7 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 
 	private edu.cmu.cs.dennisc.zoot.ZTextField textUsername = new edu.cmu.cs.dennisc.zoot.ZTextField();
 	private PasswordPane passwordPane = new PasswordPane();
+	//todo: remove. rely only on operations.
 	private javax.swing.JButton logInButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new TestLogInOperation() );
 	private java.awt.Component createLabel( String text ) {
 		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( text );

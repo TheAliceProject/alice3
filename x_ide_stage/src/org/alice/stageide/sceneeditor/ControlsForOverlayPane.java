@@ -178,9 +178,8 @@ public class ControlsForOverlayPane extends edu.cmu.cs.dennisc.swing.CompassPoin
 
 		this.cameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.dragAdapter );
 		this.isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
-		this.runButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( ide.getRunOperation() );
 		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
-		this.setNorthEastComponent( this.runButton );
+		this.setNorthEastComponent( edu.cmu.cs.dennisc.zoot.ZManager.createButton( ide.getRunOperation() ) );
 		this.setSouthComponent( this.cameraNavigatorWidget );
 		
 		this.setExpanded( this.isSceneEditorExpandedCheckBox.isSelected() );

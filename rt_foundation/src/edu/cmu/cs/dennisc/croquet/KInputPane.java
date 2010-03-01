@@ -33,7 +33,6 @@ import edu.cmu.cs.dennisc.zoot.InputValidator;
 public abstract class KInputPane<E> extends javax.swing.JPanel {
 	private java.util.List< InputValidator > m_validators = new java.util.LinkedList< InputValidator >();
 	private javax.swing.JButton m_okButton;
-	
 	private javax.swing.JDialog m_dialog;
 
 	public KInputPane() {
@@ -161,37 +160,33 @@ public abstract class KInputPane<E> extends javax.swing.JPanel {
 //		}
 		dialog.setTitle( title );
 		dialog.setModal( isModal );
-
-		//todo
-		class OKOperation extends InconsequentialActionOperation {
-			public OKOperation() {
+		class OKAction extends javax.swing.AbstractAction {
+			public OKAction() {
 				this.putValue( javax.swing.Action.NAME, "OK" );
 			}
-			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				KInputPane.this.setOK( true );
 				dialog.setVisible( false );
 			}
 		}
-		//todo
-		class CancelOperation extends InconsequentialActionOperation {
-			public CancelOperation() {
+		class CancelAction extends javax.swing.AbstractAction {
+			public CancelAction() {
 				this.putValue( javax.swing.Action.NAME, "Cancel" );
 			}
-			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
 				KInputPane.this.setOK( false );
 				dialog.setVisible( false );
 			}
 		}
-		javax.swing.JButton okButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new OKOperation() );
 
+		
+		javax.swing.JButton okButton = new javax.swing.JButton( new OKAction() );
+		javax.swing.JButton cancelButton = new javax.swing.JButton( new CancelAction() );
 		javax.swing.JPanel panel = new javax.swing.JPanel();
 		panel.setBackground( this.getBackground() );
 		panel.add( okButton );
 
 		if( this.isCancelDesired() ) {
-			javax.swing.JButton cancelButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new CancelOperation() );
 			panel.add( cancelButton );
 		} else {
 			dialog.setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE );

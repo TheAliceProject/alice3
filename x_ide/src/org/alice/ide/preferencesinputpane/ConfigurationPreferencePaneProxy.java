@@ -116,20 +116,28 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		org.alice.ide.preferences.programming.Configuration[] configurations = org.alice.ide.preferences.ProgrammingPreferences.getSingleton().getBuiltInPreferenceNodes();
 		ConfigurationComboBox activeConfigurationComboBox = new ConfigurationComboBox( configurations );
 		activeConfigurationComboBox.setSelectedIndex( 0 );
-		javax.swing.JButton editButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new EditVariantOperation() );
-		editButton.setEnabled( false );
-		editButton.setToolTipText( "coming soon" );
-		javax.swing.JButton removeButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new RemoveVariantOperation() );
-		removeButton.setEnabled( false );
-		removeButton.setToolTipText( "coming soon" );
-		javax.swing.JButton newButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new NewVariantOperation() );
-		newButton.setEnabled( false );
-		newButton.setToolTipText( "coming soon" );
-		javax.swing.JButton importButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new ImportVariantOperation() );
-		importButton.setEnabled( false );
-		importButton.setToolTipText( "coming soon" );
-		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane northTopPane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( activeConfigurationComboBox, editButton, removeButton );
-		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane northBottomPane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( newButton, importButton, javax.swing.Box.createHorizontalGlue() );
+		EditVariantOperation editVariantOperation = new EditVariantOperation();
+		editVariantOperation.setEnabled( false );
+		editVariantOperation.setToolTipText( "coming soon" );
+		RemoveVariantOperation removeVariantOperation = new RemoveVariantOperation();
+		removeVariantOperation.setEnabled( false );
+		removeVariantOperation.setToolTipText( "coming soon" );
+		NewVariantOperation newVariantOperation = new NewVariantOperation();
+		newVariantOperation.setEnabled( false );
+		newVariantOperation.setToolTipText( "coming soon" );
+		
+		ImportVariantOperation importVariantOperation = new ImportVariantOperation();
+		importVariantOperation.setEnabled( false );
+		importVariantOperation.setToolTipText( "coming soon" );
+
+		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane northTopPane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( 
+				activeConfigurationComboBox, 
+				edu.cmu.cs.dennisc.zoot.ZManager.createButton( editVariantOperation ), 
+				edu.cmu.cs.dennisc.zoot.ZManager.createButton( removeVariantOperation ) );
+		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane northBottomPane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( 
+				edu.cmu.cs.dennisc.zoot.ZManager.createButton( newVariantOperation ), 
+				edu.cmu.cs.dennisc.zoot.ZManager.createButton( importVariantOperation ), 
+				javax.swing.Box.createHorizontalGlue() );
 
 		this.preview = new ConfigurationPreview();
 		this.preview.updateValues( (org.alice.ide.preferences.programming.Configuration)activeConfigurationComboBox.getSelectedItem() );

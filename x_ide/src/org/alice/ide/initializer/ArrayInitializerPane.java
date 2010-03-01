@@ -345,20 +345,16 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.updateButtons();
 
-		javax.swing.JButton addButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.addItemOperation );
-		javax.swing.JButton removeButton =edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.removeItemOperation );
-		javax.swing.JButton moveUpButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemUpOperation );
-		javax.swing.JButton moveDownButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemDownOperation );
 		edu.cmu.cs.dennisc.croquet.swing.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.GridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		buttonPane.add( addButton, gbc );
-		buttonPane.add( removeButton, gbc );
+		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.addItemOperation ), gbc );
+		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.removeItemOperation ), gbc );
 		gbc.insets.top = 8;
-		buttonPane.add( moveUpButton, gbc );
+		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemUpOperation ), gbc );
 		gbc.insets.top = 0;
-		buttonPane.add( moveDownButton, gbc );
+		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemDownOperation ), gbc );
 		gbc.weighty = 1.0;
 		buttonPane.add( javax.swing.Box.createGlue(), gbc );
 

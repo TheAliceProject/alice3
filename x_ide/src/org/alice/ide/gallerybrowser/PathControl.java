@@ -73,25 +73,24 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineA
 			// }
 			@Override
 			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-				DirectoryControl.this.handleSelectChildDirectory();
+				DirectoryControl.this.handleSelectChildDirectory( actionContext );
 			}
 		}
 
-		private javax.swing.JButton selectButton;
-		private javax.swing.JButton selectChildButton;
 		private java.io.File file;
 
+		//todo: remove. rely only on operations.
+		private javax.swing.JButton selectChildButton;
 		public DirectoryControl(java.io.File file) {
 			this.file = file;
-			this.selectButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new SelectDirectoryActionOperation());
 			this.selectChildButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new SelectChildDirectoryActionOperation());
-			this.selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
-			this.add(this.selectButton, java.awt.BorderLayout.CENTER);
-			this.add(this.selectChildButton, java.awt.BorderLayout.EAST);
+			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
+			this.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(new SelectDirectoryActionOperation() ), java.awt.BorderLayout.CENTER);
+			this.add(selectChildButton, java.awt.BorderLayout.EAST);
 		}
 
-		private void handleSelectChildDirectory() {
-			PathControl.this.handleSelectChildDirectory(this.selectChildButton, this.file);
+		private void handleSelectChildDirectory( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			PathControl.this.handleSelectChildDirectory( this.selectChildButton, this.file);
 		}
 
 	}

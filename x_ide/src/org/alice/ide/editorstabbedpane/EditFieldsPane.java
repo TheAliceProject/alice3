@@ -59,13 +59,11 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 	public EditFieldsPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		this.setLayout( new java.awt.BorderLayout() );
 		this.fieldDeclarationsPane = new FieldDeclarationsPane( declaringType );
-		javax.swing.JButton addButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareFieldOperation( declaringType ) );
-
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( fieldDeclarationsPane );
 		scrollPane.setBorder( null );
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 		javax.swing.Box box = javax.swing.Box.createVerticalBox();
-		box.add( addButton );
+		box.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareFieldOperation( declaringType ) ) );
 		this.add( box, java.awt.BorderLayout.EAST );
 	}
 	@Override

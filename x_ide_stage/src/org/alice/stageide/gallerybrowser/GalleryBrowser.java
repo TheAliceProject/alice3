@@ -31,27 +31,21 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	public GalleryBrowser(java.io.File thumbnailRoot, java.util.Map<String, String> map) {
 		this.map = map;
 		this.initialize(thumbnailRoot);
-		javax.swing.JButton createPersonButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new IndirectCreatePersonActionOperation());
-		javax.swing.JButton createTextButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new CreateTextActionOperation());
-		javax.swing.JButton createBillboardButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new CreateBillboardActionOperation());
-		javax.swing.JButton createMyInstanceButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new CreateMyInstance());
-		javax.swing.JButton createTextbookInstanceButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new CreateTextbookInstance());
-
-		java.io.InputStream is = GalleryBrowser.class.getResourceAsStream("images/create_person.png");
-		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
-		createPersonButton.setIcon(new javax.swing.ImageIcon(image));
-		createPersonButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		createPersonButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+		
+		CreateTextActionOperation createTextActionOperation = new CreateTextActionOperation();
+		CreateBillboardActionOperation createBillboardActionOperation = new CreateBillboardActionOperation();
+		CreateMyInstanceActionOperation createMyInstanceActionOperation = new CreateMyInstanceActionOperation();
+		CreateTextbookInstanceActionOperation createTextbookInstanceActionOperation = new CreateTextbookInstanceActionOperation();
 
 		edu.cmu.cs.dennisc.croquet.swing.Pane fromFilePane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
 		fromFilePane.setLayout(new java.awt.GridLayout(2, 1, 0, 4));
-		fromFilePane.add(createMyInstanceButton);
-		fromFilePane.add(createTextbookInstanceButton);
+		fromFilePane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createMyInstanceActionOperation));
+		fromFilePane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createTextbookInstanceActionOperation));
 
 		edu.cmu.cs.dennisc.croquet.swing.Pane bonusPane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
 		bonusPane.setLayout(new java.awt.GridLayout(2, 1, 0, 4));
-		bonusPane.add(createBillboardButton);
-		bonusPane.add(createTextButton);
+		bonusPane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createBillboardActionOperation));
+		bonusPane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createTextActionOperation));
 
 		edu.cmu.cs.dennisc.croquet.swing.BorderPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
 		buttonPane.add(fromFilePane, java.awt.BorderLayout.NORTH);
@@ -59,7 +53,20 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 
 		// this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4,
 		// 4 ) );
+		
+		
 		this.setBackground(new java.awt.Color(220, 220, 255));
+
+		IndirectCreatePersonActionOperation indirectCreatePersonActionOperation = new IndirectCreatePersonActionOperation();
+		javax.swing.JButton createPersonButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(indirectCreatePersonActionOperation);
+		createPersonButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+		createPersonButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+		//todo
+		java.io.InputStream is = GalleryBrowser.class.getResourceAsStream("images/create_person.png");
+		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
+		createPersonButton.setIcon(new javax.swing.ImageIcon(image));
+		
 		this.add(createPersonButton, java.awt.BorderLayout.WEST);
 		this.add(buttonPane, java.awt.BorderLayout.EAST);
 	}

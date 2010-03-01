@@ -125,7 +125,6 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 		}
 	};
 	private TestOperation testOperation = new TestOperation();
-	private javax.swing.JButton test = edu.cmu.cs.dennisc.zoot.ZManager.createButton( testOperation );
 
 	private static edu.cmu.cs.dennisc.alice.ast.Expression getArgumentExpressionAt( edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation, int index ) {
 		assert instanceCreation.arguments.size() >= index;
@@ -249,7 +248,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
 		super.updateRows( rv );
 		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( this.test, null ) );
+		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.zoot.ZManager.createButton( testOperation ), null ) );
 		return rv;
 	}
 		
