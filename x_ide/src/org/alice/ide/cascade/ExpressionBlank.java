@@ -52,7 +52,7 @@ public class ExpressionBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 				}
 				@Override
 				protected javax.swing.JComponent getMenuProxy() {
-					return edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "length" );
+					return edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "length" );
 				}
 			} );
 			this.addSeparator();

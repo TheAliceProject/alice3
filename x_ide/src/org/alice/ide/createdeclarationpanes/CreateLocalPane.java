@@ -62,7 +62,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	}
 
 	private javax.swing.JLabel createDeclarationTextLabel() {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabelWithScaledFont( "Local", 1.2f );
+		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( "Local", 1.2f );
 		return rv;
 	}
 	private java.awt.Component createMethodTextComponent() {
@@ -73,7 +73,7 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		} else {
 			name = "unknown";
 		}
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabelWithScaledFont( name, 1.2f );
+		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( name, 1.2f );
 		return rv;
 	}
 //	@Override

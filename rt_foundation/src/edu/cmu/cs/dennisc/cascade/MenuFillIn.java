@@ -27,7 +27,7 @@ package edu.cmu.cs.dennisc.cascade;
  */
 public abstract class MenuFillIn< E > extends FillIn< E > {
 	//private javax.swing.JLabel label = new javax.swing.JLabel();
-	private javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
+	private javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
 	private String title;
 	public MenuFillIn( String title ) {
 		this.title = title;

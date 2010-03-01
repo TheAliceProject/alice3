@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.cascade;
  * @author Dennis Cosgrove
  */
 public class CancelFillIn extends FillIn< Object > {
-	private javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
+	private javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
 	public CancelFillIn( String text ) {
 		this.label.setText( text );
 	}

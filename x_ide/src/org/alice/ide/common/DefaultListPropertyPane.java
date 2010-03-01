@@ -32,7 +32,7 @@ public class DefaultListPropertyPane extends AbstractListPropertyPane< edu.cmu.c
 	}
 	@Override
 	protected java.awt.Component createComponent( Object instance ) {
-		return edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( instance.toString() );
+		return edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( instance.toString() );
 	}
 }
 

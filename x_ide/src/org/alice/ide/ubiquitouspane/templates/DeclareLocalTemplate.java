@@ -30,7 +30,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	public DeclareLocalTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
 		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
-		this.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( this.getLabelText() ) );
+		this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( this.getLabelText() ) );
 		this.setToolTipText( "" );
 	}
 	

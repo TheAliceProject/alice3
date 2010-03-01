@@ -49,7 +49,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "( " ) );
+			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "( " ) );
 		} else {
 			int n = this.getProperty().size();
 			String text;
@@ -63,7 +63,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			default:
 				text = " with parameters: ";
 			}
-			javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( text, edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE );
+			javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text, edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE );
 			this.add( label );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		}
@@ -71,7 +71,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	@Override
 	protected java.awt.Component createInterstitial( int i, int N ) {
 		if( i<N-1 ) {
-			return edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( ", " );
+			return edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( ", " );
 		} else {
 			return javax.swing.Box.createHorizontalStrut( 8 );
 		}
@@ -90,7 +90,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( " )" ) );
+			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( " )" ) );
 		}
 	}
 }

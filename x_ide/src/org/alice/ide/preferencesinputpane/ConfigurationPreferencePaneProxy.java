@@ -51,13 +51,13 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			if( this.isDefaultFieldNameGenerationDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isDefaultFieldNameGenerationDesiredLabel = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
+				this.isDefaultFieldNameGenerationDesiredLabel = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
 				this.isDefaultFieldNameGenerationDesiredLabel.setForeground( java.awt.Color.GRAY );
 			}
 			if( this.isSyntaxNoiseDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isSyntaxNoiseDesiredLabel = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
+				this.isSyntaxNoiseDesiredLabel = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
 				this.isSyntaxNoiseDesiredLabel.setForeground( java.awt.Color.GRAY );
 			}
 		}
@@ -142,7 +142,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		this.preview = new ConfigurationPreview();
 		this.preview.updateValues( (org.alice.ide.preferences.programming.Configuration)activeConfigurationComboBox.getSelectedItem() );
 		this.pane = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane(
-				edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "active variant:" ),
+				edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "active variant:" ),
 				javax.swing.Box.createVerticalStrut( 4 ),  
 				northTopPane, 
 				javax.swing.Box.createVerticalStrut( 4 ),  

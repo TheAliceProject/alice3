@@ -5,8 +5,8 @@ public class MemoryPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	private static final long M = K*K;
 
 	private MemoryView memoryView = new MemoryView();
-	private javax.swing.JLabel label0 = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "0" );
-	private javax.swing.JLabel labelMax = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
+	private javax.swing.JLabel label0 = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "0" );
+	private javax.swing.JLabel labelMax = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
 	
 	public MemoryPane() {
 		java.lang.management.MemoryMXBean memory = java.lang.management.ManagementFactory.getMemoryMXBean();

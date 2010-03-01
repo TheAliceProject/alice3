@@ -51,7 +51,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			//this.add( zoot.ZLabel.acquire( " {" ) );
 		} else {
-			this.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "declare ", edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE ) );
+			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "declare ", edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
 			if( methodDeclaredInAlice.isProcedure() ) {
 				sb.append( " procedure " );
@@ -59,7 +59,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 				this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( " function " );
 			}
-			this.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( sb.toString(), edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE ) );
+			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( sb.toString(), edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE ) );
 		}
 		
 		

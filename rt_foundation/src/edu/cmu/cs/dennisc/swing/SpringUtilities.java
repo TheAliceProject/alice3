@@ -88,7 +88,7 @@ public class SpringUtilities {
 //		return layout;
 //	}
 	public static java.awt.Component createColumn0Label(String text) {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel(text);
+		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel(text);
 		rv.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
 		return rv;
 	}

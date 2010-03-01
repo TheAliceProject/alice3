@@ -28,7 +28,7 @@ package org.alice.apis.moveandturn.inputpanes;
 public abstract class InputPane< E > extends edu.cmu.cs.dennisc.croquet.KInputPane< E > {
 	private javax.swing.JLabel messageLabel;
 	public InputPane( String message ) {
-		this.messageLabel = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabelWithScaledFont( message, 1.5f );
+		this.messageLabel = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( message, 1.5f );
 		final int INSET = 12;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 		this.setLayout( new java.awt.BorderLayout() );

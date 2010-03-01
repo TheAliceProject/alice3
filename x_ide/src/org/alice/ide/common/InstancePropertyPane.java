@@ -39,7 +39,7 @@ public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.denni
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
+			this.label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
 			this.add( this.label );
 		}
 		this.label.setText( getProperty().getValue().toString() );

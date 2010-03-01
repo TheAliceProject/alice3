@@ -69,7 +69,7 @@ public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennis
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel();
+			this.label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
 			this.add( this.label );
 		}
 		if( this.prevResource != null ) {

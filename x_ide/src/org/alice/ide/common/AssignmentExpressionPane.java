@@ -52,7 +52,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.swing.L
 			desiredValueType = field.getDesiredValueType();
 			parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, null, desiredValueType ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
-				parent.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( " . " ) );
+				parent.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( " . " ) );
 			}
 			parent.add( nameLabel );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
@@ -69,16 +69,16 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.swing.L
 			parent.add( new ParameterPane( null, (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter ) );
 		} else {
 			desiredValueType = null;
-			parent.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "TODO" ) );
+			parent.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "TODO" ) );
 		}
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "[ " ) );
+			parent.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "[ " ) );
 			parent.add( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
-			parent.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( " ]" ) );
+			parent.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( " ]" ) );
 		}
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			parent.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( " = " ) );
+			parent.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( " = " ) );
 		} else {
 			parent.add( new org.alice.ide.common.GetsPane( true ) );
 		}

@@ -51,9 +51,9 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		
 		if( getIDE().isJava() ) {
 			javax.swing.Box header = javax.swing.Box.createHorizontalBox();
-			header.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "new " ) );
+			header.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "new " ) );
 			header.add( new TypeComponent( anonymousConstructor.getDeclaringType().getSuperType() ) );
-			header.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "() {" ) );
+			header.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "() {" ) );
 			header.setAlignmentX( 0.0f );
 			this.add( header );
 		}
@@ -72,7 +72,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 			this.add( pane );
 		}
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "}" ) );
+			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "}" ) );
 		}
 		this.setBackground( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
 	}

@@ -25,12 +25,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class CroquetUtilities {
-	private CroquetUtilities() {
+public class LabelUtilities {
+	private LabelUtilities() {
 		throw new AssertionError();
-	}
-	public static javax.swing.DefaultComboBoxModel createDefaultComboBoxModel( Object... items ) {
-		return new javax.swing.DefaultComboBoxModel( items );
 	}
 	public static javax.swing.JLabel createLabel() {
 		return new javax.swing.JLabel();

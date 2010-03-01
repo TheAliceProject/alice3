@@ -33,7 +33,7 @@ public class LabeledExpressionFillIn< E extends edu.cmu.cs.dennisc.alice.ast.Exp
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( this.text, edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.LIGHT );
+		javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( this.text, edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.LIGHT );
 		return new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( super.createMenuProxy(), javax.swing.Box.createHorizontalStrut( 16 ), label );
 	}
 }

@@ -84,7 +84,7 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	//todo: remove. rely only on operations.
 	private javax.swing.JButton logInButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new TestLogInOperation() );
 	private java.awt.Component createLabel( String text ) {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( text );
+		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
@@ -100,10 +100,10 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 		};
 
 		edu.cmu.cs.dennisc.croquet.swing.Pane signUpPane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
-		signUpPane.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "Not a member?" ) );
+		signUpPane.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "Not a member?" ) );
 		edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation hyperlinkOperation = new edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation( "http://bugs.alice.org:8080/secure/Signup!default.jspa", "Sign up" );
 		signUpPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createHyperlink( hyperlinkOperation ) );
-		signUpPane.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "for an account." ) );
+		signUpPane.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "for an account." ) );
 
 		edu.cmu.cs.dennisc.croquet.swing.Pane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
 		buttonPane.add( this.logInButton );

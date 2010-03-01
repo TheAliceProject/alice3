@@ -34,7 +34,7 @@ public abstract class PreferenceLabeledPaneProxy< E > extends PreferenceProxy< E
 
 	protected void createPane( java.awt.Component control ) {
 		this.pane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
-				edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( this.getPreference().getKey() + ":" ),
+				edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( this.getPreference().getKey() + ":" ),
 				javax.swing.Box.createHorizontalStrut( 8 ),
 				control 
 		);

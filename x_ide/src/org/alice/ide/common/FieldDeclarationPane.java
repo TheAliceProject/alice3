@@ -35,7 +35,7 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineA
 		} else {
 			text = "initialize ";
 		}
-		this.add( edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( text ) );
+		this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text ) );
 		this.add( new TypeComponent( field.getValueType() ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( nameLabel, 1.5f );
