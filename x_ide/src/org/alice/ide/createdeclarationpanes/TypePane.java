@@ -46,7 +46,7 @@ class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStat
 public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 	private DeclarationProperty< AbstractType > typeProperty;
 	private org.alice.ide.common.TypeComboBox typeComboBox;
-	private javax.swing.JCheckBox isArrayCheckBox;
+	private IsArrayStateOperation isArrayStateOperation;
 
 	public TypePane( DeclarationProperty< AbstractType > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isArrayCheckBoxEnabled ) {
 		assert typeProperty != null;
@@ -91,17 +91,20 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 			}
 		} );
 		
-		this.isArrayCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( new IsArrayStateOperation( isArrayProperty ) );
-		this.isArrayCheckBox.setOpaque( false );
-		this.isArrayCheckBox.setEnabled( isArrayCheckBoxEnabled );
+		this.isArrayStateOperation = new IsArrayStateOperation( isArrayProperty );
+		this.isArrayStateOperation.setEnabled( isArrayCheckBoxEnabled );
+		
+		javax.swing.JCheckBox isArrayCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( this.isArrayStateOperation );
+		isArrayCheckBox.setOpaque( false );
+		
 		this.add( this.typeComboBox );
-		this.add( this.isArrayCheckBox );
+		this.add( isArrayCheckBox );
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem();
 		if( rv != null ) {
-			if( this.isArrayCheckBox.isSelected() ) {
+			if( this.isArrayStateOperation.getState() ) {
 				rv = rv.getArrayType();
 			}
 		}
