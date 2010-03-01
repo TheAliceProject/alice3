@@ -29,6 +29,9 @@ public class CryptographyUtilities {
 	private static final byte[] SALT = { (byte)0xc7, (byte)0x73, (byte)0x21, (byte)0x8c, (byte)0x7e, (byte)0xc8, (byte)0xee, (byte)0x99 };
 	private static final int ITERATION_COUNT = 20;
 
+	private CryptographyUtilities() {
+		throw new AssertionError();
+	}
 	public static byte[] encrypt( byte[] clear, char[] password ) {
 		try {
 			javax.crypto.spec.PBEParameterSpec pbeParamSpec = new javax.crypto.spec.PBEParameterSpec( SALT, ITERATION_COUNT );
