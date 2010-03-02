@@ -43,6 +43,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	}
 	private static Class<?> getClsWrapperIfNecessary( TypeDeclaredInJava typeDeclaredInJava ) { 
 		Class<?> rv = typeDeclaredInJava.getClassReflectionProxy().getReification();
+		assert rv != null : typeDeclaredInJava;
 		if( rv.isPrimitive() ) {
 			rv = s_mapPrimitiveToWrapper.get( rv );
 			assert rv != null;

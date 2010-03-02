@@ -221,6 +221,25 @@ public class StageIDE extends org.alice.ide.IDE {
 		return super.getOverrideComponent( factory, expression );
 	}
 	@Override
+	public boolean isDropDownDesiredForFieldInitializer( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
+//			edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
+//			edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+//			if( constructor != null ) {
+//				edu.cmu.cs.dennisc.alice.ast.AbstractType type = constructor.getDeclaringType();
+//				if( type != null ) {
+//					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava firstTypeEncounteredDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
+//					if( firstTypeEncounteredDeclaredInJava != null ) {
+//						if( firstTypeEncounteredDeclaredInJava.isAssignableFrom( org.alice.apis.moveandturn.AbstractTransformable.class ) ) {
+//							return false;
+//						}
+//					}
+//				}
+//			}
+//		}
+		return super.isDropDownDesiredForFieldInitializer( field );
+	}
+	@Override
 	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( super.isDropDownDesiredFor( expression ) ) {
 			if( expression != null ) {

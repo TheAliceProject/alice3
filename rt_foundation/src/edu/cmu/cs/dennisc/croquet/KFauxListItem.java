@@ -20,24 +20,12 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOperation extends AbstractDeclareFieldOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
-		this.putValue( javax.swing.Action.NAME, "Declare Property..." );
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
-		return this.ownerType;
-	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( ownerType );
-		return createFieldPane.showInJDialog( getIDE() );
-	}
+public interface KFauxListItem< E > {
+	public void update( java.awt.Component contents, int index, boolean isSelected, boolean cellHasFocus );
+	public java.awt.Component getComponent();
 }
