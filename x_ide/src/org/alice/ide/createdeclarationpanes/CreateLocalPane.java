@@ -35,15 +35,10 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	protected boolean isIsReassignableComponentDesired() {
 		return true;
 	}
-	
-	
-	private edu.cmu.cs.dennisc.alice.ast.BlockStatement block;
-	private javax.swing.JLabel declarationTextLabel = this.createDeclarationTextLabel();
-		
+
 	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		super( new org.alice.ide.name.validators.LocalNameValidator( block ) );
 		assert block != null;
-		this.block = block;
 		this.setBackground( getIDE().getLocalColor() );
 	}
 
@@ -61,37 +56,6 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 		return true;
 	}
 
-	private javax.swing.JLabel createDeclarationTextLabel() {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( "Local", 1.2f );
-		return rv;
-	}
-	private java.awt.Component createMethodTextComponent() {
-		String name;
-		if( this.block != null ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = this.block.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
-			name = method.getName();
-		} else {
-			name = "unknown";
-		}
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( name, 1.2f );
-		return rv;
-	}
-//	@Override
-//	protected final java.awt.Component[] createDeclarationRow() {
-//		class DeclarationComponent extends swing.LineAxisPane {
-//			public DeclarationComponent() {
-//				super(
-//						javax.swing.Box.createHorizontalGlue(),
-//						zoot.ZLabel.acquire( "declare ", zoot.font.ZTextPosture.OBLIQUE ), 
-//						CreateLocalPane.this.declarationTextLabel, 
-//						zoot.ZLabel.acquire( " for method:", zoot.font.ZTextPosture.OBLIQUE ) 
-//				);
-//				this.setAlignmentX( RIGHT_ALIGNMENT );
-//			}
-//		}
-//		//return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent( this.declaringType ), null );
-//		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( new DeclarationComponent(), this.createMethodTextComponent() );
-//	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement getActualInputValue() {
 		String name = this.getDeclarationName();

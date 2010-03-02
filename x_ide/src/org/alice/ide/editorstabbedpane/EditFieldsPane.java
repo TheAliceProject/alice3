@@ -1,10 +1,13 @@
 package org.alice.ide.editorstabbedpane;
 
+import javax.swing.UIManager;
+
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;;
 /**
 * @author Dennis Cosgrove
 */
 public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boolean > {
+	private static java.awt.Color selectionBackground = UIManager.getColor("List.selectionBackground");
 	private edu.cmu.cs.dennisc.croquet.KFauxList< FieldDeclaredInAlice > fauxList;
 	private edu.cmu.cs.dennisc.zoot.list.EditableListPane< FieldDeclaredInAlice > editableListPane;
 	public EditFieldsPane( final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
@@ -23,14 +26,14 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 					public void update( java.awt.Component contents, int index, boolean isSelected, boolean cellHasFocus ) {
 						java.awt.Color background;
 						if( isSelected ) {
-							background = new java.awt.Color( 127, 127, 255 );
+							background = selectionBackground;
 						} else {
 							background = java.awt.Color.WHITE;
 						}
 						this.component.setBackground( background );
 						this.component.setOpaque( true );
 						this.component.removeAll();
-						this.component.add( contents, java.awt.BorderLayout.CENTER );
+						this.component.add( contents, java.awt.BorderLayout.WEST );
 					}
 				};
 			}
@@ -53,9 +56,15 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 				super( org.alice.ide.IDE.PROJECT_GROUP, fauxList );
 			}
 			@Override
-			protected FieldDeclaredInAlice create() {
+			protected FieldDeclaredInAlice create() throws Exception {
 				org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( declaringType );
-				return createFieldPane.showInJDialog( org.alice.ide.IDE.getSingleton() );
+				FieldDeclaredInAlice rv = createFieldPane.showInJDialog( org.alice.ide.IDE.getSingleton() );
+				if( rv != null ) {
+					//pass
+				} else {
+					throw new Exception();
+				}
+				return rv;
 			}
 			@Override
 			protected boolean isEnabledAtAll() {

@@ -97,29 +97,4 @@ public class BogusNode extends edu.cmu.cs.dennisc.alice.ast.Node {
 			return null;
 		}
 	}
-//	
-//	public void handleComponentTypeChange( edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType ) {
-//		this.expressionType = expressionType;
-//		edu.cmu.cs.dennisc.alice.ast.Expression expression;
-//		if( expressionType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE ) {
-//			expression = new edu.cmu.cs.dennisc.alice.ast.BooleanLiteral( false );
-//		} else if( expressionType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE ) {
-//			expression = new edu.cmu.cs.dennisc.alice.ast.DoubleLiteral( 0.0 );
-//		} else if( expressionType == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) {
-//			expression = new edu.cmu.cs.dennisc.alice.ast.IntegerLiteral( 0 );
-//		} else {
-//			expression = new edu.cmu.cs.dennisc.alice.ast.NullLiteral();
-//		}
-//		this.expression.setValue( expression );
-//	}
-//	public edu.cmu.cs.dennisc.alice.ast.Expression createCopyOfExpressionValue() {
-//		edu.cmu.cs.dennisc.alice.ast.Expression src = this.expression.getValue();
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: create copy" );
-//		return src;
-//		//		if( src != null ) {
-//		//			return (edu.cmu.cs.dennisc.alice.ast.Expression)org.alice.ide.IDE.getSingleton().createCopy( src );
-//		//		} else {
-//		//			return null;
-//		//		}
-//	}
 }

@@ -31,18 +31,23 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 			this.putValue( javax.swing.Action.NAME, name );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			final E e = create();
-			final int index = getListSize();
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-				@Override
-				public void doOrRedo( boolean isDo ) {
-					add( index, e );
-				}
-				@Override
-				public void undo() {
-					remove( index, e );
-				}
-			});
+			try {
+				final E e = create();
+				final int index = getListSize();
+				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+					@Override
+					public void doOrRedo( boolean isDo ) {
+						add( index, e );
+					}
+					@Override
+					public void undo() {
+						remove( index, e );
+					}
+				});
+			//todo
+			} catch( Exception e ) {
+				actionContext.cancel();
+			}
 		}
 	}
 
@@ -140,7 +145,7 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 	}
 
 	protected abstract boolean isEnabledAtAll();
-	protected abstract E create();
+	protected abstract E create() throws Exception;
 	protected abstract void add( int index, E e );
 	protected abstract void remove( int index, E e );
 	protected abstract E getItemAt( int index );

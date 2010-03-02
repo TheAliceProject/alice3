@@ -32,11 +32,6 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	public ExpressionPropertyDropDownPane( java.awt.Component prefixPane, java.awt.Component component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		super( prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
-		if( desiredValueType != null ) {
-			//pass
-		} else {
-			desiredValueType = expressionProperty.getExpressionType();
-		}
 		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation( this.expressionProperty, desiredValueType ) );
 	}
 	@Deprecated

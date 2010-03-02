@@ -17,10 +17,10 @@ public class StageIDE extends org.alice.ide.IDE {
 				int oldState = e.getOldState();
 				int newState = e.getNewState();
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "windowStateChanged", oldState, newState, java.awt.Frame.ICONIFIED );
-				if( ( oldState & java.awt.Frame.ICONIFIED ) == java.awt.Frame.ICONIFIED ) {
+				if( (oldState & java.awt.Frame.ICONIFIED) == java.awt.Frame.ICONIFIED ) {
 					edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 				}
-				if( ( newState & java.awt.Frame.ICONIFIED ) == java.awt.Frame.ICONIFIED ) {
+				if( (newState & java.awt.Frame.ICONIFIED) == java.awt.Frame.ICONIFIED ) {
 					edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 				}
 			}
@@ -33,20 +33,23 @@ public class StageIDE extends org.alice.ide.IDE {
 			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.alice.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 1 of 3): Alice 3", edu.cmu.cs.dennisc.alice.License.TEXT, "Alice" );
 			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.wustl.cse.lookingglass.apis.walkandtouch.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 2 of 3): Looking Glass Walk & Touch API",
 					edu.wustl.cse.lookingglass.apis.walkandtouch.License.TEXT_FOR_USE_IN_ALICE, "the Looking Glass Walk & Touch API" );
-			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 3 of 3): The Sims (TM) 2 Art Assets", edu.cmu.cs.dennisc.nebulous.License.TEXT, "The Sims (TM) 2 Art Assets" );
+			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 3 of 3): The Sims (TM) 2 Art Assets",
+					edu.cmu.cs.dennisc.nebulous.License.TEXT, "The Sims (TM) 2 Art Assets" );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			javax.swing.JOptionPane.showMessageDialog( this, "You must accept the license agreements in order to use Alice 3, the Looking Glass Walk & Touch API, and The Sims (TM) 2 Art Assets.  Exiting." );
 			System.exit( -1 );
 		}
 	}
-	
+
 	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava COLOR_TYPE = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.Color.class );
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractField, ColorIcon > mapFieldToIcon = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.AbstractField, ColorIcon >();
+
 	class ColorIcon implements javax.swing.Icon {
 		private static final int SIZE = 15;
 		private java.awt.Color fillColor;
 		private java.awt.Color outlineColor;
+
 		public ColorIcon( java.awt.Color color ) {
 			this.fillColor = color;
 			float[] hsb = new float[ 3 ];
@@ -59,20 +62,21 @@ public class StageIDE extends org.alice.ide.IDE {
 			}
 		}
 		public int getIconWidth() {
-			return SIZE+3 + 2;
+			return SIZE + 3 + 2;
 		}
 		public int getIconHeight() {
-			return SIZE+3;
+			return SIZE + 3;
 		}
 		public void paintIcon( java.awt.Component arg0, java.awt.Graphics g, int x, int y ) {
 			g.setColor( this.fillColor );
-			g.fillRect( x+1 + 2, y+1, SIZE, SIZE );
+			g.fillRect( x + 1 + 2, y + 1, SIZE, SIZE );
 			if( this.outlineColor != null ) {
 				g.setColor( this.outlineColor );
-				g.drawRect( x+1 + 2, y+1, SIZE, SIZE );
+				g.drawRect( x + 1 + 2, y + 1, SIZE, SIZE );
 			}
 		}
 	}
+
 	private javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		if( field.getDeclaringType() == COLOR_TYPE && field.getValueType() == COLOR_TYPE ) {
 			ColorIcon rv = this.mapFieldToIcon.get( field );
@@ -127,16 +131,16 @@ public class StageIDE extends org.alice.ide.IDE {
 					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
 						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyEvent.class );
 						if( parameter.getValueType() == typeMouseButtonEvent ) {
-//							String[] methodNames = new String[] { "isKey", "isLetter", "isDigit" };
-//							Class<?>[][] parameterClses = new Class<?>[][] { new Class<?>[]{ org.alice.apis.moveandturn.Key.class }, new Class<?>[]{}, new Class<?>[]{} };
-//							for( int i=0; i<methodNames.length; i++ ) {
-//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodNames[ i ], parameterClses[ i ] );
-//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
-//								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
-//								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
-//							}
+							//							String[] methodNames = new String[] { "isKey", "isLetter", "isDigit" };
+							//							Class<?>[][] parameterClses = new Class<?>[][] { new Class<?>[]{ org.alice.apis.moveandturn.Key.class }, new Class<?>[]{}, new Class<?>[]{} };
+							//							for( int i=0; i<methodNames.length; i++ ) {
+							//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodNames[ i ], parameterClses[ i ] );
+							//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
+							//								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
+							//								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
+							//							}
 
-							{ 
+							{
 								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( "isKey", org.alice.apis.moveandturn.Key.class );
 								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
 								blank.addFillIn( new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( expression, method ) );
@@ -163,8 +167,10 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
+
 	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava REVOLUTIONS_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.AngleInRevolutions.class, Number.class );
 	private static final edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava PORTION_CONSTRUCTOR = edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInJava.get( org.alice.apis.moveandturn.Portion.class, Number.class );
+
 	protected org.alice.ide.common.DeclarationNameLabel createDeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		//todo: better name
 		class ThisFieldAccessNameLabel extends org.alice.ide.common.DeclarationNameLabel {
@@ -186,7 +192,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	public java.awt.Component getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
-			edu.cmu.cs.dennisc.alice.ast.Expression fieldExpression =  fieldAccess.expression.getValue();
+			edu.cmu.cs.dennisc.alice.ast.Expression fieldExpression = fieldAccess.expression.getValue();
 			if( fieldExpression instanceof edu.cmu.cs.dennisc.alice.ast.ThisExpression ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 				if( field.getDeclaringType().isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
@@ -208,10 +214,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
 					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
-						return new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( 
-								factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ),
-								edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( " revolutions" )
-						);
+						return new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( " revolutions" ) );
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
 						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );
 					}
@@ -222,21 +225,24 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 	@Override
 	public boolean isDropDownDesiredForFieldInitializer( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-//		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
-//			edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
-//			edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
-//			if( constructor != null ) {
-//				edu.cmu.cs.dennisc.alice.ast.AbstractType type = constructor.getDeclaringType();
-//				if( type != null ) {
-//					edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava firstTypeEncounteredDeclaredInJava = type.getFirstTypeEncounteredDeclaredInJava();
-//					if( firstTypeEncounteredDeclaredInJava != null ) {
-//						if( firstTypeEncounteredDeclaredInJava.isAssignableFrom( org.alice.apis.moveandturn.AbstractTransformable.class ) ) {
-//							return false;
-//						}
-//					}
-//				}
-//			}
-//		}
+		edu.cmu.cs.dennisc.alice.ast.AbstractType declaringType = field.getDeclaringType();
+		if( declaringType != null ) {
+			if( declaringType.isAssignableTo( org.alice.apis.moveandturn.Scene.class ) ) {
+				edu.cmu.cs.dennisc.alice.ast.Expression initializer = field.initializer.getValue();
+				if( initializer instanceof edu.cmu.cs.dennisc.alice.ast.InstanceCreation ) {
+					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)initializer;
+					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
+					if( constructor != null ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractType type = constructor.getDeclaringType();
+						if( type != null ) {
+							if( type.isAssignableTo( org.alice.apis.moveandturn.AbstractTransformable.class ) ) {
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
 		return super.isDropDownDesiredForFieldInitializer( field );
 	}
 	@Override
@@ -263,14 +269,15 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected MoveAndTurnRuntimeProgram createRuntimeProgram( edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType, edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm ) {
 		return new MoveAndTurnRuntimeProgram( sceneType, vm );
 	}
+
 	private int xLocation = 100;
 	private int yLocation = 100;
-	
+
 	protected void showInJDialog( MoveAndTurnRuntimeProgram rtProgram ) {
 		this.getSceneEditor().setRenderingEnabled( false );
 		//this.setRenderingEnabled( false );
 		try {
-			rtProgram.showInJDialog( this, true, new String[]{ "X_LOCATION="+xLocation, "Y_LOCATION="+yLocation } );
+			rtProgram.showInJDialog( this, true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
 			try {
 				this.xLocation = Integer.parseInt( rtProgram.getParameter( "X_LOCATION" ) );
@@ -286,7 +293,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			//this.setRenderingEnabled( true );
 		}
 	}
-	
+
 	@Override
 	public void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
@@ -308,7 +315,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		this.getSceneEditor().setRenderingEnabled( false );
 		//this.setRenderingEnabled( false );
 		try {
-			testProgram.showInJDialog( this, true, new String[]{ "X_LOCATION="+xLocation, "Y_LOCATION="+yLocation } );
+			testProgram.showInJDialog( this, true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
 			try {
 				this.xLocation = Integer.parseInt( testProgram.getParameter( "X_LOCATION" ) );
@@ -344,20 +351,20 @@ public class StageIDE extends org.alice.ide.IDE {
 
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, String > mapTypeToText;
 
-	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getDeclaredMethod( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String name, Class<?>... paramClses ) {
+	private static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getDeclaredMethod( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String name, Class< ? >... paramClses ) {
 		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( type.getDeclaredMethod( name, paramClses ), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 	}
-	private static edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice getDeclaredConstructor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, Class<?>... paramClses ) {
+	private static edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice getDeclaredConstructor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, Class< ? >... paramClses ) {
 		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( type.getDeclaredConstructor( paramClses ), edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice.class );
 	}
-	
+
 	@Override
 	public void setProject( edu.cmu.cs.dennisc.alice.Project project ) {
 		if( project != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
-				
+
 				final String CUSTOM_SET_UP_METHOD_NAME = "performMySetUp";
 				boolean isSetUpMethodReplacementDesired = false;
 				java.util.Map< String, String > map = new java.util.HashMap< String, String >();
@@ -383,8 +390,9 @@ public class StageIDE extends org.alice.ide.IDE {
 							edu.cmu.cs.dennisc.alice.ast.BlockStatement setUpBody = setUpMethod.body.getValue();
 							if( setUpBody != null && setUpBody.statements.size() == 2 ) {
 								int index = sceneType.methods.indexOf( setUpMethod );
-								if( index >= 0 ) {									
-									edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ) {
+								if( index >= 0 ) {
+									edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice >(
+											edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class ) {
 										@Override
 										protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice ) {
 											return methodDeclaredInAlice == setUpMethod;
@@ -400,10 +408,8 @@ public class StageIDE extends org.alice.ide.IDE {
 												edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 												if( methodInvocation.method.getValue() == setUpMethod ) {
 													constructorBody.statements.clear();
-													constructorBody.statements.add(
-															org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), setUpGeneratedMethod ),
-															org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), setUpCustomMethod )
-													);
+													constructorBody.statements.add( org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), setUpGeneratedMethod ), org.alice.ide.ast.NodeUtilities
+															.createMethodInvocationStatement( new edu.cmu.cs.dennisc.alice.ast.ThisExpression(), setUpCustomMethod ) );
 													sceneType.methods.remove( index );
 												}
 											}
@@ -411,7 +417,7 @@ public class StageIDE extends org.alice.ide.IDE {
 									}
 								}
 							}
-							
+
 						}
 					}
 				}
@@ -419,7 +425,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 		super.setProject( project );
 	}
-	
+
 	@Override
 	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		if( mapTypeToText != null ) {
@@ -451,17 +457,17 @@ public class StageIDE extends org.alice.ide.IDE {
 		super.addFillInAndPossiblyPartFills( blank, expression, type, type2 );
 		if( type.isAssignableTo( org.alice.apis.moveandturn.PolygonalModel.class ) ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = null;
-			Class<?> paramCls = null;
+			Class< ? > paramCls = null;
 			if( type2.isAssignableFrom( org.alice.apis.moveandturn.Model.class ) ) {
 				typeInJava = type.getFirstTypeEncounteredDeclaredInJava();
-				Class<?> cls = typeInJava.getClassReflectionProxy().getReification();
+				Class< ? > cls = typeInJava.getClassReflectionProxy().getReification();
 				for( Class innerCls : cls.getDeclaredClasses() ) {
 					if( innerCls.getSimpleName().equals( "Part" ) ) {
 						paramCls = innerCls;
 					}
 				}
 			}
-			if( paramCls !=null ) {
+			if( paramCls != null ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod getPartMethod = typeInJava.getDeclaredMethod( "getPart", paramCls );
 				if( getPartMethod != null ) {
 					blank.addFillIn( new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( expression, getPartMethod ) );
@@ -491,17 +497,17 @@ public class StageIDE extends org.alice.ide.IDE {
 			return super.getEnumTypeForInterfaceType( interfaceType );
 		}
 	}
-	
-//	@Override
-//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-//		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.EyeColor.class ) ) {
-//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseEyeColor.class );
-//		} else if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.SkinTone.class ) ) {
-//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseSkinTone.class );
-//		} else {
-//			return super.getTypeFor( type );
-//		}
-//	}
+
+	//	@Override
+	//	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getTypeFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	//		if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.EyeColor.class ) ) {
+	//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseEyeColor.class );
+	//		} else if( type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.SkinTone.class ) ) {
+	//			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.BaseSkinTone.class );
+	//		} else {
+	//			return super.getTypeFor( type );
+	//		}
+	//	}
 
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getActualTypeForDesiredParameterType( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -512,10 +518,10 @@ public class StageIDE extends org.alice.ide.IDE {
 		} else if( type.isAssignableTo( org.alice.apis.moveandturn.VolumeLevel.class ) ) {
 			return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.NUMBER_OBJECT_TYPE;
 		} else {
-            return super.getActualTypeForDesiredParameterType( type );
+			return super.getActualTypeForDesiredParameterType( type );
 		}
 	}
-	
+
 	@Override
 	protected java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > addExpressionFillerInners( java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > rv ) {
 		super.addExpressionFillerInners( rv );
@@ -532,7 +538,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		rv.add( new org.alice.stageide.cascade.fillerinners.HairFillerInner() );
 		return rv;
 	}
-	
+
 	@Override
 	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
@@ -549,37 +555,35 @@ public class StageIDE extends org.alice.ide.IDE {
 		return false == edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( typeInJava.getClassReflectionProxy().getReification(), org.alice.apis.moveandturn.Scene.class, org.alice.apis.moveandturn.AbstractCamera.class );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram(edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, final int frameRate ) {
-		return new MoveAndTurnRuntimeProgram(sceneType, vm)
-		{
+	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, final int frameRate ) {
+		return new MoveAndTurnRuntimeProgram( sceneType, vm ) {
 			@Override
-			protected java.awt.Component createSpeedMultiplierControlPanel() 
-			{
+			protected java.awt.Component createSpeedMultiplierControlPanel() {
 				return null;
 			}
 			@Override
-			protected edu.cmu.cs.dennisc.animation.Animator createAnimator() 
-			{
+			protected edu.cmu.cs.dennisc.animation.Animator createAnimator() {
 				return new edu.cmu.cs.dennisc.animation.FrameBasedAnimator( frameRate );
 			}
 
 			@Override
-			protected void postRun() 
-			{
+			protected void postRun() {
 				super.postRun();
 				this.setMovieEncoder( null );
 			}
 		};
 	}
+
 	private static final int THUMBNAIL_WIDTH = 160;
-	private static final int THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH*3/4;
+	private static final int THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH * 3 / 4;
 	private edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass offscreenLookingGlass;
+
 	@Override
 	protected java.awt.image.BufferedImage createThumbnail() throws Throwable {
 		if( offscreenLookingGlass != null ) {
 			//pass
 		} else {
-			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass(null);
+			offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );
 			offscreenLookingGlass.setSize( THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT );
 		}
 		org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor moveAndTurnSceneEditor = (org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor)this.getSceneEditor();
@@ -601,12 +605,12 @@ public class StageIDE extends org.alice.ide.IDE {
 		java.awt.image.BufferedImage rv = offscreenLookingGlass.getColorBuffer();
 		return rv;
 	}
-	
+
 	@Override
 	protected org.alice.ide.openprojectpane.TabContentPane createTemplatesPane() {
 		return new org.alice.stageide.openprojectpane.templates.TemplatesTabContentPane();
 	}
-	
+
 	@Override
 	public java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >>> updateNameClsPairsForRelationalFillIns( java.util.List< edu.cmu.cs.dennisc.pattern.Tuple2< String, Class< ? >>> rv ) {
 		super.updateNameClsPairsForRelationalFillIns( rv );
