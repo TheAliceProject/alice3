@@ -375,7 +375,6 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.addItemOperation.setEnabled( isTypeValid );
 		int index = this.list.getSelectedIndex();
 		final int N = this.list.getComponentCount()-1;
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( index, N );
 		this.removeItemOperation.setEnabled( isTypeValid && index != -1 );
 		this.moveItemUpOperation.setEnabled( isTypeValid && index > 0 );
 		this.moveItemDownOperation.setEnabled( isTypeValid && index >= 0 && index < N - 1 );

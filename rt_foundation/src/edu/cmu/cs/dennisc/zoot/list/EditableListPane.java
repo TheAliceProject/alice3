@@ -203,12 +203,7 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 
 		this.add( buttonPane, java.awt.BorderLayout.EAST );
 
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( component ) {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
-			}
-		};
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( component );
 		scrollPane.setBorder( null );
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 	}

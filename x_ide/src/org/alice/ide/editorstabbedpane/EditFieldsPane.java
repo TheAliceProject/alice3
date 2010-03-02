@@ -1,59 +1,36 @@
 package org.alice.ide.editorstabbedpane;
 
-import javax.swing.UIManager;
-
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;;
 /**
 * @author Dennis Cosgrove
 */
 public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boolean > {
-	private static java.awt.Color selectionBackground = UIManager.getColor("List.selectionBackground");
-	private edu.cmu.cs.dennisc.croquet.KFauxList< FieldDeclaredInAlice > fauxList;
+	private javax.swing.JList list;
 	private edu.cmu.cs.dennisc.zoot.list.EditableListPane< FieldDeclaredInAlice > editableListPane;
 	public EditFieldsPane( final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		this.fauxList = new edu.cmu.cs.dennisc.croquet.KFauxList< FieldDeclaredInAlice >() {
+		this.list = new javax.swing.JList();
+		this.list.setCellRenderer( new edu.cmu.cs.dennisc.croquet.ContentsCachingListCellRenderer< FieldDeclaredInAlice >() {
 			@Override
 			protected java.awt.Component createComponent(FieldDeclaredInAlice fieldDeclaredInAlice) {
 				return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), fieldDeclaredInAlice );
 			}
 			@Override
-			protected edu.cmu.cs.dennisc.croquet.KFauxListItem< FieldDeclaredInAlice > createFauxListItem() {
-				return new edu.cmu.cs.dennisc.croquet.KFauxListItem< FieldDeclaredInAlice >() {
-					private javax.swing.JComponent component = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
-					public java.awt.Component getComponent() {
-						return this.component;
-					}
-					public void update( java.awt.Component contents, int index, boolean isSelected, boolean cellHasFocus ) {
-						java.awt.Color background;
-						if( isSelected ) {
-							background = selectionBackground;
-						} else {
-							background = java.awt.Color.WHITE;
-						}
-						this.component.setBackground( background );
-						this.component.setOpaque( true );
-						this.component.removeAll();
-						this.component.add( contents, java.awt.BorderLayout.WEST );
-					}
-				};
+			public void update( java.awt.Component contents, int index, boolean isSelected, boolean cellHasFocus ) {
+				this.setOpaque( isSelected );
+				this.removeAll();
+				this.add( contents );
 			}
-			@Override
-			protected java.awt.Component getComponentForNull() {
-				return new javax.swing.JLabel( "null" );
-			}
-		};
-		
+		} );
 		
 		final javax.swing.DefaultListModel listModel = new javax.swing.DefaultListModel();
-		
 		for( FieldDeclaredInAlice field : declaringType.fields ) {
 			listModel.addElement( field );
 		}
-		
-		this.fauxList.setModel( listModel );
+		this.list.setModel( listModel );
+
 		class EditableFieldListPane extends edu.cmu.cs.dennisc.zoot.list.EditableListPane< FieldDeclaredInAlice > {
 			public EditableFieldListPane() {
-				super( org.alice.ide.IDE.PROJECT_GROUP, fauxList );
+				super( org.alice.ide.IDE.PROJECT_GROUP, list );
 			}
 			@Override
 			protected FieldDeclaredInAlice create() throws Exception {
@@ -81,14 +58,16 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 			}
 			@Override
 			protected void setItemsAt( int index, FieldDeclaredInAlice fieldDeclaredInAlice0, FieldDeclaredInAlice fieldDeclaredInAlice1 ) {
-				fauxList.setValueIsAdjusting( true );
+				list.setValueIsAdjusting( true );
 				listModel.setElementAt( fieldDeclaredInAlice0, index );
-				fauxList.setValueIsAdjusting( false );
+				list.setValueIsAdjusting( false );
 				listModel.setElementAt( fieldDeclaredInAlice1, index+1 );
 			}
 		}
 		this.editableListPane = new EditableFieldListPane();
-		this.add( this.editableListPane );
+		this.editableListPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( this.editableListPane, java.awt.BorderLayout.CENTER );
 	}
 	@Override
 	protected Boolean getActualInputValue() {

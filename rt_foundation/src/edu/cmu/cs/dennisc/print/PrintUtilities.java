@@ -73,6 +73,9 @@ public abstract class PrintUtilities {
 		s_separatorText = " ";
 	}
 
+	private PrintUtilities() {
+		throw new AssertionError();
+	}
 	public static void pushPrintStream() {
 		s_printStreamStack.push( s_printStream );
 	}

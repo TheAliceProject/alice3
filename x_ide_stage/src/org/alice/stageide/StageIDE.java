@@ -129,25 +129,25 @@ public class StageIDE extends org.alice.ide.IDE {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice enclosingMethod = previousExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 				if( enclosingMethod != null ) {
 					for( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter : enclosingMethod.parameters ) {
-						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeMouseButtonEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyEvent.class );
-						if( parameter.getValueType() == typeMouseButtonEvent ) {
+						edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeKeyEvent = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.event.KeyEvent.class );
+						if( parameter.getValueType() == typeKeyEvent ) {
 							//							String[] methodNames = new String[] { "isKey", "isLetter", "isDigit" };
 							//							Class<?>[][] parameterClses = new Class<?>[][] { new Class<?>[]{ org.alice.apis.moveandturn.Key.class }, new Class<?>[]{}, new Class<?>[]{} };
 							//							for( int i=0; i<methodNames.length; i++ ) {
-							//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodNames[ i ], parameterClses[ i ] );
+							//								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodNames[ i ], parameterClses[ i ] );
 							//								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
 							//								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
 							//								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );
 							//							}
 
 							{
-								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( "isKey", org.alice.apis.moveandturn.Key.class );
+								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( "isKey", org.alice.apis.moveandturn.Key.class );
 								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
 								blank.addFillIn( new org.alice.ide.cascade.IncompleteMethodInvocationFillIn( expression, method ) );
 							}
 							String[] methodNames = new String[] { "isLetter", "isDigit" };
 							for( String methodName : methodNames ) {
-								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeMouseButtonEvent.getDeclaredMethod( methodName );
+								edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = typeKeyEvent.getDeclaredMethod( methodName );
 								edu.cmu.cs.dennisc.alice.ast.Expression expression = new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter );
 								edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = new edu.cmu.cs.dennisc.alice.ast.MethodInvocation( expression, method );
 								blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( methodInvocation ) );

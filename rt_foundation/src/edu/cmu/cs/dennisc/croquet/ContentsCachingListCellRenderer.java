@@ -25,35 +25,30 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KFauxList< E > extends javax.swing.JList {
-	protected abstract java.awt.Component getComponentForNull();
+public abstract class ContentsCachingListCellRenderer< E > extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane implements javax.swing.ListCellRenderer {
+	private static java.awt.Color selectionBackground = javax.swing.UIManager.getColor("List.selectionBackground");
+	private java.util.Map< E, java.awt.Component > map = new java.util.HashMap< E, java.awt.Component >();
+	
+	protected abstract void update( java.awt.Component contents, int index, boolean isSelected, boolean cellHasFocus );
 	protected abstract java.awt.Component createComponent( E e );
-	protected abstract KFauxListItem< E >  createFauxListItem();
-	class ListCellRenderer implements javax.swing.ListCellRenderer {
-		private KFauxListItem< E > fauxListItem = createFauxListItem();
-		private java.util.Map< E, java.awt.Component > map = new java.util.HashMap< E, java.awt.Component >();
-		private java.awt.Component getComponent( E e ) {
-			java.awt.Component rv = this.map.get( e );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = createComponent( e );
-				this.map.put( e, rv );
-			}
-			return rv;
-		}
-		public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-			java.awt.Component component;
-			if( value != null ) {
-				component = this.getComponent( (E)value );
-			} else {
-				component = getComponentForNull();
-			}
-			this.fauxListItem.update( component, index, isSelected, cellHasFocus );
-			return this.fauxListItem.getComponent();
-		}
+
+	public ContentsCachingListCellRenderer() {
+		this.setBackground( selectionBackground );
+		this.setAlignmentX( 0.0f );
 	}
-	public KFauxList() {
-		this.setCellRenderer( new ListCellRenderer() );
+	private java.awt.Component getComponent( E e ) {
+		java.awt.Component rv = this.map.get( e );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = createComponent( e );
+			this.map.put( e, rv );
+		}
+		return rv;
+	}
+	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
+		java.awt.Component component = this.getComponent( (E)value );
+		this.update( component, index, isSelected, cellHasFocus );
+		return this;
 	}
 }
