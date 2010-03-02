@@ -65,26 +65,26 @@ public abstract class ZComponent extends edu.cmu.cs.dennisc.croquet.swing.Pane {
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
-//		java.awt.Color prev = g2.getColor();
 		int x = 0;
 		int y = 0;
 		int width = getWidth();
 		int height = getHeight();
+
+		java.awt.Paint prevPaint;
+		prevPaint = g2.getPaint();
 		try {
 			g2.setPaint( this.getBackgroundPaint( x, y, width, height ) );
-			//g2.setColor( this.getBackground() );
 			this.paintPrologue( g2, x, y, width, height );
 		} finally {
-//			g2.setPaint( prev );
+			g2.setPaint( prevPaint );
 		}
 		super.paint( g );
-//		prev = g2.getColor();
+		prevPaint = g2.getPaint();
 		g2.setPaint( this.getForegroundPaint( x, y, width, height ) );
-		//g2.setColor( this.getForeground() );
 		try {
 			this.paintEpilogue( g2, x, y, width, height );
 		} finally {
-//			g2.setPaint( prev );
+			g2.setPaint( prevPaint );
 		}
 	}
 }

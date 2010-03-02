@@ -298,10 +298,15 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 				}
 			}
 		} );
-		//this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.interpolate( java.awt.Color.BLUE, java.awt.Color.LIGHT_GRAY, 0.85f ) );
-		this.setBackground( java.awt.Color.YELLOW );
-		this.setForeground( java.awt.Color.DARK_GRAY );
+		//this.setForeground( java.awt.Color.DARK_GRAY );
 		this.label.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+	}
+	
+	private static final java.awt.Color TOP_COLOR = new java.awt.Color( 255, 255, 191 );
+	private static final java.awt.Color BOTTOM_COLOR = new java.awt.Color( 160, 160, 160 );
+	@Override
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		return new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, height, BOTTOM_COLOR );
 	}
 
 	protected void updateLabel() {
