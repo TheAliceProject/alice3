@@ -22,18 +22,18 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 			}
 		} );
 		
-		final javax.swing.DefaultListModel listModel = new javax.swing.DefaultListModel();
+		final javax.swing.DefaultListModel defaultListModel = new javax.swing.DefaultListModel();
 		for( FieldDeclaredInAlice field : declaringType.fields ) {
-			listModel.addElement( field );
+			defaultListModel.addElement( field );
 		}
-		this.list.setModel( listModel );
+		this.list.setModel( defaultListModel );
 
 		class EditableFieldListPane extends edu.cmu.cs.dennisc.zoot.list.EditableListPane< FieldDeclaredInAlice > {
 			public EditableFieldListPane() {
-				super( org.alice.ide.IDE.PROJECT_GROUP, list );
+				super( org.alice.ide.IDE.PROJECT_GROUP, list, defaultListModel, list.getSelectionModel() );
 			}
 			@Override
-			protected FieldDeclaredInAlice create() throws Exception {
+			protected FieldDeclaredInAlice createItem() throws Exception {
 				org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( declaringType );
 				FieldDeclaredInAlice rv = createFieldPane.showInJDialog( org.alice.ide.IDE.getSingleton() );
 				if( rv != null ) {
@@ -44,24 +44,17 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 				return rv;
 			}
 			@Override
+			protected edu.cmu.cs.dennisc.zoot.Edit createEditEdit() {
+				javax.swing.JOptionPane.showMessageDialog( this, "todo" );
+				return null;
+			}
+			@Override
+			protected void setValueIsAdjusting( boolean isValueAdjusting ) {
+				EditFieldsPane.this.list.setValueIsAdjusting( isValueAdjusting );
+			}
+			@Override
 			protected boolean isEnabledAtAll() {
 				return true;
-			}
-
-			@Override
-			protected void add( int index, FieldDeclaredInAlice fieldDeclaredInAlice ) {
-				listModel.add( index, fieldDeclaredInAlice );
-			}
-			@Override
-			protected void remove( int index, FieldDeclaredInAlice fieldDeclaredInAlice ) {
-				listModel.remove( index );
-			}
-			@Override
-			protected void setItemsAt( int index, FieldDeclaredInAlice fieldDeclaredInAlice0, FieldDeclaredInAlice fieldDeclaredInAlice1 ) {
-				list.setValueIsAdjusting( true );
-				listModel.setElementAt( fieldDeclaredInAlice0, index );
-				list.setValueIsAdjusting( false );
-				listModel.setElementAt( fieldDeclaredInAlice1, index+1 );
 			}
 		}
 		this.editableListPane = new EditableFieldListPane();

@@ -303,7 +303,7 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 	}
 	
 	private static final java.awt.Color TOP_COLOR = new java.awt.Color( 255, 255, 191 );
-	private static final java.awt.Color BOTTOM_COLOR = new java.awt.Color( 160, 160, 160 );
+	private static final java.awt.Color BOTTOM_COLOR = new java.awt.Color( 191, 191, 160 );
 	@Override
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		return new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, height, BOTTOM_COLOR );

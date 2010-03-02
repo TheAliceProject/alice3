@@ -21,6 +21,9 @@
  *    "This product includes software developed by Carnegie Mellon University"
  */
 package edu.cmu.cs.dennisc.zoot.list;
+
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -32,7 +35,7 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			try {
-				final E e = create();
+				final E e = createItem();
 				final int index = getListSize();
 				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 					@Override
@@ -75,6 +78,28 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 			}
 		}
 	}
+
+	class EditItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+		public EditItemOperation( java.util.UUID groupUUID, String name ) {
+			super( groupUUID );
+			this.putValue( javax.swing.Action.NAME, name );
+		}
+		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			final int index = getSelectedIndex();
+			if( index >= 0 ) {
+				final E e = getItemAt( index );
+				edu.cmu.cs.dennisc.zoot.Edit edit = createEditEdit();
+				if( edit != null ) {
+					actionContext.commitAndInvokeDo( edit );
+				} else {
+					actionContext.cancel();
+				}
+			} else {
+				throw new AssertionError();
+			}
+		}
+	}
+
 	abstract class AbstractMoveItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public AbstractMoveItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
@@ -145,54 +170,40 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 	}
 
 	protected abstract boolean isEnabledAtAll();
-	protected abstract E create() throws Exception;
+	protected abstract edu.cmu.cs.dennisc.zoot.Edit createEditEdit();
+	protected abstract E createItem() throws Exception;
 	protected abstract void add( int index, E e );
 	protected abstract void remove( int index, E e );
 	protected abstract E getItemAt( int index );
 	protected abstract void setItemsAt( int index, E e0, E e1 );
 	protected abstract int getListSize();
+	protected abstract int getSelectedIndex();
+	protected abstract void setSelectedIndex( int index );
 	
-	private javax.swing.ListSelectionModel listSelectionModel;
-	private int getSelectedIndex() {
-		return this.listSelectionModel.getMinSelectionIndex();
-	}
-	private void setSelectedIndex( int index ) {
-		this.listSelectionModel.setSelectionInterval( index, index );
-	}
 
+	private java.awt.Component component;
 	private AddItemOperation addItemOperation;
 	private RemoveItemOperation removeItemOperation;
+	private EditItemOperation editItemOperation;
 	private MoveItemUpOperation moveItemUpOperation;
 	private MoveItemDownOperation moveItemDownOperation;
-	protected String getAddItemOperationName() {
-		return "Add...";
-	}
-	protected String getRemoveItemOperationName() {
-		return "Remove";
-	}
-	protected String getMoveItemUpOperationName() {
-		return "Move Up";
-	}
-	protected String getMoveItemDownOperationName() {
-		return "Move Down";
-	}
 
-	public AbstractEditableListPane( java.util.UUID groupUUID, javax.swing.ListSelectionModel listSelectionModel, java.awt.Component component ) {
-		this.listSelectionModel = listSelectionModel;
-		
+	public AbstractEditableListPane( java.util.UUID groupUUID, java.awt.Component component ) {
+		this.component = component;
 		this.addItemOperation = new AddItemOperation( groupUUID, this.getAddItemOperationName() );
+		this.editItemOperation = new EditItemOperation( groupUUID, this.getEditItemOperationName() );
 		this.removeItemOperation = new RemoveItemOperation( groupUUID, this.getRemoveItemOperationName() );
 		this.moveItemUpOperation = new MoveItemUpOperation( groupUUID, this.getMoveItemUpOperationName() );
 		this.moveItemDownOperation = new MoveItemDownOperation( groupUUID, this.getMoveItemDownOperationName() );
 		
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
-		this.updateOperations();
 
 		edu.cmu.cs.dennisc.croquet.swing.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.GridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.addItemOperation ), gbc );
+		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.editItemOperation ), gbc );
 		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.removeItemOperation ), gbc );
 		gbc.insets.top = 8;
 		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemUpOperation ), gbc );
@@ -208,49 +219,122 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 	}
 
-	private void updateOperations() {
-		boolean isValidAtAll = this.isEnabledAtAll();
-		this.addItemOperation.setEnabled( isValidAtAll );
-		int index = this.getSelectedIndex();
-		final int N = this.getListSize();
-		this.removeItemOperation.setEnabled( isValidAtAll && index != -1 );
-		this.moveItemUpOperation.setEnabled( isValidAtAll && index > 0 );
-		this.moveItemDownOperation.setEnabled( isValidAtAll && index >= 0 && index < N - 1 );
-	}
-	
-	javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			updateOperations();
+	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
+		@Override
+		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
+			if( quoteClickCountUnquote == 2 ) {
+				edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( editItemOperation, e, true );
+			}
 		}
 	};
 	@Override
 	public void addNotify() {
+		this.updateOperationsEnabledStates();
+		this.component.addMouseListener( this.lenientMouseClickAdapter );
+		this.component.addMouseMotionListener( this.lenientMouseClickAdapter );
 		super.addNotify();
-		this.listSelectionModel.addListSelectionListener( this.listSelectionListener );
 	}
 	@Override
 	public void removeNotify() {
-		this.listSelectionModel.removeListSelectionListener( this.listSelectionListener );
+		this.component.removeMouseMotionListener( this.lenientMouseClickAdapter );
+		this.component.removeMouseListener( this.lenientMouseClickAdapter );
 		super.removeNotify();
 	}
+	
+	protected String getAddItemOperationName() {
+		return "Add...";
+	}
+	protected String getEditItemOperationName() {
+		return "Edit...";
+	}
+	protected String getRemoveItemOperationName() {
+		return "Remove";
+	}
+	protected String getMoveItemUpOperationName() {
+		return "Move Up";
+	}
+	protected String getMoveItemDownOperationName() {
+		return "Move Down";
+	}
+
+	protected boolean isEditItemEnabled( int index ) {
+		return index != -1;
+	}
+	protected boolean isRemoveItemEnabled( int index ) {
+		return index != -1;
+	}
+	protected void updateOperationsEnabledStates() {
+		boolean isEnabledAtAll = this.isEnabledAtAll();
+		this.addItemOperation.setEnabled( isEnabledAtAll );
+		int index = this.getSelectedIndex();
+		final int N = this.getListSize();
+		this.editItemOperation.setEnabled( isEnabledAtAll && this.isEditItemEnabled( index ) );
+		this.removeItemOperation.setEnabled( isEnabledAtAll && this.isRemoveItemEnabled( index ) );
+		this.moveItemUpOperation.setEnabled( isEnabledAtAll && index > 0 );
+		this.moveItemDownOperation.setEnabled( isEnabledAtAll && index >= 0 && index < N - 1 );
+	}
+	
 }
 
 public abstract class EditableListPane< E > extends AbstractEditableListPane< E > {
-	private javax.swing.JList list;
-	public EditableListPane( java.util.UUID groupUUID, javax.swing.JList list ) {
-		super( groupUUID, list.getSelectionModel(), list );
-		this.list = list;
+	private javax.swing.DefaultListModel defaultListModel;
+	private javax.swing.ListSelectionModel listSelectionModel;
+	public EditableListPane( java.util.UUID groupUUID, java.awt.Component component, javax.swing.DefaultListModel defaultListModel, javax.swing.ListSelectionModel listSelectionModel ) {
+		super( groupUUID, component );
+		this.defaultListModel = defaultListModel;
+		this.listSelectionModel = listSelectionModel;
+	}
+	@Override
+	protected int getSelectedIndex() {
+		return this.listSelectionModel.getMinSelectionIndex();
+	}
+	@Override
+	protected void setSelectedIndex( int index ) {
+		this.listSelectionModel.setSelectionInterval( index, index );
 	}
 	@Override
 	protected E getItemAt( int index ) {
-		return (E)this.list.getModel().getElementAt( index );
+		return (E)this.defaultListModel.getElementAt( index );
 	}
 	@Override
 	protected int getListSize() {
-		if( this.list != null ) {
-			return this.list.getModel().getSize();
+		if( this.defaultListModel != null ) {
+			return this.defaultListModel.getSize();
 		} else {
 			return 0;
 		}
+	}
+	@Override
+	protected void add( int index, E e ) {
+		this.defaultListModel.add( index, e );
+	}
+	@Override
+	protected void remove( int index, E e ) {
+		this.defaultListModel.remove( index );
+	}
+	
+	protected abstract void setValueIsAdjusting( boolean isValueAdjusting );
+	@Override
+	protected void setItemsAt( int index, E e0, E e1 ) {
+		this.setValueIsAdjusting( true );
+		this.defaultListModel.setElementAt( e0, index );
+		this.setValueIsAdjusting( false );
+		this.defaultListModel.setElementAt( e1, index+1 );
+	}
+	
+	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			updateOperationsEnabledStates();
+		}
+	};
+	@Override
+	public void addNotify() {
+		this.listSelectionModel.addListSelectionListener( this.listSelectionListener );
+		super.addNotify();
+	}
+	@Override
+	public void removeNotify() {
+		super.removeNotify();
+		this.listSelectionModel.removeListSelectionListener( this.listSelectionListener );
 	}
 }
