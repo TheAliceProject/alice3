@@ -112,7 +112,7 @@ public abstract class Transformable extends AbstractTransformable {
 		m_isRealized = true;
 	}
 	
-	@PropertyGetterTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
+	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
 	public void realizeIfNecessary() {
 		if( m_isRealized ) {
 			//pass
