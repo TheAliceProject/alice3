@@ -27,7 +27,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	class AddItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public AddItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
@@ -169,7 +169,6 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 		}
 	}
 
-	protected abstract boolean isEnabledAtAll();
 	protected abstract edu.cmu.cs.dennisc.zoot.Edit createEditEdit();
 	protected abstract E createItem() throws Exception;
 	protected abstract void add( int index, E e );
@@ -181,15 +180,15 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 	protected abstract void setSelectedIndex( int index );
 	
 
-	private java.awt.Component component;
+	private java.awt.Component listLikeSubstance;
 	private AddItemOperation addItemOperation;
 	private RemoveItemOperation removeItemOperation;
 	private EditItemOperation editItemOperation;
 	private MoveItemUpOperation moveItemUpOperation;
 	private MoveItemDownOperation moveItemDownOperation;
 
-	public AbstractEditableListPane( java.util.UUID groupUUID, java.awt.Component component ) {
-		this.component = component;
+	public AbstractEditableListLikeSubstancePane( java.util.UUID groupUUID, java.awt.Component listLikeSubstance ) {
+		this.listLikeSubstance = listLikeSubstance;
 		this.addItemOperation = new AddItemOperation( groupUUID, this.getAddItemOperationName() );
 		this.editItemOperation = new EditItemOperation( groupUUID, this.getEditItemOperationName() );
 		this.removeItemOperation = new RemoveItemOperation( groupUUID, this.getRemoveItemOperationName() );
@@ -214,11 +213,15 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 
 		this.add( buttonPane, java.awt.BorderLayout.EAST );
 
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( component );
+		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.listLikeSubstance );
 		scrollPane.setBorder( null );
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 	}
 
+	public java.awt.Component getListLikeSubstance() {
+		return this.listLikeSubstance;
+	}
+	
 	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
@@ -230,14 +233,14 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 	@Override
 	public void addNotify() {
 		this.updateOperationsEnabledStates();
-		this.component.addMouseListener( this.lenientMouseClickAdapter );
-		this.component.addMouseMotionListener( this.lenientMouseClickAdapter );
+		this.listLikeSubstance.addMouseListener( this.lenientMouseClickAdapter );
+		this.listLikeSubstance.addMouseMotionListener( this.lenientMouseClickAdapter );
 		super.addNotify();
 	}
 	@Override
 	public void removeNotify() {
-		this.component.removeMouseMotionListener( this.lenientMouseClickAdapter );
-		this.component.removeMouseListener( this.lenientMouseClickAdapter );
+		this.listLikeSubstance.removeMouseMotionListener( this.lenientMouseClickAdapter );
+		this.listLikeSubstance.removeMouseListener( this.lenientMouseClickAdapter );
 		super.removeNotify();
 	}
 	
@@ -263,6 +266,10 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 	protected boolean isRemoveItemEnabled( int index ) {
 		return index != -1;
 	}
+
+	protected boolean isEnabledAtAll() {
+		return true;
+	}
 	protected void updateOperationsEnabledStates() {
 		boolean isEnabledAtAll = this.isEnabledAtAll();
 		this.addItemOperation.setEnabled( isEnabledAtAll );
@@ -274,67 +281,4 @@ abstract class AbstractEditableListPane<E> extends edu.cmu.cs.dennisc.croquet.sw
 		this.moveItemDownOperation.setEnabled( isEnabledAtAll && index >= 0 && index < N - 1 );
 	}
 	
-}
-
-public abstract class EditableListPane< E > extends AbstractEditableListPane< E > {
-	private javax.swing.DefaultListModel defaultListModel;
-	private javax.swing.ListSelectionModel listSelectionModel;
-	public EditableListPane( java.util.UUID groupUUID, java.awt.Component component, javax.swing.DefaultListModel defaultListModel, javax.swing.ListSelectionModel listSelectionModel ) {
-		super( groupUUID, component );
-		this.defaultListModel = defaultListModel;
-		this.listSelectionModel = listSelectionModel;
-	}
-	@Override
-	protected int getSelectedIndex() {
-		return this.listSelectionModel.getMinSelectionIndex();
-	}
-	@Override
-	protected void setSelectedIndex( int index ) {
-		this.listSelectionModel.setSelectionInterval( index, index );
-	}
-	@Override
-	protected E getItemAt( int index ) {
-		return (E)this.defaultListModel.getElementAt( index );
-	}
-	@Override
-	protected int getListSize() {
-		if( this.defaultListModel != null ) {
-			return this.defaultListModel.getSize();
-		} else {
-			return 0;
-		}
-	}
-	@Override
-	protected void add( int index, E e ) {
-		this.defaultListModel.add( index, e );
-	}
-	@Override
-	protected void remove( int index, E e ) {
-		this.defaultListModel.remove( index );
-	}
-	
-	protected abstract void setValueIsAdjusting( boolean isValueAdjusting );
-	@Override
-	protected void setItemsAt( int index, E e0, E e1 ) {
-		this.setValueIsAdjusting( true );
-		this.defaultListModel.setElementAt( e0, index );
-		this.setValueIsAdjusting( false );
-		this.defaultListModel.setElementAt( e1, index+1 );
-	}
-	
-	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
-		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
-			updateOperationsEnabledStates();
-		}
-	};
-	@Override
-	public void addNotify() {
-		this.listSelectionModel.addListSelectionListener( this.listSelectionListener );
-		super.addNotify();
-	}
-	@Override
-	public void removeNotify() {
-		super.removeNotify();
-		this.listSelectionModel.removeListSelectionListener( this.listSelectionListener );
-	}
 }
