@@ -32,6 +32,13 @@ public abstract class CollectionOfPreferences {
 		assert this.preferences == null;
 		assert this.utilPrefs == null;
 		this.utilPrefs = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			try {
+				this.utilPrefs.clear();
+			} catch( java.util.prefs.BackingStoreException bse ) {
+				throw new RuntimeException( bse );
+			}
+		}
 		java.util.List< java.lang.reflect.Field > fields = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getPublicFinalFields( this.getClass(), Preference.class );
 		this.preferences = new edu.cmu.cs.dennisc.preference.Preference<?>[ fields.size() ];
 		int i = 0;

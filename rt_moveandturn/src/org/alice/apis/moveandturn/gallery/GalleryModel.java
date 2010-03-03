@@ -80,14 +80,4 @@ public abstract class GalleryModel extends org.alice.apis.moveandturn.PolygonalM
 	public void setProgrammedByCredit( String programmedByCredit ) {
 		m_programmedByCredit = programmedByCredit;
 	}
-	
-	public static void main( String[] args ) throws java.util.prefs.BackingStoreException {
-		if( args.length > 0 && args[ 0 ].equals( "clearPreferences" ) ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "clearPreferences" );
-			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( GalleryModel.class );
-			userPreferences.clear();
-			//java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( GalleryModel.class );
-			//systemPreferences.clear();
-		}
-	}
 }

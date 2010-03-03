@@ -27,13 +27,15 @@ package edu.cmu.cs.dennisc.eula;
  */
 public class EULAUtilities extends Exception {
 	public static void promptUserToAcceptEULAIfNecessary( Class preferencesCls, String preferencesKey, String title, String license, String name ) throws LicenseRejectedException {
-		java.util.prefs.Preferences preferences = java.util.prefs.Preferences.userNodeForPackage( preferencesCls );
-//		try {
-//			preferences.clear();
-//		} catch( java.util.prefs.BackingStoreException bse ) {
-//			throw new RuntimeException( bse );
-//		}
-		boolean isLicenseAccepted = preferences.getBoolean( preferencesKey, false );
+		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( preferencesCls );
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			try {
+				userPreferences.clear();
+			} catch( java.util.prefs.BackingStoreException bse ) {
+				throw new RuntimeException( bse );
+			}
+		}
+		boolean isLicenseAccepted = userPreferences.getBoolean( preferencesKey, false );
 		if( isLicenseAccepted ) {
 			//pass
 		} else {
@@ -54,7 +56,7 @@ public class EULAUtilities extends Exception {
 			}
 		}
 		if( isLicenseAccepted ) {
-			preferences.putBoolean( preferencesKey, true );
+			userPreferences.putBoolean( preferencesKey, true );
 		} else {
 			throw new edu.cmu.cs.dennisc.eula.LicenseRejectedException();
 		}

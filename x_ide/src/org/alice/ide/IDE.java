@@ -303,6 +303,13 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	private static <E> E createBooleanOperation( Class< E > cls, Boolean defaultInitialValue ) {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			try {
+				userPreferences.clear();
+			} catch( java.util.prefs.BackingStoreException bse ) {
+				throw new RuntimeException( bse );
+			}
+		}
 		Boolean initialValue = userPreferences.getBoolean( cls.getSimpleName(), defaultInitialValue );
 		Class< ? >[] parameterClses = { Boolean.class };
 		Object[] arguments = { initialValue };

@@ -43,6 +43,13 @@ public class GalleryRootUtilities {
 		do {
 			java.util.List< String > potentialPaths = new java.util.LinkedList< String >();
 			
+//			String galleryDirPath = System.getProperty( "org.alice.apis.gallery.dir" );
+//			if( galleryDirPath != null && galleryDirPath.length() > 0 ) {
+//				java.io.File galleryDir = new java.io.File( galleryDirPath );
+//				if( galleryDir != null && galleryDir.exists() ) {
+//					potentialPaths.add( galleryDirPath );
+//				}
+//			}
 			String installDirPath = System.getProperty( "org.alice.ide.IDE.install.dir" );
 			if( installDirPath != null && installDirPath.length() > 0 ) {
 				java.io.File installDir = new java.io.File( installDirPath );
