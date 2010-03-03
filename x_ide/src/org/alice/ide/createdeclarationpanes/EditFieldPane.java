@@ -29,10 +29,9 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice;
 	private boolean isDropDownForFieldInitializerDesired;
 	public EditFieldPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice ) {
-		super( new org.alice.ide.name.validators.FieldNameValidator( fieldDeclaredInAlice ), fieldDeclaredInAlice.getValueType() );
+		super( new org.alice.ide.name.validators.FieldNameValidator( fieldDeclaredInAlice ), fieldDeclaredInAlice.getValueType(), fieldDeclaredInAlice.initializer.getValue() );
 		this.fieldDeclaredInAlice = fieldDeclaredInAlice;
 		this.isDropDownForFieldInitializerDesired = this.getIDE().isDropDownDesiredForFieldInitializer( this.fieldDeclaredInAlice );
-		
 	}
 	@Override
 	protected String getDefaultNameText() {
@@ -58,7 +57,7 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 	}
 	@Override
 	protected boolean isIsReassignableComponentDesired() {
-		return true;
+		return this.isDropDownForFieldInitializerDesired;
 	}
 	@Override
 	protected boolean isEditableInitializerComponentDesired() {
@@ -66,6 +65,6 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 	}
 	@Override
 	protected boolean isEditableValueTypeComponentDesired() {
-		return true;
+		return this.isDropDownForFieldInitializerDesired;
 	}
 }

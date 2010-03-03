@@ -25,8 +25,6 @@ package edu.cmu.cs.dennisc.zoot;
 /**
  * @author Dennis Cosgrove
  */
-//todo
-/*package-private*/
 public class ZCheckBox extends javax.swing.JCheckBox {
 	private BooleanStateOperation booleanStateOperation;
 	public ZCheckBox( BooleanStateOperation booleanStateOperation ) {

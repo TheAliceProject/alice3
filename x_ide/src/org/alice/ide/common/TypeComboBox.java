@@ -65,7 +65,7 @@ public abstract class TypeComboBox extends edu.cmu.cs.dennisc.zoot.ZComboBox {
 		
 		this.setRenderer( new TypeListCellRenderer() );
 		this.setMaximumRowCount( model.getSize() );
-		this.setSelectedIndex( -1 );
+		//this.setSelectedIndex( -1 );
 	}
 	
 	protected abstract void handleTypeChange();

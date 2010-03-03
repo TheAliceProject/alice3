@@ -73,9 +73,17 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 	private org.alice.ide.initializer.InitializerPane initializerPane;
 
 	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
-	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator, edu.cmu.cs.dennisc.alice.ast.AbstractType initialType ) {
+	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator, edu.cmu.cs.dennisc.alice.ast.AbstractType initialType, edu.cmu.cs.dennisc.alice.ast.Expression initialExpression ) {
 		this.nodeNameValidator = nodeNameValidator;
 		this.bogusNode = new org.alice.ide.initializer.BogusNode( initialType, false );
+		if( initialExpression != null ) {
+			if( initialExpression instanceof edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation ) {
+				edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = (edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation)initialExpression;
+				this.bogusNode.arrayExpressions.setValue( arrayInstanceCreation.expressions.getValue() );
+			} else {
+				this.bogusNode.componentExpression.setValue( initialExpression );
+			}
+		}
 		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
@@ -108,7 +116,7 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 		} );
 	}
 	public AbstractDeclarationPane( org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
-		this( nodeNameValidator, null );
+		this( nodeNameValidator, null, null );
 	}
 	private void handleChange() {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {

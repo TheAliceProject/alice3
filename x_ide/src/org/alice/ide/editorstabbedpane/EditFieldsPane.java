@@ -128,11 +128,26 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 				return rv;
 			}
 			@Override
-			protected edu.cmu.cs.dennisc.zoot.Edit createEditEdit( FieldDeclaredInAlice e ) {
-				org.alice.ide.createdeclarationpanes.EditFieldPane editFieldPane = new org.alice.ide.createdeclarationpanes.EditFieldPane( e );
-				FieldDeclaredInAlice field = editFieldPane.showInJDialog( this );
-				if( field != null ) {
-					return null;
+			protected edu.cmu.cs.dennisc.zoot.Edit createEditEdit( final FieldDeclaredInAlice field ) {
+				final String prevName = field.getName();
+				final edu.cmu.cs.dennisc.alice.ast.Expression prevInitializer = field.initializer.getValue();
+				org.alice.ide.createdeclarationpanes.EditFieldPane editFieldPane = new org.alice.ide.createdeclarationpanes.EditFieldPane( field );
+				FieldDeclaredInAlice tempField = editFieldPane.showInJDialog( this );
+				if( tempField != null ) {
+					final String nextName = tempField.getName();
+					final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
+					return new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+						@Override
+						public void doOrRedo( boolean isDo ) {
+							field.name.setValue( nextName );
+							field.initializer.setValue( nextInitializer );
+						}
+						@Override
+						public void undo() {
+							field.name.setValue( prevName );
+							field.initializer.setValue( prevInitializer );
+						}
+					};
 				} else {
 					return null;
 				}

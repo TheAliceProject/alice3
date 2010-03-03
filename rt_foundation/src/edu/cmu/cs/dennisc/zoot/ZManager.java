@@ -470,4 +470,9 @@ public class ZManager {
 	public static javax.swing.JCheckBoxMenuItem createCheckBoxMenuItem( BooleanStateOperation booleanStateOperation ) {
 		return new ZCheckBoxMenuItem(booleanStateOperation);
 	}
+
+
+	public static <E> javax.swing.JComboBox createComboBox( ItemSelectionOperation< E > itemSelectionOperation ) {
+		return new ZComboBox(itemSelectionOperation);
+	}
 }

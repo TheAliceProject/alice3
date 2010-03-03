@@ -38,18 +38,16 @@ public class LocalePreferenceComboBoxProxy extends PreferenceLabeledPaneProxy< j
 		}
 	}
 
-	private LocaleSelectionOperation operation;
-	private edu.cmu.cs.dennisc.zoot.ZComboBox<java.util.Locale> comboBox;
+	private LocaleSelectionOperation localeSelectionOperation = new LocaleSelectionOperation();
 	public LocalePreferenceComboBoxProxy( edu.cmu.cs.dennisc.preference.Preference< java.util.Locale > preference ) {
 		super( preference );
-		this.operation = new LocaleSelectionOperation();
-		this.comboBox = new edu.cmu.cs.dennisc.zoot.ZComboBox<java.util.Locale>( new LocaleSelectionOperation() );
-		this.comboBox.setRenderer( new edu.cmu.cs.dennisc.croquet.util.LocaleDisplayNameListCellRenderer() );
-		this.createPane( this.comboBox );
+		javax.swing.JComboBox comboBox = edu.cmu.cs.dennisc.zoot.ZManager.createComboBox( new LocaleSelectionOperation() );
+		comboBox.setRenderer( new edu.cmu.cs.dennisc.croquet.util.LocaleDisplayNameListCellRenderer() );
+		this.createPane( comboBox );
 	}
 
 	@Override
 	public void setAndCommitValue() {
-		this.getPreference().setAndCommitValue( this.comboBox.getLocale() );
+		this.getPreference().setAndCommitValue( (java.util.Locale)this.localeSelectionOperation.getComboBoxModel().getSelectedItem() );
 	}
 }
