@@ -26,6 +26,44 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public class LaunchUtilities {
+	private static java.io.File getInstallDirectory() {
+		String installDir = System.getProperty( "org.alice.ide.IDE.install.dir" );
+		if( installDir != null ) {
+			java.io.File rv = new java.io.File( installDir ); 
+			if( rv.exists() && rv.isDirectory() ) {
+				return rv;
+			}
+		} else {
+			StringBuffer sb = new StringBuffer();
+			sb.append( "-Dorg.alice.ide.IDE.install.dir=\"" );
+			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+				sb.append( "/Program Files" );
+			} else if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+				sb.append( "/Applications" );
+			} else {
+				sb.append( System.getProperty( "user.home" ) );
+			}
+			sb.append( "/Alice3Beta\"" );
+			edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( sb.toString() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "The text below has been copied to the clipboard for your convenience." );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( sb );
+		}
+		String userDir = System.getProperty( "user.dir" );
+		if( userDir != null ) {
+			java.io.File rv = new java.io.File( userDir ); 
+			for( String childName : new String[] { "application", "ext", "gallery", "lib" } ) {
+				java.io.File childFile = new java.io.File( rv, childName );
+				if( childFile.exists() && childFile.isDirectory() ) {
+					//pass
+				} else {
+					return null;
+				}
+			}
+			System.setProperty( "org.alice.ide.IDE.install.dir", userDir );
+			return rv;
+		}
+		return null;
+	}
 	public static void launch( final Class<? extends IDE> cls, final java.awt.Window splashScreen, final String[] args ) {
 		if( splashScreen != null ) {
 			try {
@@ -44,7 +82,7 @@ public class LaunchUtilities {
 		}
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				String installDir = System.getProperty( "org.alice.ide.IDE.install.dir" );
+				java.io.File installDir = getInstallDirectory();
 				if( installDir != null ) {
 					java.io.File applicationRootDirectory = new java.io.File( installDir, "application" );
 					if( applicationRootDirectory != null && applicationRootDirectory.exists() ) {
@@ -59,20 +97,6 @@ public class LaunchUtilities {
 							}
 						}
 					}
-				} else {
-					StringBuffer sb = new StringBuffer();
-					sb.append( "-Dorg.alice.ide.IDE.install.dir=\"" );
-					if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
-						sb.append( "/Program Files" );
-					} else if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
-						sb.append( "/Applications" );
-					} else {
-						sb.append( System.getProperty( "user.home" ) );
-					}
-					sb.append( "/Alice3Beta\"" );
-					edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( sb.toString() );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "The text below has been copied to the clipboard for your convenience." );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( sb );
 				}
 				IDE ide = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cls );
 //				java.io.File applicationRootDirectory = ide.getApplicationRootDirectory();

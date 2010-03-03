@@ -26,6 +26,11 @@ package edu.cmu.cs.dennisc.lang;
  * @author Dennis Cosgrove
  */
 public class SystemUtilities {
+	public static boolean isPropertyTrue( String propertyName ) {
+		return "true".equals( System.getProperty( propertyName ) );
+	}
+	
+	
 	private static java.io.ByteArrayOutputStream getPropertiesAsXMLByteArrayOutputStream() {
 		java.util.Properties properties = System.getProperties();
 		java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();

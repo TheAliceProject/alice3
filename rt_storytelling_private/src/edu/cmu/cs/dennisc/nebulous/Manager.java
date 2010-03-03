@@ -11,9 +11,11 @@ public class Manager {
 	static boolean s_isInitialized = false;
 	static boolean s_isLicensePromptDesired = true;
 	static java.util.List< java.io.File > s_pendingBundles;
+
 	private static native void addBundlePath( String bundlePath );
 	private static native void removeBundlePath( String bundlePath );
 	private static native void setRawResourceDirectory( String rourcePath );
+
 	static {
 		try {
 			initializeIfNecessary();
@@ -25,8 +27,9 @@ public class Manager {
 			t.printStackTrace();
 		}
 	}
-	
+
 	private static final String IS_LICENSE_ACCEPTED_PREFERENCE_KEY = "isLicenseAccepted";
+
 	private static java.util.List< java.io.File > getPendingBundles() {
 		if( s_pendingBundles != null ) {
 			//pass
@@ -39,13 +42,15 @@ public class Manager {
 		if( isInitialized() ) {
 			//pass
 		} else {
-			java.util.prefs.Preferences preferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
-//			try {
-//				preferences.clear();
-//			} catch( java.util.prefs.BackingStoreException bse ) {
-//				throw new RuntimeException( bse );
-//			}
-			boolean isLicenseAccepted = preferences.getBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, false );
+			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
+			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+				try {
+					userPreferences.clear();
+				} catch( java.util.prefs.BackingStoreException bse ) {
+					throw new RuntimeException( bse );
+				}
+			}
+			boolean isLicenseAccepted = userPreferences.getBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, false );
 			if( isLicenseAccepted ) {
 				//pass
 			} else {
@@ -70,7 +75,7 @@ public class Manager {
 				}
 			}
 			if( isLicenseAccepted ) {
-				preferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
+				userPreferences.putBoolean( IS_LICENSE_ACCEPTED_PREFERENCE_KEY, true );
 				System.loadLibrary( "jni_nebulous" );
 				for( java.io.File directory : Manager.getPendingBundles() ) {
 					Manager.addBundlePath( directory.getAbsolutePath() );
@@ -87,11 +92,11 @@ public class Manager {
 	public static void resetLicensePromptDesiredToTrue() {
 		s_isLicensePromptDesired = true;
 	}
-	
+
 	public static void setRawResourcePath( java.io.File file ) {
 		Manager.setRawResourceDirectory( file.getAbsolutePath() );
 	}
-	
+
 	public static void addBundle( java.io.File file ) {
 		if( isInitialized() ) {
 			Manager.addBundlePath( file.getAbsolutePath() );
@@ -106,7 +111,7 @@ public class Manager {
 			Manager.getPendingBundles().remove( file );
 		}
 	}
-	
-//	public static void main( String[] args ) {
-//	}
+
+	//	public static void main( String[] args ) {
+	//	}
 }

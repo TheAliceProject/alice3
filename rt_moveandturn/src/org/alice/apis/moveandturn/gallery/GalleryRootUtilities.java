@@ -30,6 +30,13 @@ public class GalleryRootUtilities {
 	public static java.io.File calculateGalleryRootDirectory( Class<?> cls, String subPath, String name, String childName, String grandchildName, String titleForPromptingUserToSpecifyOrInstall, String applicationName ) {
 		java.io.File rv = null;
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			try {
+				userPreferences.clear();
+			} catch( java.util.prefs.BackingStoreException bse ) {
+				throw new RuntimeException( bse );
+			}
+		}
 		String rootPathUserPreference = userPreferences.get( ROOT_PATH_KEY, null );
 //		java.util.prefs.Preferences systemPreferences = java.util.prefs.Preferences.systemNodeForPackage( cls );
 //		String rootPathSystemPreference = systemPreferences.get( ROOT_PATH_KEY, null );
