@@ -21,6 +21,7 @@ class ListPropertyListModel< E > extends javax.swing.AbstractListModel {
 		this.fireIntervalAdded( this, index, index );
 	}
 	public void remove( int index, E e ) {
+		assert this.listProperty.get( index ) == e;
 		this.listProperty.remove( index );
 		this.fireIntervalRemoved( this, index, index );
 	}
@@ -52,6 +53,40 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 				this.add( contents );
 			}
 		} );
+		
+		final java.util.Set< FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		final java.util.Set< FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		if( project != null ) {
+			ide.ensureProjectCodeUpToDate();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
+			for( final FieldDeclaredInAlice field : declaringType.fields ) {
+				edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
+					@Override
+					protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+						return fieldAccess.field.getValue() == field;
+					}
+				};
+				programType.crawl( crawler, true );
+				java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > fieldAccesses = crawler.getList();
+				if( fieldAccesses.size() > 0 ) {
+					referencedFields.add( field );
+					for( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess : fieldAccesses ) {
+						edu.cmu.cs.dennisc.alice.ast.Node parent = fieldAccess.getParent();
+						if( parent instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
+							edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression = (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)parent;
+							if( assignmentExpression.leftHandSide.getValue() == fieldAccess ) {
+								reassignedFields.add( field );
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		
 		final ListPropertyListModel< FieldDeclaredInAlice > fieldsListModel = ListPropertyListModel.createInstance( declaringType.fields );
 		this.list.setModel( fieldsListModel );
 
@@ -72,7 +107,15 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 			protected void setItemsAt( int index, FieldDeclaredInAlice e0, FieldDeclaredInAlice e1 ) {
 				fieldsListModel.set( index, e0, e1 );
 			}
-			
+			@Override
+			protected boolean isRemoveItemEnabled( int index ) {
+				FieldDeclaredInAlice field = this.getItemAt( index );
+				return referencedFields.contains( field ) == false;
+			}
+			@Override
+			protected boolean isEditItemEnabled( int index ) {
+				return true;
+			}
 			@Override
 			protected FieldDeclaredInAlice createItem() throws Exception {
 				org.alice.ide.createdeclarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldPane( declaringType );
@@ -85,9 +128,14 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 				return rv;
 			}
 			@Override
-			protected edu.cmu.cs.dennisc.zoot.Edit createEditEdit() {
-				javax.swing.JOptionPane.showMessageDialog( this, "todo" );
-				return null;
+			protected edu.cmu.cs.dennisc.zoot.Edit createEditEdit( FieldDeclaredInAlice e ) {
+				org.alice.ide.createdeclarationpanes.EditFieldPane editFieldPane = new org.alice.ide.createdeclarationpanes.EditFieldPane( e );
+				FieldDeclaredInAlice field = editFieldPane.showInJDialog( this );
+				if( field != null ) {
+					return null;
+				} else {
+					return null;
+				}
 			}
 		}
 		this.editableListPane = new EditableFieldListPane();

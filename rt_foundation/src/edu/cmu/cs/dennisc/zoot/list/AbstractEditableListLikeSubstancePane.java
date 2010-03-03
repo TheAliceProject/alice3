@@ -88,14 +88,14 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 			final int index = getSelectedIndex();
 			if( index >= 0 ) {
 				final E e = getItemAt( index );
-				edu.cmu.cs.dennisc.zoot.Edit edit = createEditEdit();
+				edu.cmu.cs.dennisc.zoot.Edit edit = createEditEdit( e );
 				if( edit != null ) {
 					actionContext.commitAndInvokeDo( edit );
 				} else {
 					actionContext.cancel();
 				}
 			} else {
-				throw new AssertionError();
+				actionContext.cancel();
 			}
 		}
 	}
@@ -169,7 +169,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		}
 	}
 
-	protected abstract edu.cmu.cs.dennisc.zoot.Edit createEditEdit();
+	protected abstract edu.cmu.cs.dennisc.zoot.Edit createEditEdit( E e );
 	protected abstract E createItem() throws Exception;
 	protected abstract void add( int index, E e );
 	protected abstract void remove( int index, E e );
@@ -260,23 +260,15 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		return "Move Down";
 	}
 
-	protected boolean isEditItemEnabled( int index ) {
-		return index != -1;
-	}
-	protected boolean isRemoveItemEnabled( int index ) {
-		return index != -1;
-	}
-
-	protected boolean isEnabledAtAll() {
-		return true;
-	}
+	protected abstract boolean isEditItemEnabled( int index );
+	protected abstract boolean isRemoveItemEnabled( int index );
 	protected void updateOperationsEnabledStates() {
-		boolean isEnabledAtAll = this.isEnabledAtAll();
+		boolean isEnabledAtAll = true;
 		this.addItemOperation.setEnabled( isEnabledAtAll );
 		int index = this.getSelectedIndex();
 		final int N = this.getListSize();
-		this.editItemOperation.setEnabled( isEnabledAtAll && this.isEditItemEnabled( index ) );
-		this.removeItemOperation.setEnabled( isEnabledAtAll && this.isRemoveItemEnabled( index ) );
+		this.editItemOperation.setEnabled( isEnabledAtAll && index != -1 && this.isEditItemEnabled( index ) );
+		this.removeItemOperation.setEnabled( isEnabledAtAll && index != -1 && this.isRemoveItemEnabled( index ) );
 		this.moveItemUpOperation.setEnabled( isEnabledAtAll && index > 0 );
 		this.moveItemDownOperation.setEnabled( isEnabledAtAll && index >= 0 && index < N - 1 );
 	}
