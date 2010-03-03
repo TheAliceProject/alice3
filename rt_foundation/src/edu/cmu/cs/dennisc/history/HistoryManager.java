@@ -213,4 +213,18 @@ public class HistoryManager {
 			}
 		}
 	}
+	public edu.cmu.cs.dennisc.zoot.CompositeEdit createDoIgnoringCompositeEdit( String presentation ) {
+		synchronized( this.stack ) {
+			final int N = this.insertionIndex;
+			if( N > 0 ) {
+				edu.cmu.cs.dennisc.zoot.Edit[] edits = new edu.cmu.cs.dennisc.zoot.Edit[ N ];
+				for( int i=0; i<N; i++ ) {
+					edits[ i ] = this.stack.get( i ).getEdit();
+				}
+				return new edu.cmu.cs.dennisc.zoot.CompositeEdit( edits, true, presentation );
+			} else {
+				return null;
+			}
+		}
+	}
 }

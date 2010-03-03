@@ -56,40 +56,32 @@ class EditMethodOperation extends org.alice.ide.operations.InconsequentialAction
 //}
 
 class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private static String PRESENTATION = "Edit Properties";
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 
 
 	public EditFieldsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( org.alice.ide.IDE.PROJECT_GROUP );
 		this.type = type;
-		this.putValue( javax.swing.Action.NAME, "Edit Properties..." );
+		this.putValue( javax.swing.Action.NAME, PRESENTATION + "..." );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] prevArray;		
 		prevArray = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[ this.type.fields.size() ];
 		this.type.fields.toArray( prevArray );
-
-		EditFieldsPane editFieldsPane = new EditFieldsPane( this.type );
+		java.util.UUID groupUUID = java.util.UUID.randomUUID();
+		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
+		EditFieldsPane editFieldsPane = new EditFieldsPane( groupUUID, this.type );
 		Boolean isAccepted = editFieldsPane.showInJDialog( getIDE() );
 		if( isAccepted != null ) {
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-				@Override
-				public void doOrRedo( boolean isDo ) {
-					javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation doOrRedo" );
-				}
-				@Override
-				public void undo() {
-					javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation undo" );
-				}
-			} );
+			edu.cmu.cs.dennisc.zoot.CompositeEdit compositeEdit = historyManager.createDoIgnoringCompositeEdit( PRESENTATION + " " + this.type.getName() );
+			if( compositeEdit != null ) {
+				actionContext.commitAndInvokeDo( compositeEdit );
+			} else {
+				actionContext.cancel();
+			}
 		} else {
-			javax.swing.JOptionPane.showMessageDialog( null, "todo: EditFieldsOperation cancel" );
-//			int N = this.type.fields.size();
-////			this.type.fields.set( 0, array );
-//			if( array.length < N ) {
-////				this.type.fields.remove( array.length, N-1 );
-//				javax.swing.JOptionPane.showMessageDialog( getIDE(), "todo: handle cancel.  apologies." );
-//			}
+			historyManager.setInsertionIndex( 0 );
 			actionContext.cancel();
 		}
 	}

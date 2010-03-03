@@ -1,13 +1,44 @@
 package org.alice.ide.editorstabbedpane;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;;
+
+class ListPropertyListModel< E > extends javax.swing.AbstractListModel {
+	private edu.cmu.cs.dennisc.property.ListProperty< E > listProperty;
+	private ListPropertyListModel( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
+		this.listProperty = listProperty;
+	}
+	public static <E> ListPropertyListModel< E > createInstance( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
+		return new ListPropertyListModel( listProperty );
+	}
+	public int getSize() {
+		return this.listProperty.size();
+	}
+	public E getElementAt( int index ) {
+		return this.listProperty.get( index );
+	}
+	public void add( int index, E e ) {
+		this.listProperty.add( index, e );
+		this.fireIntervalAdded( this, index, index );
+	}
+	public void remove( int index, E e ) {
+		this.listProperty.remove( index );
+		this.fireIntervalRemoved( this, index, index );
+	}
+	public void set( int index, E... es ) {
+		if( es.length > 0 ) {
+			this.listProperty.set( index, es );
+			this.fireContentsChanged( this, index, index+es.length-1 );
+		}
+	}
+}
+
 /**
 * @author Dennis Cosgrove
 */
 public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boolean > {
 	private javax.swing.JList list;
 	private edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< FieldDeclaredInAlice > editableListPane;
-	public EditFieldsPane( final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+	public EditFieldsPane( final java.util.UUID groupUUID, final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		this.list = new javax.swing.JList();
 		this.list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.ContentsCachingListCellRenderer< FieldDeclaredInAlice >() {
 			@Override
@@ -21,41 +52,13 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 				this.add( contents );
 			}
 		} );
-		
-		
-		class ListPropertyListModel< E > extends javax.swing.AbstractListModel {
-			private edu.cmu.cs.dennisc.property.ListProperty< E > listProperty;
-			public ListPropertyListModel( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
-				this.listProperty = listProperty;
-			}
-			public int getSize() {
-				return this.listProperty.size();
-			}
-			public E getElementAt( int index ) {
-				return this.listProperty.get( index );
-			}
-			public void add( int index, E e ) {
-				this.listProperty.add( index, e );
-				this.fireIntervalAdded( this, index, index );
-			}
-			public void remove( int index, E e ) {
-				this.listProperty.remove( index );
-				this.fireIntervalRemoved( this, index, index );
-			}
-			public void set( int index, E... es ) {
-				if( es.length > 0 ) {
-					this.listProperty.set( index, es );
-					this.fireContentsChanged( this, index, index+es.length-1 );
-				}
-			}
-		}
-
-		final ListPropertyListModel< FieldDeclaredInAlice > fieldsListModel = new ListPropertyListModel( declaringType.fields );
+		final ListPropertyListModel< FieldDeclaredInAlice > fieldsListModel = ListPropertyListModel.createInstance( declaringType.fields );
 		this.list.setModel( fieldsListModel );
 
+		
 		class EditableFieldListPane extends edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< FieldDeclaredInAlice > {
 			public EditableFieldListPane() {
-				super( org.alice.ide.IDE.PROJECT_GROUP, list );
+				super( groupUUID, list );
 			}
 			@Override
 			protected void add( int index, FieldDeclaredInAlice e ) {
