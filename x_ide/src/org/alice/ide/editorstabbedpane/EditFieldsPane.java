@@ -9,7 +9,7 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 	private edu.cmu.cs.dennisc.zoot.list.EditableListPane< FieldDeclaredInAlice > editableListPane;
 	public EditFieldsPane( final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		this.list = new javax.swing.JList();
-		this.list.setCellRenderer( new edu.cmu.cs.dennisc.croquet.ContentsCachingListCellRenderer< FieldDeclaredInAlice >() {
+		this.list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.ContentsCachingListCellRenderer< FieldDeclaredInAlice >() {
 			@Override
 			protected java.awt.Component createComponent(FieldDeclaredInAlice fieldDeclaredInAlice) {
 				return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), fieldDeclaredInAlice );
