@@ -20,14 +20,14 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.javax.swing;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class ContentsCachingListCellRenderer< E > extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane implements javax.swing.ListCellRenderer {
 	private static java.awt.Color selectionBackground = javax.swing.UIManager.getColor("List.selectionBackground");
-	private java.util.Map< E, java.awt.Component > map = new java.util.HashMap< E, java.awt.Component >();
+	private java.util.Map< E, java.awt.Component > map = new java.util.WeakHashMap< E, java.awt.Component >();
 	
 	protected abstract void update( java.awt.Component contents, int index, boolean isSelected, boolean cellHasFocus );
 	protected abstract java.awt.Component createComponent( E e );
@@ -49,6 +49,7 @@ public abstract class ContentsCachingListCellRenderer< E > extends edu.cmu.cs.de
 	public java.awt.Component getListCellRendererComponent( javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus ) {
 		java.awt.Component component = this.getComponent( (E)value );
 		this.update( component, index, isSelected, cellHasFocus );
+		this.revalidate();
 		return this;
 	}
 }
