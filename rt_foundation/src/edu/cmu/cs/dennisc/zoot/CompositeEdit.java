@@ -44,8 +44,9 @@ public class CompositeEdit implements Edit {
 		}
 	}
 	public void undo() {
-		for( Edit edit : this.edits ) {
-			edit.undo();
+		final int N = this.edits.length;
+		for( int i=0; i<N; i++ ) {
+			this.edits[ N-1-i ].undo();
 		}
 	}
 	public boolean canRedo() {
