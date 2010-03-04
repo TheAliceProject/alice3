@@ -43,6 +43,7 @@ public abstract class AbstractSetLocalTransformationActionOperation extends edu.
 		if( this.animator != null ) {
 			edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( sgTransformable, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, lt );
 			povAnimation.setDuration( 0.5 );
+			this.animator.complete( null );
 			this.animator.invokeLater( povAnimation, null );
 		} else {
 			sgTransformable.localTransformation.setValue( lt );
