@@ -56,6 +56,11 @@ public class TranslateKeyManipulator extends AbstractManipulator {
 		setKeys(directionKeys);
 	}
 	
+	@Override
+	public String getUndoRedoDescription() {
+		return "Object Move";
+	}
+	
 	public void setBounds(AxisAlignedBox bounds)
 	{
 		this.bounds = bounds;

@@ -33,6 +33,7 @@ import org.alice.interact.PickHint;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
+import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 import org.alice.interact.VectorUtilities;
 
 import edu.cmu.cs.dennisc.awt.CursorUtilities;
@@ -123,7 +124,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		}
 		this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
 	}
-
+	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
 		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
@@ -227,11 +228,16 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 			CursorUtilities.popAndSet( this.onscreenLookingGlass.getAWTComponent() );
 		}
 	}
+	
+	@Override
+	public String getUndoRedoDescription() {
+		return "Object Rotate";
+	}
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		this.rotationHandle.setSphereVisibility( false );
-		this.showCursor();		
+		this.showCursor();
 	}
 
 	@Override

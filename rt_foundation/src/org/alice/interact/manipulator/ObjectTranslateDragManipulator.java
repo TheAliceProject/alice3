@@ -74,6 +74,11 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 	
 	@Override
+	public String getUndoRedoDescription() {
+		return "Object Move";
+	}
+	
+	@Override
 	protected void initializeEventMessages()
 	{
 		this.manipulationEvents.clear();
@@ -108,7 +113,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			if (badAngleAmount > 0.0d)
 			{
 				Vector3 newNormal = Vector3.createInterpolation( PlaneUtilities.getPlaneNormal( this.movementPlane ), PlaneUtilities.getPlaneNormal( this.badAnglePlane ), badAngleAmount );
-				newNormal.normalize();
+				newNormal.normalize();				
 				toMoveIn = new Plane(this.initialClickPoint, newNormal);
 			}
 			Point3 newPosition = this.getPositionForPlane( toMoveIn, pickRay );
@@ -170,7 +175,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	protected Plane createBadAnglePlane( Point3 clickPoint )
 	{
 		Vector3 badPlaneNormal = createCameraFacingStoodUpVector();
-		badPlaneNormal.y += .5d;  //Make the bad plane slightly tilted so moving the mouse will always move the object in the plane
+		badPlaneNormal.y += 2d;  //Make the bad plane slightly tilted so moving the mouse will always move the object in the plane
 		badPlaneNormal.normalize();
 		return new Plane( clickPoint, badPlaneNormal );
 	}

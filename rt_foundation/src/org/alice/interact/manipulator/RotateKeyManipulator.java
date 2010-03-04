@@ -57,6 +57,11 @@ public class RotateKeyManipulator extends AbstractManipulator {
 		setKeys(directionKeys);
 	}
 	
+	@Override
+	public String getUndoRedoDescription() {
+		return "Object Rotate";
+	}
+	
 	public void setKeys(MovementKey[] directionKeys)
 	{
 		this.rotationKeys = directionKeys;

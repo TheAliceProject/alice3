@@ -70,6 +70,11 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	}
 	
 	@Override
+	public String getUndoRedoDescription() {
+		return "Object Move";
+	}
+	
+	@Override
 	protected void initializeEventMessages()
 	{
 		this.manipulationEvents.clear();

@@ -24,12 +24,19 @@
 package org.alice.interact.manipulator;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.Vector;
 
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.InputState;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
+import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
+
+import edu.cmu.cs.dennisc.alice.Project;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
+import edu.cmu.cs.dennisc.zoot.ZManager;
 
 
 /**
@@ -38,8 +45,10 @@ import org.alice.interact.handle.HandleSet;
 public abstract class AbstractManipulator {
 	
 	protected edu.cmu.cs.dennisc.scenegraph.Transformable manipulatedTransformable = null;
+	protected AffineMatrix4x4 originalTransformation = null;
 	private boolean hasStarted = false;
 	protected AbstractDragAdapter dragAdapter;
+	protected boolean hasDoneUpdate = false;
 	
 	protected List< ManipulationEvent > manipulationEvents = new Vector< ManipulationEvent >();
 	
@@ -48,9 +57,24 @@ public abstract class AbstractManipulator {
 		this.manipulatedTransformable = manipulatedTransformable;
 	}
 	
+	public edu.cmu.cs.dennisc.scenegraph.Transformable getManipulatedTransformable()
+	{
+		return this.manipulatedTransformable;
+	}
+	
 	public boolean hasStarted()
 	{
 		return this.hasStarted;
+	}
+	
+	public boolean hasUpdated()
+	{
+		return this.hasDoneUpdate;
+	}
+	
+	protected void setHasUpdated(boolean hasUpdated)
+	{
+		this.hasDoneUpdate = hasUpdated;
 	}
 	
 	public void setDragAdapter( AbstractDragAdapter dragAdapter )
@@ -82,8 +106,10 @@ public abstract class AbstractManipulator {
 	public void startManipulator( InputState startInput )
 	{
 		this.hasStarted = doStartManipulator( startInput );
+		setHasUpdated(false);
 		if (this.hasStarted)
 		{
+			undoRedoBeginManipulation();
 			HandleSet setToShow = this.getHandleSetToEnable();
 			if (setToShow != null && this.dragAdapter != null)
 			{
@@ -97,6 +123,7 @@ public abstract class AbstractManipulator {
 		if (this.hasStarted)
 		{
 			doDataUpdateManipulator( currentInput, previousInput );
+			setHasUpdated(true);
 		}
 	}
 	
@@ -105,12 +132,25 @@ public abstract class AbstractManipulator {
 		if (this.hasStarted)
 		{
 			doTimeUpdateManipulator( dTime, currentInput );
+			setHasUpdated(true);
 		}
 	}
 	
 	public void endManipulator(InputState endInput, InputState previousInput  )
 	{
 		doEndManipulator( endInput, previousInput );
+		if (isUndoable())
+		{
+			undoRedoEndManipulation();
+		}
+		else if (this.getManipulatedTransformable() != null)
+		{
+			AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
+			if (!newTransformation.equals( originalTransformation ))
+			{
+				PrintUtilities.println("Skipping undoable action for a manipulation that actually changed the transformation.");
+			}
+		}
 		if (this.hasStarted)
 		{
 			this.hasStarted = false;
@@ -124,10 +164,41 @@ public abstract class AbstractManipulator {
 		
 	}
 	
+	public abstract String getUndoRedoDescription();
+	
 	@Override
 	public String toString()
 	{
 		return this.getClass().toString() + ":"+this.hashCode();
+	}
+	
+	public void undoRedoBeginManipulation()
+	{
+		if (this.getManipulatedTransformable() != null)
+		{
+			this.originalTransformation = this.getManipulatedTransformable().getLocalTransformation();
+		}
+	}
+	
+	public void undoRedoEndManipulation()
+	{
+		if (this.getManipulatedTransformable() != null)
+		{
+			AffineMatrix4x4 newTransformation = this.getManipulatedTransformable().getLocalTransformation();
+			
+			if (newTransformation.equals( originalTransformation ))
+			{
+				PrintUtilities.println("Adding an undoable action for a manipulation that didn't actually change the transformation.");
+			}
+			
+			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP_UUID, false, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
+			ZManager.performIfAppropriate( undoOperation, null, false );
+		}
+	}
+	
+	public boolean isUndoable()
+	{
+		return this.hasUpdated();
 	}
 	
 	public abstract boolean doStartManipulator( InputState startInput );

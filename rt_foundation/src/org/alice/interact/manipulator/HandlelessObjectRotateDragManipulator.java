@@ -60,6 +60,11 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 		return null;
 	}
 
+	@Override
+	public String getUndoRedoDescription() {
+		return "Object Rotate";
+	}
+	
 	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
 		this.onscreenLookingGlass = onscreenLookingGlass;
 	}

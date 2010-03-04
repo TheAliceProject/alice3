@@ -76,6 +76,11 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 
 	}
+	
+	@Override
+	public String getUndoRedoDescription() {
+		return "Camera Move";
+	}
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {

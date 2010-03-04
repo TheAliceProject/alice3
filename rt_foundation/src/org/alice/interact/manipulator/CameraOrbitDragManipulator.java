@@ -49,6 +49,11 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 	}
 	
 	@Override
+	public String getUndoRedoDescription() {
+		return "Camera Rotate";
+	}
+	
+	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		int xChange = currentInput.getMouseLocation().x - previousInput.getMouseLocation().x;
 		int yChange = currentInput.getMouseLocation().y - previousInput.getMouseLocation().y;

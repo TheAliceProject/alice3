@@ -88,6 +88,11 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 	}
 	
 	@Override
+	public String getUndoRedoDescription() {
+		return "Object Resize";
+	}
+	
+	@Override
 	protected HandleSet getHandleSetToEnable() {
 		return new HandleSet(this.linearHandle.getMovementDescription().direction.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.RESIZE);
 	}

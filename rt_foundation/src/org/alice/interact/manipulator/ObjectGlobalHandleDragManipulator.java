@@ -28,6 +28,7 @@ import org.alice.interact.handle.ManipulationHandle;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 
 /**
@@ -41,6 +42,43 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	
 	public ObjectGlobalHandleDragManipulator()
 	{
+	}
+	
+	@Override
+	public String getUndoRedoDescription() {
+		if (this.activeManipulator != null)
+		{
+			return this.activeManipulator.getUndoRedoDescription();
+		}
+		return "Handle Drag";
+	}
+	
+	@Override
+	public boolean hasUpdated() {
+		if (this.activeManipulator != null)
+		{
+			return this.activeManipulator.hasUpdated();
+		}
+		return super.hasUpdated();
+	}
+	
+	@Override
+	protected void setHasUpdated( boolean hasUpdated ) 
+	{
+		if (this.activeManipulator != null)
+		{
+			this.activeManipulator.setHasUpdated(hasUpdated);
+		}
+		super.setHasUpdated( hasUpdated );
+	}
+	
+	@Override
+	public Transformable getManipulatedTransformable() {
+		if (this.activeManipulator != null)
+		{
+			return this.activeManipulator.getManipulatedTransformable();
+		}
+		return null;
 	}
 	
 	@Override

@@ -56,6 +56,16 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 	}
 
 	@Override
+	public String getUndoRedoDescription() {
+		return "Object Select";
+	}
+	
+	@Override
+	public boolean isUndoable() {
+		return false;
+	}
+	
+	@Override
 	public boolean doStartManipulator( InputState startInput ) {
 		PickHint clickedObjectType = PickCondition.getPickType( startInput.getClickPickResult() );
 		if ( clickedObjectType.intersects( PickHint.MOVEABLE_OBJECTS) )

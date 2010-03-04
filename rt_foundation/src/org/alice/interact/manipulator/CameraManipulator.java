@@ -46,7 +46,7 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
 		return null;
 	}
 	
-	public Transformable getManipulatedTransformable()
+	public Transformable getManipulatedTransformableFromCamera()
 	{
 		AbstractCamera camera = this.getCamera();
 		if (camera != null && camera.getParent() instanceof Transformable)
@@ -58,7 +58,7 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = this.getManipulatedTransformable();
+		this.manipulatedTransformable = this.getManipulatedTransformableFromCamera();
 		if (this.manipulatedTransformable != null)
 		{
 			return true;

@@ -230,11 +230,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 		for (int i=0; i<toStart.size(); i++)
 		{
-//			PrintUtilities.println("Beginning: "+toStart.get(i) + " because of "+this.currentInputState);
+//			PrintUtilities.println("Beginning: "+toStart.get(i) + " at "+System.currentTimeMillis());
 			toStart.get( i ).startManipulator( this.currentInputState );
 		}
 		for (int i=0; i<toUpdate.size(); i++)
 		{
+//			PrintUtilities.println("Updating: "+toUpdate.get(i) + " at "+System.currentTimeMillis());
 			//If the manipulator we're updating was just started, don't update it with previous data (it's out of scope for the manipulator)
 			if (toStart.contains( toUpdate.get( i ) ))
 			{
@@ -419,12 +420,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		}
 	}
 	
-	public void mousePressed( java.awt.event.MouseEvent e ) {
+	public void mousePressed( java.awt.event.MouseEvent e ) 
+	{
 		this.currentInputState.setMouseState( e.getButton(), true );
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		this.currentInputState.setInputEventType( InputState.InputEventType.MOUSE_DOWN );
 		
 		e.getComponent().requestFocus();
+		
 		
 		if (e.getComponent() == this.lookingGlassComponent)
 		{
@@ -455,9 +458,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	private PickResult pickIntoScene( Point mouseLocation )
 	{
+//		PrintUtilities.println(System.currentTimeMillis()+": Picking object");
 		edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = this.getOnscreenLookingGlass();
 		assert onscreenLookingGlass != null;
 		edu.cmu.cs.dennisc.lookingglass.PickResult pickResult = onscreenLookingGlass.pickFrontMost( mouseLocation.x, mouseLocation.y, /*isSubElementRequired=*/false );
+//		PrintUtilities.println(System.currentTimeMillis()+": Done picking object");
 		return pickResult;
 	}
 	
