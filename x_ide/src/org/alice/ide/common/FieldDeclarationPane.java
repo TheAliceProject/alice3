@@ -27,15 +27,10 @@ package org.alice.ide.common;
  */
 public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+	private javax.swing.JLabel finalLabel = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		this.field = field;
-		String text;
-		if( field.isFinal() ) {
-			text = "permanently set ";
-		} else {
-			text = "initialize ";
-		}
-		this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text ) );
+		this.add( finalLabel );
 		this.add( new TypeComponent( field.getValueType() ) );
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
@@ -54,6 +49,35 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineA
 //			}
 //		}
 		this.add( component );
+	}
+
+	private void updateFinalLabel() {
+		String text;
+		if( field.isFinal() ) {
+			text = "permanently set ";
+		} else {
+			text = "initialize ";
+		}
+		this.finalLabel.setText( text );
+	}
+	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyListener = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
+		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+		}
+		public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
+			updateFinalLabel();
+		}
+	};
+	
+	@Override
+	public void addNotify() {
+		this.updateFinalLabel();
+		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
+		super.addNotify();
+	}
+	@Override
+	public void removeNotify() {
+		super.removeNotify();
+		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getField() {
 		return this.field;
