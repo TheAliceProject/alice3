@@ -41,7 +41,9 @@ public abstract class AbstractSetLocalTransformationActionOperation extends edu.
 	private void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
 		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
 		if( this.animator != null ) {
-			this.animator.invokeLater( new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( sgTransformable, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, lt ), null );
+			edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( sgTransformable, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, lt );
+			povAnimation.setDuration( 0.5 );
+			this.animator.invokeLater( povAnimation, null );
 		} else {
 			sgTransformable.localTransformation.setValue( lt );
 		}
