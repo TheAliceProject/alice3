@@ -170,6 +170,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.handleManager.setAnimator(animator);
 	}
 	
+	public Animator getAnimator()
+	{
+		return this.animator;
+	}
+	
 	public void setSelectedObject(Transformable selected)
 	{
 		if (this.selectedObject != selected)
