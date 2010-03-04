@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
 	public final Vector4 right       = new Vector4( 1, 0, 0, 0 );
 	public final Vector4 up          = new Vector4( 0, 1, 0, 0 );
 	public final Vector4 backward    = new Vector4( 0, 0, 1, 0 );
@@ -72,20 +72,6 @@ public class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.dennisc.c
 	}
 	public boolean isWithinReasonableEpsilonOfAffine() {
 		return isWithinEpsilonOfAffine( EpsilonUtilities.REASONABLE_EPSILON );
-	}
-
-	@Override
-	public boolean equals( Object o ) {
-		if( o == this ) {
-			return true;
-		} else {
-			if( o instanceof Matrix4x4 ) {
-				Matrix4x4 m = (Matrix4x4) o;
-				return this.right.equals( m.right ) && this.up.equals( m.up ) && this.backward.equals( m.backward ) && this.translation.equals( m.translation );
-			} else {
-				return false;
-			}
-		}
 	}
 	
 	@Override
@@ -524,4 +510,37 @@ public class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.dennisc.c
 		return rv;
 	}
 	
+	@Override
+	public boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o instanceof Matrix4x4 ) {
+				Matrix4x4 other = (Matrix4x4)o;
+				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.right, other.right ) 
+					&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.up, other.up )
+					&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.backward, other.backward )
+					&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.translation, other.translation );
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.right != null ) {
+			rv = 37*rv + this.right.hashCode();
+		}
+		if( this.up != null ) {
+			rv = 37*rv + this.up.hashCode();
+		}
+		if( this.backward != null ) {
+			rv = 37*rv + this.backward.hashCode();
+		}
+		if( this.translation != null ) {
+			rv = 37*rv + this.translation.hashCode();
+		}
+		return rv;
+	}
 }

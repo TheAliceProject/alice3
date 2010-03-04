@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Vector3f extends Tuple3f {
+public final class Vector3f extends Tuple3f {
 	public Vector3f() {
 	}
 	public Vector3f( Tuple3f other ) {

@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Matrix3x3 extends AbstractMatrix3x3 {
+public final class Matrix3x3 extends AbstractMatrix3x3 {
 	private static final Matrix3x3 IDENTITY = new Matrix3x3();
 	public static Matrix3x3 accessIdentity() {
 		IDENTITY.setIdentity();
@@ -113,4 +113,6 @@ public class Matrix3x3 extends AbstractMatrix3x3 {
 //	public void applyMultiplication( AbstractMatrix3x3 b ) {
 //		super.applyMultiplication( b );
 //	}
+	
+	//todo: equals, hashCode
 }

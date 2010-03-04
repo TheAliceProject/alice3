@@ -423,5 +423,4 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		}
 		return rv;
 	}
-
 }

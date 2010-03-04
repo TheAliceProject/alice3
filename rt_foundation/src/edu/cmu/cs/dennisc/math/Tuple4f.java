@@ -87,19 +87,6 @@ public abstract class Tuple4f implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		return rv;
 	}
 
-	@Override
-	public boolean equals( Object o ) {
-		if( o == this ) {
-			return true;
-		} else {
-			if( o instanceof Tuple4f ) {
-				Tuple4f t = (Tuple4f) o;
-				return this.x == t.x && this.y == t.y && this.z == t.z && this.w == t.w;
-			} else {
-				return false;
-			}
-		}
-	}
 	public boolean isWithinEpsilonOf( Tuple4f other, float epsilon ) {
 		return EpsilonUtilities.isWithinEpsilon( this.x, other.x, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.y, other.y, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.z, other.z, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.w, other.w, epsilon );
 	}
@@ -307,6 +294,37 @@ public abstract class Tuple4f implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		setToNormalized( this );
 	}
 	
+	@Override
+	public final boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o != null ) {
+				if( this.getClass().equals( o.getClass() ) ) {
+					Tuple4f other = (Tuple4f)o;
+					return Float.compare( this.x, other.x ) == 0 && Float.compare( this.y, other.y ) == 0 && Float.compare( this.z, other.z ) == 0 && Float.compare( this.w, other.w ) == 0;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public final int hashCode() {
+		int rv = 17;
+		long lng;
+		
+		rv = 37*rv + this.getClass().hashCode();
+
+		rv = 37*rv + Float.floatToIntBits( this.x );
+		rv = 37*rv + Float.floatToIntBits( this.y );
+		rv = 37*rv + Float.floatToIntBits( this.z );
+		rv = 37*rv + Float.floatToIntBits( this.w );
+
+		return rv;
+	}
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Vector2f extends Tuple2f {
+public final class Vector2f extends Tuple2f {
 	public Vector2f() {
 	}
 	public Vector2f( Tuple2f other ) {

@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Point3 extends Tuple3 {
+public final class Point3 extends Tuple3 {
 	public Point3() {
 	}
 	public Point3( Tuple3 other ) {

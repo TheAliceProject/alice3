@@ -25,7 +25,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Vector4f extends Tuple4f {
+public final class Vector4f extends Tuple4f {
 	public Vector4f() {
 	}
 	public Vector4f( Vector4f other ) {
