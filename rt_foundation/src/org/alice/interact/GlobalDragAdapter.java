@@ -150,8 +150,8 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 //		cameraOrbit.addCondition( new MouseDragCondition( java.awt.event.MouseEvent.BUTTON3 , new PickCondition( PickHint.EVERYTHING ) ) );
 //		this.manipulators.add(cameraOrbit);
 		
-		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
-//		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator() );
+//		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new ObjectTranslateDragManipulator() );
+		ManipulatorConditionSet mouseTranslateObject = new ManipulatorConditionSet( new OmniDirectionalDragManipulator() );
 		MouseDragCondition moveableObject = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MOVEABLE_OBJECTS), new ModifierMask( ModifierMask.NO_MODIFIERS_DOWN ));
 		mouseTranslateObject.addCondition( moveableObject );
 		this.manipulators.add( mouseTranslateObject );

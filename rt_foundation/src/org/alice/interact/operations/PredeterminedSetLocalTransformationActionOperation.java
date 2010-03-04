@@ -30,8 +30,8 @@ public class PredeterminedSetLocalTransformationActionOperation extends Abstract
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT;
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT;
 	private String editPresentationKey;
-	public PredeterminedSetLocalTransformationActionOperation( java.util.UUID groupUUID, boolean isDoRequired, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
-		super( groupUUID, isDoRequired );
+	public PredeterminedSetLocalTransformationActionOperation( java.util.UUID groupUUID, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
+		super( groupUUID, isDoRequired, animator );
 		this.sgTransformable = sgTransformable;
 		this.prevLT = prevLT;
 		this.nextLT = nextLT;

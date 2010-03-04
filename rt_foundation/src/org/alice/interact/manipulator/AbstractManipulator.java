@@ -190,8 +190,8 @@ public abstract class AbstractManipulator {
 			{
 				PrintUtilities.println("Adding an undoable action for a manipulation that didn't actually change the transformation.");
 			}
-			
-			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP_UUID, false, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
+			edu.cmu.cs.dennisc.animation.Animator animator = null;
+			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP_UUID, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
 			ZManager.performIfAppropriate( undoOperation, null, false );
 		}
 	}

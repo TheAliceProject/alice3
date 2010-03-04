@@ -27,9 +27,11 @@ package org.alice.interact.operations;
  */
 public abstract class AbstractSetLocalTransformationActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 	private boolean isDoRequired;
-	public AbstractSetLocalTransformationActionOperation( java.util.UUID groupUUID, boolean isDoRequired ) {
+	private edu.cmu.cs.dennisc.animation.Animator animator;
+	public AbstractSetLocalTransformationActionOperation( java.util.UUID groupUUID, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
 		super( groupUUID );
 		this.isDoRequired = isDoRequired;
+		this.animator = animator;
 	}
 	protected abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGTransformable();
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation();
