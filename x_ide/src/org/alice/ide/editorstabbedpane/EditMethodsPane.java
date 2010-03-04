@@ -26,7 +26,41 @@ package org.alice.ide.editorstabbedpane;
 * @author Dennis Cosgrove
 */
 public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	public EditMethodsPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType.methods );
+		this.declaringType = declaringType;
+	}
+	@Override
+	protected java.awt.Component createCellRendererComponent( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice e ) {
+		return new org.alice.ide.codeeditor.MethodHeaderPane( e, null );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID, String name ) {
+		return new org.alice.ide.operations.ast.AbstractRenameNodeOperation( groupUUID, name ) {
+			public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = getSelectedItem();
+				if( method != null ) {
+					this.perform( actionContext, method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+					getIDE().setFocusedCode( method );
+				} else {
+					actionContext.cancel();
+				}
+			}
+		};
+	}
+	protected abstract org.alice.ide.createdeclarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMember() {
+		org.alice.ide.createdeclarationpanes.CreateMethodPane createMethodPane = this.createCreateMethodPane( declaringType );
+		return createMethodPane.showInJDialog( org.alice.ide.IDE.getSingleton() );
+	}
+	@Override
+	protected boolean isEditItemEnabledFor( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice e ) {
+		return e.isSignatureLocked.getValue() == false;
+	}
+	@Override
+	protected boolean isRemoveItemEnabledFor( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice e ) {
+		return e.isDeletionAllowed.getValue();
 	}
 }

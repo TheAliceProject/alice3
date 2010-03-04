@@ -20,20 +20,17 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.editorstabbedpane;
 
 /**
- * @author Dennis Cosgrove
- */
-public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
-	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
-	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
-	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, "Rename..." );
-		this.nameProperty = nameProperty;
-		this.nodeNameValidator = nodeNameValidator;
+* @author Dennis Cosgrove
+*/
+public class EditFunctionsPane extends EditMethodsPane {
+	public EditFunctionsPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		super( declaringType );
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.perform( actionContext, this.nameProperty, this.nodeNameValidator );
+	@Override
+	protected org.alice.ide.createdeclarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		return new org.alice.ide.createdeclarationpanes.CreateFunctionPane( declaringType );
 	}
 }

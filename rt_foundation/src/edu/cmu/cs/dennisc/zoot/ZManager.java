@@ -454,20 +454,25 @@ public class ZManager {
 	
 	
 	public static javax.swing.JButton createButton( ActionOperation actionOperation ) {
+		assert actionOperation != null;
 		return new ZButton(actionOperation);
 	}
 	public static javax.swing.JMenuItem createMenuItem( ActionOperation actionOperation ) {
+		assert actionOperation != null;
 		return new ZMenuItem(actionOperation);
 	}
 	public static javax.swing.AbstractButton createHyperlink( ActionOperation actionOperation ) {
+		assert actionOperation != null;
 		return new ZHyperlink(actionOperation);
 	}
 
 
 	public static javax.swing.JCheckBox createCheckBox( BooleanStateOperation booleanStateOperation ) {
+		assert booleanStateOperation != null;
 		return new ZCheckBox(booleanStateOperation);
 	}
 	public static javax.swing.JCheckBoxMenuItem createCheckBoxMenuItem( BooleanStateOperation booleanStateOperation ) {
+		assert booleanStateOperation != null;
 		return new ZCheckBoxMenuItem(booleanStateOperation);
 	}
 

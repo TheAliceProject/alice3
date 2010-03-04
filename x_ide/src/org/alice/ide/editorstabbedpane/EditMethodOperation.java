@@ -20,20 +20,27 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.editorstabbedpane;
 
 /**
- * @author Dennis Cosgrove
- */
-public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
-	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
-	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
-	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, "Rename..." );
-		this.nameProperty = nameProperty;
-		this.nodeNameValidator = nodeNameValidator;
+* @author Dennis Cosgrove
+*/
+//todo
+class EditMethodOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
+
+	public EditMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		this.method = method;
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Edit " );
+		sb.append( this.method.getName() );
+		if( this.method == org.alice.ide.IDE.getSingleton().getFocusedCode() ) {
+			sb.append( "    (current)" );
+		}
+		this.putValue( javax.swing.Action.NAME, sb.toString() );
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.perform( actionContext, this.nameProperty, this.nodeNameValidator );
+	@Override
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		this.getIDE().setFocusedCode( this.method );
 	}
 }

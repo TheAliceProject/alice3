@@ -22,12 +22,14 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+import edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice;;
 /**
 * @author Dennis Cosgrove
 */
-public abstract class EditMembersPane< E extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.croquet.KInputPane< Boolean > {
+public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.croquet.KInputPane< Boolean > {
+	private javax.swing.JList list;
 	public EditMembersPane( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
-		final javax.swing.JList list = new javax.swing.JList();
+		this.list = new javax.swing.JList();
 		list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.ContentsCachingListCellRenderer< E >() {
 			@Override
 			protected java.awt.Component createComponent(E e) {
@@ -40,7 +42,7 @@ public abstract class EditMembersPane< E extends edu.cmu.cs.dennisc.alice.ast.Me
 				this.add( contents );
 			}
 		} );
-		
+
 		final edu.cmu.cs.dennisc.javax.swing.ListPropertyListModel< E > listModel = edu.cmu.cs.dennisc.javax.swing.ListPropertyListModel.createInstance( listProperty );
 		list.setModel( listModel );
 		class EditableMemberListPane extends edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< E > {
@@ -65,11 +67,29 @@ public abstract class EditMembersPane< E extends edu.cmu.cs.dennisc.alice.ast.Me
 			}
 			@Override
 			protected boolean isRemoveItemEnabled( int index ) {
-				return true;
+				if( index != -1 ) {
+					E e = listModel.getElementAt( index );
+					if( e != null ) {
+						return isRemoveItemEnabledFor( e );
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
 			}
 			@Override
 			protected boolean isEditItemEnabled( int index ) {
-				return true;
+				if( index != -1 ) {
+					E e = listModel.getElementAt( index );
+					if( e != null ) {
+						return isEditItemEnabledFor( e );
+					} else {
+						return false;
+					}
+				} else {
+					return false;
+				}
 			}
 			@Override
 			protected E createItem() throws Exception {
@@ -85,7 +105,12 @@ public abstract class EditMembersPane< E extends edu.cmu.cs.dennisc.alice.ast.Me
 	protected Boolean getActualInputValue() {
 		return Boolean.TRUE;
 	}
+	protected E getSelectedItem() {
+		return (E)this.list.getSelectedValue();
+	}
 	protected abstract java.awt.Component createCellRendererComponent(E e);
 	protected abstract edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID, String name );
 	protected abstract E createMember();
+	protected abstract boolean isRemoveItemEnabledFor( E e );
+	protected abstract boolean isEditItemEnabledFor( E e );
 }

@@ -20,20 +20,21 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.editorstabbedpane;
 
 /**
- * @author Dennis Cosgrove
- */
-public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
-	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
-	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
-	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, "Rename..." );
-		this.nameProperty = nameProperty;
-		this.nodeNameValidator = nodeNameValidator;
+* @author Dennis Cosgrove
+*/
+//todo
+class EditConstructorOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor;
+
+	public EditConstructorOperation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
+		this.constructor = constructor;
+		this.putValue( javax.swing.Action.NAME, "Edit Constructor" );
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		this.perform( actionContext, this.nameProperty, this.nodeNameValidator );
+	@Override
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		this.getIDE().setFocusedCode( this.constructor );
 	}
 }

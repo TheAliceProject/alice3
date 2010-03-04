@@ -1,49 +1,5 @@
 package org.alice.ide.editorstabbedpane;
 
-class OperatorFillIn extends edu.cmu.cs.dennisc.cascade.SimpleFillIn< edu.cmu.cs.dennisc.zoot.ActionOperation > {
-	public OperatorFillIn( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation ) {
-		super( actionOperation );
-	}
-	@Override
-	protected String getMenuProxyText() {
-		return (String)this.getModel().getActionForConfiguringSwing().getValue( javax.swing.Action.NAME );
-	}
-}
-
-//todo
-class EditConstructorOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor;
-
-	public EditConstructorOperation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
-		this.constructor = constructor;
-		this.putValue( javax.swing.Action.NAME, "Edit Constructor" );
-	}
-	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		this.getIDE().setFocusedCode( this.constructor );
-	}
-}
-
-//todo
-class EditMethodOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
-
-	public EditMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		this.method = method;
-		StringBuffer sb = new StringBuffer();
-		sb.append( "Edit " );
-		sb.append( this.method.getName() );
-		if( this.method == org.alice.ide.IDE.getSingleton().getFocusedCode() ) {
-			sb.append( "    (current)" );
-		}
-		this.putValue( javax.swing.Action.NAME, sb.toString() );
-	}
-	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		this.getIDE().setFocusedCode( this.method );
-	}
-}
-
 //class EditFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
 //	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 //
@@ -54,6 +10,59 @@ class EditMethodOperation extends org.alice.ide.operations.InconsequentialAction
 //	public void perform( zoot.ActionContext actionContext ) {
 //	}
 //}
+
+abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > extends org.alice.ide.operations.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
+	private String presentation;
+	public EditMembersOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, String presentation ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		this.declaringType = declaringType;
+		this.presentation = presentation;
+		this.putValue( javax.swing.Action.NAME, this.presentation + "..." );
+	}
+	protected abstract EditMembersPane< E > createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
+	public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		java.util.UUID groupUUID = java.util.UUID.randomUUID();
+		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
+		EditMembersPane< E > editMembersPane = this.createEditMembersPane( groupUUID, this.declaringType );
+		Boolean isAccepted = editMembersPane.showInJDialog( getIDE() );
+		if( isAccepted != null ) {
+			edu.cmu.cs.dennisc.zoot.CompositeEdit compositeEdit = historyManager.createDoIgnoringCompositeEdit( this.presentation + " " + this.declaringType.getName() );
+			if( compositeEdit != null ) {
+				actionContext.commitAndInvokeDo( compositeEdit );
+			} else {
+				actionContext.cancel();
+			}
+		} else {
+			historyManager.setInsertionIndex( 0 );
+			actionContext.cancel();
+		}
+	}
+}
+abstract class EditMethodsOperation< E extends edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > extends EditMembersOperation< E > {
+	public EditMethodsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String presentation ) {
+		super( type, presentation );
+	}
+}
+class EditProceduresOperation extends EditMethodsOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	public EditProceduresOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( type, "Edit Procedures" );
+	}
+	@Override
+	protected EditProceduresPane createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		return new EditProceduresPane( declaringType );
+	}
+}
+class EditFunctionsOperation extends EditMethodsOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	public EditFunctionsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( type, "Edit Functions" );
+	}
+	@Override
+	protected EditFunctionsPane createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		return new EditFunctionsPane( declaringType );
+	}
+}
+
 
 class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private static String PRESENTATION = "Edit Properties";
@@ -142,6 +151,8 @@ class ProceduresFillIn extends MethodsFillIn {
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		super.addChildrenToBlank( blank );
 		blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareProcedureOperation( this.getType() ) ) );
+		blank.addSeparator();
+		blank.addFillIn( new OperatorFillIn( new EditProceduresOperation( this.getType() ) ) );
 	}
 }
 
@@ -157,6 +168,8 @@ class FunctionsFillIn extends MethodsFillIn {
 	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
 		super.addChildrenToBlank( blank );
 		blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareFunctionOperation( this.getType() ) ) );
+		blank.addSeparator();
+		blank.addFillIn( new OperatorFillIn( new EditFunctionsOperation( this.getType() ) ) );
 	}
 }
 
