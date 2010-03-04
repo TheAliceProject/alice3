@@ -20,14 +20,16 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.stageide.sceneeditor.operations;
+package org.alice.interact.operations;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSetLocalTransformationActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public AbstractSetLocalTransformationActionOperation() {
-		super( org.alice.ide.IDE.PROJECT_GROUP );
+public abstract class AbstractSetLocalTransformationActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+	private boolean isDoRequired;
+	public AbstractSetLocalTransformationActionOperation( java.util.UUID groupUUID, boolean isDoRequired ) {
+		super( groupUUID );
+		this.isDoRequired = isDoRequired;
 	}
 	protected abstract edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSGTransformable();
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation();
@@ -45,7 +47,11 @@ public abstract class AbstractSetLocalTransformationActionOperation extends org.
 			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
-					sgTransformable.localTransformation.setValue( nextLT );
+					if( isDo && ( isDoRequired == false ) ) {
+						//pass
+					} else {
+						sgTransformable.localTransformation.setValue( nextLT );
+					}
 				}
 				@Override
 				public void undo() {

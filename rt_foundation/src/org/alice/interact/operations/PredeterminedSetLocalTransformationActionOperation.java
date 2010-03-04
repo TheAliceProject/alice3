@@ -20,7 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.stageide.sceneeditor.operations;
+package org.alice.interact.operations;
 
 /**
  * @author Dennis Cosgrove
@@ -30,7 +30,8 @@ public class PredeterminedSetLocalTransformationActionOperation extends Abstract
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT;
 	private edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT;
 	private String editPresentationKey;
-	public PredeterminedSetLocalTransformationActionOperation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
+	public PredeterminedSetLocalTransformationActionOperation( java.util.UUID groupUUID, boolean isDoRequired, edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable, edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT, edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT, String editPresentationKey ) {
+		super( groupUUID, isDoRequired );
 		this.sgTransformable = sgTransformable;
 		this.prevLT = prevLT;
 		this.nextLT = nextLT;
