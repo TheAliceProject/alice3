@@ -45,7 +45,7 @@ public abstract class EditMembersPane< E extends edu.cmu.cs.dennisc.alice.ast.Me
 		list.setModel( listModel );
 		class EditableMemberListPane extends edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< E > {
 			public EditableMemberListPane() {
-				super( org.alice.ide.IDE.PROJECT_GROUP, list );
+				super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP, list );
 			}
 			@Override
 			protected edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID ) {

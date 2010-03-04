@@ -86,7 +86,7 @@ class ListPropertyComboBoxModel<E> extends javax.swing.AbstractListModel impleme
 public class ArrayInitializerPane extends AbstractInitializerPane {
 	class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public AddItemOperation() {
-			super( org.alice.ide.IDE.PROJECT_GROUP );
+			super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Add" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -112,7 +112,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public RemoveItemOperation() {
-			super( org.alice.ide.IDE.PROJECT_GROUP );
+			super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
 			this.putValue( javax.swing.Action.NAME, "Remove" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -136,7 +136,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	}
 	abstract class AbstractMoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public AbstractMoveItemOperation() {
-			super( org.alice.ide.IDE.PROJECT_GROUP );
+			super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
 		}
 		protected abstract int getIndex( int selectedIndex );
 		protected abstract int getRedoSelectionIndexDelta();

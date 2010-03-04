@@ -27,7 +27,7 @@ package org.alice.stageide.operations.ast;
  */
 public abstract class AbstractFieldTileActionOperation extends org.alice.ide.operations.ast.AbstractFieldActionOperation {
 	public AbstractFieldTileActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP, field );
+		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP, field );
 	}
 	
 	//todo: remove

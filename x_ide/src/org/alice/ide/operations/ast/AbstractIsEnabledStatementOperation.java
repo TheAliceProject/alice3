@@ -29,7 +29,7 @@ public abstract class AbstractIsEnabledStatementOperation extends org.alice.ide.
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public AbstractIsEnabledStatementOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( org.alice.ide.IDE.PROJECT_GROUP );
+		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
 		this.statement = statement;
 	}
 	protected abstract boolean getDesiredValue();

@@ -97,7 +97,6 @@ class RecentProjectsMenu extends javax.swing.JMenu {
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
-	public static final java.util.UUID PROJECT_GROUP = java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" );
 	public static final java.util.UUID PREFERENCES_GROUP = java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" );
 	public static final java.util.UUID IO_GROUP = java.util.UUID.fromString( "669018cd-2097-4568-9ce3-38cd102f6a2f" );
 	public static final java.util.UUID INTERFACE_GROUP = java.util.UUID.fromString( "9d0f4665-a40e-4e0c-9139-6f54f288c016" );
@@ -453,7 +452,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	private int projectHistoryInsertionIndexOfCurrentFile = 0;
 
 	private boolean isProjectChanged() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( IDE.PROJECT_GROUP );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
 		return this.projectHistoryInsertionIndexOfCurrentFile != projectHistoryManager.getInsertionIndex();
 	}
 	public boolean isProjectUpToDateWithFile() {
@@ -464,7 +463,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 	}
 	private void updateHistoryLengthAtLastFileOperation() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( IDE.PROJECT_GROUP );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
 		this.projectHistoryInsertionIndexOfCurrentFile = projectHistoryManager.getInsertionIndex();
 		this.updateTitle();
 	}
@@ -476,7 +475,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		IDE.singleton = this;
 		this.promptForLicenseAgreements();
 
-		edu.cmu.cs.dennisc.history.HistoryManager.getInstance( IDE.PROJECT_GROUP ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
+		edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
 			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 			}
 			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
@@ -1732,7 +1731,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	public void loadProjectFrom( java.io.File file ) {
 		this.mapUUIDToNode.clear();
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( IDE.PROJECT_GROUP );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
 		projectHistoryManager.performClear();
 		this.updateHistoryLengthAtLastFileOperation();
 		this.restoreProjectProperties();
