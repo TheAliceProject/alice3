@@ -360,6 +360,7 @@ public class Child extends Person {
 	public Child()
 	{
 		this(null);
+		this.setBoundingBoxShowing(true);
 	}
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
@@ -385,8 +386,8 @@ public class Child extends Person {
 	
 	@Override
 	protected edu.cmu.cs.dennisc.math.AxisAlignedBox getLocalAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
-		final double X = 0.208;
-		final double Y = 1.7;
+		final double X = 0.1375;
+		final double Y = 1.20;
 		final double Z = 0.131;
 		
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: Child getLocalAxisAlignedMinimumBoundingBox" );
