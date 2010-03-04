@@ -32,7 +32,7 @@ public abstract class AbstractApplyRotationAnimation extends AffineAnimation {
 		m_angleInRadians = Double.NaN;
 		m_sumInRadians = Double.NaN;
 	}
-	public AbstractApplyRotationAnimation( edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle ) {
+	public AbstractApplyRotationAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle ) {
 		super( sgSubject, sgAsSeenBy );
 		setAngle( angle );
 		m_sumInRadians = Double.NaN;

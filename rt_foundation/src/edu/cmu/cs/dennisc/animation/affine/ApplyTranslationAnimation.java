@@ -34,7 +34,7 @@ public class ApplyTranslationAnimation extends AffineAnimation {
 		m_translation.setNaN();
 		m_sum.setNaN();
 	}
-	public ApplyTranslationAnimation( edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Point3 translation ) {
+	public ApplyTranslationAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Point3 translation ) {
 		super( sgSubject, sgAsSeenBy );
 		setTranslation( translation );
 		m_sum.setNaN();

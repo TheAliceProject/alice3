@@ -45,7 +45,7 @@ public class PointOfViewAnimation extends AffineAnimation {
 	public PointOfViewAnimation() {
 		this( null, null, null, null );
 	}
-	public PointOfViewAnimation( edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.AffineMatrix4x4 povBegin, edu.cmu.cs.dennisc.math.AffineMatrix4x4 povEnd ) {
+	public PointOfViewAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.AffineMatrix4x4 povBegin, edu.cmu.cs.dennisc.math.AffineMatrix4x4 povEnd ) {
 		super( sgSubject, sgAsSeenBy );
 		setPointOfViewBegin( povBegin );
 		setPointOfViewEnd( povEnd );

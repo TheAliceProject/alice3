@@ -30,7 +30,7 @@ public class ApplyRotationAboutArbitraryAxisAnimation extends AbstractApplyRotat
 	public ApplyRotationAboutArbitraryAxisAnimation() {
 		m_axis.setNaN();
 	}
-	public ApplyRotationAboutArbitraryAxisAnimation( edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle, edu.cmu.cs.dennisc.math.Vector3 axis ) {
+	public ApplyRotationAboutArbitraryAxisAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle, edu.cmu.cs.dennisc.math.Vector3 axis ) {
 		super( sgSubject, sgAsSeenBy, angle );
 		setAxis( axis );
 	}

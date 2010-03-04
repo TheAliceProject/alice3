@@ -37,37 +37,40 @@ public abstract class AbstractSetLocalTransformationActionOperation extends edu.
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getPrevLocalTransformation();
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 getNextLocalTransformation();
 	protected abstract String getEditPresentationName( java.util.Locale locale );
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		final edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
-		if( sgTransformable != null ) {
-			final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
-			final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
-			assert prevLT != null;
-			assert nextLT != null;
-			assert prevLT.isNaN() == false;
-			assert nextLT.isNaN() == false;
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-				@Override
-				public void doOrRedo( boolean isDo ) {
-					if( isDo && ( isDoRequired == false ) ) {
-						//pass
-					} else {
-						sgTransformable.localTransformation.setValue( nextLT );
-					}
-				}
-				@Override
-				public void undo() {
-					sgTransformable.localTransformation.setValue( prevLT );
-				}
-				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-					rv.append( getEditPresentationName( locale ) );
-					return rv;
-				}
-			} );
+	
+	private void setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4 lt ) {
+		edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgTransformable = this.getSGTransformable();
+		if( this.animator != null ) {
+			this.animator.invokeLater( new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( sgTransformable, edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, lt ), null );
 		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: TransformableFieldTileActionOperation" );
-			actionContext.cancel();
+			sgTransformable.localTransformation.setValue( lt );
 		}
+	}
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 prevLT = this.getPrevLocalTransformation();
+		final edu.cmu.cs.dennisc.math.AffineMatrix4x4 nextLT = this.getNextLocalTransformation();
+		assert prevLT != null;
+		assert nextLT != null;
+		assert prevLT.isNaN() == false;
+		assert nextLT.isNaN() == false;
+		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			@Override
+			public void doOrRedo( boolean isDo ) {
+				if( isDo && ( isDoRequired == false ) ) {
+					//pass
+				} else {
+					setLocalTransformation( nextLT );
+				}
+			}
+			@Override
+			public void undo() {
+				setLocalTransformation( prevLT );
+			}
+			@Override
+			protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+				rv.append( getEditPresentationName( locale ) );
+				return rv;
+			}
+		} );
 	}
 }

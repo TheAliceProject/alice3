@@ -26,19 +26,19 @@ package edu.cmu.cs.dennisc.animation.affine;
  * @author Dennis Cosgrove
  */
 public abstract class AffineAnimation extends edu.cmu.cs.dennisc.animation.DurationBasedAnimation {
-	private edu.cmu.cs.dennisc.scenegraph.Transformable m_sgSubject = null;
+	private edu.cmu.cs.dennisc.scenegraph.AbstractTransformable m_sgSubject = null;
 	private edu.cmu.cs.dennisc.scenegraph.ReferenceFrame m_sgAsSeenBy = null;
 	public AffineAnimation() {
 	}
-	public AffineAnimation( edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
+	public AffineAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy ) {
 		setSubject( sgSubject );
 		setAsSeenBy( sgAsSeenBy );
 	}
 	
-	public edu.cmu.cs.dennisc.scenegraph.Transformable getSubject() {
+	public edu.cmu.cs.dennisc.scenegraph.AbstractTransformable getSubject() {
 		return m_sgSubject;
 	}
-	public void setSubject( edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject ) {
+	public void setSubject( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject ) {
 		assert sgSubject != null;
 		m_sgSubject = sgSubject;
 	}

@@ -38,7 +38,7 @@ public class PositionAnimation extends AffineAnimation {
 		m_posBegin.setNaN();
 		m_posEnd.setNaN();
 	}
-	public PositionAnimation( edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Point3 posBegin, edu.cmu.cs.dennisc.math.Point3 posEnd ) {
+	public PositionAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Point3 posBegin, edu.cmu.cs.dennisc.math.Point3 posEnd ) {
 		super( sgSubject, sgAsSeenBy );
 		m_posBeginUsedAtRuntime.setNaN();
 		setPositionBegin( posBegin );

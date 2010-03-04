@@ -28,7 +28,7 @@ package edu.cmu.cs.dennisc.animation.affine;
 public class ApplyRotationAboutXAxisAnimation extends AbstractApplyRotationAnimation {
 	public ApplyRotationAboutXAxisAnimation() {
 	}
-	public ApplyRotationAboutXAxisAnimation( edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle ) {
+	public ApplyRotationAboutXAxisAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.Angle angle ) {
 		super( sgSubject, sgAsSeenBy, angle );
 	}
 	@Override

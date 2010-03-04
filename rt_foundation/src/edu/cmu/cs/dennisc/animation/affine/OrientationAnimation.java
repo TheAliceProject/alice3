@@ -38,7 +38,7 @@ public class OrientationAnimation extends AffineAnimation {
 		m_quatBegin.setNaN();
 		m_quatEnd.setNaN();
 	}
-	public OrientationAnimation( edu.cmu.cs.dennisc.scenegraph.Transformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.UnitQuaternion quatBegin, edu.cmu.cs.dennisc.math.UnitQuaternion quatEnd ) {
+	public OrientationAnimation( edu.cmu.cs.dennisc.scenegraph.AbstractTransformable sgSubject, edu.cmu.cs.dennisc.scenegraph.ReferenceFrame sgAsSeenBy, edu.cmu.cs.dennisc.math.UnitQuaternion quatBegin, edu.cmu.cs.dennisc.math.UnitQuaternion quatEnd ) {
 		super( sgSubject, sgAsSeenBy );
 		m_quatBeginUsedAtRuntime.setNaN();
 		setOrientationBegin( quatBegin );
