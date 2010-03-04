@@ -46,7 +46,13 @@ public abstract class MemberWithParametersInfo extends MemberInfo {
 			this.parameterClses = new Class<?>[ this.parameterClassNames.length ];
 			int i = 0;
 			for( String name : this.parameterClassNames ) {
-				this.parameterClses[ i++ ] = ReflectionUtilities.getClassForName( name );
+				this.parameterClses[ i ] = ReflectionUtilities.getClassForName( name );
+				if( this.parameterClses[ i ] != null ) {
+					//pass
+				} else {
+					throw new NullPointerException( name );
+				}
+				i++;
 			}
 		}
 		return this.parameterClses;

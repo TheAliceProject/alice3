@@ -29,13 +29,39 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice;
 	private boolean isDropDownForFieldInitializerDesired;
 	public EditFieldPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice ) {
-		super( new org.alice.ide.name.validators.FieldNameValidator( fieldDeclaredInAlice ), fieldDeclaredInAlice.getValueType(), fieldDeclaredInAlice.initializer.getValue() );
+		super( new org.alice.ide.name.validators.FieldNameValidator( fieldDeclaredInAlice ), fieldDeclaredInAlice.valueType.getValue(), fieldDeclaredInAlice.initializer.getValue() );
 		this.fieldDeclaredInAlice = fieldDeclaredInAlice;
 		this.isDropDownForFieldInitializerDesired = this.getIDE().isDropDownDesiredForFieldInitializer( this.fieldDeclaredInAlice );
 	}
 	@Override
 	protected String getDefaultNameText() {
 		return this.fieldDeclaredInAlice.getName();
+	}
+	
+	@Override
+	protected boolean isReassignable() {
+		if( this.isDropDownForFieldInitializerDesired ) {
+			return super.isReassignable();
+		} else {
+			return fieldDeclaredInAlice.isFinal() == false;
+		}
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
+		if( this.isDropDownForFieldInitializerDesired ) {
+			return super.getValueType();
+		} else {
+			return fieldDeclaredInAlice.valueType.getValue();
+		}
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.Expression getInitializer() {
+		if( this.isDropDownForFieldInitializerDesired ) {
+			return super.getInitializer();
+		} else {
+			return fieldDeclaredInAlice.initializer.getValue();
+		}
 	}
 	
 	@Override
@@ -61,7 +87,7 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 	}
 	@Override
 	protected boolean isEditableInitializerComponentDesired() {
-		return true;
+		return this.isDropDownForFieldInitializerDesired;
 	}
 	@Override
 	protected boolean isEditableValueTypeComponentDesired() {

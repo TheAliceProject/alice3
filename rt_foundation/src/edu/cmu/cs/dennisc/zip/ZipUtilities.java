@@ -64,4 +64,37 @@ public class ZipUtilities {
 		bos.flush();
 		zos.closeEntry();
 	}
+	
+
+	//todo: support recursion
+	public static void zipContentsOfDirectory( String zipPath, String directoryPath ) throws java.io.IOException {
+		java.io.FileOutputStream fos = new java.io.FileOutputStream( zipPath );
+		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );
+		
+		java.io.File directory = new java.io.File( directoryPath );
+		
+		byte[] buffer = new byte[ 1024 ];
+		java.io.File[] files = directory.listFiles();
+		for( java.io.File file : files ) {
+			if( file.isDirectory() ) {
+				//pass
+			} else {
+				java.io.FileInputStream fis = new java.io.FileInputStream( file );
+				java.util.zip.ZipEntry zipEntry = new java.util.zip.ZipEntry( file.getName() );
+				zos.putNextEntry( zipEntry );
+				while( true ) {
+					int bytesRead = fis.read( buffer );
+					if( bytesRead != -1 ) {
+						zos.write( buffer, 0, bytesRead );
+					} else {
+						break;
+					}
+				}
+				fis.close();
+			}
+		}
+		zos.flush();
+		zos.close();
+	}
+	
 }
