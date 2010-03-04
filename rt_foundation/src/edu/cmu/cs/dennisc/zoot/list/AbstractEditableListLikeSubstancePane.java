@@ -79,27 +79,6 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		}
 	}
 
-	class EditItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
-		public EditItemOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID );
-			this.putValue( javax.swing.Action.NAME, name );
-		}
-		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			final int index = getSelectedIndex();
-			if( index >= 0 ) {
-				final E e = getItemAt( index );
-				edu.cmu.cs.dennisc.zoot.Edit edit = createEditEdit( e );
-				if( edit != null ) {
-					actionContext.commitAndInvokeDo( edit );
-				} else {
-					actionContext.cancel();
-				}
-			} else {
-				actionContext.cancel();
-			}
-		}
-	}
-
 	abstract class AbstractMoveItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public AbstractMoveItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
@@ -169,7 +148,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		}
 	}
 
-	protected abstract edu.cmu.cs.dennisc.zoot.Edit createEditEdit( E e );
+	protected abstract edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID );
 	protected abstract E createItem() throws Exception;
 	protected abstract void add( int index, E e );
 	protected abstract void remove( int index, E e );
@@ -183,14 +162,14 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	private java.awt.Component listLikeSubstance;
 	private AddItemOperation addItemOperation;
 	private RemoveItemOperation removeItemOperation;
-	private EditItemOperation editItemOperation;
+	private edu.cmu.cs.dennisc.zoot.ActionOperation editItemOperation;
 	private MoveItemUpOperation moveItemUpOperation;
 	private MoveItemDownOperation moveItemDownOperation;
 
 	public AbstractEditableListLikeSubstancePane( java.util.UUID groupUUID, java.awt.Component listLikeSubstance ) {
 		this.listLikeSubstance = listLikeSubstance;
 		this.addItemOperation = new AddItemOperation( groupUUID, this.getAddItemOperationName() );
-		this.editItemOperation = new EditItemOperation( groupUUID, this.getEditItemOperationName() );
+		this.editItemOperation = this.createEditOperation( groupUUID );
 		this.removeItemOperation = new RemoveItemOperation( groupUUID, this.getRemoveItemOperationName() );
 		this.moveItemUpOperation = new MoveItemUpOperation( groupUUID, this.getMoveItemUpOperationName() );
 		this.moveItemDownOperation = new MoveItemDownOperation( groupUUID, this.getMoveItemDownOperationName() );
@@ -246,9 +225,6 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	
 	protected String getAddItemOperationName() {
 		return "Add...";
-	}
-	protected String getEditItemOperationName() {
-		return "Edit...";
 	}
 	protected String getRemoveItemOperationName() {
 		return "Remove";

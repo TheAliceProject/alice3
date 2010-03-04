@@ -91,10 +91,27 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 		this.list.setModel( fieldsListModel );
 
 		
+		
 		class EditableFieldListPane extends edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< FieldDeclaredInAlice > {
+			@Override
+			protected edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID ) {
+				return new org.alice.ide.operations.ast.AbstractEditFieldOperation( groupUUID, "Edit..." ) {
+					public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+						final int index = getSelectedIndex();
+						if( index >= 0 ) {
+							FieldDeclaredInAlice field = getItemAt( index );
+							this.perform( actionContext, field, referencedFields, reassignedFields );
+						} else {
+							actionContext.cancel();
+						}
+					}
+				};
+			}
+
 			public EditableFieldListPane() {
 				super( groupUUID, list );
 			}
+			
 			@Override
 			protected void add( int index, FieldDeclaredInAlice e ) {
 				fieldsListModel.add( index, e );
@@ -126,39 +143,6 @@ public class EditFieldsPane extends edu.cmu.cs.dennisc.croquet.KInputPane< Boole
 					throw new Exception();
 				}
 				return rv;
-			}
-			@Override
-			protected edu.cmu.cs.dennisc.zoot.Edit createEditEdit( final FieldDeclaredInAlice field ) {
-				final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
-				final edu.cmu.cs.dennisc.alice.ast.AbstractType prevValueType = field.valueType.getValue();
-				final String prevName = field.getName();
-				final edu.cmu.cs.dennisc.alice.ast.Expression prevInitializer = field.initializer.getValue();
-				org.alice.ide.createdeclarationpanes.EditFieldPane editFieldPane = new org.alice.ide.createdeclarationpanes.EditFieldPane( field, referencedFields.contains( field ), reassignedFields.contains( field ) );
-				FieldDeclaredInAlice tempField = editFieldPane.showInJDialog( this );
-				if( tempField != null ) {
-					final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither nextFinalVolatileOrNeither = tempField.finalVolatileOrNeither.getValue();
-					final edu.cmu.cs.dennisc.alice.ast.AbstractType nextValueType = tempField.valueType.getValue();
-					final String nextName = tempField.getName();
-					final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
-					return new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
-						@Override
-						public void doOrRedo( boolean isDo ) {
-							field.finalVolatileOrNeither.setValue( nextFinalVolatileOrNeither );
-							field.valueType.setValue( nextValueType );
-							field.name.setValue( nextName );
-							field.initializer.setValue( nextInitializer );
-						}
-						@Override
-						public void undo() {
-							field.finalVolatileOrNeither.setValue( prevFinalVolatileOrNeither );
-							field.valueType.setValue( prevValueType );
-							field.name.setValue( prevName );
-							field.initializer.setValue( prevInitializer );
-						}
-					};
-				} else {
-					return null;
-				}
 			}
 		}
 		this.editableListPane = new EditableFieldListPane();

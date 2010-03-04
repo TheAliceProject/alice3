@@ -160,23 +160,25 @@ class FunctionsFillIn extends MethodsFillIn {
 	}
 }
 
-//class FieldsFillIn extends MembersFillIn {
-//	public FieldsFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-//		super( "Properties", type );
-//	}
-//	@Override
-//	public int getMemberCount() {
-//		return this.getType().fields.size();
-//	}
-//	@Override
-//	protected void addChildrenToBlank( cascade.Blank blank ) {
-//		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.getType().fields ) {
-//			blank.addFillIn( new OperatorFillIn( new EditFieldOperation( field ) ) );
-//		}
-//		blank.addSeparator();
-//		blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareFieldOperation( this.getType() ) ) );
-//	}
-//}
+class FieldsFillIn extends MembersFillIn {
+	public FieldsFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( "Properties", type );
+	}
+	@Override
+	public int getMemberCount() {
+		return this.getType().fields.size();
+	}
+	@Override
+	protected void addChildrenToBlank( edu.cmu.cs.dennisc.cascade.Blank blank ) {
+		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field : this.getType().fields ) {
+			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.EditFieldOperation( field ) ) );
+		}
+		blank.addSeparator();
+		blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.DeclareFieldOperation( this.getType() ) ) );
+		blank.addSeparator();
+		blank.addFillIn( new OperatorFillIn( new EditFieldsOperation( this.getType() ) ) );
+	}
+}
 
 class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.dennisc.zoot.ActionOperation > {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
@@ -196,7 +198,7 @@ class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.denni
 			blank.addFillIn( new FunctionsFillIn( this.type ) );
 			blank.addFillIn( new OperatorFillIn( new EditConstructorOperation( (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.type.getDeclaredConstructor() ) ) );
 			blank.addSeparator();
-			blank.addFillIn( new OperatorFillIn( new EditFieldsOperation( this.type ) ) );
+			blank.addFillIn( new FieldsFillIn( this.type ) );
 			blank.addSeparator();
 			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) ) );
 			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
