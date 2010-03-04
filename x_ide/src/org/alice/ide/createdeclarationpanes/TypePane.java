@@ -48,7 +48,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 	private org.alice.ide.common.TypeComboBox typeComboBox;
 	private IsArrayStateOperation isArrayStateOperation;
 
-	public TypePane( DeclarationProperty< AbstractType > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isArrayCheckBoxEnabled ) {
+	public TypePane( DeclarationProperty< AbstractType > typeProperty, edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty, boolean isTypeComboBoxEnabled, boolean isArrayCheckBoxEnabled ) {
 		assert typeProperty != null;
 		this.typeProperty = typeProperty;
 		AbstractType type = this.typeProperty.getValue();
@@ -73,6 +73,8 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 				TypePane.this.updateTypeProperty();
 			}
 		};
+		
+		this.typeComboBox.setEnabled( isTypeComboBoxEnabled );
 		
 		isArrayProperty.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
@@ -100,7 +102,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 		this.add( this.typeComboBox );
 		this.add( isArrayCheckBox );
 	}
-
+	
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType rv = (edu.cmu.cs.dennisc.alice.ast.AbstractType)this.typeComboBox.getSelectedItem();
 		if( rv != null ) {

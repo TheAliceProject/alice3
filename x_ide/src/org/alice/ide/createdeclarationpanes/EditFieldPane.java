@@ -27,10 +27,14 @@ package org.alice.ide.createdeclarationpanes;
  */
 public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice;
+	private boolean isReferenced;
+	private boolean isReassigned;
 	private boolean isDropDownForFieldInitializerDesired;
-	public EditFieldPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice ) {
+	public EditFieldPane( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldDeclaredInAlice, boolean isReferenced, boolean isReassigned ) {
 		super( new org.alice.ide.name.validators.FieldNameValidator( fieldDeclaredInAlice ), fieldDeclaredInAlice.valueType.getValue(), fieldDeclaredInAlice.initializer.getValue() );
 		this.fieldDeclaredInAlice = fieldDeclaredInAlice;
+		this.isReferenced = isReferenced;
+		this.isReassigned = isReassigned;
 		this.isDropDownForFieldInitializerDesired = this.getIDE().isDropDownDesiredForFieldInitializer( this.fieldDeclaredInAlice );
 	}
 	@Override
@@ -38,6 +42,18 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 		return this.fieldDeclaredInAlice.getName();
 	}
 	
+	@Override
+	protected boolean isIsReassignableComponentEnabled() {
+		return this.isReassigned == false;
+	}
+	@Override
+	protected boolean isValueTypeComponentEnabled() {
+		return this.isReferenced == false;
+	}
+	@Override
+	protected boolean getIsReassignableInitialState() {
+		return this.fieldDeclaredInAlice.isFinal() == false;
+	}
 	@Override
 	protected boolean isReassignable() {
 		if( this.isDropDownForFieldInitializerDesired ) {

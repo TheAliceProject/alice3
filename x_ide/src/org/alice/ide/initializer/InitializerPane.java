@@ -54,7 +54,13 @@ public class InitializerPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
 		this.arrayInitializerPane = new ArrayInitializerPane( this.bogusNode.arrayExpressions );
 		this.add( this.itemInitializerPane, ITEM_KEY );
 		this.add( this.arrayInitializerPane, ARRAY_KEY );
-		this.show( ITEM_KEY );
+		String key;
+		if( this.bogusNode.isArray.getValue() ) {
+			key = ARRAY_KEY;
+		} else {
+			key = ITEM_KEY;
+		}
+		this.show( key );
 	}
 //	private java.awt.Component getCurrentCard() {
 //		if( this.itemInitializerPane.isVisible() ) {

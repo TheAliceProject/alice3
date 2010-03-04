@@ -180,10 +180,14 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 	
 
 
+	protected boolean isValueTypeComponentEnabled() {
+		return true;
+	}
 	protected abstract boolean isEditableValueTypeComponentDesired();
 	protected java.awt.Component createValueTypeComponent() {
 		if( this.isEditableValueTypeComponentDesired() ) {
-			this.typePane = new TypePane( bogusNode.componentType, bogusNode.isArray, true );
+			boolean isEnabled = this.isValueTypeComponentEnabled();
+			this.typePane = new TypePane( bogusNode.componentType, bogusNode.isArray, isEnabled, isEnabled );
 		} else {
 			this.typePane = null;
 		}

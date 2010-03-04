@@ -34,7 +34,7 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 	
 	public ArrayChooser() {
 		bogusNode.isArray.setValue( true );
-		this.typePane = new org.alice.ide.createdeclarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, false );
+		this.typePane = new org.alice.ide.createdeclarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
 		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.arrayExpressions );
 		this.components = new java.awt.Component[] { this.typePane, this.arrayInitializerPane };
 		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
