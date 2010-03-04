@@ -452,7 +452,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	private int projectHistoryInsertionIndexOfCurrentFile = 0;
 
 	private boolean isProjectChanged() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		return this.projectHistoryInsertionIndexOfCurrentFile != projectHistoryManager.getInsertionIndex();
 	}
 	public boolean isProjectUpToDateWithFile() {
@@ -463,7 +463,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 	}
 	private void updateHistoryLengthAtLastFileOperation() {
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		this.projectHistoryInsertionIndexOfCurrentFile = projectHistoryManager.getInsertionIndex();
 		this.updateTitle();
 	}
@@ -475,7 +475,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		IDE.singleton = this;
 		this.promptForLicenseAgreements();
 
-		edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
+		edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
 			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 			}
 			public void operationPushed( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
@@ -1731,7 +1731,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	public void loadProjectFrom( java.io.File file ) {
 		this.mapUUIDToNode.clear();
-		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		edu.cmu.cs.dennisc.history.HistoryManager projectHistoryManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		projectHistoryManager.performClear();
 		this.updateHistoryLengthAtLastFileOperation();
 		this.restoreProjectProperties();

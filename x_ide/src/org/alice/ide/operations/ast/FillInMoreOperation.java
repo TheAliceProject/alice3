@@ -28,7 +28,7 @@ package org.alice.ide.operations.ast;
 public class FillInMoreOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	public FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		assert expressionStatement != null;
 		this.expressionStatement = expressionStatement;
 	}

@@ -29,7 +29,7 @@ public abstract class RenameNodeOperation extends org.alice.ide.operations.Abstr
 	private edu.cmu.cs.dennisc.property.StringProperty nameProperty;
 	private org.alice.ide.name.validators.NodeNameValidator nodeNameValidator;
 	public RenameNodeOperation( edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
-		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		this.nameProperty = nameProperty;
 		this.nodeNameValidator = nodeNameValidator;
 		this.putValue( javax.swing.Action.NAME, "Rename..." );

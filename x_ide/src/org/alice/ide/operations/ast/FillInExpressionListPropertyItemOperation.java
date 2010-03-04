@@ -30,7 +30,7 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty;
 	private int index;
 	public FillInExpressionListPropertyItemOperation( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
-		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		//this.type = type;
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;

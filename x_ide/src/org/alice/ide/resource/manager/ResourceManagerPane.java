@@ -149,7 +149,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
 public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 	abstract class ResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public ResourceOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		}
 		protected abstract edu.cmu.cs.dennisc.zoot.Edit createEdit( org.alice.virtualmachine.Resource resource );
 
@@ -327,7 +327,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 
 	class RenameResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public RenameResourceOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 			this.putValue( javax.swing.Action.NAME, "Rename..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -432,7 +432,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		}
 
 		public ReloadResourceOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 			this.putValue( javax.swing.Action.NAME, "Reload Content..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

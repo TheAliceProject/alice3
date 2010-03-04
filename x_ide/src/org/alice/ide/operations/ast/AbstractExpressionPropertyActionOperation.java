@@ -29,7 +29,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 
 	public AbstractExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		this.expressionProperty = expressionProperty;
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {

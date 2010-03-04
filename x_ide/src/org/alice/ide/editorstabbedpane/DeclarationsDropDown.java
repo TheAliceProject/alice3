@@ -61,7 +61,7 @@ class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperati
 
 
 	public EditFieldsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		this.type = type;
 		this.putValue( javax.swing.Action.NAME, PRESENTATION + "..." );
 	}

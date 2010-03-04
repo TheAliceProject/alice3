@@ -28,7 +28,7 @@ import org.alice.virtualmachine.Resource;
  * @author Dennis Cosgrove
  */
 public class Project {
-	public static final java.util.UUID PROJECT_GROUP = java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" );
+	public static final java.util.UUID GROUP_UUID = java.util.UUID.fromString( "a89d2513-6d9a-4378-a08b-4d773618244d" );
 
 	private static int readInt( java.io.BufferedInputStream bis ) throws java.io.IOException {
 		byte[] lengthArray = new byte[ 4 ];

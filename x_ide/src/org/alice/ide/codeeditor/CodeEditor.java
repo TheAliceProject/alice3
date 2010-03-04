@@ -405,7 +405,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 
 
 						public DropOperation() {
-							super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+							super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 						}
 						public void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 							class DropEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
@@ -500,7 +500,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 					if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 						class CopyOperation extends org.alice.ide.operations.AbstractActionOperation {
 							public CopyOperation() {
-								super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+								super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 							}
 							public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 								final edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
@@ -535,7 +535,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 							} else {
 								class ReorderOperation extends org.alice.ide.operations.AbstractActionOperation {
 									public ReorderOperation() {
-										super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+										super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 									}
 									public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 										class ReorderEdit extends CodeEdit {
@@ -575,7 +575,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 						} else {
 							class ReparentOperation extends org.alice.ide.operations.AbstractActionOperation {
 								public ReparentOperation() {
-									super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+									super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 								}
 								public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 									class ReparentEdit extends CodeEdit {

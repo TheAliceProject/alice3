@@ -12,6 +12,6 @@ public class IsHistoryShowingOperation extends IsFrameShowingOperation {
 	}
 	@Override
 	protected java.awt.Component createPane() {
-		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		return new edu.cmu.cs.dennisc.history.HistoryPane( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 	}
 }

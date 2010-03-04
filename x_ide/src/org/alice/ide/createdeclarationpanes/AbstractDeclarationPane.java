@@ -28,7 +28,7 @@ package org.alice.ide.createdeclarationpanes;
 public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.PreviewInputPane< E > {
 	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public IsReassignableStateOperation( boolean initialValue ) {
-			super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP, initialValue );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, initialValue );
 			//this.putValue( javax.swing.Action.NAME, "is constant" );
 		}
 		@Override

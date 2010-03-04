@@ -27,7 +27,7 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public AbstractCodeOperation() {
-		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode();
 }

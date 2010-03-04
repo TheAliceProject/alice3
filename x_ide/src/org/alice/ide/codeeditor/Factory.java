@@ -27,7 +27,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public DeleteStatementActionOperation( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		this.putValue( javax.swing.Action.NAME, "Delete" );
 		this.property = abstractStatementPane.getOwner();
 		this.statement = abstractStatementPane.getStatement();
@@ -65,7 +65,7 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP, statement.isEnabled.getValue() );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, statement.isEnabled.getValue() );
 		this.statement = statement;
 		this.putValue( javax.swing.Action.NAME, "Is Enabled" );
 		//update();

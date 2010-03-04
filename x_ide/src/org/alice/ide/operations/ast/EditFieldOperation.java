@@ -30,7 +30,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 public class EditFieldOperation extends AbstractEditFieldOperation {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	public EditFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( edu.cmu.cs.dennisc.alice.Project.PROJECT_GROUP, "Edit " + field.getName() + "..." );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, "Edit " + field.getName() + "..." );
 		this.field = field;
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
