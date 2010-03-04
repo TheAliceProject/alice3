@@ -397,4 +397,31 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		//todo
 		return new Matrix4x4( this ).setReturnValueToTransformed( rv, b );
 	}
+	
+	@Override
+	public boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o instanceof AffineMatrix4x4 ) {
+				AffineMatrix4x4 other = (AffineMatrix4x4)o;
+				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.orientation, other.orientation ) 
+					&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.translation, other.translation );
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.orientation != null ) {
+			rv = 37*rv + this.orientation.hashCode();
+		}
+		if( this.orientation != null ) {
+			rv = 37*rv + this.translation.hashCode();
+		}
+		return rv;
+	}
+
 }

@@ -449,4 +449,34 @@ public class OrthogonalMatrix3x3 extends AbstractMatrix3x3 implements Orientatio
 		up.z = 0;
 		backward.z = 1;
 	}
+
+	@Override
+	public boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o instanceof OrthogonalMatrix3x3 ) {
+				OrthogonalMatrix3x3 other = (OrthogonalMatrix3x3)o;
+				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.right, other.right ) 
+					&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.up, other.up )
+					&& edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.backward, other.backward );
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		if( this.right != null ) {
+			rv = 37*rv + this.right.hashCode();
+		}
+		if( this.up != null ) {
+			rv = 37*rv + this.up.hashCode();
+		}
+		if( this.backward != null ) {
+			rv = 37*rv + this.backward.hashCode();
+		}
+		return rv;
+	}
 }

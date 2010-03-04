@@ -185,6 +185,36 @@ public class Vector3 extends Tuple3 {
 		return this.equals( accessNegativeZAxis() );
 	}
 
+	@Override
+	public boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o instanceof Vector3 ) {
+				Vector3 other = (Vector3)o;
+				return Double.compare( this.x, other.x ) == 0 && Double.compare( this.y, other.y ) == 0 && Double.compare( this.z, other.z ) == 0;
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public int hashCode() {
+		int rv = 17;
+		long lng;
+		
+		lng = Double.doubleToLongBits( this.x );
+		rv = 37*rv + (int)( lng ^(lng >>>32) );
+
+		lng = Double.doubleToLongBits( this.y );
+		rv = 37*rv + (int)( lng ^(lng >>>32) );
+
+		lng = Double.doubleToLongBits( this.z );
+		rv = 37*rv + (int)( lng ^(lng >>>32) );
+
+		return rv;
+	}
+	
 	//	
 	//	public VectorD3() {
 	//	}
