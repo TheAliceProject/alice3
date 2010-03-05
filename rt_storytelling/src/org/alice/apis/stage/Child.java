@@ -22,6 +22,7 @@
  */
 package org.alice.apis.stage;
 
+
 import edu.cmu.cs.dennisc.alice.annotations.MethodTemplate;
 import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 
@@ -378,6 +379,36 @@ public class Child extends Person {
 	protected FiniteStateMachine.State getNeutralState() {
 		return Child.State.HANDS_AT_SIDES;
 	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void standUpStraight() {
+		performStateTransition( State.HANDS_AT_SIDES );
+	}
+	
+	
+	//Exercises
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void doSideStretches() {
+		perform( Cycle.DO_SIDE_STRETCH  );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void touchToes() {
+		perform( Cycle.TOUCH_TOES );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void doJumpingJack() {
+		perform( Cycle.DO_JUMPING_JACK );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void doKneeBend() {
+		perform( Cycle.DO_KNEE_BEND );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void jogInPlace() {
+		perform( Cycle.JOG_IN_PLACE );
+	}
+	
+	
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
 	public void wave() {
 		perform( Child.Cycle.WAVE );

@@ -33,7 +33,7 @@ public class CannedAnimation extends edu.cmu.cs.dennisc.animation.AbstractAnimat
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "license not accepted" );
 		} catch( RuntimeException re ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "unable to animate cycle: " + cycle );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "unable to animate cycle: " + cycle, re);
 		}
 	}
 	public CannedAnimation( Transition transition, Model model ) {
@@ -43,7 +43,8 @@ public class CannedAnimation extends edu.cmu.cs.dennisc.animation.AbstractAnimat
 			m_control = null;
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "license not accepted" );
 		} catch( RuntimeException re ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "unable to animate between: " + transition.getPre(), transition.getPost() );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "unable to animate between: " + transition.getPre(), transition.getPost(), re );
+			re.printStackTrace();
 		}
 	}
 
