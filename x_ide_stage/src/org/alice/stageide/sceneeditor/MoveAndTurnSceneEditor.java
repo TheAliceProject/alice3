@@ -158,21 +158,27 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
 			animator = this.program.getAnimator();
 		}
+		
+		
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: remove forcing repaint of scene editor" );
+//		
 //		animator.invokeLater( new edu.cmu.cs.dennisc.animation.Animation() {
 //			public double update( double tCurrent, edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
-//				if( program.getScene() != null ) {
-//					edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = program.getScene().getSGComposite();
-//					if( sgComposite instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
-//						edu.cmu.cs.dennisc.scenegraph.Scene sgScene = (edu.cmu.cs.dennisc.scenegraph.Scene)sgComposite;
-//						double t = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
-//						double portion = t - Math.floor( t );
-//						portion *= 2;
-//						portion -= 1;
-//						portion = Math.abs( portion );
-//						sgScene.background.getValue().color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 1.0f, (float)portion, (float)portion, 1.0f ) );
-//						//PrintUtilities.println( portion );
-//					}
-//				}
+//				program.getOnscreenLookingGlass().repaint();
+//				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 50 );
+////				if( program.getScene() != null ) {
+////					edu.cmu.cs.dennisc.scenegraph.Composite sgComposite = program.getScene().getSGComposite();
+////					if( sgComposite instanceof edu.cmu.cs.dennisc.scenegraph.Scene ) {
+////						edu.cmu.cs.dennisc.scenegraph.Scene sgScene = (edu.cmu.cs.dennisc.scenegraph.Scene)sgComposite;
+////						double t = edu.cmu.cs.dennisc.clock.Clock.getCurrentTime();
+////						double portion = t - Math.floor( t );
+////						portion *= 2;
+////						portion -= 1;
+////						portion = Math.abs( portion );
+////						sgScene.background.getValue().color.setValue( new edu.cmu.cs.dennisc.color.Color4f( 1.0f, (float)portion, (float)portion, 1.0f ) );
+////						//PrintUtilities.println( portion );
+////					}
+////				}
 //				return 1.0;
 //			}
 //			public void complete( edu.cmu.cs.dennisc.animation.AnimationObserver animationObserver ) {
@@ -770,8 +776,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 	@Override
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
-		this.program.getOnscreenLookingGlass().setRenderingEnabled( isRenderingEnabled );
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignoring: setRenderingEnabled", isRenderingEnabled );
+		//this.program.getOnscreenLookingGlass().setRenderingEnabled( isRenderingEnabled );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignoring: setRenderingEnabled", isRenderingEnabled );
 	}
 
 	//	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {

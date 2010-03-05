@@ -133,13 +133,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		if( glCapabilitiesChooser != null ) {
 			//pass
 		} else {
-			boolean isSlowAndSteadyDesired = false;
-			String isSlowAndSteadyDesiredText = System.getProperty( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
-			if( isSlowAndSteadyDesiredText != null ) {
-				if( isSlowAndSteadyDesiredText.equalsIgnoreCase( "true" ) ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired:", isSlowAndSteadyDesiredText );
-					isSlowAndSteadyDesired = true;
-				}
+			boolean isSlowAndSteadyDesired = edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
 //			} else {
 //				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
 //					try {
@@ -156,12 +150,12 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 //						t.printStackTrace();
 //					}
 //				}
-			}
 			if( isSlowAndSteadyDesired ) {
 				glCapabilitiesChooser = new edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser();
 			} else {
 				glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
 			}
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "glCapabilitiesChooser", glCapabilitiesChooser );
 		}
 		return glCapabilitiesChooser;
 	}
@@ -269,6 +263,8 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			} finally {
 				releaseRenderingLock();
 			}
+		} else {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "this.automaticDisplayCount", this.automaticDisplayCount );
 		}
 		LookingGlassFactory.this.handleDisplayed();
 		return rv;
@@ -276,7 +272,12 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	
 	public void acquireRenderingLock() {
 		try {
+			long t0 = System.currentTimeMillis();
 			this.renderingLock.acquire();
+			long tDelta = System.currentTimeMillis() - t0;
+			if( tDelta > 100 ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "msec waiting for rendering lock:", tDelta );
+			}
 		} catch( InterruptedException ie ) {
 			throw new RuntimeException( ie );
 		}

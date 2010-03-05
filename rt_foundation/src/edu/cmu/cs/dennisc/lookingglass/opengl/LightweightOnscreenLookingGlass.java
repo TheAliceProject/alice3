@@ -27,8 +27,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass{
-//	class RenderPane extends javax.media.opengl.GLJPanel {
-	class RenderPane extends edu.cmu.cs.dennisc.javax.media.opengl.GLJPanel {
+	class RenderPane extends /*edu.cmu.cs.dennisc.*/javax.media.opengl.GLJPanel {
 		
 		private Throwable prevThrowable = null;
 		
@@ -48,18 +47,18 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 					if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
 						super.paintComponent( g );
 					} else {
-						java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
-						if( offscreenImage != null ) {
-							g.drawImage( offscreenImage, 0, 0, this );
-							String text = "rendering disabled for performance considerations";
-							java.awt.Dimension size = this.getSize();
-							g.setColor( java.awt.Color.BLACK );
-							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
-							g.setColor( java.awt.Color.YELLOW );
-							g.translate( -1, -1 );
-							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
-							g.translate( 1, 1 );
-						}
+//						java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
+//						if( offscreenImage != null ) {
+//							g.drawImage( offscreenImage, 0, 0, this );
+//							String text = "rendering disabled for performance considerations";
+//							java.awt.Dimension size = this.getSize();
+//							g.setColor( java.awt.Color.BLACK );
+//							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
+//							g.setColor( java.awt.Color.YELLOW );
+//							g.translate( -1, -1 );
+//							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
+//							g.translate( 1, 1 );
+//						}
 					}
 					this.prevThrowable = null;
 				} catch( Throwable t ) {
