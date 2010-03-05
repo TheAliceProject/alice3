@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class MethodReflectionProxy extends InvocableReflectionProxy< java.lang.reflect.Method > {
+public final class MethodReflectionProxy extends InvocableReflectionProxy< java.lang.reflect.Method > {
 	private String name;
 	public MethodReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name, ClassReflectionProxy[] parameterClassReflectionProxies ) {
 		super( declaringClassReflectionProxy, parameterClassReflectionProxies );
@@ -36,26 +36,22 @@ public class MethodReflectionProxy extends InvocableReflectionProxy< java.lang.r
 		super( mthd, mthd.getDeclaringClass(), mthd.getParameterTypes() );
 		this.name = mthd.getName();
 	}
+
 	@Override
-	public int hashCode() {
-		int rv = super.hashCode();
-		rv ^= this.name.hashCode();
+	protected int hashCodeNonReifiable() {
+		int rv = super.hashCodeNonReifiable();
+		rv = 37*rv + this.name.hashCode();
 		return rv;
 	}
 	@Override
-	public boolean equals( Object o ) {
-		MethodReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, MethodReflectionProxy.class );
-		if( other != null ) {
-			if( super.equals( other ) ) {
-				return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.name, other.name );
-			} else {
-				return false;
-			}
+	protected boolean equalsInstanceOfSameClassButNonReifiable( edu.cmu.cs.dennisc.alice.ast.ReflectionProxy< ? > o ) {
+		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
+			MethodReflectionProxy other = (MethodReflectionProxy)o;
+			return this.name != null ? this.name.equals( other.name ) : other.name == null;
 		} else {
 			return false;
 		}
 	}
-	
 	public String getName() {
 		return this.name;
 	}

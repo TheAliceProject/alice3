@@ -37,30 +37,26 @@ public abstract class InvocableReflectionProxy< E > extends MemberReflectionProx
 		this.parameterClassReflectionProxies = ClassReflectionProxy.create( parameterClses );
 	}
 	@Override
-	public int hashCode() {
-		int rv = super.hashCode();
+	protected int hashCodeNonReifiable() {
+		int rv = super.hashCodeNonReifiable();
 		for( ClassReflectionProxy parameterClassReflectionProxy : parameterClassReflectionProxies ) {
-			rv ^= parameterClassReflectionProxy.hashCode();
+			rv = 37*rv + parameterClassReflectionProxy.hashCode();
 		}
 		return rv;
 	}
 	@Override
-	public boolean equals( Object o ) {
-		InvocableReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, InvocableReflectionProxy.class );
-		if( other != null ) {
-			if( super.equals( other ) ) {
-				if( this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length ) {
-					for( int i=0; i<this.parameterClassReflectionProxies.length; i++ ) {
-						if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.parameterClassReflectionProxies[ i ], other.parameterClassReflectionProxies[ i ] ) ) {
-							//pass
-						} else {
-							return false;
-						}
+	protected boolean equalsInstanceOfSameClassButNonReifiable( edu.cmu.cs.dennisc.alice.ast.ReflectionProxy< ? > o ) {
+		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
+			InvocableReflectionProxy<E> other = (InvocableReflectionProxy<E>)o;
+			if( this.parameterClassReflectionProxies.length == other.parameterClassReflectionProxies.length ) {
+				for( int i=0; i<this.parameterClassReflectionProxies.length; i++ ) {
+					if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.parameterClassReflectionProxies[ i ], other.parameterClassReflectionProxies[ i ] ) ) {
+						//pass
+					} else {
+						return false;
 					}
-					return true;
-				} else {
-					return false;
 				}
+				return true;
 			} else {
 				return false;
 			}

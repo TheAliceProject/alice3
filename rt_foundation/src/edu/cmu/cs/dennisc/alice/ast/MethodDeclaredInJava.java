@@ -27,19 +27,19 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class MethodDeclaredInJava extends AbstractMethod {
-	private static java.util.Map< MethodReflectionProxy, MethodDeclaredInJava > s_map = new java.util.HashMap< MethodReflectionProxy, MethodDeclaredInJava >();
+	private static java.util.Map< MethodReflectionProxy, MethodDeclaredInJava > s_mapReflectionProxyToJava = new java.util.HashMap< MethodReflectionProxy, MethodDeclaredInJava >();
 
 	private MethodReflectionProxy methodReflectionProxy;
 	private java.util.ArrayList< ParameterDeclaredInJavaMethod > parameters;
 
 	public static MethodDeclaredInJava get( MethodReflectionProxy methodReflectionProxy ) {
 		if( methodReflectionProxy != null ) {
-			MethodDeclaredInJava rv = s_map.get( methodReflectionProxy );
+			MethodDeclaredInJava rv = s_mapReflectionProxyToJava.get( methodReflectionProxy );
 			if( rv != null ) {
 				//pass
 			} else {
 				rv = new MethodDeclaredInJava( methodReflectionProxy );
-				s_map.put( methodReflectionProxy, rv );
+				s_mapReflectionProxyToJava.put( methodReflectionProxy, rv );
 			}
 			return rv;
 		} else {

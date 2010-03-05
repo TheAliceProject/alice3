@@ -36,17 +36,15 @@ public abstract class MemberReflectionProxy< E > extends ReflectionProxy< E > {
 		this.declaringClassReflectionProxy = new ClassReflectionProxy( declaringCls );
 	}
 	@Override
-	public int hashCode() {
-		return this.declaringClassReflectionProxy.hashCode();
+	protected int hashCodeNonReifiable() {
+		int rv = 17;
+		rv = 37*rv + this.declaringClassReflectionProxy.hashCode();
+		return rv;
 	}
 	@Override
-	public boolean equals( Object o ) {
-		MemberReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, MemberReflectionProxy.class );
-		if( other != null ) {
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.declaringClassReflectionProxy, other.declaringClassReflectionProxy );
-		} else {
-			return false;
-		}
+	protected boolean equalsInstanceOfSameClassButNonReifiable( edu.cmu.cs.dennisc.alice.ast.ReflectionProxy< ? > o ) {
+		MemberReflectionProxy<E> other = (MemberReflectionProxy<E>)o;
+		return this.declaringClassReflectionProxy != null ? this.declaringClassReflectionProxy.equals( other.declaringClassReflectionProxy ) : other.declaringClassReflectionProxy == null;
 	}
 	public ClassReflectionProxy getDeclaringClassReflectionProxy() {
 		return this.declaringClassReflectionProxy;

@@ -44,8 +44,39 @@ public abstract class ReflectionProxy<E> {
 		}
 		return this.reification;
 	}
+	
+	protected abstract int hashCodeNonReifiable(); 
+	protected abstract boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy< ? > o ); 
+	
 	@Override
-	public abstract int hashCode();
+	public final int hashCode() {
+		E e = this.getReification();
+		if( e != null ) {
+			return e.hashCode();
+		} else {
+			return this.hashCodeNonReifiable();
+		}
+	}
 	@Override
-	public abstract boolean equals( Object o );
+	public final boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o instanceof ReflectionProxy< ? > ) {
+				ReflectionProxy< ? > other = (ReflectionProxy< ? >)o;
+				E e = this.getReification();
+				if( e != null ) {
+					return e.equals( other.getReification() );
+				} else {
+					if( this.getClass().equals( other.getClass() ) ) {
+						return this.equalsInstanceOfSameClassButNonReifiable( other );
+					} else {
+						return false;
+					}
+				}
+			} else {
+				return false;
+			}
+		}
+	}
 }

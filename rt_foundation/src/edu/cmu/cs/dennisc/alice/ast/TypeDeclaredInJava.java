@@ -27,7 +27,7 @@ package edu.cmu.cs.dennisc.alice.ast;
  * @author Dennis Cosgrove
  */
 public class TypeDeclaredInJava extends AbstractType {
-	private static java.util.Map< ClassReflectionProxy, TypeDeclaredInJava > s_map = new java.util.HashMap< ClassReflectionProxy, TypeDeclaredInJava >();
+	private static java.util.Map< ClassReflectionProxy, TypeDeclaredInJava > s_mapReflectionProxyToJava = new java.util.HashMap< ClassReflectionProxy, TypeDeclaredInJava >();
 	public static final TypeDeclaredInJava VOID_TYPE = get( Void.TYPE );
 
 	public static final TypeDeclaredInJava BOOLEAN_PRIMITIVE_TYPE = get( Boolean.TYPE );
@@ -45,16 +45,15 @@ public class TypeDeclaredInJava extends AbstractType {
 	public static final TypeDeclaredInJava[] DOUBLE_TYPES = { DOUBLE_PRIMITIVE_TYPE, DOUBLE_OBJECT_TYPE };
 	
 	public static final TypeDeclaredInJava OBJECT_TYPE = get( Object.class );
-	
 
 	public static TypeDeclaredInJava get( ClassReflectionProxy classReflectionProxy ) {
 		if( classReflectionProxy != null ) {
-			TypeDeclaredInJava rv = s_map.get( classReflectionProxy );
+			TypeDeclaredInJava rv = s_mapReflectionProxyToJava.get( classReflectionProxy );
 			if( rv != null ) {
 				//pass
 			} else {
 				rv = new TypeDeclaredInJava( classReflectionProxy );
-				s_map.put( classReflectionProxy, rv );
+				s_mapReflectionProxyToJava.put( classReflectionProxy, rv );
 				Class< ? > cls = classReflectionProxy.getReification();
 				if( cls != null ) {
 					//todo: handle constructors as methods are (set up chains...)
@@ -99,13 +98,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	}
 	public static TypeDeclaredInJava get( Class< ? > cls ) {
 		if( cls != null ) {
-			TypeDeclaredInJava rv = s_map.get( cls );
-			if( rv != null ) {
-				//pass
-			} else {
-				rv = get( new ClassReflectionProxy( cls ) );
-			}
-			return rv;
+			return get( new ClassReflectionProxy( cls ) );
 		} else {
 			return null;
 		}

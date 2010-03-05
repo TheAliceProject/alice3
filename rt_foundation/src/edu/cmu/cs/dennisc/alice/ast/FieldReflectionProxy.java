@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldReflectionProxy extends MemberReflectionProxy< java.lang.reflect.Field > {
+public final class FieldReflectionProxy extends MemberReflectionProxy< java.lang.reflect.Field > {
 	private String name;
 	public FieldReflectionProxy( ClassReflectionProxy declaringClassReflectionProxy, String name ) {
 		super( declaringClassReflectionProxy );
@@ -38,19 +38,21 @@ public class FieldReflectionProxy extends MemberReflectionProxy< java.lang.refle
 	}
 
 	@Override
-	public int hashCode() {
-		return super.hashCode() ^ this.name.hashCode();
+	protected int hashCodeNonReifiable() {
+		int rv = super.hashCodeNonReifiable();
+		rv = 37*rv + this.name.hashCode();
+		return rv;
 	}
 	@Override
-	public boolean equals( Object o ) {
-		FieldReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, FieldReflectionProxy.class );
-		if( other != null ) {
-			return super.equals( other ) && edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.name, other.name );
+	protected boolean equalsInstanceOfSameClassButNonReifiable( edu.cmu.cs.dennisc.alice.ast.ReflectionProxy< ? > o ) {
+		if( super.equalsInstanceOfSameClassButNonReifiable( o ) ) {
+			FieldReflectionProxy other = (FieldReflectionProxy)o;
+			return this.name != null ? this.name.equals( other.name ) : other.name == null;
 		} else {
 			return false;
 		}
 	}
-
+	
 	public String getName() {
 		return this.name;
 	}

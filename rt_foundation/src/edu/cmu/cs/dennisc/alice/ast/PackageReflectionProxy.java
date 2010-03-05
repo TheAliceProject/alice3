@@ -26,7 +26,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class PackageReflectionProxy extends ReflectionProxy< Package > {
+public final class PackageReflectionProxy extends ReflectionProxy< Package > {
 	private String name;
 	public PackageReflectionProxy( String name ) {
 		this.name = name;
@@ -36,17 +36,13 @@ public class PackageReflectionProxy extends ReflectionProxy< Package > {
 		this.name = pckg.getName();
 	}
 	@Override
-	public int hashCode() {
+	protected int hashCodeNonReifiable() {
 		return this.name.hashCode();
 	}
 	@Override
-	public boolean equals( Object o ) {
-		PackageReflectionProxy other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, PackageReflectionProxy.class );
-		if( other != null ) {
-			return edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.name, other.name );
-		} else {
-			return false;
-		}
+	protected boolean equalsInstanceOfSameClassButNonReifiable( ReflectionProxy< ? > o ) {
+		PackageReflectionProxy other = (PackageReflectionProxy)o;
+		return this.name != null ? this.name.equals( other.name ) : other.name == null;
 	}
 	public String getName() {
 		return this.name;
