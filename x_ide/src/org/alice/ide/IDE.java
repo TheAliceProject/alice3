@@ -912,6 +912,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "paint stencil" );
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			if( IDE.this.holes != null ) {
 				//java.awt.geom.Area area = new java.awt.geom.Area( g2.getClipBounds() );

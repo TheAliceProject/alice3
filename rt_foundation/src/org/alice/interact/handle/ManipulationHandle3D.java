@@ -218,7 +218,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.opacityAnimation  = new DoubleTargetBasedAnimation( new Double(sgFrontFacingAppearance.opacity.getValue()) ){
 			@Override
 			protected void updateValue( Double value ) {
-				ManipulationHandle3D.this.sgFrontFacingAppearance.opacity.setValue( value.floatValue() );
+				ManipulationHandle3D.this.sgFrontFacingAppearance.opacity.setValue( value.floatValue() );				
 			}
 		};
 		this.colorAnimation  = new ColorTargetBasedAnimation( sgFrontFacingAppearance.diffuseColor.getValue() ){

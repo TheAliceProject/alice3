@@ -80,6 +80,7 @@ abstract class Animator implements Runnable {
 			//			try {
 			ThreadDeferenceAction threadAction = this.step();
 			if( threadAction == ThreadDeferenceAction.SLEEP ) {
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "sleep" );
 				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( this.sleepMillis );
 			} else if( threadAction == ThreadDeferenceAction.YIELD ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "yield" );
