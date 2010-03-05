@@ -360,7 +360,6 @@ public class Child extends Person {
 	public Child()
 	{
 		this(null);
-		this.setBoundingBoxShowing(true);
 	}
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )
