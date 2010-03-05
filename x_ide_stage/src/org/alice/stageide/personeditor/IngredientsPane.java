@@ -70,6 +70,24 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 		this.lifeStageList.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
 		this.lifeStageList.setVisibleRowCount( 1 );
 		this.lifeStageList.setOpaque( false );
+
+		this.lifeStageList.addListSelectionListener( new javax.swing.event.ListSelectionListener() {
+			public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+				if( e.getValueIsAdjusting() ) {
+					//pass
+				} else {
+					if( IngredientsPane.this.tabbedPane != null ) {
+						javax.swing.SwingUtilities.invokeLater( new Runnable() {
+							public void run() {
+								IngredientsPane.this.handleLifeStageSelection( IngredientsPane.this.tabbedPane.getSelectedIndex() );
+							}
+						} );
+					}
+				}
+			}
+		} );
+		
+		
 		this.genderList.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
 		this.genderList.setVisibleRowCount( 1 );
 		this.genderList.setOpaque( false );
@@ -174,7 +192,8 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 		
 	}
 	
-	protected abstract void handleTabSelection( int index );
+	protected abstract void handleTabSelection( int tabIndex );
+	protected abstract void handleLifeStageSelection( int tabIndex );
 
 	@Override
 	public void addNotify() {

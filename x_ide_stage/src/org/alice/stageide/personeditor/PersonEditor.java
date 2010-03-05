@@ -31,8 +31,12 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 	private PersonViewer personViewer = PersonViewer.getSingleton();
 	private IngredientsPane ingredientsPane = new IngredientsPane() {
 		@Override
-		protected void handleTabSelection( int index ) {
-			personViewer.handleTabSelection( index );
+		protected void handleTabSelection( int tabIndex ) {
+			personViewer.handleTabSelection( tabIndex, 0.5 );
+		}
+		@Override
+		protected void handleLifeStageSelection( int tabIndex ) {
+			personViewer.handleTabSelection( tabIndex, 0.0 );
 		}
 	};
 	

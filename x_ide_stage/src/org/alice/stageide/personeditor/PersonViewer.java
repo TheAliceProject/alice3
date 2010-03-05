@@ -41,7 +41,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 
 	private IngredientsPane ingredientsPane;
 	private org.alice.interact.CreateASimDragAdapter dragAdapter = new org.alice.interact.CreateASimDragAdapter();
-	private edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person > mapToMap = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person >();
+	private edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person > mapLifeStageGenderToPerson = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Person >();
 	private LifeStage lifeStage = null;
 	private Gender gender = null;
 	private BaseSkinTone baseSkinTone = null;
@@ -64,13 +64,12 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		maleChild.setGender( Gender.MALE );
 		
 		
-		this.mapToMap.put( LifeStage.ADULT, Gender.FEMALE, femaleAdult );
-		this.mapToMap.put( LifeStage.ADULT, Gender.MALE, maleAdult );
-		this.mapToMap.put( LifeStage.CHILD, Gender.FEMALE, femaleChild );
-		this.mapToMap.put( LifeStage.CHILD, Gender.MALE, femaleChild );
+		this.mapLifeStageGenderToPerson.put( LifeStage.ADULT, Gender.FEMALE, femaleAdult );
+		this.mapLifeStageGenderToPerson.put( LifeStage.ADULT, Gender.MALE, maleAdult );
+		this.mapLifeStageGenderToPerson.put( LifeStage.CHILD, Gender.FEMALE, femaleChild );
+		this.mapLifeStageGenderToPerson.put( LifeStage.CHILD, Gender.MALE, femaleChild );
 		
-		
-		for( Person person : this.mapToMap.values() ) {
+		for( Person person : this.mapLifeStageGenderToPerson.values() ) {
 			person.getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 		}
 		
@@ -121,17 +120,9 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
-	public void handleTabSelection( int index ) {
-		Person person = this.mapToMap.get( this.lifeStage, this.gender );
-		double height = person.getHeight();
-		double amount = 3.0;
-		double duration = 0.5;
-		org.alice.apis.moveandturn.StandIn target = this.getScene().createOffsetStandIn( 0, height*1.0, 0 );
-		if( index == 0 ) {
-			this.getCamera().moveAwayFrom( amount, target, duration );
-		} else {
-			this.getCamera().moveToward( amount, target, duration );
-		}
+	public void handleTabSelection( int index, double duration ) {
+		Person person = this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
+		this.positionAndOrientCamera( person.getHeight(), index, duration );
 	}
 	
 	public IngredientsPane getIngredientsPane() {
@@ -146,7 +137,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 	
 	public org.alice.apis.stage.Person getPerson() {
 		if( this.lifeStage != null && this.gender != null ) {
-			return this.mapToMap.get( this.lifeStage, this.gender );
+			return this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
 		} else {
 			return null;
 		}
@@ -154,7 +145,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 
 	private void updatePerson() {
 		if( this.lifeStage != null && this.gender != null ) {
-			Person person = this.mapToMap.get( this.lifeStage, this.gender );
+			Person person = this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
 			if( person != null ) {
 				this.dragAdapter.setSelectedObject( person.getSGTransformable() );
 				if( this.baseSkinTone != null ) {
@@ -197,16 +188,46 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 			}
 		}
 	}
+	
+	private void positionAndOrientCamera( double height, int index, double duration ) {
+		double xzFactor;
+		if( index == 0 ) {
+			xzFactor = 2.333;
+		} else {
+			xzFactor = 0.5;
+		}
+		double yFactor;
+		if( index == 0 ) {
+			yFactor = 0.5;
+		} else {
+			yFactor = 0.9;
+		}
+		if( this.getScene() != null ) {
+			org.alice.apis.moveandturn.PointOfView prevPOV = this.getCamera().getLocalPointOfView();
+			this.getCamera().moveTo( this.getScene().createOffsetStandIn( -0.3*xzFactor, height*yFactor, -height*xzFactor ), 0.0 );
+			this.getCamera().pointAt( this.getScene().createOffsetStandIn( 0, height*yFactor, 0 ), 0.0 );
+			edu.cmu.cs.dennisc.animation.Animator animator = this.getAnimator();
+			if( duration > 0.0 && animator != null ) {
+				org.alice.apis.moveandturn.PointOfView nextPOV = this.getCamera().getLocalPointOfView();
+				this.getCamera().setLocalPointOfView( prevPOV );
+
+				edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( this.getCamera().getSGAbstractTransformable(), edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, nextPOV.getInternal() );
+				povAnimation.setDuration( duration );
+
+				animator.complete( null );
+				animator.invokeLater( povAnimation, null );
+			}
+		}
+	}
 
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.updatePerson();
 		if( this.lifeStage != null && this.gender != null ) {
-			Person person = this.mapToMap.get( this.lifeStage, this.gender );
+			Person person = this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
 			double height = person.getHeight();
-			this.getCamera().moveTo( this.getScene().createOffsetStandIn( -1, height*0.667, -height*2.333 ), 0.0 );
-			this.getCamera().pointAt( this.getScene().createOffsetStandIn( 0, height*0.5, 0 ), 0.0 );
+			this.positionAndOrientCamera( height, 0, 0.0 );
 		}
 		//this._sunLight.turn( apis.moveandturn.TurnDirection.FORWARD, org.alice.apis.moveandturn.AngleInRevolutions( 0.125 ) );
 		this.dragAdapter.setOnscreenLookingGlass( this.getOnscreenLookingGlass() );
