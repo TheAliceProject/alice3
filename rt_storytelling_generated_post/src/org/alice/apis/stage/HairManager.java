@@ -22,7 +22,7 @@
  */
 package org.alice.apis.stage;
 
-public class HairManager extends IngredientManager<Hair> {
+public class HairManager extends IngredientManager< Hair > {
 	private static HairManager singleton = new HairManager();
 
 	public static HairManager getSingleton() {
@@ -30,70 +30,43 @@ public class HairManager extends IngredientManager<Hair> {
 	}
 
 	private HairManager() {
-		this.add( FemaleChildHair.class,
-
-				FemaleChildHairBraids.class,
-				FemaleChildHairRosettes.class,
-				FemaleChildHairPoofs.class
-			);
-			this.add( ChildHair.class,
-
-				ChildHairStraightWithTricornHat.class,
-				ChildHairBald.class,
-				ChildHairDreadlockShort.class,
-				ChildHairShocked.class
-			);
-			this.add( MaleChildHair.class,
-
-				MaleChildHairGibs.class,
-				MaleChildHairCloseCrop.class,
-				MaleChildHairPompodore.class
-			);
+		this.add( FemaleChildHair.class, FemaleChildHairBraids.class, FemaleChildHairRosettes.class, FemaleChildHairPoofs.class );
+		this.add( ChildHair.class, 
+				ChildHairStraightWithTricornHat.class, 
+//				ChildHairBald.class, 
+//				ChildHairShocked.class, 
+				ChildHairDreadlockShort.class 
+		);
+		this.add( MaleChildHair.class, MaleChildHairGibs.class, MaleChildHairCloseCrop.class, MaleChildHairPompodore.class );
 		this.add( MaleAdultHair.class,
-						//MaleAdultHairBeanie.class ,
-						MaleAdultHairCloseCrop.class ,
-						MaleAdultHairCornRows.class ,
-						MaleAdultHairCrewCut.class ,
-						//MaleAdultHairCurlyWild.class ,
-						MaleAdultHairDreadlockLong.class ,
-						MaleAdultHairGibs.class ,
-						//MaleAdultHairHatFedora.class ,
-						MaleAdultHairHatFedoraCasual.class ,
-						MaleAdultHairMulletLong.class ,
-						MaleAdultHairPeak.class ,
-						MaleAdultHairPompodore.class ,
-						MaleAdultHairSemiBald.class ,
-						//MaleAdultHairShocked.class ,
-						MaleAdultHairShortCombed.class ,
-						MaleAdultHairShortSpikey.class ,
-						MaleAdultHairTopHat.class
-						//MaleAdultHairBald.class
-		);
+		//MaleAdultHairBeanie.class ,
+				MaleAdultHairCloseCrop.class, MaleAdultHairCornRows.class, MaleAdultHairCrewCut.class,
+				//MaleAdultHairCurlyWild.class ,
+				MaleAdultHairDreadlockLong.class, MaleAdultHairGibs.class,
+				//MaleAdultHairHatFedora.class ,
+				MaleAdultHairHatFedoraCasual.class, MaleAdultHairMulletLong.class, MaleAdultHairPeak.class, MaleAdultHairPompodore.class, MaleAdultHairSemiBald.class,
+				//MaleAdultHairShocked.class ,
+				MaleAdultHairShortCombed.class, MaleAdultHairShortSpikey.class, MaleAdultHairTopHat.class
+		//MaleAdultHairBald.class
+				);
 		this.add( FemaleAdultHair.class,
-	//					FemaleAdultHairBeanie.class ,
-						FemaleAdultHairBraids.class ,
-						FemaleAdultHairCornRowsLong.class ,
-						FemaleAdultHairDreadlockShort.class ,
-						FemaleAdultHairFeather.class ,
-						FemaleAdultHairGetFabulous.class ,
-						FemaleAdultHairPoofs.class ,
-						FemaleAdultHairRosettes.class ,
-						FemaleAdultHairShocked.class ,
-						FemaleAdultHairShortSlick.class 
-	//					FemaleAdultHairBald.class
-		);
+				//					FemaleAdultHairBeanie.class ,
+				FemaleAdultHairBraids.class, FemaleAdultHairCornRowsLong.class, FemaleAdultHairDreadlockShort.class, FemaleAdultHairFeather.class, FemaleAdultHairGetFabulous.class, FemaleAdultHairPoofs.class, FemaleAdultHairRosettes.class,
+				FemaleAdultHairShocked.class, FemaleAdultHairShortSlick.class
+		//					FemaleAdultHairBald.class
+				);
 	}
-	
+
 	@Override
-	protected Class<Class<? extends Hair>> getImplementingClassesComponentType() {
-		return (Class<Class<? extends Hair>>)Hair.class.getClass();
+	protected Class< Class< ? extends Hair >> getImplementingClassesComponentType() {
+		return (Class< Class< ? extends Hair >>)Hair.class.getClass();
 	}
 	@Override
-	protected Class<? extends Hair> getUnisexIntefaceClass( LifeStage lifeStage ) {
+	protected Class< ? extends Hair > getUnisexIntefaceClass( LifeStage lifeStage ) {
 		return lifeStage.getUnisexHairInterfaceClass();
 	};
 	@Override
-	protected Class<? extends Hair> getGenderedIntefaceClass( LifeStage lifeStage, Gender gender ) {
+	protected Class< ? extends Hair > getGenderedIntefaceClass( LifeStage lifeStage, Gender gender ) {
 		return lifeStage.getGenderedHairInterfaceClass( gender );
 	}
 }
