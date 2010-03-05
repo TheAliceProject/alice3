@@ -58,20 +58,23 @@ public abstract class AbstractAnimator implements Animator {
 				//pass
 			} else {
 				double tCurrent = getCurrentTime();
-				java.util.Iterator< WaitingAnimation > iterator = m_waitingAnimations.iterator();
-				while( iterator.hasNext() ) {
-					WaitingAnimation waitingAnimation = iterator.next();
-					double tRemaining = waitingAnimation.getAnimation().update( tCurrent, waitingAnimation.getAnimationObserver() );
-					if( tRemaining > 0.0 ) {
-						//pass
-					} else {
-						Thread thread = waitingAnimation.getThread();
-						if( thread != null ) {
-							synchronized( thread ) {
-								thread.notify();
+				if( m_waitingAnimations.size() > 0 ) {
+					//edu.cmu.cs.dennisc.print.PrintUtilities.println( m_waitingAnimations.size() );
+					java.util.Iterator< WaitingAnimation > iterator = m_waitingAnimations.iterator();
+					while( iterator.hasNext() ) {
+						WaitingAnimation waitingAnimation = iterator.next();
+						double tRemaining = waitingAnimation.getAnimation().update( tCurrent, waitingAnimation.getAnimationObserver() );
+						if( tRemaining > 0.0 ) {
+							//pass
+						} else {
+							Thread thread = waitingAnimation.getThread();
+							if( thread != null ) {
+								synchronized( thread ) {
+									thread.notify();
+								}
 							}
+							iterator.remove();
 						}
-						iterator.remove();
 					}
 				}
 			}
@@ -101,6 +104,8 @@ public abstract class AbstractAnimator implements Animator {
 		WaitingAnimation waitingAnimation = createWaitingAnimation( animation, animationObserver, null );
 		synchronized( m_waitingAnimations ) {
 			m_waitingAnimations.add( waitingAnimation );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "m_waitingAnimations.size()", m_waitingAnimations.size() );
+//			Thread.dumpStack();
 		}
 	}
 	public void invokeAndWait( Animation animation, AnimationObserver animationObserver ) throws InterruptedException, java.lang.reflect.InvocationTargetException {
