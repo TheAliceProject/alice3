@@ -912,7 +912,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "paint stencil" );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "paint stencil" );
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			if( IDE.this.holes != null ) {
 				//java.awt.geom.Area area = new java.awt.geom.Area( g2.getClipBounds() );
@@ -1770,14 +1770,17 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		this.generateCodeForSceneSetUp();
 	}
 
+	private static final String GENERATED_CODE_WARNING = "DO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT\n\nThis code is automatically generated.  Any work you perform in this method will be overwritten.\n\nDO NOT EDIT\nDO NOT EDIT\nDO NOT EDIT";
 	private void generateCodeForSceneSetUp() {
-		this.sceneEditor.generateCodeForSetUp();
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = this.getPerformEditorGeneratedSetUpMethod();
+		edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty = methodDeclaredInAlice.body.getValue().statements;
+		bodyStatementsProperty.clear();
+		bodyStatementsProperty.add( new edu.cmu.cs.dennisc.alice.ast.Comment( GENERATED_CODE_WARNING ) );
+		this.sceneEditor.generateCodeForSetUp( bodyStatementsProperty );
 	}
 	protected void preserveProjectProperties() {
-		this.sceneEditor.preserveProjectProperties();
 	}
 	protected void restoreProjectProperties() {
-		this.sceneEditor.restoreProjectProperties();
 	}
 
 	protected abstract java.awt.image.BufferedImage createThumbnail() throws Throwable;

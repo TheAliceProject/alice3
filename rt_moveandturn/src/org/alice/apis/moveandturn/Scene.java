@@ -86,28 +86,8 @@ public class Scene extends Composite {
 	private SceneOwner m_owner;
 
 	private org.alice.interact.AbstractDragAdapter dragAdapter;
-	private static boolean isGround( org.alice.apis.moveandturn.Model model ) {
-		String simpleName = model.getClass().getSimpleName();
-		return simpleName.endsWith( "Ground" ) || simpleName.equals( "MoonSurface" ) || simpleName.equals( "SeaSurface" );
-	}
 	private void putBonusDataFor( org.alice.apis.moveandturn.Transformable transformable ) {
-		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = transformable.getSGTransformable();
-		if( transformable instanceof org.alice.apis.moveandturn.Model ) {
-			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)transformable;
-			if( Scene.isGround( model ) ) {
-				sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.GROUND );
-			} else {
-				sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
-				sgTransformable.putBonusDataFor( org.alice.interact.GlobalDragAdapter.BOUNDING_BOX_KEY, model.getAxisAlignedMinimumBoundingBox() );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( sgTransformable.getBonusDataFor( GlobalDragAdapter.BOUNDING_BOX_KEY ) );
-			}
-		} else if( transformable instanceof org.alice.apis.moveandturn.Light ) {
-			//org.alice.apis.moveandturn.Light light = (org.alice.apis.moveandturn.Light)transformable;
-			sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.LIGHT );
-		} else if( transformable instanceof org.alice.apis.moveandturn.AbstractCamera ) {
-			//org.alice.apis.moveandturn.AbstractCamera camera = (org.alice.apis.moveandturn.AbstractCamera)transformable;
-			sgTransformable.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.CAMERA );
-		}
+		PickHintUtilities.setPickHint( transformable );
 	}
 	@MethodTemplate(visibility = Visibility.PRIME_TIME)
 	public void addDefaultModelManipulation() {

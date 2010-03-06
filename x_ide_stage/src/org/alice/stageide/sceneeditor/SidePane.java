@@ -20,26 +20,34 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.sceneeditor;
+package org.alice.stageide.sceneeditor;
+
+import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
+import org.alice.interact.AbstractDragAdapter;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FauxSceneEditor extends AbstractSceneEditor {
-	@Override
-	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
-		throw new RuntimeException();
+class SidePane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
+	private boolean isExpanded = false;
+	private ManipulationHandleControlPanel handleControlPanel;
+
+	public SidePane() {
+		this.handleControlPanel = new ManipulationHandleControlPanel();
+		this.add( this.handleControlPanel );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
-	@Override
-	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
+	public boolean isExpanded() {
+		return this.isExpanded;
 	}
-	@Override
-	public void handleExpandContractChange( boolean isExpanded ) {
+	public void setExpanded( boolean isExpanded ) {
+		this.isExpanded = isExpanded;
+		this.revalidate();
+		this.repaint();
+		//this.doLayout();
 	}
-	@Override
-	public void setRenderingEnabled( boolean isRenderingEnabled ) {
+	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
+		this.handleControlPanel.setDragAdapter( dragAdapter );
 	}
-	@Override
-	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-	}
+
 }

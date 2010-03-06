@@ -28,56 +28,6 @@ package org.alice.ide.sceneeditor;
 public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
 	
-	private static final String CAMERA_NAVIGATION_DISTANCE_KEY = AbstractSceneEditor.class.getName() + ".CAMERA_NAVIGATION_DISTANCE";
-	private static final String CAMERA_NAVIGATION_YAW_IN_RADIANS_KEY = AbstractSceneEditor.class.getName() + ".CAMERA_NAVIGATION_YAW_IN_RADIANS_KEY";
-	private static final String CAMERA_NAVIGATION_TARGET_X_KEY = AbstractSceneEditor.class.getName() + ".CAMERA_NAVIGATION_TARGET_X_KEY";
-	private static final String CAMERA_NAVIGATION_TARGET_Y_KEY = AbstractSceneEditor.class.getName() + ".CAMERA_NAVIGATION_TARGET_Y_KEY";
-	private static final String CAMERA_NAVIGATION_TARGET_Z_KEY = AbstractSceneEditor.class.getName() + ".CAMERA_NAVIGATION_TARGET_Z_KEY";
-//	private static final String CAMERA_NAVIGATION_PITCH_IN_RADIANS_KEY = AbstractSceneEditor.class.getName() + ".CAMERA_NAVIGATION_PITCH_IN_RADIANS_KEY";
-	protected void restoreCameraNavigationProperties( edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter ) {
-		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
-		if( project != null ) {
-			edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
-			if( properties != null ) {
-				double distance = properties.getDouble( CAMERA_NAVIGATION_DISTANCE_KEY, 16.0 );
-				double yawInRadians = properties.getDouble( CAMERA_NAVIGATION_YAW_IN_RADIANS_KEY, Math.PI );
-				//double pitchInRadians = project.getProperties().getDouble( CAMERA_NAVIGATION_PITCH_IN_RADIANS_KEY, 0.0 );
-				edu.cmu.cs.dennisc.math.Point3 target = new edu.cmu.cs.dennisc.math.Point3();
-				target.x = properties.getDouble( CAMERA_NAVIGATION_TARGET_X_KEY, 0.0 );
-				target.y = properties.getDouble( CAMERA_NAVIGATION_TARGET_Y_KEY, 0.0 );
-				target.z = properties.getDouble( CAMERA_NAVIGATION_TARGET_Z_KEY, 0.0 );
-				cameraNavigationDragAdapter.requestDistance( distance );
-				cameraNavigationDragAdapter.requestYaw( new edu.cmu.cs.dennisc.math.AngleInRadians( yawInRadians ) );
-				cameraNavigationDragAdapter.requestTarget( target );
-			}
-		}
-	}
-	protected void preserveCameraNavigationProperties( edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter cameraNavigationDragAdapter ) {
-		if( cameraNavigationDragAdapter != null ) {
-			edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
-			if( project != null ) {
-				edu.cmu.cs.dennisc.alice.Project.Properties properties = project.getProperties();
-				if( properties != null ) {
-					properties.putDouble( CAMERA_NAVIGATION_DISTANCE_KEY, cameraNavigationDragAdapter.getDistanceRequested() );
-					properties.putDouble( CAMERA_NAVIGATION_YAW_IN_RADIANS_KEY, cameraNavigationDragAdapter.getYawRequested().getAsRadians() );
-					
-					edu.cmu.cs.dennisc.math.Point3 target = cameraNavigationDragAdapter.getTargetRequested();
-					if( target != null ) {
-						properties.putDouble( CAMERA_NAVIGATION_TARGET_X_KEY, target.x );
-						properties.putDouble( CAMERA_NAVIGATION_TARGET_Y_KEY, target.y );
-						properties.putDouble( CAMERA_NAVIGATION_TARGET_Z_KEY, target.z );
-					}
-				} else {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: preserveCameraNavigationProperties: properties == null" );
-				}
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: preserveCameraNavigationProperties: project == null" );
-			}
-		} else {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: preserveCameraNavigationProperties: cameraNavigationDragAdapter == null" );
-		}
-	}
-
 	public abstract void setRenderingEnabled( boolean isRenderingEnabled );
 	public abstract void handleExpandContractChange( boolean isExpanded );
 	public abstract void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses );
@@ -85,9 +35,7 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 	@Deprecated
 	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance );
 	
-	public abstract void generateCodeForSetUp();
-	public abstract void preserveProjectProperties();
-	public abstract void restoreProjectProperties();
+	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty );
 	protected edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine getVM() {
 		return getIDE().getVirtualMachineForSceneEditor();
 	}
