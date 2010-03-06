@@ -27,13 +27,15 @@ package org.alice.ide.operations.ast;
  */
 public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
 	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
-	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
+	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
+	protected abstract boolean isInstanceValid();
 	public AbstractDeclareFieldOperation() {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 	}
 	public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = this.createField( ownerType );
+		final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( ownerType );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 		if( field != null ) {
 			class Edit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
 				private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
@@ -48,6 +50,9 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					this.ownerType.fields.add( this.index, this.field );
+					if( isInstanceValid() ) {
+						getIDE().getSceneEditor().handleFieldCreation(ownerType, tuple.getA(), tuple.getB());
+					}
 				}
 				@Override
 				public void undo() {

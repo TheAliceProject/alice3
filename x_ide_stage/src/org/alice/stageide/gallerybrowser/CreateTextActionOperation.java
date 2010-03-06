@@ -270,7 +270,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.KInputPane< org.alice.ap
 /**
  * @author Dennis Cosgrove
  */
-class CreateTextActionOperation extends AbstractDeclareFieldOperation {
+class CreateTextActionOperation extends AbstractGalleryDeclareFieldOperation {
 	public CreateTextActionOperation() {
 		this.putValue(javax.swing.Action.NAME, "Create Text...");
 	}

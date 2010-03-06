@@ -130,4 +130,35 @@ public class SpringUtilities {
 		putConstraint(container, component, horizontal, x, vertical, y);
 		container.add( component );
 	}
+	
+	public static void addNorthEast( java.awt.Container container, java.awt.Component component, int inset ) {
+		add( container, component, Horizontal.EAST, -inset, Vertical.NORTH, inset );
+	}
+	public static void addNorth( java.awt.Container container, java.awt.Component component, int inset ) {
+		add( container, component, Horizontal.CENTER, 0, Vertical.NORTH, inset );
+	}
+	public static void addNorthWest( java.awt.Container container, java.awt.Component component, int inset ) {
+		add( container, component, Horizontal.WEST, inset, Vertical.NORTH, inset );
+	}
+
+	public static void addEast( java.awt.Container container, java.awt.Component component, int inset ) {
+		add( container, component, Horizontal.EAST, -inset, Vertical.CENTER, 0 );
+	}
+	public static void addCenter( java.awt.Container container, java.awt.Component component, int inset ) {
+		add( container, component, Horizontal.CENTER, 0, Vertical.CENTER, 0 );
+	}
+	public static void addWest( java.awt.Container container, java.awt.Component component, int inset ) {
+		add( container, component, Horizontal.WEST, inset, Vertical.CENTER, 0 );
+	}
+
+	public static void addSouthEast( java.awt.Container container, java.awt.Component component, int inset ) {
+		add( container, component, Horizontal.EAST, -inset, Vertical.SOUTH, -inset );
+	}
+	public static void addSouth( java.awt.Container container, java.awt.Component component, int inset ) {
+		add( container, component, Horizontal.CENTER, 0, Vertical.SOUTH, -inset );
+	}
+	public static void addSouthWest( java.awt.Container container, java.awt.Component component, int inset ) {
+		add( container, component, Horizontal.WEST, inset, Vertical.SOUTH, -inset );
+	}
+	
 }

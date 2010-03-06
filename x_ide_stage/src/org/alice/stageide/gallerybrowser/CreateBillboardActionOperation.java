@@ -47,7 +47,7 @@ class CreateFieldFromBillboardPane extends org.alice.ide.createdeclarationpanes.
 /**
  * @author Dennis Cosgrove
  */
-class CreateBillboardActionOperation extends AbstractDeclareFieldOperation {
+class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperation {
 	public CreateBillboardActionOperation() {
 		this.putValue( javax.swing.Action.NAME, "Create Billboard..." );
 	}

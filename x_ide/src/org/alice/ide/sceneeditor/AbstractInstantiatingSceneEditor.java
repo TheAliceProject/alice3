@@ -47,6 +47,14 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 		this.putFieldForInstanceInJava( instanceInJava, field );
 	}
 
+	@Override
+	public Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		if( field.getDeclaringType() == getIDE().getSceneType() ) {
+			return this.getInstanceInJavaForField( field );
+		} else {
+			return null;
+		}
+	}
 	protected Object getInstanceForField( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		return this.mapFieldToInstance.get( field );
 	}
@@ -72,13 +80,6 @@ public abstract class AbstractInstantiatingSceneEditor extends AbstractSceneEdit
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractField getFieldForInstanceInJava( Object instanceInJava ) {
 		return this.mapInstanceInJavaToField.get( instanceInJava );
 	}
-
-	
-	public void addFieldToSceneType( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
-		super.addFieldToSceneType( field );
-		putInstanceForField( field, instance );
-	}
-	
 	protected Object createScene( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField ) {
 		getVM().setConstructorBodyExecutionDesired( false );
 		try {

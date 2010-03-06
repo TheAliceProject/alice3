@@ -25,23 +25,14 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldOperation {
+abstract class AbstractGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldOperation {
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
 		return this.getIDE().getSceneType();
 	}
-
-	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType);
-
 	@Override
-	protected final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
-		edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance(ownerType);
-		if (tuple != null) {
-			getIDE().getSceneEditor().handleFieldCreation(ownerType, tuple.getA(), tuple.getB());
-			return tuple.getA();
-		} else {
-			return null;
-		}
+	protected boolean isInstanceValid() {
+		return true;
 	}
 
 }

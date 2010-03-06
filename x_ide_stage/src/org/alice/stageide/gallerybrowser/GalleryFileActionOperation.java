@@ -25,7 +25,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-class GalleryFileActionOperation extends AbstractDeclareFieldOperation {
+class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation {
 	private java.io.File file;
 	public GalleryFileActionOperation(java.io.File file) {
 		this.file = file;

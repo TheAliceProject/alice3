@@ -34,7 +34,7 @@ class CreateFieldFromPersonPane extends org.alice.ide.createdeclarationpanes.Cre
 /**
  * @author Dennis Cosgrove
  */
-class CreatePersonActionOperation extends AbstractDeclareFieldOperation {
+class CreatePersonActionOperation extends AbstractGalleryDeclareFieldOperation {
 	private org.alice.apis.stage.Person person;
 	public CreatePersonActionOperation( org.alice.apis.stage.Person person ) {
 		this.person = person;

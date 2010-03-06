@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOfPredeterminedTypeOperation extends AbstractDeclareFieldOperation {
+public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGalleryDeclareFieldOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType;
 	public DeclareFieldOfPredeterminedTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {

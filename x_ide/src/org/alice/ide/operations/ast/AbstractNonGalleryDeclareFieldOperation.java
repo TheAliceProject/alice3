@@ -20,30 +20,22 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.sceneeditor;
+package org.alice.ide.operations.ast;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FauxSceneEditor extends AbstractSceneEditor {
+//todo: remove
+@Deprecated
+abstract class AbstractNonGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldOperation {
 	@Override
-	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
-		throw new RuntimeException();
+	protected boolean isInstanceValid() {
+		return false;
 	}
+	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
+	
 	@Override
-	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
-	}
-	@Override
-	public void handleExpandContractChange( boolean isExpanded ) {
-	}
-	@Override
-	public void setRenderingEnabled( boolean isRenderingEnabled ) {
-	}
-	@Override
-	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-	}
-	@Override
-	public Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		return null;
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+		return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( this.createField( ownerType ), null );
 	}
 }

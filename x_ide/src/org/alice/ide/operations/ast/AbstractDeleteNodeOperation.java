@@ -38,6 +38,15 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		if( this.isClearToDelete( this.node ) ) {
 			final int index = this.owner.indexOf( this.node );
+			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+			final Object instance;
+			if( this.node instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+				field = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.node;
+				instance = this.getIDE().getSceneEditor().getInstanceInJavaForUndo( field );
+			} else {
+				field = null;
+				instance = null;
+			}
 			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {
@@ -46,6 +55,9 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				@Override
 				public void undo() {
 					owner.add( index, node );
+					if( field != null && instance != null ) {
+						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance);
+					}
 				}
 				@Override
 				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {

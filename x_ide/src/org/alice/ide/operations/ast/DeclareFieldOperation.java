@@ -25,7 +25,7 @@ package org.alice.ide.operations.ast;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOperation extends AbstractDeclareFieldOperation {
+public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		this.ownerType = ownerType;

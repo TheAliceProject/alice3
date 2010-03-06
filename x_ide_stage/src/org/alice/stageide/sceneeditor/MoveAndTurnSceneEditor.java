@@ -42,11 +42,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 
 	public MoveAndTurnSceneEditor() {
-		javax.swing.JPanel lgPanel = this.onscreenLookingGlass.getJPanel();
+		javax.swing.JPanel lgPanel = this.getLGPanel();
 		javax.swing.SpringLayout springLayout = new javax.swing.SpringLayout();
 		lgPanel.setLayout( springLayout );
 
-		
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerLocation( 1.0 );
 		this.setLayout( new java.awt.BorderLayout() );
@@ -112,7 +111,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	@Override
 	public void addNotify() {
-		this.initializeProgramAndDragAdapter();
+		this.initializeIfNecessary();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.splitPane.setLeftComponent( this.getLGPanel() );
@@ -134,7 +133,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return (javax.swing.SpringLayout)this.getLGPanel().getLayout();
 	}
 
-	private void initializeProgramAndDragAdapter() {
+	private void initializeIfNecessary() {
 		if( this.globalDragAdapter != null ) {
 			//pass
 		} else {
@@ -159,9 +158,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			} );
 
 			javax.swing.JPanel lgPanel = this.getLGPanel();
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, isSceneEditorExpandedCheckBox, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -INSET, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.SOUTH, -INSET );
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.getIDE().getRunOperation() ), edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.EAST, -INSET, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, INSET );
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, cameraNavigatorWidget, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.CENTER, INSET, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.SOUTH, -INSET );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox, INSET );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.getIDE().getRunOperation() ), INSET );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, cameraNavigatorWidget, INSET );
 
 			this.globalDragAdapter.setAnimator( animator );
 			this.globalDragAdapter.addPropertyListener( new org.alice.interact.event.SelectionListener() {
@@ -225,6 +224,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
+	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 	protected void updateSceneBasedOnScope() {
 		//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getIDE().getTypeInScope();
@@ -338,11 +338,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		this.refreshFields();
 	}
-	protected FieldTile createFieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+	private FieldTile createFieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		assert field != null;
 		return new FieldTile( field );
 	}
-
 	private void refreshFields() {
 		javax.swing.SpringLayout springLayout = this.getLGSpringLayout();
 		java.awt.Container lgPanel = this.onscreenLookingGlass.getJPanel();
@@ -354,7 +353,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		if( this.rootField != null ) {
 			FieldTile rootFieldTile = this.createFieldTile( this.rootField );
 			//rootFieldTile.setOpaque( true );
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.add( lgPanel, rootFieldTile, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal.WEST, INSET, edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical.NORTH, INSET );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, rootFieldTile, INSET );
 			this.fieldTiles.add( rootFieldTile );
 			java.awt.Component prev = rootFieldTile;
 			if( rootField != null ) {
@@ -399,7 +398,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.refreshFields();
 	}
 
-	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
 
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = null;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
@@ -478,9 +476,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		return rv;
 	}
 
-	public Object createInstance( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return this.getVM().createInstanceEntryPoint( type );
-	}
 
 	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaForField( field ) );
