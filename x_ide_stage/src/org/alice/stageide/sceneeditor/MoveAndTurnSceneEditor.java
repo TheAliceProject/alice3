@@ -349,17 +349,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//getIDE().markChanged( "scene program addInstance" );
 	}
 	private void getGoodLookAtShowInstanceAndReturnCamera( org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera, org.alice.apis.moveandturn.Model model ) {
-		this.pushAndSetCameraNavigationDragAdapterEnabled( false );
-		try {
-			model.setOpacity( 0.0, org.alice.apis.moveandturn.Composite.RIGHT_NOW );
-			org.alice.apis.moveandturn.PointOfView pov = camera.getPointOfView( this.scene );
-			camera.getGoodLookAt( model, 0.5 );
-			this.scene.addComponent( model );
-			model.setOpacity( 1.0 );
-			camera.moveAndOrientTo( this.scene.createOffsetStandIn( pov.getInternal() ), 0.5 );
-		} finally {
-			this.popCameraNavigationDragAdapterEnabled();
-		}
+		model.setOpacity( 0.0, org.alice.apis.moveandturn.Composite.RIGHT_NOW );
+		org.alice.apis.moveandturn.PointOfView pov = camera.getPointOfView( this.scene );
+		camera.getGoodLookAt( model, 0.5 );
+		this.scene.addComponent( model );
+		model.setOpacity( 1.0 );
+		camera.moveAndOrientTo( this.scene.createOffsetStandIn( pov.getInternal() ), 0.5 );
 	}
 	private void handleSelection( org.alice.interact.event.SelectionEvent e ) {
 		edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable = e.getTransformable();
@@ -893,16 +888,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//this.restoreCameraNavigationProperties( this.cameraNavigationDragAdapter );
 	}
 
-	//private java.util.Stack< Boolean > isCameraNavigationDragAdapterEnabledStack = new java.util.Stack< Boolean >();
-
-	protected void pushAndSetCameraNavigationDragAdapterEnabled( Boolean isCameraNavigationDragAdapterEnabled ) {
-		//this.isCameraNavigationDragAdapterEnabledStack.push( this.cameraNavigationDragAdapter.isEnabled() );
-		//this.cameraNavigationDragAdapter.setEnabled( isCameraNavigationDragAdapterEnabled );
-	}
-	protected void popCameraNavigationDragAdapterEnabled() {
-		//this.cameraNavigationDragAdapter.setEnabled( this.isCameraNavigationDragAdapterEnabledStack.pop() );
-	}
-
 	@Override
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 		this.updateFieldLabels();
@@ -925,6 +910,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	//		}
 	//	}
 
+
+	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		return this.onscreenLookingGlass;
+	}
+	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCameraForCreatingThumbnails() {
+		return this.onscreenLookingGlass.getCameraAt( 0 );
+	}
+
 	@Override
 	public void update( java.awt.Graphics g ) {
 		if( isRenderingEnabled ) {
@@ -941,12 +934,5 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 //			edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
 //			g.translate( 1, 1 );
 		}
-	}
-
-	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
-		return this.onscreenLookingGlass;
-	}
-	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCameraForCreatingThumbnails() {
-		return this.onscreenLookingGlass.getCameraAt( 0 );
 	}
 }
