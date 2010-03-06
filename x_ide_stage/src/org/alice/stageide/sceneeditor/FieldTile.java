@@ -107,7 +107,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 			} else {
 				color = java.awt.Color.GRAY;
 			}
-			color = edu.cmu.cs.dennisc.awt.ColorUtilities.setAlpha( color, 191 );
+			//color = edu.cmu.cs.dennisc.awt.ColorUtilities.setAlpha( color, 191 );
 		}
 		return color;
 	}

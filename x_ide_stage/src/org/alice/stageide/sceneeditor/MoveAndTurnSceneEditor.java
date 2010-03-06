@@ -33,8 +33,121 @@ import org.alice.interact.AbstractDragAdapter;
 import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.animation.Program;
 import edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent;
 import edu.cmu.cs.dennisc.property.event.SetListPropertyEvent;
+
+class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
+	private final static IsExpandedCheckBoxUI singleton = new IsExpandedCheckBoxUI();
+
+	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent c ) {
+		return singleton;
+	}
+
+	@Override
+	protected void paintText( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle textRect, String text ) {
+		//		super.paintText( g, b, textRect, text )
+
+		javax.swing.AbstractButton button = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( c, javax.swing.AbstractButton.class );
+		javax.swing.ButtonModel model = button.getModel();
+		java.awt.Paint forePaint;
+		java.awt.Paint backPaint;
+		if( model.isPressed() ) {
+			forePaint = new java.awt.Color( 128, 128, 0 );
+			backPaint = null;
+		} else {
+			if( model.isRollover() || model.isArmed() ) {
+				forePaint = java.awt.Color.WHITE;
+				backPaint = java.awt.Color.BLACK;
+			} else {
+				//forePaint = new java.awt.Color( 255, 255, 0, 127 );
+				forePaint = java.awt.Color.YELLOW;
+				backPaint = java.awt.Color.DARK_GRAY;
+			}
+		}
+		java.awt.Graphics2D g2 = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( g, java.awt.Graphics2D.class );
+		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
+
+		java.awt.FontMetrics fm = g.getFontMetrics();
+		int x = textRect.x + getTextShiftOffset();
+		int y = textRect.y + fm.getAscent() + getTextShiftOffset();
+		if( backPaint != null ) {
+			g2.setPaint( backPaint );
+			g2.drawString( text, x + 2, y + 2 );
+		}
+		g2.setPaint( forePaint );
+		g2.drawString( text, x, y );
+	}
+	@Override
+	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
+		super.paint( g, c );
+		javax.swing.AbstractButton button = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( c, javax.swing.AbstractButton.class );
+		javax.swing.ButtonModel model = button.getModel();
+		java.awt.Graphics2D g2 = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( g, java.awt.Graphics2D.class );
+		g2.setStroke( new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND ) );
+		if( model.isSelected() ) {
+			int x = 0;
+			int y = 0;
+			int minor = 4;
+			int MAJOR = 32;
+			g2.drawLine( x + minor, y + MAJOR, x + minor, y + minor );
+			g2.drawLine( x + minor, y + minor, x + MAJOR, y + minor );
+			minor += 6;
+			MAJOR -= 4;
+			g2.drawLine( x + minor, y + MAJOR, x + minor, y + minor );
+			g2.drawLine( x + minor, y + minor, x + MAJOR, y + minor );
+		} else {
+			int x = c.getWidth();
+			int y = c.getHeight();
+			int minor = -4;
+			int MAJOR = -32;
+			g2.drawLine( x + minor, y + MAJOR, x + minor, y + minor );
+			g2.drawLine( x + minor, y + minor, x + MAJOR, y + minor );
+			minor += -6;
+			MAJOR -= -4;
+			g2.drawLine( x + minor, y + MAJOR, x + minor, y + minor );
+			g2.drawLine( x + minor, y + minor, x + MAJOR, y + minor );
+		}
+	}
+}
+
+class IsExpandedCheckBox extends edu.cmu.cs.dennisc.zoot.ZCheckBox {
+	private final int X_PAD = 16;
+	private final int Y_PAD = 10;
+
+	public IsExpandedCheckBox() {
+		super( org.alice.ide.IDE.getSingleton().getIsSceneEditorExpandedOperation() );
+		this.setOpaque( false );
+		this.setFont( this.getFont().deriveFont( 18.0f ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );
+	}
+	@Override
+	public void updateUI() {
+		this.setUI( IsExpandedCheckBoxUI.createUI( this ) );
+	}
+	@Override
+	public String getText() {
+		if( isSelected() ) {
+			return "edit code";
+		} else {
+			return "edit scene";
+		}
+	}
+
+	private java.awt.Rectangle innerAreaBuffer = new java.awt.Rectangle();
+
+	@Override
+	public boolean contains( int x, int y ) {
+		java.awt.Rectangle bounds = javax.swing.SwingUtilities.calculateInnerArea( this, innerAreaBuffer );
+		if( this.isSelected() ) {
+			bounds.x -= X_PAD;
+			bounds.y -= Y_PAD;
+		}
+		bounds.width += X_PAD;
+		bounds.height += Y_PAD;
+		return bounds.contains( x, y );
+	}
+}
 
 class SidePane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	private boolean isExpanded = false;
@@ -64,14 +177,43 @@ class SidePane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
  * @author Dennis Cosgrove
  */
 public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor {
-	private org.alice.stageide.sceneeditor.ControlsForOverlayPane controlsForOverlayPane;
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
+	private org.alice.apis.moveandturn.Scene scene;
+	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass;
+	private edu.cmu.cs.dennisc.animation.Animator animator;
 	private SidePane sidePane;
+	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
+	private java.util.List< FieldTile > fieldTiles = new java.util.LinkedList< FieldTile >();
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			MoveAndTurnSceneEditor.this.refreshFields();
+		}
+
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			MoveAndTurnSceneEditor.this.refreshFields();
+		}
+
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			MoveAndTurnSceneEditor.this.refreshFields();
+		}
+
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			MoveAndTurnSceneEditor.this.refreshFields();
+		}
+	};
+
 	public MoveAndTurnSceneEditor() {
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.sidePane = new SidePane();
-		this.add( this.splitPane );
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerLocation( 1.0 );
 		new Thread() {
@@ -82,22 +224,57 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}.start();
 	}
 
-	private org.alice.apis.moveandturn.Scene scene;
-	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass;
-	private edu.cmu.cs.dennisc.animation.Animator animator;
+	private javax.swing.SpringLayout getSpringLayout() {
+		return (javax.swing.SpringLayout)this.onscreenLookingGlass.getJPanel().getLayout();
+	}
 	
 	private void initializeProgramAndDragAdapter() {
 		if( this.animator != null ) {
 			//pass
 		} else {
 			this.animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+			edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+				public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+					animator.update();
+				}
+			} );
 			this.onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			
-			javax.swing.JPanel panel = this.onscreenLookingGlass.getJPanel();
-			panel.setLayout( new java.awt.BorderLayout() );
-			panel.add( this.getControlsForOverlayPane() );
-			this.splitPane.setLeftComponent( panel );
+			
+			javax.swing.JPanel lgPanel = this.onscreenLookingGlass.getJPanel();
+			javax.swing.SpringLayout springLayout = new javax.swing.SpringLayout();
+			lgPanel.setLayout( springLayout );
+
+			this.splitPane.setLeftComponent( lgPanel );
+
+			final org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter );
+			//final org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget = null;
+			
+			final IsExpandedCheckBox isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
+			//final javax.swing.JCheckBox isSceneEditorExpandedCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( this.getIDE().getIsSceneEditorExpandedOperation() );
+//			isSceneEditorExpandedCheckBox.setText( "edit scene" );
+//			isSceneEditorExpandedCheckBox.setOpaque( false );
+			//isSceneEditorExpandedCheckBox.setOpaque( true );
+			if( cameraNavigatorWidget != null ) {
+				cameraNavigatorWidget.setExpanded( isSceneEditorExpandedCheckBox.isSelected() );
+			}
+			isSceneEditorExpandedCheckBox.addItemListener( new java.awt.event.ItemListener() {
+				public void itemStateChanged( java.awt.event.ItemEvent e ) {
+					boolean isExpanded = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+					if( cameraNavigatorWidget != null ) {
+						cameraNavigatorWidget.setExpanded( isExpanded );
+					}
+				}
+			} );
+
+			this.setSouthEastComponent( isSceneEditorExpandedCheckBox );
+			this.setNorthEastComponent( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.getIDE().getRunOperation() ) );
+			this.setSouthComponent( cameraNavigatorWidget );
+			
+			this.add( this.splitPane );
+			
+//			this.add( panel );
 
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: remove forcing repaint of scene editor" );
 //			
@@ -281,7 +458,63 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				}
 			}
 		}
-		this.controlsForOverlayPane.focusedCodeChanged( e );
+		this.updateFieldLabels();
+	}
+
+	public void updateFieldLabels() {
+		for( FieldTile fieldTile : this.fieldTiles ) {
+			fieldTile.updateLabel();
+		}
+	}
+
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
+		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
+	}
+	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getRootField() {
+		return this.rootField;
+	}
+	public void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
+		if( this.rootField != null ) {
+			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
+		}
+		this.rootField = rootField;
+		if( this.getRootField() != null ) {
+			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
+		}
+		this.refreshFields();
+	}
+	protected FieldTile createFieldTile( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		assert field != null;
+		return new FieldTile( field );
+	}
+	
+	private void refreshFields() {
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		for( FieldTile fieldTile : this.fieldTiles ) {
+			springLayout.removeLayoutComponent( fieldTile );
+			this.onscreenLookingGlass.getJPanel().remove( fieldTile );
+		}
+		this.fieldTiles.clear();
+		if( this.rootField != null ) {
+			FieldTile rootFieldTile = this.createFieldTile( this.rootField );
+			//rootFieldTile.setOpaque( true );
+			this.setNorthWestComponent( rootFieldTile );
+			this.fieldTiles.add( rootFieldTile );
+			java.awt.Component prev = rootFieldTile;
+			if( rootField != null ) {
+				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
+					FieldTile fieldTile = createFieldTile( field );
+					//fieldTile.setOpaque( true );
+					this.onscreenLookingGlass.getJPanel().add( fieldTile );
+					this.fieldTiles.add( fieldTile );
+					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 1, javax.swing.SpringLayout.SOUTH, prev );
+					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile, 10, javax.swing.SpringLayout.WEST, rootFieldTile );
+					prev = fieldTile;
+				}
+			}
+		}
+		revalidate();
+		repaint();
 	}
 
 	private static boolean isGround( org.alice.apis.moveandturn.AbstractModel model ) {
@@ -325,18 +558,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		}
 	}
-	protected org.alice.stageide.sceneeditor.ControlsForOverlayPane createControlsForOverlayPane() {
-		return new org.alice.stageide.sceneeditor.ControlsForOverlayPane( this.globalDragAdapter );
-	}
-	private org.alice.stageide.sceneeditor.ControlsForOverlayPane getControlsForOverlayPane() {
-		if( this.controlsForOverlayPane != null ) {
-			//pass
-		} else {
-			this.controlsForOverlayPane = this.createControlsForOverlayPane();
-		}
-		return this.controlsForOverlayPane;
-	}
-	
 	@Override
 	public void addNotify() {
 		this.initializeProgramAndDragAdapter();
@@ -363,7 +584,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
 			this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
 		}
-		this.controlsForOverlayPane.fieldSelectionChanged( e );
+		this.refreshFields();
 	}
 
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
@@ -439,7 +660,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		} );
 		
-		this.getControlsForOverlayPane().setRootField( sceneField );
+		this.setRootField( sceneField );
 		//this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 		return rv;
 	}
@@ -702,11 +923,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 	@Override
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-		this.controlsForOverlayPane.updateFieldLabels();
+		this.updateFieldLabels();
 	}
 	@Override
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
-		//this.program.getOnscreenLookingGlass().setRenderingEnabled( isRenderingEnabled );
+		this.onscreenLookingGlass.setRenderingEnabled( isRenderingEnabled );
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignoring: setRenderingEnabled", isRenderingEnabled );
 		//this.splitPane.setLeftComponent( isRenderingEnabled ? this.onscreenLookingGlass.getAWTComponent() : null );
 	}
@@ -726,4 +947,264 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCameraForCreatingThumbnails() {
 		return this.onscreenLookingGlass.getCameraAt( 0 );
 	}
+
+	private java.awt.Component northComponent;
+	private java.awt.Component eastComponent;
+	private java.awt.Component southComponent;
+	private java.awt.Component westComponent;
+	
+	public java.awt.Component getNorthComponent() {
+		return this.northComponent;
+	}
+	public void setNorthComponent( java.awt.Component northComponent ) {
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		if( this.northComponent != null ) {
+			springLayout.removeLayoutComponent( this.northComponent );
+			this.onscreenLookingGlass.getJPanel().remove( this.northComponent );
+		}
+		this.northComponent = northComponent;
+		if( this.northComponent != null ) {
+			int pad = getPad();
+			this.putConstraint( this.northComponent, Horizontal.CENTER, 0, Vertical.NORTH, pad );
+			this.onscreenLookingGlass.getJPanel().add( this.northComponent );
+		}
+	}
+	public java.awt.Component getEastComponent() {
+		return this.eastComponent;
+	}
+	public void setEastComponent( java.awt.Component eastComponent ) {
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		if( this.eastComponent != null ) {
+			springLayout.removeLayoutComponent( this.eastComponent );
+			this.onscreenLookingGlass.getJPanel().remove( this.eastComponent );
+		}
+		this.eastComponent = eastComponent;
+		if( this.eastComponent != null ) {
+			int pad = getPad();
+			this.putConstraint( this.eastComponent, Horizontal.EAST, -pad, Vertical.CENTER, 0 );
+			this.onscreenLookingGlass.getJPanel().add( this.eastComponent );
+		}
+	}
+	public java.awt.Component getSouthComponent() {
+		return this.southComponent;
+	}
+	public void setSouthComponent( java.awt.Component southComponent ) {
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		if( this.southComponent != null ) {
+			springLayout.removeLayoutComponent( this.southComponent );
+			this.onscreenLookingGlass.getJPanel().remove( this.southComponent );
+		}
+		this.southComponent = southComponent;
+		if( this.southComponent != null ) {
+			int pad = getPad();
+			this.putConstraint( this.southComponent, Horizontal.CENTER, 0, Vertical.SOUTH, -pad );
+			this.onscreenLookingGlass.getJPanel().add( this.southComponent );
+		}
+	}
+	public java.awt.Component getWestComponent() {
+		return this.westComponent;
+	}
+	public void setWestComponent( java.awt.Component westComponent ) {
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		if( this.westComponent != null ) {
+			springLayout.removeLayoutComponent( this.westComponent );
+			this.onscreenLookingGlass.getJPanel().remove( this.westComponent );
+		}
+		this.westComponent = westComponent;
+		if( this.westComponent != null ) {
+			int pad = getPad();
+			this.putConstraint( this.westComponent, Horizontal.WEST, -pad, Vertical.CENTER, 0 );
+			this.onscreenLookingGlass.getJPanel().add( this.westComponent );
+		}
+	}
+	
+	private java.awt.Component northWestComponent;
+	private java.awt.Component northEastComponent;
+	private java.awt.Component southWestComponent;
+	private java.awt.Component southEastComponent;
+	
+	protected int getPad() {
+		return 8;
+	}
+	public java.awt.Component getNorthWestComponent() {
+		return this.northWestComponent;
+	}
+	public void setNorthWestComponent( java.awt.Component northWestComponent ) {
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		if( this.northWestComponent != null ) {
+			springLayout.removeLayoutComponent( this.northWestComponent );
+			this.onscreenLookingGlass.getJPanel().remove( this.northWestComponent );
+		}
+		this.northWestComponent = northWestComponent;
+		if( this.northWestComponent != null ) {
+			int pad = getPad();
+			this.putConstraint( this.northWestComponent, Horizontal.WEST, pad, Vertical.NORTH, pad );
+			//springLayout.putConstraint( javax.swing.SpringLayout.NORTH, this.northWestComponent, pad, javax.swing.SpringLayout.NORTH, this );
+			//springLayout.putConstraint( javax.swing.SpringLayout.WEST, this.northWestComponent, pad, javax.swing.SpringLayout.WEST, this );
+			this.onscreenLookingGlass.getJPanel().add( this.northWestComponent );
+		}
+	}
+	public java.awt.Component getNorthEastComponent() {
+		return this.northEastComponent;
+	}
+	public void setNorthEastComponent( java.awt.Component northEastComponent ) {
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		if( this.northEastComponent != null ) {
+			springLayout.removeLayoutComponent( this.northEastComponent );
+			this.onscreenLookingGlass.getJPanel().remove( this.northEastComponent );
+		}
+		this.northEastComponent = northEastComponent;
+		if( this.northEastComponent != null ) {
+			int pad = getPad();
+			this.putConstraint( this.northEastComponent, Horizontal.EAST, -pad, Vertical.NORTH, pad );
+//			springLayout.putConstraint( javax.swing.SpringLayout.NORTH, this.northEastComponent, pad, javax.swing.SpringLayout.NORTH, this );
+//			springLayout.putConstraint( javax.swing.SpringLayout.EAST, this.northEastComponent, -pad, javax.swing.SpringLayout.EAST, this );
+			this.onscreenLookingGlass.getJPanel().add( this.northEastComponent );
+		}
+	}
+	public java.awt.Component getSouthWestComponent() {
+		return this.southWestComponent;
+	}
+	public void setSouthWestComponent( java.awt.Component southWestComponent ) {
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		if( this.southWestComponent != null ) {
+			springLayout.removeLayoutComponent( this.southWestComponent );
+			this.onscreenLookingGlass.getJPanel().remove( this.southWestComponent );
+		}
+		this.southWestComponent = southWestComponent;
+		if( this.southWestComponent != null ) {
+			int pad = getPad();
+			this.putConstraint( this.southWestComponent, Horizontal.WEST, pad, Vertical.SOUTH, -pad );
+//			springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, this.southWestComponent, -pad, javax.swing.SpringLayout.SOUTH, this );
+//			springLayout.putConstraint( javax.swing.SpringLayout.WEST, this.southWestComponent, pad, javax.swing.SpringLayout.WEST, this );
+			this.onscreenLookingGlass.getJPanel().add( this.southWestComponent );
+		}
+	}
+	public java.awt.Component getSouthEastComponent() {
+		return this.southEastComponent;
+	}
+	public void setSouthEastComponent( java.awt.Component southEastComponent ) {
+		javax.swing.SpringLayout springLayout = this.getSpringLayout();
+		if( this.southEastComponent != null ) {
+			springLayout.removeLayoutComponent( this.southEastComponent );
+			this.onscreenLookingGlass.getJPanel().remove( this.southEastComponent );
+		}
+		this.southEastComponent = southEastComponent;
+		if( this.southEastComponent != null ) {
+			int pad = getPad();
+			this.putConstraint( this.southEastComponent, Horizontal.EAST, -pad, Vertical.SOUTH, -pad );
+//			springLayout.putConstraint( javax.swing.SpringLayout.SOUTH, this.southEastComponent, -pad, javax.swing.SpringLayout.SOUTH, this );
+//			springLayout.putConstraint( javax.swing.SpringLayout.EAST, this.southEastComponent, -pad, javax.swing.SpringLayout.EAST, this );
+			this.onscreenLookingGlass.getJPanel().add( this.southEastComponent );
+		}
+	}
+	
+	public enum Vertical {
+		NORTH(javax.swing.SpringLayout.NORTH), 
+		CENTER(null), 
+		SOUTH(javax.swing.SpringLayout.SOUTH);
+		private String internal;
+		private Vertical( String internal ) {
+			this.internal = internal;
+		}
+		public String getInternal() {
+			return internal;
+		}
+	}
+	public enum Horizontal {
+		WEST(javax.swing.SpringLayout.WEST), 
+		CENTER(null), 
+		EAST(javax.swing.SpringLayout.EAST);
+		private String internal;
+		private Horizontal( String internal ) {
+			this.internal = internal;
+		}
+		public String getInternal() {
+			return internal;
+		}
+	}
+	
+	abstract class CenterSpring extends javax.swing.Spring {
+		private java.awt.Component component;
+		private int offset;
+		public CenterSpring( java.awt.Component component, int offset ) {
+			this.component = component;
+			this.offset = offset;
+		}
+		@Override
+		public int getValue() {
+			return this.getPreferredValue();
+		}
+		@Override
+		public void setValue( int value ) {
+		}
+		protected abstract int getValue( java.awt.Dimension dimension );
+		@Override
+		public int getPreferredValue() {
+			int macro = getValue( MoveAndTurnSceneEditor.this.getSize() );
+			java.awt.Dimension size;
+			if( this.component.isValid() ) {
+				size = this.component.getSize();
+			} else {
+				size = this.component.getPreferredSize();
+			}
+			int micro = getValue( size );
+			return this.offset + (macro - micro) / 2;
+		}
+		@Override
+		public int getMinimumValue() {
+			return this.getPreferredValue();
+		}
+		@Override
+		public int getMaximumValue() {
+			return this.getPreferredValue();
+		}
+	}
+	class HorizontalCenterSpring extends CenterSpring {
+		public HorizontalCenterSpring( java.awt.Component component, int offset ) {
+			super( component, offset );
+		}
+		@Override
+		protected int getValue( java.awt.Dimension dimension ) {
+			return dimension.width;
+		}
+	}
+	class VerticalCenterSpring extends CenterSpring {
+		public VerticalCenterSpring( java.awt.Component component, int offset ) {
+			super( component, offset );
+		}
+		@Override
+		protected int getValue( java.awt.Dimension dimension ) {
+			return dimension.height;
+		}
+	}
+	protected void putConstraint( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+		String horizontalConstraint = horizontal.getInternal();
+		String verticalConstraint = vertical.getInternal();
+		if( horizontalConstraint != null ) {
+			this.getSpringLayout().putConstraint( horizontalConstraint, component, x, horizontalConstraint, this.onscreenLookingGlass.getAWTComponent() );
+		} else {
+			this.getSpringLayout().putConstraint( javax.swing.SpringLayout.WEST, component, new HorizontalCenterSpring( component, x ), javax.swing.SpringLayout.WEST, this.onscreenLookingGlass.getAWTComponent() );
+		}
+		if( verticalConstraint != null ) {
+			this.getSpringLayout().putConstraint( verticalConstraint, component, y, verticalConstraint, this.onscreenLookingGlass.getAWTComponent() );
+		} else {
+			this.getSpringLayout().putConstraint( javax.swing.SpringLayout.NORTH, component, new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, this.onscreenLookingGlass.getAWTComponent() );
+		}
+	}
+	
+//	public void add( java.awt.Component component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+//		this.putConstraint(component, horizontal, x, vertical, y);
+//		this.add( component );
+//	}
+
+	//todo?
+//	@Override
+//	public void remove( java.awt.Component component ) {
+//		super.remove( component );
+//		this.springLayout.removeLayoutComponent( component );
+//	}
+	
+	
+	
 }
