@@ -61,6 +61,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				}
 				@Override
 				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					rv.append( "delete: " );
 					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, node, locale);
 					return rv;
 				}
