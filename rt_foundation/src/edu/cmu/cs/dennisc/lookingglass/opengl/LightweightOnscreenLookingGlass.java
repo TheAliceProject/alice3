@@ -27,61 +27,61 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass{
-	class RenderPane extends /*edu.cmu.cs.dennisc.*/javax.media.opengl.GLJPanel {
-		
-		private Throwable prevThrowable = null;
-		
-		public RenderPane() {
-			super( LookingGlassFactory.createDesiredGLCapabilities(), LookingGlassFactory.getGLCapabilitiesChooser(), null );
-		}
-		@Override
-		public void display() {
-			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
-				super.display();
-			}
-		}
-		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
-			if( LightweightOnscreenLookingGlass.this.getCameraCount() > 0 ) {
-				try {
-					if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
-						super.paintComponent( g );
-					} else {
-//						java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
-//						if( offscreenImage != null ) {
-//							g.drawImage( offscreenImage, 0, 0, this );
-//							String text = "rendering disabled for performance considerations";
-//							java.awt.Dimension size = this.getSize();
-//							g.setColor( java.awt.Color.BLACK );
-//							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
-//							g.setColor( java.awt.Color.YELLOW );
-//							g.translate( -1, -1 );
-//							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
-//							g.translate( 1, 1 );
-//						}
-					}
-					this.prevThrowable = null;
-				} catch( Throwable t ) {
-					g.setColor( java.awt.Color.RED );
-					g.fillRect( 0, 0, getWidth(), getHeight() );
-					g.setColor( java.awt.Color.BLACK );
-					edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
-					//edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
-					if( this.prevThrowable != null ) {
-						//pass
-					} else {
-						this.prevThrowable = t;
-						t.printStackTrace();
-					}
-				}
-			} else {
-				g.setColor( java.awt.Color.DARK_GRAY );
-				g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
-			}
-		}
-	}
-	private RenderPane glPanel = new RenderPane();
-	//private javax.media.opengl.GLJPanel glPanel = new javax.media.opengl.GLJPanel();
+//	class RenderPane extends /*edu.cmu.cs.dennisc.*/javax.media.opengl.GLJPanel {
+//		
+//		private Throwable prevThrowable = null;
+//		
+//		public RenderPane() {
+//			super( LookingGlassFactory.createDesiredGLCapabilities(), LookingGlassFactory.getGLCapabilitiesChooser(), null );
+//		}
+//		@Override
+//		public void display() {
+//			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
+//				super.display();
+//			}
+//		}
+//		@Override
+//		protected void paintComponent( java.awt.Graphics g ) {
+//			if( LightweightOnscreenLookingGlass.this.getCameraCount() > 0 ) {
+//				try {
+//					if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
+//						super.paintComponent( g );
+//					} else {
+////						java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
+////						if( offscreenImage != null ) {
+////							g.drawImage( offscreenImage, 0, 0, this );
+////							String text = "rendering disabled for performance considerations";
+////							java.awt.Dimension size = this.getSize();
+////							g.setColor( java.awt.Color.BLACK );
+////							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
+////							g.setColor( java.awt.Color.YELLOW );
+////							g.translate( -1, -1 );
+////							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
+////							g.translate( 1, 1 );
+////						}
+//					}
+//					this.prevThrowable = null;
+//				} catch( Throwable t ) {
+//					g.setColor( java.awt.Color.RED );
+//					g.fillRect( 0, 0, getWidth(), getHeight() );
+//					g.setColor( java.awt.Color.BLACK );
+//					edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
+//					//edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
+//					if( this.prevThrowable != null ) {
+//						//pass
+//					} else {
+//						this.prevThrowable = t;
+//						t.printStackTrace();
+//					}
+//				}
+//			} else {
+//				g.setColor( java.awt.Color.DARK_GRAY );
+//				g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+//			}
+//		}
+//	}
+//	private RenderPane glPanel = new RenderPane();
+	private javax.media.opengl.GLJPanel glPanel = new javax.media.opengl.GLJPanel();
 	/*package-private*/ LightweightOnscreenLookingGlass( LookingGlassFactory lookingGlassFactory ) {
 		super( lookingGlassFactory );
 		this.glPanel.setFocusable( true );
