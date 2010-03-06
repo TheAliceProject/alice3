@@ -316,7 +316,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.updateFieldLabels();
 	}
 
-	public void updateFieldLabels() {
+	private void updateFieldLabels() {
 		for( FieldTile fieldTile : this.fieldTiles ) {
 			fieldTile.updateLabel();
 		}
@@ -368,8 +368,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				}
 			}
 		}
-		revalidate();
-		repaint();
+		this.revalidate();
+		this.repaint();
 	}
 
 	@Override
@@ -395,7 +395,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			org.alice.apis.moveandturn.Model model = (org.alice.apis.moveandturn.Model)instance;
 			this.globalDragAdapter.setSelectedObject( model.getSGTransformable() );
 		}
-		this.refreshFields();
+		this.updateFieldLabels();
 	}
 
 

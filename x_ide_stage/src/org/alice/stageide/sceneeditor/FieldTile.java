@@ -113,6 +113,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	}
 
 	public void updateLabel() {
+		String prevText = this.text;
 		if( this.field != null ) {
 			String text = getIDE().getInstanceTextForField( this.field, false );
 			this.setBackground( this.calculateColor() );
@@ -121,7 +122,11 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 			this.setBackground( java.awt.Color.RED );
 			this.text = "null";
 		}
-		this.revalidate();
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevText, this.text ) ) {
+			//pass
+		} else {
+			this.revalidate();
+		}
 		this.repaint();
 	}
 	protected boolean isInScope() {
