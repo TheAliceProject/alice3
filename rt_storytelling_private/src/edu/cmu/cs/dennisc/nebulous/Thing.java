@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2006-2009, Carnegie Mellon University. All rights reserved.
+ * Copyright (c) 2006-2010, Carnegie Mellon University. All rights reserved.
  */
 package edu.cmu.cs.dennisc.nebulous;
 

@@ -120,11 +120,11 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	/*package-private*/ static javax.media.opengl.GLCapabilities createDesiredGLCapabilities() {
 		javax.media.opengl.GLCapabilities rv = new javax.media.opengl.GLCapabilities();
 		javax.media.opengl.GLCapabilitiesChooser chooser = getGLCapabilitiesChooser();
-		if( chooser instanceof edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
-			rv.setHardwareAccelerated( false );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
-			rv.setDepthBits( 32 );
-		}
+//		if( chooser instanceof edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser ) {
+//			rv.setHardwareAccelerated( false );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: force hardware acceleration off" );
+//			rv.setDepthBits( 32 );
+//		}
 		return rv;
 	}
 	
@@ -150,11 +150,11 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 //						t.printStackTrace();
 //					}
 //				}
-			if( isSlowAndSteadyDesired ) {
-				glCapabilitiesChooser = new edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser();
-			} else {
+//			if( isSlowAndSteadyDesired ) {
+//				glCapabilitiesChooser = new edu.cmu.cs.dennisc.javax.media.opengl.HardwareAccellerationEschewingGLCapabilitiesChooser();
+//			} else {
 				glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
-			}
+//			}
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "glCapabilitiesChooser", glCapabilitiesChooser );
 		}
 		return glCapabilitiesChooser;
