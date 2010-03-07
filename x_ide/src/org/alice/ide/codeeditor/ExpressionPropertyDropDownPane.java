@@ -53,7 +53,6 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 				org.alice.ide.common.ExpressionPropertyPane expressionPropertyPane = (org.alice.ide.common.ExpressionPropertyPane)mainComponent;
 				if( expressionPropertyPane.getComponentCount()==1 ) {
 					java.awt.Component component0 = expressionPropertyPane.getComponent( 0 );
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "getInsetLeft", component0 );
 					if( component0 instanceof org.alice.ide.common.InstancePropertyPane ) {
 						//org.alice.ide.common.InstancePropertyPane instancePropertyPane = (org.alice.ide.common.InstancePropertyPane)component0;
 						rv += 2;
