@@ -63,36 +63,13 @@ class EditFunctionsOperation extends EditMethodsOperation< edu.cmu.cs.dennisc.al
 	}
 }
 
-
-class EditFieldsOperation extends org.alice.ide.operations.AbstractActionOperation {
-	private static String PRESENTATION = "Edit Properties";
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
-
-
+class EditFieldsOperation extends EditMembersOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	public EditFieldsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-		this.type = type;
-		this.putValue( javax.swing.Action.NAME, PRESENTATION + "..." );
+		super( type, "Edit Properties" );
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[] prevArray;		
-		prevArray = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice[ this.type.fields.size() ];
-		this.type.fields.toArray( prevArray );
-		java.util.UUID groupUUID = java.util.UUID.randomUUID();
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
-		EditFieldsPane editFieldsPane = new EditFieldsPane( groupUUID, this.type );
-		Boolean isAccepted = editFieldsPane.showInJDialog( getIDE() );
-		if( isAccepted != null ) {
-			edu.cmu.cs.dennisc.zoot.CompositeEdit compositeEdit = historyManager.createDoIgnoringCompositeEdit( PRESENTATION + " " + this.type.getName() );
-			if( compositeEdit != null ) {
-				actionContext.commitAndInvokeDo( compositeEdit );
-			} else {
-				actionContext.cancel();
-			}
-		} else {
-			historyManager.setInsertionIndex( 0 );
-			actionContext.cancel();
-		}
+	@Override
+	protected EditFieldsPane createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		return new EditFieldsPane( declaringType );
 	}
 }
 

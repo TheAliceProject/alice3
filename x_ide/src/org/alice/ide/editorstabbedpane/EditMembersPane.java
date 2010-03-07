@@ -27,8 +27,10 @@ import edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice;;
 * @author Dennis Cosgrove
 */
 public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.croquet.KInputPane< Boolean > {
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private javax.swing.JList list;
-	public EditMembersPane( edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
+	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
+		this.declaringType = declaringType;
 		this.list = new javax.swing.JList();
 		list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.ContentsCachingListCellRenderer< E >() {
 			@Override
@@ -93,7 +95,7 @@ public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends
 			}
 			@Override
 			protected E createItem() throws Exception {
-				return createMember();
+				return createMember( EditMembersPane.this.declaringType );
 			}
 		}
 		edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< E > editableListPane = new EditableMemberListPane();
@@ -110,7 +112,7 @@ public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends
 	}
 	protected abstract java.awt.Component createCellRendererComponent(E e);
 	protected abstract edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID, String name );
-	protected abstract E createMember();
+	protected abstract E createMember( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
 	protected abstract boolean isRemoveItemEnabledFor( E e );
 	protected abstract boolean isEditItemEnabledFor( E e );
 }

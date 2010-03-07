@@ -26,10 +26,29 @@ package org.alice.ide.editorstabbedpane;
 * @author Dennis Cosgrove
 */
 public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
+	private java.util.Set< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > referencedMethods;
 	public EditMethodsPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		super( declaringType.methods );
-		this.declaringType = declaringType;
+		super( declaringType, declaringType.methods );
+		this.referencedMethods = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
+		edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
+		if( project != null ) {
+			ide.ensureProjectCodeUpToDate();
+			edu.cmu.cs.dennisc.alice.ast.AbstractType programType = project.getProgramType();
+			for( final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : declaringType.methods ) {
+				edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
+					@Override
+					protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+						return methodInvocation.method.getValue() == method;
+					}
+				};
+				programType.crawl( crawler, true );
+				java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations = crawler.getList();
+				if( methodInvocations.size() > 0 ) {
+					referencedMethods.add( method );
+				}
+			}
+		}
 	}
 	@Override
 	protected java.awt.Component createCellRendererComponent( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice e ) {
@@ -51,7 +70,7 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 	}
 	protected abstract org.alice.ide.declarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMember() {
+	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMember( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		org.alice.ide.declarationpanes.CreateMethodPane createMethodPane = this.createCreateMethodPane( declaringType );
 		return createMethodPane.showInJDialog( org.alice.ide.IDE.getSingleton() );
 	}
@@ -61,6 +80,6 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 	}
 	@Override
 	protected boolean isRemoveItemEnabledFor( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice e ) {
-		return e.isDeletionAllowed.getValue();
+		return e.isDeletionAllowed.getValue()  && this.referencedMethods.contains( e ) == false;
 	}
 }
