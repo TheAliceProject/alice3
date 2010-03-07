@@ -20,7 +20,7 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.createdeclarationpanes;
+package org.alice.ide.declarationpanes;
 
 class GalleryIcon extends javax.swing.JLabel {
 	public GalleryIcon( java.io.File file ) {

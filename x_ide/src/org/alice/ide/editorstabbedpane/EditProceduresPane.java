@@ -30,7 +30,7 @@ public class EditProceduresPane extends EditMethodsPane {
 		super( declaringType );
 	}
 	@Override
-	protected org.alice.ide.createdeclarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		return new org.alice.ide.createdeclarationpanes.CreateProcedurePane( declaringType );
+	protected org.alice.ide.declarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		return new org.alice.ide.declarationpanes.CreateProcedurePane( declaringType );
 	}
 }

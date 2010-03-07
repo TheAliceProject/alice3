@@ -62,7 +62,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 			@Override
 			protected edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement doInBackground() throws java.lang.Exception {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: CreateLocalPane context ", e.getDropReceptor() );
-				org.alice.ide.createdeclarationpanes.CreateLocalPane createLocalPane = new org.alice.ide.createdeclarationpanes.CreateLocalPane( block );
+				org.alice.ide.declarationpanes.CreateLocalPane createLocalPane = new org.alice.ide.declarationpanes.CreateLocalPane( block );
 				return createLocalPane.showInJDialog( getIDE() );
 			}
 			@Override

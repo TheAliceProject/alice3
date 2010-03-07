@@ -25,7 +25,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-class CreateFieldFromBillboardPane extends org.alice.ide.createdeclarationpanes.CreateLargelyPredeterminedFieldPane {
+class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.CreateLargelyPredeterminedFieldPane {
 	public CreateFieldFromBillboardPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, org.alice.apis.moveandturn.Billboard billboard ) {
 		super( declaringType, billboard.getClass(), null );
 		org.alice.apis.moveandturn.ImageSource frontImageSource = billboard.getFrontImageSource();

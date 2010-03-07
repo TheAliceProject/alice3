@@ -20,24 +20,37 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.operations.ast;
+package org.alice.ide.declarationpanes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		this.ownerType = ownerType;
-		this.putValue( javax.swing.Action.NAME, "Declare Property..." );
+public abstract class RowsInputPane< E > extends edu.cmu.cs.dennisc.croquet.KInputPane< E > {
+	private javax.swing.JPanel panel = new javax.swing.JPanel();
+	public RowsInputPane() {
+		this.setLayout( new java.awt.BorderLayout() );
+		this.add( panel, java.awt.BorderLayout.NORTH );
+		this.add( javax.swing.Box.createGlue(), java.awt.BorderLayout.CENTER );
+
+		int inset = 8;
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
 	}
+	
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
-		return this.ownerType;
+	public void addNotify() {
+		super.addNotify();
+		if( this.panel.getComponentCount()==0) {
+			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
+			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this.panel, componentRows, this.getSpringXPad(), this.getSpringYPad() );
+		}
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
-		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( ownerType );
-		return createFieldPane.showInJDialog( getIDE() );
+	protected int getSpringXPad() {
+		return 12;
+	}
+	protected int getSpringYPad() {
+		return 12;
+	}
+	protected java.util.List< java.awt.Component[] > createComponentRows() {
+		return new java.util.LinkedList< java.awt.Component[] >();
 	}
 }

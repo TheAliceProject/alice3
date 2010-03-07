@@ -20,26 +20,39 @@
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
  */
-package org.alice.ide.createdeclarationpanes;
+package org.alice.ide.declarationpanes;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateFunctionPane extends CreateMethodPane {
-	public CreateFunctionPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		super( declaringType );
-		this.setBackground( getIDE().getFunctionColor() );
+public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTypePane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
+	public CreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
+		super( new org.alice.ide.name.validators.MethodNameValidator( declaringType ) );
 	}
 	@Override
 	protected String getDeclarationText() {
-		return "Function";
+		return "Procedure";
 	}
 	@Override
-	protected boolean isEditableValueTypeComponentDesired() {
-		return true;
+	protected java.awt.Component createInitializerComponent() {
+		return null;
 	}
 	@Override
-	protected String getValueTypeText() {
-		return "return value type:";
+	protected boolean isIsReassignableComponentDesired() {
+		return false;
+	}
+	
+	@Override
+	protected boolean isEditableInitializerComponentDesired() {
+		return false;
+	}
+	@Override
+	protected java.awt.Component createPreviewSubComponent() {
+		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null );
+	}
+	
+	@Override
+	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getActualInputValue() {
+		return new edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice( this.getDeclarationName(), this.getValueType(), new edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice[] {}, new edu.cmu.cs.dennisc.alice.ast.BlockStatement() );
 	}
 }

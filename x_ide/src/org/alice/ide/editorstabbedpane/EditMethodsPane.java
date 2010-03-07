@@ -49,10 +49,10 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 			}
 		};
 	}
-	protected abstract org.alice.ide.createdeclarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
+	protected abstract org.alice.ide.declarationpanes.CreateMethodPane createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMember() {
-		org.alice.ide.createdeclarationpanes.CreateMethodPane createMethodPane = this.createCreateMethodPane( declaringType );
+		org.alice.ide.declarationpanes.CreateMethodPane createMethodPane = this.createCreateMethodPane( declaringType );
 		return createMethodPane.showInJDialog( org.alice.ide.IDE.getSingleton() );
 	}
 	@Override

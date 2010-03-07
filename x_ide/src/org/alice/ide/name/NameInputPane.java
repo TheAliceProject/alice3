@@ -22,7 +22,7 @@
  */
 package org.alice.ide.name;
 
-import org.alice.ide.createdeclarationpanes.RowsInputPane;
+import org.alice.ide.declarationpanes.RowsInputPane;
 
 /**
  * @author Dennis Cosgrove

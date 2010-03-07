@@ -31,7 +31,7 @@ public class DeclareProcedureOperation extends DeclareMethodOperation {
 		this.putValue( javax.swing.Action.NAME, "Declare Procedure..." );
 	}
 	@Override
-	protected org.alice.ide.createdeclarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return new org.alice.ide.createdeclarationpanes.CreateProcedurePane( type );
+	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return new org.alice.ide.declarationpanes.CreateProcedurePane( type );
 	}
 }

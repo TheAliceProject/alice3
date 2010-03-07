@@ -83,7 +83,7 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 						}
 					}
 					if (type != null) {
-						org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.createdeclarationpanes.CreateFieldFromGalleryPane(ownerType, type);
+						org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(ownerType, type);
 						edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog(getIDE(), "Create New Instance", true);
 						if (field != null) {
 							Object instanceInJava = createFieldPane.createInstanceInJava();

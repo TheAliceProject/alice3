@@ -27,14 +27,14 @@ package org.alice.ide.choosers;
  */
 public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation > {
 	private org.alice.ide.initializer.BogusNode bogusNode = new org.alice.ide.initializer.BogusNode( null, false );
-	private org.alice.ide.createdeclarationpanes.TypePane typePane;
+	private org.alice.ide.declarationpanes.TypePane typePane;
 	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane;
 	private static final String[] LABEL_TEXTS = { "type:", "value:" };
 	private java.awt.Component[] components;
 	
 	public ArrayChooser() {
 		bogusNode.isArray.setValue( true );
-		this.typePane = new org.alice.ide.createdeclarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
+		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
 		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.arrayExpressions );
 		this.components = new java.awt.Component[] { this.typePane, this.arrayInitializerPane };
 		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
