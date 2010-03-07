@@ -51,12 +51,12 @@ class MenuItem extends javax.swing.JMenuItem {
 }
 
 class RecentProjectsMenu extends javax.swing.JMenu {
-	//	private edu.cmu.cs.dennisc.preference.event.PreferenceListener< org.alice.ide.preferences.PathsPreference > preferenceListener = new edu.cmu.cs.dennisc.preference.event.PreferenceListener< org.alice.ide.preferences.PathsPreference >() {
-	//		public void valueChanging( edu.cmu.cs.dennisc.preference.event.PreferenceEvent< org.alice.ide.preferences.PathsPreference > e ) {
-	//		}
-	//		public void valueChanged( edu.cmu.cs.dennisc.preference.event.PreferenceEvent< org.alice.ide.preferences.PathsPreference > e ) {
-	//		}
-	//	};
+//	private edu.cmu.cs.dennisc.preference.event.PreferenceListener< org.alice.ide.preferences.PathsPreference > preferenceListener = new edu.cmu.cs.dennisc.preference.event.PreferenceListener< org.alice.ide.preferences.PathsPreference >() {
+//		public void valueChanging( edu.cmu.cs.dennisc.preference.event.PreferenceEvent< org.alice.ide.preferences.PathsPreference > e ) {
+//		}
+//		public void valueChanged( edu.cmu.cs.dennisc.preference.event.PreferenceEvent< org.alice.ide.preferences.PathsPreference > e ) {
+//		}
+//	};
 	public RecentProjectsMenu() {
 		this.setText( "Open Recent Projects" );
 		this.addMenuListener( new javax.swing.event.MenuListener() {
@@ -475,6 +475,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		IDE.singleton = this;
 		this.promptForLicenseAgreements();
 
+		//org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.setAndCommitValue( 10 );
+		//org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
+		
 		edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID ).addHistoryListener( new edu.cmu.cs.dennisc.history.event.HistoryListener() {
 			public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 			}
@@ -1629,6 +1632,17 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 					if( project != null ) {
 						this.setProject( project );
 						this.file = file;
+						try {
+//							long t0 = System.currentTimeMillis();
+							if( this.file != null && this.file.canWrite() ) {
+								int desiredRecentProjectCount = org.alice.ide.preferences.GeneralPreferences.getSingleton().desiredRecentProjectCount.getValue();
+								org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.add( file, desiredRecentProjectCount );
+							}
+//							long tDelta = System.currentTimeMillis() - t0;
+//							edu.cmu.cs.dennisc.print.PrintUtilities.println( "time to store preference (msec):", tDelta );
+						} catch( Throwable throwable ) {
+							throwable.printStackTrace();
+						}
 						this.updateTitle();
 					} else {
 						//actionContext.cancel();

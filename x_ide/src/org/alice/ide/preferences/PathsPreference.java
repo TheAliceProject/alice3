@@ -30,10 +30,6 @@ public class PathsPreference extends edu.cmu.cs.dennisc.preference.ListPreferenc
 		super( new java.util.LinkedList<String>() );
 	}
 	
-	public void clear() {
-		javax.swing.JOptionPane.showMessageDialog( null, "todo" );
-	}
-
 	@Override
 	protected int getItemVersion() {
 		return 1;
@@ -49,5 +45,30 @@ public class PathsPreference extends edu.cmu.cs.dennisc.preference.ListPreferenc
 	@Override
 	protected void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, String item ) {
 		binaryEncoder.encode(item);
+	}
+
+
+	public void clear() {
+		java.util.List< String > list = java.util.Collections.emptyList();
+		this.setAndCommitValue( list );
+	}
+	public void add( java.io.File file, int maxSize ) {
+		if( file != null && file.canWrite() ) {
+			java.util.List< String > list = this.getValue();
+			String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file );
+			if( path != null && path.length() > 0 ) {
+				int index = list.indexOf( path );
+				if( index > 0 ) {
+					list.remove( index );
+				}
+				if( index != 0 ) {
+					list.add( 0, path );
+					if( list.size() > maxSize ) {
+						list = list.subList( 0, maxSize );
+					}
+					this.setAndCommitValue( list );
+				}
+			}
+		}
 	}
 }
