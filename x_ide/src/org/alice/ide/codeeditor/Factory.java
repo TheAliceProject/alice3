@@ -22,15 +22,62 @@
  */
 package org.alice.ide.codeeditor;
 
+class DissolveStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody;
+	public DissolveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		this.putValue( javax.swing.Action.NAME, "Dissolve" );
+		this.property = property;
+		this.abstractStatementWithBody = abstractStatementWithBody;
+	}
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		final int index = this.property.indexOf( this.abstractStatementWithBody );
+		if( index >= 0 ) {
+			final int N = this.abstractStatementWithBody.body.getValue().statements.size();
+
+			final edu.cmu.cs.dennisc.alice.ast.Statement[] statements = new edu.cmu.cs.dennisc.alice.ast.Statement[ N ];
+			this.abstractStatementWithBody.body.getValue().statements.toArray( statements );
+			
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo( boolean isDo ) {
+					property.remove( index );
+					property.add( statements );
+					//todo: remove
+					getIDE().refreshUbiquitousPane();
+				}
+				@Override
+				public void undo() {
+					for( int i=0; i<N; i++ ) {
+						property.remove( index );
+					}
+					property.add( index, abstractStatementWithBody );
+					//todo: remove
+					getIDE().refreshUbiquitousPane();
+				}
+				@Override
+				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					rv.append( "dissolve:" );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, abstractStatementWithBody, locale);
+					return rv;
+				}
+			} );
+		} else {
+			throw new RuntimeException();
+		}
+	}
+}
+
 class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
-	public DeleteStatementActionOperation( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+	public DeleteStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		this.putValue( javax.swing.Action.NAME, "Delete" );
-		this.property = abstractStatementPane.getOwner();
-		this.statement = abstractStatementPane.getStatement();
+		this.property = property;
+		this.statement = statement;
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final int index = this.property.indexOf( this.statement );
@@ -111,11 +158,12 @@ public class Factory extends org.alice.ide.common.Factory {
 		return abstractStatementPane;
 	}
 	protected java.util.List< edu.cmu.cs.dennisc.zoot.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.zoot.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = abstractStatementPane.getOwner();
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
 			//pass
 		} else {
-			rv.add( new StatementEnabledStateOperation( abstractStatementPane.getStatement() ) );
+			rv.add( new StatementEnabledStateOperation( statement ) );
 		}
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
 			edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)statement;
@@ -129,7 +177,14 @@ public class Factory extends org.alice.ide.common.Factory {
 			}
 		}
 		rv.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		rv.add( new DeleteStatementActionOperation( abstractStatementPane ) );
+		rv.add( new DeleteStatementActionOperation( property, statement ) );
+		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody = (edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)statement;
+			rv.add( new DissolveStatementActionOperation( property, abstractStatementWithBody ) );
+		} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
+			edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)statement;
+			//todo: dissolve to if, dissolve to else
+		}
 		return rv;
 	}
 	private java.util.List< edu.cmu.cs.dennisc.zoot.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
