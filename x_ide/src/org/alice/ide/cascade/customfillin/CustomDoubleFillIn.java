@@ -28,7 +28,7 @@ package org.alice.ide.cascade.customfillin;
 public class CustomDoubleFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.DoubleLiteral, Double > {
 	@Override
 	protected String getMenuProxyText() {
-		return "Custom Real Number...";
+		return "Other Real Number...";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser createCustomPane() {

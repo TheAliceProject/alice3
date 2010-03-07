@@ -28,7 +28,7 @@ package org.alice.ide.cascade.customfillin;
 public class CustomFloatFillIn extends CustomFillIn< edu.cmu.cs.dennisc.alice.ast.FloatLiteral, Float > {
 	@Override
 	protected String getMenuProxyText() {
-		return "Custom (Single Precision) Real Number...";
+		return "Other (Single Precision) Real Number...";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser createCustomPane() {

@@ -31,7 +31,7 @@ import org.alice.stageide.choosers.AngleChooser;
 public class CustomAngleFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression, org.alice.apis.moveandturn.Angle > {
 	@Override
 	protected String getMenuProxyText() {
-		return "Custom Angle...";
+		return "Other Angle...";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser createCustomPane() {

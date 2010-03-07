@@ -51,7 +51,7 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 	@Override
 	protected int getInsetTop() {
 //		if( this.isActive() || this.isInactiveFeedbackDesired() ) {
-			return 2;
+			return 1;
 //		} else {
 //			return 0;
 //		}
@@ -63,7 +63,7 @@ public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl
 	@Override
 	protected int getInsetBottom() {
 //		if( this.isActive() || this.isInactiveFeedbackDesired() ) {
-			return 2;
+			return 1;
 //		} else {
 //			return 0;
 //		}

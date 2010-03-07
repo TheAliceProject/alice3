@@ -42,6 +42,29 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 		return this.expressionProperty;
 	}
 
+	@Override
+	protected int getInsetLeft() {
+		int rv = super.getInsetLeft();
+		if( this.getIDE().isExpressionTypeFeedbackDesired() ) {
+			//pass
+		} else {
+			java.awt.Component mainComponent = this.getMainComponent();
+			if( mainComponent instanceof org.alice.ide.common.ExpressionPropertyPane ) {
+				org.alice.ide.common.ExpressionPropertyPane expressionPropertyPane = (org.alice.ide.common.ExpressionPropertyPane)mainComponent;
+				if( expressionPropertyPane.getComponentCount()==1 ) {
+					java.awt.Component component0 = expressionPropertyPane.getComponent( 0 );
+					edu.cmu.cs.dennisc.print.PrintUtilities.println( "getInsetLeft", component0 );
+					if( component0 instanceof org.alice.ide.common.InstancePropertyPane ) {
+						//org.alice.ide.common.InstancePropertyPane instancePropertyPane = (org.alice.ide.common.InstancePropertyPane)component0;
+						rv += 2;
+					}
+				}
+			}
+		}
+		return rv;	
+	}
+
+
 	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}

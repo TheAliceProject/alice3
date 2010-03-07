@@ -28,7 +28,7 @@ package org.alice.stageide.cascade.customfillin;
 public class CustomVolumeLevelFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.Expression, org.alice.apis.moveandturn.VolumeLevel > {
 	@Override
 	protected String getMenuProxyText() {
-		return "Custom Volume Level...";
+		return "Other Volume Level...";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser createCustomPane() {

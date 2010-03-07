@@ -42,6 +42,8 @@ public abstract class DropDownPane extends org.alice.ide.common.AbstractDropDown
 	public java.awt.Component getMainComponent() {
 		return this.mainComponent;
 	}
+	
+
 //	@Override
 //	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape() {
 //		return new edu.cmu.cs.dennisc.awt.BeveledRectangle( new java.awt.geom.Rectangle2D.Float( 0, 0, getWidth()-1.0f, getHeight()-1.0f ) );

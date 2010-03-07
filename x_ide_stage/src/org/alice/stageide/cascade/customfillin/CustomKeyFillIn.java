@@ -28,7 +28,7 @@ package org.alice.stageide.cascade.customfillin;
 public class CustomKeyFillIn extends org.alice.ide.cascade.customfillin.CustomFillIn< edu.cmu.cs.dennisc.alice.ast.FieldAccess, org.alice.apis.moveandturn.Key > {
 	@Override
 	protected String getMenuProxyText() {
-		return "Custom Key...";
+		return "Other Key...";
 	}
 	@Override
 	protected org.alice.ide.choosers.ValueChooser createCustomPane() {
