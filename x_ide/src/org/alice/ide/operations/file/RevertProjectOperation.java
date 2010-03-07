@@ -46,6 +46,11 @@ public class RevertProjectOperation extends org.alice.ide.operations.AbstractAct
 				public boolean canUndo() {
 					return false;
 				}
+				@Override
+				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+					rv.append( "revert" );
+					return rv;
+				}
 			} );
 		} else {
 			actionContext.cancel();

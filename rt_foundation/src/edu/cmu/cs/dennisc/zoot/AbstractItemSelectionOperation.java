@@ -115,6 +115,15 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 				AbstractItemSelectionOperation.this.comboBoxModel.setSelectedItem( this.prevValue );
 				AbstractItemSelectionOperation.this.handleSelectionChange( this.prevValue );
 			}
+			@Override
+			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+				rv.append( "select " );
+				rv.append( this.prevValue );
+				rv.append( " ===> " );
+				rv.append( this.nextValue );
+				return rv;
+			}
+
 		}
 		
 		context.commitAndInvokeDo( new Edit( context.getPreviousSelection(), context.getNextSelection() ) );

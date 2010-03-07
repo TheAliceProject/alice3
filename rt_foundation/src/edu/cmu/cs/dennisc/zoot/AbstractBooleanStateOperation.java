@@ -94,6 +94,12 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 				AbstractBooleanStateOperation.this.buttonModel.setSelected( this.prevValue );
 				AbstractBooleanStateOperation.this.handleStateChange( this.prevValue );
 			}
+			@Override
+			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+				rv.append( "boolean: " );
+				rv.append( this.nextValue );
+				return rv;
+			}
 		}
 		booleanStateContext.commitAndInvokeDo( new Edit( booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
 	}

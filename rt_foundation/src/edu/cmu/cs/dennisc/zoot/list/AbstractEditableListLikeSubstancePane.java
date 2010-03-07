@@ -46,6 +46,12 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 					public void undo() {
 						remove( index, e );
 					}
+					@Override
+					protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+						rv.append( "add: " );
+						rv.append( e );
+						return rv;
+					}
 				});
 			//todo
 			} catch( Exception e ) {
@@ -71,6 +77,12 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 					@Override
 					public void undo() {
 						add( index, e );
+					}
+					@Override
+					protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+						rv.append( "remove: " );
+						rv.append( e );
+						return rv;
 					}
 				});
 			} else {
@@ -106,6 +118,11 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 				public void undo() {
 					swapWithNext( index );
 					setSelectedIndex( index + getUndoSelectionIndexDelta() );
+				}
+				@Override
+				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+					rv.append( "swap items" );
+					return rv;
 				}
 			});
 		}

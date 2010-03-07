@@ -106,6 +106,13 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 						throw new javax.swing.undo.CannotUndoException();
 					}
 				}
+				@Override
+				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+					rv.append( "add: " );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, expression, locale );
+					return rv;
+				}
+				
 			});
 		}
 	}
@@ -131,6 +138,12 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 				public void undo() {
 					ArrayInitializerPane.this.arrayExpressions.add( index, expression );
 				}
+				@Override
+				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+					rv.append( "remove: " );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, expression, locale );
+					return rv;
+				}
 			});
 		}
 	}
@@ -154,6 +167,12 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 					ArrayInitializerPane.this.swapWithNext( index );
 					list.setSelectedIndex( index + getUndoSelectionIndexDelta() );
 				}
+				@Override
+				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+					rv.append( "swap" );
+					return rv;
+				}
+				
 			});
 		}
 		

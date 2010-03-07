@@ -31,6 +31,11 @@ public class ThrowBogusExceptionOperation extends org.alice.ide.operations.Incon
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
+		new Thread() {
+			@Override
+			public void run() {
+				throw new RuntimeException( "DELETE THIS BOGUS EXCEPTION" );
+			}			
+		}.start();
 	}
 }

@@ -49,6 +49,11 @@ class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActio
 			public void undo() {
 				PersonViewer.getSingleton().setState( prevState );
 			}
+			@Override
+			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+				rv.append( "randomize person" );
+				return rv;
+			}
 		} );
 	}
 }

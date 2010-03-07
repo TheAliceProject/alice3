@@ -82,8 +82,20 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	@Override
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
 		this.isRenderingEnabled = isRenderingEnabled;
-		this.onscreenLookingGlass.setRenderingEnabled( isRenderingEnabled );
+		//this.onscreenLookingGlass.setRenderingEnabled( isRenderingEnabled );
 	}
+//	@Override
+//	protected void paintChildren( java.awt.Graphics g ) {
+//		try {
+//			super.paintChildren( g );
+//		} catch( javax.media.opengl.GLException gle ) {
+//			int result = javax.swing.JOptionPane.showConfirmDialog( this, "rendering error" );
+//			if( result == javax.swing.JOptionPane.OK_OPTION ) {
+//				this.splitPane.setLeftComponent( null );
+//				this.splitPane.setLeftComponent( this.onscreenLookingGlass.getJPanel() );
+//			}
+//		}
+//	}
 	@Override
 	public void update( java.awt.Graphics g ) {
 		if( isRenderingEnabled ) {

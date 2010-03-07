@@ -34,17 +34,16 @@ public abstract class AbstractEdit implements Edit {
 	public boolean canUndo() {
 		return true;
 	}
-//	protected abstract StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale );
-
-	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-		return rv;
-	}
+	protected abstract StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale );
 	public final String getPresentation( java.util.Locale locale ) {
 		StringBuffer sb = new StringBuffer();
 		this.updatePresentation( sb, locale );
 		if( sb.length() == 0 ) {
 			Class<?> cls = this.getClass();
 			sb.append( edu.cmu.cs.dennisc.lang.ClassUtilities.getTrimmedClassName( cls ) );
+		}
+		if( sb.length() == 0 ) {
+			sb.append( this.getClass() );
 		}
 		return sb.toString();
 	}

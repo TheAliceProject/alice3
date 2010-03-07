@@ -71,6 +71,12 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 					public void undo() {
 						EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
 					}
+					@Override
+					protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+						rv.append( "edit: " );
+						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr( rv, getField(), locale );
+						return rv;
+					}
 				} );
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: remove" );

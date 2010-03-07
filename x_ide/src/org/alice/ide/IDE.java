@@ -765,9 +765,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		helpOperations.add( new org.alice.ide.operations.help.HelpOperation() );
 		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 
-		boolean isBogusExceptionGenerationDesired = "true".equals( System.getProperty( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) );
-
-		if( isBogusExceptionGenerationDesired ) {
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) ) {
 			helpOperations.add( new org.alice.ide.operations.help.ThrowBogusExceptionOperation() );
 			helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		}

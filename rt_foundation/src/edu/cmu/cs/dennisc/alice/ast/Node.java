@@ -532,54 +532,54 @@ public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePro
 	public void assignUUIDs( java.util.Map< Integer, AbstractDeclaration > map ) {
 	}
 
-	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {
-		sb.append( "name=" );
-		sb.append( this.getName() );
-		sb.append( ";" );
-		sb.append( "@" );
-		sb.append( this.hashCode() );
-		sb.append( ";" );
-		String separator = "";
-		for( edu.cmu.cs.dennisc.property.Property< ? > property : getProperties() ) {
-			sb.append( separator );
-			sb.append( property.getName() );
-			sb.append( "=" );
-			Object value = property.getValue( this );
-			if( value instanceof Node ) {
-				Node node = (Node)value;
-				if( set.contains( node ) ) {
-					sb.append( "referenced@" );
-					sb.append( node.hashCode() );
-				} else {
-					node.append( sb, set );
-				}
-			} else if( value instanceof java.util.Collection ) {
-				java.util.Collection collection = (java.util.Collection)value;
-				sb.append( "cls:" );
-				sb.append( collection.getClass().getName() );
-				sb.append( ";size:" );
-				sb.append( collection.size() );
-			} else {
-				sb.append( value );
-			}
-			separator = ",";
-		}
-	}
+//	protected void appendInternal( StringBuffer sb, java.util.Set< Node > set ) {
+//		sb.append( "name=" );
+//		sb.append( this.getName() );
+//		sb.append( ";" );
+//		sb.append( "@" );
+//		sb.append( this.hashCode() );
+//		sb.append( ";" );
+//		String separator = "";
+//		for( edu.cmu.cs.dennisc.property.Property< ? > property : getProperties() ) {
+//			sb.append( separator );
+//			sb.append( property.getName() );
+//			sb.append( "=" );
+//			Object value = property.getValue( this );
+//			if( value instanceof Node ) {
+//				Node node = (Node)value;
+//				if( set.contains( node ) ) {
+//					sb.append( "referenced@" );
+//					sb.append( node.hashCode() );
+//				} else {
+//					node.append( sb, set );
+//				}
+//			} else if( value instanceof java.util.Collection ) {
+//				java.util.Collection collection = (java.util.Collection)value;
+//				sb.append( "cls:" );
+//				sb.append( collection.getClass().getName() );
+//				sb.append( ";size:" );
+//				sb.append( collection.size() );
+//			} else {
+//				sb.append( value );
+//			}
+//			separator = ",";
+//		}
+//	}
 
-	protected void append( StringBuffer sb, java.util.Set< Node > set ) {
-		set.add( this );
-		sb.append( this.getClass().getName() );
-		sb.append( "[" );
-		appendInternal( sb, set );
-		sb.append( "]" );
-	}
+//	protected void append( StringBuffer sb, java.util.Set< Node > set ) {
+//		set.add( this );
+//		sb.append( this.getClass().getName() );
+//		sb.append( "[" );
+//		appendInternal( sb, set );
+//		sb.append( "]" );
+//	}
 		
-	@Override
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		append( sb, new java.util.HashSet< Node >() );
-		return sb.toString();
-	}
+//	@Override
+//	public String toString() {
+//		StringBuffer sb = new StringBuffer();
+//		append( sb, new java.util.HashSet< Node >() );
+//		return sb.toString();
+//	}
 
 	public static StringBuffer safeAppendRepr( StringBuffer rv, Node node, java.util.Locale locale ) {
 		if( node != null ) {
