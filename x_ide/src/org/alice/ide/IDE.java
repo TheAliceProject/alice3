@@ -881,9 +881,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
 		rv.append( this.getApplicationName() );
 		rv.append( " " );
-		rv.append( this.getVersionText() );
-		//		rv.append( " " );
-		//		rv.append( this.getVersionAdornment() ); 
+		//rv.append( this.getVersionText() );
+		//rv.append( " " );
+		rv.append( this.getVersionAdornment() ); 
 		rv.append( " " );
 		return rv;
 	}
