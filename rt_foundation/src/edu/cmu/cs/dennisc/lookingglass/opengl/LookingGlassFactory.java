@@ -292,12 +292,12 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 	
 	public void acquireRenderingLock() {
 		try {
-			long t0 = System.currentTimeMillis();
+//			long t0 = System.currentTimeMillis();
 			this.renderingLock.acquire();
-			long tDelta = System.currentTimeMillis() - t0;
-			if( tDelta > 100 ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "msec waiting for rendering lock:", tDelta );
-			}
+//			long tDelta = System.currentTimeMillis() - t0;
+//			if( tDelta > 100 ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "msec waiting for rendering lock:", tDelta );
+//			}
 		} catch( InterruptedException ie ) {
 			throw new RuntimeException( ie );
 		}

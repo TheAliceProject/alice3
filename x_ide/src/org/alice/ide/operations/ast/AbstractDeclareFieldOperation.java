@@ -55,42 +55,46 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 	public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
 		final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( ownerType );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
-		if( field != null ) {
-			class Edit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
-				private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
-				private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-				private int index;
-				
-				public Edit( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index ) {
-					this.ownerType = ownerType;
-					this.field = field;
-					this.index = index;
-				}
-				@Override
-				public void doOrRedo( boolean isDo ) {
-					this.ownerType.fields.add( this.index, this.field );
-					if( isInstanceValid() ) {
-						getIDE().getSceneEditor().handleFieldCreation(ownerType, tuple.getA(), tuple.getB());
+		if( tuple != null ) {
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
+			if( field != null ) {
+				class Edit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+					private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
+					private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
+					private int index;
+					
+					public Edit( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, int index ) {
+						this.ownerType = ownerType;
+						this.field = field;
+						this.index = index;
+					}
+					@Override
+					public void doOrRedo( boolean isDo ) {
+						this.ownerType.fields.add( this.index, this.field );
+						if( isInstanceValid() ) {
+							getIDE().getSceneEditor().handleFieldCreation(ownerType, tuple.getA(), tuple.getB());
+						}
+					}
+					@Override
+					public void undo() {
+						if( this.ownerType.fields.get( this.index ) == this.field ) {
+							this.ownerType.fields.remove( this.index );
+						} else {
+							throw new javax.swing.undo.CannotUndoException();
+						}
+					}
+					@Override
+					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+						rv.append( "declare:" );
+						edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, field, locale);
+						return rv;
 					}
 				}
-				@Override
-				public void undo() {
-					if( this.ownerType.fields.get( this.index ) == this.field ) {
-						this.ownerType.fields.remove( this.index );
-					} else {
-						throw new javax.swing.undo.CannotUndoException();
-					}
-				}
-				@Override
-				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
-					rv.append( "declare:" );
-					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, field, locale);
-					return rv;
-				}
+				int index = ownerType.fields.size();
+				actionContext.commitAndInvokeDo( new Edit( ownerType, field, index ) );
+			} else {
+				actionContext.cancel();
 			}
-			int index = ownerType.fields.size();
-			actionContext.commitAndInvokeDo( new Edit( ownerType, field, index ) );
 		} else {
 			actionContext.cancel();
 		}
