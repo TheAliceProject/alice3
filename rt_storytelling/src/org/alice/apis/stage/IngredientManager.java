@@ -84,7 +84,9 @@ public abstract class IngredientManager<E extends Ingredient> {
 		Class<?> eCls = e.getClass();
 		Class<? extends E> interfaceClsGendered = this.getGenderedIntefaceClass( lifeStage, gender );
 		Class<? extends E> interfaceClsUnisex = this.getUnisexIntefaceClass( lifeStage );
-		return interfaceClsUnisex.isAssignableFrom( eCls ) || interfaceClsGendered.isAssignableFrom( eCls );
+		boolean rv = interfaceClsUnisex.isAssignableFrom( eCls ) || interfaceClsGendered.isAssignableFrom( eCls );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( rv, lifeStage, gender, eCls, interfaceClsGendered, interfaceClsUnisex );
+		return rv;
 	}
 
 }

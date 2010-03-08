@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.apis.stage;
-public enum ChildFullBodyOutfitPirate implements ChildFullBodyOutfit {
+public enum ChildFullBodyOutfitPirate implements UnisexChildFullBodyOutfit {
 	REDSTRIPE,
  	GREENSTRIPE,
  	BLUESTRIPE;

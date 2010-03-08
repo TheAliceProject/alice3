@@ -59,7 +59,10 @@ class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActio
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> prevState = PersonViewer.getSingleton().getState();
-		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> nextState = PersonViewer.generateRandomState();
+		
+		boolean isAdult = edu.cmu.cs.dennisc.random.RandomUtilities.nextBoolean();
+		LifeStage randomLifeStage = isAdult ? LifeStage.ADULT : LifeStage.CHILD;
+		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> nextState = PersonViewer.generateRandomState( randomLifeStage, Gender.getRandom() );
 		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 			@Override
 			public void doOrRedo( boolean isDo ) {

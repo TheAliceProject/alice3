@@ -87,18 +87,16 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		this.mapLifeStageGenderToPerson.put( LifeStage.ADULT, Gender.FEMALE, femaleAdult );
 		this.mapLifeStageGenderToPerson.put( LifeStage.ADULT, Gender.MALE, maleAdult );
 		this.mapLifeStageGenderToPerson.put( LifeStage.CHILD, Gender.FEMALE, femaleChild );
-		this.mapLifeStageGenderToPerson.put( LifeStage.CHILD, Gender.MALE, femaleChild );
+		this.mapLifeStageGenderToPerson.put( LifeStage.CHILD, Gender.MALE, maleChild );
 		
 		for( Person person : this.mapLifeStageGenderToPerson.values() ) {
 			person.getSGTransformable().putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 		}
 		
-		this.setState( PersonViewer.generateRandomState() );
+		this.setState( PersonViewer.generateRandomState( LifeStage.ADULT, Gender.getRandom() ) );
 	}
 
-	public static edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> generateRandomState() {
-		LifeStage lifeStage = LifeStage.ADULT;
-		Gender gender = Gender.getRandom();
+	public static edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> generateRandomState( LifeStage lifeStage, Gender gender ) {
 		return new edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double>( 
 				lifeStage,
 				gender,
@@ -113,7 +111,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		return new edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double>( this.lifeStage, this.gender, this.baseSkinTone, this.baseEyeColor, this.fullBodyOutfit, this.hair, this.fitnessLevel );
 	}
 	public void setState( edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> state ) {
-		boolean isUpdateDesired = this.lifeStage != null;
+		boolean isUpdateDesired = this.lifeStage != null && this.gender != null;
 		//this.lifeStage = LifeStage.getRandom();
 		this.lifeStage = state.getA();
 		this.gender = state.getB();
@@ -201,7 +199,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 				person.setHair( this.hair );
 				this.setModel( person );
 			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePerson", this.lifeStage, this.gender );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePerson person is null:", this.lifeStage, this.gender );
 			}
 			if( this.ingredientsPane != null ) {
 				this.ingredientsPane.refresh();

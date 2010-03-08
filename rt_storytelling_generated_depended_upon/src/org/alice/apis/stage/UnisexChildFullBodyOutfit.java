@@ -41,9 +41,5 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.apis.stage;
-public enum ChildHairStraightWithTricornHat implements UnisexChildHair {
-	BLACK,
- 	BLOND,
- 	BROWN,
- 	RED;
+public interface UnisexChildFullBodyOutfit extends ChildFullBodyOutfit {
 }

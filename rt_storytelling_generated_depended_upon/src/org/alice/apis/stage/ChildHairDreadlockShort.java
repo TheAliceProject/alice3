@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.apis.stage;
-public enum ChildHairDreadlockShort implements ChildHair {
+public enum ChildHairDreadlockShort implements UnisexChildHair {
 	BROWN,
  	BLACK,
  	RED,

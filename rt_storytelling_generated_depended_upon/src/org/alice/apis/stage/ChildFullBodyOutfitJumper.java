@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.apis.stage;
-public enum ChildFullBodyOutfitJumper implements ChildFullBodyOutfit {
+public enum ChildFullBodyOutfitJumper implements UnisexChildFullBodyOutfit {
 	SHIRTOVERSHORTS,
  	YELLOWBLUEJEAN,
  	STRIPES,

@@ -125,13 +125,13 @@ public abstract class AbstractItemSelectionOperation<E> extends AbstractOperatio
 			}
 			@Override
 			public void doOrRedo( boolean isDo ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
 				AbstractItemSelectionOperation.this.comboBoxModel.setSelectedItem( this.nextValue );
 				AbstractItemSelectionOperation.this.handleSelectionChange( this.nextValue );
 			}
 			@Override
 			public void undo() {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
+				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: replace w/ listeners" );
 				AbstractItemSelectionOperation.this.comboBoxModel.setSelectedItem( this.prevValue );
 				AbstractItemSelectionOperation.this.handleSelectionChange( this.prevValue );
 			}

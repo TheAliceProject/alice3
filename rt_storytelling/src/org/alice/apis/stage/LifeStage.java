@@ -61,12 +61,12 @@ public enum LifeStage {
 	private static edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends Hair> > s_mapLifeStageGenderHair;
 	static {
 		s_mapLifeStageUnisexFullBodyOutfit = new java.util.HashMap< LifeStage, Class<? extends FullBodyOutfit> >();
-		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.ADULT, AdultFullBodyOutfit.class );
-		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.CHILD, ChildFullBodyOutfit.class );
+		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.ADULT, UnisexAdultFullBodyOutfit.class );
+		s_mapLifeStageUnisexFullBodyOutfit.put( LifeStage.CHILD, UnisexChildFullBodyOutfit.class );
 
 		s_mapLifeStageUnisexHair = new java.util.HashMap< LifeStage, Class<? extends Hair> >();
-		s_mapLifeStageUnisexHair.put( LifeStage.ADULT, AdultHair.class );
-		s_mapLifeStageUnisexHair.put( LifeStage.CHILD, ChildHair.class );
+		s_mapLifeStageUnisexHair.put( LifeStage.ADULT, UnisexAdultHair.class );
+		s_mapLifeStageUnisexHair.put( LifeStage.CHILD, UnisexChildHair.class );
 		
 		
 		s_mapLifeStageGenderFullBodyOutfit = new edu.cmu.cs.dennisc.map.MapToMap< LifeStage, Gender, Class<? extends FullBodyOutfit> >();

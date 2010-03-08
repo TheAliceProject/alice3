@@ -41,6 +41,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.apis.stage;
-public enum ChildHairShocked implements ChildHair {
+public enum ChildHairShocked implements UnisexChildHair {
 	FRIED;
 }

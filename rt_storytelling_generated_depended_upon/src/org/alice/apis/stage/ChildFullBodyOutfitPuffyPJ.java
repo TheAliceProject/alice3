@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.apis.stage;
-public enum ChildFullBodyOutfitPuffyPJ implements ChildFullBodyOutfit {
+public enum ChildFullBodyOutfitPuffyPJ implements UnisexChildFullBodyOutfit {
 	GREENTEDDYBEAR,
  	PINKTEDDYBEAR,
  	CREAMTEDDYBEAR,

@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.apis.stage;
-public enum ChildFullBodyOutfitNaked implements ChildFullBodyOutfit {
+public enum ChildFullBodyOutfitNaked implements UnisexChildFullBodyOutfit {
 	TANKINIGREEN,
  	TANKINIPINK,
  	TANKINISTRIPES,

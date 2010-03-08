@@ -58,6 +58,10 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 		protected void handleLifeStageSelection( int tabIndex ) {
 			personViewer.handleTabSelection( tabIndex, 0.0 );
 		}
+		@Override
+		protected void handleGenderSelection( int tabIndex ) {
+			personViewer.handleTabSelection( tabIndex, 0.0 );
+		}
 	};
 	
 	private org.alice.apis.stage.Person person;
