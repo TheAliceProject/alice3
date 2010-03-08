@@ -46,10 +46,6 @@ import edu.cmu.cs.dennisc.batch.Batch;
 public class SourceCodeBatch extends Batch {
 	private static java.util.Set< String > specialCases = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
-	static {
-		specialCases.add( "ImagesToMOVEncoder.java" );
-	}
-
 	private String allRightsReservedCopyright;
 	private String[] oldCopyrights;
 	private String newCopyright;
@@ -103,6 +99,9 @@ public class SourceCodeBatch extends Batch {
 	}
 
 	public static void main( String[] args ) {
+		
+		specialCases.add( "ImagesToMOVEncoder.java" );
+
 		final String ALL_RIGHTS_RESERVED_COPYRIGHT = edu.cmu.cs.dennisc.io.TextFileUtilities.read( SourceCodeBatch.class.getResourceAsStream( "COPYRIGHT_ALL_RIGHTS_RESERVED.txt" ) );
 		final String[] OLD_COPYRIGHTS = { 
 				edu.cmu.cs.dennisc.io.TextFileUtilities.read( SourceCodeBatch.class.getResourceAsStream( "COPYRIGHT_A.txt" ) ), 
