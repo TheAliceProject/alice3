@@ -47,25 +47,26 @@ package edu.cmu.cs.dennisc.zoot;
  */
 public abstract class AbstractBooleanStateOperation extends AbstractOperation implements BooleanStateOperation {
 	private javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
+	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
+		public void itemStateChanged( java.awt.event.ItemEvent e ) {
+			boolean prev;
+			boolean next;
+			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+				prev = false;
+				next = true;
+			} else {
+				prev = true;
+				next = false;
+			}
+			ZManager.performIfAppropriate( AbstractBooleanStateOperation.this, e, ZManager.CANCEL_IS_FUTILE, prev, next );
+		}
+	};
 	private String trueText = null;
 	private String falseText = null;
 	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialState ) {
 		super( groupUUID );
 		this.buttonModel.setSelected( initialState );
-		this.buttonModel.addItemListener( new java.awt.event.ItemListener() {
-			public void itemStateChanged( java.awt.event.ItemEvent e ) {
-				boolean prev;
-				boolean next;
-				if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-					prev = false;
-					next = true;
-				} else {
-					prev = true;
-					next = false;
-				}
-				ZManager.performIfAppropriate( AbstractBooleanStateOperation.this, e, ZManager.CANCEL_IS_FUTILE, prev, next );
-			}
-		} );
+		this.buttonModel.addItemListener( this.itemListener );
 	}
 	public Boolean getState() {
 		return this.buttonModel.isSelected();
@@ -104,15 +105,19 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 				this.prevValue = prevValue;
 				this.nextValue = nextValue;
 			}
+			private void setValue( boolean value ) {
+				AbstractBooleanStateOperation.this.buttonModel.removeItemListener( itemListener );
+				AbstractBooleanStateOperation.this.buttonModel.setSelected( value );
+				AbstractBooleanStateOperation.this.handleStateChange( value );
+				AbstractBooleanStateOperation.this.buttonModel.addItemListener( itemListener );
+			}
 			@Override
 			public void doOrRedo( boolean isDo ) {
-				AbstractBooleanStateOperation.this.buttonModel.setSelected( this.nextValue );
-				AbstractBooleanStateOperation.this.handleStateChange( this.nextValue );
+				this.setValue( this.nextValue );
 			}
 			@Override
 			public void undo() {
-				AbstractBooleanStateOperation.this.buttonModel.setSelected( this.prevValue );
-				AbstractBooleanStateOperation.this.handleStateChange( this.prevValue );
+				this.setValue( this.prevValue );
 			}
 			@Override
 			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {

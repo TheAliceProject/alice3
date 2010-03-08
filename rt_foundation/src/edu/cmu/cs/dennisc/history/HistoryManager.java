@@ -115,10 +115,11 @@ public class HistoryManager {
 			edu.cmu.cs.dennisc.zoot.event.CommitEvent commitEvent = this.stack.get( this.insertionIndex - 1 );
 			if( commitEvent != null ) {
 				edu.cmu.cs.dennisc.zoot.Edit edit = commitEvent.getEdit();
-				if( edit.canRedo() ) {
+				if( edit.canUndo() ) {
 					edit.undo();
 					this.insertionIndex--;
 				} else {
+					//javax.swing.JOptionPane.showMessageDialog( null, "cannot undo " + edit.getPresentation( null ) );
 					beep();
 				}
 			} else {
@@ -138,6 +139,7 @@ public class HistoryManager {
 						edit.doOrRedo( false );
 						this.insertionIndex++;
 					} else {
+						//javax.swing.JOptionPane.showMessageDialog( null, "cannot redo " + edit.getPresentation( null ) );
 						beep();
 					}
 				} else {
@@ -159,15 +161,19 @@ public class HistoryManager {
 		this.fireCleared( e );
 	}
 	public void performUndo() {
-		this.setInsertionIndex( this.insertionIndex - 1 );
+		int nextIndex = this.insertionIndex - 1;
+		int actualIndex = this.setInsertionIndex( nextIndex );
+		//todo
 	}
 	public void performRedo() {
-		this.setInsertionIndex( this.insertionIndex + 1 );
+		int nextIndex = this.insertionIndex + 1;
+		int actualIndex = this.setInsertionIndex( nextIndex );
+		//todo
 	}
 	public int getInsertionIndex() {
 		return this.insertionIndex;
 	}
-	private void setInsertionIndex( int nextInsertionIndex, boolean isActionDesired ) {
+	private int setInsertionIndex( int nextInsertionIndex, boolean isActionDesired ) {
 		if( nextInsertionIndex >= 0 && nextInsertionIndex <= this.stack.size() ) {
 			if( this.insertionIndex != nextInsertionIndex ) {
 				edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent e = new edu.cmu.cs.dennisc.history.event.HistoryInsertionIndexEvent( this, this.insertionIndex, nextInsertionIndex );
@@ -191,13 +197,15 @@ public class HistoryManager {
 						}
 					}
 				}
-				assert this.insertionIndex == nextInsertionIndex;
-				this.fireInsertionIndexChanged( e );
+				if( this.insertionIndex == nextInsertionIndex ) {
+					this.fireInsertionIndexChanged( e );
+				}
 			}
 		}
+		return this.insertionIndex;
 	}
-	public void setInsertionIndex( int nextInsertionIndex ) {
-		this.setInsertionIndex( nextInsertionIndex, true );
+	public int setInsertionIndex( int nextInsertionIndex ) {
+		return this.setInsertionIndex( nextInsertionIndex, true );
 	}
 
 	private java.util.List< edu.cmu.cs.dennisc.history.event.HistoryListener > historyListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.history.event.HistoryListener >();
