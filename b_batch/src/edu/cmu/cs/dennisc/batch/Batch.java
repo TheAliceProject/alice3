@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.batch;
 public abstract class Batch {
 	protected abstract void handle( java.io.File inFile, java.io.File outFile );
 	protected abstract boolean isSkipExistingOutFilesDesirable();
-	protected void process( String inRoot, String outRoot, String inExt, String outExt ) {
+	public void process( String inRoot, String outRoot, String inExt, String outExt ) {
 		boolean isSkipExistingOutFilesDesirable = this.isSkipExistingOutFilesDesirable();
 		
 		System.out.print( "FileUtilities.listDescendants... " );

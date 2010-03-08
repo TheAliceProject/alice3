@@ -59,7 +59,7 @@ public class SourceCodeBatch extends Batch {
 	@Override
 	protected void handle( java.io.File inFile, java.io.File outFile ) {
 		String s = edu.cmu.cs.dennisc.io.TextFileUtilities.read( inFile );
-		if( s.startsWith( allRightsReservedCopyright ) ) {
+		if( allRightsReservedCopyright != null && s.startsWith( allRightsReservedCopyright ) ) {
 			throw new AssertionError( outFile );
 		} else {
 			if( s.startsWith( newCopyright ) ) {
