@@ -1030,12 +1030,18 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 	}
 
+	protected void setRenderingEnabled( boolean isRenderingEnabled, boolean isDrag ) {
+		this.root.setIgnoreRepaint( isRenderingEnabled==false );
+		this.left.setIgnoreRepaint( isRenderingEnabled==false );
+		this.sceneEditor.setRenderingEnabled( isRenderingEnabled, isDrag );
+	}
+
 	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		this.potentialDragSource = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
-		this.sceneEditor.setRenderingEnabled( false, true );
+		this.setRenderingEnabled( false, true );
 	}
 	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
@@ -1050,7 +1056,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 	}
 	public void handleDragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		this.sceneEditor.setRenderingEnabled( true, true );
+		this.setRenderingEnabled( true, true );
 	}
 
 	//	public void setRenderingEnabled( boolean isRenderingEnabled ) {

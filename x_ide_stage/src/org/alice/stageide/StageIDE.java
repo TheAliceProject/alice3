@@ -274,12 +274,12 @@ public class StageIDE extends org.alice.ide.IDE {
 	private int yLocation = 100;
 
 	protected void showInJDialog( MoveAndTurnRuntimeProgram rtProgram ) {
-		this.getSceneEditor().setRenderingEnabled( false, false );
+		this.setRenderingEnabled( false, false );
 		//this.setRenderingEnabled( false );
 		try {
 			rtProgram.showInJDialog( this, true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
-			this.getSceneEditor().setRenderingEnabled( true, false );
+			this.setRenderingEnabled( true, false );
 			try {
 				this.xLocation = Integer.parseInt( rtProgram.getParameter( "X_LOCATION" ) );
 			} catch( Throwable t ) {
@@ -290,7 +290,6 @@ public class StageIDE extends org.alice.ide.IDE {
 			} catch( Throwable t ) {
 				this.yLocation = 0;
 			}
-			//this.setRenderingEnabled( true );
 		}
 	}
 
@@ -312,12 +311,11 @@ public class StageIDE extends org.alice.ide.IDE {
 			field = null;
 		}
 		TestMethodProgram testProgram = new TestMethodProgram( this.getSceneType(), field, emptyExpressionMethodInvocation );
-		this.getSceneEditor().setRenderingEnabled( false, false );
-		//this.setRenderingEnabled( false );
+		this.setRenderingEnabled( false, false );
 		try {
 			testProgram.showInJDialog( this, true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
-			this.getSceneEditor().setRenderingEnabled( true, false );
+			this.setRenderingEnabled( true, false );
 			try {
 				this.xLocation = Integer.parseInt( testProgram.getParameter( "X_LOCATION" ) );
 			} catch( Throwable t ) {
@@ -328,7 +326,6 @@ public class StageIDE extends org.alice.ide.IDE {
 			} catch( Throwable t ) {
 				this.yLocation = 0;
 			}
-			//this.setRenderingEnabled( true );
 		}
 	}
 	@Override
