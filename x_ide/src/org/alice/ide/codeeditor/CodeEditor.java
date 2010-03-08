@@ -559,27 +559,29 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 									}
 									public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 										class ReorderEdit extends CodeEdit {
+											private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
+											private int aIndex;
+											private int bIndex;
+											
+											public ReorderEdit() {
+												assert prevOwner == nextOwner;
+												this.owner = prevOwner;
+												this.aIndex = prevIndex;
+												if( prevIndex < nextIndex ) {
+													this.bIndex = nextIndex - 1;
+												} else {
+													this.bIndex = nextIndex;
+												}
+											}
 											@Override
 											protected void redoInternal() {
-												prevOwner.remove( prevIndex );
-												int index;
-												if( prevIndex < nextIndex ) {
-													index = nextIndex - 1;
-												} else {
-													index = nextIndex;
-												}
-												nextOwner.add( index, statement );
+												this.owner.remove( this.aIndex );
+												this.owner.add( this.bIndex, statement );
 											}
 											@Override
 											protected void undoInternal() {
-												nextOwner.remove( nextIndex );
-												int index;
-												if( nextIndex < prevIndex ) {
-													index = prevIndex - 1;
-												} else {
-													index = prevIndex;
-												}
-												prevOwner.add( index, statement );
+												this.owner.remove( this.bIndex );
+												this.owner.add( this.aIndex, statement );
 											}
 											@Override
 											protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
