@@ -470,11 +470,11 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 	}
 	
 	private void initialize( javax.media.opengl.GLAutoDrawable drawable ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "initialize", drawable );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "initialize", drawable );
 		assert drawable == this.drawable;
 		GL gl = drawable.getGL();
 		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( drawable.getChosenGLCapabilities() );
 		
 		final boolean USE_DEBUG_GL = false;
 		if( USE_DEBUG_GL ) {
@@ -493,7 +493,7 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 
 	//todo: investigate not being invoked
 	public void init( javax.media.opengl.GLAutoDrawable drawable ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "init", drawable );
 		initialize( drawable );
 	}
 	public void display( javax.media.opengl.GLAutoDrawable drawable ) {
@@ -526,14 +526,14 @@ class GLEventAdapter implements javax.media.opengl.GLEventListener {
 		}
 	}
 	public void reshape( javax.media.opengl.GLAutoDrawable drawable, int x, int y, int width, int height ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reshape", drawable, x, y, width, height );
 		assert drawable == this.drawable;
 		this.width = width;
 		this.height = height;
 		this.lookingGlass.fireResized( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent( this.lookingGlass, width, height ) );
 	}
 	public void displayChanged( javax.media.opengl.GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "displayChanged", drawable, modeChanged, deviceChanged );
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "displayChanged", drawable, modeChanged, deviceChanged );
 		assert drawable == this.drawable;
 		this.lookingGlass.fireDisplayChanged( new edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent( this.lookingGlass, modeChanged, deviceChanged ) );
 	}

@@ -67,7 +67,7 @@ public abstract class PrintUtilities {
 	
 
 	static {
-		s_isDumpStackDesired = "true".equals( System.getProperty( "edu.cmu.cs.dennisc.print.PrintUtilities.isDumpStackDesired" ) );
+		s_isDumpStackDesired = edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.print.PrintUtilities.isDumpStackDesired" );
 		
 		s_classToAppendMethod = new java.util.HashMap< Class<?>, java.lang.reflect.Method >();
 		s_classToAppendLinesMethod = new java.util.HashMap< Class<?>, java.lang.reflect.Method >();

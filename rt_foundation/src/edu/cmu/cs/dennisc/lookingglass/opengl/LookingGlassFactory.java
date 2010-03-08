@@ -175,7 +175,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 //			} else {
 				glCapabilitiesChooser = new javax.media.opengl.DefaultGLCapabilitiesChooser();
 //			}
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "glCapabilitiesChooser", glCapabilitiesChooser );
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "glCapabilitiesChooser", glCapabilitiesChooser );
 		}
 		return glCapabilitiesChooser;
 	}

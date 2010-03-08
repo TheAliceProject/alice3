@@ -109,7 +109,7 @@ public class LaunchUtilities {
 						for( String path : new String[] { "classinfos.zip", "classinfos" } ) {
 							java.io.File file = new java.io.File( applicationRootDirectory, path );
 							if( file.exists() ) {
-								edu.cmu.cs.dennisc.print.PrintUtilities.println( "reading class information:", file.getAbsolutePath() );
+								//edu.cmu.cs.dennisc.print.PrintUtilities.println( "reading class information:", file.getAbsolutePath() );
 								//long t0 = System.currentTimeMillis();
 								edu.cmu.cs.dennisc.alice.reflect.ClassInfoManager.addClassInfosFrom( file );
 								//long tDelta = System.currentTimeMillis() - t0;
