@@ -79,4 +79,8 @@ class OffscreenLookingGlass extends AbstractLookingGlass implements edu.cmu.cs.d
 		assert this.glPbuffer != null;
 		return this.glPbuffer;
 	}
+	
+	@Override
+	protected void repaintIfAppropriate() {
+	}
 }

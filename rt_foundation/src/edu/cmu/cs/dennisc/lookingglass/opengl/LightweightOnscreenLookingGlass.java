@@ -33,6 +33,7 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		
 		public RenderPane() {
 			super( LookingGlassFactory.createDesiredGLCapabilities(), LookingGlassFactory.getGLCapabilitiesChooser(), null );
+			//edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this, 2.0f );
 		}
 		@Override
 		public void display() {
@@ -46,44 +47,67 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 				}
 			}
 		}
+		
+		private void paintRenderingDisabledMessage( java.awt.Graphics g ) {
+			java.awt.Dimension size = this.getSize();
+//			g.setColor( java.awt.Color.GRAY );
+//			g.fillRect( 0, 0, size.width, size.height );
+			String text = "rendering disabled for performance considerations";
+			g.setColor( java.awt.Color.BLACK );
+			edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
+			g.setColor( java.awt.Color.RED );
+			g.translate( -1, -1 );
+			edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
+			g.translate( 1, 1 );
+			g.dispose();
+		}
+		@Override
+		public void update( java.awt.Graphics g ) {
+			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
+				super.update( g );
+			} else {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "update" );
+			}
+		}
+		@Override
+		public void paint( java.awt.Graphics g ) {
+			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
+				super.paint( g );
+			} else {
+				this.paintRenderingDisabledMessage( g );
+//				Thread.dumpStack();
+			}
+		}
 		@Override
 		protected void paintComponent( java.awt.Graphics g ) {
-			if( LightweightOnscreenLookingGlass.this.getCameraCount() > 0 ) {
-				try {
-					if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
+			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
+				if( LightweightOnscreenLookingGlass.this.getCameraCount() > 0 ) {
+					try {
 						super.paintComponent( g );
-					} else {
-//						java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
-//						if( offscreenImage != null ) {
-//							g.drawImage( offscreenImage, 0, 0, this );
-//							String text = "rendering disabled for performance considerations";
-//							java.awt.Dimension size = this.getSize();
-//							g.setColor( java.awt.Color.BLACK );
-//							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
-//							g.setColor( java.awt.Color.YELLOW );
-//							g.translate( -1, -1 );
-//							edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
-//							g.translate( 1, 1 );
-//						}
+						this.prevThrowable = null;
+					} catch( Throwable throwable ) {
+						g.setColor( java.awt.Color.RED );
+						g.fillRect( 0, 0, getWidth(), getHeight() );
+						g.setColor( java.awt.Color.BLACK );
+						edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
+						//edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
+						if( this.prevThrowable != null ) {
+							//pass
+						} else {
+							this.prevThrowable = throwable;
+							throwable.printStackTrace();
+						}
 					}
-					this.prevThrowable = null;
-//				} catch( javax.media.opengl.GLException gle ) {
-				} catch( Throwable throwable ) {
-					g.setColor( java.awt.Color.RED );
-					g.fillRect( 0, 0, getWidth(), getHeight() );
-					g.setColor( java.awt.Color.BLACK );
-					edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, "error in attempting to render scene", this.getSize() );
-					//edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, t.getClass().getSimpleName() + " in attempting to render scene", this.getSize() );
-					if( this.prevThrowable != null ) {
-						//pass
-					} else {
-						this.prevThrowable = throwable;
-						throwable.printStackTrace();
-					}
+				} else {
+					g.setColor( java.awt.Color.DARK_GRAY );
+					g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
 				}
 			} else {
-				g.setColor( java.awt.Color.DARK_GRAY );
-				g.fillRect( 0, 0, this.getWidth(), this.getHeight() );
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "paintComponent" );
+////					java.awt.image.BufferedImage offscreenImage = this.getOffscreenImage();
+////					if( offscreenImage != null ) {
+////						g.drawImage( offscreenImage, 0, 0, this );
+////					}
 			}
 		}
 	}

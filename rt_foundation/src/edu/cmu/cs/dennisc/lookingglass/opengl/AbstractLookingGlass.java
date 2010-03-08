@@ -521,9 +521,11 @@ abstract class AbstractLookingGlass extends edu.cmu.cs.dennisc.pattern.DefaultRe
 		return m_isRenderingEnabled;
 	}
 
+	protected abstract void repaintIfAppropriate();
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
 		if( m_isRenderingEnabled != isRenderingEnabled ) {
 			m_isRenderingEnabled = isRenderingEnabled;
+			this.repaintIfAppropriate();
 			//			//todo
 			//			if( m_isRenderingEnabled ) {
 			//				if( m_glEventAdapter.isListening() ) {

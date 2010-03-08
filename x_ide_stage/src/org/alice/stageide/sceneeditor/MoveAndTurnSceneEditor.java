@@ -82,7 +82,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	@Override
 	public void setRenderingEnabled( boolean isRenderingEnabled ) {
 		this.isRenderingEnabled = isRenderingEnabled;
-		//this.onscreenLookingGlass.setRenderingEnabled( isRenderingEnabled );
+		this.onscreenLookingGlass.setRenderingEnabled( isRenderingEnabled );
 	}
 //	@Override
 //	protected void paintChildren( java.awt.Graphics g ) {
@@ -96,24 +96,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 //			}
 //		}
 //	}
-	@Override
-	public void update( java.awt.Graphics g ) {
-		if( isRenderingEnabled ) {
-			super.update( g );
-		} else {
-//			java.awt.Dimension size = this.getSize();
-//			g.setColor( java.awt.Color.GRAY );
-//			g.fillRect( 0, 0, size.width, size.height );
-//			String text = "rendering disabled for performance considerations";
-//			g.setColor( java.awt.Color.BLACK );
-//			edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
-//			g.setColor( java.awt.Color.YELLOW );
-//			g.translate( -1, -1 );
-//			edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
-//			g.translate( 1, 1 );
-//			g.dispose();
-		}
-	}
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
@@ -125,7 +107,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public void addNotify() {
 		this.initializeIfNecessary();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
+//		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.splitPane.setLeftComponent( this.getLGPanel() );
 		super.addNotify();
 	}
@@ -133,7 +115,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	@Override
 	public void removeNotify() {
 		this.splitPane.setLeftComponent( null );
-		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
+//		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		super.removeNotify();
 	}
