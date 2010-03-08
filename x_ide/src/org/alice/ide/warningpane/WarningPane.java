@@ -78,7 +78,7 @@ public class WarningPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 			}
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "updates:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://kenai.com/projects/alice/downloads" ) ) );
+				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "updates:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://www.alice.org/3" ) ) );
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "blog:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://blog.alice.org/" ) ) );
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "community:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://www.alice.org/community/" ) ) );
 				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "bug reports:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://bugs.alice.org:8080/" ) ) );

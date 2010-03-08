@@ -113,15 +113,15 @@ public class BrowserProgressDialog extends edu.cmu.cs.dennisc.progress.ProgressD
 		};
 	}
 
-	public static void main(String[] args) {
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				javax.swing.JFrame frame = new javax.swing.JFrame();
-				BrowserProgressDialog dialog = new BrowserProgressDialog(frame, "http://kenai.com/projects/alice/pages/Help");
-				dialog.createAndExecuteWorker();
-				dialog.pack();
-				dialog.setVisible(true);
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+//			public void run() {
+//				javax.swing.JFrame frame = new javax.swing.JFrame();
+//				BrowserProgressDialog dialog = new BrowserProgressDialog(frame, "http://kenai.com/projects/alice/pages/Help");
+//				dialog.createAndExecuteWorker();
+//				dialog.pack();
+//				dialog.setVisible(true);
+//			}
+//		});
+//	}
 }
