@@ -47,7 +47,17 @@ class MenuItem extends javax.swing.JMenuItem {
 	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			if( file != null ) {
-				IDE.getSingleton().loadProjectFrom( MenuItem.this.file );
+				IDE ide = IDE.getSingleton();
+				boolean isLoadDesired;
+				if( ide.isProjectUpToDateWithFile() ) {
+					isLoadDesired = true;
+				} else {
+					edu.cmu.cs.dennisc.zoot.ActionContext checkContext = edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( ide.getClearToProcedeWithChangedProjectOperation(), e, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
+					isLoadDesired = checkContext.isCommitted();
+				}
+				if( isLoadDesired ) {
+					ide.loadProjectFrom( MenuItem.this.file );
+				}
 			}
 		}
 	};
