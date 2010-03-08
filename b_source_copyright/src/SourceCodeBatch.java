@@ -1,3 +1,5 @@
+import edu.cmu.cs.dennisc.batch.Batch;
+
 public class SourceCodeBatch extends Batch {
 	private static java.util.Set< String > specialCases = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
@@ -52,34 +54,8 @@ public class SourceCodeBatch extends Batch {
 		}
 	}
 
-	private static final String USER_HOME = System.getProperty( "user.home" );
-	private String sub;
-
 	@Override
-	protected String getInRoot( String args[] ) {
-		return USER_HOME + "/My Documents/My Workspaces/Alice3";
-	}
-	@Override
-	protected String getOutRoot( String args[] ) {
-		return USER_HOME + "/My Documents/Alice3_SourceCode_PostBatch";
-	}
-	@Override
-	protected String getSub( String args[] ) {
-		return this.sub;
-	}
-	public void setSub( String sub ) {
-		this.sub = sub;
-	}
-	@Override
-	protected String getInExtension( String args[] ) {
-		return "java";
-	}
-	@Override
-	protected String getOutExtension( String args[] ) {
-		return "java";
-	}
-	@Override
-	protected boolean isSkipExistingOutFilesDesirable( String args[] ) {
+	protected boolean isSkipExistingOutFilesDesirable() {
 		return true;
 	}
 
@@ -93,6 +69,10 @@ public class SourceCodeBatch extends Batch {
 				edu.cmu.cs.dennisc.io.TextFileUtilities.read( SourceCodeBatch.class.getResourceAsStream( "COPYRIGHT_C_DOUBLE_STAR_MISSING_LINE.txt" ) ) };
 		final String NEW_COPYRIGHT = edu.cmu.cs.dennisc.io.TextFileUtilities.read( SourceCodeBatch.class.getResourceAsStream( "COPYRIGHT_D.txt" ) );
 		SourceCodeBatch sourceCodeBatch = new SourceCodeBatch( ALL_RIGHTS_RESERVED_COPYRIGHT, OLD_COPYRIGHTS, NEW_COPYRIGHT );
+		final String USER_HOME = System.getProperty( "user.home" );
+		final String IN_ROOT = USER_HOME + "/My Documents/My Workspaces/Alice3";
+		final String OUT_ROOT = USER_HOME + "/My Documents/Alice3_SourceCode_PostBatch";
+		final String EXTENSION = "java";
 		String[] subs = { 
 				"rt_foundation", 
 				"rt_issue", 
@@ -108,8 +88,8 @@ public class SourceCodeBatch extends Batch {
 				"rt_storytelling_generated_post",
 		};
 		for( String sub : subs ) {
-			sourceCodeBatch.setSub( "/" + sub + "/src" );
-			sourceCodeBatch.process( args );
+			sub =  "/" + sub + "/src";
+			sourceCodeBatch.process( IN_ROOT+sub, OUT_ROOT+sub, EXTENSION, EXTENSION );
 		}
 
 		for( String specialCase : specialCases ) {

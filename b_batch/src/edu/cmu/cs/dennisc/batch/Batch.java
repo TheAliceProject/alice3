@@ -1,29 +1,9 @@
+package edu.cmu.cs.dennisc.batch;
 public abstract class Batch {
 	protected abstract void handle( java.io.File inFile, java.io.File outFile );
-	protected String getInRoot( String args[] ) {
-		return args[ 0 ];
-	}
-	protected String getOutRoot( String args[] ) {
-		return args[ 1 ];
-	}
-	protected String getSub( String args[] ) {
-		return args[ 2 ];
-	}
-	protected String getInExtension( String args[] ) {
-		return args[ 3 ];
-	}
-	protected String getOutExtension( String args[] ) {
-		return args[ 4 ];
-	}
-	protected boolean isSkipExistingOutFilesDesirable( String args[] ) {
-		return args[ 5 ].equalsIgnoreCase( "true" );
-	}
-	protected void process( String args[] ) {
-		String inRoot = getInRoot( args ) + getSub( args );
-		String outRoot = getOutRoot( args ) + getSub( args );
-		String inExt = getInExtension( args );
-		String outExt = getOutExtension( args );
-		boolean isSkipExistingOutFilesDesirable = isSkipExistingOutFilesDesirable( args );
+	protected abstract boolean isSkipExistingOutFilesDesirable();
+	protected void process( String inRoot, String outRoot, String inExt, String outExt ) {
+		boolean isSkipExistingOutFilesDesirable = this.isSkipExistingOutFilesDesirable();
 		
 		System.out.print( "FileUtilities.listDescendants... " );
 		java.io.File[] inFiles = edu.cmu.cs.dennisc.io.FileUtilities.listDescendants( inRoot, inExt );
