@@ -67,7 +67,6 @@ public class SourceCodeBatch extends Batch {
 			} else {
 				for( String oldCopyright : oldCopyrights ) {
 					if( s.startsWith( oldCopyright ) ) {
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( inFile, outFile );
 						s = s.substring( oldCopyright.length() );
 						break;
 					} else {
