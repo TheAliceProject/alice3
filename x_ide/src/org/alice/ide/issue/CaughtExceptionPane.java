@@ -103,10 +103,20 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 		return new String[] { edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() };
 	}
 
+	private boolean isClearedToAttachCurrentProject = false;
+	@Override
+	protected boolean isClearedToSubmit() {
+		boolean rv = super.isClearedToSubmit();
+		if( rv ) {
+			int option = javax.swing.JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the Alice team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the Alice team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_OPTION );
+			this.isClearedToAttachCurrentProject = option == javax.swing.JOptionPane.YES_OPTION;
+		}
+		return rv;
+	}
 	@Override
 	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
 		rv = super.addAttachments( rv );
-		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this, "Submitting your current project would greatly help the Alice team in diagnosing and fixing this bug.\n\nThis bug report (and your project) will only be viewable by the Alice team.\n\nWould you like to submit your project with this bug report?", "Submit project?", javax.swing.JOptionPane.YES_NO_OPTION ) ) {
+		if( this.isClearedToAttachCurrentProject ) {
 			rv.addAttachment( new CurrentProjectAttachment() );
 		}
 		return rv;

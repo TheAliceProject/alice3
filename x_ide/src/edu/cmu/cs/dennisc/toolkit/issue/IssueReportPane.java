@@ -202,6 +202,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 	protected abstract String getSMTPReplyToPersonal();
 	
 	protected abstract boolean isInclusionOfCompleteSystemPropertiesDesired();
+	
 	protected edu.cmu.cs.dennisc.issue.AbstractReport addAttachments( edu.cmu.cs.dennisc.issue.AbstractReport rv ) {
 		Throwable throwable = this.getThrowable();
 		if( throwable != null ) {
