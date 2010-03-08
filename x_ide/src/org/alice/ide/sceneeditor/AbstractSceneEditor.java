@@ -55,7 +55,7 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 	public abstract void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses );
 	
 	@Deprecated
-	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance );
+	public abstract void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired );
 	public abstract Object getInstanceInJavaForUndo( FieldDeclaredInAlice field );
 	
 	public abstract void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty );

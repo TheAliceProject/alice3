@@ -76,7 +76,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				public void undo() {
 					owner.add( index, node );
 					if( field != null && instance != null ) {
-						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance);
+						getIDE().getSceneEditor().handleFieldCreation((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)field.getDeclaringType(), field, instance, false );
 					}
 				}
 				@Override

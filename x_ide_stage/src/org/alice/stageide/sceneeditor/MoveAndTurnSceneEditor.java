@@ -201,14 +201,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 
 	@Override
-	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
+	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired ) {
 		assert instance instanceof org.alice.apis.moveandturn.Transformable;
 		final org.alice.apis.moveandturn.Transformable transformable = (org.alice.apis.moveandturn.Transformable)instance;
 		//declaringType.fields.add( field );
 		this.putInstanceForField( field, transformable );
 		this.getIDE().setFieldSelection( field );
 		final org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = this.scene.findFirstMatch( org.alice.apis.moveandturn.SymmetricPerspectiveCamera.class );
-		if( camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
+		if( isAnimationDesired && camera != null && transformable instanceof org.alice.apis.moveandturn.Model ) {
 			new Thread() {
 				@Override
 				public void run() {

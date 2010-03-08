@@ -72,7 +72,7 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 					public void doOrRedo( boolean isDo ) {
 						this.ownerType.fields.add( this.index, this.field );
 						if( isInstanceValid() ) {
-							getIDE().getSceneEditor().handleFieldCreation(ownerType, tuple.getA(), tuple.getB());
+							getIDE().getSceneEditor().handleFieldCreation(ownerType, tuple.getA(), tuple.getB(), isDo );
 						}
 					}
 					@Override
