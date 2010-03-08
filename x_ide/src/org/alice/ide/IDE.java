@@ -634,24 +634,22 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 			openProjectPane.selectAppropriateTab( this.isNew );
 			while( actionContext.isPending() ) {
 				java.net.URI uri = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
+				java.io.File file;
 				if( uri != null ) {
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( uri );
-					java.io.File file = new java.io.File( uri );
-
-					//todo: just load default project
-
-					if( file != null ) {
-						actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
-						actionContext.commit();
-					} else {
-						if( IDE.this.getFile() == null ) {
-							javax.swing.JOptionPane.showMessageDialog( IDE.this, "Please select a project to open." );
-						} else {
-							actionContext.cancel();
-						}
-					}
+					file = new java.io.File( uri );
 				} else {
-					actionContext.cancel();
+					file = null;
+				}
+				//todo: just load default project
+				if( file != null ) {
+					actionContext.put( org.alice.ide.operations.file.AbstractOpenProjectOperation.FILE_KEY, file );
+					actionContext.commit();
+				} else {
+					if( IDE.this.getFile() == null ) {
+						javax.swing.JOptionPane.showMessageDialog( IDE.this, "Please select a project to open." );
+					} else {
+						actionContext.cancel();
+					}
 				}
 			}
 		}
