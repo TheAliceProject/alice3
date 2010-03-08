@@ -37,7 +37,7 @@ public class FauxSceneEditor extends AbstractSceneEditor {
 	public void handleExpandContractChange( boolean isExpanded ) {
 	}
 	@Override
-	public void setRenderingEnabled( boolean isRenderingEnabled ) {
+	public void setRenderingEnabled( boolean isRenderingEnabled, boolean isDrag ) {
 	}
 	@Override
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {

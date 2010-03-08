@@ -33,41 +33,27 @@ class LightweightOnscreenLookingGlass extends OnscreenLookingGlass implements ed
 		
 		public RenderPane() {
 			super( LookingGlassFactory.createDesiredGLCapabilities(), LookingGlassFactory.getGLCapabilitiesChooser(), null );
-			//edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this, 2.0f );
+//			edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this, 1.5f );
 		}
 		@Override
 		public void display() {
 			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
-				try {
-					super.display();
-				} catch( javax.media.opengl.GLException gle ) {
-					this.removeNotify();
-					this.addNotify();
-					super.display();
-				}
+				super.display();
 			}
 		}
 		
 		private void paintRenderingDisabledMessage( java.awt.Graphics g ) {
 			java.awt.Dimension size = this.getSize();
-//			g.setColor( java.awt.Color.GRAY );
-//			g.fillRect( 0, 0, size.width, size.height );
+			g.setColor( java.awt.Color.GRAY );
+			g.fillRect( 0, 0, size.width, size.height );
 			String text = "rendering disabled for performance considerations";
 			g.setColor( java.awt.Color.BLACK );
 			edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
-			g.setColor( java.awt.Color.RED );
+			g.setColor( java.awt.Color.YELLOW );
 			g.translate( -1, -1 );
 			edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, text, size );
 			g.translate( 1, 1 );
 			g.dispose();
-		}
-		@Override
-		public void update( java.awt.Graphics g ) {
-			if( LightweightOnscreenLookingGlass.this.isRenderingEnabled() ) {
-				super.update( g );
-			} else {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "update" );
-			}
 		}
 		@Override
 		public void paint( java.awt.Graphics g ) {
