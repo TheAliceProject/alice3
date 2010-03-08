@@ -55,8 +55,16 @@ public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	private ImageResourcePrompter() {
 	}
 	@Override
+	protected java.io.FilenameFilter createFilenameFilter() {
+		return org.alice.virtualmachine.resources.ImageResource.createFilenameFilter( true );
+	}
+	@Override
 	protected String getInitialFileText() {
-		return "*.png;*.jpg;*.gif;*.bmp";
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+			return "*.png;*.jpg;*.gif;*.bmp";
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected String getFileDialogTitle() {

@@ -55,8 +55,16 @@ public class AudioResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	private AudioResourcePrompter() {
 	}
 	@Override
+	protected java.io.FilenameFilter createFilenameFilter() {
+		return org.alice.virtualmachine.resources.AudioResource.createFilenameFilter( true );
+	}
+	@Override
 	protected String getInitialFileText() {
-		return "*.mp3;*.wav;*.au";
+		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+			return "*.mp3;*.wav;*.au";
+		} else {
+			return null;
+		}
 	}
 	@Override
 	protected String getFileDialogTitle() {
