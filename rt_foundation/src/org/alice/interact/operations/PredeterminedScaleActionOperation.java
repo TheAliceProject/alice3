@@ -72,8 +72,26 @@ public class PredeterminedScaleActionOperation extends edu.cmu.cs.dennisc.zoot.A
 		this.criterion = criterion;
 		this.editPresentationKey = editPresentationKey;
 	}
-	private void scale( edu.cmu.cs.dennisc.math.Vector3 axis ) {
-		edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.applyScale( this.sgTransformable, axis, this.criterion );
+	private void scale( final edu.cmu.cs.dennisc.math.Vector3 axis ) {
+		if( this.animator != null ) {
+			class ScaleAnimation extends edu.cmu.cs.dennisc.math.animation.Vector3Animation {
+				private edu.cmu.cs.dennisc.math.Vector3 m_vPrev = new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 );
+				private edu.cmu.cs.dennisc.math.Vector3 m_vBuffer = new edu.cmu.cs.dennisc.math.Vector3();
+				public ScaleAnimation() {
+					super( 0.5, edu.cmu.cs.dennisc.animation.TraditionalStyle.BEGIN_AND_END_GENTLY, new edu.cmu.cs.dennisc.math.Vector3( 1, 1, 1 ), axis );
+				}
+				@Override
+				protected void updateValue( edu.cmu.cs.dennisc.math.Vector3 v ) {
+					edu.cmu.cs.dennisc.math.Vector3.setReturnValueToDivision( m_vBuffer, v, m_vPrev );
+					edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.applyScale( PredeterminedScaleActionOperation.this.sgTransformable, m_vBuffer, PredeterminedScaleActionOperation.this.criterion );
+					m_vPrev.set( v );
+				}
+			}
+			this.animator.invokeLater( new ScaleAnimation(), null );
+		} else {
+			edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.applyScale( this.sgTransformable, axis, this.criterion );
+		}
+		
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
