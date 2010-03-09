@@ -185,8 +185,6 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

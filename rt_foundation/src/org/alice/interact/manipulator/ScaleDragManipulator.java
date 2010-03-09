@@ -45,76 +45,101 @@ package org.alice.interact.manipulator;
 import org.alice.interact.PickHint;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearScaleHandle;
+import org.alice.interact.operations.PredeterminedScaleActionOperation;
+import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 
+import edu.cmu.cs.dennisc.alice.Project;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.Criterion;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities;
+import edu.cmu.cs.dennisc.zoot.ZManager;
 
 /**
  * @author David Culyba
  */
 public class ScaleDragManipulator extends LinearDragManipulator {
-	
+
 	private static final double MIN_HANDLE_PULL = .1d;
-	
+
+	private Vector3 accumulatedScaleVector = new Vector3(1.0, 1.0, 1.0);
+
+
+	private Criterion< Component > handleCriterion = new Criterion< Component >() {
+		protected boolean isHandle( Component c ) {
+			if( c == null )
+				return false;
+			Object bonusData = c.getBonusDataFor( PickHint.PICK_HINT_KEY );
+			if( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.HANDLES ) )
+				return true;
+			else
+				return isHandle( c.getParent() );
+		}
+
+		public boolean accept( Component c ) {
+			return !isHandle( c );
+		}
+	};
+
 	@Override
-	protected void updateBasedOnHandlePull( double previousPull, double newPull )
+	protected void updateBasedOnHandlePull( double previousPull, double newPull ) 
 	{
-		
 		double pullDif = (newPull) / (previousPull);
 		LinearScaleHandle scaleHandle = (LinearScaleHandle)this.linearHandle;
 		Vector3 scaleVector;
-		if (scaleHandle.applyAlongAxis())
-		{
-			scaleVector = new Vector3(1.0d, 1.0d, 1.0d);
-			if (scaleHandle.getDragAxis().x != 0.0d)
+		if( scaleHandle.applyAlongAxis() ) {
+			scaleVector = new Vector3( 1.0d, 1.0d, 1.0d );
+			if( scaleHandle.getDragAxis().x != 0.0d )
 				scaleVector.x = Math.abs( scaleHandle.getDragAxis().x ) * pullDif;
-			if (scaleHandle.getDragAxis().y != 0.0d)
+			if( scaleHandle.getDragAxis().y != 0.0d )
 				scaleVector.y = Math.abs( scaleHandle.getDragAxis().y ) * pullDif;
-			if (scaleHandle.getDragAxis().z != 0.0d)
+			if( scaleHandle.getDragAxis().z != 0.0d )
 				scaleVector.z = Math.abs( scaleHandle.getDragAxis().z ) * pullDif;
+		} else {
+			scaleVector = new Vector3( pullDif, pullDif, pullDif );
 		}
-		else
-		{
-			scaleVector = new Vector3(pullDif, pullDif, pullDif);
-		}
-		
+
 		//Don't scale if the handles are pulled past their origin
-		if (previousPull <= MIN_HANDLE_PULL || newPull <= MIN_HANDLE_PULL)
-		{
-			scaleVector = new Vector3(1.0d, 1.0d, 1.0d);
+		if( previousPull <= MIN_HANDLE_PULL || newPull <= MIN_HANDLE_PULL ) {
+			scaleVector = new Vector3( 1.0d, 1.0d, 1.0d );
 		}
 		
+		accumulatedScaleVector.multiply( scaleVector );
 		
-		ScaleUtilities.applyScale(this.manipulatedTransformable, scaleVector, new Criterion< Component >(){
-			protected boolean isHandle(Component c)
-			{
-				if (c == null)
-					return false;
-				Object bonusData = c.getBonusDataFor( PickHint.PICK_HINT_KEY );
-				if ( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.HANDLES ))
-					return true;
-				else
-					return isHandle( c.getParent() );
-			}
-			
-			public boolean accept(Component c)
-			{
-				return !isHandle(c);
-			}
-		});
-		
+		ScaleUtilities.applyScale( this.manipulatedTransformable, scaleVector, handleCriterion );
+
 	}
-	
+
+	@Override
+	public void undoRedoBeginManipulation() {
+		accumulatedScaleVector = new Vector3(1.0, 1.0, 1.0);
+	}
+
+	@Override
+	public void undoRedoEndManipulation() {
+		if( this.getManipulatedTransformable() != null ) 
+		{
+			edu.cmu.cs.dennisc.animation.Animator animator;
+			if( this.dragAdapter != null ) {
+				animator = this.dragAdapter.getAnimator();
+			} else {
+				animator = null;
+			}
+			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( Project.GROUP_UUID, false, animator, this.getManipulatedTransformable(), accumulatedScaleVector, handleCriterion, getUndoRedoDescription() );
+			ZManager.performIfAppropriate( undoOperation, null, false );
+		}
+	}
+
 	@Override
 	public String getUndoRedoDescription() {
 		return "Object Resize";
 	}
-	
+
 	@Override
 	protected HandleSet getHandleSetToEnable() {
-		return new HandleSet(this.linearHandle.getMovementDescription().direction.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.RESIZE);
+		return new HandleSet( this.linearHandle.getMovementDescription().direction.getHandleGroup(), HandleSet.HandleGroup.VISUALIZATION, HandleSet.HandleGroup.RESIZE );
 	}
 
 }

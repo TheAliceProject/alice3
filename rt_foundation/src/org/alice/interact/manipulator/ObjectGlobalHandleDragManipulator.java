@@ -83,6 +83,30 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	}
 	
 	@Override
+	public void undoRedoBeginManipulation() {
+		if (this.activeManipulator != null)
+		{
+			this.activeManipulator.undoRedoBeginManipulation();
+		}
+		else 
+		{
+			super.undoRedoBeginManipulation();
+		}
+	}
+	
+	@Override
+	public void undoRedoEndManipulation() {
+		if (this.activeManipulator != null)
+		{
+			this.activeManipulator.undoRedoEndManipulation();
+		}
+		else 
+		{
+			super.undoRedoEndManipulation();
+		}
+	}
+	
+	@Override
 	protected void setHasUpdated( boolean hasUpdated ) 
 	{
 		if (this.activeManipulator != null)
