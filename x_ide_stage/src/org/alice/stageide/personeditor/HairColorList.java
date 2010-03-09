@@ -46,8 +46,17 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 class HairColorList extends AbstractList< String > {
+	private static ArrayComboBoxModel adultModel = new ArrayComboBoxModel( "BLACK", "BROWN", "RED", "BLOND", "GREY" );
+	private static ArrayComboBoxModel childModel = new ArrayComboBoxModel( "BLACK", "BROWN", "RED", "BLOND" );
 	public HairColorList() {
-		super( new ArrayComboBoxModel( "BLACK", "BROWN", "RED", "BLOND", "GREY" ) );
+		super( adultModel );
+	}
+	public void handleEpicChange( org.alice.apis.stage.LifeStage lifeStage, org.alice.apis.stage.Gender gender, String hairColor ) {
+		if( lifeStage == org.alice.apis.stage.LifeStage.ADULT ) {
+			this.setModel( adultModel );
+		} else {
+			this.setModel( childModel );
+		}
 	}
 	@Override
 	protected void handlePerformSelectionChange( String value ) {

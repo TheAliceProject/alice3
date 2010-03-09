@@ -256,6 +256,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 			this.fullBodyOutfitList.handleEpicChange( lifeStage, gender, hairColor );
 			this.hairList.handleEpicChange( lifeStage, gender, hairColor );
 			this.hairList.setSelectedValue( hair, shouldScroll );
+			this.hairColorList.handleEpicChange( lifeStage, gender, hairColor );
 			this.hairColorList.setSelectedValue( hairColor, shouldScroll );
 			this.fullBodyOutfitList.setSelectedValue( personViewer.getFullBodyOutfit(), shouldScroll );
 			this.baseSkinToneList.setSelectedValue( personViewer.getBaseSkinTone(), shouldScroll );
