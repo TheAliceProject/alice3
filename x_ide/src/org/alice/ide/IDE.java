@@ -886,7 +886,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		return edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText();
 	}
 	protected String getVersionAdornment() {
-		return "BETA ";
+		return " 3 BETA ";
 	}
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
 		rv.append( this.getApplicationName() );
