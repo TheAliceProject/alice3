@@ -61,6 +61,7 @@ public class DeclarationNameLabel extends javax.swing.JLabel {
 	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration ) {
 		this.declaration = declaration;
 		this.updateText();
+		this.setForeground( java.awt.Color.BLACK );
 	}
 	@Override
 	public void addNotify() {
