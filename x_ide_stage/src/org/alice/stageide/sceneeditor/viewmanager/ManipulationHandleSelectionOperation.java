@@ -82,6 +82,5 @@ public class ManipulationHandleSelectionOperation extends edu.cmu.cs.dennisc.zoo
 	@Override
 	protected void handleSelectionChange(org.alice.interact.handle.HandleSet value) {
 		this.dragAdapter.setHandleSet( value );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ManipulationHandleSelectionOperation support undo/redo" );
 	}
 }

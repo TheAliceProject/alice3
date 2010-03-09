@@ -52,6 +52,5 @@ public class FieldItemSelectionOperation extends org.alice.ide.operations.Abstra
 	@Override
 	protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractField value) {
 		getIDE().setFieldSelection( value);
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: support undo/redo", this );
 	}
 }

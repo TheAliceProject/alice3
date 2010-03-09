@@ -53,7 +53,6 @@ abstract class AbstractList<E> extends edu.cmu.cs.dennisc.zoot.ZList< E > {
 		@Override
 		protected void handleSelectionChange(E value) {
 			AbstractList.this.handlePerformSelectionChange( value );
-			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: support undo/redo", this );
 		}
 	}
 

@@ -77,7 +77,6 @@ public abstract class TypeComboBox extends edu.cmu.cs.dennisc.zoot.ZComboBox {
 			@Override
 			protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.AbstractType value) {
 				TypeComboBox.this.handleTypeChange();
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: support undo/redo", this );
 			}
 		} );
 		//this.setModel( model );
