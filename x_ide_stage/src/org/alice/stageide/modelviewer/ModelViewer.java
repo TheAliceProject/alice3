@@ -42,16 +42,37 @@
  */
 package org.alice.stageide.modelviewer;
 
+
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
-	protected org.alice.apis.moveandturn.Scene scene = new org.alice.apis.moveandturn.Scene();
+//abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
+abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
+	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+	private org.alice.apis.moveandturn.Scene scene = new org.alice.apis.moveandturn.Scene();
 	private org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = new org.alice.apis.moveandturn.SymmetricPerspectiveCamera();
 	private org.alice.apis.moveandturn.DirectionalLight sunLight = new org.alice.apis.moveandturn.DirectionalLight();
-	@Override
-	protected java.awt.Component createSpeedMultiplierControlPanel() {
-		return null;
+
+	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+			animator.update();
+		}
+	};
+	public AbstractViewer() {
+		this.scene.addComponent( this.camera );
+		this.scene.addComponent( this.sunLight );
+		this.sunLight.turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, new org.alice.apis.moveandturn.AngleInRevolutions( 0.25 ) );
+	}
+	private boolean isInitialized = false;
+	protected void initialize() {
+		this.onscreenLookingGlass.addCamera( camera.getSGCamera() );
+	}
+	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
+		return this.onscreenLookingGlass;
+	}
+	protected org.alice.apis.moveandturn.Scene getScene() {
+		return this.scene;
 	}
 	protected org.alice.apis.moveandturn.SymmetricPerspectiveCamera getCamera() {
 		return this.camera;
@@ -60,19 +81,27 @@ abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
 		return this.sunLight;
 	}
 	@Override
-	protected void initialize() {
-		this.scene.addComponent( this.camera );
-		this.scene.addComponent( this.sunLight );
-		this.sunLight.turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, new org.alice.apis.moveandturn.AngleInRevolutions( 0.25 ) );
-		this.setScene( this.scene );
+	public void addNotify() {
+		if( this.isInitialized ) {
+			//pass
+		} else {
+			this.initialize();
+			this.isInitialized = true;
+		}
+		this.add( onscreenLookingGlass.getAWTComponent(), java.awt.BorderLayout.CENTER );
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
+		super.addNotify();
 	}
 	@Override
-	protected void run() {
+	public void removeNotify() {
+		super.removeNotify();
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
+		this.remove( onscreenLookingGlass.getAWTComponent() );
 	}
-	
-	@Override
-	protected boolean isRestartSupported() {
-		return false;
+	protected edu.cmu.cs.dennisc.animation.Animator getAnimator() {
+		return this.animator;
 	}
 }
 /**
@@ -86,11 +115,11 @@ public class ModelViewer extends AbstractViewer {
 	public void setModel( org.alice.apis.moveandturn.Model model ) {
 		if( model != this.model ) {
 			if( this.model != null ) {
-				this.scene.removeComponent( this.model );
+				this.getScene().removeComponent( this.model );
 			}
 			this.model = model;
 			if( this.model != null ) {
-				this.scene.addComponent( this.model );
+				this.getScene().addComponent( this.model );
 			}
 		}
 	}

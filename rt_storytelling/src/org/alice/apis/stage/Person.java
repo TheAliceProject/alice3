@@ -224,17 +224,6 @@ public abstract class Person extends Model {
 	public final LifeStage getLifeStage() {
 		return lifeStage;
 	}
-	public final Gender getGender() {
-		return gender;
-	}
-	public void setGender( Gender gender ) {
-		this.gender = gender;
-		if( this.gender != null ) {
-			getNebPerson().setGender( this.gender );
-		}
-	}
-	
-	
 
 	@Override
 	protected void createSGGeometryIfNecessary() {
@@ -300,6 +289,18 @@ public abstract class Person extends Model {
 		return true;
 	}
 
+	public final Gender getGender() {
+		return gender;
+	}
+	public void setGender( Gender gender ) {
+		if( this.gender != gender ) {
+			this.gender = gender;
+			if( this.gender != null ) {
+				getNebPerson().setGender( this.gender );
+			}
+		}
+	}
+
 	private Outfit m_outfit = null;
 	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
 	public Outfit getOutfit() {
@@ -307,8 +308,10 @@ public abstract class Person extends Model {
 	}
 	public void setOutfit( Outfit outfit ) {
 		assert outfit != null;
-		m_outfit = outfit;
-		getNebPerson().setOutfit( outfit );
+		if( m_outfit != outfit ) {
+			m_outfit = outfit;
+			getNebPerson().setOutfit( outfit );
+		}
 	}
 	
 	private SkinTone m_skinTone = null;
@@ -318,8 +321,10 @@ public abstract class Person extends Model {
 	}
 	public void setSkinTone( SkinTone skinTone ) {
 		assert skinTone != null;
-		m_skinTone = skinTone;
-		getNebPerson().setSkinTone( m_skinTone );
+		if( m_skinTone != skinTone ) {
+			m_skinTone = skinTone;
+			getNebPerson().setSkinTone( m_skinTone );
+		}
 	}
 
 
@@ -334,6 +339,12 @@ public abstract class Person extends Model {
 //		getNebPerson().setFitnessLevel( m_fitnessLevel );
 //	}
 	
+	private void setFitnessLevelRightNow( double fitnessLevel ) {
+		if( m_fitnessLevel != fitnessLevel ) {
+			m_fitnessLevel = fitnessLevel;
+			getNebPerson().setFitnessLevel( m_fitnessLevel );
+		}
+	}
 	public void setFitnessLevel( 
 			@edu.cmu.cs.dennisc.alice.annotations.ParameterTemplate( preferredArgumentClass=org.alice.apis.moveandturn.Portion.class )
 			final Number fitnessLevel,
@@ -342,14 +353,12 @@ public abstract class Person extends Model {
 		) {
 		final double actualDuration = adjustDurationIfNecessary( duration );
 		if( edu.cmu.cs.dennisc.math.EpsilonUtilities.isWithinReasonableEpsilon( actualDuration, RIGHT_NOW ) ) {
-			m_fitnessLevel = fitnessLevel.doubleValue();
-			getNebPerson().setFitnessLevel( m_fitnessLevel );
+			this.setFitnessLevelRightNow( fitnessLevel.doubleValue() );
 		} else {
 			perform( new edu.cmu.cs.dennisc.animation.interpolation.DoubleAnimation( actualDuration, style, getFitnessLevel(), fitnessLevel.doubleValue() ) {
 				@Override
 				protected void updateValue( Double d ) {
-					m_fitnessLevel = d.doubleValue();
-					getNebPerson().setFitnessLevel( m_fitnessLevel );
+					Person.this.setFitnessLevelRightNow( d );
 				}
 			} );
 		}
@@ -390,8 +399,10 @@ public abstract class Person extends Model {
 	}
 	public void setEyeColor( EyeColor eyeColor ) {
 		assert eyeColor != null;
-		m_eyeColor = eyeColor;
-		getNebPerson().setEyeColor( m_eyeColor );
+		if( m_eyeColor != eyeColor ) {
+			m_eyeColor = eyeColor;
+			getNebPerson().setEyeColor( m_eyeColor );
+		}
 	}
 	
 	private Hair m_hair = null;
@@ -401,8 +412,10 @@ public abstract class Person extends Model {
 	}
 	public void setHair( Hair hair ) {
 		assert hair != null;
-		m_hair = hair;
-		getNebPerson().setHair( hair );
+		if( m_hair != hair ) {
+			m_hair = hair;
+			getNebPerson().setHair( hair );
+		}
 	}
 	
 	@MethodTemplate( visibility=Visibility.COMPLETELY_HIDDEN )

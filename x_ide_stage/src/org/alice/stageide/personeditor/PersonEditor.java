@@ -74,12 +74,10 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 			}			
 		} );
 //		this.personViewer.initializeValues( this.person );
-		javax.swing.JPanel container = new javax.swing.JPanel();
-		this.splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, container, this.ingredientsPane );
+		this.splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, this.personViewer, this.ingredientsPane );
 		this.splitPane.setDividerLocation( 400 );
 		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.add( this.splitPane );
-		personViewer.showInAWTContainer( container, new String[] {} );
 	}
 	
 	public org.alice.apis.stage.Person getPerson() {

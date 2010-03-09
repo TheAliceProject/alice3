@@ -161,48 +161,60 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
+	private boolean isAlreadyUpdating = false;
 	private void updatePerson() {
-		if( this.lifeStage != null && this.gender != null ) {
-			Person person = this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
-			if( person != null ) {
-				this.dragAdapter.setSelectedObject( person.getSGTransformable() );
-				if( this.baseSkinTone != null ) {
-					person.setSkinTone( this.baseSkinTone );
-					if( this.fitnessLevel != null ) {
-						person.setFitnessLevel( this.fitnessLevel, org.alice.apis.stage.Person.RIGHT_NOW );
-						if( this.fullBodyOutfit != null && FullBodyOutfitManager.getSingleton().isApplicable( this.fullBodyOutfit, this.lifeStage, this.gender ) ) {
-							//pass
-						} else {
-							Outfit outfit = person.getOutfit();
-							if( outfit instanceof FullBodyOutfit ) {
-								this.fullBodyOutfit = ( FullBodyOutfit )outfit;
-							} else {
-								this.fullBodyOutfit = FullBodyOutfitManager.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
+		if( this.isAlreadyUpdating ) {
+			//pass
+		} else {
+			this.isAlreadyUpdating = true;
+			//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().acquireRenderingLock();
+			try {
+				if( this.lifeStage != null && this.gender != null ) {
+					Person person = this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
+					if( person != null ) {
+						this.dragAdapter.setSelectedObject( person.getSGTransformable() );
+						if( this.baseSkinTone != null ) {
+							person.setSkinTone( this.baseSkinTone );
+							if( this.fitnessLevel != null ) {
+								person.setFitnessLevel( this.fitnessLevel, org.alice.apis.stage.Person.RIGHT_NOW );
+								if( this.fullBodyOutfit != null && FullBodyOutfitManager.getSingleton().isApplicable( this.fullBodyOutfit, this.lifeStage, this.gender ) ) {
+									//pass
+								} else {
+									Outfit outfit = person.getOutfit();
+									if( outfit instanceof FullBodyOutfit ) {
+										this.fullBodyOutfit = ( FullBodyOutfit )outfit;
+									} else {
+										this.fullBodyOutfit = FullBodyOutfitManager.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
+									}
+								}
+								person.setOutfit( this.fullBodyOutfit );
 							}
 						}
-						person.setOutfit( this.fullBodyOutfit );
-					}
-				}
-				if( this.baseEyeColor != null ) {
-					person.setEyeColor( this.baseEyeColor );
-				}
-				if( this.hair != null && HairManager.getSingleton().isApplicable( this.hair, this.lifeStage, this.gender ) ) {
-					//pass
-				} else {
-					Hair hair = person.getHair();
-					if( hair != null ) {
-						this.hair = hair;
+						if( this.baseEyeColor != null ) {
+							person.setEyeColor( this.baseEyeColor );
+						}
+						if( this.hair != null && HairManager.getSingleton().isApplicable( this.hair, this.lifeStage, this.gender ) ) {
+							//pass
+						} else {
+							Hair hair = person.getHair();
+							if( hair != null ) {
+								this.hair = hair;
+							} else {
+								this.hair = HairManager.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
+							}
+						}
+						person.setHair( this.hair );
+						this.setModel( person );
 					} else {
-						this.hair = HairManager.getSingleton().getRandomEnumConstant( this.lifeStage, this.gender );
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePerson person is null:", this.lifeStage, this.gender );
+					}
+					if( this.ingredientsPane != null ) {
+						this.ingredientsPane.refresh();
 					}
 				}
-				person.setHair( this.hair );
-				this.setModel( person );
-			} else {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "updatePerson person is null:", this.lifeStage, this.gender );
-			}
-			if( this.ingredientsPane != null ) {
-				this.ingredientsPane.refresh();
+			} finally {
+				//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().releaseRenderingLock();
+				this.isAlreadyUpdating = false;
 			}
 		}
 	}
