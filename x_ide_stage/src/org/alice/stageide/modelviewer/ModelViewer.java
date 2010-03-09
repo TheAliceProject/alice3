@@ -84,12 +84,14 @@ public class ModelViewer extends AbstractViewer {
 		return this.model;
 	}
 	public void setModel( org.alice.apis.moveandturn.Model model ) {
-		if( this.model != null ) {
-			this.scene.removeComponent( this.model );
-		}
-		this.model = model;
-		if( this.model != null ) {
-			this.scene.addComponent( this.model );
+		if( model != this.model ) {
+			if( this.model != null ) {
+				this.scene.removeComponent( this.model );
+			}
+			this.model = model;
+			if( this.model != null ) {
+				this.scene.addComponent( this.model );
+			}
 		}
 	}
 
