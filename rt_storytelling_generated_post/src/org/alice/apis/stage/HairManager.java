@@ -66,7 +66,9 @@ public class HairManager extends IngredientManager< Hair > {
 				//MaleAdultHairHatFedora.class ,
 				MaleAdultHairHatFedoraCasual.class, MaleAdultHairMulletLong.class, MaleAdultHairPeak.class, MaleAdultHairPompodore.class, MaleAdultHairSemiBald.class,
 				//MaleAdultHairShocked.class ,
-				MaleAdultHairShortCombed.class, MaleAdultHairShortSpikey.class, MaleAdultHairTopHat.class
+				MaleAdultHairShortCombed.class, 
+				//MaleAdultHairShortSpikey.class, 
+				MaleAdultHairTopHat.class
 		//MaleAdultHairBald.class
 				);
 		this.add( FemaleAdultHair.class,
