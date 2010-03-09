@@ -122,9 +122,6 @@ public class Child extends Person {
 		}
 	}
 	public enum Cycle implements FiniteStateMachine.Cycle {
-		WORRY( State.DISTRESSED ),
-		WORRY_COVER_EYES( State.DISTRESSED ),
-		WORRY_CRINGE( State.DISTRESSED ),
 		PINING_SIGH( State.PINING ),
 		PINING_WHIMPER( State.PINING ),
 		SAD_SNUFFLE( State.SAD ),
@@ -297,7 +294,6 @@ public class Child extends Person {
 		BORED_LIP_FLAP( State.HANDS_ON_HIPS ),
 		PICK_NOSE( State.HANDS_ON_HIPS ),
 		SCRATCH_ARMPIT( State.HANDS_ON_HIPS_WEIGHT_SHIFTED_RIGHT ),
-		BELCH_LAZY( State.HANDS_AT_SIDES ),
 		FART_AND_WAVE( State.HANDS_AT_SIDES ),
 		FART( State.HANDS_AT_SIDES ),
 		HOCK_LOOGEY( State.HANDS_AT_SIDES ),
@@ -405,6 +401,11 @@ public class Child extends Person {
 		performStateTransition( State.HANDS_AT_SIDES );
 	}
 	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void wave( ChildWaveStyle style) {
+		perform( style.getCycle() );
+	}
+	
 	
 	//Exercises
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
@@ -429,10 +430,178 @@ public class Child extends Person {
 	}
 	
 	
+	//Dance
 	@MethodTemplate( visibility=Visibility.PRIME_TIME )
-	public void wave() {
-		perform( Child.Cycle.WAVE );
+	public void dance( DanceStyle style ) {
+		perform( style.getCycle() );
 	}
+	
+	//Worry
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void worry( WorryStyle style ) {
+		perform( style.getCycle() );
+	}
+	
+	//Pine
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void pine( PineStyle style ) {
+		perform( style.getCycle() );
+	}
+	
+	//Laugh
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void laugh( ChildLaughStyle style ) {
+		perform( style.getCycle() );
+	}
+	
+	//Cry
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void cry( CryStyle style ) {
+		perform( style.getCycle() );
+	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void rockBackAndForth() {
+		perform( Cycle.ROCK_BACK_AND_FORTH );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void scratchFoot() {
+		perform( Cycle.FOOT_SCRATCH );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void scratchHead() {
+		perform( Cycle.HEAD_SCRATCH );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void rubChin() {
+		perform( Cycle.RUB_CHIN );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void tabHead() {
+		perform( Cycle.TAP_HEAD );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void feelSick() {
+		perform( Cycle.NAUSEA );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void expressHunger() {
+		perform( Cycle.SHOW_HUNGER );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void rubHandEvilly() {
+		perform( Cycle.RUB_HANDS_EVILY );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void sinisterLaugh() {
+		perform( Cycle.SINISTER_NOD );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void lookAroundSuspciously() {
+		perform( Cycle.LOOK_AROUND_SUSPICIOUSLY );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void shooAway() {
+		perform( Cycle.SHOO );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void clap() {
+		perform( Cycle.CLAP_HANDS );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void playfulPunch() {
+		perform( Cycle.PLAYFUL_PUNCH );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void cheer() {
+		perform( Cycle.CHEER );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void jumpExcitedly() {
+		perform( Cycle.EXCITED_JUMP );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void doTheTwist() {
+		perform( Cycle.DO_THE_TWIST );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void swoon() {
+		perform( Cycle.SWOON );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void callOver() {
+		perform( Cycle.CALL_OVER );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void yellAt() {
+		perform( Cycle.YELL_AT );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void cringe() {
+		perform( Cycle.CRINGE );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void actShocked() {
+		perform( Cycle.SHOCKED_REACTION );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void actStartled() {
+		perform( Cycle.STARTLED );
+	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void seekEnlightenmentAsToWhyThisIsHappening() {
+		perform( Cycle.IMPLORING_A_HIGHER_POWER_FOR_AN_EXPLANATION_OF_A_FRUSTRATING_SITUATION );
+	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void shakeHead() {
+		perform( Cycle.SHAKE_HEAD_IN_DISAGREEMENT );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void yellForAttention() {
+		perform( Cycle.YELL_FOR_ATTENTION );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void mutter() {
+		perform( Cycle.UNHAPPY_MUTTER );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void expressDispleasure( ExpressDispleasure style ) {
+		perform( style.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void shrug() {
+		perform( Cycle.SHRUG );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void sigh( ChildSighStyle style ) {
+		perform( style.getCycle() );
+	}
+	
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void belch( ChildBelchStyle style ) {
+		perform( style.getCycle() );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void smellSelf() {
+		perform( Cycle.SMELL_SELF );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void breakWind() {
+		perform( Cycle.FART );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void hockLoogey() {
+		perform( Cycle.HOCK_LOOGEY );
+	}
+	@MethodTemplate( visibility=Visibility.PRIME_TIME )
+	public void snort() {
+		perform( Cycle.SNORT_PHLEGM );
+	}
+	
+	
+	
 	
 	@Override
 	protected edu.cmu.cs.dennisc.math.AxisAlignedBox getLocalAxisAlignedMinimumBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv ) {
