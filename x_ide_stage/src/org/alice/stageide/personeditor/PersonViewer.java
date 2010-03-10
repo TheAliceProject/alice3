@@ -161,14 +161,14 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
-	private boolean isAlreadyUpdating = false;
+//	private boolean isAlreadyUpdating = false;
 	private void updatePerson() {
-		if( this.isAlreadyUpdating ) {
-			//pass
-		} else {
-			this.isAlreadyUpdating = true;
-			//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().acquireRenderingLock();
-			try {
+//		if( this.isAlreadyUpdating ) {
+//			//pass
+//		} else {
+//			this.isAlreadyUpdating = true;
+//			//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().acquireRenderingLock();
+//			try {
 				if( this.lifeStage != null && this.gender != null ) {
 					Person person = this.mapLifeStageGenderToPerson.get( this.lifeStage, this.gender );
 					if( person != null ) {
@@ -212,11 +212,11 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 						this.ingredientsPane.refresh();
 					}
 				}
-			} finally {
-				//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().releaseRenderingLock();
-				this.isAlreadyUpdating = false;
-			}
-		}
+//			} finally {
+//				//edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().releaseRenderingLock();
+//				this.isAlreadyUpdating = false;
+//			}
+//		}
 	}
 	
 	private void positionAndOrientCamera( double height, int index, double duration ) {
