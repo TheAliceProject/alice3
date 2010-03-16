@@ -46,26 +46,47 @@ package edu.cmu.cs.dennisc.awt;
  * @author Dennis Cosgrove
  */
 public class MouseFocusEventQueue extends java.awt.EventQueue {
-	private java.awt.Component componentWithMouseFocus = null;
 	private static MouseFocusEventQueue singleton;
 	public static MouseFocusEventQueue getSingleton() {
 		if( singleton != null ) {
 			//pass
 		} else {
 			singleton = new MouseFocusEventQueue();
-			//todo
-			java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().push( singleton );
 		}
 		return singleton;
 	}
-	public java.awt.Component getComponentWithMouseFocus() {
-		return this.componentWithMouseFocus;
-	}
-	public void setComponentWithMouseFocus( java.awt.Component componentWithMouseFocus ) {
+
+	private java.awt.Component componentWithMouseFocus = null;
+	public void pushComponentWithMouseFocus( java.awt.Component componentWithMouseFocus ) {
+		assert this.componentWithMouseFocus == null;
 		this.componentWithMouseFocus = componentWithMouseFocus;
+		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
+
+		
+		
+		//sadly, this breaks opengl on for some video card drivers
+		toolkit.getSystemEventQueue().push( this );
+		
+		
+		
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
 	}
+	public java.awt.Component popComponentWithMouseFocus() {
+		//Thread.dumpStack();
+		assert this.componentWithMouseFocus != null;
+		java.awt.Component rv = this.componentWithMouseFocus;
+		this.componentWithMouseFocus = null;
+		//java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
+		this.pop();
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( toolkit.getSystemEventQueue() );
+		return rv;
+	}
+
 	@Override
 	protected void dispatchEvent( java.awt.AWTEvent e ) {
+		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "dispatchEvent", e );
 		if( this.componentWithMouseFocus != null ) {
 			if( e instanceof java.awt.event.MouseEvent ) {
 				java.awt.event.MouseEvent me = (java.awt.event.MouseEvent)e;
@@ -77,7 +98,6 @@ public class MouseFocusEventQueue extends java.awt.EventQueue {
 				}
 			}
 		}
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "dispatchEvent", e );
 		super.dispatchEvent( e );
 	}
 }

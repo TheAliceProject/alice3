@@ -40,33 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.sceneeditor;
-
+package org.alice.ide;
+	
 /**
  * @author Dennis Cosgrove
  */
-public class FauxSceneEditor extends AbstractSceneEditor {
-	@Override
-	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
-		throw new RuntimeException();
-	}
-	@Override
-	public void handleFieldCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance, boolean isAnimationDesired ) {
-	}
-	@Override
-	public void handleExpandContractChange( boolean isExpanded ) {
-	}
-	@Override
-	public void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-	}
-	@Override
-	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-	}
-	@Override
-	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-	}
-	@Override
-	public Object getInstanceInJavaForUndo( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		return null;
-	}
+public enum ReasonToDisableSomeAmountOfRendering { 
+	RUN_PROGRAM,
+	DRAG_AND_DROP,
+	CLICK_AND_CLACK
 }
+

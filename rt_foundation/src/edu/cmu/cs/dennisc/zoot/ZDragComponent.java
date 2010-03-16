@@ -365,7 +365,7 @@ public abstract class ZDragComponent extends ZControl {
 		return false;
 	}
 
-	private static boolean isFauxDragDesired = true;
+	private static boolean isFauxDragDesired = false;
 	public static boolean isFauxDragDesired() {
 		return ZDragComponent.isFauxDragDesired;
 	}
@@ -402,7 +402,11 @@ public abstract class ZDragComponent extends ZControl {
 						}
 						isDrop = this.isFauxDrag;
 						this.isFauxDrag = !this.isFauxDrag;
-						edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().setComponentWithMouseFocus( focusedComponent );
+						if( focusedComponent != null ) {
+							edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().pushComponentWithMouseFocus( focusedComponent );
+						} else {
+							edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().popComponentWithMouseFocus();
+						}
 					} else {
 						isDrop = false;
 					}
@@ -470,6 +474,6 @@ public abstract class ZDragComponent extends ZControl {
 			this.dragAndDropContext.handleCancel( e );
 		}
 		this.isFauxDrag = false;
-		edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().setComponentWithMouseFocus( null );
+		edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().popComponentWithMouseFocus();
 	}
 }

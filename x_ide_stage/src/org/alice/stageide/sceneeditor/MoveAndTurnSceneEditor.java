@@ -108,14 +108,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 //		}
 //	}
 	@Override
-	public void setRenderingEnabled( boolean isRenderingEnabled, boolean isDrag ) {
-		if( isDrag ) {
-//			this.isRenderingEnabled = isRenderingEnabled;
-		} else {
-			this.onscreenLookingGlass.setRenderingEnabled( isRenderingEnabled );
+	public void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+		if( reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM || reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK ) {
+			this.onscreenLookingGlass.setRenderingEnabled( true );
 		}
 	}
-
+	@Override
+	public void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+		if( reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM || reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK ) {
+			this.onscreenLookingGlass.setRenderingEnabled( false );
+		}
+	}
+	
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
 			MoveAndTurnSceneEditor.this.animator.update();

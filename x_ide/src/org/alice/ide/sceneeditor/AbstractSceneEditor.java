@@ -50,7 +50,8 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
 	
-	public abstract void setRenderingEnabled( boolean isRenderingEnabled, boolean isDrag );
+	public abstract void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
+	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	public abstract void handleExpandContractChange( boolean isExpanded );
 	public abstract void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses );
 	

@@ -316,12 +316,11 @@ public class StageIDE extends org.alice.ide.IDE {
 	private int yLocation = 100;
 
 	protected void showInJDialog( MoveAndTurnRuntimeProgram rtProgram ) {
-		this.setRenderingEnabled( false, false );
-		//this.setRenderingEnabled( false );
+		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		try {
 			rtProgram.showInJDialog( this, true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
-			this.setRenderingEnabled( true, false );
+			this.enableRendering();
 			try {
 				this.xLocation = Integer.parseInt( rtProgram.getParameter( "X_LOCATION" ) );
 			} catch( Throwable t ) {
@@ -353,11 +352,11 @@ public class StageIDE extends org.alice.ide.IDE {
 			field = null;
 		}
 		TestMethodProgram testProgram = new TestMethodProgram( this.getSceneType(), field, emptyExpressionMethodInvocation );
-		this.setRenderingEnabled( false, false );
+		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		try {
 			testProgram.showInJDialog( this, true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
-			this.setRenderingEnabled( true, false );
+			this.enableRendering();
 			try {
 				this.xLocation = Integer.parseInt( testProgram.getParameter( "X_LOCATION" ) );
 			} catch( Throwable t ) {

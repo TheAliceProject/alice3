@@ -45,15 +45,14 @@ package org.alice.ide.operations.run;
 /**
  * @author Dennis Cosgrove
  */
-public class PreviewMethodOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+public class PreviewMethodOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
 	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
 		this.putValue( javax.swing.Action.NAME, "Preview..." );
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
-	@Override
-	protected void performInternal( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: PreviewMethodOperation" );
+	public void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate, 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
 		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate, null, mouseEvent );
 		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {

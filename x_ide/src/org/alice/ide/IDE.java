@@ -1058,18 +1058,46 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 	}
 
-	protected void setRenderingEnabled( boolean isRenderingEnabled, boolean isDrag ) {
-		this.root.setIgnoreRepaint( isRenderingEnabled==false );
-		this.left.setIgnoreRepaint( isRenderingEnabled==false );
-		this.sceneEditor.setRenderingEnabled( isRenderingEnabled, isDrag );
+	
+	private ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
+	protected void disableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+		this.reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRendering;
+		if( this.reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
+			//pass
+		} else {
+			this.root.setIgnoreRepaint( true );
+			this.left.setIgnoreRepaint( true );
+		}
+		this.sceneEditor.disableRendering( this.reasonToDisableSomeAmountOfRendering );
 	}
+	protected void enableRendering() {
+		if( this.reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
+			//pass
+		} else {
+			this.root.setIgnoreRepaint( false );
+			this.left.setIgnoreRepaint( false );
+		}
+		this.sceneEditor.enableRendering( this.reasonToDisableSomeAmountOfRendering );
+	}
+	
+//	protected void setRenderingEnabled( boolean isRenderingEnabled, boolean isDrag ) {
+//		this.root.setIgnoreRepaint( isRenderingEnabled==false );
+//		this.left.setIgnoreRepaint( isRenderingEnabled==false );
+//		this.sceneEditor.setRenderingEnabled( isRenderingEnabled, isDrag );
+//	}
 
 	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		this.potentialDragSource = null;
 		if( this.stencil != null && this.holes != null ) {
 			this.stencil.repaint();
 		}
-		this.setRenderingEnabled( false, true );
+		ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
+		if( ( dragAndDropContext.getLatestMouseEvent().getModifiers() & java.awt.event.MouseEvent.BUTTON1_MASK ) != 0 ) {
+			reasonToDisableSomeAmountOfRendering = ReasonToDisableSomeAmountOfRendering.DRAG_AND_DROP;
+		} else {
+			reasonToDisableSomeAmountOfRendering = ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK;
+		}
+		this.disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
@@ -1084,7 +1112,18 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		}
 	}
 	public void handleDragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		this.setRenderingEnabled( true, true );
+		this.enableRendering();
+//		new Thread() {
+//			@Override
+//			public void run() {
+//				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 1000 );
+//				javax.swing.SwingUtilities.invokeLater( new Runnable() {
+//					public void run() {
+//						IDE.this.enableRendering();
+//					}
+//				} );
+//			}
+//		}.start();
 	}
 
 	//	public void setRenderingEnabled( boolean isRenderingEnabled ) {
