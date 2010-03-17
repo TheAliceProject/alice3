@@ -75,7 +75,8 @@ public class SceneEditor extends Program {
 	SymmetricPerspectiveCamera camera = new SymmetricPerspectiveCamera();
 	Chicken chicken = new Chicken();
 
-	org.alice.interact.RuntimeDragAdapter globalDragAdapter = new org.alice.interact.RuntimeDragAdapter();
+//	org.alice.interact.RuntimeDragAdapter globalDragAdapter = new org.alice.interact.RuntimeDragAdapter();
+	org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 	org.alice.interact.CreateASimDragAdapter simDragAdapter = new org.alice.interact.CreateASimDragAdapter();
 	CameraNavigationDragAdapter cameraNavigationDragAdapter = new CameraNavigationDragAdapter();
 	
@@ -115,7 +116,7 @@ public class SceneEditor extends Program {
 	
 	public void loadProjectFrom( java.io.File file ) {
 		if( file.exists() ) {
-			this.setProject( edu.cmu.cs.dennisc.alice.io.FileUtilities.readProject( file ) );
+			this.setProject( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.readProject( file ) );
 		} else {
 			StringBuffer sb = new StringBuffer();
 			sb.append( "Cannot read project from file:\n\t" );
@@ -133,7 +134,7 @@ public class SceneEditor extends Program {
 		this.viewPanel.saveToProject();
 		try
 		{
-			edu.cmu.cs.dennisc.alice.io.FileUtilities.writeProject( this.project, file );
+			edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeProject( file, this.project );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "project saved to: ", file.getAbsolutePath() );
 		}
 		catch (IOException e)
@@ -153,8 +154,8 @@ public class SceneEditor extends Program {
 	
 	SceneViewManagerPanel viewPanel = new SceneViewManagerPanel();
 	ManipulationHandleControlPanel handleControlPanel;
-	protected java.io.File projectFile = new java.io.File( edu.cmu.cs.dennisc.alice.io.FileUtilities.getMyProjectsDirectory(), "SCENE_EDITOR_TEST.a3p" );
-	protected java.io.File defaultFile = new java.io.File( "C:/Program Files/Alice/3.beta.0000/application/projects/templates/GrassyProject.a3p" );
+	protected java.io.File projectFile = new java.io.File( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyAliceDirectory("Alice3"), "SCENE_EDITOR_TEST.a3p" );
+	protected java.io.File defaultFile = new java.io.File( "C:/AliceApplicationFiles/AliceBaseApplication/application/projects/templates/GrassyProject.a3p" );
 	
 	protected void initializeUI()
 	{
@@ -192,10 +193,10 @@ public class SceneEditor extends Program {
 		saveAndLoadPanel.add( saveButton );
 		saveAndLoadPanel.add( loadButton );
 		
-		this.add(saveAndLoadPanel, java.awt.BorderLayout.NORTH);
-		this.add(widgetPanel, java.awt.BorderLayout.SOUTH);
-		this.add(this.viewPanel, java.awt.BorderLayout.EAST);
-		this.add( this.handleControlPanel, BorderLayout.WEST );
+		this.add( saveAndLoadPanel, java.awt.BorderLayout.NORTH );
+		this.add( widgetPanel, java.awt.BorderLayout.SOUTH );
+		this.add( (JPanel)(this.viewPanel), java.awt.BorderLayout.EAST );
+		this.add( (JPanel)(this.handleControlPanel), BorderLayout.WEST );
 	}
 	
 	protected void initializeScene()
@@ -232,10 +233,11 @@ public class SceneEditor extends Program {
 	
 	@Override
 	protected void initialize() {
+		this.initializeScene();
 		initializeUI();
 		this.loadProjectFrom( defaultFile );
-		this.initializeScene();
 		
+		this.viewPanel.setActive( true );
 		
 		
 		
