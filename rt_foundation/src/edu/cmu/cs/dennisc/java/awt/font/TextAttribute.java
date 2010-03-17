@@ -40,47 +40,13 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.awt;
+
+package edu.cmu.cs.dennisc.java.awt.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FontUtilities {
-	private FontUtilities() {
-		throw new AssertionError();
-	}
-	public static void setFontToDerivedFont( java.awt.Component component, java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
-		java.awt.Font font = component.getFont();
-		component.setFont( font.deriveFont( map ) );
-	}
-	public static void setFontToDerivedFont( java.awt.Component component, java.awt.font.TextAttribute attribute, Object value ) {
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		map.put( attribute, value );
-		setFontToDerivedFont( component, map );
-	}
-	public static void setFontToDerivedFont( java.awt.Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB ) {
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		map.put( attributeA, valueA );
-		map.put( attributeB, valueB );
-		setFontToDerivedFont( component, map );
-	}
-	public static void setFontToDerivedFont( java.awt.Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC ) {
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		map.put( attributeA, valueA );
-		map.put( attributeB, valueB );
-		map.put( attributeC, valueC );
-		setFontToDerivedFont( component, map );
-	}
-	public static void setFontToDerivedFont( java.awt.Component component, edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? >... textAttributes ) {
-		java.awt.Font font = component.getFont();
-		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
-		for( edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? > textAttribute : textAttributes ) {
-			map.put( textAttribute.getKey(), textAttribute.getValue() );
-		}
-		component.setFont( font.deriveFont( map ) );
-	}
-	public static void setFontToScaledFont( java.awt.Component component, float scaleFactor ) {
-		java.awt.Font font = component.getFont();
-		component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
-	}
+public interface TextAttribute<E> {
+	public java.awt.font.TextAttribute getKey();
+	public E getValue();
 }

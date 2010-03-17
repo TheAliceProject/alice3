@@ -64,27 +64,27 @@ public class LabelUtilities {
 	}
 	public static javax.swing.JLabel createLabel( String text, java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
 		javax.swing.JLabel rv = createLabel( text );
-		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToDerivedFont( rv, map );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, map );
 		return rv;
 	}
 	public static javax.swing.JLabel createLabel( String text, java.awt.font.TextAttribute attribute, Object value ) {
 		javax.swing.JLabel rv = createLabel( text );
-		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToDerivedFont( rv, attribute, value );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, attribute, value );
 		return rv;
 	}
-	public static javax.swing.JLabel createLabel( String text, edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? >... textAttributes ) {
+	public static javax.swing.JLabel createLabel( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
 		javax.swing.JLabel rv = createLabel( text );
-		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToDerivedFont( rv, textAttributes );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( rv, textAttributes );
 		return rv;
 	}
 	public static javax.swing.JLabel createLabelWithScaledFont( String text, float scaleFactor ) {
 		javax.swing.JLabel rv = createLabel( text );
-		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( rv, scaleFactor );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( rv, scaleFactor );
 		return rv;
 	}
-	public static javax.swing.JLabel createLabelWithScaledFont( String text, float scaleFactor, edu.cmu.cs.dennisc.zoot.font.ZTextAttribute< ? >... textAttributes ) {
+	public static javax.swing.JLabel createLabelWithScaledFont( String text, float scaleFactor, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
 		javax.swing.JLabel rv = createLabel( text, textAttributes );
-		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( rv, scaleFactor );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( rv, scaleFactor );
 		return rv;
 	}
 }

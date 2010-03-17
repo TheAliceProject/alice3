@@ -393,11 +393,11 @@ public abstract class Factory {
 									if( Character.isLetterOrDigit( c1 ) ) {
 										//pass
 									} else {
-										edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( label, 1.75f );
+										edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 1.75f );
 									}
 								}
 							}
-							edu.cmu.cs.dennisc.awt.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD );
+							edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 							//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 						}
 					}

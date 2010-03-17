@@ -83,7 +83,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			default:
 				text = " with parameters: ";
 			}
-			javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text, edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE );
+			javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 			this.add( label );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		}

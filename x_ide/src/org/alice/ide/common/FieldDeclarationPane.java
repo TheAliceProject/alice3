@@ -54,7 +54,7 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineA
 		this.add( new TypeComponent( field.getValueType() ) );
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
-		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( nameLabel, 1.5f );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( nameLabel, 1.5f );
 		this.add( nameLabel );
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		this.add( new org.alice.ide.common.GetsPane( true ) );

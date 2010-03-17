@@ -245,7 +245,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.croquet.KInputPane< org.alice.ap
 		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familyList.getFamilyAttribute();
 		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleList.getWeightAttribute();
 		org.alice.apis.moveandturn.font.PostureAttribute postureAttribute = this.styleList.getPostureAttribute();
-		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToDerivedFont( this.sample, familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.sample, familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
 	}
 	@Override
 	public boolean isOKButtonValid() {

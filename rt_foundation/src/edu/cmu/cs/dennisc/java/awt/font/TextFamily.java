@@ -41,25 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.zoot.font;
+package edu.cmu.cs.dennisc.java.awt.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ZTextWidth implements ZTextAttribute< Float > {
-	CONDENSED(java.awt.font.TextAttribute.WIDTH_CONDENSED), 
-	SEMI_CONDENSED(java.awt.font.TextAttribute.WIDTH_SEMI_CONDENSED), 
-	REGULAR(java.awt.font.TextAttribute.WIDTH_REGULAR), 
-	SEMI_EXTENDED(java.awt.font.TextAttribute.WIDTH_SEMI_EXTENDED), 
-	EXTENDED(java.awt.font.TextAttribute.WIDTH_EXTENDED); 
-	private Float m_value;
-	private ZTextWidth( Float value ) {
+public enum TextFamily implements TextAttribute< String > {
+	SERIF("Serif"), SANS_SERIF("SansSerif");
+	private String m_value;
+
+	private TextFamily( String value ) {
 		m_value = value;
 	}
+
 	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.WIDTH;
+		return java.awt.font.TextAttribute.FAMILY;
 	}
-	public Float getValue() {
+	public String getValue() {
 		return m_value;
 	}
 }

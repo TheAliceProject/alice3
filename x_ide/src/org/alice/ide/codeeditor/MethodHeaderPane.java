@@ -71,7 +71,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 			//this.add( zoot.ZLabel.acquire( " {" ) );
 		} else {
-			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "declare ", edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE ) );
+			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
 			if( methodDeclaredInAlice.isProcedure() ) {
 				sb.append( " procedure " );
@@ -79,13 +79,13 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 				this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( " function " );
 			}
-			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( sb.toString(), edu.cmu.cs.dennisc.zoot.font.ZTextPosture.OBLIQUE ) );
+			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 		
 		
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		this.nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
-		edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this.nameLabel, 2.0f );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( this.nameLabel, 2.0f );
 
 		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
 			//pass

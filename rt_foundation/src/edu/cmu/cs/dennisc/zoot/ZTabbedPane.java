@@ -104,7 +104,7 @@ public class ZTabbedPane extends javax.swing.JTabbedPane {
 					color = new java.awt.Color( 0xb4ccaf );
 				}
 				this.setBackground( color );
-				edu.cmu.cs.dennisc.awt.FontUtilities.setFontToScaledFont( this, 10.0f );
+				edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( this, 10.0f );
 			}
 		}
 

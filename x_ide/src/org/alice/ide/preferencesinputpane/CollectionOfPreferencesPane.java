@@ -47,7 +47,7 @@ package org.alice.ide.preferencesinputpane;
  */
 class TitlePane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	public TitlePane( String title ) {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( title, 2.0f, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD );
+		javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( title, 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		this.add( label );
 		this.add( new javax.swing.JSeparator( javax.swing.SwingConstants.HORIZONTAL ) );
 	}
@@ -107,7 +107,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.swin
 		assert collectionOfPreferences != null;
 		this.title = title;
 		
-		javax.swing.JLabel titleComponent = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( this.title, 2.0f, edu.cmu.cs.dennisc.zoot.font.ZTextWeight.BOLD );
+		javax.swing.JLabel titleComponent = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( this.title, 2.0f, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
 		edu.cmu.cs.dennisc.croquet.swing.PageAxisPane centerComponent = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane();
 		this.updateCenterComponent(centerComponent, collectionOfPreferences);
 		centerComponent.add( javax.swing.Box.createVerticalGlue() );

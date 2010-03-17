@@ -41,23 +41,22 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.zoot.font;
+package edu.cmu.cs.dennisc.java.awt.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum ZTextFamily implements ZTextAttribute< String > {
-	SERIF("Serif"), SANS_SERIF("SansSerif");
-	private String m_value;
+public enum TextPosture implements TextAttribute< Float > {
+	REGULAR(java.awt.font.TextAttribute.POSTURE_REGULAR), OBLIQUE(java.awt.font.TextAttribute.POSTURE_OBLIQUE);
+	private Float m_value;
 
-	private ZTextFamily( String value ) {
+	private TextPosture( Float value ) {
 		m_value = value;
 	}
-
 	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.FAMILY;
+		return java.awt.font.TextAttribute.POSTURE;
 	}
-	public String getValue() {
+	public Float getValue() {
 		return m_value;
 	}
 }
