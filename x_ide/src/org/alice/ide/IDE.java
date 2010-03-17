@@ -1061,23 +1061,28 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	
 	private ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
 	protected void disableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
+		assert this.reasonToDisableSomeAmountOfRendering == null;
 		this.reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRendering;
 		if( this.reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
 			//pass
 		} else {
 			this.root.setIgnoreRepaint( true );
 			this.left.setIgnoreRepaint( true );
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: true" );
 		}
 		this.sceneEditor.disableRendering( this.reasonToDisableSomeAmountOfRendering );
 	}
 	protected void enableRendering() {
+		assert this.reasonToDisableSomeAmountOfRendering != null;
 		if( this.reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
 			//pass
 		} else {
+			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: false" );
 			this.root.setIgnoreRepaint( false );
 			this.left.setIgnoreRepaint( false );
 		}
 		this.sceneEditor.enableRendering( this.reasonToDisableSomeAmountOfRendering );
+		this.reasonToDisableSomeAmountOfRendering = null;
 	}
 	
 //	protected void setRenderingEnabled( boolean isRenderingEnabled, boolean isDrag ) {

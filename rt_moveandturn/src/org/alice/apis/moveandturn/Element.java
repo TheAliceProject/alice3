@@ -70,14 +70,18 @@ public class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyO
 	public boolean isComposedOfGetterAndSetterProperties() {
 		return true;
 	}
-
+	
+	protected StringBuffer appendRepr( StringBuffer rv ) {
+//		sb.append( edu.cmu.cs.dennisc.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
+//		sb.append( "[name=\"" );
+		rv.append( this.getName() );
+//		sb.append(  "\"]" );
+		return rv;
+	}
 	@Override
 	public final String toString() {
 		StringBuffer sb = new StringBuffer();
-//		sb.append( edu.cmu.cs.dennisc.lang.ClassUtilities.getTrimmedClassName( this.getClass() ) );
-//		sb.append( "[name=\"" );
-		sb.append( this.getName() );
-//		sb.append(  "\"]" );
+		this.appendRepr( sb );
 		return sb.toString();
 	}
 }
