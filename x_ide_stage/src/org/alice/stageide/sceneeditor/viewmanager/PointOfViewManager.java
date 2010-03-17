@@ -47,22 +47,73 @@ import java.util.Vector;
 import javax.swing.ListModel;
 
 import edu.cmu.cs.dennisc.alice.Project;
+import edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 public class PointOfViewManager {
 
 	private static final String POINT_OF_VIEW_KEY_SUFFIX = ".POINT_OF_VIEW";
+	private static final String OPENING_POINT_OF_VIEW_KEY_SUFFIX = ".OPENING_POINT_OF_VIEW";
 	private static final String POINT_OF_VIEW_COUNT_KEY = PointOfViewManager.class.getName() + ".POINT_OF_VIEW_COUNT";
+	
+	private static final String BASE_VIEW_NAME = "cameraView";
+	private static final String STARTING_VIEW_NAME = "startingCameraView";
 	
 	private OnscreenLookingGlass onscreenLookingGlass = null;
 	private AbstractCamera camera = null;
 	private Transformable pointOfViewSource;
 	private PointOfViewListModel pointsOfView = new PointOfViewListModel();
+	private PointOfView openingPointOfView = new PointOfView(STARTING_VIEW_NAME);
 	private Project project = null;
+	
+	private boolean hasViewName(String newName)
+	{
+		if (openingPointOfView.getName().equals( newName ))
+		{
+			return true;
+		}
+		for (int i=0; i<this.pointsOfView.getSize(); i++)
+		{
+			PointOfView pov = (PointOfView)this.pointsOfView.getElementAt( i );
+			if (pov.getName().equals( newName ))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private String makeViewName(int count)
+	{
+		return BASE_VIEW_NAME + Integer.toString( count );
+	}
+	
+	protected String getNewViewName()
+	{
+		int viewCount = this.pointsOfView.getSize();
+		String viewName = makeViewName(viewCount);
+		while (hasViewName(viewName))
+		{
+			viewCount++;
+			viewName = makeViewName(viewCount);
+		}
+		return viewName;
+	}
+	
+	public boolean isValidViewName(String name)
+	{
+		if (hasViewName(name))
+		{
+			return false;
+		}
+		//TODO: check the name more thoroughly
+		return true;
+	}
 	
 	public void initFromProject(edu.cmu.cs.dennisc.alice.Project project)
 	{
@@ -73,11 +124,14 @@ public class PointOfViewManager {
 		for (int i=0; i<povCount; i++)
 		{
 			String prefixKey = this.getTransformable().getName() + "."+i + POINT_OF_VIEW_KEY_SUFFIX;
-			PointOfView currentPointOfView = new PointOfView();
+			//TODO: save and recover the name of the view
+			String viewName = getNewViewName();
+			PointOfView currentPointOfView = new PointOfView(viewName);
 			currentPointOfView.initFromProjectProperties( properties, prefixKey, "" );
-			currentPointOfView.setReferenceFrame( AsSeenBy.SCENE );
 			this.pointsOfView.addElement( currentPointOfView );
 		}
+		String prefixKey = this.getTransformable().getName() + OPENING_POINT_OF_VIEW_KEY_SUFFIX;
+		this.openingPointOfView.initFromProjectProperties( properties, prefixKey, "" );
 		
 	}
 	
@@ -102,6 +156,8 @@ public class PointOfViewManager {
 				String prefixKey = this.getTransformable().getName() + "."+i + POINT_OF_VIEW_KEY_SUFFIX;
 				pov.writeToProjectProperties( properties, prefixKey, "" );
 			}
+			String prefixKey = this.getTransformable().getName() + OPENING_POINT_OF_VIEW_KEY_SUFFIX;
+			this.openingPointOfView.writeToProjectProperties( properties, prefixKey, "" );
 		}
 	}
 	
@@ -137,6 +193,16 @@ public class PointOfViewManager {
 		this.pointsOfView.removeElement( pov );
 	}
 	
+	public PointOfView getOpeningPointOfView()
+	{
+		return this.openingPointOfView;
+	}
+	
+	public void setOpeningPointOfView( PointOfView pov )
+	{
+		this.openingPointOfView = pov;
+	}
+	
 	public PointOfView capturePointOfView()
 	{
 		
@@ -170,9 +236,11 @@ public class PointOfViewManager {
 	public PointOfView getCurrentPointOfView()
 	{
 		Transformable pointOfViewToGet = this.getTransformable();
+		Composite parent = pointOfViewToGet.getParent();
+		Composite root = pointOfViewToGet.getRoot();
 		if (pointOfViewToGet != null)
 		{
-			PointOfView pov = new PointOfView(pointOfViewToGet.getAbsoluteTransformation(), AsSeenBy.SCENE);
+			PointOfView pov = new PointOfView(getNewViewName(), pointOfViewToGet.getAbsoluteTransformation(), root);
 			return pov;
 		}
 		return null;
@@ -183,7 +251,7 @@ public class PointOfViewManager {
 		Transformable pointOfViewToSet = this.getTransformable();
 		if (pointOfViewToSet != null)
 		{
-			pointOfViewToSet.setTransformation(pointOfView.getTransform(), pointOfView.getReferenceFrame());
+			pointOfViewToSet.setTransformation(pointOfView.getTransform(), AsSeenBy.SCENE);
 		}
 	}
 	
@@ -192,6 +260,13 @@ public class PointOfViewManager {
 		if (this.camera != null)
 		{
 			this.pointOfViewSource = (Transformable)this.camera.getParent();
+			Composite root = this.camera.getRoot();
+			for (int i=0; i<this.pointsOfView.getSize(); i++)
+			{
+				PointOfView pov = (PointOfView)this.pointsOfView.getElementAt( i );
+				pov.setParent( root );
+			}
+			this.openingPointOfView.setParent( root );
 		}
 	}
 

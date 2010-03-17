@@ -42,8 +42,22 @@
  */
 package org.alice.stageide.sceneeditor.viewmanager;
 
-import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
@@ -51,10 +65,40 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
  */
 public class SceneViewManagerPanel extends JPanel {
 	
+	private static final int UPDATE_WAIT = 100;
 	private boolean isActive = false;
 	
 	private PointOfViewManager pointOfViewManager;
 	private PointsOfViewPanel pointsOfViewPanel;
+	private OpeningScenePointOfViewControl openingScenePointOfView = new OpeningScenePointOfViewControl();
+	
+	private OffscreenLookingGlass offscreenLookingGlass = null;
+	private ThumbnailUpdateThread thumbnailUpdateThread = null;
+	
+	private class ThumbnailUpdateThread extends Thread
+	{
+		private boolean shouldRun = false;
+
+		public synchronized void stopUpdating()
+		{
+			this.shouldRun = false;
+		}
+		
+		@Override
+		public void run() 
+		{
+			this.shouldRun = true;
+			while (this.shouldRun)
+			{
+				doUpdateViewThumbnails();
+				try
+				{
+					Thread.sleep( UPDATE_WAIT );
+				}
+				catch (Exception e){}
+			}
+		}
+	}
 	
 	public SceneViewManagerPanel()
 	{
@@ -62,13 +106,71 @@ public class SceneViewManagerPanel extends JPanel {
 		this.setOpaque( false );
 		this.pointOfViewManager = new PointOfViewManager();
 		this.pointsOfViewPanel = new PointsOfViewPanel(this.pointOfViewManager);
-		this.add( this.pointsOfViewPanel );
+		this.setLayout( new GridBagLayout() );
+		JLabel title = new JLabel( "Starting View");
+		title.setFont( title.getFont().deriveFont( Font.BOLD, 12f ) );
+		this.add(title, new GridBagConstraints( 
+				0, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets(2,2,2,2), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+		this.add( this.openingScenePointOfView, new GridBagConstraints( 
+				0, //gridX
+				1, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.CENTER, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets(2,2,2,2), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+		this.add( this.pointsOfViewPanel, new GridBagConstraints( 
+				0, //gridX
+				2, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.BOTH, //fill
+				new Insets(2,2,2,2), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+		this.add(Box.createVerticalGlue(), new GridBagConstraints( 
+				0, //gridX
+				2, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.VERTICAL, //fill
+				new Insets(0,0,0,0), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+		
+		this.offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );	
+		
 	}
 	
 	public void setProject(edu.cmu.cs.dennisc.alice.Project project)
 	{
 		this.pointOfViewManager.initFromProject( project );
 		this.pointsOfViewPanel.setPOVManager( this.pointOfViewManager );
+		this.openingScenePointOfView.init( this.pointOfViewManager.getOpeningPointOfView(), this.pointOfViewManager);
 	}
 	
 	public void saveToProject()
@@ -81,9 +183,47 @@ public class SceneViewManagerPanel extends JPanel {
 		this.pointOfViewManager.setCamera( camera );
 	}
 	
-	public void setActive(boolean isActive)
+	protected void doUpdateViewThumbnails()
 	{
-		this.isActive = isActive;
+//		long startTime = System.currentTimeMillis();
+		SceneViewManagerPanel.this.openingScenePointOfView.captureViewThumbnail( offscreenLookingGlass );
+		SceneViewManagerPanel.this.pointsOfViewPanel.updateViewThumbnails( offscreenLookingGlass );
+//		long endTime = System.currentTimeMillis();
+//		double totalTime = (endTime - startTime)*.001;
+//		System.out.println("It took "+totalTime+" to update thumbs");
+	}
+	
+	public synchronized void updateViewThumbnails()
+	{
+		Runnable renderThumbnails = new Runnable()
+		{
+			public void run()
+			{
+				doUpdateViewThumbnails();
+			}
+		};
+		SwingUtilities.invokeLater( renderThumbnails );
+	}
+	
+	public synchronized void setActive(boolean isActive)
+	{
+		if (isActive != this.isActive)
+		{
+			this.isActive = isActive;
+			if (this.isActive)
+			{
+				thumbnailUpdateThread = new ThumbnailUpdateThread();
+				thumbnailUpdateThread.start();
+			}
+			else
+			{
+				if (thumbnailUpdateThread != null)
+				{
+					thumbnailUpdateThread.stopUpdating();
+					thumbnailUpdateThread = null;
+				}
+			}
+		}
 	}
 
 }

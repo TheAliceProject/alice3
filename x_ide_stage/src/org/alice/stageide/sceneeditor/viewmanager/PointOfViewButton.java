@@ -43,18 +43,23 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class PointOfViewButton extends JButton {
 
 	private PointOfView pointOfView;
+	private ImageIcon imageIcon;
 	
 	public PointOfViewButton( PointOfView pointOfView )
 	{
 		super();
+		this.imageIcon = new ImageIcon();
 		this.pointOfView = pointOfView;
-		this.setText("POV");
+//		this.setText("POV");
+		this.setIcon( this.imageIcon );
 		this.setPreferredSize( new Dimension(60, 45) );
 		this.setMinimumSize( new Dimension(60, 45) );
 		this.setMaximumSize( new Dimension(60, 45) );
@@ -66,5 +71,20 @@ public class PointOfViewButton extends JButton {
 
 	public void setPointOfView(PointOfView pointOfView) {
 		this.pointOfView = pointOfView;
+	}
+	
+	public void setAllSizes(Dimension d)
+	{
+		this.setPreferredSize( d );
+		this.setMinimumSize( d );
+		this.setMaximumSize( d );
+	}
+	
+	public void setImage(BufferedImage image)
+	{
+		Dimension newSize = new Dimension(image.getWidth(), image.getHeight());
+		setAllSizes(newSize);
+		this.imageIcon.setImage( image );
+//		this.setIcon( new ImageIcon(image) );
 	}
 }

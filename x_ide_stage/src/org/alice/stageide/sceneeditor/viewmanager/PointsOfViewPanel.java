@@ -43,18 +43,28 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass;
 
 public class PointsOfViewPanel extends JPanel implements ActionListener{
 
 	private PointOfViewManager pointOfViewManager;
 	private JButton captureViewButton;
+	private JLabel titleLabel; 
 	private PointsOfViewListUI pointsOfViewList;
 	
 	public PointsOfViewPanel(PointOfViewManager pointOfViewManager)
@@ -62,14 +72,59 @@ public class PointsOfViewPanel extends JPanel implements ActionListener{
 		super();
 		this.pointOfViewManager = pointOfViewManager;
 		this.captureViewButton = new JButton("Capture View");
-		this.pointsOfViewList = new PointsOfViewListUI(this.pointOfViewManager);
+		this.titleLabel = new JLabel("Other Views");
+		this.titleLabel.setFont(this.titleLabel.getFont().deriveFont( 12f ));
+		this.pointsOfViewList = new PointsOfViewListUI(this.pointOfViewManager);		
 
-		this.setLayout(new BorderLayout());
-		this.add(this.captureViewButton, BorderLayout.WEST);
-		this.add(this.pointsOfViewList,BorderLayout.CENTER);
-		
+		this.setLayout(new GridBagLayout());
+		this.add(this.titleLabel, new GridBagConstraints( 
+				0, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets(2,2,2,2), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+		this.add(this.captureViewButton, new GridBagConstraints( 
+				1, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				0.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.EAST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets(2,2,2,2), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+		this.add(this.pointsOfViewList, new GridBagConstraints( 
+				0, //gridX
+				1, //gridY
+				2, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				1.0, //weightY
+				GridBagConstraints.NORTH, //anchor 
+				GridBagConstraints.BOTH, //fill
+				new Insets(2,2,2,2), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
 		this.captureViewButton.addActionListener(this);
+		
 	}
+	
+	public void updateViewThumbnails(final OffscreenLookingGlass offscreenLookingGlass)
+	{
+		PointsOfViewPanel.this.pointsOfViewList.updatePointOfViewImages(offscreenLookingGlass);
+	}
+	
 	
 	public void setPOVManager(PointOfViewManager pointOfViewManager)
 	{
