@@ -44,6 +44,7 @@ package org.alice.ide.editorstabbedpane;
 
 class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 	private DeclarationsUIResource declarationsUIResource;
+	private BackUIResource backUIResource;
 	private java.awt.event.ComponentListener componentAdapter = new java.awt.event.ComponentListener() {
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 		}
@@ -60,6 +61,7 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 		if( org.alice.ide.IDE.getSingleton().isEmphasizingClasses() ) {
 			this.declarationsUIResource = new DeclarationsUIResource();
 		}
+		this.backUIResource = new BackUIResource( editorsTabbedPane );
 	}
 	@Override
 	protected void installComponents() {
@@ -67,12 +69,14 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 		if( this.declarationsUIResource != null ) {
 			this.tabPane.add( this.declarationsUIResource );
 		}
+		this.tabPane.add( this.backUIResource );
 	}
 	@Override
 	protected void uninstallComponents() {
 		if( this.declarationsUIResource != null ) {
 			this.tabPane.remove( this.declarationsUIResource );
 		}
+		this.tabPane.remove( this.backUIResource );
 		super.uninstallComponents();
 	}
 	@Override
@@ -81,27 +85,32 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 		if( this.declarationsUIResource != null ) {
 			this.declarationsUIResource.addComponentListener( this.componentAdapter );
 		}
+		this.backUIResource.addComponentListener( this.componentAdapter );
 	}
 	@Override
 	protected void uninstallListeners() {
 		if( this.declarationsUIResource != null ) {
 			this.declarationsUIResource.removeComponentListener( this.componentAdapter );
 		}
+		this.backUIResource.removeComponentListener( this.componentAdapter );
 		super.uninstallListeners();
 	}
-	private java.awt.Dimension prevSize = null;
+	private java.awt.Dimension prevDeclarationsSize = null;
 	private void handleResized( java.awt.event.ComponentEvent e ) {
+		boolean isRevalidateAndRepaintRequired = false;
 		if( this.declarationsUIResource != null ) {
 			java.awt.Dimension size = this.declarationsUIResource.getSize();
-			if( size.equals( prevSize ) ) {
+			if( size.equals( prevDeclarationsSize ) ) {
 				//pass
 			} else {
 //				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
-				this.prevSize = size;
-				if( this.tabPane != null ) {
-					this.tabPane.revalidate();
-					this.tabPane.repaint();
-				}
+				this.prevDeclarationsSize = size;
+			}
+		}
+		if( isRevalidateAndRepaintRequired ) {
+			if( this.tabPane != null ) {
+				this.tabPane.revalidate();
+				this.tabPane.repaint();
 			}
 		}
 	}
@@ -112,6 +121,8 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 			rv.left += this.declarationsUIResource.getWidth();
 			rv.left += 16;
 		}
+		rv.right += this.backUIResource.getWidth();
+		rv.right += 16;
 		return rv;
 	}
 	@Override
@@ -137,8 +148,10 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 				@Override
 				public void layoutContainer( java.awt.Container parent ) {
 					super.layoutContainer( parent );
-					declarationsUIResource.setLocation( 0, 0 );
+					declarationsUIResource.setLocation( 4, 0 );
 					declarationsUIResource.setSize( declarationsUIResource.getPreferredSize() );
+					backUIResource.setSize( backUIResource.getPreferredSize() );
+					backUIResource.setLocation( parent.getWidth()-backUIResource.getWidth()-4, 0 );
 				}
 			}
 			return new LayoutManager();
@@ -151,6 +164,17 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
  * @author Dennis Cosgrove
  */
 public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane implements org.alice.ide.event.IDEListener {
+	class EditPreviousCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
+		public EditPreviousCodeOperation() {
+			super( org.alice.ide.IDE.INTERFACE_GROUP );
+			this.putValue( javax.swing.Action.NAME, "previous" );
+		}
+		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			edits.peek();
+		}
+	}
+	private EditPreviousCodeOperation editPreviousCodeOperation;
+
 	public EditorsTabbedPane() {
 		this.setTabCloseOperation( new org.alice.ide.operations.InconsequentialActionOperation() {
 			@Override
@@ -166,9 +190,17 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
 				EditorsTabbedPane.this.updateFocusedCode();
 			}
-		} );		
+		} );
 		java.awt.Font f = this.getFont();
 		this.setFont( f.deriveFont( f.getSize2D() * 1.25f ) );
+	}
+	public EditPreviousCodeOperation getEditPreviousCodeOperation() {
+		if( this.editPreviousCodeOperation != null ) {
+			//pass
+		} else {
+			this.editPreviousCodeOperation = new EditPreviousCodeOperation();
+		}
+		return this.editPreviousCodeOperation;
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI createTabbedPaneUI() {
@@ -186,6 +218,13 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 		org.alice.ide.IDE.getSingleton().setFocusedCode( nextFocusedCode );
 	}
 
+	private java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractCode > edits = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	
+	private void updateBackOperationsEnabled() {
+		boolean isEnabled = this.edits.size() > 1;
+		this.editPreviousCodeOperation.setEnabled( isEnabled );
+	}
+	
 	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( java.awt.Component component ) {
 		if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
@@ -229,6 +268,9 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 				EditorsTabbedPane.this.setSelectedComponent( codeEditor );
 //			}
 //		} );
+		this.edits.remove( code );
+		this.edits.add( code );
+		this.updateBackOperationsEnabled();
 	}
 	@Override
 	public boolean isCloseButtonDesiredAt( int index ) {
@@ -256,6 +298,8 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 
 	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
 		this.removeAll();
+		this.edits.clear();
+		this.updateBackOperationsEnabled();
 	}
 	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
 	}

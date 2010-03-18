@@ -40,19 +40,11 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.util;
+package org.alice.ide.editorstabbedpane;
 
-public class Collections {
-	private Collections() {
-		throw new AssertionError();
-	}
-	public static <E> java.util.Stack< E > newStack() {
-		return new java.util.Stack< E >();
-	}
-	public static <E> java.util.HashSet< E > newHashSet() {
-		return new java.util.HashSet< E >();
-	}
-	public static <E> java.util.LinkedList< E > newLinkedList() {
-		return new java.util.LinkedList< E >();
+public class BackUIResource extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane implements javax.swing.plaf.UIResource {
+	public BackUIResource( EditorsTabbedPane editorsTabbedPane ) {
+		this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( editorsTabbedPane.getEditPreviousCodeOperation() ) );
+		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 2, 2, 0 ) );
 	}
 }
