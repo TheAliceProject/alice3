@@ -1418,18 +1418,16 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 					}
 				}
 			}
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
-				if( type.isAssignableFrom( parameter.getValueType() ) ) {
-					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
-				}
-			}
-			
 			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
-			
 			if( prevExpression != null ) {
 				edu.cmu.cs.dennisc.alice.ast.Statement statement = prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
 				if( statement != null ) {
+					for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : codeInFocus.getParameters() ) {
+						if( type.isAssignableFrom( parameter.getValueType() ) ) {
+							//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+							this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
+						}
+					}
 					for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( statement ) ) {
 						if( type.isAssignableFrom( local.valueType.getValue() ) ) {
 							edu.cmu.cs.dennisc.alice.ast.Expression expression;
@@ -1449,24 +1447,6 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 					}
 				}
 			}
-			
-//			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : getVariables( codeInFocus ) ) {
-//				if( type.isAssignableFrom( variable.valueType.getValue() ) ) {
-//					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-//					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ), variable.valueType.getValue(), type );
-//				}
-//			}
-//			for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : getConstants( codeInFocus ) ) {
-//				if( type.isAssignableFrom( constant.valueType.getValue() ) ) {
-//					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-//					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant ), constant.valueType.getValue(), type );
-//				}
-//			}
-			//			if( isNecessary ) {
-			//				//pass
-			//			} else {
-			//				blank.addSeparator();
-			//			}
 		}
 	}
 	public edu.cmu.cs.dennisc.alice.ast.Expression getPreviousExpression() {
