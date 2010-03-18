@@ -49,4 +49,7 @@ public class Collections {
 	public static <E> java.util.HashSet< E > newHashSet() {
 		return new java.util.HashSet< E >();
 	}
+	public static <E> java.util.LinkedList< E > newLinkedList() {
+		return new java.util.LinkedList< E >();
+	}
 }

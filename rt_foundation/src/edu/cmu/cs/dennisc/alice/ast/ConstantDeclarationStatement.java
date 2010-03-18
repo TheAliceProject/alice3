@@ -59,9 +59,13 @@ public class ConstantDeclarationStatement extends LocalDeclarationStatement {
 		super( initializer );
 		this.constant.setValue( constant );
 	}
+//	@Override
+//	protected AbstractType getLocalType() {
+//		return this.constant.getValue().valueType.getValue();
+//	}
 	@Override
-	protected AbstractType getLocalType() {
-		return constant.getValue().valueType.getValue();
+	public edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice getLocal() {
+		return this.constant.getValue();
 	}
 	
 }

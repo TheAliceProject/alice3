@@ -50,7 +50,7 @@ public abstract class LocalDeclarationStatement extends Statement {
 	public ExpressionProperty initializer = new ExpressionProperty( this ) {
 		@Override
 		public AbstractType getExpressionType() {
-			return LocalDeclarationStatement.this.getLocalType();
+			return LocalDeclarationStatement.this.getLocal().valueType.getValue();
 		}
 	};
 	public LocalDeclarationStatement() {
@@ -58,5 +58,6 @@ public abstract class LocalDeclarationStatement extends Statement {
 	public LocalDeclarationStatement( Expression initializer ) {
 		this.initializer.setValue( initializer );
 	}
-	protected abstract AbstractType getLocalType();
+//	protected abstract AbstractType getLocalType();
+	public abstract LocalDeclaredInAlice getLocal();
 }

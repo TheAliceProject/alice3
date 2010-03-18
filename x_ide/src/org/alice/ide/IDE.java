@@ -1316,6 +1316,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	protected void addFillInAndPossiblyPartFills( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.Expression expression, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.alice.ast.AbstractType type2 ) {
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn< edu.cmu.cs.dennisc.alice.ast.Expression >( expression ) );
 	}
+	
 	private static Iterable< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > getVariables( edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus ) {
 		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice >( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice.class );
 		codeInFocus.crawl( crawler, false );
@@ -1342,6 +1343,46 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		return type;
 	}
 
+	private java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > updateAccessibleLocals( java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > rv, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		edu.cmu.cs.dennisc.alice.ast.Node parent = statement.getParent();
+		
+		if( parent instanceof edu.cmu.cs.dennisc.alice.ast.Statement ) {
+			edu.cmu.cs.dennisc.alice.ast.Statement statementParent = (edu.cmu.cs.dennisc.alice.ast.Statement)parent;
+			if( statementParent instanceof edu.cmu.cs.dennisc.alice.ast.BlockStatement ) {
+				edu.cmu.cs.dennisc.alice.ast.BlockStatement blockStatementParent = (edu.cmu.cs.dennisc.alice.ast.BlockStatement)statementParent;
+				int index = blockStatementParent.statements.indexOf( statement );
+				index --;
+				while( index >= 0 ) {
+					edu.cmu.cs.dennisc.alice.ast.Statement statementI = blockStatementParent.statements.get( index );
+					if( statementI instanceof edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement ) {
+						edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = (edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement)statementI;
+						rv.add( localDeclarationStatement.getLocal() );
+					}
+					index --;
+				}
+			} else if( statementParent instanceof edu.cmu.cs.dennisc.alice.ast.CountLoop ) {
+				edu.cmu.cs.dennisc.alice.ast.CountLoop countLoopParent = (edu.cmu.cs.dennisc.alice.ast.CountLoop)statementParent;
+				boolean areCountLoopLocalsViewable = this.isJava();
+				if( areCountLoopLocalsViewable ) {
+					rv.add( countLoopParent.variable.getValue() );
+					rv.add( countLoopParent.constant.getValue() );
+				}
+			} else if( statementParent instanceof edu.cmu.cs.dennisc.alice.ast.AbstractForEachLoop ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractForEachLoop forEachLoopParent = (edu.cmu.cs.dennisc.alice.ast.AbstractForEachLoop)statementParent;
+				rv.add( forEachLoopParent.variable.getValue() );
+			} else if( statementParent instanceof edu.cmu.cs.dennisc.alice.ast.AbstractEachInTogether ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractEachInTogether eachInTogetherParent = (edu.cmu.cs.dennisc.alice.ast.AbstractEachInTogether)statementParent;
+				rv.add( eachInTogetherParent.variable.getValue() );
+			}
+			updateAccessibleLocals( rv, statementParent );
+		}
+		return rv;
+	}
+	private Iterable< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > getAccessibleLocals( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
+		java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		updateAccessibleLocals( rv, statement );
+		return rv;
+	}
 	protected void addExpressionBonusFillInsForType( edu.cmu.cs.dennisc.cascade.Blank blank, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode codeInFocus = this.getFocusedCode();
 		if( codeInFocus != null ) {
@@ -1383,18 +1424,44 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ParameterAccess( parameter ), parameter.getValueType(), type );
 				}
 			}
-			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : getVariables( codeInFocus ) ) {
-				if( type.isAssignableFrom( variable.valueType.getValue() ) ) {
-					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ), variable.valueType.getValue(), type );
+			
+			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression = this.getPreviousExpression();
+			
+			if( prevExpression != null ) {
+				edu.cmu.cs.dennisc.alice.ast.Statement statement = prevExpression.getFirstAncestorAssignableTo( edu.cmu.cs.dennisc.alice.ast.Statement.class );
+				if( statement != null ) {
+					for( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local : this.getAccessibleLocals( statement ) ) {
+						if( type.isAssignableFrom( local.valueType.getValue() ) ) {
+							edu.cmu.cs.dennisc.alice.ast.Expression expression;
+							if( local instanceof edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice ) {
+								edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = (edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice)local;
+								expression = new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable );
+							} else if( local instanceof edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice ) {
+								edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant = (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)local;
+								expression = new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant );
+							} else {
+								expression = null;
+							}
+							if( expression != null ) {
+								this.addFillInAndPossiblyPartFills( blank, expression, local.valueType.getValue(), type );
+							}
+						}
+					}
 				}
 			}
-			for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : getConstants( codeInFocus ) ) {
-				if( type.isAssignableFrom( constant.valueType.getValue() ) ) {
-					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
-					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant ), constant.valueType.getValue(), type );
-				}
-			}
+			
+//			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable : getVariables( codeInFocus ) ) {
+//				if( type.isAssignableFrom( variable.valueType.getValue() ) ) {
+//					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.VariableAccess( variable ), variable.valueType.getValue(), type );
+//				}
+//			}
+//			for( edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice constant : getConstants( codeInFocus ) ) {
+//				if( type.isAssignableFrom( constant.valueType.getValue() ) ) {
+//					//isNecessary = this.addSeparatorIfNecessary( blank, "in scope", isNecessary );
+//					this.addFillInAndPossiblyPartFills( blank, new edu.cmu.cs.dennisc.alice.ast.ConstantAccess( constant ), constant.valueType.getValue(), type );
+//				}
+//			}
 			//			if( isNecessary ) {
 			//				//pass
 			//			} else {

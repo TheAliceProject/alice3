@@ -59,9 +59,13 @@ public class VariableDeclarationStatement extends LocalDeclarationStatement {
 		super( initializer );
 		this.variable.setValue( variable );
 	}
+//	@Override
+//	protected AbstractType getLocalType() {
+//		return this.variable.getValue().valueType.getValue();
+//	}
 	@Override
-	protected AbstractType getLocalType() {
-		return variable.getValue().valueType.getValue();
+	public edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice getLocal() {
+		return this.variable.getValue();
 	}
 	
 }
