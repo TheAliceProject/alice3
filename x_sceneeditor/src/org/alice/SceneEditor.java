@@ -155,7 +155,7 @@ public class SceneEditor extends Program {
 	SceneViewManagerPanel viewPanel = new SceneViewManagerPanel();
 	ManipulationHandleControlPanel handleControlPanel;
 	protected java.io.File projectFile = new java.io.File( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyAliceDirectory("Alice3"), "SCENE_EDITOR_TEST.a3p" );
-	protected java.io.File defaultFile = new java.io.File( "C:/AliceApplicationFiles/AliceBaseApplication/application/projects/templates/GrassyProject.a3p" );
+	protected java.io.File defaultFile = new java.io.File( System.getProperty( "org.alice.ide.IDE.install.dir" ) + "/application/projects/templates/GrassyProject.a3p" );
 	
 	protected void initializeUI()
 	{
