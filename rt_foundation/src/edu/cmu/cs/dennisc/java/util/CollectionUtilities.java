@@ -40,13 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.util;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
 public abstract class CollectionUtilities {
 	private CollectionUtilities() {
+		throw new AssertionError();
 	}
 	public static <E extends Object> E[] createArray( java.util.Collection< E > collection, Class< E > cls, boolean isZeroLengthArrayDesiredForNull ) {
 		int size;
@@ -86,15 +87,5 @@ public abstract class CollectionUtilities {
 		for( E e : array ) {
 			collection.add( e );
 		}
-	}
-	public static <E extends Object> java.util.ArrayList<E> createArrayList( E... array ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
-		set( rv, array );
-		return rv;
-	}
-	public static <E extends Object> java.util.Vector<E> createVector( E... array ) {
-		java.util.Vector<E> rv = new java.util.Vector< E >();
-		set( rv, array );
-		return rv;
 	}
 }

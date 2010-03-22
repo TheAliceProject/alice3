@@ -91,7 +91,7 @@ public abstract class ExpressionCreatorPane extends org.alice.ide.common.Express
 					edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] > expressionsTaskObserver = new edu.cmu.cs.dennisc.task.BlockingTaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression[] >() {
 						@Override
 						public void run() {
-							getIDE().promptUserForExpressions( edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( types, edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), accessible[ 1 ], e.getEndingMouseEvent(), this );
+							getIDE().promptUserForExpressions( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( types, edu.cmu.cs.dennisc.alice.ast.AbstractType.class ), accessible[ 1 ], e.getEndingMouseEvent(), this );
 						}
 					};
 					return expressionsTaskObserver.getResult();

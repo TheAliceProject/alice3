@@ -578,7 +578,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 
 				ide.ensureProjectCodeUpToDate();
 
-				org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( project.getResources(), org.alice.virtualmachine.Resource.class, true );
+				org.alice.virtualmachine.Resource[] resources = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( project.getResources(), org.alice.virtualmachine.Resource.class, true );
 				java.util.Set< org.alice.virtualmachine.Resource > referencedResources = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getReferencedResources( project );
 				javax.swing.table.TableModel tableModel = new ResourceTableModel( resources, referencedResources );
 				this.table.setModel( tableModel );

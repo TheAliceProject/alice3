@@ -71,7 +71,7 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 			//pass
 		} else {
 			Class<?> cls = incompleteStatement.getClass();
-			this.labelText = edu.cmu.cs.dennisc.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates" );
+			this.labelText = edu.cmu.cs.dennisc.java.util.ResourceBundleUtilities.getStringFromSimpleNames( cls, "org.alice.ide.ubiquitouspane.Templates" );
 		}
 		return this.labelText;
 	}

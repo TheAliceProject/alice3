@@ -65,7 +65,7 @@ public class IssueReportWorker extends org.jdesktop.swingworker.SwingWorker< Boo
 		this.progressPane.handleProcess( chunks );
 	}
 	private void process( String... chunks ) {
-		this.process( edu.cmu.cs.dennisc.util.CollectionUtilities.createArrayList( chunks ) );
+		this.process( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( chunks ) );
 	}
 
 	protected boolean uploadToJIRAViaSOAP() throws Exception {

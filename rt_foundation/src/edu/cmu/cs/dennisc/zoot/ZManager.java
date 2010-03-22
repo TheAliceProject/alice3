@@ -238,7 +238,7 @@ public class ZManager {
 			if( ZManager.managerListenerArray != null ) {
 				//pass
 			} else {
-				ZManager.managerListenerArray = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( ZManager.managerListeners, edu.cmu.cs.dennisc.zoot.event.ManagerListener.class );
+				ZManager.managerListenerArray = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( ZManager.managerListeners, edu.cmu.cs.dennisc.zoot.event.ManagerListener.class );
 			}
 			return ZManager.managerListenerArray;
 		}

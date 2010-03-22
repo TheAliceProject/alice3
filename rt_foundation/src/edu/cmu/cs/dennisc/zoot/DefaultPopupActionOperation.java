@@ -51,7 +51,7 @@ public class DefaultPopupActionOperation extends AbstractPopupActionOperation {
 		this.operations = operations;
 	}
 	public DefaultPopupActionOperation( edu.cmu.cs.dennisc.zoot.Operation... operations ) {
-		this( edu.cmu.cs.dennisc.util.CollectionUtilities.createArrayList( operations ) );
+		this( edu.cmu.cs.dennisc.java.util.Collections.newArrayList( operations ) );
 	}
 	@Override
 	protected java.util.List<Operation> getOperations() {

@@ -40,35 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.util;
+package edu.cmu.cs.dennisc.java.util;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ResourceBundleUtilities {
-	public static String getStringFromSimpleNames( Class<?> cls, String baseName, java.util.Locale locale ) {
-		java.util.ResourceBundle resourceBundle = java.util.ResourceBundle.getBundle( baseName, locale );
-		String key;
-		Class<?> c = cls;
-		do {
-			if( c != null ) {
-				key = c.getSimpleName();
-				c = c.getSuperclass();
-			} else {
-				throw new RuntimeException( "cannot find resource for " + cls );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "cannot find resource for", cls );
-				//return null;
-			}
-			try {
-				String unused = resourceBundle.getString( key );
-				break;
-			} catch( RuntimeException re ) {
-				//pass;
-			}
-		} while( true );
-		return resourceBundle.getString( key );
+public abstract class LocaleUtilities {
+	private LocaleUtilities() {
 	}
-	public static String getStringFromSimpleNames( Class<?> cls, String baseName ) {
-		return getStringFromSimpleNames( cls, baseName, javax.swing.JComponent.getDefaultLocale() );
+	private static java.util.Comparator<java.util.Locale> displayNameComparator = new java.util.Comparator<java.util.Locale>() {
+		public int compare(java.util.Locale o1, java.util.Locale o2) {
+			return o1.getDisplayName().compareTo(o2.getDisplayName());
+		}
+	};
+	public static java.util.Locale[] alphabetizeByDisplayName( java.util.Locale[] rv ) {
+		java.util.Arrays.sort( rv, displayNameComparator );
+		return rv;
 	}
 }

@@ -137,7 +137,7 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 		synchronized( this.contentListeners ) {
 			
 			//todo
-			org.alice.virtualmachine.event.ResourceContentListener[] array = edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( this.contentListeners, org.alice.virtualmachine.event.ResourceContentListener.class );
+			org.alice.virtualmachine.event.ResourceContentListener[] array = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.contentListeners, org.alice.virtualmachine.event.ResourceContentListener.class );
 			
 			
 			org.alice.virtualmachine.event.ResourceContentEvent e = new org.alice.virtualmachine.event.ResourceContentEvent( this, contentType, data );

@@ -78,13 +78,13 @@ public class ClassInfo implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 	
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.clsName );
-		binaryEncoder.encode( edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
-		binaryEncoder.encode( edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( this.methodInfos, MethodInfo.class ) );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.constructorInfos, ConstructorInfo.class ) );
+		binaryEncoder.encode( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( this.methodInfos, MethodInfo.class ) );
 	}
 	public void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.clsName = binaryDecoder.decodeString();
-		edu.cmu.cs.dennisc.util.CollectionUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
-		edu.cmu.cs.dennisc.util.CollectionUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.constructorInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( ConstructorInfo.class ) );
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.methodInfos, binaryDecoder.decodeBinaryEncodableAndDecodableArray( MethodInfo.class ) );
 	}
 	protected Class<?> getCls() {
 		if( this.isGetClassForNamAlreadyAttempted ) {

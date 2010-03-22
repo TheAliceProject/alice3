@@ -292,10 +292,10 @@ public class NodeUtilities {
 		return createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( arrayCls ), expressions );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.AbstractType arrayType, java.util.Collection< edu.cmu.cs.dennisc.alice.ast.Expression > expressions ) {
-		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( expressions, edu.cmu.cs.dennisc.alice.ast.Expression.class ) );
+		return createArrayInstanceCreation( arrayType, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, edu.cmu.cs.dennisc.alice.ast.Expression.class ) );
 	}
 	public static edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation createArrayInstanceCreation( Class<?> arrayCls, java.util.Collection< edu.cmu.cs.dennisc.alice.ast.Expression > expressions ) {
-		return createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( arrayCls ), edu.cmu.cs.dennisc.util.CollectionUtilities.createArray( expressions, edu.cmu.cs.dennisc.alice.ast.Expression.class ) );
+		return createArrayInstanceCreation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( arrayCls ), edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( expressions, edu.cmu.cs.dennisc.alice.ast.Expression.class ) );
 	}
 
 	public static edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInJava lookupMethod( Class<?> cls, String methodName, Class<?>... parameterTypes ) {

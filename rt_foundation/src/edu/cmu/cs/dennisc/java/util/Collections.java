@@ -55,4 +55,14 @@ public class Collections {
 	public static <E> java.util.LinkedList< E > newLinkedList() {
 		return new java.util.LinkedList< E >();
 	}
+	public static <E extends Object> java.util.ArrayList<E> newArrayList( E... array ) {
+		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
+		CollectionUtilities.set( rv, array );
+		return rv;
+	}
+	public static <E extends Object> java.util.Vector<E> newVector( E... array ) {
+		java.util.Vector<E> rv = new java.util.Vector< E >();
+		CollectionUtilities.set( rv, array );
+		return rv;
+	}
 }
