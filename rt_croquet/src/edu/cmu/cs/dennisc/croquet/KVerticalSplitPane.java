@@ -46,23 +46,17 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KButton extends KComponent {
-	private javax.swing.JButton jButton = new javax.swing.JButton() {
-		@Override
-		public void addNotify() {
-			KButton.this.adding();
-			super.addNotify();
-			KButton.this.added();
-		}
-		@Override
-		public void removeNotify() {
-			KButton.this.removing();
-			super.removeNotify();
-			KButton.this.removed();
-		}
-	};
-	@Override
-	protected javax.swing.JComponent getJComponent() {
-		return this.jButton;
+public class KVerticalSplitPane extends KSplitPane {
+	public KVerticalSplitPane() {
+		super( javax.swing.JSplitPane.VERTICAL_SPLIT );
+	}
+	public KVerticalSplitPane( KComponent topComponent, KComponent bottomComponent ) {
+		super( javax.swing.JSplitPane.VERTICAL_SPLIT, topComponent, bottomComponent );
+	}
+	public void setTopComponent( KComponent component ) {
+		this.setTopOrLeftComponent( component );
+	}
+	public void setBottomComponent( KComponent component ) {
+		this.setBottomOrRightComponent( component );
 	}
 }
