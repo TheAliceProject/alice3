@@ -47,6 +47,8 @@ package edu.cmu.cs.dennisc.zoot;
  */
 public interface Operation {
 	public java.util.UUID getGroupUUID();
+	public boolean isVisible();
+	public void setVisible( boolean isVisible );
 	public boolean isEnabled();
 	public void setEnabled( boolean isEnabled );
 	public String getToolTipText();

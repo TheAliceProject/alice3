@@ -74,6 +74,20 @@ public abstract class AbstractOperation implements Operation {
 	}
 	
 	
+	private boolean isVisible = true;
+	public boolean isVisible() {
+		return this.isVisible;
+	}
+	public void setVisible( boolean isVisible ) {
+		if( this.isVisible != isVisible ) {
+			this.isVisible = isVisible;
+			synchronized( this.components ) {
+				for( javax.swing.JComponent component : this.components ) {
+					component.setVisible( this.isVisible );
+				}
+			}
+		}
+	}
 	private boolean isEnabled = true;
 	public boolean isEnabled() {
 		return this.isEnabled;
@@ -110,6 +124,7 @@ public abstract class AbstractOperation implements Operation {
 	public void addComponent( javax.swing.JComponent component ) {
 		synchronized( this.components ) {
 			this.components.add( component );
+			component.setVisible( this.isVisible );
 			component.setEnabled( this.isEnabled );
 			component.setToolTipText( this.toolTipText );
 		}

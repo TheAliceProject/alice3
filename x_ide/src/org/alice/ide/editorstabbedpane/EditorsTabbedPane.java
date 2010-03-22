@@ -42,6 +42,46 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+class Cycle< E > {
+	private java.util.LinkedList< E > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private int index = -1;
+	
+	public static <E> Cycle<E> newInstance() {
+		return new Cycle<E>();
+	}
+	
+	public void clear() {
+		this.list.clear();
+		this.index = -1;
+	}
+	
+	public void add( E e ) {
+		int prevIndex = this.list.indexOf( e );
+		if( prevIndex != -1 ) {
+			this.list.remove( prevIndex );
+			if( prevIndex < this.index ) {
+				this.index --;
+			}
+		}
+		this.index ++;
+		assert this.index <= this.size();
+		this.list.add( this.index, e );
+	}
+	
+	public E setToPrevious() {
+		final int N = this.list.size();
+		assert N > 0;
+		this.index --;
+		this.index += N;
+		this.index %= N;
+		return this.list.get( this.index );
+	}
+	
+	public int size() {
+		return this.list.size();
+	}
+}
+
 class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 	private DeclarationsUIResource declarationsUIResource;
 	private BackUIResource backUIResource;
@@ -170,7 +210,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 			this.putValue( javax.swing.Action.NAME, "previous" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			edits.peek();
+			EditorsTabbedPane.this.editPreviousCode();
 		}
 	}
 	private EditPreviousCodeOperation editPreviousCodeOperation;
@@ -218,11 +258,15 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 		org.alice.ide.IDE.getSingleton().setFocusedCode( nextFocusedCode );
 	}
 
-	private java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractCode > edits = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-	
+	private Cycle< edu.cmu.cs.dennisc.alice.ast.AbstractCode > editedCodes = Cycle.newInstance();
+	private void editPreviousCode() {
+		this.edit( this.editedCodes.setToPrevious(), true );
+		
+	}
 	private void updateBackOperationsEnabled() {
-		boolean isEnabled = this.edits.size() > 1;
-		this.editPreviousCodeOperation.setEnabled( isEnabled );
+		boolean isVisibleAndEnabled = this.editedCodes.size() > 1;
+		this.editPreviousCodeOperation.setEnabled( isVisibleAndEnabled );
+		this.editPreviousCodeOperation.setVisible( isVisibleAndEnabled );
 	}
 	
 	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( java.awt.Component component ) {
@@ -233,7 +277,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 			return null;
 		}
 	}
-	private void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
+	private void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
 		assert code != null;
 		for( java.awt.Component component : this.getComponents() ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( component );
@@ -268,8 +312,11 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 				EditorsTabbedPane.this.setSelectedComponent( codeEditor );
 //			}
 //		} );
-		this.edits.remove( code );
-		this.edits.add( code );
+		if( isOriginatedByPreviousCodeOperation ) {
+			//pass
+		} else {
+			this.editedCodes.add( code );
+		}
 		this.updateBackOperationsEnabled();
 	}
 	@Override
@@ -292,13 +339,13 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
 		if( code != null ) {
-			this.edit( e.getNextValue() );
+			this.edit( e.getNextValue(), false );
 		}
 	}
 
 	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
 		this.removeAll();
-		this.edits.clear();
+		this.editedCodes.clear();
 		this.updateBackOperationsEnabled();
 	}
 	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
