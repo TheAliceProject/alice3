@@ -60,9 +60,9 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane 
 
 	private java.util.List< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = new java.util.LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractType >();
 
-	private Iterable< edu.cmu.cs.dennisc.alice.ast.AbstractType > getTypes() {
-		return this.types;
-	}
+//	private Iterable< edu.cmu.cs.dennisc.alice.ast.AbstractType > getTypes() {
+//		return this.types;
+//	}
 
 	public void handleFieldSelection( org.alice.ide.event.FieldSelectionEvent e ) {
 		this.types.clear();
@@ -97,7 +97,30 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane 
 	
 	protected void refresh() {
 		this.removeAll();
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : this.getTypes() ) {
+		
+		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
+		
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : this.types ) {
+			boolean isFirstNonConsumedTypeEncounteredInJava = false;
+			if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava ) {
+				if( isNonConsumedTypeDeclaredInJavaAlreadyEncountered ) {
+					//pass
+				} else {
+					if( type.isConsumptionBySubClassDesired() ) {
+						//pass
+					} else {
+						isFirstNonConsumedTypeEncounteredInJava = true;
+						isNonConsumedTypeDeclaredInJavaAlreadyEncountered = true;
+					}
+				}
+			}
+			if( type.isConsumptionBySubClassDesired() ) {
+				//pass
+			} else {
+				if( this.getIDE().isEmphasizingClasses() || type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
+					this.add( MembersEditor.getComponentFor( this.getClass(), type ) );
+				}
+			}
 			this.add( this.getTypeMembersPane( type ) );
 		}
 //		java.util.List< AbstractTypeMembersPane > panes = new java.util.LinkedList< AbstractTypeMembersPane >();
@@ -191,6 +214,19 @@ class TabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > implements org.alice.ide.event.IDEListener {
 	private TabbedPane tabbedPane = new TabbedPane();
 
+	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static java.awt.Component getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		java.awt.Component rv = map.get( cls, type );
+		if( rv != null ) {
+			//pass
+		} else {
+			rv = new org.alice.ide.common.TypeComponent( type );
+			map.put( cls, type, rv );
+		}
+		return rv;
+	}
+	
 	public MembersEditor() {
 		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
 		this.add( this.tabbedPane );

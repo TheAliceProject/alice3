@@ -74,14 +74,8 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.swing.
 			AbstractTypeMembersPane.this.refresh();
 		}
 	};
-	private org.alice.ide.common.TypeComponent typeComponent;
 	public AbstractTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		this.type = type;
-		if( this.type.isConsumptionBySubClassDesired() ) {
-			this.typeComponent = null;
-		} else {
-			this.typeComponent = new org.alice.ide.common.TypeComponent( this.type );
-		}
 		if( this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			for( edu.cmu.cs.dennisc.property.ListProperty listProperty : this.getListPropertiesToListenTo( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.type ) ) {
 				listProperty.addListPropertyListener( this.listPropertyAdapter );
@@ -118,16 +112,6 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.swing.
 	protected abstract javax.swing.JButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
 		this.removeAll();
-		if( this.typeComponent != null ) {
-			if( this.getIDE().isEmphasizingClasses() 
-				||
-				this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice
-//				||
-//				this.type == getIDE().getTypeInScope().getFirstTypeEncounteredDeclaredInJava()
-				) {
-				this.add( this.typeComponent );
-			}
-		}
 		edu.cmu.cs.dennisc.croquet.swing.PageAxisPane page = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {

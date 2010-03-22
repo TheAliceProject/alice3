@@ -65,4 +65,12 @@ public class Collections {
 		CollectionUtilities.set( rv, array );
 		return rv;
 	}
+	
+	public static <K,V> java.util.HashMap< K,V > newHashMap() {
+		return new java.util.HashMap< K,V >();
+	}
+	public static <K,V> java.util.WeakHashMap< K,V > newWeakHashMap() {
+		return new java.util.WeakHashMap< K,V >();
+	}
+	
 }
