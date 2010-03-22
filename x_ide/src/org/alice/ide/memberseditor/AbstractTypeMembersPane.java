@@ -119,7 +119,14 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.swing.
 	protected void refresh() {
 		this.removeAll();
 		if( this.typeComponent != null ) {
-			this.add( this.typeComponent );
+			if( this.getIDE().isEmphasizingClasses() 
+				||
+				this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice
+//				||
+//				this.type == getIDE().getTypeInScope().getFirstTypeEncounteredDeclaredInJava()
+				) {
+				this.add( this.typeComponent );
+			}
 		}
 		edu.cmu.cs.dennisc.croquet.swing.PageAxisPane page = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {

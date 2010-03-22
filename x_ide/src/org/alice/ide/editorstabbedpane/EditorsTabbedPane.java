@@ -136,15 +136,26 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 		super.uninstallListeners();
 	}
 	private java.awt.Dimension prevDeclarationsSize = null;
+	private java.awt.Dimension prevBackSize = null;
 	private void handleResized( java.awt.event.ComponentEvent e ) {
+		//todo:
 		boolean isRevalidateAndRepaintRequired = false;
 		if( this.declarationsUIResource != null ) {
 			java.awt.Dimension size = this.declarationsUIResource.getSize();
 			if( size.equals( prevDeclarationsSize ) ) {
 				//pass
 			} else {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( e );
+				isRevalidateAndRepaintRequired = true;
 				this.prevDeclarationsSize = size;
+			}
+		}
+		if( this.backUIResource != null ) {
+			java.awt.Dimension size = this.backUIResource.getSize();
+			if( size.equals( prevBackSize ) ) {
+				//pass
+			} else {
+				isRevalidateAndRepaintRequired = true;
+				this.prevBackSize = size;
 			}
 		}
 		if( isRevalidateAndRepaintRequired ) {
@@ -161,8 +172,10 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 			rv.left += this.declarationsUIResource.getWidth();
 			rv.left += 16;
 		}
-		rv.right += this.backUIResource.getWidth();
-		rv.right += 16;
+		if( this.backUIResource.isButtonVisible() ) {
+			rv.right += this.backUIResource.getWidth();
+			rv.right += 16;
+		}
 		return rv;
 	}
 	@Override
@@ -170,6 +183,9 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 		int rv = super.calculateMaxTabHeight( tabPlacement );
 		if( this.declarationsUIResource != null ) {
 			rv = Math.max( rv, this.declarationsUIResource.getHeight() );
+		}
+		if( this.backUIResource.isButtonVisible() ) {
+			rv = Math.max( rv, this.backUIResource.getHeight() );
 		}
 		return rv;
 	}
@@ -183,21 +199,21 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 //	}	
 	@Override
 	protected java.awt.LayoutManager createLayoutManager() {
-		if( this.declarationsUIResource != null ) {
-			class LayoutManager extends TabbedPaneLayout {
-				@Override
-				public void layoutContainer( java.awt.Container parent ) {
-					super.layoutContainer( parent );
-					declarationsUIResource.setLocation( 4, 0 );
+		class LayoutManager extends TabbedPaneLayout {
+			@Override
+			public void layoutContainer( java.awt.Container parent ) {
+				super.layoutContainer( parent );
+				if( declarationsUIResource != null ) {
 					declarationsUIResource.setSize( declarationsUIResource.getPreferredSize() );
+					declarationsUIResource.setLocation( 4, 0 );
+				}
+				if( backUIResource.isButtonVisible() ) {
 					backUIResource.setSize( backUIResource.getPreferredSize() );
 					backUIResource.setLocation( parent.getWidth()-backUIResource.getWidth()-4, 0 );
 				}
 			}
-			return new LayoutManager();
-		} else {
-			return super.createLayoutManager();
 		}
+		return new LayoutManager();
 	}
 }
 /**
