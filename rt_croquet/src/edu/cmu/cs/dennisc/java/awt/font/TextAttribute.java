@@ -41,63 +41,12 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.java.awt.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KLabel extends KComponent {
-	private javax.swing.JLabel jLabel = new javax.swing.JLabel() {
-		@Override
-		public void addNotify() {
-			KLabel.this.adding();
-			super.addNotify();
-			KLabel.this.added();
-		}
-		@Override
-		public void removeNotify() {
-			KLabel.this.removing();
-			super.removeNotify();
-			KLabel.this.removed();
-		}
-	};
-	@Override
-	protected javax.swing.JComponent getJComponent() {
-		return this.jLabel;
-	}
-	
-	public KLabel() {
-	}
-	public KLabel( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
-		this.setText( text );
-		this.changeFont( textAttributes );
-	}
-	public KLabel( javax.swing.Icon icon, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
-		this.setIcon( icon );
-		this.changeFont( textAttributes );
-	}
-	public KLabel( String text, javax.swing.Icon icon, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
-		this.setText( text );
-		this.setIcon( icon );
-		this.changeFont( textAttributes );
-	}
-	public KLabel( String text, javax.swing.Icon icon, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
-		this.setText( text );
-		this.setIcon( icon );
-		this.scaleFont( fontScalar );
-		this.changeFont( textAttributes );
-	}
-	
-	public String getText() {
-		return this.jLabel.getText();
-	}
-	public void setText( String text ) {
-		this.jLabel.setText( text );
-	}
-	public javax.swing.Icon getIcon() {
-		return this.jLabel.getIcon();
-	}
-	public void setIcon( javax.swing.Icon icon ) {
-		this.jLabel.setIcon( icon );
-	}
+public interface TextAttribute<E> {
+	public java.awt.font.TextAttribute getKey();
+	public E getValue();
 }

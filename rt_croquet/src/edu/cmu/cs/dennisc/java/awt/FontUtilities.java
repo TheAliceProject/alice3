@@ -40,24 +40,47 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet.font;
+package edu.cmu.cs.dennisc.java.awt;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum TextFamily implements TextAttribute< String > {
-	SERIF("Serif"), SANS_SERIF("SansSerif");
-	private String m_value;
-
-	private TextFamily( String value ) {
-		m_value = value;
+public class FontUtilities {
+	private FontUtilities() {
+		throw new AssertionError();
 	}
-
-	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.FAMILY;
+	public static void setFontToDerivedFont( java.awt.Component component, java.util.Map< ? extends java.awt.font.TextAttribute, Object > map ) {
+		java.awt.Font font = component.getFont();
+		component.setFont( font.deriveFont( map ) );
 	}
-	public String getValue() {
-		return m_value;
+	public static void setFontToDerivedFont( java.awt.Component component, java.awt.font.TextAttribute attribute, Object value ) {
+		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
+		map.put( attribute, value );
+		setFontToDerivedFont( component, map );
+	}
+	public static void setFontToDerivedFont( java.awt.Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB ) {
+		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
+		map.put( attributeA, valueA );
+		map.put( attributeB, valueB );
+		setFontToDerivedFont( component, map );
+	}
+	public static void setFontToDerivedFont( java.awt.Component component, java.awt.font.TextAttribute attributeA, Object valueA, java.awt.font.TextAttribute attributeB, Object valueB, java.awt.font.TextAttribute attributeC, Object valueC ) {
+		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
+		map.put( attributeA, valueA );
+		map.put( attributeB, valueB );
+		map.put( attributeC, valueC );
+		setFontToDerivedFont( component, map );
+	}
+	public static void setFontToDerivedFont( java.awt.Component component, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
+		java.awt.Font font = component.getFont();
+		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();
+		for( edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? > textAttribute : textAttributes ) {
+			map.put( textAttribute.getKey(), textAttribute.getValue() );
+		}
+		component.setFont( font.deriveFont( map ) );
+	}
+	public static void setFontToScaledFont( java.awt.Component component, float scaleFactor ) {
+		java.awt.Font font = component.getFont();
+		component.setFont( font.deriveFont( font.getSize2D() * scaleFactor ) );
 	}
 }

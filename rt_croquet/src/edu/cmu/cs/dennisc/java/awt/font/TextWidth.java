@@ -41,30 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet.font;
+package edu.cmu.cs.dennisc.java.awt.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public enum TextWeight implements TextAttribute< Float > {
-	EXTRA_LIGHT(java.awt.font.TextAttribute.WEIGHT_EXTRA_LIGHT), 
-	LIGHT(java.awt.font.TextAttribute.WEIGHT_LIGHT), 
-	DEMILIGHT(java.awt.font.TextAttribute.WEIGHT_DEMILIGHT), 
-	REGULAR(java.awt.font.TextAttribute.WEIGHT_REGULAR), 
-	SEMIBOLD(java.awt.font.TextAttribute.WEIGHT_SEMIBOLD), 
-	MEDIUM(java.awt.font.TextAttribute.WEIGHT_MEDIUM), 
-	DEMIBOLD(java.awt.font.TextAttribute.WEIGHT_DEMIBOLD), 
-	BOLD(java.awt.font.TextAttribute.WEIGHT_BOLD), 
-	HEAVY(java.awt.font.TextAttribute.WEIGHT_HEAVY), 
-	EXTRABOLD(java.awt.font.TextAttribute.WEIGHT_EXTRABOLD), 
-	ULTRABOLD(java.awt.font.TextAttribute.WEIGHT_ULTRABOLD);
+public enum TextWidth implements TextAttribute< Float > {
+	CONDENSED(java.awt.font.TextAttribute.WIDTH_CONDENSED), 
+	SEMI_CONDENSED(java.awt.font.TextAttribute.WIDTH_SEMI_CONDENSED), 
+	REGULAR(java.awt.font.TextAttribute.WIDTH_REGULAR), 
+	SEMI_EXTENDED(java.awt.font.TextAttribute.WIDTH_SEMI_EXTENDED), 
+	EXTENDED(java.awt.font.TextAttribute.WIDTH_EXTENDED); 
 	private Float m_value;
-
-	private TextWeight( Float value ) {
+	private TextWidth( Float value ) {
 		m_value = value;
 	}
 	public java.awt.font.TextAttribute getKey() {
-		return java.awt.font.TextAttribute.WEIGHT;
+		return java.awt.font.TextAttribute.WIDTH;
 	}
 	public Float getValue() {
 		return m_value;

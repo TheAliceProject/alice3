@@ -41,12 +41,23 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet.font;
+package edu.cmu.cs.dennisc.java.awt.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public interface TextAttribute<E> {
-	public java.awt.font.TextAttribute getKey();
-	public E getValue();
+public enum TextFamily implements TextAttribute< String > {
+	SERIF("Serif"), SANS_SERIF("SansSerif");
+	private String m_value;
+
+	private TextFamily( String value ) {
+		m_value = value;
+	}
+
+	public java.awt.font.TextAttribute getKey() {
+		return java.awt.font.TextAttribute.FAMILY;
+	}
+	public String getValue() {
+		return m_value;
+	}
 }

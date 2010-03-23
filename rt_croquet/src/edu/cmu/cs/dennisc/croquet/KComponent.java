@@ -57,10 +57,10 @@ public abstract class KComponent {
 	protected void removed() {
 	}
 
-	public void scaleFont( float scalar ) {
-		//todo
+	public void scaleFont( float scaleFactor ) {
+		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( this.getJComponent(), scaleFactor );
 	}
-	public void changeFont( edu.cmu.cs.dennisc.croquet.font.TextAttribute< ? >... textAttributes ) {
-		//todo
+	public void changeFont( edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
+		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToDerivedFont( this.getJComponent(), textAttributes );
 	}
 }
