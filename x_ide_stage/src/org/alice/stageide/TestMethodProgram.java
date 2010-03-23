@@ -62,8 +62,8 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 			super.popFrame();
 		}
 		@Override
-		public void pushCurrentThread( java.lang.Thread parentThread ) {
-			super.pushCurrentThread( parentThread );
+		public void pushCurrentThread( edu.cmu.cs.dennisc.alice.virtualmachine.Frame owner ) {
+			super.pushCurrentThread( owner );
 		}
 		@Override
 		public void popCurrentThread() {

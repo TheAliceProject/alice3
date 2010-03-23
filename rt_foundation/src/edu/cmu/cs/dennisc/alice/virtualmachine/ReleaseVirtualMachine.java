@@ -48,14 +48,14 @@ import edu.cmu.cs.dennisc.alice.ast.*;
  * @author Dennis Cosgrove
  */
 public class ReleaseVirtualMachine extends VirtualMachine {
-	protected abstract class AbstractFrame {
-		private AbstractFrame m_owner = null;
+	protected abstract class AbstractFrame implements Frame {
+		private Frame m_owner = null;
 		private java.util.Map< LocalDeclaredInAlice, Object > m_mapLocalToValue = new java.util.concurrent.ConcurrentHashMap< LocalDeclaredInAlice, Object >();
 
-		public AbstractFrame( AbstractFrame owner ) {
+		public AbstractFrame( Frame owner ) {
 			m_owner = owner;
 		}
-		public AbstractFrame getOwner() {
+		public Frame getOwner() {
 			return m_owner;
 		}
 		private boolean contains( LocalDeclaredInAlice local ) {
@@ -93,7 +93,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	protected class InvocationFrame extends AbstractFrame {
 		private InstanceInAlice m_instance;
 		private java.util.Map< AbstractParameter, Object > m_mapParameterToValue;
-		public InvocationFrame( AbstractFrame owner, InstanceInAlice instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
+		public InvocationFrame( Frame owner, InstanceInAlice instance, java.util.Map< AbstractParameter, Object > mapParameterToValue ) {
 			super( owner );
 			m_instance = instance;
 			m_mapParameterToValue = mapParameterToValue;
@@ -109,27 +109,39 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	protected class ThreadFrame extends AbstractFrame {
-		public ThreadFrame( AbstractFrame owner ) {
+		public ThreadFrame( Frame owner ) {
 			super( owner );
 		}
 		@Override
 		public Object getThis() {
-			return getOwner().getThis();
+			Frame owner = this.getOwner();
+			assert owner != null;
+			if( owner != null ) {
+				return owner.getThis();
+			} else {
+				return null;
+			}
 		}
 		@Override
 		public Object lookup( AbstractParameter parameter ) {
-			return getOwner().lookup( parameter );
+			Frame owner = this.getOwner();
+			assert owner != null;
+			if( owner != null ) {
+				return owner.lookup( parameter );
+			} else {
+				return null;
+			}
 		}
 	}
 
-	private java.util.Map< Thread, AbstractFrame > m_mapThreadToFrame = new java.util.concurrent.ConcurrentHashMap< Thread, AbstractFrame >();
+	private java.util.Map< Thread, Frame > m_mapThreadToFrame = new java.util.concurrent.ConcurrentHashMap< Thread, Frame >();
 
-	private AbstractFrame getCurrentFrame() {
-		AbstractFrame rv = m_mapThreadToFrame.get( Thread.currentThread() );
+	private Frame getCurrentFrame() {
+		Frame rv = m_mapThreadToFrame.get( Thread.currentThread() );
 		assert rv != null;
 		return rv;
 	}
-	private void setCurrentFrame( AbstractFrame currentFrame ) {
+	private void setCurrentFrame( Frame currentFrame ) {
 		m_mapThreadToFrame.put( Thread.currentThread(), currentFrame );
 	}
 
@@ -139,7 +151,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 	@Override
 	protected void pushFrame( InstanceInAlice instance, java.util.Map< AbstractParameter, Object > map ) {
-		AbstractFrame owner = getCurrentFrame();
+		Frame owner = getCurrentFrame();
 		setCurrentFrame( new InvocationFrame( owner, instance, map ) );
 	}
 	@Override
@@ -161,7 +173,7 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 
 	@Override
 	protected void popFrame() {
-		AbstractFrame frame = this.getCurrentFrame();
+		Frame frame = this.getCurrentFrame();
 		setCurrentFrame( frame.getOwner() );
 	}
 	@Override
@@ -170,13 +182,21 @@ public class ReleaseVirtualMachine extends VirtualMachine {
 	}
 
 	@Override
-	protected void pushCurrentThread( Thread parentThread ) {
-		AbstractFrame owner;
-		if( parentThread != null ) {
-			owner = m_mapThreadToFrame.get( parentThread );
+	protected Frame createCopyOfCurrentFrame() {
+		return null;
+	}
+	@Override
+	protected Frame getFrameForThread( Thread thread ) {
+		Frame rv;
+		if( thread != null ) {
+			rv = m_mapThreadToFrame.get( thread );
 		} else {
-			owner = null;
+			rv = null;
 		}
+		return rv;
+	}
+	@Override
+	protected void pushCurrentThread( Frame owner ) {
 		setCurrentFrame( new ThreadFrame( owner ) );
 	}
 	@Override

@@ -77,7 +77,10 @@ public abstract class VirtualMachine {
 	protected abstract void setLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local, Object value );
 	protected abstract void popLocal( edu.cmu.cs.dennisc.alice.ast.LocalDeclaredInAlice local );
 
-	protected abstract void pushCurrentThread( Thread parentThread );
+	protected abstract Frame createCopyOfCurrentFrame();
+	protected abstract Frame getFrameForThread( Thread thread );
+	
+	protected abstract void pushCurrentThread( Frame frame );
 	protected abstract void popCurrentThread();
 	
 //	public Object createInstanceEntryPoint( edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor, Object... arguments ) {
@@ -300,6 +303,7 @@ public abstract class VirtualMachine {
 		}
 	}
 	protected Object getFieldDeclaredInAlice( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field, Object instance ) {
+		assert instance != null;
 		assert instance instanceof InstanceInAlice;
 		InstanceInAlice instanceInAlice = (InstanceInAlice)instance;
 		return instanceInAlice.get( field );
@@ -726,11 +730,11 @@ public abstract class VirtualMachine {
 	}
 	private static int threadCount = 0;
 	protected void executeDoInThread( final edu.cmu.cs.dennisc.alice.ast.DoInThread doInThread ) throws ReturnException {
-		final Thread parentThread = Thread.currentThread();
+		final Frame frame = this.createCopyOfCurrentFrame();
 		new edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString( org.alice.virtualmachine.ThreadGroupUtilities.getThreadGroup(), "DoInThread-"+(VirtualMachine.threadCount++) ) {
 			@Override
 			public void run() {
-				pushCurrentThread( parentThread );
+				pushCurrentThread( frame );
 				try {
 					edu.cmu.cs.dennisc.alice.ProgramClosedException.invokeAndCatchProgramClosedException( new Runnable() {
 						public void run() {
@@ -757,14 +761,14 @@ public abstract class VirtualMachine {
 			execute( blockStatement.statements.get( 0 ) );
 			break;
 		default:
+			final Frame owner = this.getFrameForThread( Thread.currentThread() );
 			Runnable[] runnables = new Runnable[ blockStatement.statements.size() ];
-			final Thread parentThread = Thread.currentThread();
 			for( int i=0; i<runnables.length; i++ ) {
 				final edu.cmu.cs.dennisc.alice.ast.Statement statementI = blockStatement.statements.get( i );
 				runnables[ i ] = new Runnable() {;
 					public void run() {
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( statementI );
-						pushCurrentThread( parentThread );
+						pushCurrentThread( owner );
 						try {
 							execute( statementI );
 						} catch( ReturnException re ) {
@@ -821,10 +825,10 @@ public abstract class VirtualMachine {
 			}
 			break;
 		default:
-			final Thread parentThread = Thread.currentThread();
+			final Frame owner = this.getFrameForThread( Thread.currentThread() );
 			org.alice.virtualmachine.ForEachTogether.invokeAndWait( array, new org.alice.virtualmachine.ForEachRunnable< Object >() {
 				public void run( Object value ) {
-					pushCurrentThread( parentThread );
+					pushCurrentThread( owner );
 					try {
 						VirtualMachine.this.pushLocal( variable, value );
 						try {
