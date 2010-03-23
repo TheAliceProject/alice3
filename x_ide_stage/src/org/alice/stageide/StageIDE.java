@@ -343,6 +343,14 @@ public class StageIDE extends org.alice.ide.IDE {
 		MoveAndTurnRuntimeProgram rtProgram = this.createRuntimeProgram( sceneType, vm );
 		showInJDialog( rtProgram );
 	}
+	@Override
+	public void handleRestart( final edu.cmu.cs.dennisc.zoot.ActionContext context ) {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				handleRun( context );
+			}
+		} );
+	}
 
 	@Override
 	public void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {

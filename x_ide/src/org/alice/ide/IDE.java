@@ -1172,6 +1172,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	private edu.cmu.cs.dennisc.zoot.ActionOperation newProjectOperation = new org.alice.ide.operations.file.NewProjectOperation();
 	private edu.cmu.cs.dennisc.zoot.ActionOperation runOperation = this.createRunOperation();
+	private edu.cmu.cs.dennisc.zoot.ActionOperation restartOperation = this.createRestartOperation();
 	private edu.cmu.cs.dennisc.zoot.ActionOperation exitOperation = this.createExitOperation();
 	private edu.cmu.cs.dennisc.zoot.ActionOperation saveOperation = this.createSaveOperation();
 	private edu.cmu.cs.dennisc.zoot.ActionOperation preferencesOperation = this.createPreferencesOperation();
@@ -1179,6 +1180,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	protected edu.cmu.cs.dennisc.zoot.ActionOperation createRunOperation() {
 		return new org.alice.ide.operations.run.RunOperation();
+	}
+	protected edu.cmu.cs.dennisc.zoot.ActionOperation createRestartOperation() {
+		return new org.alice.ide.operations.run.RestartOperation();
 	}
 	protected edu.cmu.cs.dennisc.zoot.ActionOperation createExitOperation() {
 		return new org.alice.ide.operations.file.ExitOperation();
@@ -1209,6 +1213,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	public abstract void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
 	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
+	public abstract void handleRestart( edu.cmu.cs.dennisc.zoot.ActionContext context );
 	public final void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context ) {
 		if( this.project != null ) {
 			this.ensureProjectCodeUpToDate();
@@ -2250,8 +2255,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	}
 
 	public edu.cmu.cs.dennisc.zoot.ActionOperation getRestartOperation() {
-		//todo
-		return this.getRunOperation();
+		return this.restartOperation;
 	}
 
 	public boolean isInstanceLineDesired() {

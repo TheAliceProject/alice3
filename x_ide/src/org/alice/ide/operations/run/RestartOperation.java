@@ -40,59 +40,17 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+package org.alice.ide.operations.run;
 
 /**
  * @author Dennis Cosgrove
  */
-public class FauxIDE extends IDE {
-	@Override
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation() {
-		return null;
+public class RestartOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	public RestartOperation() {
+		this.putValue( javax.swing.Action.NAME, "Restart..." );
 	}
 	@Override
-	protected void promptForLicenseAgreements() {
-	}
-	@Override
-	protected org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor() {
-		return new org.alice.ide.sceneeditor.FauxSceneEditor();
-	}
-	@Override
-	public java.io.File getGalleryRootDirectory() {
-		return null;
-	}
-	@Override
-	protected org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRootDirectory ) {
-		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser( galleryRootDirectory );
-	}
-	@Override
-	public void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
-		javax.swing.JOptionPane.showMessageDialog( this, "imagine the program running here..." );
-	}
-	@Override
-	public void handleRestart( edu.cmu.cs.dennisc.zoot.ActionContext context ) {
-	}
-	@Override
-	public void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
-		javax.swing.JOptionPane.showMessageDialog( this, "imagine testing method here..." );
-	}
-	@Override
-	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {
-		return true;
-	}
-	@Override
-	public edu.cmu.cs.dennisc.animation.Program createRuntimeProgram( edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType, int frameRate ) {
-		return null;
-	}
-	@Override
-	protected java.awt.image.BufferedImage createThumbnail() throws java.lang.Throwable {
-		return null;
-	}
-	@Override
-	protected org.alice.ide.openprojectpane.TabContentPane createTemplatesPane() {
-		return null;
-	}
-	public static void main( String[] args ) {
-		org.alice.ide.LaunchUtilities.launch( FauxIDE.class, null, args );
+	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		this.getIDE().handleRestart( actionContext );
 	}
 }
