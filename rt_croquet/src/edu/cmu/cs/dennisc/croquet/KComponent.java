@@ -56,4 +56,11 @@ public abstract class KComponent {
 	}
 	protected void removed() {
 	}
+
+	public void scaleFont( float scalar ) {
+		//todo
+	}
+	public void changeFont( edu.cmu.cs.dennisc.croquet.font.TextAttribute< ? >... textAttributes ) {
+		//todo
+	}
 }

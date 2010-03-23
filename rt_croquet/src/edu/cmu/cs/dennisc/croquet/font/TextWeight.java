@@ -41,63 +41,32 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.font;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KLabel extends KComponent {
-	private javax.swing.JLabel jLabel = new javax.swing.JLabel() {
-		@Override
-		public void addNotify() {
-			KLabel.this.adding();
-			super.addNotify();
-			KLabel.this.added();
-		}
-		@Override
-		public void removeNotify() {
-			KLabel.this.removing();
-			super.removeNotify();
-			KLabel.this.removed();
-		}
-	};
-	@Override
-	protected javax.swing.JComponent getJComponent() {
-		return this.jLabel;
+public enum TextWeight implements TextAttribute< Float > {
+	EXTRA_LIGHT(java.awt.font.TextAttribute.WEIGHT_EXTRA_LIGHT), 
+	LIGHT(java.awt.font.TextAttribute.WEIGHT_LIGHT), 
+	DEMILIGHT(java.awt.font.TextAttribute.WEIGHT_DEMILIGHT), 
+	REGULAR(java.awt.font.TextAttribute.WEIGHT_REGULAR), 
+	SEMIBOLD(java.awt.font.TextAttribute.WEIGHT_SEMIBOLD), 
+	MEDIUM(java.awt.font.TextAttribute.WEIGHT_MEDIUM), 
+	DEMIBOLD(java.awt.font.TextAttribute.WEIGHT_DEMIBOLD), 
+	BOLD(java.awt.font.TextAttribute.WEIGHT_BOLD), 
+	HEAVY(java.awt.font.TextAttribute.WEIGHT_HEAVY), 
+	EXTRABOLD(java.awt.font.TextAttribute.WEIGHT_EXTRABOLD), 
+	ULTRABOLD(java.awt.font.TextAttribute.WEIGHT_ULTRABOLD);
+	private Float m_value;
+
+	private TextWeight( Float value ) {
+		m_value = value;
 	}
-	
-	public KLabel() {
+	public java.awt.font.TextAttribute getKey() {
+		return java.awt.font.TextAttribute.WEIGHT;
 	}
-	public KLabel( String text, edu.cmu.cs.dennisc.croquet.font.TextAttribute< ? >... textAttributes ) {
-		this.setText( text );
-		this.changeFont( textAttributes );
-	}
-	public KLabel( javax.swing.Icon icon, edu.cmu.cs.dennisc.croquet.font.TextAttribute< ? >... textAttributes ) {
-		this.setIcon( icon );
-		this.changeFont( textAttributes );
-	}
-	public KLabel( String text, javax.swing.Icon icon, edu.cmu.cs.dennisc.croquet.font.TextAttribute< ? >... textAttributes ) {
-		this.setText( text );
-		this.setIcon( icon );
-		this.changeFont( textAttributes );
-	}
-	public KLabel( String text, javax.swing.Icon icon, float fontScalar, edu.cmu.cs.dennisc.croquet.font.TextAttribute< ? >... textAttributes ) {
-		this.setText( text );
-		this.setIcon( icon );
-		this.scaleFont( fontScalar );
-		this.changeFont( textAttributes );
-	}
-	
-	public String getText() {
-		return this.jLabel.getText();
-	}
-	public void setText( String text ) {
-		this.jLabel.setText( text );
-	}
-	public javax.swing.Icon getIcon() {
-		return this.jLabel.getIcon();
-	}
-	public void setIcon( javax.swing.Icon icon ) {
-		this.jLabel.setIcon( icon );
+	public Float getValue() {
+		return m_value;
 	}
 }
