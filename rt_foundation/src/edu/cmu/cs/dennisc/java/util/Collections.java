@@ -62,6 +62,13 @@ public class Collections {
 		CollectionUtilities.set( rv, array );
 		return rv;
 	}
+	public static <E> java.util.HashSet< E > newHashSet( E... values ) {
+		java.util.HashSet<E> rv = new java.util.HashSet< E >();
+		for( E value : values ) {
+			rv.add( value );
+		}
+		return rv;
+	}
 	
 	public static <K,V> java.util.HashMap< K,V > newHashMap() {
 		return new java.util.HashMap< K,V >();
