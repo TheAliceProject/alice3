@@ -47,8 +47,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class FrustumPerspectiveCameraAdapter extends AbstractPerspectiveCameraAdapter< edu.cmu.cs.dennisc.scenegraph.FrustumPerspectiveCamera > {
-	private static edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = new edu.cmu.cs.dennisc.math.ClippedZPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
-//	private edu.cmu.cs.dennisc.scenegraph.ClippedPlane m_picturePlane = new edu.cmu.cs.dennisc.scenegraph.ClippedPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
+	private static edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = edu.cmu.cs.dennisc.math.ClippedZPlane.createNaN();
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
@@ -62,6 +61,8 @@ public class FrustumPerspectiveCameraAdapter extends AbstractPerspectiveCameraAd
 		double right = actualPicturePlane.getXMaximum();
 		double bottom = actualPicturePlane.getYMinimum();
 		double top = actualPicturePlane.getYMaximum();
+		
+		
 		double zNear = m_element.nearClippingPlaneDistance.getValue();
 		double zFar = m_element.farClippingPlaneDistance.getValue();
 
@@ -70,12 +71,7 @@ public class FrustumPerspectiveCameraAdapter extends AbstractPerspectiveCameraAd
 		rv.backward.set   ( (right + left) / (right - left), (top + bottom) / (top - bottom), -(zFar + zNear) / (zFar + zNear),     -1 );
 		rv.translation.set( 0,                               0,                               -(2 * zFar * zNear) / (zFar - zNear), 0  );
 
-//		rv.setRow( 0, 2 * zNear, 0, (right + left) / (right - left), 0 );
-//		rv.setRow( 1, 0, (2 * zNear) / (top - bottom), (top + bottom) / (top - bottom), 0 );
-//		rv.setRow( 2, 0, 0, -(zFar + zNear) / (zFar + zNear), -(2 * zFar * zNear) / (zFar - zNear) );
-//		rv.setRow( 3, 0, 0, -1, 0 );
-
-		throw new RuntimeException( "todo" );
+		return rv;
 	}
 
 	@Override

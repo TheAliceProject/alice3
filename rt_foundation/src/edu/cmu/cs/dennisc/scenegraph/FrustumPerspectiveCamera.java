@@ -48,5 +48,5 @@ package edu.cmu.cs.dennisc.scenegraph;
  * @author Dennis Cosgrove
  */
 public class FrustumPerspectiveCamera extends AbstractPerspectiveCamera {
-	public final edu.cmu.cs.dennisc.math.property.ClippedZPlaneProperty picturePlane = new edu.cmu.cs.dennisc.math.property.ClippedZPlaneProperty( this, new edu.cmu.cs.dennisc.math.ClippedZPlane( -1, -1, 1, 1 ) );
+	public final edu.cmu.cs.dennisc.math.property.ClippedZPlaneProperty picturePlane = new edu.cmu.cs.dennisc.math.property.ClippedZPlaneProperty( this, new edu.cmu.cs.dennisc.math.ClippedZPlane() );
 }

@@ -46,13 +46,15 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public class ClippedZPlane implements java.io.Serializable {
-	private double m_xMinimum = -1;
-	private double m_yMinimum = Double.NaN;
-	private double m_xMaximum = 1;
-	private double m_yMaximum = Double.NaN;
+	private static final double DEFAULT_Y_VALUE = 0.1;
+	
+	private double m_xMinimum;
+	private double m_yMinimum;
+	private double m_xMaximum;
+	private double m_yMaximum;
 
 	public ClippedZPlane() {
-		this( -1, Double.NaN, 1, Double.NaN );
+		this( Double.NaN, -DEFAULT_Y_VALUE, Double.NaN, +DEFAULT_Y_VALUE );
 	}
 	public ClippedZPlane( double xMinimum, double yMinimum, double xMaximum, double yMaximum ) {
 		set( xMinimum, yMinimum, xMaximum, yMaximum );
@@ -62,6 +64,10 @@ public class ClippedZPlane implements java.io.Serializable {
 	}
 	public ClippedZPlane( ClippedZPlane other, java.awt.Rectangle viewport ) {
 		set( other, viewport );
+	}
+	
+	public static ClippedZPlane createNaN() {
+		return new ClippedZPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
 	}
 
 	public void set( double xMinimum, double yMinimum, double xMaximum, double yMaximum ) {
@@ -80,8 +86,8 @@ public class ClippedZPlane implements java.io.Serializable {
 		double maxY = other.getYMaximum();
 		if( Double.isNaN( minX ) || Double.isNaN( maxX ) ) {
 			if( Double.isNaN( minY ) || Double.isNaN( maxY ) ) {
-				minY = -1;
-				maxY = 1;
+				minY = -DEFAULT_Y_VALUE;
+				maxY = +DEFAULT_Y_VALUE;
 			}
 			double factor = viewport.width / (double) viewport.height;
 			minX = factor * minY;
@@ -90,7 +96,7 @@ public class ClippedZPlane implements java.io.Serializable {
 			if( Double.isNaN( minY ) || Double.isNaN( maxY ) ) {
 				double factor = viewport.height / (double) viewport.width;
 				minY = factor * minX;
-				maxY = factor * maxY;
+				maxY = factor * maxX;
 			}
 		}
 		setXMinimum( minX );

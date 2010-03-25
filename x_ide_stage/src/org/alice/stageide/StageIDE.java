@@ -411,6 +411,10 @@ public class StageIDE extends org.alice.ide.IDE {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = getSceneTypeFromProgramType( programType );
 			if( sceneType != null ) {
 
+				//edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice cameraType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)sceneType.fields.get( 2 ).valueType.getValue();
+				//cameraType.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.moveandturn.FrustumPerspectiveCamera.class ) );
+				//cameraType.superType.setValue( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( edu.wustl.cse.lookingglass.apis.walkandtouch.SymmetricPerspectiveCamera.class ) );
+				
 				final String CUSTOM_SET_UP_METHOD_NAME = "performMySetUp";
 				boolean isSetUpMethodReplacementDesired = false;
 				java.util.Map< String, String > map = new java.util.HashMap< String, String >();
