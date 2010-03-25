@@ -106,6 +106,29 @@ public class BoundUtilities {
 		}
 		return rv;
 	}
+	public static edu.cmu.cs.dennisc.math.AxisAlignedBox getBoundingBox( edu.cmu.cs.dennisc.math.AxisAlignedBox rv, double[] xyzs ) {
+		edu.cmu.cs.dennisc.math.Point3 min = new edu.cmu.cs.dennisc.math.Point3( +Double.MAX_VALUE, +Double.MAX_VALUE, +Double.MAX_VALUE );
+		edu.cmu.cs.dennisc.math.Point3 max = new edu.cmu.cs.dennisc.math.Point3( -Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE );
+		final int N = xyzs.length;
+		for( int i=0; i<N; i+=3 ) {
+			double x = xyzs[ i+0 ];
+			double y = xyzs[ i+1 ];
+			double z = xyzs[ i+2 ];
+			min.x = Math.min( min.x, x );
+			min.y = Math.min( min.y, y );
+			min.z = Math.min( min.z, z );
+			max.x = Math.max( max.x, x );
+			max.y = Math.max( max.y, y );
+			max.z = Math.max( max.z, z );
+		}
+		if( min.x == +Double.MAX_VALUE ) {
+			rv.setNaN();
+		} else {
+			rv.setMinimum( min );
+			rv.setMaximum( max );
+		}
+		return rv;
+	}
 
 	public static edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv, edu.cmu.cs.dennisc.math.Point3[] pa ) {
 		final int N = pa.length;
@@ -135,6 +158,56 @@ public class BoundUtilities {
 			double maxDistanceFromCenterSquared = -Double.MAX_VALUE; // any negative number would do
 			for( edu.cmu.cs.dennisc.math.Point3 p : pa ) {
 				double distanceSquared = edu.cmu.cs.dennisc.math.Point3.calculateDistanceSquaredBetween( p, center );
+				maxDistanceFromCenterSquared = Math.max( maxDistanceFromCenterSquared, distanceSquared );
+			}
+
+			double radius = Math.sqrt( maxDistanceFromCenterSquared );
+			rv.center.set( center );
+			rv.radius = radius;
+		}
+		return rv;
+	}
+	public static edu.cmu.cs.dennisc.math.Sphere getBoundingSphere( edu.cmu.cs.dennisc.math.Sphere rv, double[] xyzs ) {
+		final int N = xyzs.length;
+		if( N == 0 ) {
+			rv.setNaN();
+		} else {
+			int indexOfCornerI = -1;
+			int indexOfCornerJ = -1;
+			double maxDistanceSquared = -Double.MAX_VALUE; // any negative number would do
+			for( int i = 0; i < N; i+=3 ) {
+				double xI = xyzs[ i+0 ];
+				double yI = xyzs[ i+1 ];
+				double zI = xyzs[ i+2 ];
+				for( int j = i + 3; j < N; j+=3 ) {
+					double xJ = xyzs[ j+0 ];
+					double yJ = xyzs[ j+1 ];
+					double zJ = xyzs[ j+2 ];
+					
+					double xDelta = xJ-xI;
+					double yDelta = yJ-yI;
+					double zDelta = zJ-zI;
+					
+					double distanceSquared = xDelta*xDelta + yDelta*yDelta + zDelta*zDelta;
+
+					if( distanceSquared > maxDistanceSquared ) {
+						indexOfCornerI = i;
+						indexOfCornerJ = j;
+					}
+				}
+			}
+
+			edu.cmu.cs.dennisc.math.Point3 center = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
+			center.add( new edu.cmu.cs.dennisc.math.Point3( xyzs[ indexOfCornerI+0 ], xyzs[ indexOfCornerI+1 ], xyzs[ indexOfCornerI+2 ] ) );
+			center.add( new edu.cmu.cs.dennisc.math.Point3( xyzs[ indexOfCornerJ+0 ], xyzs[ indexOfCornerJ+1 ], xyzs[ indexOfCornerJ+2 ] ) );
+			center.multiply( 0.5 );
+
+			double maxDistanceFromCenterSquared = -Double.MAX_VALUE; // any negative number would do
+			for( int i = 0; i < N; i+=3 ) {
+				double xDelta = center.x-xyzs[ i+0 ];
+				double yDelta = center.y-xyzs[ i+1 ];
+				double zDelta = center.z-xyzs[ i+2 ];
+				double distanceSquared = xDelta*xDelta + yDelta*yDelta + zDelta*zDelta;
 				maxDistanceFromCenterSquared = Math.max( maxDistanceFromCenterSquared, distanceSquared );
 			}
 
