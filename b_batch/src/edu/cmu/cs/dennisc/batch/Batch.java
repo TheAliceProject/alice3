@@ -46,9 +46,11 @@ package edu.cmu.cs.dennisc.batch;
 public abstract class Batch {
 	protected abstract void handle( java.io.File inFile, java.io.File outFile );
 	protected abstract boolean isSkipExistingOutFilesDesirable();
-	public void process( String inRoot, String outRoot, String inExt, String outExt ) {
+	public void process( String inRootPath, String outRootPath, String inExt, String outExt ) {
 		boolean isSkipExistingOutFilesDesirable = this.isSkipExistingOutFilesDesirable();
 		
+		java.io.File inRoot = new java.io.File(inRootPath);
+		java.io.File outRoot = new java.io.File(outRootPath);
 		System.out.print( "FileUtilities.listDescendants... " );
 		java.io.File[] inFiles = edu.cmu.cs.dennisc.io.FileUtilities.listDescendants( inRoot, inExt );
 		System.out.println( "Done.  ( " + inFiles.length + " files )" );
@@ -57,12 +59,7 @@ public abstract class Batch {
 		//Runtime.getRuntime().gc();
 		//long freeMemory0 = Runtime.getRuntime().freeMemory();
 		for( java.io.File inFile : inFiles ) {
-
-			String inPath = inFile.getAbsolutePath();
-			String outPath = outRoot + inPath.substring( inRoot.length(), inPath.length() - inExt.length() ) + outExt;
-
-			java.io.File outFile = new java.io.File( outPath );
-
+			java.io.File outFile = edu.cmu.cs.dennisc.io.FileUtilities.getAnalogousFile(inFile, inRoot, outRoot, inExt, outExt );
 			if( isSkipExistingOutFilesDesirable && outFile.exists() ) {
 				System.out.println( "SKIPPING: " + outFile + " exists." );
 			} else {
