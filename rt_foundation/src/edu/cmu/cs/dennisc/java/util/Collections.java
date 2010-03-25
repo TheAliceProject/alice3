@@ -49,9 +49,6 @@ public class Collections {
 	public static <E> java.util.Stack< E > newStack() {
 		return new java.util.Stack< E >();
 	}
-	public static <E> java.util.HashSet< E > newHashSet() {
-		return new java.util.HashSet< E >();
-	}
 	public static <E> java.util.LinkedList< E > newLinkedList() {
 		return new java.util.LinkedList< E >();
 	}
@@ -72,5 +69,4 @@ public class Collections {
 	public static <K,V> java.util.WeakHashMap< K,V > newWeakHashMap() {
 		return new java.util.WeakHashMap< K,V >();
 	}
-	
 }

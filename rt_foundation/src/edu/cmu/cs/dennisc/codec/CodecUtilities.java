@@ -48,6 +48,7 @@ package edu.cmu.cs.dennisc.codec;
 public abstract class CodecUtilities {
 	private static final String DEFAULT_ZIP_ENTRY_NAME = "edu.cmu.cs.dennisc.codec.CodecUtilities.DEFAULT_ZIP_ENTRY_NAME";
 	private CodecUtilities() {
+		throw new AssertionError();
 	}
 	public static <E extends BinaryEncodableAndDecodable> E decodeBinary( java.io.InputStream is, Class<E> cls ) {
 		BinaryDecoder binaryDecoder = new InputStreamBinaryDecoder( is );
