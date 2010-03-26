@@ -60,8 +60,8 @@ public abstract class Batch {
 		//long freeMemory0 = Runtime.getRuntime().freeMemory();
 		for( java.io.File inFile : inFiles ) {
 			java.io.File outFile = edu.cmu.cs.dennisc.io.FileUtilities.getAnalogousFile(inFile, inRoot, outRoot, inExt, outExt );
-			if( isSkipExistingOutFilesDesirable && outFile.exists() ) {
-				System.out.println( "SKIPPING: " + outFile + " exists." );
+			if( isSkipExistingOutFilesDesirable && edu.cmu.cs.dennisc.io.FileUtilities.existsAndHasLengthGreaterThanZero( outFile ) ) {
+				//System.out.println( "SKIPPING: " + outFile + " exists." );
 			} else {
 				if( inFile.exists() ) {
 					//todo:

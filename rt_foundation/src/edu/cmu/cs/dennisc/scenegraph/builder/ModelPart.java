@@ -28,23 +28,30 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 				if( front instanceof edu.cmu.cs.dennisc.scenegraph.SingleAppearance ) {
 					edu.cmu.cs.dennisc.scenegraph.SingleAppearance singleAppearance = (edu.cmu.cs.dennisc.scenegraph.SingleAppearance)front;
 					edu.cmu.cs.dennisc.texture.Texture texture = singleAppearance.diffuseColorTexture.getValue();
-					if( texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
-						rv.texture = (edu.cmu.cs.dennisc.texture.BufferedImageTexture)texture;
-						textures.add( rv.texture );
+					if( texture != null ) {
+						if( texture instanceof edu.cmu.cs.dennisc.texture.BufferedImageTexture ) {
+							rv.texture = (edu.cmu.cs.dennisc.texture.BufferedImageTexture)texture;
+							textures.add( rv.texture );
+						} else {
+							assert false;
+						}
 					} else {
-						assert false;
+						System.err.println( "warning: no texture for " + rv.name ); 
 					}
 				} else {
 					assert false;
 				}
 				edu.cmu.cs.dennisc.scenegraph.Geometry geometry = visual.getGeometry();
-				assert geometry != null;
-				if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
-					rv.geometry = (edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray)geometry;
+				if( geometry != null ) {
+					if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
+						rv.geometry = (edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray)geometry;
+					} else {
+						assert false;
+					}
+					geometries.add( rv.geometry );
 				} else {
-					assert false;
+					System.err.println( "warning: no geometry for " + rv.name ); 
 				}
-				geometries.add( rv.geometry );
 			} else if( component instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
 				edu.cmu.cs.dennisc.scenegraph.Transformable transformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)component;
 				rv.children.add( newInstance( transformable, geometries, textures ) );
@@ -85,13 +92,16 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		this.children = arrayList;
 	}
 	public void resolve( java.util.Map< Integer, edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray > mapIdToGeometry, java.util.Map< Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture > mapIdToTexture ) {
-		assert mapIdToGeometry.containsKey( this.geometryID ) : geometryID;
-		this.geometry = mapIdToGeometry.get( this.geometryID );
-		assert mapIdToTexture.containsKey( this.textureID ) : textureID;
-		this.texture = mapIdToTexture.get( this.textureID );
-		
-		assert this.geometry != null : this.name;
-		assert this.texture != null : this.name;
+		if( this.geometryID != 0 ) {
+			assert mapIdToGeometry.containsKey( this.geometryID ) : geometryID;
+			this.geometry = mapIdToGeometry.get( this.geometryID );
+			assert this.geometry != null : this.name;
+		}
+		if( this.textureID != 0 ) {
+			assert mapIdToTexture.containsKey( this.textureID ) : textureID;
+			this.texture = mapIdToTexture.get( this.textureID );
+			assert this.texture != null : this.name;
+		}
 
 		this.geometryID = null;
 		this.textureID = null;
@@ -99,11 +109,22 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 			child.resolve( mapIdToGeometry, mapIdToTexture );
 		}
 	}
+	
+	private static int getID( Object o ) {
+		int rv;
+		if( o != null ) {
+			rv = o.hashCode();
+			assert rv != 0;
+		} else {
+			rv = 0;
+		}
+		return rv;
+	}
 	public void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.name );
 		binaryEncoder.encode( this.localTransformation );
-		binaryEncoder.encode( this.geometry.hashCode() );
-		binaryEncoder.encode( this.texture.hashCode() );
+		binaryEncoder.encode( getID( this.geometry ) );
+		binaryEncoder.encode( getID( this.texture ) );
 		binaryEncoder.encode( this.children.size() );
 		for( ModelPart child : this.children ) {
 			binaryEncoder.encode( child );
