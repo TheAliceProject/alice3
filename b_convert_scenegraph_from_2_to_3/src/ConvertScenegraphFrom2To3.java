@@ -111,6 +111,15 @@ class AffineMatrix4x4Handler implements Handler< javax.vecmath.Matrix4d, edu.cmu
 class OrthogonalMatrix3x3Handler implements Handler< javax.vecmath.Matrix3d, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 > {
 	@Override
 	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 convert(javax.vecmath.Matrix3d oldM) {
+		//assert oldM.m00 == oldM.m11 && oldM.m00 == oldM.m22 : oldM;
+		
+		assert oldM.m01 == 0.0;
+		assert oldM.m02 == 0.0;
+		assert oldM.m10 == 0.0;
+		assert oldM.m12 == 0.0;
+		assert oldM.m20 == 0.0;
+		assert oldM.m21 == 0.0;
+		
 		//todo: transpose?  shouldn't matter since really a vector along diagonal, but...
 		return new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( 
 				new edu.cmu.cs.dennisc.math.Vector3( oldM.m00, oldM.m01, oldM.m02 ), 
@@ -326,7 +335,7 @@ class ScenegraphBatch extends edu.cmu.cs.dennisc.batch.Batch {
 	
 	@Override
 	protected boolean isSkipExistingOutFilesDesirable() {
-		return true;
+		return false;
 	}
 	@Override
 	protected void handle(java.io.File inFile, java.io.File outFile) {
@@ -336,7 +345,6 @@ class ScenegraphBatch extends edu.cmu.cs.dennisc.batch.Batch {
 				edu.cmu.cs.stage3.alice.core.Transformable oldTransformable = (edu.cmu.cs.stage3.alice.core.Transformable) oldSchool;
 				edu.cmu.cs.stage3.alice.scenegraph.Transformable oldSGTranformable = oldTransformable.getSceneGraphTransformable();
 				Transformable sgTransformable = createNewSchool( oldSGTranformable );
-
 				edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder modelBuilder = edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder.newInstance( sgTransformable );
 				modelBuilder.encode( outFile );
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( outFile );
