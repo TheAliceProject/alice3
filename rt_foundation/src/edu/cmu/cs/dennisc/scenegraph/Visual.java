@@ -80,8 +80,9 @@ public class Visual extends Leaf {
 	
 	@Deprecated
 	public Geometry getGeometry() {
-		if( geometries.getValue().length > 0 ) {
-			return geometries.getValue()[ 0 ];
+		Geometry[] array = this.geometries.getValue(); 
+		if( array != null && array.length > 0 ) {
+			return array[ 0 ];
 		} else {
 			return null;
 		}

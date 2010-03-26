@@ -1,7 +1,12 @@
 public class ModelBuilderTest {
 	public static void main( String[] args ) throws Exception {
-		java.io.File file = new java.io.File( System.getProperty( "user.home" ) + "/Desktop/penguin.zip" );
-
+		String path;
+		if( args.length > 0 ) {
+			path = args[ 0 ];
+		} else {
+			path = System.getProperty( "user.home" ) + "/Desktop/penguin.zip";
+		}
+		java.io.File file = new java.io.File( path );
 		if( file.exists() ) {
 			//pass
 		} else {
