@@ -1,8 +1,10 @@
 public class ModelBuilderTest {
 	public static void main( String[] args ) throws Exception {
-		java.io.File file = new java.io.File( "c:/penguin.zip" );
+		java.io.File file = new java.io.File( System.getProperty( "user.home" ) + "/Desktop/penguin.zip" );
 
-		if( false ) {
+		if( file.exists() ) {
+			//pass
+		} else {
 			org.alice.apis.moveandturn.gallery.animals.Penguin penguin = new org.alice.apis.moveandturn.gallery.animals.Penguin();
 			edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder treeBuilder0 = edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder.newInstance( penguin.getSGTransformable() );
 			treeBuilder0.encode( file );
