@@ -52,14 +52,29 @@ public class Collections {
 	public static <E> java.util.LinkedList< E > newLinkedList() {
 		return new java.util.LinkedList< E >();
 	}
-	public static <E extends Object> java.util.ArrayList<E> newArrayList( E... array ) {
+	public static <E> java.util.LinkedList<E> newLinkedList( java.util.Collection< E > other ) {
+		java.util.LinkedList<E> rv = new java.util.LinkedList< E >();
+		rv.addAll( other );
+		return rv;
+	}
+	public static <E> java.util.ArrayList<E> newArrayList( E... array ) {
 		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
 		CollectionUtilities.set( rv, array );
 		return rv;
 	}
-	public static <E extends Object> java.util.Vector<E> newVector( E... array ) {
+	public static <E> java.util.ArrayList<E> newArrayList( java.util.Collection< E > other ) {
+		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
+		rv.addAll( other );
+		return rv;
+	}
+	public static <E> java.util.Vector<E> newVector( E... array ) {
 		java.util.Vector<E> rv = new java.util.Vector< E >();
 		CollectionUtilities.set( rv, array );
+		return rv;
+	}
+	public static <E> java.util.Vector< E > newVector( java.util.Collection< E > other ) {
+		java.util.Vector<E> rv = new java.util.Vector< E >();
+		rv.addAll( other );
 		return rv;
 	}
 	public static <E> java.util.HashSet< E > newHashSet( E... values ) {
@@ -67,6 +82,11 @@ public class Collections {
 		for( E value : values ) {
 			rv.add( value );
 		}
+		return rv;
+	}
+	public static <E> java.util.HashSet< E > newHashSet( java.util.Collection< E > other ) {
+		java.util.HashSet<E> rv = new java.util.HashSet< E >();
+		rv.addAll( other );
 		return rv;
 	}
 	
