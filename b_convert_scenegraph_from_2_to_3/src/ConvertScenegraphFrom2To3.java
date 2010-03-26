@@ -108,9 +108,9 @@ class AffineMatrix4x4Handler implements Handler< javax.vecmath.Matrix4d, edu.cmu
 /**
  * @author Dennis Cosgrove
  */
-class OrthogonalMatrix3x3Handler implements Handler< javax.vecmath.Matrix3d, edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 > {
+class Matrix3x3Handler implements Handler< javax.vecmath.Matrix3d, edu.cmu.cs.dennisc.math.Matrix3x3 > {
 	@Override
-	public edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 convert(javax.vecmath.Matrix3d oldM) {
+	public edu.cmu.cs.dennisc.math.Matrix3x3 convert(javax.vecmath.Matrix3d oldM) {
 		//assert oldM.m00 == oldM.m11 && oldM.m00 == oldM.m22 : oldM;
 		
 		assert oldM.m01 == 0.0;
@@ -121,7 +121,7 @@ class OrthogonalMatrix3x3Handler implements Handler< javax.vecmath.Matrix3d, edu
 		assert oldM.m21 == 0.0;
 		
 		//todo: transpose?  shouldn't matter since really a vector along diagonal, but...
-		return new edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3( 
+		return new edu.cmu.cs.dennisc.math.Matrix3x3( 
 				new edu.cmu.cs.dennisc.math.Vector3( oldM.m00, oldM.m01, oldM.m02 ), 
 				new edu.cmu.cs.dennisc.math.Vector3( oldM.m10, oldM.m11, oldM.m12 ), 
 				new edu.cmu.cs.dennisc.math.Vector3( oldM.m20, oldM.m21, oldM.m22 )
@@ -240,7 +240,7 @@ class ScenegraphBatch extends edu.cmu.cs.dennisc.batch.Batch {
 		mapOldValueClsToHandler.put( Float.class, new PassThroughHandler<Float>() );
 		mapOldValueClsToHandler.put( edu.cmu.cs.stage3.alice.scenegraph.Color.class, new ColorHandler() );
 		mapOldValueClsToHandler.put( javax.vecmath.Matrix4d.class, new AffineMatrix4x4Handler() );
-		mapOldValueClsToHandler.put( javax.vecmath.Matrix3d.class, new OrthogonalMatrix3x3Handler() );
+		mapOldValueClsToHandler.put( javax.vecmath.Matrix3d.class, new Matrix3x3Handler() );
 		mapOldValueClsToHandler.put( edu.cmu.cs.stage3.alice.scenegraph.ShadingStyle.class, new EnumHandler<edu.cmu.cs.stage3.alice.scenegraph.ShadingStyle, ShadingStyle>( mapShadingStyle ) );
 		mapOldValueClsToHandler.put(edu.cmu.cs.stage3.alice.scenegraph.Appearance.class, new AppearanceHandler() );
 		mapOldValueClsToHandler.put(edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray.class, new IndexedTriangleArrayHandler() );

@@ -229,7 +229,7 @@ public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 //			textureCoordinate0 = new edu.cmu.cs.dennisc.texture.TextureCoordinateF2();
 //		}
 //	}
-	public void transform( edu.cmu.cs.dennisc.math.AffineMatrix4x4 m ) {
+	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 m ) {
 		if( position.isNaN() == false ) {
 			m.transform( position );
 		}

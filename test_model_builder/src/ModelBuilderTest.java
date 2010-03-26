@@ -3,6 +3,7 @@ public class ModelBuilderTest {
 		String path;
 		if( args.length > 0 ) {
 			path = args[ 0 ];
+			args = new String[] {};
 		} else {
 			path = System.getProperty( "user.home" ) + "/Desktop/penguin.zip";
 		}

@@ -41,10 +41,32 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 				} else {
 					assert false;
 				}
+				edu.cmu.cs.dennisc.math.Matrix3x3 scale = visual.scale.getValue();
 				edu.cmu.cs.dennisc.scenegraph.Geometry geometry = visual.getGeometry();
 				if( geometry != null ) {
+//					if( scale.isIdentity() ) {
+//						//pass
+//					} else {
+//						System.err.println( "fixing scale for: " + rv.name + " " + scale.right.x + " " + scale.up.y + " " + scale.backward.z );
+//						edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity();
+//						m.orientation.right.x = scale.right.x;
+//						m.orientation.up.y = scale.right.y;
+//						m.orientation.backward.z = scale.backward.z;
+//						geometry.transform( m );
+//					}
 					if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
 						rv.geometry = (edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray)geometry;
+						
+						if( scale.isIdentity() ) {
+							//pass
+						} else {
+							System.err.println( "fixing scale for: " + rv.name + " " + scale.right.x + " " + scale.up.y + " " + scale.backward.z );
+							for( edu.cmu.cs.dennisc.scenegraph.Vertex v : rv.geometry.vertices.getValue() ) {
+								v.position.x *= scale.right.x;
+								v.position.y *= scale.up.y;
+								v.position.z *= scale.backward.z;
+							}
+						}
 					} else {
 						assert false;
 					}

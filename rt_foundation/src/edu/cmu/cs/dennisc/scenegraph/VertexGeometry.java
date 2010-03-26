@@ -105,10 +105,10 @@ public abstract class VertexGeometry extends Geometry {
 	}
 	@Override
 	public void transform( edu.cmu.cs.dennisc.math.AbstractMatrix4x4 trans ) {
-		throw new RuntimeException( "todo" );
-		//		for( Vertex vertex : vertices.getValue() ) {
-		//			vertex.transform( trans );
-		//		}
-		//		fireVerticesChange();
+		//todo: does not seem to work
+		for( Vertex vertex : vertices.getValue() ) {
+			vertex.transform( trans );
+		}
+		vertices.touch();
 	}
 }
