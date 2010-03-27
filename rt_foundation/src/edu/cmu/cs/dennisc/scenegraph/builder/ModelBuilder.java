@@ -18,6 +18,13 @@ public class ModelBuilder {
 	public Iterable< edu.cmu.cs.dennisc.scenegraph.Geometry > getGeometryReferences() {
 		return this.geometries;
 	}
+	
+	public void replaceGeometries( java.util.Map< edu.cmu.cs.dennisc.scenegraph.Geometry, edu.cmu.cs.dennisc.scenegraph.Geometry > map ) {
+		this.geometries.clear();
+		this.geometries.addAll( map.keySet() );
+		this.root.replaceGeometries( map );
+	}
+	
 	public static ModelBuilder getInstance( java.io.File file ) throws java.io.IOException {
 		ModelBuilder rv = map.get( file );
 		if( rv != null ) {

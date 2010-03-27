@@ -117,17 +117,14 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 			child.resolve( mapIdToGeometry, mapIdToTexture );
 		}
 	}
-	
-//	public java.util.Set< edu.cmu.cs.dennisc.pattern.Reference< edu.cmu.cs.dennisc.scenegraph.Geometry > > getGeometryReferences( java.util.Set< edu.cmu.cs.dennisc.pattern.Reference< edu.cmu.cs.dennisc.scenegraph.Geometry > > rv ) {
-//		if( this.geometry.value != null ) {
-//			rv.add( this.geometry );
-//		}
-//		for( ModelPart child : this.children ) {
-//			child.getGeometryReferences( rv );
-//		}
-//		return rv;
-//	}
-	
+
+	public void replaceGeometries( java.util.Map< edu.cmu.cs.dennisc.scenegraph.Geometry, edu.cmu.cs.dennisc.scenegraph.Geometry > map ) {
+		assert this.geometry != null;
+		this.geometry = map.get( this.geometry );
+		for( ModelPart child : this.children ) {
+			child.replaceGeometries( map );
+		}
+	}
 	private static int getID( Object o ) {
 		int rv;
 		if( o != null ) {
