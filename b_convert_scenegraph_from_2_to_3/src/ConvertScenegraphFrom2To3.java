@@ -62,7 +62,6 @@ interface Handler< O, N > {
  * @author Dennis Cosgrove
  */
 class PassThroughHandler< E > implements Handler< E, E > {
-	@Override
 	public E convert(E oldValue) {
 		return oldValue;
 	}
@@ -72,7 +71,6 @@ class PassThroughHandler< E > implements Handler< E, E > {
  * @author Dennis Cosgrove
  */
 class AngleHandler implements Handler< Double, edu.cmu.cs.dennisc.math.Angle > {
-	@Override
 	public edu.cmu.cs.dennisc.math.Angle convert(Double oldValue) {
 		return new edu.cmu.cs.dennisc.math.AngleInRevolutions( oldValue );
 	}
@@ -82,7 +80,6 @@ class AngleHandler implements Handler< Double, edu.cmu.cs.dennisc.math.Angle > {
  * @author Dennis Cosgrove
  */
 class ColorHandler implements Handler< edu.cmu.cs.stage3.alice.scenegraph.Color, edu.cmu.cs.dennisc.color.Color4f > {
-	@Override
 	public edu.cmu.cs.dennisc.color.Color4f convert(edu.cmu.cs.stage3.alice.scenegraph.Color oldColor) {
 		if( Float.isNaN( oldColor.red ) ) {
 			return null;
@@ -96,7 +93,6 @@ class ColorHandler implements Handler< edu.cmu.cs.stage3.alice.scenegraph.Color,
  * @author Dennis Cosgrove
  */
 class AffineMatrix4x4Handler implements Handler< javax.vecmath.Matrix4d, edu.cmu.cs.dennisc.math.AffineMatrix4x4 > {
-	@Override
 	public edu.cmu.cs.dennisc.math.AffineMatrix4x4 convert(javax.vecmath.Matrix4d oldM) {
 		edu.cmu.cs.dennisc.math.Matrix4x4 newM = new edu.cmu.cs.dennisc.math.Matrix4x4( oldM.m00, oldM.m01, oldM.m02, oldM.m03, oldM.m10, oldM.m11, oldM.m12, oldM.m13, oldM.m20, oldM.m21, oldM.m22, oldM.m23, oldM.m30, oldM.m31, oldM.m32, oldM.m33 );
 		newM.transpose();
@@ -109,7 +105,6 @@ class AffineMatrix4x4Handler implements Handler< javax.vecmath.Matrix4d, edu.cmu
  * @author Dennis Cosgrove
  */
 class Matrix3x3Handler implements Handler< javax.vecmath.Matrix3d, edu.cmu.cs.dennisc.math.Matrix3x3 > {
-	@Override
 	public edu.cmu.cs.dennisc.math.Matrix3x3 convert(javax.vecmath.Matrix3d oldM) {
 		//assert oldM.m00 == oldM.m11 && oldM.m00 == oldM.m22 : oldM;
 		
@@ -147,8 +142,6 @@ class EnumHandler<O,N extends Enum<?>> implements Handler<O, N> {
  */
 class AppearanceHandler implements Handler< edu.cmu.cs.stage3.alice.scenegraph.Appearance, SingleAppearance > {
 	java.util.Map< edu.cmu.cs.stage3.alice.scenegraph.TextureMap, edu.cmu.cs.dennisc.texture.BufferedImageTexture > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();  
-	
-	@Override
 	public SingleAppearance convert(edu.cmu.cs.stage3.alice.scenegraph.Appearance oldValue) {
 		SingleAppearance rv = new SingleAppearance();
 		edu.cmu.cs.stage3.alice.scenegraph.TextureMap oldTextureMap = oldValue.getDiffuseColorMap();
@@ -172,12 +165,62 @@ class AppearanceHandler implements Handler< edu.cmu.cs.stage3.alice.scenegraph.A
 	}
 }
 
+class IndexedTriangleArrayCleaner {
+	public static boolean isCleaningNecessary( edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices ) {
+		final int N = vertices.length;
+		for( int i=0; i<N; i++ ) {
+			edu.cmu.cs.dennisc.scenegraph.Vertex vI = vertices[ i ];
+			for( int j=i+1; j<N; j++ ) {
+				edu.cmu.cs.dennisc.scenegraph.Vertex vJ = vertices[ j ];
+				if( vI.equals( vJ ) ) {
+					return true;
+				}
+			}
+		}
+		return false;
+		
+	}
+	public static IndexedTriangleArray clean( IndexedTriangleArray rv ) {
+		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = rv.vertices.getValue();
+		if( isCleaningNecessary( vertices ) ) {
+			java.util.Map< Integer, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.List< edu.cmu.cs.dennisc.scenegraph.Vertex > sharedVertices = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			final int N = vertices.length;
+			for( int i=0; i<N; i++ ) {
+				if( map.keySet().contains( i ) ) {
+					//pass
+				} else {
+					edu.cmu.cs.dennisc.scenegraph.Vertex vI = vertices[ i ];
+					//assert vI.equals( vI );
+					int sharedIndex = sharedVertices.size();
+					sharedVertices.add( vI );
+					map.put( i, sharedIndex );
+					for( int j=i+1; j<N; j++ ) {
+						edu.cmu.cs.dennisc.scenegraph.Vertex vJ = vertices[ j ];
+						if( vI.equals( vJ ) ) {
+							map.put( j, sharedIndex );
+						}
+					}
+				}
+			}
+			
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "sharing", rv.getName(), vertices.length, "--->", sharedVertices.size() );
+			rv.vertices.setValue( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( sharedVertices, edu.cmu.cs.dennisc.scenegraph.Vertex.class ) );
+			int[] array = rv.polygonData.getValue();
+			for( int i=0; i<array.length; i++ ) {
+				array[ i ] = map.get( array[ i ] );
+			}
+			
+		}
+		return rv;
+	}
+}
+
 /**
  * @author Dennis Cosgrove
  */
 class IndexedTriangleArrayHandler implements Handler< edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray, Geometry[] > {
-	@Override
-	public Geometry[] convert(edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray oldValue) {
+	public Geometry[] convert( edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray oldValue) {
 		edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] oldVertices = oldValue.getVertices();
 		if( oldVertices != null ) {
 			IndexedTriangleArray ita = new IndexedTriangleArray();
@@ -196,6 +239,8 @@ class IndexedTriangleArrayHandler implements Handler< edu.cmu.cs.stage3.alice.sc
 				triangleData[ i + 2 ] = a;
 			}
 			ita.polygonData.setValue( triangleData );
+			
+			IndexedTriangleArrayCleaner.clean( ita );
 			
 			return new Geometry[] { ita };
 		} else {
@@ -335,7 +380,7 @@ class ScenegraphBatch extends edu.cmu.cs.dennisc.batch.Batch {
 	
 	@Override
 	protected boolean isSkipExistingOutFilesDesirable() {
-		return false;
+		return edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "isSkipExistingOutFilesDesirable" );
 	}
 	@Override
 	protected void handle(java.io.File inFile, java.io.File outFile) {
@@ -366,8 +411,11 @@ class ScenegraphBatch extends edu.cmu.cs.dennisc.batch.Batch {
  */
 public class ConvertScenegraphFrom2To3 {
 	public static void main(String[] args) throws Exception {
-		final String ROOT = System.getProperty( "user.home" ) + "/Desktop/convert/";
+		final String ROOT = System.getProperty( "user.home" ) + "/Desktop/gallery_src/";
 		ScenegraphBatch scenegraphBatch = new ScenegraphBatch( ROOT + "default.a2w" );
-		scenegraphBatch.process( ROOT + "inGallery/", ROOT + "outGallery/", "a2c", "zip");
+		String subsetOrFull = "subset/";
+		//String subsetOrFull = "full/";
+		
+		scenegraphBatch.process( ROOT + subsetOrFull + "inGallery/", ROOT + subsetOrFull + "outGallery/", "a2c", "zip");
 	}
 }

@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.texture;
 
+import edu.cmu.cs.dennisc.math.Tuple3;
+import edu.cmu.cs.dennisc.math.Tuple3f;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -85,5 +88,31 @@ public class TextureCoordinate2f implements edu.cmu.cs.dennisc.codec.BinaryEncod
 	}
 	public boolean isNaN() {
 		return Float.isNaN( u ) || Float.isNaN( v );
+	}
+	
+	@Override
+	public final boolean equals( Object o ) {
+		if( this == o ) {
+			return true;
+		} else {
+			if( o != null ) {
+				if( this.getClass().equals( o.getClass() ) ) {
+					TextureCoordinate2f other = (TextureCoordinate2f)o;
+					return Float.compare( this.u, other.u ) == 0 && Float.compare( this.v, other.v ) == 0;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+	}
+	@Override
+	public final int hashCode() {
+		int rv = 17;
+		rv = 37*rv + this.getClass().hashCode();
+		rv = 37*rv + Float.floatToIntBits( this.u );
+		rv = 37*rv + Float.floatToIntBits( this.v );
+		return rv;
 	}
 }

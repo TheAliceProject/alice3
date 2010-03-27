@@ -294,13 +294,9 @@ public abstract class Tuple2f implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 	@Override
 	public final int hashCode() {
 		int rv = 17;
-		long lng;
-		
 		rv = 37*rv + this.getClass().hashCode();
-
 		rv = 37*rv + Float.floatToIntBits( this.x );
 		rv = 37*rv + Float.floatToIntBits( this.y );
-
 		return rv;
 	}
 	@Override

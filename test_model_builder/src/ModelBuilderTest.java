@@ -5,9 +5,11 @@ public class ModelBuilderTest {
 			path = args[ 0 ];
 			args = new String[] {};
 		} else {
-			path = System.getProperty( "user.home" ) + "/Desktop/penguin.zip";
+			path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/subset/outGallery/2/Animals/penguin.zip";
+			//path = System.getProperty( "user.home" ) + "/Desktop/penguin.zip";
 		}
 		java.io.File file = new java.io.File( path );
+		//assert file.exists();
 		if( file.exists() ) {
 			//pass
 		} else {
@@ -40,7 +42,7 @@ public class ModelBuilderTest {
 				for( int i = 0; i < N; i++ ) {
 					for( int j = 0; j < N; j++ ) {
 						edu.cmu.cs.dennisc.scenegraph.Transformable transformable = treeBuilder.buildTransformable();
-						transformable.setName( "penguins[" + i + "]["+ j + "]" );
+						transformable.setName( "penguins[" + i + "][" + j + "]" );
 						transformable.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() );
 						transformable.applyTranslation( -5.0 + i * 1.0, 0, -5.0 + j * 1.0 );
 						penguins[ i ][ j ] = transformable;

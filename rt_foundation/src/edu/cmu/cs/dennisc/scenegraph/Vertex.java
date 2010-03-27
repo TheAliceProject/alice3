@@ -139,56 +139,70 @@ public class Vertex implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecoda
 	//	}
 	@Override
 	public boolean equals( Object o ) {
-		if( o instanceof Vertex ) {
-			Vertex v = (Vertex)o;
-			if( v.position == null ) {
-				if( position != null ) {
-					return false;
-				}
-			} else {
-				if( !v.position.equals( position ) ) {
-					return false;
-				}
-			}
-			if( v.normal == null ) {
-				if( normal != null ) {
-					return false;
-				}
-			} else {
-				if( !v.normal.equals( normal ) ) {
-					return false;
-				}
-			}
-			if( v.diffuseColor == null ) {
-				if( diffuseColor != null ) {
-					return false;
-				}
-			} else {
-				if( !v.diffuseColor.equals( diffuseColor ) ) {
-					return false;
-				}
-			}
-			if( v.specularHighlightColor == null ) {
-				if( specularHighlightColor != null ) {
-					return false;
-				}
-			} else {
-				if( !v.specularHighlightColor.equals( specularHighlightColor ) ) {
-					return false;
-				}
-			}
-			if( v.textureCoordinate0 == null ) {
-				if( textureCoordinate0 != null ) {
-					return false;
-				}
-			} else {
-				if( !v.textureCoordinate0.equals( textureCoordinate0 ) ) {
-					return false;
-				}
-			}
+		if( this == o ) {
 			return true;
 		} else {
-			return false;
+			if( o instanceof Vertex ) {
+				Vertex v = (Vertex)o;
+				if( v.position.isNaN() ) {
+					if( this.position.isNaN() ) {
+						//pass
+					} else {
+						return false;
+					}
+				} else {
+					if( !v.position.equals( this.position ) ) {
+						return false;
+					}
+				}
+				if( v.normal.isNaN() ) {
+					if( this.normal.isNaN() ) {
+						//pass
+					} else {
+						return false;
+					}
+				} else {
+					if( !v.normal.equals( this.normal ) ) {
+						return false;
+					}
+				}
+				if( v.diffuseColor.isNaN() ) {
+					if( this.diffuseColor.isNaN() ) {
+						//pass
+					} else {
+						return false;
+					}
+				} else {
+					if( !v.diffuseColor.equals( diffuseColor ) ) {
+						return false;
+					}
+				}
+				if( v.specularHighlightColor.isNaN() ) {
+					if( this.specularHighlightColor.isNaN() ) {
+						//pass
+					} else {
+						return false;
+					}
+				} else {
+					if( !v.specularHighlightColor.equals( this.specularHighlightColor ) ) {
+						return false;
+					}
+				}
+				if( v.textureCoordinate0.isNaN() ) {
+					if( this.textureCoordinate0.isNaN() ) {
+						//pass
+					} else {
+						return false;
+					}
+				} else {
+					if( !v.textureCoordinate0.equals( this.textureCoordinate0 ) ) {
+						return false;
+					}
+				}
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 
