@@ -122,6 +122,15 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 		}
 	}
 	
+	public void getIndexedTriangleArrays( java.util.Set<edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray> set ) {
+		if( this.geometry != null ) {
+			set.add( this.geometry );
+		}
+		for( ModelPart child : this.children ) {
+			child.getIndexedTriangleArrays( set );
+		}
+	}
+	
 	private static int getID( Object o ) {
 		int rv;
 		if( o != null ) {

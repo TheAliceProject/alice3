@@ -16,6 +16,11 @@ public class ModelBuilder {
 	private static java.util.Map< java.io.File, ModelBuilder > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	//private static java.util.Map< java.io.File, TreeBuilder > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 
+	public Iterable<edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray> getIndexedTriangleArrays() {
+		java.util.Set<edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray> set = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+		this.root.getIndexedTriangleArrays( set );
+		return set;
+	}
 	public static ModelBuilder getInstance( java.io.File file ) throws java.io.IOException {
 		ModelBuilder rv = map.get( file );
 		if( rv != null ) {

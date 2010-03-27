@@ -5,7 +5,8 @@ public class ModelBuilderTest {
 			path = args[ 0 ];
 			args = new String[] {};
 		} else {
-			path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/subset/outGallery/2/Animals/penguin.zip";
+			path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/subset/smoothGallery/2/Animals/penguin.zip";
+			//path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/subset/outGallery/2/Animals/penguin.zip";
 			//path = System.getProperty( "user.home" ) + "/Desktop/penguin.zip";
 		}
 		java.io.File file = new java.io.File( path );
@@ -32,9 +33,9 @@ public class ModelBuilderTest {
 				sun.setVehicle( scene );
 				sun.turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, 0.25 );
 				camera.setVehicle( scene );
-				camera.move( org.alice.apis.moveandturn.MoveDirection.FORWARD, 20.0 );
-				camera.move( org.alice.apis.moveandturn.MoveDirection.UP, 10.0 );
-				camera.move( org.alice.apis.moveandturn.MoveDirection.RIGHT, 10.0 );
+				camera.move( org.alice.apis.moveandturn.MoveDirection.FORWARD, 2.0 );
+				camera.move( org.alice.apis.moveandturn.MoveDirection.UP, 1.0 );
+				camera.move( org.alice.apis.moveandturn.MoveDirection.RIGHT, 1.0 );
 				camera.pointAt( scene );
 
 				//scene.getSGComposite().addComponent( new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 2.0 ) );
@@ -45,6 +46,7 @@ public class ModelBuilderTest {
 						transformable.setName( "penguins[" + i + "][" + j + "]" );
 						transformable.setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() );
 						transformable.applyTranslation( -5.0 + i * 1.0, 0, -5.0 + j * 1.0 );
+						((edu.cmu.cs.dennisc.scenegraph.Visual)transformable.getComponentAt( 0 )).frontFacingAppearance.getValue().setFillingStyle( edu.cmu.cs.dennisc.scenegraph.FillingStyle.WIREFRAME );
 						penguins[ i ][ j ] = transformable;
 						scene.getSGComposite().addComponent( transformable );
 						//edu.cmu.cs.dennisc.print.PrintUtilities.println( transformable.getName() );

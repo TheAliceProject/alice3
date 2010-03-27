@@ -41,15 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.Composite;
-import edu.cmu.cs.dennisc.scenegraph.Element;
-import edu.cmu.cs.dennisc.scenegraph.FillingStyle;
-import edu.cmu.cs.dennisc.scenegraph.Geometry;
-import edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray;
-import edu.cmu.cs.dennisc.scenegraph.ShadingStyle;
-import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.*;
 
 /**
  * @author Dennis Cosgrove
@@ -240,7 +232,7 @@ class IndexedTriangleArrayHandler implements Handler< edu.cmu.cs.stage3.alice.sc
 			}
 			ita.polygonData.setValue( triangleData );
 			
-			IndexedTriangleArrayCleaner.clean( ita );
+			//IndexedTriangleArrayCleaner.clean( ita );
 			
 			return new Geometry[] { ita };
 		} else {
