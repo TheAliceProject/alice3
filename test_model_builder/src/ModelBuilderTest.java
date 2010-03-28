@@ -5,7 +5,7 @@ public class ModelBuilderTest {
 			path = args[ 0 ];
 			args = new String[] {};
 		} else {
-			path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/subset/smoothGallery/2/Animals/penguin.zip";
+			path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/subset/shared3Gallery/2/Animals/penguin.zip";
 			//path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/subset/outGallery/2/Animals/penguin.zip";
 			//path = System.getProperty( "user.home" ) + "/Desktop/penguin.zip";
 		}

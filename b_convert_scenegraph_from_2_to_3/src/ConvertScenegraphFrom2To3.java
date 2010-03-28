@@ -157,57 +157,6 @@ class AppearanceHandler implements Handler< edu.cmu.cs.stage3.alice.scenegraph.A
 	}
 }
 
-class IndexedTriangleArrayCleaner {
-	public static boolean isCleaningNecessary( edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices ) {
-		final int N = vertices.length;
-		for( int i=0; i<N; i++ ) {
-			edu.cmu.cs.dennisc.scenegraph.Vertex vI = vertices[ i ];
-			for( int j=i+1; j<N; j++ ) {
-				edu.cmu.cs.dennisc.scenegraph.Vertex vJ = vertices[ j ];
-				if( vI.equals( vJ ) ) {
-					return true;
-				}
-			}
-		}
-		return false;
-		
-	}
-	public static IndexedTriangleArray clean( IndexedTriangleArray rv ) {
-		edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices = rv.vertices.getValue();
-		if( isCleaningNecessary( vertices ) ) {
-			java.util.Map< Integer, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-			java.util.List< edu.cmu.cs.dennisc.scenegraph.Vertex > sharedVertices = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-			final int N = vertices.length;
-			for( int i=0; i<N; i++ ) {
-				if( map.keySet().contains( i ) ) {
-					//pass
-				} else {
-					edu.cmu.cs.dennisc.scenegraph.Vertex vI = vertices[ i ];
-					//assert vI.equals( vI );
-					int sharedIndex = sharedVertices.size();
-					sharedVertices.add( vI );
-					map.put( i, sharedIndex );
-					for( int j=i+1; j<N; j++ ) {
-						edu.cmu.cs.dennisc.scenegraph.Vertex vJ = vertices[ j ];
-						if( vI.equals( vJ ) ) {
-							map.put( j, sharedIndex );
-						}
-					}
-				}
-			}
-			
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( "sharing", rv.getName(), vertices.length, "--->", sharedVertices.size() );
-			rv.vertices.setValue( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( sharedVertices, edu.cmu.cs.dennisc.scenegraph.Vertex.class ) );
-			int[] array = rv.polygonData.getValue();
-			for( int i=0; i<array.length; i++ ) {
-				array[ i ] = map.get( array[ i ] );
-			}
-			
-		}
-		return rv;
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
@@ -231,9 +180,6 @@ class IndexedTriangleArrayHandler implements Handler< edu.cmu.cs.stage3.alice.sc
 				triangleData[ i + 2 ] = a;
 			}
 			ita.polygonData.setValue( triangleData );
-			
-			//IndexedTriangleArrayCleaner.clean( ita );
-			
 			return new Geometry[] { ita };
 		} else {
 			System.err.println( "warning: vertices null" );
@@ -408,6 +354,6 @@ public class ConvertScenegraphFrom2To3 {
 		String subsetOrFull = "subset/";
 		//String subsetOrFull = "full/";
 		
-		scenegraphBatch.process( ROOT + subsetOrFull + "inGallery/", ROOT + subsetOrFull + "outGallery/", "a2c", "zip");
+		scenegraphBatch.process( ROOT + subsetOrFull + "src2Gallery/", ROOT + subsetOrFull + "convertedTo3Gallery/", "a2c", "zip");
 	}
 }

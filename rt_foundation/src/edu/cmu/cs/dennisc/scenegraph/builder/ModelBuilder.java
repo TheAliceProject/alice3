@@ -7,7 +7,8 @@ public class ModelBuilder {
 
 	private static final String MAIN_ENTRY_PATH = "main.bin";
 	private static final String INDEXED_TRIANGLE_ARRAY_PREFIX = "indexedTriangleArrays/";
-	private static final String INDEXED_TRIANGLE_ARRAY_POSTFIX = ".bin";
+	private static final String MESH_PREFIX = "meshes/";
+	private static final String GEOMETRY_POSTFIX = ".bin";
 	private static final String BUFFERED_IMAGE_TEXTURE_PREFIX = "bufferedImageTextures/";
 	private static final String BUFFERED_IMAGE_TEXTURE_POSTFIX = ".png";
 
@@ -15,16 +16,18 @@ public class ModelBuilder {
 	}
 
 	private static java.util.Map< java.io.File, ModelBuilder > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	public Iterable< edu.cmu.cs.dennisc.scenegraph.Geometry > getGeometryReferences() {
+
+	public java.util.Set< edu.cmu.cs.dennisc.scenegraph.Geometry > getGeometries() {
 		return this.geometries;
 	}
-	
 	public void replaceGeometries( java.util.Map< edu.cmu.cs.dennisc.scenegraph.Geometry, edu.cmu.cs.dennisc.scenegraph.Geometry > map ) {
 		this.geometries.clear();
-		this.geometries.addAll( map.keySet() );
+		this.geometries.addAll( map.values() );
 		this.root.replaceGeometries( map );
 	}
-	
+	public static void forget( java.io.File file ) {
+		map.remove( file );
+	}
 	public static ModelBuilder getInstance( java.io.File file ) throws java.io.IOException {
 		ModelBuilder rv = map.get( file );
 		if( rv != null ) {
@@ -42,7 +45,7 @@ public class ModelBuilder {
 				for( String entryPath : map.keySet() ) {
 					java.io.InputStream is = new java.io.ByteArrayInputStream( map.get( entryPath ) );
 					if( entryPath.startsWith( INDEXED_TRIANGLE_ARRAY_PREFIX ) ) {
-						String s = entryPath.substring( INDEXED_TRIANGLE_ARRAY_PREFIX.length(), entryPath.length() - INDEXED_TRIANGLE_ARRAY_POSTFIX.length() );
+						String s = entryPath.substring( INDEXED_TRIANGLE_ARRAY_PREFIX.length(), entryPath.length() - GEOMETRY_POSTFIX.length() );
 						int id = Integer.parseInt( s );
 						edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
 						edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ita = new edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray();
@@ -50,6 +53,16 @@ public class ModelBuilder {
 						ita.polygonData.setValue( decoder.decodeIntArray() );
 						mapIdToGeometry.put( id, ita );
 
+					} else if( entryPath.startsWith( MESH_PREFIX ) ) {
+						String s = entryPath.substring( MESH_PREFIX.length(), entryPath.length() - GEOMETRY_POSTFIX.length() );
+						int id = Integer.parseInt( s );
+						edu.cmu.cs.dennisc.codec.BinaryDecoder decoder = new edu.cmu.cs.dennisc.codec.InputStreamBinaryDecoder( is );
+						edu.cmu.cs.dennisc.scenegraph.Mesh mesh = new edu.cmu.cs.dennisc.scenegraph.Mesh();
+						mesh.xyzs.setValue( decoder.decodeDoubleArray() );
+						mesh.ijks.setValue( decoder.decodeFloatArray() );
+						mesh.uvs.setValue( decoder.decodeFloatArray() );
+						mesh.xyzTriangleIndices.setValue( decoder.decodeShortArray() );
+						mapIdToGeometry.put( id, mesh );
 					} else if( entryPath.startsWith( BUFFERED_IMAGE_TEXTURE_PREFIX ) ) {
 						String s = entryPath.substring( BUFFERED_IMAGE_TEXTURE_PREFIX.length(), entryPath.length() - BUFFERED_IMAGE_TEXTURE_POSTFIX.length() );
 
@@ -95,6 +108,12 @@ public class ModelBuilder {
 						edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ita = (edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray)geometry;
 						encoder.encode( ita.vertices.getValue() );
 						encoder.encode( ita.polygonData.getValue() );
+					} else if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.Mesh ) {
+						edu.cmu.cs.dennisc.scenegraph.Mesh mesh = (edu.cmu.cs.dennisc.scenegraph.Mesh)geometry;
+						encoder.encode( mesh.xyzs.getValue() );
+						encoder.encode( mesh.ijks.getValue() );
+						encoder.encode( mesh.uvs.getValue() );
+						encoder.encode( mesh.xyzTriangleIndices.getValue() );
 					} else {
 						assert false;
 					}
@@ -140,7 +159,9 @@ public class ModelBuilder {
 
 	private static String getEntryPath( edu.cmu.cs.dennisc.scenegraph.Geometry geometry ) {
 		if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.IndexedTriangleArray ) {
-			return INDEXED_TRIANGLE_ARRAY_PREFIX + geometry.hashCode() + ".bin";
+			return INDEXED_TRIANGLE_ARRAY_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
+		} else if( geometry instanceof edu.cmu.cs.dennisc.scenegraph.Mesh ) {
+			return MESH_PREFIX + geometry.hashCode() + GEOMETRY_POSTFIX;
 		} else {
 			return null;
 		}
