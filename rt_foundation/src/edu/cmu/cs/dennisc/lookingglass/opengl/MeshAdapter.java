@@ -51,6 +51,11 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 	private float[] ijks;
 	private float[] uvs;
 	private short[] xyzTriangleIndices;
+	private short[] ijkTriangleIndices;
+	private short[] uvTriangleIndices;
+	private short[] xyzQuadrangleIndices;
+	private short[] ijkQuadrangleIndices;
+	private short[] uvQuadrangleIndices;
 	@Override
     public boolean isAlphaBlended() {
     	return false;
@@ -62,17 +67,33 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 	}
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
-		final int N = this.xyzTriangleIndices.length;
-		rc.gl.glBegin( javax.media.opengl.GL.GL_TRIANGLES );
-		try {
-			for( int i=0; i<N; i++ ) {
-				int xyzIndex = this.xyzTriangleIndices[ i ];
-				int ijkIndex = xyzIndex;
-				int uvIndex = xyzIndex;
-				renderVertex( rc, xyzIndex, ijkIndex, uvIndex ); 
+		final int N3 = this.xyzTriangleIndices != null ? this.xyzTriangleIndices.length : 0;
+		if( N3 > 0 ) {
+			rc.gl.glBegin( javax.media.opengl.GL.GL_TRIANGLES );
+			try {
+				for( int i=0; i<N3; i++ ) {
+					int xyzIndex = this.xyzTriangleIndices[ i ];
+					int ijkIndex = this.ijkTriangleIndices != null ? this.ijkTriangleIndices[ i ] : xyzIndex;
+					int uvIndex = this.uvTriangleIndices != null ? this.uvTriangleIndices[ i ] : xyzIndex;
+					renderVertex( rc, xyzIndex, ijkIndex, uvIndex ); 
+				}
+			} finally {
+				rc.gl.glEnd();
 			}
-		} finally {
-			rc.gl.glEnd();
+		}
+		final int N4 = this.xyzQuadrangleIndices != null ? this.xyzQuadrangleIndices.length : 0;
+		if( N4 > 0 ) {
+			rc.gl.glBegin( javax.media.opengl.GL.GL_QUADS );
+			try {
+				for( int i=0; i<N4; i++ ) {
+					int xyzIndex = this.xyzQuadrangleIndices[ i ];
+					int ijkIndex = this.ijkQuadrangleIndices != null ? this.ijkQuadrangleIndices[ i ] : xyzIndex;
+					int uvIndex = this.uvQuadrangleIndices != null ? this.uvQuadrangleIndices[ i ] : xyzIndex;
+					renderVertex( rc, xyzIndex, ijkIndex, uvIndex ); 
+				}
+			} finally {
+				rc.gl.glEnd();
+			}
 		}
 	}
 	@Override
@@ -94,19 +115,19 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
             this.xyzTriangleIndices = m_element.xyzTriangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.ijkTriangleIndices ) {
-            //todo
+            this.ijkTriangleIndices = m_element.ijkTriangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.uvTriangleIndices ) {
-            //todo
+            this.uvTriangleIndices = m_element.uvTriangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.xyzQuadrangleIndices ) {
-            //todo
+            this.xyzQuadrangleIndices = m_element.xyzQuadrangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.ijkQuadrangleIndices ) {
-            //todo
+            this.ijkQuadrangleIndices = m_element.ijkQuadrangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.uvQuadrangleIndices ) {
-            //todo
+            this.uvQuadrangleIndices = m_element.uvQuadrangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );

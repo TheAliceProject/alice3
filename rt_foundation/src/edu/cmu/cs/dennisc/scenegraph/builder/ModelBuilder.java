@@ -15,6 +15,24 @@ public class ModelBuilder {
 	private ModelBuilder() {
 	}
 
+	private static void safeEncode( edu.cmu.cs.dennisc.codec.BinaryEncoder encoder, short[] array ) {
+		boolean isNotNull = array != null;
+		encoder.encode( isNotNull );
+		if( isNotNull ) {
+			encoder.encode( array );
+		}
+	}
+	private static short[] safeDecodeShortArray( edu.cmu.cs.dennisc.codec.BinaryDecoder decoder ) {
+		boolean isNotNull = decoder.decodeBoolean();
+		short[] rv;
+		if( isNotNull ) {
+			rv = decoder.decodeShortArray();
+		} else {
+			rv = null;
+		}
+		return rv;
+	}
+
 	private static java.util.Map< java.io.File, ModelBuilder > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 
 	public java.util.Set< edu.cmu.cs.dennisc.scenegraph.Geometry > getGeometries() {
@@ -61,7 +79,12 @@ public class ModelBuilder {
 						mesh.xyzs.setValue( decoder.decodeDoubleArray() );
 						mesh.ijks.setValue( decoder.decodeFloatArray() );
 						mesh.uvs.setValue( decoder.decodeFloatArray() );
-						mesh.xyzTriangleIndices.setValue( decoder.decodeShortArray() );
+						mesh.xyzTriangleIndices.setValue( safeDecodeShortArray( decoder ) );
+						mesh.ijkTriangleIndices.setValue( safeDecodeShortArray( decoder ) );
+						mesh.uvTriangleIndices.setValue( safeDecodeShortArray( decoder ) );
+						mesh.xyzQuadrangleIndices.setValue( safeDecodeShortArray( decoder ) );
+						mesh.ijkQuadrangleIndices.setValue( safeDecodeShortArray( decoder ) );
+						mesh.uvQuadrangleIndices.setValue( safeDecodeShortArray( decoder ) );
 						mapIdToGeometry.put( id, mesh );
 					} else if( entryPath.startsWith( BUFFERED_IMAGE_TEXTURE_PREFIX ) ) {
 						String s = entryPath.substring( BUFFERED_IMAGE_TEXTURE_PREFIX.length(), entryPath.length() - BUFFERED_IMAGE_TEXTURE_POSTFIX.length() );
@@ -92,6 +115,7 @@ public class ModelBuilder {
 		}
 		return rv;
 	}
+	
 	public void encode( java.io.File file ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 
@@ -113,7 +137,12 @@ public class ModelBuilder {
 						encoder.encode( mesh.xyzs.getValue() );
 						encoder.encode( mesh.ijks.getValue() );
 						encoder.encode( mesh.uvs.getValue() );
-						encoder.encode( mesh.xyzTriangleIndices.getValue() );
+						safeEncode( encoder, mesh.xyzTriangleIndices.getValue() );
+						safeEncode( encoder, mesh.ijkTriangleIndices.getValue() );
+						safeEncode( encoder, mesh.uvTriangleIndices.getValue() );
+						safeEncode( encoder, mesh.xyzQuadrangleIndices.getValue() );
+						safeEncode( encoder, mesh.ijkQuadrangleIndices.getValue() );
+						safeEncode( encoder, mesh.uvQuadrangleIndices.getValue() );
 					} else {
 						assert false;
 					}

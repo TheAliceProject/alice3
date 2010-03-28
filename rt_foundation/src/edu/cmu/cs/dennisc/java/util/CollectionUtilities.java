@@ -88,4 +88,14 @@ public abstract class CollectionUtilities {
 			collection.add( e );
 		}
 	}
+	public static short[] createShortArray( java.util.Collection<Short> collection ) {
+		final int N = collection.size();
+		short[] rv = new short[ N ];
+		int i = 0;
+		for( Short s : collection ) {
+			rv[ i++ ] = s;
+		}
+		return rv;
+	}
+	//todo createIntArray, createFloatArray...
 }

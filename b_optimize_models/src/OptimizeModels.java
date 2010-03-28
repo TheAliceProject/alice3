@@ -114,12 +114,27 @@ public class OptimizeModels extends edu.cmu.cs.dennisc.batch.Batch {
 			uvs[ i*2+1 ] = v.textureCoordinate0.v;
 		}
 		
+		
 		int[] polygonData = ita.polygonData.getValue();
 		final int M = polygonData.length;
 		short[] xyzTriangleIndices = new short[ M ];
 		for( int i=0; i<M; i++ ) {
 			assert polygonData[ i ] <= Short.MAX_VALUE;
 			xyzTriangleIndices[ i ] = (short)polygonData[ i ];
+		}
+
+		for( int i=0; i<M; i+=3 ) {
+			short a1 = xyzTriangleIndices[ i+0 ];
+			short b1 = xyzTriangleIndices[ i+1 ];
+			short c1 = xyzTriangleIndices[ i+2 ];
+			assert a1 != b1;
+			assert a1 != c1;
+			for( int j=i+1; j<M; j+=3 ) {
+				short a2 = xyzTriangleIndices[ j+0 ];
+				short b2 = xyzTriangleIndices[ j+1 ];
+				short c2 = xyzTriangleIndices[ j+2 ];
+				assert a1 != a2 && b1 != b2 && c1 != c2;
+			}
 		}
 
 		Mesh rv = new Mesh();
@@ -161,8 +176,8 @@ public class OptimizeModels extends edu.cmu.cs.dennisc.batch.Batch {
 	public static void main(String[] args) throws Exception {
 		final String ROOT = System.getProperty( "user.home" ) + "/Desktop/gallery_src/";
 		OptimizeModels batch = new OptimizeModels();
-		String subsetOrFull = "subset/";
-		//String subsetOrFull = "full/";
+		//String subsetOrFull = "subset/";
+		String subsetOrFull = "full/";
 		batch.process( ROOT + subsetOrFull + "convertedTo3Gallery/", ROOT + subsetOrFull + "shared3Gallery/", "zip", "zip");
 	}
 }
