@@ -5,7 +5,7 @@ public class ModelBuilderTest {
 			path = args[ 0 ];
 			args = new String[] {};
 		} else {
-			path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/subset/smoothed3Gallery_2/2/Animals/penguin.zip";
+			path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/subset/shared3Gallery/2/Animals/Chicken.zip";
 		}
 		java.io.File file = new java.io.File( path );
 		//assert file.exists();

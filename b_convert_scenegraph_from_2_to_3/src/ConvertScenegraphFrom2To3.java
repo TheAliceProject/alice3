@@ -351,8 +351,8 @@ public class ConvertScenegraphFrom2To3 {
 	public static void main(String[] args) throws Exception {
 		final String ROOT = System.getProperty( "user.home" ) + "/Desktop/gallery_src/";
 		ScenegraphBatch scenegraphBatch = new ScenegraphBatch( ROOT + "default.a2w" );
-		//String subsetOrFull = "subset/";
-		String subsetOrFull = "full/";
+		String subsetOrFull = "subset/";
+		//String subsetOrFull = "full/";
 		scenegraphBatch.process( ROOT + subsetOrFull + "src2Gallery/", ROOT + subsetOrFull + "convertedTo3Gallery/", "a2c", "zip");
 	}
 }

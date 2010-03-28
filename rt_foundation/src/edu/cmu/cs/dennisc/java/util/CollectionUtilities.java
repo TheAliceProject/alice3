@@ -42,6 +42,8 @@
  */
 package edu.cmu.cs.dennisc.java.util;
 
+import java.util.LinkedList;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -92,10 +94,19 @@ public abstract class CollectionUtilities {
 		final int N = collection.size();
 		short[] rv = new short[ N ];
 		int i = 0;
-		for( Short s : collection ) {
-			rv[ i++ ] = s;
+		for( Short v : collection ) {
+			rv[ i++ ] = v;
 		}
 		return rv;
 	}
-	//todo createIntArray, createFloatArray...
+	public static int[] createIntArray( java.util.Collection<Integer> collection ) {
+		final int N = collection.size();
+		int[] rv = new int[ N ];
+		int i = 0;
+		for( Integer v : collection ) {
+			rv[ i++ ] = v;
+		}
+		return rv;
+	}
+	//todo createFloatArray...
 }

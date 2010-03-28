@@ -119,8 +119,9 @@ public class ModelPart implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDec
 	}
 
 	public void replaceGeometries( java.util.Map< edu.cmu.cs.dennisc.scenegraph.Geometry, edu.cmu.cs.dennisc.scenegraph.Geometry > map ) {
-		assert this.geometry != null;
-		this.geometry = map.get( this.geometry );
+		if( this.geometry != null ) {
+			this.geometry = map.get( this.geometry );
+		}
 		for( ModelPart child : this.children ) {
 			child.replaceGeometries( map );
 		}
