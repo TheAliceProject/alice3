@@ -63,7 +63,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.Abstract
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );
-					property.add( statements );
+					property.add( index, statements );
 					//todo: remove
 					getIDE().refreshUbiquitousPane();
 				}
