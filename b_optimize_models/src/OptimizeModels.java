@@ -324,9 +324,13 @@ public class OptimizeModels extends edu.cmu.cs.dennisc.batch.Batch {
 
 	public static void main(String[] args) throws Exception {
 		final String ROOT = System.getProperty( "user.home" ) + "/Desktop/gallery_src/";
+		String subsetOrFull;
+		if( args.length > 0 ) {
+			subsetOrFull = args[ 0 ];
+		} else {
+			subsetOrFull = "full";
+		}
 		OptimizeModels batch = new OptimizeModels();
-		//String subsetOrFull = "subset/";
-		String subsetOrFull = "full/";
-		batch.process( ROOT + subsetOrFull + "convertedTo3Gallery/", ROOT + subsetOrFull + "shared3Gallery/", "zip", "zip");
+		batch.process( ROOT + subsetOrFull + "/converted/", ROOT + subsetOrFull + "/shared/", "zip", "zip");
 	}
 }

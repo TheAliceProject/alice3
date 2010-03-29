@@ -350,9 +350,13 @@ class ScenegraphBatch extends edu.cmu.cs.dennisc.batch.Batch {
 public class ConvertScenegraphFrom2To3 {
 	public static void main(String[] args) throws Exception {
 		final String ROOT = System.getProperty( "user.home" ) + "/Desktop/gallery_src/";
+		String subsetOrFull;
+		if( args.length > 0 ) {
+			subsetOrFull = args[ 0 ];
+		} else {
+			subsetOrFull = "full";
+		}
 		ScenegraphBatch scenegraphBatch = new ScenegraphBatch( ROOT + "default.a2w" );
-		String subsetOrFull = "subset/";
-		//String subsetOrFull = "full/";
-		scenegraphBatch.process( ROOT + subsetOrFull + "src2Gallery/", ROOT + subsetOrFull + "convertedTo3Gallery/", "a2c", "zip");
+		scenegraphBatch.process( ROOT + subsetOrFull + "/src2/", ROOT + subsetOrFull + "/converted/", "a2c", "zip");
 	}
 }

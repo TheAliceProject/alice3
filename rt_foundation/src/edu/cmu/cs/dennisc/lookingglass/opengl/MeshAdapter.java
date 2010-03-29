@@ -60,46 +60,56 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
     public boolean isAlphaBlended() {
     	return false;
     }
-	private void renderVertex( RenderContext rc, int xyzIndex, int ijkIndex, int uvIndex ) {
-		rc.gl.glTexCoord2f( this.uvs[ uvIndex*2+0 ], this.uvs[ uvIndex*2+1 ] );
-		rc.gl.glNormal3f( this.ijks[ ijkIndex*3+0 ], this.ijks[ ijkIndex*3+1 ], this.ijks[ ijkIndex*3+2 ] );
-		rc.gl.glVertex3d( this.xyzs[ xyzIndex*3+0 ], this.xyzs[ xyzIndex*3+1 ], this.xyzs[ xyzIndex*3+2 ] );
+	private void renderVertex( javax.media.opengl.GL gl, int xyzIndex, int ijkIndex, int uvIndex ) {
+		gl.glTexCoord2f( this.uvs[ uvIndex*2+0 ], this.uvs[ uvIndex*2+1 ] );
+		gl.glNormal3f( this.ijks[ ijkIndex*3+0 ], this.ijks[ ijkIndex*3+1 ], this.ijks[ ijkIndex*3+2 ] );
+		gl.glVertex3d( this.xyzs[ xyzIndex*3+0 ], this.xyzs[ xyzIndex*3+1 ], this.xyzs[ xyzIndex*3+2 ] );
 	}
-	@Override
-	protected void renderGeometry( RenderContext rc ) {
+	
+	private void glGeometry( javax.media.opengl.GL gl ) {
 		final int N3 = this.xyzTriangleIndices != null ? this.xyzTriangleIndices.length : 0;
 		if( N3 > 0 ) {
-			rc.gl.glBegin( javax.media.opengl.GL.GL_TRIANGLES );
+			gl.glBegin( javax.media.opengl.GL.GL_TRIANGLES );
 			try {
 				for( int i=0; i<N3; i++ ) {
 					int xyzIndex = this.xyzTriangleIndices[ i ];
 					int ijkIndex = this.ijkTriangleIndices != null ? this.ijkTriangleIndices[ i ] : xyzIndex;
 					int uvIndex = this.uvTriangleIndices != null ? this.uvTriangleIndices[ i ] : xyzIndex;
-					renderVertex( rc, xyzIndex, ijkIndex, uvIndex ); 
+					renderVertex( gl, xyzIndex, ijkIndex, uvIndex ); 
 				}
 			} finally {
-				rc.gl.glEnd();
+				gl.glEnd();
 			}
 		}
 		final int N4 = this.xyzQuadrangleIndices != null ? this.xyzQuadrangleIndices.length : 0;
 		if( N4 > 0 ) {
-			rc.gl.glBegin( javax.media.opengl.GL.GL_QUADS );
+			gl.glBegin( javax.media.opengl.GL.GL_QUADS );
 			try {
 				for( int i=0; i<N4; i++ ) {
 					int xyzIndex = this.xyzQuadrangleIndices[ i ];
 					int ijkIndex = this.ijkQuadrangleIndices != null ? this.ijkQuadrangleIndices[ i ] : xyzIndex;
 					int uvIndex = this.uvQuadrangleIndices != null ? this.uvQuadrangleIndices[ i ] : xyzIndex;
-					renderVertex( rc, xyzIndex, ijkIndex, uvIndex ); 
+					renderVertex( gl, xyzIndex, ijkIndex, uvIndex ); 
 				}
 			} finally {
-				rc.gl.glEnd();
+				gl.glEnd();
 			}
 		}
 	}
 	@Override
+	protected void renderGeometry( RenderContext rc ) {
+		glGeometry( rc.gl );
+	}
+	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
-		throw new RuntimeException( "todo" );
-	}    
+		pc.gl.glPushName( -1 );
+		if( isSubElementRequired ) {
+			throw new RuntimeException( "todo" );
+		} else {
+			glGeometry( pc.gl );
+		}
+		pc.gl.glPopName();
+	}
 	@Override
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.xyzs ) {
