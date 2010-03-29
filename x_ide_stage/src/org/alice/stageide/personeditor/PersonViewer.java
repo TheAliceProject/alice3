@@ -244,7 +244,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 				edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation povAnimation = new edu.cmu.cs.dennisc.animation.affine.PointOfViewAnimation( this.getCamera().getSGAbstractTransformable(), edu.cmu.cs.dennisc.scenegraph.AsSeenBy.PARENT, null, nextPOV.getInternal() );
 				povAnimation.setDuration( duration );
 
-				animator.complete( null );
+				animator.completeAll( null );
 				animator.invokeLater( povAnimation, null );
 			}
 		}

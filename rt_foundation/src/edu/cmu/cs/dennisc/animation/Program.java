@@ -72,7 +72,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	
 	protected abstract boolean isRestartSupported();
 	protected void restart( java.util.EventObject e ) {
-		this.animator.complete( null );
+		this.animator.completeAll( null );
 	}
 
 	private Object monitor = new Object();
@@ -159,7 +159,7 @@ public abstract class Program extends edu.cmu.cs.dennisc.lookingglass.DefaultPro
 	@Override
 	protected void handleWindowClosed( java.awt.event.WindowEvent e ) {
 		super.handleWindowClosed( e );
-		this.animator.complete( null );
+		this.animator.completeAll( null );
 	}
 	public void perform( Animation animation, AnimationObserver animationObserver ) {
 		if( this.isClosed() ) {
