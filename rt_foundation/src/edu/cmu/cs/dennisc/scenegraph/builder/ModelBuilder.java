@@ -38,7 +38,7 @@ public class ModelBuilder {
 	public java.util.Set< edu.cmu.cs.dennisc.scenegraph.Geometry > getGeometries() {
 		return this.geometries;
 	}
-	public void replaceGeometries( java.util.Map< edu.cmu.cs.dennisc.scenegraph.Geometry, edu.cmu.cs.dennisc.scenegraph.Geometry > map ) {
+	public void replaceGeometries( java.util.Map< ? extends edu.cmu.cs.dennisc.scenegraph.Geometry, ? extends edu.cmu.cs.dennisc.scenegraph.Geometry > map ) {
 		this.geometries.clear();
 		this.geometries.addAll( map.values() );
 		this.root.replaceGeometries( map );
