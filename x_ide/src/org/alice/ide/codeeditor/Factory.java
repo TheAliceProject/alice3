@@ -42,12 +42,72 @@
  */
 package org.alice.ide.codeeditor;
 
+abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
+	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original;
+	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement;
+	public ConvertStatementWithBodyActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		this.property = property;
+		this.original = original;
+		this.replacement = replacement;
+	}
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		final int index = this.property.indexOf( this.original );
+		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
+		if( index >= 0 ) {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo( boolean isDo ) {
+					property.remove( index );
+					original.body.setValue( null );
+					replacement.body.setValue( body );
+					property.add( index, replacement );
+					//todo: remove
+					getIDE().refreshUbiquitousPane();
+				}
+				@Override
+				public void undo() {
+					property.remove( index );
+					replacement.body.setValue( null );
+					original.body.setValue( body );
+					property.add( index, original );
+					//todo: remove
+					getIDE().refreshUbiquitousPane();
+				}
+				@Override
+				protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
+					rv.append( "convert:" );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, original, locale);
+					rv.append( " --> " );
+					edu.cmu.cs.dennisc.alice.ast.Node.safeAppendRepr(rv, replacement, locale);
+					return rv;
+				}
+			} );
+		} else {
+			throw new RuntimeException();
+		}
+	}
+}
+class ConvertDoInOrderToDoTogetherActionOperation extends ConvertStatementWithBodyActionOperation {
+	public ConvertDoInOrderToDoTogetherActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder ) {
+		super( property, doInOrder, new edu.cmu.cs.dennisc.alice.ast.DoTogether() );
+		this.putValue( javax.swing.Action.NAME, "Convert To DoTogether" );
+	}
+}
+class ConvertDoTogetherToDoInOrderActionOperation extends ConvertStatementWithBodyActionOperation {
+	public ConvertDoTogetherToDoInOrderActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether ) {
+		super( property, doTogether, new edu.cmu.cs.dennisc.alice.ast.DoInOrder() );
+		this.putValue( javax.swing.Action.NAME, "Convert To DoInOrder" );
+	}
+}
+
 class DissolveStatementActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody;
 	public DissolveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-		this.putValue( javax.swing.Action.NAME, "Dissolve" );
+		this.putValue( javax.swing.Action.NAME, "Dissolve " + abstractStatementWithBody.getClass().getSimpleName() );
 		this.property = property;
 		this.abstractStatementWithBody = abstractStatementWithBody;
 	}
@@ -95,7 +155,16 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 
 	public DeleteStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-		this.putValue( javax.swing.Action.NAME, "Delete" );
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Delete " );
+		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
+			sb.append( "Statement" );
+		} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
+			sb.append( "If/Else" );
+		} else {
+			sb.append( statement.getClass().getSimpleName() );
+		}
+		this.putValue( javax.swing.Action.NAME, sb.toString() );
 		this.property = property;
 		this.statement = statement;
 	}
@@ -201,6 +270,13 @@ public class Factory extends org.alice.ide.common.Factory {
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody = (edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)statement;
 			rv.add( new DissolveStatementActionOperation( property, abstractStatementWithBody ) );
+			if( abstractStatementWithBody instanceof edu.cmu.cs.dennisc.alice.ast.DoInOrder ) {
+				edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder = (edu.cmu.cs.dennisc.alice.ast.DoInOrder)abstractStatementWithBody;
+				rv.add( new ConvertDoInOrderToDoTogetherActionOperation( property, doInOrder ) );
+			} else if( abstractStatementWithBody instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
+				edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether = (edu.cmu.cs.dennisc.alice.ast.DoTogether)abstractStatementWithBody;
+				rv.add( new ConvertDoTogetherToDoInOrderActionOperation( property, doTogether ) );
+			}
 		} else if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ConditionalStatement ) {
 			edu.cmu.cs.dennisc.alice.ast.ConditionalStatement conditionalStatement = (edu.cmu.cs.dennisc.alice.ast.ConditionalStatement)statement;
 			//todo: dissolve to if, dissolve to else
