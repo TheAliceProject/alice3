@@ -302,19 +302,53 @@ public class OptimizeModels extends edu.cmu.cs.dennisc.batch.Batch {
 		try {
 			edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder modelBuilder = edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder.getInstance( inFile );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( inFile );
-			java.util.Map< Geometry, Geometry > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.Map< IndexedTriangleArray, Mesh > mapITAToMesh = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 			for( Geometry geometry : modelBuilder.getGeometries() ) {
 				if( geometry instanceof IndexedTriangleArray ) {
 					IndexedTriangleArray ita = (IndexedTriangleArray)geometry;
 					shareVertices( ita );
 					removeExcessTriangles( ita );
 					Mesh mesh = meshify( ita );
-					map.put( ita, mesh );
+					mapITAToMesh.put( ita, mesh );
 				} else {
 					assert false;
 				}
 			}
-			modelBuilder.replaceGeometries( map );
+			modelBuilder.replaceGeometries( mapITAToMesh );
+			
+			
+			//todo:
+			/*
+			java.util.Map< Mesh, Mesh > mapMeshToMesh = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			java.util.ArrayList< Geometry > meshes = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( modelBuilder.getGeometries() );
+			int ideniticalCount = 0;
+			final int N = meshes.size();
+			for( int i=0; i<N; i++ ) {
+				Mesh meshI = (Mesh)meshes.get( i );
+				if( mapMeshToMesh.containsKey( meshI ) ) {
+					//pass
+				} else {
+					mapMeshToMesh.put( meshI, meshI );
+					for( int j=i+1; j<N; j++ ) {
+						Mesh meshJ = (Mesh)meshes.get( j );
+						if( java.util.Arrays.equals(  meshI.xyzs.getValue(),  meshJ.xyzs.getValue() ) ) {
+							if( java.util.Arrays.equals(  meshI.ijks.getValue(),  meshJ.ijks.getValue() ) ) {
+								if( java.util.Arrays.equals(  meshI.uvs.getValue(),  meshJ.uvs.getValue() ) ) {
+									if( java.util.Arrays.equals(  meshI.xyzTriangleIndices.getValue(),  meshJ.xyzTriangleIndices.getValue() ) ) {
+										mapMeshToMesh.put( meshJ, meshI );
+										edu.cmu.cs.dennisc.print.PrintUtilities.println( "found indentical", i, j );
+										ideniticalCount ++;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			modelBuilder.replaceGeometries( mapMeshToMesh );
+			assert meshes.size()-ideniticalCount == modelBuilder.getGeometries().size();
+			*/
+			
 			modelBuilder.encode( outFile );
 			edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder.forget( inFile );
 		} catch( Exception e ) {
