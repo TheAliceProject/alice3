@@ -19,14 +19,16 @@ public class TestMeshSmooth {
 					fillingStyle = edu.cmu.cs.dennisc.scenegraph.FillingStyle.SOLID;
 				}
 				for( edu.cmu.cs.dennisc.scenegraph.Transformable transformable : this.transformables ) {
-					transformable.accept( new edu.cmu.cs.dennisc.pattern.Visitor() {
-						public void visit(edu.cmu.cs.dennisc.pattern.Visitable visitable) {
-							if (visitable instanceof edu.cmu.cs.dennisc.scenegraph.Visual) {
-								edu.cmu.cs.dennisc.scenegraph.Visual visual = (edu.cmu.cs.dennisc.scenegraph.Visual) visitable;
-								visual.frontFacingAppearance.getValue().setFillingStyle( fillingStyle );
+					if( transformable != null ) {
+						transformable.accept( new edu.cmu.cs.dennisc.pattern.Visitor() {
+							public void visit(edu.cmu.cs.dennisc.pattern.Visitable visitable) {
+								if (visitable instanceof edu.cmu.cs.dennisc.scenegraph.Visual) {
+									edu.cmu.cs.dennisc.scenegraph.Visual visual = (edu.cmu.cs.dennisc.scenegraph.Visual) visitable;
+									visual.frontFacingAppearance.getValue().setFillingStyle( fillingStyle );
+								}
 							}
-						}
-					} );
+						} );
+					}
 				}
 				isSolid = !isSolid;
 			}
@@ -42,20 +44,25 @@ public class TestMeshSmooth {
 			@Override
 			protected void initialize() {
 				String subPath = "/2/Animals/Penguin.zip";
-				String[] locations = { "shared", "smoothed_0", "smoothed_1", "smoothed_2", "smoothed_3" };
+				String[] locations = { "shared", "smoothed_0", "arrayized_1", "arrayized_2", "smoothed_3" };
 				this.transformables = new edu.cmu.cs.dennisc.scenegraph.Transformable[ locations.length ];
 				int i = 0;
 				for( String location : locations ) {
 					String path = System.getProperty( "user.home" ) + "/Desktop/gallery_src/full/" + location + subPath;
 					java.io.File file = new java.io.File( path );
-					try {
-						final edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder builder = edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder.getInstance( file );
-						this.transformables[ i ] = builder.buildTransformable();
-						this.transformables[ i ].setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() );
-					} catch( java.io.IOException ioe ) {
-						throw new RuntimeException( file.toString(), ioe );
+					if( file.exists() ) {
+						try {
+							final edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder builder = edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder.getInstance( file );
+							this.transformables[ i ] = builder.buildTransformable();
+							this.transformables[ i ].setLocalTransformation( edu.cmu.cs.dennisc.math.AffineMatrix4x4.createIdentity() );
+						} catch( java.io.IOException ioe ) {
+							throw new RuntimeException( file.toString(), ioe );
+						}
+						edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder.forget( file );
+					} else {
+						edu.cmu.cs.dennisc.print.PrintUtilities.println( file + " not found." );
+						this.transformables[ i ] = null;
 					}
-					edu.cmu.cs.dennisc.scenegraph.builder.ModelBuilder.forget( file );
 					i++;
 				}
 

@@ -56,6 +56,13 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 	private short[] xyzQuadrangleIndices;
 	private short[] ijkQuadrangleIndices;
 	private short[] uvQuadrangleIndices;
+
+	private java.nio.DoubleBuffer xyzBuffer;
+	private java.nio.FloatBuffer ijkBuffer;
+	private java.nio.FloatBuffer uvBuffer;
+	private java.nio.ShortBuffer triangleIndexBuffer;
+	private java.nio.ShortBuffer quadrangleIndexBuffer;
+
 	@Override
     public boolean isAlphaBlended() {
     	return false;
@@ -68,31 +75,100 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 	
 	private void glGeometry( javax.media.opengl.GL gl ) {
 		final int N3 = this.xyzTriangleIndices != null ? this.xyzTriangleIndices.length : 0;
-		if( N3 > 0 ) {
-			gl.glBegin( javax.media.opengl.GL.GL_TRIANGLES );
-			try {
-				for( int i=0; i<N3; i++ ) {
-					int xyzIndex = this.xyzTriangleIndices[ i ];
-					int ijkIndex = this.ijkTriangleIndices != null ? this.ijkTriangleIndices[ i ] : xyzIndex;
-					int uvIndex = this.uvTriangleIndices != null ? this.uvTriangleIndices[ i ] : xyzIndex;
-					renderVertex( gl, xyzIndex, ijkIndex, uvIndex ); 
-				}
-			} finally {
-				gl.glEnd();
-			}
-		}
 		final int N4 = this.xyzQuadrangleIndices != null ? this.xyzQuadrangleIndices.length : 0;
-		if( N4 > 0 ) {
-			gl.glBegin( javax.media.opengl.GL.GL_QUADS );
-			try {
-				for( int i=0; i<N4; i++ ) {
-					int xyzIndex = this.xyzQuadrangleIndices[ i ];
-					int ijkIndex = this.ijkQuadrangleIndices != null ? this.ijkQuadrangleIndices[ i ] : xyzIndex;
-					int uvIndex = this.uvQuadrangleIndices != null ? this.uvQuadrangleIndices[ i ] : xyzIndex;
-					renderVertex( gl, xyzIndex, ijkIndex, uvIndex ); 
+		if( N3 > 0 || N4 > 0 ) {
+			final boolean isArrayRenderingDesired = false;
+			if( isArrayRenderingDesired==false || this.ijkTriangleIndices != null || this.uvTriangleIndices != null || this.ijkQuadrangleIndices != null || this.uvQuadrangleIndices != null ) {
+				if( N3 > 0 ) {
+					gl.glBegin( javax.media.opengl.GL.GL_TRIANGLES );
+					try {
+						for( int i=0; i<N3; i++ ) {
+							int xyzIndex = this.xyzTriangleIndices[ i ];
+							int ijkIndex = this.ijkTriangleIndices != null ? this.ijkTriangleIndices[ i ] : xyzIndex;
+							int uvIndex = this.uvTriangleIndices != null ? this.uvTriangleIndices[ i ] : xyzIndex;
+							renderVertex( gl, xyzIndex, ijkIndex, uvIndex ); 
+						}
+					} finally {
+						gl.glEnd();
+					}
 				}
-			} finally {
-				gl.glEnd();
+				if( N4 > 0 ) {
+					gl.glBegin( javax.media.opengl.GL.GL_QUADS );
+					try {
+						for( int i=0; i<N4; i++ ) {
+							int xyzIndex = this.xyzQuadrangleIndices[ i ];
+							int ijkIndex = this.ijkQuadrangleIndices != null ? this.ijkQuadrangleIndices[ i ] : xyzIndex;
+							int uvIndex = this.uvQuadrangleIndices != null ? this.uvQuadrangleIndices[ i ] : xyzIndex;
+							renderVertex( gl, xyzIndex, ijkIndex, uvIndex ); 
+						}
+					} finally {
+						gl.glEnd();
+					}
+				}
+			} else {
+				if( this.xyzBuffer != null ) {
+					//pass
+				} else {
+					this.xyzBuffer = com.sun.opengl.util.BufferUtil.newDoubleBuffer( xyzs.length );
+					this.xyzBuffer.put( this.xyzs );
+					this.xyzBuffer.rewind();
+				}
+				if( this.ijkBuffer != null ) {
+					//pass
+				} else {
+					this.ijkBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( ijks.length );
+					this.ijkBuffer.put( this.ijks );
+					this.ijkBuffer.rewind();
+				}
+				if( this.uvBuffer != null ) {
+					//pass
+				} else {
+					this.uvBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( uvs.length );
+					this.uvBuffer.put( this.uvs );
+					this.uvBuffer.rewind();
+				}
+				gl.glEnableClientState(javax.media.opengl.GL.GL_VERTEX_ARRAY);
+				gl.glEnableClientState(javax.media.opengl.GL.GL_NORMAL_ARRAY);
+				gl.glEnableClientState(javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY);
+				try {
+					gl.glVertexPointer( 3, javax.media.opengl.GL.GL_DOUBLE, 0, this.xyzBuffer );
+					gl.glNormalPointer( javax.media.opengl.GL.GL_FLOAT, 0, this.ijkBuffer );
+					gl.glTexCoordPointer( 2, javax.media.opengl.GL.GL_FLOAT, 0, this.uvBuffer );
+					if( N3 > 0 ) {
+						gl.glBegin(javax.media.opengl.GL.GL_TRIANGLES);
+						for( int i=0; i<this.xyzTriangleIndices.length; i++ ) {
+							gl.glArrayElement( i );
+						}
+						gl.glEnd();
+//						if( this.triangleIndexBuffer != null ) {
+//							//pass
+//						} else {
+//							this.triangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( N3 );
+//							this.triangleIndexBuffer.put( this.xyzTriangleIndices );
+//							this.triangleIndexBuffer.rewind();
+//						}
+//						gl.glDrawElements( javax.media.opengl.GL.GL_TRIANGLES, N3/3, javax.media.opengl.GL.GL_SHORT, this.triangleIndexBuffer );
+					}
+					if( N4 > 0 ) {
+						gl.glBegin(javax.media.opengl.GL.GL_QUADS);
+						for( int i=0; i<this.xyzQuadrangleIndices.length; i++ ) {
+							gl.glArrayElement( i );
+						}
+						gl.glEnd();
+//						if( this.quadrangleIndexBuffer != null ) {
+//							//pass
+//						} else {
+//							this.quadrangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( N4 );
+//							this.quadrangleIndexBuffer.put( this.xyzQuadrangleIndices );
+//							this.quadrangleIndexBuffer.rewind();
+//						}
+						//gl.glDrawElements( javax.media.opengl.GL.GL_QUADS, N4/4, javax.media.opengl.GL.GL_SHORT, this.quadrangleIndexBuffer );
+					}
+				} finally {		
+					gl.glDisableClientState(javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY);
+					gl.glDisableClientState(javax.media.opengl.GL.GL_NORMAL_ARRAY);
+					gl.glDisableClientState(javax.media.opengl.GL.GL_VERTEX_ARRAY);
+				}
 			}
 		}
 	}
@@ -114,15 +190,19 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
 		if( property == m_element.xyzs ) {
 			this.xyzs = m_element.xyzs.getValue();
+			this.xyzBuffer = null;
 			setIsGeometryChanged( true );
 		} else if( property == m_element.ijks ) {
 			this.ijks = m_element.ijks.getValue();
+			this.ijkBuffer = null;
 			setIsGeometryChanged( true );
 		} else if( property == m_element.uvs ) {
 			this.uvs = m_element.uvs.getValue();
+			this.uvBuffer = null;
 			setIsGeometryChanged( true );
 		} else if( property == m_element.xyzTriangleIndices ) {
             this.xyzTriangleIndices = m_element.xyzTriangleIndices.getValue();
+			this.triangleIndexBuffer = null;
 			setIsGeometryChanged( true );
 		} else if( property == m_element.ijkTriangleIndices ) {
             this.ijkTriangleIndices = m_element.ijkTriangleIndices.getValue();
@@ -132,6 +212,7 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 			setIsGeometryChanged( true );
 		} else if( property == m_element.xyzQuadrangleIndices ) {
             this.xyzQuadrangleIndices = m_element.xyzQuadrangleIndices.getValue();
+			this.quadrangleIndexBuffer = null;
 			setIsGeometryChanged( true );
 		} else if( property == m_element.ijkQuadrangleIndices ) {
             this.ijkQuadrangleIndices = m_element.ijkQuadrangleIndices.getValue();
