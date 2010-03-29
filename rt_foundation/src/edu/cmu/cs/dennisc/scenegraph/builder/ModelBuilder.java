@@ -55,7 +55,6 @@ public class ModelBuilder {
 			try {
 				java.util.Map< Integer, edu.cmu.cs.dennisc.scenegraph.Geometry > mapIdToGeometry = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 				java.util.Map< Integer, edu.cmu.cs.dennisc.texture.BufferedImageTexture > mapIdToTexture = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-
 				java.io.FileInputStream fis = new java.io.FileInputStream( file );
 				java.util.Map< String, byte[] > map = edu.cmu.cs.dennisc.zip.ZipUtilities.extract( fis );
 

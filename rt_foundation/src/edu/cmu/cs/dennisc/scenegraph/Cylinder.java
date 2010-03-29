@@ -104,9 +104,10 @@ public class Cylinder extends Shape {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty< OriginAlignment > originAlignment = new edu.cmu.cs.dennisc.property.InstanceProperty< OriginAlignment >( this, OriginAlignment.BOTTOM ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, OriginAlignment value ) {
-			//todo: check isEqual
-			super.setValue( owner, value );
-			Cylinder.this.fireBoundChange();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				super.setValue( owner, value );
+				Cylinder.this.fireBoundChange();
+			}
 		};
 	};
 	
@@ -114,9 +115,10 @@ public class Cylinder extends Shape {
 	public final edu.cmu.cs.dennisc.property.InstanceProperty< BottomToTopAxis > bottomToTopAxis = new edu.cmu.cs.dennisc.property.InstanceProperty< BottomToTopAxis >( this, BottomToTopAxis.POSITIVE_Y ) {
 		@Override
 		public void setValue( edu.cmu.cs.dennisc.property.PropertyOwner owner, BottomToTopAxis value ) {
-			//todo: check isEqual
-			super.setValue( owner, value );
-			Cylinder.this.fireBoundChange();
+			if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+				super.setValue( owner, value );
+				Cylinder.this.fireBoundChange();
+			}
 		};
 	};
 	public final edu.cmu.cs.dennisc.property.BooleanProperty hasBottomCap = new edu.cmu.cs.dennisc.property.BooleanProperty( this, true );

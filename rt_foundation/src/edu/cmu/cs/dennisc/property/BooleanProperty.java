@@ -52,7 +52,9 @@ public class BooleanProperty extends InstanceProperty<Boolean> {
 	@Override
 	public void setValue( PropertyOwner owner, Boolean value ) {
 		assert value != null;
-		super.setValue( owner, value );
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areNotEquivalent( value, this.getValue( owner ) ) ) {
+			super.setValue( owner, value );
+		}
 	}
 
 	public void setValueAsInteger( Integer value ) {
