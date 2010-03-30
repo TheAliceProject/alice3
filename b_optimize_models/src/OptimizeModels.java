@@ -239,6 +239,47 @@ public class OptimizeModels extends edu.cmu.cs.dennisc.batch.Batch {
 		}
 		return rv;
 	}
+	private static IndexedTriangleArray removeUnreferencedVertices( IndexedTriangleArray rv ) {
+		Vertex[] vertices = rv.vertices.getValue();
+		final int N = vertices.length;
+		boolean[] isReferencedArray = new boolean[ N ]; 
+		int[] polygonData = rv.polygonData.getValue();
+		
+		for( int i : polygonData ) {
+			isReferencedArray[ i ] = true;
+		}
+		
+		boolean isRequiringTrimming = false;
+		for( boolean isReferenced : isReferencedArray ) {
+			if( isReferenced ) {
+				//pass
+			} else {
+				isRequiringTrimming = true;
+				break;
+			}
+		}
+		
+		if( isRequiringTrimming ) {
+			java.util.List< Vertex > trimmedVertices = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			java.util.Map< Integer, Integer > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			for( int i=0; i<N; i++ ) {
+				if( isReferencedArray[ i ] ) {
+					map.put( i, trimmedVertices.size() );
+					trimmedVertices.add( vertices[ i ] );
+				}
+			}
+			
+			//not necessary at the moment, but might as well create new array
+			int[] reassignedPolygonData = new int[ polygonData.length ];
+			for( int i=0; i<polygonData.length; i++ ) {
+				reassignedPolygonData[ i ] = map.get( polygonData[ i ] );
+			}
+			
+			rv.vertices.setValue( edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( trimmedVertices, Vertex.class ) );
+			rv.polygonData.setValue( reassignedPolygonData );
+		}
+		return rv;
+	}
 	private static Mesh meshify( IndexedTriangleArray ita ) {
 		Vertex[] vertices = ita.vertices.getValue();
 		final int N = vertices.length;
@@ -308,6 +349,7 @@ public class OptimizeModels extends edu.cmu.cs.dennisc.batch.Batch {
 					IndexedTriangleArray ita = (IndexedTriangleArray)geometry;
 					shareVertices( ita );
 					removeExcessTriangles( ita );
+					removeUnreferencedVertices( ita );
 					Mesh mesh = meshify( ita );
 					mapITAToMesh.put( ita, mesh );
 				} else {
