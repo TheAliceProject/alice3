@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/b_batch"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/lg_walkandtouch_gallery_generated"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_foundation"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_issue"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/rt_moveandturn_generated"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
