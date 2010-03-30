@@ -43,8 +43,8 @@ public class TestMeshSmooth {
 			}
 			@Override
 			protected void initialize() {
-				String subPath = "/2/Animals/Penguin.zip";
-				String[] locations = { "shared", "smoothed_0", "arrayized_1", "arrayized_2", "smoothed_3" };
+				String subPath = "/2/People/EvilNinja.zip";
+				String[] locations = { "shared", "smoothed_0", "smoothed_1", "smoothed_2", "consolidated_0", "consolidated_1", "consolidated_2" };
 				this.transformables = new edu.cmu.cs.dennisc.scenegraph.Transformable[ locations.length ];
 				int i = 0;
 				for( String location : locations ) {
@@ -73,10 +73,10 @@ public class TestMeshSmooth {
 				sun.setVehicle( scene );
 				sun.turn( org.alice.apis.moveandturn.TurnDirection.FORWARD, 0.25 );
 				camera.setVehicle( scene );
-				camera.move( org.alice.apis.moveandturn.MoveDirection.FORWARD, 5.0 );
-				camera.move( org.alice.apis.moveandturn.MoveDirection.UP, 2.0 );
-				camera.move( org.alice.apis.moveandturn.MoveDirection.RIGHT, 0.2 );
-				camera.pointAt( scene.createOffsetStandIn( org.alice.apis.moveandturn.MoveDirection.UP, 0.75 ) );
+				camera.move( org.alice.apis.moveandturn.MoveDirection.FORWARD, 4.0 );
+				camera.move( org.alice.apis.moveandturn.MoveDirection.UP, 1.5 );
+				camera.move( org.alice.apis.moveandturn.MoveDirection.RIGHT, -0.5 );
+				camera.pointAt( scene.createOffsetStandIn( org.alice.apis.moveandturn.MoveDirection.UP, 0.9 ) );
 
 				scene.getSGComposite().addComponent( this.parent );
 				//scene.getSGComposite().addComponent( new edu.cmu.cs.dennisc.scenegraph.util.ExtravagantAxes( 2.0 ) );
@@ -109,6 +109,12 @@ public class TestMeshSmooth {
 								break;
 							case java.awt.event.KeyEvent.VK_4:
 								setModelIndex( 4 );
+								break;
+							case java.awt.event.KeyEvent.VK_5:
+								setModelIndex( 5 );
+								break;
+							case java.awt.event.KeyEvent.VK_6:
+								setModelIndex( 6 );
 								break;
 							}
 						}

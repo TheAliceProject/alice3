@@ -175,59 +175,57 @@ public class ConsolidateMeshes extends edu.cmu.cs.dennisc.batch.Batch {
 		updateVertexSet( vertices, xyzQuadrangleIndices, ijkQuadrangleIndices, uvQuadrangleIndices );
 
 
-//		int min = edu.cmu.cs.dennisc.java.lang.MathUtilities.minInt( prevPositions.length, prevNormals.length, textureCoordinates.length );
-//		int max = edu.cmu.cs.dennisc.java.lang.MathUtilities.maxInt( prevPositions.length, prevNormals.length, textureCoordinates.length );
-		int min = edu.cmu.cs.dennisc.java.lang.MathUtilities.minInt( prevPositions.length, prevNormals.length, vertices.size() );
-		int max = edu.cmu.cs.dennisc.java.lang.MathUtilities.maxInt( prevPositions.length, prevNormals.length, vertices.size() );
+		int min = edu.cmu.cs.dennisc.java.lang.MathUtilities.minInt( prevPositions.length, prevNormals.length, prevTextureCoordinates.length, vertices.size() );
+		int max = edu.cmu.cs.dennisc.java.lang.MathUtilities.maxInt( prevPositions.length, prevNormals.length, prevTextureCoordinates.length, vertices.size() );
 
 		final int N = vertices.size();
 		if( N < Short.MAX_VALUE ) {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( points.length, normals.length, textureCoordinates.length, vertices.size() );
 			double factor = max / (double)min;
 			if( factor > 2.0 ) {
-				System.err.println( "over threshold: skipping" );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( factor );
-				//edu.cmu.cs.dennisc.print.PrintUtilities.println( prevPositions.length, prevNormals.length, prevTextureCoordinates.length );
+				System.err.println( "WARNING: over threshold: " +  factor);
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( System.err, prevPositions.length, prevNormals.length, prevTextureCoordinates.length, vertices.size() );
 				//assert false;
-			} else {
-				double[] nextXYZs = new double[ N*3 ];
-				float[] nextIJKs = new float[ N*3 ];
-				float[] nextUVs = new float[ N*2 ];
-				int iXYZ = 0;
-				int iIJK = 0;
-				int iUV = 0;
-				
-				short iVertex = 0;
-				java.util.Map< Vertex, Short > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-				for( Vertex vertex : vertices ) {
-					edu.cmu.cs.dennisc.math.Point3 position = prevPositions[ vertex.positionIndex ];
-					nextXYZs[ iXYZ++ ] = position.x;
-					nextXYZs[ iXYZ++ ] = position.y;
-					nextXYZs[ iXYZ++ ] = position.z;
-					edu.cmu.cs.dennisc.math.Vector3f normal = prevNormals[ vertex.normalIndex ];
-					nextIJKs[ iIJK++ ] = normal.x;
-					nextIJKs[ iIJK++ ] = normal.y;
-					nextIJKs[ iIJK++ ] = normal.z;
-					edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate = prevTextureCoordinates[ vertex.textureCoordIndex ];
-					nextUVs[ iUV++ ] = textureCoordinate.u;
-					nextUVs[ iUV++ ] = textureCoordinate.v;
-					
-					map.put( vertex, iVertex++ );
-				}
-				
-				rv.xyzs.setValue( nextXYZs );
-				rv.ijks.setValue( nextIJKs );
-				rv.uvs.setValue( nextUVs );
-				
-				rv.xyzTriangleIndices.setValue( createIndices( xyzTriangleIndices, ijkTriangleIndices, uvTriangleIndices, map ) );
-				rv.ijkTriangleIndices.setValue( null );
-				rv.uvTriangleIndices.setValue( null );
-				
-				rv.xyzQuadrangleIndices.setValue( createIndices( xyzQuadrangleIndices, ijkQuadrangleIndices, uvQuadrangleIndices, map ) );
-				rv.ijkQuadrangleIndices.setValue( null );
-				rv.uvQuadrangleIndices.setValue( null );
 			}
+			double[] nextXYZs = new double[ N*3 ];
+			float[] nextIJKs = new float[ N*3 ];
+			float[] nextUVs = new float[ N*2 ];
+			int iXYZ = 0;
+			int iIJK = 0;
+			int iUV = 0;
+			
+			short iVertex = 0;
+			java.util.Map< Vertex, Short > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+			for( Vertex vertex : vertices ) {
+				edu.cmu.cs.dennisc.math.Point3 position = prevPositions[ vertex.positionIndex ];
+				nextXYZs[ iXYZ++ ] = position.x;
+				nextXYZs[ iXYZ++ ] = position.y;
+				nextXYZs[ iXYZ++ ] = position.z;
+				edu.cmu.cs.dennisc.math.Vector3f normal = prevNormals[ vertex.normalIndex ];
+				nextIJKs[ iIJK++ ] = normal.x;
+				nextIJKs[ iIJK++ ] = normal.y;
+				nextIJKs[ iIJK++ ] = normal.z;
+				edu.cmu.cs.dennisc.texture.TextureCoordinate2f textureCoordinate = prevTextureCoordinates[ vertex.textureCoordIndex ];
+				nextUVs[ iUV++ ] = textureCoordinate.u;
+				nextUVs[ iUV++ ] = textureCoordinate.v;
+				
+				map.put( vertex, iVertex++ );
+			}
+			
+			rv.xyzs.setValue( nextXYZs );
+			rv.ijks.setValue( nextIJKs );
+			rv.uvs.setValue( nextUVs );
+			
+			rv.xyzTriangleIndices.setValue( createIndices( xyzTriangleIndices, ijkTriangleIndices, uvTriangleIndices, map ) );
+			rv.ijkTriangleIndices.setValue( null );
+			rv.uvTriangleIndices.setValue( null );
+			
+			rv.xyzQuadrangleIndices.setValue( createIndices( xyzQuadrangleIndices, ijkQuadrangleIndices, uvQuadrangleIndices, map ) );
+			rv.ijkQuadrangleIndices.setValue( null );
+			rv.uvQuadrangleIndices.setValue( null );
 		} else {
+			System.err.println( "vertex count greater than max short: " + vertices.size() );
+			assert false;
 		}
 
 		return rv;
@@ -266,6 +264,8 @@ public class ConsolidateMeshes extends edu.cmu.cs.dennisc.batch.Batch {
 			subsetOrFull = "full";
 		}
 		ConsolidateMeshes batch = new ConsolidateMeshes();
-		batch.process( ROOT + subsetOrFull + "/smoothed_2/", ROOT + subsetOrFull + "/arrayized_2/", "zip", "zip" );
+		for( int i=0; i<3; i++ ) {
+			batch.process( ROOT + subsetOrFull + "/smoothed_" + i + "/", ROOT + subsetOrFull + "/consolidated_" + i + "/", "zip", "zip" );
+		}
 	}
 }
