@@ -46,7 +46,7 @@ import edu.cmu.cs.dennisc.scenegraph.*;
 /**
  * @author Dennis Cosgrove
  */
-public class OptimizeModels extends edu.cmu.cs.dennisc.batch.Batch {
+public class CleanModels extends edu.cmu.cs.dennisc.batch.Batch {
 	private static boolean isSharingVerticesNecessary( edu.cmu.cs.dennisc.scenegraph.Vertex[] vertices ) {
 		final int N = vertices.length;
 		for( int i=0; i<N; i++ ) {
@@ -406,7 +406,7 @@ public class OptimizeModels extends edu.cmu.cs.dennisc.batch.Batch {
 		} else {
 			subsetOrFull = "full";
 		}
-		OptimizeModels batch = new OptimizeModels();
-		batch.process( ROOT + subsetOrFull + "/converted/", ROOT + subsetOrFull + "/shared/", "zip", "zip");
+		CleanModels batch = new CleanModels();
+		batch.process( ROOT + subsetOrFull + "/converted/", ROOT + subsetOrFull + "/cleaned/", "zip", "zip");
 	}
 }

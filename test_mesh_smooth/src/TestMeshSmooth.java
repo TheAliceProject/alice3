@@ -43,7 +43,7 @@ public class TestMeshSmooth {
 			}
 			@Override
 			protected void initialize() {
-				String subPath = "/2/People/EvilNinja.zip";
+				String subPath = "/2/Animals/Penguin.zip";
 				String[] locations = { "shared", "smoothed_0", "smoothed_1", "smoothed_2", "consolidated_0", "consolidated_1", "consolidated_2" };
 				this.transformables = new edu.cmu.cs.dennisc.scenegraph.Transformable[ locations.length ];
 				int i = 0;
