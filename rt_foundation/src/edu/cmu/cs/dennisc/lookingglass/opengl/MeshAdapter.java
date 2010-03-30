@@ -64,117 +64,124 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 	private java.nio.ShortBuffer quadrangleIndexBuffer;
 
 	@Override
-    public boolean isAlphaBlended() {
-    	return false;
-    }
-	private void renderVertex( javax.media.opengl.GL gl, int xyzIndex, int ijkIndex, int uvIndex ) {
-		gl.glTexCoord2f( this.uvs[ uvIndex*2+0 ], this.uvs[ uvIndex*2+1 ] );
-		gl.glNormal3f( this.ijks[ ijkIndex*3+0 ], this.ijks[ ijkIndex*3+1 ], this.ijks[ ijkIndex*3+2 ] );
-		gl.glVertex3d( this.xyzs[ xyzIndex*3+0 ], this.xyzs[ xyzIndex*3+1 ], this.xyzs[ xyzIndex*3+2 ] );
+	public boolean isAlphaBlended() {
+		return false;
 	}
-	
-	private void glGeometry( javax.media.opengl.GL gl ) {
-		final int N3 = this.xyzTriangleIndices != null ? this.xyzTriangleIndices.length : 0;
-		final int N4 = this.xyzQuadrangleIndices != null ? this.xyzQuadrangleIndices.length : 0;
-		if( N3 > 0 || N4 > 0 ) {
-			final boolean isArrayRenderingDesired = false;
-			if( isArrayRenderingDesired==false || this.ijkTriangleIndices != null || this.uvTriangleIndices != null || this.ijkQuadrangleIndices != null || this.uvQuadrangleIndices != null ) {
-				if( N3 > 0 ) {
-					gl.glBegin( javax.media.opengl.GL.GL_TRIANGLES );
-					try {
-						for( int i=0; i<N3; i++ ) {
-							int xyzIndex = this.xyzTriangleIndices[ i ];
-							int ijkIndex = this.ijkTriangleIndices != null ? this.ijkTriangleIndices[ i ] : xyzIndex;
-							int uvIndex = this.uvTriangleIndices != null ? this.uvTriangleIndices[ i ] : xyzIndex;
-							renderVertex( gl, xyzIndex, ijkIndex, uvIndex ); 
-						}
-					} finally {
-						gl.glEnd();
-					}
+	private void glDraw( javax.media.opengl.GL gl, int mode, short[] xyzIndices, short[] ijkIndices, short[] uvIndices ) {
+		final int N = xyzIndices != null ? xyzIndices.length : 0;
+		if( N > 0 ) {
+			gl.glBegin( mode );
+			try {
+				for( int i = 0; i < N; i++ ) {
+					int xyzIndex = xyzIndices[ i ];
+					int ijkIndex = ijkIndices != null ? ijkIndices[ i ] : xyzIndex;
+					int uvIndex = uvIndices != null ? uvIndices[ i ] : xyzIndex;
+					gl.glTexCoord2f( this.uvs[ uvIndex * 2 + 0 ], this.uvs[ uvIndex * 2 + 1 ] );
+					gl.glNormal3f( this.ijks[ ijkIndex * 3 + 0 ], this.ijks[ ijkIndex * 3 + 1 ], this.ijks[ ijkIndex * 3 + 2 ] );
+					gl.glVertex3d( this.xyzs[ xyzIndex * 3 + 0 ], this.xyzs[ xyzIndex * 3 + 1 ], this.xyzs[ xyzIndex * 3 + 2 ] );
 				}
-				if( N4 > 0 ) {
-					gl.glBegin( javax.media.opengl.GL.GL_QUADS );
-					try {
-						for( int i=0; i<N4; i++ ) {
-							int xyzIndex = this.xyzQuadrangleIndices[ i ];
-							int ijkIndex = this.ijkQuadrangleIndices != null ? this.ijkQuadrangleIndices[ i ] : xyzIndex;
-							int uvIndex = this.uvQuadrangleIndices != null ? this.uvQuadrangleIndices[ i ] : xyzIndex;
-							renderVertex( gl, xyzIndex, ijkIndex, uvIndex ); 
-						}
-					} finally {
-						gl.glEnd();
-					}
-				}
+			} finally {
+				gl.glEnd();
+			}
+		}
+	}
+	private void glDrawElements( javax.media.opengl.GL gl, int mode, boolean b ) {
+		if( b ) {
+			short[] xyzIndices;
+			if( mode == javax.media.opengl.GL.GL_TRIANGLES ) {
+				xyzIndices = this.xyzTriangleIndices;
+			} else if( mode == javax.media.opengl.GL.GL_QUADS ) {
+				xyzIndices = this.xyzQuadrangleIndices;
 			} else {
-				if( this.xyzBuffer != null ) {
-					//pass
-				} else {
-					this.xyzBuffer = com.sun.opengl.util.BufferUtil.newDoubleBuffer( xyzs.length );
-					this.xyzBuffer.put( this.xyzs );
-					this.xyzBuffer.rewind();
-				}
-				if( this.ijkBuffer != null ) {
-					//pass
-				} else {
-					this.ijkBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( ijks.length );
-					this.ijkBuffer.put( this.ijks );
-					this.ijkBuffer.rewind();
-				}
-				if( this.uvBuffer != null ) {
-					//pass
-				} else {
-					this.uvBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( uvs.length );
-					this.uvBuffer.put( this.uvs );
-					this.uvBuffer.rewind();
-				}
-				gl.glEnableClientState(javax.media.opengl.GL.GL_VERTEX_ARRAY);
-				gl.glEnableClientState(javax.media.opengl.GL.GL_NORMAL_ARRAY);
-				gl.glEnableClientState(javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY);
+				throw new AssertionError();
+			}
+			final int N = xyzIndices != null ? xyzIndices.length : 0;
+			if( N > 0 ) {
+				gl.glBegin( mode );
 				try {
-					gl.glVertexPointer( 3, javax.media.opengl.GL.GL_DOUBLE, 0, this.xyzBuffer );
-					gl.glNormalPointer( javax.media.opengl.GL.GL_FLOAT, 0, this.ijkBuffer );
-					gl.glTexCoordPointer( 2, javax.media.opengl.GL.GL_FLOAT, 0, this.uvBuffer );
-					if( N3 > 0 ) {
-						gl.glBegin(javax.media.opengl.GL.GL_TRIANGLES);
-						for( int i=0; i<this.xyzTriangleIndices.length; i++ ) {
-							gl.glArrayElement( i );
-						}
-						gl.glEnd();
-//						if( this.triangleIndexBuffer != null ) {
-//							//pass
-//						} else {
-//							this.triangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( N3 );
-//							this.triangleIndexBuffer.put( this.xyzTriangleIndices );
-//							this.triangleIndexBuffer.rewind();
-//						}
-//						gl.glDrawElements( javax.media.opengl.GL.GL_TRIANGLES, N3/3, javax.media.opengl.GL.GL_SHORT, this.triangleIndexBuffer );
+					for( int i = 0; i < xyzIndices.length; i++ ) {
+						gl.glArrayElement( i );
 					}
-					if( N4 > 0 ) {
-						gl.glBegin(javax.media.opengl.GL.GL_QUADS);
-						for( int i=0; i<this.xyzQuadrangleIndices.length; i++ ) {
-							gl.glArrayElement( i );
-						}
-						gl.glEnd();
-//						if( this.quadrangleIndexBuffer != null ) {
-//							//pass
-//						} else {
-//							this.quadrangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( N4 );
-//							this.quadrangleIndexBuffer.put( this.xyzQuadrangleIndices );
-//							this.quadrangleIndexBuffer.rewind();
-//						}
-						//gl.glDrawElements( javax.media.opengl.GL.GL_QUADS, N4/4, javax.media.opengl.GL.GL_SHORT, this.quadrangleIndexBuffer );
-					}
-				} finally {		
-					gl.glDisableClientState(javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY);
-					gl.glDisableClientState(javax.media.opengl.GL.GL_NORMAL_ARRAY);
-					gl.glDisableClientState(javax.media.opengl.GL.GL_VERTEX_ARRAY);
+				} finally {
+					gl.glEnd();
 				}
+			}
+		} else {
+			if( mode == javax.media.opengl.GL.GL_TRIANGLES ) {
+				if( this.triangleIndexBuffer != null ) {
+					//pass
+				} else {
+					this.triangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( this.xyzTriangleIndices.length );
+					this.triangleIndexBuffer.put( this.xyzTriangleIndices );
+				}
+				this.triangleIndexBuffer.rewind();
+				
+				gl.glDrawElements( mode, this.xyzTriangleIndices.length/3, javax.media.opengl.GL.GL_SHORT, this.triangleIndexBuffer );
+			} else if( mode == javax.media.opengl.GL.GL_QUADS ) {
+				if( this.quadrangleIndexBuffer != null ) {
+					//pass
+				} else {
+					this.quadrangleIndexBuffer = com.sun.opengl.util.BufferUtil.newShortBuffer( this.xyzQuadrangleIndices.length );
+					this.quadrangleIndexBuffer.put( this.xyzQuadrangleIndices );
+					this.quadrangleIndexBuffer.rewind();
+				}
+				gl.glDrawElements( mode, this.xyzQuadrangleIndices.length/4, javax.media.opengl.GL.GL_SHORT, this.quadrangleIndexBuffer );
+			} else {
+				throw new AssertionError();
+			}
+		}
+	}
+
+	private void glGeometry( javax.media.opengl.GL gl, boolean isArrayRenderingDesired ) {
+		if( isArrayRenderingDesired == false || this.ijkTriangleIndices != null || this.uvTriangleIndices != null || this.ijkQuadrangleIndices != null || this.uvQuadrangleIndices != null ) {
+			glDraw( gl, javax.media.opengl.GL.GL_TRIANGLES, this.xyzTriangleIndices, this.ijkTriangleIndices, this.uvTriangleIndices );
+			glDraw( gl, javax.media.opengl.GL.GL_QUADS, this.xyzQuadrangleIndices, this.ijkQuadrangleIndices, this.uvQuadrangleIndices );
+		} else {
+			if( this.xyzBuffer != null ) {
+				//pass
+			} else {
+				this.xyzBuffer = com.sun.opengl.util.BufferUtil.newDoubleBuffer( xyzs.length );
+				this.xyzBuffer.put( this.xyzs );
+			}
+			this.xyzBuffer.rewind();
+			if( this.ijkBuffer != null ) {
+				//pass
+			} else {
+				this.ijkBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( ijks.length );
+				this.ijkBuffer.put( this.ijks );
+			}
+			this.ijkBuffer.rewind();
+			if( this.uvBuffer != null ) {
+				//pass
+			} else {
+				this.uvBuffer = com.sun.opengl.util.BufferUtil.newFloatBuffer( uvs.length );
+				this.uvBuffer.put( this.uvs );
+			}
+			this.uvBuffer.rewind();
+			gl.glEnableClientState( javax.media.opengl.GL.GL_VERTEX_ARRAY );
+			gl.glEnableClientState( javax.media.opengl.GL.GL_NORMAL_ARRAY );
+			gl.glEnableClientState( javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY );
+			try {
+				gl.glVertexPointer( 3, javax.media.opengl.GL.GL_DOUBLE, 0, this.xyzBuffer );
+				gl.glNormalPointer( javax.media.opengl.GL.GL_FLOAT, 0, this.ijkBuffer );
+				gl.glTexCoordPointer( 2, javax.media.opengl.GL.GL_FLOAT, 0, this.uvBuffer );
+				
+				boolean b = true;
+				glDrawElements( gl, javax.media.opengl.GL.GL_TRIANGLES, b );
+				glDrawElements( gl, javax.media.opengl.GL.GL_QUADS, b );
+			} finally {
+				gl.glDisableClientState( javax.media.opengl.GL.GL_TEXTURE_COORD_ARRAY );
+				gl.glDisableClientState( javax.media.opengl.GL.GL_NORMAL_ARRAY );
+				gl.glDisableClientState( javax.media.opengl.GL.GL_VERTEX_ARRAY );
 			}
 		}
 	}
 	@Override
 	protected void renderGeometry( RenderContext rc ) {
-		glGeometry( rc.gl );
+//		if( xyzs != null && xyzs.length > Short.MAX_VALUE / 3 ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning" );
+//		}
+		glGeometry( rc.gl, false );
 	}
 	@Override
 	protected void pickGeometry( PickContext pc, boolean isSubElementRequired ) {
@@ -182,12 +189,12 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 		if( isSubElementRequired ) {
 			throw new RuntimeException( "todo" );
 		} else {
-			glGeometry( pc.gl );
+			glGeometry( pc.gl, false );
 		}
 		pc.gl.glPopName();
 	}
 	@Override
-	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty<?> property ) {
+	protected void propertyChanged( edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
 		if( property == m_element.xyzs ) {
 			this.xyzs = m_element.xyzs.getValue();
 			this.xyzBuffer = null;
@@ -201,31 +208,31 @@ public class MeshAdapter extends GeometryAdapter< edu.cmu.cs.dennisc.scenegraph.
 			this.uvBuffer = null;
 			setIsGeometryChanged( true );
 		} else if( property == m_element.xyzTriangleIndices ) {
-            this.xyzTriangleIndices = m_element.xyzTriangleIndices.getValue();
+			this.xyzTriangleIndices = m_element.xyzTriangleIndices.getValue();
 			this.triangleIndexBuffer = null;
 			setIsGeometryChanged( true );
 		} else if( property == m_element.ijkTriangleIndices ) {
-            this.ijkTriangleIndices = m_element.ijkTriangleIndices.getValue();
+			this.ijkTriangleIndices = m_element.ijkTriangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.uvTriangleIndices ) {
-            this.uvTriangleIndices = m_element.uvTriangleIndices.getValue();
+			this.uvTriangleIndices = m_element.uvTriangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.xyzQuadrangleIndices ) {
-            this.xyzQuadrangleIndices = m_element.xyzQuadrangleIndices.getValue();
+			this.xyzQuadrangleIndices = m_element.xyzQuadrangleIndices.getValue();
 			this.quadrangleIndexBuffer = null;
 			setIsGeometryChanged( true );
 		} else if( property == m_element.ijkQuadrangleIndices ) {
-            this.ijkQuadrangleIndices = m_element.ijkQuadrangleIndices.getValue();
+			this.ijkQuadrangleIndices = m_element.ijkQuadrangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else if( property == m_element.uvQuadrangleIndices ) {
-            this.uvQuadrangleIndices = m_element.uvQuadrangleIndices.getValue();
+			this.uvQuadrangleIndices = m_element.uvQuadrangleIndices.getValue();
 			setIsGeometryChanged( true );
 		} else {
 			super.propertyChanged( property );
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource(edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement) {
+	public edu.cmu.cs.dennisc.math.Point3 getIntersectionInSource( edu.cmu.cs.dennisc.math.Point3 rv, edu.cmu.cs.dennisc.math.Ray ray, edu.cmu.cs.dennisc.math.AffineMatrix4x4 m, int subElement ) {
 		rv.setNaN();
 		return rv;
 	}

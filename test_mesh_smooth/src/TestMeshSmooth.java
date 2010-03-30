@@ -66,7 +66,9 @@ public class TestMeshSmooth {
 					i++;
 				}
 
-				this.currentTransformable = transformables[ 2 ];
+				int initialIndex = 4;
+				this.currentTransformable = transformables[ initialIndex ];
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( locations[ initialIndex ] );
 				this.parent.addComponent( this.currentTransformable );
 				this.parent.putBonusDataFor( org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.MOVEABLE_OBJECTS );
 
