@@ -225,7 +225,7 @@ public class ConsolidateMeshes extends edu.cmu.cs.dennisc.batch.Batch {
 			rv.uvQuadrangleIndices.setValue( null );
 		} else {
 			System.err.println( "vertex count greater than max short: " + vertices.size() );
-			assert false;
+			//assert false;
 		}
 
 		return rv;
