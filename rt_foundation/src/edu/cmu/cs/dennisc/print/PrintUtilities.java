@@ -80,8 +80,7 @@ public abstract class PrintUtilities {
 				double[].class, 
 				java.nio.IntBuffer.class, 
 				java.nio.FloatBuffer.class, 
-				java.nio.DoubleBuffer.class,
-				Printable.class
+				java.nio.DoubleBuffer.class
 		};
 		for( Class<?> cls : classes ) {
 			s_classToAppendMethod.put( cls, getMethod( "append", cls  ) );
@@ -172,36 +171,42 @@ public abstract class PrintUtilities {
 		}
 		for( Object value : values ) {
 			if( value != null ) {
-				java.util.Map< Class< ? >, java.lang.reflect.Method > map;
-				if( isSingleLine ) {
-					map = s_classToAppendMethod;
+				if( value instanceof Printable ) {
+					Printable printable = (Printable)value;
+					printable.append( rv, s_decimalFormat, isSingleLine==false );
 				} else {
-					map = s_classToAppendLinesMethod;
-				}
-				java.lang.reflect.Method method = map.get( value.getClass() );
-				if( method != null ) {
-					Object[] args = { rv, value };
-					edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( null, method, args );
-				} else {
-					if( value instanceof Object[] ) {
-						Object[] array = (Object[])value;
-						rv.append( array.getClass().getComponentType().getName() );
-						rv.append( "[]: " );
-						rv.append( "length=" );
-						rv.append( array.length );
-						rv.append( "; values=[ " );
-						for( int i = 0; i < array.length; i++ ) {
-							if( isSingleLine ) {
-								append( rv, array[ i ] );
-								rv.append( " " );
-							} else {
-								appendLines( rv, array[ i ] );
-								rv.append( "\n" );
-							}
-						}
-						rv.append( "]" );
+					java.util.Map< Class< ? >, java.lang.reflect.Method > map;
+					if( isSingleLine ) {
+						map = s_classToAppendMethod;
 					} else {
-						rv.append( value );
+						map = s_classToAppendLinesMethod;
+					}
+					Class<?> cls = value.getClass();
+					java.lang.reflect.Method method = map.get( cls );
+					if( method != null ) {
+						Object[] args = { rv, value };
+						edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( null, method, args );
+					} else {
+						if( value instanceof Object[] ) {
+							Object[] array = (Object[])value;
+							rv.append( array.getClass().getComponentType().getName() );
+							rv.append( "[]: " );
+							rv.append( "length=" );
+							rv.append( array.length );
+							rv.append( "; values=[ " );
+							for( int i = 0; i < array.length; i++ ) {
+								if( isSingleLine ) {
+									append( rv, array[ i ] );
+									rv.append( " " );
+								} else {
+									appendLines( rv, array[ i ] );
+									rv.append( "\n" );
+								}
+							}
+							rv.append( "]" );
+						} else {
+							rv.append( value );
+						}
 					}
 				}
 			} else {

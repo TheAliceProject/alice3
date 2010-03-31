@@ -136,6 +136,108 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		return right.isNaN() || up.isNaN() || backward.isNaN() || translation.isNaN();
 	}
 
+	public StringBuffer append( StringBuffer rv, java.text.DecimalFormat decimalFormat, boolean isLines ) {
+		if( isLines ) {
+			int n = decimalFormat.format( 0.0 ).length() + 1;
+			rv.append( "+-" );
+			for( int i = 0; i < 4; i++ ) {
+				for( int j = 0; j < n; j++ ) {
+					rv.append( ' ' );
+				}
+			}
+			rv.append( "-+\n" );
+
+			rv.append( "| " );
+			rv.append( decimalFormat.format( this.right.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.up.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.backward.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.x ) );
+			rv.append( "  |\n" );
+
+			rv.append( "| " );
+			rv.append( decimalFormat.format( this.right.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.up.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.backward.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.y ) );
+			rv.append( "  |\n" );
+
+			rv.append( "| " );
+			rv.append( decimalFormat.format( this.right.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.up.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.backward.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.z ) );
+			rv.append( "  |\n" );
+
+			rv.append( "| " );
+			rv.append( decimalFormat.format( this.right.w ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.up.w ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.backward.w ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.w ) );
+			rv.append( "  |\n" );
+
+			rv.append( "+-" );
+			for( int i = 0; i < 4; i++ ) {
+				for( int j = 0; j < n; j++ ) {
+					rv.append( ' ' );
+				}
+			}
+			rv.append( "-+\n" );
+		} else {
+			rv.append( "[ " );
+			rv.append( decimalFormat.format( this.right.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.up.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.backward.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.x ) );
+			rv.append( "  ] " );
+
+			rv.append( "[ " );
+			rv.append( decimalFormat.format( this.right.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.up.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.backward.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.y ) );
+			rv.append( "  ] " );
+
+			rv.append( "[ " );
+			rv.append( decimalFormat.format( this.right.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.up.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.backward.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.z ) );
+			rv.append( "  ] " );
+
+			rv.append( "[ " );
+			rv.append( decimalFormat.format( this.right.w ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.up.w ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.backward.w ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.w ) );
+			rv.append( "  ] " );
+		}
+		return rv;
+	}
+
 	//Identity
 	private static final Matrix4x4 IDENTITY = Matrix4x4.createNaN();
 	public static Matrix4x4 accessIdentity() {

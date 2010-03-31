@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractMatrix4x4 {
+public abstract class AbstractMatrix4x4 implements edu.cmu.cs.dennisc.print.Printable {
 	public abstract double[] getAsColumnMajorArray16( double[] rv );
 	public final double[] getAsColumnMajorArray16() {
 		return getAsColumnMajorArray16( new double[ 16 ] );

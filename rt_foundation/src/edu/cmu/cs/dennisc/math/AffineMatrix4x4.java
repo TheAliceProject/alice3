@@ -104,7 +104,107 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	public boolean isAffine() {
 		return true;
 	}
+	public StringBuffer append( StringBuffer rv, java.text.DecimalFormat decimalFormat, boolean isLines ) {
+		if( isLines ) {
+			int n = decimalFormat.format( 0.0 ).length() + 1;
+			rv.append( "+-" );
+			for( int i = 0; i < 4; i++ ) {
+				for( int j = 0; j < n; j++ ) {
+					rv.append( ' ' );
+				}
+			}
+			rv.append( "-+\n" );
 
+			rv.append( "| " );
+			rv.append( decimalFormat.format( this.orientation.right.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.up.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.backward.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.x ) );
+			rv.append( "  |\n" );
+
+			rv.append( "| " );
+			rv.append( decimalFormat.format( this.orientation.right.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.up.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.backward.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.y ) );
+			rv.append( "  |\n" );
+
+			rv.append( "| " );
+			rv.append( decimalFormat.format( this.orientation.right.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.up.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.backward.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.z ) );
+			rv.append( "  |\n" );
+
+			rv.append( "| " );
+			rv.append( decimalFormat.format( 0 ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( 0 ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( 0 ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( 1 ) );
+			rv.append( "  |\n" );
+
+			rv.append( "+-" );
+			for( int i = 0; i < 4; i++ ) {
+				for( int j = 0; j < n; j++ ) {
+					rv.append( ' ' );
+				}
+			}
+			rv.append( "-+\n" );
+		} else {
+			rv.append( "[ " );
+			rv.append( decimalFormat.format( this.orientation.right.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.up.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.backward.x ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.x ) );
+			rv.append( "  ] " );
+
+			rv.append( "[ " );
+			rv.append( decimalFormat.format( this.orientation.right.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.up.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.backward.y ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.y ) );
+			rv.append( "  ] " );
+
+			rv.append( "[ " );
+			rv.append( decimalFormat.format( this.orientation.right.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.up.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.orientation.backward.z ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( this.translation.z ) );
+			rv.append( "  ] " );
+
+			rv.append( "[ " );
+			rv.append( decimalFormat.format( 0 ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( 0 ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( 0 ) );
+			rv.append( ' ' );
+			rv.append( decimalFormat.format( 1 ) );
+			rv.append( "  ] " );
+		}
+		return rv;
+	}
 	
 	//NaN
 	public static AffineMatrix4x4 setReturnValueToNaN( AffineMatrix4x4 rv ) {
