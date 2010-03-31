@@ -151,10 +151,12 @@ public class CheckForScaledSpace {
 										if( m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
 											//pass
 										} else {
-											edu.cmu.cs.dennisc.print.PrintUtilities.printlns( clsName );
-											edu.cmu.cs.dennisc.print.PrintUtilities.println( transformable.getName() );
-											edu.cmu.cs.dennisc.print.PrintUtilities.println( m.orientation.right.calculateMagnitude(), m.orientation.up.calculateMagnitude(), m.orientation.backward.calculateMagnitude() );
-											edu.cmu.cs.dennisc.print.PrintUtilities.printlns();
+											
+											edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.exorciseTheDemonsOfScaledSpace( transformable );
+//											edu.cmu.cs.dennisc.print.PrintUtilities.printlns( clsName );
+//											edu.cmu.cs.dennisc.print.PrintUtilities.println( transformable.getName() );
+//											edu.cmu.cs.dennisc.print.PrintUtilities.println( m.orientation.right.calculateMagnitude(), m.orientation.up.calculateMagnitude(), m.orientation.backward.calculateMagnitude() );
+//											edu.cmu.cs.dennisc.print.PrintUtilities.printlns();
 										}
 									}
 								}

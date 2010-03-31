@@ -75,4 +75,31 @@ public class ScaleUtilities {
 	public static void applyScale( edu.cmu.cs.dennisc.scenegraph.Component sgComponent, edu.cmu.cs.dennisc.math.Vector3 axis, edu.cmu.cs.dennisc.pattern.Criterion< edu.cmu.cs.dennisc.scenegraph.Component > inclusionCriterion ) {
 		applyScale( sgComponent, sgComponent, axis, inclusionCriterion );
 	}
+	
+	public static void exorciseTheDemonsOfScaledSpace( edu.cmu.cs.dennisc.scenegraph.Transformable sgTransformable ) {
+		edu.cmu.cs.dennisc.math.AffineMatrix4x4 m = sgTransformable.localTransformation.getValue();
+		if( m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
+			//pass
+		} else {
+			double xScale = m.orientation.right.calculateMagnitude();
+			double yScale = m.orientation.up.calculateMagnitude();
+			double zScale = m.orientation.backward.calculateMagnitude();
+			
+			applyScale( sgTransformable, new edu.cmu.cs.dennisc.math.Vector3( xScale, yScale, zScale ), null );
+			
+			edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3 inverseScale = edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3.createIdentity();
+			inverseScale.right.x = 1/xScale;
+			inverseScale.up.y = 1/yScale;
+			inverseScale.backward.z = 1/zScale;
+			m.orientation.applyMultiplication( inverseScale );
+			
+			assert m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+		}
+		for( edu.cmu.cs.dennisc.scenegraph.Component sgChild : sgTransformable.accessComponents() ) {
+			if( sgChild instanceof edu.cmu.cs.dennisc.scenegraph.Transformable ) {
+				edu.cmu.cs.dennisc.scenegraph.Transformable sgChildTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)sgChild;
+				exorciseTheDemonsOfScaledSpace( sgChildTransformable );
+			}
+		}
+	}
 }
