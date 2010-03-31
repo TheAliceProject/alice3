@@ -141,7 +141,7 @@ public abstract class Tuple2f implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		setReturnValueToNaN( this );
 	}
 	public boolean isNaN() {
-		return Float.isNaN( x ) && Float.isNaN( y );
+		return Float.isNaN( x ) || Float.isNaN( y );
 	}
 	
 
