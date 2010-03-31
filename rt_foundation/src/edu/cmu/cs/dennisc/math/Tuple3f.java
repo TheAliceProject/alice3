@@ -97,8 +97,14 @@ public abstract class Tuple3f implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		return rv;
 	}
 
+	public boolean isWithinEpsilonOf( float x, float y, float z, float epsilon ) {
+		return EpsilonUtilities.isWithinEpsilon( this.x, x, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.y, y, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.z, z, epsilon );
+	}
+	public boolean isWithinReasonableEpsilonOf( float x, float y, float z ) {
+		return isWithinEpsilonOf( x, y, z, EpsilonUtilities.REASONABLE_EPSILON_FLOAT );
+	}
 	public boolean isWithinEpsilonOf( Tuple3f other, float epsilon ) {
-		return EpsilonUtilities.isWithinEpsilon( this.x, other.x, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.y, other.y, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.z, other.z, epsilon );
+		return isWithinEpsilonOf( other.x, other.y, other.z, epsilon );
 	}
 	public boolean isWithinReasonableEpsilonOf( Tuple3f other ) {
 		return isWithinEpsilonOf( other, EpsilonUtilities.REASONABLE_EPSILON_FLOAT );

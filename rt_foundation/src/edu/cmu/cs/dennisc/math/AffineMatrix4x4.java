@@ -443,4 +443,9 @@ public class AffineMatrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		}
 		return rv;
 	}
+	
+	@Override
+	public boolean isWithinEpsilonOfIdentity( double epsilon ) {
+		return this.orientation.isWithinEpsilonOfIdentity( epsilon ) && this.translation.isWithinEpsilonOfZero( epsilon );
+	}
 }

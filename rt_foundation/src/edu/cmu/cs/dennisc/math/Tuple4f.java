@@ -107,8 +107,14 @@ public abstract class Tuple4f implements edu.cmu.cs.dennisc.codec.BinaryEncodabl
 		return rv;
 	}
 
+	public boolean isWithinEpsilonOf( float x, float y, float z, float w, float epsilon ) {
+		return EpsilonUtilities.isWithinEpsilon( this.x, x, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.y, y, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.z, z, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.w, w, epsilon );
+	}
+	public boolean isWithinReasonableEpsilonOf( float x, float y, float z, float w ) {
+		return isWithinEpsilonOf( x, y, z, w, EpsilonUtilities.REASONABLE_EPSILON_FLOAT );
+	}
 	public boolean isWithinEpsilonOf( Tuple4f other, float epsilon ) {
-		return EpsilonUtilities.isWithinEpsilon( this.x, other.x, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.y, other.y, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.z, other.z, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.w, other.w, epsilon );
+		return isWithinEpsilonOf( other.x, other.y, other.z, other.w, epsilon );
 	}
 	public boolean isWithinReasonableEpsilonOf( Tuple4f other ) {
 		return isWithinEpsilonOf( other, EpsilonUtilities.REASONABLE_EPSILON_FLOAT );

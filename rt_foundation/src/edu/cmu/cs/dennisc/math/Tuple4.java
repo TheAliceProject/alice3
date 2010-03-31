@@ -107,12 +107,19 @@ public abstract class Tuple4 implements edu.cmu.cs.dennisc.codec.BinaryEncodable
 		return rv;
 	}
 
+	public boolean isWithinEpsilonOf( double x, double y, double z, double w, double epsilon ) {
+		return EpsilonUtilities.isWithinEpsilon( this.x, x, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.y, y, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.z, z, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.w, w, epsilon );
+	}
+	public boolean isWithinReasonableEpsilonOf( double x, double y, double z, double w ) {
+		return isWithinEpsilonOf( x, y, z, w, EpsilonUtilities.REASONABLE_EPSILON_FLOAT );
+	}
 	public boolean isWithinEpsilonOf( Tuple4 other, double epsilon ) {
-		return EpsilonUtilities.isWithinEpsilon( this.x, other.x, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.y, other.y, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.z, other.z, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.w, other.w, epsilon );
+		return isWithinEpsilonOf( other.x, other.y, other.z, other.w, epsilon );
 	}
 	public boolean isWithinReasonableEpsilonOf( Tuple4 other ) {
-		return isWithinEpsilonOf( other, EpsilonUtilities.REASONABLE_EPSILON );
+		return isWithinEpsilonOf( other, EpsilonUtilities.REASONABLE_EPSILON_FLOAT );
 	}
+
 
 	public boolean isWithinEpsilonOfUnitLengthSquared( double epsilon ) {
 		return EpsilonUtilities.isWithinEpsilonOf1InSquaredSpace( calculateMagnitudeSquared(), epsilon );

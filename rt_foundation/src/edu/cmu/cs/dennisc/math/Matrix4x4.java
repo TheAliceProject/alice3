@@ -531,6 +531,14 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	}
 	
 	@Override
+	public boolean isWithinEpsilonOfIdentity( double epsilon ) {
+		return 
+			this.right.isWithinEpsilonOf      ( 1.0, 0.0, 0.0, 0.0, epsilon ) && 
+			this.up.isWithinEpsilonOf         ( 0.0, 1.0, 0.0, 0.0, epsilon ) && 
+			this.backward.isWithinEpsilonOf   ( 0.0, 0.0, 1.0, 0.0, epsilon ) && 
+			this.translation.isWithinEpsilonOf( 0.0, 0.0, 0.0, 1.0, epsilon );
+	}
+	@Override
 	public boolean equals( Object o ) {
 		if( this == o ) {
 			return true;
@@ -563,4 +571,5 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 		}
 		return rv;
 	}
+	
 }

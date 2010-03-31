@@ -110,4 +110,9 @@ public abstract class AbstractMatrix4x4 {
 	public final void transform( Point3f b ) { 
 		setReturnValueToTransformed( b, b );
 	}
+	
+	public abstract boolean isWithinEpsilonOfIdentity( double epsilon );
+	public boolean isWithinReasonableEpsilonOfIdentity() {
+		return this.isWithinEpsilonOfIdentity( EpsilonUtilities.REASONABLE_EPSILON );
+	}
 }

@@ -87,8 +87,14 @@ public abstract class Tuple2 implements edu.cmu.cs.dennisc.codec.BinaryEncodable
 		return rv;
 	}
 
+	public boolean isWithinEpsilonOf( double x, double y, double epsilon ) {
+		return EpsilonUtilities.isWithinEpsilon( this.x, x, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.y, y, epsilon );
+	}
+	public boolean isWithinReasonableEpsilonOf( double x, double y ) {
+		return isWithinEpsilonOf( x, y, EpsilonUtilities.REASONABLE_EPSILON );
+	}
 	public boolean isWithinEpsilonOf( Tuple2 other, double epsilon ) {
-		return EpsilonUtilities.isWithinEpsilon( this.x, other.x, epsilon ) && EpsilonUtilities.isWithinEpsilon( this.y, other.y, epsilon );
+		return isWithinEpsilonOf( other.x, other.y, epsilon );
 	}
 	public boolean isWithinReasonableEpsilonOf( Tuple2 other ) {
 		return isWithinEpsilonOf( other, EpsilonUtilities.REASONABLE_EPSILON );
