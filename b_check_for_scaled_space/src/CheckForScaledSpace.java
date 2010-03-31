@@ -2,8 +2,8 @@
 public class CheckForScaledSpace {
 	public static void main(String[] args) throws Exception {
 		java.util.Set< String > doNotExistSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( 
-				"edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.pets.TeddyBear",
-				"edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes.aquarium.OceanFloor"
+//				"edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.characters.pets.TeddyBear",
+//				"edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes.aquarium.OceanFloor"
 		);
 		java.util.Set< String > scaledSpaceSet = edu.cmu.cs.dennisc.java.util.Collections.newHashSet( 
 				"edu.wustl.cse.lookingglass.apis.walkandtouch.gallery.scenes.classroom.School",
@@ -139,7 +139,7 @@ public class CheckForScaledSpace {
 				if( doNotExistSet.contains( clsName ) ) {
 					//pass
 				} else {
-					if( scaledSpaceSet.contains( clsName ) ) {
+					//if( scaledSpaceSet.contains( clsName ) ) {
 						Class<? extends org.alice.apis.moveandturn.Transformable> cls = (Class<? extends org.alice.apis.moveandturn.Transformable>)Class.forName( clsName );
 						try {
 							org.alice.apis.moveandturn.Transformable transformable = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cls );
@@ -151,12 +151,8 @@ public class CheckForScaledSpace {
 										if( m.orientation.isWithinReasonableEpsilonOfUnitLengthSquared() ) {
 											//pass
 										} else {
-											
 											edu.cmu.cs.dennisc.scenegraph.scale.ScaleUtilities.exorciseTheDemonsOfScaledSpace( transformable );
-//											edu.cmu.cs.dennisc.print.PrintUtilities.printlns( clsName );
-//											edu.cmu.cs.dennisc.print.PrintUtilities.println( transformable.getName() );
-//											edu.cmu.cs.dennisc.print.PrintUtilities.println( m.orientation.right.calculateMagnitude(), m.orientation.up.calculateMagnitude(), m.orientation.backward.calculateMagnitude() );
-//											edu.cmu.cs.dennisc.print.PrintUtilities.printlns();
+											assert transformable.localTransformation.getValue().isWithinReasonableEpsilonOfIdentity();
 										}
 									}
 								}
@@ -165,7 +161,7 @@ public class CheckForScaledSpace {
 							re.printStackTrace();
 							failedClsNames.add( clsName );
 						}
-					}
+					//}
 				}
 			}
 		}
