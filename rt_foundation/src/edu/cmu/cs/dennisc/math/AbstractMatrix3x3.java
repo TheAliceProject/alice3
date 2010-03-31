@@ -328,4 +328,14 @@ public abstract class AbstractMatrix3x3 implements edu.cmu.cs.dennisc.codec.Bina
 	public boolean isWithinReasonableEpsilonOfIdentity() {
 		return this.isWithinEpsilonOfIdentity( EpsilonUtilities.REASONABLE_EPSILON );
 	}
+	
+	public boolean isWithinEpsilonOf( AbstractMatrix3x3 other, double epsilon ) {
+		return 
+			this.right.isWithinEpsilonOf   ( other.right,    epsilon ) && 
+			this.up.isWithinEpsilonOf      ( other.up,       epsilon ) && 
+			this.backward.isWithinEpsilonOf( other.backward, epsilon );
+	}
+	public boolean isWithinReasonableEpsilonOf( AbstractMatrix3x3 other ) {
+		return this.isWithinEpsilonOf( other, EpsilonUtilities.REASONABLE_EPSILON );
+	}
 }
