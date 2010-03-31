@@ -1059,30 +1059,28 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	}
 
 	
-	private ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering;
+	private java.util.Stack< ReasonToDisableSomeAmountOfRendering > reasonToDisableSomeAmountOfRenderingStack = edu.cmu.cs.dennisc.java.util.Collections.newStack();
 	protected void disableRendering( ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
-		assert this.reasonToDisableSomeAmountOfRendering == null;
-		this.reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRendering;
-		if( this.reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
+		this.reasonToDisableSomeAmountOfRenderingStack.push( reasonToDisableSomeAmountOfRendering );
+		if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
 			//pass
 		} else {
 			this.root.setIgnoreRepaint( true );
 			this.left.setIgnoreRepaint( true );
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: true" );
 		}
-		this.sceneEditor.disableRendering( this.reasonToDisableSomeAmountOfRendering );
+		this.sceneEditor.disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	protected void enableRendering() {
-		assert this.reasonToDisableSomeAmountOfRendering != null;
-		if( this.reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
+		ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering = reasonToDisableSomeAmountOfRenderingStack.pop();
+		if( reasonToDisableSomeAmountOfRendering == ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM ) {
 			//pass
 		} else {
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( "ignore repaint: false" );
 			this.root.setIgnoreRepaint( false );
 			this.left.setIgnoreRepaint( false );
 		}
-		this.sceneEditor.enableRendering( this.reasonToDisableSomeAmountOfRendering );
-		this.reasonToDisableSomeAmountOfRendering = null;
+		this.sceneEditor.enableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	
 //	protected void setRenderingEnabled( boolean isRenderingEnabled, boolean isDrag ) {
