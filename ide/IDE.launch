@@ -12,5 +12,5 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.alice.stageide.EntryPoint"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="ide"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/lib/jogl/lib/windows-i586&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea -Xmx1024m -Djava.library.path=&quot;${project_loc:ide}/lib/jogl/lib/native/${system_property:os.arch}&quot;"/>
 </launchConfiguration>
