@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.color.Color4f;
 /**
  * @author David Culyba
  */
-public abstract class ColorTargetBasedAnimation extends TargetBasedAnimation< Color4f > {
+public abstract class ColorTargetBasedAnimation extends TargetBasedFrameObserver< Color4f > {
 
 	public ColorTargetBasedAnimation( Color4f currentValue )
 	{

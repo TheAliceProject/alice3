@@ -55,6 +55,8 @@ public class HandleSet extends BitSet
 	public static HandleSet RESIZE_INTERACTION = new HandleSet(HandleGroup.RESIZE, HandleGroup.INTERACTION);
 	public static HandleSet ROTATION_INTERACTION = new HandleSet(HandleGroup.ROTATION, HandleGroup.INTERACTION);
 	public static HandleSet TRANSLATION_INTERACTION = new HandleSet(HandleGroup.TRANSLATION, HandleGroup.INTERACTION);
+	public static HandleSet MAIN_ORTHOGRAPHIC_CAMERA_CONTROLS = new HandleSet(HandleGroup.ORTHOGRAPHIC_CAMERA, HandleGroup.MAIN_CAMERA);
+	public static HandleSet MAIN_PERSPECTIVE_CAMERA_CONTROLS = new HandleSet(HandleGroup.PERSPECTIVE_CAMERA, HandleGroup.MAIN_CAMERA);
 	
 	public enum HandleGroup {
 		ROTATION(0),
@@ -72,7 +74,14 @@ public class HandleSet extends BitSet
 		RESIZE_AXIS(12),
 		X_AND_Z_AXIS(13),
 		X_AND_Y_AXIS(14),
-		CAMERA(15);
+		CAMERA(15),
+		ORTHOGRAPHIC_CAMERA(16),
+		PERSPECTIVE_CAMERA(17),
+		MAIN_CAMERA(18),
+		TOP_LEFT_CAMERA(19),
+		TOP_RIGHT_CAMERA(20),
+		BOTTOM_LEFT_CAMERA(21),
+		BOTTOM_RIGHT_CAMERA(22);
 		
 		private int index;
 		

@@ -54,11 +54,37 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public class ObjectGlobalHandleDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
+public class ObjectGlobalHandleDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 
 	protected AbstractManipulator activeManipulator;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	protected ManipulationHandle activeHandle = null;
+	protected AbstractCamera camera = null;
+	
+	public AbstractCamera getCamera()
+	{
+		return this.camera;
+	}
+	
+	public void setCamera( AbstractCamera camera ) 
+	{
+		this.camera = camera;
+		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		{
+			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+		}
+		
+	}
+	
+	public OnscreenLookingGlass getOnscreenLookingGlass()
+	{
+		return this.onscreenLookingGlass;
+	}
+	
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
+	{
+		this.onscreenLookingGlass = lookingGlass;
+	}
 	
 	public ObjectGlobalHandleDragManipulator()
 	{
@@ -167,7 +193,12 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 				if (this.activeManipulator instanceof CameraInformedManipulator)
 				{
 					CameraInformedManipulator cIM = (CameraInformedManipulator)this.activeManipulator;
-					cIM.setOnscreenLookingGlass( this.onscreenLookingGlass );
+					cIM.setCamera( this.camera );
+				}
+				if (this.activeManipulator instanceof OnScreenLookingGlassInformedManipulator)
+				{
+					OnScreenLookingGlassInformedManipulator oLIM = (OnScreenLookingGlassInformedManipulator)this.activeManipulator;
+					oLIM.setOnscreenLookingGlass( this.onscreenLookingGlass );
 				}
 				return this.activeManipulator.doStartManipulator( startInput );
 			}
@@ -195,20 +226,6 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		{
 			return null;
 		}
-	}
-
-	public AbstractCamera getCamera()
-	{
-		if( this.onscreenLookingGlass != null )
-		{
-			return onscreenLookingGlass.getCameraAt( 0 );
-		} 
-		return null;
-	}
-
-	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
-
 	}
 
 }

@@ -45,7 +45,7 @@ package org.alice.interact;
 /**
  * @author David Culyba
  */
-public abstract class DoubleTargetBasedAnimation extends TargetBasedAnimation<Double> 
+public abstract class DoubleTargetBasedAnimation extends TargetBasedFrameObserver<Double> 
 {
 	public DoubleTargetBasedAnimation( Double currentValue )
 	{

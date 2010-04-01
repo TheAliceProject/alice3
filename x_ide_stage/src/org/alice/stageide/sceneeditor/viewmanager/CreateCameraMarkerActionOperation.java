@@ -40,67 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.manipulator;
+package org.alice.stageide.sceneeditor.viewmanager;
 
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
-import org.alice.interact.InputState;
-import org.alice.interact.handle.HandleSet;
-
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
+import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
 
 /**
  * @author David Culyba
  */
-public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
+public class CreateCameraMarkerActionOperation extends AbstractSceneDeclareFieldOperation {
 
-	protected AbstractCamera camera = null;
-	
-	public AbstractCamera getCamera()
-	{
-		return this.camera;
+	public CreateCameraMarkerActionOperation(MoveAndTurnSceneEditor sceneEditor) {
+		super(sceneEditor);
+		this.putValue( javax.swing.Action.NAME, "Create Camera Marker..." );
 	}
-	
-	public void setCamera( AbstractCamera camera ) 
-	{
-		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
-		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
-		}
-		
-	}
-	
-	public Transformable getManipulatedTransformableFromCamera()
-	{
-		AbstractCamera camera = this.getCamera();
-		if (camera != null && camera.getParent() instanceof Transformable)
-		{
-			return (Transformable)camera.getParent();
-		}
-		return null;
-	}
-
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = this.getManipulatedTransformableFromCamera();
-		if (this.manipulatedTransformable != null)
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	
 	
 	@Override
-	//We don't want to change the handle set when moving the camera
-	protected HandleSet getHandleSetToEnable()
+	protected Tuple2< FieldDeclaredInAlice, Object > createFieldAndInstance( TypeDeclaredInAlice ownerType ) 
 	{
-		return null;
+		return sceneEditor.createCameraMarkerField( ownerType );
 	}
-	
-	
-	
+
 }

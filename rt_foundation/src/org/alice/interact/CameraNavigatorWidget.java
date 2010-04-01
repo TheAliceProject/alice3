@@ -59,21 +59,35 @@ import org.alice.interact.handle.ManipulationHandle2DCameraTurnUpDown;
 import org.alice.interact.manipulator.CameraDragDriveManipulator;
 import org.alice.interact.manipulator.CameraDragStrafeManipulator;
 import org.alice.interact.manipulator.CameraDragUpDownRotateManipulator;
+import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
+
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author David Culyba
  */
 public class CameraNavigatorWidget extends JPanel {
 	
-	AbstractDragAdapter dragAdapter;
-	ManipulationHandle2DCameraDriver cameraDriver;
-	ManipulationHandle2DCameraTurnUpDown cameraControlUpDown;
-	ManipulationHandle2DCameraStrafe cameraControlStrafe;
+	public enum CameraMode
+	{
+		ORTHOGRAPHIC,
+		PERSPECTIVE,
+	}
 	
-	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter )
+	protected CameraMode cameraMode = CameraMode.PERSPECTIVE; 
+	protected boolean isExpanded = false;
+	protected AbstractDragAdapter dragAdapter;
+	protected ManipulationHandle2DCameraDriver cameraDriver;
+	protected ManipulationHandle2DCameraTurnUpDown cameraControlUpDown;
+	protected ManipulationHandle2DCameraStrafe cameraControlStrafe;
+	
+	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter)
 	{
 		super();
+		
 		//this.setLayout( new FlowLayout() );
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
 		this.setOpaque(false);
@@ -131,15 +145,94 @@ public class CameraNavigatorWidget extends JPanel {
 		
 		this.cameraDriver.setDragAdapter( this.dragAdapter );
 		
+		this.cameraMode = null;
+		setMode(CameraMode.PERSPECTIVE); //This will set the mode and also put the controls in the panel
 		
-		this.add(this.cameraControlStrafe);
-		this.add(this.cameraDriver);
-		this.add(this.cameraControlUpDown);
 		
 	}
+	
 	public void setExpanded( boolean isExpanded ) {
-		this.cameraControlUpDown.setVisible( isExpanded );
-		this.cameraControlStrafe.setVisible( isExpanded );
+		this.isExpanded = isExpanded;
+		switch (this.cameraMode)
+		{
+		case PERSPECTIVE:
+			{
+				this.cameraControlUpDown.setVisible( isExpanded );
+				this.cameraControlStrafe.setVisible( isExpanded );
+				this.cameraDriver.setVisible( true );
+			}
+			break;
+		case ORTHOGRAPHIC:
+			{
+				this.cameraControlUpDown.setVisible( false );
+				this.cameraControlStrafe.setVisible( true );
+				this.cameraDriver.setVisible( false );
+			}
+			break;
+		}
+		
+	}
+	
+	
+	protected void setControlsBasedOnMode(CameraMode mode)
+	{
+		this.removeAll();
+		this.setExpanded( this.isExpanded );
+		switch (mode)
+		{
+		case PERSPECTIVE:
+			{
+				this.add(this.cameraControlStrafe);
+				this.add(this.cameraDriver);
+				this.add(this.cameraControlUpDown);
+			}
+			break;
+		case ORTHOGRAPHIC:
+			{
+				this.add(this.cameraControlStrafe);
+			}
+			break;
+		}
+	}
+	
+	public void setCamera(AbstractCamera camera)
+	{
+		if (cameraDriver.getManipulation( null ) instanceof CameraInformedManipulator)
+		{
+			((CameraInformedManipulator)cameraDriver.getManipulation( null )).setCamera( camera );
+		}
+		if (cameraControlUpDown.getManipulation( null ) instanceof CameraInformedManipulator)
+		{
+			((CameraInformedManipulator)cameraControlUpDown.getManipulation( null )).setCamera( camera );
+		}
+		if (cameraControlStrafe.getManipulation( null ) instanceof CameraInformedManipulator)
+		{
+			((CameraInformedManipulator)cameraControlStrafe.getManipulation( null )).setCamera( camera );
+		}
+		
+		CameraMode newMode;
+		if (camera instanceof OrthographicCamera)
+		{
+			newMode = CameraMode.ORTHOGRAPHIC;
+		}
+		else if (camera instanceof SymmetricPerspectiveCamera)
+		{
+			newMode = CameraMode.PERSPECTIVE;
+		}
+		else
+		{
+			newMode = null;
+		}
+		setMode(newMode);
+	}
+	
+	public void setMode(CameraMode mode)
+	{
+		if (mode != this.cameraMode)
+		{
+			this.cameraMode = mode;
+			setControlsBasedOnMode( this.cameraMode );
+		}
 	}
 
 }

@@ -62,15 +62,15 @@ import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
-public class ObjectTranslateDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
+public class ObjectTranslateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 
 	protected static final double BAD_ANGLE_THRESHOLD = 2.0d*Math.PI * (8.0d/360.0d);
 	protected static final double MIN_BAD_ANGLE_THRESHOLD = 0.0d;
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
 	protected Point3 initialClickPoint = new Point3();
 	protected Point3 initialObjectPosition = new Point3();
@@ -80,17 +80,32 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	protected Point initialMouseLocation = new Point();
 	protected Boolean hasMoved = false;
 	
+	protected AbstractCamera camera = null;
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	
 	public AbstractCamera getCamera()
 	{
-		if( this.onscreenLookingGlass != null )
-		{
-			return onscreenLookingGlass.getCameraAt( 0 );
-		} 
-		return null;
+		return this.camera;
 	}
-
-	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
+	
+	public void setCamera( AbstractCamera camera ) 
+	{
+		this.camera = camera;
+		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		{
+			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+		}
+		
+	}
+	
+	public OnscreenLookingGlass getOnscreenLookingGlass()
+	{
+		return this.onscreenLookingGlass;
+	}
+	
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
+	{
+		this.onscreenLookingGlass = lookingGlass;
 	}
 	
 	@Override
@@ -125,7 +140,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	
 	protected Point3 getPositionBasedonOnMouseLocation( Point mouseLocation )
 	{
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if (pickRay != null)
 		{
 			Plane toMoveIn = this.movementPlane;
@@ -257,7 +272,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			this.movementPlane = createPickPlane(this.initialClickPoint);
 			this.badAnglePlane = createBadAnglePlane(this.initialClickPoint);
 			
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
+			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			if (pickRay != null)
 			{
 				this.initialClickPoint = PlaneUtilities.getPointInPlane( this.movementPlane, pickRay );

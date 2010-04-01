@@ -60,26 +60,43 @@ import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
-public class OmniDirectionalDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
+public class OmniDirectionalDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
-	
-	
 	protected Plane pickPlane = new edu.cmu.cs.dennisc.math.Plane( 0.0d, 1.0d, 0.0d, 0.0d );
 	protected Point3 offsetToOrigin = null;
 	protected Boolean hasMoved = false;
 	
+	protected AbstractCamera camera = null;
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	
 	public AbstractCamera getCamera()
 	{
-		if( this.onscreenLookingGlass != null )
+		return this.camera;
+	}
+	
+	public void setCamera( AbstractCamera camera ) 
+	{
+		this.camera = camera;
+		if (this.camera != null && this.camera.getParent() instanceof Transformable)
 		{
-			return onscreenLookingGlass.getCameraAt( 0 );
-		} 
-		return null;
+			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+		}
+		
+	}
+	
+	public OnscreenLookingGlass getOnscreenLookingGlass()
+	{
+		return this.onscreenLookingGlass;
+	}
+	
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
+	{
+		this.onscreenLookingGlass = lookingGlass;
 	}
 
 	@Override
@@ -87,9 +104,6 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		return "Object Move";
 	}
 	
-	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
-	}
 	
 	@Override
 	protected void initializeEventMessages()
@@ -144,7 +158,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 	private Point3 getPickBasedVector(InputState currentInput, InputState previousInput)
 	{
 		boolean usePickForVertical = true;
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
 		if (pickRay == null)
 		{
 			return new Point3();
@@ -293,7 +307,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			startInput.getClickPickResult().getSource().transformTo_AffectReturnValuePassedIn( initialClickPoint, startInput.getClickPickResult().getSource().getRoot() );
 			this.pickPlane = createCameraPickPlane(initialClickPoint);
 			
-			Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
+			Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), startInput.getMouseLocation().x, startInput.getMouseLocation().y );
 			if (pickRay != null)
 			{
 				this.offsetToOrigin = Point3.createSubtraction( this.manipulatedTransformable.getAbsoluteTransformation().translation, initialClickPoint );

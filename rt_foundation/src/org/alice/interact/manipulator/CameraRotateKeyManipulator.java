@@ -46,13 +46,14 @@ import org.alice.interact.MovementKey;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
 public class CameraRotateKeyManipulator extends RotateKeyManipulator implements CameraInformedManipulator {
 
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	protected AbstractCamera camera = null;
 	
 	public CameraRotateKeyManipulator( MovementKey[] directionKeys )
 	{
@@ -61,19 +62,17 @@ public class CameraRotateKeyManipulator extends RotateKeyManipulator implements 
 	
 	public AbstractCamera getCamera()
 	{
-		if( this.onscreenLookingGlass != null )
-		{
-			return onscreenLookingGlass.getCameraAt( 0 );
-		} 
-		return null;
+		return this.camera;
 	}
-
-	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
-		if (this.getCamera() != null)
+	
+	public void setCamera( AbstractCamera camera ) 
+	{
+		this.camera = camera;
+		if (this.camera != null && this.camera.getParent() instanceof Transformable)
 		{
-			this.manipulatedTransformable = (edu.cmu.cs.dennisc.scenegraph.Transformable)getCamera().getParent();
+			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
+		
 	}
 
 }

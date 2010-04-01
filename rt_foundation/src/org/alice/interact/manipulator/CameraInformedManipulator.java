@@ -50,6 +50,6 @@ import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 public interface CameraInformedManipulator {
 	
 	public AbstractCamera getCamera();
-	public void setOnscreenLookingGlass( edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass );
+	public void setCamera( AbstractCamera camera );
 	
 }

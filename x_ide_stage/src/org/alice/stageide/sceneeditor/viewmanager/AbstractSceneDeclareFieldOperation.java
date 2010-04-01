@@ -40,67 +40,30 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.manipulator;
+package org.alice.stageide.sceneeditor.viewmanager;
 
-
-import org.alice.interact.InputState;
-import org.alice.interact.handle.HandleSet;
-
-import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import org.alice.ide.operations.ast.AbstractDeclareFieldOperation;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 /**
  * @author David Culyba
  */
-public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
+public abstract class AbstractSceneDeclareFieldOperation extends AbstractDeclareFieldOperation {
 
-	protected AbstractCamera camera = null;
+	protected MoveAndTurnSceneEditor sceneEditor;
 	
-	public AbstractCamera getCamera()
+	public AbstractSceneDeclareFieldOperation( MoveAndTurnSceneEditor sceneEditor )
 	{
-		return this.camera;
+		this.sceneEditor = sceneEditor;
 	}
-	
-	public void setCamera( AbstractCamera camera ) 
-	{
-		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
-		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
-		}
-		
-	}
-	
-	public Transformable getManipulatedTransformableFromCamera()
-	{
-		AbstractCamera camera = this.getCamera();
-		if (camera != null && camera.getParent() instanceof Transformable)
-		{
-			return (Transformable)camera.getParent();
-		}
-		return null;
-	}
-
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = this.getManipulatedTransformableFromCamera();
-		if (this.manipulatedTransformable != null)
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	
 	
 	@Override
-	//We don't want to change the handle set when moving the camera
-	protected HandleSet getHandleSetToEnable()
-	{
-		return null;
+	protected final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
+		return this.getIDE().getSceneType();
 	}
-	
-	
-	
+	@Override
+	protected boolean isInstanceValid() {
+		return true;
+	}
+
 }

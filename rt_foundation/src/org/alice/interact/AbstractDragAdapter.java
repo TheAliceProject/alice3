@@ -64,6 +64,7 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
 import org.alice.interact.manipulator.AbstractManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
+import org.alice.interact.manipulator.OnScreenLookingGlassInformedManipulator;
 
 
 import edu.cmu.cs.dennisc.animation.Animator;
@@ -309,7 +310,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		{
 			if (this.manipulators.get( i ).getManipulator() instanceof CameraInformedManipulator)
 			{
-				((CameraInformedManipulator)this.manipulators.get( i ).getManipulator()).setOnscreenLookingGlass( getOnscreenLookingGlass() );
+				((CameraInformedManipulator)this.manipulators.get( i ).getManipulator()).setCamera( camera );
+			}
+			if (this.manipulators.get( i ).getManipulator() instanceof OnScreenLookingGlassInformedManipulator)
+			{
+				((OnScreenLookingGlassInformedManipulator)this.manipulators.get( i ).getManipulator()).setOnscreenLookingGlass( getOnscreenLookingGlass() );
 			}
 		}
 	}

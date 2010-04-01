@@ -112,10 +112,13 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 		this.lengthAnimation = new DoubleTargetBasedAnimation( new Double(this.distanceFromOrigin) ){
 			@Override
 			protected void updateValue( Double value ) {
-				LinearDragHandle.this.setSize(value);
+				if (LinearDragHandle.this.manipulatedObject != null)
+				{
+					LinearDragHandle.this.setSize(value);
+				}
 			}
 		};
-		this.animator.invokeLater( this.lengthAnimation, null );
+		this.animator.addFrameObserver( this.lengthAnimation );
 	}
 	
 	protected void setSize(double size)

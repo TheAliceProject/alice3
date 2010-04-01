@@ -56,11 +56,12 @@ import edu.cmu.cs.dennisc.math.AngleUtilities;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
-public class HandlelessObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
+public class HandlelessObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 	protected static final double MOUSE_DISTANCE_TO_RADIANS_MULTIPLIER = .025d;
 	
 	protected Vector3 rotateAxis;
@@ -71,22 +72,36 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	protected Vector3 absoluteRotationAxis;
 	
 	
+	protected AbstractCamera camera = null;
+	
 	public AbstractCamera getCamera()
 	{
-		if( this.onscreenLookingGlass != null )
+		return this.camera;
+	}
+	
+	public void setCamera( AbstractCamera camera ) 
+	{
+		this.camera = camera;
+		if (this.camera != null && this.camera.getParent() instanceof Transformable)
 		{
-			return onscreenLookingGlass.getCameraAt( 0 );
-		} 
-		return null;
+			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+		}
+		
+	}
+	
+	public OnscreenLookingGlass getOnscreenLookingGlass()
+	{
+		return this.onscreenLookingGlass;
+	}
+	
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
+	{
+		this.onscreenLookingGlass = lookingGlass;
 	}
 
 	@Override
 	public String getUndoRedoDescription() {
 		return "Object Rotate";
-	}
-	
-	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
 	}
 	
 	public HandlelessObjectRotateDragManipulator( MovementDirection rotateAxisDirection )
@@ -97,7 +112,7 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	
 	protected Angle getRotationBasedOnMouse( Point mouseLocation )
 	{
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if (pickRay != null)
 		{
 			int xDif = mouseLocation.x - this.initialPoint.x;

@@ -72,12 +72,10 @@ import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 /**
  * @author David Culyba
  */
-public class ObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
+public class ObjectRotateDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator {
 
 	protected static final double BAD_ANGLE_THRESHOLD = 2.0d*Math.PI * (15.0d/360.0d);
 	protected static final double WORLD_DISTANCE_TO_RADIANS_MULTIPLIER = 1.1d;
-	
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
 	protected Point3 initialClickPoint = new Point3();
 	protected Point3 objectOriginInPlane;
@@ -86,21 +84,33 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	protected Vector3 originalMouseRightDirection;
 	protected Vector3 absoluteRotationAxis;
 	protected Plane cameraFacingPlane;
-	
 	protected RotationRingHandle rotationHandle;
-	
+	protected AbstractCamera camera = null;
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
 	public AbstractCamera getCamera()
 	{
-		if( this.onscreenLookingGlass != null )
-		{
-			return onscreenLookingGlass.getCameraAt( 0 );
-		} 
-		return null;
+		return this.camera;
 	}
-
-	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
+	
+	public void setCamera( AbstractCamera camera ) 
+	{
+		this.camera = camera;
+		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		{
+			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+		}
+		
+	}
+	
+	public OnscreenLookingGlass getOnscreenLookingGlass()
+	{
+		return this.onscreenLookingGlass;
+	}
+	
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
+	{
+		this.onscreenLookingGlass = lookingGlass;
 	}
 	
 	public  ObjectRotateDragManipulator()
@@ -159,7 +169,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	
 	protected Angle getRotationBasedOnMouse( Point mouseLocation )
 	{
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if (pickRay != null)
 		{
 			AngleInRadians angleBetweenVector = VectorUtilities.getAngleBetweenVectors(this.absoluteRotationAxis, this.getCamera().getAbsoluteTransformation().orientation.backward);
@@ -230,22 +240,22 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	
 	protected void hideCursor()
 	{
-		CursorUtilities.pushAndSet( this.onscreenLookingGlass.getAWTComponent(), CursorUtilities.NULL_CURSOR );
+		CursorUtilities.pushAndSet( this.getOnscreenLookingGlass().getAWTComponent(), CursorUtilities.NULL_CURSOR );
 	}
 	
 	protected void showCursor()
 	{
 		try {
 			Point3 pointInCamera = this.rotationHandle.getSphereLocation( this.getCamera() );
-			Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.onscreenLookingGlass, this.getCamera() );
-			SwingUtilities.convertPointToScreen( awtPoint, this.onscreenLookingGlass.getAWTComponent() );
+			Point awtPoint = edu.cmu.cs.dennisc.lookingglass.util.TransformationUtilities.transformFromCameraToAWT_New( pointInCamera, this.getOnscreenLookingGlass(), this.getCamera() );
+			SwingUtilities.convertPointToScreen( awtPoint, this.getOnscreenLookingGlass().getAWTComponent() );
 			Robot mouseMover = new Robot();
 			mouseMover.mouseMove(awtPoint.x, awtPoint.y);
 		} catch( AWTException e ) {
 		}
 		finally
 		{
-			CursorUtilities.popAndSet( this.onscreenLookingGlass.getAWTComponent() );
+			CursorUtilities.popAndSet( this.getOnscreenLookingGlass().getAWTComponent() );
 		}
 	}
 	

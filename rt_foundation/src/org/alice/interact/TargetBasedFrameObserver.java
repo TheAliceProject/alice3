@@ -42,79 +42,59 @@
  */
 package org.alice.interact;
 
-import edu.cmu.cs.dennisc.animation.AbstractAnimation;
-import edu.cmu.cs.dennisc.animation.AnimationObserver;
+import edu.cmu.cs.dennisc.animation.FrameObserver;
 
 /**
  * @author David Culyba
  */
-public abstract class TargetBasedAnimation< E > extends AbstractAnimation {
+public abstract class TargetBasedFrameObserver<E> implements FrameObserver {
 
 	protected static final double DEFAULT_SPEED = 12.0d;
-	private static final double DISTANCE_TO_DONE = .001d;
+	protected static final double MIN_DISTANCE_TO_DONE = .001d;
 	private static final double MAX_FRAME_LENGTH = .1d;
-	
+
 	protected E targetValue;
 	protected E currentValue;
 	protected double speed;
-	
-	public TargetBasedAnimation()
-	{
+	protected double timeOfLastFrame = Double.NaN;
+	protected double deltaSinceLastFrame = Double.NaN;
+
+	public TargetBasedFrameObserver() {
 		speed = DEFAULT_SPEED;
 	}
-	
-	public TargetBasedAnimation( E currentValue )
-	{
-		this(currentValue, currentValue, DEFAULT_SPEED);
-	}
-	
-	public TargetBasedAnimation( E currentValue, double speed )
-	{
-		this(currentValue, currentValue, speed);
+
+	public TargetBasedFrameObserver( E currentValue ) {
+		this( currentValue, currentValue, DEFAULT_SPEED );
 	}
 
-	public TargetBasedAnimation( E currentValue, E targetValue )
-	{
-		this(currentValue, targetValue, DEFAULT_SPEED);
+	public TargetBasedFrameObserver( E currentValue, double speed ) {
+		this( currentValue, currentValue, speed );
 	}
-	
-	public TargetBasedAnimation( E currentValue, E targetValue, double speed )
-	{
+
+	public TargetBasedFrameObserver( E currentValue, E targetValue ) {
+		this( currentValue, targetValue, DEFAULT_SPEED );
+	}
+
+	public TargetBasedFrameObserver( E currentValue, E targetValue, double speed ) {
 		this.currentValue = this.newE( currentValue );
 		this.targetValue = this.newE( targetValue );
 		this.speed = speed;
 	}
-	
-	public void setTarget( E target )
-	{
+
+	public void setTarget( E target ) {
 		this.targetValue = this.newE( target );
 	}
-	
-	public void setCurrentValue( E value )
-	{
+
+	public void setCurrentValue( E value ) {
 		this.currentValue = this.newE( value );
 	}
-	
-	public void setSpeed( double speed )
-	{
+
+	public void setSpeed( double speed ) {
 		this.speed = speed;
 	}
-	
-	public double getSpeed()
-	{
+
+	public double getSpeed() {
 		return this.speed;
-	}
-	
-	@Override
-	protected void epilogue() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void prologue() {
-		// TODO Auto-generated method stub
-
 	}
 
 	protected abstract void updateValue( E value );
@@ -122,34 +102,34 @@ public abstract class TargetBasedAnimation< E > extends AbstractAnimation {
 	public abstract boolean isDone();
 	protected abstract E interpolate( E v0, E v1, double deltaSinceLastUpdate );
 	protected abstract E newE( E other );
-	
-	public void forceValueUpdate()
-	{
+
+	public void forceValueUpdate() {
 		this.updateValue( this.currentValue );
 	}
-	
-	@Override
-	protected double update( double deltaSincePrologue, double deltaSinceLastUpdate, AnimationObserver animationObserver ) {
-		
-		if (!this.isDone())
-		{
-			if (!Double.isNaN( deltaSinceLastUpdate ))
-			{
-				if (deltaSinceLastUpdate > MAX_FRAME_LENGTH)
-					deltaSinceLastUpdate = MAX_FRAME_LENGTH;
-				this.currentValue = this.interpolate( this.currentValue, this.targetValue, deltaSinceLastUpdate);
+
+	public void complete() {
+		this.currentValue = newE( targetValue );
+		this.updateValue( this.currentValue );
+	}
+
+	public void update( double tCurrent ) {
+		if( timeOfLastFrame == Double.NaN ) {
+			deltaSinceLastFrame = 0.0d;
+		} else {
+			deltaSinceLastFrame = tCurrent - timeOfLastFrame;
+			timeOfLastFrame = tCurrent;
+		}
+		if( !isDone() ) {
+			if( !Double.isNaN( deltaSinceLastFrame ) ) {
+				if( deltaSinceLastFrame > MAX_FRAME_LENGTH )
+					deltaSinceLastFrame = MAX_FRAME_LENGTH;
+				this.currentValue = this.interpolate( this.currentValue, this.targetValue, deltaSinceLastFrame );
 			}
-			if ( this.getDistanceToDone() < DISTANCE_TO_DONE)
-			{
-				this.currentValue = newE(this.targetValue);
+			if( this.getDistanceToDone() < MIN_DISTANCE_TO_DONE ) {
+				this.currentValue = newE( this.targetValue );
 			}
 			this.updateValue( this.currentValue );
 		}
-		return 1.0d;
 	}
-	
-	
-	
-	
 
 }

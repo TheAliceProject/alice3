@@ -65,9 +65,7 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 /**
  * @author David Culyba
  */
-public class LinearDragManipulator extends AbstractManipulator implements CameraInformedManipulator {
-
-	protected OnscreenLookingGlass onscreenLookingGlass = null;
+public class LinearDragManipulator extends AbstractManipulator implements CameraInformedManipulator, OnScreenLookingGlassInformedManipulator{
 	
 	protected LinearDragHandle linearHandle;
 	protected Vector3 absoluteDragAxis;
@@ -75,18 +73,32 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	protected Point3 originalOrigin;
 	protected Plane cameraFacingPlane;
 	protected Plane handleAlignedPlane;
+	protected AbstractCamera camera = null;
+	protected OnscreenLookingGlass onscreenLookingGlass = null;
 	
 	public AbstractCamera getCamera()
 	{
-		if( this.onscreenLookingGlass != null )
-		{
-			return onscreenLookingGlass.getCameraAt( 0 );
-		} 
-		return null;
+		return this.camera;
 	}
-
-	public void setOnscreenLookingGlass( OnscreenLookingGlass onscreenLookingGlass ) {
-		this.onscreenLookingGlass = onscreenLookingGlass;
+	
+	public void setCamera( AbstractCamera camera ) 
+	{
+		this.camera = camera;
+		if (this.camera != null && this.camera.getParent() instanceof Transformable)
+		{
+			this.manipulatedTransformable = (Transformable)this.camera.getParent();
+		}
+		
+	}
+	
+	public OnscreenLookingGlass getOnscreenLookingGlass()
+	{
+		return this.onscreenLookingGlass;
+	}
+	
+	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
+	{
+		this.onscreenLookingGlass = lookingGlass;
 	}
 	
 	@Override
@@ -108,7 +120,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	
 	protected double getDistanceAlongAxisBasedOnMouse( Point mouseLocation )
 	{
-		Ray pickRay = PlaneUtilities.getRayFromPixel( this.onscreenLookingGlass, this.getCamera(), mouseLocation.x, mouseLocation.y );
+		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), mouseLocation.x, mouseLocation.y );
 		if (pickRay != null)
 		{
 			double axisCameraDot = Vector3.calculateDotProduct( this.absoluteDragAxis, this.getCamera().getAbsoluteTransformation().orientation.backward );

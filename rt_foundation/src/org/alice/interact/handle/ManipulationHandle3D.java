@@ -222,6 +222,10 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 	
 	protected Visual getSGVisualForTransformable( Transformable object )
 	{
+		if (object == null)
+		{
+			return null;
+		}
 		for (int i=0; i<object.getComponentCount(); i++)
 		{
 			Component c = object.getComponentAt( i );
@@ -238,17 +242,23 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		this.opacityAnimation  = new DoubleTargetBasedAnimation( new Double(sgFrontFacingAppearance.opacity.getValue()) ){
 			@Override
 			protected void updateValue( Double value ) {
-				ManipulationHandle3D.this.sgFrontFacingAppearance.opacity.setValue( value.floatValue() );				
+				if (ManipulationHandle3D.this.manipulatedObject != null)
+				{
+					ManipulationHandle3D.this.sgFrontFacingAppearance.opacity.setValue( value.floatValue() );
+				}
 			}
 		};
 		this.colorAnimation  = new ColorTargetBasedAnimation( sgFrontFacingAppearance.diffuseColor.getValue() ){
 			@Override
 			protected void updateValue( Color4f value ) {
-				ManipulationHandle3D.this.sgFrontFacingAppearance.diffuseColor.setValue( value );
+				if (ManipulationHandle3D.this.manipulatedObject != null)
+				{
+					ManipulationHandle3D.this.sgFrontFacingAppearance.diffuseColor.setValue( value );
+				}
 			}
 		};
-		this.animator.invokeLater( this.opacityAnimation, null );
-		this.animator.invokeLater( this.colorAnimation, null );
+		this.animator.addFrameObserver( this.opacityAnimation );
+		this.animator.addFrameObserver( this.colorAnimation );
 	}
 	
 	public void addToSet( HandleSet set )

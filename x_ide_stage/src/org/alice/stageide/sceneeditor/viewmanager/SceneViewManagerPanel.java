@@ -43,6 +43,7 @@
 package org.alice.stageide.sceneeditor.viewmanager;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -50,65 +51,57 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
-import edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import org.alice.ide.common.FieldDeclarationPane;
+
+import edu.cmu.cs.dennisc.zoot.ZManager;
 
 /**
  * @author David Culyba
  */
-public class SceneViewManagerPanel extends JPanel {
+public class SceneViewManagerPanel extends JPanel{
 	
-	private static final int UPDATE_WAIT = 100;
 	private boolean isActive = false;
 	
-	private PointOfViewManager pointOfViewManager;
-	private PointsOfViewPanel pointsOfViewPanel;
-	private OpeningScenePointOfViewControl openingScenePointOfView = new OpeningScenePointOfViewControl();
-	
-	private OffscreenLookingGlass offscreenLookingGlass = null;
-	private ThumbnailUpdateThread thumbnailUpdateThread = null;
-	
-	private class ThumbnailUpdateThread extends Thread
-	{
-		private boolean shouldRun = false;
+	private JPanel cameraMarkerPanel;
+	private JButton addCameraMarkerButton;
+	private JPanel startingViewPanel;
 
-		public synchronized void stopUpdating()
-		{
-			this.shouldRun = false;
-		}
-		
-		@Override
-		public void run() 
-		{
-			this.shouldRun = true;
-			while (this.shouldRun)
-			{
-				doUpdateViewThumbnails();
-				try
-				{
-					Thread.sleep( UPDATE_WAIT );
-				}
-				catch (Exception e){}
-			}
-		}
-	}
+	private CreateCameraMarkerActionOperation createCameraMarkerAction = null;
 	
-	public SceneViewManagerPanel()
+	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor;
+	
+	
+	
+	public SceneViewManagerPanel(org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor)
 	{
 		super();
 		this.setOpaque( false );
-		this.pointOfViewManager = new PointOfViewManager();
-		this.pointsOfViewPanel = new PointsOfViewPanel(this.pointOfViewManager);
-		this.setLayout( new GridBagLayout() );
-		JLabel title = new JLabel( "Starting View");
-		title.setFont( title.getFont().deriveFont( Font.BOLD, 12f ) );
+		this.setLayout( new GridBagLayout() );	
+		
+		this.sceneEditor = sceneEditor;
+		this.createCameraMarkerAction = new CreateCameraMarkerActionOperation(this.sceneEditor);	
+		
+		JLabel title = new JLabel( "Starting View = ");
+		title.setFont( title.getFont().deriveFont( Font.BOLD, 18f ) );
+		
+		startingViewPanel = new JPanel();
+		startingViewPanel.add( new JLabel("Not implemented yet."));
+		
+		JLabel cameraMarkerTitle = new JLabel( "Camera Markers:");
+		cameraMarkerTitle.setFont( cameraMarkerTitle.getFont().deriveFont( Font.BOLD, 18f ) );
+		
+		addCameraMarkerButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(createCameraMarkerAction);
+		
+		cameraMarkerPanel = new JPanel();
+		cameraMarkerPanel.setLayout( new GridBagLayout()  );
+		
 		this.add(title, new GridBagConstraints( 
 				0, //gridX
 				0, //gridY
@@ -122,8 +115,34 @@ public class SceneViewManagerPanel extends JPanel {
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.add( this.openingScenePointOfView, new GridBagConstraints( 
+		this.add(startingViewPanel, new GridBagConstraints( 
+				1, //gridX
+				0, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets(2,2,2,2), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+		this.add( cameraMarkerTitle, new GridBagConstraints( 
 				0, //gridX
+				1, //gridY
+				1, //gridWidth
+				1, //gridHeight
+				1.0, //weightX
+				0.0, //weightY
+				GridBagConstraints.WEST, //anchor 
+				GridBagConstraints.NONE, //fill
+				new Insets(2,2,2,2), //insets
+				0, //ipadX
+				0 ) //ipadY
+		);
+		this.add( addCameraMarkerButton, new GridBagConstraints( 
+				1, //gridX
 				1, //gridY
 				1, //gridWidth
 				1, //gridHeight
@@ -135,74 +154,72 @@ public class SceneViewManagerPanel extends JPanel {
 				0, //ipadX
 				0 ) //ipadY
 		);
-		this.add( this.pointsOfViewPanel, new GridBagConstraints( 
+		this.add(cameraMarkerPanel, new GridBagConstraints( 
 				0, //gridX
 				2, //gridY
-				1, //gridWidth
+				2, //gridWidth
 				1, //gridHeight
 				1.0, //weightX
 				1.0, //weightY
 				GridBagConstraints.NORTH, //anchor 
 				GridBagConstraints.BOTH, //fill
-				new Insets(2,2,2,2), //insets
-				0, //ipadX
-				0 ) //ipadY
-		);
-		this.add(Box.createVerticalGlue(), new GridBagConstraints( 
-				0, //gridX
-				2, //gridY
-				1, //gridWidth
-				1, //gridHeight
-				1.0, //weightX
-				1.0, //weightY
-				GridBagConstraints.NORTH, //anchor 
-				GridBagConstraints.VERTICAL, //fill
 				new Insets(0,0,0,0), //insets
 				0, //ipadX
 				0 ) //ipadY
 		);
+	}
+	
+	private Component makeCameraMarkerComponent(final edu.cmu.cs.dennisc.alice.ast.AbstractField field)
+	{
+		JPanel componentPanel = new JPanel();
+		componentPanel.add( new JLabel(field.getName()) );
+		JButton deleteViewButton = ZManager.createButton( new org.alice.ide.operations.ast.DeleteFieldOperation( (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice) field ) );
+		componentPanel.add( deleteViewButton );
 		
-		this.offscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createOffscreenLookingGlass( null );	
-		
+		return componentPanel;
 	}
 	
-	public void setProject(edu.cmu.cs.dennisc.alice.Project project)
+	public void refreshFields()
 	{
-		this.pointOfViewManager.initFromProject( project );
-		this.pointsOfViewPanel.setPOVManager( this.pointOfViewManager );
-		this.openingScenePointOfView.init( this.pointOfViewManager.getOpeningPointOfView(), this.pointOfViewManager);
-	}
-	
-	public void saveToProject()
-	{
-		this.pointOfViewManager.writeToProject();
-	}
-	
-	public void setCamera(AbstractCamera camera)
-	{
-		this.pointOfViewManager.setCamera( camera );
-	}
-	
-	protected void doUpdateViewThumbnails()
-	{
-//		long startTime = System.currentTimeMillis();
-		SceneViewManagerPanel.this.openingScenePointOfView.captureViewThumbnail( offscreenLookingGlass );
-		SceneViewManagerPanel.this.pointsOfViewPanel.updateViewThumbnails( offscreenLookingGlass );
-//		long endTime = System.currentTimeMillis();
-//		double totalTime = (endTime - startTime)*.001;
-//		System.out.println("It took "+totalTime+" to update thumbs");
-	}
-	
-	public synchronized void updateViewThumbnails()
-	{
-		Runnable renderThumbnails = new Runnable()
+		if (this.sceneEditor != null)
 		{
-			public void run()
+			this.cameraMarkerPanel.removeAll();
+			int count = 0;
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.sceneEditor.getDeclaredFields()) 
 			{
-				doUpdateViewThumbnails();
+				if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
+				{
+					cameraMarkerPanel.add(makeCameraMarkerComponent(field), new GridBagConstraints( 
+							0, //gridX
+							count, //gridY
+							1, //gridWidth
+							1, //gridHeight
+							1.0, //weightX
+							0.0, //weightY
+							GridBagConstraints.WEST, //anchor 
+							GridBagConstraints.NONE, //fill
+							new Insets(2,10,2,2), //insets (top, left, bottom, right)
+							0, //ipadX
+							0 ) //ipadY
+					);
+					count++;
+				}
 			}
-		};
-		SwingUtilities.invokeLater( renderThumbnails );
+			cameraMarkerPanel.add(Box.createVerticalGlue(), new GridBagConstraints( 
+					0, //gridX
+					count, //gridY
+					1, //gridWidth
+					1, //gridHeight
+					1.0, //weightX
+					1.0, //weightY
+					GridBagConstraints.CENTER, //anchor 
+					GridBagConstraints.BOTH, //fill
+					new Insets(0,0,0,0), //insets (top, left, bottom, right)
+					0, //ipadX
+					0 ) //ipadY
+			);
+			this.cameraMarkerPanel.revalidate();
+		}
 	}
 	
 	public synchronized void setActive(boolean isActive)
@@ -210,19 +227,6 @@ public class SceneViewManagerPanel extends JPanel {
 		if (isActive != this.isActive)
 		{
 			this.isActive = isActive;
-			if (this.isActive)
-			{
-				thumbnailUpdateThread = new ThumbnailUpdateThread();
-				thumbnailUpdateThread.start();
-			}
-			else
-			{
-				if (thumbnailUpdateThread != null)
-				{
-					thumbnailUpdateThread.stopUpdating();
-					thumbnailUpdateThread = null;
-				}
-			}
 		}
 	}
 

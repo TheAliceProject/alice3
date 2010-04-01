@@ -225,21 +225,24 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		this.radiusAnimation = new DoubleTargetBasedAnimation( new Double(currentRadius) ){
 			@Override
 			protected void updateValue( Double value ) {
-				if (RotationRingHandle.this.sgTorus != null)
+				if (RotationRingHandle.this.manipulatedObject != null)
 				{
-					if (value.isNaN())
+					if (RotationRingHandle.this.sgTorus != null)
 					{
-						value = 0.0d;
+						if (value.isNaN())
+						{
+							value = 0.0d;
+						}
+						if (value < 0.0d)
+						{
+							value = 0.0d;
+						}
+						RotationRingHandle.this.setSize(value);
 					}
-					if (value < 0.0d)
-					{
-						value = 0.0d;
-					}
-					RotationRingHandle.this.setSize(value);
 				}
 			}
 		};
-		this.animator.invokeLater( this.radiusAnimation, null );
+		this.animator.addFrameObserver( this.radiusAnimation );
 	}
 	
 	@Override

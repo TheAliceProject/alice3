@@ -74,11 +74,13 @@ import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 
 /**
  * @author David Culyba
  */
 public class GlobalDragAdapter extends AbstractDragAdapter {
+	
 	
 	@Override
 	protected void setUpControls()

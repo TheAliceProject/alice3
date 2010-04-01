@@ -40,67 +40,36 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.interact.manipulator;
+package org.alice.stageide.sceneeditor.viewmanager;
 
 
-import org.alice.interact.InputState;
-import org.alice.interact.handle.HandleSet;
+import org.alice.apis.moveandturn.AbstractCamera;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener;
 
 /**
  * @author David Culyba
  */
-public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
-
-	protected AbstractCamera camera = null;
+public class CameraViewPort 
+{
+	private OnscreenLookingGlass lookingGlass;
+	private AbstractCamera camera;
 	
-	public AbstractCamera getCamera()
-	{
-		return this.camera;
-	}
-	
-	public void setCamera( AbstractCamera camera ) 
+	public CameraViewPort(OnscreenLookingGlass lookingGlass, AbstractCamera camera)
 	{
 		this.camera = camera;
-		if (this.camera != null && this.camera.getParent() instanceof Transformable)
-		{
-			this.manipulatedTransformable = (Transformable)this.camera.getParent();
-		}
-		
+		this.lookingGlass = lookingGlass;
 	}
 	
-	public Transformable getManipulatedTransformableFromCamera()
+	public void addAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener)
 	{
-		AbstractCamera camera = this.getCamera();
-		if (camera != null && camera.getParent() instanceof Transformable)
-		{
-			return (Transformable)camera.getParent();
-		}
-		return null;
+		this.lookingGlass.getLookingGlassFactory().addAutomaticDisplayListener( automaticDisplayListener );
+	}
+	
+	public void removeAutomaticDisplayListener(AutomaticDisplayListener automaticDisplayListener)
+	{
+		this.lookingGlass.getLookingGlassFactory().removeAutomaticDisplayListener( automaticDisplayListener );
 	}
 
-	@Override
-	public boolean doStartManipulator( InputState startInput ) {
-		this.manipulatedTransformable = this.getManipulatedTransformableFromCamera();
-		if (this.manipulatedTransformable != null)
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	
-	
-	@Override
-	//We don't want to change the handle set when moving the camera
-	protected HandleSet getHandleSetToEnable()
-	{
-		return null;
-	}
-	
-	
-	
 }
