@@ -241,7 +241,10 @@ public final class Matrix4x4 extends AbstractMatrix4x4 implements edu.cmu.cs.den
 	//Identity
 	private static final Matrix4x4 IDENTITY = Matrix4x4.createNaN();
 	public static Matrix4x4 accessIdentity() {
-		IDENTITY.setIdentity();
+		IDENTITY.right.set( 1,0,0,0 );
+		IDENTITY.up.set( 0,1,0,0 );
+		IDENTITY.backward.set( 0,0,1,0 );
+		IDENTITY.translation.set( 0,0,0,1 );
 		return IDENTITY;
 	}
 

@@ -48,7 +48,7 @@ public abstract class BubbleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.grap
 	private java.awt.geom.Point2D.Float textBoundsOffset = new java.awt.geom.Point2D.Float();
 	@Override
 	protected float getWrapWidth( java.awt.Rectangle actualViewport ) {
-		return (float)( actualViewport.getWidth() * 0.5 ); 
+		return (float)( actualViewport.getWidth() * 0.9 ); 
 	}
 	protected abstract void render( 
 			edu.cmu.cs.dennisc.lookingglass.Graphics2D g2, 
