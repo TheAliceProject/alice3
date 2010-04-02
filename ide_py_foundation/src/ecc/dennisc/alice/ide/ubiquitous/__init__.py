@@ -1,1 +1,0 @@
-from UbiquitousTemplatesPane import UbiquitousTemplatesPane
