@@ -51,7 +51,7 @@ class GalleryFileActionOperation extends AbstractGalleryDeclareFieldOperation {
 		this.file = file;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
 		org.alice.ide.declarationpanes.CreateFieldFromGalleryPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldFromGalleryPane(ownerType, this.file);
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldPane.showInJDialog(this.getIDE(), "Create New Instance", true);
 		if (field != null) {

@@ -96,7 +96,7 @@ public class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 	}
 	
 	@Override
-	public java.lang.String toString() {
+	public String toString() {
 		return ByteArrayDataSource.class.getName() + "[contentType=" + this.contentType + "]";
 	}
 }

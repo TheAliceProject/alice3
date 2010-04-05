@@ -55,7 +55,7 @@ abstract class AbstractNonGalleryDeclareFieldOperation extends org.alice.ide.ope
 	protected abstract edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
 	
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( this.createField( ownerType ), null );
 	}
 }

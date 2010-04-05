@@ -47,7 +47,7 @@ package org.alice.ide.cascade.customfillin;
  */
 public class ImportNewImageResourceFillIn extends ImportNewResourceFillIn<org.alice.virtualmachine.resources.ImageResource> {
 	@Override
-	protected java.lang.String getMenuText() {
+	protected String getMenuText() {
 		return "Import New Image Resource...";
 	}
 	@Override

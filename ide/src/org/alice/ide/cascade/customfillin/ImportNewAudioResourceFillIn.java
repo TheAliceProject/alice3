@@ -47,7 +47,7 @@ package org.alice.ide.cascade.customfillin;
  */
 public class ImportNewAudioResourceFillIn extends ImportNewResourceFillIn<org.alice.virtualmachine.resources.AudioResource> {
 	@Override
-	protected java.lang.String getMenuText() {
+	protected String getMenuText() {
 		return "Import New Audio Resource...";
 	}
 	@Override

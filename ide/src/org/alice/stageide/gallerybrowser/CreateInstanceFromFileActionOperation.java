@@ -63,7 +63,7 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 	}
 
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
 		java.io.File directory = this.getInitialDirectory();
 		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog(this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false);
 
