@@ -60,13 +60,14 @@ public class ClassUtilities {
 		s_primativeTypeMap.put( Float.TYPE.getName(), Float.TYPE );
 	}
 	public static <E> E getInstance( Object o, Class<E> cls ) {
-		E rv = null;
-		if( o != null ) {
-			if( cls.isAssignableFrom( o.getClass() ) ) {
-				rv = (E)o;
-			}
-		}
-		return rv;
+		return cls.cast( o );
+//		E rv = null;
+//		if( o != null ) {
+//			if( cls.isAssignableFrom( o.getClass() ) ) {
+//				rv = (E)o;
+//			}
+//		}
+//		return rv;
 	}
 
 	public static Class<?> forName( String className ) throws ClassNotFoundException {
