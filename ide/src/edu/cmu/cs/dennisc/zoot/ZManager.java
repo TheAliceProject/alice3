@@ -473,13 +473,35 @@ public class ZManager {
 	}
 	
 	
-	public static javax.swing.JButton createButton( ActionOperation actionOperation ) {
+	public static javax.swing.JButton createButton( final ActionOperation actionOperation ) {
 		assert actionOperation != null;
-		return new ZButton(actionOperation);
+		return new javax.swing.JButton() {
+			@Override
+			public void addNotify() {
+				actionOperation.addAbstractButton( this );
+				super.addNotify();
+			}
+			@Override
+			public void removeNotify() {
+				super.removeNotify();
+				actionOperation.removeAbstractButton( this );
+			}
+		};
 	}
-	public static javax.swing.JMenuItem createMenuItem( ActionOperation actionOperation ) {
+	public static javax.swing.JMenuItem createMenuItem( final ActionOperation actionOperation ) {
 		assert actionOperation != null;
-		return new ZMenuItem(actionOperation);
+		return new javax.swing.JMenuItem() {
+			@Override
+			public void addNotify() {
+				actionOperation.addAbstractButton( this );
+				super.addNotify();
+			}
+			@Override
+			public void removeNotify() {
+				super.removeNotify();
+				actionOperation.removeAbstractButton( this );
+			}
+		};
 	}
 	public static javax.swing.AbstractButton createHyperlink( ActionOperation actionOperation ) {
 		assert actionOperation != null;
@@ -487,9 +509,20 @@ public class ZManager {
 	}
 
 
-	public static javax.swing.JCheckBox createCheckBox( BooleanStateOperation booleanStateOperation ) {
+	public static javax.swing.JCheckBox createCheckBox( final BooleanStateOperation booleanStateOperation ) {
 		assert booleanStateOperation != null;
-		return new ZCheckBox(booleanStateOperation);
+		return new javax.swing.JCheckBox() {
+			@Override
+			public void addNotify() {
+				booleanStateOperation.addAbstractButton( this );
+				super.addNotify();
+			}
+			@Override
+			public void removeNotify() {
+				super.removeNotify();
+				booleanStateOperation.removeAbstractButton( this );
+			}
+		};
 	}
 	public static javax.swing.JCheckBoxMenuItem createCheckBoxMenuItem( BooleanStateOperation booleanStateOperation ) {
 		assert booleanStateOperation != null;

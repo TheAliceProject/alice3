@@ -46,7 +46,21 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public interface ActionOperation extends Operation {
-	public javax.swing.ButtonModel getButtonModel();
-	public javax.swing.Action getActionForConfiguringSwing();
+	public String getName();
+	public void setName( String name );
+	public javax.swing.Icon getSmallIcon();
+	public void setSmallIcon( javax.swing.Icon icon );
+	public int getMnemonicKey();
+	public void setMnemonicKey( int mnemonicKey );
+	public javax.swing.KeyStroke getAcceleratorKey();
+	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey );
+	public String getShortDescription();
+	public void setShortDescription( String shortDescription );
+	public String getLongDescription();
+	public void setLongDescription( String longDescription );
+	
 	public void perform( ActionContext actionContext );
+
+	public void addAbstractButton(javax.swing.AbstractButton abstractButton);
+	public void removeAbstractButton(javax.swing.AbstractButton abstractButton);
 }

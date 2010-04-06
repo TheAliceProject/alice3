@@ -48,7 +48,7 @@ package org.alice.ide.operations.help;
 public class WarningOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private boolean isSolicited;
 	public WarningOperation( boolean isSolicited ) {
-		this.putValue( javax.swing.Action.NAME, "Display Warning..." );
+		this.setName( "Display Warning..." );
 		this.isSolicited = isSolicited;
 	}
 	@Override

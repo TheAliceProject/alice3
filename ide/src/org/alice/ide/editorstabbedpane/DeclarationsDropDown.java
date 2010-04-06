@@ -60,7 +60,7 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		this.declaringType = declaringType;
 		this.presentation = presentation;
-		this.putValue( javax.swing.Action.NAME, this.presentation + "..." );
+		this.setName( this.presentation + "..." );
 	}
 	protected abstract EditMembersPane< E > createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
 	public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -264,7 +264,7 @@ class ProjectBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 
 class RootOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RootOperation() {
-		this.putValue( javax.swing.Action.NAME, "All" );
+		this.setName( "All" );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
@@ -317,14 +317,18 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 		this.setLeftButtonPressOperation( leftButtonPressOperation );
 		this.add( this.label );
 		this.updateLabel();
-		leftButtonPressOperation.getActionForConfiguringSwing().addPropertyChangeListener( new java.beans.PropertyChangeListener() {
-			public void propertyChange( java.beans.PropertyChangeEvent e ) {
-				if( javax.swing.Action.NAME.equals( e.getPropertyName() ) || javax.swing.Action.SMALL_ICON.equals( e.getPropertyName() ) ) {
-					OperationDropDown.this.updateLabel();
-				}
-			}
-		} );
-		//this.setForeground( java.awt.Color.DARK_GRAY );
+//
+//		
+//		
+//		leftButtonPressOperation.getActionForConfiguringSwing().addPropertyChangeListener( new java.beans.PropertyChangeListener() {
+//			public void propertyChange( java.beans.PropertyChangeEvent e ) {
+//				if( javax.swing.Action.NAME.equals( e.getPropertyName() ) || javax.swing.Action.SMALL_ICON.equals( e.getPropertyName() ) ) {
+//					OperationDropDown.this.updateLabel();
+//				}
+//			}
+//		} );
+//		
+//		
 		this.label.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
 	}
 	
@@ -336,9 +340,8 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 	}
 
 	protected void updateLabel() {
-		javax.swing.Action action = this.getLeftButtonPressOperation().getActionForConfiguringSwing();
 		this.label.setText( "class:" );
-		this.label.setIcon( (javax.swing.Icon)action.getValue( javax.swing.Action.SMALL_ICON ) );
+		this.label.setIcon( this.getLeftButtonPressOperation().getSmallIcon() );
 	}
 	@Override
 	protected boolean isInactiveFeedbackDesired() {
@@ -404,7 +407,10 @@ public class DeclarationsDropDown extends OperationDropDown {
 			type = null;
 		}
 //		this.rootOperationDropDown.getLeftButtonPressOperation().getActionForConfiguringSwing().putValue( javax.swing.Action.NAME, sb.toString() );
-		this.getLeftButtonPressOperation().getActionForConfiguringSwing().putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) );
+		this.getLeftButtonPressOperation().setSmallIcon( new org.alice.ide.common.TypeIcon( type ) );
+		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: update label" );
+		
 		this.revalidate();
 		this.repaint();
 	}

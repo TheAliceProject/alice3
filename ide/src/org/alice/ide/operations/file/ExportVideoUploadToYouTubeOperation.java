@@ -56,7 +56,7 @@ import edu.cmu.cs.dennisc.animation.Program;
  */
 public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ExportVideoUploadToYouTubeOperation() {
-		this.putValue( javax.swing.Action.NAME, "Export Video / Upload To YouTube\u2122..." );
+		this.setName( "Export Video / Upload To YouTube\u2122..." );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

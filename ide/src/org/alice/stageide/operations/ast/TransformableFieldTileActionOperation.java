@@ -74,7 +74,7 @@ public abstract class TransformableFieldTileActionOperation extends AbstractFiel
 					@Override
 					protected StringBuffer updatePresentation(StringBuffer rv, java.util.Locale locale) {
 						//todo
-						rv.append( getActionForConfiguringSwing().getValue( javax.swing.Action.NAME ) );
+						rv.append( TransformableFieldTileActionOperation.this.getName() );
 						return rv;
 					}
 				} );

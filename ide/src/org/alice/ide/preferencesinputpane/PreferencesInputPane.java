@@ -84,7 +84,7 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.croquet.KInputPane<
 		class ClearRecentProjectsOperation extends org.alice.ide.operations.AbstractActionOperation {
 			public ClearRecentProjectsOperation() {
 				super( org.alice.ide.IDE.PREFERENCES_GROUP );
-				this.putValue( javax.swing.Action.NAME, "Clear Recent Projects" );
+				this.setName( "Clear Recent Projects" );
 			}
 			public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 				org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();

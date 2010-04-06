@@ -55,7 +55,7 @@ public class CreateCameraMarkerActionOperation extends AbstractSceneDeclareField
 
 	public CreateCameraMarkerActionOperation(MoveAndTurnSceneEditor sceneEditor) {
 		super(sceneEditor);
-		this.putValue( javax.swing.Action.NAME, "Create Camera Marker..." );
+		this.setName( "Create Camera Marker..." );
 	}
 	
 	@Override

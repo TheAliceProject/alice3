@@ -51,7 +51,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	class AddItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public AddItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
-			this.putValue( javax.swing.Action.NAME, name );
+			this.setName( name );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			try {
@@ -83,7 +83,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	class RemoveItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public RemoveItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
-			this.putValue( javax.swing.Action.NAME, name );
+			this.setName( name );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			final int index = getSelectedIndex();
@@ -114,7 +114,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	abstract class AbstractMoveItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public AbstractMoveItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
-			this.putValue( javax.swing.Action.NAME, name );
+			this.setName( name );
 		}
 		protected abstract int getIndex( int selectedIndex );
 		protected abstract int getRedoSelectionIndexDelta();

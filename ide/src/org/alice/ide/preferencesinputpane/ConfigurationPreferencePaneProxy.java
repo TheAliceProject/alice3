@@ -105,28 +105,28 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	}
 	class EditVariantOperation extends PreferencesActionOperation {
 		public EditVariantOperation() {
-			this.putValue( javax.swing.Action.NAME, "Edit..." );
+			this.setName( "Edit..." );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
 	}
 	class RemoveVariantOperation extends PreferencesActionOperation {
 		public RemoveVariantOperation() {
-			this.putValue( javax.swing.Action.NAME, "Remove" );
+			this.setName( "Remove" );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
 	}
 	class NewVariantOperation extends PreferencesActionOperation {
 		public NewVariantOperation() {
-			this.putValue( javax.swing.Action.NAME, "New..." );
+			this.setName( "New..." );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}
 	}
 	class ImportVariantOperation extends PreferencesActionOperation {
 		public ImportVariantOperation() {
-			this.putValue( javax.swing.Action.NAME, "Import..." );
+			this.setName( "Import..." );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		}

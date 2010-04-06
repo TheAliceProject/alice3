@@ -47,13 +47,13 @@ package org.alice.stageide.gallerybrowser;
  */
 class IndirectCreatePersonActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public IndirectCreatePersonActionOperation() {
-		this.putValue(javax.swing.Action.NAME, "Create Person...");
+		this.setName( "Create Person..." );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		PersonCreatorDialog dialog = new PersonCreatorDialog( this.getIDE() );
 		dialog.pack();
-		dialog.setVisible(true);
+		dialog.setVisible( true );
 		dialog.createAndExecuteWorker();
 	}
 

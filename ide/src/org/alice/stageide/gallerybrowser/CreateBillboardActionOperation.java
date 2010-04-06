@@ -69,7 +69,7 @@ class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.Create
  */
 class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperation {
 	public CreateBillboardActionOperation() {
-		this.putValue( javax.swing.Action.NAME, "Create Billboard..." );
+		this.setName( "Create Billboard..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {

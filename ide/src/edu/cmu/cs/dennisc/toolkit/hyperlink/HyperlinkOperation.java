@@ -50,9 +50,9 @@ public class HyperlinkOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialA
 	}
 	public HyperlinkOperation( String url, String text ) {
 		this.url = url;
-		this.putValue( javax.swing.Action.NAME, text );
-		this.putValue( javax.swing.Action.SHORT_DESCRIPTION, url );
-		this.putValue( javax.swing.Action.LONG_DESCRIPTION, url );
+		this.setName( text );
+		this.setShortDescription( url );
+		this.setLongDescription( url );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

@@ -93,9 +93,9 @@ class RunIcon implements javax.swing.Icon {
  */
 public class RunOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RunOperation() {
-		this.putValue( javax.swing.Action.NAME, "Run..." );
-		this.putValue( javax.swing.Action.SMALL_ICON, new RunIcon() );
-		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_R );
+		this.setName( "Run..." );
+		this.setSmallIcon( new RunIcon() );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

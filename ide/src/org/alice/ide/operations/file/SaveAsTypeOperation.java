@@ -49,8 +49,8 @@ public class SaveAsTypeOperation extends AbstractSaveOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 	public SaveAsTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		this.type = type;
-		this.putValue( javax.swing.Action.NAME, "Save As..." );
-		this.putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( type ) );
+		this.setName( "Save As..." );
+		this.setSmallIcon( new org.alice.ide.common.TypeIcon( type ) );
 	}
 	@Override
 	protected java.io.File getDefaultDirectory() {

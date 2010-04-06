@@ -53,6 +53,4 @@ public interface Operation {
 	public void setEnabled( boolean isEnabled );
 	public String getToolTipText();
 	public void setToolTipText( String toolTipText );
-	public void addComponent( javax.swing.JComponent component );
-	public void removeComponent( javax.swing.JComponent component );
 }

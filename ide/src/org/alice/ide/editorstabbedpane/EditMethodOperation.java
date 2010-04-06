@@ -57,7 +57,7 @@ class EditMethodOperation extends org.alice.ide.operations.InconsequentialAction
 		if( this.method == org.alice.ide.IDE.getSingleton().getFocusedCode() ) {
 			sb.append( "    (current)" );
 		}
-		this.putValue( javax.swing.Action.NAME, sb.toString() );
+		this.setName( sb.toString() );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

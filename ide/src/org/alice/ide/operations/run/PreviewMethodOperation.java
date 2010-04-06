@@ -49,7 +49,7 @@ public class PreviewMethodOperation extends org.alice.ide.operations.AbstractAct
 	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
 	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
 		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
-		this.putValue( javax.swing.Action.NAME, "Preview..." );
+		this.setName( "Preview..." );
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
 	public void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

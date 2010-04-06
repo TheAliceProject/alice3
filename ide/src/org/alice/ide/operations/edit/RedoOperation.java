@@ -47,8 +47,8 @@ package org.alice.ide.operations.edit;
  */
 public class RedoOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RedoOperation() {
-		this.putValue( javax.swing.Action.NAME, "Redo" );
-		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+		this.setName( "Redo" );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

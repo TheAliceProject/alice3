@@ -73,7 +73,7 @@ public class BrowserProgressDialog extends edu.cmu.cs.dennisc.progress.ProgressD
 		
 		class CopyToClipboardOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 			public CopyToClipboardOperation() {
-				this.putValue( javax.swing.Action.NAME, "Copy to Clipboard" );
+				this.setName( "Copy to Clipboard" );
 			}
 			@Override
 			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
@@ -82,7 +82,7 @@ public class BrowserProgressDialog extends edu.cmu.cs.dennisc.progress.ProgressD
 		}
 		class DismissOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 			public DismissOperation() {
-				this.putValue( javax.swing.Action.NAME, "Dismiss" );
+				this.setName( "Dismiss" );
 			}
 			@Override
 			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

@@ -210,7 +210,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 
 	class ImportResourceOperation extends ResourceOperation {
 		public ImportResourceOperation() {
-			this.putValue( javax.swing.Action.NAME, "Import..." );
+			this.setName( "Import..." );
 		}
 		@Override
 		public org.alice.virtualmachine.Resource selectResource() {
@@ -256,7 +256,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 
 	class RemoveResourceOperation extends ResourceOperation {
 		public RemoveResourceOperation() {
-			this.putValue( javax.swing.Action.NAME, "Remove" );
+			this.setName( "Remove" );
 		}
 		@Override
 		public org.alice.virtualmachine.Resource selectResource() {
@@ -348,7 +348,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 	class RenameResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public RenameResourceOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-			this.putValue( javax.swing.Action.NAME, "Rename..." );
+			this.setName( "Rename..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
@@ -453,7 +453,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 
 		public ReloadResourceOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-			this.putValue( javax.swing.Action.NAME, "Reload Content..." );
+			this.setName( "Reload Content..." );
 		}
 		public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();

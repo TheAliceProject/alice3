@@ -48,7 +48,7 @@ package org.alice.stageide.operations.ast;
 public class PlaceOnTopOfGroundActionOperation extends TransformableFieldTileActionOperation {
 	public PlaceOnTopOfGroundActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
-		this.putValue( javax.swing.Action.NAME, "Place on top of Ground" );
+		this.setName( "Place on top of Ground" );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable ) {

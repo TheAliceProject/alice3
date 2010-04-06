@@ -134,7 +134,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	
 	class TestOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public TestOperation() {
-			this.putValue( javax.swing.Action.NAME, "test" );
+			this.setName( "test" );
 		}
 		@Override
 		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

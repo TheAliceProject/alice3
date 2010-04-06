@@ -92,13 +92,13 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 class ConvertDoInOrderToDoTogetherActionOperation extends ConvertStatementWithBodyActionOperation {
 	public ConvertDoInOrderToDoTogetherActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder ) {
 		super( property, doInOrder, new edu.cmu.cs.dennisc.alice.ast.DoTogether() );
-		this.putValue( javax.swing.Action.NAME, "Convert To DoTogether" );
+		this.setName( "Convert To DoTogether" );
 	}
 }
 class ConvertDoTogetherToDoInOrderActionOperation extends ConvertStatementWithBodyActionOperation {
 	public ConvertDoTogetherToDoInOrderActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether ) {
 		super( property, doTogether, new edu.cmu.cs.dennisc.alice.ast.DoInOrder() );
-		this.putValue( javax.swing.Action.NAME, "Convert To DoInOrder" );
+		this.setName( "Convert To DoInOrder" );
 	}
 }
 
@@ -107,7 +107,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.Abstract
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody;
 	public DissolveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody ) {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-		this.putValue( javax.swing.Action.NAME, "Dissolve " + abstractStatementWithBody.getClass().getSimpleName() );
+		this.setName( "Dissolve " + abstractStatementWithBody.getClass().getSimpleName() );
 		this.property = property;
 		this.abstractStatementWithBody = abstractStatementWithBody;
 	}
@@ -164,7 +164,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		} else {
 			sb.append( statement.getClass().getSimpleName() );
 		}
-		this.putValue( javax.swing.Action.NAME, sb.toString() );
+		this.setName( sb.toString() );
 		this.property = property;
 		this.statement = statement;
 	}
@@ -201,9 +201,8 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, statement.isEnabled.getValue() );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, statement.isEnabled.getValue(), "Is Enabled" );
 		this.statement = statement;
-		this.putValue( javax.swing.Action.NAME, "Is Enabled" );
 		//update();
 	}
 	//	private void update() {

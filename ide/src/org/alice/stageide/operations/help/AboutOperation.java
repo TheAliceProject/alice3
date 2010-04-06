@@ -47,8 +47,8 @@ package org.alice.stageide.operations.help;
  */
 public class AboutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public AboutOperation() {
-		this.putValue( javax.swing.Action.NAME, "About..." );
-		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_A );
+		this.setName( "About..." );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

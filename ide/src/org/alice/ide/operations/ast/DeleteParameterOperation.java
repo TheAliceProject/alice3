@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 	public DeleteParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
 		super( parametersProperty, parameter );
-		this.putValue( javax.swing.Action.NAME, "Delete" );
+		this.setName( "Delete" );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();

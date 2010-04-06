@@ -48,7 +48,7 @@ package org.alice.ide.operations.ast;
 public abstract class AbstractRenameNodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public AbstractRenameNodeOperation( java.util.UUID groupUUID, String name ) {
 		super( groupUUID );
-		this.putValue( javax.swing.Action.NAME, name );
+		this.setName( name );
 	}
 	protected final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, final edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( nodeNameValidator );

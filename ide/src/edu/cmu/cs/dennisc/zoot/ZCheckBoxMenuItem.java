@@ -49,17 +49,15 @@ package edu.cmu.cs.dennisc.zoot;
 	private BooleanStateOperation booleanStateOperation;
 	public ZCheckBoxMenuItem( BooleanStateOperation booleanStateOperation ) {
 		this.booleanStateOperation = booleanStateOperation;
-		this.setAction( this.booleanStateOperation.getActionForConfiguringSwing() );
-		this.setModel( this.booleanStateOperation.getButtonModel() );
 	}
 	@Override
 	public void addNotify() {
-		this.booleanStateOperation.addComponent( this );
+		this.booleanStateOperation.addAbstractButton( this );
 		super.addNotify();
 	}
 	@Override
 	public void removeNotify() {
 		super.removeNotify();
-		this.booleanStateOperation.removeComponent( this );
+		this.booleanStateOperation.removeAbstractButton( this );
 	}
 }

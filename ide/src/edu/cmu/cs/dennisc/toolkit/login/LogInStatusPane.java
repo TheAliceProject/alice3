@@ -93,7 +93,7 @@ class PasswordPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	class TestLogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public TestLogInOperation() {
-			this.putValue( javax.swing.Action.NAME, "Log In" );
+			this.setName( "Log In" );
 		}
 		@Override
 		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -173,7 +173,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
 	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
 	class LogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public LogInOperation() {
-			this.putValue( javax.swing.Action.NAME, "Log In... (Optional)" );
+			this.setName( "Log In... (Optional)" );
 		}
 		@Override
 		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -193,7 +193,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
 
 	class LogOutOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public LogOutOperation() {
-			this.putValue( javax.swing.Action.NAME, "Log Out" );
+			this.setName( "Log Out" );
 		}
 		@Override
 		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

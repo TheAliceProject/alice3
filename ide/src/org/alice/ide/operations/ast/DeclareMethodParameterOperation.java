@@ -50,7 +50,7 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 
 	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 		this.method = method;
-		this.putValue( javax.swing.Action.NAME, "Add Parameter..." );
+		this.setName( "Add Parameter..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {

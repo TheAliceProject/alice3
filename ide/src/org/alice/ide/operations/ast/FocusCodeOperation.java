@@ -56,7 +56,7 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 		} else {
 			name = "Edit";
 		}
-		this.putValue( javax.swing.Action.NAME, name );
+		this.setName( name );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();

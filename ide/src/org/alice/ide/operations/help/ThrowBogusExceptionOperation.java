@@ -47,7 +47,7 @@ package org.alice.ide.operations.help;
  */
 public class ThrowBogusExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ThrowBogusExceptionOperation() {
-		this.putValue( javax.swing.Action.NAME, "Throw Bogus Exception..." );
+		this.setName( "Throw Bogus Exception..." );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

@@ -48,8 +48,7 @@ package org.alice.ide.declarationpanes;
 public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.PreviewInputPane< E > {
 	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public IsReassignableStateOperation( boolean initialValue ) {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, initialValue );
-			//this.putValue( javax.swing.Action.NAME, "is constant" );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, initialValue, "(is constant)", "(is variable)" );
 		}
 		@Override
 		protected void handleStateChange(boolean value) {

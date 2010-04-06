@@ -48,7 +48,7 @@ package org.alice.stageide.operations.ast;
 public class EditPersonActionOperation extends AbstractFieldTileActionOperation {
 	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
-		this.putValue( javax.swing.Action.NAME, "Edit..." );
+		this.setName( "Edit..." );
 	}
 	
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

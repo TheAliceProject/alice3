@@ -62,7 +62,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.swin
 		private boolean isAll;
 		public RestoreDefaultsActionOperation() {
 			super( org.alice.ide.IDE.PREFERENCES_GROUP );
-			this.putValue( javax.swing.Action.NAME, "Restore Defaults" );
+			this.setName( "Restore Defaults" );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 			String name = CollectionOfPreferencesPane.this.getTitle();
@@ -92,7 +92,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.swin
 	class ApplyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public ApplyActionOperation() {
 			super( org.alice.ide.IDE.PREFERENCES_GROUP );
-			this.putValue( javax.swing.Action.NAME, "Apply" );
+			this.setName( "Apply" );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 			//todo

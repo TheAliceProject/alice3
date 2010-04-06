@@ -48,7 +48,7 @@ package org.alice.stageide.operations.ast;
 public class OrientToUprightActionOperation extends TransformableFieldTileActionOperation {
 	public OrientToUprightActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
-		this.putValue( javax.swing.Action.NAME, "Orient to Upright" );
+		this.setName( "Orient to Upright" );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable ) {

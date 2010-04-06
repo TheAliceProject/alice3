@@ -85,7 +85,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		//todo
 		java.io.InputStream is = GalleryBrowser.class.getResourceAsStream("images/create_person.png");
 		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
-		createPersonButton.setIcon(new javax.swing.ImageIcon(image));
+		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(image));
 		
 		this.add(createPersonButton, java.awt.BorderLayout.WEST);
 		this.add(buttonPane, java.awt.BorderLayout.EAST);

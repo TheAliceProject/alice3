@@ -53,9 +53,8 @@ import edu.cmu.cs.dennisc.alice.ast.DeclarationProperty;
 class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, isArrayProperty.getValue() );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, isArrayProperty.getValue(), "is array" );
 		this.isArrayProperty = isArrayProperty;
-		this.putValue( javax.swing.Action.NAME, "is array" );
 	}
 	@Override
 	protected void handleStateChange(boolean value) {

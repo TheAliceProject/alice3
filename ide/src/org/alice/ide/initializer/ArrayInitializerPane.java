@@ -107,7 +107,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public AddItemOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-			this.putValue( javax.swing.Action.NAME, "Add" );
+			this.setName( "Add" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			assert ArrayInitializerPane.this.type != null;
@@ -140,7 +140,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public RemoveItemOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-			this.putValue( javax.swing.Action.NAME, "Remove" );
+			this.setName( "Remove" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			final int index = ArrayInitializerPane.this.list.getSelectedIndex();
@@ -200,7 +200,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class MoveItemUpOperation extends AbstractMoveItemOperation {
 		public MoveItemUpOperation() {
-			this.putValue( javax.swing.Action.NAME, "Move Up" );
+			this.setName( "Move Up" );
 		}
 		@Override
 		protected int getIndex(int selectedIndex) {
@@ -218,7 +218,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class MoveItemDownOperation extends AbstractMoveItemOperation {
 		public MoveItemDownOperation() {
-			this.putValue( javax.swing.Action.NAME, "Move Down" );
+			this.setName( "Move Down" );
 		}
 		@Override
 		protected int getIndex(int selectedIndex) {

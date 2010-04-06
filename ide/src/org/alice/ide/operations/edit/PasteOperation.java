@@ -47,8 +47,8 @@ package org.alice.ide.operations.edit;
  */
 public class PasteOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public PasteOperation() {
-		this.putValue( javax.swing.Action.NAME, "Paste" );
-		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_V, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+		this.setName( "Paste" );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_V, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

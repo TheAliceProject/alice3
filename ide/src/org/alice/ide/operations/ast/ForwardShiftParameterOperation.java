@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 public class ForwardShiftParameterOperation extends ShiftParameterOperation {
 	public ForwardShiftParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
 		super( parametersProperty, parameter );
-		this.putValue( javax.swing.Action.NAME, "Shift Forward" );
+		this.setName( "Shift Forward" );
 	}
 	@Override
 	protected boolean isAppropriate( int index, int n ) {

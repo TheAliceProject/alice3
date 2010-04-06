@@ -47,8 +47,7 @@ package org.alice.ide.operations.window;
  */
 public class IsSceneEditorExpandedOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	public IsSceneEditorExpandedOperation( Boolean initialValue ) {
-		super( org.alice.ide.IDE.INTERFACE_GROUP, initialValue );
-		this.putValue( javax.swing.Action.NAME, "Is Scene Editor Expanded" );
+		super( org.alice.ide.IDE.INTERFACE_GROUP, initialValue, "Is Scene Editor Expanded" );
 		//this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_X );
 	}
 	@Override

@@ -223,7 +223,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 	class EditPreviousCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public EditPreviousCodeOperation() {
 			super( org.alice.ide.IDE.INTERFACE_GROUP );
-			this.putValue( javax.swing.Action.NAME, "previous" );
+			this.setName( "previous" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			EditorsTabbedPane.this.editPreviousCode();

@@ -47,8 +47,7 @@ package org.alice.ide.operations.window;
  */
 public class IsDefaultFieldNameGenerationDesiredOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	public IsDefaultFieldNameGenerationDesiredOperation( Boolean initialValue ) {
-		super( org.alice.ide.IDE.PREFERENCES_GROUP, initialValue );
-		this.putValue( javax.swing.Action.NAME, "Is Default Field Name Generation Desired" );
+		super( org.alice.ide.IDE.PREFERENCES_GROUP, initialValue, "Is Default Field Name Generation Desired" );
 	}
 	@Override
 	protected void handleStateChange(boolean value) {
