@@ -54,7 +54,7 @@ public class NodePropertyPane< E extends edu.cmu.cs.dennisc.alice.ast.NodeProper
 	}
 	@Override
 	protected void refresh() {
-		edu.cmu.cs.dennisc.javax.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
 		Object value = getProperty().getValue();
 		if( value instanceof edu.cmu.cs.dennisc.alice.ast.Node ) {
 			this.add( this.getFactory().createComponent( (edu.cmu.cs.dennisc.alice.ast.Node)value ) );

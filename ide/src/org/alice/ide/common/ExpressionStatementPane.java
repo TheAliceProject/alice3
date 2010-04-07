@@ -85,7 +85,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	}
 
 	private void refresh() {
-		edu.cmu.cs.dennisc.javax.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
 		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {

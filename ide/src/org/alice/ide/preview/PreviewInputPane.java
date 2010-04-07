@@ -53,7 +53,7 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.inputpane.K
 //	}
 	class PreviewPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 		public void refresh() {
-			edu.cmu.cs.dennisc.javax.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
+			edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
 //			java.awt.Component component = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
 //					PreviewInputPane.this.createPreviewSubComponent(),
 //					javax.swing.Box.createHorizontalGlue()

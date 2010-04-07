@@ -176,7 +176,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 		return this;
 	}
 	public void refresh() {
-		edu.cmu.cs.dennisc.javax.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
 			javax.swing.JComponent parametersPane = createParametersPane( codeDeclaredInAlice );
