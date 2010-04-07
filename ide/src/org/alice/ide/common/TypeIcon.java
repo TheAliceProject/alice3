@@ -84,7 +84,7 @@ public class TypeIcon implements javax.swing.Icon {
 //		} else {
 //			g.setColor( java.awt.Color.RED );
 //		}
-		edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, this.getText(), x, y, w, h );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, this.getText(), x, y, w, h );
 	}
 }
 

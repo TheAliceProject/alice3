@@ -60,7 +60,7 @@ public class ImageResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	}
 	@Override
 	protected String getInitialFileText() {
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			return "*.png;*.jpg;*.gif;*.bmp";
 		} else {
 			return null;

@@ -78,11 +78,11 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 	protected void paintText( java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle textRect, String text ) {
 		//		super.paintText( g, b, textRect, text )
 
-		javax.swing.AbstractButton button = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( c, javax.swing.AbstractButton.class );
+		javax.swing.AbstractButton button = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( c, javax.swing.AbstractButton.class );
 		javax.swing.ButtonModel model = button.getModel();
 		java.awt.Paint forePaint = this.getForegroundPaint( model );
 		java.awt.Paint backPaint = this.getBackgroundPaint( model );
-		java.awt.Graphics2D g2 = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( g, java.awt.Graphics2D.class );
+		java.awt.Graphics2D g2 = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( g, java.awt.Graphics2D.class );
 		g2.setRenderingHint( java.awt.RenderingHints.KEY_TEXT_ANTIALIASING, java.awt.RenderingHints.VALUE_TEXT_ANTIALIAS_ON );
 
 		java.awt.FontMetrics fm = g.getFontMetrics();
@@ -125,9 +125,9 @@ class IsExpandedCheckBoxUI extends javax.swing.plaf.basic.BasicButtonUI {
 	@Override
 	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
 		super.paint( g, c );
-		javax.swing.AbstractButton button = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( c, javax.swing.AbstractButton.class );
+		javax.swing.AbstractButton button = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( c, javax.swing.AbstractButton.class );
 		javax.swing.ButtonModel model = button.getModel();
-		java.awt.Graphics2D g2 = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( g, java.awt.Graphics2D.class );
+		java.awt.Graphics2D g2 = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( g, java.awt.Graphics2D.class );
 		g2.setStroke( new java.awt.BasicStroke( 3.0f, java.awt.BasicStroke.CAP_ROUND, java.awt.BasicStroke.JOIN_ROUND ) );
 		java.awt.Paint forePaint = this.getForegroundPaint( model );
 		java.awt.Paint backPaint = this.getBackgroundPaint( model );

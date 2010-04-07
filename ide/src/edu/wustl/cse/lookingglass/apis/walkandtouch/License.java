@@ -47,7 +47,7 @@ public class License {
 	public static final String TEXT;
 	public static final String TEXT_FOR_USE_IN_ALICE;
 	static {
-		TEXT = edu.cmu.cs.dennisc.io.TextFileUtilities.read( License.class.getResourceAsStream( "License.txt" ) );
-		TEXT_FOR_USE_IN_ALICE = edu.cmu.cs.dennisc.io.TextFileUtilities.read( License.class.getResourceAsStream( "LicenseForUseInAlice.txt" ) );
+		TEXT = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( License.class.getResourceAsStream( "License.txt" ) );
+		TEXT_FOR_USE_IN_ALICE = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( License.class.getResourceAsStream( "LicenseForUseInAlice.txt" ) );
 	}
 }

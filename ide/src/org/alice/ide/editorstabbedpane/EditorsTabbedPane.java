@@ -376,7 +376,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 	}
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 		for( java.awt.Component component : this.getComponents() ) {
-			org.alice.ide.codeeditor.CodeEditor codeEditor = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( component, org.alice.ide.codeeditor.CodeEditor.class );
+			org.alice.ide.codeeditor.CodeEditor codeEditor = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( component, org.alice.ide.codeeditor.CodeEditor.class );
 			if( codeEditor != null ) {
 				codeEditor.refresh();
 			}

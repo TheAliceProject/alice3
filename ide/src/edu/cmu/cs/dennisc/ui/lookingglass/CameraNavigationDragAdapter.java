@@ -61,7 +61,7 @@ public class CameraNavigationDragAdapter extends OnscreenLookingGlassDragAdapter
 	}
 	@Override
 	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
-		return edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e );
+		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e );
 	}
 
 	@Override

@@ -181,8 +181,8 @@ public abstract class Factory {
 //			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
 //			rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "resource " + resource.getName() );
 		} else {
-			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
-			Object o = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
+			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
+			Object o = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
 			String s;
 			if( o != null ) {
 				if( o instanceof edu.cmu.cs.dennisc.alice.ast.AbstractType ) {
@@ -253,7 +253,7 @@ public abstract class Factory {
 						int n = this.getComponentCount();
 						java.awt.Component cFirst = this.getComponent( 0 );
 						java.awt.Component cLast = this.getComponent( n-1 );
-						g.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 160 ) );
+						g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 160 ) );
 						int xB = Factory.this.getPixelsPerIndent();
 						int xA = xB/2;
 						int yTop = cFirst.getY() + cFirst.getHeight();
@@ -267,7 +267,7 @@ public abstract class Factory {
 						g.drawLine( xD, yBottom, xD, cLast.getY() );
 						
 						final int HALF_TRIANGLE_WIDTH = 3;
-						edu.cmu.cs.dennisc.awt.GraphicsUtilties.fillTriangle( g, edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
 					}
 					g.setColor( prev );
 				}

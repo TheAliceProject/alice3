@@ -241,7 +241,7 @@ public abstract class KInputPane<E> extends javax.swing.JPanel {
 		this.revalidate();
 		dialog.pack();
 		
-		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, root );
+		edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, root );
 
 		assert m_dialog == null;
 		m_dialog = dialog;

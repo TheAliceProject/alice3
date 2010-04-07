@@ -91,7 +91,7 @@ public final class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 		if( cls != null ) {
 			return cls.getSimpleName();
 		} else {
-			String[] simpleNames = edu.cmu.cs.dennisc.lang.ClassUtilities.getSimpleClassNames( this.name );
+			String[] simpleNames = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getSimpleClassNames( this.name );
 			return simpleNames[ simpleNames.length-1 ];
 		}
 	}
@@ -100,7 +100,7 @@ public final class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 		if( cls != null ) {
 			return cls.isArray();
 		} else {
-			return edu.cmu.cs.dennisc.lang.ClassUtilities.getArrayDimensionCount( this.name ) > 0;
+			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getArrayDimensionCount( this.name ) > 0;
 		}
 	}
 	public ClassReflectionProxy getComponentClassReflectionProxy() {
@@ -150,7 +150,7 @@ public final class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 				return null;
 			}
 		} else {
-			String packageName = edu.cmu.cs.dennisc.lang.ClassUtilities.getPackageName( this.name );
+			String packageName = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getPackageName( this.name );
 			if( packageName != null ) {
 				return new PackageReflectionProxy( packageName );
 			} else {
@@ -162,7 +162,7 @@ public final class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 	@Override
 	protected Class<?> reify() {
 		try {
-			return edu.cmu.cs.dennisc.lang.ClassUtilities.forName( this.name );
+			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( this.name );
 		} catch( ClassNotFoundException cnfe ) {
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: could not find class", this.name );
 			return null;

@@ -57,8 +57,8 @@ public class PreviewMethodOperation extends org.alice.ide.operations.AbstractAct
 		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate, null, mouseEvent );
 		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
 			public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( statement, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
-				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
+				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
+				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
 				methodInvocation.expression.setValue( null );
 				PreviewMethodOperation.this.getIDE().handlePreviewMethod( actionContext, methodInvocation );
 				actionContext.commit();

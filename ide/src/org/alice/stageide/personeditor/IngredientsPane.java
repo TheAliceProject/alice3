@@ -63,8 +63,8 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 	}
 	
 	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
-	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	private static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
+	private static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 	
 	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane() {
 		@Override

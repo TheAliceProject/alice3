@@ -71,7 +71,7 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
 			java.awt.Rectangle actualViewport, 
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
-			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText, 
 			java.awt.Font font, 
 			java.awt.Color textColor, 
 			float wrapWidth,
@@ -153,7 +153,7 @@ public class SpeechBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scene
 //			g2.setPaint( java.awt.Color.RED );
 //			g2.draw( textBounds );
 //			g2.setPaint( java.awt.Color.BLACK );
-			multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.awt.TextAlignment.LEADING, textBounds );
+			multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.java.awt.TextAlignment.LEADING, textBounds );
 			g2.translate( -xT, -yT );
 //			int xPixel = (int)( bodyConnectionLocationOfTail.getX() + textBoundsOffset.getX() );
 //			int yPixel = (int)( bodyConnectionLocationOfTail.getY() + textBoundsOffset.getY() - 10 );

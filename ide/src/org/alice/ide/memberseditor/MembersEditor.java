@@ -228,7 +228,7 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	}
 	
 	public MembersEditor() {
-		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
+		this.setLayout( new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager() );
 		this.add( this.tabbedPane );
 	}
 

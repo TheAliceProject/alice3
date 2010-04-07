@@ -94,7 +94,7 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.inputpane.K
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 	}
 
 	protected abstract java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv );

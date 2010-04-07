@@ -50,7 +50,7 @@ public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scen
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
 			java.awt.Rectangle actualViewport, 
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
-			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText, 
 			java.awt.Font font, 
 			java.awt.Color textColor,
 			float wrapWidth,
@@ -62,7 +62,7 @@ public abstract class ShapeEnclosedTextAdapter<E extends edu.cmu.cs.dennisc.scen
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
 			java.awt.Rectangle actualViewport, 
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
-			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText, 
 			java.awt.Font font,
 			java.awt.Color textColor,
 			float wrapWidth ) {

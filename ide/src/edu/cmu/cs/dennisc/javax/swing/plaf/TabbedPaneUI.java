@@ -47,8 +47,8 @@ package edu.cmu.cs.dennisc.javax.swing.plaf;
  */
 class CloseIcon implements javax.swing.Icon {
 	private static final java.awt.Color BASE_COLOR = new java.awt.Color( 127, 63, 63 );
-	private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
-	private static final java.awt.Color PRESS_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
+	private static final java.awt.Color HIGHLIGHT_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, +0.25f );
+	private static final java.awt.Color PRESS_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.shiftHSB( BASE_COLOR, 0, 0, -0.125f );
 
 	private boolean isFilled = false;
 	private boolean isHighlighted = false;
@@ -210,7 +210,7 @@ public class TabbedPaneUI extends javax.swing.plaf.basic.BasicTabbedPaneUI {
 		this.tabAreaInsets.set( 0, 0, 0, 0 );
 		this.tabInsets.set( 3, 2, 3, 2 );
 		this.selectedTabPadInsets.set( 0, 0, 0, 0 );
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			this.contentBorderInsets.set( 0, 0, 0, 0 );
 		} else {
 			this.contentBorderInsets.set( 2, 2, 0, 0 );

@@ -48,7 +48,7 @@ package org.alice.ide.operations.file;
 public class SaveAsProjectOperation extends AbstractSaveProjectOperation {
 	public SaveAsProjectOperation() {
 		this.setName( "Save As..." );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() | java.awt.event.InputEvent.SHIFT_MASK ) );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() | java.awt.event.InputEvent.SHIFT_MASK ) );
 		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
 	}
 	@Override

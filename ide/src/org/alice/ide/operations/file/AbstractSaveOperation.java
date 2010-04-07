@@ -58,7 +58,7 @@ public abstract class AbstractSaveOperation extends AbstractClearanceActionOpera
 		boolean isExceptionRaised;
 		do {
 			if( this.isPromptNecessary( filePrevious ) ) {
-				fileNext = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog( this.getIDE(), this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
+				fileNext = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.getIDE(), this.getDefaultDirectory(), this.getInitialFilename(), this.getExtension(), true );
 			} else {
 				fileNext = filePrevious;
 			}

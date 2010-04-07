@@ -75,14 +75,14 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.javax.swing.compone
 					public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 						if( c instanceof javax.swing.AbstractButton ) {
 							javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
-							edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading heading;
+							edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading heading;
 							if( button.getModel().isPressed() ) {
-								heading = edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading.SOUTH;
+								heading = edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.SOUTH;
 							} else {
-								heading = edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading.EAST;
+								heading = edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.EAST;
 							}
 							g.setColor( java.awt.Color.BLACK );
-							edu.cmu.cs.dennisc.awt.GraphicsUtilties.fillTriangle( g, heading, x + ARROW_BORDER_HALF_SIZE, y + ARROW_BORDER_HALF_SIZE, DirectoryControl.ARROW_SIZE, DirectoryControl.ARROW_SIZE );
+							edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.fillTriangle( g, heading, x + ARROW_BORDER_HALF_SIZE, y + ARROW_BORDER_HALF_SIZE, DirectoryControl.ARROW_SIZE, DirectoryControl.ARROW_SIZE );
 						}
 					}
 				};

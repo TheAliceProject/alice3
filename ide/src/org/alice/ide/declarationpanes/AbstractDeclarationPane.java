@@ -74,7 +74,7 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 		}
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
 		}
 		@Override
 		public java.awt.Dimension getMaximumSize() {
@@ -147,7 +147,7 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 	
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 	}
 
 	protected boolean isReassignable() {

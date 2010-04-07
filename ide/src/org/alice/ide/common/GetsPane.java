@@ -127,7 +127,7 @@ public class GetsPane extends edu.cmu.cs.dennisc.javax.swing.components.JPane {
 				xPoints[ i ] = getWidth() - xPoints[ i ];
 			}
 		}
-		edu.cmu.cs.dennisc.awt.GraphicsUtilties.setRenderingHint( g, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.setRenderingHint( g, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g2.setPaint( this.getGradientPaint() );

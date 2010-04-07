@@ -43,7 +43,7 @@ public class Manager {
 			//pass
 		} else {
 			java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( License.class );
-			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 				try {
 					userPreferences.clear();
 				} catch( java.util.prefs.BackingStoreException bse ) {

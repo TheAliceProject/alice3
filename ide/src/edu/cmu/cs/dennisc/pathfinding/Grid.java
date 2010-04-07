@@ -182,7 +182,7 @@ public class Grid {
 		while( !open.isEmpty() ) {
 			if( observer != null ) {
 				observer.repaint();
-				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 100 );
+				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 100 );
 			}
 			Cell bestNeighbor = getCellWithMinimumF( open, dst );
 			if( bestNeighbor.equals( dst ) ) {

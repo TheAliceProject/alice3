@@ -1010,7 +1010,7 @@ public class ASG {
 		Integer elementKey = Integer.parseInt( xmlElement.getAttribute( "key" ) );
 		String elementName = xmlElement.getAttribute( "name" );
 		className = convertClassnameIfNecessary( className );
-		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element) edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( className );
+		edu.cmu.cs.dennisc.scenegraph.Element sgElement = (edu.cmu.cs.dennisc.scenegraph.Element) edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( className );
 		sgElement.setName( elementName );
 		keyToElementMap.put( elementKey, sgElement );
 		org.w3c.dom.Element[] xmlProperties = getChildren( xmlElement, "property" );
@@ -1025,14 +1025,14 @@ public class ASG {
 			if( xmlProperty.hasAttribute( "class" ) ) {
 				String propertyValueClassname = xmlProperty.getAttribute( "class" );
 				propertyValueClassname = convertClassnameIfNecessary( propertyValueClassname );
-				Class<?> propertyValueClass = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( propertyValueClassname );
+				Class<?> propertyValueClass = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( propertyValueClassname );
 				Object value;
 				if( xmlProperty.hasAttribute( "filename" ) ) {
 					String filename = xmlProperty.getAttribute( "filename" );
 					java.io.InputStream is = filenameToStreamMap.get( filename );
 					if( is != null ) {
 						if( java.awt.Image.class.isAssignableFrom( propertyValueClass ) ) {
-							String ext = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( filename );
+							String ext = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( filename );
 							String codecName = edu.cmu.cs.dennisc.image.ImageUtilities.getCodecNameForExtension( ext );
 							value = edu.cmu.cs.dennisc.image.ImageUtilities.read( codecName, is );
 						} else if( edu.cmu.cs.dennisc.scenegraph.Vertex[].class.isAssignableFrom( propertyValueClass ) ) {

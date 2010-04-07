@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class BeveledShapeForType extends edu.cmu.cs.dennisc.awt.BeveledShape {
+public class BeveledShapeForType extends edu.cmu.cs.dennisc.java.awt.BeveledShape {
 	private static java.util.List< Class< ? > > s_roundTypes = new java.util.LinkedList< Class< ? > >();
 
 	public static void addRoundType( Class< ? > cls ) {

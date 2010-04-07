@@ -60,7 +60,7 @@ public abstract class IngredientManager<E extends Ingredient> {
 		Class<? extends E>[] enumClsesUnisex = this.mapInterfaceClsToImplementingClses.get( interfaceClsUnisex );
 		Class<? extends E>[] enumClsesGendered = this.mapInterfaceClsToImplementingClses.get( interfaceClsGendered );
 
-		return edu.cmu.cs.dennisc.lang.SystemUtilities.createArray( this.getImplementingClassesComponentType(), enumClsesGendered, enumClsesUnisex );
+		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.createArray( this.getImplementingClassesComponentType(), enumClsesGendered, enumClsesUnisex );
 	}
 	public Class<? extends E> getRandomClass( LifeStage lifeStage, Gender gender ) {
 		return edu.cmu.cs.dennisc.random.RandomUtilities.getRandomValueFrom( getImplementingClasses( lifeStage, gender ) );

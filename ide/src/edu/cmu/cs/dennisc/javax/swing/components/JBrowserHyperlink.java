@@ -53,7 +53,7 @@ public class JBrowserHyperlink extends AbstractHyperlink {
 				edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( uri );
 			} catch( Exception e ) {
 				e.printStackTrace();
-				edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( uri );
+				edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( uri );
 				javax.swing.JOptionPane.showMessageDialog( JBrowserHyperlink.this, "Alice was unable to launch your default browser.\n\nThe text\n\n    " + uri + "\n\nhas been copied to your clipboard so that you may paste it into the address line of your favorite web browser." );
 			}
 		}

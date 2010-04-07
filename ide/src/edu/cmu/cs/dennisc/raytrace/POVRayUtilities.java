@@ -260,6 +260,6 @@ public class POVRayUtilities {
 	}
 	
 	public static int exec( String path ) {
-		return edu.cmu.cs.dennisc.lang.RuntimeUtilities.exec( new java.io.File( "s:/povray" ), "pvengine", "/RENDER", "test.pov" );
+		return edu.cmu.cs.dennisc.java.lang.RuntimeUtilities.exec( new java.io.File( "s:/povray" ), "pvengine", "/RENDER", "test.pov" );
 	}
 }

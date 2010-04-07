@@ -53,7 +53,7 @@ public class AffineAnimation {
 	private static long s_t0 = System.currentTimeMillis();
 	
 	private static void waitForLookingGlass() {
-		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( SLEEP_MSEC );
+		edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( SLEEP_MSEC );
 	}
 	
 	private static double getCurrentTime() {

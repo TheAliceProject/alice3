@@ -66,7 +66,7 @@ public class HeaderPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineA
 		//LogInPane pane = new LogInPane();
 		//PasswordPane pane = new PasswordPane();
 		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, null, "", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, null );
+		edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, null );
 		dialog.setVisible( true );
 	}
 }

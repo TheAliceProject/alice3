@@ -327,7 +327,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.javax.swing.componen
 			final edu.cmu.cs.dennisc.javax.swing.components.JBorderPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane() {
 				@Override
 				public java.awt.Dimension getPreferredSize() {
-					return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 256, 32 );
+					return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 256, 32 );
 				}
 			};
 			new Thread() {
@@ -532,7 +532,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.javax.swing.componen
 	private ImportResourceOperation addResourceOperation = new ImportResourceOperation();
 	private RemoveResourceOperation removeResourceOperation = new RemoveResourceOperation();
 
-	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
+	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
 			if( quoteClickUnquoteCount == 2 ) {
@@ -637,6 +637,6 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.javax.swing.componen
 
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 400 );
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 400 );
 	}
 }

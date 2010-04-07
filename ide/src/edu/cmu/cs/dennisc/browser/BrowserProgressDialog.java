@@ -77,7 +77,7 @@ public class BrowserProgressDialog extends edu.cmu.cs.dennisc.progress.ProgressD
 			}
 			@Override
 			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-				edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( BrowserProgressDialog.this.url );
+				edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( BrowserProgressDialog.this.url );
 			}
 		}
 		class DismissOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {

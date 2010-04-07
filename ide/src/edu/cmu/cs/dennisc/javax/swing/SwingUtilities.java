@@ -166,7 +166,7 @@ public class SwingUtilities {
 	}
 
 	public static boolean isQuoteControlUnquoteDown( java.awt.event.InputEvent e ) {
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			return e.isControlDown();
 		} else {
 			return e.isAltDown();

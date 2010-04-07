@@ -81,7 +81,7 @@ import org.jdesktop.swingworker.SwingWorker;
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Program;
 import edu.cmu.cs.dennisc.inputpane.FileSelectionPane;
-import edu.cmu.cs.dennisc.io.FileUtilities;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
 import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
 
 
@@ -779,7 +779,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 	
 	private String getDefaultDirectory()
 	{
-		return edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory().getAbsolutePath();
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath();
 	}
 	
 	private String getDefaultFilename()
@@ -1061,7 +1061,7 @@ public abstract class VideoCapturePane extends JLineAxisPane implements ActionLi
 		}
 		else if (e.getSource() == this.saveButton)
 		{
-			File selectedFile = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog(this, getDefaultDirectory(), getDefaultFilename(), "mov", true);
+			File selectedFile = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog(this, getDefaultDirectory(), getDefaultFilename(), "mov", true);
 			if (selectedFile != null)
 			{
 				copyRecordedFile( this.recordedMovieFile, selectedFile );

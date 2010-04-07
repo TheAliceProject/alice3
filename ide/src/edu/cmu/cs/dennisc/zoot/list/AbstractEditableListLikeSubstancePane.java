@@ -238,7 +238,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		return this.listLikeSubstance;
 	}
 	
-	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
+	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {

@@ -64,13 +64,13 @@ public class GetterSetterProperty<E> implements Property< E > {
 	}
 	public E getValue( PropertyOwner owner ) {
 		synchronized( s_getterArgs ) {
-			return (E)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( owner, m_getter, s_getterArgs );
+			return (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, m_getter, s_getterArgs );
 		}
 	}
 	public void setValue( PropertyOwner owner, E value ) {
 		synchronized( s_setterArgs ) {
 			s_setterArgs[ 0 ] = value;
-			edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( owner, m_setter, s_setterArgs );
+			edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, m_setter, s_setterArgs );
 		}
 	}
 	@Override

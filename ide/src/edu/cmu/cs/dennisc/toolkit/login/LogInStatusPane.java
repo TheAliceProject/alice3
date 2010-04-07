@@ -50,7 +50,7 @@ class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPa
 		private javax.swing.JPasswordField hidden = new javax.swing.JPasswordField() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 256 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 256 );
 			}
 		};
 		private javax.swing.JTextField exposed = new javax.swing.JTextField();
@@ -180,7 +180,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			LogInPane pane = new LogInPane();
 			java.awt.Component owner = this.getSourceComponent( actionContext );
 			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
-			edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );
+			edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );
 			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
 			dialog.setVisible( true );
 			edu.cmu.cs.dennisc.login.AccountInformation accountInformation = edu.cmu.cs.dennisc.login.AccountManager.get( LogInStatusPane.BUGS_ALICE_ORG_KEY );
@@ -217,7 +217,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 		private javax.swing.JLabel nameLabel = new javax.swing.JLabel( "Full Name" ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 			}
 			@Override
 			public java.awt.Dimension getMaximumSize() {

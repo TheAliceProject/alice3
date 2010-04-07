@@ -62,12 +62,12 @@ public abstract class PrintUtilities {
 	private static java.util.Map< Class<?>, java.lang.reflect.Method > s_classToAppendLinesMethod;
 
 	private static java.lang.reflect.Method getMethod( String name, Class<?> cls ) {
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( PrintUtilities.class, name, new Class[] { StringBuffer.class, cls } );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( PrintUtilities.class, name, new Class[] { StringBuffer.class, cls } );
 	}
 	
 
 	static {
-		s_isDumpStackDesired = edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.print.PrintUtilities.isDumpStackDesired" );
+		s_isDumpStackDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.print.PrintUtilities.isDumpStackDesired" );
 		
 		s_classToAppendMethod = new java.util.HashMap< Class<?>, java.lang.reflect.Method >();
 		s_classToAppendLinesMethod = new java.util.HashMap< Class<?>, java.lang.reflect.Method >();
@@ -185,7 +185,7 @@ public abstract class PrintUtilities {
 					java.lang.reflect.Method method = map.get( cls );
 					if( method != null ) {
 						Object[] args = { rv, value };
-						edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( null, method, args );
+						edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( null, method, args );
 					} else {
 						if( value instanceof Object[] ) {
 							Object[] array = (Object[])value;

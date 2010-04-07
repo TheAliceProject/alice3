@@ -116,7 +116,7 @@ public class ModelBuilder {
 	}
 	
 	public void encode( java.io.File file ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 
 		java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
 		java.util.zip.ZipOutputStream zos = new java.util.zip.ZipOutputStream( fos );

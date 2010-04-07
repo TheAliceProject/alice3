@@ -402,7 +402,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
 			}
 		};
 		scrollPane.setBorder( null );

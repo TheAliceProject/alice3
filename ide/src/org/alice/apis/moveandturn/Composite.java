@@ -88,7 +88,7 @@ public abstract class Composite extends Element implements ReferenceFrame {
 	}
 	//todo 
 	@MethodTemplate(visibility = Visibility.COMPLETELY_HIDDEN)
-	public void print( @edu.cmu.cs.dennisc.lang.ParameterAnnotation(isVariable = true) Object... values ) {
+	public void print( @edu.cmu.cs.dennisc.java.lang.ParameterAnnotation(isVariable = true) Object... values ) {
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( values );
 	}
 

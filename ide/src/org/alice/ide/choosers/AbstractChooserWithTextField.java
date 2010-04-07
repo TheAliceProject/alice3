@@ -49,7 +49,7 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 	private edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField textField = new edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField( "", "" ) {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
 		}
 	};
 	private java.awt.Component[] components = { this.textField };

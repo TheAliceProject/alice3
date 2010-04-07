@@ -46,13 +46,13 @@ package edu.cmu.cs.dennisc.lookingglass.opengl.graphics;
 /**
  * @author Dennis Cosgrove
  */
-class BumpyBubble extends edu.cmu.cs.dennisc.awt.geom.Composite {
+class BumpyBubble extends edu.cmu.cs.dennisc.java.awt.geom.Composite {
 //	class EllipseWrappedMultilineText extends edu.cmu.cs.dennisc.awt.geom.MultilineText {
 //		public EllipseWrappedMultilineText( String text, java.awt.Font font, edu.cmu.cs.dennisc.awt.TextAlignment alignment, java.awt.Paint paint ) {
 //			super( text, font, alignment, paint );
 //		}
 //	}
-	class Bump extends edu.cmu.cs.dennisc.awt.geom.Shape {
+	class Bump extends edu.cmu.cs.dennisc.java.awt.geom.Shape {
 		private double m_xHalfLength;
 		private double m_yHalfLength;
 		private java.awt.geom.Ellipse2D.Double m_ellipse;
@@ -159,7 +159,7 @@ class BumpyBubble extends edu.cmu.cs.dennisc.awt.geom.Composite {
 	private static edu.cmu.cs.dennisc.math.SineCosineCache s_sineCosineCache = new edu.cmu.cs.dennisc.math.SineCosineCache( 8 ); 
 	
 	public void initialize( java.awt.Graphics2D g2 ) {
-		edu.cmu.cs.dennisc.awt.geom.MultilineText multilineText = new edu.cmu.cs.dennisc.awt.geom.MultilineText( m_message, m_font, edu.cmu.cs.dennisc.awt.TextAlignment.LEADING, g2.getPaint() );
+		edu.cmu.cs.dennisc.java.awt.geom.MultilineText multilineText = new edu.cmu.cs.dennisc.java.awt.geom.MultilineText( m_message, m_font, edu.cmu.cs.dennisc.java.awt.TextAlignment.LEADING, g2.getPaint() );
 		multilineText.setWrapWidth( 400.0f );
 		java.awt.geom.Rectangle2D bound = multilineText.getBounds( g2 );
 		
@@ -215,7 +215,7 @@ class BumpyBubble extends edu.cmu.cs.dennisc.awt.geom.Composite {
 		}
 
 		
-		edu.cmu.cs.dennisc.awt.geom.Ellipse background = new edu.cmu.cs.dennisc.awt.geom.Ellipse( xHalfBoxLength, yHalfBoxLength );
+		edu.cmu.cs.dennisc.java.awt.geom.Ellipse background = new edu.cmu.cs.dennisc.java.awt.geom.Ellipse( xHalfBoxLength, yHalfBoxLength );
 		background.setDrawn( false );
 		background.setFilled( true );
 		add( background );
@@ -277,13 +277,13 @@ class BumpyBubble extends edu.cmu.cs.dennisc.awt.geom.Composite {
 public class ThoughtBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scenegraph.graphics.ThoughtBubble > {
 	private static final java.awt.Stroke STROKE = new java.awt.BasicStroke( 1 );
 
-	private edu.cmu.cs.dennisc.awt.geom.Ellipse[] m_tailEllipses = null;
+	private edu.cmu.cs.dennisc.java.awt.geom.Ellipse[] m_tailEllipses = null;
 	private BumpyBubble m_bumpyBubble;
 
 	private final int TAIL_ELLIPSE_COUNT = 3;
 	private final double PORTION_PER_TAIL_ELLIPSE = 1.0/TAIL_ELLIPSE_COUNT;
 	
-	private void paintEllipses( edu.cmu.cs.dennisc.awt.geom.GraphicsContext gc, double portion ) {
+	private void paintEllipses( edu.cmu.cs.dennisc.java.awt.geom.GraphicsContext gc, double portion ) {
 		for( int i=0; i<m_tailEllipses.length; i++ ) {
 			double portion0 = i*PORTION_PER_TAIL_ELLIPSE;
 			double portion1 = (i+1)*PORTION_PER_TAIL_ELLIPSE;
@@ -314,7 +314,7 @@ public class ThoughtBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scen
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
 			java.awt.Rectangle actualViewport, 
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
-			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText, 
 			java.awt.Font font, 
 			java.awt.Color textColor, 
 			float wrapWidth,
@@ -331,19 +331,19 @@ public class ThoughtBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scen
 		if( m_tailEllipses != null ) {
 			//pass
 		} else {
-			m_tailEllipses = new edu.cmu.cs.dennisc.awt.geom.Ellipse[ TAIL_ELLIPSE_COUNT ];
+			m_tailEllipses = new edu.cmu.cs.dennisc.java.awt.geom.Ellipse[ TAIL_ELLIPSE_COUNT ];
 			
 			double xDelta = bodyConnectionLocationOfTail.getX() - originOfTail.getX(); 
 			double yDelta = bodyConnectionLocationOfTail.getY() - originOfTail.getY(); 
 			
 			for( int i=0; i<m_tailEllipses.length; i++ ) {
 				double factor = i+1;
-				m_tailEllipses[ i ] = new edu.cmu.cs.dennisc.awt.geom.Ellipse( 5*factor, 3*factor );
+				m_tailEllipses[ i ] = new edu.cmu.cs.dennisc.java.awt.geom.Ellipse( 5*factor, 3*factor );
 				m_tailEllipses[ i ].applyTranslation( originOfTail.getX() + i*xDelta*PORTION_PER_TAIL_ELLIPSE, originOfTail.getY() + i*yDelta*PORTION_PER_TAIL_ELLIPSE );
 			}
 		}
 
-		edu.cmu.cs.dennisc.awt.geom.GraphicsContext gc = new edu.cmu.cs.dennisc.awt.geom.GraphicsContext();
+		edu.cmu.cs.dennisc.java.awt.geom.GraphicsContext gc = new edu.cmu.cs.dennisc.java.awt.geom.GraphicsContext();
 		gc.initialize( g2 );
 		if( portion < 1.0 ) {
 			paintEllipses( gc, portion );
@@ -358,7 +358,7 @@ public class ThoughtBubbleAdapter extends BubbleAdapter< edu.cmu.cs.dennisc.scen
 				m_bumpyBubble.applyTranslation( bodyConnectionLocationOfTail.getX()+textBoundsOffset.getX(), bodyConnectionLocationOfTail.getY()+textBoundsOffset.getY() );
 			}
 			m_bumpyBubble.paint( gc );
-			for( edu.cmu.cs.dennisc.awt.geom.Ellipse tailEllipse : m_tailEllipses ) {
+			for( edu.cmu.cs.dennisc.java.awt.geom.Ellipse tailEllipse : m_tailEllipses ) {
 				tailEllipse.paint( gc );
 			}
 		}

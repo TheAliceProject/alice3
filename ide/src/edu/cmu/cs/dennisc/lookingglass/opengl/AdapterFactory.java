@@ -100,12 +100,12 @@ public abstract class AdapterFactory {
 			sb.append( '.' );
 			sb.append( sgClass.getSimpleName() );
 			sb.append( "Adapter" );
-			cls = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( sb.toString() );
+			cls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( sb.toString() );
 			if( cls != null ) {
 				register( sgClass, cls );
 			}
 		}
-		return (AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cls );
+		return (AbstractElementAdapter< ? extends edu.cmu.cs.dennisc.pattern.AbstractElement >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 	}
 
 	public static void forget( edu.cmu.cs.dennisc.pattern.AbstractElement sgElement ) {

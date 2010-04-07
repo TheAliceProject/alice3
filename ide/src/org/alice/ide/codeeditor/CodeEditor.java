@@ -259,7 +259,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 		return org.alice.ide.IDE.getSingleton();
 	}
 	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return edu.cmu.cs.dennisc.awt.ComponentUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
+		return edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 				if( expressionType.isAssignableFrom( type ) ) {
@@ -300,7 +300,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 		return this.scrollPane.getViewport().getView();
 	}
 	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
-		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
+		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
 		for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {

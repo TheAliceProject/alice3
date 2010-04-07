@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.alice;
 public class Version {
 	private static final String TEXT;
 	static {
-		TEXT = edu.cmu.cs.dennisc.io.TextFileUtilities.read( License.class.getResourceAsStream( "Version.txt" ) ).trim();
+		TEXT = edu.cmu.cs.dennisc.java.io.TextFileUtilities.read( License.class.getResourceAsStream( "Version.txt" ) ).trim();
 	}
 	public static String getCurrentVersionText() {
 		return TEXT;

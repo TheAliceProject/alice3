@@ -74,7 +74,7 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 				ArrayChooser.this.handleChanged();
 			}
 		} );
-		edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( this.getPreviousExpression(), edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class );
+		edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation arrayInstanceCreation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getPreviousExpression(), edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class );
 		if( arrayInstanceCreation != null ) {
 			//typePane.setAndLockType( arrayInstanceCreation.arrayType.getValue() );
 			edu.cmu.cs.dennisc.alice.ast.AbstractType type = arrayInstanceCreation.arrayType.getValue().getComponentType();

@@ -54,7 +54,7 @@ class SuggestiveTextUtilties {
 			} else {
 				java.awt.Font font = textComponent.getFont().deriveFont( java.awt.Font.ITALIC );
 				g.setFont( font );
-				g.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 127 ) );
+				g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 127 ) );
 				java.awt.FontMetrics fm = g.getFontMetrics();
 				//java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( text, g );
 				g.drawString( textForBlankCondition, 0, textComponent.getHeight()-textComponent.getInsets().bottom-fm.getDescent() );

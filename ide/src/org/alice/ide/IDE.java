@@ -332,7 +332,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 
 	private static <E> E createBooleanOperation( Class< E > cls, Boolean defaultInitialValue ) {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 			try {
 				userPreferences.clear();
 			} catch( java.util.prefs.BackingStoreException bse ) {
@@ -342,7 +342,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 		Boolean initialValue = userPreferences.getBoolean( cls.getSimpleName(), defaultInitialValue );
 		Class< ? >[] parameterClses = { Boolean.class };
 		Object[] arguments = { initialValue };
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cls, parameterClses, arguments );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls, parameterClses, arguments );
 	}
 	private static void preservePreference( org.alice.ide.operations.AbstractBooleanStateOperation operation ) {
 		if( operation != null ) {
@@ -796,7 +796,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 		helpOperations.add( new org.alice.ide.operations.help.HelpOperation() );
 		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) ) {
 			helpOperations.add( new org.alice.ide.operations.help.ThrowBogusExceptionOperation() );
 			helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
 		}
@@ -808,7 +808,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 		helpOperations.add( new org.alice.ide.operations.help.DisplaySystemPropertiesOperation() );
 		helpOperations.add( new org.alice.ide.operations.help.ReleaseNotesOperation() );
 
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			//pass
 		} else {
 			helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
@@ -838,7 +838,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 	private java.io.File applicationDirectory = null;
 
 	protected java.io.File getDefaultApplicationRootDirectory() {
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			return new java.io.File( "/Applications/" + this.getApplicationName() + ".app/Contents/Resources/Java/application" );
 		} else {
 			return new java.io.File( "/Program Files/" + this.getApplicationName() + "3Beta/application" );
@@ -1711,7 +1711,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 	private void showMessageDialog( java.io.File file, boolean isValidZip ) {
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Unable to open project from file " );
-		sb.append( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ) );
+		sb.append( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 		sb.append( ".\n\n" );
 		sb.append( this.getApplicationName() );
 		sb.append( " is able to open projects from files saved by " );
@@ -2105,9 +2105,9 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 		if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
 			return color;
 		} else {
-			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.DoTogether.class, edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, edu.cmu.cs.dennisc.alice.ast.DoInThread.class ) ) {
-				java.awt.Color colorA = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
-				java.awt.Color colorB = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
+			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.DoTogether.class, edu.cmu.cs.dennisc.alice.ast.EachInArrayTogether.class, edu.cmu.cs.dennisc.alice.ast.DoInThread.class ) ) {
+				java.awt.Color colorA = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.9, 0.85 );
+				java.awt.Color colorB = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 1.0, 1.15 );
 				return new java.awt.GradientPaint( x, y, colorA, x + 200, y, colorB );
 			} else {
 				return color;
@@ -2118,16 +2118,16 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 	public java.awt.Color getColorFor( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Node > cls ) {
 		if( edu.cmu.cs.dennisc.alice.ast.Statement.class.isAssignableFrom( cls ) ) {
 			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( cls ) ) {
-				return edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 245 );
+				return edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 245 );
 			} else {
 				return new java.awt.Color( 0xd3d7f0 );
 			}
 		} else if( edu.cmu.cs.dennisc.alice.ast.Expression.class.isAssignableFrom( cls ) ) {
-			if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) ) {
+			if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) ) {
 				return new java.awt.Color( 0xBAD1A7 );
-			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.StringConcatenation.class ) ) {
+			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.StringConcatenation.class ) ) {
 				return new java.awt.Color( 0xDEEBD3 );
-			} else if( edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
+			} else if( edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( cls, edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class, edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation.class ) ) {
 				return new java.awt.Color( 0xbdcfb3 );
 			} else if( edu.cmu.cs.dennisc.alice.ast.ResourceExpression.class.isAssignableFrom( cls ) ) {
 				return new java.awt.Color( 0xffffff );

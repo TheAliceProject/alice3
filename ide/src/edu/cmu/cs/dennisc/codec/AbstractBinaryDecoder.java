@@ -148,15 +148,15 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 	public final <E extends BinaryEncodableAndDecodable> E decodeBinaryEncodableAndDecodable( Class< E > cls ) {
 		String clsName = decodeString();
 		if( clsName.length() > 0 ) {
-			Class clsActual = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( clsName );
+			Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
 			java.lang.reflect.Constructor cnstrctr;
 			E rv;
 			try {
 				cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );
-				rv = (E)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
+				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr, this );
 			} catch( NoSuchMethodException nsme ) {
-				cnstrctr = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
-				rv = (E)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
+				cnstrctr = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( clsActual );
+				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cnstrctr );
 				rv.decode( this );
 			}
 			return rv;
@@ -182,7 +182,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 			if( map.containsKey( reference ) ) {
 				rv = (E)map.get( reference );
 			} else {
-				rv = (E)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( clsName );
+				rv = (E)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( clsName );
 				map.put( reference, rv );
 				rv.decode( this, map );
 			}

@@ -60,7 +60,7 @@ public class HyperlinkOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialA
 			edu.cmu.cs.dennisc.browser.BrowserUtilities.browse( this.url );
 		} catch( Exception e ) {
 			e.printStackTrace();
-			edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( url );
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( url );
 			javax.swing.JOptionPane.showMessageDialog( this.getSourceComponent( actionContext ), "Alice was unable to launch your default browser.\n\nThe text\n\n    " + url + "\n\nhas been copied to your clipboard so that you may paste it into the address line of your favorite web browser." );
 		}
 	}

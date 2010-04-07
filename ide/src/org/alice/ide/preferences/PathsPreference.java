@@ -75,7 +75,7 @@ public class PathsPreference extends edu.cmu.cs.dennisc.preference.ListPreferenc
 	public void add( java.io.File file, int maxSize ) {
 		if( file != null && file.canWrite() ) {
 			java.util.List< String > list = this.getValue();
-			String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file );
+			String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );
 			if( path != null && path.length() > 0 ) {
 				int index = list.indexOf( path );
 				if( index > 0 ) {

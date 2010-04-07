@@ -125,8 +125,8 @@ class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveT
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = super.getPreferredSize();
-		rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( rv, 256 );
-		rv = edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMaximumHeight( rv, this.getMinimumSize().height );
+		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( rv, 256 );
+		rv = edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMaximumHeight( rv, this.getMinimumSize().height );
 		return rv;
 	}
 	@Override

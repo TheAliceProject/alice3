@@ -42,7 +42,7 @@
  */
 package edu.cmu.cs.dennisc.alice.reflect;
 
-import edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities;
+import edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities;
 
 /**
  * @author Dennis Cosgrove

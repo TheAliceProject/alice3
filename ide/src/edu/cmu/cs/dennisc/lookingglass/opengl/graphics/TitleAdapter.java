@@ -56,7 +56,7 @@ public abstract class TitleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graph
 			edu.cmu.cs.dennisc.lookingglass.LookingGlass lookingGlass, 
 			java.awt.Rectangle actualViewport, 
 			edu.cmu.cs.dennisc.scenegraph.AbstractCamera camera, 
-			edu.cmu.cs.dennisc.awt.MultilineText multilineText, 
+			edu.cmu.cs.dennisc.java.awt.MultilineText multilineText, 
 			java.awt.Font font, 
 			java.awt.Color textColor,
 			float wrapWidth,
@@ -77,7 +77,7 @@ public abstract class TitleAdapter<E extends edu.cmu.cs.dennisc.scenegraph.graph
 			if( textColor != null ) {
 				g2.setColor( textColor );
 				g2.setFont( font );
-				multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.awt.TextAlignment.CENTER, this.backgroundBounds );
+				multilineText.paint( g2, wrapWidth, edu.cmu.cs.dennisc.java.awt.TextAlignment.CENTER, this.backgroundBounds );
 //				float x = this.backgroundBounds.x - (float)textBounds.getX() + this.backgroundBounds.width * 0.5f - (float)textBounds.getWidth() * 0.5f;
 //				float y = this.backgroundBounds.y - (float)textBounds.getY() + this.backgroundBounds.height * 0.5f - (float)textBounds.getHeight() * 0.5f;
 //				g2.setFont( font );

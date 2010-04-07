@@ -103,7 +103,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 		}
 	}
 
-	protected edu.cmu.cs.dennisc.awt.BeveledShape createBoundsShape( int x, int y, int width, int height ) {
+	protected edu.cmu.cs.dennisc.java.awt.BeveledShape createBoundsShape( int x, int y, int width, int height ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getExpressionType();
 		if( type != null ) {
 //			assert type != edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
@@ -121,7 +121,7 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	@Override
 	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
 		if( this.isExpressionTypeFeedbackDesired() ) {
-			edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
+			edu.cmu.cs.dennisc.java.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
 			beveledShape.fill( g2 );
 		}
 	}
@@ -131,8 +131,8 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 			//pass
 		} else {
 			//edu.cmu.cs.dennisc.awt.BevelState bevelState = this.getBevelState();
-			edu.cmu.cs.dennisc.awt.BevelState bevelState = edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
-			edu.cmu.cs.dennisc.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
+			edu.cmu.cs.dennisc.java.awt.BevelState bevelState = edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
+			edu.cmu.cs.dennisc.java.awt.BeveledShape beveledShape = createBoundsShape( x, y, width, height );
 			beveledShape.paint( g2, bevelState, 3.0f, 1.0f, 1.0f );
 		}
 	}

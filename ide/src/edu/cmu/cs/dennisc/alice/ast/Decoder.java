@@ -85,11 +85,11 @@ public class Decoder {
 	}
 	//todo: investigate
 	private Class< ? > getCls( org.w3c.dom.Element xmlElement ) {
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( getClassName( xmlElement ) );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( getClassName( xmlElement ) );
 	}
 	//todo: investigate
 	private Object newInstance( org.w3c.dom.Element xmlElement ) {
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( getClassName( xmlElement ) );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( getClassName( xmlElement ) );
 	}
 
 	public Object decodeValue( org.w3c.dom.Element xmlValue, java.util.Map< Integer, AbstractDeclaration > map ) {
@@ -126,12 +126,12 @@ public class Decoder {
 					rv = textContent;
 				} else {
 					try {
-						rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.valueOf( cls, textContent );
+						rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.valueOf( cls, textContent );
 					} catch( RuntimeException re ) {
 						if( "DIVIDE".equals( textContent ) ) {
-							rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.valueOf( cls, "REAL_DIVIDE" );
+							rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.valueOf( cls, "REAL_DIVIDE" );
 						} else if( "REMAINDER".equals( textContent ) ) {
-							rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.valueOf( cls, "REAL_REMAINDER" );
+							rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.valueOf( cls, "REAL_REMAINDER" );
 						} else {
 							throw re;
 						}

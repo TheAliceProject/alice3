@@ -139,7 +139,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 			}
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 160 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 160 );
 			}
 			@Override
 			public java.awt.Dimension getMaximumSize() {

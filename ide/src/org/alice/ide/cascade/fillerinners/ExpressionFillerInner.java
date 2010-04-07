@@ -80,7 +80,7 @@ public abstract class ExpressionFillerInner {
 	}
 
 	protected void addExpressionFillIn( edu.cmu.cs.dennisc.cascade.Blank blank, Object... args ) {
-		edu.cmu.cs.dennisc.alice.ast.Expression expression = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstanceForArguments( this.expressionCls, args );
+		edu.cmu.cs.dennisc.alice.ast.Expression expression = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstanceForArguments( this.expressionCls, args );
 		blank.addFillIn( new org.alice.ide.cascade.SimpleExpressionFillIn( expression ) ); 
 	}
 	

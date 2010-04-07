@@ -123,7 +123,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 			color = java.awt.Color.YELLOW;
 		} else {
 			if( ide.isFieldInScope( this.field ) ) {
-				color = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( color, 1.0, 0.75, 0.75 );
+				color = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( color, 1.0, 0.75, 0.75 );
 			} else {
 				color = java.awt.Color.GRAY;
 			}
@@ -163,8 +163,8 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
-		return edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
+	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
+		return edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {

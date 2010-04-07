@@ -59,7 +59,7 @@ public class LazySusanDragAdapter extends edu.cmu.cs.dennisc.ui.DragAdapter {
 	}
 	@Override
 	protected boolean isAcceptable( java.awt.event.MouseEvent e ) {
-		return edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
+		return edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e );
 	}
 
 	//todo: add get/set m_lazySusan

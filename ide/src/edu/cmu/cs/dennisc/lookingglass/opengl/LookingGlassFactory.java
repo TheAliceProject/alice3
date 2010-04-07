@@ -87,9 +87,9 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			//String pathOriginal = System.getProperty( JAVA_LIBRARY_PATH );
 			StringBuffer sb = new StringBuffer();
 			String libraryPath;
-			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 				libraryPath = "\"/Applications/Alice3Beta/ext/jogl/lib/macosx-universal\"";
-			} else if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+			} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 				libraryPath = "\"/Program Files/Alice3Beta/ext/jogl/lib/windows-i586\"";
 			} else {
 				libraryPath = "?/Alice3Beta/ext/jogl/lib/?";
@@ -98,7 +98,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 			
 			String javaLibraryPath = sb.toString();
 			
-			edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( javaLibraryPath );
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( javaLibraryPath );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
@@ -153,7 +153,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		if( glCapabilitiesChooser != null ) {
 			//pass
 		} else {
-			boolean isSlowAndSteadyDesired = edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
+			boolean isSlowAndSteadyDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
 //			} else {
 //				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
 //					try {

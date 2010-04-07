@@ -168,7 +168,7 @@ public abstract class VirtualMachine {
 				arguments[ i ] = valueInAlice.getInstanceInJava();
 			}
 		}
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( constructor.getConstructorReflectionProxy().getReification(), arguments );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( constructor.getConstructorReflectionProxy().getReification(), arguments );
 	}
 	
 	private java.util.Map< Class<?>, Class<?> > mapAnonymousClsToAdapterCls = new java.util.HashMap< Class<?>, Class<?> >();
@@ -198,7 +198,7 @@ public abstract class VirtualMachine {
 					};
 					Class< ? >[] parameterTypes = { Context.class, edu.cmu.cs.dennisc.alice.ast.AnonymousInnerTypeDeclaredInAlice.class, Object[].class };
 					Object[] args = { context, anonymousType, arguments };
-					return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
+					return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( adapterCls, parameterTypes, args );
 				} else {
 					throw new RuntimeException();
 				}
@@ -318,7 +318,7 @@ public abstract class VirtualMachine {
 			InstanceInAlice instanceInAlice = (InstanceInAlice)instance;
 			instance = instanceInAlice.getInstanceInJava();
 		}
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field.getFieldReflectionProxy().getReification(), instance );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field.getFieldReflectionProxy().getReification(), instance );
 	}
 	protected void setFieldDeclaredInJavaWithField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithField field, Object instance, Object value ) {
 		//todo
@@ -326,7 +326,7 @@ public abstract class VirtualMachine {
 			InstanceInAlice valueInAlice = (InstanceInAlice)value;
 			value = valueInAlice.getInstanceInJava();
 		}
-		edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.set( field.getFieldReflectionProxy().getReification(), instance, value );
+		edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.set( field.getFieldReflectionProxy().getReification(), instance, value );
 	}
 	protected Object getFieldDeclaredInJavaWithGetterAndSetter( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInJavaWithGetterAndSetter field, Object instance ) {
 		if( instance instanceof InstanceInAlice ) {
@@ -334,7 +334,7 @@ public abstract class VirtualMachine {
 			instance = instanceInAlice.getInstanceInJava();
 		}
 		if( instance != null ) {
-			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getGetterReflectionProxy().getReification() );
+			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, field.getGetterReflectionProxy().getReification() );
 		} else {
 			throw new NullPointerException();
 		}
@@ -352,7 +352,7 @@ public abstract class VirtualMachine {
 			value = valueInAlice.getInstanceInJava();
 		}
 		if( instance != null ) {
-			edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, field.getSetterReflectionProxy().getReification(), value );
+			edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, field.getSetterReflectionProxy().getReification(), value );
 		} else {
 			throw new NullPointerException();
 		}
@@ -428,7 +428,7 @@ public abstract class VirtualMachine {
 			}
 		}
 //		try {
-			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( instance, method.getMethodReflectionProxy().getReification(), arguments );
+			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( instance, method.getMethodReflectionProxy().getReification(), arguments );
 //		} catch( RuntimeException re ) {
 //			edu.cmu.cs.dennisc.print.PrintUtilities.println( "warning: could not invoke ", method );
 //			for( Object argument : arguments ) {
@@ -731,7 +731,7 @@ public abstract class VirtualMachine {
 	private static int threadCount = 0;
 	protected void executeDoInThread( final edu.cmu.cs.dennisc.alice.ast.DoInThread doInThread ) throws ReturnException {
 		final Frame frame = this.createCopyOfCurrentFrame();
-		new edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString( org.alice.virtualmachine.ThreadGroupUtilities.getThreadGroup(), "DoInThread-"+(VirtualMachine.threadCount++) ) {
+		new edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString( org.alice.virtualmachine.ThreadGroupUtilities.getThreadGroup(), "DoInThread-"+(VirtualMachine.threadCount++) ) {
 			@Override
 			public void run() {
 				pushCurrentThread( frame );
@@ -806,7 +806,7 @@ public abstract class VirtualMachine {
 	}
 	protected void executeForEachInIterableLoop( edu.cmu.cs.dennisc.alice.ast.ForEachInIterableLoop forEachInIterableLoop ) throws ReturnException {
 		Iterable<?> iterable = this.evaluate( forEachInIterableLoop.iterable.getValue(), Iterable.class );
-		excecuteForEachLoop( forEachInIterableLoop, edu.cmu.cs.dennisc.lang.IterableUtilities.toArray( iterable ) );
+		excecuteForEachLoop( forEachInIterableLoop, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ) );
 	}
 	
 	private void excecuteForEachTogether( edu.cmu.cs.dennisc.alice.ast.AbstractEachInTogether forEachInTogether, final Object[] array ) throws ReturnException {
@@ -851,7 +851,7 @@ public abstract class VirtualMachine {
 	}
 	protected void executeEachInIterableTogether( edu.cmu.cs.dennisc.alice.ast.EachInIterableTogether eachInIterableTogether ) throws ReturnException {
 		Iterable iterable = this.evaluate( eachInIterableTogether.iterable.getValue(), Iterable.class );
-		excecuteForEachTogether( eachInIterableTogether, edu.cmu.cs.dennisc.lang.IterableUtilities.toArray( iterable ) );
+		excecuteForEachTogether( eachInIterableTogether, edu.cmu.cs.dennisc.java.lang.IterableUtilities.toArray( iterable ) );
 	}
 	protected void executeReturnStatement( edu.cmu.cs.dennisc.alice.ast.ReturnStatement returnStatement ) throws ReturnException {
 		Object returnValue = this.evaluate( returnStatement.expression.getValue() );
