@@ -73,7 +73,7 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 		this.buttonModel.setSelected( initialState );
 		this.buttonModel.addItemListener( this.itemListener );
 		this.setTrueText( trueText );
-		this.setFalseText( trueText );
+		this.setFalseText( falseText );
 	}
 	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialState, String trueAndFalseText ) {
 		this( groupUUID, initialState, trueAndFalseText, null );
