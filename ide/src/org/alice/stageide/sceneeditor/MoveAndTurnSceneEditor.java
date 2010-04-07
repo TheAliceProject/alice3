@@ -76,12 +76,11 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private org.alice.apis.moveandturn.Scene scene;
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
 	private java.util.List< FieldTile > fieldTiles = new java.util.LinkedList< FieldTile >();
-	
+
 	private edu.cmu.cs.dennisc.scenegraph.OrthographicCamera sgOrthographicCamera = null;
 	private edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera sgPerspectiveCamera = null;
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
-	
-	
+
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 
 	public MoveAndTurnSceneEditor() {
@@ -89,7 +88,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		javax.swing.SpringLayout springLayout = new javax.swing.SpringLayout();
 		lgPanel.setLayout( springLayout );
 
-//		this.splitPane.setBackground( java.awt.Color.GRAY );
+		//		this.splitPane.setBackground( java.awt.Color.GRAY );
 		this.splitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerLocation( 1.0 );
@@ -123,13 +122,13 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	};
 
-//	private boolean isRenderingEnabled = true;
-//	@Override
-//	public void paintChildren( java.awt.Graphics g ) {
-//		if( this.isRenderingEnabled ) {
-//			super.paintChildren( g );
-//		}
-//	}
+	//	private boolean isRenderingEnabled = true;
+	//	@Override
+	//	public void paintChildren( java.awt.Graphics g ) {
+	//		if( this.isRenderingEnabled ) {
+	//			super.paintChildren( g );
+	//		}
+	//	}
 	@Override
 	public void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering ) {
 		if( reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM || reasonToDisableSomeAmountOfRendering == org.alice.ide.ReasonToDisableSomeAmountOfRendering.CLICK_AND_CLACK ) {
@@ -142,7 +141,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.onscreenLookingGlass.setRenderingEnabled( false );
 		}
 	}
-	
+
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
 			MoveAndTurnSceneEditor.this.animator.update();
@@ -179,12 +178,19 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		} else {
 			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
-			
+
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter );
 			//final org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget = null;
 
-			final IsExpandedCheckBox isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
-			//final javax.swing.JCheckBox isSceneEditorExpandedCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( this.getIDE().getIsSceneEditorExpandedOperation() );
+			edu.cmu.cs.dennisc.zoot.BooleanStateOperation isSceneEditorExpandedOperation = this.getIDE().getIsSceneEditorExpandedOperation();
+			final javax.swing.JCheckBox isSceneEditorExpandedCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( isSceneEditorExpandedOperation );
+			isSceneEditorExpandedCheckBox.setUI( new IsExpandedCheckBoxUI() );
+			final int X_PAD = 16;
+			final int Y_PAD = 10;
+			isSceneEditorExpandedCheckBox.setOpaque( false );
+			isSceneEditorExpandedCheckBox.setFont( this.getFont().deriveFont( 18.0f ) );
+			isSceneEditorExpandedCheckBox.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );
+			
 			if( mainCameraNavigatorWidget != null ) {
 				mainCameraNavigatorWidget.setExpanded( isSceneEditorExpandedCheckBox.isSelected() );
 			}
@@ -213,12 +219,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 
 			this.sidePane.setDragAdapter( this.globalDragAdapter );
 		}
-		if (this.sgOrthographicCamera != null)
-		{
+		if( this.sgOrthographicCamera != null ) {
 			//pass
-		}
-		else
-		{
+		} else {
 			this.sgOrthographicCamera = new edu.cmu.cs.dennisc.scenegraph.OrthographicCamera();
 			edu.cmu.cs.dennisc.scenegraph.Transformable orthographicSGTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 			this.sgOrthographicCamera.setParent( orthographicSGTransformable );
@@ -275,6 +278,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	}
 
 	private edu.cmu.cs.dennisc.scenegraph.Background cameraBackground = new edu.cmu.cs.dennisc.scenegraph.Background();
+
 	protected void updateSceneBasedOnScope() {
 		//		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = this.getIDE().getFocusedCode();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.getIDE().getTypeInScope();
@@ -448,7 +452,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.updateFieldLabels();
 	}
 
-
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = null;
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > listPropertyAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
 		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
@@ -521,24 +524,30 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			}
 		} );
 		this.sgPerspectiveCamera = null;
-		for (int i=0; i<this.onscreenLookingGlass.getCameraCount(); i++)
-		{
-			if (this.onscreenLookingGlass.getCameraAt( 0 ) instanceof SymmetricPerspectiveCamera)
-			{
+		for( int i = 0; i < this.onscreenLookingGlass.getCameraCount(); i++ ) {
+			if( this.onscreenLookingGlass.getCameraAt( 0 ) instanceof SymmetricPerspectiveCamera ) {
 				this.sgPerspectiveCamera = (SymmetricPerspectiveCamera)this.onscreenLookingGlass.getCameraAt( 0 );
 			}
 		}
 		assert this.sgPerspectiveCamera != null;
+
 		
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO:" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO:" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO:" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO: investigate initializeIfNecessary in MoveAndTurnSceneEditor" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO:" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO:" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "TODO:" );
+		this.initializeIfNecessary();
 		this.scene.getSGComposite().addComponent( this.sgOrthographicCamera.getParent() );
 		this.setRootField( sceneField );
-		
-//		createInitialOrthographicCameraMarkers();
+
+		//		createInitialOrthographicCameraMarkers();
 		//this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 		return rv;
 	}
-	
-	
+
 	private void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		SetUpMethodGenerator.fillInAutomaticSetUpMethod( bodyStatementsProperty, isThis, field, this.getInstanceInJavaForField( field ) );
 	}
@@ -557,7 +566,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.updateFieldLabels();
 	}
 
-
 	//	public void editPerson( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 	//		org.alice.apis.stage.Person person = this.getInstanceInJavaForField( field, org.alice.apis.stage.Person.class );
 	//		if( person != null ) {
@@ -567,43 +575,39 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	//		}
 	//	}
 
-
 	public edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;
 	}
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCameraForCreatingThumbnails() {
 		return this.onscreenLookingGlass.getCameraAt( 0 );
 	}
-	
+
 	public edu.cmu.cs.dennisc.scenegraph.AbstractCamera getSGCameraForCreatingMarker() {
 		return this.sgPerspectiveCamera;
 	}
-	
+
 	public edu.cmu.cs.dennisc.scenegraph.OrthographicCamera getSGOrthographicCamera() {
 		return this.sgOrthographicCamera;
 	}
-	
+
 	public edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera getSGPerspectiveCamera() {
 		return this.sgPerspectiveCamera;
 	}
-	
+
 	private static final String DEFAULT_CAMERA_MARKER_NAME = "cameraMarker";
-	
-	private String getNameForCameraMarker(TypeDeclaredInAlice ownerType)
-	{
+
+	private String getNameForCameraMarker( TypeDeclaredInAlice ownerType ) {
 		FieldNameValidator nameValidator = new FieldNameValidator( ownerType );
 		int count = 0;
 		String markerName = DEFAULT_CAMERA_MARKER_NAME;
-		while (!nameValidator.isNameValidAndAvailable( markerName ))
-		{
+		while( !nameValidator.isNameValidAndAvailable( markerName ) ) {
 			count++;
 			markerName = DEFAULT_CAMERA_MARKER_NAME + "_" + Integer.toString( count );
 		}
 		return markerName;
 	}
-	
-	private void switchToCamera(AbstractCamera camera)
-	{
+
+	private void switchToCamera( AbstractCamera camera ) {
 		assert camera != null;
 		boolean isClearingAndAddingRequired;
 		if( this.onscreenLookingGlass.getCameraCount() == 1 ) {
@@ -620,35 +624,28 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			onscreenLookingGlass.addCamera( camera );
 		}
 	}
-	
-	public void switchToOthographicCamera()
-	{
+
+	public void switchToOthographicCamera() {
 		switchToCamera( this.sgOrthographicCamera );
 		this.mainCameraNavigatorWidget.setCamera( this.sgOrthographicCamera );
 	}
-	
-	public void switchToPerspectiveCamera()
-	{
+
+	public void switchToPerspectiveCamera() {
 		switchToCamera( this.sgPerspectiveCamera );
 		this.mainCameraNavigatorWidget.setCamera( this.sgPerspectiveCamera );
 	}
-	
-	private boolean hasFieldNamed(String fieldName)
-	{
-		for (AbstractField field : this.sceneType.fields)
-		{
-			if (field.getName().equals( fieldName ))
-			{
+
+	private boolean hasFieldNamed( String fieldName ) {
+		for( AbstractField field : this.sceneType.fields ) {
+			if( field.getName().equals( fieldName ) ) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	private void createInitialOrthographicCameraMarkers()
-	{
-		if (!hasFieldNamed("TOP"))
-		{
+
+	private void createInitialOrthographicCameraMarkers() {
+		if( !hasFieldNamed( "TOP" ) ) {
 			org.alice.apis.moveandturn.OrthographicCameraMarker topMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
 			topMarker.setName( "TOP" );
 			AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
@@ -658,80 +655,75 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			topTransform.orientation.backward.set( 0, 1, 0 );
 			assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 			topMarker.setLocalTransformation( topTransform );
-			
-			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(org.alice.apis.moveandturn.OrthographicCameraMarker.class);
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice topMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice("TOP", org.alice.apis.moveandturn.OrthographicCameraMarker.class, initializer);
-			topMarkerField.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
-			topMarkerField.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
-			
-			System.out.println("Creating marker "+topMarker.getName()+":"+topMarker.hashCode());
-			
+
+			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.OrthographicCameraMarker.class );
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice topMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( "TOP", org.alice.apis.moveandturn.OrthographicCameraMarker.class, initializer );
+			topMarkerField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+			topMarkerField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+
+			System.out.println( "Creating marker " + topMarker.getName() + ":" + topMarker.hashCode() );
+
 			this.sceneType.fields.add( this.sceneType.fields.size(), topMarkerField );
-			this.handleFieldCreation(this.sceneType, topMarkerField, topMarker, false );
+			this.handleFieldCreation( this.sceneType, topMarkerField, topMarker, false );
 		}
-		if (!hasFieldNamed("SIDE"))
-		{
+		if( !hasFieldNamed( "SIDE" ) ) {
 			org.alice.apis.moveandturn.OrthographicCameraMarker sideMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
 			sideMarker.setName( "SIDE" );
 			AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
 			sideTransform.translation.x = 10;
-			sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
+			sideTransform.orientation.setValue( new ForwardAndUpGuide( Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis() ) );
 			assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 			sideMarker.setLocalTransformation( sideTransform );
-			
-			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(org.alice.apis.moveandturn.OrthographicCameraMarker.class);
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sideMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice("SIDE", org.alice.apis.moveandturn.OrthographicCameraMarker.class, initializer);
-			sideMarkerField.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
-			sideMarkerField.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
-			
-			System.out.println("Creating marker "+sideMarker.getName()+":"+sideMarker.hashCode());
-			
+
+			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.OrthographicCameraMarker.class );
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sideMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( "SIDE", org.alice.apis.moveandturn.OrthographicCameraMarker.class, initializer );
+			sideMarkerField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+			sideMarkerField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+
+			System.out.println( "Creating marker " + sideMarker.getName() + ":" + sideMarker.hashCode() );
+
 			this.sceneType.fields.add( this.sceneType.fields.size(), sideMarkerField );
-			this.handleFieldCreation(this.sceneType, sideMarkerField, sideMarker, false );
+			this.handleFieldCreation( this.sceneType, sideMarkerField, sideMarker, false );
 		}
-		if (!hasFieldNamed("FRONT"))
-		{
+		if( !hasFieldNamed( "FRONT" ) ) {
 			org.alice.apis.moveandturn.OrthographicCameraMarker frontMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
 			frontMarker.setName( "FRONT" );
 			AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
 			frontTransform.translation.z = 10;
-			frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeZAxis(), Vector3.accessPositiveYAxis()) );
+			frontTransform.orientation.setValue( new ForwardAndUpGuide( Vector3.accessNegativeZAxis(), Vector3.accessPositiveYAxis() ) );
 			assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 			frontMarker.setLocalTransformation( frontTransform );
-			
-			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(org.alice.apis.moveandturn.OrthographicCameraMarker.class);
-			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice frontMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice("FRONT", org.alice.apis.moveandturn.OrthographicCameraMarker.class, initializer);
-			frontMarkerField.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
-			frontMarkerField.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
-			
-			System.out.println("Creating marker "+frontMarker.getName()+":"+frontMarker.hashCode());
-			
+
+			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.OrthographicCameraMarker.class );
+			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice frontMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( "FRONT", org.alice.apis.moveandturn.OrthographicCameraMarker.class, initializer );
+			frontMarkerField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+			frontMarkerField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+
+			System.out.println( "Creating marker " + frontMarker.getName() + ":" + frontMarker.hashCode() );
+
 			this.sceneType.fields.add( this.sceneType.fields.size(), frontMarkerField );
-			this.handleFieldCreation(this.sceneType, frontMarkerField, frontMarker, false );
+			this.handleFieldCreation( this.sceneType, frontMarkerField, frontMarker, false );
 		}
 	}
-	
-	public Tuple2< FieldDeclaredInAlice, Object > createCameraMarkerField(TypeDeclaredInAlice ownerType)
-	{
+
+	public Tuple2< FieldDeclaredInAlice, Object > createCameraMarkerField( TypeDeclaredInAlice ownerType ) {
 		String markerName = getNameForCameraMarker( ownerType );
-		
+
 		org.alice.apis.moveandturn.PerspectiveCameraMarker cameraMarker = new org.alice.apis.moveandturn.PerspectiveCameraMarker();
 		cameraMarker.setName( markerName );
 		cameraMarker.setLocalTransformation( getSGCameraForCreatingMarker().getTransformation( AsSeenBy.SCENE.getSGReferenceFrame() ) );
-		
-		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation(org.alice.apis.moveandturn.CameraMarker.class);
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice(markerName, org.alice.apis.moveandturn.CameraMarker.class, initializer);
-		cameraMarkerField.finalVolatileOrNeither.setValue(edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL);
-		cameraMarkerField.access.setValue(edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE);
-		
+
+		edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( org.alice.apis.moveandturn.CameraMarker.class );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice cameraMarkerField = new edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice( markerName, org.alice.apis.moveandturn.CameraMarker.class, initializer );
+		cameraMarkerField.finalVolatileOrNeither.setValue( edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither.FINAL );
+		cameraMarkerField.access.setValue( edu.cmu.cs.dennisc.alice.ast.Access.PRIVATE );
+
 		return new Tuple2< FieldDeclaredInAlice, Object >( cameraMarkerField, cameraMarker );
 	}
-	
-	public List<edu.cmu.cs.dennisc.alice.ast.AbstractField> getDeclaredFields()
-	{
-		List<edu.cmu.cs.dennisc.alice.ast.AbstractField> declaredFields = new LinkedList<edu.cmu.cs.dennisc.alice.ast.AbstractField>();
-		if (this.rootField != null)
-		{
+
+	public List< edu.cmu.cs.dennisc.alice.ast.AbstractField > getDeclaredFields() {
+		List< edu.cmu.cs.dennisc.alice.ast.AbstractField > declaredFields = new LinkedList< edu.cmu.cs.dennisc.alice.ast.AbstractField >();
+		if( this.rootField != null ) {
 			declaredFields.addAll( rootField.valueType.getValue().getDeclaredFields() );
 		}
 		return declaredFields;
