@@ -524,9 +524,20 @@ public class ZManager {
 			}
 		};
 	}
-	public static javax.swing.JCheckBoxMenuItem createCheckBoxMenuItem( BooleanStateOperation booleanStateOperation ) {
+	public static javax.swing.JCheckBoxMenuItem createCheckBoxMenuItem( final BooleanStateOperation booleanStateOperation ) {
 		assert booleanStateOperation != null;
-		return new ZCheckBoxMenuItem(booleanStateOperation);
+		return new javax.swing.JCheckBoxMenuItem() {
+			@Override
+			public void addNotify() {
+				booleanStateOperation.addAbstractButton( this );
+				super.addNotify();
+			}
+			@Override
+			public void removeNotify() {
+				super.removeNotify();
+				booleanStateOperation.removeAbstractButton( this );
+			}
+		};
 	}
 
 
