@@ -178,7 +178,7 @@ class FileSystemPane extends TabContentPane {
 /**
  * @author Dennis Cosgrove
  */
-public class OpenProjectPane extends edu.cmu.cs.dennisc.croquet.KInputPane< java.net.URI > {
+public class OpenProjectPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< java.net.URI > {
 	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane();
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private TabContentPane templatesPane;

@@ -126,7 +126,7 @@ class RecentProjectsMenu extends javax.swing.JMenu {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
+public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFrame {
 	public static final java.util.UUID PREFERENCES_GROUP = java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" );
 	public static final java.util.UUID IO_GROUP = java.util.UUID.fromString( "669018cd-2097-4568-9ce3-38cd102f6a2f" );
 	public static final java.util.UUID INTERFACE_GROUP = java.util.UUID.fromString( "9d0f4665-a40e-4e0c-9139-6f54f288c016" );
@@ -243,7 +243,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 
 	}
 
-	private edu.cmu.cs.dennisc.croquet.swing.ConcealedBin concealedBin = new edu.cmu.cs.dennisc.croquet.swing.ConcealedBin();
+	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
 	private org.alice.ide.memberseditor.MembersEditor membersEditor;
@@ -402,7 +402,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 	private javax.swing.JSplitPane root;
 	private javax.swing.JSplitPane left;
 
-	class RightPane extends edu.cmu.cs.dennisc.croquet.swing.GridBagPane {
+	class RightPane extends edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane {
 		public RightPane() {
 			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 			gbc.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
@@ -548,7 +548,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.croquet.KFrame {
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
 		this.vmForSceneEditor = createVirtualMachineForSceneEditor();
 
-		getContentPane().addMouseWheelListener( new edu.cmu.cs.dennisc.swing.plaf.metal.FontMouseWheelAdapter() );
+		getContentPane().addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
 
 		//this.setLocale( new java.util.Locale( "en", "US", "java" ) );
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );

@@ -59,9 +59,9 @@ class ExceptionPane extends javax.swing.JPanel {
 		this.throwable = throwable;
 		this.removeAll();
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-		edu.cmu.cs.dennisc.swing.FauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.swing.FauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
+		edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowStackTrace = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new javax.swing.AbstractAction( "show complete stack trace..." ) {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( ExceptionPane.this, edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsString( throwable ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( ExceptionPane.this, edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsString( throwable ), "Stack Trace", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			}
 		} );
 
@@ -102,11 +102,11 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 				super( "show all system properties..." );
 			}
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				edu.cmu.cs.dennisc.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( AbstractCaughtExceptionPane.this, edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString(), "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+				edu.cmu.cs.dennisc.javax.swing.SwingUtilities.showMessageDialogInScrollableUneditableTextArea( AbstractCaughtExceptionPane.this, edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString(), "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE );
 			}
 		}
 
-		private edu.cmu.cs.dennisc.swing.FauxHyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.swing.FauxHyperlink( new ShowAllSystemPropertiesAction() );
+		private edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink vcShowAllSystemProperties = new edu.cmu.cs.dennisc.javax.swing.components.JFauxHyperlink( new ShowAllSystemPropertiesAction() );
 
 		public SystemPropertiesPane() {
 			this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
@@ -119,23 +119,23 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 
 	private javax.swing.JLabel labelException = createLabelForMultiLine( "exception:" );
 	private ExceptionPane paneException = new ExceptionPane();
-	private java.awt.Component[] rowException = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelException, paneException );
+	private java.awt.Component[] rowException = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelException, paneException );
 
 	private javax.swing.JLabel labelEnvironment = createLabelForMultiLine( "environment:" );
 	private SystemPropertiesPane paneEnvironment = new SystemPropertiesPane();
-	private java.awt.Component[] rowEnvironment = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelEnvironment, paneEnvironment );
+	private java.awt.Component[] rowEnvironment = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelEnvironment, paneEnvironment );
 
 	private static final String NAME_SUGGESTIVE_TEXT = "please fill in your name (optional)";
 	private javax.swing.JLabel labelName = createLabelForSingleLine( "reported by:" );
 	private SuggestiveTextField textReporterName = new SuggestiveTextField( "", NAME_SUGGESTIVE_TEXT );
-	private java.awt.Component[] rowName = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelName, textReporterName );
+	private java.awt.Component[] rowName = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelName, textReporterName );
 
 	private static final String EMAIL_SUGGESTIVE_TEXT = "please fill in your e-mail address (optional)";
 	private javax.swing.JLabel labelAddress = createLabelForSingleLine( "e-mail address:" );
 	private SuggestiveTextField textReporterEMailAddress = new SuggestiveTextField( "", EMAIL_SUGGESTIVE_TEXT );
-	private java.awt.Component[] rowAddress = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelAddress, textReporterEMailAddress );
+	private java.awt.Component[] rowAddress = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelAddress, textReporterEMailAddress );
 
-	class MyExpandPane extends edu.cmu.cs.dennisc.swing.ExpandPane {
+	class MyExpandPane extends edu.cmu.cs.dennisc.javax.swing.components.JExpandPane {
 		@Override
 		protected javax.swing.JComponent createCenterPane() {
 			javax.swing.JPanel rv = new javax.swing.JPanel();
@@ -148,7 +148,7 @@ public abstract class AbstractCaughtExceptionPane extends IssueReportPane {
 			rows.add( rowEnvironment );
 			rows.add( rowName );
 			rows.add( rowAddress );
-			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( rv, rows, 8, 4 );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.springItUpANotch( rv, rows, 8, 4 );
 			return rv;
 		}
 		@Override

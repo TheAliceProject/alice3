@@ -107,7 +107,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 
 	private javax.swing.JLabel labelSummary = createLabelForSingleLine( "summary:" );
 	private SuggestiveTextField textSummary = new SuggestiveTextField( "", this.getSummarySuggestiveText() );
-	protected java.awt.Component[] rowSummary = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelSummary, textSummary );
+	protected java.awt.Component[] rowSummary = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelSummary, textSummary );
 
 	private javax.swing.JLabel labelDescription = createLabelForMultiLine( "description:" );
 	private SuggestiveTextArea textDescription = new SuggestiveTextArea( "", DESCRIPTION_SUGGESTIVE_TEXT );
@@ -117,7 +117,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredDescriptionHeight() );
 		}
 	};
-	protected java.awt.Component[] rowDescription = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelDescription, scrollDescription );
+	protected java.awt.Component[] rowDescription = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelDescription, scrollDescription );
 
 	private javax.swing.JLabel labelSteps = createLabelForMultiLine( "steps:" );
 	private SuggestiveTextArea textSteps = new SuggestiveTextArea( "", STEPS_SUGGESTIVE_TEXT );
@@ -127,7 +127,7 @@ public abstract class IssueReportPane extends javax.swing.JPanel implements Repo
 			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), IssueReportPane.this.getPreferredStepsHeight() );
 		}
 	};
-	protected java.awt.Component[] rowSteps = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelSteps, scrollSteps );
+	protected java.awt.Component[] rowSteps = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelSteps, scrollSteps );
 
 	public IssueReportPane() {
 		java.awt.Font font = this.submitButton.getFont();

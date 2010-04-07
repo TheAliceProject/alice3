@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class CommentLine extends edu.cmu.cs.dennisc.croquet.KSuggestiveTextArea {
+class CommentLine extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextArea {
 //class CommentLine extends javax.swing.JTextArea {
 	private edu.cmu.cs.dennisc.alice.ast.Comment comment;
 	public CommentLine( edu.cmu.cs.dennisc.alice.ast.Comment comment ) {
@@ -107,7 +107,7 @@ class CommentLine extends edu.cmu.cs.dennisc.croquet.KSuggestiveTextArea {
 		this.updateBorder();
 	}
 	private void updateBorder() {
-		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
+		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
 		java.awt.FontMetrics fm = g.getFontMetrics( this.getFont() );
 		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( "//", g );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, (int)bounds.getWidth()+2, 0, 0 ) );

@@ -51,9 +51,9 @@ public class VolumeLevelControl extends javax.swing.JSlider {
 		this.setMaximum( 200 );
 
 		java.util.Dictionary<Integer, javax.swing.JComponent> labels = new java.util.Hashtable<Integer, javax.swing.JComponent>();
-		labels.put( 0, edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "Silent (0.0)" ) );
-		labels.put( 100, edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "Normal (1.0)" ) );
-		labels.put( 200, edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "Louder (2.0)" ) );
+		labels.put( 0, edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Silent (0.0)" ) );
+		labels.put( 100, edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Normal (1.0)" ) );
+		labels.put( 200, edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Louder (2.0)" ) );
 		this.setLabelTable( labels );
 		this.setPaintLabels( true );
 		this.setOrientation( javax.swing.SwingConstants.VERTICAL );

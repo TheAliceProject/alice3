@@ -84,7 +84,7 @@ class SingleOrDoubleClickList extends javax.swing.JList {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 	class ThumbnailSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCellRenderer {
 		private javax.swing.Icon folderIcon;
 
@@ -113,7 +113,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.swing.Li
 				if( file.isDirectory() ) {
 					if( this.folderIcon != null ) {
 						if( icon != null ) {
-							icon = new edu.cmu.cs.dennisc.swing.CompositeIcon( this.folderIcon, icon );
+							icon = new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( this.folderIcon, icon );
 						} else {
 							icon = this.folderIcon;
 						}

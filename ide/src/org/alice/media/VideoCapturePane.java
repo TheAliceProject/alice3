@@ -80,16 +80,16 @@ import org.jdesktop.swingworker.SwingWorker;
 
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Program;
-import edu.cmu.cs.dennisc.croquet.swing.LineAxisPane;
+import edu.cmu.cs.dennisc.inputpane.FileSelectionPane;
 import edu.cmu.cs.dennisc.io.FileUtilities;
-import edu.cmu.cs.dennisc.swing.FileSelectionPane;
+import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
 
 
 /**
  * @author David Culyba
  */
 
-public abstract class VideoCapturePane extends LineAxisPane implements ActionListener, DocumentListener, EncoderListener{
+public abstract class VideoCapturePane extends JLineAxisPane implements ActionListener, DocumentListener, EncoderListener{
 	
 	private enum CaptureState
 	{

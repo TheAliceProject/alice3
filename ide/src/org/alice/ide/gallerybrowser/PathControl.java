@@ -45,8 +45,8 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
-	class DirectoryControl extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public abstract class PathControl extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+	class DirectoryControl extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 		private static final int ARROW_SIZE = 10;
 		private static final int ARROW_BORDER_HALF_SIZE = 3;
 
@@ -217,6 +217,6 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineA
 			operations.add( new SelectFileActionOperation( file ) );
 		}
 		javax.swing.JPopupMenu popupMenu = edu.cmu.cs.dennisc.zoot.ZManager.createPopupMenu( operations );
-		edu.cmu.cs.dennisc.swing.PopupMenuUtilities.showModal( popupMenu, invoker, 0, invoker.getHeight() );
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, 0, invoker.getHeight() );
 	}
 }

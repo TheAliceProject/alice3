@@ -57,17 +57,17 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		CreateMyInstanceActionOperation createMyInstanceActionOperation = new CreateMyInstanceActionOperation();
 		CreateTextbookInstanceActionOperation createTextbookInstanceActionOperation = new CreateTextbookInstanceActionOperation();
 
-		edu.cmu.cs.dennisc.croquet.swing.Pane fromFilePane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
+		edu.cmu.cs.dennisc.javax.swing.components.JPane fromFilePane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
 		fromFilePane.setLayout(new java.awt.GridLayout(2, 1, 0, 4));
 		fromFilePane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createMyInstanceActionOperation));
 		fromFilePane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createTextbookInstanceActionOperation));
 
-		edu.cmu.cs.dennisc.croquet.swing.Pane bonusPane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
+		edu.cmu.cs.dennisc.javax.swing.components.JPane bonusPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
 		bonusPane.setLayout(new java.awt.GridLayout(2, 1, 0, 4));
 		bonusPane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createBillboardActionOperation));
 		bonusPane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createTextActionOperation));
 
-		edu.cmu.cs.dennisc.croquet.swing.BorderPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
+		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
 		buttonPane.add(fromFilePane, java.awt.BorderLayout.NORTH);
 		buttonPane.add(bonusPane, java.awt.BorderLayout.SOUTH);
 
@@ -117,7 +117,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 
 		java.io.File thumbnailRoot = new java.io.File(org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails");
-		edu.cmu.cs.dennisc.croquet.KFrame frame = new edu.cmu.cs.dennisc.croquet.KFrame() {
+		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
 			@Override
 			protected void handleWindowOpened(java.awt.event.WindowEvent e) {
 			}

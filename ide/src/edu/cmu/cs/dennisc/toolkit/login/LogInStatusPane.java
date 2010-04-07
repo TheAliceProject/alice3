@@ -42,11 +42,11 @@
  */
 package edu.cmu.cs.dennisc.toolkit.login;
 
-class PasswordPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
+class PasswordPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	private static final String HIDDEN_KEY = "HIDDEN_KEY";
 	private static final String EXPOSED_KEY = "EXPOSED_KEY";
 
-	class PasswordCardPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
+	class PasswordCardPane extends edu.cmu.cs.dennisc.javax.swing.components.JCardPane {
 		private javax.swing.JPasswordField hidden = new javax.swing.JPasswordField() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
@@ -90,7 +90,7 @@ class PasswordPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	}
 }
 
-class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
+class LogInPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	class TestLogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public TestLogInOperation() {
 			this.setName( "Log In" );
@@ -126,28 +126,28 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 	//todo: remove. rely only on operations.
 	private javax.swing.JButton logInButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new TestLogInOperation() );
 	private java.awt.Component createLabel( String text ) {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text );
+		javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
 	}
 	public LogInPane() {
-		edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane rowsPane = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 8, 4 ) {
+		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane rowsPane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 8, 4 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "Username:" ), textUsername ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "Password:" ), passwordPane ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "Username:" ), textUsername ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "Password:" ), passwordPane ) );
 				return rv;
 			}
 		};
 
-		edu.cmu.cs.dennisc.croquet.swing.Pane signUpPane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
-		signUpPane.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "Not a member?" ) );
+		edu.cmu.cs.dennisc.javax.swing.components.JPane signUpPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
+		signUpPane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Not a member?" ) );
 		edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation hyperlinkOperation = new edu.cmu.cs.dennisc.toolkit.hyperlink.HyperlinkOperation( "http://bugs.alice.org:8080/secure/Signup!default.jspa", "Sign up" );
 		signUpPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createHyperlink( hyperlinkOperation ) );
-		signUpPane.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "for an account." ) );
+		signUpPane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "for an account." ) );
 
-		edu.cmu.cs.dennisc.croquet.swing.Pane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.Pane();
+		edu.cmu.cs.dennisc.javax.swing.components.JPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
 		buttonPane.add( this.logInButton );
 
 		signUpPane.setAlignmentX( javax.swing.JComponent.CENTER_ALIGNMENT );
@@ -169,7 +169,7 @@ class LogInPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 }
 
 
-public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
+public class LogInStatusPane extends edu.cmu.cs.dennisc.javax.swing.components.JCardPane {
 	public static final String BUGS_ALICE_ORG_KEY = "bugs.alice.org";
 	class LogInOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public LogInOperation() {
@@ -179,7 +179,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
 		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			LogInPane pane = new LogInPane();
 			java.awt.Component owner = this.getSourceComponent( actionContext );
-			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+			javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, owner, "Log In", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 			edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, javax.swing.SwingUtilities.getRoot( owner ) );
 			dialog.getRootPane().setDefaultButton( pane.getLogInButton() );
 			dialog.setVisible( true );
@@ -207,13 +207,13 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
 	private javax.swing.JButton logInButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new LogInOperation() );
 	private javax.swing.JButton logOutButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new LogOutOperation() );
 
-	class OffPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+	class OffPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 		public OffPane() {
 			this.add( javax.swing.Box.createHorizontalGlue() );
 			this.add( logInButton );
 		}
 	}
-	class OnPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+	class OnPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 		private javax.swing.JLabel nameLabel = new javax.swing.JLabel( "Full Name" ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
@@ -261,7 +261,7 @@ public class LogInStatusPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
 		LogInStatusPane pane = new LogInStatusPane();
 		//LogInPane pane = new LogInPane();
 		//PasswordPane pane = new PasswordPane();
-		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, null, "", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, null, "", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		dialog.getContentPane().setBackground( java.awt.Color.DARK_GRAY );
 		dialog.setLocation( 200, 200 );
 		dialog.setVisible( true );

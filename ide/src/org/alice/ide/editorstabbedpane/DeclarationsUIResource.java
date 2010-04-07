@@ -42,7 +42,7 @@
  */
 package org.alice.ide.editorstabbedpane;
 
-public class DeclarationsUIResource extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane implements javax.swing.plaf.UIResource {
+public class DeclarationsUIResource extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane implements javax.swing.plaf.UIResource {
 	public DeclarationsUIResource() {
 		this.add( new DeclarationsDropDown() );
 		this.add( new org.alice.ide.common.ThisPane() );

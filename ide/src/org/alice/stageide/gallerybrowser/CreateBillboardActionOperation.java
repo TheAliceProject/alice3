@@ -54,8 +54,8 @@ class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.Create
 			if( imageResource != null ) {
 				java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
 				if( bufferedImage != null ) {
-					edu.cmu.cs.dennisc.croquet.swing.ImageView imageView = new edu.cmu.cs.dennisc.croquet.swing.ImageView( bufferedImage, 240 );
-					this.add( new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( javax.swing.Box.createHorizontalStrut( 8 ), imageView ), java.awt.BorderLayout.EAST );
+					edu.cmu.cs.dennisc.javax.swing.components.JImageView imageView = new edu.cmu.cs.dennisc.javax.swing.components.JImageView( bufferedImage, 240 );
+					this.add( new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( javax.swing.Box.createHorizontalStrut( 8 ), imageView ), java.awt.BorderLayout.EAST );
 				} else {
 					//todo?
 				}

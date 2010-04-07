@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.zoot.plaf;
 /**
  * @author Dennis Cosgrove
  */
-public class TabbedPaneUI extends edu.cmu.cs.dennisc.swing.plaf.TabbedPaneUI {
+public class TabbedPaneUI extends edu.cmu.cs.dennisc.javax.swing.plaf.TabbedPaneUI {
 	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane;
 
 	public TabbedPaneUI( edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane ) {

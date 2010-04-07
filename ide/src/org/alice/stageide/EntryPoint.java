@@ -69,7 +69,7 @@ public class EntryPoint {
 		String text = edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText()/* + " BETA"*/;
 		System.out.println( "version: " + text );
 		javax.swing.Icon icon = new SplashIcon( EntryPoint.class.getResource( "images/SplashScreen.png" ), text );
-		java.awt.Window splashScreen = new edu.cmu.cs.dennisc.swing.SplashScreen( null, icon );
+		java.awt.Window splashScreen = new edu.cmu.cs.dennisc.javax.swing.components.JSplashScreen( null, icon );
 		org.alice.ide.LaunchUtilities.launch( StageIDE.class, splashScreen, args );
 	}
 }

@@ -62,7 +62,7 @@ class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStat
 	}
 }
 
-public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+public class TypePane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 	private DeclarationProperty< AbstractType > typeProperty;
 	private org.alice.ide.common.TypeComboBox typeComboBox;
 	private IsArrayStateOperation isArrayStateOperation;

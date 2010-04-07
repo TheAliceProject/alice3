@@ -272,7 +272,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	//		}
 	//	}
 
-	class ExpressionList extends edu.cmu.cs.dennisc.croquet.swing.GridBagPane {
+	class ExpressionList extends edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane {
 		private java.awt.Component glue = javax.swing.Box.createGlue();
 		private javax.swing.ButtonGroup group;
 		private java.awt.GridBagConstraints gbc;
@@ -384,7 +384,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.updateButtons();
 
-		edu.cmu.cs.dennisc.croquet.swing.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.GridBagPane();
+		edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;

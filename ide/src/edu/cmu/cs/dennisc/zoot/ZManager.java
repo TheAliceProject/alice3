@@ -374,7 +374,7 @@ public class ZManager {
 	//	}
 
 	public static javax.swing.JPanel createRadioButtons( ItemSelectionOperation itemSelectionOperation ) {
-		javax.swing.JPanel rv = new edu.cmu.cs.dennisc.croquet.swing.BoxPane( javax.swing.BoxLayout.PAGE_AXIS );
+		javax.swing.JPanel rv = new edu.cmu.cs.dennisc.javax.swing.components.JBoxPane( javax.swing.BoxLayout.PAGE_AXIS );
 		javax.swing.ComboBoxModel comboBoxModel = itemSelectionOperation.getComboBoxModel();
 		int N = comboBoxModel.getSize();
 		for( int i = 0; i < N; i++ ) {

@@ -47,7 +47,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	class AddItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public AddItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
@@ -213,7 +213,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 
-		edu.cmu.cs.dennisc.croquet.swing.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.GridBagPane();
+		edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;

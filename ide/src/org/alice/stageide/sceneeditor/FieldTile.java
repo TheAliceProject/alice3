@@ -155,7 +155,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	@Override
 	public java.awt.Dimension getPreferredSize() {
 		java.awt.Dimension rv = super.getPreferredSize();
-		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
+		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
 		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
 		rv.width += (int)( bounds.getWidth()+0.5 );
 		rv.height += (int)( bounds.getHeight()+0.5 );

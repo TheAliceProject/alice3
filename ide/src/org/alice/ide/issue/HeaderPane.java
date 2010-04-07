@@ -42,12 +42,12 @@
  */
 package org.alice.ide.issue;
 
-public class HeaderPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+public class HeaderPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 	public HeaderPane() {
 		this.setBackground( java.awt.Color.DARK_GRAY );
 		this.setOpaque( true );
 
-		edu.cmu.cs.dennisc.swing.Hyperlink hyperlink = new edu.cmu.cs.dennisc.swing.Hyperlink( "http://bugs.alice.org:8080/" );
+		edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink hyperlink = new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://bugs.alice.org:8080/" );
 		hyperlink.setIcon( new javax.swing.ImageIcon( HeaderPane.class.getResource( "images/logo.png" ) ) );
 		hyperlink.setDefaultColor( java.awt.Color.LIGHT_GRAY );
 		hyperlink.setArmedColor( java.awt.Color.YELLOW );
@@ -65,7 +65,7 @@ public class HeaderPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
 		HeaderPane pane = new HeaderPane();
 		//LogInPane pane = new LogInPane();
 		//PasswordPane pane = new PasswordPane();
-		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, null, "", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, null, "", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, null );
 		dialog.setVisible( true );
 	}

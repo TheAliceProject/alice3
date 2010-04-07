@@ -47,7 +47,7 @@ package org.alice.ide.choosers;
  */
 public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.cs.dennisc.zoot.InputValidator {
 	private static final String[] LABEL_TEXTS = { "value:" };
-	private edu.cmu.cs.dennisc.croquet.KInputPane< ? > inputPane;
+	private edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane;
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -59,10 +59,10 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 			return null;
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.KInputPane< ? > getInputPane() {
+	public edu.cmu.cs.dennisc.inputpane.KInputPane< ? > getInputPane() {
 		return this.inputPane;
 	}
-	public void setInputPane( edu.cmu.cs.dennisc.croquet.KInputPane< ? > inputPane ) {
+	public void setInputPane( edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane ) {
 		this.inputPane = inputPane;
 		this.inputPane.addOKButtonValidator( this );
 	}
@@ -77,9 +77,9 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 		final int N = labelTexts.length;
 		for( int i=0; i<N; i++ ) {
 			rv.add( 
-					edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( 
-						edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( labelTexts[ i ] ), 
-						new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( 
+					edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( 
+						edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( labelTexts[ i ] ), 
+						new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( 
 								components[ i ],
 								javax.swing.Box.createHorizontalGlue()
 						)

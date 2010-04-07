@@ -104,7 +104,7 @@ class Tree extends edu.cmu.cs.dennisc.zoot.ZTree {
 	}
 }
 
-class LookingGlass extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
+class LookingGlass extends edu.cmu.cs.dennisc.javax.swing.components.JCornerSpringPane {
 	private javax.swing.JCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
 	public LookingGlass() {
 		this.setBackground( java.awt.Color.RED );

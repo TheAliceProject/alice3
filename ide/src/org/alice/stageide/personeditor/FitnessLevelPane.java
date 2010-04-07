@@ -64,7 +64,7 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 /**
  * @author Dennis Cosgrove
  */
-class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+class FitnessLevelPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	private FitnessLevelSlider slider = new FitnessLevelSlider();
 	public FitnessLevelPane() {
 		this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new FitnessLevelActionOperation( slider, 0, "SOFT" ) ), java.awt.BorderLayout.WEST );

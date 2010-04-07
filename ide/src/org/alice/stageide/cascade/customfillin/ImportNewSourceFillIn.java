@@ -83,6 +83,6 @@ public abstract class ImportNewSourceFillIn< E, F extends org.alice.virtualmachi
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		return edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( this.getMenuText() );
+		return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.getMenuText() );
 	}
 }

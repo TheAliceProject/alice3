@@ -100,7 +100,7 @@ public class ControlPanel extends javax.swing.JPanel {
 			public void mousePressed( java.awt.event.MouseEvent e ) {
 			}
 			public void mouseReleased( java.awt.event.MouseEvent e ) {
-				if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
+				if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
 					//pass
 				} else {
 					ControlPanel.this.speed.setValue( 1 );

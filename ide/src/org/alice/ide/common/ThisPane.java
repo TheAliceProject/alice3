@@ -73,7 +73,7 @@ public class ThisPane extends AccessiblePane {
 	};
 
 	public ThisPane() {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( getIDE().getTextForThis() );
+		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( getIDE().getTextForThis() );
 		this.add( label );
 		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}

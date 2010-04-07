@@ -72,7 +72,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 					frame = new javax.swing.JFrame();
 				}
 //				while( true ) {
-					javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( bugReportPane, frame, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+					javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, frame, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 					dialog.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
 					dialog.setVisible( true );
 

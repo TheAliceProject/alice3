@@ -45,7 +45,7 @@ package org.alice.ide.preferencesinputpane;
 /**
  * @author Dennis Cosgrove
  */
-class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.DefaultMutableTreeNodeTreeCellRenderer<CollectionOfPreferencesPane> {
+class TreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.DefaultMutableTreeNodeTreeCellRenderer<CollectionOfPreferencesPane> {
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponentForUserObject(javax.swing.JLabel rv, javax.swing.JTree tree, org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
 		rv.setText( value.getTitle() );
@@ -56,10 +56,10 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.DefaultMutableTr
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesInputPane extends edu.cmu.cs.dennisc.croquet.KInputPane<Void> {
+public class PreferencesInputPane extends edu.cmu.cs.dennisc.inputpane.KInputPane<Void> {
 	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private javax.swing.JTree tree = new javax.swing.JTree();
-	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.croquet.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane> {
+	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.javax.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane> {
 		@Override
 		protected void valueChangedUserObject(javax.swing.event.TreeSelectionEvent e, CollectionOfPreferencesPane oldLeadValue, org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane newLeadValue) {
 //			if( oldLeadValue != null ) {
@@ -103,7 +103,7 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.croquet.KInputPane<
 				}
 			}
 			@Override
-			protected void updateCenterComponent( edu.cmu.cs.dennisc.croquet.swing.PageAxisPane centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+			protected void updateCenterComponent( edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
 				super.updateCenterComponent( centerComponent, collectionOfPreferences );
 				centerComponent.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new ClearRecentProjectsOperation() ) );
 			}

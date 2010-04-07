@@ -63,14 +63,14 @@ public class TypeIcon implements javax.swing.Icon {
 	}
 	public int getIconWidth() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
+		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
 		java.awt.FontMetrics fm = g.getFontMetrics();
 		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
 		return insets.left + insets.right + (int)bounds.getWidth();
 	}
 	public int getIconHeight() {
 		java.awt.Insets insets = this.border.getBorderInsets( null );
-		java.awt.Graphics g = edu.cmu.cs.dennisc.swing.SwingUtilities.getGraphics();
+		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
 		java.awt.FontMetrics fm = g.getFontMetrics();
 		java.awt.geom.Rectangle2D bounds = fm.getStringBounds( this.getText(), g );
 		return insets.top + insets.bottom + (int)bounds.getHeight();

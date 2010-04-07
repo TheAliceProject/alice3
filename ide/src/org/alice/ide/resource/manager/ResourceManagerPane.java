@@ -90,7 +90,7 @@ class ResourceTableModel extends javax.swing.table.AbstractTableModel {
 	}
 }
 
-abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.croquet.swing.TableCellRenderer< E > {
+abstract class ResourceTableCellRenderer<E> extends edu.cmu.cs.dennisc.javax.swing.renderers.TableCellRenderer< E > {
 	@Override
 	protected javax.swing.JLabel getTableCellRendererComponent( javax.swing.JLabel rv, javax.swing.JTable table, E value, boolean isSelected, boolean hasFocus, int row, int column ) {
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
@@ -166,7 +166,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public class ResourceManagerPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	abstract class ResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public ResourceOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
@@ -297,7 +297,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		@Override
 		protected java.util.List< java.awt.Component[] > createComponentRows() {
 			java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-			javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "preview:" );
+			javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "preview:" );
 			rv.add( new java.awt.Component[] { label, this.createPreviewComponent() } );
 			return rv;
 		}
@@ -314,7 +314,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		@Override
 		protected java.awt.Component createPreviewComponent() {
 			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( this.getResource() );
-			return new edu.cmu.cs.dennisc.croquet.swing.ImageView( bufferedImage, 256 );
+			return new edu.cmu.cs.dennisc.javax.swing.components.JImageView( bufferedImage, 256 );
 		}
 	}
 
@@ -324,7 +324,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		}
 		@Override
 		protected java.awt.Component createPreviewComponent() {
-			final edu.cmu.cs.dennisc.croquet.swing.BorderPane rv = new edu.cmu.cs.dennisc.croquet.swing.BorderPane() {
+			final edu.cmu.cs.dennisc.javax.swing.components.JBorderPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane() {
 				@Override
 				public java.awt.Dimension getPreferredSize() {
 					return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 256, 32 );
@@ -556,9 +556,9 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.swing.Border
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.add( scrollPane, java.awt.BorderLayout.CENTER );
 
-		java.awt.Component pane = new edu.cmu.cs.dennisc.croquet.swing.SingleColumnPane( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.addResourceOperation ),edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.removeResourceOperation ), javax.swing.Box
+		java.awt.Component pane = new edu.cmu.cs.dennisc.javax.swing.components.JSingleColumnPane( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.addResourceOperation ),edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.removeResourceOperation ), javax.swing.Box
 				.createVerticalStrut( 8 ), edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.renameResourceOperation ), edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.replaceResourceOperation ) );
-		this.add( new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane( pane, javax.swing.Box.createGlue() ), java.awt.BorderLayout.EAST );
+		this.add( new edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane( pane, javax.swing.Box.createGlue() ), java.awt.BorderLayout.EAST );
 		this.handleSelection();
 	}
 

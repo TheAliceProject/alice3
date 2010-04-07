@@ -311,7 +311,7 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 //}
 
 class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
-	private javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
+	private javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
 
 	public OperationDropDown( edu.cmu.cs.dennisc.zoot.ActionOperation leftButtonPressOperation ) {
 		this.setLeftButtonPressOperation( leftButtonPressOperation );

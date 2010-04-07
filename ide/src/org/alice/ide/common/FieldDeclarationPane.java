@@ -45,9 +45,9 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+public class FieldDeclarationPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private javax.swing.JLabel finalLabel = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
+	private javax.swing.JLabel finalLabel = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		this.field = field;
 		this.add( finalLabel );

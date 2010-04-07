@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class GetsPane extends edu.cmu.cs.dennisc.croquet.swing.Pane {
+public class GetsPane extends edu.cmu.cs.dennisc.javax.swing.components.JPane {
 	private boolean isTowardLeadingEdge;
 	private int length;
 
