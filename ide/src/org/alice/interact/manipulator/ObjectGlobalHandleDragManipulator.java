@@ -43,6 +43,7 @@
 package org.alice.interact.manipulator;
 
 import org.alice.interact.InputState;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.ManipulationHandle;
 
@@ -74,6 +75,29 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
 		
+	}
+	
+	public void setDesiredCameraView( CameraView cameraView )
+	{
+		if (this.activeManipulator != null && this.activeManipulator instanceof CameraInformedManipulator)
+		{
+			((CameraInformedManipulator)this.activeManipulator).setDesiredCameraView( cameraView );
+		}
+		else
+		{
+			//pass
+		}
+	}
+	
+	public CameraView getDesiredCameraView() {
+		if (this.activeManipulator != null && this.activeManipulator instanceof CameraInformedManipulator)
+		{
+			return ((CameraInformedManipulator)this.activeManipulator).getDesiredCameraView();
+		}
+		else
+		{
+			return CameraView.ACTIVE_VIEW;
+		}
 	}
 	
 	public OnscreenLookingGlass getOnscreenLookingGlass()
@@ -180,7 +204,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 //			this.dragAdapter.setActivateHandle( this.activeHandle, false );
 //		}
 	}
-
+	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
 		this.activeHandle = startInput.getClickHandle();
@@ -193,7 +217,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 				if (this.activeManipulator instanceof CameraInformedManipulator)
 				{
 					CameraInformedManipulator cIM = (CameraInformedManipulator)this.activeManipulator;
-					cIM.setCamera( this.camera );
+					cIM.setCamera( this.dragAdapter.getCameraForManipulator( this ) );
 				}
 				if (this.activeManipulator instanceof OnScreenLookingGlassInformedManipulator)
 				{

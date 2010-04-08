@@ -42,6 +42,7 @@
  */
 package org.alice.interact.manipulator;
 
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.ManipulationHandle2D;
 
 /**
@@ -55,6 +56,5 @@ public abstract class CameraManipulator2D extends CameraManipulator {
 	{
 		this.handle = handle;
 	}
-	
 
 }

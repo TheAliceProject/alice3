@@ -49,6 +49,7 @@ import org.alice.interact.MovementDirection;
 import org.alice.interact.PickHint;
 import org.alice.interact.PlaneUtilities;
 import org.alice.interact.VectorUtilities;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
@@ -87,8 +88,16 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 		if (this.camera != null && this.camera.getParent() instanceof Transformable)
 		{
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
-		}
-		
+		}	
+	}
+	
+	public void setDesiredCameraView( CameraView cameraView )
+	{
+		//this can only be ACTIVE_VIEW
+	}
+	
+	public CameraView getDesiredCameraView() {
+		return CameraView.ACTIVE_VIEW;
 	}
 	
 	public OnscreenLookingGlass getOnscreenLookingGlass()

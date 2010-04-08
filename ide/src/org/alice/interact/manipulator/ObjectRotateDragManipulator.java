@@ -51,6 +51,7 @@ import javax.swing.SwingUtilities;
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
 import org.alice.interact.PlaneUtilities;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
@@ -101,6 +102,15 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
 		
+	}
+	
+	public void setDesiredCameraView( CameraView cameraView )
+	{
+		//this can only be ACTIVE_VIEW
+	}
+	
+	public CameraView getDesiredCameraView() {
+		return CameraView.ACTIVE_VIEW;
 	}
 	
 	public OnscreenLookingGlass getOnscreenLookingGlass()

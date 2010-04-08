@@ -44,6 +44,7 @@ package org.alice.interact.manipulator;
 
 
 import org.alice.interact.InputState;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.HandleSet;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
@@ -56,11 +57,22 @@ import edu.cmu.cs.dennisc.scenegraph.Transformable;
 public abstract class CameraManipulator extends AbstractManipulator implements CameraInformedManipulator {
 
 	protected AbstractCamera camera = null;
+	protected CameraView desiredCameraView;
 	
 	public AbstractCamera getCamera()
 	{
 		return this.camera;
 	}
+	
+	public void setDesiredCameraView( CameraView cameraView )
+	{
+		this.desiredCameraView = cameraView;
+	}
+	
+	public CameraView getDesiredCameraView() {
+		return this.desiredCameraView;
+	}
+
 	
 	public void setCamera( AbstractCamera camera ) 
 	{

@@ -48,6 +48,7 @@ import java.util.List;
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.ReferenceFrame;
 import org.alice.ide.name.validators.FieldNameValidator;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
@@ -180,7 +181,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 			
-			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter );
+			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 			//final org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget = null;
 
 			final IsExpandedCheckBox isSceneEditorExpandedCheckBox = new IsExpandedCheckBox();
@@ -533,7 +534,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.scene.getSGComposite().addComponent( this.sgOrthographicCamera.getParent() );
 		this.setRootField( sceneField );
 		
-//		createInitialOrthographicCameraMarkers();
+		this.globalDragAdapter.addCameraView( CameraView.MAIN, this.sgPerspectiveCamera, this.sgOrthographicCamera );
+		this.globalDragAdapter.makeCameraActive( this.sgPerspectiveCamera );
+		createInitialOrthographicCameraMarkers();
 		//this.cameraNavigationDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 		return rv;
 	}
@@ -624,13 +627,15 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public void switchToOthographicCamera()
 	{
 		switchToCamera( this.sgOrthographicCamera );
-		this.mainCameraNavigatorWidget.setCamera( this.sgOrthographicCamera );
+		this.globalDragAdapter.makeCameraActive( this.sgOrthographicCamera );
+		this.mainCameraNavigatorWidget.setToOrthographicMode();
 	}
 	
 	public void switchToPerspectiveCamera()
 	{
 		switchToCamera( this.sgPerspectiveCamera );
-		this.mainCameraNavigatorWidget.setCamera( this.sgPerspectiveCamera );
+		this.globalDragAdapter.makeCameraActive( this.sgPerspectiveCamera );
+		this.mainCameraNavigatorWidget.setToPerspectiveMode();
 	}
 	
 	private boolean hasFieldNamed(String fieldName)

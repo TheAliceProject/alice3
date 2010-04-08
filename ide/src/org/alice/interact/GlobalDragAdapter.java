@@ -43,6 +43,9 @@
 
 package org.alice.interact;
 import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.AndInputCondition;
 import org.alice.interact.condition.KeyPressCondition;
@@ -73,14 +76,18 @@ import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
+
+import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author David Culyba
  */
 public class GlobalDragAdapter extends AbstractDragAdapter {
-	
 	
 	@Override
 	protected void setUpControls()

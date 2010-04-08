@@ -47,6 +47,7 @@ import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
 
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.ModifierMask.ModifierKey;
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.condition.MouseDragCondition;
@@ -84,7 +85,7 @@ public class CameraNavigatorWidget extends JPanel {
 	protected ManipulationHandle2DCameraTurnUpDown cameraControlUpDown;
 	protected ManipulationHandle2DCameraStrafe cameraControlStrafe;
 	
-	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter)
+	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter, CameraView attachedView)
 	{
 		super();
 		
@@ -95,6 +96,7 @@ public class CameraNavigatorWidget extends JPanel {
 		
 		this.cameraControlUpDown = new ManipulationHandle2DCameraTurnUpDown();
 		CameraDragUpDownRotateManipulator upDownManipulator = new CameraDragUpDownRotateManipulator(this.cameraControlUpDown);
+		upDownManipulator.setDesiredCameraView( attachedView );
 		this.cameraControlUpDown.setManipulation( upDownManipulator );
 		for (ManipulationEvent event : upDownManipulator.getManipulationEvents())
 		{
@@ -108,6 +110,7 @@ public class CameraNavigatorWidget extends JPanel {
 		
 		this.cameraControlStrafe = new ManipulationHandle2DCameraStrafe();
 		CameraDragStrafeManipulator strafeManipulator = new CameraDragStrafeManipulator(this.cameraControlStrafe);
+		strafeManipulator.setDesiredCameraView( attachedView );
 		this.cameraControlStrafe.setManipulation( strafeManipulator );
 		for (ManipulationEvent event : strafeManipulator.getManipulationEvents())
 		{
@@ -121,6 +124,7 @@ public class CameraNavigatorWidget extends JPanel {
 		
 		this.cameraDriver = new ManipulationHandle2DCameraDriver();
 		CameraDragDriveManipulator driverManipulator = new CameraDragDriveManipulator(this.cameraDriver);
+		driverManipulator.setDesiredCameraView( attachedView );
 		this.cameraDriver.setManipulation( driverManipulator );
 		for (ManipulationEvent event : driverManipulator.getManipulationEvents())
 		{
@@ -195,35 +199,14 @@ public class CameraNavigatorWidget extends JPanel {
 		}
 	}
 	
-	public void setCamera(AbstractCamera camera)
+	public void setToOrthographicMode()
 	{
-		if (cameraDriver.getManipulation( null ) instanceof CameraInformedManipulator)
-		{
-			((CameraInformedManipulator)cameraDriver.getManipulation( null )).setCamera( camera );
-		}
-		if (cameraControlUpDown.getManipulation( null ) instanceof CameraInformedManipulator)
-		{
-			((CameraInformedManipulator)cameraControlUpDown.getManipulation( null )).setCamera( camera );
-		}
-		if (cameraControlStrafe.getManipulation( null ) instanceof CameraInformedManipulator)
-		{
-			((CameraInformedManipulator)cameraControlStrafe.getManipulation( null )).setCamera( camera );
-		}
-		
-		CameraMode newMode;
-		if (camera instanceof OrthographicCamera)
-		{
-			newMode = CameraMode.ORTHOGRAPHIC;
-		}
-		else if (camera instanceof SymmetricPerspectiveCamera)
-		{
-			newMode = CameraMode.PERSPECTIVE;
-		}
-		else
-		{
-			newMode = null;
-		}
-		setMode(newMode);
+		setMode(CameraMode.ORTHOGRAPHIC);
+	}
+	
+	public void setToPerspectiveMode()
+	{
+		setMode(CameraMode.PERSPECTIVE);
 	}
 	
 	public void setMode(CameraMode mode)

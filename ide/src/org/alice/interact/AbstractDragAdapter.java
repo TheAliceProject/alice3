@@ -51,7 +51,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.alice.interact.condition.ManipulatorConditionSet;
 import org.alice.interact.event.ManipulationEvent;
@@ -71,12 +74,55 @@ import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
 import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
  * @author David Culyba
  */
 public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelListener, java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.KeyListener {
+	
+	public enum CameraView
+	{
+		MAIN,
+		TOP_LEFT,
+		TOP_RIGHT,
+		BOTTOM_LEFT,
+		BOTTOM_RIGHT,
+		ACTIVE_VIEW
+	}
+	
+	private class CameraPair
+	{
+		public SymmetricPerspectiveCamera perspectiveCamera;
+		public OrthographicCamera orthographicCamera;
+		
+		private AbstractCamera activeCamera;
+		
+		public CameraPair(SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera)
+		{
+			this.perspectiveCamera = perspectiveCamera;
+			this.orthographicCamera = orthographicCamera;
+		}
+		
+		public void setActiveCamera(AbstractCamera camera)
+		{
+			this.activeCamera = camera;
+		}
+		
+		public AbstractCamera getActiveCamera()
+		{
+			return this.activeCamera;
+		}
+		
+		public boolean hasCamera(AbstractCamera camera)
+		{
+			return this.perspectiveCamera == camera || this.orthographicCamera == camera;
+		}
+	}
+	
+	private Map<CameraView, CameraPair> cameraMap = new HashMap<CameraView, CameraPair>();
 	
 	public static final String BOUNDING_BOX_KEY = "BOUNDING_BOX_KEY";
 	
@@ -183,6 +229,16 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		if( this.lookingGlassComponent  != null ) {
 			addListeners( awtComponent );
 		}
+	}
+	
+	public void addCameraView(CameraView viewType, SymmetricPerspectiveCamera perspectiveCamera, OrthographicCamera orthographicCamera)
+	{
+		addCameraView(viewType, new CameraPair(perspectiveCamera, orthographicCamera));
+	}
+	
+	protected void addCameraView(CameraView viewType, CameraPair cameras)
+	{
+		this.cameraMap.put( viewType, cameras );
 	}
 	
 	public void setAnimator( Animator animator )
@@ -303,14 +359,71 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			}
 		}
 	}
+	
+	public void makeCameraActive(AbstractCamera camera)
+	{
+		System.out.println("Trying to activate "+camera);
+		boolean activated = false;
+		for (Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet())
+		{
+			if (cameras.getValue().hasCamera( camera ))
+			{
+				System.out.println("Making "+cameras.getKey()+" active on "+camera);
+				cameras.getValue().setActiveCamera( camera );
+				activated = true;
+			}
+		}
+		if (activated)
+		{
+			System.out.println("Success!");
+		}
+		else
+		{
+			System.out.println("failure!");
+		}
+	}
 
+	protected AbstractCamera getActiveCamera()
+	{
+		//TODO: introduce a true sense of "active"
+		CameraPair activeCameraPair = this.cameraMap.get( CameraView.MAIN );
+		if (activeCameraPair == null || activeCameraPair.getActiveCamera() == null)
+		{
+			return null;
+		}
+		return activeCameraPair.getActiveCamera();
+	}
+	
+	public AbstractCamera getCameraForManipulator(CameraInformedManipulator cameraManipulator)
+	{
+		CameraView cameraView = cameraManipulator.getDesiredCameraView();
+		if (cameraView == CameraView.ACTIVE_VIEW)
+		{
+			return getActiveCamera();
+		}
+		else
+		{
+			CameraPair cameras = this.cameraMap.get( cameraView );
+			if (cameras != null)
+			{
+				return cameras.getActiveCamera();
+			}
+			else
+			{
+				System.out.println("NULL!");
+				return null;
+			}
+		}
+	}
+	
 	public void setSGCamera( AbstractCamera camera )
 	{
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			if (this.manipulators.get( i ).getManipulator() instanceof CameraInformedManipulator)
 			{
-				((CameraInformedManipulator)this.manipulators.get( i ).getManipulator()).setCamera( camera );
+				CameraInformedManipulator cameraManipulator = ((CameraInformedManipulator)this.manipulators.get( i ).getManipulator());
+				cameraManipulator.setCamera( getCameraForManipulator( cameraManipulator ) );
 			}
 			if (this.manipulators.get( i ).getManipulator() instanceof OnScreenLookingGlassInformedManipulator)
 			{

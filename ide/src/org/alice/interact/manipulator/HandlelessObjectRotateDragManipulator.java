@@ -47,6 +47,7 @@ import java.awt.Point;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.PlaneUtilities;
+import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.HandleSet;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
@@ -86,7 +87,15 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 		{
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
-		
+	}
+	
+	public void setDesiredCameraView( CameraView cameraView )
+	{
+		//this can only be ACTIVE_VIEW
+	}
+	
+	public CameraView getDesiredCameraView() {
+		return CameraView.ACTIVE_VIEW;
 	}
 	
 	public OnscreenLookingGlass getOnscreenLookingGlass()
