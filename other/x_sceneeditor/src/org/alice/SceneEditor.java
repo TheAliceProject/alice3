@@ -24,6 +24,7 @@
 package org.alice;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -38,9 +39,14 @@ import org.alice.apis.moveandturn.SymmetricPerspectiveCamera;
 import org.alice.apis.moveandturn.TurnDirection;
 import org.alice.apis.moveandturn.gallery.animals.Chicken;
 import org.alice.apis.moveandturn.gallery.environments.grounds.GrassyGround;
+import org.alice.ide.IDE;
+import org.alice.ide.event.ProjectOpenEvent;
 import org.alice.interact.CameraNavigatorWidget;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.PickHint;
+import org.alice.stageide.StageIDE;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
+import org.alice.stageide.sceneeditor.viewmanager.CameraViewSelector;
 import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 
@@ -54,8 +60,6 @@ import edu.cmu.cs.dennisc.ui.lookingglass.CameraNavigationDragAdapter;
  */
 public class SceneEditor extends Program {
 	
-	
-	
 	static {
 		Thread.setDefaultUncaughtExceptionHandler( new Thread.UncaughtExceptionHandler() {
 			public void uncaughtException( Thread thread, Throwable throwable ) {
@@ -64,21 +68,17 @@ public class SceneEditor extends Program {
 		});
 	}
 	
-	
 	//IDE level stuff
-	protected edu.cmu.cs.dennisc.alice.Project project;
+	protected edu.cmu.cs.dennisc.alice.Project project = null;
 	private java.util.List< org.alice.ide.event.IDEListener > ideListeners = new java.util.LinkedList< org.alice.ide.event.IDEListener >();
+	
+	private org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor sceneEditor;
 	
 	Scene scene = new Scene();
 	GrassyGround grassyGround = new GrassyGround();
 	DirectionalLight sunLight = new DirectionalLight();
 	SymmetricPerspectiveCamera camera = new SymmetricPerspectiveCamera();
 	Chicken chicken = new Chicken();
-
-//	org.alice.interact.RuntimeDragAdapter globalDragAdapter = new org.alice.interact.RuntimeDragAdapter();
-	org.alice.interact.GlobalDragAdapter globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
-	org.alice.interact.CreateASimDragAdapter simDragAdapter = new org.alice.interact.CreateASimDragAdapter();
-	CameraNavigationDragAdapter cameraNavigationDragAdapter = new CameraNavigationDragAdapter();
 	
 
 	public void addIDEListener( org.alice.ide.event.IDEListener l ) {
@@ -109,9 +109,29 @@ public class SceneEditor extends Program {
 		}
 	}
 	
+	
+	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType ) {
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice;
+		if( programType != null ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractField field = programType.getDeclaredFields().get( 0 );
+			if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
+				fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field;
+			} else {
+				fieldInAlice = null;
+			}
+		} else {
+			fieldInAlice = null;
+		}
+		this.setRootField( fieldInAlice );
+	}
+	
 	public void setProject(edu.cmu.cs.dennisc.alice.Project project)
 	{
-		this.viewPanel.setProject( project );
+		IDE.getSingleton().setProject( project );
+		//this.sceneEditor.projectOpened( new ProjectOpenEvent(IDE.getSingleton(), this.project, project) );
+		this.setProgramType( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType() );
+		this.project = project;
+//		this.viewPanel.setProject( project );
 	}
 	
 	public void loadProjectFrom( java.io.File file ) {
@@ -131,7 +151,6 @@ public class SceneEditor extends Program {
 	}
 	
 	public void saveProjectTo( java.io.File file ) {
-		this.viewPanel.saveToProject();
 		try
 		{
 			edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeProject( file, this.project );
@@ -152,35 +171,91 @@ public class SceneEditor extends Program {
 		return false;
 	}
 	
-	SceneViewManagerPanel viewPanel = new SceneViewManagerPanel();
+	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
+	
+	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
+		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			SceneEditor.this.refreshFields();
+		}
+
+		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			SceneEditor.this.refreshFields();
+		}
+
+		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			SceneEditor.this.refreshFields();
+		}
+
+		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+		}
+		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+			SceneEditor.this.refreshFields();
+		}
+	};
+	
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
+		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
+	}
+	public void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
+		if( this.rootField != null ) {
+			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
+		}
+		this.rootField = rootField;
+		if( this.rootField != null ) {
+			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
+		}
+		this.refreshFields();
+	}
+	
+	public void refreshFields()
+	{
+		System.out.println("Refresh!");
+		this.viewPanel.refreshFields();
+		this.viewSelector.refreshFields();
+	}
+	
+	SceneViewManagerPanel viewPanel = null;
 	ManipulationHandleControlPanel handleControlPanel;
+	CameraViewSelector viewSelector;
 	protected java.io.File projectFile = new java.io.File( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyAliceDirectory("Alice3"), "SCENE_EDITOR_TEST.a3p" );
-	protected java.io.File defaultFile = new java.io.File( System.getProperty( "org.alice.ide.IDE.install.dir" ) + "/application/projects/templates/GrassyProject.a3p" );
+	protected java.io.File defaultFile = new java.io.File( "C:/Users/Administrator/Documents/Alice3/MyProjects/cameraTest.a3p" );
+
+	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
+	
+	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
+		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
+			SceneEditor.this.animator.update();
+		}
+	};
 	
 	protected void initializeUI()
 	{
-		CameraNavigatorWidget controlPanel = new CameraNavigatorWidget(globalDragAdapter);
 		
-		globalDragAdapter.setOnscreenLookingGlass(this.getOnscreenLookingGlass());
+		this.remove( this.getOnscreenLookingGlass().getAWTComponent() );
+		this.add(this.sceneEditor, BorderLayout.CENTER);
+	
+		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 		
-		this.viewPanel.setCamera(camera.getSGPerspectiveCamera());
-		
+		this.viewPanel = new SceneViewManagerPanel(this.sceneEditor);
+		this.viewSelector = new CameraViewSelector(this.sceneEditor, animator);
 		this.handleControlPanel = new ManipulationHandleControlPanel();
-		this.handleControlPanel.setDragAdapter( this.globalDragAdapter );
 		
 		JButton saveButton = new JButton("SAVE");
+		Font buttonFont = saveButton.getFont();
+		System.out.println(buttonFont.getFontName());
+		
 		saveButton.addActionListener( new ActionListener(){
 
 			public void actionPerformed( ActionEvent e ) {
 				SceneEditor.this.saveProjectTo( SceneEditor.this.projectFile );
 			}
 		});
-		
-		JPanel widgetPanel = new JPanel();
-		widgetPanel.setLayout(new FlowLayout());
-		widgetPanel.add(controlPanel);
-		//widgetPanel.add(this.viewPanel);
-		
 		JButton loadButton = new JButton("LOAD");
 		loadButton.addActionListener( new ActionListener(){
 
@@ -192,9 +267,8 @@ public class SceneEditor extends Program {
 		saveAndLoadPanel.setLayout( new FlowLayout());
 		saveAndLoadPanel.add( saveButton );
 		saveAndLoadPanel.add( loadButton );
-		
+		this.add( this.viewSelector, java.awt.BorderLayout.SOUTH );
 		this.add( saveAndLoadPanel, java.awt.BorderLayout.NORTH );
-		this.add( widgetPanel, java.awt.BorderLayout.SOUTH );
 		this.add( (JPanel)(this.viewPanel), java.awt.BorderLayout.EAST );
 		this.add( (JPanel)(this.handleControlPanel), BorderLayout.WEST );
 	}
@@ -233,25 +307,18 @@ public class SceneEditor extends Program {
 	
 	@Override
 	protected void initialize() {
+		this.sceneEditor = (MoveAndTurnSceneEditor)org.alice.ide.IDE.getSingleton().getSceneEditor();
 		this.initializeScene();
 		initializeUI();
 		this.loadProjectFrom( defaultFile );
-		
 		this.viewPanel.setActive( true );
-		
-		
-		
-		
-		
-		
-		globalDragAdapter.setSelectedObject( chicken.getSGTransformable() );
 		
 	}
 
 	@Override
 	protected void run() {
-		globalDragAdapter.setAnimator( this.getAnimator() );
-		this.viewPanel.setCamera(globalDragAdapter.getOnscreenLookingGlass().getCameraAt( 0 ));
+		this.viewSelector.setPersespectiveCamera( this.sceneEditor.getSGPerspectiveCamera());
+		this.viewSelector.setOrthographicCamera( this.sceneEditor.getSGOrthographicCamera() );
 	}
 
 	
@@ -263,6 +330,10 @@ public class SceneEditor extends Program {
 //		} );
 //	}
 	public static void main(String[] args) {
+		
+		System.out.println(System.getProperty("java.library.path"));
+		
+		org.alice.ide.IDE ide = new StageIDE();
 		SceneEditor sceneEditor = new SceneEditor();
 		sceneEditor.showInJFrame(args, true);
 	}
