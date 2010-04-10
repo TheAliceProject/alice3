@@ -83,32 +83,15 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		try {
 			javax.media.opengl.GLDrawableFactory unused = javax.media.opengl.GLDrawableFactory.getFactory();
 		} catch( UnsatisfiedLinkError ule ) {
-			//final String JAVA_LIBRARY_PATH = "java.library.path";
-			//String pathOriginal = System.getProperty( JAVA_LIBRARY_PATH );
-			StringBuffer sb = new StringBuffer();
-			String libraryPath;
-			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
-				libraryPath = "\"/Applications/Alice3Beta/ext/jogl/lib/macosx-universal\"";
-			} else if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
-				libraryPath = "\"/Program Files/Alice3Beta/ext/jogl/lib/windows-i586\"";
-			} else {
-				libraryPath = "?/Alice3Beta/ext/jogl/lib/?";
-			}
-			sb.append( "-ea -Xmx1024m -Djava.library.path=" + libraryPath );
-			
-			String javaLibraryPath = sb.toString();
-			
-			edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( javaLibraryPath );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
+			String platformText = System.getProperty( "os.name" ) + "-" + System.getProperty( "os.arch" );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( platformText );
+			edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( platformText );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "UNABLE TO LOAD OPENGL" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "------ -- ---- ------" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "The most common reason for this is an incorrectly set Java library path.  Please update your VM arguments." );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "The text below has been copied to the clipboard for your convenience." );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( javaLibraryPath );
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
-			edu.cmu.cs.dennisc.print.PrintUtilities.println();
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( platformText );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			System.exit( 0 );
 		}
