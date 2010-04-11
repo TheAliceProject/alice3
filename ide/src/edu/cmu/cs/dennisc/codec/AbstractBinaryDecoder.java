@@ -149,7 +149,7 @@ public abstract class AbstractBinaryDecoder implements BinaryDecoder {
 		String clsName = decodeString();
 		if( clsName.length() > 0 ) {
 			Class clsActual = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( clsName );
-			java.lang.reflect.Constructor cnstrctr;
+			java.lang.reflect.Constructor< E > cnstrctr;
 			E rv;
 			try {
 				cnstrctr = clsActual.getConstructor( new Class[] { BinaryDecoder.class } );

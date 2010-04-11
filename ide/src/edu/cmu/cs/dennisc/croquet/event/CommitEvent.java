@@ -40,20 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.croquet.event;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: better name
-public abstract class KRoot {
-	protected abstract java.awt.Window getAWTWindow();
-	protected abstract java.awt.Frame getAWTFrame();
-	protected abstract java.awt.Dialog getAWTDialog();
-	
-	protected abstract java.awt.Container getContentPane();
-	public void addToContentPane( KComponent component, KBorderPanel.KCardinalDirection cardinalDirection ) {
-		this.getContentPane().add( component.getJComponent(), cardinalDirection.getInternal() );
+public class CommitEvent extends ManagerEvent {
+	private edu.cmu.cs.dennisc.croquet.Edit edit;
+	public CommitEvent( edu.cmu.cs.dennisc.croquet.Operation source, edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+		super( source, context );
+		this.edit = edit;
+	}
+	public edu.cmu.cs.dennisc.croquet.Edit getEdit() {
+		return this.edit;
 	}
 }

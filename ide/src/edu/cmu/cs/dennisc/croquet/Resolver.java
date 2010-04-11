@@ -40,20 +40,15 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: better name
-public abstract class KRoot {
-	protected abstract java.awt.Window getAWTWindow();
-	protected abstract java.awt.Frame getAWTFrame();
-	protected abstract java.awt.Dialog getAWTDialog();
-	
-	protected abstract java.awt.Container getContentPane();
-	public void addToContentPane( KComponent component, KBorderPanel.KCardinalDirection cardinalDirection ) {
-		this.getContentPane().add( component.getJComponent(), cardinalDirection.getInternal() );
-	}
+//todo: rename
+public interface Resolver< E extends Edit, F > {
+	public E createEdit();
+	public E initialize( E rv, Context<? extends Operation> context, edu.cmu.cs.dennisc.task.TaskObserver<F> taskObserver );
+	public E handleCompletion( E rv, F e );
+	public void handleCancelation();
 }

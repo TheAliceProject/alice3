@@ -40,20 +40,88 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: better name
-public abstract class KRoot {
-	protected abstract java.awt.Window getAWTWindow();
-	protected abstract java.awt.Frame getAWTFrame();
-	protected abstract java.awt.Dialog getAWTDialog();
+public abstract class Operation {
+	private java.util.UUID groupUUID;
+	public Operation( java.util.UUID groupUUID ) {
+		this.groupUUID = groupUUID;
+	}
+	public java.util.UUID getGroupUUID() {
+		return this.groupUUID;
+	}
+	protected java.awt.Component getSourceComponent( Context< ? > context ) {
+		if( context != null ) {
+			java.util.EventObject e = context.getEvent();
+			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( e.getSource(), java.awt.Component.class );
+		} else {
+			return null;
+		}
+	}
+
+
+	private boolean isVisible = true;
+	public boolean isVisible() {
+		return this.isVisible;
+	}
+	public void setVisible( boolean isVisible ) {
+		if( this.isVisible != isVisible ) {
+			this.isVisible = isVisible;
+			synchronized( this.components ) {
+				for( javax.swing.JComponent component : this.components ) {
+					component.setVisible( this.isVisible );
+				}
+			}
+		}
+	}
+	private boolean isEnabled = true;
+	public boolean isEnabled() {
+		return this.isEnabled;
+	}
+	public void setEnabled( boolean isEnabled ) {
+		if( this.isEnabled != isEnabled ) {
+			this.isEnabled = isEnabled;
+			synchronized( this.components ) {
+				for( javax.swing.JComponent component : this.components ) {
+					component.setEnabled( this.isEnabled );
+				}
+			}
+		}
+	}
+
+	private String toolTipText = null;
+	public String getToolTipText() {
+		return this.toolTipText;
+	}
+	public void setToolTipText( String toolTipText ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( this.toolTipText, toolTipText ) ) {
+			//pass
+		} else {
+			this.toolTipText = toolTipText;
+			synchronized( this.components ) {
+				for( javax.swing.JComponent component : this.components ) {
+					component.setToolTipText( this.toolTipText );
+				}
+			}
+		}
+	}
+
+	private java.util.List< javax.swing.JComponent > components = new java.util.LinkedList< javax.swing.JComponent >();
 	
-	protected abstract java.awt.Container getContentPane();
-	public void addToContentPane( KComponent component, KBorderPanel.KCardinalDirection cardinalDirection ) {
-		this.getContentPane().add( component.getJComponent(), cardinalDirection.getInternal() );
+	protected void addComponent( javax.swing.JComponent component ) {
+		synchronized( this.components ) {
+			this.components.add( component );
+			component.setVisible( this.isVisible );
+			component.setEnabled( this.isEnabled );
+			component.setToolTipText( this.toolTipText );
+		}
+	}
+	protected void removeComponent( javax.swing.JComponent component ) {
+		synchronized( this.components ) {
+			this.components.remove( component );
+		}
 	}
 }

@@ -40,20 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-//todo: better name
-public abstract class KRoot {
-	protected abstract java.awt.Window getAWTWindow();
-	protected abstract java.awt.Frame getAWTFrame();
-	protected abstract java.awt.Dialog getAWTDialog();
-	
-	protected abstract java.awt.Container getContentPane();
-	public void addToContentPane( KComponent component, KBorderPanel.KCardinalDirection cardinalDirection ) {
-		this.getContentPane().add( component.getJComponent(), cardinalDirection.getInternal() );
+public abstract class Edit {
+	public abstract void doOrRedo( boolean isDo );
+	public abstract void undo();
+	public boolean canRedo() {
+		return true;
+	}
+	public boolean canUndo() {
+		return true;
+	}
+	protected abstract StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale );
+	public final String getPresentation( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		this.updatePresentation( sb, locale );
+		if( sb.length() == 0 ) {
+			Class<?> cls = this.getClass();
+			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( cls ) );
+		}
+		if( sb.length() == 0 ) {
+			sb.append( this.getClass() );
+		}
+		return sb.toString();
+	}
+	public String getRedoPresentation( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Redo:" );
+		this.updatePresentation( sb, locale );
+		return sb.toString();
+	}
+	public String getUndoPresentation( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Undo:" );
+		this.updatePresentation( sb, locale );
+		return sb.toString();
 	}
 }
