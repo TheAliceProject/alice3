@@ -114,7 +114,15 @@ public final class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 			}
 		} else {
 			if( this.name.charAt( 0 ) == '[' ) {
-				return new ClassReflectionProxy( this.name.substring( 1 ) );
+				String s = this.name.substring( 1 );
+				if( s.charAt( 0 ) == '[' ) {
+					//pass
+				} else {
+					assert s.charAt( 0 ) == 'L';
+					assert s.charAt( s.length()-1 ) == ';';
+					s = s.substring( 1, s.length()-1 );
+				}
+				return new ClassReflectionProxy( s );
 			} else {
 				return null;
 			}
@@ -143,7 +151,7 @@ public final class ClassReflectionProxy extends ReflectionProxy< Class<?> > {
 	public PackageReflectionProxy getPackageReflectionProxy() {
 		Class< ? > cls = this.getReification();
 		if( cls != null ) {
-			Package pckg = cls.getPackage();
+			Package pckg = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getPackage( cls );
 			if( pckg != null ) {
 				return new PackageReflectionProxy( pckg );
 			} else {

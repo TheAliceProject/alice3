@@ -129,10 +129,17 @@ public class ClassUtilities {
 		return simpleClassNames.split( "\\$" );
 	}
 	
+	public static Package getPackage( Class<?> cls ) {
+		if( cls.isArray() ) {
+			return getPackage( cls.getComponentType() );
+		} else {
+			return cls.getPackage();
+		}
+	}
 	public static String getTrimmedClassName( Class<?> cls ) {
 		if( cls != null ) {
 			if( cls.isMemberClass() ) {
-				Package pckg = cls.getPackage(); 
+				Package pckg = getPackage( cls ); 
 				return cls.getName().substring( pckg.getName().length()+1 );
 			} else {
 				return cls.getSimpleName();
