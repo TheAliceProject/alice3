@@ -40,63 +40,18 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.util;
+package edu.cmu.cs.dennisc.croquet;
 
-public class Collections {
-	private Collections() {
-		throw new AssertionError();
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class BoundedRangeOperation extends Operation {
+	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
+	public BoundedRangeOperation( java.util.UUID groupUUID ) {
+		super( groupUUID );
 	}
-	public static <E> java.util.Stack< E > newStack() {
-		return new java.util.Stack< E >();
+	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
+		return this.boundedRangeModel;
 	}
-	public static <E> java.util.LinkedList< E > newLinkedList() {
-		return new java.util.LinkedList< E >();
-	}
-	public static <E> java.util.LinkedList<E> newLinkedList( java.util.Collection< E > other ) {
-		java.util.LinkedList<E> rv = new java.util.LinkedList< E >();
-		rv.addAll( other );
-		return rv;
-	}
-	public static <E> java.util.ArrayList<E> newArrayList( E... array ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
-		CollectionUtilities.set( rv, array );
-		return rv;
-	}
-	public static <E> java.util.ArrayList<E> newArrayList( java.util.Collection< E > other ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
-		rv.addAll( other );
-		return rv;
-	}
-	public static <E> java.util.Vector<E> newVector( E... array ) {
-		java.util.Vector<E> rv = new java.util.Vector< E >();
-		CollectionUtilities.set( rv, array );
-		return rv;
-	}
-	public static <E> java.util.Vector< E > newVector( java.util.Collection< E > other ) {
-		java.util.Vector<E> rv = new java.util.Vector< E >();
-		rv.addAll( other );
-		return rv;
-	}
-	public static <E> java.util.HashSet< E > newHashSet() {
-		return new java.util.HashSet< E >();
-	}
-	public static <E> java.util.HashSet< E > newHashSet( E... values ) {
-		java.util.HashSet<E> rv = new java.util.HashSet< E >();
-		for( E value : values ) {
-			rv.add( value );
-		}
-		return rv;
-	}
-	public static <E> java.util.HashSet< E > newHashSet( java.util.Collection< E > other ) {
-		java.util.HashSet<E> rv = new java.util.HashSet< E >();
-		rv.addAll( other );
-		return rv;
-	}
-	
-	public static <K,V> java.util.HashMap< K,V > newHashMap() {
-		return new java.util.HashMap< K,V >();
-	}
-	public static <K,V> java.util.WeakHashMap< K,V > newWeakHashMap() {
-		return new java.util.WeakHashMap< K,V >();
-	}
+	public abstract void perform( BoundedRangeContext boundedRangeContext );
 }

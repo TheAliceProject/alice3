@@ -40,63 +40,43 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.java.util;
+package edu.cmu.cs.dennisc.croquet;
 
-public class Collections {
-	private Collections() {
-		throw new AssertionError();
+/**
+ * @author Dennis Cosgrove
+ */
+public abstract class Edit {
+	public abstract void doOrRedo( boolean isDo );
+	public abstract void undo();
+	public boolean canRedo() {
+		return true;
 	}
-	public static <E> java.util.Stack< E > newStack() {
-		return new java.util.Stack< E >();
+	public boolean canUndo() {
+		return true;
 	}
-	public static <E> java.util.LinkedList< E > newLinkedList() {
-		return new java.util.LinkedList< E >();
-	}
-	public static <E> java.util.LinkedList<E> newLinkedList( java.util.Collection< E > other ) {
-		java.util.LinkedList<E> rv = new java.util.LinkedList< E >();
-		rv.addAll( other );
-		return rv;
-	}
-	public static <E> java.util.ArrayList<E> newArrayList( E... array ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
-		CollectionUtilities.set( rv, array );
-		return rv;
-	}
-	public static <E> java.util.ArrayList<E> newArrayList( java.util.Collection< E > other ) {
-		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
-		rv.addAll( other );
-		return rv;
-	}
-	public static <E> java.util.Vector<E> newVector( E... array ) {
-		java.util.Vector<E> rv = new java.util.Vector< E >();
-		CollectionUtilities.set( rv, array );
-		return rv;
-	}
-	public static <E> java.util.Vector< E > newVector( java.util.Collection< E > other ) {
-		java.util.Vector<E> rv = new java.util.Vector< E >();
-		rv.addAll( other );
-		return rv;
-	}
-	public static <E> java.util.HashSet< E > newHashSet() {
-		return new java.util.HashSet< E >();
-	}
-	public static <E> java.util.HashSet< E > newHashSet( E... values ) {
-		java.util.HashSet<E> rv = new java.util.HashSet< E >();
-		for( E value : values ) {
-			rv.add( value );
+	protected abstract StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale );
+	public final String getPresentation( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		this.updatePresentation( sb, locale );
+		if( sb.length() == 0 ) {
+			Class<?> cls = this.getClass();
+			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( cls ) );
 		}
-		return rv;
+		if( sb.length() == 0 ) {
+			sb.append( this.getClass() );
+		}
+		return sb.toString();
 	}
-	public static <E> java.util.HashSet< E > newHashSet( java.util.Collection< E > other ) {
-		java.util.HashSet<E> rv = new java.util.HashSet< E >();
-		rv.addAll( other );
-		return rv;
+	public String getRedoPresentation( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Redo:" );
+		this.updatePresentation( sb, locale );
+		return sb.toString();
 	}
-	
-	public static <K,V> java.util.HashMap< K,V > newHashMap() {
-		return new java.util.HashMap< K,V >();
-	}
-	public static <K,V> java.util.WeakHashMap< K,V > newWeakHashMap() {
-		return new java.util.WeakHashMap< K,V >();
+	public String getUndoPresentation( java.util.Locale locale ) {
+		StringBuffer sb = new StringBuffer();
+		sb.append( "Undo:" );
+		this.updatePresentation( sb, locale );
+		return sb.toString();
 	}
 }
