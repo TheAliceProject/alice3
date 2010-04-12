@@ -160,7 +160,6 @@ public final class BooleanStateOperation extends Operation {
 		this.buttonModel.addItemListener( itemListener );
 		this.updateName();
 	}
-	
 	public javax.swing.JCheckBox createCheckBox( final BooleanStateOperation booleanStateOperation ) {
 		return new javax.swing.JCheckBox() {
 			@Override
@@ -191,5 +190,4 @@ public final class BooleanStateOperation extends Operation {
 			}
 		};
 	}
-	
 }

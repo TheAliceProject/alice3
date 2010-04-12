@@ -124,6 +124,5 @@ public abstract class Operation {
 			this.components.remove( component );
 		}
 	}
-	
 	public abstract javax.swing.JMenuItem createMenuItem();
 }

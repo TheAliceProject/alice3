@@ -129,7 +129,6 @@ public abstract class ActionOperation extends Operation {
 			}
 		};
 	}
-	
 	@Override
 	public javax.swing.JMenuItem createMenuItem() {
 		return new javax.swing.JMenuItem() {

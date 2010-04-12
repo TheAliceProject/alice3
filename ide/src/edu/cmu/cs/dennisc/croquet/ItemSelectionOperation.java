@@ -141,7 +141,6 @@ public final class ItemSelectionOperation<E> extends Operation {
 		
 		context.commitAndInvokeDo( new ItemSelectionEdit( context.getPreviousSelection(), context.getNextSelection() ) );
 	}
-	
 	@Override
 	public javax.swing.JMenuItem createMenuItem() {
 		//todo

@@ -121,9 +121,6 @@ public abstract class Application {
 		jFrame.setVisible( true );
 	}
 	
-	@Deprecated
-	public static final java.util.UUID UNKNOWN_GROUP = java.util.UUID.fromString( "6e31d069-b4ed-4d10-a3af-bc009985c6e3" );
-
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
 	
