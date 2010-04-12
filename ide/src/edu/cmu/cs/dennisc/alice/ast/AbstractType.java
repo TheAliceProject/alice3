@@ -51,15 +51,15 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 	private static java.util.Map< Class<?>, Class<?>> s_mapPrimitiveToWrapper;
 	static {
 		s_mapPrimitiveToWrapper = new java.util.HashMap< Class<?>, Class<?>>();
-		s_mapPrimitiveToWrapper.put( java.lang.Void.TYPE, java.lang.Void.class );
-		s_mapPrimitiveToWrapper.put( java.lang.Boolean.TYPE, java.lang.Boolean.class );
-		s_mapPrimitiveToWrapper.put( java.lang.Byte.TYPE, java.lang.Byte.class );
-		s_mapPrimitiveToWrapper.put( java.lang.Character.TYPE, java.lang.Character.class );
-		s_mapPrimitiveToWrapper.put( java.lang.Short.TYPE, java.lang.Short.class );
+		s_mapPrimitiveToWrapper.put( Void.TYPE, Void.class );
+		s_mapPrimitiveToWrapper.put( Boolean.TYPE, Boolean.class );
+		s_mapPrimitiveToWrapper.put( Byte.TYPE, Byte.class );
+		s_mapPrimitiveToWrapper.put( Character.TYPE, Character.class );
+		s_mapPrimitiveToWrapper.put( Short.TYPE, Short.class );
 		s_mapPrimitiveToWrapper.put( Integer.TYPE, Integer.class );
-		s_mapPrimitiveToWrapper.put( java.lang.Long.TYPE, java.lang.Long.class );
-		s_mapPrimitiveToWrapper.put( java.lang.Float.TYPE, java.lang.Float.class );
-		s_mapPrimitiveToWrapper.put( java.lang.Double.TYPE, java.lang.Double.class );
+		s_mapPrimitiveToWrapper.put( Long.TYPE, Long.class );
+		s_mapPrimitiveToWrapper.put( Float.TYPE, Float.class );
+		s_mapPrimitiveToWrapper.put( Double.TYPE, Double.class );
 	}
 	private static Class<?> getClsWrapperIfNecessary( TypeDeclaredInJava typeDeclaredInJava ) { 
 		Class<?> rv = typeDeclaredInJava.getClassReflectionProxy().getReification();
