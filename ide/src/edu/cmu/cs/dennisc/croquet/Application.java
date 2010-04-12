@@ -101,6 +101,8 @@ public abstract class Application {
 	protected java.awt.Container initializeContentPane( java.awt.Container rv ) {
 		return rv;
 	}
+	
+	protected abstract javax.swing.JPanel createContentPane(); 	
 	public void initialize( String[] args ) {
 		KFrame frame = new KFrame();
 		javax.swing.JFrame jFrame = (javax.swing.JFrame)frame.getAWTFrame();
@@ -116,7 +118,7 @@ public abstract class Application {
 			jFrame.setJMenuBar( menuBar );
 		}
 		
-		initializeContentPane( jFrame.getContentPane() );
+		jFrame.setContentPane( this.createContentPane() );
 		jFrame.pack();
 		jFrame.setVisible( true );
 	}
