@@ -128,6 +128,7 @@ public class SceneEditor extends Program {
 	public void setProject(edu.cmu.cs.dennisc.alice.Project project)
 	{
 		IDE.getSingleton().setProject( project );
+		this.viewSelector.addOrthographicMarkersToScene(this.sceneEditor.getScene());
 		//this.sceneEditor.projectOpened( new ProjectOpenEvent(IDE.getSingleton(), this.project, project) );
 		this.setProgramType( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType() );
 		this.project = project;

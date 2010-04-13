@@ -386,6 +386,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected AbstractCamera getActiveCamera()
 	{
 		//TODO: introduce a true sense of "active"
+		System.out.println("Entries: "+this.cameraMap.size());
+		for (Entry<CameraView, CameraPair> entry : this.cameraMap.entrySet())
+		{
+			System.out.println("  "+entry.getKey()+", "+entry.getValue());
+		}
+		
 		CameraPair activeCameraPair = this.cameraMap.get( CameraView.MAIN );
 		if (activeCameraPair == null || activeCameraPair.getActiveCamera() == null)
 		{
@@ -397,39 +403,49 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	public AbstractCamera getCameraForManipulator(CameraInformedManipulator cameraManipulator)
 	{
 		CameraView cameraView = cameraManipulator.getDesiredCameraView();
+		AbstractCamera cameraToReturn = null;
 		if (cameraView == CameraView.ACTIVE_VIEW)
 		{
-			return getActiveCamera();
+			
+			cameraToReturn = getActiveCamera();
 		}
 		else
 		{
 			CameraPair cameras = this.cameraMap.get( cameraView );
 			if (cameras != null)
 			{
-				return cameras.getActiveCamera();
+				cameraToReturn = cameras.getActiveCamera();
 			}
 			else
 			{
 				System.out.println("NULL!");
-				return null;
+				cameraToReturn = null;
 			}
 		}
+		if (cameraToReturn == null)
+		{
+			System.out.println("Null!");
+		}
+		return cameraToReturn;
 	}
 	
 	public void setSGCamera( AbstractCamera camera )
 	{
-		for (int i=0; i<this.manipulators.size(); i++)
-		{
-			if (this.manipulators.get( i ).getManipulator() instanceof CameraInformedManipulator)
-			{
-				CameraInformedManipulator cameraManipulator = ((CameraInformedManipulator)this.manipulators.get( i ).getManipulator());
-				cameraManipulator.setCamera( getCameraForManipulator( cameraManipulator ) );
-			}
-			if (this.manipulators.get( i ).getManipulator() instanceof OnScreenLookingGlassInformedManipulator)
-			{
-				((OnScreenLookingGlassInformedManipulator)this.manipulators.get( i ).getManipulator()).setOnscreenLookingGlass( getOnscreenLookingGlass() );
-			}
-		}
+//		assert camera != null;
+//		System.out.println("Setting Camera from DragAdapter: ");
+//		Thread.dumpStack();
+//		for (int i=0; i<this.manipulators.size(); i++)
+//		{
+//			if (this.manipulators.get( i ).getManipulator() instanceof CameraInformedManipulator)
+//			{
+//				CameraInformedManipulator cameraManipulator = ((CameraInformedManipulator)this.manipulators.get( i ).getManipulator());
+//				cameraManipulator.setCamera( getCameraForManipulator( cameraManipulator ) );
+//			}
+//			if (this.manipulators.get( i ).getManipulator() instanceof OnScreenLookingGlassInformedManipulator)
+//			{
+//				((OnScreenLookingGlassInformedManipulator)this.manipulators.get( i ).getManipulator()).setOnscreenLookingGlass( getOnscreenLookingGlass() );
+//			}
+//		}
 	}
 	
 	protected void handleDisplayed() {

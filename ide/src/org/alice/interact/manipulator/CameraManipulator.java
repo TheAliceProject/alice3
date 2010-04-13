@@ -96,6 +96,7 @@ public abstract class CameraManipulator extends AbstractManipulator implements C
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
+		this.setCamera(this.dragAdapter.getCameraForManipulator(this));
 		this.manipulatedTransformable = this.getManipulatedTransformableFromCamera();
 		if (this.manipulatedTransformable != null)
 		{

@@ -49,6 +49,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,13 +64,18 @@ import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
 import org.alice.apis.moveandturn.PerspectiveCameraMarker;
 import org.alice.interact.AffineMatrix4x4TargetBasedAnimation;
+import org.alice.interact.OrthographicCameraController;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
 import edu.cmu.cs.dennisc.animation.Animator;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
+import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.property.event.PropertyEvent;
+import edu.cmu.cs.dennisc.property.event.PropertyListener;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -80,7 +87,7 @@ import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 /**
  * @author David Culyba
  */
-public class CameraViewSelector extends JPanel implements ItemListener, AbsoluteTransformationListener{
+public class CameraViewSelector extends JPanel implements ItemListener, AbsoluteTransformationListener, PropertyListener{
 	
 	private MoveAndTurnSceneEditor sceneEditor;
 	private JComboBox cameraViewComboBox;
@@ -91,6 +98,8 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 	private Animator animator;
 	private int selectedIndex = -1;
 	private AffineMatrix4x4TargetBasedAnimation cameraAnimation = null;
+	
+	private List<OrthographicCameraMarker> orthographicMarkers = new LinkedList<OrthographicCameraMarker>();
 	
 	private JPanel orthographicControlPanel;
 	
@@ -104,7 +113,53 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 		this.add(this.cameraViewComboBox);
 		this.cameraViewComboBox.addItemListener( this );
 		initializeOrthographicControls();
+		createInitialOrthographicCameraMarkers();
 		refreshFields();
+	}
+	
+	public void addOrthographicMarkersToScene(org.alice.apis.moveandturn.Scene scene )
+	{
+		for (OrthographicCameraMarker marker : this.orthographicMarkers)
+		{
+			if (marker.getVehicle() != null)
+			{
+				marker.setVehicle(null);
+			}
+			scene.addComponent(marker);
+		}
+	}
+	
+	private void createInitialOrthographicCameraMarkers()
+	{
+		orthographicMarkers.clear();
+		org.alice.apis.moveandturn.OrthographicCameraMarker topMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
+		topMarker.setName( "TOP" );
+		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
+		topTransform.translation.y = 10;
+		topTransform.orientation.up.set( 0, 0, 1 );
+		topTransform.orientation.right.set( 1, 0, 0 );
+		topTransform.orientation.backward.set( 0, 1, 0 );
+		assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+		topMarker.setLocalTransformation( topTransform );
+		orthographicMarkers.add(topMarker);
+
+		org.alice.apis.moveandturn.OrthographicCameraMarker sideMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
+		sideMarker.setName( "SIDE" );
+		AffineMatrix4x4 sideTransform = AffineMatrix4x4.createIdentity();
+		sideTransform.translation.x = 10;
+		sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
+		assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+		sideMarker.setLocalTransformation( sideTransform );
+		orthographicMarkers.add(sideMarker);
+
+		org.alice.apis.moveandturn.OrthographicCameraMarker frontMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
+		frontMarker.setName( "FRONT" );
+		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
+		frontTransform.translation.z = 10;
+		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeZAxis(), Vector3.accessPositiveYAxis()) );
+		assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
+		frontMarker.setLocalTransformation( frontTransform );
+		orthographicMarkers.add(frontMarker);
 	}
 	
 	private void initializeOrthographicControls()
@@ -236,8 +291,10 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 	{
 		if (this.orthographicCamera != null)
 		{
-			this.orthographicCamera.picturePlane.getValue().setXMaximum( this.orthographicCamera.picturePlane.getValue().getXMaximum() + zoom );
-			this.orthographicCamera.picturePlane.getValue().setXMinimum( this.orthographicCamera.picturePlane.getValue().getXMinimum() - zoom );
+			OrthographicCameraController cameraController = new OrthographicCameraController(this.orthographicCamera);
+			cameraController.zoom(zoom);
+//			this.orthographicCamera.picturePlane.getValue().setXMaximum( this.orthographicCamera.picturePlane.getValue().getXMaximum() + zoom );
+//			this.orthographicCamera.picturePlane.getValue().setXMinimum( this.orthographicCamera.picturePlane.getValue().getXMinimum() - zoom );
 		}
 	}
 	
@@ -270,11 +327,13 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 		if (this.orthographicCamera != null)
 		{
 			this.orthographicCamera.removeAbsoluteTransformationListener( this );
+			this.orthographicCamera.picturePlane.removePropertyListener(this);
 		}
 		this.orthographicCamera = camera;
 		if (this.orthographicCamera != null)
 		{
 			this.orthographicCamera.addAbsoluteTransformationListener( this );
+			this.orthographicCamera.picturePlane.addPropertyListener(this);
 		}
 	}
 	
@@ -284,13 +343,17 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 		this.cameraViewComboBox.removeAllItems();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : this.sceneEditor.getDeclaredFields()) 
 		{
-			System.out.println(field.getName());
 			if (field.getValueType().isAssignableTo( org.alice.apis.moveandturn.CameraMarker.class ))
 			{
 				cameraFields.add( field );
 				this.cameraViewComboBox.addItem( field.getName() );
 			}
 		}
+		for (OrthographicCameraMarker marker : this.orthographicMarkers)
+		{
+			this.cameraViewComboBox.addItem(marker.getName());
+		}
+		
 		if (selectedIndex == -1 && this.cameraFields.size() > 0)
 		{
 			this.cameraViewComboBox.setSelectedIndex( 0 );
@@ -306,10 +369,18 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 	{
 		if (this.selectedIndex > -1)
 		{
-			AbstractField selectedField = this.cameraFields.get( this.selectedIndex );
-			CameraMarker marker = this.sceneEditor.getInstanceInJavaForField(selectedField, org.alice.apis.moveandturn.CameraMarker.class);
-			System.out.println("Set selected marker to "+marker.getName()+":"+marker.hashCode());
-			return marker;
+			if (this.selectedIndex < this.cameraFields.size())
+			{
+				AbstractField selectedField = this.cameraFields.get( this.selectedIndex );
+				CameraMarker marker = this.sceneEditor.getInstanceInJavaForField(selectedField, org.alice.apis.moveandturn.CameraMarker.class);
+				return marker;
+			}
+			else
+			{
+				int orthoIndex = this.selectedIndex - this.cameraFields.size();
+				OrthographicCameraMarker orthoMarker = this.orthographicMarkers.get(orthoIndex);
+				return orthoMarker;
+			}
 		}
 		return null;
 	}
@@ -365,6 +436,14 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 		}
 	}
 	
+	private void printOrthoViews()
+	{
+		for (OrthographicCameraMarker marker : this.orthographicMarkers)
+		{
+			System.out.println(marker.getName() + ": <("+marker.getPicturePlane().getXMaximum()+", "+marker.getPicturePlane().getXMinimum()+"), ("+marker.getPicturePlane().getYMaximum()+", "+marker.getPicturePlane().getYMinimum()+")>");
+		}
+	}
+	
 	private void setSelectedView(int index)
 	{
 		this.selectedIndex = index;
@@ -373,8 +452,10 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 		{
 			if (this.activeMarker instanceof OrthographicCameraMarker)
 			{
+				OrthographicCameraMarker orthoMarker = (OrthographicCameraMarker)this.activeMarker;
 				switchToOrthographicView();
 				Transformable cameraParent = (Transformable)CameraViewSelector.this.orthographicCamera.getParent();
+				CameraViewSelector.this.orthographicCamera.picturePlane.setValue(new ClippedZPlane(orthoMarker.getPicturePlane()) );
 				cameraParent.setTransformation( CameraViewSelector.this.activeMarker.getTransformation( AsSeenBy.SCENE ), CameraViewSelector.this.orthographicCamera.getRoot() );
 			}
 			else
@@ -425,8 +506,6 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 			{
 				AffineMatrix4x4 cameraTransform = this.orthographicCamera.getAbsoluteTransformation();
 				Component root = this.orthographicCamera.getRoot();
-				Composite vehicle = this.activeMarker.getVehicle();
-				System.out.println("trying to update marker position: "+this.activeMarker.getName());
 				this.activeMarker.getSGTransformable().setTransformation( cameraTransform, root );
 			}
 			else if (cameraSource instanceof SymmetricPerspectiveCamera)
@@ -438,6 +517,21 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 				
 			}
 		}
+	}
+
+	public void propertyChanged(PropertyEvent e) {
+		if (e.getOwner() == this.orthographicCamera && e.getTypedSource() == this.orthographicCamera.picturePlane)
+		{		
+			if (doesMarkerMatchCamera( this.activeMarker, this.orthographicCamera ))
+			{
+				((OrthographicCameraMarker)this.activeMarker).setPicturePlane(this.orthographicCamera.picturePlane.getValue());
+			}
+		}		
+	}
+
+	public void propertyChanging(PropertyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

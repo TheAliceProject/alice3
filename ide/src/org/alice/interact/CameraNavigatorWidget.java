@@ -54,6 +54,7 @@ import org.alice.interact.condition.MouseDragCondition;
 import org.alice.interact.condition.PickCondition;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.event.ManipulationEventCriteria;
+import org.alice.interact.handle.ManipulationHandle2CameraZoom;
 import org.alice.interact.handle.ManipulationHandle2DCameraDriver;
 import org.alice.interact.handle.ManipulationHandle2DCameraStrafe;
 import org.alice.interact.handle.ManipulationHandle2DCameraTurnUpDown;
@@ -62,6 +63,8 @@ import org.alice.interact.manipulator.CameraDragStrafeManipulator;
 import org.alice.interact.manipulator.CameraDragUpDownRotateManipulator;
 import org.alice.interact.manipulator.CameraInformedManipulator;
 import org.alice.interact.manipulator.ObjectGlobalHandleDragManipulator;
+import org.alice.interact.manipulator.OrthographicCameraDragStrafeManipulator;
+import org.alice.interact.manipulator.OrthographicCameraDragZoomManipulator;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
@@ -84,6 +87,8 @@ public class CameraNavigatorWidget extends JPanel {
 	protected ManipulationHandle2DCameraDriver cameraDriver;
 	protected ManipulationHandle2DCameraTurnUpDown cameraControlUpDown;
 	protected ManipulationHandle2DCameraStrafe cameraControlStrafe;
+	protected ManipulationHandle2DCameraStrafe orthographicCameraControlStrafe;
+	protected ManipulationHandle2CameraZoom orthographicCameraControlZoom;
 	
 	public CameraNavigatorWidget( AbstractDragAdapter dragAdapter, CameraView attachedView)
 	{
@@ -121,6 +126,35 @@ public class CameraNavigatorWidget extends JPanel {
 		}
 		this.dragAdapter.addManipulationListener( this.cameraControlStrafe );
 		this.cameraControlStrafe.setDragAdapter( this.dragAdapter );
+		
+		this.orthographicCameraControlStrafe = new ManipulationHandle2DCameraStrafe();
+		OrthographicCameraDragStrafeManipulator orthoStrafeManipulator = new OrthographicCameraDragStrafeManipulator(this.cameraControlStrafe);
+		orthoStrafeManipulator.setDesiredCameraView( attachedView );
+		this.orthographicCameraControlStrafe.setManipulation( orthoStrafeManipulator );
+		for (ManipulationEvent event : orthoStrafeManipulator.getManipulationEvents())
+		{
+			this.orthographicCameraControlStrafe.addCondition( new ManipulationEventCriteria(
+					event.getType(),
+					event.getMovementDescription(),
+					PickHint.CAMERA ) );
+		}
+		this.dragAdapter.addManipulationListener( this.orthographicCameraControlStrafe );
+		this.orthographicCameraControlStrafe.setDragAdapter( this.dragAdapter );
+		
+		
+		this.orthographicCameraControlZoom = new ManipulationHandle2CameraZoom();
+		OrthographicCameraDragZoomManipulator orthoZoomManipulator = new OrthographicCameraDragZoomManipulator(this.orthographicCameraControlZoom);
+		orthoZoomManipulator.setDesiredCameraView( attachedView );
+		this.orthographicCameraControlZoom.setManipulation( orthoZoomManipulator );
+		for (ManipulationEvent event : orthoZoomManipulator.getManipulationEvents())
+		{
+			this.orthographicCameraControlZoom.addCondition( new ManipulationEventCriteria(
+					event.getType(),
+					event.getMovementDescription(),
+					PickHint.CAMERA ) );
+		}
+		this.dragAdapter.addManipulationListener( this.orthographicCameraControlZoom );
+		this.orthographicCameraControlZoom.setDragAdapter( this.dragAdapter );
 		
 		this.cameraDriver = new ManipulationHandle2DCameraDriver();
 		CameraDragDriveManipulator driverManipulator = new CameraDragDriveManipulator(this.cameraDriver);
@@ -164,13 +198,17 @@ public class CameraNavigatorWidget extends JPanel {
 				this.cameraControlUpDown.setVisible( isExpanded );
 				this.cameraControlStrafe.setVisible( isExpanded );
 				this.cameraDriver.setVisible( true );
+				this.orthographicCameraControlStrafe.setVisible( false );
+				this.orthographicCameraControlZoom.setVisible( false );
 			}
 			break;
 		case ORTHOGRAPHIC:
 			{
 				this.cameraControlUpDown.setVisible( false );
-				this.cameraControlStrafe.setVisible( true );
+				this.cameraControlStrafe.setVisible( false );
 				this.cameraDriver.setVisible( false );
+				this.orthographicCameraControlStrafe.setVisible( true );
+				this.orthographicCameraControlZoom.setVisible( true );
 			}
 			break;
 		}
@@ -193,7 +231,8 @@ public class CameraNavigatorWidget extends JPanel {
 			break;
 		case ORTHOGRAPHIC:
 			{
-				this.add(this.cameraControlStrafe);
+				this.add(this.orthographicCameraControlStrafe);
+				this.add(this.orthographicCameraControlZoom);
 			}
 			break;
 		}
