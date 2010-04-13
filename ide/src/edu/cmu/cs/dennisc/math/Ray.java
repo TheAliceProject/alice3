@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Ray implements java.io.Serializable {
+public class Ray {
 	protected edu.cmu.cs.dennisc.math.Point3 m_origin = new edu.cmu.cs.dennisc.math.Point3( 0, 0, 0 );
 	protected edu.cmu.cs.dennisc.math.Vector3 m_direction = new edu.cmu.cs.dennisc.math.Vector3( 0, 0, 1 );
 
