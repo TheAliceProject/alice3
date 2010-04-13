@@ -60,7 +60,7 @@ public class MethodInfo extends MemberWithParametersInfo {
 		if( this.mthd != null ) {
 			//pass
 		} else {
-			this.mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( getDeclaringCls(), this.name, getParameterClses() );
+			this.mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( getDeclaringCls(), this.name, getParameterClses() );
 		}
 		return this.mthd;
 	}

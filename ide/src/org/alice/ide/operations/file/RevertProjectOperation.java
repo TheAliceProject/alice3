@@ -48,8 +48,8 @@ package org.alice.ide.operations.file;
 public class RevertProjectOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public RevertProjectOperation() {
 		super( org.alice.ide.IDE.IO_GROUP );
-		this.putValue( javax.swing.Action.NAME, "Revert" );
-		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_R );
+		this.setName( "Revert" );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this.getIDE(), "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE ) ) {

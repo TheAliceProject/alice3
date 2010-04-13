@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class Hexahedron implements java.io.Serializable {
+public class Hexahedron {
 	public enum RightOrLeft {
 		RIGHT(0x0), LEFT(0x1);
 		private int m_mask;

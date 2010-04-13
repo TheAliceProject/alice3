@@ -60,9 +60,9 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 		blank.addFillIn( new edu.cmu.cs.dennisc.cascade.MenuFillIn( "Random" ) {
 			@Override
 			protected void addChildrenToBlank(edu.cmu.cs.dennisc.cascade.Blank blank) {
-				//addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFrom0ToNExclusive", java.lang.Integer.class );
-				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBExclusive", java.lang.Integer.class, java.lang.Integer.class );
-				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBInclusive", java.lang.Integer.class, java.lang.Integer.class );
+				//addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFrom0ToNExclusive", Integer.class );
+				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBExclusive", Integer.class, Integer.class );
+				addNodeChildForMethod( blank, RANDOM_UTILITIES_TYPE_EXPRESSION, "nextIntegerFromAToBInclusive", Integer.class, Integer.class );
 			}
 		} );
 		blank.addSeparator();
@@ -73,10 +73,10 @@ public class IntegerFillerInner extends AbstractNumberFillerInner {
 					blank.addFillIn( new org.alice.ide.cascade.IncompleteArithmeticExpressionFillIn( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE, operator, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE ) );
 				}
 				blank.addSeparator();
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", java.lang.Integer.TYPE );
+				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "abs", Integer.TYPE );
 				blank.addSeparator();
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", java.lang.Integer.TYPE, java.lang.Integer.TYPE );
-				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "max", java.lang.Integer.TYPE, java.lang.Integer.TYPE );
+				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "min", Integer.TYPE, Integer.TYPE );
+				addNodeChildForMethod( blank, MATH_TYPE_EXPRESSION, "max", Integer.TYPE, Integer.TYPE );
 			}
 		} );
 	}

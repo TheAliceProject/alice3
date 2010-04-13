@@ -75,7 +75,7 @@ public abstract class Element extends edu.cmu.cs.dennisc.pattern.DefaultInstance
 	//todo: investigate typing return value with generics
 	//todo: support copying referenced elements?
 	public Element newCopy() {
-		Element rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.getClass() );
+		Element rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.getClass() );
 		rv.setName( this.getName() );
 		for( edu.cmu.cs.dennisc.property.Property property : this.getProperties() ) {
 			Object value;

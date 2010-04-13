@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.alice.ast;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner/* implements java.io.Serializable*/implements edu.cmu.cs.dennisc.pattern.Crawlable {
+public abstract class Node extends edu.cmu.cs.dennisc.pattern.DefaultInstancePropertyOwner implements edu.cmu.cs.dennisc.pattern.Crawlable {
 	private java.util.UUID m_uuid = java.util.UUID.randomUUID();
 	private Node parent;
 	

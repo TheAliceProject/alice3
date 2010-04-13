@@ -42,13 +42,13 @@
  */
 package edu.cmu.cs.dennisc.memory;
 
-public class MemoryPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public class MemoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	private static final long K = 1024;
 	private static final long M = K*K;
 
 	private MemoryView memoryView = new MemoryView();
-	private javax.swing.JLabel label0 = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "0" );
-	private javax.swing.JLabel labelMax = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
+	private javax.swing.JLabel label0 = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "0" );
+	private javax.swing.JLabel labelMax = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
 	
 	public MemoryPane() {
 		java.lang.management.MemoryMXBean memory = java.lang.management.ManagementFactory.getMemoryMXBean();
@@ -57,7 +57,7 @@ public class MemoryPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
 		labelMax.setText( maxMB + "MB" );
 
 		this.add( memoryView, java.awt.BorderLayout.CENTER );
-		edu.cmu.cs.dennisc.croquet.swing.BorderPane labels = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
+		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane labels = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
 		labels.add( label0, java.awt.BorderLayout.WEST );
 		labels.add( labelMax, java.awt.BorderLayout.EAST );
 		this.add( labels, java.awt.BorderLayout.SOUTH );

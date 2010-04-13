@@ -91,7 +91,7 @@ public class PackageDeclaredInJava extends AbstractPackage {
 	
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		PackageDeclaredInJava other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, PackageDeclaredInJava.class );
+		PackageDeclaredInJava other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, PackageDeclaredInJava.class );
 		if( other != null ) {
 			return this.packageReflectionProxy.equals( other.packageReflectionProxy );
 		} else {

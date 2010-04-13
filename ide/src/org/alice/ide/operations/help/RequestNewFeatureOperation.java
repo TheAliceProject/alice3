@@ -47,7 +47,7 @@ package org.alice.ide.operations.help;
  */
 public class RequestNewFeatureOperation extends PostIssueOperation {
 	public RequestNewFeatureOperation() {
-		this.putValue( javax.swing.Action.NAME, "Request a New Feature..." );
+		this.setName( "Request a New Feature..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {

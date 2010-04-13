@@ -57,7 +57,7 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 	protected Resource( Class<?> cls, String resourceName, String contentType ) {
 		this.uuid = null;
 		try {
-			byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( cls, resourceName );
+			byte[] data = edu.cmu.cs.dennisc.java.io.InputStreamUtilities.getBytes( cls, resourceName );
 			this.setOriginalFileName( resourceName );
 			this.setName( resourceName );
 			this.setContent( contentType, data );
@@ -68,7 +68,7 @@ public abstract class Resource implements edu.cmu.cs.dennisc.pattern.Nameable, e
 	protected Resource( java.io.File file, String contentType ) throws java.io.IOException {
 		this.uuid = java.util.UUID.randomUUID();
 		String resourceName = file.getName();
-		byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( file );
+		byte[] data = edu.cmu.cs.dennisc.java.io.InputStreamUtilities.getBytes( file );
 		this.setOriginalFileName( resourceName );
 		this.setName( resourceName );
 		this.setContent( contentType, data );

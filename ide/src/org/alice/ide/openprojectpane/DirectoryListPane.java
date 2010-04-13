@@ -49,7 +49,7 @@ package org.alice.ide.openprojectpane;
 abstract class DirectoryListPane extends ListPane {
 	@Override
 	protected String getTextForZeroProjects() {
-		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( this.getDirectory() );
+		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.getDirectory() );
 		return "there are no projects in " + path;
 	}
 	protected abstract java.io.File getDirectory();

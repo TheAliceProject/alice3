@@ -84,7 +84,7 @@ class SingleOrDoubleClickList extends javax.swing.JList {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 	class ThumbnailSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCellRenderer {
 		private javax.swing.Icon folderIcon;
 
@@ -105,7 +105,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.swing.Li
 				rv.setText( text );
 				javax.swing.Icon icon;
 				if( iconFile.exists() ) {
-					String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( iconFile );
+					String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( iconFile );
 					icon = new javax.swing.ImageIcon( path );
 				} else {
 					icon = null;
@@ -113,7 +113,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.swing.Li
 				if( file.isDirectory() ) {
 					if( this.folderIcon != null ) {
 						if( icon != null ) {
-							icon = new edu.cmu.cs.dennisc.swing.CompositeIcon( this.folderIcon, icon );
+							icon = new edu.cmu.cs.dennisc.javax.swing.icons.CompositeIcon( this.folderIcon, icon );
 						} else {
 							icon = this.folderIcon;
 						}
@@ -167,10 +167,10 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.swing.Li
 	}
 	
 	/*package private*/ static java.io.File[] listPackages( java.io.File directory ) {
-		return edu.cmu.cs.dennisc.io.FileUtilities.listDirectories( directory );
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.listDirectories( directory );
 	}
 	/*package private*/ static java.io.File[] listClasses( java.io.File directory ) {
-		return edu.cmu.cs.dennisc.io.FileUtilities.listFiles( directory, new java.io.FileFilter() {
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, new java.io.FileFilter() {
 			public boolean accept( java.io.File file ) {
 				String lcFilename = file.getName().toLowerCase();
 				return file.isFile() && lcFilename.equals( "directorythumbnail.png" ) == false;

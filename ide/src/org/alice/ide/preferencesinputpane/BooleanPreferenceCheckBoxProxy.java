@@ -48,8 +48,7 @@ package org.alice.ide.preferencesinputpane;
 public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
 	class BooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public BooleanStateOperation() {
-			super( org.alice.ide.IDE.PREFERENCES_GROUP, BooleanPreferenceCheckBoxProxy.this.getPreference().getValue() );
-			this.putValue( javax.swing.Action.NAME, BooleanPreferenceCheckBoxProxy.this.getPreference().getKey() );
+			super( org.alice.ide.IDE.PREFERENCES_GROUP, BooleanPreferenceCheckBoxProxy.this.getPreference().getValue(), BooleanPreferenceCheckBoxProxy.this.getPreference().getKey() );
 		}
 		@Override
 		protected void handleStateChange( boolean value ) {

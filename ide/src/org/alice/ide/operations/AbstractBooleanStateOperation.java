@@ -46,12 +46,16 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanStateOperation {
-	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialValue ) {
-		super( groupUUID, initialValue );
+	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialValue, String trueText, String falseText ) {
+		super( groupUUID, initialValue, trueText, falseText );
+	}
+	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialValue, String trueAndFalseText ) {
+		super( groupUUID, initialValue, trueAndFalseText );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
+	@Deprecated
 	protected boolean isPreservedAndRestored() {
 		return false;
 	}

@@ -45,7 +45,7 @@ package org.alice.apis.moveandturn.gallery;
 /**
  * @author Dennis Cosgrove
  */
-public class GalleryDirectorySelectionPane extends edu.cmu.cs.dennisc.swing.DirectorySelectionPane {
+public class GalleryDirectorySelectionPane extends edu.cmu.cs.dennisc.inputpane.DirectorySelectionPane {
 	private String name;
 	private String childName;
 	private String grandchildName;

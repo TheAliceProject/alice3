@@ -47,7 +47,7 @@ package org.alice.ide.operations.help;
  */
 class AllSystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public AllSystemPropertiesOperation() {
-		this.putValue( javax.swing.Action.NAME, "Show All Properties..." );
+		this.setName( "Show All Properties..." );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -86,11 +86,11 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 	private String propertyName;
 	public PathPropertyOperation( String propertyName ) {
 		this.propertyName = propertyName;
-		this.putValue( javax.swing.Action.NAME, "Show..." );
+		this.setName( "Show..." );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.croquet.swing.FormPane formPane = new edu.cmu.cs.dennisc.croquet.swing.FormPane( 8, 2 ) {
+		edu.cmu.cs.dennisc.javax.swing.components.JFormPane formPane = new edu.cmu.cs.dennisc.javax.swing.components.JFormPane( 8, 2 ) {
 			private java.awt.Component[][] createComponentRowsForSystemProperty( String name, String separator ) {
 				String value = System.getProperty( name );
 				assert value != null;
@@ -103,7 +103,7 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 					} else {
 						prefix = "";
 					}
-					rv[ i ] = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( prefix+"[" + i + "]:" ), edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( array[ i ] ) );
+					rv[ i ] = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( prefix+"[" + i + "]:" ), edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( array[ i ] ) );
 				}
 				return rv;
 			}
@@ -125,15 +125,15 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
  */
 public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public DisplaySystemPropertiesOperation() {
-		this.putValue( javax.swing.Action.NAME, "Display System Properties..." );
+		this.setName( "Display System Properties..." );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.croquet.swing.FormPane formPane = new edu.cmu.cs.dennisc.croquet.swing.FormPane( 8, 2 ) {
+		edu.cmu.cs.dennisc.javax.swing.components.JFormPane formPane = new edu.cmu.cs.dennisc.javax.swing.components.JFormPane( 8, 2 ) {
 			private java.awt.Component[] createComponentRowForSystemProperty( String name ) {
 				String value = System.getProperty( name );
 				assert value != null;
-				return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( name+":" ), edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( value ) );
+				return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( name+":" ), edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( value ) );
 			}
 			@Override
 			protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {
@@ -142,12 +142,12 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 				rv.add( createComponentRowForSystemProperty( "os.version" ) );
 				rv.add( createComponentRowForSystemProperty( "os.arch" ) );
 				rv.add( createComponentRowForSystemProperty( "sun.arch.data.model" ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 8 ), null ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 8 ), null ) );
 				for( String propertyName : new String[] { "java.class.path", "java.library.path" } ) {				
-					rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( propertyName+":" ), edu.cmu.cs.dennisc.zoot.ZManager.createHyperlink( new PathPropertyOperation(propertyName) ) ) );
+					rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( propertyName+":" ), edu.cmu.cs.dennisc.zoot.ZManager.createHyperlink( new PathPropertyOperation(propertyName) ) ) );
 				}
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 8 ), null ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.zoot.ZManager.createHyperlink( new AllSystemPropertiesOperation() ) ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 8 ), null ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.zoot.ZManager.createHyperlink( new AllSystemPropertiesOperation() ) ) );
 				return rv;
 			}
 		};

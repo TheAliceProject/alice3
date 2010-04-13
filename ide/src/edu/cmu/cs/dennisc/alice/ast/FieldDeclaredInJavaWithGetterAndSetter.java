@@ -205,7 +205,7 @@ public class FieldDeclaredInJavaWithGetterAndSetter extends FieldDeclaredInJava 
 
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		FieldDeclaredInJavaWithGetterAndSetter other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, FieldDeclaredInJavaWithGetterAndSetter.class );
+		FieldDeclaredInJavaWithGetterAndSetter other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, FieldDeclaredInJavaWithGetterAndSetter.class );
 		if( other != null ) {
 			return this.getterReflectionProxy.equals( other.getterReflectionProxy ) && this.setterReflectionProxy.equals( other.setterReflectionProxy );
 		} else {

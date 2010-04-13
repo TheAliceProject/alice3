@@ -60,8 +60,8 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import edu.cmu.cs.dennisc.javax.swing.ScrollUtilities;
 import edu.cmu.cs.dennisc.lookingglass.OffscreenLookingGlass;
-import edu.cmu.cs.dennisc.swing.ScrollUtilities;
 
 /**
  * @author David Culyba

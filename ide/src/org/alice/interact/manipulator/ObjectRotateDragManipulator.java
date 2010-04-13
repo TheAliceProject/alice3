@@ -57,7 +57,7 @@ import org.alice.interact.handle.RotationRingHandle;
 import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 import org.alice.interact.VectorUtilities;
 
-import edu.cmu.cs.dennisc.awt.CursorUtilities;
+import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.Angle;
 import edu.cmu.cs.dennisc.math.AngleInRadians;

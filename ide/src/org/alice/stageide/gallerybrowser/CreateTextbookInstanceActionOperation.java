@@ -47,11 +47,11 @@ package org.alice.stageide.gallerybrowser;
  */
 class CreateTextbookInstanceActionOperation extends CreateInstanceFromFileActionOperation {
 	public CreateTextbookInstanceActionOperation() {
-		this.putValue(javax.swing.Action.NAME, "Textbook Classes...");
+		this.setName( "Textbook Classes..." );
 	}
 
 	@Override
 	protected java.io.File getInitialDirectory() {
-		return new java.io.File(this.getIDE().getApplicationRootDirectory(), "classes/textbook");
+		return new java.io.File( this.getIDE().getApplicationRootDirectory(), "classes/textbook" );
 	}
 }

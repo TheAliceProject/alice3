@@ -44,19 +44,19 @@ package org.alice.ide.ubiquitouspane;
 
 import org.alice.ide.ubiquitouspane.templates.*;
 
-class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+class ReturnStatementWrapper extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
 	public void refresh() {
 		this.removeAll();
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
-		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( code, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
+		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( code, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
 		if( method != null && method.isFunction() ) {
 			this.add( re );
 		}
 	}
 }
 
-class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+class TransientStatementsWrapper extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate > mapVariableToVariableAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate > mapVariableToVariableArrayAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate > mapParameterToParameterAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate >();
@@ -132,7 +132,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.swing.LineAx
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+public class UbiquitousPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();

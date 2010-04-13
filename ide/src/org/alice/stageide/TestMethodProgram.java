@@ -129,7 +129,7 @@ public class TestMethodProgram extends org.alice.apis.moveandturn.Program {
 			this.vm.popCurrentThread();
 		}
 		this.vm.invokeEntryPoint( this.emptyExpressionMethodInvocation.method.getValue(), instance, arguments );
-		edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 500 );
+		edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 500 );
 		java.awt.Component root = javax.swing.SwingUtilities.getRoot( this );
 		root.setVisible( false );
 	}

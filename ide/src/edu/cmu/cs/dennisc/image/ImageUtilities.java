@@ -114,7 +114,7 @@ public class ImageUtilities {
 	}
 
 	public static boolean isAcceptable( String path ) {
-		String codecName = getCodecNameForExtension( edu.cmu.cs.dennisc.io.FileUtilities.getExtension( path ) );
+		String codecName = getCodecNameForExtension( edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( path ) );
 		return codecName != null;
 	}
 
@@ -143,7 +143,7 @@ public class ImageUtilities {
 	}
 
 	public static java.awt.image.BufferedImage read( java.io.File file, javax.imageio.ImageReadParam imageReadParam ) {
-		String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( file );
+		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
 		String codecName = getCodecNameForExtension( extension );
 		if( codecName != null ) {
 			try {
@@ -156,11 +156,11 @@ public class ImageUtilities {
 				}
 				return rv;
 			} catch( java.io.FileNotFoundException fnfe ) {
-				throw new RuntimeException( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ), fnfe );
+				throw new RuntimeException( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ), fnfe );
 			} catch( java.io.IOException ioe ) {
-				throw new RuntimeException( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ), ioe );
+				throw new RuntimeException( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ), ioe );
 			} catch( RuntimeException re ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ) );
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 				edu.cmu.cs.dennisc.print.PrintUtilities.accessPrintStream().flush();
 				throw re;
 			}
@@ -174,7 +174,7 @@ public class ImageUtilities {
 
 	public static java.awt.image.BufferedImage read( java.net.URL url, javax.imageio.ImageReadParam imageReadParam ) {
 		//todo: net.URLUtilities?
-		String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( url.getPath() );
+		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( url.getPath() );
 		String codecName = getCodecNameForExtension( extension );
 		if( codecName != null ) {
 			try {
@@ -385,8 +385,8 @@ public class ImageUtilities {
 	}
 
 	public static void write( java.io.File file, java.awt.Image image, javax.imageio.ImageReadParam imageWriteParam ) {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
-		String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( file );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( file );
 		String codecName = getCodecNameForExtension( extension );
 		if( codecName != null ) {
 			try {

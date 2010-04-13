@@ -108,7 +108,7 @@ public class InstanceInAlice {
 		assert classReflectionProxy != null;
 		Class<?> cls = classReflectionProxy.getReification();
 		assert cls != null : classReflectionProxy.getName();
-		m_instanceInJava = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( cls );
+		m_instanceInJava = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( cls );
 	}
 	public AbstractType getType() {
 		return m_type;
@@ -117,7 +117,7 @@ public class InstanceInAlice {
 		return m_instanceInJava;
 	}
 	public <E> E getInstanceInJava( Class<E> cls ) {
-		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( m_instanceInJava, cls );
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( m_instanceInJava, cls );
 	}
 	public Object get( FieldDeclaredInAlice field ) {
 		return m_map.get( field );

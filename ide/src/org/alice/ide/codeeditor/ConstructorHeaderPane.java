@@ -50,12 +50,12 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 		super( constructorDeclaredInAlice );
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "()" ) );
+			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "()" ) );
 		} else {
-			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "declare " ) );
-			javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabelWithScaledFont( "constructor", 1.5f );
+			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "declare " ) );
+			javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabelWithScaledFont( "constructor", 1.5f );
 			this.add( label );
-			this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( " on class " ) );
+			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " on class " ) );
 			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.add( parametersPane );
 		}

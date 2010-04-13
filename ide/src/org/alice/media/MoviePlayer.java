@@ -256,7 +256,7 @@ public class MoviePlayer extends JPanel implements ControllerListener{
 	}
 	
 	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.croquet.KFrame frame = new edu.cmu.cs.dennisc.croquet.KFrame() {
+		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
 			@Override
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}

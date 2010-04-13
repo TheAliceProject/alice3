@@ -48,8 +48,8 @@ package org.alice.ide.operations.help;
 public class HelpOperation extends BrowserOperation {
 	public HelpOperation() {
 		super( "http://kenai.com/projects/alice/pages/Help" );
-		this.putValue( javax.swing.Action.NAME, "Help..." );
-		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
+		this.setName( "Help..." );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
 	}
 //	@Override
 //	protected StringBuffer getMessage( StringBuffer rv ) {

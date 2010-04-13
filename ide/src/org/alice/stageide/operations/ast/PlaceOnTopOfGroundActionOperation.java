@@ -48,12 +48,12 @@ package org.alice.stageide.operations.ast;
 public class PlaceOnTopOfGroundActionOperation extends TransformableFieldTileActionOperation {
 	public PlaceOnTopOfGroundActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		super( field );
-		this.putValue( javax.swing.Action.NAME, "Place on top of Ground" );
+		this.setName( "Place on top of Ground" );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable ) {
 		edu.cmu.cs.dennisc.math.AffineMatrix4x4 rv = new edu.cmu.cs.dennisc.math.AffineMatrix4x4();
-		org.alice.apis.moveandturn.Model model = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( transformable, org.alice.apis.moveandturn.Model.class ); 
+		org.alice.apis.moveandturn.Model model = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( transformable, org.alice.apis.moveandturn.Model.class ); 
 		if( model != null ) {
 			org.alice.apis.moveandturn.Scene scene = model.getScene();
 			assert scene != null;

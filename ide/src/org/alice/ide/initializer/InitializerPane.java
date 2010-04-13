@@ -45,7 +45,7 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-public class InitializerPane extends edu.cmu.cs.dennisc.croquet.swing.CardPane {
+public class InitializerPane extends edu.cmu.cs.dennisc.javax.swing.components.JCardPane {
 	private static final String ITEM_KEY = "ITEM_KEY";
 	private static final String ARRAY_KEY = "ARRAY_KEY";
 	private BogusNode bogusNode;

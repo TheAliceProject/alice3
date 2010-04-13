@@ -47,11 +47,11 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	class AddItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public AddItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
-			this.putValue( javax.swing.Action.NAME, name );
+			this.setName( name );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			try {
@@ -83,7 +83,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	class RemoveItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public RemoveItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
-			this.putValue( javax.swing.Action.NAME, name );
+			this.setName( name );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			final int index = getSelectedIndex();
@@ -114,7 +114,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	abstract class AbstractMoveItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
 		public AbstractMoveItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID );
-			this.putValue( javax.swing.Action.NAME, name );
+			this.setName( name );
 		}
 		protected abstract int getIndex( int selectedIndex );
 		protected abstract int getRedoSelectionIndexDelta();
@@ -213,7 +213,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 
-		edu.cmu.cs.dennisc.croquet.swing.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.GridBagPane();
+		edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -238,7 +238,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		return this.listLikeSubstance;
 	}
 	
-	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
+	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter lenientMouseClickAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {

@@ -77,6 +77,9 @@ public class Collections {
 		rv.addAll( other );
 		return rv;
 	}
+	public static <E> java.util.HashSet< E > newHashSet() {
+		return new java.util.HashSet< E >();
+	}
 	public static <E> java.util.HashSet< E > newHashSet( E... values ) {
 		java.util.HashSet<E> rv = new java.util.HashSet< E >();
 		for( E value : values ) {

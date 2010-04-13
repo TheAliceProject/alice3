@@ -64,17 +64,17 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 			return this.getPreferredSize();
 		}
 	};
-	private java.awt.Component[] rowType = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelType, new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( comboType, javax.swing.Box.createHorizontalGlue() ) );
+	private java.awt.Component[] rowType = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelType, new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( comboType, javax.swing.Box.createHorizontalGlue() ) );
 	
 	private javax.swing.JLabel labelEnvironment = createLabelForMultiLine( "environment:" );
 	private javax.swing.JTextArea textEnvironment = new javax.swing.JTextArea();
 	private javax.swing.JScrollPane scrollEnvironment = new javax.swing.JScrollPane( this.textEnvironment ){
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 80 );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 80 );
 		}
 	};
-	private java.awt.Component[] rowEnvironment = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelEnvironment, scrollEnvironment );
+	private java.awt.Component[] rowEnvironment = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelEnvironment, scrollEnvironment );
 
 
 	private javax.swing.JPanel centerPane = new javax.swing.JPanel();
@@ -137,7 +137,7 @@ public abstract class AbstractPostIssuePane extends IssueReportPane {
 		this.centerPane.removeAll();
 
 		java.util.ArrayList< java.awt.Component[] > rows = this.addRows( new java.util.ArrayList< java.awt.Component[] >() );
-		edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this.centerPane, rows, 8, 4 );
+		edu.cmu.cs.dennisc.javax.swing.SpringUtilities.springItUpANotch( this.centerPane, rows, 8, 4 );
 		this.centerPane.revalidate();
 	}
 	

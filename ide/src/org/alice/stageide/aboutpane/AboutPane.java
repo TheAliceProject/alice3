@@ -74,7 +74,7 @@ class ViewEULAAction extends javax.swing.AbstractAction {
 /**
  * @author Dennis Cosgrove
  */
-class ViewEULAsPane extends edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane {
+class ViewEULAsPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane {
 	public ViewEULAsPane() {
 		super( 8, 4 );
 		this.setAlignmentX( 0.0f );
@@ -101,7 +101,7 @@ class ViewEULAsPane extends edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane {
 /**
  * @author Dennis Cosgrove
  */
-public class AboutPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
+public class AboutPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	public AboutPane() {
 		this.add( this.createLabel( "current version: " + edu.cmu.cs.dennisc.alice.Version.getCurrentVersionText() ) );
 		this.add( javax.swing.Box.createVerticalStrut( 24 ) );

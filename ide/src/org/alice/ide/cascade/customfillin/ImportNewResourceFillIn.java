@@ -77,6 +77,6 @@ public abstract class ImportNewResourceFillIn< E extends org.alice.virtualmachin
 	}
 	@Override
 	protected javax.swing.JComponent createMenuProxy() {
-		return edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( this.getMenuText() );
+		return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.getMenuText() );
 	}
 }

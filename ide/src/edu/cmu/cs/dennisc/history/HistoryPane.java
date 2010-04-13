@@ -65,7 +65,7 @@ class HistoryStackModel extends javax.swing.AbstractListModel {
 	}
 };
 
-class HistoryCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.ListCellRenderer< edu.cmu.cs.dennisc.zoot.event.CommitEvent > {
+class HistoryCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.ListCellRenderer< edu.cmu.cs.dennisc.zoot.event.CommitEvent > {
 	@Override
 	protected javax.swing.JLabel getListCellRendererComponent( javax.swing.JLabel rv, javax.swing.JList list, edu.cmu.cs.dennisc.zoot.event.CommitEvent value, int index, boolean isSelected, boolean cellHasFocus ) {
 		if( index == 0 ) {
@@ -91,7 +91,7 @@ class HistoryCellRenderer extends edu.cmu.cs.dennisc.croquet.swing.ListCellRende
 	}
 }
 
-public class HistoryPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public class HistoryPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	private edu.cmu.cs.dennisc.history.event.HistoryListener historyListener = new edu.cmu.cs.dennisc.history.event.HistoryListener() {
 		public void operationPushing( edu.cmu.cs.dennisc.history.event.HistoryPushEvent e ) {
 		}

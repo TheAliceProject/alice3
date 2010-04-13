@@ -143,7 +143,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 			name = Character.toLowerCase( name.charAt( 0 ) ) + name.substring( 1 );
 			try {
 				java.lang.reflect.Field field = getClass().getField( name );
-				return (Property< ? >)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field, this );
+				return (Property< ? >)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
 			} catch (NoSuchFieldException nsfe) {
 				return null;
 			}
@@ -189,7 +189,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 					if( java.lang.reflect.Modifier.isPublic( modifiers ) ) {
 						if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
 							if( GetterSetterProperty.class.isAssignableFrom( field.getType() ) ) {
-								rv.add( (Property)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field, null ) );
+								rv.add( (Property)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, null ) );
 							}
 						}
 					}
@@ -207,7 +207,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 							//pass
 						} else {
 							if( InstanceProperty.class.isAssignableFrom( field.getType() ) ) {
-								InstanceProperty instanceProperty = (InstanceProperty)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field, this );
+								InstanceProperty instanceProperty = (InstanceProperty)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
 								assert instanceProperty.getOwner() == this;
 								m_properties.add( instanceProperty );
 							}
@@ -226,7 +226,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 					if( java.lang.reflect.Modifier.isStatic( modifiers ) ) {
 						//pass
 					} else {
-						if( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field, this ) == instanceProperty ) {
+						if( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this ) == instanceProperty ) {
 							return field.getName();
 						}
 					}
@@ -280,7 +280,7 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 				if( valueClsName.equals( "" ) ) {
 					value = null;
 				} else {
-					Class valueCls = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( valueClsName );
+					Class valueCls = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( valueClsName );
 					if( valueCls.isArray() ) {
 						if( boolean[].class == valueCls ) {
 							value = binaryDecoder.decodeBooleanArray();
@@ -315,10 +315,10 @@ public abstract class DefaultInstancePropertyOwner extends AbstractElement imple
 						}
 					} else if( java.util.Collection.class.isAssignableFrom( valueCls ) ) {
 						int size = binaryDecoder.decodeInt();
-						java.util.Collection collection = (java.util.Collection)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( valueCls );
+						java.util.Collection collection = (java.util.Collection)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( valueCls );
 						for( int i = 0; i < size; i++ ) {
 							String componentTypeName = binaryDecoder.decodeString();
-							Class< ? > componentType = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( componentTypeName );
+							Class< ? > componentType = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( componentTypeName );
 							collection.add( decodeObject( binaryDecoder, componentType, map ) );
 						}
 						value = null;

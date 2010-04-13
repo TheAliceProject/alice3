@@ -51,7 +51,7 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
 public class BackwardShiftParameterOperation extends ShiftParameterOperation {
 	public BackwardShiftParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
 		super( parametersProperty, parameter );
-		this.putValue( javax.swing.Action.NAME, "Shift Backward" );
+		this.setName( "Shift Backward" );
 	}
 	@Override
 	protected boolean isAppropriate( int index, int n ) {

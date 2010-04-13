@@ -45,15 +45,15 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.croquet.KInputPane< E > {
+public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.inputpane.KInputPane< E > {
 //	protected static javax.swing.JLabel createLabel( String s ) {
 //		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( s );
 //		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 //		return rv;
 //	}
-	class PreviewPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+	class PreviewPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 		public void refresh() {
-			edu.cmu.cs.dennisc.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
+			edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
 //			java.awt.Component component = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
 //					PreviewInputPane.this.createPreviewSubComponent(),
 //					javax.swing.Box.createHorizontalGlue()
@@ -94,7 +94,7 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.croquet.KIn
 	}
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 	}
 
 	protected abstract java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv );
@@ -102,17 +102,17 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.croquet.KIn
 	private java.awt.Component createRowsSpringPane() {
 		this.previewPane = new PreviewPane();
 		this.spacer = javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) );
-		final java.awt.Component[] previewRow = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "preview:" ), this.previewPane );
-		final java.awt.Component[] spacerRow = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( this.spacer, null );
+		final java.awt.Component[] previewRow = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "preview:" ), this.previewPane );
+		final java.awt.Component[] spacerRow = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( this.spacer, null );
 		this.repaint();
-		javax.swing.JComponent rv = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 16, 4 ) {
+		javax.swing.JComponent rv = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 16, 4 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
 				assert previewRow != null;
 				rv.add( previewRow );
 				rv.add( spacerRow );
 				PreviewInputPane.this.updateRows( rv );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, null ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( null, null ) );
 				return rv;
 			}
 		};

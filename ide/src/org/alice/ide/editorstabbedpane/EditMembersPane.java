@@ -46,13 +46,13 @@ import edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice;;
 /**
 * @author Dennis Cosgrove
 */
-public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.croquet.KInputPane< Boolean > {
+public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.inputpane.KInputPane< Boolean > {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private javax.swing.JList list;
 	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
 		this.declaringType = declaringType;
 		this.list = new javax.swing.JList();
-		list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.ContentsCachingListCellRenderer< E >() {
+		list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ContentsCachingListCellRenderer< E >() {
 			@Override
 			protected java.awt.Component createComponent(E e) {
 				return createCellRendererComponent( e  );
@@ -65,7 +65,7 @@ public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends
 			}
 		} );
 
-		final edu.cmu.cs.dennisc.javax.swing.ListPropertyListModel< E > listModel = edu.cmu.cs.dennisc.javax.swing.ListPropertyListModel.createInstance( listProperty );
+		final edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel< E > listModel = edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel.createInstance( listProperty );
 		list.setModel( listModel );
 		class EditableMemberListPane extends edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< E > {
 			public EditableMemberListPane() {

@@ -63,7 +63,7 @@ public class CurrentProjectAttachment implements edu.cmu.cs.dennisc.issue.Attach
 				this.bytes = baos.toByteArray();
 				this.isCreateSuccessful = true;
 			} catch( Throwable t ) {
-				this.bytes = edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsByteArray( t );
+				this.bytes = edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsByteArray( t );
 			}
 			this.isCreateAttempted = true;
 		}

@@ -40,50 +40,28 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KFrame extends javax.swing.JFrame {
-	public KFrame() {
-		this.setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
-		this.addWindowListener( new java.awt.event.WindowListener() {
-			public void windowOpened( java.awt.event.WindowEvent e ) {
-				KFrame.this.handleWindowOpened( e );
-			}
-			public void windowClosed( java.awt.event.WindowEvent e ) {
-			}
-			public void windowClosing( java.awt.event.WindowEvent e ) {
-				KFrame.this.handleQuit( e );
-			}
-			public void windowActivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeactivated( java.awt.event.WindowEvent e ) {
-			}
-			public void windowIconified( java.awt.event.WindowEvent e ) {
-			}
-			public void windowDeiconified( java.awt.event.WindowEvent e ) {
-			}
-		} );
-		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
-			public void handleAbout( java.util.EventObject e ) {
-			}
-			public void handlePreferences( java.util.EventObject e ) {
-			}
-			public void handleQuit( java.util.EventObject e ) {
-				KFrame.this.handleQuit( e );
-			}
-		} );
-		
+public class KFrame extends KRoot {
+	private javax.swing.JFrame jFrame = new javax.swing.JFrame();
+	@Override
+	protected java.awt.Dialog getAWTDialog() {
+		return null;
 	}
-	public void maximize() {
-		this.setExtendedState( this.getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+	@Override
+	protected java.awt.Frame getAWTFrame() {
+		return this.jFrame;
 	}
-	
-	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
-	//protected abstract void handleWindowClosing();
-	protected abstract void handleAbout( java.util.EventObject e );
-	protected abstract void handlePreferences( java.util.EventObject e );
-	protected abstract void handleQuit( java.util.EventObject e );
+	@Override
+	protected java.awt.Window getAWTWindow() {
+		return this.jFrame;
+	}
+	@Override
+	protected java.awt.Container getContentPane() {
+		return this.jFrame.getContentPane();
+	}
 }

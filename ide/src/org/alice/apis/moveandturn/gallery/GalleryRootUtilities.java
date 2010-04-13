@@ -50,7 +50,7 @@ public class GalleryRootUtilities {
 	public static java.io.File calculateGalleryRootDirectory( Class<?> cls, String subPath, String name, String childName, String grandchildName, String titleForPromptingUserToSpecifyOrInstall, String applicationName ) {
 		java.io.File rv = null;
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 			try {
 				userPreferences.clear();
 			} catch( java.util.prefs.BackingStoreException bse ) {
@@ -75,7 +75,7 @@ public class GalleryRootUtilities {
 			if( installDirPath != null && installDirPath.length() > 0 ) {
 				java.io.File installDir = new java.io.File( installDirPath );
 				if( installDir != null && installDir.exists() ) {
-					potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( installDir ) + "/gallery" );
+					potentialPaths.add( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( installDir ) + "/gallery" );
 				}
 			}
 
@@ -95,7 +95,7 @@ public class GalleryRootUtilities {
 			
 			java.io.File userDir = new java.io.File( System.getProperty( "user.dir" ) );
 			if( userDir != null && userDir.exists() ) {
-				potentialPaths.add( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( userDir ) + "/" + name );
+				potentialPaths.add( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( userDir ) + "/" + name );
 			}
 			if( rootPathUserPreference != null ) {
 				potentialPaths.add( rootPathUserPreference );
@@ -115,9 +115,9 @@ public class GalleryRootUtilities {
 				//pass
 			} else {
 				String expectedRoot;
-				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+				if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 					expectedRoot = "c:/Program Files";
-				} else if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+				} else if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 					expectedRoot = "/Applications";
 				} else {
 					expectedRoot = System.getProperty( "user.home" );
@@ -140,7 +140,7 @@ public class GalleryRootUtilities {
 			}
 		} while( rv == null );
 		if( rv != null ) {
-			String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( rv );
+			String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( rv );
 			try {
 				userPreferences.put( ROOT_PATH_KEY, path );
 				//systemPreferences.put( ROOT_PATH_KEY, path );

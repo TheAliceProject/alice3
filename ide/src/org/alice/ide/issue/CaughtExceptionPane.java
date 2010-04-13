@@ -85,7 +85,7 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 //		message.setAlignmentY( 0.5f );
 //		label.setAlignmentY( 0.5f );
 		
-		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane pane = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( meanQueen, javax.swing.Box.createHorizontalStrut( 16 ), message );
+		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( meanQueen, javax.swing.Box.createHorizontalStrut( 16 ), message );
 		pane.setBackground( java.awt.Color.DARK_GRAY );
 		pane.setOpaque( true );
 		this.add( pane, java.awt.BorderLayout.NORTH );
@@ -130,7 +130,7 @@ public class CaughtExceptionPane extends edu.cmu.cs.dennisc.toolkit.issue.Abstra
 			pane.setThreadAndThrowable( Thread.currentThread(), re );
 		}
 		
-		javax.swing.JDialog window = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( pane, null, "Report Bug", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		javax.swing.JDialog window = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( pane, null, "Report Bug", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.setVisible( true );
 	}

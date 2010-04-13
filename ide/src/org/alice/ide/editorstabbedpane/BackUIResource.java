@@ -42,7 +42,7 @@
  */
 package org.alice.ide.editorstabbedpane;
 
-public class BackUIResource extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane implements javax.swing.plaf.UIResource {
+public class BackUIResource extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane implements javax.swing.plaf.UIResource {
 	public BackUIResource( EditorsTabbedPane editorsTabbedPane ) {
 		this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( editorsTabbedPane.getEditPreviousCodeOperation() ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 2, 2, 0 ) );

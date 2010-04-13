@@ -47,15 +47,15 @@ package org.alice.ide.operations.edit;
  */
 public class CopyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public CopyOperation() {
-		this.putValue( javax.swing.Action.NAME, "Copy" );
-		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+		this.setName( "Copy" );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_C, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		String title = "Copy coming soon";
 		String message = "Copy is not yet implemented.  Apologies.";
 		message += "\n\nNOTE: one can copy by dragging with the ";
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 			message += "Alt";
 		} else {
 			message += "Control";

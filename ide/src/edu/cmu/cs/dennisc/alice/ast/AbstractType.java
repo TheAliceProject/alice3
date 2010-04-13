@@ -56,7 +56,7 @@ public abstract class AbstractType extends AbstractAccessibleDeclaration {
 		s_mapPrimitiveToWrapper.put( java.lang.Byte.TYPE, java.lang.Byte.class );
 		s_mapPrimitiveToWrapper.put( java.lang.Character.TYPE, java.lang.Character.class );
 		s_mapPrimitiveToWrapper.put( java.lang.Short.TYPE, java.lang.Short.class );
-		s_mapPrimitiveToWrapper.put( java.lang.Integer.TYPE, java.lang.Integer.class );
+		s_mapPrimitiveToWrapper.put( Integer.TYPE, Integer.class );
 		s_mapPrimitiveToWrapper.put( java.lang.Long.TYPE, java.lang.Long.class );
 		s_mapPrimitiveToWrapper.put( java.lang.Float.TYPE, java.lang.Float.class );
 		s_mapPrimitiveToWrapper.put( java.lang.Double.TYPE, java.lang.Double.class );

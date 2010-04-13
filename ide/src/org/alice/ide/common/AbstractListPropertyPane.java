@@ -111,7 +111,7 @@ public abstract class AbstractListPropertyPane< E extends edu.cmu.cs.dennisc.pro
 			if( o != null ) {
 				component = this.createComponent( o );
 			} else {
-				component = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "null" );
+				component = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "null" );
 			}
 			this.add( component );
 			java.awt.Component interstitial = this.createInterstitial( i, N );

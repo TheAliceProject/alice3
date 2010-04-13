@@ -60,7 +60,7 @@ public class AudioResourcePrompter extends ResourcePrompter< org.alice.virtualma
 	}
 	@Override
 	protected String getInitialFileText() {
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isWindows() ) {
 			return "*.mp3;*.wav;*.au";
 		} else {
 			return null;

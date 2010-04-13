@@ -50,7 +50,7 @@ public abstract class AbstractPopupActionOperation extends edu.cmu.cs.dennisc.zo
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		javax.swing.JPopupMenu popupMenu = edu.cmu.cs.dennisc.zoot.ZManager.createPopupMenu( this.getOperations() );
-		java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( actionContext.getEvent(), java.awt.event.MouseEvent.class );
-		edu.cmu.cs.dennisc.swing.PopupMenuUtilities.showModal( popupMenu, me.getComponent(), me.getX(), me.getY() );
+		java.awt.event.MouseEvent me = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( actionContext.getEvent(), java.awt.event.MouseEvent.class );
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, me.getComponent(), me.getX(), me.getY() );
 	}
 }

@@ -45,19 +45,19 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
-	class DirectoryControl extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+public abstract class PathControl extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+	class DirectoryControl extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 		private static final int ARROW_SIZE = 10;
 		private static final int ARROW_BORDER_HALF_SIZE = 3;
 
 		class SelectDirectoryActionOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 			public SelectDirectoryActionOperation() {
-				this.putValue(javax.swing.Action.NAME, PathControl.this.getTextFor(DirectoryControl.this.file));
+				this.setName( PathControl.this.getTextFor( DirectoryControl.this.file ) );
 			}
 
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-				PathControl.this.handleSelectDirectory(DirectoryControl.this.file);
+			protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+				PathControl.this.handleSelectDirectory( DirectoryControl.this.file );
 			}
 		}
 
@@ -72,27 +72,27 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineA
 						return ARROW_SIZE + ARROW_BORDER_HALF_SIZE + ARROW_BORDER_HALF_SIZE;
 					}
 
-					public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
-						if (c instanceof javax.swing.AbstractButton) {
-							javax.swing.AbstractButton button = (javax.swing.AbstractButton) c;
-							edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading heading;
-							if (button.getModel().isPressed()) {
-								heading = edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading.SOUTH;
+					public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
+						if( c instanceof javax.swing.AbstractButton ) {
+							javax.swing.AbstractButton button = (javax.swing.AbstractButton)c;
+							edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading heading;
+							if( button.getModel().isPressed() ) {
+								heading = edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.SOUTH;
 							} else {
-								heading = edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading.EAST;
+								heading = edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.EAST;
 							}
 							g.setColor( java.awt.Color.BLACK );
-							edu.cmu.cs.dennisc.awt.GraphicsUtilties.fillTriangle(g, heading, x+ARROW_BORDER_HALF_SIZE, y+ARROW_BORDER_HALF_SIZE, DirectoryControl.ARROW_SIZE, DirectoryControl.ARROW_SIZE);
+							edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.fillTriangle( g, heading, x + ARROW_BORDER_HALF_SIZE, y + ARROW_BORDER_HALF_SIZE, DirectoryControl.ARROW_SIZE, DirectoryControl.ARROW_SIZE );
 						}
 					}
 				};
-				this.putValue(javax.swing.Action.SMALL_ICON, icon);
+				this.setSmallIcon( icon );
 			}
 
 			// public void respond( java.util.EventObject e ) {
 			// }
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+			protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 				DirectoryControl.this.handleSelectChildDirectory( actionContext );
 			}
 		}
@@ -101,16 +101,17 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineA
 
 		//todo: remove. rely only on operations.
 		private javax.swing.JButton selectChildButton;
-		public DirectoryControl(java.io.File file) {
+
+		public DirectoryControl( java.io.File file ) {
 			this.file = file;
-			this.selectChildButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(new SelectChildDirectoryActionOperation());
+			this.selectChildButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new SelectChildDirectoryActionOperation() );
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
-			this.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(new SelectDirectoryActionOperation() ), java.awt.BorderLayout.CENTER);
-			this.add(selectChildButton, java.awt.BorderLayout.EAST);
+			this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new SelectDirectoryActionOperation() ), java.awt.BorderLayout.CENTER );
+			this.add( selectChildButton, java.awt.BorderLayout.EAST );
 		}
 
 		private void handleSelectChildDirectory( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			PathControl.this.handleSelectChildDirectory( this.selectChildButton, this.file);
+			PathControl.this.handleSelectChildDirectory( this.selectChildButton, this.file );
 		}
 
 	}
@@ -120,16 +121,16 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineA
 	private javax.swing.Icon folderIconSmall;
 	private javax.swing.Icon fileIconSmall;
 
-	public PathControl(java.io.File rootDirectory) {
+	public PathControl( java.io.File rootDirectory ) {
 		this.rootDirectory = rootDirectory;
-		setCurrentDirectory(rootDirectory);
+		setCurrentDirectory( rootDirectory );
 	}
 
 	public java.io.File getRootDirectory() {
 		return this.rootDirectory;
 	}
 
-	public void setFolderIconSmall(javax.swing.Icon folderIconSmall) {
+	public void setFolderIconSmall( javax.swing.Icon folderIconSmall ) {
 		this.folderIconSmall = folderIconSmall;
 		this.fileIconSmall = new javax.swing.Icon() {
 			public int getIconWidth() {
@@ -140,82 +141,82 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.swing.LineA
 				return PathControl.this.folderIconSmall.getIconHeight();
 			}
 
-			public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
+			public void paintIcon( java.awt.Component c, java.awt.Graphics g, int x, int y ) {
 			}
 		};
 	}
 
 	public void setCurrentDirectoryUpOneLevelIfAppropriate() {
-		if (this.currentDirectory.equals(this.rootDirectory)) {
+		if( this.currentDirectory.equals( this.rootDirectory ) ) {
 			// pass
 		} else {
-			setCurrentDirectory(this.currentDirectory.getParentFile());
+			setCurrentDirectory( this.currentDirectory.getParentFile() );
 		}
 	}
 
-	protected abstract String getTextFor(java.io.File file);
+	protected abstract String getTextFor( java.io.File file );
 
-	public void setCurrentDirectory(java.io.File nextDirectory) {
-		java.util.Stack<java.io.File> ancestors = new java.util.Stack<java.io.File>();
+	public void setCurrentDirectory( java.io.File nextDirectory ) {
+		java.util.Stack< java.io.File > ancestors = new java.util.Stack< java.io.File >();
 		java.io.File d = nextDirectory;
-		while (d.equals(this.rootDirectory) == false) {
+		while( d.equals( this.rootDirectory ) == false ) {
 			d = d.getParentFile();
-			ancestors.add(d);
+			ancestors.add( d );
 		}
 		this.removeAll();
-		while (ancestors.size() > 0) {
+		while( ancestors.size() > 0 ) {
 			java.io.File ancestor = ancestors.pop();
-			this.add(new DirectoryControl(ancestor));
+			this.add( new DirectoryControl( ancestor ) );
 		}
-		this.add(new DirectoryControl(nextDirectory));
+		this.add( new DirectoryControl( nextDirectory ) );
 		this.currentDirectory = nextDirectory;
 		this.revalidate();
 		this.repaint();
 	}
 
-	private void handleSelectDirectory(java.io.File directory) {
-		setCurrentDirectory(directory);
+	private void handleSelectDirectory( java.io.File directory ) {
+		setCurrentDirectory( directory );
 	}
 
-	protected abstract void handleSelectFile(java.io.File file);
+	protected abstract void handleSelectFile( java.io.File file );
 
-	private void handleSelectChildDirectory(java.awt.Component invoker, java.io.File directory) {
-		java.io.File[] packages = ThumbnailsPane.listPackages(directory);
-		java.io.File[] classes = ThumbnailsPane.listClasses(directory);
+	private void handleSelectChildDirectory( java.awt.Component invoker, java.io.File directory ) {
+		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
+		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
 
 		class SelectFileActionOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 			private java.io.File file;
 
-			public SelectFileActionOperation(java.io.File file) {
+			public SelectFileActionOperation( java.io.File file ) {
 				this.file = file;
-				this.putValue(javax.swing.Action.NAME, PathControl.this.getTextFor(this.file));
+				this.setName( PathControl.this.getTextFor( this.file ) );
 				javax.swing.Icon icon;
-				if (this.file.isDirectory()) {
+				if( this.file.isDirectory() ) {
 					icon = PathControl.this.folderIconSmall;
 				} else {
 					icon = PathControl.this.fileIconSmall;
 				}
-				this.putValue(javax.swing.Action.SMALL_ICON, icon);
+				this.setSmallIcon( icon );
 			}
 
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-				if (this.file.isDirectory()) {
-					PathControl.this.handleSelectDirectory(this.file);
+			protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+				if( this.file.isDirectory() ) {
+					PathControl.this.handleSelectDirectory( this.file );
 				} else {
-					PathControl.this.handleSelectFile(this.file);
+					PathControl.this.handleSelectFile( this.file );
 				}
 			}
 		}
 
-		java.util.List< edu.cmu.cs.dennisc.zoot.ActionOperation > operations = new java.util.LinkedList<edu.cmu.cs.dennisc.zoot.ActionOperation>();
-		for (java.io.File file : packages) {
-			operations.add(new SelectFileActionOperation(file));
+		java.util.List< edu.cmu.cs.dennisc.zoot.ActionOperation > operations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.ActionOperation >();
+		for( java.io.File file : packages ) {
+			operations.add( new SelectFileActionOperation( file ) );
 		}
-		for (java.io.File file : classes) {
-			operations.add(new SelectFileActionOperation(file));
+		for( java.io.File file : classes ) {
+			operations.add( new SelectFileActionOperation( file ) );
 		}
 		javax.swing.JPopupMenu popupMenu = edu.cmu.cs.dennisc.zoot.ZManager.createPopupMenu( operations );
-		edu.cmu.cs.dennisc.swing.PopupMenuUtilities.showModal(popupMenu, invoker, 0, invoker.getHeight());
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, 0, invoker.getHeight() );
 	}
 }

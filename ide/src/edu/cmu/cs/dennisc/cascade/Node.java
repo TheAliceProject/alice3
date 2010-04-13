@@ -190,11 +190,11 @@ public abstract class Node implements javax.swing.event.MenuListener/*, java.awt
 //					this.menuItem.setText( label.getText() );
 //					this.menuItem.setIcon( label.getIcon() );
 //				} else {
-					edu.cmu.cs.dennisc.swing.SwingUtilities.invalidateTree( component );
-					edu.cmu.cs.dennisc.swing.SwingUtilities.doLayoutTree( component );
+					edu.cmu.cs.dennisc.javax.swing.SwingUtilities.invalidateTree( component );
+					edu.cmu.cs.dennisc.javax.swing.SwingUtilities.doLayoutTree( component );
 					java.awt.Dimension size = component.getPreferredSize();
 					if( size.width > 0 && size.height > 0 ) {
-						javax.swing.Icon icon = edu.cmu.cs.dennisc.swing.SwingUtilities.createIcon( component );
+						javax.swing.Icon icon = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.createIcon( component );
 						this.menuItem.setIcon( icon );
 						this.menuItem.setText( null );
 					} else {

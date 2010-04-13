@@ -98,11 +98,11 @@ class VisibilityRadioButtons extends BooleanRadio {
 public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPostIssuePane {
 	private javax.swing.JLabel labelAttachment = createLabelForMultiLine( "attachment:" );
 	private AttachProjectRadioButtons radioAttachment = new AttachProjectRadioButtons();
-	private java.awt.Component[] rowAttachment = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelAttachment, radioAttachment );
+	private java.awt.Component[] rowAttachment = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelAttachment, radioAttachment );
 	
 	private javax.swing.JLabel labelVisibility = createLabelForSingleLine( "visibility:" );
 	private VisibilityRadioButtons radioVisibility = new VisibilityRadioButtons();
-	private java.awt.Component[] rowVisibility = edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( labelVisibility, radioVisibility );
+	private java.awt.Component[] rowVisibility = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( labelVisibility, radioVisibility );
 
 	public PostIssuePane( edu.cmu.cs.dennisc.jira.JIRAReport.Type issueType ) {
 		HeaderPane headerPane = new HeaderPane();
@@ -193,7 +193,7 @@ public class PostIssuePane extends edu.cmu.cs.dennisc.toolkit.issue.AbstractPost
 	}
 	public static void main( String[] args ) {
 		PostIssuePane pane = new PostIssuePane( edu.cmu.cs.dennisc.jira.JIRAReport.Type.BUG );
-		javax.swing.JFrame window = edu.cmu.cs.dennisc.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		javax.swing.JFrame window = edu.cmu.cs.dennisc.javax.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );
 		window.setVisible( true );
 	}

@@ -65,7 +65,7 @@ public abstract class Factory {
 		return new org.alice.ide.common.GetsPane( isTowardLeading );
 	}
 	protected java.awt.Component createTextComponent( String text ) { 
-		return edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text );
+		return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
 	}
 	public abstract java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType );
 	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane ) {
@@ -92,7 +92,7 @@ public abstract class Factory {
 			} else if( "constant".equals( propertyName ) ) {
 				rv = this.createConstantDeclaredInAlice( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "TODO: handle underscore count 2: " + propertyName );
+				rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "TODO: handle underscore count 2: " + propertyName );
 			}
 		} else if( underscoreCount == 1 ) {
 			if( "variable".equals( propertyName ) ) {
@@ -100,7 +100,7 @@ public abstract class Factory {
 			} else if( "constant".equals( propertyName ) ) {
 				rv = new ConstantPane( (edu.cmu.cs.dennisc.alice.ast.ConstantDeclaredInAlice)property.getValue() );
 			} else {
-				rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "TODO: handle underscore count 1: " + propertyName );
+				rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "TODO: handle underscore count 1: " + propertyName );
 			}
 		} else {
 			rv = null;
@@ -151,7 +151,7 @@ public abstract class Factory {
 		return this.createGetsComponent( getsChunk.isTowardLeading() );
 	}
 	protected java.awt.Component createComponent( org.alice.ide.i18n.TextChunk textChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( textChunk.getText() );
+		javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( textChunk.getText() );
 		return rv;
 	}	
 	protected java.awt.Component createComponent( org.alice.ide.i18n.PropertyChunk propertyChunk, edu.cmu.cs.dennisc.property.InstancePropertyOwner owner ) {
@@ -181,8 +181,8 @@ public abstract class Factory {
 //			org.alice.virtualmachine.Resource resource = resourceExpression.resource.getValue();
 //			rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "resource " + resource.getName() );
 		} else {
-			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
-			Object o = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
+			java.lang.reflect.Method mthd = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( owner.getClass(), methodName );
+			Object o = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( owner, mthd );
 			String s;
 			if( o != null ) {
 				if( o instanceof edu.cmu.cs.dennisc.alice.ast.AbstractType ) {
@@ -194,7 +194,7 @@ public abstract class Factory {
 				s = null;
 			}
 			//s = "<html><h1>" + s + "</h1></html>";
-			rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( s );
+			rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( s );
 		}
 		return rv;
 	}
@@ -209,7 +209,7 @@ public abstract class Factory {
 		} else if( chunk instanceof org.alice.ide.i18n.GetsChunk ) {
 			return createComponent( (org.alice.ide.i18n.GetsChunk)chunk, owner );
 		} else {
-			return edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "unhandled: " + chunk.toString() );
+			return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "unhandled: " + chunk.toString() );
 		}
 	}
 	protected int getPixelsPerIndent() {
@@ -220,7 +220,7 @@ public abstract class Factory {
 		org.alice.ide.i18n.Chunk[] chunks = line.getChunks();
 		assert chunks.length > 0;
 		if( indentCount > 0 || chunks.length > 1 ) {
-			edu.cmu.cs.dennisc.croquet.swing.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
+			edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
 			if( indentCount > 0 ) {
 				rv.add( javax.swing.Box.createHorizontalStrut( indentCount * this.getPixelsPerIndent() ) );
 			}
@@ -244,7 +244,7 @@ public abstract class Factory {
 		assert N > 0;
 		if( N > 1 ) {
 			final boolean isLoop = lines[ N-1 ].isLoop();
-			edu.cmu.cs.dennisc.croquet.swing.PageAxisPane pagePane = new edu.cmu.cs.dennisc.croquet.swing.PageAxisPane() {
+			edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane pagePane = new edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane() {
 				@Override
 				public void paintComponent( java.awt.Graphics g ) {
 					super.paintComponent( g );
@@ -253,7 +253,7 @@ public abstract class Factory {
 						int n = this.getComponentCount();
 						java.awt.Component cFirst = this.getComponent( 0 );
 						java.awt.Component cLast = this.getComponent( n-1 );
-						g.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 160 ) );
+						g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 160 ) );
 						int xB = Factory.this.getPixelsPerIndent();
 						int xA = xB/2;
 						int yTop = cFirst.getY() + cFirst.getHeight();
@@ -267,7 +267,7 @@ public abstract class Factory {
 						g.drawLine( xD, yBottom, xD, cLast.getY() );
 						
 						final int HALF_TRIANGLE_WIDTH = 3;
-						edu.cmu.cs.dennisc.awt.GraphicsUtilties.fillTriangle( g, edu.cmu.cs.dennisc.awt.GraphicsUtilties.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
 					}
 					g.setColor( prev );
 				}
@@ -302,7 +302,7 @@ public abstract class Factory {
 //			}
 		} else {
 			//rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "todo: handle null" );
-			rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( org.alice.ide.IDE.getSingleton().getTextForNull() );
+			rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( org.alice.ide.IDE.getSingleton().getTextForNull() );
 		}
 		return rv;
 	}
@@ -338,7 +338,7 @@ public abstract class Factory {
 		java.awt.Component rv = new FieldAccessPane( this, fieldAccess );
 		java.awt.Component prefixPane = org.alice.ide.IDE.getSingleton().getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 		if( prefixPane != null ) {
-			rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( prefixPane, rv );
+			rv = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( prefixPane, rv );
 		}
 		return rv;
 	}

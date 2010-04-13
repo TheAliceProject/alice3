@@ -44,7 +44,7 @@ package org.alice.ide.operations.project;
 
 public class ManageResourcesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ManageResourcesOperation() {
-		this.putValue( javax.swing.Action.NAME, "Manage Resources..." );
+		this.setName( "Manage Resources..." );
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

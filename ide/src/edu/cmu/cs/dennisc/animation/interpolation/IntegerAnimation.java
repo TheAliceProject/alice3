@@ -51,7 +51,7 @@ public abstract class IntegerAnimation extends InterpolationAnimation< Integer >
 		super( duration, style, n0, n1 );
 	}
 	@Override
-	protected java.lang.Integer newE( java.lang.Integer other ) {
+	protected Integer newE( Integer other ) {
 		return other;
 	}
 	@Override

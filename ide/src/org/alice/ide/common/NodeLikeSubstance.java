@@ -54,15 +54,15 @@ public abstract class NodeLikeSubstance extends org.alice.ide.AbstractDragCompon
 		}
 	}
 
-	protected edu.cmu.cs.dennisc.awt.BevelState getBevelState() {
+	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {
 		if( this.isActive() ) {
 			if( this.isPressed() ) {
-				return edu.cmu.cs.dennisc.awt.BevelState.SUNKEN;
+				return edu.cmu.cs.dennisc.java.awt.BevelState.SUNKEN;
 			} else {
-				return edu.cmu.cs.dennisc.awt.BevelState.RAISED;
+				return edu.cmu.cs.dennisc.java.awt.BevelState.RAISED;
 			}
 		} else {
-			return edu.cmu.cs.dennisc.awt.BevelState.FLUSH;
+			return edu.cmu.cs.dennisc.java.awt.BevelState.FLUSH;
 		}
 	}
 
@@ -105,8 +105,8 @@ public abstract class NodeLikeSubstance extends org.alice.ide.AbstractDragCompon
 			} else {
 				grayscale = 60;
 			}
-			g2.setColor( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( grayscale ) );
-			edu.cmu.cs.dennisc.awt.KnurlUtilities.paintKnurl5( g2, x + getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
+			g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( grayscale ) );
+			edu.cmu.cs.dennisc.java.awt.KnurlUtilities.paintKnurl5( g2, x + getDockInsetLeft(), y + 2, KNURL_WIDTH, height - 5 );
 		}
 	}
 }

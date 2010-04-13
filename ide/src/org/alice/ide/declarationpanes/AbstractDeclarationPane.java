@@ -48,8 +48,7 @@ package org.alice.ide.declarationpanes;
 public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.PreviewInputPane< E > {
 	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public IsReassignableStateOperation( boolean initialValue ) {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, initialValue );
-			//this.putValue( javax.swing.Action.NAME, "is constant" );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, initialValue, "(is constant)", "(is variable)" );
 		}
 		@Override
 		protected void handleStateChange(boolean value) {
@@ -57,7 +56,7 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: undo/redo support for", this );
 		}
 	}
-	class DeclarationNameTextField extends edu.cmu.cs.dennisc.croquet.KSuggestiveTextField {
+	class DeclarationNameTextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
 		public DeclarationNameTextField() {
 			super( "", "" );
 			this.setFont( this.getFont().deriveFont( 18.0f ) );
@@ -75,7 +74,7 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 		}
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
 		}
 		@Override
 		public java.awt.Dimension getMaximumSize() {
@@ -148,7 +147,7 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 	
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 	}
 
 	protected boolean isReassignable() {
@@ -219,7 +218,7 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 	protected final java.awt.Component[] createIsReassignableRow() {
 		java.awt.Component component = this.createIsReassignableComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "is re-assignable:" ), component );
+			return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "is re-assignable:" ), component );
 		} else {
 			return null;
 		}
@@ -232,14 +231,14 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 	protected final java.awt.Component[] createValueTypeRow() {
 		java.awt.Component component = this.createValueTypeComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( this.getValueTypeText() ), component );
+			return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( this.getValueTypeText() ), component );
 		} else {
 			return null;
 		}
 	}
 
 	protected final java.awt.Component[] createNameRow() {
-		return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "name:" ), this.declarationNameTextField );
+		return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "name:" ), this.declarationNameTextField );
 	}
 	
 	protected abstract boolean isEditableInitializerComponentDesired();
@@ -254,7 +253,7 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 	protected final java.awt.Component[] createInitializerRow() {
 		java.awt.Component component = this.createInitializerComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.swing.SpringUtilities.createColumn0Label( "initializer:" ), component );
+			return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "initializer:" ), component );
 		} else {
 			return null;
 		}

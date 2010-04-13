@@ -70,7 +70,7 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 		return get( new ConstructorReflectionProxy( cnstrctr ) );
 	}
 	public static ConstructorDeclaredInJava get( Class<?> declaringCls, Class<?>... parameterClses ) {
-		return get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
+		return get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getConstructor( declaringCls, parameterClses ) );
 	}
 	
 	private ConstructorDeclaredInJava( ConstructorReflectionProxy constructorReflectionProxy ) {
@@ -150,7 +150,7 @@ public class ConstructorDeclaredInJava extends AbstractConstructor {
 
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		ConstructorDeclaredInJava other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, ConstructorDeclaredInJava.class );
+		ConstructorDeclaredInJava other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, ConstructorDeclaredInJava.class );
 		if( other != null ) {
 			return this.constructorReflectionProxy.equals( other.constructorReflectionProxy );
 		} else {

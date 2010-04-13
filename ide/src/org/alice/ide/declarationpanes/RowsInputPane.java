@@ -45,7 +45,7 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowsInputPane< E > extends edu.cmu.cs.dennisc.croquet.KInputPane< E > {
+public abstract class RowsInputPane< E > extends edu.cmu.cs.dennisc.inputpane.KInputPane< E > {
 	private javax.swing.JPanel panel = new javax.swing.JPanel();
 	public RowsInputPane() {
 		this.setLayout( new java.awt.BorderLayout() );
@@ -61,7 +61,7 @@ public abstract class RowsInputPane< E > extends edu.cmu.cs.dennisc.croquet.KInp
 		super.addNotify();
 		if( this.panel.getComponentCount()==0) {
 			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
-			edu.cmu.cs.dennisc.swing.SpringUtilities.springItUpANotch( this.panel, componentRows, this.getSpringXPad(), this.getSpringYPad() );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.springItUpANotch( this.panel, componentRows, this.getSpringXPad(), this.getSpringYPad() );
 		}
 	}
 	protected int getSpringXPad() {

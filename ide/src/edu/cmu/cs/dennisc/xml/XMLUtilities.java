@@ -105,7 +105,7 @@ public class XMLUtilities {
 		}
 	}
 	public static void write( org.w3c.dom.Document xmlDocument, java.io.File file ) {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		try {
 			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
 			write( xmlDocument, fos );

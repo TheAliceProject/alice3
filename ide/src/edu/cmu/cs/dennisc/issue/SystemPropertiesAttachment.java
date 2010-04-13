@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.issue;
  */
 public class SystemPropertiesAttachment implements edu.cmu.cs.dennisc.issue.Attachment {
 	public byte[] getBytes() {
-		return edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLByteArray();
+		return edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertiesAsXMLByteArray();
 	}
 	public String getMIMEType() {
 		return "application/xml";

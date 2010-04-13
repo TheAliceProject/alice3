@@ -79,7 +79,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 	
 
 	public Object createInstanceInJava() {
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.newInstance( this.getValueType().getFirstTypeEncounteredDeclaredInJava().getClassReflectionProxy().getReification() );
 	}
 
 	private static java.util.Set< String > prefixSet = new java.util.HashSet< String >();
@@ -91,7 +91,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 	}
 	
 	private static Class<?> getClsFromGalleryFile( java.io.File file ) {
-		String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file );
+		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );
 		int index = -1;
 		for( String prefix : prefixSet ) {
 			int i = path.indexOf( prefix );
@@ -104,7 +104,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 			String s = path.substring( index, path.length()-4 );
 			s = s.replace( '\\', '/' );
 			s = s.replace( '/', '.' );
-			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getClassForName( s );
+			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getClassForName( s );
 		} else {
 			return null;
 		}

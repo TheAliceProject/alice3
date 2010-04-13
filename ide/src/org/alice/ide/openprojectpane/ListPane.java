@@ -57,12 +57,12 @@ public abstract class ListPane extends TabContentPane {
 				java.awt.Font font = this.getFont();
 				font = font.deriveFont( java.awt.Font.ITALIC );
 				g.setFont( font );
-				edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, ListPane.this.getTextForZeroProjects(), this.getSize() );
+				edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, ListPane.this.getTextForZeroProjects(), this.getSize() );
 			}
 		}
 	};
 	
-	private edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.awt.event.LenientMouseClickAdapter() {
+	private edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter mouseAdapter = new edu.cmu.cs.dennisc.java.awt.event.LenientMouseClickAdapter() {
 		@Override
 		protected void mouseQuoteClickedUnquote(java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {

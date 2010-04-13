@@ -91,7 +91,7 @@ abstract class Animator implements Runnable {
 			while( true ) {
 				long tCurrent = System.currentTimeMillis();
 				if( (tCurrent-tPrev) < THRESHOLD ) {
-					edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( 5 );
+					edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( 5 );
 //					i++;
 				} else {
 					tPrev = tCurrent;
@@ -106,7 +106,7 @@ abstract class Animator implements Runnable {
 			ThreadDeferenceAction threadAction = this.step();
 			if( threadAction == ThreadDeferenceAction.SLEEP ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "sleep", this.sleepMillis );
-				edu.cmu.cs.dennisc.lang.ThreadUtilities.sleep( this.sleepMillis );
+				edu.cmu.cs.dennisc.java.lang.ThreadUtilities.sleep( this.sleepMillis );
 			} else if( threadAction == ThreadDeferenceAction.YIELD ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "yield" );
 				Thread.yield();

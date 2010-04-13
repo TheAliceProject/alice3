@@ -154,9 +154,9 @@ class FileSystemPane extends TabContentPane {
 		this.add( pane, java.awt.BorderLayout.NORTH );
 	}
 	private void handleBrowse( java.awt.event.ActionEvent e ) {
-		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog( this, org.alice.ide.IDE.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true );
+		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this, org.alice.ide.IDE.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true );
 		if( file != null ) {
-			this.textField.setText( edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file ) );
+			this.textField.setText( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 		}
 	}
 	@Override
@@ -178,7 +178,7 @@ class FileSystemPane extends TabContentPane {
 /**
  * @author Dennis Cosgrove
  */
-public class OpenProjectPane extends edu.cmu.cs.dennisc.croquet.KInputPane< java.net.URI > {
+public class OpenProjectPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< java.net.URI > {
 	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane();
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private TabContentPane templatesPane;

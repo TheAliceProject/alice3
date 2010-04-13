@@ -47,7 +47,7 @@ package org.alice.ide.operations.help;
  */
 public class ReportBugOperation extends PostIssueOperation {
 	public ReportBugOperation() {
-		this.putValue( javax.swing.Action.NAME, "Report a Bug..." );
+		this.setName( "Report a Bug..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {
