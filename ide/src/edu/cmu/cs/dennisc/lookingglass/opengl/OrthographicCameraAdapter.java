@@ -58,11 +58,11 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
 		synchronized( s_actualPicturePlaneBufferForReuse ) {
-			edu.cmu.cs.dennisc.math.ClippedZPlane actualPicturePlane = getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), actualViewport );
-			double left = actualPicturePlane.getXMinimum();
-			double right = actualPicturePlane.getXMaximum();
-			double bottom = actualPicturePlane.getYMinimum();
-			double top = actualPicturePlane.getYMaximum();
+			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
+			double left = s_actualPicturePlaneBufferForReuse.getXMinimum();
+			double right = s_actualPicturePlaneBufferForReuse.getXMaximum();
+			double bottom = s_actualPicturePlaneBufferForReuse.getYMinimum();
+			double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
 			double near = m_element.nearClippingPlaneDistance.getValue();
 			double far = m_element.farClippingPlaneDistance.getValue();
 

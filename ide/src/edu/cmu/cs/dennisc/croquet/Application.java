@@ -59,15 +59,14 @@ public abstract class Application {
 	// return null;
 	// }
 
-	public Context<? extends Operation> getCurrentContext() {
+	public Context< ? extends Operation > getCurrentContext() {
 		return null;
 	}
 
-	private java.util.Set<Operation> operations = edu.cmu.cs.dennisc.java.util.Collections
-			.newHashSet();
+	private java.util.Set< Operation > operations = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 
-	protected <O extends Operation> O registerOperation(O rv) {
-		this.operations.add(rv);
+	protected <O extends Operation> O registerOperation( O rv ) {
+		this.operations.add( rv );
 		return rv;
 	}
 
@@ -78,18 +77,18 @@ public abstract class Application {
 		private String name;
 		private Operation[] operations;
 
-		public MenuBuilder(String name, Operation... operations) {
+		public MenuBuilder( String name, Operation... operations ) {
 			this.name = name;
 			this.operations = operations;
 		}
 
 		public javax.swing.JMenu createMenu() {
-			javax.swing.JMenu rv = new javax.swing.JMenu(this.name);
-			for (Operation operation : this.operations) {
-				if (operation != null) {
+			javax.swing.JMenu rv = new javax.swing.JMenu( this.name );
+			for( Operation operation : this.operations ) {
+				if( operation != null ) {
 					javax.swing.JMenuItem menuItem = operation.createMenuItem();
 					assert menuItem != null;
-					rv.add(menuItem);
+					rv.add( menuItem );
 				} else {
 					rv.addSeparator();
 				}
@@ -98,146 +97,117 @@ public abstract class Application {
 		}
 	}
 
-	protected java.util.List<MenuBuilder> updateMenuBuilders(
-			java.util.List<MenuBuilder> rv) {
+	protected java.util.List< MenuBuilder > updateMenuBuilders( java.util.List< MenuBuilder > rv ) {
 		return rv;
 	}
 
-	protected final java.util.List<MenuBuilder> createMenuBuilders() {
-		java.util.List<MenuBuilder> rv = edu.cmu.cs.dennisc.java.util.Collections
-				.newLinkedList();
-		return updateMenuBuilders(rv);
+	protected final java.util.List< MenuBuilder > createMenuBuilders() {
+		java.util.List< MenuBuilder > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+		return updateMenuBuilders( rv );
 	}
 
 	protected abstract javax.swing.JPanel createContentPane();
 
-	public void initialize(String[] args) {
+	public void initialize( String[] args ) {
 		KFrame frame = new KFrame();
-		javax.swing.JFrame jFrame = (javax.swing.JFrame) frame.getAWTFrame();
+		javax.swing.JFrame jFrame = (javax.swing.JFrame)frame.getAWTFrame();
 
 		this.createAndRegisterOperations();
 
-		java.util.List<MenuBuilder> menuBuilders = this.createMenuBuilders();
-		if (menuBuilders.size() > 0) {
+		java.util.List< MenuBuilder > menuBuilders = this.createMenuBuilders();
+		if( menuBuilders.size() > 0 ) {
 			javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
-			for (MenuBuilder menuBuilder : menuBuilders) {
-				menuBar.add(menuBuilder.createMenu());
+			for( MenuBuilder menuBuilder : menuBuilders ) {
+				menuBar.add( menuBuilder.createMenu() );
 			}
-			jFrame.setJMenuBar(menuBar);
+			jFrame.setJMenuBar( menuBar );
 		}
 
-		jFrame.setContentPane(this.createContentPane());
+		jFrame.setContentPane( this.createContentPane() );
 		jFrame.pack();
-		jFrame.setVisible(true);
+		jFrame.setVisible( true );
 	}
 
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
 
-	private static java.util.List<edu.cmu.cs.dennisc.croquet.event.ManagerListener> managerListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.croquet.event.ManagerListener>();
+	private static java.util.List< edu.cmu.cs.dennisc.croquet.event.ManagerListener > managerListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.event.ManagerListener >();
 	private static edu.cmu.cs.dennisc.croquet.event.ManagerListener[] managerListenerArray = null;
 
-	public static void addManagerListener(
-			edu.cmu.cs.dennisc.croquet.event.ManagerListener l) {
-		synchronized (Application.managerListeners) {
-			Application.managerListeners.add(l);
+	public static void addManagerListener( edu.cmu.cs.dennisc.croquet.event.ManagerListener l ) {
+		synchronized( Application.managerListeners ) {
+			Application.managerListeners.add( l );
 			Application.managerListenerArray = null;
 		}
 	}
 
-	public static void removeManagerListener(
-			edu.cmu.cs.dennisc.croquet.event.ManagerListener l) {
-		synchronized (Application.managerListeners) {
-			Application.managerListeners.remove(l);
+	public static void removeManagerListener( edu.cmu.cs.dennisc.croquet.event.ManagerListener l ) {
+		synchronized( Application.managerListeners ) {
+			Application.managerListeners.remove( l );
 			Application.managerListenerArray = null;
 		}
 	}
 
 	private static edu.cmu.cs.dennisc.croquet.event.ManagerListener[] getManagerListenerArray() {
-		synchronized (Application.managerListeners) {
-			if (Application.managerListenerArray != null) {
+		synchronized( Application.managerListeners ) {
+			if( Application.managerListenerArray != null ) {
 				// pass
 			} else {
-				Application.managerListenerArray = edu.cmu.cs.dennisc.java.util.CollectionUtilities
-						.createArray(
-								Application.managerListeners,
-								edu.cmu.cs.dennisc.croquet.event.ManagerListener.class);
+				Application.managerListenerArray = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( Application.managerListeners, edu.cmu.cs.dennisc.croquet.event.ManagerListener.class );
 			}
 			return Application.managerListenerArray;
 		}
 	}
 
-	/* package-private */static void fireOperationCancelling(
-			edu.cmu.cs.dennisc.croquet.event.CancelEvent e) {
-		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application
-				.getManagerListenerArray()) {
-			l.operationCancelling(e);
+	/* package-private */static void fireOperationCancelling( edu.cmu.cs.dennisc.croquet.event.CancelEvent e ) {
+		for( edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray() ) {
+			l.operationCancelling( e );
 		}
 	}
 
-	/* package-private */static void fireOperationCancelled(
-			edu.cmu.cs.dennisc.croquet.event.CancelEvent e) {
-		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application
-				.getManagerListenerArray()) {
-			l.operationCancelled(e);
+	/* package-private */static void fireOperationCancelled( edu.cmu.cs.dennisc.croquet.event.CancelEvent e ) {
+		for( edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray() ) {
+			l.operationCancelled( e );
 		}
 	}
 
-	/* package-private */static void fireOperationCommitting(
-			edu.cmu.cs.dennisc.croquet.event.CommitEvent e) {
-		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application
-				.getManagerListenerArray()) {
-			l.operationCommitting(e);
+	/* package-private */static void fireOperationCommitting( edu.cmu.cs.dennisc.croquet.event.CommitEvent e ) {
+		for( edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray() ) {
+			l.operationCommitting( e );
 		}
 	}
 
-	/* package-private */static void fireOperationCommitted(
-			edu.cmu.cs.dennisc.croquet.event.CommitEvent e) {
-		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application
-				.getManagerListenerArray()) {
-			l.operationCommitted(e);
+	/* package-private */static void fireOperationCommitted( edu.cmu.cs.dennisc.croquet.event.CommitEvent e ) {
+		for( edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray() ) {
+			l.operationCommitted( e );
 		}
 	}
 
-	public static BooleanStateContext performIfAppropriate(
-			BooleanStateOperation stateOperation, java.util.EventObject e,
-			boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue) {
+	public static BooleanStateContext performIfAppropriate( BooleanStateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
 		assert stateOperation != null;
-		BooleanStateContext rv = new BooleanStateContext(stateOperation, e,
-				isCancelWorthwhile, previousValue, nextValue);
-		stateOperation.performStateChange(rv);
+		BooleanStateContext rv = new BooleanStateContext( stateOperation, e, isCancelWorthwhile, previousValue, nextValue );
+		stateOperation.performStateChange( rv );
 		return rv;
 	}
 
-	public static BoundedRangeContext performIfAppropriate(
-			BoundedRangeOperation boundedRangeOperation,
-			java.util.EventObject e, boolean isCancelWorthwhile) {
+	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert boundedRangeOperation != null;
-		BoundedRangeContext rv = new BoundedRangeContext(boundedRangeOperation,
-				e, isCancelWorthwhile);
-		boundedRangeOperation.perform(rv);
+		BoundedRangeContext rv = new BoundedRangeContext( boundedRangeOperation, e, isCancelWorthwhile );
+		boundedRangeOperation.perform( rv );
 		return rv;
 	}
 
-	public static ActionContext performIfAppropriate(
-			ActionOperation actionOperation, java.util.EventObject e,
-			boolean isCancelWorthwhile) {
+	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
 		assert actionOperation != null;
-		ActionContext rv = new ActionContext(actionOperation, e,
-				isCancelWorthwhile);
-		actionOperation.perform(rv);
+		ActionContext rv = new ActionContext( actionOperation, e, isCancelWorthwhile );
+		actionOperation.perform( rv );
 		return rv;
 	}
 
-	public static <E> ItemSelectionContext<E> performIfAppropriate(
-			ItemSelectionOperation<E> itemSelectionOperation,
-			java.util.EventObject e, boolean isCancelWorthwhile,
-			E previousSelection, E nextSelection) {
+	public static <E> ItemSelectionContext< E > performIfAppropriate( ItemSelectionOperation< E > itemSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, E previousSelection, E nextSelection ) {
 		assert itemSelectionOperation != null;
-		ItemSelectionContext<E> rv = new ItemSelectionContext(
-				itemSelectionOperation, e, isCancelWorthwhile,
-				previousSelection, nextSelection);
-		itemSelectionOperation.performSelectionChange(rv);
+		ItemSelectionContext< E > rv = new ItemSelectionContext( itemSelectionOperation, e, isCancelWorthwhile, previousSelection, nextSelection );
+		itemSelectionOperation.performSelectionChange( rv );
 		return rv;
 	}
 }
