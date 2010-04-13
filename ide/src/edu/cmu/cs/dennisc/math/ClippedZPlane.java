@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class ClippedZPlane implements java.io.Serializable {
+public class ClippedZPlane {
 	private static final double DEFAULT_Y_VALUE = 0.1;
 	
 	private double m_xMinimum;

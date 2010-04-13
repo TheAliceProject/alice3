@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class AxisAlignedBox implements java.io.Serializable {
+public class AxisAlignedBox {
 	protected Point3 m_minimum = new Point3();
 	protected Point3 m_maximum = new Point3();
 

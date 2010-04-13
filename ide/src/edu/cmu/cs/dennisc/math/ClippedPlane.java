@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.math;
 /**
  * @author Dennis Cosgrove
  */
-public class ClippedPlane implements java.io.Serializable {
+public class ClippedPlane {
 	private Point3[] m_points = { 
 			new Point3(), 
 			new Point3(), 
