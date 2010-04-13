@@ -22,10 +22,11 @@ public class OrthographicCameraController
 	public void zoom(double amount)
 	{
 		ClippedZPlane picturePlane = this.camera.picturePlane.getValue();
-		picturePlane.setXMaximum(picturePlane.getXMaximum() + amount);
-		picturePlane.setXMinimum(picturePlane.getXMinimum() - amount);
-		picturePlane.setYMaximum(picturePlane.getYMaximum() + amount);
-		picturePlane.setYMinimum(picturePlane.getYMinimum() - amount);
+		picturePlane.setHeight(picturePlane.getHeight() + amount);
+//		picturePlane.setXMaximum(picturePlane.getXMaximum() + amount);
+//		picturePlane.setXMinimum(picturePlane.getXMinimum() - amount);
+//		picturePlane.setYMaximum(picturePlane.getYMaximum() + amount);
+//		picturePlane.setYMinimum(picturePlane.getYMinimum() - amount);
 		this.camera.picturePlane.setValue(picturePlane);
 	}
 	

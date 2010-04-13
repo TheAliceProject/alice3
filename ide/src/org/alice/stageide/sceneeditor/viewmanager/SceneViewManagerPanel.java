@@ -171,12 +171,43 @@ public class SceneViewManagerPanel extends JPanel{
 	
 	private Component makeCameraMarkerComponent(final edu.cmu.cs.dennisc.alice.ast.AbstractField field)
 	{
-		JPanel componentPanel = new JPanel();
-		componentPanel.add( new JLabel(field.getName()) );
-		JButton deleteViewButton = ZManager.createButton( new org.alice.ide.operations.ast.DeleteFieldOperation( (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice) field ) );
-		componentPanel.add( deleteViewButton );
-		
-		return componentPanel;
+		org.alice.ide.memberseditor.templates.GetterTemplate fieldComponent = new org.alice.ide.memberseditor.templates.GetterTemplate(field);
+//		{
+//			@Override
+//			public void paint(java.awt.Graphics g) {
+//				java.awt.Graphics2D g2 = (java.awt.Graphics2D) g;
+//				int x = 0;
+//				int y = 0;
+//				int width = getWidth();
+//				int height = getHeight();
+//
+//				java.awt.Paint prevPaint;
+//				prevPaint = g2.getPaint();
+//				try {
+//					g2.setPaint(this.getBackgroundPaint(x, y, width, height));
+//					this.paintPrologue(g2, x, y, width, height);
+//				} finally {
+//					g2.setPaint(prevPaint);
+//				}
+//				super.paint(g);
+//				prevPaint = g2.getPaint();
+//				g2.setPaint(this.getForegroundPaint(x, y, width, height));
+//				try {
+//					this.paintEpilogue(g2, x, y, width, height);
+//				} finally {
+//					g2.setPaint(prevPaint);
+//				}
+//			}
+//		};
+		fieldComponent.setActive(true);
+		return fieldComponent;
+//		
+//		JPanel componentPanel = new JPanel();
+//		componentPanel.add( new JLabel(field.getName()) );
+//		JButton deleteViewButton = ZManager.createButton( new org.alice.ide.operations.ast.DeleteFieldOperation( (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice) field ) );
+//		componentPanel.add( deleteViewButton );
+//		
+//		return componentPanel;
 	}
 	
 	public void refreshFields()

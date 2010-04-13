@@ -226,6 +226,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			//pass
 		} else {
 			this.sgOrthographicCamera = new edu.cmu.cs.dennisc.scenegraph.OrthographicCamera();
+			this.sgOrthographicCamera.nearClippingPlaneDistance.setValue(.01d);
 			edu.cmu.cs.dennisc.scenegraph.Transformable orthographicSGTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
 			this.sgOrthographicCamera.setParent( orthographicSGTransformable );
 			this.sgOrthographicCamera.putBonusDataFor(org.alice.interact.PickHint.PICK_HINT_KEY, org.alice.interact.PickHint.CAMERA);
@@ -417,8 +418,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			java.awt.Component prev = rootFieldTile;
 			if( rootField != null ) {
 				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
-					System.out.println("FIELD: "+field.getName());
-					
 					FieldTile fieldTile = createFieldTile( field );
 					//fieldTile.setOpaque( true );
 					this.onscreenLookingGlass.getJPanel().add( fieldTile );

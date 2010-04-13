@@ -213,12 +213,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 			this.activeManipulator = this.activeHandle.getManipulation( startInput );
 			if (this.activeManipulator != null)
 			{
-				this.activeManipulator.setDragAdapter( this.dragAdapter );
-				if (this.activeManipulator instanceof CameraInformedManipulator)
-				{
-					CameraInformedManipulator cIM = (CameraInformedManipulator)this.activeManipulator;
-					cIM.setCamera( this.dragAdapter.getCameraForManipulator( this ) );
-				}
+				this.activeManipulator.setDragAdapter( this.dragAdapter );				
 				if (this.activeManipulator instanceof OnScreenLookingGlassInformedManipulator)
 				{
 					OnScreenLookingGlassInformedManipulator oLIM = (OnScreenLookingGlassInformedManipulator)this.activeManipulator;

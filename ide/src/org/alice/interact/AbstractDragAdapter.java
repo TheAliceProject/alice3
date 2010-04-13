@@ -313,6 +313,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		for (int i=0; i<toStart.size(); i++)
 		{
 //			PrintUtilities.println("Beginning: "+toStart.get(i) + " at "+System.currentTimeMillis());
+			if (toStart.get(i) instanceof CameraInformedManipulator)
+			{
+				((CameraInformedManipulator)toStart.get(i)).setCamera(this.getCameraForManipulator((CameraInformedManipulator)toStart.get(i)) );
+			}
+			if (toStart.get(i) instanceof OnScreenLookingGlassInformedManipulator)
+			{
+				((OnScreenLookingGlassInformedManipulator)toStart.get(i)).setOnscreenLookingGlass( this.onscreenLookingGlass );
+			}
 			toStart.get( i ).startManipulator( this.currentInputState );
 		}
 		for (int i=0; i<toUpdate.size(); i++)

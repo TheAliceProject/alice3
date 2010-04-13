@@ -141,6 +141,10 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 		topTransform.orientation.backward.set( 0, 1, 0 );
 		assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		topMarker.setLocalTransformation( topTransform );
+		ClippedZPlane picturePlane = new ClippedZPlane();
+		picturePlane.setCenter(0, 0);
+		picturePlane.setHeight(1);
+		topMarker.setPicturePlane(picturePlane);
 		orthographicMarkers.add(topMarker);
 
 		org.alice.apis.moveandturn.OrthographicCameraMarker sideMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
@@ -150,6 +154,7 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 		sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
 		assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		sideMarker.setLocalTransformation( sideTransform );
+		sideMarker.setPicturePlane(picturePlane);
 		orthographicMarkers.add(sideMarker);
 
 		org.alice.apis.moveandturn.OrthographicCameraMarker frontMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
@@ -159,6 +164,7 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeZAxis(), Vector3.accessPositiveYAxis()) );
 		assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		frontMarker.setLocalTransformation( frontTransform );
+		frontMarker.setPicturePlane(picturePlane);
 		orthographicMarkers.add(frontMarker);
 	}
 	
@@ -287,17 +293,16 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 		
 	}
 	
+	//TODO: remove
 	private void zoomOrthographicCamera(double zoom)
 	{
 		if (this.orthographicCamera != null)
 		{
-			OrthographicCameraController cameraController = new OrthographicCameraController(this.orthographicCamera);
-			cameraController.zoom(zoom);
-//			this.orthographicCamera.picturePlane.getValue().setXMaximum( this.orthographicCamera.picturePlane.getValue().getXMaximum() + zoom );
-//			this.orthographicCamera.picturePlane.getValue().setXMinimum( this.orthographicCamera.picturePlane.getValue().getXMinimum() - zoom );
+			this.orthographicCamera.nearClippingPlaneDistance.setValue(this.orthographicCamera.nearClippingPlaneDistance.getValue() + zoom);
 		}
 	}
 	
+	//TODO: remove
 	private void moveOrthographicCamera(Point3 direction)
 	{
 		if (this.orthographicCamera != null)
