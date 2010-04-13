@@ -47,7 +47,7 @@ package edu.cmu.cs.dennisc.lookingglass.opengl;
  * @author Dennis Cosgrove
  */
 public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCameraAdapter< edu.cmu.cs.dennisc.scenegraph.OrthographicCamera > {
-	private static edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = new edu.cmu.cs.dennisc.math.ClippedZPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
+	private static edu.cmu.cs.dennisc.math.ClippedZPlane s_actualPicturePlaneBufferForReuse = edu.cmu.cs.dennisc.math.ClippedZPlane.createNaN();
 //	private edu.cmu.cs.dennisc.scenegraph.ClippedPlane m_picturePlane = new edu.cmu.cs.dennisc.scenegraph.ClippedPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
 
 	@Override

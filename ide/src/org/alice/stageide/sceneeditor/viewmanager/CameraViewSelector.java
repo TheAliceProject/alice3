@@ -236,8 +236,10 @@ public class CameraViewSelector extends JPanel implements ItemListener, Absolute
 	{
 		if (this.orthographicCamera != null)
 		{
-			this.orthographicCamera.picturePlane.getValue().setXMaximum( this.orthographicCamera.picturePlane.getValue().getXMaximum() + zoom );
-			this.orthographicCamera.picturePlane.getValue().setXMinimum( this.orthographicCamera.picturePlane.getValue().getXMinimum() - zoom );
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: zoomOrthographicCamera", zoom );
+			//this.orthographicCamera.picturePlane.getValue().setWidth( todo );
+//			this.orthographicCamera.picturePlane.getValue().setXMaximum( this.orthographicCamera.picturePlane.getValue().getXMaximum() + zoom );
+//			this.orthographicCamera.picturePlane.getValue().setXMinimum( this.orthographicCamera.picturePlane.getValue().getXMinimum() - zoom );
 		}
 	}
 	

@@ -46,18 +46,12 @@ package edu.cmu.cs.dennisc.math;
  * @author Dennis Cosgrove
  */
 public class ClippedZPlane {
-	private static final double DEFAULT_Y_VALUE = 0.1;
-	
-	private double m_xMinimum;
-	private double m_yMinimum;
-	private double m_xMaximum;
-	private double m_yMaximum;
+	private static final double DEFAULT_HALF_HEIGHT = 0.1;
+	private final Point2 center = new Point2( 0, 0 );
+	private double halfWidth = Double.NaN;
+	private double halfHeight = DEFAULT_HALF_HEIGHT;
 
 	public ClippedZPlane() {
-		this( Double.NaN, -DEFAULT_Y_VALUE, Double.NaN, +DEFAULT_Y_VALUE );
-	}
-	public ClippedZPlane( double xMinimum, double yMinimum, double xMaximum, double yMaximum ) {
-		set( xMinimum, yMinimum, xMaximum, yMaximum );
 	}
 	public ClippedZPlane( ClippedZPlane other ) {
 		set( other );
@@ -65,69 +59,71 @@ public class ClippedZPlane {
 	public ClippedZPlane( ClippedZPlane other, java.awt.Rectangle viewport ) {
 		set( other, viewport );
 	}
-	
 	public static ClippedZPlane createNaN() {
-		return new ClippedZPlane( Double.NaN, Double.NaN, Double.NaN, Double.NaN );
-	}
-
-	public void set( double xMinimum, double yMinimum, double xMaximum, double yMaximum ) {
-		setXMinimum( xMinimum );
-		setYMinimum( yMinimum );
-		setXMaximum( xMaximum );
-		setYMaximum( yMaximum );
+		ClippedZPlane rv = new ClippedZPlane();
+		rv.center.setNaN();
+		rv.halfWidth = Double.NaN;
+		rv.halfHeight = Double.NaN;
+		return rv;
 	}
 	public void set( ClippedZPlane other ) {
-		set( other.m_xMinimum, other.m_yMinimum, other.m_xMaximum, other.m_yMaximum );
+		this.center.set( other.center );
+		this.halfWidth = other.halfWidth;
+		this.halfHeight = other.halfHeight;
 	}
 	public void set( ClippedZPlane other, java.awt.Rectangle viewport ) {
-		double minX = other.getXMinimum();
-		double minY = other.getYMinimum();
-		double maxX = other.getXMaximum();
-		double maxY = other.getYMaximum();
-		if( Double.isNaN( minX ) || Double.isNaN( maxX ) ) {
-			if( Double.isNaN( minY ) || Double.isNaN( maxY ) ) {
-				minY = -DEFAULT_Y_VALUE;
-				maxY = +DEFAULT_Y_VALUE;
+		this.set( other );
+		if( Double.isNaN( this.halfWidth ) ) {
+			if( Double.isNaN( this.halfHeight ) ) {
+				this.halfHeight = DEFAULT_HALF_HEIGHT;
 			}
 			double factor = viewport.width / (double) viewport.height;
-			minX = factor * minY;
-			maxX = factor * maxY;
+			this.halfWidth = factor * this.halfHeight;
 		} else {
-			if( Double.isNaN( minY ) || Double.isNaN( maxY ) ) {
+			if( Double.isNaN( this.halfHeight ) ) {
 				double factor = viewport.height / (double) viewport.width;
-				minY = factor * minX;
-				maxY = factor * maxX;
+				this.halfHeight = factor * this.halfWidth;
 			}
 		}
-		setXMinimum( minX );
-		setYMinimum( minY );
-		setXMaximum( maxX );
-		setYMaximum( maxY );
+	}
+	
+	public Point2 getCenter( Point2 rv ) {
+		rv.set( this.center );
+		return rv;
+	}
+	public Point2 getCenter() {
+		return this.getCenter( Point2.createNaN() );
+	}
+	public void setCenter( double x, double y ) {
+		this.center.set( x, y );
+	}
+	public void setCenter( Point2 center ) {
+		this.center.set( center );
+	}
+	
+	public double getWidth() {
+		return this.halfWidth * 2.0;
+	}
+	public void setWidth( double width ) {
+		this.halfWidth = width * 0.5;
+	}
+	public double getHeight() {
+		return this.halfHeight * 2.0;
+	}
+	public void setHeight( double height ) {
+		this.halfHeight = height * 0.5;
 	}
 
 	public double getXMinimum() {
-		return m_xMinimum;
-	}
-	public void setXMinimum( double xMinimum ) {
-		m_xMinimum = xMinimum;
+		return this.center.x - this.halfWidth;
 	}
 	public double getXMaximum() {
-		return m_xMaximum;
+		return this.center.x + this.halfWidth;
 	}
-	public void setXMaximum( double xMaximum ) {
-		m_xMaximum = xMaximum;
-	}
-
 	public double getYMinimum() {
-		return m_yMinimum;
-	}
-	public void setYMinimum( double yMinimum ) {
-		m_yMinimum = yMinimum;
+		return this.center.y - this.halfHeight;
 	}
 	public double getYMaximum() {
-		return m_yMaximum;
-	}
-	public void setYMaximum( double yMaximum ) {
-		m_yMaximum = yMaximum;
+		return this.center.y - this.halfHeight;
 	}
 }
