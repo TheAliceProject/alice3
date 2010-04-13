@@ -124,6 +124,6 @@ public class ClippedZPlane {
 		return this.center.y - this.halfHeight;
 	}
 	public double getYMaximum() {
-		return this.center.y - this.halfHeight;
+		return this.center.y + this.halfHeight;
 	}
 }
