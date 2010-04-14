@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KLabel extends KComponent {
+public class KLabel extends KComponent< javax.swing.JLabel > {
 	private javax.swing.JLabel jLabel = new javax.swing.JLabel() {
 		@Override
 		public void addNotify() {
@@ -62,7 +62,7 @@ public class KLabel extends KComponent {
 		}
 	};
 	@Override
-	protected javax.swing.JComponent getJComponent() {
+	protected javax.swing.JLabel getJComponent() {
 		return this.jLabel;
 	}
 	

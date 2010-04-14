@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KScrollPane extends KComponent {
+public class KScrollPane extends KComponent< javax.swing.JScrollPane > {
 	private javax.swing.JScrollPane jScrollPane = new javax.swing.JScrollPane()	{
 		@Override
 		public void addNotify() {
@@ -94,7 +94,7 @@ public class KScrollPane extends KComponent {
 		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
 	}
 	@Override
-	protected javax.swing.JComponent getJComponent() {
+	protected javax.swing.JScrollPane getJComponent() {
 		return this.jScrollPane;
 	}
 	

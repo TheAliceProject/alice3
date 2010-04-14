@@ -104,48 +104,14 @@ public abstract class ActionOperation extends Operation {
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
-	private void addAbstractButton( javax.swing.AbstractButton abstractButton ) {
+	/*package-private*/ void addAbstractButton( KAbstractButton abstractButton ) {
 		abstractButton.setAction( this.action );
 		abstractButton.setModel( this.buttonModel );
 		this.addComponent( abstractButton );
 	}
-	private void removeAbstractButton( javax.swing.AbstractButton abstractButton ) {
+	/*package-private*/ void removeAbstractButton( KAbstractButton abstractButton ) {
 		this.removeComponent( abstractButton );
-		//abstractButton.setModel( null );
-		//abstractButton.setAction( null );
+		abstractButton.setModel( null );
+		abstractButton.setAction( null );
 	}
-
-	public javax.swing.JButton createButton() {
-		return new javax.swing.JButton() {
-			@Override
-			public void addNotify() {
-				ActionOperation.this.addAbstractButton( this );
-				super.addNotify();
-			}
-			@Override
-			public void removeNotify() {
-				super.removeNotify();
-				ActionOperation.this.removeAbstractButton( this );
-			}
-		};
-	}
-	@Override
-	public javax.swing.JMenuItem createMenuItem() {
-		return new javax.swing.JMenuItem() {
-			@Override
-			public void addNotify() {
-				ActionOperation.this.addAbstractButton( this );
-				super.addNotify();
-			}
-			@Override
-			public void removeNotify() {
-				super.removeNotify();
-				ActionOperation.this.removeAbstractButton( this );
-			}
-		};
-	}
-//	public javax.swing.AbstractButton createHyperlink( ActionOperation actionOperation ) {
-//		assert actionOperation != null;
-//		return new ZHyperlink(actionOperation);
-//	}
 }

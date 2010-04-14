@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KSplitPane extends KComponent {
+public abstract class KSplitPane extends KComponent< javax.swing.JSplitPane > {
 	private javax.swing.JSplitPane jSplitPane = new javax.swing.JSplitPane()	{
 		@Override
 		public void addNotify() {
@@ -70,7 +70,7 @@ public abstract class KSplitPane extends KComponent {
 		this.setBottomOrRightComponent( bottomOrRightComponent );
 	}
 	@Override
-	protected javax.swing.JComponent getJComponent() {
+	protected javax.swing.JSplitPane getJComponent() {
 		return this.jSplitPane;
 	}
 	

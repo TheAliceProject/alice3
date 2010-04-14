@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KCheckBox extends KComponent {
+public class KCheckBox extends KAbstractButton< javax.swing.JCheckBox > {
 	private javax.swing.JCheckBox jCheckBox = new javax.swing.JCheckBox() {
 		@Override
 		public void addNotify() {
@@ -62,7 +62,7 @@ public class KCheckBox extends KComponent {
 		}
 	};
 	@Override
-	protected javax.swing.JComponent getJComponent() {
+	protected javax.swing.JCheckBox getJComponent() {
 		return this.jCheckBox;
 	}
 }

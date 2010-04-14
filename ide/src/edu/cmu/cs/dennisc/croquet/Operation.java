@@ -71,7 +71,7 @@ public abstract class Operation {
 		if( this.isVisible != isVisible ) {
 			this.isVisible = isVisible;
 			synchronized( this.components ) {
-				for( javax.swing.JComponent component : this.components ) {
+				for( KComponent<?> component : this.components ) {
 					component.setVisible( this.isVisible );
 				}
 			}
@@ -85,7 +85,7 @@ public abstract class Operation {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
 			synchronized( this.components ) {
-				for( javax.swing.JComponent component : this.components ) {
+				for( KComponent<?> component : this.components ) {
 					component.setEnabled( this.isEnabled );
 				}
 			}
@@ -102,16 +102,16 @@ public abstract class Operation {
 		} else {
 			this.toolTipText = toolTipText;
 			synchronized( this.components ) {
-				for( javax.swing.JComponent component : this.components ) {
+				for( KComponent<?> component : this.components ) {
 					component.setToolTipText( this.toolTipText );
 				}
 			}
 		}
 	}
 
-	private java.util.List< javax.swing.JComponent > components = new java.util.LinkedList< javax.swing.JComponent >();
+	private java.util.List< KComponent > components = new java.util.LinkedList< KComponent >();
 	
-	protected void addComponent( javax.swing.JComponent component ) {
+	protected void addComponent( KComponent component ) {
 		synchronized( this.components ) {
 			this.components.add( component );
 			component.setVisible( this.isVisible );
@@ -119,10 +119,9 @@ public abstract class Operation {
 			component.setToolTipText( this.toolTipText );
 		}
 	}
-	protected void removeComponent( javax.swing.JComponent component ) {
+	protected void removeComponent( KComponent component ) {
 		synchronized( this.components ) {
 			this.components.remove( component );
 		}
 	}
-	public abstract javax.swing.JMenuItem createMenuItem();
 }

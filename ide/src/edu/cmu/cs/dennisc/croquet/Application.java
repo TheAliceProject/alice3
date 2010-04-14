@@ -63,71 +63,79 @@ public abstract class Application {
 		return null;
 	}
 
-	private java.util.Set< Operation > operations = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-
-	protected <O extends Operation> O registerOperation( O rv ) {
-		this.operations.add( rv );
-		return rv;
-	}
-
-	protected void createAndRegisterOperations() {
-	}
-
-	protected static class MenuBuilder {
-		private String name;
-		private Operation[] operations;
-
-		public MenuBuilder( String name, Operation... operations ) {
-			this.name = name;
-			this.operations = operations;
-		}
-
-		public javax.swing.JMenu createMenu() {
-			javax.swing.JMenu rv = new javax.swing.JMenu( this.name );
-			for( Operation operation : this.operations ) {
-				if( operation != null ) {
-					javax.swing.JMenuItem menuItem = operation.createMenuItem();
-					assert menuItem != null;
-					rv.add( menuItem );
-				} else {
-					rv.addSeparator();
-				}
-			}
-			return rv;
-		}
-	}
+//	private java.util.Set< Operation > operations = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
+//
+//	protected <O extends Operation> O registerOperation( O rv ) {
+//		this.operations.add( rv );
+//		return rv;
+//	}
+//
+//	protected void createAndRegisterOperations() {
+//	}
+	
+//	protected abstract ActionOperation createPreferencesOperation();
+//	protected abstract ActionOperation createAboutOperation();
+	protected abstract ActionOperation createExitOperation();
+	private ActionOperation exitOperation = this.createExitOperation();
+	
+	protected abstract KComponent<?> createContentPane();
 
 	protected java.util.List< MenuBuilder > updateMenuBuilders( java.util.List< MenuBuilder > rv ) {
 		return rv;
 	}
-
 	protected final java.util.List< MenuBuilder > createMenuBuilders() {
 		java.util.List< MenuBuilder > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		return updateMenuBuilders( rv );
 	}
 
-	protected abstract javax.swing.JPanel createContentPane();
 
 	public void initialize( String[] args ) {
 		KFrame frame = new KFrame();
 		javax.swing.JFrame jFrame = (javax.swing.JFrame)frame.getAWTFrame();
 
-		this.createAndRegisterOperations();
-
 		java.util.List< MenuBuilder > menuBuilders = this.createMenuBuilders();
 		if( menuBuilders.size() > 0 ) {
-			javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+			KMenuBar menuBar = new KMenuBar();
 			for( MenuBuilder menuBuilder : menuBuilders ) {
-				menuBar.add( menuBuilder.createMenu() );
+				menuBar.addMenu( menuBuilder.createMenu( this ) );
 			}
-			jFrame.setJMenuBar( menuBar );
+			jFrame.setJMenuBar( menuBar.getJComponent() );
 		}
 
-		jFrame.setContentPane( this.createContentPane() );
+		jFrame.setContentPane( this.createContentPane().getJComponent() );
 		jFrame.pack();
+		jFrame.setDefaultCloseOperation( javax.swing.JFrame.DO_NOTHING_ON_CLOSE );
+		jFrame.addWindowListener( new java.awt.event.WindowListener() {
+
+			public void windowOpened(java.awt.event.WindowEvent e) {
+			}
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				Application.this.handleWindowClosing( e );
+			}
+			public void windowClosed(java.awt.event.WindowEvent e) {
+			}
+
+			public void windowActivated(java.awt.event.WindowEvent e) {
+			}
+			public void windowDeactivated(java.awt.event.WindowEvent e) {
+			}
+
+			public void windowIconified(java.awt.event.WindowEvent e) {
+			}
+			public void windowDeiconified(java.awt.event.WindowEvent e) {
+			}
+		} );
 		jFrame.setVisible( true );
 	}
 
+	private void handleWindowClosing(java.awt.event.WindowEvent e) {
+		ActionContext actionContext = Application.performIfAppropriate( this.exitOperation, e, CANCEL_IS_WORTHWHILE );
+		if( actionContext.isCancelled() ) {
+			//pass
+		} else {
+			System.exit( 0 );
+		}
+	}
 	public static final boolean CANCEL_IS_WORTHWHILE = true;
 	public static final boolean CANCEL_IS_FUTILE = false;
 
@@ -183,6 +191,13 @@ public abstract class Application {
 		}
 	}
 
+	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
+		assert actionOperation != null;
+		ActionContext rv = new ActionContext( actionOperation, e, isCancelWorthwhile );
+		actionOperation.perform( rv );
+		return rv;
+	}
+
 	public static BooleanStateContext performIfAppropriate( BooleanStateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
 		assert stateOperation != null;
 		BooleanStateContext rv = new BooleanStateContext( stateOperation, e, isCancelWorthwhile, previousValue, nextValue );
@@ -197,17 +212,77 @@ public abstract class Application {
 		return rv;
 	}
 
-	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
-		assert actionOperation != null;
-		ActionContext rv = new ActionContext( actionOperation, e, isCancelWorthwhile );
-		actionOperation.perform( rv );
-		return rv;
-	}
-
 	public static <E> ItemSelectionContext< E > performIfAppropriate( ItemSelectionOperation< E > itemSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, E previousSelection, E nextSelection ) {
 		assert itemSelectionOperation != null;
 		ItemSelectionContext< E > rv = new ItemSelectionContext( itemSelectionOperation, e, isCancelWorthwhile, previousSelection, nextSelection );
 		itemSelectionOperation.performSelectionChange( rv );
 		return rv;
 	}
+	
+
+	public KButton createButton( final ActionOperation actionOperation ) {
+		return new KButton() {
+			@Override
+			protected void adding() {
+				actionOperation.addAbstractButton( this );
+				super.adding();
+			}
+			@Override
+			protected void removed() {
+				super.removed();
+				actionOperation.removeAbstractButton( this );
+			}
+		};
+	}
+	public KMenuItem createMenuItem( final ActionOperation actionOperation ) {
+		return new KMenuItem() {
+			@Override
+			protected void adding() {
+				actionOperation.addAbstractButton( this );
+				super.adding();
+			}
+			@Override
+			protected void removed() {
+				super.removed();
+				actionOperation.removeAbstractButton( this );
+			}
+		};
+	}
+	
+
+	public KCheckBox createCheckBox( final BooleanStateOperation booleanStateOperation ) {
+		return new KCheckBox() {
+			@Override
+			protected void adding() {
+				booleanStateOperation.addAbstractButton( this );
+				super.adding();
+			}
+			@Override
+			protected void removed() {
+				super.removed();
+				booleanStateOperation.removeAbstractButton( this );
+			}
+		};
+	}
+	public KMenuItem createMenuItem( final BooleanStateOperation booleanStateOperation ) {
+		// todo: return javax.swing.JMenuItem if true and false different
+		return new KMenuItem() {
+			@Override
+			protected void adding() {
+				booleanStateOperation.addAbstractButton( this );
+				super.adding();
+			}
+			@Override
+			protected void removed() {
+				super.removed();
+				booleanStateOperation.removeAbstractButton( this );
+			}
+		};
+	}
+	
+//	public javax.swing.AbstractButton createHyperlink( ActionOperation actionOperation ) {
+//		assert actionOperation != null;
+//		return new ZHyperlink(actionOperation);
+//	}
+	
 }

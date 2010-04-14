@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KList<E> extends KComponent {
+public class KList<E> extends KComponent< javax.swing.JList > {
 	private javax.swing.JList jList = new javax.swing.JList() {
 		@Override
 		public void addNotify() {
@@ -62,7 +62,7 @@ public class KList<E> extends KComponent {
 		}
 	};
 	@Override
-	protected javax.swing.JComponent getJComponent() {
+	protected javax.swing.JList getJComponent() {
 		return this.jList;
 	}
 }

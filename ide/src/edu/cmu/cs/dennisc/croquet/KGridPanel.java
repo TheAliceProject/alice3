@@ -46,16 +46,39 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KAxisPanel extends KPanel {
-	private int axis;
-	protected KAxisPanel( int axis, KComponent<?>... components ) {
-		this.axis = axis;
-		for( KComponent<?> component : components ) {
-			this.addComponent( component );
-		}
+public class KGridPanel extends KPanel {
+	private static final int DEFAULT_HGAP = 0;
+	private static final int DEFAULT_VGAP = 0;
+	private int rowCount;
+	private int columnCount;
+	private int hgap;
+	private int vgap;
+	private KGridPanel( int rowCount, int columnCount, int hgap, int vgap ) {
+		this.rowCount = rowCount;
+		this.columnCount = columnCount;
+		this.hgap = hgap;
+		this.vgap = vgap;
+	}
+	public static KGridPanel createSingleRowGridPane() {
+		return new KGridPanel( 1, 0, DEFAULT_HGAP, DEFAULT_VGAP );
+	}
+	public static KGridPanel createSingleRowGridPane( int hgap, int vgap ) {
+		return new KGridPanel( 1, 0, hgap, vgap );
+	}
+	public static KGridPanel createSingleColumnGridPane() {
+		return new KGridPanel( 0, 1, DEFAULT_HGAP, DEFAULT_VGAP );
+	}
+	public static KGridPanel createSingleColumnGridPane( int hgap, int vgap ) {
+		return new KGridPanel( 0, 1, hgap, vgap );
+	}
+	public static KGridPanel createGridPane( int rowCount, int columnCount, int hgap, int vgap ) {
+		return new KGridPanel( rowCount, columnCount, hgap, vgap );
+	}
+	public static KGridPanel createGridPane( int rowCount, int columnCount ) {
+		return new KGridPanel( rowCount, columnCount, DEFAULT_HGAP, DEFAULT_VGAP );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, this.axis );
+		return new java.awt.GridLayout( this.rowCount, this.columnCount, this.hgap, this.vgap );
 	}
 }

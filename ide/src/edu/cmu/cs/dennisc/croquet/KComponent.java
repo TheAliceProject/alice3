@@ -46,8 +46,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KComponent {
-	protected abstract javax.swing.JComponent getJComponent();
+public abstract class KComponent<J extends javax.swing.JComponent> {
+	protected abstract J getJComponent();
 	protected void adding() {
 	}
 	protected void added() {
@@ -62,5 +62,18 @@ public abstract class KComponent {
 	}
 	public void changeFont( edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
 		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToDerivedFont( this.getJComponent(), textAttributes );
+	}
+	
+	public void setVisible( boolean isVisible ) {
+		this.getJComponent().setVisible( isVisible );
+	}
+	public void setEnabled( boolean isEnabled ) {
+		this.getJComponent().setEnabled( isEnabled );
+	}
+	public void setToolTipText( String toolTipText ) {
+		this.getJComponent().setToolTipText( toolTipText );
+	}
+	public void setBorder( javax.swing.border.Border border ) {
+		this.getJComponent().setBorder( border );
 	}
 }

@@ -46,16 +46,35 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KAxisPanel extends KPanel {
-	private int axis;
-	protected KAxisPanel( int axis, KComponent<?>... components ) {
-		this.axis = axis;
-		for( KComponent<?> component : components ) {
-			this.addComponent( component );
-		}
+public class MenuBuilder {
+	private String name;
+	private Operation[] operations;
+
+	public MenuBuilder( String name, Operation... operations ) {
+		this.name = name;
+		this.operations = operations;
 	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, this.axis );
+
+	public KMenu createMenu( Application application ) {
+		KMenu rv = new KMenu( this.name );
+		for( Operation operation : this.operations ) {
+			if( operation != null ) {
+				KMenuItem menuItem = null;
+				if (operation instanceof ActionOperation) {
+					ActionOperation actionOperation = (ActionOperation) operation;
+					menuItem = application.createMenuItem( actionOperation );
+				} else if (operation instanceof BooleanStateOperation) {
+					BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
+					menuItem = application.createMenuItem( booleanStateOperation );				
+				} else {
+					throw new RuntimeException();
+				}
+				assert menuItem != null;
+				rv.addMenuItem( menuItem );
+			} else {
+				rv.addSeparator();
+			}
+		}
+		return rv;
 	}
 }

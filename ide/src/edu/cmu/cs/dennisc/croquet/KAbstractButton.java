@@ -46,16 +46,12 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KAxisPanel extends KPanel {
-	private int axis;
-	protected KAxisPanel( int axis, KComponent<?>... components ) {
-		this.axis = axis;
-		for( KComponent<?> component : components ) {
-			this.addComponent( component );
-		}
+public abstract class KAbstractButton< J extends javax.swing.AbstractButton> extends KComponent< J > {
+	/*package-private*/public void setModel( javax.swing.ButtonModel model ) {
+		this.getJComponent().setModel( model );
 	}
-	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, this.axis );
+	/*package-private*/public void setAction( javax.swing.Action action ) {
+		this.getJComponent().setAction( action );
 	}
+	
 }

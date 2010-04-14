@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KPanel extends KComponent {
+public abstract class KPanel extends KComponent< javax.swing.JPanel > {
 	private javax.swing.JPanel jPanel = new javax.swing.JPanel() {
 		@Override
 		public void addNotify() {
@@ -63,7 +63,7 @@ public abstract class KPanel extends KComponent {
 	};
 	private java.awt.LayoutManager layoutManager;
 	@Override
-	protected javax.swing.JComponent getJComponent() {
+	protected javax.swing.JPanel getJComponent() {
 		return this.jPanel;
 	}
 	
@@ -79,10 +79,16 @@ public abstract class KPanel extends KComponent {
 		}
 	}
 	
-	protected void internalAddComponent( KComponent component ) {
+	public void addComponent( KComponent<?> component ) {
 		assert component != null;
 		component.adding();
 		this.jPanel.add( component.getJComponent() );
+		component.added();
+	}
+	protected void internalAddComponent( KComponent<?> component, Object constraints ) {
+		assert component != null;
+		component.adding();
+		this.jPanel.add( component.getJComponent(), constraints );
 		component.added();
 	}
 }

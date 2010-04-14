@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KWidget extends KComponent {
+public abstract class KWidget extends KComponent< javax.swing.JComponent > {
 	private javax.swing.JComponent jComponent = new javax.swing.JComponent() {
 		@Override
 		public void addNotify() {

@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KButton extends KComponent {
+public class KButton extends KAbstractButton< javax.swing.JButton > {
 	private javax.swing.JButton jButton = new javax.swing.JButton() {
 		@Override
 		public void addNotify() {
@@ -62,7 +62,7 @@ public class KButton extends KComponent {
 		}
 	};
 	@Override
-	protected javax.swing.JComponent getJComponent() {
+	protected javax.swing.JButton getJComponent() {
 		return this.jButton;
 	}
 }

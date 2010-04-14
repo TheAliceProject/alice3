@@ -46,16 +46,38 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KAxisPanel extends KPanel {
-	private int axis;
-	protected KAxisPanel( int axis, KComponent<?>... components ) {
-		this.axis = axis;
-		for( KComponent<?> component : components ) {
-			this.addComponent( component );
+public class KMenu extends KComponent< javax.swing.JMenu > {
+	private javax.swing.JMenu jMenu = new javax.swing.JMenu()	{
+		@Override
+		public void addNotify() {
+			KMenu.this.adding();
+			super.addNotify();
+			KMenu.this.added();
 		}
+		@Override
+		public void removeNotify() {
+			KMenu.this.removing();
+			super.removeNotify();
+			KMenu.this.removed();
+		}
+	};
+	
+	/*package-private*/ KMenu( String name ) {
+		this.jMenu.setName( name );
 	}
+	
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, this.axis );
+	protected javax.swing.JMenu getJComponent() {
+		return this.jMenu;
+	}
+	
+	public void addMenu( KMenu menu ) {
+		this.jMenu.add( menu.getJComponent() );
+	}
+	public void addMenuItem( KMenuItem menuItem ) {
+		this.jMenu.add( menuItem.getJComponent() );
+	}
+	public void addSeparator() {
+		this.jMenu.addSeparator();
 	}
 }
