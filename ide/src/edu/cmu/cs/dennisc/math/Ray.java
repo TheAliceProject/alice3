@@ -93,10 +93,13 @@ public class Ray {
 	}
 	public void setOrigin( edu.cmu.cs.dennisc.math.Point3 origin ) {
 		if( origin != null ) {
-			m_origin.set( origin );
+			this.setOrigin( origin.x, origin.y, origin.z );
 		} else {
-			m_origin.set( Double.NaN, Double.NaN, Double.NaN );
+			this.setOrigin( Double.NaN, Double.NaN, Double.NaN );
 		}
+	}
+	public void setOrigin( double x, double y, double z ) {
+		m_origin.set( x, y, z );
 	}
 	public edu.cmu.cs.dennisc.math.Vector3 accessDirection() {
 		return m_direction;
@@ -110,10 +113,13 @@ public class Ray {
 	}
 	public void setDirection( edu.cmu.cs.dennisc.math.Vector3 direction ) {
 		if( direction != null ) {
-			m_direction.set( direction );
+			this.setDirection( direction.x, direction.y, direction.z );
 		} else {
-			m_direction.set( Double.NaN, Double.NaN, Double.NaN );
+			this.setDirection( Double.NaN, Double.NaN, Double.NaN );
 		}
+	}
+	public void setDirection( double x, double y, double z ) {
+		m_direction.set( x, y, z );
 	}
 
 	public edu.cmu.cs.dennisc.math.Point3 getPointAlong( edu.cmu.cs.dennisc.math.Point3 rv, double t ) {
