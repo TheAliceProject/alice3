@@ -46,26 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KLabel extends KComponent {
-	private javax.swing.JLabel jLabel = new javax.swing.JLabel() {
-		@Override
-		public void addNotify() {
-			KLabel.this.adding();
-			super.addNotify();
-			KLabel.this.added();
-		}
-		@Override
-		public void removeNotify() {
-			KLabel.this.removing();
-			super.removeNotify();
-			KLabel.this.removed();
-		}
-	};
-	@Override
-	protected javax.swing.JComponent getJComponent() {
-		return this.jLabel;
-	}
-	
+public class KLabel extends KComponent< javax.swing.JLabel > {
 	public KLabel() {
 	}
 	public KLabel( String text, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
@@ -87,17 +68,21 @@ public class KLabel extends KComponent {
 		this.scaleFont( fontScalar );
 		this.changeFont( textAttributes );
 	}
+	@Override
+	protected javax.swing.JLabel createJComponent() {
+		return new javax.swing.JLabel();
+	}
 	
 	public String getText() {
-		return this.jLabel.getText();
+		return this.getJComponent().getText();
 	}
 	public void setText( String text ) {
-		this.jLabel.setText( text );
+		this.getJComponent().setText( text );
 	}
 	public javax.swing.Icon getIcon() {
-		return this.jLabel.getIcon();
+		return this.getJComponent().getIcon();
 	}
 	public void setIcon( javax.swing.Icon icon ) {
-		this.jLabel.setIcon( icon );
+		this.getJComponent().setIcon( icon );
 	}
 }

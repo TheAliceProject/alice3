@@ -318,7 +318,7 @@ public abstract class ZDragComponent extends ZControl {
 		if( ZManager.isDragInProgress() ) {
 			this.updateProxyPosition( e );
 			//todo: investidate why this would be null
-			if( this.dragAndDropOperation != null ) {
+			if( this.dragAndDropContext != null ) {
 				this.dragAndDropContext.handleMouseDragged( e );
 			}
 		}

@@ -48,36 +48,39 @@ package edu.cmu.cs.dennisc.croquet;
 public final class BooleanStateOperation extends Operation {
 	private javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		public void actionPerformed(java.awt.event.ActionEvent e) {
 		}
 	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
-		public void itemStateChanged( java.awt.event.ItemEvent e ) {
+		public void itemStateChanged(java.awt.event.ItemEvent e) {
 			boolean prev;
 			boolean next;
-			if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+			if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
 				prev = false;
 				next = true;
 			} else {
 				prev = true;
 				next = false;
 			}
-			Application.performIfAppropriate( BooleanStateOperation.this, e, Application.CANCEL_IS_FUTILE, prev, next );
+			Application.getSingleton().getCurrentCompositeContext().performInChildContext(BooleanStateOperation.this, e, CancelEffectiveness.FUTILE, prev, next);
 		}
 	};
 
 	private String trueText = null;
 	private String falseText = null;
-	public BooleanStateOperation( java.util.UUID groupUUID, Boolean initialState, String trueText, String falseText ) {
-		super( groupUUID );
-		this.buttonModel.setSelected( initialState );
-		this.buttonModel.addItemListener( this.itemListener );
-		this.setTrueText( trueText );
-		this.setFalseText( falseText );
+
+	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, Boolean initialState, String trueText, String falseText) {
+		super(groupUUID, individualUUID);
+		this.buttonModel.setSelected(initialState);
+		this.buttonModel.addItemListener(this.itemListener);
+		this.setTrueText(trueText);
+		this.setFalseText(falseText);
 	}
-	public BooleanStateOperation( java.util.UUID groupUUID, Boolean initialState, String trueAndFalseText ) {
-		this( groupUUID, initialState, trueAndFalseText, trueAndFalseText );
+
+	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, Boolean initialState, String trueAndFalseText) {
+		this(groupUUID, individualUUID, initialState, trueAndFalseText, trueAndFalseText);
 	}
+
 	public Boolean getState() {
 		return this.buttonModel.isSelected();
 	}
@@ -90,7 +93,7 @@ public final class BooleanStateOperation extends Operation {
 		return this.trueText;
 	}
 
-	public void setTrueText( String trueText ) {
+	public void setTrueText(String trueText) {
 		this.trueText = trueText;
 		this.updateName();
 	}
@@ -99,95 +102,42 @@ public final class BooleanStateOperation extends Operation {
 		return this.falseText;
 	}
 
-	public void setFalseText( String falseText ) {
+	public void setFalseText(String falseText) {
 		this.falseText = falseText;
 		this.updateName();
 	}
 
-	public void addAbstractButton(javax.swing.AbstractButton abstractButton) {
-		abstractButton.setAction( this.action );
-		abstractButton.setModel( this.buttonModel );
+	/*package-private*/ void addAbstractButton(KAbstractButton<?> abstractButton) {
+		abstractButton.setAction(this.action);
+		abstractButton.setModel(this.buttonModel);
 		this.addComponent(abstractButton);
 	}
-	public void removeAbstractButton(javax.swing.AbstractButton abstractButton) {
+
+	/*package-private*/ void removeAbstractButton(KAbstractButton<?> abstractButton) {
 		this.removeComponent(abstractButton);
-		//abstractButton.setModel( null );
-		//abstractButton.setAction( null );
+		abstractButton.setModel(null);
+		abstractButton.setAction(null);
 	}
 
-	public final void performStateChange( BooleanStateContext booleanStateContext ) {
-		class BooleanStateEdit extends Edit {
-			private boolean prevValue;
-			private boolean nextValue;
-
-			public BooleanStateEdit( boolean prevValue, boolean nextValue ) {
-				this.prevValue = prevValue;
-				this.nextValue = nextValue;
-			}
-			@Override
-			public void doOrRedo( boolean isDo ) {
-				BooleanStateOperation.this.setValue( this.nextValue );
-			}
-
-			@Override
-			public void undo() {
-				BooleanStateOperation.this.setValue( this.prevValue );
-			}
-
-			@Override
-			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
-				rv.append( "boolean: " );
-				rv.append( this.nextValue );
-				return rv;
-			}
-		}
-		booleanStateContext.commitAndInvokeDo( new BooleanStateEdit( booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
+	public final void performStateChange(BooleanStateContext booleanStateContext) {
+		booleanStateContext.commitAndInvokeDo(new BooleanStateEdit( this, booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
 	}
-	
+
 	private void updateName() {
 		String name;
-		if( this.getState() ) {
+		if (this.getState()) {
 			name = this.trueText;
 		} else {
 			name = this.falseText;
 		}
-		this.action.putValue( javax.swing.Action.NAME, name );
+		this.action.putValue(javax.swing.Action.NAME, name);
 	}
-	private void setValue( boolean value ) {
-		this.buttonModel.removeItemListener( itemListener );
-		this.buttonModel.setSelected( value );
-		//this.handleStateChange( value );
-		this.buttonModel.addItemListener( itemListener );
+
+	/*package-private*/ void setValue(boolean value) {
+		this.buttonModel.removeItemListener(itemListener);
+		this.buttonModel.setSelected(value);
+		// this.handleStateChange( value );
+		this.buttonModel.addItemListener(itemListener);
 		this.updateName();
-	}
-	public javax.swing.JCheckBox createCheckBox( final BooleanStateOperation booleanStateOperation ) {
-		return new javax.swing.JCheckBox() {
-			@Override
-			public void addNotify() {
-				BooleanStateOperation.this.addAbstractButton( this );
-				super.addNotify();
-			}
-			@Override
-			public void removeNotify() {
-				super.removeNotify();
-				BooleanStateOperation.this.removeAbstractButton( this );
-			}
-		};
-	}
-	@Override
-	public javax.swing.JMenuItem createMenuItem() {
-		//todo: return javax.swing.JMenuItem if true and false different
-		return new javax.swing.JCheckBoxMenuItem() {
-			@Override
-			public void addNotify() {
-				BooleanStateOperation.this.addAbstractButton( this );
-				super.addNotify();
-			}
-			@Override
-			public void removeNotify() {
-				super.removeNotify();
-				BooleanStateOperation.this.removeAbstractButton( this );
-			}
-		};
 	}
 }

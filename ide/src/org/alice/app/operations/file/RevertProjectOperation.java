@@ -40,37 +40,40 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package org.alice.ide.openprojectpane;
+package org.alice.app.operations.file;
 
 /**
  * @author Dennis Cosgrove
  */
-abstract class DirectoryListPane extends ListPane {
-	@Override
-	protected String getTextForZeroProjects() {
-		String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( this.getDirectory() );
-		return "there are no projects in " + path;
+public class RevertProjectOperation extends org.alice.ide.operations.AbstractActionOperation {
+	public RevertProjectOperation() {
+		super( org.alice.ide.IDE.IO_GROUP );
+		this.setName( "Revert" );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
-	protected abstract java.io.File getDirectory();
-	@Override
-	protected java.net.URI[] getURIs() {
-		java.io.File directory = this.getDirectory();
-		java.net.URI[] rv;
-		if( directory != null ) {
-			java.io.File[] files = edu.cmu.cs.dennisc.alice.project.ProjectUtilities.listProjectFiles( this.getDirectory() );
-			final int N = files.length;
-			rv = new java.net.URI[ N ];
-			for( int i=0; i<N; i++ ) {
-				if( files[ i ] != null ) {
-					rv[ i ] = files[ i ].toURI();
-				} else {
-					rv[ i ] = null;
+	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this.getIDE(), "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE ) ) {
+			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				@Override
+				public void doOrRedo( boolean isDo ) {
+					getIDE().revert();
 				}
-			}
+				@Override
+				public void undo() {
+					throw new AssertionError();
+				}
+				@Override
+				public boolean canUndo() {
+					return false;
+				}
+				@Override
+				protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+					rv.append( "revert" );
+					return rv;
+				}
+			} );
 		} else {
-			rv = new java.net.URI[ 0 ];
+			actionContext.cancel();
 		}
-		return rv;
 	}
 }

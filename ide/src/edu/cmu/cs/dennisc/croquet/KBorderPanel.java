@@ -64,7 +64,7 @@ public class KBorderPanel extends KPanel {
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout();
 	}
-	public void add( KComponent child, KCardinalDirection cardinalDirection ) {
-		this.getJComponent().add( child.getJComponent(), cardinalDirection.internal );
+	public void addComponent( KComponent<?> child, KCardinalDirection cardinalDirection ) {
+		this.internalAddComponent( child, cardinalDirection.internal );
 	}
 }

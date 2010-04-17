@@ -46,43 +46,25 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KPanel extends KComponent {
-	private javax.swing.JPanel jPanel = new javax.swing.JPanel() {
-		@Override
-		public void addNotify() {
-			KPanel.this.adding();
-			super.addNotify();
-			KPanel.this.added();
-		}
-		@Override
-		public void removeNotify() {
-			KPanel.this.removing();
-			super.removeNotify();
-			KPanel.this.removed();
-		}
-	};
-	private java.awt.LayoutManager layoutManager;
-	@Override
-	protected javax.swing.JComponent getJComponent() {
-		return this.jPanel;
-	}
-	
+public abstract class KPanel extends KComponent< javax.swing.JPanel > {
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
-	protected void adding() {
-		super.adding();
-		if( this.layoutManager != null ) {
-			//pass
-		} else {
-			this.layoutManager = this.createLayoutManager( this.jPanel );
-			this.jPanel.setLayout( this.layoutManager );
-		}
+	protected javax.swing.JPanel createJComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel();
+		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
+		rv.setLayout( layoutManager );
+		return rv;
 	}
-	
-	protected void internalAddComponent( KComponent component ) {
+	public void addComponent( KComponent<?> component ) {
 		assert component != null;
 		component.adding();
-		this.jPanel.add( component.getJComponent() );
+		this.getJComponent().add( component.getJComponent() );
+		component.added();
+	}
+	protected void internalAddComponent( KComponent<?> component, Object constraints ) {
+		assert component != null;
+		component.adding();
+		this.getJComponent().add( component.getJComponent(), constraints );
 		component.added();
 	}
 }

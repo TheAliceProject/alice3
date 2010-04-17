@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class BoundedRangeContext extends Context< BoundedRangeOperation > {
-	public BoundedRangeContext( BoundedRangeOperation operation, java.util.EventObject e, boolean isCancelWorthwhile ) {
-		super( operation, e, isCancelWorthwhile );
+	public BoundedRangeContext( CompositeContext parent, BoundedRangeOperation operation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+		super( parent, operation, e, cancelEffectiveness );
 	}
 }

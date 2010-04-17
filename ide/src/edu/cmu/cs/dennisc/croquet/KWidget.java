@@ -46,30 +46,16 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KWidget extends KComponent {
-	private javax.swing.JComponent jComponent = new javax.swing.JComponent() {
-		@Override
-		public void addNotify() {
-			KWidget.this.adding();
-			super.addNotify();
-			KWidget.this.added();
-		}
-		@Override
-		public void removeNotify() {
-			KWidget.this.removing();
-			super.removeNotify();
-			KWidget.this.removed();
-		}
-		@Override
-		protected void paintComponent( java.awt.Graphics g ) {
-			assert g instanceof java.awt.Graphics2D;
-			KWidget.this.paintComponent( (java.awt.Graphics2D)g );
-		}
-	};
-
+public abstract class KWidget extends KComponent< javax.swing.JComponent > {
 	@Override
-	protected javax.swing.JComponent getJComponent() {
-		return this.jComponent;
+	protected javax.swing.JComponent createJComponent() {
+		return new javax.swing.JComponent() {
+			@Override
+			protected void paintComponent( java.awt.Graphics g ) {
+				assert g instanceof java.awt.Graphics2D;
+				KWidget.this.paintComponent( (java.awt.Graphics2D)g );
+			}
+		};
 	}
 	protected abstract void paintComponent( java.awt.Graphics2D g2 );
 }

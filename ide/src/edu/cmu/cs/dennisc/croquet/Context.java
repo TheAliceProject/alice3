@@ -46,42 +46,94 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Context< O extends Operation > {
+	private CompositeContext parent;
 	private O operation;
-	private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
-	private boolean isCommitted = false;
-	private boolean isCancelled = false;
-	private java.util.EventObject e;
-	private boolean isCancelWorthwhile;
+	private java.util.EventObject event;
+	private CancelEffectiveness cancelEffectiveness;
 
-	public Context( O operation, java.util.EventObject e, boolean isCancelWorthwhile ) {
+	public enum State {
+		COMMITTED,
+		SKIPPED,
+		CANCELLED,
+		PENDING
+	}
+	private State state = null;
+	
+//	public static class Key<V> {
+//		private String name;
+//		private Key( String name ) {
+//			this.name = name;
+//		}
+//		@Override
+//		public String toString() {
+//			return this.name;
+//		}
+//	};
+//	public static <V> Key<V> createKey( String name ) {
+//		return new Key( name );
+//	}
+//	private java.util.Map< Key, Object > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+//	public <V> V get( Key<V> key ) {
+//		return (V)this.map.get( key );
+//	}
+//	public <V> void put( Key<V> key, V value ) {
+//		this.map.put( key, value );
+//	}
+
+	public Context( CompositeContext parent, O operation, java.util.EventObject event, CancelEffectiveness cancelEffectiveness ) {
+		this.parent = parent;
 		this.operation = operation;
-		this.e = e;
-		this.isCancelWorthwhile = isCancelWorthwhile;
+		this.event = event;
+		this.cancelEffectiveness = cancelEffectiveness;
+	}
+	public Context<?> getParent() {
+		return this.parent;
 	}
 	public O getOperation() {
 		return this.operation;
 	}
+	public java.util.EventObject getEvent() {
+		return event;
+	}
+	public boolean isCancelWorthwhile() {
+		return this.cancelEffectiveness == CancelEffectiveness.WORTHWHILE;
+	}
+
+	public State getState() {
+		return this.state;
+	}
+	
 	public boolean isCommitted() {
-		return this.isCommitted;
+		return this.state == State.COMMITTED;
 	}
 	public boolean isCancelled() {
-		return this.isCancelled;
+		return this.state == State.CANCELLED;
 	}
-	public boolean isPending() {
-		return (this.isCommitted() || this.isCancelled()) == false;
-	}
-	public void commitAndInvokeDo( Edit edit ) {
-		assert this.isPending();
-		edu.cmu.cs.dennisc.croquet.event.CommitEvent e = new edu.cmu.cs.dennisc.croquet.event.CommitEvent( this.operation, this, edit );
-		Application.fireOperationCommitting( e );
+	public void commitAndInvokeDo( Edit<O> edit ) {
+		assert this.state == null;
+		//edu.cmu.cs.dennisc.croquet.event.CommitEvent e = new edu.cmu.cs.dennisc.croquet.event.CommitEvent( this.operation, this, edit );
+		//this.parent.committing();
 		if( edit != null ) {
 			edit.doOrRedo( true );
 		}
-		this.isCommitted = true;
-		Application.fireOperationCommitted( e );
+		this.state = State.COMMITTED;
+		//this.parent.committed();
 	}
 	public void commit() {
 		this.commitAndInvokeDo( null );
+	}
+	public void skip() {
+		//edu.cmu.cs.dennisc.croquet.event.SkipEvent e = new edu.cmu.cs.dennisc.croquet.event.SkipEvent( this.operation, this );
+		//this.parent.skipping();
+		this.state = State.SKIPPED;
+		//this.parent.skipped();
+	}
+	public void cancel() {
+		assert this.state == null;
+		edu.cmu.cs.dennisc.croquet.event.CancelEvent e = new edu.cmu.cs.dennisc.croquet.event.CancelEvent( this.operation, this );
+		//this.parent.canceling();
+		this.state = State.CANCELLED;
+		//this.parent.cancelled();
 	}
 	private class PendTaskObserver< E extends Edit,F > implements edu.cmu.cs.dennisc.task.TaskObserver< F > {
 		private Resolver<E,F> resolver;
@@ -100,44 +152,13 @@ public abstract class Context< O extends Operation > {
 			Context.this.cancel();
 		}
 	}
-	public void pend(Resolver<? extends Edit, ?> resolver) {
+	public void pend( Resolver<? extends Edit, ?> resolver ) {
 		new PendTaskObserver(resolver);
+		this.state = State.PENDING;
 	}
-	public void cancel() {
-		assert this.isPending();
-		edu.cmu.cs.dennisc.croquet.event.CancelEvent e = new edu.cmu.cs.dennisc.croquet.event.CancelEvent( this.operation, this );
-		Application.fireOperationCancelling( e );
-		this.isCancelled = true;
-		Application.fireOperationCancelled( e );
-	}
-	public boolean isCancelWorthwhile() {
-		return isCancelWorthwhile;
-	}
-	public <E extends Object> E get( Object key, Class< E > cls ) {
-		Object rv = this.get( key );
-		if( rv != null ) {
-			assert cls.isAssignableFrom( rv.getClass() );
-			return (E)rv;
-		} else {
-			return null;
-		}
-	}
-	public Object get( Object key ) {
-		return this.map.get( key );
-	}
-	public void put( Object key, Object value ) {
-		this.map.put( key, value );
-	}
-	public java.util.EventObject getEvent() {
-		return e;
-	}
-	public ActionContext perform( ActionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile ) {
-		return Application.performIfAppropriate( operation, o, isCancelWorthwhile );
-	}
-	public ItemSelectionContext perform( ItemSelectionOperation operation, java.util.EventObject o, boolean isCancelWorthwhile, Object prevSelection, Object nextSelection ) {
-		return Application.performIfAppropriate( operation, o, isCancelWorthwhile, prevSelection, nextSelection );
-	}
-	public void execute( org.jdesktop.swingworker.SwingWorker< ?, ? > worker ) {
-		worker.execute();
-	}
+	
+//	public void execute( org.jdesktop.swingworker.SwingWorker< ?, ? > worker ) {
+//		worker.execute();
+//	}
+	
 }

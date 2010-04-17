@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class ActionContext extends Context< ActionOperation > {
-	public ActionContext( ActionOperation operation, java.util.EventObject e, boolean isCancelWorthwhile ) {
-		super( operation, e, isCancelWorthwhile );
+	public ActionContext( CompositeContext parent, ActionOperation operation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+		super( parent, operation, e, cancelEffectiveness );
 	}
 }

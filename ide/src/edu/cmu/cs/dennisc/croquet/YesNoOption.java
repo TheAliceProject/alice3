@@ -41,38 +41,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabContentPane extends edu.cmu.cs.dennisc.javax.swing.components.JPane {
-	//	protected boolean isTabEnabled() {
-	//		return this.isEnabled();
-	//	}
-	private edu.cmu.cs.dennisc.inputpane.KInputPane< java.net.URI > inputPane;
-	public TabContentPane() {
-		this.setBackground( new java.awt.Color( 191, 191, 255 ) );
-		this.setOpaque( true );
-		final int INSET = 8;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
+public enum YesNoOption {
+	YES(javax.swing.JOptionPane.YES_OPTION), 
+	NO(javax.swing.JOptionPane.NO_OPTION);
+	int internal;
+
+	YesNoOption(int internal) {
+		this.internal = internal;
 	}
-	public void setInputPane( edu.cmu.cs.dennisc.inputpane.KInputPane< java.net.URI > inputPane ) {
-		this.inputPane = inputPane;
-	}
-	public abstract java.net.URI getSelectedURI();
-	public javax.swing.Icon getTabTitleIcon() {
+
+	public static YesNoOption getInstance(int internal) {
+		for (YesNoOption value : YesNoOption.values()) {
+			if (value.internal == internal) {
+				return value;
+			}
+		}
 		return null;
-	}
-	public abstract String getTabTitleText();
-	protected void updateOKButton() {
-		if( this.inputPane != null ) {
-			this.inputPane.updateOKButton();
-		}
-	}
-	protected void fireOKButtonIfPossible() {
-		if( this.inputPane != null ) {
-			this.inputPane.fireOKButtonIfPossible();
-		}
 	}
 }

@@ -46,23 +46,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KList<E> extends KComponent {
-	private javax.swing.JList jList = new javax.swing.JList() {
-		@Override
-		public void addNotify() {
-			KList.this.adding();
-			super.addNotify();
-			KList.this.added();
-		}
-		@Override
-		public void removeNotify() {
-			KList.this.removing();
-			super.removeNotify();
-			KList.this.removed();
-		}
-	};
+public class KList<E> extends KComponent< javax.swing.JList > {
 	@Override
-	protected javax.swing.JComponent getJComponent() {
-		return this.jList;
+	protected javax.swing.JList createJComponent() {
+		return new javax.swing.JList();
 	}
 }

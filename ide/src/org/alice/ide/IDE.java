@@ -640,7 +640,7 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 			this.isNew = isNew;
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			org.alice.ide.openprojectpane.OpenProjectPane openProjectPane = new org.alice.ide.openprojectpane.OpenProjectPane( IDE.this.getTemplatesTabContentPane() );
+			org.alice.app.openprojectpane.OpenProjectPane openProjectPane = new org.alice.app.openprojectpane.OpenProjectPane( IDE.this.getTemplatesTabContentPane() );
 			openProjectPane.selectAppropriateTab( this.isNew );
 			while( actionContext.isPending() ) {
 				java.net.URI uri = openProjectPane.showInJDialog( IDE.this, "Open Project", true );
@@ -665,11 +665,11 @@ public abstract class IDE extends edu.cmu.cs.dennisc.javax.swing.ApplicationFram
 		}
 	}
 
-	private org.alice.ide.openprojectpane.TabContentPane templatesPane;
+	private org.alice.app.openprojectpane.TabContentPane templatesPane;
 
-	protected abstract org.alice.ide.openprojectpane.TabContentPane createTemplatesPane();
+	protected abstract org.alice.app.openprojectpane.TabContentPane createTemplatesPane();
 
-	private org.alice.ide.openprojectpane.TabContentPane getTemplatesTabContentPane() {
+	private org.alice.app.openprojectpane.TabContentPane getTemplatesTabContentPane() {
 		if( this.templatesPane != null ) {
 			//pass
 		} else {

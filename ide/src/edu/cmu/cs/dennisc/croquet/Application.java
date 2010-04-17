@@ -47,167 +47,348 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Application {
-	// private static Application singleton;
-	// public static Application getInstance() {
-	// return singleton;
-	// }
-	// protected void setInstance( Application singleton ) {
-	// Application.singleton = singleton;
-	// }
-	//	
-	// /*package-private*/ Context<Operation> getCurrentContext() {
-	// return null;
-	// }
-
-	public Context< ? extends Operation > getCurrentContext() {
-		return null;
-	}
-
-	private java.util.Set< Operation > operations = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-
-	protected <O extends Operation> O registerOperation( O rv ) {
-		this.operations.add( rv );
-		return rv;
-	}
-
-	protected void createAndRegisterOperations() {
-	}
-
-	protected static class MenuBuilder {
-		private String name;
-		private Operation[] operations;
-
-		public MenuBuilder( String name, Operation... operations ) {
-			this.name = name;
-			this.operations = operations;
+	private static class RootContext extends CompositeContext {
+		public RootContext() {
+			super( null, null, null, null );
 		}
+	};
+	private RootContext rootContext = new RootContext();
+	private static Application singleton;
 
-		public javax.swing.JMenu createMenu() {
-			javax.swing.JMenu rv = new javax.swing.JMenu( this.name );
-			for( Operation operation : this.operations ) {
-				if( operation != null ) {
-					javax.swing.JMenuItem menuItem = operation.createMenuItem();
-					assert menuItem != null;
-					rv.add( menuItem );
-				} else {
-					rv.addSeparator();
-				}
-			}
-			return rv;
-		}
+	public static Application getSingleton() {
+		return singleton;
 	}
 
-	protected java.util.List< MenuBuilder > updateMenuBuilders( java.util.List< MenuBuilder > rv ) {
-		return rv;
+	private java.util.Map<java.util.UUID, Operation> mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+	private KMenuBar menuBar = new KMenuBar();
+	public Application() {
+		assert Application.singleton == null;
+		Application.singleton = this;
+	}
+	
+	public KMenuBar getMenuBar() {
+		return this.menuBar;
 	}
 
-	protected final java.util.List< MenuBuilder > createMenuBuilders() {
-		java.util.List< MenuBuilder > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
-		return updateMenuBuilders( rv );
+	public CompositeContext getCurrentCompositeContext() {
+		return this.rootContext.getCurrentCompositeActionContext();
 	}
 
-	protected abstract javax.swing.JPanel createContentPane();
+	
+	public <O extends Operation> O lookupOperation( java.util.UUID uuid ) {
+		//todo
+		return (O)this.mapUUIDToOperation.get( uuid );
+	}
 
-	public void initialize( String[] args ) {
-		KFrame frame = new KFrame();
-		javax.swing.JFrame jFrame = (javax.swing.JFrame)frame.getAWTFrame();
+	protected abstract KComponent<?> createContentPane();
 
-		this.createAndRegisterOperations();
+	private KFrame frame = new KFrame();
+	
+	public KFrame getFrame() {
+		return this.frame;
+	}
 
-		java.util.List< MenuBuilder > menuBuilders = this.createMenuBuilders();
-		if( menuBuilders.size() > 0 ) {
-			javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
-			for( MenuBuilder menuBuilder : menuBuilders ) {
-				menuBar.add( menuBuilder.createMenu() );
-			}
-			jFrame.setJMenuBar( menuBar );
-		}
-
-		jFrame.setContentPane( this.createContentPane() );
+	public void initialize(String[] args) {
+		javax.swing.JFrame jFrame = (javax.swing.JFrame) frame.getAWTFrame();
+		jFrame.setJMenuBar(this.menuBar.getJComponent());
+		jFrame.setContentPane(this.createContentPane().getJComponent());
 		jFrame.pack();
-		jFrame.setVisible( true );
+		jFrame.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
+		jFrame.addWindowListener(new java.awt.event.WindowListener() {
+			public void windowOpened(java.awt.event.WindowEvent e) {
+			}
+			public void windowClosing(java.awt.event.WindowEvent e) {
+				Application.this.handleQuit(e);
+			}
+			public void windowClosed(java.awt.event.WindowEvent e) {
+			}
+			public void windowActivated(java.awt.event.WindowEvent e) {
+			}
+			public void windowDeactivated(java.awt.event.WindowEvent e) {
+			}
+			public void windowIconified(java.awt.event.WindowEvent e) {
+			}
+			public void windowDeiconified(java.awt.event.WindowEvent e) {
+			}
+		} );
+		edu.cmu.cs.dennisc.apple.AppleUtilities.addApplicationListener( new edu.cmu.cs.dennisc.apple.event.ApplicationListener() {
+			public void handleAbout( java.util.EventObject e ) {
+				Application.this.handleAbout( e );
+			}
+			public void handlePreferences( java.util.EventObject e ) {
+				Application.this.handlePreferences( e );
+			}
+			public void handleQuit( java.util.EventObject e ) {
+				Application.this.handleQuit( e );
+			}
+		} );
+		
 	}
 
-	public static final boolean CANCEL_IS_WORTHWHILE = true;
-	public static final boolean CANCEL_IS_FUTILE = false;
+	public void setVisible(boolean isVisible) {
+		javax.swing.JFrame jFrame = (javax.swing.JFrame) frame.getAWTFrame();
+		jFrame.setVisible(true);
+	}
 
-	private static java.util.List< edu.cmu.cs.dennisc.croquet.event.ManagerListener > managerListeners = new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.event.ManagerListener >();
+	public void setTitle(String title) {
+		javax.swing.JFrame jFrame = (javax.swing.JFrame) frame.getAWTFrame();
+		jFrame.setTitle(title);
+	}
+
+	protected abstract void handleAbout( java.util.EventObject e );
+	protected abstract void handlePreferences( java.util.EventObject e );
+	protected abstract void handleQuit( java.util.EventObject e );
+
+	private static java.util.List<edu.cmu.cs.dennisc.croquet.event.ManagerListener> managerListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.croquet.event.ManagerListener>();
 	private static edu.cmu.cs.dennisc.croquet.event.ManagerListener[] managerListenerArray = null;
 
-	public static void addManagerListener( edu.cmu.cs.dennisc.croquet.event.ManagerListener l ) {
-		synchronized( Application.managerListeners ) {
-			Application.managerListeners.add( l );
+	public static void addManagerListener(edu.cmu.cs.dennisc.croquet.event.ManagerListener l) {
+		synchronized (Application.managerListeners) {
+			Application.managerListeners.add(l);
 			Application.managerListenerArray = null;
 		}
 	}
 
-	public static void removeManagerListener( edu.cmu.cs.dennisc.croquet.event.ManagerListener l ) {
-		synchronized( Application.managerListeners ) {
-			Application.managerListeners.remove( l );
+	public static void removeManagerListener(edu.cmu.cs.dennisc.croquet.event.ManagerListener l) {
+		synchronized (Application.managerListeners) {
+			Application.managerListeners.remove(l);
 			Application.managerListenerArray = null;
 		}
 	}
 
 	private static edu.cmu.cs.dennisc.croquet.event.ManagerListener[] getManagerListenerArray() {
-		synchronized( Application.managerListeners ) {
-			if( Application.managerListenerArray != null ) {
+		synchronized (Application.managerListeners) {
+			if (Application.managerListenerArray != null) {
 				// pass
 			} else {
-				Application.managerListenerArray = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( Application.managerListeners, edu.cmu.cs.dennisc.croquet.event.ManagerListener.class );
+				Application.managerListenerArray = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(Application.managerListeners, edu.cmu.cs.dennisc.croquet.event.ManagerListener.class);
 			}
 			return Application.managerListenerArray;
 		}
 	}
 
-	/* package-private */static void fireOperationCancelling( edu.cmu.cs.dennisc.croquet.event.CancelEvent e ) {
-		for( edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray() ) {
-			l.operationCancelling( e );
+	/* package-private */static void fireOperationCancelling(edu.cmu.cs.dennisc.croquet.event.CancelEvent e) {
+		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray()) {
+			l.operationCancelling(e);
 		}
 	}
 
-	/* package-private */static void fireOperationCancelled( edu.cmu.cs.dennisc.croquet.event.CancelEvent e ) {
-		for( edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray() ) {
-			l.operationCancelled( e );
+	/* package-private */static void fireOperationCancelled(edu.cmu.cs.dennisc.croquet.event.CancelEvent e) {
+		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray()) {
+			l.operationCancelled(e);
 		}
 	}
 
-	/* package-private */static void fireOperationCommitting( edu.cmu.cs.dennisc.croquet.event.CommitEvent e ) {
-		for( edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray() ) {
-			l.operationCommitting( e );
+	/* package-private */static void fireOperationCommitting(edu.cmu.cs.dennisc.croquet.event.CommitEvent e) {
+		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray()) {
+			l.operationCommitting(e);
 		}
 	}
 
-	/* package-private */static void fireOperationCommitted( edu.cmu.cs.dennisc.croquet.event.CommitEvent e ) {
-		for( edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray() ) {
-			l.operationCommitted( e );
+	/* package-private */static void fireOperationCommitted(edu.cmu.cs.dennisc.croquet.event.CommitEvent e) {
+		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray()) {
+			l.operationCommitted(e);
+		}
+	}
+	
+	private void register( Operation operation ) {
+		java.util.UUID id = operation.getIndividualUUID();
+		Operation prev = this.mapUUIDToOperation.get( id );
+		if( prev != null ) {
+			assert prev == operation;
+		} else {
+			this.mapUUIDToOperation.put( id, operation );
 		}
 	}
 
-	public static BooleanStateContext performIfAppropriate( BooleanStateOperation stateOperation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
-		assert stateOperation != null;
-		BooleanStateContext rv = new BooleanStateContext( stateOperation, e, isCancelWorthwhile, previousValue, nextValue );
-		stateOperation.performStateChange( rv );
-		return rv;
+	public KButton createButton(final AbstractActionOperation actionOperation) {
+		this.register( actionOperation );
+		return new KButton() {
+			@Override
+			protected void adding() {
+				actionOperation.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				actionOperation.removeAbstractButton(this);
+			}
+		};
 	}
 
-	public static BoundedRangeContext performIfAppropriate( BoundedRangeOperation boundedRangeOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
-		assert boundedRangeOperation != null;
-		BoundedRangeContext rv = new BoundedRangeContext( boundedRangeOperation, e, isCancelWorthwhile );
-		boundedRangeOperation.perform( rv );
-		return rv;
+	public KMenuItem createMenuItem(final AbstractActionOperation actionOperation) {
+		this.register( actionOperation );
+		return new KMenuItem() {
+			@Override
+			protected void adding() {
+				actionOperation.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				actionOperation.removeAbstractButton(this);
+			}
+		};
 	}
 
-	public static ActionContext performIfAppropriate( ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
-		assert actionOperation != null;
-		ActionContext rv = new ActionContext( actionOperation, e, isCancelWorthwhile );
-		actionOperation.perform( rv );
-		return rv;
+
+	public KCheckBox createCheckBox(final BooleanStateOperation booleanStateOperation) {
+		this.register( booleanStateOperation );
+		return new KCheckBox() {
+			@Override
+			protected void adding() {
+				booleanStateOperation.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				booleanStateOperation.removeAbstractButton(this);
+			}
+		};
 	}
 
-	public static <E> ItemSelectionContext< E > performIfAppropriate( ItemSelectionOperation< E > itemSelectionOperation, java.util.EventObject e, boolean isCancelWorthwhile, E previousSelection, E nextSelection ) {
-		assert itemSelectionOperation != null;
-		ItemSelectionContext< E > rv = new ItemSelectionContext( itemSelectionOperation, e, isCancelWorthwhile, previousSelection, nextSelection );
-		itemSelectionOperation.performSelectionChange( rv );
+	public KMenuItem createMenuItem(final BooleanStateOperation booleanStateOperation) {
+		this.register( booleanStateOperation );
+		// todo: return javax.swing.JMenuItem if true and false different
+		return new KMenuItem() {
+			@Override
+			protected void adding() {
+				booleanStateOperation.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				booleanStateOperation.removeAbstractButton(this);
+			}
+		};
+	}
+	
+	// public javax.swing.AbstractButton createHyperlink( ActionOperation
+	// actionOperation ) {
+	// assert actionOperation != null;
+	// return new ZHyperlink(actionOperation);
+	// }
+	
+	public KDragComponent createDragComponent(final DragOperation dragOperation) {
+		this.register( dragOperation );
+		// todo: return javax.swing.JMenuItem if true and false different
+		return new KDragComponent() {
+			@Override
+			protected void adding() {
+				dragOperation.addDragComponent(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				dragOperation.removeDragComponent(this);
+			}
+		};
+	}
+
+	public KMenu createMenu( final MenuOperation menuOperation ) {
+		this.register( menuOperation );
+		KMenu rv = new KMenu() {
+			@Override
+			protected void adding() {
+				menuOperation.addMenu(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				menuOperation.removeMenu(this);
+			}
+		};
+		for( Operation operation : menuOperation.getOperations() ) {
+			if( operation != null ) {
+				if( operation instanceof MenuOperation ) {
+					rv.addMenu( this.createMenu( (MenuOperation) operation ) );
+				} else {
+					KMenuItem menuItem = null;
+					if (operation instanceof AbstractActionOperation) {
+						AbstractActionOperation actionOperation = (AbstractActionOperation) operation;
+						menuItem = this.createMenuItem( actionOperation );
+					} else if (operation instanceof BooleanStateOperation) {
+						BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
+						menuItem = this.createMenuItem( booleanStateOperation );				
+					} else {
+						throw new RuntimeException();
+					}
+					rv.addMenuItem( menuItem );
+				}
+			} else {
+				rv.addSeparator();
+			}
+		}
 		return rv;
+		
+	}
+	
+	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
+		javax.swing.JOptionPane.showMessageDialog( this.frame.getAWTWindow(), message, title, messageType.internal, icon );
+	}
+	public void showMessageDialog( Object message, String title, MessageType messageType ) {
+		showYesNoCancelConfirmDialog( message, title, messageType, null );
+	}
+	public void showMessageDialog( Object message, String title ) {
+		showYesNoCancelConfirmDialog( message, title, MessageType.QUESTION );
+	}
+	public void showMessageDialog( Object message ) {
+		showYesNoCancelConfirmDialog( message, null );
+	}
+
+	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
+		return YesNoCancelOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAWTWindow(), message, title, javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, messageType.internal, icon ) );
+	}
+	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType ) {
+		return showYesNoCancelConfirmDialog( message, title, messageType, null );
+	}
+	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title ) {
+		return showYesNoCancelConfirmDialog( message, title, MessageType.QUESTION );
+	}
+	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message ) {
+		return showYesNoCancelConfirmDialog( message, null );
+	}
+	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
+		return YesNoOption.getInstance( javax.swing.JOptionPane.showConfirmDialog( this.frame.getAWTWindow(), message, title, javax.swing.JOptionPane.YES_NO_OPTION, messageType.internal, icon ) );
+	}
+	public YesNoOption showYesNoConfirmDialog( Object message, String title, MessageType messageType ) {
+		return showYesNoConfirmDialog( message, title, messageType, null );
+	}
+	public YesNoOption showYesNoConfirmDialog( Object message, String title ) {
+		return showYesNoConfirmDialog( message, title, MessageType.QUESTION );
+	}
+	public YesNoOption showYesNoConfirmDialog( Object message ) {
+		return showYesNoConfirmDialog( message, null );
+	}
+	
+	public java.io.File showOpenFileDialog( String directoryPath, String filename, String extension, boolean isSharingDesired ) {
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAWTWindow(), directoryPath, filename, extension, isSharingDesired ); 
+	}
+	public java.io.File showSaveFileDialog( String directoryPath, String filename, String extension, boolean isSharingDesired ) {
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAWTWindow(), directoryPath, filename, extension, isSharingDesired ); 
+	}
+	public java.io.File showOpenFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.frame.getAWTWindow(), directory, filename, extension, isSharingDesired ); 
+	}
+	public java.io.File showSaveFileDialog( java.io.File directory, String filename, String extension, boolean isSharingDesired ) {
+		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAWTWindow(), directory, filename, extension, isSharingDesired ); 
+	}
+
+	//todo
+	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane<T> inputPane, String title, boolean isModal ) {
+		return inputPane.showInJDialog( this.frame.getAWTWindow(), title, isModal);
 	}
 }

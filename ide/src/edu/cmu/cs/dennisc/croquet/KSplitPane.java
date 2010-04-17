@@ -46,40 +46,26 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KSplitPane extends KComponent {
-	private javax.swing.JSplitPane jSplitPane = new javax.swing.JSplitPane()	{
-		@Override
-		public void addNotify() {
-			KSplitPane.this.adding();
-			super.addNotify();
-			KSplitPane.this.added();
-		}
-		@Override
-		public void removeNotify() {
-			KSplitPane.this.removing();
-			super.removeNotify();
-			KSplitPane.this.removed();
-		}
-	};
+public abstract class KSplitPane extends KComponent< javax.swing.JSplitPane > {
 	protected KSplitPane( int orientation ) {
-		this.jSplitPane.setOrientation( orientation );
+		this.getJComponent().setOrientation( orientation );
 	}
-	protected KSplitPane( int orientation, KComponent topOrLeftComponent, KComponent bottomOrRightComponent ) {
+	protected KSplitPane( int orientation, KComponent<?> topOrLeftComponent, KComponent<?> bottomOrRightComponent ) {
 		this( orientation );
 		this.setTopOrLeftComponent( topOrLeftComponent );
 		this.setBottomOrRightComponent( bottomOrRightComponent );
 	}
 	@Override
-	protected javax.swing.JComponent getJComponent() {
-		return this.jSplitPane;
+	protected javax.swing.JSplitPane createJComponent() {
+		return new javax.swing.JSplitPane();
 	}
 	
-	protected void setTopOrLeftComponent( KComponent component ) {
+	protected void setTopOrLeftComponent( KComponent<?> component ) {
 		assert component != null;
-		this.jSplitPane.setTopComponent( component.getJComponent() );
+		this.getJComponent().setTopComponent( component.getJComponent() );
 	}
-	protected void setBottomOrRightComponent( KComponent component ) {
+	protected void setBottomOrRightComponent( KComponent<?> component ) {
 		assert component != null;
-		this.jSplitPane.setBottomComponent( component.getJComponent() );
+		this.getJComponent().setBottomComponent( component.getJComponent() );
 	}
 }

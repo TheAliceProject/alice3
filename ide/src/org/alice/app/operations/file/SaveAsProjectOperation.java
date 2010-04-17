@@ -40,32 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+package org.alice.app.operations.file;
 
-package org.alice.ide.openprojectpane;
-
-class RecentPane extends ListPane {
-	@Override
-	public String getTabTitleText() {
-		return "Recent";
+/**
+ * @author Dennis Cosgrove
+ */
+public class SaveAsProjectOperation extends AbstractSaveProjectOperation {
+	public SaveAsProjectOperation() {
+		super( java.util.UUID.fromString( "14986f74-fb95-40f1-a39e-7cf89f5cd720" ) );
+		this.setName( "Save As..." );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_S, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() | java.awt.event.InputEvent.SHIFT_MASK ) );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
 	}
 	@Override
-	protected String getTextForZeroProjects() {
-		return "there are no recent projects";
-	}
-	@Override
-	protected java.net.URI[] getURIs() {
-		java.util.List< String > paths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
-		java.net.URI[] rv;
-		if( paths != null ) {
-			final int N = paths.size();
-			rv = new java.net.URI[ N ];
-			for( int i=0; i<N; i++ ) {
-				rv[ i ] = new java.io.File( paths.get( i ) ).toURI();
-			}
-		} else {
-			rv = new java.net.URI[ 0 ];
-		}
-		return rv;
+	protected boolean isPromptNecessary( java.io.File file ) {
+		return true;
 	}
 }
-

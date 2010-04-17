@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.app.openprojectpane;
 
 abstract class ComingSoonTabPane extends TabContentPane {
 	public ComingSoonTabPane() {
@@ -64,7 +64,12 @@ class TutorialPane extends ComingSoonTabPane {
 class MyProjectsPane extends DirectoryListPane {
 	@Override
 	public java.io.File getDirectory() {
-		return org.alice.ide.IDE.getSingleton().getMyProjectsDirectory();
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: MyProjectsPane" );
+		if( org.alice.ide.IDE.getSingleton() != null ) {
+			return org.alice.ide.IDE.getSingleton().getMyProjectsDirectory();
+		} else {
+			return org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory();
+		}
 	}
 	@Override
 	public String getTabTitleText() {
@@ -76,9 +81,9 @@ abstract class ApplicationRootDirectoryListPane extends DirectoryListPane {
 	protected abstract String getSubPath();
 	@Override
 	public java.io.File getDirectory() {
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		if( ide != null ) {
-			return new java.io.File( ide.getApplicationRootDirectory(), this.getSubPath() );
+		org.alice.app.ProjectApplication application = org.alice.app.ProjectApplication.getSingleton();
+		if( application != null ) {
+			return new java.io.File( application.getApplicationRootDirectory(), this.getSubPath() );
 		} else {
 			return null;
 		}
@@ -154,7 +159,7 @@ class FileSystemPane extends TabContentPane {
 		this.add( pane, java.awt.BorderLayout.NORTH );
 	}
 	private void handleBrowse( java.awt.event.ActionEvent e ) {
-		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this, org.alice.ide.IDE.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true );
+		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this, org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true );
 		if( file != null ) {
 			this.textField.setText( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 		}

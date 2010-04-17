@@ -41,7 +41,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.alice.ide.openprojectpane;
+package org.alice.app.openprojectpane;
 
 /**
  * @author Dennis Cosgrove

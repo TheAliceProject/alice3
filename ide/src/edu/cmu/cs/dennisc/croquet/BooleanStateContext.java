@@ -49,8 +49,8 @@ public class BooleanStateContext extends Context< BooleanStateOperation > {
 	private Boolean previousValue;
 	private Boolean nextValue;
 
-	public BooleanStateContext( BooleanStateOperation operation, java.util.EventObject e, boolean isCancelWorthwhile, Boolean previousValue, Boolean nextValue ) {
-		super( operation, e, isCancelWorthwhile );
+	public BooleanStateContext( CompositeContext parent, BooleanStateOperation operation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness, Boolean previousValue, Boolean nextValue ) {
+		super( parent, operation, e, cancelEffectiveness );
 		this.previousValue = previousValue;
 		this.nextValue = nextValue;
 	}

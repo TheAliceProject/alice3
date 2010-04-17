@@ -42,7 +42,7 @@
  */
 package org.alice.stageide.openprojectpane.templates;
 
-public class TemplatesTabContentPane extends org.alice.ide.openprojectpane.ListPane {
+public class TemplatesTabContentPane extends org.alice.app.openprojectpane.ListPane {
 	private static java.net.URI[] uris;
 	static {
 		java.util.List< java.net.URI > list = new java.util.LinkedList< java.net.URI >();

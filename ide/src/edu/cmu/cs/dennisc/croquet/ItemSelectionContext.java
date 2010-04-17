@@ -50,8 +50,8 @@ public class ItemSelectionContext<E> extends Context< ItemSelectionOperation< E 
 	private E nextSelection;
 
 	//	private boolean isPreviousSelectionValid;
-	public ItemSelectionContext( ItemSelectionOperation< E > operation, java.util.EventObject e, boolean isCancelWorthwhile, E previousSelection, E nextSelection ) {
-		super( operation, e, isCancelWorthwhile );
+	public ItemSelectionContext( CompositeContext parent, ItemSelectionOperation< E > operation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness, E previousSelection, E nextSelection ) {
+		super( parent, operation, e, cancelEffectiveness );
 		this.previousSelection = previousSelection;
 		this.nextSelection = nextSelection;
 		//		this.isPreviousSelectionValid = true;
