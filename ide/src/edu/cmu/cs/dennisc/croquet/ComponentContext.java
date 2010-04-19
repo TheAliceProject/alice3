@@ -45,13 +45,65 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedRangeOperation extends ComponentOperation {
-	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-	public BoundedRangeOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
-		super( groupUUID, individualUUID );
+public abstract class ComponentContext< O extends ComponentOperation > extends Context< O >{
+	private State state;
+	public ComponentContext( CompositeContext parent, O operation, java.util.EventObject event, CancelEffectiveness cancelEffectiveness ) {
+		super( parent, operation, event, cancelEffectiveness );
 	}
-	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
-		return this.boundedRangeModel;
+	@Override
+	public State getState() {
+		return this.state;
 	}
-	public abstract void perform( BoundedRangeContext boundedRangeContext );
+	public void commitAndInvokeDo( Edit<O> edit ) {
+		assert this.state == null;
+		//edu.cmu.cs.dennisc.croquet.event.CommitEvent e = new edu.cmu.cs.dennisc.croquet.event.CommitEvent( this.getOperation(), this, edit );
+		//this.parent.committing();
+		if( edit != null ) {
+			edit.doOrRedo( true );
+		}
+		this.state = State.COMMITTED;
+		//this.parent.committed();
+	}
+	public void commit() {
+		this.commitAndInvokeDo( null );
+	}
+	public void skip() {
+		//edu.cmu.cs.dennisc.croquet.event.SkipEvent e = new edu.cmu.cs.dennisc.croquet.event.SkipEvent( this.operation, this );
+		//this.parent.skipping();
+		this.state = State.SKIPPED;
+		//this.parent.skipped();
+	}
+	public void cancel() {
+		assert this.state == null;
+		//edu.cmu.cs.dennisc.croquet.event.CancelEvent e = new edu.cmu.cs.dennisc.croquet.event.CancelEvent( this.getOperation(), this );
+		//this.parent.canceling();
+		this.state = State.CANCELLED;
+		//this.parent.cancelled();
+	}
+	private class PendTaskObserver< E extends Edit,F > implements edu.cmu.cs.dennisc.task.TaskObserver< F > {
+		private Resolver<E,F> resolver;
+		private E edit;
+		public PendTaskObserver( Resolver<E,F> resolver ) {
+			this.resolver = resolver;
+			this.edit = this.resolver.createEdit();
+			this.edit = this.resolver.initialize( this.edit, ComponentContext.this, this );
+		}
+		public void handleCompletion(F f) {
+			this.edit = this.resolver.handleCompletion( this.edit, f);
+			ComponentContext.this.commitAndInvokeDo( this.edit );
+		}
+		public void handleCancelation() {
+			this.resolver.handleCancelation();
+			ComponentContext.this.cancel();
+		}
+	}
+	public void pend( Resolver<? extends Edit, ?> resolver ) {
+		new PendTaskObserver(resolver);
+		this.state = State.PENDING;
+	}
+	
+//	public void execute( org.jdesktop.swingworker.SwingWorker< ?, ? > worker ) {
+//		worker.execute();
+//	}
+	
 }

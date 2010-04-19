@@ -45,13 +45,60 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionOperation extends AbstractActionOperation {
+public abstract class ActionOperation extends ComponentOperation {
+	private AbstractButtonOperationImplementation implementation = new AbstractButtonOperationImplementation() {
+		@Override
+		protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
+			Application.getSingleton().getCurrentCompositeContext().performInChildContext( ActionOperation.this, e, CancelEffectiveness.WORTHWHILE );
+		}
+	};
 	public ActionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
 		super( groupUUID, individualUUID );
 	}
-	@Override
-	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		Application.getSingleton().getCurrentCompositeContext().performInChildContext( this, e, CancelEffectiveness.WORTHWHILE );
-	}
 	public abstract void perform( ActionContext actionContext );
+	public String getName() {
+		return this.implementation.getName();
+	}
+	public void setName( String name ) {
+		this.implementation.setName( name );
+	}
+	public String getShortDescription() {
+		return this.implementation.getShortDescription();
+	}
+	public void setShortDescription( String shortDescription ) {
+		this.implementation.setShortDescription( shortDescription );
+	}
+	public String getLongDescription() {
+		return this.implementation.getLongDescription();
+	}
+	public void setLongDescription( String longDescription ) {
+		this.implementation.setLongDescription( longDescription );
+	}
+	public javax.swing.Icon getSmallIcon() {
+		return this.implementation.getSmallIcon();
+	}
+	public void setSmallIcon( javax.swing.Icon icon ) {
+		this.implementation.setSmallIcon( icon );
+	}
+	public int getMnemonicKey() {
+		return this.implementation.getMnemonicKey();
+	}
+	public void setMnemonicKey( int mnemonicKey ) {
+		this.implementation.setMnemonicKey( mnemonicKey );
+	}
+	public javax.swing.KeyStroke getAcceleratorKey() {
+		return this.implementation.getAcceleratorKey();
+	}
+	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+		this.implementation.setAcceleratorKey( acceleratorKey );
+	}
+
+	/*package-private*/ void addAbstractButton( KAbstractButton<?> abstractButton ) {
+		this.implementation.addAbstractButton(abstractButton);
+		this.addComponent(abstractButton);
+	}
+	/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
+		this.implementation.removeAbstractButton(abstractButton);
+		this.removeComponent(abstractButton);
+	}
 }

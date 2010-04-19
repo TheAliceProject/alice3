@@ -202,7 +202,7 @@ public abstract class Application {
 		}
 	}
 
-	public KButton createButton(final AbstractActionOperation actionOperation) {
+	public KButton createButton(final ActionOperation actionOperation) {
 		this.register( actionOperation );
 		return new KButton() {
 			@Override
@@ -219,7 +219,7 @@ public abstract class Application {
 		};
 	}
 
-	public KMenuItem createMenuItem(final AbstractActionOperation actionOperation) {
+	public KMenuItem createMenuItem(final ActionOperation actionOperation) {
 		this.register( actionOperation );
 		return new KMenuItem() {
 			@Override
@@ -235,6 +235,46 @@ public abstract class Application {
 			}
 		};
 	}
+	
+	public KButton createButton(final CompositeOperation compositeOperation) {
+		this.register( compositeOperation );
+		return new KButton() {
+			@Override
+			protected void adding() {
+				compositeOperation.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				compositeOperation.removeAbstractButton(this);
+			}
+		};
+	}
+
+	public KMenuItem createMenuItem(final CompositeOperation compositeOperation) {
+		this.register( compositeOperation );
+		return new KMenuItem() {
+			@Override
+			protected void adding() {
+				compositeOperation.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				compositeOperation.removeAbstractButton(this);
+			}
+		};
+	}
+	
+	// public javax.swing.AbstractButton createHyperlink( ActionOperation
+	// actionOperation ) {
+	// assert actionOperation != null;
+	// return new ZHyperlink(actionOperation);
+	// }
 
 
 	public KCheckBox createCheckBox(final BooleanStateOperation booleanStateOperation) {
@@ -271,12 +311,6 @@ public abstract class Application {
 			}
 		};
 	}
-	
-	// public javax.swing.AbstractButton createHyperlink( ActionOperation
-	// actionOperation ) {
-	// assert actionOperation != null;
-	// return new ZHyperlink(actionOperation);
-	// }
 	
 	public KDragComponent createDragComponent(final DragOperation dragOperation) {
 		this.register( dragOperation );
@@ -317,9 +351,12 @@ public abstract class Application {
 					rv.addMenu( this.createMenu( (MenuOperation) operation ) );
 				} else {
 					KMenuItem menuItem = null;
-					if (operation instanceof AbstractActionOperation) {
-						AbstractActionOperation actionOperation = (AbstractActionOperation) operation;
+					if (operation instanceof ActionOperation) {
+						ActionOperation actionOperation = (ActionOperation) operation;
 						menuItem = this.createMenuItem( actionOperation );
+					} else if (operation instanceof CompositeOperation) {
+						CompositeOperation compositeOperation = (CompositeOperation)operation;
+						menuItem = this.createMenuItem( compositeOperation );				
 					} else if (operation instanceof BooleanStateOperation) {
 						BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
 						menuItem = this.createMenuItem( booleanStateOperation );				

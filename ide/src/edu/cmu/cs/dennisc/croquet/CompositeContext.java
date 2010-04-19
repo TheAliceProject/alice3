@@ -50,6 +50,15 @@ public class CompositeContext extends Context< CompositeOperation > {
 	public CompositeContext( CompositeContext parent, CompositeOperation operation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
 		super( parent, operation, e, cancelEffectiveness );
 	}
+	@Override
+	public State getState() {
+		final int N = this.children.size();
+		if( N > 0 ) {
+			return this.children.get( N-1 ).getState();
+		} else {
+			return null;
+		}
+	}
 	public CompositeContext getCurrentCompositeActionContext() {
 		if( this.children.size() > 0 ) {
 			Context<?> lastChildContext = this.children.get( this.children.size()-1 );
@@ -138,5 +147,16 @@ public class CompositeContext extends Context< CompositeOperation > {
 		boundedRangeOperation.perform(rv);
 		assert isGoodToReturn( rv );
 		return rv;
+	}
+	
+	//todo
+	@Deprecated
+	public void commit() {
+		throw new AssertionError();
+	}
+	//todo
+	@Deprecated
+	public void cancel() {
+		throw new AssertionError();
 	}
 }

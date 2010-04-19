@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectionOperation<T> extends Operation {
+public abstract class ItemSelectionOperation<T> extends ComponentOperation {
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	private javax.swing.Action[] actions;
 	private javax.swing.ButtonModel[] buttonModels;

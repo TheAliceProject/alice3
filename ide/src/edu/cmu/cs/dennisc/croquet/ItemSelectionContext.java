@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ItemSelectionContext<E> extends Context< ItemSelectionOperation< E > > {
+public class ItemSelectionContext<E> extends ComponentContext< ItemSelectionOperation< E > > {
 	private E previousSelection;
 	private E nextSelection;
 

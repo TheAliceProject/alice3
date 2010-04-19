@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class BooleanStateContext extends Context< BooleanStateOperation > {
+public class BooleanStateContext extends ComponentContext< BooleanStateOperation > {
 	private Boolean previousValue;
 	private Boolean nextValue;
 

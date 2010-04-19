@@ -46,13 +46,12 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class DragOperation extends Operation {
-	private AbstractActionOperation dropOperation;
-	public DragOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, AbstractActionOperation dropOperation ) {
+	private ActionOperation dropOperation;
+	public DragOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, ActionOperation dropOperation ) {
 		super( groupUUID, individualUUID );
 		this.dropOperation = dropOperation;
 	}
-	
-	public AbstractActionOperation getDropOperation() {
+	public ActionOperation getDropOperation() {
 		return dropOperation;
 	}
 	/*package-private*/ void addDragComponent( KDragComponent dragComponent ) {
@@ -61,5 +60,4 @@ public abstract class DragOperation extends Operation {
 	/*package-private*/ void removeDragComponent( KDragComponent dragComponent ) {
 		this.removeComponent( dragComponent );
 	}
-	
 }

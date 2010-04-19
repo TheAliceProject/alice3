@@ -57,8 +57,6 @@ public abstract class Context< O extends Operation > {
 		CANCELLED,
 		PENDING
 	}
-	private State state = null;
-	
 //	public static class Key<V> {
 //		private String name;
 //		private Key( String name ) {
@@ -99,66 +97,11 @@ public abstract class Context< O extends Operation > {
 		return this.cancelEffectiveness == CancelEffectiveness.WORTHWHILE;
 	}
 
-	public State getState() {
-		return this.state;
+	public abstract State getState();
+	public final boolean isCommitted() {
+		return this.getState() == State.COMMITTED;
 	}
-	
-	public boolean isCommitted() {
-		return this.state == State.COMMITTED;
+	public final boolean isCancelled() {
+		return this.getState() == State.CANCELLED;
 	}
-	public boolean isCancelled() {
-		return this.state == State.CANCELLED;
-	}
-	public void commitAndInvokeDo( Edit<O> edit ) {
-		assert this.state == null;
-		//edu.cmu.cs.dennisc.croquet.event.CommitEvent e = new edu.cmu.cs.dennisc.croquet.event.CommitEvent( this.operation, this, edit );
-		//this.parent.committing();
-		if( edit != null ) {
-			edit.doOrRedo( true );
-		}
-		this.state = State.COMMITTED;
-		//this.parent.committed();
-	}
-	public void commit() {
-		this.commitAndInvokeDo( null );
-	}
-	public void skip() {
-		//edu.cmu.cs.dennisc.croquet.event.SkipEvent e = new edu.cmu.cs.dennisc.croquet.event.SkipEvent( this.operation, this );
-		//this.parent.skipping();
-		this.state = State.SKIPPED;
-		//this.parent.skipped();
-	}
-	public void cancel() {
-		assert this.state == null;
-		edu.cmu.cs.dennisc.croquet.event.CancelEvent e = new edu.cmu.cs.dennisc.croquet.event.CancelEvent( this.operation, this );
-		//this.parent.canceling();
-		this.state = State.CANCELLED;
-		//this.parent.cancelled();
-	}
-	private class PendTaskObserver< E extends Edit,F > implements edu.cmu.cs.dennisc.task.TaskObserver< F > {
-		private Resolver<E,F> resolver;
-		private E edit;
-		public PendTaskObserver( Resolver<E,F> resolver ) {
-			this.resolver = resolver;
-			this.edit = this.resolver.createEdit();
-			this.edit = this.resolver.initialize( this.edit, Context.this, this );
-		}
-		public void handleCompletion(F f) {
-			this.edit = this.resolver.handleCompletion( this.edit, f);
-			Context.this.commitAndInvokeDo( this.edit );
-		}
-		public void handleCancelation() {
-			this.resolver.handleCancelation();
-			Context.this.cancel();
-		}
-	}
-	public void pend( Resolver<? extends Edit, ?> resolver ) {
-		new PendTaskObserver(resolver);
-		this.state = State.PENDING;
-	}
-	
-//	public void execute( org.jdesktop.swingworker.SwingWorker< ?, ? > worker ) {
-//		worker.execute();
-//	}
-	
 }

@@ -45,13 +45,8 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class BoundedRangeOperation extends ComponentOperation {
-	private javax.swing.BoundedRangeModel boundedRangeModel = new javax.swing.DefaultBoundedRangeModel();
-	public BoundedRangeOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
-		super( groupUUID, individualUUID );
+public abstract class ComponentOperation extends Operation {
+	public ComponentOperation( java.util.UUID groupUUID, java.util.UUID inividualUUID ) {
+		super( groupUUID, inividualUUID );
 	}
-	public javax.swing.BoundedRangeModel getBoundedRangeModel() {
-		return this.boundedRangeModel;
-	}
-	public abstract void perform( BoundedRangeContext boundedRangeContext );
 }

@@ -45,18 +45,17 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractActionOperation extends Operation {
+public abstract class AbstractButtonOperationImplementation {
 	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
 
-	public AbstractActionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
-		super( groupUUID, individualUUID );
+	public AbstractButtonOperationImplementation() {
 		this.buttonModel.addActionListener( new java.awt.event.ActionListener() {
 			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				AbstractActionOperation.this.handleActionPerformed( e );
+				AbstractButtonOperationImplementation.this.handleActionPerformed( e );
 			}
 		} );
 	}
@@ -101,10 +100,8 @@ public abstract class AbstractActionOperation extends Operation {
 	/*package-private*/ void addAbstractButton( KAbstractButton<?> abstractButton ) {
 		abstractButton.setAction( this.action );
 		abstractButton.setModel( this.buttonModel );
-		this.addComponent( abstractButton );
 	}
 	/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
-		this.removeComponent( abstractButton );
 		abstractButton.setModel( null );
 		abstractButton.setAction( null );
 	}

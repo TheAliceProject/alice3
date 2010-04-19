@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class ActionContext extends Context< ActionOperation > {
+public class ActionContext extends ComponentContext< ActionOperation > {
 	public ActionContext( CompositeContext parent, ActionOperation operation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
 		super( parent, operation, e, cancelEffectiveness );
 	}
