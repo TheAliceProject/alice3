@@ -145,5 +145,4 @@ public abstract class ItemSelectionOperation<T> extends ComponentOperation {
 			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
 		}
 	}
-	
 }

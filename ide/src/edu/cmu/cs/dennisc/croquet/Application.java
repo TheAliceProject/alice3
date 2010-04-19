@@ -370,7 +370,6 @@ public abstract class Application {
 			}
 		}
 		return rv;
-		
 	}
 	
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
@@ -427,5 +426,5 @@ public abstract class Application {
 	//todo
 	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane<T> inputPane, String title, boolean isModal ) {
 		return inputPane.showInJDialog( this.frame.getAWTWindow(), title, isModal);
-	}
+	}	
 }

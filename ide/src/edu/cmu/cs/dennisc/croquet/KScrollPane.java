@@ -81,7 +81,6 @@ public class KScrollPane extends KComponent< javax.swing.JScrollPane > {
 		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
 		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
 	}
-	
 	public void setViewportView( KComponent<?> view ) {
 		assert view != null;
 		this.getJComponent().setViewportView( view.getJComponent() );
