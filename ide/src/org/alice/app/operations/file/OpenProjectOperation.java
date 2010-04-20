@@ -52,9 +52,9 @@ public class OpenProjectOperation extends AbstractOpenProjectOperation {
 		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_O, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
 		this.setMnemonicKey( java.awt.event.KeyEvent.VK_O );
 	}
-	@Override
-	protected boolean isNew() {
-		return false;
-	}
-	
+//	@Override
+//	protected boolean isNew() {
+//		return false;
+//	}
+//	
 }

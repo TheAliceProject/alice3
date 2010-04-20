@@ -55,7 +55,12 @@ public abstract class CompositeOperation extends Operation {
 	public CompositeOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
 		super( groupUUID, individualUUID );
 	}
-	public abstract void perform( CompositeContext actionContext );
+	protected abstract java.util.List< Operation > getOperations();
+	public final void perform( CompositeContext actionContext ) {
+		for( Operation operation : this.getOperations() ) {
+			edu.cmu.cs.dennisc.print.PrintUtilities.println( operation );
+		}
+	}
 	public String getName() {
 		return this.implementation.getName();
 	}

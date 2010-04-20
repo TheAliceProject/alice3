@@ -48,21 +48,21 @@ package org.alice.app.operations.file;
 public abstract class AbstractOpenProjectOperation extends ClearanceRequiringUriCompositeOperation {
 	//public static final edu.cmu.cs.dennisc.croquet.Context.Key<java.io.File> FILE_KEY = edu.cmu.cs.dennisc.croquet.Context.createKey( "FILE_KEY" );
 	
-	private edu.cmu.cs.dennisc.croquet.ActionOperation selectAndLoadProjectOperation;
+//	private edu.cmu.cs.dennisc.croquet.ActionOperation selectAndLoadProjectOperation;
 	
 	public AbstractOpenProjectOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.ActionOperation saveOperation, edu.cmu.cs.dennisc.croquet.ActionOperation selectAndLoadProjectOperation ) {
-		super( individualUUID, saveOperation );
-		this.selectAndLoadProjectOperation = selectAndLoadProjectOperation;
+		super( individualUUID, saveOperation, selectAndLoadProjectOperation );
+//		this.selectAndLoadProjectOperation = selectAndLoadProjectOperation;
 	}
-	protected abstract boolean isNew();
-	@Override
-	protected final void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
-		assert compositeContext.isCancelled() == false;
-		edu.cmu.cs.dennisc.croquet.ActionContext selectProjectContext = compositeContext.performInChildContext( this.selectAndLoadProjectOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
-		if( selectProjectContext.isCommitted() ) {
-			compositeContext.commit();
-		} else {
-			compositeContext.cancel();
-		}
-	}
+//	protected abstract boolean isNew();
+//	@Override
+//	protected final void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
+//		assert compositeContext.isCancelled() == false;
+//		edu.cmu.cs.dennisc.croquet.ActionContext selectProjectContext = compositeContext.performInChildContext( this.selectAndLoadProjectOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
+//		if( selectProjectContext.isCommitted() ) {
+//			compositeContext.commit();
+//		} else {
+//			compositeContext.cancel();
+//		}
+//	}
 }

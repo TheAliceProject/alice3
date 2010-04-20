@@ -47,36 +47,63 @@ package org.alice.app.operations.file;
  */
 public abstract class ClearanceRequiringUriCompositeOperation extends UriCompositeOperation {
 	private edu.cmu.cs.dennisc.croquet.ActionOperation saveOperation;
-	public ClearanceRequiringUriCompositeOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.ActionOperation saveOperation ) {
+	private edu.cmu.cs.dennisc.croquet.Operation otherOperation;
+	public ClearanceRequiringUriCompositeOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.ActionOperation saveOperation, edu.cmu.cs.dennisc.croquet.Operation otherOperation ) {
 		super( individualUUID );
 		this.saveOperation = saveOperation;
+		this.otherOperation = otherOperation;
 	}
-	protected abstract void performPostCleared( edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext );
 	@Override
-	public final void perform(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Operation > getOperations() {
+		java.util.List< edu.cmu.cs.dennisc.croquet.Operation > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		org.alice.app.ProjectApplication application = this.getProjectApplication();
 		if( application.isProjectUpToDateWithFile() ) {
-			//pass
+			operations.add( this.otherOperation );
 		} else {
 			edu.cmu.cs.dennisc.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
 			if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ClearToProcedeWithChangedProjectOperation event" );
-				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
-				if( saveContext.isCommitted() ) {
-					//pass;
-				} else {
-					compositeContext.cancel();
-				}
+				operations.add( this.saveOperation );
+				operations.add( this.otherOperation );
+//				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
+//				if( saveContext.isCommitted() ) {
+//					//pass;
+//				} else {
+//					compositeContext.cancel();
+//				}
 			} else if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.NO ) {
-				//pass
+				operations.add( this.otherOperation );
 			} else {
-				compositeContext.cancel();
+				//pass
 			}
 		}
-		if( compositeContext.isCancelled() ) {
-			//pass
-		} else {
-			this.performPostCleared( compositeContext );
-		}
+		return operations;
 	}
+//	protected abstract void performPostCleared( edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext );
+//	@Override
+//	public final void perform(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
+//		org.alice.app.ProjectApplication application = this.getProjectApplication();
+//		if( application.isProjectUpToDateWithFile() ) {
+//			//pass
+//		} else {
+//			edu.cmu.cs.dennisc.croquet.YesNoCancelOption option = application.showYesNoCancelConfirmDialog( "Your program has been modified.  Would you like to save it?", "Save changed project?" );
+//			if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ClearToProcedeWithChangedProjectOperation event" );
+//				edu.cmu.cs.dennisc.croquet.ActionContext saveContext = compositeContext.performInChildContext( this.saveOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
+//				if( saveContext.isCommitted() ) {
+//					//pass;
+//				} else {
+//					compositeContext.cancel();
+//				}
+//			} else if( option == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.NO ) {
+//				//pass
+//			} else {
+//				compositeContext.cancel();
+//			}
+//		}
+//		if( compositeContext.isCancelled() ) {
+//			//pass
+//		} else {
+//			this.performPostCleared( compositeContext );
+//		}
+//	}
 }

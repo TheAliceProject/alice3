@@ -47,13 +47,13 @@ package org.alice.app.operations.file;
  */
 public class ExitOperation extends ClearanceRequiringUriCompositeOperation {
 	public ExitOperation( edu.cmu.cs.dennisc.croquet.ActionOperation saveOperation ) {
-		super( java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), saveOperation );
+		super( java.util.UUID.fromString( "ba357b75-2167-4b4d-9f11-bf34b48d6b2e" ), saveOperation, null );
 		this.setName( "Exit" );
 	}
-	@Override
-	protected void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
-		assert compositeContext.isCancelled() == false;
-		//todo?
-		System.exit( 0 );
-	}
+//	@Override
+//	protected void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
+//		assert compositeContext.isCancelled() == false;
+//		//todo?
+//		System.exit( 0 );
+//	}
 }

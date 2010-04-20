@@ -148,15 +148,4 @@ public class CompositeContext extends Context< CompositeOperation > {
 		assert isGoodToReturn( rv );
 		return rv;
 	}
-	
-	//todo
-	@Deprecated
-	public void commit() {
-		throw new AssertionError();
-	}
-	//todo
-	@Deprecated
-	public void cancel() {
-		throw new AssertionError();
-	}
 }
