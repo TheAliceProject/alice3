@@ -66,7 +66,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	private edu.cmu.cs.dennisc.croquet.ActionOperation saveAsOperation = new org.alice.app.operations.file.SaveAsProjectOperation();
 	private edu.cmu.cs.dennisc.croquet.CompositeOperation newProjectOperation = new org.alice.app.operations.file.NewProjectOperation( this.saveOperation );
 	private edu.cmu.cs.dennisc.croquet.CompositeOperation openProjectOperation = new org.alice.app.operations.file.OpenProjectOperation( this.saveOperation );
-	private edu.cmu.cs.dennisc.croquet.CompositeOperation exitOperation = new org.alice.app.operations.file.ExitOperation( this.saveOperation );
+	private edu.cmu.cs.dennisc.croquet.CompositeOperation exitOperation = new org.alice.app.operations.file.ClearanceCheckingExitOperation( this.saveOperation );
 
 	public org.alice.app.openprojectpane.OpenProjectPane getOpenProjectPane() {
 		//todo: cache
