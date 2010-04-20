@@ -45,17 +45,16 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ActionOperation extends ComponentOperation {
+public abstract class ActionOperation extends ComponentOperation< ActionContext > {
 	private AbstractButtonOperationImplementation implementation = new AbstractButtonOperationImplementation() {
 		@Override
 		protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-			Application.getSingleton().getCurrentCompositeContext().performInChildContext( ActionOperation.this, e, CancelEffectiveness.WORTHWHILE );
+			ActionOperation.this.performAsChildInCurrentContext( e, CancelEffectiveness.WORTHWHILE );
 		}
 	};
 	public ActionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
 		super( groupUUID, individualUUID );
 	}
-	public abstract void perform( ActionContext actionContext );
 	public String getName() {
 		return this.implementation.getName();
 	}
@@ -100,5 +99,10 @@ public abstract class ActionOperation extends ComponentOperation {
 	/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
 		this.implementation.removeAbstractButton(abstractButton);
 		this.removeComponent(abstractButton);
+	}
+	
+	@Override
+	protected ActionContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+		return new ActionContext( parentContext, this, e, cancelEffectiveness );
 	}
 }

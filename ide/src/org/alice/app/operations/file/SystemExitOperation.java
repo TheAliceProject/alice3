@@ -50,7 +50,7 @@ public class SystemExitOperation extends UriActionOperation {
 		super( java.util.UUID.fromString( "ea33dc98-e41d-4a7a-850e-cc4e612efbe8" ) );
 	}
 	@Override
-	public void perform(edu.cmu.cs.dennisc.croquet.ActionContext actionContext) {
+	protected void perform(edu.cmu.cs.dennisc.croquet.ActionContext actionContext) {
 		System.exit( 0 );
 	}
 }

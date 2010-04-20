@@ -45,20 +45,21 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompositeOperation extends Operation {
+public abstract class CompositeOperation extends Operation< CompositeContext > {
 	private AbstractButtonOperationImplementation implementation = new AbstractButtonOperationImplementation() {
 		@Override
 		protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-			Application.getSingleton().getCurrentCompositeContext().performInChildContext( CompositeOperation.this, e, CancelEffectiveness.WORTHWHILE );
+			CompositeOperation.this.performAsChildInCurrentContext( e, CancelEffectiveness.WORTHWHILE );
 		}
 	};
 	public CompositeOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
 		super( groupUUID, individualUUID );
 	}
 	protected abstract java.util.List< Operation > getOperations();
-	public final void perform( CompositeContext actionContext ) {
-		for( Operation operation : this.getOperations() ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( operation );
+	@Override
+	protected final void perform( CompositeContext context ) {
+		for( Operation<?> operation : this.getOperations() ) {
+			operation.performAsChildInCurrentContext( null, context.getCancelEffectiveness() );
 		}
 	}
 	public String getName() {
@@ -105,5 +106,10 @@ public abstract class CompositeOperation extends Operation {
 	/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
 		this.implementation.removeAbstractButton(abstractButton);
 		this.removeComponent(abstractButton);
+	}
+	
+	@Override
+	protected CompositeContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+		return new CompositeContext( parentContext, this, e, cancelEffectiveness );
 	}
 }

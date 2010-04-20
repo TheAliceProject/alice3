@@ -100,52 +100,52 @@ public class CompositeContext extends Context< CompositeOperation > {
 		}
 		
 	}
-	public CompositeContext performInChildContext( CompositeOperation compositeOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-		assert compositeOperation != null;
-		assert this.isGoodToGo();
-		CompositeContext rv = new CompositeContext( this, compositeOperation, e, cancelEffectiveness);
-		this.children.add( rv );
-		compositeOperation.perform(rv);
-		assert isGoodToReturn( rv );
-		return rv;
-	}
-	public ActionContext performInChildContext( ActionOperation actionOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-		assert actionOperation != null;
-		assert this.isGoodToGo();
-		ActionContext rv = new ActionContext( this, actionOperation, e, cancelEffectiveness);
-		this.children.add( rv );
-		actionOperation.perform(rv);
-		assert isGoodToReturn( rv );
-		return rv;
-	}
-
-	public BooleanStateContext performInChildContext(BooleanStateOperation stateOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness, Boolean previousValue, Boolean nextValue) {
-		assert stateOperation != null;
-		assert this.isGoodToGo();
-		BooleanStateContext rv = new BooleanStateContext(this, stateOperation, e, cancelEffectiveness, previousValue, nextValue);
-		this.children.add( rv );
-		stateOperation.performStateChange(rv);
-		assert isGoodToReturn( rv );
-		return rv;
-	}
-	
-	public <E> ItemSelectionContext<E> performInChildContext(ItemSelectionOperation<E> itemSelectionOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness, E previousSelection, E nextSelection) {
-		assert itemSelectionOperation != null;
-		assert this.isGoodToGo();
-		ItemSelectionContext<E> rv = new ItemSelectionContext<E>(this, itemSelectionOperation, e, cancelEffectiveness, previousSelection, nextSelection);
-		this.children.add( rv );
-		itemSelectionOperation.performSelectionChange(rv);
-		assert isGoodToReturn( rv );
-		return rv;
-	}
-	
-	public BoundedRangeContext performInChildContext(BoundedRangeOperation boundedRangeOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness) {
-		assert boundedRangeOperation != null;
-		assert this.isGoodToGo();
-		BoundedRangeContext rv = new BoundedRangeContext(this, boundedRangeOperation, e, cancelEffectiveness);
-		this.children.add( rv );
-		boundedRangeOperation.perform(rv);
-		assert isGoodToReturn( rv );
-		return rv;
-	}
+//	public CompositeContext performInChildContext( CompositeOperation compositeOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+//		assert compositeOperation != null;
+//		assert this.isGoodToGo();
+//		CompositeContext rv = new CompositeContext( this, compositeOperation, e, cancelEffectiveness);
+//		this.children.add( rv );
+//		compositeOperation.perform(rv);
+//		assert isGoodToReturn( rv );
+//		return rv;
+//	}
+//	public ActionContext performInChildContext( ActionOperation actionOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+//		assert actionOperation != null;
+//		assert this.isGoodToGo();
+//		ActionContext rv = new ActionContext( this, actionOperation, e, cancelEffectiveness);
+//		this.children.add( rv );
+//		actionOperation.perform(rv);
+//		assert isGoodToReturn( rv );
+//		return rv;
+//	}
+//
+//	public BooleanStateContext performInChildContext(BooleanStateOperation stateOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness, Boolean previousValue, Boolean nextValue) {
+//		assert stateOperation != null;
+//		assert this.isGoodToGo();
+//		BooleanStateContext rv = new BooleanStateContext(this, stateOperation, e, cancelEffectiveness, previousValue, nextValue);
+//		this.children.add( rv );
+//		stateOperation.performStateChange(rv);
+//		assert isGoodToReturn( rv );
+//		return rv;
+//	}
+//	
+//	public <E> ItemSelectionContext<E> performInChildContext(ItemSelectionOperation<E> itemSelectionOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness, E previousSelection, E nextSelection) {
+//		assert itemSelectionOperation != null;
+//		assert this.isGoodToGo();
+//		ItemSelectionContext<E> rv = new ItemSelectionContext<E>(this, itemSelectionOperation, e, cancelEffectiveness, previousSelection, nextSelection);
+//		this.children.add( rv );
+//		itemSelectionOperation.performSelectionChange(rv);
+//		assert isGoodToReturn( rv );
+//		return rv;
+//	}
+//	
+//	public BoundedRangeContext performInChildContext(BoundedRangeOperation boundedRangeOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness) {
+//		assert boundedRangeOperation != null;
+//		assert this.isGoodToGo();
+//		BoundedRangeContext rv = new BoundedRangeContext(this, boundedRangeOperation, e, cancelEffectiveness);
+//		this.children.add( rv );
+//		boundedRangeOperation.perform(rv);
+//		assert isGoodToReturn( rv );
+//		return rv;
+//	}
 }

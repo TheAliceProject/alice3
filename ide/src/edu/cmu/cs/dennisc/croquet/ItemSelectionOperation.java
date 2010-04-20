@@ -45,12 +45,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectionOperation<T> extends ComponentOperation {
+public abstract class ItemSelectionOperation<T> extends ComponentOperation< ItemSelectionContext > {
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	private javax.swing.Action[] actions;
 	private javax.swing.ButtonModel[] buttonModels;
 	private java.awt.event.ItemListener[] itemListeners;
 	private javax.swing.ComboBoxModel comboBoxModel;
+	
+	private T previousSelection;
 	public ItemSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, javax.swing.ComboBoxModel comboBoxModel ) {
 		super( groupUUID, individualUUID );
 		this.comboBoxModel = comboBoxModel;
@@ -58,7 +60,7 @@ public abstract class ItemSelectionOperation<T> extends ComponentOperation {
 		this.actions = new javax.swing.Action[ N ];
 		this.buttonModels = new javax.swing.ButtonModel[ N ];
 		this.itemListeners = new java.awt.event.ItemListener[ N ];
-		T selectedItem = (T)comboBoxModel.getSelectedItem();
+		this.previousSelection = (T)comboBoxModel.getSelectedItem();
 		for( int i=0; i<N; i++ ) {
 			class Action extends javax.swing.AbstractAction {
 				public Action( int i, T item ) {
@@ -67,22 +69,16 @@ public abstract class ItemSelectionOperation<T> extends ComponentOperation {
 				public void actionPerformed( java.awt.event.ActionEvent e ) {
 				}
 			}
-			final T item = (T)this.comboBoxModel.getElementAt( i );
+			T item = (T)this.comboBoxModel.getElementAt( i );
 			this.actions[ i ] = new Action( i, item ); 
 			this.buttonModels[ i ] = new javax.swing.JToggleButton.ToggleButtonModel();
 			this.buttonModels[ i ].setGroup( buttonGroup );
-			if( item == selectedItem ) {
+			if( item == this.previousSelection ) {
 				this.buttonModels[ i ].setSelected( true );
 			}
 			this.itemListeners[ i ] = new java.awt.event.ItemListener() {
 				public void itemStateChanged( java.awt.event.ItemEvent e ) {
-					if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
-						
-						edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ItemSelectionOperation previousValue" );
-						
-						
-						Application.getSingleton().getCurrentCompositeContext().performInChildContext( ItemSelectionOperation.this, e, CancelEffectiveness.FUTILE, null, item );
-					}
+					ItemSelectionOperation.this.performAsChildInCurrentContext( e, CancelEffectiveness.FUTILE );
 				}
 			};
 			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
@@ -144,5 +140,15 @@ public abstract class ItemSelectionOperation<T> extends ComponentOperation {
 		for( int i=0; i<N; i++ ) {
 			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
 		}
+	}
+	
+	@Override
+	protected ItemSelectionContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+		assert e instanceof java.awt.event.ItemEvent;
+		java.awt.event.ItemEvent itemEvent = (java.awt.event.ItemEvent)e;
+		T nextSelection = (T)this.comboBoxModel.getSelectedItem();
+		ItemSelectionContext rv = new ItemSelectionContext( parentContext, this, e, cancelEffectiveness, this.previousSelection, nextSelection );
+		this.previousSelection = nextSelection;
+		return rv;
 	}
 }

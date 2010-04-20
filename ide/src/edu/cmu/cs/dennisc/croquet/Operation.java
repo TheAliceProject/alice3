@@ -45,14 +45,13 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation {
+public abstract class Operation< C extends Context > {
 	private java.util.UUID groupUUID;
 	private java.util.UUID inividualUUID;
 	public Operation( java.util.UUID groupUUID, java.util.UUID inividualUUID ) {
 		this.groupUUID = groupUUID;
 		this.inividualUUID = inividualUUID;
 	}
-
 	public java.util.UUID getGroupUUID() {
 		return this.groupUUID;
 	}
@@ -130,5 +129,15 @@ public abstract class Operation {
 		synchronized( this.components ) {
 			this.components.remove( component );
 		}
+	}
+	
+	protected abstract void perform( C context );
+	protected abstract C createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness );
+	private C createContext( java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+		return this.createContext( Application.getSingleton().getCurrentCompositeContext(), e, cancelEffectiveness );
+	}
+	protected final void performAsChildInCurrentContext( java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+		C context = this.createContext( e, cancelEffectiveness );
+		this.perform( context );
 	}
 }

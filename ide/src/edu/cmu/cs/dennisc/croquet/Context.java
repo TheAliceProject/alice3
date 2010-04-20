@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Context< O extends Operation > {
+public abstract class Context< O extends Operation<?> > {
 	private CompositeContext parent;
 	private O operation;
 	private java.util.EventObject event;
@@ -84,7 +84,7 @@ public abstract class Context< O extends Operation > {
 		this.event = event;
 		this.cancelEffectiveness = cancelEffectiveness;
 	}
-	public Context<?> getParent() {
+	public CompositeContext getParent() {
 		return this.parent;
 	}
 	public O getOperation() {
@@ -92,6 +92,9 @@ public abstract class Context< O extends Operation > {
 	}
 	public java.util.EventObject getEvent() {
 		return event;
+	}
+	public CancelEffectiveness getCancelEffectiveness() {
+		return this.cancelEffectiveness;
 	}
 	public boolean isCancelWorthwhile() {
 		return this.cancelEffectiveness == CancelEffectiveness.WORTHWHILE;

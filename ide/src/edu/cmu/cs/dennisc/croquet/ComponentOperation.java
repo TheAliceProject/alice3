@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ComponentOperation extends Operation {
+public abstract class ComponentOperation< C extends ComponentContext > extends Operation< C > {
 	public ComponentOperation( java.util.UUID groupUUID, java.util.UUID inividualUUID ) {
 		super( groupUUID, inividualUUID );
 	}
