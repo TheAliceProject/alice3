@@ -47,6 +47,7 @@ import org.alice.interact.PickHint;
 import org.alice.stageide.StageIDE;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 import org.alice.stageide.sceneeditor.viewmanager.CameraViewSelector;
+import org.alice.stageide.sceneeditor.viewmanager.LookingGlassViewSelector;
 import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
 
@@ -110,29 +111,10 @@ public class SceneEditor extends Program {
 	}
 	
 	
-	protected void setProgramType( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType ) {
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice;
-		if( programType != null ) {
-			edu.cmu.cs.dennisc.alice.ast.AbstractField field = programType.getDeclaredFields().get( 0 );
-			if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-				fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field;
-			} else {
-				fieldInAlice = null;
-			}
-		} else {
-			fieldInAlice = null;
-		}
-		this.setRootField( fieldInAlice );
-	}
-	
 	public void setProject(edu.cmu.cs.dennisc.alice.Project project)
 	{
 		IDE.getSingleton().setProject( project );
-		this.viewSelector.addOrthographicMarkersToScene(this.sceneEditor.getScene());
-		//this.sceneEditor.projectOpened( new ProjectOpenEvent(IDE.getSingleton(), this.project, project) );
-		this.setProgramType( (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType() );
 		this.project = project;
-//		this.viewPanel.setProject( project );
 	}
 	
 	public void loadProjectFrom( java.io.File file ) {
@@ -171,59 +153,10 @@ public class SceneEditor extends Program {
 	protected boolean isLightweightOnscreenLookingGlassDesired() {
 		return false;
 	}
-	
-	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField;
-	
-	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
-		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-		}
-		public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			SceneEditor.this.refreshFields();
-		}
 
-		public void clearing( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-		}
-		public void cleared( edu.cmu.cs.dennisc.property.event.ClearListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			SceneEditor.this.refreshFields();
-		}
-
-		public void removing( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-		}
-		public void removed( edu.cmu.cs.dennisc.property.event.RemoveListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			SceneEditor.this.refreshFields();
-		}
-
-		public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-		}
-		public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
-			SceneEditor.this.refreshFields();
-		}
-	};
-	
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getRootTypeDeclaredInAlice() {
-		return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)this.rootField.valueType.getValue();
-	}
-	public void setRootField( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rootField ) {
-		if( this.rootField != null ) {
-			getRootTypeDeclaredInAlice().fields.removeListPropertyListener( this.fieldsAdapter );
-		}
-		this.rootField = rootField;
-		if( this.rootField != null ) {
-			getRootTypeDeclaredInAlice().fields.addListPropertyListener( this.fieldsAdapter );
-		}
-		this.refreshFields();
-	}
-	
-	public void refreshFields()
-	{
-		System.out.println("Refresh!");
-		this.viewPanel.refreshFields();
-		this.viewSelector.refreshFields();
-	}
-	
 	SceneViewManagerPanel viewPanel = null;
 	ManipulationHandleControlPanel handleControlPanel;
-	CameraViewSelector viewSelector;
+	LookingGlassViewSelector viewSelector;
 	protected java.io.File projectFile = new java.io.File( edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyAliceDirectory("Alice3"), "SCENE_EDITOR_TEST.a3p" );
 	protected java.io.File defaultFile = new java.io.File( "C:/Users/Administrator/Documents/Alice3/MyProjects/cameraTest.a3p" );
 
@@ -243,8 +176,8 @@ public class SceneEditor extends Program {
 	
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 		
-		this.viewPanel = new SceneViewManagerPanel(this.sceneEditor);
-		this.viewSelector = new CameraViewSelector(this.sceneEditor, animator);
+//		this.viewPanel = (SceneViewManagerPanel)this.sceneEditor.getViewManager();
+//		this.viewSelector = (LookingGlassViewSelector)this.sceneEditor.getViewSelector();
 		this.handleControlPanel = new ManipulationHandleControlPanel();
 		
 		JButton saveButton = new JButton("SAVE");

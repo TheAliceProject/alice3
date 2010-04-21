@@ -70,13 +70,13 @@ public abstract class ColorTargetBasedAnimation extends TargetBasedFrameObserver
 	}
 
 	@Override
-	protected double getDistanceToDone() {
+	protected boolean isCloseEnoughToBeDone() {
 		double rDif = Math.abs( this.currentValue.red - this.targetValue.red);
 		double gDif = Math.abs( this.currentValue.green - this.targetValue.green);
 		double bDif = Math.abs( this.currentValue.blue - this.targetValue.blue);
 		double aDif = Math.abs( this.currentValue.alpha - this.targetValue.alpha);
 		
-		return Math.sqrt( rDif*rDif + gDif*gDif + bDif*bDif + aDif*aDif );
+		return (Math.sqrt( rDif*rDif + gDif*gDif + bDif*bDif + aDif*aDif ) < MIN_DISTANCE_TO_DONE);
 	}
 
 	@Override

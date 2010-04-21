@@ -370,36 +370,20 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	public void makeCameraActive(AbstractCamera camera)
 	{
-		System.out.println("Trying to activate "+camera);
 		boolean activated = false;
 		for (Entry<CameraView, CameraPair> cameras : this.cameraMap.entrySet())
 		{
 			if (cameras.getValue().hasCamera( camera ))
 			{
-				System.out.println("Making "+cameras.getKey()+" active on "+camera);
 				cameras.getValue().setActiveCamera( camera );
 				activated = true;
 			}
-		}
-		if (activated)
-		{
-			System.out.println("Success!");
-		}
-		else
-		{
-			System.out.println("failure!");
 		}
 	}
 
 	protected AbstractCamera getActiveCamera()
 	{
 		//TODO: introduce a true sense of "active"
-		System.out.println("Entries: "+this.cameraMap.size());
-		for (Entry<CameraView, CameraPair> entry : this.cameraMap.entrySet())
-		{
-			System.out.println("  "+entry.getKey()+", "+entry.getValue());
-		}
-		
 		CameraPair activeCameraPair = this.cameraMap.get( CameraView.MAIN );
 		if (activeCameraPair == null || activeCameraPair.getActiveCamera() == null)
 		{
@@ -426,13 +410,8 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 			}
 			else
 			{
-				System.out.println("NULL!");
 				cameraToReturn = null;
 			}
-		}
-		if (cameraToReturn == null)
-		{
-			System.out.println("Null!");
 		}
 		return cameraToReturn;
 	}

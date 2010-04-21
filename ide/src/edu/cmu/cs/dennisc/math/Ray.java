@@ -91,43 +91,35 @@ public class Ray {
 	public edu.cmu.cs.dennisc.math.Point3 getOrigin() {
 		return getOrigin( new edu.cmu.cs.dennisc.math.Point3() );
 	}
-	
 	public void setOrigin( edu.cmu.cs.dennisc.math.Point3 origin ) {
-        if( origin != null ) {
-                this.setOrigin( origin.x, origin.y, origin.z );
-        } else {
-                this.setOrigin( Double.NaN, Double.NaN, Double.NaN );
-        }
+		if( origin != null ) {
+			this.setOrigin( origin.x, origin.y, origin.z );
+		} else {
+			this.setOrigin( Double.NaN, Double.NaN, Double.NaN );
+		}
 	}
-
-	public void setOrigin(double x, double y, double z) {
-		m_origin.set(x, y, z);
+	public void setOrigin( double x, double y, double z ) {
+		m_origin.set( x, y, z );
 	}
-
 	public edu.cmu.cs.dennisc.math.Vector3 accessDirection() {
 		return m_direction;
 	}
-
-	public edu.cmu.cs.dennisc.math.Vector3 getDirection(
-			edu.cmu.cs.dennisc.math.Vector3 rv) {
-		rv.set(m_direction);
+	public edu.cmu.cs.dennisc.math.Vector3 getDirection( edu.cmu.cs.dennisc.math.Vector3 rv ) {
+		rv.set( m_direction );
 		return rv;
 	}
-
 	public edu.cmu.cs.dennisc.math.Vector3 getDirection() {
-		return getDirection(new edu.cmu.cs.dennisc.math.Vector3());
+		return getDirection( new edu.cmu.cs.dennisc.math.Vector3() );
 	}
-
-	public void setDirection(edu.cmu.cs.dennisc.math.Vector3 direction) {
-		if (direction != null) {
-			this.setDirection(direction.x, direction.y, direction.z);
+	public void setDirection( edu.cmu.cs.dennisc.math.Vector3 direction ) {
+		if( direction != null ) {
+			this.setDirection( direction.x, direction.y, direction.z );
 		} else {
-			this.setDirection(Double.NaN, Double.NaN, Double.NaN);
+			this.setDirection( Double.NaN, Double.NaN, Double.NaN );
 		}
 	}
-
-	public void setDirection(double x, double y, double z) {
-		m_direction.set(x, y, z);
+	public void setDirection( double x, double y, double z ) {
+		m_direction.set( x, y, z );
 	}
 
 	public edu.cmu.cs.dennisc.math.Point3 getPointAlong( edu.cmu.cs.dennisc.math.Point3 rv, double t ) {

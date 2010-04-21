@@ -52,27 +52,24 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Ray getRayAtPixel( edu.cmu.cs.dennisc.math.Ray rv, int xPixel, int yPixel, java.awt.Rectangle actualViewport ) {
-		synchronized (s_actualPicturePlaneBufferForReuse) {
-			getActualPicturePlane(s_actualPicturePlaneBufferForReuse,
-					actualViewport);
+		synchronized( s_actualPicturePlaneBufferForReuse ) {
+			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
 			double left = s_actualPicturePlaneBufferForReuse.getXMinimum();
 			double right = s_actualPicturePlaneBufferForReuse.getXMaximum();
 			double bottom = s_actualPicturePlaneBufferForReuse.getYMinimum();
 			double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
 			double near = m_element.nearClippingPlaneDistance.getValue();
-			// double far = m_element.farClippingPlaneDistance.getValue();
-
-			double xPortion = (xPixel - actualViewport.x)
-					/ (double) actualViewport.width;
-			double yPortion = (xPixel - actualViewport.x)
-					/ (double) actualViewport.width;
-
-			double x = left + (right - left) * xPortion;
-			double y = bottom + (top - bottom) * yPortion;
+			//double far = m_element.farClippingPlaneDistance.getValue();
+			
+			double xPortion = ( xPixel - actualViewport.x ) / (double) actualViewport.width;
+			double yPortion = ( xPixel - actualViewport.x ) / (double) actualViewport.width;
+			
+			double x = left + (right-left)*xPortion;
+			double y = bottom + (top-bottom)*yPortion;
 			double z = near;
-			rv.setOrigin(x, y, z);
-
-			rv.setDirection(0, 0, 1);
+			rv.setOrigin( x, y, z );
+			
+			rv.setDirection( 0, 0, 1 );
 		}
 		return rv;
 	}
@@ -80,11 +77,11 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
 		synchronized( s_actualPicturePlaneBufferForReuse ) {
-			edu.cmu.cs.dennisc.math.ClippedZPlane actualPicturePlane = getActualPicturePlane( new edu.cmu.cs.dennisc.math.ClippedZPlane(), actualViewport );
-			double left = actualPicturePlane.getXMinimum();
-			double right = actualPicturePlane.getXMaximum();
-			double bottom = actualPicturePlane.getYMinimum();
-			double top = actualPicturePlane.getYMaximum();
+			getActualPicturePlane( s_actualPicturePlaneBufferForReuse, actualViewport );
+			double left = s_actualPicturePlaneBufferForReuse.getXMinimum();
+			double right = s_actualPicturePlaneBufferForReuse.getXMaximum();
+			double bottom = s_actualPicturePlaneBufferForReuse.getYMinimum();
+			double top = s_actualPicturePlaneBufferForReuse.getYMaximum();
 			double near = m_element.nearClippingPlaneDistance.getValue();
 			double far = m_element.farClippingPlaneDistance.getValue();
 

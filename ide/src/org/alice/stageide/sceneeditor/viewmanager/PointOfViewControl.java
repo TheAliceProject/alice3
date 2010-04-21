@@ -280,7 +280,6 @@ public class PointOfViewControl extends JPanel implements ActionListener, Absolu
 			this.pointOfViewManager.removePointOfView( this.pointOfViewButton.getPointOfView() );
 		} else if( e.getSource() == this.setViewButton ) {
 			PointOfView pov = this.pointOfViewManager.getCurrentPointOfView();
-			System.out.println(pov);
 			this.pointOfViewButton.setPointOfView( pov );
 		} else if( e.getSource() == this.recordButton ) {
 			this.toggleRecording();

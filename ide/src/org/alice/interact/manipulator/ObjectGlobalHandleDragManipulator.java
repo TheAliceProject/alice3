@@ -74,6 +74,10 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		{
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
+		if (this.activeManipulator != null && this.activeManipulator instanceof CameraInformedManipulator)
+		{
+			((CameraInformedManipulator)this.activeManipulator).setCamera( camera );
+		}
 		
 	}
 	
@@ -108,6 +112,10 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 	public void setOnscreenLookingGlass( OnscreenLookingGlass lookingGlass )
 	{
 		this.onscreenLookingGlass = lookingGlass;
+		if (this.activeManipulator != null && this.activeManipulator instanceof OnScreenLookingGlassInformedManipulator)
+		{
+			((OnScreenLookingGlassInformedManipulator)this.activeManipulator).setOnscreenLookingGlass( lookingGlass );
+		}
 	}
 	
 	public ObjectGlobalHandleDragManipulator()
@@ -218,6 +226,10 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 				{
 					OnScreenLookingGlassInformedManipulator oLIM = (OnScreenLookingGlassInformedManipulator)this.activeManipulator;
 					oLIM.setOnscreenLookingGlass( this.onscreenLookingGlass );
+				}
+				if (this.activeManipulator instanceof CameraInformedManipulator)
+				{
+					((CameraInformedManipulator)this.activeManipulator).setCamera( this.camera );
 				}
 				return this.activeManipulator.doStartManipulator( startInput );
 			}

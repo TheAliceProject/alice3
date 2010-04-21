@@ -84,9 +84,14 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		return false;
 	}
 	
+	protected boolean isFieldInScope()
+	{
+		return getIDE().isSelectedFieldInScope();
+	}
+	
 	@Override
 	public boolean contains( int x, int y ) {
-		if( getIDE().isSelectedFieldInScope() ) {
+		if( this.isFieldInScope() ) {
 			return super.contains( x, y );
 		} else {
 			return false;
@@ -95,7 +100,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	@Override
 	public void paint( java.awt.Graphics g ) {
 		super.paint( g );
-		if( getIDE().isSelectedFieldInScope() ) {
+		if( this.isFieldInScope() ) {
 			//pass
 		} else {
 			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;

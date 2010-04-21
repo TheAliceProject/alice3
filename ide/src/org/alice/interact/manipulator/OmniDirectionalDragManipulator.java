@@ -55,12 +55,14 @@ import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.HandleSet;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -165,7 +167,38 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		return mouseRelativeMovement;
 	}
 	
-	private Point3 getPickBasedVector(InputState currentInput, InputState previousInput)
+	private Point3 getMovementVectorBasedOnCamera(InputState currentInput, InputState previousInput)
+	{
+		if (this.getCamera() instanceof OrthographicCamera)
+		{
+			return getOthographicMovementVector(currentInput, previousInput);
+		}
+		else
+		{
+			return getPerspectiveMovementVector(currentInput, previousInput);
+		}
+	}
+	
+	private Point3 getOthographicMovementVector(InputState currentInput, InputState previousInput)
+	{
+		OrthographicCamera orthoCamera = (OrthographicCamera)this.getCamera();
+		//This is used to get an accurate width and height. Otherwise the width will be calculated based on NaN (what the width in the camera picture plane is set to to tell it to autoresize)
+		ClippedZPlane dummyPlane = new ClippedZPlane(orthoCamera.picturePlane.getValue(), this.onscreenLookingGlass.getActualViewport(orthoCamera));
+		
+		double xRatio = dummyPlane.getWidth() / this.onscreenLookingGlass.getWidth();
+		double yRatio = dummyPlane.getHeight() / this.onscreenLookingGlass.getHeight();
+		
+		double mouseX = (currentInput.getMouseLocation().x - previousInput.getMouseLocation().x) * xRatio;
+		double mouseY = -(currentInput.getMouseLocation().y - previousInput.getMouseLocation().y) * yRatio;
+
+		Vector3 cameraRelativeRightAmount = Vector3.createMultiplication(this.camera.getAbsoluteTransformation().orientation.right, mouseX);
+		Vector3 cameraRelativeUpAmount = Vector3.createMultiplication(this.camera.getAbsoluteTransformation().orientation.up, mouseY);
+		
+		return Point3.createAddition(cameraRelativeRightAmount, cameraRelativeUpAmount);
+		
+	}
+	
+	private Point3 getPerspectiveMovementVector(InputState currentInput, InputState previousInput)
 	{
 		boolean usePickForVertical = true;
 		Ray pickRay = PlaneUtilities.getRayFromPixel( this.getOnscreenLookingGlass(), this.getCamera(), currentInput.getMouseLocation().x, currentInput.getMouseLocation().y );
@@ -275,7 +308,7 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 				this.hasMoved = true;
 			}
 				
-			Point3 movementVector = getPickBasedVector( currentInput, previousInput );
+			Point3 movementVector = getMovementVectorBasedOnCamera( currentInput, previousInput );
 			Point3 currentPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
 			Point3 newPosition = Point3.createAddition( currentPosition, movementVector );
 			//Send manipulation events

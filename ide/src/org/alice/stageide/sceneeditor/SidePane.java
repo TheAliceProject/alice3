@@ -42,7 +42,13 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
 import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
+import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
+import org.alice.stageide.sceneeditor.viewmanager.StartingCameraViewManager;
 import org.alice.interact.AbstractDragAdapter;
 
 /**
@@ -51,23 +57,87 @@ import org.alice.interact.AbstractDragAdapter;
 class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	private boolean isExpanded = false;
 	private ManipulationHandleControlPanel handleControlPanel;
+	private SceneViewManagerPanel viewManagerPanel = null;
+	private StartingCameraViewManager startingCameraViewManager = null;
 
-	public SidePane() {
+	public SidePane(MoveAndTurnSceneEditor sceneEditor) {
 		this.handleControlPanel = new ManipulationHandleControlPanel();
-		this.add( this.handleControlPanel );
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
+		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
+		this.startingCameraViewManager = new StartingCameraViewManager(sceneEditor);
+
+		this.setLayout(new GridBagLayout());
+
+		this.add(this.startingCameraViewManager, new GridBagConstraints(
+				0, // gridX
+				0, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
+		
+		this.add(this.viewManagerPanel, new GridBagConstraints(
+				0, // gridX
+				1, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				1.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.BOTH, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
+
+		this.add(this.handleControlPanel, new GridBagConstraints(
+				0, // gridX
+				2, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
+		
+		this.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
 	}
+
 	public boolean isExpanded() {
 		return this.isExpanded;
 	}
-	public void setExpanded( boolean isExpanded ) {
+
+	public void setExpanded(boolean isExpanded) {
 		this.isExpanded = isExpanded;
 		this.revalidate();
 		this.repaint();
-		//this.doLayout();
+		// this.doLayout();
 	}
-	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
-		this.handleControlPanel.setDragAdapter( dragAdapter );
+
+	public void setDragAdapter(AbstractDragAdapter dragAdapter) {
+		this.handleControlPanel.setDragAdapter(dragAdapter);
+	}
+
+	public void refreshFields() {
+		this.viewManagerPanel.refreshFields();
+		this.startingCameraViewManager.refreshFields();
+	}
+
+	public SceneViewManagerPanel getViewManager() {
+		return this.viewManagerPanel;
+	}
+
+	public StartingCameraViewManager getStartingCameraViewManager() {
+		return this.startingCameraViewManager;
 	}
 
 }

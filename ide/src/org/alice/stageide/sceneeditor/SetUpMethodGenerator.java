@@ -154,6 +154,14 @@ public class SetUpMethodGenerator {
 		return org.alice.ide.ast.NodeUtilities.createMethodInvocationStatement( instanceExpression, method, argumentExpressions );
 	}
 
+	public static void fillInAutomaticPointOfViewAssignment(edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, edu.cmu.cs.dennisc.alice.ast.AbstractField field, edu.cmu.cs.dennisc.alice.ast.AbstractField pointOfViewField)
+	{
+		if (pointOfViewField != null)
+		{
+			bodyStatementsProperty.add( createStatement( org.alice.apis.moveandturn.AbstractTransformable.class, "moveAndOrientTo", new Class< ? >[] {org.alice.apis.moveandturn.ReferenceFrame.class, Number.class}, SetUpMethodGenerator.createInstanceExpression( false, field ), SetUpMethodGenerator.createInstanceExpression( false, pointOfViewField ), createExpression( 0.0 ) ) );
+		}
+	}
+	
 	public static void fillInAutomaticSetUpMethod( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, boolean isThis, edu.cmu.cs.dennisc.alice.ast.AbstractField field, Object instance ) {
 		if( instance instanceof org.alice.apis.moveandturn.Element ) {
 			org.alice.apis.moveandturn.Element element = (org.alice.apis.moveandturn.Element)instance;

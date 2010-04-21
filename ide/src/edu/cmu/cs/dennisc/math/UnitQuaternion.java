@@ -209,8 +209,12 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.codec.Bin
 			}
 		}
 	}
-	public boolean isWithinEpsilon( UnitQuaternion q, double epsilon ) {
+	
+	private static boolean isWithinEpsilon( double x, double y, double z, double w, UnitQuaternion q, double epsilon ) {
 		return Math.abs( x - q.x ) < epsilon && Math.abs( y - q.y ) < epsilon && Math.abs( z - q.z ) < epsilon && Math.abs( w - q.w ) < epsilon;
+	}
+	public boolean isWithinEpsilonOrIsNegativeWithinEpsilon( UnitQuaternion q, double epsilon ) {
+		return UnitQuaternion.isWithinEpsilon( this.x, this.y, this.z, this.w, q, epsilon ) || UnitQuaternion.isWithinEpsilon( -this.x, -this.y, -this.z, -this.w, q, epsilon );
 	}
 
 	public void set( double x, double y, double z, double w ) {
@@ -407,7 +411,7 @@ public class UnitQuaternion implements Orientation, edu.cmu.cs.dennisc.codec.Bin
 			rv.setValue( a );
 		} else if( portion == 1.0 ) {
 			rv.setValue( b );
-		} else if( a.isWithinEpsilon( b, EPSILON ) ) {
+		} else if( a.isWithinEpsilonOrIsNegativeWithinEpsilon( b, EPSILON ) ) {
 			rv.setValue( b );
 		} else {
 			double dotProduct = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
