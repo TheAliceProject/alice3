@@ -832,14 +832,14 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		topMarker.setName( "TOP" );
 		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
 		topTransform.translation.y = 10;
-		topTransform.orientation.up.set( 0, 0, 1 );
+		topTransform.orientation.up.set( 0, 0, -1 );
 		topTransform.orientation.right.set( 1, 0, 0 );
 		topTransform.orientation.backward.set( 0, 1, 0 );
 		assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		topMarker.setLocalTransformation( topTransform );
 		ClippedZPlane picturePlane = new ClippedZPlane();
 		picturePlane.setCenter(0, 0);
-		picturePlane.setHeight(1);
+		picturePlane.setHeight(3);
 		topMarker.setPicturePlane(picturePlane);
 		orthographicCameraMarkers.add(topMarker);
 
@@ -850,16 +850,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		sideTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeXAxis(), Vector3.accessPositiveYAxis()) );
 		assert sideTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		sideMarker.setLocalTransformation( sideTransform );
+		picturePlane.setHeight(4);
 		sideMarker.setPicturePlane(picturePlane);
 		orthographicCameraMarkers.add(sideMarker);
 
 		org.alice.apis.moveandturn.OrthographicCameraMarker frontMarker = new org.alice.apis.moveandturn.OrthographicCameraMarker();
 		frontMarker.setName( "FRONT" );
 		AffineMatrix4x4 frontTransform = AffineMatrix4x4.createIdentity();
-		frontTransform.translation.z = 10;
-		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessNegativeZAxis(), Vector3.accessPositiveYAxis()) );
+		frontTransform.translation.z = -10;
+		frontTransform.orientation.setValue( new ForwardAndUpGuide(Vector3.accessPositiveZAxis(), Vector3.accessPositiveYAxis()) );
 		assert frontTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		frontMarker.setLocalTransformation( frontTransform );
+		picturePlane.setHeight(4);
 		frontMarker.setPicturePlane(picturePlane);
 		orthographicCameraMarkers.add(frontMarker);
 	}

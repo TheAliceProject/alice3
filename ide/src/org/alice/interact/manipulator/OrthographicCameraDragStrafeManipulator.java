@@ -129,7 +129,7 @@ public class OrthographicCameraDragStrafeManipulator extends Camera2DDragManipul
 					}
 					else
 					{
-						relativeMousePos.y = MIN_PIXEL_MOVE_AMOUNT;
+						relativeMousePos.y -= MIN_PIXEL_MOVE_AMOUNT;
 					}
 				}
 			}
@@ -147,7 +147,7 @@ public class OrthographicCameraDragStrafeManipulator extends Camera2DDragManipul
 					}
 					else
 					{
-						relativeMousePos.x = MIN_PIXEL_MOVE_AMOUNT;
+						relativeMousePos.x -= MIN_PIXEL_MOVE_AMOUNT;
 					}
 				}
 			}

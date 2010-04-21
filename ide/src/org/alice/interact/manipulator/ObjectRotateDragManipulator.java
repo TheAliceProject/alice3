@@ -54,9 +54,9 @@ import org.alice.interact.PlaneUtilities;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.RotationRingHandle;
-import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
 import org.alice.interact.VectorUtilities;
 
+import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.java.awt.CursorUtilities;
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
 import edu.cmu.cs.dennisc.math.Angle;
@@ -65,9 +65,15 @@ import edu.cmu.cs.dennisc.math.AngleUtilities;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
+import edu.cmu.cs.dennisc.math.Tuple3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Sphere;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
 
 /**
@@ -88,6 +94,45 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	protected RotationRingHandle rotationHandle;
 	protected AbstractCamera camera = null;
 	protected OnscreenLookingGlass onscreenLookingGlass = null;
+	
+	
+//	protected Sphere sgSphere = new Sphere();
+//	protected Transformable sphereTransformable = new Transformable();
+//	protected Visual sgSphereVisual = new Visual();
+	
+//	private void DEBUG_setupDebugSphere()
+//	{
+//		SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
+//		sgFrontFacingAppearance.diffuseColor.setValue( Color4f.RED );
+//		sgFrontFacingAppearance.opacity.setValue( new Float(1.0) );
+//		
+//		this.sgSphereVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
+//		this.sgSphereVisual.setParent( this.sphereTransformable );
+//		this.sgSphereVisual.geometries.setValue( new Geometry[] { this.sgSphere } );
+//		this.sgSphere.radius.setValue( .2d);
+//	}
+//	
+//	private void DEBUG_addDebugSphereToScene()
+//	{
+//		if (this.camera != null && this.sphereTransformable.getParent() == null)
+//		{
+//			this.camera.getRoot().addComponent(this.sphereTransformable);
+//		}
+//	}
+//	
+//	private void DEBUG_removeDebugSphereFromScene()
+//	{
+//		if (this.camera != null && this.sphereTransformable.getParent() == this.camera.getRoot())
+//		{
+//			this.camera.getRoot().removeComponent(this.sphereTransformable);
+//		}
+//	}
+//	
+//	private void DEBUG_setDebugSpherePosition(Tuple3 position)
+//	{
+//		this.sphereTransformable.setTranslationOnly(position, AsSeenBy.SCENE);
+//	}
+	
 	
 	public AbstractCamera getCamera()
 	{
@@ -125,10 +170,13 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	
 	public  ObjectRotateDragManipulator()
 	{
+//		DEBUG_setupDebugSphere();
 	}
 	
 	protected void initManipulator( RotationRingHandle handle, InputState startInput )
 	{
+//		DEBUG_addDebugSphereToScene();
+		
 		this.rotationHandle = handle;
 		this.manipulatedTransformable = this.rotationHandle.getManipulatedObject();
 		this.absoluteRotationAxis = this.rotationHandle.getReferenceFrame().getAbsoluteTransformation().createTransformed( this.rotationHandle.getRotationAxis() );
@@ -162,6 +210,9 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 			this.hideCursor();
 			
 		}
+		
+//		DEBUG_setDebugSpherePosition(this.initialClickPoint);
+		
 		this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
 	}
 	
@@ -192,18 +243,22 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 				double mouseDistance = Vector3.calculateDotProduct( fromOriginalMouseToCurrentMouse, rotationRightAxis );
 				
 				return new AngleInRadians(mouseDistance * WORLD_DISTANCE_TO_RADIANS_MULTIPLIER);
-				
 			}
 			else
 			{
 				Point3 pointInPlane = PlaneUtilities.getPointInPlane( this.rotationPlane, pickRay );
 				if (pointInPlane != null)
 				{
-					Vector3 toMouse = Vector3.createSubtraction( pointInPlane, this.objectOriginInPlane );
 					
+					//<DEBUG>
+//					Point3 pickOrigin = new Point3(pickRay.accessOrigin());
+//					pickOrigin.y = 0;
+//					DEBUG_setDebugSpherePosition(pickOrigin);
+					//</DEBUG>
+					
+					Vector3 toMouse = Vector3.createSubtraction( pointInPlane, this.objectOriginInPlane );
 					double toMouseDotOriginalRight = Vector3.calculateDotProduct( toMouse, this.originalMouseRightDirection );
 					boolean isToTheRight = toMouseDotOriginalRight > 0.0d;
-					
 					toMouse.normalize();
 					Vector3 toMouseDirection = new Vector3(toMouse);
 					double cosOfAngleBetween = Vector3.calculateDotProduct(this.originalMouseDirection, toMouseDirection );
@@ -278,6 +333,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		this.rotationHandle.setSphereVisibility( false );
 		this.showCursor();
+//		DEBUG_removeDebugSphereFromScene();
 	}
 
 	@Override

@@ -134,7 +134,7 @@ public class CameraDragDriveManipulator extends Camera2DDragManipulator {
 				}
 				else
 				{
-					relativeMousePos.y = MIN_PIXEL_MOVE_AMOUNT;
+					relativeMousePos.y -= MIN_PIXEL_MOVE_AMOUNT;
 				}
 			}
 		}

@@ -61,8 +61,11 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 			double near = m_element.nearClippingPlaneDistance.getValue();
 			//double far = m_element.farClippingPlaneDistance.getValue();
 			
+			//Pixels are relative to the top of the screen, but the "up" vector is bottom relative. Make the yPixel value bottom relative
+			yPixel = actualViewport.height - yPixel; 
+			
 			double xPortion = ( xPixel - actualViewport.x ) / (double) actualViewport.width;
-			double yPortion = ( xPixel - actualViewport.x ) / (double) actualViewport.width;
+			double yPortion = ( yPixel - actualViewport.y ) / (double) actualViewport.height;
 			
 			double x = left + (right-left)*xPortion;
 			double y = bottom + (top-bottom)*yPortion;
@@ -89,11 +92,11 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 
 			rv.right.x = 2 / (right - left);
 			rv.up.y = 2 / (top - bottom);
-			rv.backward.z = 2 / (far - near);
+			rv.backward.z = - 2 / (far - near);
 
-			rv.translation.x = (right + left) / (right - left);
-			rv.translation.y = (top + bottom) / (top - bottom);
-			rv.translation.z = (far + near) / (far - near);
+			rv.translation.x = - (right + left) / (right - left);
+			rv.translation.y = - (top + bottom) / (top - bottom);
+			rv.translation.z = - (far + near) / (far - near);
 		}
 		return rv;
 	}

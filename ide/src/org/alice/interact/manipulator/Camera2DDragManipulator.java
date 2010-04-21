@@ -65,9 +65,10 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	protected static final double MIN_TIME = .001d;
 	protected static final double MAX_TIME = .1d;
 	protected static final double MIN_AMOUNT_TO_MOVE = .005d;
-	protected static final double WORLD_DISTANCE_PER_PIXEL_SECONDS = .1d;
+	protected static final double WORLD_DISTANCE_PER_PIXEL_SECONDS = .08d;
 	protected static final double RADIANS_PER_PIXEL_SECONDS = .02d;
-	protected static final double MIN_PIXEL_MOVE_AMOUNT = 10.0d;
+	protected static final double MIN_PIXEL_MOVE_AMOUNT = 15.0d;
+	protected static final double OPPOSITE_DIRECTION_MIN_PIXEL_MOVE_AMOUNT = 5.0d;
 	
 	protected Vector3 initialMoveFactor = new Vector3(0.0d, 0.0d, 0.0d);
 	protected Vector3 initialRotateFactor = new Vector3(0.0d, 0.0d, 0.0d);

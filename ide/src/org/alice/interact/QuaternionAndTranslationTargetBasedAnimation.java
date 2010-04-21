@@ -91,7 +91,7 @@ public abstract class QuaternionAndTranslationTargetBasedAnimation extends Targe
 		
 		edu.cmu.cs.dennisc.math.UnitQuaternion targetQNegative = new edu.cmu.cs.dennisc.math.UnitQuaternion(targetQ);
 		targetQNegative.multiply(-1.0);
-		boolean quaternionDone = currentQ.isWithinEpsilon(targetQ, MIN_DISTANCE_TO_DONE) || currentQ.isWithinEpsilon(targetQNegative, MIN_DISTANCE_TO_DONE);
+		boolean quaternionDone = currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQ, MIN_DISTANCE_TO_DONE) || currentQ.isWithinEpsilonOrIsNegativeWithinEpsilon(targetQNegative, MIN_DISTANCE_TO_DONE);
 		double translationDist = Point3.calculateDistanceBetween( this.currentValue.getTranslation(), this.targetValue.getTranslation() );
 		
 		boolean translationDone = translationDist < MIN_DISTANCE_TO_DONE;
