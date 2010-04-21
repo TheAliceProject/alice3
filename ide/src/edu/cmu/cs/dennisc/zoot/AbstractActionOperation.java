@@ -47,6 +47,11 @@ package edu.cmu.cs.dennisc.zoot;
  */
 public abstract class AbstractActionOperation extends AbstractOperation implements ActionOperation {
 	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		}
+	};
+
 	public AbstractActionOperation( java.util.UUID groupUUID ) {
 		super( groupUUID );
 		this.buttonModel.addActionListener( new java.awt.event.ActionListener() {
@@ -55,10 +60,54 @@ public abstract class AbstractActionOperation extends AbstractOperation implemen
 			}
 		} );
 	}
-	public javax.swing.ButtonModel getButtonModel() {
-		return this.buttonModel;
-	}
-	protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
+	private void handleActionPerformed( java.awt.event.ActionEvent e ) {
 		ZManager.performIfAppropriate( this, e, ZManager.CANCEL_IS_WORTHWHILE );
+	}
+
+	public String getName() {
+		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
+	}
+	public void setName( String name ) {
+		this.action.putValue( javax.swing.Action.NAME, name );
+	}
+	public String getShortDescription() {
+		return String.class.cast( this.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
+	}
+	public void setShortDescription( String shortDescription ) {
+		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
+	}
+	public String getLongDescription() {
+		return String.class.cast( this.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
+	}
+	public void setLongDescription( String longDescription ) {
+		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
+	}
+	public javax.swing.Icon getSmallIcon() {
+		return javax.swing.Icon.class.cast( this.action.getValue( javax.swing.Action.SMALL_ICON ) );
+	}
+	public void setSmallIcon( javax.swing.Icon icon ) {
+		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
+	}
+	public int getMnemonicKey() {
+		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
+	}
+	public void setMnemonicKey( int mnemonicKey ) {
+		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
+	}
+	public javax.swing.KeyStroke getAcceleratorKey() {
+		return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
+	}
+	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
+		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
+	}
+	public void addAbstractButton( javax.swing.AbstractButton abstractButton ) {
+		abstractButton.setAction( this.action );
+		abstractButton.setModel( this.buttonModel );
+		this.addComponent( abstractButton );
+	}
+	public void removeAbstractButton( javax.swing.AbstractButton abstractButton ) {
+		this.removeComponent( abstractButton );
+		//abstractButton.setModel( null );
+		//abstractButton.setAction( null );
 	}
 }

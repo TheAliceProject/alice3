@@ -57,8 +57,8 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		if( IS_PARAMETER_NAME_DESIRED ) {
 			String parameterName = argument.parameter.getValue().getName();
 			if( parameterName != null && parameterName.length() > 0 ) {
-				edu.cmu.cs.dennisc.croquet.swing.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
-				rv.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( parameterName + ": " ) );
+				edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
+				rv.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( parameterName + ": " ) );
 				rv.add( expressionComponent );
 				return rv;
 			} else {

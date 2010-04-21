@@ -70,7 +70,7 @@ public abstract class CodecUtilities {
 	}
 	
 	public static <E extends BinaryEncodableAndDecodable> E decodeBinary( String path, Class<E> cls ) {
-		if( edu.cmu.cs.dennisc.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
 			return decodeZippedBinary( path, DEFAULT_ZIP_ENTRY_NAME, cls );
 		} else {
 			return decodeBinary( new java.io.File( path ), cls );
@@ -121,7 +121,7 @@ public abstract class CodecUtilities {
 	}
 	
 	public static BinaryEncodableAndDecodable decodeBinary( BinaryEncodableAndDecodable rv, String path ) {
-		if( edu.cmu.cs.dennisc.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
 			return decodeZippedBinary( rv, path, DEFAULT_ZIP_ENTRY_NAME );
 		} else {
 			return decodeBinary( rv, new java.io.File( path ) );
@@ -167,7 +167,7 @@ public abstract class CodecUtilities {
 		binaryEncoder.flush();
 	}
 	public static void encodeBinary( BinaryEncodableAndDecodable binaryEncodableAndDecodable, java.io.File file ) {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		try {
 			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
 			try {
@@ -183,7 +183,7 @@ public abstract class CodecUtilities {
 	}
 	
 	public static void encodeBinary( BinaryEncodableAndDecodable binaryEncodableAndDecodable, String path ) {
-		if( edu.cmu.cs.dennisc.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
 			encodeZippedBinary( binaryEncodableAndDecodable, path, DEFAULT_ZIP_ENTRY_NAME );
 		} else {
 			encodeBinary( binaryEncodableAndDecodable, new java.io.File( path ) );
@@ -218,7 +218,7 @@ public abstract class CodecUtilities {
 		}
 	}
 	public static void encodeZippedBinary( BinaryEncodableAndDecodable binaryEncodableAndDecodable, java.io.File file, String entryName ) {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		try {
 			encodeZippedBinary( binaryEncodableAndDecodable, new java.io.FileOutputStream( file ), entryName );
 		} catch( java.io.IOException ioe ) {
@@ -250,7 +250,7 @@ public abstract class CodecUtilities {
 	}
 	
 	public static <E extends ReferenceableBinaryEncodableAndDecodable> E decodeReferenceableBinary( String path, Class<E> cls ) {
-		if( edu.cmu.cs.dennisc.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
 			return decodeZippedReferenceableBinary( path, DEFAULT_ZIP_ENTRY_NAME, cls );
 		} else {
 			return decodeReferenceableBinary( new java.io.File( path ), cls );
@@ -302,7 +302,7 @@ public abstract class CodecUtilities {
 	}
 	
 	public static ReferenceableBinaryEncodableAndDecodable decodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable rv, String path ) {
-		if( edu.cmu.cs.dennisc.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
 			return decodeZippedReferenceableBinary( rv, path, DEFAULT_ZIP_ENTRY_NAME );
 		} else {
 			return decodeReferenceableBinary( rv, new java.io.File( path ) );
@@ -341,7 +341,7 @@ public abstract class CodecUtilities {
 		binaryEncoder.flush();
 	}
 	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.File file ) {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		try {
 			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
 			try {
@@ -357,7 +357,7 @@ public abstract class CodecUtilities {
 	}
 	
 	public static void encodeReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, String path ) {
-		if( edu.cmu.cs.dennisc.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
+		if( edu.cmu.cs.dennisc.java.io.FileUtilities.isExtensionAmoung( path, edu.cmu.cs.dennisc.equivalence.CaseSensitivityPolicy.INSENSITIVE, "zip" ) ) {
 			encodeZippedReferenceableBinary( referenceableBinaryEncodableAndDecodable, path, DEFAULT_ZIP_ENTRY_NAME );
 		} else {
 			encodeReferenceableBinary( referenceableBinaryEncodableAndDecodable, new java.io.File( path ) );
@@ -386,7 +386,7 @@ public abstract class CodecUtilities {
 		}
 	}
 	public static void encodeZippedReferenceableBinary( ReferenceableBinaryEncodableAndDecodable referenceableBinaryEncodableAndDecodable, java.io.File file, String entryName ) {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		try {
 			java.io.FileOutputStream fos = new java.io.FileOutputStream( file );
 			try {

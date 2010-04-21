@@ -70,7 +70,7 @@ public class MethodDeclaredInJava extends AbstractMethod {
 		return get( new MethodReflectionProxy( mthd ) );
 	}
 	public static MethodDeclaredInJava get( Class< ? > declaringCls, String name, Class< ? >... parameterClses ) {
-		return get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( declaringCls, name, parameterClses ) );
+		return get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( declaringCls, name, parameterClses ) );
 	}
 
 	private MethodDeclaredInJava( MethodReflectionProxy methodReflectionProxy ) {
@@ -198,7 +198,7 @@ public class MethodDeclaredInJava extends AbstractMethod {
 
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		MethodDeclaredInJava other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, MethodDeclaredInJava.class );
+		MethodDeclaredInJava other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, MethodDeclaredInJava.class );
 		if( other != null ) {
 			return this.methodReflectionProxy.equals( other.methodReflectionProxy );
 		} else {

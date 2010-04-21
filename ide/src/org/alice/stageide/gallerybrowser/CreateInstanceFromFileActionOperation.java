@@ -51,7 +51,7 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 	private void showMessageDialog(java.io.File file, boolean isValidZip) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Unable to create instance from file ");
-		sb.append(edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible(file));
+		sb.append(edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible(file));
 		sb.append(".\n\n");
 		sb.append(getIDE().getApplicationName());
 		sb.append(" is able to create instances from class files saved by ");
@@ -65,7 +65,7 @@ abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDecl
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance(edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType) {
 		java.io.File directory = this.getInitialDirectory();
-		java.io.File file = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showOpenFileDialog(this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false);
+		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog(this.getIDE(), directory, null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.TYPE_EXTENSION, false);
 
 		if (file != null) {
 			String lcFilename = file.getName().toLowerCase();

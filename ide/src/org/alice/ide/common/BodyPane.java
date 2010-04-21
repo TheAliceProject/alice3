@@ -47,7 +47,7 @@ public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
 		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
 		this.setLayout( new java.awt.BorderLayout() );
 		this.setOpaque( false );
-		this.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( "do in order" ), java.awt.BorderLayout.NORTH );
+		this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "do in order" ), java.awt.BorderLayout.NORTH );
 		this.add( statementListComponent, java.awt.BorderLayout.CENTER );
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ), java.awt.BorderLayout.WEST );
 	}

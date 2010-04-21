@@ -46,11 +46,11 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public interface BooleanStateOperation extends Operation {
-	public javax.swing.Action getActionForConfiguringSwing();
-	public javax.swing.ButtonModel getButtonModel();
 	public String getTrueText();
 	public void setTrueText( String trueText );
 	public String getFalseText();
 	public void setFalseText( String falseText );
 	public void performStateChange( BooleanStateContext booleanStateContext );
+	public void addAbstractButton(javax.swing.AbstractButton abstractButton);
+	public void removeAbstractButton(javax.swing.AbstractButton abstractButton);
 }

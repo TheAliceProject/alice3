@@ -47,6 +47,10 @@ package edu.cmu.cs.dennisc.zoot;
  */
 public abstract class AbstractBooleanStateOperation extends AbstractOperation implements BooleanStateOperation {
 	private javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+		}
+	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged( java.awt.event.ItemEvent e ) {
 			boolean prev;
@@ -61,64 +65,76 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 			ZManager.performIfAppropriate( AbstractBooleanStateOperation.this, e, ZManager.CANCEL_IS_FUTILE, prev, next );
 		}
 	};
+
 	private String trueText = null;
 	private String falseText = null;
-	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialState ) {
+	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialState, String trueText, String falseText ) {
 		super( groupUUID );
 		this.buttonModel.setSelected( initialState );
 		this.buttonModel.addItemListener( this.itemListener );
+		this.setTrueText( trueText );
+		this.setFalseText( falseText );
 	}
+	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialState, String trueAndFalseText ) {
+		this( groupUUID, initialState, trueAndFalseText, trueAndFalseText );
+	}
+
 	public Boolean getState() {
 		return this.buttonModel.isSelected();
 	}
+
 	public javax.swing.ButtonModel getButtonModel() {
 		return this.buttonModel;
 	}
+
 	public String getTrueText() {
-		if( this.trueText != null ) {
-			return this.trueText;
-		} else {
-			return (String)this.getActionForConfiguringSwing().getValue( javax.swing.Action.NAME );
-		}
+		return this.trueText;
 	}
+
 	public void setTrueText( String trueText ) {
 		this.trueText = trueText;
-		
+		this.updateName();
 	}
-	public String getFalseText() {
-		if( this.falseText != null ) {
-			return this.falseText;
-		} else {
-			return (String)this.getActionForConfiguringSwing().getValue( javax.swing.Action.NAME );
-		}
-	}
-	public void setFalseText( String falseText ) {
-		this.trueText = falseText;
-	}
-	
 
-	public final void performStateChange(edu.cmu.cs.dennisc.zoot.BooleanStateContext booleanStateContext) {
+	public String getFalseText() {
+		return this.falseText;
+	}
+
+	public void setFalseText( String falseText ) {
+		this.falseText = falseText;
+		this.updateName();
+	}
+
+	public void addAbstractButton(javax.swing.AbstractButton abstractButton) {
+		abstractButton.setAction( this.action );
+		abstractButton.setModel( this.buttonModel );
+		this.addComponent(abstractButton);
+	}
+	public void removeAbstractButton(javax.swing.AbstractButton abstractButton) {
+		this.removeComponent(abstractButton);
+		//abstractButton.setModel( null );
+		//abstractButton.setAction( null );
+	}
+
+	public final void performStateChange( edu.cmu.cs.dennisc.zoot.BooleanStateContext booleanStateContext ) {
 		class Edit extends AbstractEdit {
 			private boolean prevValue;
 			private boolean nextValue;
+
 			public Edit( boolean prevValue, boolean nextValue ) {
 				this.prevValue = prevValue;
 				this.nextValue = nextValue;
 			}
-			private void setValue( boolean value ) {
-				AbstractBooleanStateOperation.this.buttonModel.removeItemListener( itemListener );
-				AbstractBooleanStateOperation.this.buttonModel.setSelected( value );
-				AbstractBooleanStateOperation.this.handleStateChange( value );
-				AbstractBooleanStateOperation.this.buttonModel.addItemListener( itemListener );
-			}
 			@Override
 			public void doOrRedo( boolean isDo ) {
-				this.setValue( this.nextValue );
+				AbstractBooleanStateOperation.this.setValue( this.nextValue );
 			}
+
 			@Override
 			public void undo() {
-				this.setValue( this.prevValue );
+				AbstractBooleanStateOperation.this.setValue( this.prevValue );
 			}
+
 			@Override
 			protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
 				rv.append( "boolean: " );
@@ -127,6 +143,23 @@ public abstract class AbstractBooleanStateOperation extends AbstractOperation im
 			}
 		}
 		booleanStateContext.commitAndInvokeDo( new Edit( booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
+	}
+	
+	private void updateName() {
+		String name;
+		if( this.getState() ) {
+			name = this.trueText;
+		} else {
+			name = this.falseText;
+		}
+		this.action.putValue( javax.swing.Action.NAME, name );
+	}
+	private void setValue( boolean value ) {
+		this.buttonModel.removeItemListener( itemListener );
+		this.buttonModel.setSelected( value );
+		this.handleStateChange( value );
+		this.buttonModel.addItemListener( itemListener );
+		this.updateName();
 	}
 	protected abstract void handleStateChange( boolean value );
 }

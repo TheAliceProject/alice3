@@ -47,7 +47,7 @@ package org.alice.stageide.gallerybrowser;
  */
 class CreateMyInstanceActionOperation extends CreateInstanceFromFileActionOperation {
 	public CreateMyInstanceActionOperation() {
-		this.putValue(javax.swing.Action.NAME, "My Classes...");
+		this.setName( "My Classes..." );
 	}
 
 	@Override

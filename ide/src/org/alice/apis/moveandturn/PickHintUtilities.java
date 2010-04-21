@@ -61,7 +61,7 @@ public class PickHintUtilities {
 		};
 		for( String clsName : clsNames ) {
 			try {
-				Class<?> cls = edu.cmu.cs.dennisc.lang.ClassUtilities.forName( clsName );
+				Class<?> cls = edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( clsName );
 				groundClses.add( cls );
 			} catch( ClassNotFoundException cnfe ) {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "WARNING: could not find class:", clsName );

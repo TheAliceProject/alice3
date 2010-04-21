@@ -47,7 +47,7 @@ package org.alice.ide.operations.run;
  */
 public class RestartOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RestartOperation() {
-		this.putValue( javax.swing.Action.NAME, "Restart..." );
+		this.setName( "Restart..." );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

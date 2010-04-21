@@ -47,7 +47,7 @@ package org.alice.stageide.modelviewer;
  * @author Dennis Cosgrove
  */
 //abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
-abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+abstract class AbstractViewer extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	private edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createHeavyweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.alice.apis.moveandturn.Scene scene = new org.alice.apis.moveandturn.Scene();

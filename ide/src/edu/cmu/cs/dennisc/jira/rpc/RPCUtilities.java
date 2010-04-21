@@ -101,7 +101,7 @@ public class RPCUtilities {
 				}
 			}
 		}
-		environment.append( edu.cmu.cs.dennisc.lang.SystemUtilities.getPropertiesAsXMLString() );
+		environment.append( edu.cmu.cs.dennisc.java.lang.SystemUtilities.getPropertiesAsXMLString() );
 		rv.put( "environment", environment.toString() );
 	    java.util.Vector< redstone.xmlrpc.XmlRpcStruct > customFields = new java.util.Vector< redstone.xmlrpc.XmlRpcStruct >();
 	    customFields.add( createCustomField( 10000, jiraReport.getSteps() ) );

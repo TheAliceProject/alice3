@@ -52,7 +52,7 @@ public class AudioResource extends org.alice.virtualmachine.Resource {
 	}
 
 	public static String getContentType( String path ) {
-		String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( path );
+		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( path );
 		String contentType = AudioResource.extensionToContentTypeMap.get( extension.toLowerCase() );
 		return contentType;
 	}

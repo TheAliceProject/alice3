@@ -45,7 +45,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPane {
+abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 	private RandomPersonActionOperation randomPersonActionOperation = new RandomPersonActionOperation();
 	private LifeStageList lifeStageList = new LifeStageList();
 	private GenderList genderList = new GenderList();
@@ -57,14 +57,14 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 	private FullBodyOutfitList fullBodyOutfitList = new FullBodyOutfitList();
 	
 	private static java.awt.Component createLabel( String text ) {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text );
+		javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
 	}
 	
 	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
-	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
-	private static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
+	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
+	private static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 	
 	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane() {
 		@Override
@@ -139,7 +139,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 		this.baseEyeColorList.setOpaque( false );
 		
 		class ListCellRenderer implements javax.swing.ListCellRenderer {
-			private edu.cmu.cs.dennisc.croquet.swing.BorderPane pane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
+			private edu.cmu.cs.dennisc.javax.swing.components.JBorderPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
 			private javax.swing.JLabel label = new javax.swing.JLabel();
 			public ListCellRenderer() {
 				label.setHorizontalAlignment( javax.swing.SwingUtilities.CENTER );
@@ -167,15 +167,15 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 		this.hairColorList.setCellRenderer( listCellRenderer );
 		this.baseEyeColorList.setCellRenderer( listCellRenderer );
 
-		edu.cmu.cs.dennisc.croquet.swing.BorderPane northPane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane();
+		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane northPane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
 		northPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.randomPersonActionOperation ), java.awt.BorderLayout.NORTH );
 		
-		edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane ubiquitousPane = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 8, 8 ) {
+		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane ubiquitousPane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 8, 8 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "life stage:" ), lifeStageList ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "gender:" ), genderList ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "skin tone:" ), baseSkinToneList ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "life stage:" ), lifeStageList ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "gender:" ), genderList ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "skin tone:" ), baseSkinToneList ) );
 				return rv;
 			}
 		};
@@ -185,13 +185,13 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 //		hairPane.add( this.hairColorList, java.awt.BorderLayout.NORTH );
 //		hairPane.add( this.hairList, java.awt.BorderLayout.CENTER );
 		
-		edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane headPane = new edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane( 8, 8 ) {
+		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane headPane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 8, 8 ) {
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "hair:" ), hairColorList ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, hairList ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "eye color:" ), baseEyeColorList ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( null, javax.swing.Box.createGlue() ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "hair:" ), hairColorList ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( null, hairList ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "eye color:" ), baseEyeColorList ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( null, javax.swing.Box.createGlue() ) );
 				return rv;
 			}
 		};
@@ -205,7 +205,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.swing.BorderPa
 		scrollPane.setOpaque( false );
 		scrollPane.getViewport().setOpaque( false );
 
-		edu.cmu.cs.dennisc.croquet.swing.BorderPane bodyPane = new edu.cmu.cs.dennisc.croquet.swing.BorderPane( 8, 8 );
+		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane bodyPane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane( 8, 8 );
 		bodyPane.add( scrollPane, java.awt.BorderLayout.CENTER );
 		bodyPane.add( this.fitnessLevelPane, java.awt.BorderLayout.SOUTH );
 		

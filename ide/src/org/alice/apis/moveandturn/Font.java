@@ -61,7 +61,7 @@ public class Font {
 
 	
 	public Font( 
-			@edu.cmu.cs.dennisc.lang.ParameterAnnotation( isVariable=true )
+			@edu.cmu.cs.dennisc.java.lang.ParameterAnnotation( isVariable=true )
 			Attribute< ? >... attributes 
 	) {
 		java.util.Map< java.awt.font.TextAttribute, Object > map = new java.util.HashMap< java.awt.font.TextAttribute, Object >();

@@ -59,15 +59,15 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 
 	
 	
-	private java.util.List< edu.cmu.cs.dennisc.awt.EventInterceptor > m_eventInterceptors = new java.util.LinkedList< edu.cmu.cs.dennisc.awt.EventInterceptor >();
+	private java.util.List< edu.cmu.cs.dennisc.java.awt.EventInterceptor > m_eventInterceptors = new java.util.LinkedList< edu.cmu.cs.dennisc.java.awt.EventInterceptor >();
 	
-	public void addEventInterceptor( edu.cmu.cs.dennisc.awt.EventInterceptor eventInterceptor ) {
+	public void addEventInterceptor( edu.cmu.cs.dennisc.java.awt.EventInterceptor eventInterceptor ) {
 		m_eventInterceptors.add( eventInterceptor );
 	}
-	public void removeEventInterceptor( edu.cmu.cs.dennisc.awt.EventInterceptor eventInterceptor ) {
+	public void removeEventInterceptor( edu.cmu.cs.dennisc.java.awt.EventInterceptor eventInterceptor ) {
 		m_eventInterceptors.add( eventInterceptor );
 	}
-	public Iterable< edu.cmu.cs.dennisc.awt.EventInterceptor > accessEventInterceptors() {
+	public Iterable< edu.cmu.cs.dennisc.java.awt.EventInterceptor > accessEventInterceptors() {
 		return m_eventInterceptors;
 	}
 	
@@ -200,7 +200,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 
 	public final void mousePressed( java.awt.event.MouseEvent e ) {
 		boolean isIntercepted = false;
-		for( edu.cmu.cs.dennisc.awt.EventInterceptor eventInterceptor : m_eventInterceptors ) {
+		for( edu.cmu.cs.dennisc.java.awt.EventInterceptor eventInterceptor : m_eventInterceptors ) {
 			if( eventInterceptor.isEventIntercepted( e ) ) {
 				isIntercepted = true;
 				break;
@@ -213,7 +213,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 			m_isActive = this.isAcceptable( e );
 		}
 		if( m_isActive ) {
-			if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
+			if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e ) ) {
 				if( e.isShiftDown() ) {
 					m_dragStyleCurrent = DragStyle.CONTROL_SHIFT;
 				} else {
@@ -272,7 +272,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	public final void mouseMoved( java.awt.event.MouseEvent e ) {
 		//the mac does not report dragged events if control is pressed
 		if( m_isActive ) {
-			if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 				if( e.isControlDown() ) {
 					mouseDragged(e);
 				}
@@ -296,7 +296,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 	
 	private void addToDragStyleIfNecessary( int keyCode ) {
 		if( m_dragStyleCurrent != null ) {
-			if( keyCode == edu.cmu.cs.dennisc.awt.event.KeyEventUtilities.getQuoteControlUnquoteKey() ) {
+			if( keyCode == edu.cmu.cs.dennisc.java.awt.event.KeyEventUtilities.getQuoteControlUnquoteKey() ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					//note: this should happen plenty, as key press events keep coming
 					//pass
@@ -324,7 +324,7 @@ public abstract class DragAdapter implements java.awt.event.MouseListener, java.
 
 	private void removeFromDragStyleIfNecessary( int keyCode ) {
 		if( m_dragStyleCurrent != null ) {
-			if( keyCode == edu.cmu.cs.dennisc.awt.event.KeyEventUtilities.getQuoteControlUnquoteKey() ) {
+			if( keyCode == edu.cmu.cs.dennisc.java.awt.event.KeyEventUtilities.getQuoteControlUnquoteKey() ) {
 				if( m_dragStyleCurrent.isControlDown() ) {
 					if( m_dragStyleCurrent.isShiftDown() ) {
 						handleDragStyleChange( m_dragStyleCurrent, DragStyle.SHIFT );

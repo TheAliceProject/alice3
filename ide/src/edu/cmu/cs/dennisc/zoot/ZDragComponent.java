@@ -142,7 +142,7 @@ public abstract class ZDragComponent extends ZControl {
 				dx -= mousePressedEvent.getX();
 				dy -= mousePressedEvent.getY();
 
-				boolean isCopyDesired = edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( e );
+				boolean isCopyDesired = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( e );
 				int x = e.getX() + dx;
 				int y = e.getY() + dy;
 				dragProxy.setCopyDesired( isCopyDesired );
@@ -327,7 +327,7 @@ public abstract class ZDragComponent extends ZControl {
 	protected void handleMouseDraggedOutsideOfClickThreshold( java.awt.event.MouseEvent e ) {
 		super.handleMouseDraggedOutsideOfClickThreshold( e );
 		if( isActuallyPotentiallyDraggable() ) {
-			if(edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
+			if(edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				this.handleLeftMouseDraggedOutsideOfClickThreshold( e );
 			}
 		}
@@ -336,7 +336,7 @@ public abstract class ZDragComponent extends ZControl {
 	public void handleMouseDragged( java.awt.event.MouseEvent e ) {
 		super.handleMouseDragged( e );
 		if( isActuallyPotentiallyDraggable() ) {
-			if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
+			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "isActuallyPotentiallyDraggable == true" );
 				if( this.isWithinClickThreshold() ) {
 					//pass
@@ -381,7 +381,7 @@ public abstract class ZDragComponent extends ZControl {
 	@Override
 	public void handleMousePressed( java.awt.event.MouseEvent e ) {
 		super.handleMousePressed( e );
-		if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
 			if( ZManager.isDragInProgress() ) {
 				this.handleCancel( e );
 			}
@@ -390,7 +390,7 @@ public abstract class ZDragComponent extends ZControl {
 	@Override
 	public void handleMouseReleased( java.awt.event.MouseEvent e ) {
 		if( isActuallyPotentiallyDraggable() ) {
-			if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
+			if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 				boolean isDrop;
 				if( this.isWithinClickThreshold() ) {
 					if( ZDragComponent.isFauxDragDesired && this.isClickReservedForSelection()==false ) {
@@ -403,9 +403,9 @@ public abstract class ZDragComponent extends ZControl {
 						isDrop = this.isFauxDrag;
 						this.isFauxDrag = !this.isFauxDrag;
 						if( focusedComponent != null ) {
-							edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().pushComponentWithMouseFocus( focusedComponent );
+							edu.cmu.cs.dennisc.java.awt.MouseFocusEventQueue.getSingleton().pushComponentWithMouseFocus( focusedComponent );
 						} else {
-							edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().popComponentWithMouseFocus();
+							edu.cmu.cs.dennisc.java.awt.MouseFocusEventQueue.getSingleton().popComponentWithMouseFocus();
 						}
 					} else {
 						isDrop = false;
@@ -474,6 +474,6 @@ public abstract class ZDragComponent extends ZControl {
 			this.dragAndDropContext.handleCancel( e );
 		}
 		this.isFauxDrag = false;
-		edu.cmu.cs.dennisc.awt.MouseFocusEventQueue.getSingleton().popComponentWithMouseFocus();
+		edu.cmu.cs.dennisc.java.awt.MouseFocusEventQueue.getSingleton().popComponentWithMouseFocus();
 	}
 }

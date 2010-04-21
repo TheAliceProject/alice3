@@ -55,7 +55,7 @@ public class ExpressionPane extends org.alice.ide.common.ExpressionLikeSubstance
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {
-		if( this.expression == null || edu.cmu.cs.dennisc.lang.ClassUtilities.isAssignableToAtLeastOne( this.expression.getClass(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.ThisExpression.class )  ) {
+		if( this.expression == null || edu.cmu.cs.dennisc.java.lang.ClassUtilities.isAssignableToAtLeastOne( this.expression.getClass(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class, edu.cmu.cs.dennisc.alice.ast.InfixExpression.class, edu.cmu.cs.dennisc.alice.ast.LogicalComplement.class, edu.cmu.cs.dennisc.alice.ast.ThisExpression.class )  ) {
 			return true;
 		} else {
 			return super.isExpressionTypeFeedbackDesired();

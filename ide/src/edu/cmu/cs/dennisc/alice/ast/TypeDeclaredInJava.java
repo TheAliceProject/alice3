@@ -230,7 +230,7 @@ public class TypeDeclaredInJava extends AbstractType {
 		if( srcParameterClses.length > 0 ) {
 			Class< ? >[] dstParameterClses = trimLast( srcParameterClses );
 			try {
-				rv = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( src.getDeclaringClass(), name, dstParameterClses );
+				rv = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( src.getDeclaringClass(), name, dstParameterClses );
 				if( rv.getReturnType() == srcReturnCls ) {
 					//pass
 				} else {
@@ -354,7 +354,7 @@ public class TypeDeclaredInJava extends AbstractType {
 	public AbstractType getArrayType() {
 		Class< ? > cls = this.classReflectionProxy.getReification();
 		assert cls != null;
-		return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getArrayClass( cls ) );
+		return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( cls ) );
 	}
 
 	@Override

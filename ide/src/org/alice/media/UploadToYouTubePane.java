@@ -79,8 +79,9 @@ import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YouTubeNamespace;
 
-import edu.cmu.cs.dennisc.croquet.swing.Pane;
 import edu.cmu.cs.dennisc.image.ImageUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JPane;
+
 import javax.swing.JLabel;
 
 
@@ -362,7 +363,7 @@ public class UploadToYouTubePane extends JDialog implements ActionListener, Docu
 	}
 	
 	public static void main( String[] args ) {
-		edu.cmu.cs.dennisc.croquet.KFrame frame = new edu.cmu.cs.dennisc.croquet.KFrame() {
+		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
 			@Override
 			protected void handleWindowOpened( java.awt.event.WindowEvent e ) {
 			}

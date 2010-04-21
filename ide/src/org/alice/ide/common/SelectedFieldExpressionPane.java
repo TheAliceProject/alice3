@@ -96,7 +96,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	};
 	
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field = null;
-	private javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel();
+	private javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
 	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
 		this.add( this.label );
 		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );

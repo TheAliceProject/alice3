@@ -117,7 +117,7 @@ public class ArrayTypeDeclaredInAlice extends AbstractType {
 			return ArrayTypeDeclaredInAlice.get( ((AbstractTypeDeclaredInAlice)superType), m_dimensionCount );
 		} else {
 			assert superType instanceof TypeDeclaredInJava;
-			return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getArrayClass( superType.getClass(), m_dimensionCount ) );
+			return TypeDeclaredInJava.get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getArrayClass( superType.getClass(), m_dimensionCount ) );
 		}
 		//todo: investigate
 	}

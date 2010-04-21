@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
+abstract class MembersTab extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	public MembersTab() {
 		this.setOpaque( true );
 	}
@@ -190,7 +190,7 @@ class TabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 		}
 	}
 	private void addMembersTab( MembersTab membersTab ) {
-		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( membersTab );
+		edu.cmu.cs.dennisc.javax.swing.components.JScrollPane scrollPane = new edu.cmu.cs.dennisc.javax.swing.components.JScrollPane( membersTab );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBackground( membersTab.getBackground() );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
@@ -228,7 +228,7 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	}
 	
 	public MembersEditor() {
-		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
+		this.setLayout( new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager() );
 		this.add( this.tabbedPane );
 	}
 

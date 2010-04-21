@@ -60,7 +60,7 @@ public abstract class AbstractEdit implements Edit {
 		this.updatePresentation( sb, locale );
 		if( sb.length() == 0 ) {
 			Class<?> cls = this.getClass();
-			sb.append( edu.cmu.cs.dennisc.lang.ClassUtilities.getTrimmedClassName( cls ) );
+			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( cls ) );
 		}
 		if( sb.length() == 0 ) {
 			sb.append( this.getClass() );

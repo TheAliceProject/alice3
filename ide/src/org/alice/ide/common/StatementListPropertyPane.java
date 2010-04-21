@@ -58,7 +58,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		} else {
 			pad = INTRASTICIAL_PAD;
 		}
-		this.setLayout( new edu.cmu.cs.dennisc.swing.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, pad ) );
+		this.setLayout( new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, pad ) );
 		
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {

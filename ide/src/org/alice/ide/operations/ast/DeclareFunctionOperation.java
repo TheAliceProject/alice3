@@ -48,7 +48,7 @@ package org.alice.ide.operations.ast;
 public class DeclareFunctionOperation extends DeclareMethodOperation {
 	public DeclareFunctionOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		super( type );
-		this.putValue( javax.swing.Action.NAME, "Declare Function..." );
+		this.setName( "Declare Function..." );
 	}
 	@Override
 	protected org.alice.ide.declarationpanes.CreateDeclarationPane< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > createCreateMethodPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {

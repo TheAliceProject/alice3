@@ -60,7 +60,7 @@ abstract class AbstractNotAvailableIcon implements javax.swing.Icon {
 		g.setColor( java.awt.Color.DARK_GRAY );
 		g.fillRect( x, y, width, height );
 		g.setColor( java.awt.Color.LIGHT_GRAY );
-		edu.cmu.cs.dennisc.awt.GraphicsUtilties.drawCenteredText( g, this.getText(), x, y, width, height );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, this.getText(), x, y, width, height );
 	}
 }
 
@@ -92,10 +92,10 @@ class ProjectSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCe
 			text = file.getName();
 			if( file.exists() ) {
 				//todo: remove
-				String path = edu.cmu.cs.dennisc.io.FileUtilities.getCanonicalPathIfPossible( file );
+				String path = edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file );
 				if( path != null ) {
 					String snapshotPath = path.substring( 0, path.length()-3 ) + "png";
-					if( edu.cmu.cs.dennisc.io.FileUtilities.existsAndHasLengthGreaterThanZero( snapshotPath ) ) {
+					if( edu.cmu.cs.dennisc.java.io.FileUtilities.existsAndHasLengthGreaterThanZero( snapshotPath ) ) {
 						icon = new javax.swing.ImageIcon( snapshotPath );
 					} else {
 						icon = null;

@@ -51,16 +51,16 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 	}
 	@Override
 	protected java.awt.Component createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.croquet.swing.LineAxisPane rv = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane();
+		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
 		rv.setOpaque( true );
 		rv.setBackground( new java.awt.Color( 255, 255, 255, 127 ) );
-		rv.setBorder( edu.cmu.cs.dennisc.swing.BorderFactory.createOutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
+		rv.setBorder( edu.cmu.cs.dennisc.javax.swing.BorderFactory.createOutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
 		
 		String parameterName = argument.parameter.getValue().getName();
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
 		if( parameterName != null && parameterName.length() > 0 ) {
-			rv.add( edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( parameterName + ": " ) );
+			rv.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( parameterName + ": " ) );
 		}
 		rv.add( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
 		return rv;

@@ -48,7 +48,7 @@ import org.alice.interact.AbstractDragAdapter;
 /**
  * @author Dennis Cosgrove
  */
-class SidePane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
+class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	private boolean isExpanded = false;
 	private ManipulationHandleControlPanel handleControlPanel;
 

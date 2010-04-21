@@ -109,7 +109,7 @@ public abstract class Program extends javax.swing.JApplet {
 	@Override
 	public final void init() {
 		super.init();
-		class InitializeThread extends edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString {
+		class InitializeThread extends edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString {
 			@Override
 			public void run() {
 				preInitialize();
@@ -131,7 +131,7 @@ public abstract class Program extends javax.swing.JApplet {
 	@Override
 	public final void start() {
 		super.start();
-		class RunThread extends edu.cmu.cs.dennisc.lang.ThreadWithRevealingToString {
+		class RunThread extends edu.cmu.cs.dennisc.java.lang.ThreadWithRevealingToString {
 			@Override
 			public void run() {
 				Program.this.semaphore.acquireUninterruptibly();
@@ -391,7 +391,7 @@ public abstract class Program extends javax.swing.JApplet {
 			}
 		} else {
 			String javaMainText = "-Djava.main=package.Class";
-			edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( javaMainText );
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( javaMainText );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();

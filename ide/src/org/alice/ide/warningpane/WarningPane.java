@@ -42,9 +42,9 @@
  */
 package org.alice.ide.warningpane;
 
-public class WarningPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
+public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	public WarningPane( boolean isSolicited ) {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
+		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
 
 		StringBuffer sb = new StringBuffer();
 		sb.append( "<html><body>" );
@@ -66,22 +66,22 @@ public class WarningPane extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane {
 		this.add( editorPane );
 		this.add( javax.swing.Box.createVerticalStrut( 8 ) );
 		
-		class FurtherInfoPane extends edu.cmu.cs.dennisc.croquet.swing.RowsSpringPane {
+		class FurtherInfoPane extends edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane {
 			public FurtherInfoPane() {
 				super( 8, 4 );
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 			}
 			private java.awt.Component createLabel( String text ) {
-				javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.LabelUtilities.createLabel( text );
+				javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
 				rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 				return rv;
 			}
 			@Override
 			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "updates:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://www.alice.org/3" ) ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "blog:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://blog.alice.org/" ) ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "community:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://www.alice.org/community/" ) ) );
-				rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( createLabel( "bug reports:" ), new edu.cmu.cs.dennisc.swing.Hyperlink( "http://bugs.alice.org:8080/" ) ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "updates:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://www.alice.org/3" ) ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "blog:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://blog.alice.org/" ) ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "community:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://www.alice.org/community/" ) ) );
+				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "bug reports:" ), new edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink( "http://bugs.alice.org:8080/" ) ) );
 				return rv;
 			}
 		}

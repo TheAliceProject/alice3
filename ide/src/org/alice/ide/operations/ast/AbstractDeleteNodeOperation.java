@@ -52,7 +52,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		this.node = node;
 		this.owner = owner;
-		this.putValue( javax.swing.Action.NAME, "Delete" );
+		this.setName( "Delete" );
 	}
 	protected abstract boolean isClearToDelete( E node );
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

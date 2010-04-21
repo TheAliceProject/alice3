@@ -60,7 +60,7 @@ public class ImageResource extends org.alice.virtualmachine.Resource {
 	}
 
 	public static String getContentType( String path ) {
-		String extension = edu.cmu.cs.dennisc.io.FileUtilities.getExtension( path );
+		String extension = edu.cmu.cs.dennisc.java.io.FileUtilities.getExtension( path );
 		return ImageResource.extensionToContentTypeMap.get( extension.toLowerCase() );
 	}
 	public static String getContentType( java.io.File file ) {

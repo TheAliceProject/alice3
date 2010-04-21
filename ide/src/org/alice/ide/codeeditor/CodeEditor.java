@@ -75,7 +75,7 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.zoot.DropReceptor {
+public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.zoot.DropReceptor {
 	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
 	}
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
@@ -176,7 +176,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 		return this;
 	}
 	public void refresh() {
-		edu.cmu.cs.dennisc.swing.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
 			javax.swing.JComponent parametersPane = createParametersPane( codeDeclaredInAlice );
@@ -259,7 +259,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 		return org.alice.ide.IDE.getSingleton();
 	}
 	public java.util.List< ? extends ExpressionPropertyDropDownPane > createListOfPotentialDropReceptors( final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return edu.cmu.cs.dennisc.awt.ComponentUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
+		return edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this, ExpressionPropertyDropDownPane.class, new edu.cmu.cs.dennisc.pattern.Criterion< ExpressionPropertyDropDownPane >() {
 			public boolean accept( ExpressionPropertyDropDownPane expressionPropertyDropDownPane ) {
 				edu.cmu.cs.dennisc.alice.ast.AbstractType expressionType = expressionPropertyDropDownPane.getExpressionProperty().getExpressionType();
 				if( expressionType.isAssignableFrom( type ) ) {
@@ -300,7 +300,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 		return this.scrollPane.getViewport().getView();
 	}
 	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
-		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
+		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
 		for( StatementListPropertyPane statementListPropertyPane : statementListPropertyPanes ) {
@@ -341,12 +341,12 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 		edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-			java.awt.event.MouseEvent eAsSeenBy = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( source, eSource, this.getAsSeenBy() );
+			java.awt.event.MouseEvent eAsSeenBy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( source, eSource, this.getAsSeenBy() );
 			StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
 			this.currentUnder = nextUnder;
 			if( this.currentUnder != null ) {
 				boolean isDropProxyAlreadyUpdated = false;
-				if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
+				if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 					//pass
 				} else {
 					java.awt.Component subject = source.getSubject();
@@ -374,7 +374,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 				if( isDropProxyAlreadyUpdated ) {
 					//pass
 				} else {
-					java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.swing.SwingUtilities.convertMouseEvent( this.getAsSeenBy(), eAsSeenBy, this.currentUnder );
+					java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getAsSeenBy(), eAsSeenBy, this.currentUnder );
 					Integer height = 0;
 					java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder );
 					int x = insets.left;
@@ -517,7 +517,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.swing.PageAxisPane im
 					}
 					
 					edu.cmu.cs.dennisc.zoot.ActionOperation operation;
-					if( edu.cmu.cs.dennisc.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
+					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 						class CopyOperation extends org.alice.ide.operations.AbstractActionOperation {
 							public CopyOperation() {
 								super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );

@@ -85,7 +85,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		} catch( UnsatisfiedLinkError ule ) {
 			String platformText = System.getProperty( "os.name" ) + "-" + System.getProperty( "os.arch" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( platformText );
-			edu.cmu.cs.dennisc.clipboard.ClipboardUtilities.setClipboardContents( platformText );
+			edu.cmu.cs.dennisc.java.awt.datatransfer.ClipboardUtilities.setClipboardContents( platformText );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println();
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "UNABLE TO LOAD OPENGL" );
 			edu.cmu.cs.dennisc.print.PrintUtilities.println( "------ -- ---- ------" );
@@ -136,7 +136,7 @@ public class LookingGlassFactory implements edu.cmu.cs.dennisc.lookingglass.Look
 		if( glCapabilitiesChooser != null ) {
 			//pass
 		} else {
-			boolean isSlowAndSteadyDesired = edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
+			boolean isSlowAndSteadyDesired = edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "edu.cmu.cs.dennisc.lookingglass.opengl.isSlowAndSteadyDesired" );
 //			} else {
 //				if( edu.cmu.cs.dennisc.lang.SystemUtilities.isWindows() ) {
 //					try {

@@ -55,7 +55,7 @@ import org.alice.apis.stage.LifeStage;
 class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public RandomPersonActionOperation() {
 		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
-		this.putValue( javax.swing.Action.NAME, "Generate Random Selection" );
+		this.setName( "Generate Random Selection" );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> prevState = PersonViewer.getSingleton().getState();

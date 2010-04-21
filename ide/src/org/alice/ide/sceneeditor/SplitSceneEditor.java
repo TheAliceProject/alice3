@@ -104,7 +104,7 @@ class Tree extends edu.cmu.cs.dennisc.zoot.ZTree {
 	}
 }
 
-class LookingGlass extends edu.cmu.cs.dennisc.swing.CornerSpringPane {
+class LookingGlass extends edu.cmu.cs.dennisc.javax.swing.components.JCornerSpringPane {
 	private javax.swing.JCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
 	public LookingGlass() {
 		this.setBackground( java.awt.Color.RED );
@@ -125,7 +125,7 @@ public class SplitSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.al
 	public SplitSceneEditor() {
 		this.root.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
 		this.root.setRightComponent( this.lookingGlass );
-		this.setLayout( new edu.cmu.cs.dennisc.awt.ExpandAllToBoundsLayoutManager() );
+		this.setLayout( new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager() );
 		this.add( this.root );
 	}
 	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {

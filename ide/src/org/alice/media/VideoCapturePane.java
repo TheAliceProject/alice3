@@ -80,16 +80,16 @@ import org.jdesktop.swingworker.SwingWorker;
 
 import edu.cmu.cs.dennisc.alice.Project;
 import edu.cmu.cs.dennisc.animation.Program;
-import edu.cmu.cs.dennisc.croquet.swing.LineAxisPane;
-import edu.cmu.cs.dennisc.io.FileUtilities;
-import edu.cmu.cs.dennisc.swing.FileSelectionPane;
+import edu.cmu.cs.dennisc.inputpane.FileSelectionPane;
+import edu.cmu.cs.dennisc.java.io.FileUtilities;
+import edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane;
 
 
 /**
  * @author David Culyba
  */
 
-public abstract class VideoCapturePane extends LineAxisPane implements ActionListener, DocumentListener, EncoderListener{
+public abstract class VideoCapturePane extends JLineAxisPane implements ActionListener, DocumentListener, EncoderListener{
 	
 	private enum CaptureState
 	{
@@ -779,7 +779,7 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 	
 	private String getDefaultDirectory()
 	{
-		return edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory().getAbsolutePath();
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory().getAbsolutePath();
 	}
 	
 	private String getDefaultFilename()
@@ -1061,7 +1061,7 @@ public abstract class VideoCapturePane extends LineAxisPane implements ActionLis
 		}
 		else if (e.getSource() == this.saveButton)
 		{
-			File selectedFile = edu.cmu.cs.dennisc.awt.FileDialogUtilities.showSaveFileDialog(this, getDefaultDirectory(), getDefaultFilename(), "mov", true);
+			File selectedFile = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog(this, getDefaultDirectory(), getDefaultFilename(), "mov", true);
 			if (selectedFile != null)
 			{
 				copyRecordedFile( this.recordedMovieFile, selectedFile );

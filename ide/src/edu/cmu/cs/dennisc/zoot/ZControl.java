@@ -96,12 +96,12 @@ public abstract class ZControl extends ZComponent {
 		this.mousePressedEvent = e;
 		this.leftButtonPressedEvent = null;
 		this.setPressed( true );
-		if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
+		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 			this.leftButtonPressedEvent = e;
 			if( this.leftButtonPressOperation != null ) {
 				ZManager.performIfAppropriate( this.leftButtonPressOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
 			}
-		} else if( edu.cmu.cs.dennisc.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
+		} else if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
 			if( ZManager.isDragInProgress() ) {
 				this.isWithinClickThreshold = false;
 			} else {

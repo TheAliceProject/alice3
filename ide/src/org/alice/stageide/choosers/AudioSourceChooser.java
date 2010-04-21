@@ -118,7 +118,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			super.firePropertyChanged( e );
 			AudioSourceChooser.this.startTimeSlider.setTime( 0.0 );
 			AudioSourceChooser.this.stopTimeSlider.setTime( Double.NaN );
-			edu.cmu.cs.dennisc.croquet.KInputPane< ? > inputPane = AudioSourceChooser.this.getInputPane();
+			edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane = AudioSourceChooser.this.getInputPane();
 			if( inputPane != null ) {
 				inputPane.updateOKButton();
 			}
@@ -134,7 +134,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	
 	class TestOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
 		public TestOperation() {
-			this.putValue( javax.swing.Action.NAME, "test" );
+			this.setName( "test" );
 		}
 		@Override
 		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -259,7 +259,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public java.awt.Component[] getComponents() {
 		return new java.awt.Component[] { 
 				this.dropDown, 
-				new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane( this.volumeLevelControl, javax.swing.Box.createHorizontalGlue() ), 
+				new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( this.volumeLevelControl, javax.swing.Box.createHorizontalGlue() ), 
 				javax.swing.Box.createVerticalStrut( 16 ), 
 				this.startTimeSlider, 
 				this.stopTimeSlider };
@@ -267,8 +267,8 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	@Override
 	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
 		super.updateRows( rv );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
-		rv.add( edu.cmu.cs.dennisc.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.zoot.ZManager.createButton( testOperation ), null ) );
+		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
+		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.zoot.ZManager.createButton( testOperation ), null ) );
 		return rv;
 	}
 		

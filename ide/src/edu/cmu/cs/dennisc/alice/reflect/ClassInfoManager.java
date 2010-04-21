@@ -53,7 +53,7 @@ public final class ClassInfoManager {
 		assert file != null;
 		if( file.isDirectory() ) {
 			for( final java.io.File f : file.listFiles() ) {
-				String clsName = edu.cmu.cs.dennisc.io.FileUtilities.getBaseName( f );
+				String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( f );
 				s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
 					@Override
 					protected ClassInfo initialize() {
@@ -76,7 +76,7 @@ public final class ClassInfoManager {
 				while( e.hasMoreElements() ) {
 					java.util.zip.ZipEntry zipEntry = e.nextElement();
 					final java.io.InputStream is = zipFile.getInputStream( zipEntry );
-					String clsName = edu.cmu.cs.dennisc.io.FileUtilities.getBaseName( zipEntry.getName() );
+					String clsName = edu.cmu.cs.dennisc.java.io.FileUtilities.getBaseName( zipEntry.getName() );
 					s_map.put( clsName, new edu.cmu.cs.dennisc.pattern.LazilyInitialized< ClassInfo >() {
 						@Override
 						protected edu.cmu.cs.dennisc.alice.reflect.ClassInfo initialize() {

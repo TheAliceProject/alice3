@@ -74,8 +74,8 @@ public class DefaultNameableAndClassOwnerTrackable extends DefaultNameable imple
 	}
 	
 	public static void setNamesAndClassOwnersForPublicStaticFinalInstancesOwnedBy( Class<?> clsOwner ) {
-		for( java.lang.reflect.Field field : edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( clsOwner, DefaultNameableAndClassOwnerTrackable.class ) ) {
-			DefaultNameableAndClassOwnerTrackable instance = (DefaultNameableAndClassOwnerTrackable)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field, null );
+		for( java.lang.reflect.Field field : edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicStaticFinalFields( clsOwner, DefaultNameableAndClassOwnerTrackable.class ) ) {
+			DefaultNameableAndClassOwnerTrackable instance = (DefaultNameableAndClassOwnerTrackable)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, null );
 			instance.setName( field.getName() );
 			instance.setClassOwner( clsOwner );
 		}

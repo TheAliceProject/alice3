@@ -216,14 +216,14 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 	
 	@Override
 	public void test( java.awt.Component owner ) {
-		edu.cmu.cs.dennisc.croquet.swing.BorderPane content = new edu.cmu.cs.dennisc.croquet.swing.BorderPane() {
+		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane content = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane() {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 			}
 		};
 		
-		final javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createJDialog( owner, "test", true );
+		final javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createJDialog( owner, "test", true );
 		dialog.getContentPane().add( content, java.awt.BorderLayout.CENTER );
 		
 		java.awt.Component controlPanelComponent = this.getControlPanelComponent();
@@ -236,7 +236,7 @@ public class Player extends edu.cmu.cs.dennisc.media.Player {
 		}
 		dialog.pack();
 
-		edu.cmu.cs.dennisc.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, owner );
+		edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( dialog, owner );
 
 		new Thread() {
 			@Override

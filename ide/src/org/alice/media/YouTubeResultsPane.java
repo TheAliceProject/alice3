@@ -65,7 +65,7 @@ import com.google.gdata.data.youtube.VideoEntry;
 import com.google.gdata.data.youtube.YouTubeMediaGroup;
 import com.google.gdata.data.youtube.YtPublicationState;
 
-import edu.cmu.cs.dennisc.swing.Hyperlink;
+import edu.cmu.cs.dennisc.javax.swing.components.JBrowserHyperlink;
 
 /**
  * @author David Culyba
@@ -75,7 +75,7 @@ public class YouTubeResultsPane extends JPanel {
 	private JLabel videoStatus;
 	private JTextPane additionalStatusInfo;
 	private JTextField videoLinkCopyableField;
-	private Hyperlink youTubeLink;
+	private JBrowserHyperlink youTubeLink;
 	private JLabel videoStatusTitle;
 	
 	public YouTubeResultsPane()
@@ -105,7 +105,7 @@ public class YouTubeResultsPane extends JPanel {
 		this.additionalStatusInfo.getStyledDocument().setParagraphAttributes( 0, 0, attributes, true );
 		
 		JLabel videoLinkLabel = new JLabel(" Video link:");
-		this.youTubeLink = new Hyperlink("");
+		this.youTubeLink = new JBrowserHyperlink("");
 		this.youTubeLink.setContentText( "Your uploaded video");
 		this.youTubeLink.setFont( this.youTubeLink.getFont().deriveFont( 16f ));
 		this.youTubeLink.setDefaultColor(new Color(0f, 0f, .6f));

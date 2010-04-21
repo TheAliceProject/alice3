@@ -50,7 +50,7 @@ public class ImageEditor extends edu.cmu.cs.dennisc.program.DefaultProgram {
 
 	@Override
 	protected void initialize() {
-		class MyFileTransferHandler extends edu.cmu.cs.dennisc.swing.transfer.FileTransferHandler {
+		class MyFileTransferHandler extends edu.cmu.cs.dennisc.javax.swing.transfer.FileTransferHandler {
 			@Override
 			protected void handleFiles( java.util.List<java.io.File> files ) {
 				ImageEditor.this.load( files.get( 0 ) );

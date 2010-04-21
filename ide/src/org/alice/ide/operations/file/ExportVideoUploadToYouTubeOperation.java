@@ -56,7 +56,7 @@ import edu.cmu.cs.dennisc.animation.Program;
  */
 public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ExportVideoUploadToYouTubeOperation() {
-		this.putValue( javax.swing.Action.NAME, "Export Video / Upload To YouTube\u2122..." );
+		this.setName( "Export Video / Upload To YouTube\u2122..." );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
@@ -82,7 +82,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 			}
 		};
 
-		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, this.getIDE(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, this.getIDE(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		dialog.setVisible( true );
 	}
 }

@@ -89,7 +89,7 @@ public abstract class ProjectUtilities {
 	private static String XML_RESOURCE_ENTRY_NAME_ATTRIBUTE = "entryName";
 
 	public static java.io.File getMyAliceDirectory( String applicationName ) {
-		java.io.File rv = new java.io.File( edu.cmu.cs.dennisc.io.FileUtilities.getDefaultDirectory(), applicationName );
+		java.io.File rv = new java.io.File( edu.cmu.cs.dennisc.java.io.FileUtilities.getDefaultDirectory(), applicationName );
 		rv.mkdirs();
 		return rv;
 	}
@@ -117,10 +117,10 @@ public abstract class ProjectUtilities {
 	}
 
 	public static java.io.File[] listProjectFiles( java.io.File directory ) {
-		return edu.cmu.cs.dennisc.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, PROJECT_EXTENSION );
 	}
 	public static java.io.File[] listTypeFiles( java.io.File directory ) {
-		return edu.cmu.cs.dennisc.io.FileUtilities.listFiles( directory, TYPE_EXTENSION );
+		return edu.cmu.cs.dennisc.java.io.FileUtilities.listFiles( directory, TYPE_EXTENSION );
 	}
 
 	private static String readVersion( java.util.zip.ZipFile zipFile ) throws java.io.IOException {
@@ -180,11 +180,11 @@ public abstract class ProjectUtilities {
 				String entryName = xmlElement.getAttribute( XML_RESOURCE_ENTRY_NAME_ATTRIBUTE );
 				if( className != null && uuidText != null && entryName != null ) {
 					java.util.zip.ZipEntry zipEntry = zipFile.getEntry( entryName );
-					byte[] data = edu.cmu.cs.dennisc.io.InputStreamUtilities.getBytes( zipFile.getInputStream( zipEntry ) );
+					byte[] data = edu.cmu.cs.dennisc.java.io.InputStreamUtilities.getBytes( zipFile.getInputStream( zipEntry ) );
 					if( data != null ) {
 						try {
-							Class< ? extends org.alice.virtualmachine.Resource > resourceCls = (Class< ? extends org.alice.virtualmachine.Resource >)edu.cmu.cs.dennisc.lang.ClassUtilities.forName( className );
-							org.alice.virtualmachine.Resource resource = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.valueOf( resourceCls, uuidText );
+							Class< ? extends org.alice.virtualmachine.Resource > resourceCls = (Class< ? extends org.alice.virtualmachine.Resource >)edu.cmu.cs.dennisc.java.lang.ClassUtilities.forName( className );
+							org.alice.virtualmachine.Resource resource = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.valueOf( resourceCls, uuidText );
 							resource.decodeAttributes( xmlElement, data );
 							rv.add( resource );
 						} catch( ClassNotFoundException cnfe ) {
@@ -373,7 +373,7 @@ public abstract class ProjectUtilities {
 		zos.close();
 	}
 	public static void writeProject( java.io.File file, edu.cmu.cs.dennisc.alice.Project project, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		writeProject( new java.io.FileOutputStream( file ), project, dataSources );
 	}
 
@@ -404,7 +404,7 @@ public abstract class ProjectUtilities {
 		zos.close();
 	}
 	public static void writeType( java.io.File file, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {
-		edu.cmu.cs.dennisc.io.FileUtilities.createParentDirectoriesIfNecessary( file );
+		edu.cmu.cs.dennisc.java.io.FileUtilities.createParentDirectoriesIfNecessary( file );
 		writeType( new java.io.FileOutputStream( file ), type, dataSources );
 	}
 	public static void writeType( String path, edu.cmu.cs.dennisc.alice.ast.AbstractType type, edu.cmu.cs.dennisc.zip.DataSource... dataSources ) throws java.io.IOException {

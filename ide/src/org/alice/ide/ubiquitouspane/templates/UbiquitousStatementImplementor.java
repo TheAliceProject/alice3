@@ -79,7 +79,7 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 		if( this.toolTip != null ) {
 			//pass
 		} else {
-			this.toolTip = new edu.cmu.cs.dennisc.croquet.KToolTip( this.getIncompleteStatementPane() );
+			this.toolTip = new edu.cmu.cs.dennisc.javax.swing.tooltips.JToolTip( this.getIncompleteStatementPane() );
 		}
 		return this.toolTip;
 	}

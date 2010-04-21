@@ -52,6 +52,6 @@ public abstract class AbstractFieldTileActionOperation extends org.alice.ide.ope
 	
 	//todo: remove
 	protected org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor getMoveAndTurnSceneEditor() {
-		return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( getIDE().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
+		return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( getIDE().getSceneEditor(), org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor.class );
 	}
 }

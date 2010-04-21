@@ -107,7 +107,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public AddItemOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-			this.putValue( javax.swing.Action.NAME, "Add" );
+			this.setName( "Add" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			assert ArrayInitializerPane.this.type != null;
@@ -140,7 +140,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public RemoveItemOperation() {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-			this.putValue( javax.swing.Action.NAME, "Remove" );
+			this.setName( "Remove" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 			final int index = ArrayInitializerPane.this.list.getSelectedIndex();
@@ -200,7 +200,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class MoveItemUpOperation extends AbstractMoveItemOperation {
 		public MoveItemUpOperation() {
-			this.putValue( javax.swing.Action.NAME, "Move Up" );
+			this.setName( "Move Up" );
 		}
 		@Override
 		protected int getIndex(int selectedIndex) {
@@ -218,7 +218,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class MoveItemDownOperation extends AbstractMoveItemOperation {
 		public MoveItemDownOperation() {
-			this.putValue( javax.swing.Action.NAME, "Move Down" );
+			this.setName( "Move Down" );
 		}
 		@Override
 		protected int getIndex(int selectedIndex) {
@@ -272,7 +272,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	//		}
 	//	}
 
-	class ExpressionList extends edu.cmu.cs.dennisc.croquet.swing.GridBagPane {
+	class ExpressionList extends edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane {
 		private java.awt.Component glue = javax.swing.Box.createGlue();
 		private javax.swing.ButtonGroup group;
 		private java.awt.GridBagConstraints gbc;
@@ -384,7 +384,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.updateButtons();
 
-		edu.cmu.cs.dennisc.croquet.swing.GridBagPane buttonPane = new edu.cmu.cs.dennisc.croquet.swing.GridBagPane();
+		edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -402,7 +402,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
+				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
 			}
 		};
 		scrollPane.setBorder( null );

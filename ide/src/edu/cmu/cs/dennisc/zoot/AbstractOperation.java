@@ -46,10 +46,6 @@ package edu.cmu.cs.dennisc.zoot;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractOperation implements Operation {
-	private javax.swing.Action actionForConfiguringSwingComponents = new javax.swing.AbstractAction() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-		}
-	};
 	private java.util.UUID groupUUID;
 	public AbstractOperation( java.util.UUID groupUUID ) {
 		this.groupUUID = groupUUID;
@@ -60,20 +56,13 @@ public abstract class AbstractOperation implements Operation {
 	protected java.awt.Component getSourceComponent( Context< ? > context ) {
 		if( context != null ) {
 			java.util.EventObject e = context.getEvent();
-			return edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( e.getSource(), java.awt.Component.class );
+			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( e.getSource(), java.awt.Component.class );
 		} else {
 			return null;
 		}
 	}
 
-	public final javax.swing.Action getActionForConfiguringSwing() {
-		return this.actionForConfiguringSwingComponents;
-	}
-	protected final void putValue( String key, Object value ) {
-		this.actionForConfiguringSwingComponents.putValue( key, value );
-	}
-	
-	
+
 	private boolean isVisible = true;
 	public boolean isVisible() {
 		return this.isVisible;
@@ -119,9 +108,10 @@ public abstract class AbstractOperation implements Operation {
 			}
 		}
 	}
+
 	private java.util.List< javax.swing.JComponent > components = new java.util.LinkedList< javax.swing.JComponent >();
 	
-	public void addComponent( javax.swing.JComponent component ) {
+	protected void addComponent( javax.swing.JComponent component ) {
 		synchronized( this.components ) {
 			this.components.add( component );
 			component.setVisible( this.isVisible );
@@ -129,7 +119,7 @@ public abstract class AbstractOperation implements Operation {
 			component.setToolTipText( this.toolTipText );
 		}
 	}
-	public void removeComponent( javax.swing.JComponent component ) {
+	protected void removeComponent( javax.swing.JComponent component ) {
 		synchronized( this.components ) {
 			this.components.remove( component );
 		}

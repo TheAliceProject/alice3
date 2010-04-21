@@ -47,7 +47,7 @@ package org.alice.ide.operations.file;
  */
 public class ExitOperation extends AbstractClearanceActionOperation {
 	public ExitOperation() {
-		this.putValue( javax.swing.Action.NAME, "Exit" );
+		this.setName( "Exit" );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		if( this.getIDE().isProjectUpToDateWithFile() ) {

@@ -51,7 +51,7 @@ class EditConstructorOperation extends org.alice.ide.operations.InconsequentialA
 
 	public EditConstructorOperation( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor ) {
 		this.constructor = constructor;
-		this.putValue( javax.swing.Action.NAME, "Edit Constructor" );
+		this.setName( "Edit Constructor" );
 	}
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

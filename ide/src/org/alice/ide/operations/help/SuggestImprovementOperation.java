@@ -47,7 +47,7 @@ package org.alice.ide.operations.help;
  */
 public class SuggestImprovementOperation extends PostIssueOperation {
 	public SuggestImprovementOperation() {
-		this.putValue( javax.swing.Action.NAME, "Suggest Improvement..." );
+		this.setName( "Suggest Improvement..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType() {

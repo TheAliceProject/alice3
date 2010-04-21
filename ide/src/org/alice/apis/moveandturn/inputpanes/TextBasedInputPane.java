@@ -49,13 +49,13 @@ public abstract class TextBasedInputPane< E > extends InputPane< E > {
 	private javax.swing.JTextField textField = new javax.swing.JTextField() {
 		@Override
 		public java.awt.Dimension getPreferredSize() {
-			return edu.cmu.cs.dennisc.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 		}
 	};
 	public TextBasedInputPane( String message ) {
 		super( message );
 		this.add( this.textField, java.awt.BorderLayout.CENTER );
-		this.textField.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.swing.event.SimplifiedDocumentAdapter() {
+		this.textField.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
 			@Override
 			protected void updated( javax.swing.event.DocumentEvent e ) {
 				TextBasedInputPane.this.updateOKButton();

@@ -53,9 +53,8 @@ import edu.cmu.cs.dennisc.alice.ast.DeclarationProperty;
 class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, isArrayProperty.getValue() );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, isArrayProperty.getValue(), "is array" );
 		this.isArrayProperty = isArrayProperty;
-		this.putValue( javax.swing.Action.NAME, "is array" );
 	}
 	@Override
 	protected void handleStateChange(boolean value) {
@@ -63,7 +62,7 @@ class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStat
 	}
 }
 
-public class TypePane extends edu.cmu.cs.dennisc.croquet.swing.LineAxisPane {
+public class TypePane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
 	private DeclarationProperty< AbstractType > typeProperty;
 	private org.alice.ide.common.TypeComboBox typeComboBox;
 	private IsArrayStateOperation isArrayStateOperation;

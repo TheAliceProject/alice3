@@ -56,7 +56,7 @@ public final class PropertyUtilities {
 		} else {
 			methodName = "get" + propertyName;
 		}
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
 	}
 	public static java.lang.reflect.Method getSetter( Class< ? > cls, String propertyName ) {
 		java.lang.reflect.Method getter = getGetter( cls, propertyName );
@@ -69,11 +69,11 @@ public final class PropertyUtilities {
 			methodName = "set" + propertyName;
 		}
 		try {
-			return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
+			return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
 		} catch( RuntimeException re ) {
 			if( valueClass.equals( Double.TYPE ) || valueClass.equals( Double.class ) ) {
 				parameterTypes[ 0 ] = Number.class;
-				return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
+				return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getMethod( cls, methodName, parameterTypes );
 			} else {
 				throw re;
 			}
@@ -174,11 +174,11 @@ public final class PropertyUtilities {
 	public static Object getPropertyValue( Object o, String propertyName ) {
 		java.lang.reflect.Method getter = getGetter( o.getClass(), propertyName );
 		Object[] args = {};
-		return edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( o, getter, args );
+		return edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( o, getter, args );
 	}
 	public static void setPropertyValue( Object o, String propertyName, Object value ) {
 		java.lang.reflect.Method setter = getSetter( o.getClass(), propertyName );
 		Object[] args = { value };
-		edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.invoke( o, setter, args );
+		edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.invoke( o, setter, args );
 	}
 }

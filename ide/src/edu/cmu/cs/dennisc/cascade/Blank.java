@@ -111,7 +111,7 @@ public abstract class Blank extends Node {
 				Blank.this.handleCancel( e );
 			}
 		} );
-		edu.cmu.cs.dennisc.swing.PopupMenuUtilities.showModal( popupMenu, invoker, x, y );
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, x, y );
 	}
 
 	protected void handleActionPerformed() {

@@ -49,7 +49,7 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		this.ownerType = ownerType;
-		this.putValue( javax.swing.Action.NAME, "Declare Property..." );
+		this.setName( "Declare Property..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {

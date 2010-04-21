@@ -52,18 +52,18 @@ public abstract class CollectionOfPreferences {
 		assert this.preferences == null;
 		assert this.utilPrefs == null;
 		this.utilPrefs = java.util.prefs.Preferences.userNodeForPackage( this.getClass() );
-		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
+		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.clearAllPreferences" ) ) {
 			try {
 				this.utilPrefs.clear();
 			} catch( java.util.prefs.BackingStoreException bse ) {
 				throw new RuntimeException( bse );
 			}
 		}
-		java.util.List< java.lang.reflect.Field > fields = edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getPublicFinalFields( this.getClass(), Preference.class );
+		java.util.List< java.lang.reflect.Field > fields = edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getPublicFinalFields( this.getClass(), Preference.class );
 		this.preferences = new edu.cmu.cs.dennisc.preference.Preference<?>[ fields.size() ];
 		int i = 0;
 		for( java.lang.reflect.Field field : fields ) {
-			this.preferences[ i ] = (Preference)edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.get( field, this );
+			this.preferences[ i ] = (Preference)edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.get( field, this );
 			this.preferences[ i ].initialize( this, field.getName(), java.lang.reflect.Modifier.isTransient( field.getModifiers() ) );
 			i++;
 		}

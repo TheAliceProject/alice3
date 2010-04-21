@@ -97,7 +97,7 @@ public class CompositeEdit implements Edit {
 		sb.append( this.presentation );
 		if( sb.length() == 0 ) {
 			Class<?> cls = this.getClass();
-			sb.append( edu.cmu.cs.dennisc.lang.ClassUtilities.getTrimmedClassName( cls ) );
+			sb.append( edu.cmu.cs.dennisc.java.lang.ClassUtilities.getTrimmedClassName( cls ) );
 		}
 		return sb.toString();
 	}

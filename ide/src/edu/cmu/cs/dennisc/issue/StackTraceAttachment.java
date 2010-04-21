@@ -51,7 +51,7 @@ public class StackTraceAttachment implements edu.cmu.cs.dennisc.issue.Attachment
 		this.throwable = throwable;
 	}
 	public byte[] getBytes() {
-		return edu.cmu.cs.dennisc.lang.ThrowableUtilities.getStackTraceAsByteArray( this.throwable );
+		return edu.cmu.cs.dennisc.java.lang.ThrowableUtilities.getStackTraceAsByteArray( this.throwable );
 	}
 	public String getMIMEType() {
 		return "text/plain";

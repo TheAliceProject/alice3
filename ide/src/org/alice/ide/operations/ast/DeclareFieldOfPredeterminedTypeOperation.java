@@ -51,8 +51,8 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGallery
 	public DeclareFieldOfPredeterminedTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
 		this.ownerType = ownerType;
 		this.valueType = valueType;
-		this.putValue( javax.swing.Action.SMALL_ICON, new org.alice.ide.common.TypeIcon( this.valueType ) );
-		this.putValue( javax.swing.Action.NAME, "Declare New Instance..." );
+		this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.valueType ) );
+		this.setName( "Declare New Instance..." );
 	}
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {

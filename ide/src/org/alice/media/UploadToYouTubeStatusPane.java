@@ -68,7 +68,7 @@ import org.jdesktop.swingworker.SwingWorker;
 
 import com.google.gdata.util.ServiceException;
 
-import edu.cmu.cs.dennisc.croquet.swing.Pane;
+import edu.cmu.cs.dennisc.javax.swing.components.JPane;
 
 
 /**

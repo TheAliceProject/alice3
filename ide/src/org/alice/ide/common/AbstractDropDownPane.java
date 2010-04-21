@@ -48,8 +48,8 @@ package org.alice.ide.common;
 public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl {
 //	private zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
 	public AbstractDropDownPane() {
-		this.setBackground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 230 ) );
-		this.setForeground( edu.cmu.cs.dennisc.awt.ColorUtilities.createGray( 191 ) );
+		this.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );
+		this.setForeground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
 		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 	}
 	

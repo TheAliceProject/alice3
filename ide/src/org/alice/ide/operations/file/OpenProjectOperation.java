@@ -47,9 +47,9 @@ package org.alice.ide.operations.file;
  */
 public class OpenProjectOperation extends AbstractOpenProjectOperation {
 	public OpenProjectOperation() {
-		this.putValue( javax.swing.Action.NAME, "Open..." );
-		this.putValue( javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_O, edu.cmu.cs.dennisc.awt.event.InputEventUtilities.getAcceleratorMask() ) );
-		this.putValue( javax.swing.Action.MNEMONIC_KEY, java.awt.event.KeyEvent.VK_O );
+		this.setName( "Open..." );
+		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_O, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+		this.setMnemonicKey( java.awt.event.KeyEvent.VK_O );
 	}
 	@Override
 	protected boolean isNew() {

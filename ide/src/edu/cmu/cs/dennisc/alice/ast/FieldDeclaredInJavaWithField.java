@@ -66,7 +66,7 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 		return get( new FieldReflectionProxy( fld ) );
 	}
 	public static FieldDeclaredInJavaWithField get( Class<?> declaringCls, String name ) {
-		return get( edu.cmu.cs.dennisc.lang.reflect.ReflectionUtilities.getField(  declaringCls, name ) );
+		return get( edu.cmu.cs.dennisc.java.lang.reflect.ReflectionUtilities.getField(  declaringCls, name ) );
 	}
 
 	private FieldReflectionProxy fieldReflectionProxy;
@@ -152,7 +152,7 @@ public class FieldDeclaredInJavaWithField extends FieldDeclaredInJava {
 	
 	@Override
 	public boolean isEquivalentTo( Object o ) {
-		FieldDeclaredInJavaWithField other = edu.cmu.cs.dennisc.lang.ClassUtilities.getInstance( o, FieldDeclaredInJavaWithField.class );
+		FieldDeclaredInJavaWithField other = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( o, FieldDeclaredInJavaWithField.class );
 		if( other != null ) {
 			return this.fieldReflectionProxy.equals( other.fieldReflectionProxy );
 		} else {
