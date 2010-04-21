@@ -71,7 +71,8 @@ public class OrthographicCameraAdapter extends AbstractNearPlaneAndFarPlaneCamer
 			
 			rv.setDirection( 0, 0, 1 );
 		}
-		return rv;	}
+		return rv;
+	}
 
 	@Override
 	public edu.cmu.cs.dennisc.math.Matrix4x4 getActualProjectionMatrix( edu.cmu.cs.dennisc.math.Matrix4x4 rv, java.awt.Rectangle actualViewport ) {
