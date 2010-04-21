@@ -78,28 +78,33 @@ public class CompositeContext extends Context< CompositeOperation > {
 		}
 	}
 	
-	private boolean isGoodToGo() {
-		if( this.children.size() > 0 ) {
-			Context<?> lastChildContext = this.children.get( this.children.size()-1 );
-			State state = lastChildContext.getState();
-			return state != null && state != State.PENDING;
-		} else {
-			return true;
-		}
+	
+	public <C extends Context> void performAsChild( Operation<C> operation, C context ) {
+		this.children.add( context );
+		operation.perform( context );
 	}
-
-	private static boolean isGoodToReturn( Context<?> context ) {
-		State state = context.getState();
-		if( state != null ) {
-			if( state == State.PENDING ) {
-				//todo? handle pend
-			}
-			return true;
-		} else {
-			return false;
-		}
-		
-	}
+	
+//	private boolean isGoodToGo() {
+//		if( this.children.size() > 0 ) {
+//			Context<?> lastChildContext = this.children.get( this.children.size()-1 );
+//			State state = lastChildContext.getState();
+//			return state != null && state != State.PENDING;
+//		} else {
+//			return true;
+//		}
+//	}
+//
+//	private static boolean isGoodToReturn( Context<?> context ) {
+//		State state = context.getState();
+//		if( state != null ) {
+//			if( state == State.PENDING ) {
+//				//todo? handle pend
+//			}
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	}
 //	public CompositeContext performInChildContext( CompositeOperation compositeOperation, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
 //		assert compositeOperation != null;
 //		assert this.isGoodToGo();

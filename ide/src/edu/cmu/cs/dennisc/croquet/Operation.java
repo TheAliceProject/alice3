@@ -133,11 +133,9 @@ public abstract class Operation< C extends Context > {
 	
 	protected abstract void perform( C context );
 	protected abstract C createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness );
-	private C createContext( java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-		return this.createContext( Application.getSingleton().getCurrentCompositeContext(), e, cancelEffectiveness );
-	}
 	protected final void performAsChildInCurrentContext( java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-		C context = this.createContext( e, cancelEffectiveness );
-		this.perform( context );
+		CompositeContext parentContext = Application.getSingleton().getCurrentCompositeContext();
+		C context = this.createContext( parentContext, e, cancelEffectiveness );
+		parentContext.performAsChild( this, context );
 	}
 }
