@@ -1,9 +1,9 @@
 package org.alice.app.operations.file;
 
-public class LoadUriEdit extends edu.cmu.cs.dennisc.croquet.Edit< edu.cmu.cs.dennisc.croquet.ActionOperation > {
+public class LoadUriEdit extends edu.cmu.cs.dennisc.croquet.Edit {
 	private java.net.URI uri;
-	public LoadUriEdit( edu.cmu.cs.dennisc.croquet.ActionOperation operation, java.net.URI uri ) {
-		super( operation );
+	public LoadUriEdit( java.util.UUID contextId, java.net.URI uri ) {
+		super( contextId );
 		this.uri = uri;
 	}
 	@Override

@@ -52,7 +52,7 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 	}
 	protected abstract boolean isNew();
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.ActionContext actionContext) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.ActionEvent e ) {
 		org.alice.app.ProjectApplication application = this.getProjectApplication();
 		org.alice.app.openprojectpane.OpenProjectPane openProjectPane = application.getOpenProjectPane();
 		openProjectPane.selectAppropriateTab( this.isNew() );
@@ -60,13 +60,13 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 			java.net.URI uri = application.showInJDialog( openProjectPane, "Open Project", true );
 			//todo: just load default project
 			if( uri != null ) {
-				actionContext.commitAndInvokeDo( new LoadUriEdit( this, uri ) );
+				context.commitAndInvokeDo( id, new LoadUriEdit( id, uri ) );
 				break;
 			} else {
 				if( application.getFile() == null ) {
 					application.showMessageDialog( "Please select a project to open." );
 				} else {
-					actionContext.cancel();
+					context.cancel( id );
 					break;
 				}
 			}

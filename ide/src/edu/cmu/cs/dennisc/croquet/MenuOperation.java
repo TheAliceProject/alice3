@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class MenuOperation extends Operation< MenuContext > {
+public class MenuOperation extends Operation {
 	private String name;
 	private Operation[] operations;
 	public MenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, String name, Operation... operations ) {
@@ -64,15 +64,5 @@ public class MenuOperation extends Operation< MenuContext > {
 	/*package-private*/ void removeMenu( KMenu menu ) {
 		this.removeComponent( menu );
 		menu.setText( null );
-	}
-	
-	@Override
-	protected MenuContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-		return new MenuContext( parentContext, this, e, cancelEffectiveness );
-	}
-	
-	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.MenuContext context ) {
-		//todo: show popup menu
 	}
 }

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectionOperation<T> extends ComponentOperation< ItemSelectionContext > {
+public abstract class ItemSelectionOperation<T> extends Operation {
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	private javax.swing.Action[] actions;
 	private javax.swing.ButtonModel[] buttonModels;
@@ -53,6 +53,7 @@ public abstract class ItemSelectionOperation<T> extends ComponentOperation< Item
 	private javax.swing.ComboBoxModel comboBoxModel;
 	
 	private T previousSelection;
+
 	public ItemSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, javax.swing.ComboBoxModel comboBoxModel ) {
 		super( groupUUID, individualUUID );
 		this.comboBoxModel = comboBoxModel;
@@ -78,12 +79,49 @@ public abstract class ItemSelectionOperation<T> extends ComponentOperation< Item
 			}
 			this.itemListeners[ i ] = new java.awt.event.ItemListener() {
 				public void itemStateChanged( java.awt.event.ItemEvent e ) {
-					ItemSelectionOperation.this.performAsChildInCurrentContext( e, CancelEffectiveness.FUTILE );
+					ItemSelectionOperation.this.handleItemStateChanged( e );
 				}
 			};
 			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
 		}
 	}
+
+	protected abstract ItemSelectionEdit< T > createItemSelectionEdit( Context context, java.util.UUID id, java.awt.event.ItemEvent e, T previousSelection, T nextSelection );
+//	public final void performSelectionChange(ItemSelectionContext<T> context) {
+//		context.commitAndInvokeDo( new ItemSelectionEdit< T >( this, context.getPreviousSelection(), context.getNextSelection() ) {
+//			@Override
+//			protected T decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
+//				return ItemSelectionOperation.this.decodeValue(binaryDecoder);
+//			}
+//			@Override
+//			protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
+//				ItemSelectionOperation.this.encodeValue(binaryEncoder, value);
+//			}
+//		} );
+//	}
+//	@Override
+//	protected ItemSelectionContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+//		assert e instanceof java.awt.event.ItemEvent;
+//		java.awt.event.ItemEvent itemEvent = (java.awt.event.ItemEvent)e;
+//		T nextSelection = (T)this.comboBoxModel.getSelectedItem();
+//		ItemSelectionContext rv = new ItemSelectionContext( parentContext, this, e, cancelEffectiveness, this.previousSelection, nextSelection );
+//		this.previousSelection = nextSelection;
+//		return rv;
+//	}
+
+	private void handleItemStateChanged(java.awt.event.ItemEvent e) {
+		Application application = Application.getSingleton();
+		Context context = application.getCurrentContext();
+		java.util.UUID id = context.open();
+		context.handleItemStateChanged( id, this, e );
+		context.closeIfNotPending( id );
+	}
+	/*package-private*/ final void perform( Context context, java.util.UUID id, java.awt.event.ItemEvent e ) {
+		T nextSelection = (T)this.comboBoxModel.getSelectedItem();
+		context.commitAndInvokeDo( id, this.createItemSelectionEdit( context, id, e, this.previousSelection, nextSelection ) );
+		this.previousSelection = nextSelection;
+	}
+
 	protected String getNameFor( int index, T item ) {
 		if( item != null ) {
 			return item.toString();
@@ -114,23 +152,6 @@ public abstract class ItemSelectionOperation<T> extends ComponentOperation< Item
 			}
 		}
 	}
-
-	protected abstract T decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder);
-	protected abstract void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value);
-
-	public final void performSelectionChange(ItemSelectionContext<T> context) {
-		context.commitAndInvokeDo( new ItemSelectionEdit< T >( this, context.getPreviousSelection(), context.getNextSelection() ) {
-			@Override
-			protected T decodeValue(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-				return ItemSelectionOperation.this.decodeValue(binaryDecoder);
-			}
-			@Override
-			protected void encodeValue(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder, T value) {
-				ItemSelectionOperation.this.encodeValue(binaryEncoder, value);
-			}
-		} );
-	}
-
 	/*package-private*/ void setValue(T value) {
 		int N = this.buttonModels.length;
 		for( int i=0; i<N; i++ ) {
@@ -140,15 +161,5 @@ public abstract class ItemSelectionOperation<T> extends ComponentOperation< Item
 		for( int i=0; i<N; i++ ) {
 			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
 		}
-	}
-	
-	@Override
-	protected ItemSelectionContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-		assert e instanceof java.awt.event.ItemEvent;
-		java.awt.event.ItemEvent itemEvent = (java.awt.event.ItemEvent)e;
-		T nextSelection = (T)this.comboBoxModel.getSelectedItem();
-		ItemSelectionContext rv = new ItemSelectionContext( parentContext, this, e, cancelEffectiveness, this.previousSelection, nextSelection );
-		this.previousSelection = nextSelection;
-		return rv;
 	}
 }

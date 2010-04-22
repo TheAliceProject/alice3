@@ -45,48 +45,24 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Edit< O extends Operation > implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	private O operation;
-	private java.util.UUID operationIndividualUUID;
+public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private java.util.UUID contextId;
+	
 	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
 	}
-	public Edit( O operation ) {
-		this.operation = operation;
-		this.operationIndividualUUID = operation.getIndividualUUID();
+	public Edit( java.util.UUID contextId ) {
+		this.contextId = contextId;
+	}
+	protected java.util.UUID getContextID() {
+		return this.contextId;
 	}
 	
-	public O getOperation() {
-		if( this.operation != null ) {
-			//pass
-		} else {
-			this.operation = Application.getSingleton().lookupOperation( this.operationIndividualUUID );
-		}
-		return this.operation;
-	}
-	public java.util.UUID getOperationIndividualUUID() {
-		return operationIndividualUUID;
-	}
 	public abstract boolean canRedo();
 	public abstract boolean canUndo();
 	public abstract void doOrRedo( boolean isDo );
 	public abstract void undo();
 
-	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		long mostSignificantBits = binaryDecoder.decodeLong();
-		long leastSignificantBits = binaryDecoder.decodeLong();
-		this.operationIndividualUUID = new java.util.UUID(mostSignificantBits, leastSignificantBits);
-		this.decodeInternal(binaryDecoder);
-	}
-	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		long mostSignificantBits = this.operationIndividualUUID.getMostSignificantBits();
-		long leastSignificantBits = this.operationIndividualUUID.getLeastSignificantBits();
-		binaryEncoder.encode( mostSignificantBits );
-		binaryEncoder.encode( leastSignificantBits );
-		this.encodeInternal(binaryEncoder);
-	}
 	protected abstract StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale );
 	public final String getPresentation( java.util.Locale locale ) {
 		StringBuffer sb = new StringBuffer();
@@ -112,4 +88,16 @@ public abstract class Edit< O extends Operation > implements edu.cmu.cs.dennisc.
 		this.updatePresentation( sb, locale );
 		return sb.toString();
 	}
+	
+	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
+	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.contextId = edu.cmu.cs.dennisc.java.util.UuidUtilities.decodeUuid( binaryDecoder );
+		this.decodeInternal(binaryDecoder);
+	}
+	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		edu.cmu.cs.dennisc.java.util.UuidUtilities.encodeUuid( binaryEncoder, this.contextId );
+		this.encodeInternal(binaryEncoder);
+	}
+	
 }

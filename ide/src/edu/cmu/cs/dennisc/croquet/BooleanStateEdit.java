@@ -45,28 +45,45 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateEdit extends Edit< BooleanStateOperation > {
+public final class BooleanStateEdit extends Edit {
+	private BooleanStateOperation operation;
+	private java.util.UUID operationId;
 	//can't really imagine this values being the same, but it doesn't seem likely to hurt to track both values
-	private boolean prevValue;
+	private boolean previousValue;
 	private boolean nextValue;
 
 	public BooleanStateEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
-	public BooleanStateEdit( BooleanStateOperation booleanStateOperation, boolean prevValue, boolean nextValue) {
-		super( booleanStateOperation );
-		this.prevValue = prevValue;
-		this.nextValue = nextValue;
+	public BooleanStateEdit( java.util.UUID contextId, java.awt.event.ItemEvent e, BooleanStateOperation operation ) {
+		super( contextId );
+		this.operation = operation;
+		this.operationId = operation.getIndividualUUID();
+		if( e.getStateChange() == java.awt.event.ItemEvent.SELECTED ) {
+			this.previousValue = false;
+			this.nextValue = true;
+		} else {
+			this.previousValue = true;
+			this.nextValue = false;
+		}
 	}
 
+	private BooleanStateOperation getOperation() {
+		if( this.operation != null ) {
+			//pass
+		} else {
+			this.operation = Application.getSingleton().lookupOperation( this.operationId );
+		}
+		return this.operation;
+	}
 	@Override
 	protected void decodeInternal(edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder) {
-		this.prevValue = binaryDecoder.decodeBoolean();
+		this.previousValue = binaryDecoder.decodeBoolean();
 		this.nextValue = binaryDecoder.decodeBoolean();
 	}
 	@Override
 	protected void encodeInternal(edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder) {
-		binaryEncoder.encode( this.prevValue );
+		binaryEncoder.encode( this.previousValue );
 		binaryEncoder.encode( this.nextValue );
 	}
 	
@@ -86,7 +103,7 @@ public final class BooleanStateEdit extends Edit< BooleanStateOperation > {
 
 	@Override
 	public void undo() {
-		this.getOperation().setValue(this.prevValue);
+		this.getOperation().setValue(this.previousValue);
 	}
 
 	@Override

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateOperation extends ComponentOperation< BooleanStateContext > {
+public final class BooleanStateOperation extends Operation {
 	private javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -53,9 +53,19 @@ public final class BooleanStateOperation extends ComponentOperation< BooleanStat
 	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged(java.awt.event.ItemEvent e) {
-			BooleanStateOperation.this.performAsChildInCurrentContext( e, CancelEffectiveness.FUTILE );
+			BooleanStateOperation.this.handleItemStateChanged( e );
 		}
 	};
+	private void handleItemStateChanged(java.awt.event.ItemEvent e) {
+		Application application = Application.getSingleton();
+		Context context = application.getCurrentContext();
+		java.util.UUID id = context.open();
+		context.handleItemStateChanged( id, this, e );
+		context.closeIfNotPending( id );
+	}
+	/*package-private*/ final void perform( Context context, java.util.UUID id, java.awt.event.ItemEvent e ) {
+		context.commitAndInvokeDo( id, new BooleanStateEdit( id, e, this ) );
+	}
 
 	private String trueText = null;
 	private String falseText = null;
@@ -110,10 +120,25 @@ public final class BooleanStateOperation extends ComponentOperation< BooleanStat
 		abstractButton.setAction(null);
 	}
 
-	@Override
-	protected final void perform(BooleanStateContext booleanStateContext) {
-		booleanStateContext.commitAndInvokeDo(new BooleanStateEdit( this, booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
-	}
+//		@Override
+//	protected final void perform(BooleanStateContext booleanStateContext) {
+//		booleanStateContext.commitAndInvokeDo(new BooleanStateEdit( this, booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
+//	}
+//	@Override
+//	protected BooleanStateContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+//		boolean previousValue;
+//		boolean nextValue;
+//		assert e instanceof java.awt.event.ItemEvent;
+//		java.awt.event.ItemEvent itemEvent = (java.awt.event.ItemEvent)e;
+//		if (itemEvent.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+//			previousValue = false;
+//			nextValue = true;
+//		} else {
+//			previousValue = true;
+//			nextValue = false;
+//		}
+//		return new BooleanStateContext( parentContext, this, e, cancelEffectiveness, previousValue, nextValue );
+//	}
 
 	private void updateName() {
 		String name;
@@ -124,28 +149,11 @@ public final class BooleanStateOperation extends ComponentOperation< BooleanStat
 		}
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
-
 	/*package-private*/ void setValue(boolean value) {
 		this.buttonModel.removeItemListener(itemListener);
 		this.buttonModel.setSelected(value);
 		// this.handleStateChange( value );
 		this.buttonModel.addItemListener(itemListener);
 		this.updateName();
-	}
-
-	@Override
-	protected BooleanStateContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-		boolean previousValue;
-		boolean nextValue;
-		assert e instanceof java.awt.event.ItemEvent;
-		java.awt.event.ItemEvent itemEvent = (java.awt.event.ItemEvent)e;
-		if (itemEvent.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-			previousValue = false;
-			nextValue = true;
-		} else {
-			previousValue = true;
-			nextValue = false;
-		}
-		return new BooleanStateContext( parentContext, this, e, cancelEffectiveness, previousValue, nextValue );
 	}
 }

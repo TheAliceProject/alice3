@@ -47,14 +47,13 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Application {
-	private static class RootContext extends CompositeContext {
-		public RootContext() {
-			super( null, null, null, null );
-		}
-	};
-	private RootContext rootContext = new RootContext();
+//	private static class RootContext extends CompositeContext {
+//		public RootContext() {
+//			super( null, null, null, null );
+//		}
+//	};
+//	private RootContext rootContext = new RootContext();
 	private static Application singleton;
-
 	public static Application getSingleton() {
 		return singleton;
 	}
@@ -62,6 +61,7 @@ public abstract class Application {
 	private java.util.Map<java.util.UUID, Operation> mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private KMenuBar menuBar = new KMenuBar();
+	private Context rootContext = new Context();
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
@@ -71,14 +71,13 @@ public abstract class Application {
 		return this.menuBar;
 	}
 
-	public CompositeContext getCurrentCompositeContext() {
-		return this.rootContext.getCurrentCompositeActionContext();
+	public Context getCurrentContext() {
+		return this.rootContext;
 	}
 
-	
-	public <O extends Operation> O lookupOperation( java.util.UUID uuid ) {
+	public <O extends Operation> O lookupOperation( java.util.UUID id ) {
 		//todo
-		return (O)this.mapUUIDToOperation.get( uuid );
+		return (O)this.mapUUIDToOperation.get( id );
 	}
 
 	protected abstract KComponent<?> createContentPane();

@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Operation< C extends Context > {
+public abstract class Operation {
 	private java.util.UUID groupUUID;
 	private java.util.UUID inividualUUID;
 	public Operation( java.util.UUID groupUUID, java.util.UUID inividualUUID ) {
@@ -58,15 +58,19 @@ public abstract class Operation< C extends Context > {
 	public java.util.UUID getIndividualUUID() {
 		return this.inividualUUID;
 	}
-	
-	protected java.awt.Component getSourceComponent( Context< ? > context ) {
-		if( context != null ) {
-			java.util.EventObject e = context.getEvent();
-			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( e.getSource(), java.awt.Component.class );
-		} else {
-			return null;
-		}
-	}
+
+//	public CompositeContext getCurrentCompositeContext() {	
+//		Application application = Application.getSingleton();
+//		return application.getCurrentCompositeContext();
+//	}
+//	protected java.awt.Component getSourceComponent( Context< ? > context ) {
+//		if( context != null ) {
+//			java.util.EventObject e = context.getEvent();
+//			return edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( e.getSource(), java.awt.Component.class );
+//		} else {
+//			return null;
+//		}
+//	}
 
 
 	private boolean isVisible = true;
@@ -131,11 +135,11 @@ public abstract class Operation< C extends Context > {
 		}
 	}
 	
-	protected abstract void perform( C context );
-	protected abstract C createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness );
-	protected final void performAsChildInCurrentContext( java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-		CompositeContext parentContext = Application.getSingleton().getCurrentCompositeContext();
-		C context = this.createContext( parentContext, e, cancelEffectiveness );
-		parentContext.performAsChild( this, context );
-	}
+//	protected abstract void perform( C context );
+//	protected abstract C createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness );
+//	protected final void performAsChildInCurrentContext( java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
+//		CompositeContext parentContext = Application.getSingleton().getCurrentCompositeContext();
+//		C context = this.createContext( parentContext, e, cancelEffectiveness );
+//		parentContext.performAsChild( this, context );
+//	}
 }

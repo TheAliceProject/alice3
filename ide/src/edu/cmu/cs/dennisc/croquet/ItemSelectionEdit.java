@@ -45,14 +45,30 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectionEdit<T> extends Edit< ItemSelectionOperation<T> > {
+public abstract class ItemSelectionEdit<T> extends Edit {
+	private ItemSelectionOperation<T> operation;
+	private java.util.UUID operationId;
 	private T prevValue;
 	private T nextValue;
-	public ItemSelectionEdit( ItemSelectionOperation< T > operation, T prevValue, T nextValue ) {
-		super( operation );
+	public ItemSelectionEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public ItemSelectionEdit( java.util.UUID contextId, T prevValue, T nextValue, ItemSelectionOperation< T > operation ) {
+		super( contextId );
 		this.prevValue = prevValue;
 		this.nextValue = nextValue;
+		this.operation = operation;
+		this.operationId = operation.getIndividualUUID();
 	}
+	private ItemSelectionOperation<T> getOperation() {
+		if( this.operation != null ) {
+			//pass
+		} else {
+			this.operation = Application.getSingleton().lookupOperation( this.operationId );
+		}
+		return this.operation;
+	}
+
 	@Override
 	public boolean canRedo() {
 		return this.getOperation() != null;

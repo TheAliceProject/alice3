@@ -45,71 +45,18 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class CompositeOperation extends Operation< CompositeContext > {
-	private AbstractButtonOperationImplementation implementation = new AbstractButtonOperationImplementation() {
-		@Override
-		protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-			CompositeOperation.this.performAsChildInCurrentContext( e, CancelEffectiveness.WORTHWHILE );
+public abstract class CompositeOperation extends AbstractActionOperation {
+	@Override
+	protected final void perform( Context context, java.util.UUID id, java.awt.event.ActionEvent e ) {
+		for( AbstractActionOperation operation : this.getOperations() ) {
+			operation.perform( context, id, e );
+			if( context.isCanceled( id ) ) {
+				break;
+			}
 		}
-	};
+	}
 	public CompositeOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
 		super( groupUUID, individualUUID );
 	}
-	protected abstract java.util.List< Operation > getOperations();
-	@Override
-	protected final void perform( CompositeContext context ) {
-		for( Operation<?> operation : this.getOperations() ) {
-			operation.performAsChildInCurrentContext( null, context.getCancelEffectiveness() );
-		}
-	}
-	public String getName() {
-		return this.implementation.getName();
-	}
-	public void setName( String name ) {
-		this.implementation.setName( name );
-	}
-	public String getShortDescription() {
-		return this.implementation.getShortDescription();
-	}
-	public void setShortDescription( String shortDescription ) {
-		this.implementation.setShortDescription( shortDescription );
-	}
-	public String getLongDescription() {
-		return this.implementation.getLongDescription();
-	}
-	public void setLongDescription( String longDescription ) {
-		this.implementation.setLongDescription( longDescription );
-	}
-	public javax.swing.Icon getSmallIcon() {
-		return this.implementation.getSmallIcon();
-	}
-	public void setSmallIcon( javax.swing.Icon icon ) {
-		this.implementation.setSmallIcon( icon );
-	}
-	public int getMnemonicKey() {
-		return this.implementation.getMnemonicKey();
-	}
-	public void setMnemonicKey( int mnemonicKey ) {
-		this.implementation.setMnemonicKey( mnemonicKey );
-	}
-	public javax.swing.KeyStroke getAcceleratorKey() {
-		return this.implementation.getAcceleratorKey();
-	}
-	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-		this.implementation.setAcceleratorKey( acceleratorKey );
-	}
-
-	/*package-private*/ void addAbstractButton( KAbstractButton<?> abstractButton ) {
-		this.implementation.addAbstractButton(abstractButton);
-		this.addComponent(abstractButton);
-	}
-	/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
-		this.implementation.removeAbstractButton(abstractButton);
-		this.removeComponent(abstractButton);
-	}
-	
-	@Override
-	protected CompositeContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-		return new CompositeContext( parentContext, this, e, cancelEffectiveness );
-	}
+	protected abstract java.util.List< AbstractActionOperation > getOperations();
 }
