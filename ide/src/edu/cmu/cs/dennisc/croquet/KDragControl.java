@@ -286,9 +286,9 @@ public abstract class KDragControl extends KControl {
 		this.getJComponent().addComponentListener( this.componentListener );
 	}
 	@Override
-	protected void removing() {
+	protected void removed() {
 		this.getJComponent().removeComponentListener( this.componentListener );
-		super.removing();
+		super.removed();
 	}
 	private boolean isActuallyPotentiallyDraggable() {
 		return true;

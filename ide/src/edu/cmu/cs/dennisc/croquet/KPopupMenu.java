@@ -40,20 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.app.operations.edit;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	public HistoryOperation( java.util.UUID individualUUID ) {
-		super( org.alice.app.ProjectApplication.HISTORY_GROUP, individualUUID );
+public class KPopupMenu extends KAbstractMenu< javax.swing.JPopupMenu > {
+	/*package-private*/ KPopupMenu() {
 	}
-	protected abstract void performInternal( edu.cmu.cs.dennisc.history.HistoryManager historyManager );
+	
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = org.alice.app.ProjectApplication.getSingleton().getProjectHistoryManager();
-		this.performInternal(historyManager);
-		context.commit( id );
+	protected javax.swing.JPopupMenu createJComponent() {
+		return new javax.swing.JPopupMenu();
+	}
+
+	@Override
+	public void addMenu( edu.cmu.cs.dennisc.croquet.KMenu menu ) {
+		menu.adding();
+		this.getJComponent().add( menu.getJComponent() );
+		menu.added();
+	}
+	@Override
+	public void addMenuItem( edu.cmu.cs.dennisc.croquet.KMenuItem menuItem ) {
+		menuItem.adding();
+		this.getJComponent().add( menuItem.getJComponent() );
+		menuItem.added();
+	}
+	@Override
+	public void addSeparator() {
+		this.getJComponent().addSeparator();
+	}
+	
+	public void showBelow( KComponent< ? > invoker ) {
+		int x;
+		int y;
+		javax.swing.JComponent jInvoker;
+		if( invoker != null ) {
+			jInvoker = invoker.getJComponent();
+			x = 0;
+			y = invoker.getHeight();
+		} else {
+			jInvoker = null;
+			x = 0;
+			y = 0;
+		}
+		this.getJComponent().show( jInvoker, x, y );
 	}
 }

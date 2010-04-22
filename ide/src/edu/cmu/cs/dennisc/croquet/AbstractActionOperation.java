@@ -46,128 +46,91 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractActionOperation extends Operation {
-	private static abstract class AbstractButtonOperationImplementation {
-		private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
-		private javax.swing.Action action = new javax.swing.AbstractAction() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-			}
-		};
-
-		public AbstractButtonOperationImplementation() {
-			this.buttonModel.addActionListener( new java.awt.event.ActionListener() {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					AbstractButtonOperationImplementation.this.handleActionPerformed( e );
-				}
-			} );
+	private class ButtonActionListener implements java.awt.event.ActionListener {
+		private KAbstractButton< ? > button;
+		public ButtonActionListener( KAbstractButton< ? > button ) {
+			this.button = button;
 		}
-		protected abstract void handleActionPerformed( java.awt.event.ActionEvent e );
-		public String getName() {
-			return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
-		}
-		public void setName( String name ) {
-			this.action.putValue( javax.swing.Action.NAME, name );
-		}
-		public String getShortDescription() {
-			return String.class.cast( this.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
-		}
-		public void setShortDescription( String shortDescription ) {
-			this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
-		}
-		public String getLongDescription() {
-			return String.class.cast( this.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
-		}
-		public void setLongDescription( String longDescription ) {
-			this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
-		}
-		public javax.swing.Icon getSmallIcon() {
-			return javax.swing.Icon.class.cast( this.action.getValue( javax.swing.Action.SMALL_ICON ) );
-		}
-		public void setSmallIcon( javax.swing.Icon icon ) {
-			this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
-		}
-		public int getMnemonicKey() {
-			return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
-		}
-		public void setMnemonicKey( int mnemonicKey ) {
-			this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
-		}
-		public javax.swing.KeyStroke getAcceleratorKey() {
-			return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
-		}
-		public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-			this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
-		}
-
-		/*package-private*/ void addAbstractButton( KAbstractButton<?> abstractButton ) {
-			abstractButton.setAction( this.action );
-			abstractButton.setModel( this.buttonModel );
-		}
-		/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
-			abstractButton.setModel( null );
-			abstractButton.setAction( null );
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
+			Application application = Application.getSingleton();
+			Context context = application.getCurrentContext();
+			java.util.UUID id = context.open();
+			context.handleActionPerformed( id, AbstractActionOperation.this, e, this.button );
+			context.closeIfNotPending( id );
 		}
 	}
-
-	private AbstractButtonOperationImplementation implementation = new AbstractButtonOperationImplementation() {
-		@Override
-		protected void handleActionPerformed( java.awt.event.ActionEvent e ) {
-			AbstractActionOperation.this.handleActionPerformed( e );
+	
+	private java.util.Map< KAbstractButton< ? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+//	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
+	private javax.swing.Action action = new javax.swing.AbstractAction() {
+		public void actionPerformed( java.awt.event.ActionEvent e ) {
 		}
 	};
-	protected abstract void perform( Context context, java.util.UUID id, java.awt.event.ActionEvent e );
-	private void handleActionPerformed( java.awt.event.ActionEvent e ) {
-		Application application = Application.getSingleton();
-		Context context = application.getCurrentContext();
-		java.util.UUID id = context.open();
-		context.handleActionPerformed( id, this, e );
-		context.closeIfNotPending( id );
-	}
 	public AbstractActionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
 		super( groupUUID, individualUUID );
+//		this.buttonModel.addActionListener( new java.awt.event.ActionListener() {
+//			public void actionPerformed( java.awt.event.ActionEvent e ) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "model", e );
+//				AbstractActionOperation.this.handleActionPerformed( e );
+//			}
+//		} );
 	}
+	protected abstract void perform( Context context, java.util.UUID id, java.awt.event.ActionEvent e, KAbstractButton< ? > button );
+
 	public String getName() {
-		return this.implementation.getName();
+		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
 	}
 	public void setName( String name ) {
-		this.implementation.setName( name );
+		this.action.putValue( javax.swing.Action.NAME, name );
 	}
 	public String getShortDescription() {
-		return this.implementation.getShortDescription();
+		return String.class.cast( this.action.getValue( javax.swing.Action.SHORT_DESCRIPTION ) );
 	}
 	public void setShortDescription( String shortDescription ) {
-		this.implementation.setShortDescription( shortDescription );
+		this.action.putValue( javax.swing.Action.SHORT_DESCRIPTION, shortDescription );
 	}
 	public String getLongDescription() {
-		return this.implementation.getLongDescription();
+		return String.class.cast( this.action.getValue( javax.swing.Action.LONG_DESCRIPTION ) );
 	}
 	public void setLongDescription( String longDescription ) {
-		this.implementation.setLongDescription( longDescription );
+		this.action.putValue( javax.swing.Action.LONG_DESCRIPTION, longDescription );
 	}
 	public javax.swing.Icon getSmallIcon() {
-		return this.implementation.getSmallIcon();
+		return javax.swing.Icon.class.cast( this.action.getValue( javax.swing.Action.SMALL_ICON ) );
 	}
 	public void setSmallIcon( javax.swing.Icon icon ) {
-		this.implementation.setSmallIcon( icon );
+		this.action.putValue( javax.swing.Action.SMALL_ICON, icon );
 	}
 	public int getMnemonicKey() {
-		return this.implementation.getMnemonicKey();
+		return Integer.class.cast( this.action.getValue( javax.swing.Action.MNEMONIC_KEY ) );
 	}
 	public void setMnemonicKey( int mnemonicKey ) {
-		this.implementation.setMnemonicKey( mnemonicKey );
+		this.action.putValue( javax.swing.Action.MNEMONIC_KEY, mnemonicKey );
 	}
 	public javax.swing.KeyStroke getAcceleratorKey() {
-		return this.implementation.getAcceleratorKey();
+		return javax.swing.KeyStroke.class.cast( this.action.getValue( javax.swing.Action.ACCELERATOR_KEY ) );
 	}
 	public void setAcceleratorKey( javax.swing.KeyStroke acceleratorKey ) {
-		this.implementation.setAcceleratorKey( acceleratorKey );
+		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
 	/*package-private*/ void addAbstractButton( KAbstractButton<?> abstractButton ) {
-		this.implementation.addAbstractButton(abstractButton);
+		abstractButton.setAction( this.action );
+		assert mapButtonToListener.containsKey( abstractButton ) == false;
+		ButtonActionListener buttonActionListener = new ButtonActionListener( abstractButton );
+		this.mapButtonToListener.put( abstractButton, buttonActionListener );
+		abstractButton.getJComponent().addActionListener( buttonActionListener );
+		//abstractButton.setModel( this.buttonModel );
 		this.addComponent(abstractButton);
 	}
 	/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
-		this.implementation.removeAbstractButton(abstractButton);
+		//abstractButton.setModel( null );
+		ButtonActionListener buttonActionListener = mapButtonToListener.get( abstractButton );
+		assert buttonActionListener != null;
+		abstractButton.getJComponent().removeActionListener( buttonActionListener );
+		mapButtonToListener.remove( abstractButton );
+		abstractButton.setAction( null );
 		this.removeComponent(abstractButton);
 	}
 }

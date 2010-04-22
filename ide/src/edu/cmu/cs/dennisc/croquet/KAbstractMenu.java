@@ -40,20 +40,16 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.app.operations.edit;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	public HistoryOperation( java.util.UUID individualUUID ) {
-		super( org.alice.app.ProjectApplication.HISTORY_GROUP, individualUUID );
+public abstract class KAbstractMenu< C extends javax.swing.JComponent > extends KComponent< C > {
+	/*package-private*/ KAbstractMenu() {
 	}
-	protected abstract void performInternal( edu.cmu.cs.dennisc.history.HistoryManager historyManager );
-	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = org.alice.app.ProjectApplication.getSingleton().getProjectHistoryManager();
-		this.performInternal(historyManager);
-		context.commit( id );
-	}
+	public abstract void addMenu( KMenu menu );
+	public abstract void addMenuItem( KMenuItem menuItem );
+	public abstract void addSeparator();
 }

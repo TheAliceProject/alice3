@@ -205,8 +205,8 @@ public class Context {
 		itemSelectionOperation.perform( this, id, e );
 	}
 
-	/*package-private*/void handleActionPerformed( java.util.UUID id, AbstractActionOperation actionOperation, java.awt.event.ActionEvent e ) {
-		actionOperation.perform( this, id, e );
+	/*package-private*/void handleActionPerformed( java.util.UUID id, AbstractActionOperation actionOperation, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
+		actionOperation.perform( this, id, e, button );
 	}
 
 	//	private java.util.List< Node > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
@@ -316,5 +316,4 @@ public class Context {
 	////		assert isGoodToReturn( rv );
 	////		return rv;
 	////	}
-
 }

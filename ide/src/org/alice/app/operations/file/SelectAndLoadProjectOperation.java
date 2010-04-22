@@ -52,7 +52,7 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 	}
 	protected abstract boolean isNew();
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.ActionEvent e ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		org.alice.app.ProjectApplication application = this.getProjectApplication();
 		org.alice.app.openprojectpane.OpenProjectPane openProjectPane = application.getOpenProjectPane();
 		openProjectPane.selectAppropriateTab( this.isNew() );

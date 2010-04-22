@@ -46,10 +46,9 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KMenu extends KComponent< javax.swing.JMenu > {
+public class KMenu extends KAbstractMenu< javax.swing.JMenu > {
 	/*package-private*/ KMenu() {
 	}
-	
 	@Override
 	protected javax.swing.JMenu createJComponent() {
 		return new javax.swing.JMenu();
@@ -62,17 +61,19 @@ public class KMenu extends KComponent< javax.swing.JMenu > {
 			//todo
 		}
 	}
-
-	public void addMenu( KMenu menu ) {
+	@Override
+	public void addMenu( edu.cmu.cs.dennisc.croquet.KMenu menu ) {
 		menu.adding();
 		this.getJComponent().add( menu.getJComponent() );
 		menu.added();
 	}
-	public void addMenuItem( KMenuItem menuItem ) {
+	@Override
+	public void addMenuItem( edu.cmu.cs.dennisc.croquet.KMenuItem menuItem ) {
 		menuItem.adding();
 		this.getJComponent().add( menuItem.getJComponent() );
-		menuItem.adding();
+		menuItem.added();
 	}
+	@Override
 	public void addSeparator() {
 		this.getJComponent().addSeparator();
 	}

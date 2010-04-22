@@ -40,20 +40,42 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.app.operations.edit;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class HistoryOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
-	public HistoryOperation( java.util.UUID individualUUID ) {
-		super( org.alice.app.ProjectApplication.HISTORY_GROUP, individualUUID );
+public class PopupMenuOperation extends AbstractActionOperation {
+	private MenuOperation menuOperation;
+	public PopupMenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, MenuOperation menuOperation ) {
+		super( groupUUID, individualUUID );
+		this.menuOperation = menuOperation;
 	}
-	protected abstract void performInternal( edu.cmu.cs.dennisc.history.HistoryManager historyManager );
+	public MenuOperation getMenuOperation() {
+		return this.menuOperation;
+	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = org.alice.app.ProjectApplication.getSingleton().getProjectHistoryManager();
-		this.performInternal(historyManager);
-		context.commit( id );
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
+		Application application = Application.getSingleton();
+		KPopupMenu popupMenu = application.createPopupMenu( this );
+		
+//		javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+//		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+//			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+//			}
+//			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+//			}
+//			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+//			}
+//		} );
+		
+		popupMenu.showBelow( button );
+	}
+
+	/*package-private*/ void addPopupMenu( KPopupMenu popupMenu ) {
+		this.addComponent( popupMenu );
+	}
+	/*package-private*/ void removePopupMenu( KPopupMenu popupMenu ) {
+		this.removeComponent( popupMenu );
 	}
 }
