@@ -97,6 +97,12 @@ public class CameraOrbitDragManipulator extends CameraManipulator {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		//Do nothing
+	}
+
 
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {

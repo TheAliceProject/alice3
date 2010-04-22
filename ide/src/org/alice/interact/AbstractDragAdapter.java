@@ -280,11 +280,41 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		return this.handleManager.popHandleSet();
 	}
 	
+	public void setCameraOnManipulator(CameraInformedManipulator manipulator, InputState startInput)
+	{
+		AbstractCamera startCamera = this.currentInputState.getPickCamera();
+		if (startCamera == null)
+		{
+			startCamera = this.getCameraForManipulator(manipulator);
+		}
+		manipulator.setCamera( startCamera );
+	}
+	
+	public void setLookingGlassOnManipulator( OnScreenLookingGlassInformedManipulator manipulator )
+	{
+		manipulator.setOnscreenLookingGlass(this.onscreenLookingGlass);
+	}
+	
+	protected void setManipulatorStartState(AbstractManipulator manipulator, InputState startState)
+	{			
+		if (manipulator instanceof OnScreenLookingGlassInformedManipulator)
+		{
+			OnScreenLookingGlassInformedManipulator lookingGlassManipulator = (OnScreenLookingGlassInformedManipulator)manipulator;
+			this.setLookingGlassOnManipulator(lookingGlassManipulator);
+		}
+		if (manipulator instanceof CameraInformedManipulator)
+		{
+			CameraInformedManipulator cameraInformed = (CameraInformedManipulator)manipulator;
+			this.setCameraOnManipulator(cameraInformed, startState);
+		}
+	}
+	
 	protected void handleStateChange()
 	{
 		java.util.Vector< AbstractManipulator > toStart = new java.util.Vector< AbstractManipulator >();
 		java.util.Vector< AbstractManipulator > toEnd = new java.util.Vector< AbstractManipulator >();
 		java.util.Vector< AbstractManipulator > toUpdate = new java.util.Vector< AbstractManipulator >();
+		java.util.Vector< AbstractManipulator > toClick = new java.util.Vector< AbstractManipulator >();
 		for (int i=0; i<this.manipulators.size(); i++)
 		{
 			ManipulatorConditionSet currentManipulatorSet = this.manipulators.get( i );
@@ -302,6 +332,10 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				{
 					toEnd.add( currentManipulatorSet.getManipulator() );
 				}
+				else if ( currentManipulatorSet.clicked( this.currentInputState, this.previousInputState ) )
+				{
+					toClick.add( currentManipulatorSet.getManipulator() );
+				}
 			}
 		}
 		//End manipulators first
@@ -310,17 +344,16 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 //			PrintUtilities.println("Ending: "+toEnd.get(i) + " because of "+this.currentInputState);
 			toEnd.get( i ).endManipulator( this.currentInputState, this.previousInputState );
 		}
+		for (int i=0; i<toClick.size(); i++)
+		{
+//			PrintUtilities.println("Clicking: "+toClick.get(i) + " because of "+this.currentInputState);
+			setManipulatorStartState(toClick.get( i ), this.currentInputState);
+			toClick.get( i ).clickManipulator( this.currentInputState, this.previousInputState );
+		}
 		for (int i=0; i<toStart.size(); i++)
 		{
 //			PrintUtilities.println("Beginning: "+toStart.get(i) + " at "+System.currentTimeMillis());
-			if (toStart.get(i) instanceof CameraInformedManipulator)
-			{
-				((CameraInformedManipulator)toStart.get(i)).setCamera(this.getCameraForManipulator((CameraInformedManipulator)toStart.get(i)) );
-			}
-			if (toStart.get(i) instanceof OnScreenLookingGlassInformedManipulator)
-			{
-				((OnScreenLookingGlassInformedManipulator)toStart.get(i)).setOnscreenLookingGlass( this.onscreenLookingGlass );
-			}
+			setManipulatorStartState(toStart.get( i ), this.currentInputState);
 			toStart.get( i ).startManipulator( this.currentInputState );
 		}
 		for (int i=0; i<toUpdate.size(); i++)

@@ -201,16 +201,42 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		}
 	}
 
+	protected void setManipulatorStartState(AbstractManipulator manipulator, InputState startState)
+	{
+		manipulator.setDragAdapter( this.dragAdapter );				
+		if (manipulator instanceof OnScreenLookingGlassInformedManipulator)
+		{
+			OnScreenLookingGlassInformedManipulator lookingGlassManipulator = (OnScreenLookingGlassInformedManipulator)manipulator;
+			this.dragAdapter.setLookingGlassOnManipulator(lookingGlassManipulator);
+		}
+		if (manipulator instanceof CameraInformedManipulator)
+		{
+			CameraInformedManipulator cameraInformed = (CameraInformedManipulator)manipulator;
+			this.dragAdapter.setCameraOnManipulator(cameraInformed, startState);
+		}
+	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		this.activeHandle = clickInput.getClickHandle();
+		if (this.activeHandle != null)
+		{
+			this.activeManipulator = this.activeHandle.getManipulation( clickInput );
+			if (this.activeManipulator != null)
+			{
+				//Since the active manipulator was just set, we need to set its start state properly
+				setManipulatorStartState(this.activeManipulator, clickInput);
+				this.activeManipulator.doClickManipulator( clickInput, previousInput );
+			}
+		}
+	}
+	
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		if (this.activeManipulator != null)
 		{
 			this.activeManipulator.doEndManipulator( endInput, previousInput );
 		}
-//		if (activeHandle != null)
-//		{
-//			this.dragAdapter.setActivateHandle( this.activeHandle, false );
-//		}
 	}
 	
 	@Override
@@ -221,16 +247,8 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 			this.activeManipulator = this.activeHandle.getManipulation( startInput );
 			if (this.activeManipulator != null)
 			{
-				this.activeManipulator.setDragAdapter( this.dragAdapter );				
-				if (this.activeManipulator instanceof OnScreenLookingGlassInformedManipulator)
-				{
-					OnScreenLookingGlassInformedManipulator oLIM = (OnScreenLookingGlassInformedManipulator)this.activeManipulator;
-					oLIM.setOnscreenLookingGlass( this.onscreenLookingGlass );
-				}
-				if (this.activeManipulator instanceof CameraInformedManipulator)
-				{
-					((CameraInformedManipulator)this.activeManipulator).setCamera( this.camera );
-				}
+				//Since the active manipulator was just set, we need to set its start state properly
+				setManipulatorStartState(this.activeManipulator, startInput);
 				return this.activeManipulator.doStartManipulator( startInput );
 			}
 		}

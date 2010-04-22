@@ -42,6 +42,7 @@
  */
 package org.alice.interact.manipulator;
 
+import org.alice.interact.InputState;
 import org.alice.interact.MovementKey;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 
@@ -75,7 +76,6 @@ public class CameraTranslateKeyManipulator extends TranslateKeyManipulator imple
 		{
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
-		
 	}
 	
 	public void setDesiredCameraView( CameraView cameraView )

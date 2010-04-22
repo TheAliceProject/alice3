@@ -55,6 +55,7 @@ public class ManipulatorConditionSet {
 		IS_RUNNING,
 		JUST_ENDED,
 		CHANGED,
+		CLICKED,
 	}
 	
 	private AbstractManipulator manipulator;
@@ -77,6 +78,10 @@ public class ManipulatorConditionSet {
 	
 	private boolean checkCondition( RunningState state, InputState current, InputState previous )
 	{
+//		if (previous.isAnyMouseButtonDown() && !current.isAnyMouseButtonDown())
+//		{
+//			System.out.println("stopping? "+this.hashCode());
+//		}
 		switch (state)
 		{
 		case CHANGED:
@@ -115,6 +120,15 @@ public class ManipulatorConditionSet {
 				}
 			}
 			break;
+		case CLICKED:
+			for (int i=0; i<this.inputConditions.size(); i++)
+			{
+				if (this.inputConditions.get( i ).clicked( current, previous ))
+				{
+					return true;
+				}
+			}
+			break;
 		}
 		return false;
 		
@@ -144,4 +158,14 @@ public class ManipulatorConditionSet {
 		boolean someoneJustEnded = this.checkCondition(RunningState.JUST_ENDED, current, previous);
 		return (!someoneIsRunning && !someoneJustStarted && someoneJustEnded);
 	}
+	
+	public boolean clicked(InputState current, InputState previous)
+	{
+//		boolean someoneIsRunning = this.checkCondition(RunningState.IS_RUNNING, current, previous);
+//		boolean someoneJustStarted = this.checkCondition(RunningState.JUST_STARTED, current, previous);
+//		boolean someoneJustEnded = this.checkCondition(RunningState.JUST_ENDED, current, previous);
+		boolean clicked = this.checkCondition(RunningState.CLICKED, current, previous);
+		return (clicked);
+	}
+	
 }

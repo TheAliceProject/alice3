@@ -262,6 +262,12 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			}
 		}
 	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		//Do nothing
+	}
+
 
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput  ) 

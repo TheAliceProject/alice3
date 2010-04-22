@@ -146,7 +146,6 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		{
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
-		
 	}
 	
 	public void setDesiredCameraView( CameraView cameraView )
@@ -218,7 +217,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	
 	@Override
 	public boolean doStartManipulator( InputState startInput ) {
-		Transformable clickedHandle = PickHint.HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
+		Transformable clickedHandle = PickHint.THREE_D_HANDLES.getMatchingTransformable( startInput.getClickPickedTransformable(true) );
 		if (clickedHandle instanceof RotationRingHandle)
 		{
 			this.initManipulator( (RotationRingHandle)clickedHandle, startInput );
@@ -302,6 +301,12 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		//Do nothing
+	}
+
 	
 	protected void hideCursor()
 	{

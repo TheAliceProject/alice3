@@ -167,6 +167,11 @@ public class HandlelessObjectRotateDragManipulator extends AbstractManipulator i
 	}
 	
 	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		//Do nothing
+	}
+	
+	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput )
 	{
 	}

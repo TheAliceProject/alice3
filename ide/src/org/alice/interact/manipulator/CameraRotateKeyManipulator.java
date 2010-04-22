@@ -42,6 +42,7 @@
  */
 package org.alice.interact.manipulator;
 
+import org.alice.interact.InputState;
 import org.alice.interact.MovementKey;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 
@@ -73,7 +74,6 @@ public class CameraRotateKeyManipulator extends RotateKeyManipulator implements 
 		{
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
-		
 	}
 	
 	public void setDesiredCameraView( CameraView cameraView )

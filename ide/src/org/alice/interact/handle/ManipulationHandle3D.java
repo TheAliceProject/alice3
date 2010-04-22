@@ -187,7 +187,7 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		sgVisual.frontFacingAppearance.setValue( sgFrontFacingAppearance );
 		sgVisual.setParent( this );
 		this.setParent( null );
-		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.HANDLES );
+		this.putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.THREE_D_HANDLES );
 	}
 
 	protected void initializeAppearance()

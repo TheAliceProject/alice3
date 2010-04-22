@@ -58,10 +58,10 @@ public class PickHint extends BitSet{
 		NOTHING(0),
 		MOVEABLE_OBJECT(1),
 		GROUND(2),
-		HANDLE(3),
+		THREE_D_HANDLE(3),
 		CAMERA(4),
 		LIGHT(5),
-		MUTLIMODE_HANDLE(6),
+		TWO_D_HANDLE(6),
 		;
 		
 		public int index;
@@ -82,13 +82,14 @@ public class PickHint extends BitSet{
 	
 	public static final PickHint NOTHING = new PickHint( PickType.NOTHING );
 	public static final PickHint MOVEABLE_OBJECTS = new PickHint( PickType.MOVEABLE_OBJECT );
-	public static final PickHint HANDLES = new PickHint( PickType.HANDLE );
+	public static final PickHint THREE_D_HANDLES = new PickHint( PickType.THREE_D_HANDLE );
 	public static final PickHint GROUND = new PickHint( PickType.GROUND );
 	public static final PickHint LIGHT = new PickHint( PickType.LIGHT );
 	public static final PickHint CAMERA = new PickHint( PickType.CAMERA );
-	public static final PickHint MULTIMODE_HANDLES = new PickHint( PickType.MUTLIMODE_HANDLE );
+	public static final PickHint TWO_D_HANDLES = new PickHint( PickType.TWO_D_HANDLE );
 	public static final PickHint EVERYTHING = createEverythingHint();
 	
+	public static final PickHint ALL_HANDLES = new PickHint( PickType.TWO_D_HANDLE, PickType.THREE_D_HANDLE );
 	public static final PickHint NON_INTERACTIVE = new PickHint( PickType.NOTHING, PickType.GROUND ,PickType.LIGHT, PickType.CAMERA);
 	
 	public PickHint()

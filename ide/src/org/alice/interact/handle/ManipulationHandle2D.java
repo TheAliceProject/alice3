@@ -170,7 +170,7 @@ public abstract class ManipulationHandle2D extends JLabel implements Manipulatio
 	}
 
 	public PickHint getPickHint() {
-		return PickHint.HANDLES;
+		return PickHint.THREE_D_HANDLES;
 	}
 
 	public void setManipulation(AbstractManipulator manipulation)

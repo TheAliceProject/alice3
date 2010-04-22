@@ -72,7 +72,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 			if( c == null )
 				return false;
 			Object bonusData = c.getBonusDataFor( PickHint.PICK_HINT_KEY );
-			if( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.HANDLES ) )
+			if( bonusData instanceof PickHint && ((PickHint)bonusData).intersects( PickHint.THREE_D_HANDLES ) )
 				return true;
 			else
 				return isHandle( c.getParent() );

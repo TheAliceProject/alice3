@@ -41,53 +41,16 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.alice.stageide.sceneeditor.viewmanager;
-
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import org.alice.apis.moveandturn.AsSeenBy;
-import org.alice.apis.moveandturn.Composite;
 import org.alice.apis.moveandturn.CameraMarker;
-import org.alice.apis.moveandturn.OrthographicCameraMarker;
-import org.alice.apis.moveandturn.PerspectiveCameraMarker;
-import org.alice.ide.codeeditor.DropDownPane;
-import org.alice.interact.QuaternionAndTranslationTargetBasedAnimation;
-import org.alice.interact.OrthographicCameraController;
 import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
-import edu.cmu.cs.dennisc.animation.Animator;
-import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
-import edu.cmu.cs.dennisc.math.ClippedZPlane;
-import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
-import edu.cmu.cs.dennisc.math.Point3;
-import edu.cmu.cs.dennisc.math.Vector3;
-import edu.cmu.cs.dennisc.property.event.PropertyEvent;
-import edu.cmu.cs.dennisc.property.event.PropertyListener;
-import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
-import edu.cmu.cs.dennisc.scenegraph.Component;
-import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
-import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
-import edu.cmu.cs.dennisc.scenegraph.Transformable;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationEvent;
-import edu.cmu.cs.dennisc.scenegraph.event.AbsoluteTransformationListener;
 
 /**
  * @author David Culyba

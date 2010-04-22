@@ -65,6 +65,10 @@ public abstract class InputCondition {
 		return false;
 	}
 
+	public boolean clicked( InputState currentState, InputState previousState ) {
+		return false;
+	}
+	
 	public boolean justStarted( InputState currentState, InputState previousState ) {
 		if (testState(currentState) && !testState(previousState))
 		{

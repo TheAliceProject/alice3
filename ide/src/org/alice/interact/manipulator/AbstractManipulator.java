@@ -156,6 +156,26 @@ public abstract class AbstractManipulator {
 		}
 	}
 	
+	public void clickManipulator( InputState clickInput, InputState previousInput )
+	{
+		undoRedoBeginManipulation();
+		doClickManipulator(clickInput, previousInput);
+		if (isUndoable())
+		{
+			undoRedoEndManipulation();
+		}
+		if (this.hasStarted)
+		{
+			this.hasStarted = false;
+			HandleSet setToShow = this.getHandleSetToEnable();
+			if (setToShow != null && this.dragAdapter != null)
+			{
+				this.dragAdapter.popHandleSet();
+			}
+		}
+		triggerAllDeactivateEvents();
+	}
+	
 	public void endManipulator(InputState endInput, InputState previousInput  )
 	{
 		doEndManipulator( endInput, previousInput );
@@ -181,7 +201,6 @@ public abstract class AbstractManipulator {
 			}
 		}
 		triggerAllDeactivateEvents();
-		
 	}
 	
 	public abstract String getUndoRedoDescription();
@@ -234,5 +253,6 @@ public abstract class AbstractManipulator {
 	
 	public abstract void doEndManipulator( InputState endInput, InputState previousInput  );
 	
+	public abstract void doClickManipulator( InputState endInput, InputState previousInput );
 
 }

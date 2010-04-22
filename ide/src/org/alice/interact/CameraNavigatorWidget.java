@@ -171,13 +171,13 @@ public class CameraNavigatorWidget extends JPanel {
 		
 		driverManipulator.setDragAdapter( this.dragAdapter );
 		ManipulatorConditionSet mouseHandleDrag_NoShift = new ManipulatorConditionSet( driverManipulator );
-		MouseDragCondition handleNoShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MULTIMODE_HANDLES ), new ModifierMask( ModifierKey.NOT_SHIFT ));
+		MouseDragCondition handleNoShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.TWO_D_HANDLES ), new ModifierMask( ModifierKey.NOT_SHIFT ));
 		mouseHandleDrag_NoShift.addCondition( handleNoShiftCondition );
 		this.dragAdapter.addManipulator( mouseHandleDrag_NoShift );
 		
 		strafeManipulator.setDragAdapter( this.dragAdapter );
 		ManipulatorConditionSet mouseHandleDrag_Shift = new ManipulatorConditionSet( strafeManipulator );
-		MouseDragCondition handleShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.MULTIMODE_HANDLES ), new ModifierMask( ModifierKey.SHIFT ));
+		MouseDragCondition handleShiftCondition = new MouseDragCondition( java.awt.event.MouseEvent.BUTTON1, new PickCondition( PickHint.TWO_D_HANDLES ), new ModifierMask( ModifierKey.SHIFT ));
 		mouseHandleDrag_Shift.addCondition( handleShiftCondition );
 		this.dragAdapter.addManipulator( mouseHandleDrag_Shift );
 		

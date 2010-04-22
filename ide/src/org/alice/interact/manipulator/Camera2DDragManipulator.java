@@ -74,6 +74,8 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	protected Vector3 initialRotateFactor = new Vector3(0.0d, 0.0d, 0.0d);
 	protected static final double INITIAL_MOVE_FACTOR = 10.0d;
 	protected static final double INITIAL_ROTATE_FACTOR = 8.0d;
+	protected static final double MOVE_CLICK_FACTOR = .02d;
+	protected static final double ROTATE_CLICK_FACTOR = .003d;
 	
 	protected Transformable standUpReference = new Transformable();
 	protected Color initialHandleColor = null;
@@ -96,7 +98,22 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 
+		
+		
 	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		if (doStartManipulator(clickInput))
+		{
+			//This lets the manipulator know that the object has changed and we should push the change onto the undo/redo stack
+			this.hasDoneUpdate = true;
+			Vector3 amountToMoveClick = Vector3.createMultiplication( this.initialMoveFactor, MOVE_CLICK_FACTOR );
+			Vector3 amountToRotateClick = Vector3.createMultiplication( this.initialRotateFactor, ROTATE_CLICK_FACTOR );
+			applyMovement(amountToMoveClick, amountToRotateClick);
+		}
+	}
+
 	
 	@Override
 	public String getUndoRedoDescription() {
@@ -157,6 +174,12 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 		Vector2 mousePos = new Vector2( currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
 		Vector3 moveVector = this.getTotalMovementAmount( mousePos, time );
 		Vector3 rotateVector = this.getTotalRotationAmount( mousePos, time );
+
+		applyMovement(moveVector, rotateVector);
+	}
+	
+	protected void applyMovement(Vector3 moveVector, Vector3 rotateVector)
+	{
 		this.manipulatedTransformable.applyTranslation( moveVector, this.getMovementReferenceFrame() );
 		if (rotateVector.x != 0.0d)
 			this.manipulatedTransformable.applyRotationAboutXAxis( new AngleInRadians(rotateVector.x), getRotationReferenceFrame() );
@@ -164,7 +187,7 @@ public abstract class Camera2DDragManipulator extends CameraManipulator2D {
 			this.manipulatedTransformable.applyRotationAboutYAxis( new AngleInRadians(rotateVector.y), getRotationReferenceFrame() );
 		if (rotateVector.z != 0.0d)
 			this.manipulatedTransformable.applyRotationAboutZAxis( new AngleInRadians(rotateVector.z), getRotationReferenceFrame() );
-
+		
 		for (ManipulationEvent event : this.manipulationEvents)
 		{
 			Vector3 dotVector = null;

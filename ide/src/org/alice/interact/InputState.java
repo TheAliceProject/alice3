@@ -46,6 +46,7 @@ import org.alice.interact.condition.PickCondition;
 import org.alice.interact.handle.ManipulationHandle;
 
 import edu.cmu.cs.dennisc.lookingglass.PickResult;
+import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
@@ -88,6 +89,18 @@ public class InputState {
 		return this.rolloverHandle;
 	}
 
+	public AbstractCamera getPickCamera()
+	{
+		if (this.rolloverPickResult != null && this.rolloverPickResult.getSource() instanceof AbstractCamera)
+		{
+			return (AbstractCamera)this.rolloverPickResult.getSource(); 
+		}
+		else if (this.clickPickResult != null && this.clickPickResult.getSource() instanceof AbstractCamera)
+		{
+			return (AbstractCamera)this.clickPickResult.getSource(); 
+		}
+		return null;
+	}
 
 	public void setRolloverHandle( ManipulationHandle rolloverHandle ) {
 		this.rolloverHandle = rolloverHandle;

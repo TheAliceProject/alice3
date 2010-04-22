@@ -5,16 +5,22 @@ import java.awt.Color;
 import org.alice.interact.InputState;
 import org.alice.interact.MovementDirection;
 import org.alice.interact.MovementType;
-import org.alice.interact.OrthographicCameraController;
 import org.alice.interact.condition.MovementDescription;
 import org.alice.interact.event.ManipulationEvent;
 import org.alice.interact.handle.ImageBasedManipulationHandle2D;
+import org.alice.interact.operations.PredeterminedSetLocalTransformationActionOperation;
+import org.alice.interact.operations.PredeterminedSetOrthographicPicturePlaneActionOperation;
 
+import edu.cmu.cs.dennisc.alice.Project;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.Vector2;
 import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.print.PrintUtilities;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
+import edu.cmu.cs.dennisc.zoot.ZManager;
 
 public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulator
 {
@@ -24,15 +30,44 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 	
 	protected static final double INITIAL_ZOOM_FACTOR = .1d;
 	protected static final double ZOOMS_PER_SECOND = .1d;
+	protected static final double ZOOM_CLICK_FACTOR = 1d;
 	
 	protected double initialZoomValue = 0.0d;
+	protected double originalZoomValue = 0.0d;
 	
-	protected OrthographicCameraController cameraController;
+	private static final double MAX_ZOOM = 20.0d;
+	private static final double MIN_ZOOM = .01d;
 	
 	public OrthographicCameraDragZoomManipulator( ImageBasedManipulationHandle2D handle)
 	{
 		super(handle);
 	}
+	
+	
+	public double getCameraZoom()
+	{
+		OrthographicCamera orthoCam = (OrthographicCamera)this.camera;
+		ClippedZPlane picturePlane = orthoCam.picturePlane.getValue();
+		return picturePlane.getHeight(); 
+	}
+	
+	public void setCameraZoom(double amount)
+	{
+		OrthographicCamera orthoCam = (OrthographicCamera)this.camera;
+		ClippedZPlane picturePlane = orthoCam.picturePlane.getValue();
+		double newZoom = picturePlane.getHeight() + amount;
+		if (newZoom > MAX_ZOOM)
+		{
+			newZoom = MAX_ZOOM;
+		}
+		else if (newZoom < MIN_ZOOM)
+		{
+			newZoom = MIN_ZOOM;
+		}
+		picturePlane.setHeight(newZoom);
+		orthoCam.picturePlane.setValue(picturePlane);
+	}
+	
 	
 	@Override
 	protected void initializeEventMessages()
@@ -46,8 +81,11 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 	public void setCamera(AbstractCamera camera) 
 	{
 		super.setCamera(camera);
+		if (!(camera instanceof OrthographicCamera))
+		{
+			System.out.println("NOPE!");
+		}
 		assert camera instanceof OrthographicCamera;
-		cameraController = new OrthographicCameraController((OrthographicCamera)camera);
 		initializeEventMessages();
 	}
 	
@@ -57,16 +95,51 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 		{
 			if (color.equals( IN ))
 			{
-				initialZoom = INITIAL_ZOOM_FACTOR;
+				initialZoom = -INITIAL_ZOOM_FACTOR;
 			}
 			else if (color.equals( OUT ))
 			{
-				initialZoom = -INITIAL_ZOOM_FACTOR;
+				initialZoom = INITIAL_ZOOM_FACTOR;
 			}
 		}
 		return initialZoom;
 	}
 	
+	@Override
+	public void undoRedoBeginManipulation()
+	{
+		if (this.getCamera() != null)
+		{
+			this.originalZoomValue = this.getCameraZoom();
+		}
+	}
+	
+	@Override
+	public void undoRedoEndManipulation()
+	{
+		if (this.getCamera() != null)
+		{
+			double newZoom = this.getCameraZoom();
+			
+			if (newZoom  == this.originalZoomValue)
+			{
+				PrintUtilities.println("Adding an undoable action for a manipulation that didn't actually change the zoom.");
+			}
+			edu.cmu.cs.dennisc.animation.Animator animator;
+			if( this.dragAdapter != null ) {
+				animator = this.dragAdapter.getAnimator();
+			} else {
+				animator = null;
+			}
+			PredeterminedSetOrthographicPicturePlaneActionOperation undoOperation = new PredeterminedSetOrthographicPicturePlaneActionOperation(Project.GROUP_UUID, false, animator, (OrthographicCamera)this.camera, this.originalZoomValue, newZoom, getUndoRedoDescription());
+			ZManager.performIfAppropriate( undoOperation, null, false );
+		}
+	}
+	
+	@Override
+	public String getUndoRedoDescription() {
+		return "Camera Zoom";
+	}
 	
 	protected double getRelativeZoomAmount(Vector2 mousePos, double time)
 	{
@@ -94,16 +167,17 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 	}
 	
 	@Override
-	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
-		if (time < MIN_TIME)
-			time = MIN_TIME;
-		else if (time > MAX_TIME)
-			time = MAX_TIME;
-		
-		Vector2 mousePos = new Vector2( currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
-		double zoomAmount = this.getTotalZoomAmount( mousePos, time );
-		
-		cameraController.zoom(zoomAmount);
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		if (doStartManipulator(clickInput))
+		{
+			double amountToZoomClick = this.initialZoomValue * ZOOM_CLICK_FACTOR;
+			applyZoom(amountToZoomClick);
+		}
+	}
+	
+	protected void applyZoom(double zoomAmount)
+	{
+		this.setCameraZoom(zoomAmount);
 		
 		for (ManipulationEvent event : this.manipulationEvents)
 		{
@@ -116,6 +190,18 @@ public class OrthographicCameraDragZoomManipulator extends Camera2DDragManipulat
 				this.dragAdapter.triggerManipulationEvent( event, zoomAmount >= 0.0d );
 			}
 		}
+	}
+	
+	@Override
+	public void doTimeUpdateManipulator( double time, InputState currentInput ) {
+		if (time < MIN_TIME)
+			time = MIN_TIME;
+		else if (time > MAX_TIME)
+			time = MAX_TIME;
+		
+		Vector2 mousePos = new Vector2( currentInput.getMouseLocation().x, currentInput.getMouseLocation().y);
+		double zoomAmount = this.getTotalZoomAmount( mousePos, time );
+		applyZoom(zoomAmount);
 	}
 	
 	

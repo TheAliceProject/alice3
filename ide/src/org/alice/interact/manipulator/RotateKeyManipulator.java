@@ -140,6 +140,12 @@ public class RotateKeyManipulator extends AbstractManipulator {
 	}
 	
 	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		//Do nothing
+	}
+
+	
+	@Override
 	public void doEndManipulator( InputState endInput, InputState previousInput ) {
 		double currentTime = System.currentTimeMillis() * .001d;
 		if (currentTime - this.startTime < CLICK_TIME)

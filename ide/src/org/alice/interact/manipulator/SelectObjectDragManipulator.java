@@ -74,6 +74,12 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		//Do nothing
+	}
+
 
 	@Override
 	public String getUndoRedoDescription() {
@@ -92,7 +98,7 @@ public class SelectObjectDragManipulator extends AbstractManipulator {
 		{
 			this.globalDragAdapter.setSelectedObject( startInput.getClickPickedTransformable(true) );
 		}
-		else if (clickedObjectType.intersects( PickHint.HANDLES) )
+		else if (clickedObjectType.intersects( PickHint.THREE_D_HANDLES) )
 		{
 			Transformable pickedHandle = startInput.getClickPickedTransformable(true);
 			if (pickedHandle instanceof RotationRingHandle)

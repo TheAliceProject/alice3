@@ -43,6 +43,7 @@
 package org.alice.interact.manipulator;
 
 import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.InputState;
 
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
 

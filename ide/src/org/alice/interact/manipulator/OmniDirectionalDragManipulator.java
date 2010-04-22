@@ -89,7 +89,6 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 		{
 			this.manipulatedTransformable = (Transformable)this.camera.getParent();
 		}
-		
 	}
 	
 	public void setDesiredCameraView( CameraView cameraView )
@@ -331,6 +330,11 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 				this.manipulatedTransformable.setTranslationOnly( newPosition, AsSeenBy.SCENE );
 			}
 		}
+	}
+	
+	@Override
+	public void doClickManipulator(InputState clickInput, InputState previousInput) {
+		//Do nothing
 	}
 
 	@Override

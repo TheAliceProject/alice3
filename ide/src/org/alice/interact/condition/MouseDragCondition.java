@@ -85,7 +85,9 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 
 	@Override
 	protected boolean testState( InputState state ) {
-		return testInputs(state) && testPick( state );
+		boolean pickTest = testPick( state );
+		boolean inputTest = testInputs(state); 
+		return  inputTest && pickTest;
 	}
 	
 	@Override
@@ -126,6 +128,18 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 		return false;
 	}
 	
+	@Override
+	public boolean clicked( InputState currentState, InputState previousState ) {
+		if (!this.hasStarted && !testState(currentState) && testState(previousState))
+		{
+			if (!testMouse(currentState) && testMouse(previousState))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	protected boolean testClick(InputState state)
 	{
 		if (testInputs(state))
@@ -142,12 +156,15 @@ public class MouseDragCondition extends ModifierSensitiveCondition{
 	
 	protected boolean testMouse( InputState state )
 	{
-		return state.isMouseDown( this.mouseButton );
+		boolean mouseTest = state.isMouseDown( this.mouseButton );
+		return mouseTest;
 	}
 	
 	protected boolean testInputs( InputState state )
 	{
-		return (super.testState( state ) && testMouse( state ) );
+		boolean superTest = super.testState( state );
+		boolean mouseTest = testMouse( state );
+		return (superTest && mouseTest);
 	}
 	
 	
