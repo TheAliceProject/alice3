@@ -47,6 +47,8 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class KButton extends KAbstractButton< javax.swing.JButton > {
+	/*package-private*/ KButton() {
+	}
 	@Override
 	protected javax.swing.JButton createJComponent() {
 		return new javax.swing.JButton();

@@ -88,4 +88,16 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	}
 	protected void removed() {
 	}
+	
+	public int getWidth() {
+		return this.getJComponent().getWidth();
+	}
+	public int getHeight() {
+		return this.getJComponent().getHeight();
+	}
+	
+	protected void repaint() {
+		this.getJComponent().repaint();
+	}
 }
+

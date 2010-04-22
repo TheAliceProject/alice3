@@ -52,6 +52,8 @@ public abstract class KAbstractButton< J extends javax.swing.AbstractButton> ext
 //		public void actionPerformed(java.awt.event.ActionEvent e) {
 //		}
 //	};
+	/*package-private*/ KAbstractButton() {
+	}
 	/*package-private*/public void setModel( javax.swing.ButtonModel model ) {
 		if( model != null ) {
 			if( model != this.getJComponent().getModel() ) {

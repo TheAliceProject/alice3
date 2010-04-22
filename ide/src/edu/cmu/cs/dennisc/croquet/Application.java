@@ -201,7 +201,7 @@ public abstract class Application {
 		}
 	}
 
-	public KButton createButton(final ActionOperation actionOperation) {
+	public KButton createButton(final AbstractActionOperation actionOperation) {
 		this.register( actionOperation );
 		return new KButton() {
 			@Override
@@ -218,7 +218,7 @@ public abstract class Application {
 		};
 	}
 
-	public KMenuItem createMenuItem(final ActionOperation actionOperation) {
+	public KMenuItem createMenuItem(final AbstractActionOperation actionOperation) {
 		this.register( actionOperation );
 		return new KMenuItem() {
 			@Override
@@ -231,40 +231,6 @@ public abstract class Application {
 			protected void removed() {
 				super.removed();
 				actionOperation.removeAbstractButton(this);
-			}
-		};
-	}
-	
-	public KButton createButton(final CompositeOperation compositeOperation) {
-		this.register( compositeOperation );
-		return new KButton() {
-			@Override
-			protected void adding() {
-				compositeOperation.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				compositeOperation.removeAbstractButton(this);
-			}
-		};
-	}
-
-	public KMenuItem createMenuItem(final CompositeOperation compositeOperation) {
-		this.register( compositeOperation );
-		return new KMenuItem() {
-			@Override
-			protected void adding() {
-				compositeOperation.addAbstractButton(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				compositeOperation.removeAbstractButton(this);
 			}
 		};
 	}
@@ -311,10 +277,10 @@ public abstract class Application {
 		};
 	}
 	
-	public KDragComponent createDragComponent(final DragOperation dragOperation) {
+	public KDragControl createDragComponent(final DragOperation dragOperation, KDragControl.Paintable paintable ) {
 		this.register( dragOperation );
 		// todo: return javax.swing.JMenuItem if true and false different
-		return new KDragComponent() {
+		return new KDragControl( paintable ) {
 			@Override
 			protected void adding() {
 				dragOperation.addDragComponent(this);

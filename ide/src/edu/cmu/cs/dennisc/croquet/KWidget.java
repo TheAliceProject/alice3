@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class KWidget extends KComponent< javax.swing.JComponent > {
 	@Override
-	protected javax.swing.JComponent createJComponent() {
+	protected final javax.swing.JComponent createJComponent() {
 		return new javax.swing.JComponent() {
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
