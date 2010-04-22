@@ -46,6 +46,8 @@ import java.awt.Component;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.CameraMarker;
 import org.alice.apis.moveandturn.OrthographicCameraMarker;
@@ -481,11 +483,19 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private void handleFieldAdded(edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e)
 	{
-		for( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice element : e.getElements() ) 
+		for( final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice element : e.getElements() ) 
 		{
 			if (element.getDesiredValueType().isAssignableFrom(CameraMarker.class))
 			{
 				this.mainViewSelector.setSelectedView( element );
+				SwingUtilities.invokeLater(new Runnable()
+				{
+					public void run()
+					{
+						MoveAndTurnSceneEditor.this.sidePane.getViewManager().scrollToField(element);
+					}
+				});
+				
 				break;
 			}
 		}
@@ -691,10 +701,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private void fillInAutomaticPointOfViewAssignment(edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty, edu.cmu.cs.dennisc.alice.ast.AbstractField field)
 	{
 		AbstractField pointOfViewField = this.getPointOfViewFieldForField( field );
-		if (pointOfViewField == null)
-		{
-			System.out.println("NULL");
-		}
+		assert pointOfViewField != null;
 		SetUpMethodGenerator.fillInAutomaticPointOfViewAssignment(bodyStatementsProperty, field, this.getPointOfViewFieldForField(field));
 	}
 	
@@ -810,15 +817,6 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.globalDragAdapter.makeCameraActive( this.sgPerspectiveCamera );
 		this.mainCameraNavigatorWidget.setToPerspectiveMode();
 	}
-
-	private boolean hasFieldNamed( String fieldName ) {
-		for( AbstractField field : this.sceneType.fields ) {
-			if( field.getName().equals( fieldName ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	public List<CameraMarker> getOrthographicCameraMarkers()
 	{
@@ -832,8 +830,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		topMarker.setName( "TOP" );
 		AffineMatrix4x4 topTransform = AffineMatrix4x4.createIdentity();
 		topTransform.translation.y = 10;
-		topTransform.orientation.up.set( 0, 0, -1 );
-		topTransform.orientation.right.set( 1, 0, 0 );
+		topTransform.orientation.up.set( 0, 0, 1 );
+		topTransform.orientation.right.set( -1, 0, 0 );
 		topTransform.orientation.backward.set( 0, 1, 0 );
 		assert topTransform.orientation.isWithinReasonableEpsilonOfUnitLengthSquared();
 		topMarker.setLocalTransformation( topTransform );
