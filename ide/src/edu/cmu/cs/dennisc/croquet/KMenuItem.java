@@ -46,7 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KMenuItem extends KAbstractButton< javax.swing.JMenuItem > {
+public class KMenuItem extends KAbstractMenuItem< javax.swing.JMenuItem > {
 	/*package-private*/ KMenuItem() {
 	}
 	@Override

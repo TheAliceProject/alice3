@@ -67,6 +67,12 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToDerivedFont( this.getJComponent(), textAttributes );
 	}
 	
+	public void setForegroundColor( java.awt.Color color ) {
+		this.getJComponent().setForeground( color );
+	}
+	public void setBackgroundColor( java.awt.Color color ) {
+		this.getJComponent().setBackground( color );
+	}
 	public void setVisible( boolean isVisible ) {
 		this.getJComponent().setVisible( isVisible );
 	}
@@ -99,5 +105,6 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	protected void repaint() {
 		this.getJComponent().repaint();
 	}
+	
 }
 

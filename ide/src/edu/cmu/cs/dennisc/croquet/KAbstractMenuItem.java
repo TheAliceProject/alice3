@@ -46,24 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KAbstractButton< J extends javax.swing.AbstractButton> extends KComponent< J > {
-	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
-	/*package-private*/ KAbstractButton() {
+public abstract class KAbstractMenuItem< J extends javax.swing.JMenuItem > extends KAbstractButton< J > {
+	/*package-private*/ KAbstractMenuItem() {
 	}
-	/*package-private*/public void setModel( javax.swing.ButtonModel model ) {
-		if( model != null ) {
-			//pass
-		} else {
-			model = MODEL_FOR_NULL;
-		}
-		if( model != this.getJComponent().getModel() ) {
-			this.getJComponent().setModel( model );
-		}
-	}
-	/*package-private*/public void setAction( javax.swing.Action action ) {
-		if( action != this.getJComponent().getAction() ) {
-			this.getJComponent().setAction( action );
-		}
-	}
-	
 }

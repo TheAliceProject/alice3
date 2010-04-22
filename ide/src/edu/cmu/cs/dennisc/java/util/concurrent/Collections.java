@@ -40,30 +40,26 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-package edu.cmu.cs.dennisc.croquet;
+package edu.cmu.cs.dennisc.java.util.concurrent;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KAbstractButton< J extends javax.swing.AbstractButton> extends KComponent< J > {
-	private static final javax.swing.ButtonModel MODEL_FOR_NULL = new javax.swing.DefaultButtonModel();
-	/*package-private*/ KAbstractButton() {
+public class Collections {
+	private Collections() {
+		throw new AssertionError();
 	}
-	/*package-private*/public void setModel( javax.swing.ButtonModel model ) {
-		if( model != null ) {
-			//pass
-		} else {
-			model = MODEL_FOR_NULL;
-		}
-		if( model != this.getJComponent().getModel() ) {
-			this.getJComponent().setModel( model );
-		}
+	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList() {
+		return new java.util.concurrent.CopyOnWriteArrayList< E >();
 	}
-	/*package-private*/public void setAction( javax.swing.Action action ) {
-		if( action != this.getJComponent().getAction() ) {
-			this.getJComponent().setAction( action );
-		}
+	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( E... array ) {
+		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList< E >();
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( rv, array );
+		return rv;
 	}
-	
+	public static <E> java.util.concurrent.CopyOnWriteArrayList<E> newCopyOnWriteArrayList( java.util.Collection< E > other ) {
+		java.util.concurrent.CopyOnWriteArrayList<E> rv = new java.util.concurrent.CopyOnWriteArrayList< E >();
+		rv.addAll( other );
+		return rv;
+	}
 }

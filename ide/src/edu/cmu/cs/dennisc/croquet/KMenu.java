@@ -62,13 +62,13 @@ public class KMenu extends KAbstractMenu< javax.swing.JMenu > {
 		}
 	}
 	@Override
-	public void addMenu( edu.cmu.cs.dennisc.croquet.KMenu menu ) {
+	public void addMenu( KMenu menu ) {
 		menu.adding();
 		this.getJComponent().add( menu.getJComponent() );
 		menu.added();
 	}
 	@Override
-	public void addMenuItem( edu.cmu.cs.dennisc.croquet.KMenuItem menuItem ) {
+	public void addMenuItem( KAbstractMenuItem<?> menuItem ) {
 		menuItem.adding();
 		this.getJComponent().add( menuItem.getJComponent() );
 		menuItem.added();

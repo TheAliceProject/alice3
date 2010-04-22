@@ -50,6 +50,6 @@ public abstract class KAbstractMenu< C extends javax.swing.JComponent > extends 
 	/*package-private*/ KAbstractMenu() {
 	}
 	public abstract void addMenu( KMenu menu );
-	public abstract void addMenuItem( KMenuItem menuItem );
+	public abstract void addMenuItem( KAbstractMenuItem<?> menuItem );
 	public abstract void addSeparator();
 }

@@ -46,6 +46,20 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public final class BooleanStateOperation extends Operation {
+	public static interface ValueObserver {
+		public void changing( boolean nextValue );
+		public void changed( boolean nextValue );
+	};
+	
+	private java.util.List< ValueObserver > valueObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
+	public void addValueObserver( ValueObserver valueObserver ) {
+		this.valueObservers.add( valueObserver );
+	}
+	public void removeValueObserver( ValueObserver valueObserver ) {
+		this.valueObservers.remove( valueObserver );
+	}
+	
 	private javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -67,18 +81,20 @@ public final class BooleanStateOperation extends Operation {
 		context.commitAndInvokeDo( id, new BooleanStateEdit( id, e, this ) );
 	}
 
+	private boolean state;
 	private String trueText = null;
 	private String falseText = null;
 
-	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, Boolean initialState, String trueText, String falseText) {
+	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String trueText, String falseText) {
 		super(groupUUID, individualUUID);
+		this.state = initialState;
 		this.buttonModel.setSelected(initialState);
 		this.buttonModel.addItemListener(this.itemListener);
 		this.setTrueText(trueText);
 		this.setFalseText(falseText);
 	}
 
-	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, Boolean initialState, String trueAndFalseText) {
+	public BooleanStateOperation(java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String trueAndFalseText) {
 		this(groupUUID, individualUUID, initialState, trueAndFalseText, trueAndFalseText);
 	}
 
@@ -120,26 +136,6 @@ public final class BooleanStateOperation extends Operation {
 		abstractButton.setAction(null);
 	}
 
-//		@Override
-//	protected final void perform(BooleanStateContext booleanStateContext) {
-//		booleanStateContext.commitAndInvokeDo(new BooleanStateEdit( this, booleanStateContext.getPreviousValue(), booleanStateContext.getNextValue() ) );
-//	}
-//	@Override
-//	protected BooleanStateContext createContext( CompositeContext parentContext, java.util.EventObject e, CancelEffectiveness cancelEffectiveness ) {
-//		boolean previousValue;
-//		boolean nextValue;
-//		assert e instanceof java.awt.event.ItemEvent;
-//		java.awt.event.ItemEvent itemEvent = (java.awt.event.ItemEvent)e;
-//		if (itemEvent.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-//			previousValue = false;
-//			nextValue = true;
-//		} else {
-//			previousValue = true;
-//			nextValue = false;
-//		}
-//		return new BooleanStateContext( parentContext, this, e, cancelEffectiveness, previousValue, nextValue );
-//	}
-
 	private void updateName() {
 		String name;
 		if (this.getState()) {
@@ -149,11 +145,21 @@ public final class BooleanStateOperation extends Operation {
 		}
 		this.action.putValue(javax.swing.Action.NAME, name);
 	}
-	/*package-private*/ void setValue(boolean value) {
-		this.buttonModel.removeItemListener(itemListener);
-		this.buttonModel.setSelected(value);
-		// this.handleStateChange( value );
-		this.buttonModel.addItemListener(itemListener);
-		this.updateName();
+	/*package-private*/ void setValue(boolean nextValue) {
+		if( nextValue != this.state ) {
+			this.buttonModel.removeItemListener(itemListener);
+
+			for( ValueObserver valueObserver : this.valueObservers ) {
+				valueObserver.changing( nextValue );
+			}
+			this.buttonModel.setSelected(nextValue);
+			for( ValueObserver valueObserver : this.valueObservers ) {
+				valueObserver.changed( nextValue );
+			}
+			this.state = nextValue;
+
+			this.buttonModel.addItemListener(itemListener);
+			this.updateName();
+		}
 	}
 }

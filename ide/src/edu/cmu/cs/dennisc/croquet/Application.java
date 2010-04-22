@@ -259,10 +259,27 @@ public abstract class Application {
 		};
 	}
 
-	public KMenuItem createMenuItem(final BooleanStateOperation booleanStateOperation) {
+//	public KMenuItem createMenuItem(final BooleanStateOperation booleanStateOperation) {
+//		this.register( booleanStateOperation );
+//		// todo: return javax.swing.JMenuItem if true and false different
+//		return new KMenuItem() {
+//			@Override
+//			protected void adding() {
+//				booleanStateOperation.addAbstractButton(this);
+//				super.adding();
+//			}
+//
+//			@Override
+//			protected void removed() {
+//				super.removed();
+//				booleanStateOperation.removeAbstractButton(this);
+//			}
+//		};
+//	}
+	public KCheckBoxMenuItem createCheckBoxMenuItem(final BooleanStateOperation booleanStateOperation) {
 		this.register( booleanStateOperation );
 		// todo: return javax.swing.JMenuItem if true and false different
-		return new KMenuItem() {
+		return new KCheckBoxMenuItem() {
 			@Override
 			protected void adding() {
 				booleanStateOperation.addAbstractButton(this);
@@ -301,7 +318,7 @@ public abstract class Application {
 				if( operation instanceof MenuOperation ) {
 					rv.addMenu( this.createMenu( (MenuOperation) operation ) );
 				} else {
-					KMenuItem menuItem = null;
+					KAbstractMenuItem<?> menuItem = null;
 					if (operation instanceof ActionOperation) {
 						ActionOperation actionOperation = (ActionOperation) operation;
 						menuItem = this.createMenuItem( actionOperation );
@@ -310,7 +327,7 @@ public abstract class Application {
 						menuItem = this.createMenuItem( compositeOperation );				
 					} else if (operation instanceof BooleanStateOperation) {
 						BooleanStateOperation booleanStateOperation = (BooleanStateOperation)operation;
-						menuItem = this.createMenuItem( booleanStateOperation );				
+						menuItem = this.createCheckBoxMenuItem( booleanStateOperation );				
 					} else {
 						throw new RuntimeException();
 					}

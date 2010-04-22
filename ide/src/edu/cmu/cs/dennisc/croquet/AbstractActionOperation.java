@@ -71,8 +71,6 @@ public abstract class AbstractActionOperation extends Operation {
 		super( groupUUID, individualUUID );
 //		this.buttonModel.addActionListener( new java.awt.event.ActionListener() {
 //			public void actionPerformed( java.awt.event.ActionEvent e ) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "model", e );
-//				AbstractActionOperation.this.handleActionPerformed( e );
 //			}
 //		} );
 	}
@@ -117,20 +115,20 @@ public abstract class AbstractActionOperation extends Operation {
 
 	/*package-private*/ void addAbstractButton( KAbstractButton<?> abstractButton ) {
 		abstractButton.setAction( this.action );
+//		abstractButton.setModel( this.buttonModel );
 		assert mapButtonToListener.containsKey( abstractButton ) == false;
 		ButtonActionListener buttonActionListener = new ButtonActionListener( abstractButton );
 		this.mapButtonToListener.put( abstractButton, buttonActionListener );
 		abstractButton.getJComponent().addActionListener( buttonActionListener );
-		//abstractButton.setModel( this.buttonModel );
 		this.addComponent(abstractButton);
 	}
 	/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
-		//abstractButton.setModel( null );
 		ButtonActionListener buttonActionListener = mapButtonToListener.get( abstractButton );
 		assert buttonActionListener != null;
 		abstractButton.getJComponent().removeActionListener( buttonActionListener );
 		mapButtonToListener.remove( abstractButton );
 		abstractButton.setAction( null );
+//		abstractButton.setModel( null );
 		this.removeComponent(abstractButton);
 	}
 }

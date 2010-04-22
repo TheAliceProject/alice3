@@ -42,6 +42,9 @@
  */
 package edu.cmu.cs.dennisc.java.util;
 
+/**
+ * @author Dennis Cosgrove
+ */
 public class Collections {
 	private Collections() {
 		throw new AssertionError();
@@ -57,6 +60,9 @@ public class Collections {
 		rv.addAll( other );
 		return rv;
 	}
+	public static <E> java.util.ArrayList<E> newArrayList() {
+		return new java.util.ArrayList< E >();
+	}
 	public static <E> java.util.ArrayList<E> newArrayList( E... array ) {
 		java.util.ArrayList<E> rv = new java.util.ArrayList< E >();
 		CollectionUtilities.set( rv, array );
@@ -67,6 +73,7 @@ public class Collections {
 		rv.addAll( other );
 		return rv;
 	}
+
 	public static <E> java.util.Vector<E> newVector( E... array ) {
 		java.util.Vector<E> rv = new java.util.Vector< E >();
 		CollectionUtilities.set( rv, array );
