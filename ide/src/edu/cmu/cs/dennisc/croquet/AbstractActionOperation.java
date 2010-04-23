@@ -54,12 +54,11 @@ public abstract class AbstractActionOperation extends Operation {
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			Application application = Application.getSingleton();
 			Context parentContext = application.getCurrentContext();
-			Context childContext = parentContext.open();
-			childContext.handleActionPerformed( AbstractActionOperation.this, e, this.button );
-			childContext.closeIfNotPending();
+			Context childContext = parentContext.createChildContext();
+			childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, button ) );
+			AbstractActionOperation.this.perform( childContext, e, button );
 		}
 	}
-	
 	private java.util.Map< KAbstractButton< ? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 //	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
@@ -116,19 +115,19 @@ public abstract class AbstractActionOperation extends Operation {
 	/*package-private*/ void addAbstractButton( KAbstractButton<?> abstractButton ) {
 		abstractButton.setAction( this.action );
 //		abstractButton.setModel( this.buttonModel );
-		assert mapButtonToListener.containsKey( abstractButton ) == false;
+		assert this.mapButtonToListener.containsKey( abstractButton ) == false;
 		ButtonActionListener buttonActionListener = new ButtonActionListener( abstractButton );
 		this.mapButtonToListener.put( abstractButton, buttonActionListener );
 		abstractButton.getJComponent().addActionListener( buttonActionListener );
 		this.addComponent(abstractButton);
 	}
 	/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
-		ButtonActionListener buttonActionListener = mapButtonToListener.get( abstractButton );
+		this.removeComponent(abstractButton);
+		ButtonActionListener buttonActionListener = this.mapButtonToListener.get( abstractButton );
 		assert buttonActionListener != null;
 		abstractButton.getJComponent().removeActionListener( buttonActionListener );
 		mapButtonToListener.remove( abstractButton );
 		abstractButton.setAction( null );
 //		abstractButton.setModel( null );
-		this.removeComponent(abstractButton);
 	}
 }

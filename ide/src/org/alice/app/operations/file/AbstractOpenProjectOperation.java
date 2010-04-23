@@ -57,7 +57,7 @@ public abstract class AbstractOpenProjectOperation extends ClearanceRequiringUri
 //	protected abstract boolean isNew();
 //	@Override
 //	protected final void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
-//		assert compositeContext.isCancelled() == false;
+//		assert compositeContext.isCanceled() == false;
 //		edu.cmu.cs.dennisc.croquet.ActionContext selectProjectContext = compositeContext.performInChildContext( this.selectAndLoadProjectOperation, null, edu.cmu.cs.dennisc.croquet.CancelEffectiveness.WORTHWHILE );
 //		if( selectProjectContext.isCommitted() ) {
 //			compositeContext.commit();

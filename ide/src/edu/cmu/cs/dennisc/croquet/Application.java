@@ -58,10 +58,10 @@ public abstract class Application {
 		return singleton;
 	}
 
+	private Context rootContext = new Context( null );
 	private java.util.Map<java.util.UUID, Operation> mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	private KMenuBar menuBar = new KMenuBar();
-	private Context rootContext = new Context( null );
+
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
@@ -75,12 +75,11 @@ public abstract class Application {
 		} );
 	}
 	
-	public KMenuBar getMenuBar() {
-		return this.menuBar;
-	}
-
-	public Context getCurrentContext() {
+	public Context getRootContext() {
 		return this.rootContext;
+	}
+	public Context getCurrentContext() {
+		return this.rootContext.getCurrentContext();
 	}
 
 	public <O extends Operation> O lookupOperation( java.util.UUID id ) {
@@ -98,9 +97,7 @@ public abstract class Application {
 
 	public void initialize(String[] args) {
 		javax.swing.JFrame jFrame = (javax.swing.JFrame) frame.getAWTFrame();
-		jFrame.setJMenuBar(this.menuBar.getJComponent());
 		jFrame.setContentPane(this.createContentPane().getJComponent());
-		jFrame.pack();
 		jFrame.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
 		jFrame.addWindowListener(new java.awt.event.WindowListener() {
 			public void windowOpened(java.awt.event.WindowEvent e) {
@@ -130,9 +127,17 @@ public abstract class Application {
 				Application.this.handleQuit( e );
 			}
 		} );
-		
+		jFrame.pack();
 	}
 
+	public void setMenuBar( KMenuBar menuBar ) {
+		javax.swing.JFrame jFrame = (javax.swing.JFrame) frame.getAWTFrame();
+		javax.swing.JMenuBar jMenuBar = menuBar.getJComponent();
+		menuBar.adding();
+		jFrame.setJMenuBar(jMenuBar);
+		menuBar.added();
+		jFrame.pack();
+	}
 	public void setVisible(boolean isVisible) {
 		javax.swing.JFrame jFrame = (javax.swing.JFrame) frame.getAWTFrame();
 		jFrame.setVisible(true);
@@ -147,58 +152,6 @@ public abstract class Application {
 	protected abstract void handlePreferences( java.util.EventObject e );
 	protected abstract void handleQuit( java.util.EventObject e );
 
-	private static java.util.List<edu.cmu.cs.dennisc.croquet.event.ManagerListener> managerListeners = new java.util.LinkedList<edu.cmu.cs.dennisc.croquet.event.ManagerListener>();
-	private static edu.cmu.cs.dennisc.croquet.event.ManagerListener[] managerListenerArray = null;
-
-	public static void addManagerListener(edu.cmu.cs.dennisc.croquet.event.ManagerListener l) {
-		synchronized (Application.managerListeners) {
-			Application.managerListeners.add(l);
-			Application.managerListenerArray = null;
-		}
-	}
-
-	public static void removeManagerListener(edu.cmu.cs.dennisc.croquet.event.ManagerListener l) {
-		synchronized (Application.managerListeners) {
-			Application.managerListeners.remove(l);
-			Application.managerListenerArray = null;
-		}
-	}
-
-	private static edu.cmu.cs.dennisc.croquet.event.ManagerListener[] getManagerListenerArray() {
-		synchronized (Application.managerListeners) {
-			if (Application.managerListenerArray != null) {
-				// pass
-			} else {
-				Application.managerListenerArray = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(Application.managerListeners, edu.cmu.cs.dennisc.croquet.event.ManagerListener.class);
-			}
-			return Application.managerListenerArray;
-		}
-	}
-
-	/* package-private */static void fireOperationCancelling(edu.cmu.cs.dennisc.croquet.event.CancelEvent e) {
-		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray()) {
-			l.operationCancelling(e);
-		}
-	}
-
-	/* package-private */static void fireOperationCancelled(edu.cmu.cs.dennisc.croquet.event.CancelEvent e) {
-		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray()) {
-			l.operationCancelled(e);
-		}
-	}
-
-	/* package-private */static void fireOperationCommitting(edu.cmu.cs.dennisc.croquet.event.CommitEvent e) {
-		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray()) {
-			l.operationCommitting(e);
-		}
-	}
-
-	/* package-private */static void fireOperationCommitted(edu.cmu.cs.dennisc.croquet.event.CommitEvent e) {
-		for (edu.cmu.cs.dennisc.croquet.event.ManagerListener l : Application.getManagerListenerArray()) {
-			l.operationCommitted(e);
-		}
-	}
-	
 	private void register( Operation operation ) {
 		java.util.UUID id = operation.getIndividualUUID();
 		Operation prev = this.mapUUIDToOperation.get( id );
@@ -330,7 +283,7 @@ public abstract class Application {
 		return rv;
 	}
 
-	public KMenu createMenu( final MenuOperation menuOperation ) {
+	/*package-private*/ KMenu createMenu( final MenuOperation menuOperation ) {
 		this.register( menuOperation );
 		KMenu rv = new KMenu() {
 			@Override
@@ -368,6 +321,27 @@ public abstract class Application {
 		return rv;
 	}
 	
+	public KMenuBar createMenuBar(final MenuBarOperation menuBarOperation) {
+		this.register( menuBarOperation );
+		KMenuBar rv = new KMenuBar() {
+			@Override
+			protected void adding() {
+				menuBarOperation.addMenuBar(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				menuBarOperation.removeMenuBar(this);
+			}
+		};
+		for( MenuOperation menuOperation : menuBarOperation.getMenuOperations() ) {
+			rv.addMenu( this.createMenu( menuOperation ) );
+		}
+		return rv;
+	}
+
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		javax.swing.JOptionPane.showMessageDialog( this.frame.getAWTWindow(), message, title, messageType.internal, icon );
 	}

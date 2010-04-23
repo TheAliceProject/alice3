@@ -40,13 +40,29 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.croquet.event;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class OperationEvent extends edu.cmu.cs.dennisc.pattern.event.Event< edu.cmu.cs.dennisc.croquet.Operation > {
-	public OperationEvent( edu.cmu.cs.dennisc.croquet.Operation source ) {
-		super( source );
+public class KTree<E> extends KComponent< javax.swing.JTree > {
+	public KTree( javax.swing.tree.TreeModel treeModel ) {
+		this.getJComponent().setModel( treeModel );
+	}
+	@Override
+	protected javax.swing.JTree createJComponent() {
+		return new javax.swing.JTree();
+	}
+	
+	public void expandAllRows() {
+		for( int i=0; i<this.getJComponent().getRowCount(); i++ ) {
+			this.getJComponent().expandRow( i );
+		}
+	}
+	public void collapseAllRows() {
+		for( int i=0; i<this.getJComponent().getRowCount(); i++ ) {
+			this.getJComponent().collapseRow( i );
+		}
 	}
 }

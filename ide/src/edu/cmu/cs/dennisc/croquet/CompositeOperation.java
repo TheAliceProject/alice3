@@ -50,7 +50,7 @@ public abstract class CompositeOperation extends AbstractActionOperation {
 	protected final void perform( Context context, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
 		for( AbstractActionOperation operation : this.getOperations() ) {
 			operation.perform( context, e, button );
-			if( context.isCancelled() ) {
+			if( context.isCanceled() ) {
 				break;
 			}
 		}

@@ -81,9 +81,9 @@ public abstract class ItemSelectionOperation<T> extends Operation {
 				public void itemStateChanged( java.awt.event.ItemEvent e ) {
 					Application application = Application.getSingleton();
 					Context parentContext = application.getCurrentContext();
-					Context childContext = parentContext.open();
-					childContext.handleItemStateChanged( ItemSelectionOperation.this, e );
-					childContext.closeIfNotPending();
+					Context childContext = parentContext.createChildContext();
+					childContext.addChild( new ItemSelectionEvent< T >( childContext, ItemSelectionOperation.this, e ) );
+					ItemSelectionOperation.this.perform( childContext, e );
 				}
 			};
 			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );

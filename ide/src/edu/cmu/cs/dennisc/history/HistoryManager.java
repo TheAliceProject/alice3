@@ -44,9 +44,9 @@ package edu.cmu.cs.dennisc.history;
 
 public class HistoryManager {
 	private static edu.cmu.cs.dennisc.zoot.event.ManagerListener managerListener = new edu.cmu.cs.dennisc.zoot.event.ManagerListener() {
-		public void operationCancelling( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
+		public void operationCanceling( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
 		}
-		public void operationCancelled( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
+		public void operationCanceled( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
 		}
 		public void operationCommitting( edu.cmu.cs.dennisc.zoot.event.CommitEvent e ) {
 		}

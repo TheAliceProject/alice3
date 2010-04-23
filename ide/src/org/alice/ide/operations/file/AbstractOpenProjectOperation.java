@@ -63,7 +63,7 @@ public abstract class AbstractOpenProjectOperation extends AbstractClearanceActi
 				actionContext.cancel();
 			}
 		}
-		if( actionContext.isCancelled() ) {
+		if( actionContext.isCanceled() ) {
 			//pass
 		} else {
 			edu.cmu.cs.dennisc.zoot.ActionContext selectProjectContext = actionContext.perform( this.getSelectProjectToOpenOperation(), null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );

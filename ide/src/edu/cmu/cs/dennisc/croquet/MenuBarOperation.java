@@ -40,68 +40,54 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KComponent<J extends javax.swing.JComponent> {
-	private J jComponent;
-	protected abstract J createJComponent();
-	protected final J getJComponent() {
-		if( this.jComponent != null ) {
-			//pass
-		} else {
-			this.jComponent = this.createJComponent();
-		}
-		return this.jComponent;
-	}
-	public void scaleFont( float scaleFactor ) {
-		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( this.getJComponent(), scaleFactor );
-	}
-	public void changeFont( edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
-		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToDerivedFont( this.getJComponent(), textAttributes );
-	}
-	
-	public void setForegroundColor( java.awt.Color color ) {
-		this.getJComponent().setForeground( color );
-	}
-	public void setBackgroundColor( java.awt.Color color ) {
-		this.getJComponent().setBackground( color );
-	}
-	public void setVisible( boolean isVisible ) {
-		this.getJComponent().setVisible( isVisible );
-	}
-	public void setEnabled( boolean isEnabled ) {
-		this.getJComponent().setEnabled( isEnabled );
-	}
-	public void setToolTipText( String toolTipText ) {
-		this.getJComponent().setToolTipText( toolTipText );
-	}
-	public void setBorder( javax.swing.border.Border border ) {
-		this.getJComponent().setBorder( border );
+public class MenuBarOperation extends Operation {
+//	private class MenuBarChangeListener implements javax.swing.event.ChangeListener {
+//		private KMenuBar menuBar;
+//		public MenuBarChangeListener( KMenuBar menuBar ) {
+//			this.menuBar = menuBar;
+//		}
+//		public void stateChanged( javax.swing.event.ChangeEvent e ) {
+//			Application application = Application.getSingleton();
+//			Context parentContext = application.getCurrentContext();
+//			Context childContext = parentContext.open();
+//			javax.swing.SingleSelectionModel singleSelectionModel = (javax.swing.SingleSelectionModel)e.getSource();
+//			int index = singleSelectionModel.getSelectedIndex();
+//			MenuOperation menuOperationAtIndex = MenuBarOperation.this.menuOperations.get( index );
+//			childContext.addChild( new MenuBarStateChangeEvent( childContext, MenuBarOperation.this, e, this.menuBar, singleSelectionModel, index, menuOperationAtIndex ) );
+//		}
+//	};
+//	private java.util.Map< KMenuBar, MenuBarChangeListener > mapMenuBarToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.concurrent.CopyOnWriteArrayList< MenuOperation > menuOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public MenuBarOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
+		super( groupUUID, individualUUID );
 	}
 
-	protected void adding() {
+	public void addMenuOperation( MenuOperation menuOperation ) {
+		this.menuOperations.add( menuOperation );
 	}
-	protected void added() {
+	public void removeMenuOperation( MenuOperation menuOperation ) {
+		this.menuOperations.remove( menuOperation );
 	}
-	protected void removing() {
+	public java.util.concurrent.CopyOnWriteArrayList< MenuOperation > getMenuOperations() {
+		return this.menuOperations;
 	}
-	protected void removed() {
+	/*package-private*/ void addMenuBar( KMenuBar menuBar ) {
+//		assert mapMenuBarToListener.containsKey( menuBar ) == false;
+//		MenuBarChangeListener listener = new MenuBarChangeListener( menuBar );
+//		this.mapMenuBarToListener.put( menuBar, listener );
+//		menuBar.getJComponent().getSelectionModel().addChangeListener( listener );
+		this.addComponent( menuBar );
 	}
-	
-	public int getWidth() {
-		return this.getJComponent().getWidth();
+	/*package-private*/ void removeMenuBar( KMenuBar menuBar ) {
+		this.removeComponent( menuBar );
+//		MenuBarChangeListener listener = this.mapMenuBarToListener.get( menuBar );
+//		assert listener != null;
+//		menuBar.getJComponent().getSelectionModel().removeChangeListener( listener );
+//		this.mapMenuBarToListener.remove( menuBar );
 	}
-	public int getHeight() {
-		return this.getJComponent().getHeight();
-	}
-	
-	protected void repaint() {
-		this.getJComponent().repaint();
-	}
-	
 }
-

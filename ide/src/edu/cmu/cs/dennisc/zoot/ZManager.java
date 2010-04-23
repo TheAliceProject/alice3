@@ -49,7 +49,7 @@ abstract class AbstractContext< E extends Operation > implements Context< E > {
 	private E operation;
 	private java.util.Map< Object, Object > map = new java.util.HashMap< Object, Object >();
 	private boolean isCommitted = false;
-	private boolean isCancelled = false;
+	private boolean isCanceled = false;
 	private java.util.EventObject e;
 	private boolean isCancelWorthwhile;
 
@@ -64,11 +64,11 @@ abstract class AbstractContext< E extends Operation > implements Context< E > {
 	public boolean isCommitted() {
 		return this.isCommitted;
 	}
-	public boolean isCancelled() {
-		return this.isCancelled;
+	public boolean isCanceled() {
+		return this.isCanceled;
 	}
 	public boolean isPending() {
-		return (this.isCommitted() || this.isCancelled()) == false;
+		return (this.isCommitted() || this.isCanceled()) == false;
 	}
 	public void commitAndInvokeDo( Edit edit ) {
 		assert this.isPending();
@@ -108,9 +108,9 @@ abstract class AbstractContext< E extends Operation > implements Context< E > {
 	public void cancel() {
 		assert this.isPending();
 		edu.cmu.cs.dennisc.zoot.event.CancelEvent e = new edu.cmu.cs.dennisc.zoot.event.CancelEvent( this.operation, this );
-		ZManager.fireOperationCancelling( e );
-		this.isCancelled = true;
-		ZManager.fireOperationCancelled( e );
+		ZManager.fireOperationCanceling( e );
+		this.isCanceled = true;
+		ZManager.fireOperationCanceled( e );
 	}
 	public boolean isCancelWorthwhile() {
 		return isCancelWorthwhile;
@@ -243,14 +243,14 @@ public class ZManager {
 			return ZManager.managerListenerArray;
 		}
 	}
-	/*package-private*/ static void fireOperationCancelling( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
+	/*package-private*/ static void fireOperationCanceling( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
 		for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.getManagerListenerArray() ) {
-			l.operationCancelling( e );
+			l.operationCanceling( e );
 		}
 	}
-	/*package-private*/ static void fireOperationCancelled( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
+	/*package-private*/ static void fireOperationCanceled( edu.cmu.cs.dennisc.zoot.event.CancelEvent e ) {
 		for( edu.cmu.cs.dennisc.zoot.event.ManagerListener l : ZManager.getManagerListenerArray() ) {
-			l.operationCancelled( e );
+			l.operationCanceled( e );
 		}
 	}
 	/*package-private*/ static void fireOperationCommitting( edu.cmu.cs.dennisc.zoot.event.CommitEvent e ) {
@@ -294,14 +294,14 @@ public class ZManager {
 
 	//	private static void addToHistory( Operation operation ) {
 	//	}
-	//	private static void handlePreparedOperation( CancellableOperation operation, java.util.EventObject e, java.util.List< java.util.EventObject > preparationUpdates, CancellableOperation.PreparationResult preparationResult ) {
+	//	private static void handlePreparedOperation( CancelableOperation operation, java.util.EventObject e, java.util.List< java.util.EventObject > preparationUpdates, CancelableOperation.PreparationResult preparationResult ) {
 	//		edu.cmu.cs.dennisc.print.PrintUtilities.println( "ZManager.handlePreparedOperation", operation, preparationResult );
 	//		if( preparationResult != null ) {
-	//			if( preparationResult == CancellableOperation.PreparationResult.CANCEL ) {
+	//			if( preparationResult == CancelableOperation.PreparationResult.CANCEL ) {
 	//				//pass
 	//			} else {
 	//				operation.perform();
-	//				if( preparationResult == CancellableOperation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY ) {
+	//				if( preparationResult == CancelableOperation.PreparationResult.PERFORM_AND_ADD_TO_HISTORY ) {
 	//					//addToHistory( operation );
 	//				}
 	//			}
@@ -344,15 +344,15 @@ public class ZManager {
 		ActionContext rv = new MyActionContext( actionOperation, e, isCancelWorthwhile );
 		actionOperation.perform( rv );
 		return rv;
-		//		if( operation instanceof CancellableOperation ) {
-		//			CancellableOperation cancellableOperation = (CancellableOperation)operation;
+		//		if( operation instanceof CancelableOperation ) {
+		//			CancelableOperation cancelableOperation = (CancelableOperation)operation;
 		//			final java.util.List< java.util.EventObject > preparationUpdates = new java.util.LinkedList< java.util.EventObject >();
-		//			CancellableOperation.PreparationResult preparationResult = cancellableOperation.prepare( e, new CancellableOperation.PreparationObserver() {
+		//			CancelableOperation.PreparationResult preparationResult = cancelableOperation.prepare( e, new CancelableOperation.PreparationObserver() {
 		//				public void update( java.util.EventObject e ) {
 		//					preparationUpdates.add( e );
 		//				}
 		//			} );
-		//			handlePreparedOperation( cancellableOperation, e, preparationUpdates, preparationResult );
+		//			handlePreparedOperation( cancelableOperation, e, preparationUpdates, preparationResult );
 		//		} else {
 		//			if( operation instanceof ResponseOperation ) {
 		//				((ResponseOperation)operation).respond( e );

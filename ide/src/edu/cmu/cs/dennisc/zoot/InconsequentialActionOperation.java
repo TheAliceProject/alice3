@@ -53,7 +53,7 @@ public abstract class InconsequentialActionOperation extends AbstractActionOpera
 	protected abstract void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext);
 	public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		performInternal(actionContext);
-		if( actionContext.isCancelled() ) {
+		if( actionContext.isCanceled() ) {
 			//pass
 		} else {
 			actionContext.commit();

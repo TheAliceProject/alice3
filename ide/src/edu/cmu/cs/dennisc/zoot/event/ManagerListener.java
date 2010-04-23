@@ -48,6 +48,6 @@ package edu.cmu.cs.dennisc.zoot.event;
 public interface ManagerListener {
 	public void operationCommitting( CommitEvent e );
 	public void operationCommitted( CommitEvent e );
-	public void operationCancelling( CancelEvent e );
-	public void operationCancelled( CancelEvent e );
+	public void operationCanceling( CancelEvent e );
+	public void operationCanceled( CancelEvent e );
 }

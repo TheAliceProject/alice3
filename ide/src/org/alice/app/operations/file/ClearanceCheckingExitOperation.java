@@ -52,7 +52,7 @@ public class ClearanceCheckingExitOperation extends ClearanceRequiringUriComposi
 	}
 //	@Override
 //	protected void performPostCleared(edu.cmu.cs.dennisc.croquet.CompositeContext compositeContext) {
-//		assert compositeContext.isCancelled() == false;
+//		assert compositeContext.isCanceled() == false;
 //		//todo?
 //		System.exit( 0 );
 //	}

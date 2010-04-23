@@ -69,9 +69,9 @@ public final class BooleanStateOperation extends Operation {
 		public void itemStateChanged(java.awt.event.ItemEvent e) {
 			Application application = Application.getSingleton();
 			Context parentContext = application.getCurrentContext();
-			Context childContext = parentContext.open();
-			childContext.handleItemStateChanged( BooleanStateOperation.this, e );
-			childContext.closeIfNotPending();
+			Context childContext = parentContext.createChildContext();
+			childContext.addChild( new BooleanStateEvent( childContext, BooleanStateOperation.this, e ) );
+			BooleanStateOperation.this.perform( childContext, e );
 		}
 	};
 	/*package-private*/ final void perform( Context context, java.awt.event.ItemEvent e ) {

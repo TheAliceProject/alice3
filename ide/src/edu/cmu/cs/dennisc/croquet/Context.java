@@ -42,230 +42,140 @@
  */
 package edu.cmu.cs.dennisc.croquet;
 
-//import edu.cmu.cs.dennisc.croquet.Node.State;
-//
-//public abstract class Node implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-//	private Node parent;
-//	private java.util.UUID id;
-//	public enum State {
-//		COMMITTED,
-//		SKIPPED,
-//		CANCELLED,
-//		PENDING
-//	}
-//	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//		this.decode( binaryDecoder );
-//	}
-//	public Node( CompositeContext parent ) {
-//		this.parent = parent;
-//		this.id = java.util.UUID.randomUUID();
-//	}
-//	public Node getParent() {
-//		return this.parent;
-//	}
-//	public java.util.UUID getId() {
-//		return this.id;
-//	}
-//	public abstract State getState();
-//	public final boolean isCommitted() {
-//		return this.getState() == State.COMMITTED;
-//	}
-//	public final boolean isCancelled() {
-//		return this.getState() == State.CANCELLED;
-//	}
-//
-//	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-//	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-//	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-//		this.id = edu.cmu.cs.dennisc.java.util.UuidUtilities.decodeUuid( binaryDecoder );
-//		this.decodeInternal(binaryDecoder);
-//	}
-//	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-//		edu.cmu.cs.dennisc.java.util.UuidUtilities.encodeUuid( binaryEncoder, this.id );
-//		this.encodeInternal(binaryEncoder);
-//	}
-//}
-
-//public abstract class ComponentContext< O extends ComponentOperation > extends Node {
-////	private State state;
-//	private O operation;
-//	private java.util.EventObject event;
-//	private CancelEffectiveness cancelEffectiveness;
-//	public ComponentContext( CompositeContext parent, O operation, java.util.EventObject event, CancelEffectiveness cancelEffectiveness ) {
-//		super( parent );
-//		this.operation = operation;
-//		this.event = event;
-//		this.cancelEffectiveness = cancelEffectiveness;
-//	}
-////	@Override
-////	public State getState() {
-////		return this.state;
-////	}
-//	public O getOperation() {
-//		return this.operation;
-//	}
-//	public java.util.EventObject getEvent() {
-//		return event;
-//	}
-//	public CancelEffectiveness getCancelEffectiveness() {
-//		return this.cancelEffectiveness;
-//	}
-//	public boolean isCancelWorthwhile() {
-//		return this.cancelEffectiveness == CancelEffectiveness.WORTHWHILE;
-//	}
-//	
-////	private void commitAndInvokeDo( Edit<O> edit ) {
-////		assert this.state == null;
-////		//edu.cmu.cs.dennisc.croquet.event.CommitEvent e = new edu.cmu.cs.dennisc.croquet.event.CommitEvent( this.getOperation(), this, edit );
-////		//this.parent.committing();
-////		if( edit != null ) {
-////			edit.doOrRedo( true );
-////		}
-////		this.state = State.COMMITTED;
-////		//this.parent.committed();
-////	}
-////	public void commit() {
-////		this.commitAndInvokeDo( null );
-////	}
-////	public void skip() {
-////		//edu.cmu.cs.dennisc.croquet.event.SkipEvent e = new edu.cmu.cs.dennisc.croquet.event.SkipEvent( this.operation, this );
-////		//this.parent.skipping();
-////		this.state = State.SKIPPED;
-////		//this.parent.skipped();
-////	}
-////	public void cancel() {
-////		assert this.state == null;
-////		//edu.cmu.cs.dennisc.croquet.event.CancelEvent e = new edu.cmu.cs.dennisc.croquet.event.CancelEvent( this.getOperation(), this );
-////		//this.parent.canceling();
-////		this.state = State.CANCELLED;
-////		//this.parent.cancelled();
-////	}
-////	private class PendTaskObserver< E extends Edit,F > implements edu.cmu.cs.dennisc.task.TaskObserver< F > {
-////		private Resolver<E,F> resolver;
-////		private E edit;
-////		public PendTaskObserver( Resolver<E,F> resolver ) {
-////			this.resolver = resolver;
-////			this.edit = this.resolver.createEdit();
-////			this.edit = this.resolver.initialize( this.edit, ComponentContext.this, this );
-////		}
-////		public void handleCompletion(F f) {
-////			this.edit = this.resolver.handleCompletion( this.edit, f);
-////			ComponentContext.this.commitAndInvokeDo( this.edit );
-////		}
-////		public void handleCancelation() {
-////			this.resolver.handleCancelation();
-////			ComponentContext.this.cancel();
-////		}
-////	}
-////	public void pend( Resolver<? extends Edit, ?> resolver ) {
-////		new PendTaskObserver(resolver);
-////		this.state = State.PENDING;
-////	}
-////	
-//////	public void execute( org.jdesktop.swingworker.SwingWorker< ?, ? > worker ) {
-//////		worker.execute();
-//////	}
-//	
-//}
-
-/*package-private*/ abstract class Node implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
-	public enum State {
-		COMMITTED, FINISHED, SKIPPED, CANCELLED, PENDING
-	}
-
-	private Context parent;
-	private java.util.UUID id;
-
-	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.decode( binaryDecoder );
-	}
-	public Node( Context parent ) {
-		this.parent = parent;
-		this.id = java.util.UUID.randomUUID();
-	}
-	public Context getParent() {
-		return this.parent;
-	}
-	public java.util.UUID getId() {
-		return this.id;
-	}
-
-	public abstract State getState();
-	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
-	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
-	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		this.id = edu.cmu.cs.dennisc.java.util.UuidUtilities.decodeUuid( binaryDecoder );
-		this.decodeInternal( binaryDecoder );
-	}
-	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		edu.cmu.cs.dennisc.java.util.UuidUtilities.encodeUuid( binaryEncoder, this.id );
-		this.encodeInternal( binaryEncoder );
-	}
-}
-
-/*package-private*/ abstract class Event extends Node {
+/*package-private*/ abstract class Event extends HistoryTreeNode {
 	public Event( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	public Event( Context parent ) {
 		super( parent );
 	}
+	public boolean isLeaf() {
+		return true;
+	}
+	public java.util.Enumeration<HistoryTreeNode> children() {
+		return null;
+	}
+	public boolean getAllowsChildren() {
+		return false;
+	}
+	public javax.swing.tree.TreeNode getChildAt( int childIndex ) {
+		return null;
+	}
+	public int getChildCount() {
+		return 0;
+	}
+	public int getIndex( javax.swing.tree.TreeNode node ) {
+		return -1;
+	}
 }
 
-/*package-private*/ class ActionEvent extends Event {
+abstract class OperationEvent< O extends Operation, E extends java.util.EventObject, C extends KComponent< ? > > extends Event {
+	private O operation;
+	private E event;
+	private C component;
+	public OperationEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public OperationEvent( Context parent, O operation, E event, C component ) {
+		super( parent );
+		this.operation = operation;
+		this.event = event;
+		this.component = component;
+	}
+	public O getOperation() {
+		return this.operation;
+	}
+	public E getEvent() {
+		return this.event;
+	}
+	public C getComponent() {
+		return this.component;
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	public State getState() {
+		return null;
+	}
+	
+	@Override
+	protected StringBuilder appendRepr( StringBuilder rv ) {
+		super.appendRepr( rv );
+		rv.append( " operation:" );
+		rv.append( this.operation.getClass().getSimpleName() );
+		return rv;
+	}
+}
+/*package-private*/ class ActionEvent extends OperationEvent<AbstractActionOperation,java.awt.event.ActionEvent,KAbstractButton< ? >> {
 	public ActionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	public ActionEvent( Context parent, AbstractActionOperation actionOperation, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
-		super( parent );
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-	@Override
-	public State getState() {
-		return null;
+		super( parent, actionOperation, e, button );
 	}
 }
 
-/*package-private*/ class BooleanStateEvent extends Event {
+/*package-private*/ class BooleanStateEvent extends OperationEvent {
 	public BooleanStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	public BooleanStateEvent( Context parent, BooleanStateOperation booleanStateOperation, java.awt.event.ItemEvent e ) {
-		super( parent );
-	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-	}
-	@Override
-	public State getState() {
-		return null;
+		super( parent, booleanStateOperation, e, null );
 	}
 }
 
-/*package-private*/ class ItemSelectionEvent< T > extends Event {
+/*package-private*/ class ItemSelectionEvent< T > extends OperationEvent {
 	public ItemSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
 	}
 	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.awt.event.ItemEvent e ) {
-		super( parent );
+		super( parent, itemSelectionOperation, e, null );
 	}
-	@Override
-	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+}
+
+///*package-private*/ class MenuBarStateChangeEvent extends OperationEvent {
+//	public MenuBarStateChangeEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+//		super( binaryDecoder );
+//	}
+//	public MenuBarStateChangeEvent( Context parent, MenuBarOperation menuBarOperation, javax.swing.event.ChangeEvent e, KMenuBar menuBar, javax.swing.SingleSelectionModel singleSelectionModel, int index, MenuOperation menuOperationAtIndex ) {
+//		super( parent, menuBarOperation, e, menuBar );
+//	}
+//}
+/*package-private*/ abstract class MenuEvent extends OperationEvent {
+	public MenuEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
 	}
-	@Override
-	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	public MenuEvent( Context parent, MenuOperation menuOperation, javax.swing.event.MenuEvent e, KMenu menu ) {
+		super( parent, menuOperation, e, menu );
 	}
-	@Override
-	public State getState() {
-		return null;
+}
+
+/*package-private*/ class MenuSelectedEvent extends MenuEvent {
+	public MenuSelectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public MenuSelectedEvent( Context parent, MenuOperation menuOperation, javax.swing.event.MenuEvent e, KMenu menu ) {
+		super( parent, menuOperation, e, menu );
+	}
+}
+/*package-private*/ class MenuDeselectedEvent extends MenuEvent {
+	public MenuDeselectedEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public MenuDeselectedEvent( Context parent, MenuOperation menuOperation, javax.swing.event.MenuEvent e, KMenu menu ) {
+		super( parent, menuOperation, e, menu );
+	}
+}
+/*package-private*/ class MenuCanceledEvent extends MenuEvent {
+	public MenuCanceledEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public MenuCanceledEvent( Context parent, MenuOperation menuOperation, javax.swing.event.MenuEvent e, KMenu menu ) {
+		super( parent, menuOperation, e, menu );
 	}
 }
 
@@ -309,6 +219,7 @@ package edu.cmu.cs.dennisc.croquet;
 		return State.FINISHED;
 	}
 }
+
 /*package-private*/ class CancelEvent extends Event {
 	public CancelEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		super( binaryDecoder );
@@ -324,7 +235,7 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 	@Override
 	public State getState() {
-		return State.CANCELLED;
+		return State.CANCELED;
 	}
 }
 
@@ -333,28 +244,48 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class Context extends Node {
+public class Context extends HistoryTreeNode {
 	public interface CommitObserver {
 		public void committing( Edit edit );
 		public void committed( Edit edit );
 	}
 	private java.util.List< CommitObserver > commitObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	private java.util.List< Node > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+	private java.util.List< HistoryTreeNode > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	//todo: reduce visibility?
 	public Context( Context parent ) {
 		super( parent );
 	}
-	
 	public void addCommitObserver( CommitObserver commitObserver ) {
 		this.commitObservers.add( commitObserver );
 	}
 	public void removeCommitObserver( CommitObserver commitObserver ) {
 		this.commitObservers.remove( commitObserver );
 	}
-	
+
+	public boolean isLeaf() {
+		return false;
+	}
+	public java.util.Enumeration<HistoryTreeNode> children() {
+		return java.util.Collections.enumeration( this.children );
+	}
+	public boolean getAllowsChildren() {
+		return true;
+	}
+	public javax.swing.tree.TreeNode getChildAt( int childIndex ) {
+		return this.children.get( childIndex );
+	}
+	public int getChildCount() {
+		return this.children.size();
+	}
+	public int getIndex( javax.swing.tree.TreeNode node ) {
+		return this.children.indexOf( node );
+	}
+
 	protected void fireComitting( Edit edit ) {
-		for( CommitObserver commitObserver : this.commitObservers ) {
-			commitObserver.committing( edit );
+		if( this.commitObservers.size() > 0 ) {
+			for( CommitObserver commitObserver : this.commitObservers ) {
+				commitObserver.committing( edit );
+			}
 		}
 		Context parent = this.getParent();
 		if( parent != null ) {
@@ -362,8 +293,10 @@ public class Context extends Node {
 		}
 	}
 	protected void fireComitted( Edit edit ) {
-		for( CommitObserver commitObserver : this.commitObservers ) {
-			commitObserver.committed( edit );
+		if( this.commitObservers.size() > 0 ) {
+			for( CommitObserver commitObserver : this.commitObservers ) {
+				commitObserver.committed( edit );
+			}
 		}
 		Context parent = this.getParent();
 		if( parent != null ) {
@@ -380,27 +313,46 @@ public class Context extends Node {
 			return null;
 		}
 	}
+	//todo
+	public Context getCurrentContext() {
+		final int N = this.children.size();
+		if( N > 0 ) {
+			HistoryTreeNode lastChild = this.children.get( N - 1 );
+			if( lastChild instanceof Context ) {
+				Context lastContext = (Context)lastChild;
+				if( lastContext.getState() != null ) {
+					return this;
+				} else {
+					return lastContext.getCurrentContext();
+				}
+			} else {
+				return this;
+			}
+			
+		} else {
+			return this;
+		}
+	}
+	
+	
 	public final boolean isCommitted() {
 		return this.getState() == State.COMMITTED;
 	}
-	public final boolean isCancelled() {
-		return this.getState() == State.CANCELLED;
+	public final boolean isCanceled() {
+		return this.getState() == State.CANCELED;
 	}
 
-	private void addChild( Node child ) {
+	/*package-private*/ void addChild( HistoryTreeNode child ) {
 		synchronized( this.children ) {
 			this.children.add( child );
 		}
 	}
 	
-	/*package-private*/Context open() {
+	/*package-private*/Context createChildContext() {
 		Context rv = new Context( this );
 		this.addChild( rv );
 		return rv;
 	}
-	/*package-private*/void closeIfNotPending() {
-	}
-
 	public void finish() {
 		this.addChild( new FinishEvent( this ) );
 	}
@@ -415,28 +367,31 @@ public class Context extends Node {
 		this.addChild( new CancelEvent( this ) );
 	}
 
-	/*package-private*/void handleItemStateChanged( BooleanStateOperation booleanStateOperation, java.awt.event.ItemEvent e ) {
-		booleanStateOperation.perform( this, e );
-		this.addChild( new BooleanStateEvent( this, booleanStateOperation, e ) );
-	}
-	/*package-private*/<T> void handleItemStateChanged( ItemSelectionOperation< T > itemSelectionOperation, java.awt.event.ItemEvent e ) {
-		itemSelectionOperation.perform( this, e );
-		this.addChild( new ItemSelectionEvent< T >( this, itemSelectionOperation, e ) );
-	}
-
-	/*package-private*/void handleActionPerformed( AbstractActionOperation actionOperation, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
-		actionOperation.perform( this, e, button );
-		this.addChild( new ActionEvent( this, actionOperation, e, button ) );
-	}
+//	/*package-private*/void handleItemStateChanged( BooleanStateOperation booleanStateOperation, java.awt.event.ItemEvent e ) {
+//		this.addChild( new BooleanStateEvent( this, booleanStateOperation, e ) );
+//		booleanStateOperation.perform( this, e );
+//	}
+//	/*package-private*/<T> void handleItemStateChanged( ItemSelectionOperation< T > itemSelectionOperation, java.awt.event.ItemEvent e ) {
+//		this.addChild( new ItemSelectionEvent< T >( this, itemSelectionOperation, e ) );
+//		itemSelectionOperation.perform( this, e );
+//	}
+//
+//	/*package-private*/void handleActionPerformed( AbstractActionOperation actionOperation, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
+//		this.addChild( new ActionEvent( this, actionOperation, e, button ) );
+//		actionOperation.perform( this, e, button );
+//	}
+//
+//	/*package-private*/ void handleStateChanged( MenuBarOperation menuBarOperation, javax.swing.event.ChangeEvent e, KMenuBar menuBar, javax.swing.SingleSelectionModel singleSelectionModel, int index, MenuOperation menuOperationAtIndex ) {
+//	}
 
 	@Override
 	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
-		Node[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Node.class );
+		HistoryTreeNode[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray( HistoryTreeNode.class );
 		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.children, array );
 	}
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
-		Node[] array = new Node[ this.children.size() ];
+		HistoryTreeNode[] array = new HistoryTreeNode[ this.children.size() ];
 		this.children.toArray( array );
 		binaryEncoder.encode( array );
 	}

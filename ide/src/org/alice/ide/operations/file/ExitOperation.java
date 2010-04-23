@@ -61,7 +61,7 @@ public class ExitOperation extends AbstractClearanceActionOperation {
 				actionContext.cancel();
 			}
 		}
-		if( actionContext.isCancelled() ) {
+		if( actionContext.isCanceled() ) {
 			//pass
 		} else {
 			

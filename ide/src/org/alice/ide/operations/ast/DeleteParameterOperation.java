@@ -86,7 +86,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 				} else {
 					sb.append( "accesses" );
 				}
-				sb.append( " before you may delete the parameter.<br>Cancelling.</body></html>" );
+				sb.append( " before you may delete the parameter.<br>Canceling.</body></html>" );
 				javax.swing.JOptionPane.showMessageDialog( this.getIDE(), sb.toString() );
 				actionContext.cancel();
 			} else {
@@ -123,7 +123,7 @@ public class DeleteParameterOperation extends AbstractCodeParameterOperation {
 					}
 				}
 			}
-			if( actionContext.isCancelled() ) {
+			if( actionContext.isCanceled() ) {
 				//pass
 			} else {
 				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {

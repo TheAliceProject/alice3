@@ -46,11 +46,39 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuOperation extends Operation {
-	private String name;
+	private class MenuListener implements javax.swing.event.MenuListener {
+		private KMenu menu;
+		public MenuListener( KMenu menu ) {
+			this.menu = menu;
+		}
+		public void menuSelected( javax.swing.event.MenuEvent e ) {
+			Application application = Application.getSingleton();
+			Context parentContext = application.getCurrentContext();
+			Context context;
+			if( this.menu.getJComponent().getParent() instanceof javax.swing.JMenuBar ) {
+				context = parentContext.createChildContext();
+			} else {
+				context = parentContext;
+			}
+			context.addChild( new MenuSelectedEvent( context, MenuOperation.this, e, this.menu ) );
+		}
+		public void menuDeselected( javax.swing.event.MenuEvent e ) {
+			Application application = Application.getSingleton();
+			Context context = application.getCurrentContext();
+			context.addChild( new MenuDeselectedEvent( context, MenuOperation.this, e, this.menu ) );
+		}
+		public void menuCanceled( javax.swing.event.MenuEvent e ) {
+			Application application = Application.getSingleton();
+			Context context = application.getCurrentContext();
+			context.addChild( new MenuCanceledEvent( context, MenuOperation.this, e, this.menu ) );
+		}
+	};
+	private java.util.Map< KMenu, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private String text;
 	private Operation[] operations;
-	public MenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, String name, Operation... operations ) {
+	public MenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, String text, Operation... operations ) {
 		super( groupUUID, individualUUID );
-		this.name = name;
+		this.text = text;
 		this.operations = operations;
 	}
 
@@ -58,11 +86,25 @@ public class MenuOperation extends Operation {
 		return this.operations;
 	}
 	/*package-private*/ void addMenu( KMenu menu ) {
-		menu.setText( this.name );
+		menu.setText( this.text );
+
+		assert mapMenuToListener.containsKey( menu ) == false;
+		MenuListener menuListener = new MenuListener( menu );
+		this.mapMenuToListener.put( menu, menuListener );
+		menu.getJComponent().addMenuListener( menuListener );
+		menu.getJComponent().addActionListener( new java.awt.event.ActionListener() {
+			public void actionPerformed( java.awt.event.ActionEvent e ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( "actionPerformed", e );
+			}
+		} );
 		this.addComponent( menu );
 	}
 	/*package-private*/ void removeMenu( KMenu menu ) {
 		this.removeComponent( menu );
+		MenuListener menuListener = this.mapMenuToListener.get( menu );
+		assert menuListener != null;
+		menu.getJComponent().removeMenuListener( menuListener );
+		this.mapMenuToListener.remove( menu );
 		menu.setText( null );
 	}
 }

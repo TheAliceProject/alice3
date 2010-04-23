@@ -116,12 +116,19 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	}
 	private FileMenuOperation fileMenuOperation = new FileMenuOperation( this.newProjectOperation, this.openProjectOperation, null, this.saveOperation, this.saveAsOperation, null, this.exitOperation );
 	private EditMenuOperation editMenuOperation = new EditMenuOperation( this.undoOperation, this.redoOperation );
+
+	protected edu.cmu.cs.dennisc.croquet.MenuBarOperation createMenuBarOperation() {
+		edu.cmu.cs.dennisc.croquet.MenuBarOperation rv = new edu.cmu.cs.dennisc.croquet.MenuBarOperation( IDE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
+		rv.addMenuOperation( this.fileMenuOperation );
+		rv.addMenuOperation( this.editMenuOperation );
+		return rv;
+	}
 	@Override
 	public void initialize(java.lang.String[] args) {
 		super.initialize(args);
-		edu.cmu.cs.dennisc.croquet.KMenuBar menuBar = this.getMenuBar();
-		menuBar.addMenu( this.createMenu( this.fileMenuOperation ) );
-		menuBar.addMenu( this.createMenu( this.editMenuOperation ) );
+		edu.cmu.cs.dennisc.croquet.MenuBarOperation menuBarOperation = this.createMenuBarOperation();
+		edu.cmu.cs.dennisc.croquet.KMenuBar menuBar = this.createMenuBar( menuBarOperation );
+		this.setMenuBar( menuBar );
 	}
 	private java.net.URI uri = null;
 	public java.net.URI getUri() {

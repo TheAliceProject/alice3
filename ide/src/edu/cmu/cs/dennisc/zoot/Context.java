@@ -52,7 +52,7 @@ public interface Context< O extends Operation > {
 	public Object get( Object key );
 	public void put( Object key, Object value );
 	public boolean isCommitted();
-	public boolean isCancelled();
+	public boolean isCanceled();
 	public boolean isPending();
 	public void commitAndInvokeDo( Edit edit );
 	

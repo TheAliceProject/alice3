@@ -100,7 +100,7 @@ public abstract class ClearanceRequiringUriCompositeOperation extends UriComposi
 //				compositeContext.cancel();
 //			}
 //		}
-//		if( compositeContext.isCancelled() ) {
+//		if( compositeContext.isCanceled() ) {
 //			//pass
 //		} else {
 //			this.performPostCleared( compositeContext );
