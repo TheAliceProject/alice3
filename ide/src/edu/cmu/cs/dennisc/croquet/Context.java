@@ -168,10 +168,148 @@ package edu.cmu.cs.dennisc.croquet;
 //	
 //}
 
+/*package-private*/ abstract class Node implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private Context parent;
+	private java.util.UUID id;
+
+	public Node( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.decode( binaryDecoder );
+	}
+	public Node( Context parent ) {
+		this.parent = parent;
+		this.id = java.util.UUID.randomUUID();
+	}
+	public Context getParent() {
+		return this.parent;
+	}
+	public java.util.UUID getId() {
+		return this.id;
+	}
+
+	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
+	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
+	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.id = edu.cmu.cs.dennisc.java.util.UuidUtilities.decodeUuid( binaryDecoder );
+		this.decodeInternal( binaryDecoder );
+	}
+	public final void encode( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		edu.cmu.cs.dennisc.java.util.UuidUtilities.encodeUuid( binaryEncoder, this.id );
+		this.encodeInternal( binaryEncoder );
+	}
+}
+
+/*package-private*/ abstract class Event extends Node {
+	public Event( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public Event( Context parent ) {
+		super( parent );
+	}
+}
+
+/*package-private*/ class ActionEvent extends Event {
+	public ActionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public ActionEvent( Context parent, AbstractActionOperation actionOperation, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
+		super( parent );
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+}
+
+/*package-private*/ class BooleanStateEvent extends Event {
+	public BooleanStateEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public BooleanStateEvent( Context parent, BooleanStateOperation booleanStateOperation, java.awt.event.ItemEvent e ) {
+		super( parent );
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+}
+
+/*package-private*/ class CommitEvent extends Event {
+	private Edit edit;
+	public CommitEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public CommitEvent( Context parent, Edit edit ) {
+		super( parent );
+		this.edit = edit;
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.edit = binaryDecoder.decodeBinaryEncodableAndDecodable( Edit.class );
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.edit );
+	}
+}
+/*package-private*/ class FinishEvent extends Event {
+	public FinishEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public FinishEvent( Context parent ) {
+		super( parent );
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+}
+/*package-private*/ class CancelEvent extends Event {
+	public CancelEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public CancelEvent( Context parent ) {
+		super( parent );
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+}
+
+
+
 /**
  * @author Dennis Cosgrove
  */
-public class Context {
+public class Context extends Node {
+	private java.util.List< Node > children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public enum State {
+		COMMITTED, SKIPPED, CANCELLED, PENDING
+	}
+	//todo: reduce visibility?
+	public Context( Context parent ) {
+		super( parent );
+	}
+	
+	public State getState() {
+		return null;
+	}
+	public final boolean isCommitted() {
+		return this.getState() == State.COMMITTED;
+	}
+	public final boolean isCancelled() {
+		return this.getState() == State.CANCELLED;
+	}
+
+	
 	//	public enum State {
 	//		COMMITTED, SKIPPED, CANCELED, PENDING
 	//	}
@@ -183,8 +321,7 @@ public class Context {
 	/*package-private*/void closeIfNotPending( java.util.UUID id ) {
 	}
 
-	//todo: rename
-	public void commit( java.util.UUID id ) {
+	public void finish( java.util.UUID id ) {
 	}
 	public void commitAndInvokeDo( java.util.UUID id, Edit edit ) {
 		if( edit != null ) {
@@ -207,6 +344,18 @@ public class Context {
 
 	/*package-private*/void handleActionPerformed( java.util.UUID id, AbstractActionOperation actionOperation, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
 		actionOperation.perform( this, id, e, button );
+	}
+
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		Node[] array = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Node.class );
+		edu.cmu.cs.dennisc.java.util.CollectionUtilities.set( this.children, array );
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		Node[] array = new Node[ this.children.size() ];
+		this.children.toArray( array );
+		binaryEncoder.encode( array );
 	}
 
 	//	private java.util.List< Node > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();

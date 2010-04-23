@@ -79,7 +79,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 				if( isExceptionRaised ) {
 					//pass
 				} else {
-					context.commit( id );
+					context.finish( id );
 				}
 			} else {
 				context.cancel( id );

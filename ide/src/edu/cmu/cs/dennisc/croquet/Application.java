@@ -61,7 +61,7 @@ public abstract class Application {
 	private java.util.Map<java.util.UUID, Operation> mapUUIDToOperation = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
 	private KMenuBar menuBar = new KMenuBar();
-	private Context rootContext = new Context();
+	private Context rootContext = new Context( null );
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
@@ -258,24 +258,6 @@ public abstract class Application {
 			}
 		};
 	}
-
-//	public KMenuItem createMenuItem(final BooleanStateOperation booleanStateOperation) {
-//		this.register( booleanStateOperation );
-//		// todo: return javax.swing.JMenuItem if true and false different
-//		return new KMenuItem() {
-//			@Override
-//			protected void adding() {
-//				booleanStateOperation.addAbstractButton(this);
-//				super.adding();
-//			}
-//
-//			@Override
-//			protected void removed() {
-//				super.removed();
-//				booleanStateOperation.removeAbstractButton(this);
-//			}
-//		};
-//	}
 	public KCheckBoxMenuItem createCheckBoxMenuItem(final BooleanStateOperation booleanStateOperation) {
 		this.register( booleanStateOperation );
 		// todo: return javax.swing.JMenuItem if true and false different
