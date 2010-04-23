@@ -79,14 +79,18 @@ public abstract class ItemSelectionOperation<T> extends Operation {
 			}
 			this.itemListeners[ i ] = new java.awt.event.ItemListener() {
 				public void itemStateChanged( java.awt.event.ItemEvent e ) {
-					ItemSelectionOperation.this.handleItemStateChanged( e );
+					Application application = Application.getSingleton();
+					Context parentContext = application.getCurrentContext();
+					Context childContext = parentContext.open();
+					childContext.handleItemStateChanged( ItemSelectionOperation.this, e );
+					childContext.closeIfNotPending();
 				}
 			};
 			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
 		}
 	}
 
-	protected abstract ItemSelectionEdit< T > createItemSelectionEdit( Context context, java.util.UUID id, java.awt.event.ItemEvent e, T previousSelection, T nextSelection );
+	protected abstract ItemSelectionEdit< T > createItemSelectionEdit( Context context, java.awt.event.ItemEvent e, T previousSelection, T nextSelection );
 //	public final void performSelectionChange(ItemSelectionContext<T> context) {
 //		context.commitAndInvokeDo( new ItemSelectionEdit< T >( this, context.getPreviousSelection(), context.getNextSelection() ) {
 //			@Override
@@ -109,16 +113,9 @@ public abstract class ItemSelectionOperation<T> extends Operation {
 //		return rv;
 //	}
 
-	private void handleItemStateChanged(java.awt.event.ItemEvent e) {
-		Application application = Application.getSingleton();
-		Context context = application.getCurrentContext();
-		java.util.UUID id = context.open();
-		context.handleItemStateChanged( id, this, e );
-		context.closeIfNotPending( id );
-	}
-	/*package-private*/ final void perform( Context context, java.util.UUID id, java.awt.event.ItemEvent e ) {
+	/*package-private*/ final void perform( Context context, java.awt.event.ItemEvent e ) {
 		T nextSelection = (T)this.comboBoxModel.getSelectedItem();
-		context.commitAndInvokeDo( id, this.createItemSelectionEdit( context, id, e, this.previousSelection, nextSelection ) );
+		context.commitAndInvokeDo( this.createItemSelectionEdit( context, e, this.previousSelection, nextSelection ) );
 		this.previousSelection = nextSelection;
 	}
 

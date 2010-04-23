@@ -65,6 +65,14 @@ public abstract class Application {
 	public Application() {
 		assert Application.singleton == null;
 		Application.singleton = this;
+		
+		rootContext.addCommitObserver( new Context.CommitObserver() {
+			public void committing( Edit edit ) {
+			}
+			public void committed( Edit edit ) {
+				edu.cmu.cs.dennisc.print.PrintUtilities.println( edit );
+			}
+		} );
 	}
 	
 	public KMenuBar getMenuBar() {

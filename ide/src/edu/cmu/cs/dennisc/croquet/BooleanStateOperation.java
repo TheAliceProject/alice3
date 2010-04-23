@@ -67,18 +67,15 @@ public final class BooleanStateOperation extends Operation {
 	};
 	private java.awt.event.ItemListener itemListener = new java.awt.event.ItemListener() {
 		public void itemStateChanged(java.awt.event.ItemEvent e) {
-			BooleanStateOperation.this.handleItemStateChanged( e );
+			Application application = Application.getSingleton();
+			Context parentContext = application.getCurrentContext();
+			Context childContext = parentContext.open();
+			childContext.handleItemStateChanged( BooleanStateOperation.this, e );
+			childContext.closeIfNotPending();
 		}
 	};
-	private void handleItemStateChanged(java.awt.event.ItemEvent e) {
-		Application application = Application.getSingleton();
-		Context context = application.getCurrentContext();
-		java.util.UUID id = context.open();
-		context.handleItemStateChanged( id, this, e );
-		context.closeIfNotPending( id );
-	}
-	/*package-private*/ final void perform( Context context, java.util.UUID id, java.awt.event.ItemEvent e ) {
-		context.commitAndInvokeDo( id, new BooleanStateEdit( id, e, this ) );
+	/*package-private*/ final void perform( Context context, java.awt.event.ItemEvent e ) {
+		context.commitAndInvokeDo( new BooleanStateEdit( context, e, this ) );
 	}
 
 	private boolean state;

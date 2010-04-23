@@ -53,10 +53,10 @@ public abstract class AbstractActionOperation extends Operation {
 		}
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			Application application = Application.getSingleton();
-			Context context = application.getCurrentContext();
-			java.util.UUID id = context.open();
-			context.handleActionPerformed( id, AbstractActionOperation.this, e, this.button );
-			context.closeIfNotPending( id );
+			Context parentContext = application.getCurrentContext();
+			Context childContext = parentContext.open();
+			childContext.handleActionPerformed( AbstractActionOperation.this, e, this.button );
+			childContext.closeIfNotPending();
 		}
 	}
 	
@@ -74,7 +74,7 @@ public abstract class AbstractActionOperation extends Operation {
 //			}
 //		} );
 	}
-	protected abstract void perform( Context context, java.util.UUID id, java.awt.event.ActionEvent e, KAbstractButton< ? > button );
+	protected abstract void perform( Context context, java.awt.event.ActionEvent e, KAbstractButton< ? > button );
 
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );

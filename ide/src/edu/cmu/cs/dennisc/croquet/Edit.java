@@ -46,13 +46,15 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	private Context context;
 	private java.util.UUID contextId;
 	
 	public Edit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
 		this.decode( binaryDecoder );
 	}
-	public Edit( java.util.UUID contextId ) {
-		this.contextId = contextId;
+	public Edit( Context context ) {
+		this.context = context;
+		this.contextId = context.getId();
 	}
 	protected java.util.UUID getContextID() {
 		return this.contextId;

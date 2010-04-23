@@ -169,6 +169,10 @@ package edu.cmu.cs.dennisc.croquet;
 //}
 
 /*package-private*/ abstract class Node implements edu.cmu.cs.dennisc.codec.BinaryEncodableAndDecodable {
+	public enum State {
+		COMMITTED, FINISHED, SKIPPED, CANCELLED, PENDING
+	}
+
 	private Context parent;
 	private java.util.UUID id;
 
@@ -186,6 +190,7 @@ package edu.cmu.cs.dennisc.croquet;
 		return this.id;
 	}
 
+	public abstract State getState();
 	protected abstract void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder );
 	protected abstract void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder );
 	public final void decode( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -220,6 +225,10 @@ package edu.cmu.cs.dennisc.croquet;
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
+	@Override
+	public State getState() {
+		return null;
+	}
 }
 
 /*package-private*/ class BooleanStateEvent extends Event {
@@ -234,6 +243,29 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	public State getState() {
+		return null;
+	}
+}
+
+/*package-private*/ class ItemSelectionEvent< T > extends Event {
+	public ItemSelectionEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	public ItemSelectionEvent( Context parent, ItemSelectionOperation< T > itemSelectionOperation, java.awt.event.ItemEvent e ) {
+		super( parent );
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	public State getState() {
+		return null;
 	}
 }
 
@@ -254,6 +286,10 @@ package edu.cmu.cs.dennisc.croquet;
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 		binaryEncoder.encode( this.edit );
 	}
+	@Override
+	public State getState() {
+		return State.COMMITTED;
+	}
 }
 /*package-private*/ class FinishEvent extends Event {
 	public FinishEvent( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
@@ -267,6 +303,10 @@ package edu.cmu.cs.dennisc.croquet;
 	}
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	public State getState() {
+		return State.FINISHED;
 	}
 }
 /*package-private*/ class CancelEvent extends Event {
@@ -282,6 +322,10 @@ package edu.cmu.cs.dennisc.croquet;
 	@Override
 	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
 	}
+	@Override
+	public State getState() {
+		return State.CANCELLED;
+	}
 }
 
 
@@ -290,17 +334,51 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class Context extends Node {
-	private java.util.List< Node > children = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-	public enum State {
-		COMMITTED, SKIPPED, CANCELLED, PENDING
+	public interface CommitObserver {
+		public void committing( Edit edit );
+		public void committed( Edit edit );
 	}
+	private java.util.List< CommitObserver > commitObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	private java.util.List< Node > children = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	//todo: reduce visibility?
 	public Context( Context parent ) {
 		super( parent );
 	}
 	
+	public void addCommitObserver( CommitObserver commitObserver ) {
+		this.commitObservers.add( commitObserver );
+	}
+	public void removeCommitObserver( CommitObserver commitObserver ) {
+		this.commitObservers.remove( commitObserver );
+	}
+	
+	protected void fireComitting( Edit edit ) {
+		for( CommitObserver commitObserver : this.commitObservers ) {
+			commitObserver.committing( edit );
+		}
+		Context parent = this.getParent();
+		if( parent != null ) {
+			parent.fireComitting( edit );
+		}
+	}
+	protected void fireComitted( Edit edit ) {
+		for( CommitObserver commitObserver : this.commitObservers ) {
+			commitObserver.committed( edit );
+		}
+		Context parent = this.getParent();
+		if( parent != null ) {
+			parent.fireComitted( edit );
+		}
+	}
+	
+	@Override
 	public State getState() {
-		return null;
+		final int N = this.children.size();
+		if( N > 0 ) {
+			return this.children.get( N - 1 ).getState();
+		} else {
+			return null;
+		}
 	}
 	public final boolean isCommitted() {
 		return this.getState() == State.COMMITTED;
@@ -309,41 +387,46 @@ public class Context extends Node {
 		return this.getState() == State.CANCELLED;
 	}
 
-	
-	//	public enum State {
-	//		COMMITTED, SKIPPED, CANCELED, PENDING
-	//	}
-
-	/*package-private*/java.util.UUID open() {
-		java.util.UUID rv = java.util.UUID.randomUUID();
-		return rv;
-	}
-	/*package-private*/void closeIfNotPending( java.util.UUID id ) {
-	}
-
-	public void finish( java.util.UUID id ) {
-	}
-	public void commitAndInvokeDo( java.util.UUID id, Edit edit ) {
-		if( edit != null ) {
-			edit.doOrRedo( true );
+	private void addChild( Node child ) {
+		synchronized( this.children ) {
+			this.children.add( child );
 		}
 	}
-	public void cancel( java.util.UUID id ) {
+	
+	/*package-private*/Context open() {
+		Context rv = new Context( this );
+		this.addChild( rv );
+		return rv;
+	}
+	/*package-private*/void closeIfNotPending() {
 	}
 
-	public boolean isCanceled( java.util.UUID id ) {
-		return false;
+	public void finish() {
+		this.addChild( new FinishEvent( this ) );
+	}
+	public void commitAndInvokeDo( Edit edit ) {
+		assert edit != null;
+		this.fireComitting( edit );
+		edit.doOrRedo( true );
+		this.fireComitted( edit );
+		this.addChild( new CommitEvent( this, edit ) );
+	}
+	public void cancel() {
+		this.addChild( new CancelEvent( this ) );
 	}
 
-	/*package-private*/void handleItemStateChanged( java.util.UUID id, BooleanStateOperation booleanStateOperation, java.awt.event.ItemEvent e ) {
-		booleanStateOperation.perform( this, id, e );
+	/*package-private*/void handleItemStateChanged( BooleanStateOperation booleanStateOperation, java.awt.event.ItemEvent e ) {
+		booleanStateOperation.perform( this, e );
+		this.addChild( new BooleanStateEvent( this, booleanStateOperation, e ) );
 	}
-	/*package-private*/<T> void handleItemStateChanged( java.util.UUID id, ItemSelectionOperation< T > itemSelectionOperation, java.awt.event.ItemEvent e ) {
-		itemSelectionOperation.perform( this, id, e );
+	/*package-private*/<T> void handleItemStateChanged( ItemSelectionOperation< T > itemSelectionOperation, java.awt.event.ItemEvent e ) {
+		itemSelectionOperation.perform( this, e );
+		this.addChild( new ItemSelectionEvent< T >( this, itemSelectionOperation, e ) );
 	}
 
-	/*package-private*/void handleActionPerformed( java.util.UUID id, AbstractActionOperation actionOperation, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
-		actionOperation.perform( this, id, e, button );
+	/*package-private*/void handleActionPerformed( AbstractActionOperation actionOperation, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
+		actionOperation.perform( this, e, button );
+		this.addChild( new ActionEvent( this, actionOperation, e, button ) );
 	}
 
 	@Override

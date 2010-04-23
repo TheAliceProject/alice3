@@ -55,7 +55,7 @@ public class PopupMenuOperation extends AbstractActionOperation {
 		return this.menuOperation;
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
 		Application application = Application.getSingleton();
 		KPopupMenu popupMenu = application.createPopupMenu( this );
 		
