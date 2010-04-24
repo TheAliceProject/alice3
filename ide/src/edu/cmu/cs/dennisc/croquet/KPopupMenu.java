@@ -58,6 +58,7 @@ public class KPopupMenu extends KAbstractMenu< javax.swing.JPopupMenu > {
 	@Override
 	public void addMenu( KMenu menu ) {
 		menu.adding();
+		menu.setParent( this );
 		this.getJComponent().add( menu.getJComponent() );
 		menu.added();
 	}

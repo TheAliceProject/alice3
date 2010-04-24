@@ -54,6 +54,14 @@ public class KMenu extends KAbstractMenu< javax.swing.JMenu > {
 		return new javax.swing.JMenu();
 	}
 	
+	private KComponent<?> parent;
+	/*package-private*/ KComponent< ? > getParent() {
+		return this.parent;
+	}
+	/*package-private*/ void setParent( KComponent< ? > parent ) {
+		this.parent = parent;
+	}
+	
 	public void setText( String text ) {
 		if( text != null ) {
 			this.getJComponent().setText( text );
@@ -64,6 +72,7 @@ public class KMenu extends KAbstractMenu< javax.swing.JMenu > {
 	@Override
 	public void addMenu( KMenu menu ) {
 		menu.adding();
+		menu.setParent( this );
 		this.getJComponent().add( menu.getJComponent() );
 		menu.added();
 	}

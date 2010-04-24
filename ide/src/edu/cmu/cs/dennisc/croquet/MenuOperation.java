@@ -53,12 +53,13 @@ public class MenuOperation extends Operation {
 		}
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
 			Application application = Application.getSingleton();
-			Context parentContext = application.getCurrentContext();
 			Context context;
-			if( this.menu.getJComponent().getParent() instanceof javax.swing.JMenuBar ) {
-				context = parentContext.createChildContext();
+			KComponent< ? > parent = this.menu.getParent();
+			if( parent instanceof KMenuBar ) {
+				Context rootContext = application.getRootContext();
+				context = rootContext.createChildContext();
 			} else {
-				context = parentContext;
+				context = application.getCurrentContext();
 			}
 			context.addChild( new MenuSelectedEvent( context, MenuOperation.this, e, this.menu ) );
 		}

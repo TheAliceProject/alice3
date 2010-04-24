@@ -53,6 +53,7 @@ public class KMenuBar extends KComponent< javax.swing.JMenuBar > {
 	}
 	public void addMenu( KMenu menu ) {
 		menu.adding();
+		menu.setParent( this );
 		this.getJComponent().add( menu.getJComponent() );
 		menu.added();
 	}
