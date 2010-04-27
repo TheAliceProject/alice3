@@ -100,7 +100,7 @@ public class ObjectGlobalHandleDragManipulator extends AbstractManipulator imple
 		}
 		else
 		{
-			return CameraView.ACTIVE_VIEW;
+			return CameraView.PICK_CAMERA;
 		}
 	}
 	

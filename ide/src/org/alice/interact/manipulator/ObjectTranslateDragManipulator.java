@@ -105,7 +105,7 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 	}
 	
 	public CameraView getDesiredCameraView() {
-		return CameraView.ACTIVE_VIEW;
+		return CameraView.PICK_CAMERA;
 	}
 	
 	public OnscreenLookingGlass getOnscreenLookingGlass()
@@ -240,7 +240,16 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			}
 				
 			Point3 newPosition = getPositionBasedonOnMouseLocation( currentInput.getMouseLocation() );
-			//Send manipulation events
+			Point3 snapPosition = new Point3(newPosition);
+			if (this.dragAdapter.getSnapState().shouldSnapToGround())
+			{
+				snapPosition = SnapUtilities.snapObjectToGround(this.manipulatedTransformable, newPosition);
+			}
+			//Visualize any snapping that happened
+			SnapUtilities.showSnapLines(this.getCamera(), newPosition, snapPosition);
+			//Apply the new snap position
+			newPosition = snapPosition;
+			
 			Vector3 movementDif = Vector3.createSubtraction( newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation);
 			movementDif.normalize();
 			for (ManipulationEvent event : this.manipulationEvents)

@@ -48,8 +48,10 @@ import java.awt.Insets;
 
 import org.alice.stageide.sceneeditor.viewmanager.ManipulationHandleControlPanel;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
+import org.alice.stageide.sceneeditor.viewmanager.SnapControlPanel;
 import org.alice.stageide.sceneeditor.viewmanager.StartingCameraViewManager;
 import org.alice.interact.AbstractDragAdapter;
+import org.alice.interact.SnapState;
 
 /**
  * @author Dennis Cosgrove
@@ -59,11 +61,13 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	private ManipulationHandleControlPanel handleControlPanel;
 	private SceneViewManagerPanel viewManagerPanel = null;
 	private StartingCameraViewManager startingCameraViewManager = null;
+	private SnapControlPanel snapControlPanel = null;
 
 	public SidePane(MoveAndTurnSceneEditor sceneEditor) {
 		this.handleControlPanel = new ManipulationHandleControlPanel();
 		this.viewManagerPanel = new SceneViewManagerPanel(sceneEditor);
 		this.startingCameraViewManager = new StartingCameraViewManager(sceneEditor);
+		this.snapControlPanel = new SnapControlPanel(sceneEditor.getSnapState());
 
 		this.setLayout(new GridBagLayout());
 
@@ -108,6 +112,19 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 				0, // ipadX
 				0) // ipadY
 				);
+		this.add(this.snapControlPanel, new GridBagConstraints(
+				0, // gridX
+				3, // gridY
+				1, // gridWidth
+				1, // gridHeight
+				1.0, // weightX
+				0.0, // weightY
+				GridBagConstraints.NORTH, // anchor
+				GridBagConstraints.HORIZONTAL, // fill
+				new Insets(2, 0, 2, 0), // insets (top, left, bottom, right)
+				0, // ipadX
+				0) // ipadY
+				);
 		
 		this.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
 	}
@@ -136,6 +153,13 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 		return this.viewManagerPanel;
 	}
 
+	public void setSnapState(SnapState snapState)
+	{
+		this.snapControlPanel.setSnapState(snapState);
+	}
+	
+	
+	
 	public StartingCameraViewManager getStartingCameraViewManager() {
 		return this.startingCameraViewManager;
 	}

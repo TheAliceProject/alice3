@@ -154,7 +154,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	}
 	
 	public CameraView getDesiredCameraView() {
-		return CameraView.ACTIVE_VIEW;
+		return CameraView.PICK_CAMERA;
 	}
 	
 	public OnscreenLookingGlass getOnscreenLookingGlass()

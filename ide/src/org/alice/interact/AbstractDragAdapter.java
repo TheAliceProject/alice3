@@ -90,7 +90,8 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		TOP_RIGHT,
 		BOTTOM_LEFT,
 		BOTTOM_RIGHT,
-		ACTIVE_VIEW
+		ACTIVE_VIEW,
+		PICK_CAMERA
 	}
 	
 	private class CameraPair
@@ -143,8 +144,9 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	protected HandleManager handleManager = new HandleManager();
 	protected ManipulationEventManager manipulationEventManager = new ManipulationEventManager();
 	
-	private Transformable selectedObject = null;
+	protected SnapState snapState = null;
 	
+	private Transformable selectedObject = null;
 	
 	private List< SelectionListener > selectionListeners = new java.util.LinkedList< SelectionListener >(); 
 	public void addPropertyListener( SelectionListener selectionListener ) {
@@ -282,12 +284,15 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 	
 	public void setCameraOnManipulator(CameraInformedManipulator manipulator, InputState startInput)
 	{
-		AbstractCamera startCamera = this.currentInputState.getPickCamera();
-		if (startCamera == null)
+		if (manipulator.getDesiredCameraView() == CameraView.PICK_CAMERA)
 		{
-			startCamera = this.getCameraForManipulator(manipulator);
+			manipulator.setCamera( this.currentInputState.getPickCamera() );
 		}
-		manipulator.setCamera( startCamera );
+		else
+		{
+			manipulator.setCamera( this.getCameraForManipulator(manipulator) );
+		}
+		
 	}
 	
 	public void setLookingGlassOnManipulator( OnScreenLookingGlassInformedManipulator manipulator )
@@ -659,7 +664,11 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		this.currentInputState.setMouseLocation( e.getPoint() );
 		if (e.getComponent() == this.lookingGlassComponent)
 		{
-			this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+			//Don't pick into the scene if a mouse button is already down 
+			if (!this.currentInputState.isAnyMouseButtonDown())
+			{			
+				this.currentInputState.setRolloverPickResult( pickIntoScene( e.getPoint() ) );
+			}
 		}
 		else
 		{
@@ -728,4 +737,14 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 		
 	}
 
+	public void setSnapState(SnapState snapState)
+	{
+		this.snapState = snapState;
+	}
+	
+	public SnapState getSnapState()
+	{
+		return this.snapState;
+	}
+	
 }

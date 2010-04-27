@@ -42,10 +42,14 @@
  */
 package org.alice.stageide.sceneeditor;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.alice.apis.moveandturn.AsSeenBy;
@@ -55,10 +59,12 @@ import org.alice.apis.moveandturn.ReferenceFrame;
 import org.alice.apis.moveandturn.Scene;
 import org.alice.apis.moveandturn.Transformable;
 import org.alice.ide.name.validators.FieldNameValidator;
+import org.alice.interact.SnapState;
 import org.alice.interact.AbstractDragAdapter.CameraView;
 import org.alice.stageide.sceneeditor.viewmanager.CameraFieldAndMarker;
 import org.alice.stageide.sceneeditor.viewmanager.LookingGlassViewSelector;
 import org.alice.stageide.sceneeditor.viewmanager.SceneViewManagerPanel;
+import org.alice.stageide.sceneeditor.viewmanager.SnapControlPanel;
 import org.alice.stageide.sceneeditor.viewmanager.StartingCameraViewManager;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
@@ -67,19 +73,27 @@ import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
 import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Horizontal;
 import edu.cmu.cs.dennisc.javax.swing.SpringUtilities.Vertical;
+import edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass;
+import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassDisplayChangeEvent;
+import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassInitializeEvent;
+import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassListener;
+import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassRenderEvent;
+import edu.cmu.cs.dennisc.lookingglass.event.LookingGlassResizeEvent;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.ClippedZPlane;
 import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
 import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
+import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.pattern.Tuple2;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
 import edu.cmu.cs.dennisc.scenegraph.SymmetricPerspectiveCamera;
 
 /**
  * @author Dennis Cosgrove
  */
-public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor {
+public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractInstantiatingSceneEditor implements LookingGlassListener{
 	private static final int INSET = 8;
 
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
@@ -99,6 +113,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private LookingGlassViewSelector mainViewSelector = null;
 	private int expandedViewSelectedIndex = -1;
 	
+	//SNAP STATE
+	protected SnapState snapState = new SnapState();
 
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
 	
@@ -192,6 +208,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private javax.swing.JPanel getLGPanel() {
 		return this.onscreenLookingGlass.getJPanel();
 	}
+	
 	private javax.swing.SpringLayout getLGSpringLayout() {
 		return (javax.swing.SpringLayout)this.getLGPanel().getLayout();
 	}
@@ -213,10 +230,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			//pass
 		} else {
 			
+			
+			
 			createOrthographicCameraMarkers();
+			
+			this.snapState = new SnapState();
+			this.sidePane.setSnapState(this.snapState);
 			this.globalDragAdapter = new org.alice.interact.GlobalDragAdapter();
+			this.globalDragAdapter.setSnapState(this.snapState);
 			this.globalDragAdapter.setOnscreenLookingGlass( onscreenLookingGlass );
 
+			this.onscreenLookingGlass.addLookingGlassListener(this);
+			
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter, CameraView.MAIN);
 
 			this.mainViewSelector = new LookingGlassViewSelector(this, animator);
@@ -503,10 +528,10 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	
 	private void refreshFields() {
 		javax.swing.SpringLayout springLayout = this.getLGSpringLayout();
-		java.awt.Container lgPanel = this.onscreenLookingGlass.getJPanel();
+		java.awt.Container lgPanel = getLGPanel();
 		for( FieldTile fieldTile : this.fieldTiles ) {
 			springLayout.removeLayoutComponent( fieldTile );
-			this.onscreenLookingGlass.getJPanel().remove( fieldTile );
+			this.getLGPanel().remove( fieldTile );
 		}
 		this.fieldTiles.clear();
 		if( this.rootField != null ) {
@@ -519,7 +544,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
 					FieldTile fieldTile = createFieldTile( field );
 					//fieldTile.setOpaque( true );
-					this.onscreenLookingGlass.getJPanel().add( fieldTile );
+					this.getLGPanel().add( fieldTile );
 					this.fieldTiles.add( fieldTile );
 					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 1, javax.swing.SpringLayout.SOUTH, prev );
 					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile, 10, javax.swing.SpringLayout.WEST, rootFieldTile );
@@ -910,6 +935,63 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			declaredFields.addAll( rootField.valueType.getValue().getDeclaredFields() );
 		}
 		return declaredFields;
+	}
+	
+	protected void paintHorizonLine(LightweightOnscreenLookingGlass lookingGlass, OrthographicCamera camera)
+	{
+		AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
+		double dotProd = Vector3.calculateDotProduct(cameraTransform.orientation.up, Vector3.accessPositiveYAxis());
+		if (dotProd == 1 || dotProd == -1)
+		{
+			Graphics g = lookingGlass.getJPanel().getGraphics();
+			Dimension lookingGlassSize = lookingGlass.getSize();
+			
+			Point3 cameraPosition = camera.getAbsoluteTransformation().translation;
+			
+			ClippedZPlane dummyPlane = new ClippedZPlane(camera.picturePlane.getValue(), lookingGlass.getActualViewport(camera));
+			
+			double lookingGlassHeight = lookingGlassSize.getHeight();
+			
+			double yRatio = this.onscreenLookingGlass.getHeight() / dummyPlane.getHeight();
+			double horizonInCameraSpace = 0.0d - cameraPosition.y;
+			double distanceFromMaxY = dummyPlane.getYMaximum() - horizonInCameraSpace;
+			int horizonLinePixelVal = (int)(yRatio * distanceFromMaxY);
+			if (horizonLinePixelVal >= 0 && horizonLinePixelVal <= lookingGlassHeight)
+			{
+				g.setColor(Color.BLACK);
+				g.drawLine(0, horizonLinePixelVal, lookingGlassSize.width, horizonLinePixelVal);
+			}
+		}
+	}
+	
+	public SnapState getSnapState()
+	{
+		return this.snapState;
+	}
+
+	
+	public void initialized( LookingGlassInitializeEvent e )
+	{
+	}
+
+	public void cleared( LookingGlassRenderEvent e )
+	{
+	}
+	
+	public void rendered( LookingGlassRenderEvent e )
+	{
+		if (this.onscreenLookingGlass.getCameraCount() > 0 && this.onscreenLookingGlass.getCameraAt(0) instanceof OrthographicCamera)
+		{
+			paintHorizonLine(this.onscreenLookingGlass, (OrthographicCamera)this.onscreenLookingGlass.getCameraAt(0));
+		}
+	}
+	
+	public void resized( LookingGlassResizeEvent e )
+	{
+	}
+	
+	public void displayChanged( LookingGlassDisplayChangeEvent e )
+	{
 	}
 
 }

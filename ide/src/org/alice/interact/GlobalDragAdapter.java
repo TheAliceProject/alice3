@@ -76,6 +76,7 @@ import org.alice.interact.manipulator.ObjectUpDownDragManipulator;
 import org.alice.interact.manipulator.OmniDirectionalDragManipulator;
 import org.alice.interact.manipulator.ScaleDragManipulator;
 import org.alice.interact.manipulator.SelectObjectDragManipulator;
+import org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor;
 
 import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 import edu.cmu.cs.dennisc.color.Color4f;
@@ -357,6 +358,5 @@ public class GlobalDragAdapter extends AbstractDragAdapter {
 		
 		this.setHandleSet( HandleSet.DEFAULT_INTERACTION );
 	}
-	
 	
 }

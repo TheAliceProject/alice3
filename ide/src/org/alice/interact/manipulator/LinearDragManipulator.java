@@ -97,7 +97,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	}
 	
 	public CameraView getDesiredCameraView() {
-		return CameraView.ACTIVE_VIEW;
+		return CameraView.PICK_CAMERA;
 	}
 	
 	public OnscreenLookingGlass getOnscreenLookingGlass()

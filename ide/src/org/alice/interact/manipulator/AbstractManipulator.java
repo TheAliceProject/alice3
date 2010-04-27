@@ -158,7 +158,7 @@ public abstract class AbstractManipulator {
 	
 	public void clickManipulator( InputState clickInput, InputState previousInput )
 	{
-		undoRedoBeginManipulation();
+		startManipulator( clickInput );
 		doClickManipulator(clickInput, previousInput);
 		if (isUndoable())
 		{
@@ -200,6 +200,7 @@ public abstract class AbstractManipulator {
 				this.dragAdapter.popHandleSet();
 			}
 		}
+		SnapUtilities.hideSnapLines();
 		triggerAllDeactivateEvents();
 	}
 	
@@ -234,6 +235,10 @@ public abstract class AbstractManipulator {
 				animator = this.dragAdapter.getAnimator();
 			} else {
 				animator = null;
+			}
+			if (originalTransformation == null || newTransformation == null)
+			{
+				System.out.println("boom");
 			}
 			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP_UUID, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
 			ZManager.performIfAppropriate( undoOperation, null, false );
