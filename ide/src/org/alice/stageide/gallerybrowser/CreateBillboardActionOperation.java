@@ -75,7 +75,7 @@ class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperatio
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		org.alice.ide.resource.prompter.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
 		try {
-			org.alice.virtualmachine.resources.ImageResource frontImageResource = imageResourcePrompter.promptUserForResource( this.getIDE() );
+			org.alice.virtualmachine.resources.ImageResource frontImageResource = imageResourcePrompter.promptUserForResource( this.getIDE().getJFrame() );
 			if( frontImageResource != null ) {
 				edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();
 				if( project != null ) {
@@ -87,7 +87,7 @@ class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperatio
 
 				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType = this.getIDE().getSceneType();
 				CreateFieldFromBillboardPane createFieldFromBillboardPane = new CreateFieldFromBillboardPane( declaringType, billboard );
-				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.showInJDialog( this.getIDE() );
+				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = createFieldFromBillboardPane.showInJDialog( this.getIDE().getJFrame() );
 				if( field != null ) {
 					//ide.getSceneEditor().handleFieldCreation( declaringType, field, person );
 					return new edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object >( field, billboard );

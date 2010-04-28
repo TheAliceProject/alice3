@@ -42,51 +42,17 @@
  */
 package org.alice.ide.common;
 
-import org.alice.ide.event.FieldSelectionEvent;
-import org.alice.ide.event.FocusedCodeChangeEvent;
-import org.alice.ide.event.LocaleEvent;
-import org.alice.ide.event.ProjectOpenEvent;
-import org.alice.ide.event.TransientSelectionEvent;
-
 /**
  * @author Dennis Cosgrove
  */
 public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
-	private org.alice.ide.event.IDEListener ideAdapter = new org.alice.ide.event.IDEListener() {
-
-		public void fieldSelectionChanging( FieldSelectionEvent e ) {
+	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
+		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
 		}
-		public void fieldSelectionChanged( FieldSelectionEvent e ) {
-			SelectedFieldExpressionPane.this.handleFieldChanged( e.getNextValue() );
+		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+			SelectedFieldExpressionPane.this.handleCodeChanged( nextCode );
 		}
-
-
-		public void focusedCodeChanging( FocusedCodeChangeEvent e ) {
-		}
-		public void focusedCodeChanged( FocusedCodeChangeEvent e ) {
-			SelectedFieldExpressionPane.this.handleCodeChanged( e.getNextValue() );
-		}
-
-
-		public void localeChanging( LocaleEvent e ) {
-		}
-		public void localeChanged( LocaleEvent e ) {
-		}
-
-
-		public void projectOpening( ProjectOpenEvent e ) {
-		}
-		public void projectOpened( ProjectOpenEvent e ) {
-		}
-
-
-		public void transientSelectionChanging( TransientSelectionEvent e ) {
-		}
-		public void transientSelectionChanged( TransientSelectionEvent e ) {
-		}
-		
 	};
-	
 	private edu.cmu.cs.dennisc.property.event.PropertyListener namePropertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
@@ -140,12 +106,12 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	@Override
 	public void addNotify() {
 		super.addNotify();
-		getIDE().addIDEListener( this.ideAdapter );
+		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
 		this.handleFieldChanged( getIDE().getFieldSelection() );
 	}
 	@Override
 	public void removeNotify() {
-		getIDE().removeIDEListener( this.ideAdapter );
+		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
 		super.removeNotify();
 	}
 }

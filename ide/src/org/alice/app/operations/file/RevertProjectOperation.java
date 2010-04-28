@@ -47,12 +47,13 @@ package org.alice.app.operations.file;
  */
 public class RevertProjectOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public RevertProjectOperation() {
-		super( org.alice.ide.IDE.IO_GROUP );
+		super( org.alice.app.ProjectApplication.URI_GROUP );
 		this.setName( "Revert" );
 		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		if( javax.swing.JOptionPane.YES_OPTION == javax.swing.JOptionPane.showConfirmDialog( this.getIDE(), "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE ) ) {
+		edu.cmu.cs.dennisc.croquet.YesNoCancelOption yesNoCancelOption = this.getIDE().showYesNoCancelConfirmDialog( "WARNING: revert restores your project to the last saved version.\nWould you like to continue with revert?", "Revert?", edu.cmu.cs.dennisc.croquet.MessageType.WARNING );
+		if( yesNoCancelOption == edu.cmu.cs.dennisc.croquet.YesNoCancelOption.YES ) {
 			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
 				@Override
 				public void doOrRedo( boolean isDo ) {

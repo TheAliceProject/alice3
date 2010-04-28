@@ -46,7 +46,7 @@ package org.alice.app.operations.file;
  * @author Dennis Cosgrove
  */
 public class NewProjectOperation extends AbstractOpenProjectOperation {
-	public NewProjectOperation( edu.cmu.cs.dennisc.croquet.ActionOperation saveOperation ) {
+	public NewProjectOperation( edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveOperation ) {
 		super( java.util.UUID.fromString( "281eb394-1da5-4527-98a1-92ce5c604715" ), saveOperation, new org.alice.app.operations.file.SelectAndLoadTemplateProjectOperation() );
 		this.setName( "New..." );
 		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_N, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );

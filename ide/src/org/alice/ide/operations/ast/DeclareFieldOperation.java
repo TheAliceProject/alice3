@@ -58,6 +58,6 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( ownerType );
-		return createFieldPane.showInJDialog( getIDE() );
+		return createFieldPane.showInJDialog( this.getIDE().getJFrame() );
 	}
 }

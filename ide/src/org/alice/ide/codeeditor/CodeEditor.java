@@ -75,81 +75,41 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.zoot.DropReceptor {
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-		this.refresh();
-		this.repaint();
-	}
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-
+public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane implements edu.cmu.cs.dennisc.zoot.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	private StatementListPropertyPane currentUnder;
 	private javax.swing.JScrollPane scrollPane;
 
+	private edu.cmu.cs.dennisc.croquet.Application.LocaleObserver localeObserver = new edu.cmu.cs.dennisc.croquet.Application.LocaleObserver() {
+		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
+		}
+		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
+			CodeEditor.this.refresh();
+			CodeEditor.this.repaint();
+		}
+	};
+	
 	public CodeEditor( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
-		this.getIDE().addIDEListener( this );
 		this.code = code;
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackground( getIDE().getCodeDeclaredInAliceColor( this.code ) );
 		this.setDoubleBuffered( true );
 		this.refresh();
-		//		this.addMouseListener( new java.awt.event.MouseListener() {
-		//			public void mouseClicked( final java.awt.event.MouseEvent e ) {
-		//				final alice.ide.IDE ide = alice.ide.IDE.getSingleton();
-		//				if( ide != null ) {
-		//					final StatementListPropertyPane statementListPropertyPane = getStatementListPropertyPaneUnder( e, createStatementListPropertyPaneInfos( null ) );
-		//					if( statementListPropertyPane != null ) {
-		//						ide.promptUserForStatement( e, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
-		//							public void handleCompletion( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		//								java.awt.Point p = javax.swing.SwingUtilities.convertPoint( e.getComponent(), e.getPoint(), statementListPropertyPane );
-		//								statementListPropertyPane.getProperty().add( statementListPropertyPane.calculateIndex( p ), statement );
-		//								ide.markChanged( "statement" );
-		//							}
-		//							public void handleCancelation() {
-		//							}
-		//						} );
-		//					}
-		//				}
-		//			}
-		//			public void mouseEntered( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mouseExited( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mousePressed( java.awt.event.MouseEvent e ) {
-		//			}
-		//			public void mouseReleased( java.awt.event.MouseEvent e ) {
-		//			}
-		//		} );
+	}
 
-		//		this.addHierarchyListener( new java.awt.event.HierarchyListener() {
-		//			public void hierarchyChanged( java.awt.event.HierarchyEvent e ) {
-		//				//edu.cmu.cs.dennisc.print.PrintUtilities.println( "hierarchyChanged", getIDE().isAncestorOf( CodeEditor.this ), CodeEditor.this.isShowing(), CodeEditor.this.getCode() );
-		//				if( getIDE().isAncestorOf( CodeEditor.this ) && CodeEditor.this.isShowing() ) {
-		//					getIDE().addDropReceptorIfNecessary( CodeEditor.this );
-		//				} else {
-		//					getIDE().removeDropReceptorIfNecessary( CodeEditor.this );
-		//				}
-		//			}
-		//		} );
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		edu.cmu.cs.dennisc.croquet.Application.getSingleton().addLocaleObserver( this.localeObserver );
+		this.refresh();
+		this.repaint();
+	}
+	@Override
+	public void removeNotify() {
+		edu.cmu.cs.dennisc.croquet.Application.getSingleton().removeLocaleObserver( this.localeObserver );
+		super.removeNotify();
 	}
 
 	@Override

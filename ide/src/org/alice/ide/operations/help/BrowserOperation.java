@@ -54,7 +54,7 @@ public abstract class BrowserOperation extends org.alice.ide.operations.Inconseq
 	protected abstract int getMessageType();
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		edu.cmu.cs.dennisc.browser.BrowserProgressDialog dialog = new edu.cmu.cs.dennisc.browser.BrowserProgressDialog( this.getIDE(), this.url);
+		edu.cmu.cs.dennisc.browser.BrowserProgressDialog dialog = new edu.cmu.cs.dennisc.browser.BrowserProgressDialog( this.getIDE().getJFrame(), this.url);
 		dialog.createAndExecuteWorker();
 		dialog.pack();
 		dialog.setVisible( true );

@@ -103,5 +103,13 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 		this.getJComponent().repaint();
 	}
 	
+
+	public void addMouseWheelListener( java.awt.event.MouseWheelListener listener ) {
+		this.getJComponent().addMouseWheelListener( listener );
+	}
+	public void removeMouseWheelListener( java.awt.event.MouseWheelListener listener ) {
+		this.getJComponent().removeMouseWheelListener( listener );
+	}
+	
 }
 

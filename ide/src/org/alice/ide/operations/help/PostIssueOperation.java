@@ -51,7 +51,8 @@ public abstract class PostIssueOperation extends org.alice.ide.operations.Incons
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		final org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
 
-		final javax.swing.JFrame owner = org.alice.ide.IDE.getSingleton();
+		//final javax.swing.JFrame owner = org.alice.ide.IDE.getSingleton();
+		final java.awt.Frame owner = org.alice.ide.IDE.getSingleton().getJFrame();
 		javax.swing.JFrame window = edu.cmu.cs.dennisc.javax.swing.JFrameUtilities.createPackedJFrame( pane, "Report Issue", javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		edu.cmu.cs.dennisc.java.awt.WindowUtilties.setLocationOnScreenToCenteredWithin( window, this.getSourceComponent( actionContext ) );
 		window.getRootPane().setDefaultButton( pane.getSubmitButton() );

@@ -118,44 +118,35 @@ class LookingGlass extends edu.cmu.cs.dennisc.javax.swing.components.JCornerSpri
 /**
  * @author Dennis Cosgrove
  */
-public class SplitSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener {
+public class SplitSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> {
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private Tree tree = new Tree();
 	private LookingGlass lookingGlass = new LookingGlass();
+	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() { 
+		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+		}
+		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+			edu.cmu.cs.dennisc.alice.ast.AbstractType programType = nextProject.getProgramType();
+			edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = programType.getDeclaredFields().get( 0 );
+			tree.setModel( new TreeModel( sceneField ) );
+		}
+	};
+
 	public SplitSceneEditor() {
 		this.root.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
 		this.root.setRightComponent( this.lookingGlass );
 		this.setLayout( new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager() );
 		this.add( this.root );
 	}
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		org.alice.app.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
 	}
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
+	@Override
+	public void removeNotify() {
+		org.alice.app.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
+		super.removeNotify();
 	}
-
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-	}
-
-
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-
-
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType programType = this.getIDE().getProject().getProgramType();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = programType.getDeclaredFields().get( 0 );
-		tree.setModel( new TreeModel( sceneField ) );
-	}
-
-
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
+	
 }

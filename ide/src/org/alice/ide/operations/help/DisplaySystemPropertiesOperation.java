@@ -75,7 +75,7 @@ class AllSystemPropertiesOperation extends org.alice.ide.operations.Inconsequent
 		textArea.setFont( new java.awt.Font( "Monospaced", font.getStyle(), font.getSize() ) );
 		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( textArea );
 		scrollPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), scrollPane, "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE ); 
+		this.getIDE().showMessageDialog( scrollPane, "System Properties", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
 	}
 }
 
@@ -116,7 +116,7 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 				return rv;
 			}
 		};
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), formPane, "System Property: " + this.propertyName, javax.swing.JOptionPane.INFORMATION_MESSAGE ); 
+		this.getIDE().showMessageDialog( formPane, "System Property: " + this.propertyName, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
 	}
 }
 
@@ -157,7 +157,7 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 //			new javax.swing.JButton( new AllSystemPropertiesOperation() ),
 //			javax.swing.Box.createVerticalStrut( 8 )
 //		);
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), formPane, "System Properties", javax.swing.JOptionPane.INFORMATION_MESSAGE ); 
+		this.getIDE().showMessageDialog( formPane, "System Properties", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
 	}
 	
 	public static void main( String[] args ) {

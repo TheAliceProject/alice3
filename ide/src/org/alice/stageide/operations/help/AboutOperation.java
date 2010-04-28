@@ -53,6 +53,6 @@ public class AboutOperation extends org.alice.ide.operations.InconsequentialActi
 	@Override
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), aboutPane, "About Alice 3", javax.swing.JOptionPane.PLAIN_MESSAGE );
+		this.getIDE().showMessageDialog( aboutPane, "About Alice 3", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}
 }

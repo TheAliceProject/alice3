@@ -214,18 +214,18 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.javax.swing.componen
 		}
 		@Override
 		public org.alice.virtualmachine.Resource selectResource() {
-			int result = javax.swing.JOptionPane.showOptionDialog( this.getIDE(), "What type of resource would you like to import?", "Select Type", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, new String[] {
+			int result = javax.swing.JOptionPane.showOptionDialog( this.getIDE().getJFrame(), "What type of resource would you like to import?", "Select Type", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.QUESTION_MESSAGE, null, new String[] {
 					"Import Audio...", "Import Image..." }, null );
 			switch( result ) {
 			case javax.swing.JOptionPane.YES_OPTION:
 				try {
-					return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
+					return org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getJFrame() );
 				} catch( java.io.IOException ioe ) {
 					throw new RuntimeException( ioe );
 				}
 			case javax.swing.JOptionPane.NO_OPTION:
 				try {
-					return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
+					return org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getJFrame() );
 				} catch( java.io.IOException ioe ) {
 					throw new RuntimeException( ioe );
 				}
@@ -364,7 +364,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.javax.swing.componen
 					renamePane = new org.alice.ide.name.RenamePane( new org.alice.ide.name.validators.ResourceNameValidator( resource ) );
 				}
 				renamePane.setAndSelectNameText( resource.getName() );
-				final String nextName = renamePane.showInJDialog( this.getIDE(), "Rename Resource" );
+				final String nextName = renamePane.showInJDialog( this.getIDE().getJFrame(), "Rename Resource" );
 				if( nextName != null && nextName.length() > 0 ) {
 					final String prevName = resource.getName();
 					actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
@@ -463,7 +463,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.javax.swing.componen
 				if( resource instanceof org.alice.virtualmachine.resources.ImageResource ) {
 					org.alice.virtualmachine.resources.ImageResource prevImageResource = (org.alice.virtualmachine.resources.ImageResource)resource;
 					try {
-						org.alice.virtualmachine.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
+						org.alice.virtualmachine.resources.ImageResource nextImageResource = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getJFrame() );
 						if( nextImageResource != null ) {
 							prevCapsule = new ImageCapsule( prevImageResource );
 							nextCapsule = new ImageCapsule( nextImageResource );
@@ -477,7 +477,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.javax.swing.componen
 				} else if( resource instanceof org.alice.virtualmachine.resources.AudioResource ) {
 					org.alice.virtualmachine.resources.AudioResource prevAudioResource = (org.alice.virtualmachine.resources.AudioResource)resource;
 					try {
-						org.alice.virtualmachine.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE() );
+						org.alice.virtualmachine.resources.AudioResource nextAudioResource = org.alice.ide.resource.prompter.AudioResourcePrompter.getSingleton().promptUserForResource( this.getIDE().getJFrame() );
 						if( nextAudioResource != null ) {
 							prevCapsule = new AudioCapsule( prevAudioResource );
 							nextCapsule = new AudioCapsule( nextAudioResource );

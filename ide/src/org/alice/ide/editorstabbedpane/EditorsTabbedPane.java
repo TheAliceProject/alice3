@@ -42,6 +42,8 @@
  */
 package org.alice.ide.editorstabbedpane;
 
+import org.alice.ide.common.SelectedFieldExpressionPane;
+
 class Cycle< E > {
 	private java.util.LinkedList< E > list = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 	private int index = -1;
@@ -219,10 +221,10 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane implements org.alice.ide.event.IDEListener {
+public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 	class EditPreviousCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public EditPreviousCodeOperation() {
-			super( org.alice.ide.IDE.INTERFACE_GROUP );
+			super( org.alice.app.ProjectApplication.IDE_GROUP );
 			this.setName( "previous" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -340,37 +342,24 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 		return index > 0 || org.alice.ide.IDE.getSingleton().isEmphasizingClasses();
 	}
 
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-	}
-
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
-		if( code != null ) {
-			this.edit( e.getNextValue(), false );
+	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
+		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
 		}
-	}
+		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+			if( nextCode != null ) {
+				EditorsTabbedPane.this.edit( nextCode, false );
+			}
+		}
+	};
 
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
+	public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 		this.removeAll();
 		this.editedCodes.clear();
 		this.updateBackOperationsEnabled();
 	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
+	public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 	}
 
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 		this.updateUI();
 	}
@@ -382,5 +371,14 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane imple
 			}
 		}
 	}
-	
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
+	}
+	@Override
+	public void removeNotify() {
+		org.alice.ide.IDE.getSingleton().removeCodeInFocusObserver( this.codeInFocusObserver );
+		super.removeNotify();
+	}
 }

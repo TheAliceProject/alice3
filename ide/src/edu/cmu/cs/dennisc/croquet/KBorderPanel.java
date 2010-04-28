@@ -47,13 +47,14 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class KBorderPanel extends KPanel {
-	public enum KCardinalDirection {
+	public enum CardinalDirection {
+		CENTER( java.awt.BorderLayout.CENTER ),
 		NORTH( java.awt.BorderLayout.NORTH ),
 		SOUTH( java.awt.BorderLayout.SOUTH ),
 		EAST( java.awt.BorderLayout.EAST ),
 		WEST( java.awt.BorderLayout.WEST );
 		private String internal;
-		private KCardinalDirection( String internal ) {
+		private CardinalDirection( String internal ) {
 			this.internal = internal;
 		}
 		/*package-private*/ String getInternal() {
@@ -64,7 +65,7 @@ public class KBorderPanel extends KPanel {
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout();
 	}
-	public void addComponent( KComponent<?> child, KCardinalDirection cardinalDirection ) {
+	public void addComponent( KComponent<?> child, CardinalDirection cardinalDirection ) {
 		this.internalAddComponent( child, cardinalDirection.internal );
 	}
 }

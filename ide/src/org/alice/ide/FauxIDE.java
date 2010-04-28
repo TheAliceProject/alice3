@@ -67,14 +67,14 @@ public class FauxIDE extends IDE {
 	}
 	@Override
 	public void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
-		javax.swing.JOptionPane.showMessageDialog( this, "imagine the program running here..." );
+		this.showMessageDialog( "imagine the program running here..." );
 	}
 	@Override
 	public void handleRestart( edu.cmu.cs.dennisc.zoot.ActionContext context ) {
 	}
 	@Override
 	public void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
-		javax.swing.JOptionPane.showMessageDialog( this, "imagine testing method here..." );
+		this.showMessageDialog( "imagine testing method here..." );
 	}
 	@Override
 	public boolean isInstanceCreationAllowableFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice ) {

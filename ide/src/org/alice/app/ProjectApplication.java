@@ -62,12 +62,20 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 
 	private edu.cmu.cs.dennisc.croquet.Operation undoOperation = new org.alice.app.operations.edit.UndoOperation();
 	private edu.cmu.cs.dennisc.croquet.Operation redoOperation = new org.alice.app.operations.edit.RedoOperation();
-	private edu.cmu.cs.dennisc.croquet.ActionOperation saveOperation = new org.alice.app.operations.file.SaveProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.ActionOperation saveAsOperation = new org.alice.app.operations.file.SaveAsProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.CompositeOperation newProjectOperation = new org.alice.app.operations.file.NewProjectOperation( this.saveOperation );
-	private edu.cmu.cs.dennisc.croquet.CompositeOperation openProjectOperation = new org.alice.app.operations.file.OpenProjectOperation( this.saveOperation );
-	private edu.cmu.cs.dennisc.croquet.CompositeOperation exitOperation = new org.alice.app.operations.file.ClearanceCheckingExitOperation( this.saveOperation );
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveOperation = new org.alice.app.operations.file.SaveProjectOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveAsOperation = new org.alice.app.operations.file.SaveAsProjectOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation newProjectOperation = new org.alice.app.operations.file.NewProjectOperation( this.saveOperation );
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation openProjectOperation = new org.alice.app.operations.file.OpenProjectOperation( this.saveOperation );
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation exitOperation = new org.alice.app.operations.file.ClearanceCheckingExitOperation( this.saveOperation );
 
+	
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getNewProjectOperation() {
+		return this.exitOperation;
+	}
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getExitOperation() {
+		return this.exitOperation;
+	}
+	
 	public org.alice.app.openprojectpane.OpenProjectPane getOpenProjectPane() {
 		//todo: cache
 		return new org.alice.app.openprojectpane.OpenProjectPane( this.getTemplatesTabContentPane() );
@@ -228,7 +236,6 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	protected StringBuffer updateTitlePrefix( StringBuffer rv ) {
 		rv.append( this.getApplicationName() );
 		rv.append( " " );
-		rv.append( "todo: " );
 //		rv.append( this.getVersionText() );
 //		rv.append( " " );
 		rv.append( this.getVersionAdornment() ); 
@@ -264,28 +271,33 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	protected void restoreProjectProperties() {
 	}
 
-	protected abstract void fireProjectOpening( org.alice.ide.event.ProjectOpenEvent e );
-	protected abstract void fireProjectOpened( org.alice.ide.event.ProjectOpenEvent e );
+	public static interface ProjectObserver {
+		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject );
+		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject );
+	}
+	
+	private java.util.List< ProjectObserver > projectObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	
+	public void addProjectObserver( ProjectObserver projectObserver ) {
+		this.projectObservers.add( projectObserver );
+	}
+	public void removeProjectObserver( ProjectObserver projectObserver ) {
+		this.projectObservers.remove( projectObserver );
+	}
+	
+	
 	public edu.cmu.cs.dennisc.alice.Project getProject() {
 		return this.project;
 	}
-
 	public void setProject( edu.cmu.cs.dennisc.alice.Project project ) {
-	
-		edu.cmu.cs.dennisc.print.PrintUtilities.println("todo: ProjectOpenEvent");
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		
-		
-		
-		org.alice.ide.event.ProjectOpenEvent e = new org.alice.ide.event.ProjectOpenEvent( null, this.project, project );
-		fireProjectOpening( e );
+		edu.cmu.cs.dennisc.alice.Project previousProject = this.project;
+		for( ProjectObserver projectObserver : this.projectObservers ) {
+			projectObserver.projectOpening( previousProject, project );
+		}
 		this.project = project;
-		
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: enable/disable operations based on this.project != null" );
-		//this.runOperation.setEnabled( this.project != null );
-		
-		
-		fireProjectOpened( e );
+		for( ProjectObserver projectObserver : this.projectObservers ) {
+			projectObserver.projectOpened( previousProject, project );
+		}
 	}
 	
 	public void loadProjectFrom( java.net.URI uri ) {
@@ -322,7 +334,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 //			}
 //		} );
 	}
-	public void loadProjectFrom( String path ) {
+	public final void loadProjectFrom( String path ) {
 		loadProjectFrom( new java.io.File( path ).toURI() );
 	}
 	public void createProjectFromBootstrap() {
@@ -381,5 +393,5 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	}
 
 	public abstract void ensureProjectCodeUpToDate();
-	public abstract String getApplicationRootDirectory();
+	public abstract java.io.File getApplicationRootDirectory();
 }

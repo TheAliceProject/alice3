@@ -47,9 +47,17 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements org.alice.ide.event.IDEListener, edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
+public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> implements edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice sceneField = null;
-	
+	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() { 
+		public void projectOpening( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+		}
+		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
+			AbstractSceneEditor.this.setProgramType( nextProject.getProgramType() );
+			AbstractSceneEditor.this.revalidate();
+			AbstractSceneEditor.this.repaint();
+		}
+	};
 	public abstract void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	public abstract void enableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
 	public abstract void handleExpandContractChange( boolean isExpanded );
@@ -89,38 +97,7 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 		}
 		setSceneField( fieldInAlice );
 	}
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
 
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-	}
-
-
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-
-
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		edu.cmu.cs.dennisc.alice.Project project = e.getNextValue();
-		this.setProgramType( project.getProgramType() );
-		this.revalidate();
-		this.repaint();
-	}
-
-
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	
 	public void added( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 	}
 	public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
@@ -136,5 +113,16 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 	public void set( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 	}
 	public void setting( edu.cmu.cs.dennisc.property.event.SetListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
+	}
+
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		org.alice.app.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
+	}
+	@Override
+	public void removeNotify() {
+		org.alice.app.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
+		super.removeNotify();
 	}
 }

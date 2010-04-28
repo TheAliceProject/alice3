@@ -79,7 +79,7 @@ public class TypeComponent extends DeclarationNameLabel {
 			if( ide.isInstanceCreationAllowableFor( typeInAlice ) ) {
 				operations.add( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ide.getSceneType(), typeInAlice ) );
 			}
-			operations.add( new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) );
+			//operations.add( new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) );
 			this.popupOperation = new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( operations );
 					
 //			this.popupOperation = new zoot.DefaultPopupActionOperation( 

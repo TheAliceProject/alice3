@@ -42,6 +42,7 @@
  */
 package org.alice.ide.ubiquitouspane;
 
+import org.alice.ide.common.SelectedFieldExpressionPane;
 import org.alice.ide.ubiquitouspane.templates.*;
 
 class ReturnStatementWrapper extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
@@ -148,6 +149,14 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.javax.swing.components.JL
 	private ReturnStatementWrapper returnStatementWrapper = new ReturnStatementWrapper();
 	private TransientStatementsWrapper transientStatementsWrapper = new TransientStatementsWrapper();
 
+	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
+		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+		}
+		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+			UbiquitousPane.this.refresh();
+		}
+	};
+
 	public UbiquitousPane() {
 		final int PAD = 6;
 		this.add( this.doInOrderTemplate );
@@ -170,19 +179,20 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.javax.swing.components.JL
 		this.add( this.returnStatementWrapper );
 		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
 		this.add( this.commentTemplate );
-		
-		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		ide.addIDEListener( new org.alice.ide.event.IDEAdapter() {
-			@Override
-			public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-				UbiquitousPane.this.handleFocusedCodeChanged( e );
-			}
-		} );
-	}
-	private void handleFocusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		this.refresh();
 	}
 	
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
+		this.refresh();
+	}
+	@Override
+	public void removeNotify() {
+		org.alice.ide.IDE.getSingleton().removeCodeInFocusObserver( this.codeInFocusObserver );
+		super.removeNotify();
+	}
+
 	public void refresh() {
 		this.returnStatementWrapper.refresh();
 		this.transientStatementsWrapper.refresh();

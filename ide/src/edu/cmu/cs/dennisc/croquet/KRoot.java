@@ -52,7 +52,14 @@ public abstract class KRoot {
 	protected abstract java.awt.Frame getAWTFrame();
 	protected abstract java.awt.Dialog getAWTDialog();
 	protected abstract java.awt.Container getContentPane();
-	public void addToContentPane( KComponent component, KBorderPanel.KCardinalDirection cardinalDirection ) {
-		this.getContentPane().add( component.getJComponent(), cardinalDirection.getInternal() );
+//	public void addToContentPane( KComponent<?> component, KBorderPanel.CardinalDirection cardinalDirection ) {
+//		this.getContentPane().add( component.getJComponent(), cardinalDirection.getInternal() );
+//	}
+	
+	public void addWindowStateListener( java.awt.event.WindowStateListener listener ) {
+		this.getAWTWindow().addWindowStateListener( listener );
+	}
+	public void removeWindowStateListener( java.awt.event.WindowStateListener listener ) {
+		this.getAWTWindow().removeWindowStateListener( listener );
 	}
 }

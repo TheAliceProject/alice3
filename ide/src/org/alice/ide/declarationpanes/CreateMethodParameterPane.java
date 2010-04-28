@@ -49,7 +49,7 @@ package org.alice.ide.declarationpanes;
 public class CreateMethodParameterPane extends CreateParameterPane {
 	class UnderstandingConfirmationOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public UnderstandingConfirmationOperation( String codeText ) {
-			super( org.alice.ide.IDE.INTERFACE_GROUP, false, "I understand that I need to update the invocations to this " + codeText + "." );
+			super( org.alice.app.ProjectApplication.IDE_GROUP, false, "I understand that I need to update the invocations to this " + codeText + "." );
 		}
 		@Override
 		protected void handleStateChange(boolean value) {

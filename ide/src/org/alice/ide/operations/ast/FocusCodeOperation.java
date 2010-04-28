@@ -48,7 +48,7 @@ package org.alice.ide.operations.ast;
 public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode;
 	public FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-		super( org.alice.ide.IDE.INTERFACE_GROUP );
+		super( org.alice.app.ProjectApplication.IDE_GROUP );
 		this.nextCode = nextCode;
 		String name;
 		if( nextCode instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {

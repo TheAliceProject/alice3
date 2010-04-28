@@ -47,7 +47,12 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class Application {
-//	private static class RootContext extends CompositeContext {
+	public static interface LocaleObserver {
+		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale );
+		public void localeChanged( java.util.Locale previousLocale, java.util.Locale nextLocale );
+	}
+
+	//	private static class RootContext extends CompositeContext {
 //		public RootContext() {
 //			super( null, null, null, null );
 //		}
@@ -130,6 +135,27 @@ public abstract class Application {
 		jFrame.pack();
 	}
 
+	private java.util.List< LocaleObserver > localeObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+	public void addLocaleObserver( LocaleObserver localeObserver ) {
+		this.localeObservers.add( localeObserver );
+	}
+	public void removeLocaleObserver( LocaleObserver localeObserver ) {
+		this.localeObservers.remove( localeObserver );
+	}
+	public void setLocale( java.util.Locale locale ) {
+		java.util.Locale previousLocale = this.frame.getAWTFrame().getLocale();
+		
+		for( LocaleObserver localeObserver : this.localeObservers ) {
+			localeObserver.localeChanging( previousLocale, locale );
+		}
+		this.frame.getAWTFrame().setLocale( locale );
+		//todo: remove
+		javax.swing.JComponent.setDefaultLocale( locale );
+		for( LocaleObserver localeObserver : this.localeObservers ) {
+			localeObserver.localeChanged( previousLocale, locale );
+		}
+	}
+	
 	public void setMenuBar( KMenuBar menuBar ) {
 		javax.swing.JFrame jFrame = (javax.swing.JFrame) frame.getAWTFrame();
 		javax.swing.JMenuBar jMenuBar = menuBar.getJComponent();
@@ -148,6 +174,7 @@ public abstract class Application {
 		jFrame.setTitle(title);
 	}
 
+	protected abstract void handleWindowOpened( java.awt.event.WindowEvent e );
 	protected abstract void handleAbout( java.util.EventObject e );
 	protected abstract void handlePreferences( java.util.EventObject e );
 	protected abstract void handleQuit( java.util.EventObject e );
@@ -393,8 +420,13 @@ public abstract class Application {
 		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAWTWindow(), directory, filename, extension, isSharingDesired ); 
 	}
 
-	//todo
+	@Deprecated
 	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane<T> inputPane, String title, boolean isModal ) {
 		return inputPane.showInJDialog( this.frame.getAWTWindow(), title, isModal);
-	}	
+	}
+	@Deprecated
+	public javax.swing.JFrame getJFrame() {
+		//return ((javax.swing.JFrame)this.getFrame().getAWTFrame()).getRootPane();
+		return (javax.swing.JFrame)this.getFrame().getAWTFrame();
+	}
 }

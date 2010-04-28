@@ -45,16 +45,18 @@ package org.alice.ide.operations.file;
 /**
  * @author Dennis Cosgrove
  */
-public class SaveAsTypeOperation extends AbstractSaveOperation {
+public class SaveAsTypeOperation extends org.alice.app.operations.file.AbstractSaveOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type;
 	public SaveAsTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		super( java.util.UUID.fromString( "e8da4117-db15-40d6-b486-7f226d827be7" ) );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: SaveAsTypeOperation" );
 		this.type = type;
 		this.setName( "Save As..." );
 		this.setSmallIcon( new org.alice.ide.common.TypeIcon( type ) );
 	}
 	@Override
-	protected java.io.File getDefaultDirectory() {
-		return getIDE().getMyTypesDirectory();
+	protected java.io.File getDefaultDirectory( org.alice.app.ProjectApplication application ) {
+		return org.alice.ide.IDE.getSingleton().getMyTypesDirectory();
 	}
 	@Override
 	protected String getExtension() {
@@ -65,7 +67,7 @@ public class SaveAsTypeOperation extends AbstractSaveOperation {
 		return this.type.name.getValue() + "." + this.getExtension();
 	}
 	@Override
-	protected void save( java.io.File file ) throws java.io.IOException {
+	protected void save( org.alice.app.ProjectApplication application, java.io.File file ) throws java.io.IOException {
 		edu.cmu.cs.dennisc.alice.project.ProjectUtilities.writeType( file, this.type );
 	}
 	@Override

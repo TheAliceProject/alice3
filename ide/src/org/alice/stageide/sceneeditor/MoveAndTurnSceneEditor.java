@@ -47,6 +47,8 @@ import java.util.List;
 
 import org.alice.apis.moveandturn.AsSeenBy;
 import org.alice.apis.moveandturn.ReferenceFrame;
+import org.alice.ide.common.SelectedFieldExpressionPane;
+import org.alice.ide.memberseditor.MembersEditor;
 import org.alice.ide.name.validators.FieldNameValidator;
 
 import edu.cmu.cs.dennisc.alice.ast.AbstractField;
@@ -82,6 +84,20 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private org.alice.interact.CameraNavigatorWidget mainCameraNavigatorWidget = null;
 
 	private org.alice.interact.GlobalDragAdapter globalDragAdapter;
+	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
+		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+		}
+		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+			MoveAndTurnSceneEditor.this.handleFocusedCodeChanged( nextCode );
+		}
+	};
+	private org.alice.ide.IDE.FieldSelectionObserver fieldSelectionObserver = new org.alice.ide.IDE.FieldSelectionObserver() {
+		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
+		}
+		public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
+			MoveAndTurnSceneEditor.this.handleFieldSelection( nextField );
+		}
+	};
 
 	public MoveAndTurnSceneEditor() {
 		javax.swing.JPanel lgPanel = this.getLGPanel();
@@ -155,6 +171,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.splitPane.setLeftComponent( this.getLGPanel() );
 		super.addNotify();
+		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getSingleton().addFieldSelectionObserver( this.fieldSelectionObserver );
 	}
 
 	@Override
@@ -162,6 +180,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.splitPane.setLeftComponent( null );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
+		org.alice.ide.IDE.getSingleton().removeCodeInFocusObserver( this.codeInFocusObserver );
+		org.alice.ide.IDE.getSingleton().removeFieldSelectionObserver( this.fieldSelectionObserver );
 		super.removeNotify();
 	}
 
@@ -335,11 +355,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		} );
 	}
 
-	@Override
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		super.focusedCodeChanged( e );
+	private void handleFocusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.updateSceneBasedOnScope();
-		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = e.getNextValue();
 		if( code != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType type = code.getDeclaringType();
 			if( type != null ) {
@@ -436,10 +453,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 	}
 
-	@Override
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-		super.fieldSelectionChanged( e );
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = e.getNextValue();
+	private void handleFieldSelection( AbstractField field ) {
 		Object instance = this.getInstanceForField( field );
 		if( instance instanceof edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice ) {
 			edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice instanceInAlice = (edu.cmu.cs.dennisc.alice.virtualmachine.InstanceInAlice)instance;

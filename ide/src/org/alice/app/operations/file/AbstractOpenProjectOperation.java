@@ -50,7 +50,7 @@ public abstract class AbstractOpenProjectOperation extends ClearanceRequiringUri
 	
 //	private edu.cmu.cs.dennisc.croquet.ActionOperation selectAndLoadProjectOperation;
 	
-	public AbstractOpenProjectOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.ActionOperation saveOperation, edu.cmu.cs.dennisc.croquet.ActionOperation selectAndLoadProjectOperation ) {
+	public AbstractOpenProjectOperation( java.util.UUID individualUUID, edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveOperation, edu.cmu.cs.dennisc.croquet.AbstractActionOperation selectAndLoadProjectOperation ) {
 		super( individualUUID, saveOperation, selectAndLoadProjectOperation );
 //		this.selectAndLoadProjectOperation = selectAndLoadProjectOperation;
 	}

@@ -54,7 +54,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		edu.cmu.cs.dennisc.alice.ast.Decoder.addMethodFilter( org.alice.apis.moveandturn.Model.class, "setDepth", org.alice.apis.moveandturn.Transformable.class );
 		//
 		org.alice.ide.common.BeveledShapeForType.addRoundType( org.alice.apis.moveandturn.Transformable.class );
-		this.addWindowStateListener( new java.awt.event.WindowStateListener() {
+		this.getFrame().addWindowStateListener( new java.awt.event.WindowStateListener() {
 			public void windowStateChanged( java.awt.event.WindowEvent e ) {
 				int oldState = e.getOldState();
 				int newState = e.getNewState();
@@ -78,7 +78,7 @@ public class StageIDE extends org.alice.ide.IDE {
 			edu.cmu.cs.dennisc.eula.EULAUtilities.promptUserToAcceptEULAIfNecessary( edu.cmu.cs.dennisc.nebulous.License.class, IS_LICENSE_ACCEPTED_PREFERENCE_KEY, "License Agreement (Part 3 of 3): The Sims (TM) 2 Art Assets",
 					edu.cmu.cs.dennisc.nebulous.License.TEXT, "The Sims (TM) 2 Art Assets" );
 		} catch( edu.cmu.cs.dennisc.eula.LicenseRejectedException lre ) {
-			javax.swing.JOptionPane.showMessageDialog( this, "You must accept the license agreements in order to use Alice 3, the Looking Glass Walk & Touch API, and The Sims (TM) 2 Art Assets.  Exiting." );
+			this.showMessageDialog( "You must accept the license agreements in order to use Alice 3, the Looking Glass Walk & Touch API, and The Sims (TM) 2 Art Assets.  Exiting." );
 			System.exit( -1 );
 		}
 	}
@@ -318,7 +318,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	protected void showInJDialog( MoveAndTurnRuntimeProgram rtProgram ) {
 		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		try {
-			rtProgram.showInJDialog( this, true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
+			rtProgram.showInJDialog( this.getJFrame(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
 			this.enableRendering();
 			try {
@@ -362,7 +362,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		TestMethodProgram testProgram = new TestMethodProgram( this.getSceneType(), field, emptyExpressionMethodInvocation );
 		this.disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering.RUN_PROGRAM );
 		try {
-			testProgram.showInJDialog( this, true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
+			testProgram.showInJDialog( this.getJFrame(), true, new String[] { "X_LOCATION=" + xLocation, "Y_LOCATION=" + yLocation } );
 		} finally {
 			this.enableRendering();
 			try {
@@ -595,7 +595,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	public boolean isDeclareFieldOfPredeterminedTypeSupported( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava typeInJava = valueType.getFirstTypeEncounteredDeclaredInJava();
 		if( typeInJava == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( org.alice.apis.stage.Adult.class ) ) {
-			javax.swing.JOptionPane.showMessageDialog( this, "todo: isDeclareFieldOfPredeterminedTypeSupported" );
+			this.showMessageDialog( "todo: isDeclareFieldOfPredeterminedTypeSupported" );
 			return false;
 		} else {
 			return super.isDeclareFieldOfPredeterminedTypeSupported( valueType );

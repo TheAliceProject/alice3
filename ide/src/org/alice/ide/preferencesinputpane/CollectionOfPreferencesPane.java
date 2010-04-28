@@ -67,7 +67,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.javax.swing.
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 			String name = CollectionOfPreferencesPane.this.getTitle();
 			
-			java.awt.Component parentComponent = this.getIDE();
+			java.awt.Component parentComponent = org.alice.ide.IDE.getSingleton().getJFrame();
 			String message = "To what extent would you like to restore defaults?";
 			String title = "Restore Defaults";
 			int optionType = javax.swing.JOptionPane.YES_NO_CANCEL_OPTION;

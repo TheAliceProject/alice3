@@ -53,7 +53,7 @@ public class PreferencesOperation extends org.alice.ide.operations.AbstractActio
 	
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 		org.alice.ide.preferencesinputpane.PreferencesInputPane preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesInputPane();
-		preferencesInputPane.showInJDialog( this.getIDE() );
+		preferencesInputPane.showInJDialog( this.getIDE().getJFrame() );
 //		if( this.method != null ) {
 //			this.prevCode = getIDE().getFocusedCode();
 			actionContext.commit();

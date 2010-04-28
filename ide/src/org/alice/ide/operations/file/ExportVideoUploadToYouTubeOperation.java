@@ -82,7 +82,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 			}
 		};
 
-		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, this.getIDE(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+		javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( videoCapturePane, this.getIDE().getJFrame(), "Export Video", true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 		dialog.setVisible( true );
 	}
 }

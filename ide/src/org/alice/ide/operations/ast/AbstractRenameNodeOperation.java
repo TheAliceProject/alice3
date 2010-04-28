@@ -53,7 +53,7 @@ public abstract class AbstractRenameNodeOperation extends org.alice.ide.operatio
 	protected final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, final edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( nodeNameValidator );
 		renameNodePane.setAndSelectNameText( nameProperty.getValue() );
-		final String nextValue = renameNodePane.showInJDialog( this.getIDE() );
+		final String nextValue = renameNodePane.showInJDialog( this.getIDE().getJFrame() );
 		if( nextValue != null && nextValue.length() > 0 ) {
 			final String prevValue = nameProperty.getValue();
 			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {

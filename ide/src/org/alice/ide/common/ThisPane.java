@@ -48,27 +48,11 @@ package org.alice.ide.common;
 public class ThisPane extends AccessiblePane {
 	private static final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava TYPE_FOR_NULL = edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( Void.class );
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type = TYPE_FOR_NULL;
-	private org.alice.ide.event.IDEListener ideAdapter = new org.alice.ide.event.IDEListener() {
-		public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
+	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
+		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
 		}
-		public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-		}
-		public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		}
-		public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-			ThisPane.this.updateBasedOnFocusedCode( e.getNextValue() );
-		}
-		public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-		}
-		public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-		}
-		public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-		}
-		public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		}
-		public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-		}
-		public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
+		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+			ThisPane.this.updateBasedOnFocusedCode( nextCode );
 		}
 	};
 
@@ -81,11 +65,11 @@ public class ThisPane extends AccessiblePane {
 	public void addNotify() {
 		super.addNotify();
 		this.updateBasedOnFocusedCode( org.alice.ide.IDE.getSingleton().getFocusedCode() );
-		getIDE().addIDEListener( this.ideAdapter );
+		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
 	@Override
 	public void removeNotify() {
-		getIDE().removeIDEListener( this.ideAdapter );
+		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
 		super.removeNotify();
 	}
 	private void updateBasedOnFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {

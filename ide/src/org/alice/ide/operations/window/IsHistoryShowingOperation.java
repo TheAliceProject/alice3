@@ -45,7 +45,7 @@ package org.alice.ide.operations.window;
 public class IsHistoryShowingOperation extends IsFrameShowingOperation {
 	public IsHistoryShowingOperation() {
 		//todo: PREFERENCES_GROUP?
-		super( org.alice.ide.IDE.INTERFACE_GROUP, false, "Show History?" );
+		super( org.alice.app.ProjectApplication.IDE_GROUP, false, "Show History?" );
 	}
 	@Override
 	protected String getTitle() {

@@ -52,14 +52,22 @@ public abstract class AbstractActionOperation extends Operation {
 			this.button = button;
 		}
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			Application application = Application.getSingleton();
-			Context parentContext = application.getCurrentContext();
-			Context childContext = parentContext.createChildContext();
-			childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, button ) );
-			AbstractActionOperation.this.perform( childContext, e, button );
+			AbstractActionOperation.this.fire( e, this.button );
 		}
 	}
 	private java.util.Map< KAbstractButton< ? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	
+	private void fire( java.awt.event.ActionEvent e, KAbstractButton< ? > button  ) {
+		Application application = Application.getSingleton();
+		Context parentContext = application.getCurrentContext();
+		Context childContext = parentContext.createChildContext();
+		childContext.addChild( new ActionEvent( childContext, AbstractActionOperation.this, e, button ) );
+		AbstractActionOperation.this.perform( childContext, e, button );
+	}
+	@Deprecated
+	public void fire() {
+		fire( null, null );
+	}
 	
 //	private javax.swing.ButtonModel buttonModel = new javax.swing.DefaultButtonModel();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {

@@ -80,7 +80,7 @@ public class DeleteMethodOperation extends AbstractDeleteNodeOperation< edu.cmu.
 			sb.append( method.name.getValue() );
 			sb.append( "\" ." );
 
-			javax.swing.JOptionPane.showMessageDialog( this.getIDE(), sb.toString() );
+			this.getIDE().showMessageDialog( sb.toString() );
 			return false;
 		} else {
 			return true;

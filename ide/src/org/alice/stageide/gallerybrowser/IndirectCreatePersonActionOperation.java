@@ -51,7 +51,7 @@ class IndirectCreatePersonActionOperation extends org.alice.ide.operations.Incon
 	}
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		PersonCreatorDialog dialog = new PersonCreatorDialog( this.getIDE() );
+		PersonCreatorDialog dialog = new PersonCreatorDialog( this.getIDE().getJFrame() );
 		dialog.pack();
 		dialog.setVisible( true );
 		dialog.createAndExecuteWorker();

@@ -167,13 +167,14 @@ public class LaunchUtilities {
 						}
 					}
 				}
-				ide.setLocation( xLocation, yLocation );
-				ide.setSize( width, height );
+				ide.getJFrame().setLocation( xLocation, yLocation );
+				ide.getJFrame().setSize( width, height );
 				
 				if( isMaximizationDesired ) {
-					ide.maximize();
+					ide.getFrame().maximize();
 				}
 				ide.setSplashScreen( splashScreen );
+				ide.initialize( args );
 				ide.setVisible( true );
 			}
 		} );

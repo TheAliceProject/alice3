@@ -67,7 +67,7 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 		java.util.UUID groupUUID = java.util.UUID.randomUUID();
 		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
 		EditMembersPane< E > editMembersPane = this.createEditMembersPane( groupUUID, this.declaringType );
-		Boolean isAccepted = editMembersPane.showInJDialog( getIDE() );
+		Boolean isAccepted = editMembersPane.showInJDialog( this.getIDE().getJFrame() );
 		if( isAccepted != null ) {
 			edu.cmu.cs.dennisc.zoot.CompositeEdit compositeEdit = historyManager.createDoIgnoringCompositeEdit( this.presentation + " " + this.declaringType.getName() );
 			if( compositeEdit != null ) {
@@ -233,7 +233,7 @@ class TypeFillIn extends edu.cmu.cs.dennisc.cascade.MenuFillIn< edu.cmu.cs.denni
 			blank.addFillIn( new FieldsFillIn( this.type ) );
 			blank.addSeparator();
 			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.ast.RenameTypeOperation( this.type ) ) );
-			blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
+			//blank.addFillIn( new OperatorFillIn( new org.alice.ide.operations.file.SaveAsTypeOperation( this.type ) ) );
 		} else {
 			blank.addFillIn( new edu.cmu.cs.dennisc.cascade.CancelFillIn( "type is not set.  canceling." ) );
 		}
@@ -281,7 +281,7 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 				}
 			} );
 		} else {
-			javax.swing.JOptionPane.showMessageDialog( this.getIDE(), "Open a project first (via the File Menu)", "No Project", javax.swing.JOptionPane.INFORMATION_MESSAGE );
+			this.getIDE().showMessageDialog( "Open a project first (via the File Menu)", "No Project", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION );
 		}
 	}
 }
@@ -350,27 +350,11 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 }
 
 public class DeclarationsDropDown extends OperationDropDown {
-	private org.alice.ide.event.IDEListener ideAdapter = new org.alice.ide.event.IDEListener() {
-		public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
+	private org.alice.ide.IDE.CodeInFocusObserver codeInFocusObserver = new org.alice.ide.IDE.CodeInFocusObserver() {
+		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
 		}
-		public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-		}
-		public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-		}
-		public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-			DeclarationsDropDown.this.updateOperation( e.getNextValue() );
-		}
-		public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-		}
-		public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-		}
-		public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-		}
-		public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-		}
-		public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-		}
-		public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
+		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
+			DeclarationsDropDown.this.updateOperation( nextCode );
 		}
 	};
 	public DeclarationsDropDown() {
@@ -380,11 +364,11 @@ public class DeclarationsDropDown extends OperationDropDown {
 	public void addNotify() {
 		super.addNotify();
 		this.updateOperation( org.alice.ide.IDE.getSingleton().getFocusedCode() );
-		getIDE().addIDEListener( this.ideAdapter );
+		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
 	@Override
 	public void removeNotify() {
-		getIDE().removeIDEListener( this.ideAdapter );
+		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
 		super.removeNotify();
 	}
 	@Override

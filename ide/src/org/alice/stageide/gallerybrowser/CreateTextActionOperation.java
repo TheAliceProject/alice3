@@ -209,7 +209,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 
 	class ConstrainInstanceNameToTextBooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
-			super( org.alice.ide.IDE.INTERFACE_GROUP, false, "constrain to text" );
+			super( org.alice.app.ProjectApplication.IDE_GROUP, false, "constrain to text" );
 		}
 		@Override
 		protected void handleStateChange( boolean value ) {
@@ -279,7 +279,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 	public static void main( String[] args ) {
 		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
 		CreateTextPane createTextPane = new CreateTextPane();
-		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( ide );
+		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( ide.getJFrame() );
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( text );
 		System.exit( 0 );
 	}
@@ -295,7 +295,7 @@ class CreateTextActionOperation extends AbstractGalleryDeclareFieldOperation {
 	@Override
 	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		CreateTextPane createTextPane = new CreateTextPane();
-		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( getIDE(), "Create Text", true );
+		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( getIDE().getJFrame(), "Create Text", true );
 		if( text != null ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor( org.alice.apis.moveandturn.Text.class );
 			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );

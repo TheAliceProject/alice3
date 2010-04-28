@@ -54,6 +54,6 @@ public class CutOperation extends org.alice.ide.operations.InconsequentialAction
 	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
 		String title = "Cut coming soon";
 		String message = "Cut is not yet implemented.  Apologies.";
-		javax.swing.JOptionPane.showMessageDialog( this.getIDE(), message, title, javax.swing.JOptionPane.INFORMATION_MESSAGE ); 
+		this.getIDE().showMessageDialog( message, title, edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
 	}
 }

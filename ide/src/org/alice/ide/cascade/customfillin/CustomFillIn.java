@@ -55,7 +55,7 @@ public abstract class CustomFillIn<E extends edu.cmu.cs.dennisc.alice.ast.Expres
 	}
 	@Override
 	public E getValue() {
-		java.awt.Component owner = org.alice.ide.IDE.getSingleton();
+		java.awt.Component owner = org.alice.ide.IDE.getSingleton().getJFrame();
 		org.alice.ide.choosers.ValueChooser< ? > customPane = this.createCustomPane();
 		edu.cmu.cs.dennisc.inputpane.KInputPane< E > inputPane = new CustomInputPane( this, customPane );
 		E value = inputPane.showInJDialog( owner );

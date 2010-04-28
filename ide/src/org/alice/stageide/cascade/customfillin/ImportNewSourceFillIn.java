@@ -59,7 +59,7 @@ public abstract class ImportNewSourceFillIn< E, F extends org.alice.virtualmachi
 	public edu.cmu.cs.dennisc.alice.ast.InstanceCreation getValue() {
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
 		try {
-			F resource = this.getResourcePrompter().promptUserForResource( ide );
+			F resource = this.getResourcePrompter().promptUserForResource( ide.getJFrame() );
 			if( resource != null ) {
 				edu.cmu.cs.dennisc.alice.Project project = ide.getProject();
 				if( project != null ) {

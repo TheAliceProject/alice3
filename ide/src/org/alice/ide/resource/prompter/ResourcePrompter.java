@@ -52,7 +52,7 @@ public abstract class ResourcePrompter<E extends org.alice.virtualmachine.Resour
 	protected abstract String getFileDialogTitle();
 	protected abstract java.io.FilenameFilter createFilenameFilter();
 	public E promptUserForResource( java.awt.Component owner ) throws java.io.IOException {
-		java.awt.FileDialog fileDialog = new java.awt.FileDialog( org.alice.ide.IDE.getSingleton() );
+		java.awt.FileDialog fileDialog = new java.awt.FileDialog( org.alice.ide.IDE.getSingleton().getJFrame() );
 		fileDialog.setTitle( this.getFileDialogTitle() );
 		fileDialog.setFilenameFilter( this.createFilenameFilter() );
 		fileDialog.setFile( this.getInitialFileText() );

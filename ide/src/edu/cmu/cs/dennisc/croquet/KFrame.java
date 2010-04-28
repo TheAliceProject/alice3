@@ -64,4 +64,7 @@ public class KFrame extends KRoot {
 	protected java.awt.Container getContentPane() {
 		return this.jFrame.getContentPane();
 	}
+	public void maximize() {
+		this.getAWTFrame().setExtendedState( this.getAWTFrame().getExtendedState() | java.awt.Frame.MAXIMIZED_BOTH );
+	}
 }

@@ -65,14 +65,15 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 			try {
 				org.alice.ide.issue.CaughtExceptionPane bugReportPane = new org.alice.ide.issue.CaughtExceptionPane();
 				bugReportPane.setThreadAndThrowable( thread, throwable );
-				javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton();
-				if( frame != null ) {
-					//pass
-				} else {
-					frame = new javax.swing.JFrame();
-				}
+//				javax.swing.JFrame frame = org.alice.ide.IDE.getSingleton().getFrame();
+//				if( frame != null ) {
+//					//pass
+//				} else {
+//					frame = new javax.swing.JFrame();
+//				}
+				java.awt.Component owner = org.alice.ide.IDE.getSingleton().getJFrame();
 //				while( true ) {
-					javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, frame, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
+					javax.swing.JDialog dialog = edu.cmu.cs.dennisc.javax.swing.JDialogUtilities.createPackedJDialog( bugReportPane, owner, this.title, true, javax.swing.WindowConstants.DISPOSE_ON_CLOSE );
 					dialog.getRootPane().setDefaultButton( bugReportPane.getSubmitButton() );
 					dialog.setVisible( true );
 
@@ -81,9 +82,9 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 							//javax.swing.JOptionPane.showMessageDialog( frame, "Thank you for submitting a bug report." );
 						} else {
 							if( bugReportPane.isSubmitSuccessful() ) {
-								javax.swing.JOptionPane.showMessageDialog( frame, "Your bug report has been successfully submitted.  Thank you." );
+								javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report has been successfully submitted.  Thank you." );
 							} else {
-								javax.swing.JOptionPane.showMessageDialog( frame, "Your bug report FAILED to submit.  Thank you for trying." );
+								javax.swing.JOptionPane.showMessageDialog( owner, "Your bug report FAILED to submit.  Thank you for trying." );
 							}
 						}
 //						break;
@@ -92,7 +93,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 							Object[] options = { CONTINUE_TEXT, SILENTLY_FAIL_TEXT };
 							String message = "If you are caught in an unending stream of exceptions:\n    1) Press the \"" + SILENTLY_FAIL_TEXT + "\" button,\n    2) Attempt save your project to a different file (use Save As...), and\n    3) Restart " + this.applicationName + ".\nElse\n    1) Press the \"" + CONTINUE_TEXT + "\" button.";
 							String title = "Multiple Exceptions Detected";
-							int result = javax.swing.JOptionPane.showOptionDialog( frame, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
+							int result = javax.swing.JOptionPane.showOptionDialog( owner, message, title, javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.ERROR_MESSAGE, null, options, CONTINUE_TEXT );
 							if( result == javax.swing.JOptionPane.NO_OPTION ) {
 								this.isBugReportSubmissionPaneDesired = false;
 							}

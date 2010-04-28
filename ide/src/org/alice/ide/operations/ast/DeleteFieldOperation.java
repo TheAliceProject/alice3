@@ -81,7 +81,7 @@ public class DeleteFieldOperation extends AbstractDeleteNodeOperation< edu.cmu.c
 			sb.append( " if you want to delete \"" );
 			sb.append( field.name.getValue() );
 			sb.append( "\" ." );
-			javax.swing.JOptionPane.showMessageDialog( this.getIDE(), sb.toString() );
+			this.getIDE().showMessageDialog( sb.toString() );
 			return false;
 		} else {
 			return true;

@@ -68,7 +68,7 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 			prevFitnessLevel = person.getFitnessLevel(); 
 
 			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
-			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE() );
+			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE().getJFrame() );
 			if( result != null ) {
 				final org.alice.apis.stage.Gender nextGender;
 				final org.alice.apis.stage.SkinTone nextSkinTone;

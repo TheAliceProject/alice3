@@ -71,7 +71,7 @@ class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
 				};
 
 				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-				PersonCreatorDialog.this.person = personEditorInputPane.showInJDialog( ide );
+				PersonCreatorDialog.this.person = personEditorInputPane.showInJDialog( ide.getJFrame() );
 				return true;
 			}
 		}

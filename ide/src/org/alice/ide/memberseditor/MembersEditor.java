@@ -64,9 +64,8 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.javax.swing.components.JPag
 //		return this.types;
 //	}
 
-	public void handleFieldSelection( org.alice.ide.event.FieldSelectionEvent e ) {
+	public void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		this.types.clear();
-		edu.cmu.cs.dennisc.alice.ast.AbstractField field = e.getNextValue();
 		if( field != null ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractType type = field.getValueType();
 			while( type != null ) {
@@ -196,9 +195,9 @@ class TabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
 		this.addTab( membersTab.getTitle(), scrollPane );
 	}
-	public void handleFieldSelection( org.alice.ide.event.FieldSelectionEvent e ) {
+	public void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
 		for( MembersTab membersTab : membersTabs ) {
-			membersTab.handleFieldSelection( e );
+			membersTab.handleFieldSelection( field );
 		}
 	}
 	public void refresh() {
@@ -211,8 +210,15 @@ class TabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 /**
  * @author Dennis Cosgrove
  */
-public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > implements org.alice.ide.event.IDEListener {
+public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 	private TabbedPane tabbedPane = new TabbedPane();
+	private org.alice.ide.IDE.FieldSelectionObserver fieldSelectionObserver = new org.alice.ide.IDE.FieldSelectionObserver() {
+		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
+		}
+		public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
+			MembersEditor.this.tabbedPane.handleFieldSelection( nextField );
+		}
+	};
 
 	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
@@ -232,36 +238,22 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 		this.add( this.tabbedPane );
 	}
 
-	public void fieldSelectionChanging( org.alice.ide.event.FieldSelectionEvent e ) {
-	}
-	public void fieldSelectionChanged( org.alice.ide.event.FieldSelectionEvent e ) {
-		this.tabbedPane.handleFieldSelection( e );
-	}
-
-	public void localeChanging( org.alice.ide.event.LocaleEvent e ) {
-	}
-	public void localeChanged( org.alice.ide.event.LocaleEvent e ) {
-	}
-
-	public void focusedCodeChanging( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-	public void focusedCodeChanged( org.alice.ide.event.FocusedCodeChangeEvent e ) {
-	}
-
-	public void projectOpening( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-	public void projectOpened( org.alice.ide.event.ProjectOpenEvent e ) {
-	}
-
-	public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-	public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e ) {
-	}
-
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
 		this.tabbedPane.refresh();
 	}
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
 		this.tabbedPane.refresh();
 	}
+	@Override
+	public void addNotify() {
+		super.addNotify();
+		this.getIDE().addFieldSelectionObserver( this.fieldSelectionObserver );
+		MembersEditor.this.tabbedPane.handleFieldSelection( getIDE().getFieldSelection() );
+	}
+	@Override
+	public void removeNotify() {
+		this.getIDE().removeFieldSelectionObserver( this.fieldSelectionObserver );
+		super.removeNotify();
+	}
+	
 }
