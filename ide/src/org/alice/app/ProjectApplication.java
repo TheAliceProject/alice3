@@ -60,22 +60,38 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	public static final java.util.UUID URI_GROUP = java.util.UUID.fromString( "79bf8341-61a4-4395-9469-0448e66d9ac6" );
 	public static final java.util.UUID IDE_GROUP = java.util.UUID.fromString( "d92c1a48-a6ae-473b-9b9f-94734e1606c1" );
 
-	private edu.cmu.cs.dennisc.croquet.Operation undoOperation = new org.alice.app.operations.edit.UndoOperation();
-	private edu.cmu.cs.dennisc.croquet.Operation redoOperation = new org.alice.app.operations.edit.RedoOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveOperation = new org.alice.app.operations.file.SaveProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveAsOperation = new org.alice.app.operations.file.SaveAsProjectOperation();
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation newProjectOperation = new org.alice.app.operations.file.NewProjectOperation( this.saveOperation );
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation openProjectOperation = new org.alice.app.operations.file.OpenProjectOperation( this.saveOperation );
-	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation exitOperation = new org.alice.app.operations.file.ClearanceCheckingExitOperation( this.saveOperation );
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveProjectOperation = new org.alice.app.operations.file.SaveProjectOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation saveAsProjectOperation = new org.alice.app.operations.file.SaveAsProjectOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation newProjectOperation = new org.alice.app.operations.file.NewProjectOperation( this.saveProjectOperation );
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation openProjectOperation = new org.alice.app.operations.file.OpenProjectOperation( this.saveProjectOperation );
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation exitOperation = new org.alice.app.operations.file.ClearanceCheckingExitOperation( this.saveProjectOperation );
 
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation undoOperation = new org.alice.app.operations.edit.UndoOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation redoOperation = new org.alice.app.operations.edit.RedoOperation();
 	
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getNewProjectOperation() {
-		return this.exitOperation;
+		return this.newProjectOperation;
+	}
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getOpenProjectOperation() {
+		return this.openProjectOperation;
+	}
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getSaveProjectOperation() {
+		return this.saveProjectOperation;
+	}
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getSaveAsProjectOperation() {
+		return this.saveAsProjectOperation;
 	}
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getExitOperation() {
 		return this.exitOperation;
 	}
 	
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getUndoOperation() {
+		return this.undoOperation;
+	}
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRedoOperation() {
+		return this.redoOperation;
+	}
+
 	public org.alice.app.openprojectpane.OpenProjectPane getOpenProjectPane() {
 		//todo: cache
 		return new org.alice.app.openprojectpane.OpenProjectPane( this.getTemplatesTabContentPane() );
@@ -112,25 +128,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		this.showMessageDialog( sb.toString(), "Cannot read file", edu.cmu.cs.dennisc.croquet.MessageType.ERROR );
 	}
 
-	private static class FileMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
-		public FileMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), "File", operations );
-		}
-	}
-	private static class EditMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
-		public EditMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), "Edit", operations );
-		}
-	}
-	private FileMenuOperation fileMenuOperation = new FileMenuOperation( this.newProjectOperation, this.openProjectOperation, null, this.saveOperation, this.saveAsOperation, null, this.exitOperation );
-	private EditMenuOperation editMenuOperation = new EditMenuOperation( this.undoOperation, this.redoOperation );
-
-	protected edu.cmu.cs.dennisc.croquet.MenuBarOperation createMenuBarOperation() {
-		edu.cmu.cs.dennisc.croquet.MenuBarOperation rv = new edu.cmu.cs.dennisc.croquet.MenuBarOperation( IDE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		rv.addMenuOperation( this.fileMenuOperation );
-		rv.addMenuOperation( this.editMenuOperation );
-		return rv;
-	}
+	protected abstract edu.cmu.cs.dennisc.croquet.MenuBarOperation createMenuBarOperation();
 	@Override
 	public void initialize(java.lang.String[] args) {
 		super.initialize(args);

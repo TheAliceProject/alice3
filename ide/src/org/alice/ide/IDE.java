@@ -42,8 +42,6 @@
  */
 package org.alice.ide;
 
-import org.alice.app.ProjectApplication.ProjectObserver;
-
 class MenuItem extends javax.swing.JMenuItem {
 	private java.io.File file;
 	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
@@ -177,6 +175,27 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	public static IDE getSingleton() {
 		return IDE.singleton;
+	}
+
+	private static class FileMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
+		public FileMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+			super( IDE_GROUP, java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), "File", operations );
+		}
+	}
+	private static class EditMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
+		public EditMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+			super( IDE_GROUP, java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), "Edit", operations );
+		}
+	}
+	private FileMenuOperation fileMenuOperation = new FileMenuOperation( this.getNewProjectOperation(), this.getOpenProjectOperation(), null, this.getSaveProjectOperation(), this.getSaveAsProjectOperation(), null, this.getExitOperation() );
+	private EditMenuOperation editMenuOperation = new EditMenuOperation( this.getUndoOperation(), this.getRedoOperation() );
+
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.MenuBarOperation createMenuBarOperation() {
+		edu.cmu.cs.dennisc.croquet.MenuBarOperation rv = new edu.cmu.cs.dennisc.croquet.MenuBarOperation( IDE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
+		rv.addMenuOperation( this.fileMenuOperation );
+		rv.addMenuOperation( this.editMenuOperation );
+		return rv;
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {

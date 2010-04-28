@@ -742,5 +742,4 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		}
 		return declaredFields;
 	}
-
 }
