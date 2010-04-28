@@ -56,11 +56,14 @@ import org.alice.interact.handle.HandleSet;
 import org.alice.interact.handle.LinearDragHandle;
 
 import edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.Plane;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Ray;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
+import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 
 /**
@@ -174,6 +177,13 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	protected void updateBasedOnHandlePull( double previousPull, double newPull )
 	{
 		Vector3 translation = Vector3.createMultiplication( this.linearHandle.getDragAxis(), (newPull - previousPull));
+		
+//		AffineMatrix4x4 toSceneTransform = this.linearHandle.getReferenceFrame().getInverseAbsoluteTransformation();
+//		Vector3 sceneSpaceTranslation = new Vector3(translation);
+//		toSceneTransform.transform(sceneSpaceTranslation);
+//		
+//		Transformable snapFrame = new Transformable();
+//		this.linearHandle.getReferenceFrame();
 		
 		Vector3 movementDif = new Vector3(translation);
 		movementDif.normalize();

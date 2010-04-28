@@ -1,8 +1,10 @@
 package org.alice.interact.manipulator;
 
+import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.SnapLine;
 
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
@@ -11,6 +13,7 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Component;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.OrthographicCamera;
+import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.util.TransformationUtilities;
@@ -146,7 +149,7 @@ public class SnapUtilities
 		return boundingBox;
 	}
 	
-	public static Point3 snapObjectToGround(Transformable toSnap, Point3 newPosition)
+	public static Point3 snapObjectToGround(Transformable toSnap, Point3 newPosition, ReferenceFrame referenceFrame)
 	{
 
 		Point3 returnSnapPosition = new Point3(newPosition);
@@ -183,7 +186,7 @@ public class SnapUtilities
 		return (1 - Math.abs(dotProd)) <= epsilon;
 	}
 	
-	public static void showHorizontalSnap(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition)
+	public static void showHorizontalSnap(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition, ReferenceFrame referenceFrame)
 	{
 		Vector3 snapVector = Vector3.createSubtraction(currentPosition, snapPosition);
 		Point3 linePosition = new Point3(snapPosition);
@@ -221,7 +224,7 @@ public class SnapUtilities
 		}
 	}
 	
-	public static void showVerticalSnap(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition)
+	public static void showVerticalSnap(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition, ReferenceFrame referenceFrame)
 	{
 		if (isEdgeOn(camera))
 		{
@@ -237,25 +240,29 @@ public class SnapUtilities
 		}
 	}
 	
-	public static void showSnapLines(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition)
+	public static void showSnapLines(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition, ReferenceFrame referenceFrame)
 	{
-		showHorizontalSnap(camera, currentPosition, snapPosition);
-		showVerticalSnap(camera, currentPosition, snapPosition);
+		showHorizontalSnap(camera, currentPosition, snapPosition, referenceFrame);
+		showVerticalSnap(camera, currentPosition, snapPosition, referenceFrame);
 	}
 	
 	public static Point3 snapObjectToAbsoluteGrid(Transformable toSnap, Point3 newPosition)
 	{
-		return snapObjectToAbsoluteGrid(toSnap, newPosition, DEFAULT_GRID_SPACING);
+		return snapObjectToAbsoluteGrid(toSnap, newPosition, DEFAULT_GRID_SPACING, toSnap.getRoot());
 	}
 	
-	public static Point3 snapObjectToAbsoluteGrid(Transformable toSnap, Point3 newPosition, double gridSpacing)
+	public static Point3 snapObjectToAbsoluteGrid(Transformable toSnap, Point3 originalPositionIn, double gridSpacing, ReferenceFrame referenceFrame)
 	{
-		Point3 returnSnapPosition = new Point3(newPosition);
+		AffineMatrix4x4 toReferenceFrame = referenceFrame.getAbsoluteTransformation();
+		AffineMatrix4x4 backToScene = referenceFrame.getAbsoluteTransformation();
+		Point3 originalPosition = new Point3(originalPositionIn);
+		toReferenceFrame.transform(originalPosition);
+		Point3 returnSnapPosition = new Point3(originalPosition);
 		boolean didSnap = false;
-		Vector3 movementDelta = Vector3.createSubtraction( newPosition, toSnap.getAbsoluteTransformation().translation);
+		Vector3 movementDelta = Vector3.createSubtraction( originalPosition, toSnap.getAbsoluteTransformation().translation);
 		if (movementDelta.x != 0)
 		{
-			double currentPos = newPosition.x;
+			double currentPos = originalPosition.x;
 			
 			int lowerMultiplier = (int)(currentPos / gridSpacing);
 			int upperMultiplier = ( currentPos < 0 ) ? lowerMultiplier - 1 : lowerMultiplier + 1;
@@ -276,7 +283,7 @@ public class SnapUtilities
 		}
 		if (movementDelta.y != 0)
 		{
-			double currentPos = newPosition.y;
+			double currentPos = originalPosition.y;
 			
 			int lowerMultiplier = (int)(currentPos / gridSpacing);
 			int upperMultiplier = ( currentPos < 0 ) ? lowerMultiplier - 1 : lowerMultiplier + 1;
@@ -297,7 +304,7 @@ public class SnapUtilities
 		}
 		if (movementDelta.z != 0)
 		{
-			double currentPos = newPosition.z;
+			double currentPos = originalPosition.z;
 			
 			int lowerMultiplier = (int)(currentPos / gridSpacing);
 			int upperMultiplier = ( currentPos < 0 ) ? lowerMultiplier - 1 : lowerMultiplier + 1;
@@ -316,8 +323,31 @@ public class SnapUtilities
 			
 			returnSnapPosition.z = currentPos;
 		}
+		backToScene.transform(returnSnapPosition);
 		return returnSnapPosition;
 		
+	}
+	
+	public static Point3 doMovementSnapping(Transformable t, Point3 currentPosition, AbstractDragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera)
+	{
+		Point3 snapPosition = new Point3(currentPosition);
+		
+		//Try snapping to various snaps
+		if (dragAdapter.getSnapState().shouldSnapToGround())
+		{
+			snapPosition = SnapUtilities.snapObjectToGround(t, currentPosition, referenceFrame);
+		}
+		if (dragAdapter.getSnapState().shouldSnapToGrid())
+		{
+			snapPosition = SnapUtilities.snapObjectToAbsoluteGrid(t, snapPosition, dragAdapter.getSnapState().getGridSpacing(), referenceFrame);
+		}
+		//Visualize any snapping that happened
+		if (camera != null)
+		{
+			SnapUtilities.showSnapLines(camera, currentPosition, snapPosition, referenceFrame);
+		}
+		//Apply the new snap position
+		return snapPosition;
 	}
 
 }

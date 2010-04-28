@@ -303,21 +303,8 @@ public class OmniDirectionalDragManipulator extends AbstractManipulator implemen
 			Point3 movementVector = getMovementVectorBasedOnCamera( currentInput, previousInput );
 			Point3 currentPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
 			Point3 newPosition = Point3.createAddition( currentPosition, movementVector );
-			Point3 snapPosition = new Point3(newPosition);
 			
-			//Try snapping to various snaps
-			if (this.dragAdapter.getSnapState().shouldSnapToGround())
-			{
-				snapPosition = SnapUtilities.snapObjectToGround(this.manipulatedTransformable, newPosition);
-			}
-			if (this.dragAdapter.getSnapState().shouldSnapToGrid())
-			{
-				snapPosition = SnapUtilities.snapObjectToAbsoluteGrid(this.manipulatedTransformable, snapPosition, this.dragAdapter.getSnapState().getGridSpacing());
-			}
-			//Visualize any snapping that happened
-			SnapUtilities.showSnapLines(this.getCamera(), newPosition, snapPosition);
-			//Apply the new snap position
-			newPosition = snapPosition;
+			newPosition = SnapUtilities.doMovementSnapping(this.manipulatedTransformable, newPosition, this.dragAdapter, this.manipulatedTransformable.getRoot(), this.getCamera());
 			
 			//Send manipulation events
 			Vector3 movementDif = Vector3.createSubtraction( newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation);

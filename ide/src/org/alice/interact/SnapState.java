@@ -23,6 +23,11 @@ public class SnapState
 		return this.isSnapEnabled && this.isSnapToGroundEnabled;
 	}
 	
+	public boolean isSnapToGroundEnabled()
+	{
+		return this.isSnapToGroundEnabled;
+	}
+	
 	public void setShouldSnapToGridEnabled(boolean shouldSnapToGround)
 	{
 		this.isSnapToGridEnabled = shouldSnapToGround;
@@ -31,6 +36,11 @@ public class SnapState
 	public boolean shouldSnapToGrid()
 	{
 		return this.isSnapEnabled && this.isSnapToGridEnabled;
+	}
+	
+	public boolean isSnapToGridEnabled()
+	{
+		return this.isSnapToGridEnabled;
 	}
 	
 	public void setGridSpacing(double gridSpacing)

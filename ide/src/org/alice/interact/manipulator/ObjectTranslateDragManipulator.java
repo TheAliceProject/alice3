@@ -240,15 +240,9 @@ public class ObjectTranslateDragManipulator extends AbstractManipulator implemen
 			}
 				
 			Point3 newPosition = getPositionBasedonOnMouseLocation( currentInput.getMouseLocation() );
-			Point3 snapPosition = new Point3(newPosition);
-			if (this.dragAdapter.getSnapState().shouldSnapToGround())
-			{
-				snapPosition = SnapUtilities.snapObjectToGround(this.manipulatedTransformable, newPosition);
-			}
-			//Visualize any snapping that happened
-			SnapUtilities.showSnapLines(this.getCamera(), newPosition, snapPosition);
-			//Apply the new snap position
-			newPosition = snapPosition;
+
+			newPosition = SnapUtilities.doMovementSnapping(this.manipulatedTransformable, newPosition, this.dragAdapter, this.manipulatedTransformable.getRoot(), this.getCamera());
+			
 			
 			Vector3 movementDif = Vector3.createSubtraction( newPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation);
 			movementDif.normalize();
