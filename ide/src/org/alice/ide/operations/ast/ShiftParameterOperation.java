@@ -49,20 +49,21 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
  * @author Dennis Cosgrove
  */
 public abstract class ShiftParameterOperation extends AbstractCodeParameterOperation {
-	public ShiftParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
-		super( parametersProperty, parameter );
+	public ShiftParameterOperation( java.util.UUID individualId, NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
+		super( individualId, parametersProperty, parameter );
 	}
 	protected abstract boolean isAppropriate( int index, int n );
 	protected abstract int getIndexA();
 	public boolean isIndexAppropriate() {
 		return this.isAppropriate( this.getIndex(), this.getParameterCount() );
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( this.getCode(), edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice.class );
 		final int aIndex = this.getIndexA();
 		final int bIndex = aIndex + 1;
 		if( method != null ) {
-			actionContext.commitAndInvokeDo(new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					swap( method, aIndex, bIndex );

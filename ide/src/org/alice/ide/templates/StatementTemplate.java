@@ -73,19 +73,19 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		return new org.alice.ide.operations.DefaultDragAndDropOperation();
 	}
 	@Override
-	public void addNotify() {
+	protected void adding() {
+		super.adding();
 		if( this.dragAndDropOperation != null ) {
 			//pass
 		} else {
 			this.dragAndDropOperation = this.createDragAndDropOperation();
 		}
 		this.setDragAndDropOperation( this.dragAndDropOperation );
-		super.addNotify();
 	}
 	@Override
-	public void removeNotify() {
-		super.removeNotify();
+	protected void removed() {
 		this.setPopupOperation( null );
+		super.removed();
 	}
 	@Override
 	public boolean contains( int x, int y ) {

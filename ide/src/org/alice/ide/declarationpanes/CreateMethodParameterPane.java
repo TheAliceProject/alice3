@@ -57,7 +57,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 		}
 	}
 
-	private javax.swing.JCheckBox checkBox;
+	private edu.cmu.cs.dennisc.croquet.KCheckBox checkBox;
 	private java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations;
 	public CreateMethodParameterPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations ) {
 		super( method );
@@ -65,7 +65,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 		
 	}
 	@Override
-	protected java.awt.Component[] createWarningRow() {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createWarningRow() {
 		final int N = this.methodInvocations.size();
 		if( N > 0 ) {
 
@@ -80,7 +80,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 //			} else {
 //				codeText = "constructor";
 //			}
-			this.checkBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( new UnderstandingConfirmationOperation( codeText ) );
+			this.checkBox = this.getIDE().createCheckBox( new UnderstandingConfirmationOperation( codeText ) );
 			this.checkBox.setOpaque( false );
 			
 			StringBuffer sb = new StringBuffer();
@@ -108,13 +108,13 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			}
 			sb.append( " invocation.</body></html>" );
 
-			edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane();
-			pane.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( sb.toString() ) );
-			pane.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			pane.add( new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
-			pane.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			pane.add( this.checkBox );
-			return new java.awt.Component[] { edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "WARNING:" ), pane };
+			edu.cmu.cs.dennisc.croquet.KPageAxisPanel pane = new edu.cmu.cs.dennisc.croquet.KPageAxisPanel();
+			pane.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( sb.toString() ) );
+			pane.addComponent( this.getIDE().createVerticalStrut( 8 ) );
+			pane.addComponent( new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( new edu.cmu.cs.dennisc.croquet.KLabel( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+			pane.addComponent( this.getIDE().createVerticalStrut( 8 ) );
+			pane.addComponent( this.checkBox );
+			return new edu.cmu.cs.dennisc.croquet.KComponent< ? >[] { new edu.cmu.cs.dennisc.croquet.KLabel( "WARNING:" ), pane };
 		} else {
 			this.checkBox = null;
 			return null;

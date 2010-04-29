@@ -86,7 +86,7 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.inputpane.K
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	protected abstract java.awt.Component createPreviewSubComponent();
+	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? > createPreviewSubComponent();
 	private void updatePreview() {
 		if( this.previewPane != null ) {
 			this.previewPane.refresh();

@@ -61,7 +61,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.javax.swing.
 	class RestoreDefaultsActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 		private boolean isAll;
 		public RestoreDefaultsActionOperation() {
-			super( org.alice.ide.IDE.PREFERENCES_GROUP );
+			super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "47826a1a-383e-4628-acc9-d07dcc2e55ac" ) );
 			this.setName( "Restore Defaults" );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
@@ -91,7 +91,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.javax.swing.
 
 	class ApplyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public ApplyActionOperation() {
-			super( org.alice.ide.IDE.PREFERENCES_GROUP );
+			super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "e83b1957-5d47-492a-ab7b-8bfeaef148af" ) );
 			this.setName( "Apply" );
 		}
 		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {

@@ -44,7 +44,7 @@ package org.alice.ide.warningpane;
 
 public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	public WarningPane( boolean isSolicited ) {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
+		javax.swing.JLabel label = new javax.swing.JLabel(  new javax.swing.ImageIcon( this.getClass().getResource( "images/toxic.png" ) ) );
 
 		StringBuffer sb = new StringBuffer();
 		sb.append( "<html><body>" );
@@ -72,7 +72,7 @@ public class WarningPane extends edu.cmu.cs.dennisc.javax.swing.components.JPage
 				this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 0, 16, 0, 0 ) );
 			}
 			private java.awt.Component createLabel( String text ) {
-				javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
+				javax.swing.JLabel rv = new javax.swing.JLabel( text );
 				rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 				return rv;
 			}

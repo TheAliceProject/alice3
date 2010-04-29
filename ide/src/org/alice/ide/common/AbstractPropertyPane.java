@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.property.InstanceProperty > extends edu.cmu.cs.dennisc.javax.swing.components.JBoxPane {
+public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.property.InstanceProperty > extends edu.cmu.cs.dennisc.croquet.KAxisPanel {
 	private Factory factory;
 	private E property;
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {
@@ -64,14 +64,14 @@ public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.propert
 	}
 
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.property.addPropertyListener( this.propertyAdapter );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		this.property.removePropertyListener( this.propertyAdapter );
-		super.removeNotify();
+		super.removed();
 	}
 	
 	protected Factory getFactory() {

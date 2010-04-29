@@ -46,6 +46,10 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 abstract class CreateInstanceFromFileActionOperation extends AbstractGalleryDeclareFieldOperation {
+	public CreateInstanceFromFileActionOperation( java.util.UUID individualId ) {
+		super( individualId );
+	}
+
 	protected abstract java.io.File getInitialDirectory();
 
 	private void showMessageDialog( java.io.File file, boolean isValidZip ) {

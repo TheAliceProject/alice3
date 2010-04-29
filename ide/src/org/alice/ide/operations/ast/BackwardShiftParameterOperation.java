@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice;
  */
 public class BackwardShiftParameterOperation extends ShiftParameterOperation {
 	public BackwardShiftParameterOperation( NodeListProperty< ParameterDeclaredInAlice > parametersProperty, ParameterDeclaredInAlice parameter ) {
-		super( parametersProperty, parameter );
+		super( java.util.UUID.fromString( "d318d441-f58e-49b1-b01e-d16f15259c95" ), parametersProperty, parameter );
 		this.setName( "Shift Backward" );
 	}
 	@Override

@@ -56,7 +56,7 @@ public class ParameterPane extends AccessiblePane {
 		this.parametersProperty = parametersProperty;
 		this.parameter = parameter;
 		this.add( new org.alice.ide.common.DeclarationNameLabel( this.parameter ) );
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
+		this.setBackgroundColor( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ParameterAccess.class ) );
 		final org.alice.ide.operations.ast.RenameParameterOperation renameParameterOperation = new org.alice.ide.operations.ast.RenameParameterOperation( this.parameter );
 		
 		if( this.parametersProperty != null ) {

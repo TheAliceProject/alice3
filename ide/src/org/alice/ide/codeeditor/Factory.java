@@ -46,17 +46,18 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement;
-	public ConvertStatementWithBodyActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+	public ConvertStatementWithBodyActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody original, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody replacement ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 		this.property = property;
 		this.original = original;
 		this.replacement = replacement;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		final int index = this.property.indexOf( this.original );
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );
@@ -91,13 +92,13 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 }
 class ConvertDoInOrderToDoTogetherActionOperation extends ConvertStatementWithBodyActionOperation {
 	public ConvertDoInOrderToDoTogetherActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoInOrder doInOrder ) {
-		super( property, doInOrder, new edu.cmu.cs.dennisc.alice.ast.DoTogether() );
+		super( java.util.UUID.fromString( "d3abb3c6-f016-4687-be00-f0921de7cb39" ), property, doInOrder, new edu.cmu.cs.dennisc.alice.ast.DoTogether() );
 		this.setName( "Convert To DoTogether" );
 	}
 }
 class ConvertDoTogetherToDoInOrderActionOperation extends ConvertStatementWithBodyActionOperation {
 	public ConvertDoTogetherToDoInOrderActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.DoTogether doTogether ) {
-		super( property, doTogether, new edu.cmu.cs.dennisc.alice.ast.DoInOrder() );
+		super( java.util.UUID.fromString( "14aec49f-ae07-4a4c-9c0b-73c5533d514f" ), property, doTogether, new edu.cmu.cs.dennisc.alice.ast.DoInOrder() );
 		this.setName( "Convert To DoInOrder" );
 	}
 }
@@ -106,12 +107,13 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.Abstract
 	private edu.cmu.cs.dennisc.alice.ast.StatementListProperty property;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody;
 	public DissolveStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		super( java.util.UUID.fromString( "b48d1d87-9dbf-4fc5-bb07-daa56ae6bd7d" ), edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
 		this.setName( "Dissolve " + abstractStatementWithBody.getClass().getSimpleName() );
 		this.property = property;
 		this.abstractStatementWithBody = abstractStatementWithBody;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		final int index = this.property.indexOf( this.abstractStatementWithBody );
 		if( index >= 0 ) {
 			final int N = this.abstractStatementWithBody.body.getValue().statements.size();
@@ -119,7 +121,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.Abstract
 			final edu.cmu.cs.dennisc.alice.ast.Statement[] statements = new edu.cmu.cs.dennisc.alice.ast.Statement[ N ];
 			this.abstractStatementWithBody.body.getValue().statements.toArray( statements );
 			
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );
@@ -154,7 +156,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public DeleteStatementActionOperation( edu.cmu.cs.dennisc.alice.ast.StatementListProperty property, edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "c2b2810b-68ad-4935-b47f-458fe90f877b" ) );
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Delete " );
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.ExpressionStatement ) {
@@ -168,10 +170,11 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		this.property = property;
 		this.statement = statement;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					property.remove( index );

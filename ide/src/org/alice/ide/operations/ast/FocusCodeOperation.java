@@ -48,7 +48,7 @@ package org.alice.ide.operations.ast;
 public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode;
 	public FocusCodeOperation( edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode ) {
-		super( org.alice.app.ProjectApplication.IDE_GROUP );
+		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "82bf4d2a-f1ff-4df5-a5dc-80f981181ba5" ) );
 		this.nextCode = nextCode;
 		String name;
 		if( nextCode instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
@@ -58,9 +58,10 @@ public class FocusCodeOperation extends org.alice.ide.operations.AbstractActionO
 		}
 		this.setName( name );
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
-		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				getIDE().setFocusedCode( nextCode );

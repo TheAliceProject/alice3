@@ -45,12 +45,12 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane  {
-	public TypedDeclarationPane( java.awt.Component... components ) {
+public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel  {
+	public TypedDeclarationPane( edu.cmu.cs.dennisc.croquet.KComponent< ? >... components ) {
 		super( components );
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setForeground( java.awt.Color.GRAY );
+		this.setForegroundColor( java.awt.Color.GRAY );
 	}
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {

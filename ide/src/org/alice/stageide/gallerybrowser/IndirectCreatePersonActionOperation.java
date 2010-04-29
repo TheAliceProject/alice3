@@ -47,19 +47,20 @@ package org.alice.stageide.gallerybrowser;
  */
 class IndirectCreatePersonActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public IndirectCreatePersonActionOperation() {
+		super( java.util.UUID.fromString( "3dba52e9-fe65-4fe2-9f51-fd428549ca3a" ) );
 		this.setName( "Create Person..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		PersonCreatorDialog dialog = new PersonCreatorDialog( this.getIDE().getJFrame() );
 		dialog.pack();
 		dialog.setVisible( true );
 		dialog.createAndExecuteWorker();
 	}
 
-	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		IndirectCreatePersonActionOperation indirectCreatePersonActionOperation = new IndirectCreatePersonActionOperation();
-		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( indirectCreatePersonActionOperation, null, true );
-	}
+//	public static void main( String[] args ) {
+//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+//		IndirectCreatePersonActionOperation indirectCreatePersonActionOperation = new IndirectCreatePersonActionOperation();
+//		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( indirectCreatePersonActionOperation, null, true );
+//	}
 }

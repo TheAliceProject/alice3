@@ -50,7 +50,7 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
 public class EditFieldOperation extends AbstractEditFieldOperation {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	public EditFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, "Edit " + field.getName() + "..." );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "66bf123b-f047-4cba-86ea-04d3a0a1f689" ), "Edit " + field.getName() + "..." );
 		this.field = field;
 	}
 	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {

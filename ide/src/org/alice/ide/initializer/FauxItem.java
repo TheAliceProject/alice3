@@ -57,7 +57,7 @@ abstract class FauxItem extends javax.swing.AbstractButton {
 		this.setModel( new javax.swing.JToggleButton.ToggleButtonModel() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 2, 2, 2, 2 ) );
 		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
-		this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "[ " + index + " ]" ) );
+		this.add( new edu.cmu.cs.dennisc.croquet.KLabel( "[ " + index + " ]" ) );
 		this.add( this.dropDownListItemExpressionPane );
 		this.add( javax.swing.Box.createHorizontalGlue() );
 		this.addMouseListener( new java.awt.event.MouseListener() {

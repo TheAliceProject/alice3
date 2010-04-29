@@ -83,11 +83,13 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.inputpane.KInputPan
 		
 		class ClearRecentProjectsOperation extends org.alice.ide.operations.AbstractActionOperation {
 			public ClearRecentProjectsOperation() {
-				super( org.alice.ide.IDE.PREFERENCES_GROUP );
+				super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "f8b4c080-88cf-41e5-ac7d-afc2bd340083" ) );
 				this.setName( "Clear Recent Projects" );
 			}
-			public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			@Override
+			protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 				org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.clear();
+				context.finish();
 			}
 		}
 		

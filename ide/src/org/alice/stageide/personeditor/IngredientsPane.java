@@ -57,7 +57,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 	private FullBodyOutfitList fullBodyOutfitList = new FullBodyOutfitList();
 	
 	private static java.awt.Component createLabel( String text ) {
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
+		javax.swing.JLabel rv = new edu.cmu.cs.dennisc.croquet.KLabel( text );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		return rv;
 	}

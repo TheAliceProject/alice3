@@ -46,6 +46,9 @@ package org.alice.stageide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 abstract class AbstractGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldOperation {
+	public AbstractGalleryDeclareFieldOperation( java.util.UUID individualId ) {
+		super( individualId );
+	}
 	@Override
 	protected final edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType() {
 		return this.getIDE().getSceneType();

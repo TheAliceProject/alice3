@@ -47,12 +47,13 @@ package org.alice.ide.operations.ast;
  */
 public class SelectFieldActionOperation extends AbstractFieldActionOperation {
 	public SelectFieldActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( org.alice.app.ProjectApplication.IDE_GROUP, field );
+		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "250135aa-af23-4e7f-a134-63405a27e16a" ), field );
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		final edu.cmu.cs.dennisc.alice.ast.AbstractField prevField = getIDE().getFieldSelection();
 		final edu.cmu.cs.dennisc.alice.ast.AbstractField nextField = getField();
-		actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+		context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 			@Override
 			public void doOrRedo( boolean isDo ) {
 				getIDE().setFieldSelection( nextField );

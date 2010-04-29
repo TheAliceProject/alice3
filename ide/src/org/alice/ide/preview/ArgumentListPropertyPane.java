@@ -50,16 +50,16 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		super( factory, property );
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
-		java.awt.Component expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > expressionComponent = this.getFactory().createExpressionPane( argument.expression.getValue() );
 		final boolean IS_PARAMETER_NAME_DESIRED = false;
 		if( IS_PARAMETER_NAME_DESIRED ) {
 			String parameterName = argument.parameter.getValue().getName();
 			if( parameterName != null && parameterName.length() > 0 ) {
-				edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
-				rv.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( parameterName + ": " ) );
-				rv.add( expressionComponent );
+				edu.cmu.cs.dennisc.croquet.KLineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel();
+				rv.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( parameterName + ": " ) );
+				rv.addComponent( expressionComponent );
 				return rv;
 			} else {
 				return expressionComponent;

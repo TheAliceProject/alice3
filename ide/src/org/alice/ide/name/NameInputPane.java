@@ -74,7 +74,7 @@ public abstract class NameInputPane<E> extends RowsInputPane< E > {
 	@Override
 	protected java.util.List< java.awt.Component[] > createComponentRows() {
 		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
+		javax.swing.JLabel label = new edu.cmu.cs.dennisc.croquet.KLabel();
 		label.setText( "name:" );
 		assert this.textField != null;
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {

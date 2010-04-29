@@ -48,7 +48,7 @@ package org.alice.ide.operations.ast;
 public class FillInExpressionPropertyActionOperation extends AbstractExpressionPropertyActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType desiredType;
 	public FillInExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredType ) {
-		super( expressionProperty );
+		super( java.util.UUID.fromString( "6ec3825b-459d-4c3c-a4fe-ca57525c77df" ), expressionProperty );
 		this.desiredType = desiredType;
 	}
 	@Override

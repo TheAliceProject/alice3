@@ -62,14 +62,14 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 //			if( getIDE().isJava() ) {
 //				//pass
 //			} else {
-				this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "." ) );
+				this.add( new edu.cmu.cs.dennisc.croquet.KLabel( "." ) );
 //			}
 		}
 		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( this.fieldAccess.field.getValue() );
 		//nodeNameLabel.setFontToScaledFont( 1.2f );
 		//nodeNameLabel.setFontToDerivedFont( zoot.font.ZTextWeight.BOLD );
 		this.add( nodeNameLabel );
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
+		this.setBackgroundColor( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override
 	protected boolean isExpressionTypeFeedbackDesired() {

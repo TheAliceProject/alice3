@@ -54,7 +54,7 @@ public class DeleteFieldOperation extends AbstractDeleteNodeOperation< edu.cmu.c
 		
 	}
 	public DeleteFieldOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		super( field, DeleteFieldOperation.getFieldsProperty( field ) );
+		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), field, DeleteFieldOperation.getFieldsProperty( field ) );
 	}
 
 	@Override

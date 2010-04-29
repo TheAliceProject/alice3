@@ -58,7 +58,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 	};
 	public ProcedureInvocationTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		this.method = method;
-		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > operations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
+		java.util.List< edu.cmu.cs.dennisc.croquet.Operation > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 		operations.add( new org.alice.ide.operations.run.PreviewMethodOperation( this ) );
 		if( method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method;
@@ -69,18 +69,18 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 		this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( operations ) );
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.addListPropertyListener( this.parameterAdapter );
 		}
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		if( this.method instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.method).parameters.removeListPropertyListener( this.parameterAdapter );
 		}
-		super.removeNotify();
+		super.removed();
 	}
 	
 	@Override

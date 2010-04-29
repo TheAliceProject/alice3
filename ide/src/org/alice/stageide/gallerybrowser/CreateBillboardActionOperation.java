@@ -69,6 +69,7 @@ class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.Create
  */
 class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperation {
 	public CreateBillboardActionOperation() {
+		super( java.util.UUID.fromString( "6ec4f250-7bb7-4f73-830b-1e9b511b69d5" ) );
 		this.setName( "Create Billboard..." );
 	}
 	@Override

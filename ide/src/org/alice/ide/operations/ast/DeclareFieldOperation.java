@@ -48,6 +48,7 @@ package org.alice.ide.operations.ast;
 public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	public DeclareFieldOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+		super( java.util.UUID.fromString( "e935b0ea-e927-49ff-b33b-2c8eaf5c8b57" ) );
 		this.ownerType = ownerType;
 		this.setName( "Declare Property..." );
 	}

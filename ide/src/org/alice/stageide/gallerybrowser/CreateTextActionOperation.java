@@ -217,9 +217,8 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 		}
 	}
 
-	private static java.awt.Component createLabel( String text ) {
-		//javax.swing.JLabel rv = new javax.swing.JLabel( text );
-		javax.swing.JLabel rv = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text );
+	private static edu.cmu.cs.dennisc.croquet.KLabel createLabel( String text ) {
+		edu.cmu.cs.dennisc.croquet.KLabel rv = new edu.cmu.cs.dennisc.croquet.KLabel( text );
 		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
 		rv.setOpaque( false );
@@ -290,6 +289,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
  */
 class CreateTextActionOperation extends AbstractGalleryDeclareFieldOperation {
 	public CreateTextActionOperation() {
+		super( java.util.UUID.fromString( "37c0a6d6-a21b-4abb-829b-bd3621cada8d" ) );
 		this.setName( "Create Text..." );
 	}
 	@Override

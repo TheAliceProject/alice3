@@ -40,19 +40,21 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.edit;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class UndoOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public UndoOperation() {
-		this.setName( "Undo" );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Z, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+public class KGridBagPanel extends KPanel {
+	public KGridBagPanel() {
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-		historyManager.performUndo();
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.GridBagLayout();
+	}
+	
+	public void addComponent( KComponent< ? > component, java.awt.GridBagConstraints gbc ) {
+		this.internalAddComponent( component, gbc );
 	}
 }

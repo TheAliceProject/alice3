@@ -74,14 +74,14 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	}
 	
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.getExpressionStatement().expression.addPropertyListener( this.refreshAdapter );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		this.getExpressionStatement().expression.removePropertyListener( this.refreshAdapter );
-		super.removeNotify();
+		super.removed();
 	}
 
 	private void refresh() {
@@ -98,7 +98,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 				if( methodInvocation.isValid() ) {
 					//pass
 				} else {
-					this.setBackground( java.awt.Color.RED );
+					this.setBackgroundColor( java.awt.Color.RED );
 				}
 				
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = methodInvocation.method.getValue();
@@ -136,11 +136,10 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( ";" ) );
+			this.add( new edu.cmu.cs.dennisc.croquet.KLabel( ";" ) );
 		}
 		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		ExpressionStatementPane.this.revalidate();
-		ExpressionStatementPane.this.repaint();
+		this.revalidateAndRepaint();
 	}
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {
 		edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = this.getExpressionStatement();

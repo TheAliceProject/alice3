@@ -47,11 +47,12 @@ package org.alice.stageide.operations.help;
  */
 public class AboutOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public AboutOperation() {
+		super( java.util.UUID.fromString( "175834c9-b8f4-4714-a212-e7d346d77835" ) );
 		this.setName( "About..." );
 		this.setMnemonicKey( java.awt.event.KeyEvent.VK_A );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
 		org.alice.stageide.aboutpane.AboutPane aboutPane = new org.alice.stageide.aboutpane.AboutPane();
 		this.getIDE().showMessageDialog( aboutPane, "About Alice 3", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN );
 	}

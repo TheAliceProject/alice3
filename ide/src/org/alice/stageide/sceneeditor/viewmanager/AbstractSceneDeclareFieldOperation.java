@@ -52,8 +52,9 @@ public abstract class AbstractSceneDeclareFieldOperation extends AbstractDeclare
 
 	protected MoveAndTurnSceneEditor sceneEditor;
 	
-	public AbstractSceneDeclareFieldOperation( MoveAndTurnSceneEditor sceneEditor )
+	public AbstractSceneDeclareFieldOperation( java.util.UUID individualId, MoveAndTurnSceneEditor sceneEditor )
 	{
+		super( individualId );
 		this.sceneEditor = sceneEditor;
 	}
 	

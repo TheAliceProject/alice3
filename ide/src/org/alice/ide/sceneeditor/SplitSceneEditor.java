@@ -118,7 +118,7 @@ class LookingGlass extends edu.cmu.cs.dennisc.javax.swing.components.JCornerSpri
 /**
  * @author Dennis Cosgrove
  */
-public class SplitSceneEditor extends org.alice.ide.Editor<edu.cmu.cs.dennisc.alice.ast.AbstractType> {
+public class SplitSceneEditor extends javax.swing.JPanel {
 	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
 	private Tree tree = new Tree();
 	private LookingGlass lookingGlass = new LookingGlass();

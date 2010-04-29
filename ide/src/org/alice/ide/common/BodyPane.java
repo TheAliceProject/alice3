@@ -43,13 +43,16 @@
 package org.alice.ide.common;
 
 public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
-	public BodyPane( java.awt.Component statementListComponent ) {
+	public BodyPane( edu.cmu.cs.dennisc.croquet.KComponent< ? > statementListComponent ) {
 		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
-		this.setLayout( new java.awt.BorderLayout() );
 		this.setOpaque( false );
-		this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "do in order" ), java.awt.BorderLayout.NORTH );
-		this.add( statementListComponent, java.awt.BorderLayout.CENTER );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ), java.awt.BorderLayout.WEST );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "do in order" ), java.awt.BorderLayout.NORTH );
+		this.addComponent( statementListComponent, java.awt.BorderLayout.CENTER );
+		this.addComponent( this.getIDE().createHorizontalStrut( 8 ), java.awt.BorderLayout.WEST );
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.BorderLayout();
 	}
 	@Override
 	protected boolean isKnurlDesired() {

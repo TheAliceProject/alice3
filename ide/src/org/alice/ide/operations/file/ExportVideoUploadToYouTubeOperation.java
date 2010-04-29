@@ -42,33 +42,28 @@
  */
 package org.alice.ide.operations.file;
 
-import java.io.File;
-
-import org.alice.media.VideoCapturePane;
-
-import edu.cmu.cs.dennisc.alice.Project;
-import edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice;
-import edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine;
-import edu.cmu.cs.dennisc.animation.Program;
+//import org.alice.media.VideoCapturePane;
+//import edu.cmu.cs.dennisc.alice.Project;
 
 /**
  * @author Dennis Cosgrove
  */
 public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ExportVideoUploadToYouTubeOperation() {
+		super( java.util.UUID.fromString( "fd6ec0d7-add3-4061-a895-f085f45c0667" ) );
 		this.setName( "Export Video / Upload To YouTube\u2122..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
 		final int frameRate = 24;
 		
 		edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();
 		
 		//this.rtProgram = new RecordableRuntimeProgram( sceneType, vm );
-		VideoCapturePane videoCapturePane = new VideoCapturePane(project, frameRate){
+		org.alice.media.VideoCapturePane videoCapturePane = new org.alice.media.VideoCapturePane(project, frameRate){
 
 			@Override
-			protected edu.cmu.cs.dennisc.animation.Program createProgram( Project project )
+			protected edu.cmu.cs.dennisc.animation.Program createProgram( edu.cmu.cs.dennisc.alice.Project project )
 			{
 				edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = new edu.cmu.cs.dennisc.alice.virtualmachine.ReleaseVirtualMachine();
 				edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType().getDeclaredFields().get( 0 ).getValueType();

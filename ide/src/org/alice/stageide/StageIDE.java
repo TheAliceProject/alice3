@@ -231,7 +231,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new ThisFieldAccessNameLabel( field );
 	}
 	@Override
-	public java.awt.Component getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
 			edu.cmu.cs.dennisc.alice.ast.Expression fieldExpression = fieldAccess.expression.getValue();
@@ -256,7 +256,7 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
 					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
-						return new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " revolutions" ) );
+						return new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " revolutions" ) );
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
 						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );
 					}
@@ -335,7 +335,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	public void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+	public void handleRun( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		edu.cmu.cs.dennisc.alice.virtualmachine.VirtualMachine vm = this.createVirtualMachineForRuntimeProgram();
 		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.MouseButtonListener.class, org.alice.stageide.apis.moveandturn.event.MouseButtonAdapter.class );
 		vm.registerAnonymousAdapter( org.alice.apis.moveandturn.event.KeyListener.class, org.alice.stageide.apis.moveandturn.event.KeyAdapter.class );
@@ -344,7 +344,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		showInJDialog( rtProgram );
 	}
 	@Override
-	public void handleRestart( final edu.cmu.cs.dennisc.zoot.ActionContext context ) {
+	public void handleRestart( final edu.cmu.cs.dennisc.croquet.Context context ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
 				handleRun( context );
@@ -353,7 +353,7 @@ public class StageIDE extends org.alice.ide.IDE {
 	}
 
 	@Override
-	public void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 		this.ensureProjectCodeUpToDate();
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = this.getFieldSelection();
 		if( field == this.getSceneField() ) {
@@ -382,7 +382,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new org.alice.stageide.sceneeditor.MoveAndTurnSceneEditor();
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation() {
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createAboutOperation() {
 		return new org.alice.stageide.operations.help.AboutOperation();
 	}
 

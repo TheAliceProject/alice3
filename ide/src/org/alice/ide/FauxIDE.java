@@ -47,7 +47,7 @@ package org.alice.ide;
  */
 public class FauxIDE extends IDE {
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation() {
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createAboutOperation() {
 		return null;
 	}
 	@Override
@@ -66,14 +66,14 @@ public class FauxIDE extends IDE {
 		return new org.alice.ide.gallerybrowser.FauxGalleryBrowser( galleryRootDirectory );
 	}
 	@Override
-	public void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
+	public void handleRun( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType ) {
 		this.showMessageDialog( "imagine the program running here..." );
 	}
 	@Override
-	public void handleRestart( edu.cmu.cs.dennisc.zoot.ActionContext context ) {
+	public void handleRestart( edu.cmu.cs.dennisc.croquet.Context context ) {
 	}
 	@Override
-	public void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
+	public void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation ) {
 		this.showMessageDialog( "imagine testing method here..." );
 	}
 	@Override

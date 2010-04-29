@@ -50,7 +50,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 	public DeclareLocalTemplate() {
 		super( edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement.class );
 		this.implementor = new UbiquitousStatementImplementor( org.alice.ide.ast.NodeUtilities.createIncompleteVariableDeclarationStatement() );
-		this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.getLabelText() ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( this.getLabelText() ) );
 		this.setToolTipText( "" );
 	}
 	
@@ -58,19 +58,25 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		return this.implementor.getLabelText();
 	}
 	@Override
-	public java.awt.Component getSubject() {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
 	public javax.swing.JToolTip createToolTip() {
 		return this.implementor.getToolTip();
 	}
-	@Override
-	public void addNotify() {
-		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
-		super.addNotify();
-	}
 	
+	@Override
+	protected void adding() {
+		super.adding();
+		this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
+	}
+
+	@Override
+	protected void removed() {
+		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
+		super.removed();
+	}
 	@Override
 	public java.awt.Dimension getMinimumSize() {
 		return this.implementor.adjustMinimumSize( super.getMinimumSize() );

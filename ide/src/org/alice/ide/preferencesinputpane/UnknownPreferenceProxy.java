@@ -48,7 +48,7 @@ package org.alice.ide.preferencesinputpane;
 public class UnknownPreferenceProxy extends PreferenceLabeledPaneProxy<Object> {
 	public UnknownPreferenceProxy( edu.cmu.cs.dennisc.preference.Preference<Object> preference ) {
 		super( preference );
-		this.createPane( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "<no control available>" ) );
+		this.createPane( new edu.cmu.cs.dennisc.croquet.KLabel( "<no control available>" ) );
 	}
 	@Override
 	public void setAndCommitValue() {

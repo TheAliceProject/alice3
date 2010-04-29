@@ -47,7 +47,7 @@ package org.alice.ide.operations.help;
  */
 public class ReleaseNotesOperation extends BrowserOperation {
 	public ReleaseNotesOperation() {
-		super( "http://kenai.com/projects/alice/pages/ReleaseNotes" );
+		super( java.util.UUID.fromString( "79d29dd0-278b-4c8a-8f1b-816257f0a621" ), "http://kenai.com/projects/alice/pages/ReleaseNotes" );
 		this.setName( "Browse Release Notes..." );
 	}
 //	@Override

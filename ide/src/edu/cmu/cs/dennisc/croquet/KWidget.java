@@ -46,16 +46,54 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class KWidget extends KComponent< javax.swing.JComponent > {
+public abstract class KWidget extends KComponent< javax.swing.JPanel > {
+	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
-	protected final javax.swing.JComponent createJComponent() {
-		return new javax.swing.JComponent() {
+	protected final javax.swing.JPanel createJComponent() {
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
 			@Override
 			protected void paintComponent( java.awt.Graphics g ) {
 				assert g instanceof java.awt.Graphics2D;
 				KWidget.this.paintComponent( (java.awt.Graphics2D)g );
 			}
 		};
+		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
+		rv.setLayout( layoutManager );
+		return rv;
+		
 	}
 	protected abstract void paintComponent( java.awt.Graphics2D g2 );
+	
+	@Deprecated
+	protected void addComponent( KComponent<?> component ) {
+		assert component != null;
+		component.adding();
+		this.getJComponent().add( component.getJComponent() );
+		component.added();
+	}
+	@Deprecated
+	protected void addComponent( KComponent<?> component, Object constraints ) {
+		assert component != null;
+		component.adding();
+		this.getJComponent().add( component.getJComponent(), constraints );
+		component.added();
+	}
+	@Deprecated
+	protected void add( KComponent<?> component ) {
+		this.addComponent( component );
+	}
+	@Deprecated
+	protected void add( KComponent<?> component, Object constraints ) {
+		this.addComponent( component, constraints );
+	}
+
+	@Deprecated
+	protected void add( java.awt.Component component ) {
+		throw new AssertionError();
+	}
+	@Deprecated
+	protected void add( java.awt.Component component, Object constraints ) {
+		throw new AssertionError();
+	}
+	
 }

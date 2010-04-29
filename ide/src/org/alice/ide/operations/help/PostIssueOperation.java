@@ -46,9 +46,12 @@ package org.alice.ide.operations.help;
  * @author Dennis Cosgrove
  */
 public abstract class PostIssueOperation extends org.alice.ide.operations.InconsequentialActionOperation {
+	public PostIssueOperation( java.util.UUID individualId ) {
+		super( individualId );
+	}
 	protected abstract edu.cmu.cs.dennisc.jira.JIRAReport.Type getIssueType();
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
 		final org.alice.ide.issue.PostIssuePane pane = new org.alice.ide.issue.PostIssuePane( this.getIssueType() );
 
 		//final javax.swing.JFrame owner = org.alice.ide.IDE.getSingleton();

@@ -47,6 +47,7 @@ package org.alice.ide.operations.help;
  */
 public class SuggestImprovementOperation extends PostIssueOperation {
 	public SuggestImprovementOperation() {
+		super( java.util.UUID.fromString( "0590e771-d993-4f6c-99f6-c38a010cda2e" ) );
 		this.setName( "Suggest Improvement..." );
 	}
 	@Override

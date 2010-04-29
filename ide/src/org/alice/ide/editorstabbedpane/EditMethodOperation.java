@@ -50,6 +50,7 @@ class EditMethodOperation extends org.alice.ide.operations.InconsequentialAction
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 
 	public EditMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		super( java.util.UUID.fromString( "4a6e51f7-630a-4f36-b7db-5fa37c62eb54" ) );
 		this.method = method;
 		StringBuffer sb = new StringBuffer();
 		sb.append( "Edit " );
@@ -60,7 +61,7 @@ class EditMethodOperation extends org.alice.ide.operations.InconsequentialAction
 		this.setName( sb.toString() );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
 		this.getIDE().setFocusedCode( this.method );
 	}
 }

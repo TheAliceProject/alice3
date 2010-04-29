@@ -49,6 +49,7 @@ public class DeclareFieldOfPredeterminedTypeOperation extends AbstractNonGallery
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType;
 	public DeclareFieldOfPredeterminedTypeOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice valueType ) {
+		super( java.util.UUID.fromString( "f3aeb501-8138-47dc-a839-83961ee1f26d" ) );
 		this.ownerType = ownerType;
 		this.valueType = valueType;
 		this.setSmallIcon( new org.alice.ide.common.TypeIcon( this.valueType ) );

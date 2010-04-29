@@ -45,19 +45,19 @@ package org.alice.ide.ubiquitouspane;
 import org.alice.ide.common.SelectedFieldExpressionPane;
 import org.alice.ide.ubiquitouspane.templates.*;
 
-class ReturnStatementWrapper extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
 	public void refresh() {
-		this.removeAll();
+		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( code, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
 		if( method != null && method.isFunction() ) {
-			this.add( re );
+			this.addComponent( re );
 		}
 	}
 }
 
-class TransientStatementsWrapper extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate > mapVariableToVariableAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate > mapVariableToVariableArrayAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate > mapParameterToParameterAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate >();
@@ -93,7 +93,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.javax.swing.componen
 	}
 	
 	public void refresh() {
-		this.removeAll();
+		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
 		if( code != null ) {
 			for( edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter : code.getParameters() ) {
@@ -101,7 +101,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.javax.swing.componen
 					edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameterInAlice = (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter;
 					edu.cmu.cs.dennisc.alice.ast.AbstractType type = parameterInAlice.getValueType();
 					if( type.isArray() ) {
-						this.add( this.getParameterArrayAssignmentStatementTemplate( parameterInAlice ) );
+						this.addComponent( this.getParameterArrayAssignmentStatementTemplate( parameterInAlice ) );
 					}
 				}
 			}
@@ -110,10 +110,10 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.javax.swing.componen
 			code.crawl( crawler, false );
 			for( edu.cmu.cs.dennisc.alice.ast.VariableDeclarationStatement variableDeclarationStatement : crawler.getList() ) {
 				edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = variableDeclarationStatement.variable.getValue();
-				this.add( this.getVariableAssignmentStatementTemplate( variable ) );
+				this.addComponent( this.getVariableAssignmentStatementTemplate( variable ) );
 				edu.cmu.cs.dennisc.alice.ast.AbstractType type = variable.valueType.getValue();
 				if( type.isArray() ) {
-					this.add( this.getVariableArrayAssignmentStatementTemplate( variable ) );
+					this.addComponent( this.getVariableArrayAssignmentStatementTemplate( variable ) );
 				}
 			}
 		}
@@ -133,7 +133,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.javax.swing.componen
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();
@@ -158,45 +158,45 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.javax.swing.components.JL
 	};
 
 	public UbiquitousPane() {
+		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		final int PAD = 6;
-		this.add( this.doInOrderTemplate );
-		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
-//		this.add( this.loopTemplate );
+		this.addComponent( this.doInOrderTemplate );
+		this.addComponent( application.createHorizontalStrut( PAD ) );
+//		this.addComponent( this.loopTemplate );
 
-		this.add( this.countLoopTemplate );
-		this.add( this.whileLoopTemplate );
-		this.add( this.forEachInArrayLoopTemplate );
-		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
-		this.add( this.conditionalStatementTemplate );
-		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
-		this.add( this.doTogetherTemplate );
-		this.add( this.eachInArrayTogetherTemplate );
-		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
-		this.add( this.doInThreadTemplate );
-		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
-		this.add( this.declareLocalTemplate );
-		this.add( this.transientStatementsWrapper );
-		this.add( this.returnStatementWrapper );
-		this.add( javax.swing.Box.createHorizontalStrut( PAD ) );
-		this.add( this.commentTemplate );
+		this.addComponent( this.countLoopTemplate );
+		this.addComponent( this.whileLoopTemplate );
+		this.addComponent( this.forEachInArrayLoopTemplate );
+		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( this.conditionalStatementTemplate );
+		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( this.doTogetherTemplate );
+		this.addComponent( this.eachInArrayTogetherTemplate );
+		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( this.doInThreadTemplate );
+		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( this.declareLocalTemplate );
+		this.addComponent( this.transientStatementsWrapper );
+		this.addComponent( this.returnStatementWrapper );
+		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( this.commentTemplate );
 	}
 	
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 		this.refresh();
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		org.alice.ide.IDE.getSingleton().removeCodeInFocusObserver( this.codeInFocusObserver );
-		super.removeNotify();
+		super.removed();
 	}
 
 	public void refresh() {
 		this.returnStatementWrapper.refresh();
 		this.transientStatementsWrapper.refresh();
-		this.revalidate();
-		this.repaint();
+		this.revalidateAndRepaint();
 	}
 }

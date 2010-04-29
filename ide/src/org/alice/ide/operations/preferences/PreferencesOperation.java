@@ -47,16 +47,17 @@ package org.alice.ide.operations.preferences;
  */
 public class PreferencesOperation extends org.alice.ide.operations.AbstractActionOperation {
 	public PreferencesOperation() {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "8662d722-9a02-47d5-a7ed-27d20528175a" ) );
 		this.setName( "Preferences..." );
 	}
 	
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		org.alice.ide.preferencesinputpane.PreferencesInputPane preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesInputPane();
 		preferencesInputPane.showInJDialog( this.getIDE().getJFrame() );
 //		if( this.method != null ) {
 //			this.prevCode = getIDE().getFocusedCode();
-			actionContext.commit();
+			context.finish();
 //		} else {
 //			actionContext.cancel();
 //		}

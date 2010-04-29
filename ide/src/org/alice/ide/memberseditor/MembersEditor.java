@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class MembersTab extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
+abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel {
 	public MembersTab() {
 		this.setOpaque( true );
 	}
@@ -95,7 +95,7 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.javax.swing.components.JPag
 	}
 	
 	protected void refresh() {
-		this.removeAll();
+		this.removeAllComponents();
 		
 		boolean isNonConsumedTypeDeclaredInJavaAlreadyEncountered = false;
 		
@@ -117,10 +117,10 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.javax.swing.components.JPag
 				//pass
 			} else {
 				if( this.getIDE().isEmphasizingClasses() || type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice || isFirstNonConsumedTypeEncounteredInJava ) {
-					this.add( MembersEditor.getComponentFor( this.getClass(), type ) );
+					this.addComponent( MembersEditor.getComponentFor( this.getClass(), type ) );
 				}
 			}
-			this.add( this.getTypeMembersPane( type ) );
+			this.addComponent( this.getTypeMembersPane( type ) );
 		}
 //		java.util.List< AbstractTypeMembersPane > panes = new java.util.LinkedList< AbstractTypeMembersPane >();
 //		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : this.getTypes() ) {
@@ -131,8 +131,7 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.javax.swing.components.JPag
 //				this.add( component );
 //			}
 //		}
-		this.revalidate();
-		this.repaint();
+		this.revalidateAndRepaint();
 	}
 }
 
@@ -141,7 +140,7 @@ abstract class MethodsTab extends MembersTab {
 
 class ProceduresTab extends MethodsTab {
 	public ProceduresTab() {
-		this.setBackground( getIDE().getProcedureColor() );
+		this.setBackgroundColor( getIDE().getProcedureColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -155,7 +154,7 @@ class ProceduresTab extends MethodsTab {
 
 class FunctionsTab extends MethodsTab {
 	public FunctionsTab() {
-		this.setBackground( getIDE().getFunctionColor() );
+		this.setBackgroundColor( getIDE().getFunctionColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -169,7 +168,7 @@ class FunctionsTab extends MethodsTab {
 
 class FieldsTab extends MembersTab {
 	public FieldsTab() {
-		this.setBackground( getIDE().getFieldColor() );
+		this.setBackgroundColor( getIDE().getFieldColor() );
 	}
 	@Override
 	protected AbstractTypeMembersPane createTypeMembersPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
@@ -189,7 +188,7 @@ class TabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 		}
 	}
 	private void addMembersTab( MembersTab membersTab ) {
-		edu.cmu.cs.dennisc.javax.swing.components.JScrollPane scrollPane = new edu.cmu.cs.dennisc.javax.swing.components.JScrollPane( membersTab );
+		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( membersTab );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBackground( membersTab.getBackground() );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
@@ -221,9 +220,9 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	};
 
 	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static java.awt.Component getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		java.awt.Component rv = map.get( cls, type );
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType, edu.cmu.cs.dennisc.croquet.KComponent< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > rv = map.get( cls, type );
 		if( rv != null ) {
 			//pass
 		} else {
@@ -234,8 +233,12 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	}
 	
 	public MembersEditor() {
-		this.setLayout( new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager() );
-		this.add( this.tabbedPane );
+		this.addComponent( this.tabbedPane );
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: investigate ExpandAllToBoundsLayoutManager" );
+		return new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager();
 	}
 
 	public void setEmphasizingClasses( boolean isEmphasizingClasses ) {
@@ -245,15 +248,15 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 		this.tabbedPane.refresh();
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.getIDE().addFieldSelectionObserver( this.fieldSelectionObserver );
-		MembersEditor.this.tabbedPane.handleFieldSelection( getIDE().getFieldSelection() );
+		this.tabbedPane.handleFieldSelection( getIDE().getFieldSelection() );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		this.getIDE().removeFieldSelectionObserver( this.fieldSelectionObserver );
-		super.removeNotify();
+		super.removed();
 	}
 	
 }

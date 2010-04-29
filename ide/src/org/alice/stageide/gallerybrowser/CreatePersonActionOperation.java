@@ -57,6 +57,7 @@ class CreateFieldFromPersonPane extends org.alice.ide.declarationpanes.CreateLar
 class CreatePersonActionOperation extends AbstractGalleryDeclareFieldOperation {
 	private org.alice.apis.stage.Person person;
 	public CreatePersonActionOperation( org.alice.apis.stage.Person person ) {
+		super( java.util.UUID.fromString( "7f4b7217-336c-4661-ac31-ed6ea7b963fe" ) );
 		this.person = person;
 	}
 	@Override

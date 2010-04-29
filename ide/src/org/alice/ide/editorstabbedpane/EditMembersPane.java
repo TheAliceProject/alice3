@@ -131,7 +131,7 @@ public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends
 		return (E)this.list.getSelectedValue();
 	}
 	protected abstract java.awt.Component createCellRendererComponent(E e);
-	protected abstract edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID, String name );
+	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID, String name );
 	protected abstract E createMember( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
 	protected abstract boolean isRemoveItemEnabledFor( E e );
 	protected abstract boolean isEditItemEnabledFor( E e );

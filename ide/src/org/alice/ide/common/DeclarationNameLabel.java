@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class DeclarationNameLabel extends javax.swing.JLabel {
+public class DeclarationNameLabel extends edu.cmu.cs.dennisc.croquet.KLabel {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration;
 
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
@@ -61,11 +61,11 @@ public class DeclarationNameLabel extends javax.swing.JLabel {
 	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration ) {
 		this.declaration = declaration;
 		this.updateText();
-		this.setForeground( java.awt.Color.BLACK );
+		this.setForegroundColor( java.awt.Color.BLACK );
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		if( this.declaration != null ) {
 			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
@@ -73,15 +73,16 @@ public class DeclarationNameLabel extends javax.swing.JLabel {
 			}
 		}
 	}
+	
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		if( this.declaration != null ) {
 			edu.cmu.cs.dennisc.property.StringProperty nameProperty = this.declaration.getNamePropertyIfItExists();
 			if( nameProperty != null ) {
 				nameProperty.removePropertyListener( this.namePropertyAdapter );
 			}
 		}
-		super.removeNotify();
+		super.removed();
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration getDeclaration() {
 		return this.declaration;

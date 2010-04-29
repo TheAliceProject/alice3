@@ -224,7 +224,7 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 	class EditPreviousCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public EditPreviousCodeOperation() {
-			super( org.alice.app.ProjectApplication.IDE_GROUP );
+			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
 			this.setName( "previous" );
 		}
 		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
@@ -234,9 +234,9 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 	private EditPreviousCodeOperation editPreviousCodeOperation;
 
 	public EditorsTabbedPane() {
-		this.setTabCloseOperation( new org.alice.ide.operations.InconsequentialActionOperation() {
+		this.setTabCloseOperation( new org.alice.ide.operations.InconsequentialActionOperation( java.util.UUID.fromString( "d1577606-6175-468c-8967-14ce7501099e" ) ) {
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
 				EditorsTabbedPane.this.remove( EditorsTabbedPane.this.getSelectedIndex() );
 				EditorsTabbedPane.this.updateFocusedCode();
 			}

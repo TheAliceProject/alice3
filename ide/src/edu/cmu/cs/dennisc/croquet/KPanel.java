@@ -55,6 +55,11 @@ public abstract class KPanel extends KComponent< javax.swing.JPanel > {
 		rv.setLayout( layoutManager );
 		return rv;
 	}
+	public void removeAllComponents() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: removeAllComponents invoke removing and removed" );
+		
+		this.getJComponent().removeAll();
+	}
 	public void addComponent( KComponent<?> component ) {
 		assert component != null;
 		component.adding();

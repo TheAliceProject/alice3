@@ -54,8 +54,7 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 		}
 		public void projectOpened( edu.cmu.cs.dennisc.alice.Project previousProject, edu.cmu.cs.dennisc.alice.Project nextProject ) {
 			AbstractSceneEditor.this.setProgramType( nextProject.getProgramType() );
-			AbstractSceneEditor.this.revalidate();
-			AbstractSceneEditor.this.repaint();
+			AbstractSceneEditor.this.revalidateAndRepaint();
 		}
 	};
 	public abstract void disableRendering( org.alice.ide.ReasonToDisableSomeAmountOfRendering reasonToDisableSomeAmountOfRendering );
@@ -116,13 +115,13 @@ public abstract class AbstractSceneEditor extends org.alice.ide.Editor<edu.cmu.c
 	}
 
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		org.alice.app.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		org.alice.app.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
-		super.removeNotify();
+		super.removed();
 	}
 }

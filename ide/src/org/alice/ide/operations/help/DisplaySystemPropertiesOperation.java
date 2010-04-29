@@ -47,10 +47,11 @@ package org.alice.ide.operations.help;
  */
 class AllSystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public AllSystemPropertiesOperation() {
+		super( java.util.UUID.fromString( "db633e18-dd47-49ca-9406-cf4988d90960" ) );
 		this.setName( "Show All Properties..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		java.util.Properties properties = System.getProperties();
 		java.util.Map< String, String > map = new java.util.HashMap< String, String >();
 		java.util.Enumeration< String > nameEnum = (java.util.Enumeration< String >)properties.propertyNames();
@@ -85,11 +86,12 @@ class AllSystemPropertiesOperation extends org.alice.ide.operations.Inconsequent
 class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private String propertyName;
 	public PathPropertyOperation( String propertyName ) {
+		super( java.util.UUID.fromString( "9105ebd2-79f6-498f-a652-1bd2bcd0daa8" ) );
 		this.propertyName = propertyName;
 		this.setName( "Show..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		edu.cmu.cs.dennisc.javax.swing.components.JFormPane formPane = new edu.cmu.cs.dennisc.javax.swing.components.JFormPane( 8, 2 ) {
 			private java.awt.Component[][] createComponentRowsForSystemProperty( String name, String separator ) {
 				String value = System.getProperty( name );
@@ -103,7 +105,7 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 					} else {
 						prefix = "";
 					}
-					rv[ i ] = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( prefix+"[" + i + "]:" ), edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( array[ i ] ) );
+					rv[ i ] = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( prefix+"[" + i + "]:" ), new edu.cmu.cs.dennisc.croquet.KLabel( array[ i ] ) );
 				}
 				return rv;
 			}
@@ -125,15 +127,16 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
  */
 public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public DisplaySystemPropertiesOperation() {
+		super( java.util.UUID.fromString( "1f1ea35c-0d52-48c3-92fd-fa9f163e48a9" ) );
 		this.setName( "Display System Properties..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		edu.cmu.cs.dennisc.javax.swing.components.JFormPane formPane = new edu.cmu.cs.dennisc.javax.swing.components.JFormPane( 8, 2 ) {
 			private java.awt.Component[] createComponentRowForSystemProperty( String name ) {
 				String value = System.getProperty( name );
 				assert value != null;
-				return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( name+":" ), edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( value ) );
+				return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( name+":" ), new edu.cmu.cs.dennisc.croquet.KLabel( value ) );
 			}
 			@Override
 			protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {
@@ -160,8 +163,8 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 		this.getIDE().showMessageDialog( formPane, "System Properties", edu.cmu.cs.dennisc.croquet.MessageType.INFORMATION ); 
 	}
 	
-	public static void main( String[] args ) {
-		DisplaySystemPropertiesOperation displaySystemPropertiesOperation = new DisplaySystemPropertiesOperation();
-		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( displaySystemPropertiesOperation, null, false );
-	}
+//	public static void main( String[] args ) {
+//		DisplaySystemPropertiesOperation displaySystemPropertiesOperation = new DisplaySystemPropertiesOperation();
+//		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( displaySystemPropertiesOperation, null, false );
+//	}
 }

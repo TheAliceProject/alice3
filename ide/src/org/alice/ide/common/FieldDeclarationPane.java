@@ -45,30 +45,31 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private javax.swing.JLabel finalLabel = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
+	private edu.cmu.cs.dennisc.croquet.KLabel finalLabel = new edu.cmu.cs.dennisc.croquet.KLabel();
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		this.field = field;
-		this.add( finalLabel );
-		this.add( new TypeComponent( field.getValueType() ) );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+		this.addComponent( finalLabel );
+		this.addComponent( new TypeComponent( field.getValueType() ) );
+		this.addComponent( application.createHorizontalStrut( 8 ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( nameLabel, 1.5f );
-		this.add( nameLabel );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.add( new org.alice.ide.common.GetsPane( true ) );
+		this.addComponent( nameLabel );
+		this.addComponent( application.createHorizontalStrut( 8 ) );
+		this.addComponent( new org.alice.ide.common.GetsPane( true ) );
 		
 		//todo
 		//boolean isDropDownPotentiallyDesired = factory instanceof org.alice.ide.memberseditor.Factory;
 		
-		java.awt.Component component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
 //		if( factory instanceof org.alice.ide.memberseditor.Factory ) {
 //			if( org.alice.ide.IDE.getSingleton().isDropDownDesiredForFieldInitializer( field ) ) {
 //				component = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane(null, component, field.initializer, field.getDesiredValueType() );
 //			}
 //		}
-		this.add( component );
+		this.addComponent( component );
 	}
 
 	private void updateFinalLabel() {
@@ -87,17 +88,17 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.javax.swing.compone
 			updateFinalLabel();
 		}
 	};
-	
+
 	@Override
-	public void addNotify() {
+	protected void adding() {
+		super.adding();
 		this.updateFinalLabel();
 		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
-		super.addNotify();
 	}
 	@Override
-	public void removeNotify() {
-		super.removeNotify();
+	protected void removed() {
 		this.field.finalVolatileOrNeither.addPropertyListener( this.propertyListener );
+		super.removed();
 	}
 	public edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice getField() {
 		return this.field;

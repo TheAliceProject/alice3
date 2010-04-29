@@ -65,7 +65,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation newProjectOperation = new org.alice.app.operations.file.NewProjectOperation( this.saveProjectOperation );
 	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation openProjectOperation = new org.alice.app.operations.file.OpenProjectOperation( this.saveProjectOperation );
 	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation exitOperation = new org.alice.app.operations.file.ClearanceCheckingExitOperation( this.saveProjectOperation );
-
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation revertProjectOperation = new org.alice.app.operations.file.RevertProjectOperation();
 	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation undoOperation = new org.alice.app.operations.edit.UndoOperation();
 	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation redoOperation = new org.alice.app.operations.edit.RedoOperation();
 	
@@ -81,8 +81,11 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getSaveAsProjectOperation() {
 		return this.saveAsProjectOperation;
 	}
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRevertProjectOperation() {
+		return this.saveAsProjectOperation;
+	}
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getExitOperation() {
-		return this.exitOperation;
+		return this.revertProjectOperation;
 	}
 	
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getUndoOperation() {

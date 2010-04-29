@@ -50,16 +50,7 @@ import org.alice.ide.codeeditor.EmptyStatementListAfforance;
 public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu.cs.dennisc.alice.ast.StatementListProperty > {
 	public static final int INTRASTICIAL_PAD = 4;
 	public StatementListPropertyPane( Factory factory, final edu.cmu.cs.dennisc.alice.ast.StatementListProperty property ) {
-		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );
-		
-		int pad;
-		if( property.getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
-			pad = 0;
-		} else {
-			pad = INTRASTICIAL_PAD;
-		}
-		this.setLayout( new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS, pad ) );
-		
+		super( factory, javax.swing.BoxLayout.PAGE_AXIS, property );		
 //		this.addMouseListener( new java.awt.event.MouseListener() {
 //			public void mouseClicked( final java.awt.event.MouseEvent e ) {
 //				final alice.ide.IDE ide = alice.ide.IDE.getSingleton();
@@ -91,6 +82,17 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 //		} );
 	}
 	
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		int pad;
+		if( this.getProperty().getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
+			pad = 0;
+		} else {
+			pad = INTRASTICIAL_PAD;
+		}
+		return new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS, pad ) );
+	}
+	
 	public java.awt.Rectangle getDropBounds() {
 		java.awt.Rectangle rv = javax.swing.SwingUtilities.getLocalBounds( this );
 		final int DELTA = this.getFont().getSize() + 4;
@@ -101,7 +103,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 
 	
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = (edu.cmu.cs.dennisc.alice.ast.Statement)instance;
 		return this.getFactory().createStatementPane( statement, getProperty() );
 	}

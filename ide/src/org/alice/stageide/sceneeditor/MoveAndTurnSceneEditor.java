@@ -439,8 +439,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 				}
 			}
 		}
-		this.revalidate();
-		this.repaint();
+		this.revalidateAndRepaint();
 	}
 
 	@Override

@@ -47,6 +47,7 @@ package org.alice.stageide.gallerybrowser;
  */
 class CreateTextbookInstanceActionOperation extends CreateInstanceFromFileActionOperation {
 	public CreateTextbookInstanceActionOperation() {
+		super( java.util.UUID.fromString( "70394f4f-c130-48cd-a197-4a1ba7bea9b5" ) );
 		this.setName( "Textbook Classes..." );
 	}
 

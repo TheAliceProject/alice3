@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
+abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel {
 	private static final int INDENT = 16;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
@@ -106,20 +106,20 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.javax.swing.co
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	protected abstract java.awt.Component[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
+	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
 
-	protected abstract javax.swing.JButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
-	protected abstract javax.swing.JButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract edu.cmu.cs.dennisc.croquet.KButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract edu.cmu.cs.dennisc.croquet.KButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
-		this.removeAll();
-		edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane page = new edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane();
+		this.removeAllComponents();
+		edu.cmu.cs.dennisc.croquet.KPageAxisPanel page = new edu.cmu.cs.dennisc.croquet.KPageAxisPanel();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {
-				java.awt.Component[] templates = this.createTemplates( field );
+				edu.cmu.cs.dennisc.croquet.KComponent< ? >[] templates = this.createTemplates( field );
 				if( templates != null ) {
-					for( java.awt.Component template : templates ) {
-						page.add( javax.swing.Box.createVerticalStrut( 1 ) );
-						page.add( template );
+					for( edu.cmu.cs.dennisc.croquet.KComponent< ? > template : templates ) {
+						page.addComponent( this.getIDE().createVerticalStrut( 1 ) );
+						page.addComponent( template );
 					}
 				}
 			}
@@ -127,35 +127,34 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.javax.swing.co
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 			if( isInclusionDesired( method ) ) {
 				method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getShortestInChain();
-				java.awt.Component[] templates = this.createTemplates( method );
+				edu.cmu.cs.dennisc.croquet.KComponent< ? >[] templates = this.createTemplates( method );
 				if( templates != null ) {
-					for( java.awt.Component template : templates ) {
-						page.add( javax.swing.Box.createVerticalStrut( 1 ) );
-						page.add( template );
+					for( edu.cmu.cs.dennisc.croquet.KComponent< ? > template : templates ) {
+						page.addComponent( this.getIDE().createVerticalStrut( 1 ) );
+						page.addComponent( template );
 					}
 				}
 			}
 		}
 		if( getIDE().isEmphasizingClasses() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			javax.swing.JButton createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
-			javax.swing.JButton editConstructorButton = this.createEditConstructorButton( typeInAlice );
+			edu.cmu.cs.dennisc.croquet.KButton createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
+			edu.cmu.cs.dennisc.croquet.KButton editConstructorButton = this.createEditConstructorButton( typeInAlice );
 			if( createAndAddMemberButton != null ) {
-				page.add( createAndAddMemberButton );
+				page.addComponent( createAndAddMemberButton );
 			}
 			if( editConstructorButton != null ) {
-				page.add( editConstructorButton );
+				page.addComponent( editConstructorButton );
 			}
 		}
 		int pad;
 		if( page.getComponentCount() > 0 ) {
-			this.add( new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( javax.swing.Box.createHorizontalStrut( INDENT ), page ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( this.getIDE().createHorizontalStrut( INDENT ), page ) );
 			pad = 8;
 		} else {
 			pad = 2;
 		}
-		this.add( javax.swing.Box.createVerticalStrut( pad ) );
-		this.revalidate();
-		this.repaint();
+		this.addComponent( this.getIDE().createVerticalStrut( pad ) );
+		this.revalidateAndRepaint();
 	}
 }

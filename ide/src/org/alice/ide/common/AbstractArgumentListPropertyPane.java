@@ -51,9 +51,9 @@ public abstract class AbstractArgumentListPropertyPane extends AbstractListPrope
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
-	protected java.awt.Component createInterstitial( int i, final int N ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createInterstitial( int i, final int N ) {
 		if( i < N - 1 ) {
-			return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( ", " );
+			return new edu.cmu.cs.dennisc.croquet.KLabel( ", " );
 		} else {
 			return null;
 		}

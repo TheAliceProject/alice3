@@ -51,21 +51,22 @@ public abstract class ExpressionStatementTemplate extends org.alice.ide.template
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createExpression( edu.cmu.cs.dennisc.alice.ast.Expression... expressions );
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
+	
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.refresh();
 	}
 	@Override
-	public void removeNotify() {
-		this.removeAll();
-		super.removeNotify();
+	protected void removed() {
+		this.removeAllComponents();
+		super.removed();
 	}
 	protected void refresh() {
-		this.removeAll();
+		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackground( getIDE().getColorFor( incompleteExpression ) );
-		this.add( getIDE().getTemplatesFactory().createExpressionPane( incompleteExpression ) );
+		this.setBackgroundColor( getIDE().getColorFor( incompleteExpression ) );
+		this.addComponent( getIDE().getTemplatesFactory().createExpressionPane( incompleteExpression ) );
 	}
 
 	@Override

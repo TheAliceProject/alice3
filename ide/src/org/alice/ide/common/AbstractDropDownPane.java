@@ -45,14 +45,17 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDropDownPane extends org.alice.ide.AbstractControl {
+public abstract class AbstractDropDownPane extends edu.cmu.cs.dennisc.croquet.KControl {
 //	private zoot.event.ControlAdapter controlAdapter = new zoot.event.ControlAdapter( this );
 	public AbstractDropDownPane() {
-		this.setBackground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );
-		this.setForeground( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
+		this.setBackgroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 230 ) );
+		this.setForegroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
 		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 	}
 	
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
+	}
 //	@Override
 //	public void addNotify() {
 //		super.addNotify();

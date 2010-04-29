@@ -47,7 +47,7 @@ package org.alice.ide.operations.ast;
  */
 public class DeleteMethodOperation extends AbstractDeleteNodeOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
 	public DeleteMethodOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
-		super( method, ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)method.getDeclaringType()).methods );
+		super( java.util.UUID.fromString( "5a07b4dc-0bd9-4393-93d2-1cc1a9b48262" ), method, ((edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)method.getDeclaringType()).methods );
 	}
 	@Override
 	protected boolean isClearToDelete( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {

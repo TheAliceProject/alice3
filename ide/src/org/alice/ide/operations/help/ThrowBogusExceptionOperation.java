@@ -47,10 +47,11 @@ package org.alice.ide.operations.help;
  */
 public class ThrowBogusExceptionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ThrowBogusExceptionOperation() {
+		super( java.util.UUID.fromString( "8c417baa-8be7-42e9-818c-b6ed4ecd8758" ) );
 		this.setName( "Throw Bogus Exception..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
 		new Thread() {
 			@Override
 			public void run() {

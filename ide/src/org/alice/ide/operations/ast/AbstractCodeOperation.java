@@ -46,8 +46,8 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public AbstractCodeOperation() {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+	public AbstractCodeOperation( java.util.UUID individualId ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode();
 }

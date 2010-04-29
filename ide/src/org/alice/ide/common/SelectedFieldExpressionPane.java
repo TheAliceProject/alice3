@@ -62,10 +62,10 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	};
 	
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field = null;
-	private javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
+	private edu.cmu.cs.dennisc.croquet.KLabel label = new edu.cmu.cs.dennisc.croquet.KLabel();
 	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
-		this.add( this.label );
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
+		this.addComponent( this.label );
+		this.setBackgroundColor( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
@@ -104,14 +104,14 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 		return true;
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
 		this.handleFieldChanged( getIDE().getFieldSelection() );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
-		super.removeNotify();
+		super.removed();
 	}
 }

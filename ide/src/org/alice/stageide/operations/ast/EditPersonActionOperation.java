@@ -51,7 +51,8 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 		this.setName( "Edit..." );
 	}
 	
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		final org.alice.apis.stage.Person person = this.getMoveAndTurnSceneEditor().getInstanceInJavaForField( this.getField(), org.alice.apis.stage.Person.class );
 		if( person != null ) {
 			final org.alice.apis.stage.Gender prevGender;
@@ -82,7 +83,7 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 				nextOutfit = result.getOutfit();
 				nextHair = result.getHair();
 				nextFitnessLevel = result.getFitnessLevel();
-				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 					@Override
 					public void doOrRedo( boolean isDo ) {
 						EditPersonActionOperation.set( person, nextGender, nextSkinTone, nextEyeColor, nextOutfit, nextHair, nextFitnessLevel );
@@ -101,10 +102,10 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 			} else {
 				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: remove" );
 				EditPersonActionOperation.set( person, prevGender, prevSkinTone, prevEyeColor, prevOutfit, prevHair, prevFitnessLevel );
-				actionContext.cancel();
+				context.cancel();
 			}
 		} else {
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 	private static void set( org.alice.apis.stage.Person person, org.alice.apis.stage.Gender gender, org.alice.apis.stage.SkinTone skinTone, org.alice.apis.stage.EyeColor eyeColor, org.alice.apis.stage.Outfit outfit, org.alice.apis.stage.Hair hair, Double fitnessLevel ) {

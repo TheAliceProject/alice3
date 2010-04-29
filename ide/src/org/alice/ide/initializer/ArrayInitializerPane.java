@@ -106,14 +106,15 @@ class ListPropertyComboBoxModel<E> extends javax.swing.AbstractListModel impleme
 public class ArrayInitializerPane extends AbstractInitializerPane {
 	class AddItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public AddItemOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "a93199db-d9f7-4c95-b82d-f6ac6720f29b" ) );
 			this.setName( "Add" );
 		}
-		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 			assert ArrayInitializerPane.this.type != null;
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
 			final int index = ArrayInitializerPane.this.arrayExpressions.size();
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					ArrayInitializerPane.this.arrayExpressions.add( index, expression );
@@ -139,13 +140,14 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class RemoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public RemoveItemOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "a87ae96c-07fb-4a78-94c3-177ec3d642ce" ) );
 			this.setName( "Remove" );
 		}
-		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 			final int index = ArrayInitializerPane.this.list.getSelectedIndex();
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ArrayInitializerPane.this.list.getItemAt( index );
-			actionContext.commitAndInvokeDo(new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					if( ArrayInitializerPane.this.arrayExpressions.get( index ) == expression ) {
@@ -168,15 +170,16 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		}
 	}
 	abstract class AbstractMoveItemOperation extends org.alice.ide.operations.AbstractActionOperation {
-		public AbstractMoveItemOperation() {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		public AbstractMoveItemOperation( java.util.UUID individualId ) {
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 		}
 		protected abstract int getIndex( int selectedIndex );
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
-		public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 			final int index = this.getIndex( ArrayInitializerPane.this.list.getSelectedIndex() );
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					ArrayInitializerPane.this.swapWithNext( index );
@@ -200,6 +203,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class MoveItemUpOperation extends AbstractMoveItemOperation {
 		public MoveItemUpOperation() {
+			super( java.util.UUID.fromString( "3fc4c11e-215d-4780-8083-600663d5738e" ) );
 			this.setName( "Move Up" );
 		}
 		@Override
@@ -218,6 +222,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class MoveItemDownOperation extends AbstractMoveItemOperation {
 		public MoveItemDownOperation() {
+			super( java.util.UUID.fromString( "c308bb2f-e58d-4b12-861f-2767533b56a2" ) );
 			this.setName( "Move Down" );
 		}
 		@Override

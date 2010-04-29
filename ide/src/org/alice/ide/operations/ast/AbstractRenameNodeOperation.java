@@ -46,17 +46,17 @@ package org.alice.ide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractRenameNodeOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public AbstractRenameNodeOperation( java.util.UUID groupUUID, String name ) {
-		super( groupUUID );
+	public AbstractRenameNodeOperation( java.util.UUID groupUUID, java.util.UUID individualId, String name ) {
+		super( groupUUID, individualId );
 		this.setName( name );
 	}
-	protected final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, final edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, final edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( nodeNameValidator );
 		renameNodePane.setAndSelectNameText( nameProperty.getValue() );
 		final String nextValue = renameNodePane.showInJDialog( this.getIDE().getJFrame() );
 		if( nextValue != null && nextValue.length() > 0 ) {
 			final String prevValue = nameProperty.getValue();
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					nameProperty.setValue( nextValue );
@@ -75,7 +75,7 @@ public abstract class AbstractRenameNodeOperation extends org.alice.ide.operatio
 				}
 			} );
 		} else {
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }

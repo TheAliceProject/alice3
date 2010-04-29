@@ -51,12 +51,13 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 	private javax.swing.JSlider slider;
 	private int value;
 	public FitnessLevelActionOperation( javax.swing.JSlider slider, int value, String name ) {
+		super( java.util.UUID.fromString( "979d9be8-c24c-4921-93d4-23747bdf079d" ) );
 		this.slider = slider;
 		this.value = value;
 		this.setName( name );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
 		this.slider.setValue( this.value );
 	}
 }

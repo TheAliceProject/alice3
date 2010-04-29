@@ -47,10 +47,11 @@ package org.alice.ide.operations.run;
  */
 public class RestartOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RestartOperation() {
+		super( java.util.UUID.fromString( "f8acb9c4-f4d8-4c6e-84ae-6555cc0da4e0" ) );
 		this.setName( "Restart..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		this.getIDE().handleRestart( actionContext );
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+		this.getIDE().handleRestart( context );
 	}
 }

@@ -56,14 +56,15 @@ package org.alice.ide.editorstabbedpane;
 abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice > extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private String presentation;
-	public EditMembersOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, String presentation ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+	public EditMembersOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, String presentation ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 		this.declaringType = declaringType;
 		this.presentation = presentation;
 		this.setName( this.presentation + "..." );
 	}
 	protected abstract EditMembersPane< E > createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
-	public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		java.util.UUID groupUUID = java.util.UUID.randomUUID();
 		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
 		EditMembersPane< E > editMembersPane = this.createEditMembersPane( groupUUID, this.declaringType );
@@ -71,24 +72,24 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 		if( isAccepted != null ) {
 			edu.cmu.cs.dennisc.zoot.CompositeEdit compositeEdit = historyManager.createDoIgnoringCompositeEdit( this.presentation + " " + this.declaringType.getName() );
 			if( compositeEdit != null ) {
-				actionContext.commitAndInvokeDo( compositeEdit );
+				context.commitAndInvokeDo( compositeEdit );
 			} else {
-				actionContext.cancel();
+				context.cancel();
 			}
 		} else {
 			historyManager.setInsertionIndex( 0 );
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }
 abstract class EditMethodsOperation< E extends edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > extends EditMembersOperation< E > {
-	public EditMethodsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String presentation ) {
-		super( type, presentation );
+	public EditMethodsOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type, String presentation ) {
+		super( individualId, type, presentation );
 	}
 }
 class EditProceduresOperation extends EditMethodsOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
 	public EditProceduresOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type, "Edit Procedures" );
+		super( java.util.UUID.fromString( "f3160b4c-d060-4e60-839c-3dfd761f71ce" ), type, "Edit Procedures" );
 	}
 	@Override
 	protected EditProceduresPane createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
@@ -97,7 +98,7 @@ class EditProceduresOperation extends EditMethodsOperation< edu.cmu.cs.dennisc.a
 }
 class EditFunctionsOperation extends EditMethodsOperation< edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice > {
 	public EditFunctionsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type, "Edit Functions" );
+		super( java.util.UUID.fromString( "f911b1ae-3ceb-4749-99de-dee5f40a8109" ), type, "Edit Functions" );
 	}
 	@Override
 	protected EditFunctionsPane createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
@@ -107,7 +108,7 @@ class EditFunctionsOperation extends EditMethodsOperation< edu.cmu.cs.dennisc.al
 
 class EditFieldsOperation extends EditMembersOperation< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > {
 	public EditFieldsOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type, "Edit Properties" );
+		super( java.util.UUID.fromString( "64816bc1-6c0f-4675-bb77-2e53086b2f74" ), type, "Edit Properties" );
 	}
 	@Override
 	protected EditFieldsPane createEditMembersPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
@@ -264,13 +265,13 @@ class ProjectBlank extends edu.cmu.cs.dennisc.cascade.Blank {
 
 class RootOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RootOperation() {
+		super( java.util.UUID.fromString( "259dfcc5-dd20-4890-8104-a34a075734d0" ) );
 		this.setName( "All" );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		java.awt.Component component = (java.awt.Component)actionContext.getEvent().getSource();
-		int x = 0;//component.getWidth();
-		int y = component.getHeight();
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+		int x = 0;
+		int y = button.getHeight();
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
 		if( project != null ) {
 			new ProjectBlank( project ).showPopupMenu( component, x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.zoot.ActionOperation >() {
@@ -311,11 +312,11 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 //}
 
 class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
-	private javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
+	private edu.cmu.cs.dennisc.croquet.KLabel label = new edu.cmu.cs.dennisc.croquet.KLabel();
 
-	public OperationDropDown( edu.cmu.cs.dennisc.zoot.ActionOperation leftButtonPressOperation ) {
+	public OperationDropDown( edu.cmu.cs.dennisc.croquet.AbstractActionOperation leftButtonPressOperation ) {
 		this.setLeftButtonPressOperation( leftButtonPressOperation );
-		this.add( this.label );
+		this.addComponent( this.label );
 		this.updateLabel();
 //
 //		
@@ -360,16 +361,17 @@ public class DeclarationsDropDown extends OperationDropDown {
 	public DeclarationsDropDown() {
 		super( new RootOperation() );
 	}
+	
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.updateOperation( org.alice.ide.IDE.getSingleton().getFocusedCode() );
 		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
-		super.removeNotify();
+		super.removed();
 	}
 	@Override
 	protected int getInsetTop() {
@@ -395,7 +397,6 @@ public class DeclarationsDropDown extends OperationDropDown {
 		
 		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: update label" );
 		
-		this.revalidate();
-		this.repaint();
+		this.revalidateAndRepaint();
 	}
 }

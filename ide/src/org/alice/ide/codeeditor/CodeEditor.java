@@ -125,7 +125,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 		}
 	}
 
-	protected javax.swing.JComponent createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		return new ParametersPane( this.getIDE().getCodeFactory(), code );
 	}
 
@@ -139,8 +139,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
-			javax.swing.JComponent parametersPane = createParametersPane( codeDeclaredInAlice );
-			javax.swing.JComponent header;
+			edu.cmu.cs.dennisc.croquet.KComponent< ? > parametersPane = createParametersPane( codeDeclaredInAlice );
+			edu.cmu.cs.dennisc.croquet.KComponent< ? > header;
 			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
 				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane );
@@ -382,10 +382,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 				if( this.currentUnder != null ) {
 					final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( source, CodeEditor.this, eSource );
 					class DropOperation extends org.alice.ide.operations.AbstractActionOperation {
-
-
 						public DropOperation() {
-							super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+							super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
 						}
 						public void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
 							class DropEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
@@ -456,7 +454,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 					final int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
 
 					
-					abstract class CodeEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+					abstract class CodeEdit extends org.alice.ide.ToDoEdit {
 						protected abstract void redoInternal();
 						protected abstract void undoInternal();
 
@@ -476,13 +474,14 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 						}
 					}
 					
-					edu.cmu.cs.dennisc.zoot.ActionOperation operation;
+					edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation;
 					if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 						class CopyOperation extends org.alice.ide.operations.AbstractActionOperation {
 							public CopyOperation() {
-								super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+								super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "ef6143be-5de3-4a55-aed3-f61d8ebbbef2" ) );
 							}
-							public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+							@Override
+							protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 								final edu.cmu.cs.dennisc.alice.ast.Statement copy = (edu.cmu.cs.dennisc.alice.ast.Statement)getIDE().createCopy( statement );
 								class CopyEdit extends CodeEdit {
 									@Override
@@ -504,7 +503,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 									}
 									
 								}
-								actionContext.commitAndInvokeDo( new CopyEdit() );
+								context.commitAndInvokeDo( new CopyEdit() );
 							}
 						}
 						operation = new CopyOperation();
@@ -515,9 +514,10 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 							} else {
 								class ReorderOperation extends org.alice.ide.operations.AbstractActionOperation {
 									public ReorderOperation() {
-										super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+										super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "e2cffe11-be24-4b5c-9ca4-ac0d71ecd16c" ) );
 									}
-									public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+									@Override
+									protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 										class ReorderEdit extends CodeEdit {
 											private edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner;
 											private int aIndex;
@@ -549,7 +549,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 												return rv;
 											}
 										}
-										actionContext.commitAndInvokeDo( new ReorderEdit() );
+										context.commitAndInvokeDo( new ReorderEdit() );
 									}
 								}
 								operation = new ReorderOperation();
@@ -557,9 +557,10 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 						} else {
 							class ReparentOperation extends org.alice.ide.operations.AbstractActionOperation {
 								public ReparentOperation() {
-									super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+									super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "6049a378-2972-4672-a211-1f3fcda45025" ) );
 								}
-								public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+								@Override
+								protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 									class ReparentEdit extends CodeEdit {
 										@Override
 										protected void redoInternal() {
@@ -577,7 +578,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 											return rv;
 										}
 									}
-									actionContext.commitAndInvokeDo( new ReparentEdit() );
+									context.commitAndInvokeDo( new ReparentEdit() );
 								}
 							}
 							operation = new ReparentOperation();

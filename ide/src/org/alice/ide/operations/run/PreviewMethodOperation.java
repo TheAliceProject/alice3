@@ -48,11 +48,12 @@ package org.alice.ide.operations.run;
 public class PreviewMethodOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate;
 	public PreviewMethodOperation( org.alice.ide.memberseditor.templates.ProcedureInvocationTemplate procedureInvocationTemplate ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "9414c780-1ba2-4b00-8cb2-3c066f0063d5" ) );
 		this.setName( "Preview..." );
 		this.procedureInvocationTemplate = procedureInvocationTemplate;
 	}
-	public void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent( this.procedureInvocationTemplate, 0, 0, 0, this.procedureInvocationTemplate.getWidth(), this.procedureInvocationTemplate.getHeight(), 0, false );
 		edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent dragAndDropEvent = new edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent( this.procedureInvocationTemplate, null, mouseEvent );
 		this.procedureInvocationTemplate.createStatement( dragAndDropEvent, null, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement >() {
@@ -60,11 +61,11 @@ public class PreviewMethodOperation extends org.alice.ide.operations.AbstractAct
 				edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( statement, edu.cmu.cs.dennisc.alice.ast.ExpressionStatement.class );
 				edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( expressionStatement.expression.getValue(), edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class );
 				methodInvocation.expression.setValue( null );
-				PreviewMethodOperation.this.getIDE().handlePreviewMethod( actionContext, methodInvocation );
-				actionContext.commit();
+				PreviewMethodOperation.this.getIDE().handlePreviewMethod( context, methodInvocation );
+				context.commit();
 			}
 			public void handleCancelation() {
-				actionContext.cancel();
+				context.cancel();
 			}
 		} );
 	}

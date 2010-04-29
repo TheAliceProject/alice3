@@ -53,29 +53,32 @@ public class KGridPanel extends KPanel {
 	private int columnCount;
 	private int hgap;
 	private int vgap;
-	private KGridPanel( int rowCount, int columnCount, int hgap, int vgap ) {
+	private KGridPanel( int rowCount, int columnCount, int hgap, int vgap, KComponent< ? >[] components ) {
 		this.rowCount = rowCount;
 		this.columnCount = columnCount;
 		this.hgap = hgap;
 		this.vgap = vgap;
+		for( KComponent< ? > component : components ) {
+			this.addComponent( component );
+		}
 	}
-	public static KGridPanel createSingleRowGridPane() {
-		return new KGridPanel( 1, 0, DEFAULT_HGAP, DEFAULT_VGAP );
+	public static KGridPanel createSingleRowGridPane( KComponent< ? >... components ) {
+		return new KGridPanel( 1, 0, DEFAULT_HGAP, DEFAULT_VGAP, components );
 	}
-	public static KGridPanel createSingleRowGridPane( int hgap, int vgap ) {
-		return new KGridPanel( 1, 0, hgap, vgap );
+	public static KGridPanel createSingleRowGridPane( int hgap, int vgap, KComponent< ? >... components ) {
+		return new KGridPanel( 1, 0, hgap, vgap, components );
 	}
-	public static KGridPanel createSingleColumnGridPane() {
-		return new KGridPanel( 0, 1, DEFAULT_HGAP, DEFAULT_VGAP );
+	public static KGridPanel createSingleColumnGridPane( KComponent< ? >... components ) {
+		return new KGridPanel( 0, 1, DEFAULT_HGAP, DEFAULT_VGAP, components );
 	}
-	public static KGridPanel createSingleColumnGridPane( int hgap, int vgap ) {
-		return new KGridPanel( 0, 1, hgap, vgap );
+	public static KGridPanel createSingleColumnGridPane( int hgap, int vgap, KComponent< ? >... components ) {
+		return new KGridPanel( 0, 1, hgap, vgap, components );
 	}
-	public static KGridPanel createGridPane( int rowCount, int columnCount, int hgap, int vgap ) {
-		return new KGridPanel( rowCount, columnCount, hgap, vgap );
+	public static KGridPanel createGridPane( int rowCount, int columnCount, int hgap, int vgap, KComponent< ? >... components ) {
+		return new KGridPanel( rowCount, columnCount, hgap, vgap, components );
 	}
-	public static KGridPanel createGridPane( int rowCount, int columnCount ) {
-		return new KGridPanel( rowCount, columnCount, DEFAULT_HGAP, DEFAULT_VGAP );
+	public static KGridPanel createGridPane( int rowCount, int columnCount, KComponent< ? >... components ) {
+		return new KGridPanel( rowCount, columnCount, DEFAULT_HGAP, DEFAULT_VGAP, components );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

@@ -75,7 +75,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		// 4 ) );
 		
 		
-		this.setBackground(new java.awt.Color(220, 220, 255));
+		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
 		IndirectCreatePersonActionOperation indirectCreatePersonActionOperation = new IndirectCreatePersonActionOperation();
 		javax.swing.JButton createPersonButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(indirectCreatePersonActionOperation);

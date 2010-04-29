@@ -48,11 +48,12 @@ package org.alice.ide.operations.help;
 public class WarningOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private boolean isSolicited;
 	public WarningOperation( boolean isSolicited ) {
+		super( java.util.UUID.fromString( "b868d8df-f743-4eab-a942-376a36f69218" ) );
 		this.setName( "Display Warning..." );
 		this.isSolicited = isSolicited;
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		org.alice.ide.warningpane.WarningPane warningPane = new org.alice.ide.warningpane.WarningPane( this.isSolicited );
 		this.getIDE().showMessageDialog( warningPane, "Alice3 is currently under development", edu.cmu.cs.dennisc.croquet.MessageType.WARNING ); 
 	}

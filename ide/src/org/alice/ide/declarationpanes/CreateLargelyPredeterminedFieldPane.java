@@ -108,18 +108,18 @@ public abstract class CreateLargelyPredeterminedFieldPane extends org.alice.ide.
 	}
 	
 	@Override
-	protected java.awt.Component createValueTypeComponent() {
-		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane valueTypeLine = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
-		valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType ) );
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createValueTypeComponent() {
+		edu.cmu.cs.dennisc.croquet.KLineAxisPanel valueTypeLine = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel();
+		valueTypeLine.addComponent( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType ) );
 		if( CreateLargelyPredeterminedFieldPane.this.valueType instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
-			valueTypeLine.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " which extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
-			valueTypeLine.add( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
+			valueTypeLine.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " which extends ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE, edu.cmu.cs.dennisc.java.awt.font.TextWeight.LIGHT ) );
+			valueTypeLine.addComponent( new org.alice.ide.common.TypeComponent( CreateLargelyPredeterminedFieldPane.this.valueType.getSuperType() ) );
 //			valueTypeLine.add( zoot.ZLabel.acquire( " ) ", zoot.font.ZTextPosture.OBLIQUE, zoot.font.ZTextWeight.LIGHT ) );
 		}
 		return valueTypeLine;
 	}
 	@Override
-	protected java.awt.Component createInitializerComponent() {
-		return new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createInitializerComponent() {
+		return new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( getIDE().getPreviewFactory().createExpressionPane( this.getInitializer() ) );
 	}
 }

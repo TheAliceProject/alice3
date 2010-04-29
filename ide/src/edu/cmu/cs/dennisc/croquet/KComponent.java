@@ -76,11 +76,20 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	public void setEnabled( boolean isEnabled ) {
 		this.getJComponent().setEnabled( isEnabled );
 	}
+	public void setOpaque( boolean isOpaque ) {
+		this.getJComponent().setOpaque( isOpaque );
+	}
 	public void setToolTipText( String toolTipText ) {
 		this.getJComponent().setToolTipText( toolTipText );
 	}
 	public void setBorder( javax.swing.border.Border border ) {
 		this.getJComponent().setBorder( border );
+	}
+	public void setCursor( java.awt.Cursor cursor ) {
+		this.getJComponent().setCursor( cursor );
+	}
+	public void setIgnoreRepaint( boolean ignoreRepaint ) {
+		this.getJComponent().setIgnoreRepaint( ignoreRepaint );
 	}
 
 	protected void adding() {
@@ -101,6 +110,13 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	
 	protected void repaint() {
 		this.getJComponent().repaint();
+	}
+	private void revalidate() {
+		this.getJComponent().revalidate();
+	}
+	protected void revalidateAndRepaint() {
+		this.revalidate();
+		this.repaint();
 	}
 	
 

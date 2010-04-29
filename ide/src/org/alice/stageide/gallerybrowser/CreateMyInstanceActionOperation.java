@@ -47,6 +47,7 @@ package org.alice.stageide.gallerybrowser;
  */
 class CreateMyInstanceActionOperation extends CreateInstanceFromFileActionOperation {
 	public CreateMyInstanceActionOperation() {
+		super( java.util.UUID.fromString( "d1b9047a-dd23-42be-8a64-fd4ca1fa0f78" ) );
 		this.setName( "My Classes..." );
 	}
 

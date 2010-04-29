@@ -65,20 +65,20 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	}
 	
 	class ConfigurationPreview extends edu.cmu.cs.dennisc.javax.swing.components.JFormPane {
-		private javax.swing.JLabel isDefaultFieldNameGenerationDesiredLabel;
-		private javax.swing.JLabel isSyntaxNoiseDesiredLabel;
+		private edu.cmu.cs.dennisc.croquet.KLabel isDefaultFieldNameGenerationDesiredLabel;
+		private edu.cmu.cs.dennisc.croquet.KLabel isSyntaxNoiseDesiredLabel;
 		private void ensureLabelsExist() {
 			if( this.isDefaultFieldNameGenerationDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isDefaultFieldNameGenerationDesiredLabel = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
-				this.isDefaultFieldNameGenerationDesiredLabel.setForeground( java.awt.Color.GRAY );
+				this.isDefaultFieldNameGenerationDesiredLabel = new edu.cmu.cs.dennisc.croquet.KLabel();
+				this.isDefaultFieldNameGenerationDesiredLabel.setForegroundColor( java.awt.Color.GRAY );
 			}
 			if( this.isSyntaxNoiseDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isSyntaxNoiseDesiredLabel = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
-				this.isSyntaxNoiseDesiredLabel.setForeground( java.awt.Color.GRAY );
+				this.isSyntaxNoiseDesiredLabel = new edu.cmu.cs.dennisc.croquet.KLabel();
+				this.isSyntaxNoiseDesiredLabel.setForegroundColor( java.awt.Color.GRAY );
 			}
 		}
 		@Override
@@ -99,36 +99,44 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	private ConfigurationPreview preview;
 	
 	abstract class PreferencesActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-		public PreferencesActionOperation() {
-			super( org.alice.ide.IDE.PREFERENCES_GROUP );
+		public PreferencesActionOperation( java.util.UUID individualId ) {
+			super( org.alice.ide.IDE.PREFERENCES_GROUP, individualId );
 		}
 	}
 	class EditVariantOperation extends PreferencesActionOperation {
 		public EditVariantOperation() {
+			super( java.util.UUID.fromString( "6035083a-a50e-43bb-a527-5c680ce25a0d" ) );
 			this.setName( "Edit..." );
 		}
-		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		}
 	}
 	class RemoveVariantOperation extends PreferencesActionOperation {
 		public RemoveVariantOperation() {
+			super( java.util.UUID.fromString( "b1e27e44-814b-42aa-a6d1-b6a8520b2ff8" ) );
 			this.setName( "Remove" );
 		}
-		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		}
 	}
 	class NewVariantOperation extends PreferencesActionOperation {
 		public NewVariantOperation() {
+			super( java.util.UUID.fromString( "fac28f32-3beb-4c47-bc73-ff73b34fc597" ) );
 			this.setName( "New..." );
 		}
-		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		}
 	}
 	class ImportVariantOperation extends PreferencesActionOperation {
 		public ImportVariantOperation() {
+			super( java.util.UUID.fromString( "5cf110be-9d53-40dd-8461-b8d0183ae10d" ) );
 			this.setName( "Import..." );
 		}
-		public void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		}
 	}
 	public ConfigurationPreferencePaneProxy( edu.cmu.cs.dennisc.preference.Preference<org.alice.ide.preferences.programming.Configuration> preference ) {
@@ -162,7 +170,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		this.preview = new ConfigurationPreview();
 		this.preview.updateValues( (org.alice.ide.preferences.programming.Configuration)activeConfigurationComboBox.getSelectedItem() );
 		this.pane = new edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane(
-				edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "active variant:" ),
+				new edu.cmu.cs.dennisc.croquet.KLabel( "active variant:" ),
 				javax.swing.Box.createVerticalStrut( 4 ),  
 				northTopPane, 
 				javax.swing.Box.createVerticalStrut( 4 ),  

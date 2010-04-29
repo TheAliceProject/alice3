@@ -49,18 +49,19 @@ public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.denni
 	//	public InstancePropertyPane( Factory factory ) {
 	//		super( factory, javax.swing.BoxLayout.LINE_AXIS );
 	//	}
-	private javax.swing.JLabel label;
+	private edu.cmu.cs.dennisc.croquet.KLabel label;
 
 	public InstancePropertyPane( Factory factory, edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
 	protected void refresh() {
+		//todo: move to adding?
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
-			this.add( this.label );
+			this.label = new edu.cmu.cs.dennisc.croquet.KLabel();
+			this.addComponent( this.label );
 		}
 		this.label.setText( getProperty().getValue().toString() );
 	}

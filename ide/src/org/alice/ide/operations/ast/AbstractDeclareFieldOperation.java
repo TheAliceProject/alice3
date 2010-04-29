@@ -49,16 +49,17 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 	protected abstract edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getOwnerType();
 	protected abstract edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType );
 	protected abstract boolean isInstanceValid();
-	public AbstractDeclareFieldOperation() {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+	public AbstractDeclareFieldOperation( java.util.UUID individualId ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 	}
-	public final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType = this.getOwnerType();
 		final edu.cmu.cs.dennisc.pattern.Tuple2<edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object> tuple = this.createFieldAndInstance( ownerType );
 		if( tuple != null ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = tuple.getA();
 			if( field != null ) {
-				class Edit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+				class Edit extends org.alice.ide.ToDoEdit {
 					private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType;
 					private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 					private int index;
@@ -91,12 +92,12 @@ public abstract class AbstractDeclareFieldOperation extends org.alice.ide.operat
 					}
 				}
 				int index = ownerType.fields.size();
-				actionContext.commitAndInvokeDo( new Edit( ownerType, field, index ) );
+				context.commitAndInvokeDo( new Edit( ownerType, field, index ) );
 			} else {
-				actionContext.cancel();
+				context.cancel();
 			}
 		} else {
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }

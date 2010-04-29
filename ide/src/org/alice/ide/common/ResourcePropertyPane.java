@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennisc.alice.ast.ResourceProperty> {
 	private static java.text.NumberFormat durationFormat = new java.text.DecimalFormat( "0.00" );
-	private javax.swing.JLabel label;
+	private edu.cmu.cs.dennisc.croquet.KLabel label;
 	private org.alice.virtualmachine.Resource prevResource;
 	private edu.cmu.cs.dennisc.pattern.event.NameListener nameListener;
 	public ResourcePropertyPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.ResourceProperty property ) {
@@ -73,24 +73,25 @@ public class ResourcePropertyPane extends AbstractPropertyPane<edu.cmu.cs.dennis
 		return this.nameListener;
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
+		//refresh takes care of name listener
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		if( this.prevResource != null ) {
 			this.prevResource.removeNameListener( this.getNameListener() );
 		}
-		super.removeNotify();
+		super.removed();
 	}
-	
+
 	@Override
 	protected void refresh() {
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel();
-			this.add( this.label );
+			this.label = new edu.cmu.cs.dennisc.croquet.KLabel();
+			this.addComponent( this.label );
 		}
 		if( this.prevResource != null ) {
 			this.prevResource.removeNameListener( this.getNameListener() );

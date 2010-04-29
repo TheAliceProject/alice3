@@ -47,6 +47,6 @@ package org.alice.ide.operations.ast;
  */
 public class RenameParameterOperation extends RenameNodeOperation {
 	public RenameParameterOperation( edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter ) {
-		super( parameter.name, new org.alice.ide.name.validators.ParameterNameValidator( parameter ) );
+		super( java.util.UUID.fromString( "a5ea865d-495f-4962-99a6-b481d4ca3eb9" ), parameter.name, new org.alice.ide.name.validators.ParameterNameValidator( parameter ) );
 	}
 }

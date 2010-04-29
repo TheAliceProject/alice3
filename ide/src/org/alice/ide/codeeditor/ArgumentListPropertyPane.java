@@ -74,16 +74,16 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		return rv;
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
-		javax.swing.JComponent prefixPane;
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane;
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			prefixPane = null;
 		} else {
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = argument.parameter.getValue();
 			boolean isNameDesired = this.isNameDesired( parameter );
 			if( isNameDesired ) {
-				prefixPane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( javax.swing.Box.createHorizontalStrut( 4 ), new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() ), edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( ": " ) );
+				prefixPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 4 ), new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() ), new edu.cmu.cs.dennisc.croquet.KLabel( ": " ) );
 			} else {
 				prefixPane = null;
 			}

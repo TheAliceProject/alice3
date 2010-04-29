@@ -48,7 +48,7 @@ package org.alice.ide.operations.ast;
 public class FillInMoreOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	public FillInMoreOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "e4cdc25b-d7a0-42b5-adc9-74e34db6b5fc" ) );
 		assert expressionStatement != null;
 		this.expressionStatement = expressionStatement;
 	}

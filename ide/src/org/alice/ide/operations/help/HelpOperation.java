@@ -47,7 +47,7 @@ package org.alice.ide.operations.help;
  */
 public class HelpOperation extends BrowserOperation {
 	public HelpOperation() {
-		super( "http://kenai.com/projects/alice/pages/Help" );
+		super( java.util.UUID.fromString( "b478d150-03c2-4972-843a-a1e64dbd2b58" ), "http://kenai.com/projects/alice/pages/Help" );
 		this.setName( "Help..." );
 		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_F1, 0 ) );
 	}

@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	private UbiquitousStatementImplementor implementor;
-	private javax.swing.JLabel label;
+	private edu.cmu.cs.dennisc.croquet.KLabel label;
 	public CascadingUbiquitousStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
 		super( cls );
 		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
@@ -61,30 +61,37 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 	}
 	
 	@Override
-	public java.awt.Component getSubject() {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
 	public javax.swing.JToolTip createToolTip() {
 		return this.implementor.getToolTip();
 	}
+	
 	@Override
-	public void addNotify() {
+	protected void adding() {
+		super.adding();
 		if( this.label != null ) {
 			//pass
 		} else {
 			//this.label = zoot.ZLabel.acquire( "<html><body>" + this.getLabelText() + "</body></html>" );
-			this.label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( this.getLabelText() );
+			this.label = new edu.cmu.cs.dennisc.croquet.KLabel( this.getLabelText() );
 			//this.label = zoot.ZLabel.acquire( "<html><body>\u2334</body></html>" );
 			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
-				this.label.setForeground( getIDE().getCommentForegroundColor() );
+				this.label.setForegroundColor( getIDE().getCommentForegroundColor() );
 			}
 			//this.label.setFontToScaledFont( 1.2f );
-			this.add( this.label );
+			this.addComponent( this.label );
 			this.setToolTipText( "" );
 			this.getIDE().addToConcealedBin( this.implementor.getIncompleteStatementPane() );
 		}
-		super.addNotify();
+	}
+	
+	@Override
+	protected void removed() {
+		todo
+		super.removed();
 	}
 	
 	@Override

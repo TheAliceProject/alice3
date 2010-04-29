@@ -48,8 +48,8 @@ package org.alice.ide.operations.ast;
 public abstract class AbstractExpressionPropertyActionOperation extends org.alice.ide.operations.AbstractActionOperation {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 
-	public AbstractExpressionPropertyActionOperation( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+	public AbstractExpressionPropertyActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 		this.expressionProperty = expressionProperty;
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {

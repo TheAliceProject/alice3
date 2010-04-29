@@ -69,6 +69,9 @@ public class KMenu extends KAbstractMenu< javax.swing.JMenu > {
 			//todo
 		}
 	}
+	public void setMnemonic( int mnemonic ) {
+		this.getJComponent().setMnemonic( mnemonic );
+	}
 	@Override
 	public void addMenu( KMenu menu ) {
 		menu.adding();

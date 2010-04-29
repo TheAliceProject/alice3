@@ -49,6 +49,7 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method;
 
 	public DeclareMethodParameterOperation( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
+		super( java.util.UUID.fromString( "aa3d337d-b409-46ae-816f-54f139b32d86" ) );
 		this.method = method;
 		this.setName( "Add Parameter..." );
 	}
@@ -56,13 +57,14 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 	protected edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice getCode() {
 		return this.method;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, this.getIDE().getMethodInvocations( method ) );
 		final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.showInJDialog( this.getIDE().getJFrame() );
 		if( parameter != null ) {
 			final int index = method.parameters.size();
 			final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					org.alice.ide.ast.NodeUtilities.addParameter( map, method, parameter, index, getIDE().getMethodInvocations( method ) );
@@ -79,7 +81,7 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 				}
 			} );
 		} else {
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }

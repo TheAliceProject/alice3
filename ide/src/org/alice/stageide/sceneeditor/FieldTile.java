@@ -136,17 +136,19 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		String prevText = this.text;
 		if( this.field != null ) {
 			String text = getIDE().getInstanceTextForField( this.field, false );
-			this.setBackground( this.calculateColor() );
+			this.setBackgroundColor( this.calculateColor() );
 			this.text = text;
 		} else {
-			this.setBackground( java.awt.Color.RED );
+			this.setBackgroundColor( java.awt.Color.RED );
 			this.text = "null";
 		}
 		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( prevText, this.text ) ) {
 			//pass
 		} else {
-			this.revalidate();
+			this.revalidateAndRepaint();
 		}
+		
+		//todo?
 		this.repaint();
 	}
 	protected boolean isInScope() {

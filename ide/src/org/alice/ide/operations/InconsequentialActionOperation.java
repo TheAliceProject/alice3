@@ -47,12 +47,13 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class InconsequentialActionOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public InconsequentialActionOperation() {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
+	public InconsequentialActionOperation( java.util.UUID individualUUID ) {
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualUUID );
 	}
-	protected abstract void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext);
-	public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		performInternal(actionContext);
-		actionContext.commit();
+	protected abstract void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button );
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		performInternal(context, e, button);
+		context.finish();
 	}
 }

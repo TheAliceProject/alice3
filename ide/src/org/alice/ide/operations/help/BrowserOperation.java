@@ -47,13 +47,14 @@ package org.alice.ide.operations.help;
  */
 public abstract class BrowserOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	private String url;
-	public BrowserOperation( String url ) {
+	public BrowserOperation( java.util.UUID individualId, String url ) {
+		super( individualId );
 		this.url = url;
 	}
 	protected abstract String getTitle(); 
 	protected abstract int getMessageType();
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
 		edu.cmu.cs.dennisc.browser.BrowserProgressDialog dialog = new edu.cmu.cs.dennisc.browser.BrowserProgressDialog( this.getIDE().getJFrame(), this.url);
 		dialog.createAndExecuteWorker();
 		dialog.pack();

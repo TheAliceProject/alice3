@@ -45,11 +45,26 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractControl extends edu.cmu.cs.dennisc.zoot.ZControl {
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+@Deprecated
+public abstract class ToDoEdit extends edu.cmu.cs.dennisc.croquet.Edit {
+	public ToDoEdit() {
+		this( null );
 	}
-	public void fillBounds( java.awt.Graphics2D g2 ) {
-		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
+	public ToDoEdit( edu.cmu.cs.dennisc.croquet.Context context ) {
+		super( context );
+	}
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+	}
+	@Override
+	public boolean canRedo() {
+		return true;
+	}
+	@Override
+	public boolean canUndo() {
+		return true;
 	}
 }

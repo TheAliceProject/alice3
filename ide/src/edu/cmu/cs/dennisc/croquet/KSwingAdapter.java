@@ -40,20 +40,20 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations.edit;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class RedoOperation extends org.alice.ide.operations.InconsequentialActionOperation {
-	public RedoOperation() {
-		this.setName( "Redo" );
-		this.setAcceleratorKey( javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_Y, edu.cmu.cs.dennisc.java.awt.event.InputEventUtilities.getAcceleratorMask() ) );
+@Deprecated
+public class KSwingAdapter extends KComponent< javax.swing.JComponent > {
+	private javax.swing.JComponent jComponent;
+	public KSwingAdapter( javax.swing.JComponent jComponent ) {
+		this.jComponent = jComponent;
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
-		historyManager.performRedo();
+	protected javax.swing.JComponent createJComponent() {
+		return this.jComponent;
 	}
-	
 }

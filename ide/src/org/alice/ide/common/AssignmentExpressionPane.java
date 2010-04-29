@@ -46,7 +46,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane  {
+public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 	private edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression;
 	public AssignmentExpressionPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression ) {
 		this.assignmentExpression = assignmentExpression;
@@ -54,11 +54,11 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.javax.swing.com
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType;
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
-		javax.swing.JComponent parent;
+		edu.cmu.cs.dennisc.croquet.KAxisPanel parent;
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
-			this.add( parent );
+			parent = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel();
+			this.addComponent( parent );
 			expression = arrayAccess.array.getValue();
 		} else {
 			parent = this;
@@ -70,38 +70,38 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.javax.swing.com
 //			nameLabel.setFontToScaledFont( 1.5f );
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 			desiredValueType = field.getDesiredValueType();
-			parent.add( factory.createExpressionPropertyPane( fieldAccess.expression, null, desiredValueType ) );
+			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, null, desiredValueType ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
-				parent.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " . " ) );
+				parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " . " ) );
 			}
-			parent.add( nameLabel );
+			parent.addComponent( nameLabel );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.VariableAccess variableAccess = (edu.cmu.cs.dennisc.alice.ast.VariableAccess)expression;
 			edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable = variableAccess.variable.getValue();
 			//todo?
 			//desiredValueType = variable.getDesiredValueType();
 			desiredValueType = null;
-			parent.add( new VariablePane( variable ) );
+			parent.addComponent( new VariablePane( variable ) );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.ParameterAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ParameterAccess parameterAccess = (edu.cmu.cs.dennisc.alice.ast.ParameterAccess)expression;
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = parameterAccess.parameter.getValue();
 			desiredValueType = parameter.getDesiredValueType();
-			parent.add( new ParameterPane( null, (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter ) );
+			parent.addComponent( new ParameterPane( null, (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter ) );
 		} else {
 			desiredValueType = null;
-			parent.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "TODO" ) );
+			parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "TODO" ) );
 		}
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "[ " ) );
-			parent.add( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
-			parent.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " ]" ) );
+			parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "[ " ) );
+			parent.addComponent( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
+			parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " ]" ) );
 		}
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			parent.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " = " ) );
+			parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " = " ) );
 		} else {
-			parent.add( new org.alice.ide.common.GetsPane( true ) );
+			parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
 		}
-		parent.add( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null, desiredValueType ) );
+		parent.addComponent( factory.createExpressionPropertyPane( this.assignmentExpression.rightHandSide, null, desiredValueType ) );
 	}
 }

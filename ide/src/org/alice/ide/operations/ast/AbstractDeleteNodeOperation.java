@@ -48,14 +48,15 @@ package org.alice.ide.operations.ast;
 public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.alice.ast.Node > extends org.alice.ide.operations.AbstractActionOperation {
 	private E node;
 	private edu.cmu.cs.dennisc.alice.ast.NodeListProperty owner;
-	public AbstractDeleteNodeOperation( E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID );
+	public AbstractDeleteNodeOperation( java.util.UUID individualId, E node, edu.cmu.cs.dennisc.alice.ast.NodeListProperty< ? extends edu.cmu.cs.dennisc.alice.ast.Node > owner ) {
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
 		this.node = node;
 		this.owner = owner;
 		this.setName( "Delete" );
 	}
 	protected abstract boolean isClearToDelete( E node );
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		if( this.isClearToDelete( this.node ) ) {
 			final int index = this.owner.indexOf( this.node );
 			final edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
@@ -67,7 +68,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				field = null;
 				instance = null;
 			}
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
 				public void doOrRedo( boolean isDo ) {
 					owner.remove( index );
@@ -87,7 +88,7 @@ public abstract class AbstractDeleteNodeOperation< E extends edu.cmu.cs.dennisc.
 				}
 			} );
 		} else {
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }

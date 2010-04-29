@@ -47,7 +47,7 @@ package org.alice.ide.operations.ast;
  */
 public class DeclareFunctionOperation extends DeclareMethodOperation {
 	public DeclareFunctionOperation( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		super( type );
+		super( java.util.UUID.fromString( "171164e5-8159-4641-9528-a230ef4d2600" ), type );
 		this.setName( "Declare Function..." );
 	}
 	@Override

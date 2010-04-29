@@ -46,7 +46,7 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	private javax.swing.JLabel nameLabel;
+	private edu.cmu.cs.dennisc.croquet.KLabel nameLabel;
 	private edu.cmu.cs.dennisc.zoot.ActionOperation popupOperation;
 	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
@@ -64,26 +64,27 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		}
 	};
 
-	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, javax.swing.JComponent parametersPane ) {
+	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, edu.cmu.cs.dennisc.croquet.KComponent< ? > parametersPane ) {
 		super( methodDeclaredInAlice );
+		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+			this.addComponent( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
+			this.addComponent( application.createHorizontalStrut( 8 ) );
 			//this.add( zoot.ZLabel.acquire( " {" ) );
 		} else {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
 			if( methodDeclaredInAlice.isProcedure() ) {
 				sb.append( " procedure " );
 			} else {
-				this.add( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
+				this.addComponent( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( " function " );
 			}
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 		
 		
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+		this.addComponent( application.createHorizontalStrut( 8 ) );
 		this.nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
 		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( this.nameLabel, 2.0f );
 
@@ -96,24 +97,24 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		}
 
 		
-		this.add( this.nameLabel );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+		this.addComponent( this.nameLabel );
+		this.addComponent( application.createHorizontalStrut( 8 ) );
 		if( parametersPane != null ) {
-			this.add( parametersPane );
+			this.addComponent( parametersPane );
 		}
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		if( this.popupOperation != null ) {
 			this.nameLabel.addMouseListener( this.mouseAdapter );
 		}
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		if( this.popupOperation != null ) {
 			this.nameLabel.removeMouseListener( this.mouseAdapter );
 		}
-		super.removeNotify();
+		super.removed();
 	}
 }

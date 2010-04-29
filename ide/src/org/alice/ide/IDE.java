@@ -42,99 +42,21 @@
  */
 package org.alice.ide;
 
-class MenuItem extends javax.swing.JMenuItem {
-	private java.io.File file;
-	private java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
-		public void actionPerformed( java.awt.event.ActionEvent e ) {
-			if( file != null ) {
-				IDE ide = IDE.getSingleton();
-				boolean isLoadDesired;
-				if( ide.isProjectUpToDateWithFile() ) {
-					isLoadDesired = true;
-				} else {
-//					edu.cmu.cs.dennisc.zoot.ActionContext checkContext = edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( ide.getClearToProcedeWithChangedProjectOperation(), e, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
-//					isLoadDesired = checkContext.isCommitted();
-					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: ide.getClearToProcedeWithChangedProjectOperation()" );
-					isLoadDesired = true;
-				}
-				if( isLoadDesired ) {
-					ide.loadProjectFrom( MenuItem.this.file );
-				}
-			}
-		}
-	};
-
-	public MenuItem( int i, java.io.File file ) {
-		this.file = file;
-		this.setText( i + ") " + this.file.getAbsolutePath() );
-		this.addActionListener( this.actionListener );
-	}
-	//	@Override
-	//	public void addNotify() {
-	//		this.addActionListener( this.actionListener );
-	//		super.addNotify();
-	//	}
-	//	
-	//	@Override
-	//	public void removeNotify() {
-	//		this.removeActionListener( this.actionListener );
-	//		super.removeNotify();
-	//	}
-}
-
-class RecentProjectsMenu extends javax.swing.JMenu {
-//	private edu.cmu.cs.dennisc.preference.event.PreferenceListener< org.alice.ide.preferences.PathsPreference > preferenceListener = new edu.cmu.cs.dennisc.preference.event.PreferenceListener< org.alice.ide.preferences.PathsPreference >() {
-//		public void valueChanging( edu.cmu.cs.dennisc.preference.event.PreferenceEvent< org.alice.ide.preferences.PathsPreference > e ) {
-//		}
-//		public void valueChanged( edu.cmu.cs.dennisc.preference.event.PreferenceEvent< org.alice.ide.preferences.PathsPreference > e ) {
-//		}
-//	};
-	public RecentProjectsMenu() {
-		this.setText( "Open Recent Projects" );
-		this.addMenuListener( new javax.swing.event.MenuListener() {
-			public void menuSelected( javax.swing.event.MenuEvent e ) {
-				RecentProjectsMenu.this.handleMenuSelected( e );
-			}
-			public void menuDeselected( javax.swing.event.MenuEvent e ) {
-				RecentProjectsMenu.this.handleMenuDeselected( e );
-			}
-			public void menuCanceled( javax.swing.event.MenuEvent e ) {
-				RecentProjectsMenu.this.handleMenuCanceled( e );
-			}
-		} );
-	}
-
-	private void handleMenuSelected( javax.swing.event.MenuEvent e ) {
-		this.removeAll();
-		org.alice.ide.preferences.PathsPreference pathsPreference = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths;
-		int i = 1;
-		for( String pathname : pathsPreference.getValue() ) {
-			java.io.File file = new java.io.File( pathname );
-			if( file.exists() ) {
-				this.add( new MenuItem( i, file ) );
-				i++;
-			}
-		}
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "menuSelected:", e );
-	}
-	private void handleMenuDeselected( javax.swing.event.MenuEvent e ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "menuDeselected:", e );
-	}
-	private void handleMenuCanceled( javax.swing.event.MenuEvent e ) {
-		//edu.cmu.cs.dennisc.print.PrintUtilities.println( "menuCanceled:", e );
-	}
-}
-
 /**
  * @author Dennis Cosgrove
  */
 public abstract class IDE extends org.alice.app.ProjectApplication {
+	public static final java.util.UUID PREFERENCES_GROUP = java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" );
+
 	public static interface FieldSelectionObserver {
 		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField );
 		public void fieldSelectionChanged( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField );
-		//public void transientSelectionChanging( org.alice.ide.event.TransientSelectionEvent e );
-		//public void transientSelectionChanged( org.alice.ide.event.TransientSelectionEvent e );
 	}
+//	public static interface TransientSelectionObserver {
+//		public void transientSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractTransient previousTransient, edu.cmu.cs.dennisc.alice.ast.AbstractTransient nextTransient );
+//		public void transientSelectionChanged( edu.cmu.cs.dennisc.alice.ast.AbstractTransient previousTransient, edu.cmu.cs.dennisc.alice.ast.AbstractTransient nextTransient );
+//	}
+	
 	public static interface CodeInFocusObserver {
 		public void focusedCodeChanging( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode );
 		public void focusedCodeChanged( edu.cmu.cs.dennisc.alice.ast.AbstractCode previousCode, edu.cmu.cs.dennisc.alice.ast.AbstractCode nextCode );
@@ -155,9 +77,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.codeInFocusObservers.remove( codeInFocusObserver );
 	}
 	
-	public static final java.util.UUID PREFERENCES_GROUP = java.util.UUID.fromString( "c090cda0-4a77-4e2c-a839-faf28c98c10c" );
-//	public static final java.util.UUID IO_GROUP = java.util.UUID.fromString( "669018cd-2097-4568-9ce3-38cd102f6a2f" );
-//	public static final java.util.UUID INTERFACE_GROUP = java.util.UUID.fromString( "9d0f4665-a40e-4e0c-9139-6f54f288c016" );
 
 	private static org.alice.ide.issue.ExceptionHandler exceptionHandler;
 	private static IDE singleton;
@@ -177,203 +96,180 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return IDE.singleton;
 	}
 
+	private static final edu.cmu.cs.dennisc.croquet.Operation MENU_SEPARATOR = null;
 	private static class FileMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
 		public FileMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), "File", operations );
+			super( IDE_GROUP, java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), "File", java.awt.event.KeyEvent.VK_F, operations );
+		}
+	}
+	private static class RecentProjectsMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
+		public RecentProjectsMenuOperation() {
+			super( IDE_GROUP, java.util.UUID.fromString( "f94dda45-71e1-48df-9291-a8681b08f1c0" ), "Recent Projects", java.awt.event.KeyEvent.VK_R );
 		}
 	}
 	private static class EditMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
 		public EditMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
-			super( IDE_GROUP, java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), "Edit", operations );
+			super( IDE_GROUP, java.util.UUID.fromString( "dbfe00f8-a401-4858-be5c-a544cad7c938" ), "Edit", java.awt.event.KeyEvent.VK_E, operations );
 		}
 	}
-	private FileMenuOperation fileMenuOperation = new FileMenuOperation( this.getNewProjectOperation(), this.getOpenProjectOperation(), null, this.getSaveProjectOperation(), this.getSaveAsProjectOperation(), null, this.getExitOperation() );
-	private EditMenuOperation editMenuOperation = new EditMenuOperation( this.getUndoOperation(), this.getRedoOperation() );
-
-	@Override
-	protected edu.cmu.cs.dennisc.croquet.MenuBarOperation createMenuBarOperation() {
-		edu.cmu.cs.dennisc.croquet.MenuBarOperation rv = new edu.cmu.cs.dennisc.croquet.MenuBarOperation( IDE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
-		rv.addMenuOperation( this.fileMenuOperation );
-		rv.addMenuOperation( this.editMenuOperation );
-		return rv;
-	}
-
-	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
-		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : sceneType.methods ) {
-			if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
-				return method;
-			}
+	private static class ProjectMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
+		public ProjectMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+			super( IDE_GROUP, java.util.UUID.fromString( "f154f9a2-4ba1-4adb-9cb1-fb6cd36841c4" ), "Project", java.awt.event.KeyEvent.VK_P, operations );
 		}
-		return null;
 	}
-
-	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = this.getProgramType();
-		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
-		setUpMethod.body.getValue().statements.clear();
-		return rv;
-	}
-	public java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > getFieldAccesses( final edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
-		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
-			@Override
-			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
-				return fieldAccess.field.getValue() == field;
-			}
-		};
-		programType.crawl( crawler, true );
-		return crawler.getList();
-	}
-	public java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > getMethodInvocations( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
-		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
-		assert programType != null;
-		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
-			@Override
-			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
-				return methodInvocation.method.getValue() == method;
-			}
-		};
-		programType.crawl( crawler, true );
-		return crawler.getList();
-	}
-
-	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
-
-	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
-		return this.templatesFactory;
-	}
-	protected org.alice.ide.memberseditor.Factory createTemplatesFactory() {
-		return new org.alice.ide.memberseditor.Factory();
-	}
-
-	private org.alice.ide.codeeditor.Factory codeFactory = this.createCodeFactory();
-
-	public org.alice.ide.codeeditor.Factory getCodeFactory() {
-		return this.codeFactory;
-	}
-	protected org.alice.ide.codeeditor.Factory createCodeFactory() {
-		return new org.alice.ide.codeeditor.Factory();
-	}
-
-	private org.alice.ide.preview.Factory previewFactory = this.createPreviewFactory();
-
-	public org.alice.ide.preview.Factory getPreviewFactory() {
-		return this.previewFactory;
-	}
-	protected org.alice.ide.preview.Factory createPreviewFactory() {
-		return new org.alice.ide.preview.Factory();
-	}
-
-	public void refreshUbiquitousPane() {
-		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-			public void run() {
-				if( IDE.this.ubiquitousPane != null ) {
-					IDE.this.ubiquitousPane.refresh();
-				}
-			}
-		} );
-	}
-
-	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
-		java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > aliceTypes = this.addAliceTypes( new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : aliceTypes ) {
-			assert type != null;
-			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
-				return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			}
+	private static class RunMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
+		public RunMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+			super( IDE_GROUP, java.util.UUID.fromString( "e441d150-d53b-4bc1-9dbf-a61843a53a34" ), "Run", java.awt.event.KeyEvent.VK_R, operations );
 		}
-		String name = "My" + superType.getName();
-		return org.alice.ide.ast.NodeUtilities.createType( name, superType );
 	}
-	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( Class< ? > superCls ) {
-		return getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( superCls ) );
-
+	private static class WindowMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
+		public WindowMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+			super( IDE_GROUP, java.util.UUID.fromString( "58a7297b-a5f8-499a-abd1-db6fca4083c8" ), "Window", java.awt.event.KeyEvent.VK_W, operations );
+		}
 	}
-
-	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
-	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
-	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
-	private org.alice.ide.memberseditor.MembersEditor membersEditor;
-	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane;
-	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
-
-	//	private zoot.ZLabel feedback = zoot.ZLabel.acquire();
-
-	public java.awt.Component getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		return null;
+	private static class HelpMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
+		public HelpMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
+			super( IDE_GROUP, java.util.UUID.fromString( "435770a7-fb94-49ee-8c4d-b55a80618a09" ), "Help", java.awt.event.KeyEvent.VK_H, operations );
+		}
 	}
 	
-	public boolean isDropDownDesiredForFieldInitializer( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		return true;
-	}
-	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
-		return (expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression || expression instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression) == false;
-	}
-	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		//todo:
-		return new org.alice.ide.common.TypeComponent( type );
-	}
-	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return null;
-	}
-	public javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		return new org.alice.ide.common.TypeIcon( type );
-	}
+	
+	
+	private FileMenuOperation fileMenuOperation = new FileMenuOperation( 
+			this.getNewProjectOperation(), 
+			this.getOpenProjectOperation(), 
+			MENU_SEPARATOR,
+			new RecentProjectsMenuOperation(),
+			MENU_SEPARATOR, 
+			this.getSaveProjectOperation(), 
+			this.getSaveAsProjectOperation(), 
+			MENU_SEPARATOR, 
+			this.getRevertProjectOperation(), 
+			MENU_SEPARATOR, 
+			new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(), 
+			MENU_SEPARATOR, 
+			this.getExitOperation() 
+	);
+	private EditMenuOperation editMenuOperation = new EditMenuOperation( 
+			this.getUndoOperation(), 
+			this.getRedoOperation(), 
+			MENU_SEPARATOR,
+			new org.alice.ide.operations.edit.CutOperation(),
+			new org.alice.ide.operations.edit.CopyOperation(),
+			new org.alice.ide.operations.edit.PasteOperation()
+	);
 
-	private javax.swing.ComboBoxModel typeComboBoxModel;
-
-	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addJavaTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
-		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ) );
-		return rv;
-	}
-
-	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addAliceTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
-		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = this.getSceneType();
-		if( sceneType != null ) {
-			rv.add( sceneType );
-			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
-				edu.cmu.cs.dennisc.alice.ast.AbstractType valueType = field.getValueType();
-				if( valueType.isDeclaredInAlice() ) {
-					if( rv.contains( valueType ) ) {
-						//pass
-					} else {
-						rv.add( valueType );
-					}
-				}
-			}
-		}
-		return rv;
-	}
-	public javax.swing.ComboBoxModel getTypeComboBoxModel() {
-		if( this.typeComboBoxModel != null ) {
-			//pass
-		} else {
-			java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >();
-			this.addJavaTypes( types );
-			this.addAliceTypes( types );
-			typeComboBoxModel = new javax.swing.DefaultComboBoxModel( types );
-		}
-		return this.typeComboBoxModel;
-	}
-	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
-	public abstract java.io.File getGalleryRootDirectory();
-	protected abstract org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRootDirectory );
-	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
-		return new org.alice.ide.memberseditor.MembersEditor();
-	}
-	protected org.alice.ide.editorstabbedpane.EditorsTabbedPane createEditorsTabbedPane() {
-		return new org.alice.ide.editorstabbedpane.EditorsTabbedPane();
-	}
-	protected org.alice.ide.ubiquitouspane.UbiquitousPane createUbiquitousPane() {
-		return new org.alice.ide.ubiquitouspane.UbiquitousPane();
-	}
-
-	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
+	private ProjectMenuOperation projectMenuOperation = new ProjectMenuOperation( 
+			new org.alice.ide.operations.project.ManageResourcesOperation() 
+	);
+	private RunMenuOperation runMenuOperation = new RunMenuOperation( 
+			this.runOperation 
+	);
+	
+	private WindowMenuOperation windowMenuOperation = new WindowMenuOperation( 
+//			class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
+//				private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "java" ) };
+//				private int selectedIndex;
+//
+//				public LocaleComboBoxModel() {
+//					this.selectedIndex = 0;
+//				}
+//				public Object getElementAt( int index ) {
+//					return this.candidates[ index ];
+//				}
+//				public int getSize() {
+//					return this.candidates.length;
+//				}
+//				public Object getSelectedItem() {
+//					if( 0 <= this.selectedIndex && this.selectedIndex < this.candidates.length ) {
+//						return this.candidates[ this.selectedIndex ];
+//					} else {
+//						return null;
+//					}
+//				}
+//				public void setSelectedItem( Object selectedItem ) {
+//					int index = -1;
+//					if( selectedItem != null ) {
+//						int i = 0;
+//						for( java.util.Locale locale : this.candidates ) {
+//							if( selectedItem.equals( locale ) ) {
+//								index = i;
+//								break;
+//							}
+//							i++;
+//						}
+//					}
+//					this.selectedIndex = index;
+//				}
+//			}
+//
+//			class LocaleItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< java.util.Locale > {
+//				public LocaleItemSelectionOperation() {
+//					super( new LocaleComboBoxModel() );
+//				}
+//				@Override
+//				protected String getNameFor( int index, java.util.Locale locale ) {
+//					if( locale != null ) {
+//						String variant = locale.getVariant();
+//						if( variant != null && variant.length() > 0 ) { //should not be null
+//							return variant;
+//						} else {
+//							return "alice";
+//						}
+//					} else {
+//						return "null";
+//					}
+//				}
+//				@Override
+//				protected void handleSelectionChange( java.util.Locale value ) {
+//					IDE.this.setLocale( value );
+//					edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: support undo", this );
+//				}
+//			}
+//
+//			java.util.List< edu.cmu.cs.dennisc.zoot.Operation > windowOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
+//
+//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			windowOperations.add( this.isHistoryShowingOperation );
+//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			windowOperations.add( this.isEmphasizingClassesOperation );
+//			windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
+//			windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
+//			windowOperations.add( this.isDefaultFieldNameGenerationDesiredOperation );
+//
+//			//		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
+//			//			//pass
+//			//		} else {
+//			//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			//			windowOperations.add( this.getPreferencesOperation() );
+//			//		}
+//
+//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			windowOperations.add( this.isMemoryUsageShowingOperation );
+//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			windowOperations.add( this.isSceneEditorExpandedOperation );
+	);
+	private HelpMenuOperation helpMenuOperation = new HelpMenuOperation( 
+			new org.alice.ide.operations.help.HelpOperation(),
+			MENU_SEPARATOR,
+//			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) ) {
+//				helpOperations.add( new org.alice.ide.operations.help.ThrowBogusExceptionOperation() );
+//				helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			}
+			new org.alice.ide.operations.help.ReportBugOperation(),
+			new org.alice.ide.operations.help.SuggestImprovementOperation(),
+			new org.alice.ide.operations.help.RequestNewFeatureOperation(),
+			MENU_SEPARATOR,
+			new org.alice.ide.operations.help.WarningOperation( true ),
+			new org.alice.ide.operations.help.DisplaySystemPropertiesOperation(),
+			new org.alice.ide.operations.help.ReleaseNotesOperation()
+//			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
+//				//pass
+//			} else {
+//				helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//				helpOperations.add( this.getAboutOperation() );
+//			}
+	);
 
 	private static <E> E createBooleanOperation( Class< E > cls, Boolean defaultInitialValue ) {
 		java.util.prefs.Preferences userPreferences = java.util.prefs.Preferences.userNodeForPackage( cls );
@@ -444,41 +340,30 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private int rootDividerLocation = 320;
 	private int leftDividerLocation = 240;
 
-	private javax.swing.JSplitPane root;
-	private javax.swing.JSplitPane left;
-
-	class RightPane extends edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane {
-		public RightPane() {
+	private class RightPanel extends edu.cmu.cs.dennisc.croquet.KGridBagPanel {
+		public RightPanel( edu.cmu.cs.dennisc.croquet.KComponent< ? > ubiquitousPane, edu.cmu.cs.dennisc.croquet.KComponent< ? > editorsTabbedPane ) {
 			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 			gbc.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
 			gbc.fill = java.awt.GridBagConstraints.BOTH;
 			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 			gbc.weightx = 1.0;
-			this.add( IDE.this.ubiquitousPane, gbc );
-			//			this.add( IDE.this.declarationsUIResource, gbc );
+			this.addComponent( ubiquitousPane, gbc );
 			gbc.weighty = 1.0;
-			this.add( IDE.this.editorsTabbedPane, gbc );
+			this.addComponent( editorsTabbedPane, gbc );
 		}
 	}
+	
+	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
+	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
+	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
+	private org.alice.ide.memberseditor.MembersEditor membersEditor;
+	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane;
+	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
-	private javax.swing.JComponent rightPane;
+	private edu.cmu.cs.dennisc.croquet.KVerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.KVerticalSplitPane();
+	private RightPanel right = new RightPanel( this.ubiquitousPane, this.editorsTabbedPane );
+	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane( left, right );
 
-	protected javax.swing.JComponent createRightPane() {
-		return new RightPane();
-	}
-	protected javax.swing.JComponent getRightPane() {
-		return this.rightPane;
-	}
-
-	protected javax.swing.JSplitPane getRootSplitPane() {
-		return this.root;
-	}
-	protected javax.swing.JComponent createRoot() {
-		this.root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
-		this.left = new javax.swing.JSplitPane( javax.swing.JSplitPane.VERTICAL_SPLIT );
-		this.rightPane = this.createRightPane();
-		return this.root;
-	}
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
 			this.left.setResizeWeight( 1.0 );
@@ -493,7 +378,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		} else {
 			this.left.setResizeWeight( 0.0 );
 			this.root.setLeftComponent( this.left );
-			this.root.setRightComponent( this.rightPane );
+			this.root.setRightComponent( this.right );
 			this.root.setDividerLocation( this.rootDividerLocation );
 			this.left.setDividerLocation( this.leftDividerLocation );
 			this.left.setTopComponent( this.sceneEditor );
@@ -507,6 +392,184 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		this.sceneEditor.handleExpandContractChange( isSceneEditorExpanded );
 	}
+
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.MenuBarOperation createMenuBarOperation() {
+		edu.cmu.cs.dennisc.croquet.MenuBarOperation rv = new edu.cmu.cs.dennisc.croquet.MenuBarOperation( IDE_GROUP, java.util.UUID.fromString( "f621208a-244e-4cbe-8263-52ebb6916c2d" ) );
+		rv.addMenuOperation( this.fileMenuOperation );
+		rv.addMenuOperation( this.editMenuOperation );
+		rv.addMenuOperation( this.projectMenuOperation );
+		rv.addMenuOperation( this.runMenuOperation );
+		rv.addMenuOperation( this.windowMenuOperation );
+		rv.addMenuOperation( this.helpMenuOperation );
+		return rv;
+	}
+
+	public edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getPerformEditorGeneratedSetUpMethod() {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice sceneType = this.getSceneType();
+		for( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method : sceneType.methods ) {
+			if( IDE.performSceneEditorGeneratedSetUpMethodNameSet.contains( method.name.getValue() ) ) {
+				return method;
+			}
+		}
+		return null;
+	}
+
+	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getStrippedProgramType() {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice rv = this.getProgramType();
+		edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice setUpMethod = this.getPerformEditorGeneratedSetUpMethod();
+		setUpMethod.body.getValue().statements.clear();
+		return rv;
+	}
+	public java.util.List< edu.cmu.cs.dennisc.alice.ast.FieldAccess > getFieldAccesses( final edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+		assert programType != null;
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.FieldAccess >( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) {
+			@Override
+			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+				return fieldAccess.field.getValue() == field;
+			}
+		};
+		programType.crawl( crawler, true );
+		return crawler.getList();
+	}
+	public java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > getMethodInvocations( final edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+		edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice programType = this.getStrippedProgramType();
+		assert programType != null;
+		edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > crawler = new edu.cmu.cs.dennisc.pattern.IsInstanceCrawler< edu.cmu.cs.dennisc.alice.ast.MethodInvocation >( edu.cmu.cs.dennisc.alice.ast.MethodInvocation.class ) {
+			@Override
+			protected boolean isAcceptable( edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation ) {
+				return methodInvocation.method.getValue() == method;
+			}
+		};
+		programType.crawl( crawler, true );
+		return crawler.getList();
+	}
+
+	private org.alice.ide.memberseditor.Factory templatesFactory = this.createTemplatesFactory();
+	public org.alice.ide.memberseditor.Factory getTemplatesFactory() {
+		return this.templatesFactory;
+	}
+	protected org.alice.ide.memberseditor.Factory createTemplatesFactory() {
+		return new org.alice.ide.memberseditor.Factory();
+	}
+
+	private org.alice.ide.codeeditor.Factory codeFactory = this.createCodeFactory();
+	public org.alice.ide.codeeditor.Factory getCodeFactory() {
+		return this.codeFactory;
+	}
+	protected org.alice.ide.codeeditor.Factory createCodeFactory() {
+		return new org.alice.ide.codeeditor.Factory();
+	}
+
+	private org.alice.ide.preview.Factory previewFactory = this.createPreviewFactory();
+	public org.alice.ide.preview.Factory getPreviewFactory() {
+		return this.previewFactory;
+	}
+	protected org.alice.ide.preview.Factory createPreviewFactory() {
+		return new org.alice.ide.preview.Factory();
+	}
+
+	public void refreshUbiquitousPane() {
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				if( IDE.this.ubiquitousPane != null ) {
+					IDE.this.ubiquitousPane.refresh();
+				}
+			}
+		} );
+	}
+
+	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava superType ) {
+		java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > aliceTypes = this.addAliceTypes( new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >() );
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractType type : aliceTypes ) {
+			assert type != null;
+			if( type.getFirstTypeEncounteredDeclaredInJava() == superType ) {
+				return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
+			}
+		}
+		String name = "My" + superType.getName();
+		return org.alice.ide.ast.NodeUtilities.createType( name, superType );
+	}
+	public edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getTypeDeclaredInAliceFor( Class< ? > superCls ) {
+		return getTypeDeclaredInAliceFor( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( superCls ) );
+
+	}
+
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		return null;
+	}
+
+	public boolean isDropDownDesiredForFieldInitializer( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
+		return true;
+	}
+	public boolean isDropDownDesiredFor( edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+		return (expression instanceof edu.cmu.cs.dennisc.alice.ast.TypeExpression || expression instanceof edu.cmu.cs.dennisc.alice.ast.ResourceExpression) == false;
+	}
+	public org.alice.ide.common.TypeComponent getComponentFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		//todo:
+		return new org.alice.ide.common.TypeComponent( type );
+	}
+	public String getTextFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return null;
+	}
+	public javax.swing.Icon getIconFor( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		return new org.alice.ide.common.TypeIcon( type );
+	}
+
+	private javax.swing.ComboBoxModel typeComboBoxModel;
+
+	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addJavaTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.DOUBLE_OBJECT_TYPE );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.INTEGER_OBJECT_TYPE );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.BOOLEAN_OBJECT_TYPE );
+		rv.add( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.get( String.class ) );
+		return rv;
+	}
+
+	protected java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > addAliceTypes( java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > rv ) {
+		edu.cmu.cs.dennisc.alice.ast.AbstractType sceneType = this.getSceneType();
+		if( sceneType != null ) {
+			rv.add( sceneType );
+			for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+				edu.cmu.cs.dennisc.alice.ast.AbstractType valueType = field.getValueType();
+				if( valueType.isDeclaredInAlice() ) {
+					if( rv.contains( valueType ) ) {
+						//pass
+					} else {
+						rv.add( valueType );
+					}
+				}
+			}
+		}
+		return rv;
+	}
+	public javax.swing.ComboBoxModel getTypeComboBoxModel() {
+		if( this.typeComboBoxModel != null ) {
+			//pass
+		} else {
+			java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType > types = new java.util.Vector< edu.cmu.cs.dennisc.alice.ast.AbstractType >();
+			this.addJavaTypes( types );
+			this.addAliceTypes( types );
+			typeComboBoxModel = new javax.swing.DefaultComboBoxModel( types );
+		}
+		return this.typeComboBoxModel;
+	}
+	protected abstract org.alice.ide.sceneeditor.AbstractSceneEditor createSceneEditor();
+	public abstract java.io.File getGalleryRootDirectory();
+	protected abstract org.alice.ide.gallerybrowser.AbstractGalleryBrowser createGalleryBrowser( java.io.File galleryRootDirectory );
+	protected org.alice.ide.memberseditor.MembersEditor createClassMembersEditor() {
+		return new org.alice.ide.memberseditor.MembersEditor();
+	}
+	protected org.alice.ide.editorstabbedpane.EditorsTabbedPane createEditorsTabbedPane() {
+		return new org.alice.ide.editorstabbedpane.EditorsTabbedPane();
+	}
+	protected org.alice.ide.ubiquitouspane.UbiquitousPane createUbiquitousPane() {
+		return new org.alice.ide.ubiquitouspane.UbiquitousPane();
+	}
+
+	private java.util.List< org.alice.ide.cascade.fillerinners.ExpressionFillerInner > expressionFillerInners;
+
 
 	protected org.alice.ide.ubiquitouspane.UbiquitousPane getUbiquitousPane() {
 		return this.ubiquitousPane;
@@ -575,8 +638,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		//javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "en", "US", "java" ) );
 
 		this.expressionFillerInners = this.addExpressionFillerInners( new java.util.LinkedList< org.alice.ide.cascade.fillerinners.ExpressionFillerInner >() );
-		javax.swing.JMenuBar menuBar = this.createMenuBar();
-		this.getJFrame().setJMenuBar( menuBar );
 	}
 
 	
@@ -621,154 +682,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.concealedBin.revalidate();
 	}
 
-	protected javax.swing.JMenuBar createMenuBar() {
-		javax.swing.JMenuBar rv = new javax.swing.JMenuBar();
-
-		RecentProjectsMenu recentProjectsMenu = new RecentProjectsMenu();
-
-		javax.swing.JMenu fileMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "File", java.awt.event.KeyEvent.VK_F, 
-//				this.newProjectOperation, 
-//				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, 
-//				new org.alice.ide.operations.file.OpenProjectOperation(), 
-//				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, 
-//				this.saveOperation, 
-//				new org.alice.ide.operations.file.SaveAsProjectOperation(),
-//				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR,
-//				new org.alice.ide.operations.file.RevertProjectOperation(), 
-//				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, 
-				new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation()
-//				, 
-//				edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, 
-//				this.exitOperation 
-		);
-
-		fileMenu.add( recentProjectsMenu, 0 );
-
-		javax.swing.JMenu editMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Edit", java.awt.event.KeyEvent.VK_E, new org.alice.ide.operations.edit.UndoOperation(), new org.alice.ide.operations.edit.RedoOperation(), edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR, new org.alice.ide.operations.edit.CutOperation(), new org.alice.ide.operations.edit.CopyOperation(),
-				new org.alice.ide.operations.edit.PasteOperation() );
-
-		javax.swing.JMenu projectMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Project", java.awt.event.KeyEvent.VK_P, new org.alice.ide.operations.project.ManageResourcesOperation() );
-		javax.swing.JMenu runMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Run", java.awt.event.KeyEvent.VK_R, this.runOperation );
-
-		class LocaleComboBoxModel extends javax.swing.AbstractListModel implements javax.swing.ComboBoxModel {
-			private java.util.Locale[] candidates = { new java.util.Locale( "en", "US" ), new java.util.Locale( "en", "US", "java" ) };
-			private int selectedIndex;
-
-			public LocaleComboBoxModel() {
-				this.selectedIndex = 0;
-			}
-			public Object getElementAt( int index ) {
-				return this.candidates[ index ];
-			}
-			public int getSize() {
-				return this.candidates.length;
-			}
-			public Object getSelectedItem() {
-				if( 0 <= this.selectedIndex && this.selectedIndex < this.candidates.length ) {
-					return this.candidates[ this.selectedIndex ];
-				} else {
-					return null;
-				}
-			}
-			public void setSelectedItem( Object selectedItem ) {
-				int index = -1;
-				if( selectedItem != null ) {
-					int i = 0;
-					for( java.util.Locale locale : this.candidates ) {
-						if( selectedItem.equals( locale ) ) {
-							index = i;
-							break;
-						}
-						i++;
-					}
-				}
-				this.selectedIndex = index;
-			}
-		}
-
-		class LocaleItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< java.util.Locale > {
-			public LocaleItemSelectionOperation() {
-				super( new LocaleComboBoxModel() );
-			}
-			@Override
-			protected String getNameFor( int index, java.util.Locale locale ) {
-				if( locale != null ) {
-					String variant = locale.getVariant();
-					if( variant != null && variant.length() > 0 ) { //should not be null
-						return variant;
-					} else {
-						return "alice";
-					}
-				} else {
-					return "null";
-				}
-			}
-			@Override
-			protected void handleSelectionChange( java.util.Locale value ) {
-				IDE.this.setLocale( value );
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: support undo", this );
-			}
-		}
-
-		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > windowOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
-
-		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		windowOperations.add( this.isHistoryShowingOperation );
-		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		windowOperations.add( this.isEmphasizingClassesOperation );
-		windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
-		windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
-		windowOperations.add( this.isDefaultFieldNameGenerationDesiredOperation );
-
-		//		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
-		//			//pass
-		//		} else {
-		//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		//			windowOperations.add( this.getPreferencesOperation() );
-		//		}
-
-		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		windowOperations.add( this.isMemoryUsageShowingOperation );
-		windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		windowOperations.add( this.isSceneEditorExpandedOperation );
-
-		javax.swing.JMenu windowMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Window", java.awt.event.KeyEvent.VK_W, windowOperations );
-
-		javax.swing.JMenu setLocaleMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Set Language", java.awt.event.KeyEvent.VK_L, new LocaleItemSelectionOperation() );
-		windowMenu.add( setLocaleMenu, 0 );
-
-		java.util.List< edu.cmu.cs.dennisc.zoot.Operation > helpOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
-		helpOperations.add( new org.alice.ide.operations.help.HelpOperation() );
-		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) ) {
-			helpOperations.add( new org.alice.ide.operations.help.ThrowBogusExceptionOperation() );
-			helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		}
-		helpOperations.add( new org.alice.ide.operations.help.ReportBugOperation() );
-		helpOperations.add( new org.alice.ide.operations.help.SuggestImprovementOperation() );
-		helpOperations.add( new org.alice.ide.operations.help.RequestNewFeatureOperation() );
-		helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-		helpOperations.add( new org.alice.ide.operations.help.WarningOperation( true ) );
-		helpOperations.add( new org.alice.ide.operations.help.DisplaySystemPropertiesOperation() );
-		helpOperations.add( new org.alice.ide.operations.help.ReleaseNotesOperation() );
-
-		if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
-			//pass
-		} else {
-			helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-			helpOperations.add( this.getAboutOperation() );
-		}
-
-		javax.swing.JMenu helpMenu = edu.cmu.cs.dennisc.zoot.ZManager.createMenu( "Help", java.awt.event.KeyEvent.VK_H, helpOperations );
-		rv.add( fileMenu );
-		rv.add( editMenu );
-		rv.add( projectMenu );
-		rv.add( runMenu );
-		rv.add( windowMenu );
-		rv.add( helpMenu );
-		return rv;
-	}
 	public boolean isJava() {
 		return this.getJFrame().getLocale().getVariant().equals( "java" );
 	}
@@ -1087,36 +1000,39 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return dst;
 	}
 
-	private edu.cmu.cs.dennisc.zoot.ActionOperation preferencesOperation = this.createPreferencesOperation();
-	private edu.cmu.cs.dennisc.zoot.ActionOperation aboutOperation = this.createAboutOperation();
-	private edu.cmu.cs.dennisc.zoot.ActionOperation runOperation = this.createRunOperation();
-	private edu.cmu.cs.dennisc.zoot.ActionOperation restartOperation = this.createRestartOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation preferencesOperation = this.createPreferencesOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation aboutOperation = this.createAboutOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation runOperation = this.createRunOperation();
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation restartOperation = this.createRestartOperation();
 
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation createRunOperation() {
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRunOperation() {
 		return new org.alice.ide.operations.run.RunOperation();
 	}
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation createRestartOperation() {
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createRestartOperation() {
 		return new org.alice.ide.operations.run.RestartOperation();
 	}
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation createPreferencesOperation() {
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createPreferencesOperation() {
 		return new org.alice.ide.operations.preferences.PreferencesOperation();
 	}
-	protected abstract edu.cmu.cs.dennisc.zoot.ActionOperation createAboutOperation();
+	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createAboutOperation();
 
-	public final edu.cmu.cs.dennisc.zoot.ActionOperation getRunOperation() {
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRunOperation() {
 		return this.runOperation;
 	}
-	public final edu.cmu.cs.dennisc.zoot.ActionOperation getPreferencesOperation() {
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRestartOperation() {
+		return this.restartOperation;
+	}
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getPreferencesOperation() {
 		return this.preferencesOperation;
 	}
-	public final edu.cmu.cs.dennisc.zoot.ActionOperation getAboutOperation() {
+	public final edu.cmu.cs.dennisc.croquet.AbstractActionOperation getAboutOperation() {
 		return this.aboutOperation;
 	}
 
-	public abstract void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
-	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
-	public abstract void handleRestart( edu.cmu.cs.dennisc.zoot.ActionContext context );
-	public final void handleRun( edu.cmu.cs.dennisc.zoot.ActionContext context ) {
+	public abstract void handleRun( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.AbstractType programType );
+	public abstract void handlePreviewMethod( edu.cmu.cs.dennisc.croquet.Context context, edu.cmu.cs.dennisc.alice.ast.MethodInvocation emptyExpressionMethodInvocation );
+	public abstract void handleRestart( edu.cmu.cs.dennisc.croquet.Context context );
+	public final void handleRun( edu.cmu.cs.dennisc.croquet.Context context ) {
 		if( this.project != null ) {
 			this.ensureProjectCodeUpToDate();
 			this.handleRun( context, this.getSceneType() );
@@ -1124,6 +1040,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			this.showMessageDialog( "Please open a project first." );
 		}
 	}
+
 
 	private boolean isDragInProgress = false;
 
@@ -1889,9 +1806,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return edu.cmu.cs.dennisc.alice.project.ProjectUtilities.getMyTypesDirectory( this.getSubPath() );
 	}
 
-	public edu.cmu.cs.dennisc.zoot.ActionOperation getRestartOperation() {
-		return this.restartOperation;
-	}
 
 	public boolean isInstanceLineDesired() {
 		return true;

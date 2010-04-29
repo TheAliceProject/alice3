@@ -93,12 +93,13 @@ class RunIcon implements javax.swing.Icon {
  */
 public class RunOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public RunOperation() {
+		super( java.util.UUID.fromString( "985b3795-e1c7-4114-9819-fae4dcfe5676" ) );
 		this.setName( "Run..." );
 		this.setSmallIcon( new RunIcon() );
 		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-		this.getIDE().handleRun( actionContext );
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+		this.getIDE().handleRun( context );
 	}
 }

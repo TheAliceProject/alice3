@@ -420,6 +420,47 @@ public abstract class Application {
 		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAWTWindow(), directory, filename, extension, isSharingDesired ); 
 	}
 
+	public KComponent< javax.swing.Box.Filler > createGlue() {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
+			}
+		};
+	}
+	public KComponent< javax.swing.Box.Filler > createHorizontalGlue() {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, 0 ) );
+			}
+		};
+	}
+	public KComponent< javax.swing.Box.Filler > createVerticalGlue() {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, Short.MAX_VALUE ) );
+			}
+		};
+	}
+	public KComponent< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, Short.MAX_VALUE ) );
+			}
+		};
+	}
+	public KComponent< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( Short.MAX_VALUE, height ) );
+			}
+		};
+	}
+	
 	@Deprecated
 	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane<T> inputPane, String title, boolean isModal ) {
 		return inputPane.showInJDialog( this.frame.getAWTWindow(), title, isModal);

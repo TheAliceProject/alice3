@@ -48,8 +48,8 @@ import edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEditFieldOperation extends org.alice.ide.operations.AbstractActionOperation {
-	public AbstractEditFieldOperation( java.util.UUID groupUUID, String name ) {
-		super( groupUUID );
+	public AbstractEditFieldOperation( java.util.UUID groupUUID, java.util.UUID individualId, String name ) {
+		super( groupUUID, individualId );
 		this.setName( name );
 	}
 	protected final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, final FieldDeclaredInAlice field, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {

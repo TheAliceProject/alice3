@@ -45,8 +45,8 @@ package org.alice.ide.editorstabbedpane;
 /**
 * @author Dennis Cosgrove
 */
-public class OperatorFillIn extends edu.cmu.cs.dennisc.cascade.SimpleFillIn< edu.cmu.cs.dennisc.zoot.ActionOperation > {
-	public OperatorFillIn( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation ) {
+public class OperatorFillIn extends edu.cmu.cs.dennisc.cascade.SimpleFillIn<  edu.cmu.cs.dennisc.croquet.AbstractActionOperation > {
+	public OperatorFillIn( edu.cmu.cs.dennisc.croquet.AbstractActionOperation actionOperation ) {
 		super( actionOperation );
 	}
 	@Override

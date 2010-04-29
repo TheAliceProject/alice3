@@ -76,10 +76,12 @@ public class MenuOperation extends Operation {
 	};
 	private java.util.Map< KMenu, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private String text;
+	private int mnemonic;
 	private Operation[] operations;
-	public MenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, String text, Operation... operations ) {
+	public MenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, String text, int mnemonic, Operation... operations ) {
 		super( groupUUID, individualUUID );
 		this.text = text;
+		this.mnemonic = mnemonic;
 		this.operations = operations;
 	}
 
@@ -88,7 +90,7 @@ public class MenuOperation extends Operation {
 	}
 	/*package-private*/ void addMenu( KMenu menu ) {
 		menu.setText( this.text );
-
+		menu.setMnemonic( this.mnemonic );
 		assert mapMenuToListener.containsKey( menu ) == false;
 		MenuListener menuListener = new MenuListener( menu );
 		this.mapMenuToListener.put( menu, menuListener );
@@ -106,6 +108,7 @@ public class MenuOperation extends Operation {
 		assert menuListener != null;
 		menu.getJComponent().removeMenuListener( menuListener );
 		this.mapMenuToListener.remove( menu );
+		menu.setMnemonic( 0 );
 		menu.setText( null );
 	}
 }

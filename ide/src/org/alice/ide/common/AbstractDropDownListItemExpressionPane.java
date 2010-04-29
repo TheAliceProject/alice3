@@ -69,20 +69,20 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 		});
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.expressionListProperty.addListPropertyListener( this.listPropertyAdapter );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		this.expressionListProperty.removeListPropertyListener( this.listPropertyAdapter );
-		super.removeNotify();
+		super.removed();
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
 	public void refresh() {
 		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
 		if( this.index < this.expressionListProperty.size() ) {
-			this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
+			this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
 		}
 	}
 }

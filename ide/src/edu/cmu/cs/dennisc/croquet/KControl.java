@@ -43,9 +43,6 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
-import edu.cmu.cs.dennisc.zoot.ActionOperation;
-import edu.cmu.cs.dennisc.zoot.ZManager;
-
 /**
  * @author Dennis Cosgrove
  */

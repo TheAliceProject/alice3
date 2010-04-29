@@ -50,10 +50,10 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		this.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
 		
 		//todo
-		this.setPopupOperation( new org.alice.ide.operations.InconsequentialActionOperation() {
+		this.setPopupOperation( new org.alice.ide.operations.InconsequentialActionOperation( java.util.UUID.fromString( "20e0121d-2166-4479-af43-d45e6ae425e6" ) ) {
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
-				actionContext.cancel();
+			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+				context.cancel();
 			}
 		} );
 	}
@@ -64,19 +64,19 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	
 	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.refresh();
 	}
 	@Override
-	public void removeNotify() {
-		this.removeAll();
-		super.removeNotify();
+	protected void removed() {
+		this.removeAllComponents();
+		super.removed();
 	}
 	protected void refresh() {
-		this.removeAll();
+		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackground( getIDE().getColorFor( incompleteExpression ) );
+		this.setBackgroundColor( getIDE().getColorFor( incompleteExpression ) );
 		this.add( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
 	}
 	@Override

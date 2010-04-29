@@ -62,14 +62,14 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	}
 
 	@Override
-	protected java.awt.Component createComponent( Object parameter ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createComponent( Object parameter ) {
 		return new TypedParameterPane( getProperty(), (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter );
 	}
 	@Override
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "( " ) );
+			this.add( new edu.cmu.cs.dennisc.croquet.KLabel( "( " ) );
 		} else {
 			int n = this.getProperty().size();
 			String text;
@@ -83,7 +83,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			default:
 				text = " with parameters: ";
 			}
-			javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
+			javax.swing.JLabel label = new edu.cmu.cs.dennisc.croquet.KLabel( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
 			this.add( label );
 			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
 		}
@@ -91,7 +91,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	@Override
 	protected java.awt.Component createInterstitial( int i, int N ) {
 		if( i<N-1 ) {
-			return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( ", " );
+			return new edu.cmu.cs.dennisc.croquet.KLabel( ", " );
 		} else {
 			return javax.swing.Box.createHorizontalStrut( 8 );
 		}
@@ -110,7 +110,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " )" ) );
+			this.add( new edu.cmu.cs.dennisc.croquet.KLabel( " )" ) );
 		}
 	}
 }

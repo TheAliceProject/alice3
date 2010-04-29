@@ -44,10 +44,11 @@ package org.alice.ide.operations.project;
 
 public class ManageResourcesOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 	public ManageResourcesOperation() {
+		super( java.util.UUID.fromString( "ec7dc4b0-d1f8-420d-b6f0-7a25bd92639d" ) );
 		this.setName( "Manage Resources..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		org.alice.ide.resource.manager.ResourceManagerPane resourcesPane = new org.alice.ide.resource.manager.ResourceManagerPane();
 		this.getIDE().showMessageDialog( resourcesPane, "Project Resources", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN, null );
 	}	

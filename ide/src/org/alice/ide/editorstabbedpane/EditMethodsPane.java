@@ -75,15 +75,16 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 		return new org.alice.ide.codeeditor.MethodHeaderPane( e, null );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID, String name ) {
-		return new org.alice.ide.operations.ast.AbstractRenameNodeOperation( groupUUID, name ) {
-			public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID, String name ) {
+		return new org.alice.ide.operations.ast.AbstractRenameNodeOperation( groupUUID, java.util.UUID.fromString( "16fe1479-558c-4386-925c-0d9eb5aaf280" ), name ) {
+			@Override
+			protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = getSelectedItem();
 				if( method != null ) {
-					this.perform( actionContext, method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+					this.perform( context, method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
 					getIDE().setFocusedCode( method );
 				} else {
-					actionContext.cancel();
+					context.cancel();
 				}
 			}
 		};

@@ -57,20 +57,19 @@ public class ThisPane extends AccessiblePane {
 	};
 
 	public ThisPane() {
-		javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( getIDE().getTextForThis() );
-		this.add( label );
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( getIDE().getTextForThis() ) );
+		this.setBackgroundColor( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.ThisExpression.class ) );
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.updateBasedOnFocusedCode( org.alice.ide.IDE.getSingleton().getFocusedCode() );
 		this.getIDE().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		this.getIDE().removeCodeInFocusObserver( this.codeInFocusObserver );
-		super.removeNotify();
+		super.removed();
 	}
 	private void updateBasedOnFocusedCode( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		if( code != null ) {

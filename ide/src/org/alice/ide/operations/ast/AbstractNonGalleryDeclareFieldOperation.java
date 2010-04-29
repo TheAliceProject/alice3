@@ -48,6 +48,9 @@ package org.alice.ide.operations.ast;
 //todo: remove
 @Deprecated
 abstract class AbstractNonGalleryDeclareFieldOperation extends org.alice.ide.operations.ast.AbstractDeclareFieldOperation {
+	public AbstractNonGalleryDeclareFieldOperation( java.util.UUID individualId ) {
+		super( individualId );
+	}
 	@Override
 	protected boolean isInstanceValid() {
 		return false;

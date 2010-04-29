@@ -42,20 +42,21 @@
  */
 package org.alice.ide.common;
 
-class MethodPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+class MethodPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	public MethodPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 //		javax.swing.Box header = javax.swing.Box.createHorizontalBox();
 //		header.add( zoot.ZLabel.acquire( "declare procedure " ) );
 //		header.add( zoot.ZLabel.acquire( method.getName() ) );
 //		header.setAlignmentX( 0.0f );
+		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
-		this.add( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane ), java.awt.BorderLayout.NORTH );
-		this.add( javax.swing.Box.createHorizontalStrut( 12 ), java.awt.BorderLayout.WEST );
-		this.add( new BodyPane( factory.createComponent( method.body.getValue() ) ), java.awt.BorderLayout.CENTER );
+		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.NORTH );
+		this.addComponent( application.createHorizontalStrut( 12 ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.WEST );
+		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
 		this.setAlignmentX( 0.0f );
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setBackground( org.alice.ide.IDE.getSingleton().getProcedureColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );
 		this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK | java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
 	}
 }
@@ -67,15 +68,14 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 	private edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor anonymousConstructor;
 	public AnonymousConstructorPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor anonymousConstructor ) {
 		this.anonymousConstructor = anonymousConstructor;
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.PAGE_AXIS ) );
-		
 		if( getIDE().isJava() ) {
-			javax.swing.Box header = javax.swing.Box.createHorizontalBox();
-			header.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "new " ) );
-			header.add( new TypeComponent( anonymousConstructor.getDeclaringType().getSuperType() ) );
-			header.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "() {" ) );
+			edu.cmu.cs.dennisc.croquet.KLineAxisPanel header = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
+					new edu.cmu.cs.dennisc.croquet.KLabel( "new " ),
+					new TypeComponent( anonymousConstructor.getDeclaringType().getSuperType() ),
+					new edu.cmu.cs.dennisc.croquet.KLabel( "() {" ) 
+			);
 			header.setAlignmentX( 0.0f );
-			this.add( header );
+			this.addComponent( header );
 		}
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.anonymousConstructor.getDeclaringType();
@@ -89,12 +89,16 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 			}
 			pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, left, inset, inset ) );
 			pane.add( new MethodPane( factory, (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method ) );
-			this.add( pane );
+			this.addComponent( pane );
 		}
 		if( getIDE().isJava() ) {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "}" ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "}" ) );
 		}
-		this.setBackground( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {

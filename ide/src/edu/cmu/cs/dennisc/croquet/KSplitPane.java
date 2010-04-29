@@ -68,4 +68,17 @@ public abstract class KSplitPane extends KComponent< javax.swing.JSplitPane > {
 		assert component != null;
 		this.getJComponent().setBottomComponent( component.getJComponent() );
 	}
+	
+	public int getDividerSize() {
+		return this.getJComponent().getDividerSize();
+	}
+	public void setDividerSize( int dividerSize ) {
+		this.getJComponent().setDividerSize( dividerSize );
+	}
+	public int getDividerLocation() {
+		return this.getJComponent().getDividerLocation();
+	}
+	public void setDividerLocation( int dividerLocation ) {
+		this.getJComponent().setDividerLocation( dividerLocation );
+	}
 }

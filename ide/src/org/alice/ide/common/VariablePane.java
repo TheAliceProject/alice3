@@ -50,7 +50,7 @@ public class VariablePane extends LocalPane {
 	public VariablePane( edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice variable ) {
 		super( variable );
 		this.variable = variable;
-		this.setBackground( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
+		this.setBackgroundColor( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.VariableAccess.class ) );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {

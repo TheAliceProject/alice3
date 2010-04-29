@@ -49,15 +49,15 @@ class ConstructorHeaderPane extends AbstractCodeHeaderPane {
 	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, javax.swing.JComponent parametersPane ) {
 		super( constructorDeclaredInAlice );
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "()" ) );
+			this.addComponent( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "()" ) );
 		} else {
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "declare " ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "declare " ) );
 			javax.swing.JLabel label = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabelWithScaledFont( "constructor", 1.5f );
-			this.add( label );
-			this.add( edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " on class " ) );
-			this.add( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.add( parametersPane );
+			this.addComponent( label );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " on class " ) );
+			this.addComponent( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
+			this.addComponent( parametersPane );
 		}
 	}
 }

@@ -56,7 +56,7 @@ class InstanceLine extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPa
 //		this.add( b );
 		
 		this.add( javax.swing.Box.createHorizontalStrut( 16 ) );
-		javax.swing.JLabel a = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "current instance: " );
+		javax.swing.JLabel a = new edu.cmu.cs.dennisc.croquet.KLabel( "current instance: " );
 //		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 		this.add( a );
 		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane();

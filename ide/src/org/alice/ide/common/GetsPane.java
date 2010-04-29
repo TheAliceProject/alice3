@@ -45,15 +45,15 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class GetsPane extends edu.cmu.cs.dennisc.javax.swing.components.JPane {
+public class GetsPane extends edu.cmu.cs.dennisc.croquet.KWidget {
 	private boolean isTowardLeadingEdge;
 	private int length;
 
 	private GetsPane( boolean isTowardLeadingEdge, int length ) {
 		this.isTowardLeadingEdge = isTowardLeadingEdge;
 		this.length = length;
-		this.setBackground( java.awt.Color.YELLOW );
-		this.setForeground( java.awt.Color.GRAY );
+		this.setBackgroundColor( java.awt.Color.YELLOW );
+		this.setForegroundColor( java.awt.Color.GRAY );
 	}
 	public GetsPane( boolean isTowardLeadingEdge ) {
 		this( isTowardLeadingEdge, 2 );
@@ -133,15 +133,15 @@ public class GetsPane extends edu.cmu.cs.dennisc.javax.swing.components.JPane {
 		g2.setPaint( this.getGradientPaint() );
 
 		g.fillPolygon( xPoints, yPoints, xPoints.length );
-		g.setColor( this.getForeground() );
+		g.setColor( this.getForegroundColor() );
 		g.drawPolygon( xPoints, yPoints, xPoints.length );
 	}
-	public static void main( String[] args ) {
-		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "ar" ) );
-		javax.swing.JFrame frame = new javax.swing.JFrame();
-		frame.getContentPane().add( new GetsPane( false ) );
-		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-		frame.setSize( 640, 480 );
-		frame.setVisible( true );
-	}
+//	public static void main( String[] args ) {
+//		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "ar" ) );
+//		javax.swing.JFrame frame = new javax.swing.JFrame();
+//		frame.getContentPane().add( new GetsPane( false ) );
+//		frame.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
+//		frame.setSize( 640, 480 );
+//		frame.setVisible( true );
+//	}
 }

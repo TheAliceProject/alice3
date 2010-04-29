@@ -49,10 +49,10 @@ public abstract class ExpressionLikeSubstance extends NodeLikeSubstance {
 	private static final int INSET = 2;
 	private static final int DOCKING_BAY_INSET_LEFT = 5;
 
-	public ExpressionLikeSubstance() {
-		this.setLayout( new javax.swing.BoxLayout( this, javax.swing.BoxLayout.LINE_AXIS ) );
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
 	}
-	
 	private boolean isVoid() {
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = getExpressionType();
 		return type == edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;

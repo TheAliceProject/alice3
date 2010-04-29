@@ -54,18 +54,18 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
 	@Override
-	protected javax.swing.JButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
-		return edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareFieldOperation( type ) );
+	protected edu.cmu.cs.dennisc.croquet.KButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+		return this.getIDE().createButton( new org.alice.ide.operations.ast.DeclareFieldOperation( type ) );
 	}
 	@Override
-	protected javax.swing.JButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.croquet.KButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return null;
 	}
 	@Override
-	protected java.awt.Component[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		java.awt.Component[] rv;
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] rv;
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-			java.util.List< java.awt.Component > components = new java.util.LinkedList< java.awt.Component >();
+			java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? > > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
 			if( getIDE().isEmphasizingClasses() ) {
 				//pass
@@ -92,10 +92,9 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 			if( getIDE().isEmphasizingClasses() ) {
 				//pass
 			} else {
-				components.add( javax.swing.Box.createVerticalStrut( 16 ) );
+				components.add( this.getIDE().createVerticalStrut( 16 ) );
 			}
-			rv = new java.awt.Component[ components.size() ];
-			components.toArray( rv );
+			rv = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( components, edu.cmu.cs.dennisc.croquet.KComponent.class );
 		} else {
 			rv = null;
 		}

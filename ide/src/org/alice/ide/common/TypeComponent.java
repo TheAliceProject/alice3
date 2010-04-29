@@ -104,19 +104,19 @@ public class TypeComponent extends DeclarationNameLabel {
 	}
 
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		if( this.popupOperation != null ) {
 			this.addMouseListener( this.mouseAdapter );
 		}
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		if( this.popupOperation != null ) {
 			this.removeMouseListener( this.mouseAdapter );
 		}
-		super.removeNotify();
-	}	
+		super.removed();
+	}
 
 	public void setRollover( boolean isRollover ) {
 		this.isRollover = isRollover;

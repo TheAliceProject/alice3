@@ -54,7 +54,7 @@ import edu.cmu.cs.dennisc.pattern.Tuple2;
 public class CreateCameraMarkerActionOperation extends AbstractSceneDeclareFieldOperation {
 
 	public CreateCameraMarkerActionOperation(MoveAndTurnSceneEditor sceneEditor) {
-		super(sceneEditor);
+		super( java.util.UUID.fromString( "88fdc53c-596f-4878-ab39-22381982e079" ), sceneEditor);
 		this.setName( "Create Camera Marker..." );
 	}
 	
