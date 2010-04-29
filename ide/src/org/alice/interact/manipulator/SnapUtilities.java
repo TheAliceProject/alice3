@@ -25,10 +25,14 @@ public class SnapUtilities
 	public static final double DEFAULT_GRID_SPACING = .5d;
 	public static final double MIN_SNAP_RETURN_VALUE = .1d;
 	
+	
+	
 	private static final SnapLine X_AXIS_LINE = new SnapLine(Vector3.accessPositiveXAxis());
 	private static final SnapLine Y_AXIS_LINE = new SnapLine(Vector3.accessPositiveYAxis());
 	private static final SnapLine Z_AXIS_LINE = new SnapLine(Vector3.accessPositiveZAxis());
 	private static final SnapLine ARBITRARY_AXIS_LINE = new SnapLine(Vector3.accessPositiveXAxis());
+	
+	private static final double MIN_SNAP_DELTA = .000001d;
 	
 	public static void showXAxis(Point3 position, Composite parent)
 	{
@@ -36,8 +40,16 @@ public class SnapUtilities
 		X_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
 	}
 	
+	public static void showXAxis(Point3 position, Vector3 newDirection, Composite parent)
+	{
+		X_AXIS_LINE.setLine(newDirection);
+		X_AXIS_LINE.setParent(parent);
+		X_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+	}
+	
 	public static void hideXAxis()
 	{
+		X_AXIS_LINE.setLine(Vector3.accessPositiveXAxis()); //Restore the axis line to the absolute direction
 		X_AXIS_LINE.setParent(null);
 	}
 	
@@ -47,8 +59,16 @@ public class SnapUtilities
 		Y_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
 	}
 	
+	public static void showYAxis(Point3 position, Vector3 newDirection, Composite parent)
+	{
+		Y_AXIS_LINE.setLine(newDirection);
+		Y_AXIS_LINE.setParent(parent);
+		Y_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+	}
+	
 	public static void hideYAxis()
 	{
+		Y_AXIS_LINE.setLine(Vector3.accessPositiveYAxis()); //Restore the axis line to the absolute direction
 		Y_AXIS_LINE.setParent(null);
 	}
 	
@@ -58,8 +78,16 @@ public class SnapUtilities
 		Z_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
 	}
 	
+	public static void showZAxis(Point3 position, Vector3 newDirection, Composite parent)
+	{
+		Z_AXIS_LINE.setLine(newDirection);
+		Z_AXIS_LINE.setParent(parent);
+		Z_AXIS_LINE.setTranslationOnly(position, AsSeenBy.SCENE);
+	}
+	
 	public static void hideZAxis()
 	{
+		Z_AXIS_LINE.setLine(Vector3.accessPositiveZAxis()); //Restore the axis line to the absolute direction
 		Z_AXIS_LINE.setParent(null);
 	}
 	
@@ -175,27 +203,34 @@ public class SnapUtilities
 		
 	}
 	
-	public static boolean isEdgeOn(AbstractCamera camera)
+	public static boolean isEdgeOn(AbstractCamera camera, Vector3 upVector)
 	{
-		return isEdgeOn(camera, 0);
+		return isEdgeOn(camera, upVector, 0);
 	}
 	
-	public static boolean isEdgeOn(AbstractCamera camera, double epsilon)
+	public static boolean isEdgeOn(AbstractCamera camera, Vector3 upVector, double epsilon)
 	{
-		double dotProd = Vector3.calculateDotProduct(camera.getAbsoluteTransformation().orientation.up, Vector3.accessPositiveYAxis());
-		return (1 - Math.abs(dotProd)) <= epsilon;
+		double dotProd = Vector3.calculateDotProduct(camera.getAbsoluteTransformation().orientation.backward, upVector);
+		return (Math.abs(dotProd)) <= epsilon;
 	}
 	
 	public static void showHorizontalSnap(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition, ReferenceFrame referenceFrame)
 	{
 		Vector3 snapVector = Vector3.createSubtraction(currentPosition, snapPosition);
 		Point3 linePosition = new Point3(snapPosition);
+		AffineMatrix4x4 snapTransform = referenceFrame.getAbsoluteTransformation();
+		Vector3 xSnapLine = snapTransform.orientation.right;
+		Vector3 zSnapLine = snapTransform.orientation.backward;
+		Vector3 ySnapLine = snapTransform.orientation.up;
+		
+		referenceFrame.getInverseAbsoluteTransformation().transform(snapVector);
+		
 		//If we're looking edge on, use a vertical line to draw the snap
-		if (isEdgeOn(camera))
+		if (isEdgeOn(camera, snapTransform.orientation.up))
 		{
-			if (snapVector.x != 0 || snapVector.z != 0)
+			if (Math.abs(snapVector.x) > MIN_SNAP_DELTA || Math.abs(snapVector.z) > MIN_SNAP_DELTA)
 			{
-				SnapUtilities.showYAxis(linePosition, camera.getRoot());
+				SnapUtilities.showYAxis(linePosition, ySnapLine, camera.getRoot());
 			}
 			else
 			{
@@ -204,18 +239,23 @@ public class SnapUtilities
 		}
 		else
 		{
-			linePosition.y = .05d;
-			if (snapVector.x != 0)
+			linePosition.y = snapPosition.y;
+			//If the position is too close to the ground to show up well, bump it up a little bit
+			if (Math.abs(linePosition.y) < 0.05)
 			{
-				SnapUtilities.showZAxis(linePosition, camera.getRoot());
+				linePosition.y = .05d; 
+			}
+			if (Math.abs(snapVector.x) > MIN_SNAP_DELTA)
+			{
+				SnapUtilities.showZAxis(linePosition, zSnapLine, camera.getRoot());
 			}
 			else
 			{
 				SnapUtilities.hideZAxis();
 			}
-			if (snapVector.z != 0)
+			if (Math.abs(snapVector.z) > MIN_SNAP_DELTA)
 			{
-				SnapUtilities.showXAxis(linePosition, camera.getRoot());
+				SnapUtilities.showXAxis(linePosition, xSnapLine, camera.getRoot());
 			}
 			else
 			{
@@ -226,12 +266,19 @@ public class SnapUtilities
 	
 	public static void showVerticalSnap(AbstractCamera camera, Point3 currentPosition, Point3 snapPosition, ReferenceFrame referenceFrame)
 	{
-		if (isEdgeOn(camera))
+		Vector3 snapVector = Vector3.createSubtraction(currentPosition, snapPosition);
+		AffineMatrix4x4 snapTransform = referenceFrame.getAbsoluteTransformation();
+		referenceFrame.getInverseAbsoluteTransformation().transform(snapVector);
+		
+//		if (isEdgeOn(camera, snapTransform.orientation.up, .9))
 		{
-			Vector3 snapVector = Vector3.createSubtraction(currentPosition, snapPosition);
-			if (snapVector.y != 0)
+			if (Math.abs(snapVector.y) > MIN_SNAP_DELTA)
 			{
-				SnapUtilities.showArbitraryAxis(snapPosition, camera.getAbsoluteTransformation().orientation.right, camera.getRoot());
+				AffineMatrix4x4 cameraTransform = camera.getAbsoluteTransformation();
+				double dotRight = Vector3.calculateDotProduct(snapTransform.orientation.right, cameraTransform.orientation.backward);
+				double dotBackward = Vector3.calculateDotProduct(snapTransform.orientation.backward, cameraTransform.orientation.backward);
+				Vector3 lineToUse = (Math.abs(dotRight) < Math.abs(dotBackward)) ? snapTransform.orientation.right : snapTransform.orientation.backward;
+				SnapUtilities.showArbitraryAxis(snapPosition, lineToUse, camera.getRoot());
 			}
 			else
 			{
@@ -248,12 +295,12 @@ public class SnapUtilities
 	
 	public static Point3 snapObjectToAbsoluteGrid(Transformable toSnap, Point3 newPosition)
 	{
-		return snapObjectToAbsoluteGrid(toSnap, newPosition, DEFAULT_GRID_SPACING, toSnap.getRoot());
+		return snapObjectToGrid(toSnap, newPosition, DEFAULT_GRID_SPACING, toSnap.getRoot());
 	}
 	
-	public static Point3 snapObjectToAbsoluteGrid(Transformable toSnap, Point3 originalPositionIn, double gridSpacing, ReferenceFrame referenceFrame)
+	public static Point3 snapObjectToGrid(Transformable toSnap, Point3 originalPositionIn, double gridSpacing, ReferenceFrame referenceFrame)
 	{
-		AffineMatrix4x4 toReferenceFrame = referenceFrame.getAbsoluteTransformation();
+		AffineMatrix4x4 toReferenceFrame = referenceFrame.getInverseAbsoluteTransformation();
 		AffineMatrix4x4 backToScene = referenceFrame.getAbsoluteTransformation();
 		Point3 originalPosition = new Point3(originalPositionIn);
 		toReferenceFrame.transform(originalPosition);
@@ -339,7 +386,7 @@ public class SnapUtilities
 		}
 		if (dragAdapter.getSnapState().shouldSnapToGrid())
 		{
-			snapPosition = SnapUtilities.snapObjectToAbsoluteGrid(t, snapPosition, dragAdapter.getSnapState().getGridSpacing(), referenceFrame);
+			snapPosition = SnapUtilities.snapObjectToGrid(t, snapPosition, dragAdapter.getSnapState().getGridSpacing(), referenceFrame);
 		}
 		//Visualize any snapping that happened
 		if (camera != null)

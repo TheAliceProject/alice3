@@ -74,6 +74,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 	protected LinearDragHandle linearHandle;
 	protected Vector3 absoluteDragAxis;
 	protected Point3 initialClickPoint = new Point3();
+	protected double initialDistanceAlongAxis;
 	protected Point3 originalOrigin;
 	protected Plane cameraFacingPlane;
 	protected Plane handleAlignedPlane;
@@ -174,18 +175,26 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 		return 0;
 	}
 	
-	protected void updateBasedOnHandlePull( double previousPull, double newPull )
+	protected void updateBasedOnHandlePull( double initialPull, double newPull )
 	{
-		Vector3 translation = Vector3.createMultiplication( this.linearHandle.getDragAxis(), (newPull - previousPull));
+		Vector3 translationFromOriginal = Vector3.createMultiplication( this.linearHandle.getDragAxis(), (newPull - initialPull));
 		
-//		AffineMatrix4x4 toSceneTransform = this.linearHandle.getReferenceFrame().getInverseAbsoluteTransformation();
-//		Vector3 sceneSpaceTranslation = new Vector3(translation);
-//		toSceneTransform.transform(sceneSpaceTranslation);
-//		
-//		Transformable snapFrame = new Transformable();
-//		this.linearHandle.getReferenceFrame();
+		//Translate the translation vector into scene space for snapping
+		AffineMatrix4x4 toSceneTransform = this.linearHandle.getReferenceFrame().getAbsoluteTransformation();
+		Vector3 sceneSpaceTranslation = new Vector3(translationFromOriginal);
+		toSceneTransform.transform(sceneSpaceTranslation);
+
+		//Calculate the new position based on the current mouse position
+		Point3 absoluteNewPosition = Point3.createAddition(this.originalOrigin, sceneSpaceTranslation);
 		
-		Vector3 movementDif = new Vector3(translation);
+		//Apply any snap as necessary
+		absoluteNewPosition = SnapUtilities.doMovementSnapping(this.manipulatedTransformable, absoluteNewPosition, this.dragAdapter, this.linearHandle.getSnapReferenceFrame(), this.getCamera());
+		
+		//Calculate handle-relative translation vector
+		Vector3 movementVector = Vector3.createSubtraction(absoluteNewPosition, this.manipulatedTransformable.getAbsoluteTransformation().translation);
+		this.linearHandle.getReferenceFrame().getAbsoluteTransformation().transform(movementVector);
+		
+		Vector3 movementDif = new Vector3(movementVector);
 		movementDif.normalize();
 		for (ManipulationEvent event : this.manipulationEvents)
 		{
@@ -199,17 +208,19 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 				this.dragAdapter.triggerManipulationEvent( event, false );
 			}
 		}
-		
-		this.manipulatedTransformable.applyTranslation( translation, this.linearHandle.getReferenceFrame() );
+//		this.manipulatedTransformable.setTranslationOnly(this.originalOrigin, AsSeenBy.SCENE);
+//		this.manipulatedTransformable.applyTranslation(translationFromOriginal, this.linearHandle.getReferenceFrame());
+//		Point3 finalPosition = this.manipulatedTransformable.getAbsoluteTransformation().translation;
+		this.manipulatedTransformable.setTranslationOnly(absoluteNewPosition, AsSeenBy.SCENE);
 	}
+
 	
 	@Override
 	public void doDataUpdateManipulator( InputState currentInput, InputState previousInput ) {
 		if ( !currentInput.getMouseLocation().equals( previousInput.getMouseLocation() ) )
 		{
 			double currentDistance = getDistanceAlongAxisBasedOnMouse( currentInput.getMouseLocation() );
-			double previousDistance  = getDistanceAlongAxisBasedOnMouse( previousInput.getMouseLocation() );
-			updateBasedOnHandlePull(previousDistance, currentDistance);
+			updateBasedOnHandlePull(this.initialDistanceAlongAxis, currentDistance);
 		}
 
 	}
@@ -248,6 +259,7 @@ public class LinearDragManipulator extends AbstractManipulator implements Camera
 			this.handleAlignedPlane = new Plane(this.linearHandle.getAbsoluteTransformation().translation, axisAlignedNormal);
 			this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
 			this.originalOrigin = this.manipulatedTransformable.getAbsoluteTransformation().translation; 
+			this.initialDistanceAlongAxis = getDistanceAlongAxisBasedOnMouse( startInput.getMouseLocation() );
 			return true;
 		}
 		else

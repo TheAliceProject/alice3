@@ -59,6 +59,7 @@ import edu.cmu.cs.dennisc.scenegraph.AsSeenBy;
 import edu.cmu.cs.dennisc.scenegraph.Composite;
 import edu.cmu.cs.dennisc.scenegraph.ReferenceFrame;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.ui.DragStyle;
 
 /**
  * @author David Culyba
@@ -72,7 +73,8 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 	protected Vector3 dragAxis;
 	protected double distanceFromOrigin;
 	protected Transformable standUpReference = new Transformable();
-
+	protected Transformable snapReference = new Transformable();
+	
 	protected DoubleTargetBasedAnimation lengthAnimation;
 	
 	public LinearDragHandle( )
@@ -218,6 +220,37 @@ public abstract class LinearDragHandle extends ManipulationHandle3D implements P
 			}
 		}
 		return this;
+	}
+	
+	@Override
+	public ReferenceFrame getSnapReferenceFrame()
+	{
+		if (this.manipulatedObject != null)
+		{
+			if (this.dragDescription.type == MovementType.STOOD_UP)
+			{
+				this.snapReference.setParent( this.manipulatedObject.getRoot() );
+				this.snapReference.setTransformation(this.manipulatedObject.getAbsoluteTransformation(), AsSeenBy.SCENE);
+				this.snapReference.setAxesOnlyToStandUp();
+				this.snapReference.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
+				return this.snapReference;
+			}
+			else if (this.dragDescription.type == MovementType.ABSOLUTE)
+			{
+				this.snapReference.setParent( this.manipulatedObject.getRoot() );
+				AffineMatrix4x4 location = AffineMatrix4x4.createIdentity();
+				this.snapReference.localTransformation.setValue( location );
+				return this.snapReference;
+			}
+			else
+			{
+				this.snapReference.setParent( this.manipulatedObject.getRoot() );
+				this.snapReference.setTransformation(this.manipulatedObject.getAbsoluteTransformation(), AsSeenBy.SCENE);
+				this.snapReference.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
+				return this.snapReference;
+			}
+		}
+		return this.getRoot();
 	}
 	
 	@Override

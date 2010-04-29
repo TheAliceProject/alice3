@@ -327,6 +327,8 @@ public abstract class ManipulationHandle3D extends Transformable implements Mani
 		return this.getManipulatedObject();
 	}
 	
+	public abstract ReferenceFrame getSnapReferenceFrame();
+	
 	abstract public void positionRelativeToObject();
 	abstract public void resizeToObject();
 	
