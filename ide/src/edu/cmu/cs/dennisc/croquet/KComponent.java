@@ -57,6 +57,10 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 		}
 		return this.jComponent;
 	}
+
+	public java.awt.Font getFont() {
+		return this.getJComponent().getFont();
+	}
 	public void scaleFont( float scaleFactor ) {
 		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( this.getJComponent(), scaleFactor );
 	}
@@ -90,6 +94,10 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	}
 	public void setIgnoreRepaint( boolean ignoreRepaint ) {
 		this.getJComponent().setIgnoreRepaint( ignoreRepaint );
+	}
+	
+	public int getComponentCount() {
+		return this.getJComponent().getComponentCount();
 	}
 
 	protected void adding() {
@@ -126,6 +134,5 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	public void removeMouseWheelListener( java.awt.event.MouseWheelListener listener ) {
 		this.getJComponent().removeMouseWheelListener( listener );
 	}
-	
 }
 

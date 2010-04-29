@@ -389,29 +389,29 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.updateButtons();
 
-		edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane();
+		edu.cmu.cs.dennisc.croquet.KGridBagPanel buttonPane = new edu.cmu.cs.dennisc.croquet.KGridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.addItemOperation ), gbc );
-		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.removeItemOperation ), gbc );
+		buttonPane.addComponent( this.getIDE().createButton( this.addItemOperation ), gbc );
+		buttonPane.addComponent( this.getIDE().createButton( this.removeItemOperation ), gbc );
 		gbc.insets.top = 8;
-		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemUpOperation ), gbc );
+		buttonPane.addComponent( this.getIDE().createButton( this.moveItemUpOperation ), gbc );
 		gbc.insets.top = 0;
-		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemDownOperation ), gbc );
+		buttonPane.addComponent( this.getIDE().createButton( this.moveItemDownOperation ), gbc );
 		gbc.weighty = 1.0;
-		buttonPane.add( javax.swing.Box.createGlue(), gbc );
+		buttonPane.addComponent( this.getIDE().createGlue(), gbc );
 
-		this.add( buttonPane, java.awt.BorderLayout.EAST );
+		this.addComponent( buttonPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.EAST );
 
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.list ) {
+		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( this.list ) {
 			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
 			}
 		};
 		scrollPane.setBorder( null );
-		this.add( scrollPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
 	}
 
 	private void updateButtons() {

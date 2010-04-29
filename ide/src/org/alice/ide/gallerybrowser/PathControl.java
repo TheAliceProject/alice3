@@ -45,7 +45,7 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PathControl extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 	class DirectoryControl extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
 		private static final int ARROW_SIZE = 10;
 		private static final int ARROW_BORDER_HALF_SIZE = 3;

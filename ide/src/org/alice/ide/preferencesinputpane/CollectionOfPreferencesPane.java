@@ -112,7 +112,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.javax.swing.
 		this.updateCenterComponent(centerComponent, collectionOfPreferences);
 		centerComponent.add( javax.swing.Box.createVerticalGlue() );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane buttonsPane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane(
+		edu.cmu.cs.dennisc.croquet.KLineAxisPanel buttonsPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel(
 				javax.swing.Box.createHorizontalGlue(),
 				edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.restoreDefaultsActionOperation ),
 				javax.swing.Box.createHorizontalStrut( 4 ),

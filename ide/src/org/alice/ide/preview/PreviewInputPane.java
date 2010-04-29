@@ -51,17 +51,15 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.inputpane.K
 //		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 //		return rv;
 //	}
-	class PreviewPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+	class PreviewPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		public void refresh() {
 			edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
 //			java.awt.Component component = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
 //					PreviewInputPane.this.createPreviewSubComponent(),
 //					javax.swing.Box.createHorizontalGlue()
 //			);
-			java.awt.Component component = PreviewInputPane.this.createPreviewSubComponent();
-			this.add( component, java.awt.BorderLayout.WEST );
-			this.revalidate();
-			this.repaint();
+			this.addComponent( PreviewInputPane.this.createPreviewSubComponent(), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.WEST );
+			this.revalidateAndRepaint();
 		}
 		@Override
 		public boolean contains( int x, int y ) {

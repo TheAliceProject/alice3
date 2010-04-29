@@ -361,7 +361,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 	private edu.cmu.cs.dennisc.croquet.KVerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.KVerticalSplitPane();
-	private RightPanel right = new RightPanel( this.ubiquitousPane, this.editorsTabbedPane );
+	private RightPanel right = new RightPanel( this.ubiquitousPane, new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.editorsTabbedPane ) );
 	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane( left, right );
 
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
@@ -645,7 +645,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createContentPane() {
 		edu.cmu.cs.dennisc.croquet.KBorderPanel rv = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
 		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
-		rv.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.createRoot() ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
+		rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
 		rv.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.concealedBin ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.EAST );
 		
 		this.setSceneEditorExpanded( false );
@@ -1081,11 +1081,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	@Override
 	protected void handleAbout( java.util.EventObject e ) {
-		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( this.getAboutOperation(), e, true );
+		this.getAboutOperation().fire();
 	}
 	@Override
 	protected void handlePreferences( java.util.EventObject e ) {
-		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( this.getPreferencesOperation(), e, true );
+		this.getPreferencesOperation().fire();
 	}
 	@Override
 	protected void handleQuit( java.util.EventObject e ) {

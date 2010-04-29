@@ -69,6 +69,12 @@ public abstract class KSplitPane extends KComponent< javax.swing.JSplitPane > {
 		this.getJComponent().setBottomComponent( component.getJComponent() );
 	}
 	
+	public double getResizeWeight() {
+		return this.getJComponent().getResizeWeight();
+	}
+	public void setResizeWeight( double resizeWeight ) {
+		this.getJComponent().setResizeWeight( resizeWeight );
+	}
 	public int getDividerSize() {
 		return this.getJComponent().getDividerSize();
 	}

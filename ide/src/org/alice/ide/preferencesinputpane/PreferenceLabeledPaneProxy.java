@@ -46,14 +46,14 @@ package org.alice.ide.preferencesinputpane;
  * @author Dennis Cosgrove
  */
 public abstract class PreferenceLabeledPaneProxy< E > extends PreferenceProxy< E > {
-	private edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane pane;
+	private edu.cmu.cs.dennisc.croquet.KLineAxisPanel pane;
 
 	public PreferenceLabeledPaneProxy( edu.cmu.cs.dennisc.preference.Preference< E > preference ) {
 		super( preference );
 	}
 
 	protected void createPane( java.awt.Component control ) {
-		this.pane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane(
+		this.pane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel(
 				new edu.cmu.cs.dennisc.croquet.KLabel( this.getPreference().getKey() + ":" ),
 				javax.swing.Box.createHorizontalStrut( 8 ),
 				control 

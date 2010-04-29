@@ -158,11 +158,11 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		importVariantOperation.setEnabled( false );
 		importVariantOperation.setToolTipText( "coming soon" );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane northTopPane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( 
+		edu.cmu.cs.dennisc.croquet.KLineAxisPanel northTopPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
 				activeConfigurationComboBox, 
 				edu.cmu.cs.dennisc.zoot.ZManager.createButton( editVariantOperation ), 
 				edu.cmu.cs.dennisc.zoot.ZManager.createButton( removeVariantOperation ) );
-		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane northBottomPane = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( 
+		edu.cmu.cs.dennisc.croquet.KLineAxisPanel northBottomPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
 				edu.cmu.cs.dennisc.zoot.ZManager.createButton( newVariantOperation ), 
 				edu.cmu.cs.dennisc.zoot.ZManager.createButton( importVariantOperation ), 
 				javax.swing.Box.createHorizontalGlue() );

@@ -58,7 +58,6 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 		}
 	};
 	public AbstractDropDownListItemExpressionPane( int index, edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty expressionListProperty ) {
-		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
 		this.index = index;
 		this.expressionListProperty = expressionListProperty;
 		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionListPropertyItemOperation( this.index, this.expressionListProperty ) {
@@ -67,6 +66,10 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 				return AbstractDropDownListItemExpressionPane.this.getFillInType();
 			}
 		});
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.GridLayout( 1, 1 );
 	}
 	@Override
 	protected void adding() {

@@ -90,7 +90,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		} else {
 			pad = INTRASTICIAL_PAD;
 		}
-		return new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS, pad ) );
+		return new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS, pad );
 	}
 	
 	public java.awt.Rectangle getDropBounds() {
@@ -113,7 +113,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 		super.refresh();
 		int bottom;
 		if( this.getComponentCount() == 0 ) {
-			this.add( new EmptyStatementListAfforance() );
+			this.addComponent( new EmptyStatementListAfforance() );
 			bottom = 0;
 		} else {
 			bottom = 4;

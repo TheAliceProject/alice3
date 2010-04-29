@@ -50,10 +50,10 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		super( factory, property );
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
-		edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane();
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createComponent( Object instance ) {
+		edu.cmu.cs.dennisc.croquet.KLineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel();
 		rv.setOpaque( true );
-		rv.setBackground( new java.awt.Color( 255, 255, 255, 127 ) );
+		rv.setBackgroundColor( new java.awt.Color( 255, 255, 255, 127 ) );
 		rv.setBorder( edu.cmu.cs.dennisc.javax.swing.BorderFactory.createOutlinedBorder( 1, 4, 1, 4, java.awt.Color.LIGHT_GRAY ) );
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
 		

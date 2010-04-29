@@ -69,7 +69,7 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 	protected void addPrefixComponents() {
 		//super.addPrefixComponents();
 		if( getIDE().isJava() ) {
-			this.add( new edu.cmu.cs.dennisc.croquet.KLabel( "( " ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "( " ) );
 		} else {
 			int n = this.getProperty().size();
 			String text;
@@ -83,17 +83,16 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			default:
 				text = " with parameters: ";
 			}
-			javax.swing.JLabel label = new edu.cmu.cs.dennisc.croquet.KLabel( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE );
-			this.add( label );
-			this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( text, edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( this.getIDE().createHorizontalStrut( 8 ) );
 		}
 	}
 	@Override
-	protected java.awt.Component createInterstitial( int i, int N ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createInterstitial( int i, int N ) {
 		if( i<N-1 ) {
 			return new edu.cmu.cs.dennisc.croquet.KLabel( ", " );
 		} else {
-			return javax.swing.Box.createHorizontalStrut( 8 );
+			return this.getIDE().createHorizontalStrut( 8 );
 		}
 	}
 	@Override
@@ -106,11 +105,11 @@ public class ParametersPane extends org.alice.ide.common.AbstractListPropertyPan
 			if( method.isSignatureLocked.getValue() ) {
 				//pass
 			} else {
-				this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new org.alice.ide.operations.ast.DeclareMethodParameterOperation( method ) ) );
+				this.addComponent( this.getIDE().createButton( new org.alice.ide.operations.ast.DeclareMethodParameterOperation( method ) ) );
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( new edu.cmu.cs.dennisc.croquet.KLabel( " )" ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " )" ) );
 		}
 	}
 }

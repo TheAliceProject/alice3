@@ -84,7 +84,7 @@ class SingleOrDoubleClickList extends javax.swing.JList {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane {
+public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 	class ThumbnailSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCellRenderer {
 		private javax.swing.Icon folderIcon;
 

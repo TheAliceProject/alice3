@@ -47,12 +47,12 @@ package org.alice.ide.preview;
  */
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
-	protected java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		//return new org.alice.ide.codeeditor.ArgumentListPropertyPane( this, argumentListProperty );
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		return this.createExpressionPane( expressionProperty.getValue() );
 	}
 }

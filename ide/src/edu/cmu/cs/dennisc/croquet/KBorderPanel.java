@@ -61,9 +61,18 @@ public class KBorderPanel extends KPanel {
 			return this.internal;
 		}
 	}
+	private int hgap;
+	private int vgap;
+	public KBorderPanel() {
+		this( 0, 0 );
+	}
+	public KBorderPanel( int hgap, int vgap ) {
+		this.hgap = hgap;
+		this.vgap = vgap;
+	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.BorderLayout();
+		return new java.awt.BorderLayout( this.hgap, this.vgap );
 	}
 	public void addComponent( KComponent<?> child, CardinalDirection cardinalDirection ) {
 		this.internalAddComponent( child, cardinalDirection.internal );
