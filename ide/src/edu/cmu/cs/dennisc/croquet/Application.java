@@ -424,6 +424,7 @@ public abstract class Application {
 		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAWTWindow(), directory, filename, extension, isSharingDesired ); 
 	}
 
+	@Deprecated
 	public KComponent< javax.swing.Box.Filler > createGlue() {
 		return new KComponent< javax.swing.Box.Filler >() {
 			@Override
@@ -432,6 +433,7 @@ public abstract class Application {
 			}
 		};
 	}
+	@Deprecated
 	public KComponent< javax.swing.Box.Filler > createHorizontalGlue() {
 		return new KComponent< javax.swing.Box.Filler >() {
 			@Override
@@ -440,6 +442,7 @@ public abstract class Application {
 			}
 		};
 	}
+	@Deprecated
 	public KComponent< javax.swing.Box.Filler > createVerticalGlue() {
 		return new KComponent< javax.swing.Box.Filler >() {
 			@Override
@@ -448,6 +451,7 @@ public abstract class Application {
 			}
 		};
 	}
+	@Deprecated
 	public KComponent< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
 		return new KComponent< javax.swing.Box.Filler >() {
 			@Override
@@ -456,6 +460,7 @@ public abstract class Application {
 			}
 		};
 	}
+	@Deprecated
 	public KComponent< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
 		return new KComponent< javax.swing.Box.Filler >() {
 			@Override
@@ -465,6 +470,7 @@ public abstract class Application {
 		};
 	}
 
+	@Deprecated
 	public KComponent< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
 		return new KComponent< javax.swing.Box.Filler >() {
 			@Override
@@ -473,6 +479,7 @@ public abstract class Application {
 			}
 		};
 	}
+	@Deprecated
 	public KComponent< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
 		return this.createRigidArea( new java.awt.Dimension( width, height ) );
 	}

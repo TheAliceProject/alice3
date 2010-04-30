@@ -47,7 +47,7 @@ package org.alice.stageide.operations.ast;
  */
 public class OrientToUprightActionOperation extends TransformableFieldTileActionOperation {
 	public OrientToUprightActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( field );
+		super( java.util.UUID.fromString( "3d18487c-4e92-40d2-b101-104487a370c0" ), field );
 		this.setName( "Orient to Upright" );
 	}
 	@Override

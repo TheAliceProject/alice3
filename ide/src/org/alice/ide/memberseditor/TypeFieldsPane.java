@@ -94,7 +94,7 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 			} else {
 				components.add( this.getIDE().createVerticalStrut( 16 ) );
 			}
-			rv = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( components, edu.cmu.cs.dennisc.croquet.KComponent.class );
+			rv = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( components, edu.cmu.cs.dennisc.croquet.KComponent<?>.class );
 		} else {
 			rv = null;
 		}

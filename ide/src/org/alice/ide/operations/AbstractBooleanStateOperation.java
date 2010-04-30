@@ -46,11 +46,11 @@ package org.alice.ide.operations;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
-	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialValue, String trueText, String falseText ) {
-		super( groupUUID, initialValue, trueText, falseText );
+	public AbstractBooleanStateOperation( java.util.UUID groupUUID, java.util.UUID individualId, Boolean initialValue, String trueText, String falseText ) {
+		super( groupUUID, individualId, initialValue, trueText, falseText );
 	}
-	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialValue, String trueAndFalseText ) {
-		super( groupUUID, initialValue, trueAndFalseText );
+	public AbstractBooleanStateOperation( java.util.UUID groupUUID, java.util.UUID individualId, Boolean initialValue, String trueAndFalseText ) {
+		super( groupUUID, individualId, initialValue, trueAndFalseText );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
@@ -59,4 +59,5 @@ public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.c
 	protected boolean isPreservedAndRestored() {
 		return false;
 	}
+	protected abstract void handleStateChange( boolean value );
 }

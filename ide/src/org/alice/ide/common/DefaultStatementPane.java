@@ -48,6 +48,6 @@ package org.alice.ide.common;
 public class DefaultStatementPane extends AbstractStatementPane {
 	public DefaultStatementPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty owner ) {
 		super( factory, statement, owner );
-		this.add( factory.createComponent( statement ) );
+		this.addComponent( factory.createComponent( statement ) );
 	}
 }

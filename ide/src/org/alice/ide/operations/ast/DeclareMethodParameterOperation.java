@@ -60,7 +60,7 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, this.getIDE().getMethodInvocations( method ) );
-		final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.showInJDialog( this.getIDE().getJFrame() );
+		final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.showInJDialog( button );
 		if( parameter != null ) {
 			final int index = method.parameters.size();
 			final java.util.Map< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument > map = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.MethodInvocation, edu.cmu.cs.dennisc.alice.ast.Argument >();

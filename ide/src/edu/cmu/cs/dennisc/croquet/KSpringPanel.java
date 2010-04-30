@@ -47,8 +47,114 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class KSpringPanel extends KPanel {
+	public enum Vertical {
+		NORTH(javax.swing.SpringLayout.NORTH), 
+		CENTER(null), 
+		SOUTH(javax.swing.SpringLayout.SOUTH);
+		private String internal;
+		private Vertical( String internal ) {
+			this.internal = internal;
+		}
+		public String getInternal() {
+			return internal;
+		}
+	}
+	public enum Horizontal {
+		WEST(javax.swing.SpringLayout.WEST), 
+		CENTER(null), 
+		EAST(javax.swing.SpringLayout.EAST);
+		private String internal;
+		private Horizontal( String internal ) {
+			this.internal = internal;
+		}
+		public String getInternal() {
+			return internal;
+		}
+	}
+	private javax.swing.SpringLayout springLayout = new javax.swing.SpringLayout();
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.SpringLayout();
+		return this.springLayout;
+	}
+//	protected javax.swing.SpringLayout getSpringLayout() {
+//		return this.springLayout;
+//	}
+	abstract class CenterSpring extends javax.swing.Spring {
+		private KComponent< ? > component;
+		private int offset;
+		public CenterSpring( KComponent< ? > component, int offset ) {
+			this.component = component;
+			this.offset = offset;
+		}
+		@Override
+		public int getValue() {
+			return this.getPreferredValue();
+		}
+		@Override
+		public void setValue( int value ) {
+		}
+		protected abstract int getValue( java.awt.Dimension dimension );
+		@Override
+		public int getPreferredValue() {
+			int macro = getValue( KSpringPanel.this.getJComponent().getSize() );
+			java.awt.Dimension size;
+			if( this.component.getJComponent().isValid() ) {
+				size = this.component.getJComponent().getSize();
+			} else {
+				size = this.component.getJComponent().getPreferredSize();
+			}
+			int micro = getValue( size );
+			return this.offset + (macro - micro) / 2;
+		}
+		@Override
+		public int getMinimumValue() {
+			return this.getPreferredValue();
+		}
+		@Override
+		public int getMaximumValue() {
+			return this.getPreferredValue();
+		}
+	}
+	class HorizontalCenterSpring extends CenterSpring {
+		public HorizontalCenterSpring( KComponent< ? > component, int offset ) {
+			super( component, offset );
+		}
+		@Override
+		protected int getValue( java.awt.Dimension dimension ) {
+			return dimension.width;
+		}
+	}
+	class VerticalCenterSpring extends CenterSpring {
+		public VerticalCenterSpring( KComponent< ? > component, int offset ) {
+			super( component, offset );
+		}
+		@Override
+		protected int getValue( java.awt.Dimension dimension ) {
+			return dimension.height;
+		}
+	}
+	private void putConstraint( KComponent< ? > component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+		String horizontalConstraint = horizontal.getInternal();
+		String verticalConstraint = vertical.getInternal();
+		if( horizontalConstraint != null ) {
+			this.springLayout.putConstraint( horizontalConstraint, component.getJComponent(), x, horizontalConstraint, this.getJComponent() );
+		} else {
+			this.springLayout.putConstraint( javax.swing.SpringLayout.WEST, component.getJComponent(), new HorizontalCenterSpring( component, x ), javax.swing.SpringLayout.WEST, this.getJComponent() );
+		}
+		if( verticalConstraint != null ) {
+			this.springLayout.putConstraint( verticalConstraint, component.getJComponent(), y, verticalConstraint, this.getJComponent() );
+		} else {
+			this.springLayout.putConstraint( javax.swing.SpringLayout.NORTH, component.getJComponent(), new VerticalCenterSpring( component, y ), javax.swing.SpringLayout.NORTH, this.getJComponent() );
+		}
+	}
+	
+	public void addComponent( KComponent< ? > component, Horizontal horizontal, int x, Vertical vertical, int y ) {
+		this.putConstraint( component, horizontal, x, vertical, y );
+		this.addComponent( component );
+	}
+	@Override
+	public void removeComponent( edu.cmu.cs.dennisc.croquet.KComponent< ? > component ) {
+		super.removeComponent( component );
+		this.springLayout.removeLayoutComponent( component.getJComponent() );
 	}
 }

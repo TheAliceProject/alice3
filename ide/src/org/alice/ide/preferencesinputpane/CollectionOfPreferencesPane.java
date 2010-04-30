@@ -154,8 +154,8 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.KBor
 			} else {
 				PreferenceProxy<?> proxy = this.createDefaultProxyFor(preference);
 				if( proxy != null ) {
-					centerComponent.addComponent( proxy.getAWTComponent() );
-					centerComponent.addComponent( javax.swing.Box.createVerticalStrut( 4 ) );
+					centerComponent.addComponent( proxy.getComponent() );
+					centerComponent.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 4 ) );
 				}
 			}
 		}

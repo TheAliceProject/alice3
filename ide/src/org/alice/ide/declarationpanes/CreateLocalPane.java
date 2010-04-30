@@ -59,11 +59,11 @@ public class CreateLocalPane extends CreateDeclarationPane<edu.cmu.cs.dennisc.al
 	public CreateLocalPane( edu.cmu.cs.dennisc.alice.ast.BlockStatement block ) {
 		super( new org.alice.ide.name.validators.LocalNameValidator( block ) );
 		assert block != null;
-		this.setBackground( getIDE().getLocalColor() );
+		this.setBackgroundColor( getIDE().getLocalColor() );
 	}
 
 	@Override
-	protected java.awt.Component createPreviewSubComponent() {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createPreviewSubComponent() {
 		edu.cmu.cs.dennisc.alice.ast.LocalDeclarationStatement localDeclarationStatement = this.getActualInputValue();
 		org.alice.ide.common.AbstractStatementPane pane = org.alice.ide.IDE.getSingleton().getPreviewFactory().createStatementPane( localDeclarationStatement );
 //		pane.setLeftButtonPressOperation( null );

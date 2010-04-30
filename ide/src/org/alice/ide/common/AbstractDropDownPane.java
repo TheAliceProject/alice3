@@ -52,10 +52,6 @@ public abstract class AbstractDropDownPane extends org.alice.ide.Component {
 		this.setForegroundColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 191 ) );
 		this.setCursor( java.awt.Cursor.getPredefinedCursor( java.awt.Cursor.DEFAULT_CURSOR ) );
 	}
-	
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
 //	@Override
 //	public void addNotify() {
 //		super.addNotify();

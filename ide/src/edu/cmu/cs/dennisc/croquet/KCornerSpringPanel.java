@@ -40,27 +40,70 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationpanes;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateProcedurePane extends CreateMethodPane {
-	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		super( declaringType );
-		this.setBackgroundColor( getIDE().getProcedureColor() );
+public class KCornerSpringPanel extends KSpringPanel {
+	private KComponent< ? > northWestComponent;
+	private KComponent< ? > northEastComponent;
+	private KComponent< ? > southWestComponent;
+	private KComponent< ? > southEastComponent;
+	
+	protected int getPad() {
+		return 8;
 	}
-	@Override
-	protected String getDeclarationText() {
-		return "Procedure";
+	public KComponent< ? > getNorthWestComponent() {
+		return this.northWestComponent;
 	}
-	@Override
-	protected boolean isEditableValueTypeComponentDesired() {
-		return false;
+	public void setNorthWestComponent( KComponent< ? > northWestComponent ) {
+		if( this.northWestComponent != null ) {
+			this.removeComponent( this.northWestComponent );
+		}
+		this.northWestComponent = northWestComponent;
+		if( this.northWestComponent != null ) {
+			int pad = getPad();
+			this.addComponent( this.northWestComponent, Horizontal.WEST, pad, Vertical.NORTH, pad );
+		}
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
-		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
+	public KComponent< ? > getNorthEastComponent() {
+		return this.northEastComponent;
+	}
+	public void setNorthEastComponent( KComponent< ? > northEastComponent ) {
+		if( this.northEastComponent != null ) {
+			this.removeComponent( this.northEastComponent );
+		}
+		this.northEastComponent = northEastComponent;
+		if( this.northEastComponent != null ) {
+			int pad = getPad();
+			this.addComponent( this.northEastComponent, Horizontal.EAST, -pad, Vertical.NORTH, pad );
+		}
+	}
+	public KComponent< ? > getSouthWestComponent() {
+		return this.southWestComponent;
+	}
+	public void setSouthWestComponent( KComponent< ? > southWestComponent ) {
+		if( this.southWestComponent != null ) {
+			this.removeComponent( this.southWestComponent );
+		}
+		this.southWestComponent = southWestComponent;
+		if( this.southWestComponent != null ) {
+			int pad = getPad();
+			this.addComponent( this.southWestComponent, Horizontal.WEST, pad, Vertical.SOUTH, -pad );
+		}
+	}
+	public KComponent< ? > getSouthEastComponent() {
+		return this.southEastComponent;
+	}
+	public void setSouthEastComponent( KComponent< ? > southEastComponent ) {
+		if( this.southEastComponent != null ) {
+			this.removeComponent( this.southEastComponent );
+		}
+		this.southEastComponent = southEastComponent;
+		if( this.southEastComponent != null ) {
+			int pad = getPad();
+			this.addComponent( this.southEastComponent, Horizontal.EAST, -pad, Vertical.SOUTH, -pad );
+		}
 	}
 }
-

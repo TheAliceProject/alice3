@@ -63,7 +63,7 @@ public class CreateFieldFromGalleryPane extends CreateLargelyPredeterminedFieldP
 		if( file != null ) {
 			if( file.exists() ) {
 				this.galleryIcon = new GalleryIcon( file );
-				this.add( this.galleryIcon, java.awt.BorderLayout.EAST );
+				this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.galleryIcon ), java.awt.BorderLayout.EAST );
 			}
 		}
 	}

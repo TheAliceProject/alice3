@@ -46,6 +46,7 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class MenuOperation extends Operation {
+	public static final Operation SEPARATOR = null;
 	private class MenuListener implements javax.swing.event.MenuListener {
 		private KMenu menu;
 		public MenuListener( KMenu menu ) {

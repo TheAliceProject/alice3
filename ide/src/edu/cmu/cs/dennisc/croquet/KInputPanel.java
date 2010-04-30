@@ -48,7 +48,7 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class KInputPanel< T > extends KPanel {
 	public static interface Validator {
-		public boolean isValid();
+		public boolean isInputValid();
 	}
 	private java.util.List< Validator > validators = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private javax.swing.JDialog dialog;
@@ -64,7 +64,7 @@ public abstract class KInputPanel< T > extends KPanel {
 	private javax.swing.JButton okButton;
 	public boolean isOKButtonValid() {
 		for( Validator validator : validators ) {
-			if( validator.isValid() ) {
+			if( validator.isInputValid() ) {
 				//pass
 			} else {
 				return false;
@@ -112,7 +112,13 @@ public abstract class KInputPanel< T > extends KPanel {
 	public T showInJDialog( KAbstractButton< ? > button, String title ) {
 		final javax.swing.JDialog dialog;
 		
-		java.awt.Component root = javax.swing.SwingUtilities.getRoot( button.getJComponent() );
+		
+		java.awt.Component root;
+		if( button != null ) {
+			root = javax.swing.SwingUtilities.getRoot( button.getJComponent() );
+		} else {
+			root = null;
+		}
 		if( root instanceof java.awt.Frame ) {
 			dialog = new javax.swing.JDialog( (java.awt.Frame)root );
 		} else if( root instanceof java.awt.Dialog ) {
@@ -214,6 +220,10 @@ public abstract class KInputPanel< T > extends KPanel {
 	@Deprecated
 	public T showInJDialog( KAbstractButton< ? > button ) {
 		return this.showInJDialog( button, null );
+	}
+	@Deprecated
+	public T showInJDialog() {
+		return this.showInJDialog( null );
 	}
 	@Deprecated
 	protected void addComponent( KComponent<?> component, Object constraints ) {

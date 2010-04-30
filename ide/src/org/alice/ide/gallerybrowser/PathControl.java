@@ -46,23 +46,25 @@ package org.alice.ide.gallerybrowser;
  * @author Dennis Cosgrove
  */
 public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
-	class DirectoryControl extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+	class DirectoryControl extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		private static final int ARROW_SIZE = 10;
 		private static final int ARROW_BORDER_HALF_SIZE = 3;
 
-		class SelectDirectoryActionOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
+		class SelectDirectoryActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 			public SelectDirectoryActionOperation() {
+				super( java.util.UUID.fromString( "ca407baf-13b1-4530-bf35-67764efbf5f0" ) );
 				this.setName( PathControl.this.getTextFor( DirectoryControl.this.file ) );
 			}
 
 			@Override
-			protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button) {
 				PathControl.this.handleSelectDirectory( DirectoryControl.this.file );
 			}
 		}
 
-		class SelectChildDirectoryActionOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
+		class SelectChildDirectoryActionOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 			public SelectChildDirectoryActionOperation() {
+				super( java.util.UUID.fromString( "cc6a0de7-91b1-4a2b-86ff-21ca9de14bed" ) );
 				javax.swing.Icon icon = new javax.swing.Icon() {
 					public int getIconHeight() {
 						return ARROW_SIZE + ARROW_BORDER_HALF_SIZE + ARROW_BORDER_HALF_SIZE;
@@ -92,26 +94,26 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 			// public void respond( java.util.EventObject e ) {
 			// }
 			@Override
-			protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-				DirectoryControl.this.handleSelectChildDirectory( actionContext );
+			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button) {
+				DirectoryControl.this.handleSelectChildDirectory( context, e, button );
 			}
 		}
 
 		private java.io.File file;
 
 		//todo: remove. rely only on operations.
-		private javax.swing.JButton selectChildButton;
+		private edu.cmu.cs.dennisc.croquet.KButton selectChildButton;
 
 		public DirectoryControl( java.io.File file ) {
 			this.file = file;
-			this.selectChildButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton( new SelectChildDirectoryActionOperation() );
+			this.selectChildButton = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new SelectChildDirectoryActionOperation() );
 			selectChildButton.setBorder( javax.swing.BorderFactory.createLineBorder( java.awt.Color.GRAY ) );
-			this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new SelectDirectoryActionOperation() ), java.awt.BorderLayout.CENTER );
-			this.add( selectChildButton, java.awt.BorderLayout.EAST );
+			this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new SelectDirectoryActionOperation() ), CardinalDirection.CENTER );
+			this.addComponent( selectChildButton, CardinalDirection.EAST );
 		}
 
-		private void handleSelectChildDirectory( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-			PathControl.this.handleSelectChildDirectory( this.selectChildButton, this.file );
+		private void handleSelectChildDirectory(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button) {
+			PathControl.this.handleSelectChildDirectory( context, e, button, this.file );
 		}
 
 	}
@@ -179,7 +181,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 
 	protected abstract void handleSelectFile( java.io.File file );
 
-	private void handleSelectChildDirectory( java.awt.Component invoker, java.io.File directory ) {
+	private void handleSelectChildDirectory( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button, java.io.File directory ) {
 		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
 		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
 

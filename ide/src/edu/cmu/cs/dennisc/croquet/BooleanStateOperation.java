@@ -45,7 +45,7 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class BooleanStateOperation extends Operation {
+public /*final*/ class BooleanStateOperation extends Operation {
 	public static interface ValueObserver {
 		public void changing( boolean nextValue );
 		public void changed( boolean nextValue );

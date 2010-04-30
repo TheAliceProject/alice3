@@ -45,7 +45,7 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-class CreateTextPane extends org.alice.ide.declarationpanes.RowsInputPane< org.alice.apis.moveandturn.Text > {
+class CreateTextPane extends org.alice.ide.RowsInputPanel< org.alice.apis.moveandturn.Text > {
 	class FamilyList extends edu.cmu.cs.dennisc.croquet.KList< String > {
 		public FamilyList() {
 			this.setListData( "Serif", "SansSerif" );
@@ -119,14 +119,14 @@ class CreateTextPane extends org.alice.ide.declarationpanes.RowsInputPane< org.a
 	private javax.swing.JTextField textVC;
 	private javax.swing.JTextField instanceNameVC;
 	//private javax.swing.JTextField classNameVC;
-	private javax.swing.JCheckBox constrainInstanceNameToTextVC;
+	private edu.cmu.cs.dennisc.croquet.KCheckBox constrainInstanceNameToTextVC;
 	//private javax.swing.JCheckBox constrainClassNameToInstanceNameVC;
 
 	private javax.swing.JTextField heightTextField;
 	private FamilyList familyList;
 	private StyleList styleList;
 
-	private javax.swing.JLabel sample;
+	private edu.cmu.cs.dennisc.croquet.KLabel sample;
 
 	public CreateTextPane() {
 		final int INSET = 16;
@@ -165,8 +165,8 @@ class CreateTextPane extends org.alice.ide.declarationpanes.RowsInputPane< org.a
 		} );
 		//this.instanceNameVC.getDocument().addDocumentListener( ecc.dennisc.swing.event.FilteredDocumentAdapter( this.handleInstanceNameChange ) );
 
-		this.constrainInstanceNameToTextVC = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( new ConstrainInstanceNameToTextBooleanStateOperation() );
-		this.constrainInstanceNameToTextVC.setSelected( true );
+		this.constrainInstanceNameToTextVC = this.getIDE().createCheckBox( new ConstrainInstanceNameToTextBooleanStateOperation() );
+		this.constrainInstanceNameToTextVC.getJComponent().setSelected( true );
 		this.constrainInstanceNameToTextVC.setOpaque( false );
 		this.heightTextField = new TextField( "1.0", " enter height in meters here" );
 		this.heightTextField.getDocument().addDocumentListener( new edu.cmu.cs.dennisc.javax.swing.event.SimplifiedDocumentAdapter() {
@@ -178,7 +178,7 @@ class CreateTextPane extends org.alice.ide.declarationpanes.RowsInputPane< org.a
 		this.familyList = new FamilyList();
 		this.styleList = new StyleList();
 
-		this.sample = edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabelWithScaledFont( "AaBbYyZz", 1.2f );
+		this.sample = new edu.cmu.cs.dennisc.croquet.KLabel( "AaBbYyZz", 1.2f );
 		this.updateSample();
 
 		class ListSelectionAdapter implements javax.swing.event.ListSelectionListener {
@@ -208,7 +208,7 @@ class CreateTextPane extends org.alice.ide.declarationpanes.RowsInputPane< org.a
 
 	class ConstrainInstanceNameToTextBooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public ConstrainInstanceNameToTextBooleanStateOperation() {
-			super( org.alice.app.ProjectApplication.IDE_GROUP, false, "constrain to text" );
+			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "74c18933-e5d7-4c48-ad88-46a7a83ff12d" ), false, "constrain to text" );
 		}
 		@Override
 		protected void handleStateChange( boolean value ) {
@@ -217,15 +217,47 @@ class CreateTextPane extends org.alice.ide.declarationpanes.RowsInputPane< org.a
 	}
 
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "text:" ), this.textVC, null ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "instance:" ), this.instanceNameVC, this.constrainInstanceNameToTextVC ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 24 ), null, null ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "letter height:" ), this.heightTextField, edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "(meters)" ) ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 4 ), null, null ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "family:" ), this.familyList, null ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "style:" ), this.styleList, null ) );
-		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "sample:" ), this.sample, null ) );
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv, edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel ) {
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "text:" ), 
+				new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.textVC ), 
+				null 
+		) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "instance:" ), 
+				new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.instanceNameVC ), 
+				this.constrainInstanceNameToTextVC 
+		) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 24 ),
+				null,
+				null 
+		) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "letter height:" ), 
+				new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.heightTextField ), 
+				new edu.cmu.cs.dennisc.croquet.KLabel( "(meters)" ) 
+		) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 4 ), 
+				null, 
+				null 
+		) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "family:" ), 
+				this.familyList, 
+				null 
+		) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "style:" ), 
+				this.styleList, 
+				null 
+		) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "sample:" ), 
+				this.sample, 
+				null 
+		) );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, null, null ) );
 
 		return rv;
@@ -235,7 +267,7 @@ class CreateTextPane extends org.alice.ide.declarationpanes.RowsInputPane< org.a
 		org.alice.apis.moveandturn.font.FamilyAttribute familyAttribute = this.familyList.getFamilyAttribute();
 		org.alice.apis.moveandturn.font.WeightAttribute weightAttribute = this.styleList.getWeightAttribute();
 		org.alice.apis.moveandturn.font.PostureAttribute postureAttribute = this.styleList.getPostureAttribute();
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.sample, familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
+		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( this.sample.getJComponent(), familyAttribute.getKey(), familyAttribute.getValue(), weightAttribute.getKey(), weightAttribute.getValue(), postureAttribute.getKey(), postureAttribute.getValue() );
 	}
 	@Override
 	public boolean isOKButtonValid() {
@@ -248,7 +280,7 @@ class CreateTextPane extends org.alice.ide.declarationpanes.RowsInputPane< org.a
 		return super.isOKButtonValid() && isInstanceNameValid;
 	}
 	private void handleTextChange( javax.swing.event.DocumentEvent e ) {
-		if( this.constrainInstanceNameToTextVC.isSelected() ) {
+		if( this.constrainInstanceNameToTextVC.getJComponent().isSelected() ) {
 			String text = this.textVC.getText();
 			String instanceName = edu.cmu.cs.dennisc.alice.ast.IdentifierUtilities.getConventionalInstanceName( text );
 			this.instanceNameVC.setText( instanceName );

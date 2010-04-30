@@ -65,7 +65,7 @@ public abstract class MostlyDeterminedInfixExpressionFillIn< E extends edu.cmu.c
 	protected abstract E createExpression( edu.cmu.cs.dennisc.alice.ast.Expression leftOperand, O operator, edu.cmu.cs.dennisc.alice.ast.Expression right );
 	@Override
 	protected final javax.swing.JComponent createMenuProxy() {
-		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( this.createIncompleteExpression( this.leftOperand, this.operator, this.rightOperandType ) );
+		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( this.createIncompleteExpression( this.leftOperand, this.operator, this.rightOperandType ) ).getJComponent();
 	}
 	@Override
 	public final E getValue() {

@@ -51,7 +51,7 @@ public class DefaultListPropertyPane extends AbstractListPropertyPane< edu.cmu.c
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createComponent( Object instance ) {
 		return new edu.cmu.cs.dennisc.croquet.KLabel( instance.toString() );
 	}
 }

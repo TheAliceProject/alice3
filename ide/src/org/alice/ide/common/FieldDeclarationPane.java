@@ -49,15 +49,14 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
 	private edu.cmu.cs.dennisc.croquet.KLabel finalLabel = new edu.cmu.cs.dennisc.croquet.KLabel();
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
-		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		this.field = field;
 		this.addComponent( finalLabel );
 		this.addComponent( new TypeComponent( field.getValueType() ) );
-		this.addComponent( application.createHorizontalStrut( 8 ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
 		org.alice.ide.common.DeclarationNameLabel nameLabel = new org.alice.ide.common.DeclarationNameLabel( field );
-		edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( nameLabel, 1.5f );
+		nameLabel.scaleFont( 1.5f );
 		this.addComponent( nameLabel );
-		this.addComponent( application.createHorizontalStrut( 8 ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
 		this.addComponent( new org.alice.ide.common.GetsPane( true ) );
 		
 		//todo

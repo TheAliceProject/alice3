@@ -45,7 +45,7 @@ package org.alice.ide.operations.window;
 public class IsMemoryUsageShowingOperation extends IsFrameShowingOperation {
 	public IsMemoryUsageShowingOperation() {
 		//todo: PREFERENCES_GROUP?
-		super( org.alice.app.ProjectApplication.IDE_GROUP, false, "Show Memory Usage?" );
+		super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "e460dca7-e707-4075-883a-ff47367c21fd" ), false, "Show Memory Usage?" );
 	}
 	@Override
 	protected String getTitle() {

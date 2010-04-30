@@ -64,7 +64,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		}
 	}
 	
-	class ConfigurationPreview extends edu.cmu.cs.dennisc.javax.swing.components.JFormPane {
+	class ConfigurationPreview extends edu.cmu.cs.dennisc.croquet.KRowsSpringPanel {
 		private edu.cmu.cs.dennisc.croquet.KLabel isDefaultFieldNameGenerationDesiredLabel;
 		private edu.cmu.cs.dennisc.croquet.KLabel isSyntaxNoiseDesiredLabel;
 		private void ensureLabelsExist() {
@@ -82,7 +82,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			}
 		}
 		@Override
-		protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {
+		protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
 			this.ensureLabelsExist();
 			rv.add( 
 					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
@@ -194,7 +194,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		this.pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 4 ) );
 	}
 	@Override
-	public java.awt.Component getAWTComponent() {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponent() {
 		return this.pane;
 	}
 	@Override

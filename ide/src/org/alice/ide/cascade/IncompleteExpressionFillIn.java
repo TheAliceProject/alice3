@@ -53,6 +53,6 @@ public abstract class IncompleteExpressionFillIn< E extends edu.cmu.cs.dennisc.a
 	protected abstract E createIncomplete();
 	@Override
 	protected final javax.swing.JComponent createMenuProxy() {
-		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( this.createIncomplete() );
+		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( this.createIncomplete() ).getJComponent();
 	}
 }

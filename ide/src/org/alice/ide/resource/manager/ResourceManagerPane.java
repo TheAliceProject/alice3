@@ -372,7 +372,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 					renamePane = new org.alice.ide.name.RenamePane( new org.alice.ide.name.validators.ResourceNameValidator( resource ) );
 				}
 				renamePane.setAndSelectNameText( resource.getName() );
-				final String nextName = renamePane.showInJDialog( this.getIDE().getJFrame(), "Rename Resource" );
+				final String nextName = renamePane.showInJDialog( button, "Rename Resource" );
 				if( nextName != null && nextName.length() > 0 ) {
 					final String prevName = resource.getName();
 					context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {

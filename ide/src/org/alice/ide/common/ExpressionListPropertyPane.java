@@ -51,7 +51,7 @@ public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cm
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
 	}
 	@Override
-	protected java.awt.Component createInterstitial( int i, final int N ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createInterstitial( int i, final int N ) {
 		if( i < N - 1 ) {
 			return new edu.cmu.cs.dennisc.croquet.KLabel( ", " );
 		} else {
@@ -59,7 +59,7 @@ public class ExpressionListPropertyPane extends AbstractListPropertyPane< edu.cm
 		}
 	}
 	@Override
-	protected java.awt.Component createComponent( Object instance ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = (edu.cmu.cs.dennisc.alice.ast.Expression)instance;
 		return this.getFactory().createExpressionPane( expression );
 	}

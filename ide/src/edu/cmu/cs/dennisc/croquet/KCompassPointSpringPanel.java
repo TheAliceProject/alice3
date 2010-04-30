@@ -40,27 +40,67 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.declarationpanes;
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class CreateProcedurePane extends CreateMethodPane {
-	public CreateProcedurePane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
-		super( declaringType );
-		this.setBackgroundColor( getIDE().getProcedureColor() );
+public class KCompassPointSpringPanel extends KCornerSpringPanel {
+	private KComponent< ? > northComponent;
+	private KComponent< ? > eastComponent;
+	private KComponent< ? > southComponent;
+	private KComponent< ? > westComponent;
+	
+	public KComponent< ? > getNorthComponent() {
+		return this.northComponent;
 	}
-	@Override
-	protected String getDeclarationText() {
-		return "Procedure";
+	public void setNorthComponent( KComponent< ? > northComponent ) {
+		if( this.northComponent != null ) {
+			this.removeComponent( this.northComponent );
+		}
+		this.northComponent = northComponent;
+		if( this.northComponent != null ) {
+			int pad = getPad();
+			this.addComponent( this.northComponent, Horizontal.CENTER, 0, Vertical.NORTH, pad );
+		}
 	}
-	@Override
-	protected boolean isEditableValueTypeComponentDesired() {
-		return false;
+	public KComponent< ? > getEastComponent() {
+		return this.eastComponent;
 	}
-	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {
-		return edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInJava.VOID_TYPE;
+	public void setEastComponent( KComponent< ? > eastComponent ) {
+		if( this.eastComponent != null ) {
+			this.removeComponent( this.eastComponent );
+		}
+		this.eastComponent = eastComponent;
+		if( this.eastComponent != null ) {
+			int pad = getPad();
+			this.addComponent( this.eastComponent, Horizontal.EAST, -pad, Vertical.CENTER, 0 );
+		}
+	}
+	public KComponent< ? > getSouthComponent() {
+		return this.southComponent;
+	}
+	public void setSouthComponent( KComponent< ? > southComponent ) {
+		if( this.southComponent != null ) {
+			this.removeComponent( this.southComponent );
+		}
+		this.southComponent = southComponent;
+		if( this.southComponent != null ) {
+			int pad = getPad();
+			this.addComponent( this.southComponent, Horizontal.CENTER, 0, Vertical.SOUTH, -pad );
+		}
+	}
+	public KComponent< ? > getWestComponent() {
+		return this.westComponent;
+	}
+	public void setWestComponent( KComponent< ? > westComponent ) {
+		if( this.westComponent != null ) {
+			this.removeComponent( this.westComponent );
+		}
+		this.westComponent = westComponent;
+		if( this.westComponent != null ) {
+			int pad = getPad();
+			this.addComponent( this.westComponent, Horizontal.WEST, -pad, Vertical.CENTER, 0 );
+		}
 	}
 }
-

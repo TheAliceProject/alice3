@@ -89,7 +89,7 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 	private void handleChanged() {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				ArrayChooser.this.getInputPane().updateOKButton();
+				ArrayChooser.this.getInputPanel().updateOKButton();
 			}
 		} );
 		

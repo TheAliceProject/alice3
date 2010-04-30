@@ -52,9 +52,9 @@ public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.croquet.KL
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setForegroundColor( java.awt.Color.GRAY );
 	}
-	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
-		g.drawRect( 0, 0, this.getWidth()-1, this.getHeight()-1);
-	}
+//	@Override
+//	protected void paintComponent( java.awt.Graphics g ) {
+//		super.paintComponent( g );
+//		g.drawRect( 0, 0, this.getWidth()-1, this.getHeight()-1);
+//	}
 }

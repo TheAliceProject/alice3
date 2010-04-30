@@ -273,7 +273,7 @@ public abstract class KDragControl extends KControl {
 		}
 	};
 	private Paintable paintable;
-	/*package-private*/ KDragControl( Paintable paintable ) {
+	public KDragControl( Paintable paintable ) {
 		this.paintable = paintable;
 	}
 	

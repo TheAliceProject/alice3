@@ -59,7 +59,7 @@ public class MostlyDeterminedStringConcatenationFillIn extends edu.cmu.cs.dennis
 	}
 	@Override
 	protected final javax.swing.JComponent createMenuProxy() {
-		return (javax.swing.JComponent)org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createIncompleteStringConcatenation( this.leftOperand ) );
+		return org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( org.alice.ide.ast.NodeUtilities.createIncompleteStringConcatenation( this.leftOperand ) ).getJComponent();
 	}
 	@Override
 	public final edu.cmu.cs.dennisc.alice.ast.StringConcatenation getValue() {

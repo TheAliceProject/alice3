@@ -104,7 +104,7 @@ public class EditFieldsPane extends EditMembersPane< edu.cmu.cs.dennisc.alice.as
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createMember( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( declaringType );
-		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = createFieldPane.showInJDialog( org.alice.ide.IDE.getSingleton().getJFrame() );
+		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice rv = createFieldPane.showInJDialog();
 		return rv;
 	}
 	@Override

@@ -48,7 +48,16 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class KRowsSpringPanel extends KSpringPanel {
 	private java.util.List< KComponent< ? >[] > componentRows;
+	private int xPad;
+	private int yPad;
 	protected abstract java.util.List< KComponent< ? >[] > updateComponentRows( java.util.List< KComponent< ? >[] > rv );
+	public KRowsSpringPanel() {
+		this( 12, 12 );
+	}
+	public KRowsSpringPanel( int xPad, int yPad ) {
+		this.xPad = xPad;
+		this.yPad = yPad;
+	}
 	@Override
 	protected void adding() {
 		super.adding();
@@ -57,18 +66,12 @@ public abstract class KRowsSpringPanel extends KSpringPanel {
 		} else {
 			this.componentRows = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			this.updateComponentRows( this.componentRows );
-			SpringUtilities.springItUpANotch( this, componentRows, this.getSpringXPad(), this.getSpringYPad() );
+			SpringUtilities.springItUpANotch( this, componentRows, this.xPad, this.yPad );
 		}
 	}
 	@Override
 	protected void removed() {
 		//todo?
 		super.removed();
-	}
-	protected int getSpringXPad() {
-		return 12;
-	}
-	protected int getSpringYPad() {
-		return 12;
 	}
 }

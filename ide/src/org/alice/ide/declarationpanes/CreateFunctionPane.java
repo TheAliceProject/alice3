@@ -48,7 +48,7 @@ package org.alice.ide.declarationpanes;
 public class CreateFunctionPane extends CreateMethodPane {
 	public CreateFunctionPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( declaringType );
-		this.setBackground( getIDE().getFunctionColor() );
+		this.setBackgroundColor( getIDE().getFunctionColor() );
 	}
 	@Override
 	protected String getDeclarationText() {

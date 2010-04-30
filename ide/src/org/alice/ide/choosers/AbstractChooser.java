@@ -45,9 +45,9 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.cs.dennisc.zoot.InputValidator {
+public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.cs.dennisc.croquet.KInputPanel.Validator {
 	private static final String[] LABEL_TEXTS = { "value:" };
-	private edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane;
+	private edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPanel;
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -59,12 +59,12 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 			return null;
 		}
 	}
-	public edu.cmu.cs.dennisc.inputpane.KInputPane< ? > getInputPane() {
-		return this.inputPane;
+	public edu.cmu.cs.dennisc.croquet.KInputPanel< ? > getInputPanel() {
+		return this.inputPanel;
 	}
-	public void setInputPane( edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane ) {
-		this.inputPane = inputPane;
-		this.inputPane.addOKButtonValidator( this );
+	public void setInputPanel( edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPanel ) {
+		this.inputPanel = inputPanel;
+		this.inputPanel.addValidator( this );
 	}
 	
 	protected String[] getLabelTexts() {

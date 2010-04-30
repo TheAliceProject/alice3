@@ -44,8 +44,8 @@ package org.alice.ide.operations.window;
 
 public abstract class IsFrameShowingOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private javax.swing.JFrame frame;
-	public IsFrameShowingOperation( java.util.UUID groupUUID, boolean initialValue, String trueAndFalseText ) {
-		super( groupUUID, initialValue, trueAndFalseText );
+	public IsFrameShowingOperation( java.util.UUID groupUUID, java.util.UUID individualId, boolean initialValue, String trueAndFalseText ) {
+		super( groupUUID, individualId, initialValue, trueAndFalseText );
 		//todo
 		if( initialValue ) {
 			javax.swing.SwingUtilities.invokeLater( new Runnable() {

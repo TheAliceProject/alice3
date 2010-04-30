@@ -48,7 +48,7 @@ package org.alice.ide.declarationpanes;
 public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PreviewInputPane< T > {
 	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public IsReassignableStateOperation( boolean initialValue ) {
-			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, initialValue, "(is constant)", "(is variable)" );
+			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "c95e177e-8fea-4916-a401-1b865594b135" ), initialValue, "(is constant)", "(is variable)" );
 		}
 		@Override
 		protected void handleStateChange(boolean value) {
@@ -182,14 +182,14 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	protected boolean getIsReassignableInitialState() {
 		return true;
 	}
-	protected final java.awt.Component createIsReassignableComponent() {
-		javax.swing.JCheckBox rv;
+	protected final edu.cmu.cs.dennisc.croquet.KComponent< ? > createIsReassignableComponent() {
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > rv;
 		if( isIsReassignableComponentDesired() ) {
 			this.isReassignableStateOperation = new IsReassignableStateOperation( this.getIsReassignableInitialState() );
 			this.isReassignableStateOperation.setTrueText( "yes" );
 			this.isReassignableStateOperation.setFalseText( "no" );
 			this.isReassignableStateOperation.setEnabled( this.isIsReassignableComponentEnabled() );
-			rv = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( this.isReassignableStateOperation );
+			rv = this.getIDE().createCheckBox( this.isReassignableStateOperation );
 			rv.setOpaque( false );
 		} else {
 			rv = null;
@@ -203,7 +203,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		return true;
 	}
 	protected abstract boolean isEditableValueTypeComponentDesired();
-	protected java.awt.Component createValueTypeComponent() {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createValueTypeComponent() {
 		if( this.isEditableValueTypeComponentDesired() ) {
 			boolean isEnabled = this.isValueTypeComponentEnabled();
 			this.typePane = new TypePane( bogusNode.componentType, bogusNode.isArray, isEnabled, isEnabled );
@@ -215,10 +215,10 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 
 
 
-	protected final java.awt.Component[] createIsReassignableRow() {
-		java.awt.Component component = this.createIsReassignableComponent();
+	protected final edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createIsReassignableRow() {
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > component = this.createIsReassignableComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "is re-assignable:" ), component );
+			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "is re-assignable:" ), component );
 		} else {
 			return null;
 		}
@@ -228,17 +228,17 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		return "value type:";
 	}
 
-	protected final java.awt.Component[] createValueTypeRow() {
-		java.awt.Component component = this.createValueTypeComponent();
+	protected final edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createValueTypeRow() {
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > component = this.createValueTypeComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( this.getValueTypeText() ), component );
+			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( this.getValueTypeText() ), component );
 		} else {
 			return null;
 		}
 	}
 
-	protected final java.awt.Component[] createNameRow() {
-		return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "name:" ), this.declarationNameTextField );
+	protected final edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createNameRow() {
+		return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ), new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.declarationNameTextField ) );
 	}
 	
 	protected abstract boolean isEditableInitializerComponentDesired();
@@ -250,25 +250,25 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 		}
 		return this.initializerPane;
 	}
-	protected final java.awt.Component[] createInitializerRow() {
-		java.awt.Component component = this.createInitializerComponent();
+	protected final edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createInitializerRow() {
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > component = this.createInitializerComponent();
 		if( component != null ) {
-			return edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "initializer:" ), component );
+			return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "initializer:" ), component );
 		} else {
 			return null;
 		}
 	}
-	protected java.awt.Component[] createWarningRow() {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createWarningRow() {
 		return null;
 	}
 
 	@Override
-	protected java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
-		final java.awt.Component[] isReassignableRow = createIsReassignableRow();
-		final java.awt.Component[] valueTypeRow = createValueTypeRow();
-		final java.awt.Component[] nameRow = createNameRow();
-		final java.awt.Component[] initializerRow = createInitializerRow();
-		final java.awt.Component[] warningRow = createWarningRow();
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] isReassignableRow = createIsReassignableRow();
+		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] valueTypeRow = createValueTypeRow();
+		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] nameRow = createNameRow();
+		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] initializerRow = createInitializerRow();
+		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] warningRow = createWarningRow();
 		if( isReassignableRow != null ) {
 			rv.add( isReassignableRow );
 		}
@@ -282,7 +282,7 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 			rv.add( initializerRow );
 		}
 		if( warningRow != null ) {
-			rv.add( new java.awt.Component[] { javax.swing.Box.createVerticalStrut( 16 ), javax.swing.Box.createVerticalStrut( 16 ) } );
+			rv.add( new edu.cmu.cs.dennisc.croquet.KComponent< ? >[] { edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 16 ), null } );
 			rv.add( warningRow );
 		}
 		return rv;
@@ -293,8 +293,8 @@ public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.P
 	}
 	
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		this.declarationNameTextField.setText( this.getDefaultNameText() );
 		this.declarationNameTextField.selectAll();
 		this.declarationNameTextField.requestFocus();

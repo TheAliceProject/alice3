@@ -204,7 +204,7 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
 	private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 
 	public StatementEnabledStateOperation( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
-		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, statement.isEnabled.getValue(), "Is Enabled" );
+		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "d0199421-49e6-49eb-9307-83db77dfa28b" ), statement.isEnabled.getValue(), "Is Enabled" );
 		this.statement = statement;
 		//update();
 	}
@@ -267,7 +267,7 @@ public class Factory extends org.alice.ide.common.Factory {
 				}
 			}
 		}
-		rv.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+		rv.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
 		rv.add( new DeleteStatementActionOperation( property, statement ) );
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody abstractStatementWithBody = (edu.cmu.cs.dennisc.alice.ast.AbstractStatementWithBody)statement;

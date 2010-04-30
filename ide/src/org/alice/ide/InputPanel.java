@@ -53,4 +53,7 @@ public abstract class InputPanel< T > extends edu.cmu.cs.dennisc.croquet.KInputP
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout();
 	}
+	protected String getTitleDefault() {
+		return null;
+	}
 }

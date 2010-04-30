@@ -48,7 +48,7 @@ package org.alice.ide.codeeditor;
  */
 public class ArgumentExpressionPropertyDropDownPane extends ExpressionPropertyDropDownPane {
 	private edu.cmu.cs.dennisc.alice.ast.Argument argument;
-	public ArgumentExpressionPropertyDropDownPane( java.awt.Component component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane, edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
+	public ArgumentExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.KComponent< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.Argument argument ) {
 		super( prefixPane, component, expressionProperty, argument.parameter.getValue().getDesiredValueType() );
 		this.argument = argument;
 	}

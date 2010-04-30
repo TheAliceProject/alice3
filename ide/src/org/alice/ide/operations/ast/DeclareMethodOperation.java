@@ -55,7 +55,7 @@ public abstract class DeclareMethodOperation extends org.alice.ide.operations.Ab
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		org.alice.ide.declarationpanes.CreateDeclarationPane<edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice> createMethodPane = this.createCreateMethodPane( this.type );
-		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.showInJDialog( this.getIDE().getJFrame() );
+		final edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = createMethodPane.showInJDialog( button );
 		if( method != null ) {
 			final edu.cmu.cs.dennisc.alice.ast.AbstractCode prevCode = getIDE().getFocusedCode();
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {

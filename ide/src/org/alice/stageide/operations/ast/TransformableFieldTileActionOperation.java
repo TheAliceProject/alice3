@@ -46,8 +46,8 @@ package org.alice.stageide.operations.ast;
  * @author Dennis Cosgrove
  */
 public abstract class TransformableFieldTileActionOperation extends AbstractFieldTileActionOperation {
-	public TransformableFieldTileActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( field );
+	public TransformableFieldTileActionOperation( java.util.UUID individualId, edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
+		super( individualId, field );
 	}
 	protected abstract edu.cmu.cs.dennisc.math.AffineMatrix4x4 calculateNextAbsoluteTransformation( org.alice.apis.moveandturn.AbstractTransformable transformable );
 	@Override

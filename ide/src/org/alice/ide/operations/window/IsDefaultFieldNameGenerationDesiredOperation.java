@@ -47,7 +47,7 @@ package org.alice.ide.operations.window;
  */
 public class IsDefaultFieldNameGenerationDesiredOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	public IsDefaultFieldNameGenerationDesiredOperation( Boolean initialValue ) {
-		super( org.alice.ide.IDE.PREFERENCES_GROUP, initialValue, "Is Default Field Name Generation Desired" );
+		super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "3e551420-bb50-4e33-9175-9f29738998f0" ), initialValue, "Is Default Field Name Generation Desired" );
 	}
 	@Override
 	protected void handleStateChange(boolean value) {

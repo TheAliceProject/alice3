@@ -277,8 +277,8 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	//		}
 	//	}
 
-	class ExpressionList extends edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane {
-		private java.awt.Component glue = javax.swing.Box.createGlue();
+	class ExpressionList extends edu.cmu.cs.dennisc.croquet.KGridBagPanel {
+		private edu.cmu.cs.dennisc.croquet.KComponent< ? > glue = edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue();
 		private javax.swing.ButtonGroup group;
 		private java.awt.GridBagConstraints gbc;
 
@@ -291,7 +291,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 			this.gbc.weightx = 1.0;
 			this.setOpaque( true );
-			this.setBackground( java.awt.Color.WHITE );
+			this.setBackgroundColor( java.awt.Color.WHITE );
 			this.refresh();
 		}
 		public int getSelectedIndex() {
@@ -345,15 +345,15 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 				FauxItem fauxItem = (FauxItem)this.getComponent( i );
 				this.group.remove( fauxItem );
 			}
-			this.removeAll();
+			this.removeAllComponents();
 			java.util.Enumeration< javax.swing.AbstractButton > e = this.group.getElements();
 			while( e.hasMoreElements() ) {
 				FauxItem fauxItem = (FauxItem)e.nextElement();
 				fauxItem.refresh();
-				this.add( fauxItem, this.gbc );
+				this.addComponent( fauxItem, this.gbc );
 			}
 			this.gbc.weighty = 1.0;
-			this.add( this.glue, this.gbc );
+			this.addComponent( this.glue, this.gbc );
 			this.gbc.weighty = 0.0;
 		}
 	}

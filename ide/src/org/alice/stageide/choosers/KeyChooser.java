@@ -72,7 +72,7 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< org.alic
 			super.removeNotify();
 		}
 	};
-	private java.awt.Component[] components = { this.keyReceiver };
+	private edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components = { new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.keyReceiver ) };
 	private org.alice.apis.moveandturn.Key key = null;
 
 	public KeyChooser() {
@@ -98,13 +98,13 @@ public class KeyChooser extends org.alice.ide.choosers.AbstractChooser< org.alic
 		} else {
 			this.keyReceiver.setText( NULL_TEXT );
 		}
-		edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane = this.getInputPane();
-		if( inputPane != null ) {
-			inputPane.updateOKButton();
+		edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPanel = this.getInputPanel();
+		if( inputPanel != null ) {
+			inputPanel.updateOKButton();
 		}
 	}
 	@Override
-	public java.awt.Component[] getComponents() {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents() {
 		return this.components;
 	}
 	public org.alice.apis.moveandturn.Key getValue() {

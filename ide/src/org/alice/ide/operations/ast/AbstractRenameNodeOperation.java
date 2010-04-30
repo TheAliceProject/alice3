@@ -50,10 +50,10 @@ public abstract class AbstractRenameNodeOperation extends org.alice.ide.operatio
 		super( groupUUID, individualId );
 		this.setName( name );
 	}
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, final edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button, final edu.cmu.cs.dennisc.property.StringProperty nameProperty, org.alice.ide.name.validators.NodeNameValidator nodeNameValidator ) {
 		org.alice.ide.name.RenamePane renameNodePane = new org.alice.ide.name.RenamePane( nodeNameValidator );
 		renameNodePane.setAndSelectNameText( nameProperty.getValue() );
-		final String nextValue = renameNodePane.showInJDialog( this.getIDE().getJFrame() );
+		final String nextValue = renameNodePane.showInJDialog( button );
 		if( nextValue != null && nextValue.length() > 0 ) {
 			final String prevValue = nameProperty.getValue();
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {

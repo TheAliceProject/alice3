@@ -380,27 +380,24 @@ public abstract class Factory {
 				String value = resourceBundle.getString( e.name() );
 				org.alice.ide.i18n.Page page = new org.alice.ide.i18n.Page( value );
 				edu.cmu.cs.dennisc.croquet.KComponent< ? > component = this.createComponent( page, infixExpression );
-				if( component instanceof java.awt.Container ) {
-					java.awt.Container container = (java.awt.Container)component;
-					for( java.awt.Component child : container.getComponents() ) {
-						if( child instanceof javax.swing.JLabel ) {
-							javax.swing.JLabel label = (javax.swing.JLabel)child;
-							String text = label.getText();
-							if( text.length() == 3 ) {
-								char c0 = text.charAt( 0 );
-								char c1 = text.charAt( 1 );
-								char c2 = text.charAt( 2 );
-								if( c0==' ' && c2 == ' ' ) {
-									if( Character.isLetterOrDigit( c1 ) ) {
-										//pass
-									} else {
-										edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 1.75f );
-									}
+				for( java.awt.Component child : component.getJComponent().getComponents() ) {
+					if( child instanceof javax.swing.JLabel ) {
+						javax.swing.JLabel label = (javax.swing.JLabel)child;
+						String text = label.getText();
+						if( text.length() == 3 ) {
+							char c0 = text.charAt( 0 );
+							char c1 = text.charAt( 1 );
+							char c2 = text.charAt( 2 );
+							if( c0==' ' && c2 == ' ' ) {
+								if( Character.isLetterOrDigit( c1 ) ) {
+									//pass
+								} else {
+									edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToScaledFont( label, 1.75f );
 								}
 							}
-							edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
-							//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 						}
+						edu.cmu.cs.dennisc.java.awt.font.FontUtilities.setFontToDerivedFont( label, edu.cmu.cs.dennisc.java.awt.font.TextWeight.BOLD );
+						//label.setVerticalAlignment( javax.swing.SwingConstants.CENTER );
 					}
 				}
 				rv = new ExpressionPane( infixExpression, component );

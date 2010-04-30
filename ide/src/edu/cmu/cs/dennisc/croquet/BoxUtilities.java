@@ -40,55 +40,63 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.stageide.gallerybrowser;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
-	private org.alice.apis.stage.Person person;
-
-	public PersonCreatorDialog( javax.swing.JDialog owner ) {
-		super( owner );
-	}
-
-	public PersonCreatorDialog( javax.swing.JFrame owner ) {
-		super( owner );
-	}
-
-	@Override
-	protected edu.cmu.cs.dennisc.progress.ProgressDialog.Worker createWorker() {
-		class PersonCreatorWorker extends edu.cmu.cs.dennisc.progress.ProgressDialog.Worker {
+public class BoxUtilities {
+	public static KComponent< javax.swing.Box.Filler > createGlue() {
+		return new KComponent< javax.swing.Box.Filler >() {
 			@Override
-			protected Boolean doInBackground() throws Exception {
-				this.publish( "opening person creator..." );
-				org.alice.stageide.personeditor.PersonEditorInputPane personEditorInputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( null ) {
-					@Override
-					protected void added() {
-						super.added();
-						PersonCreatorDialog.this.setVisible( false );
-					}
-				};
-
-				org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-				PersonCreatorDialog.this.person = personEditorInputPane.showInJDialog();
-				return true;
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
 			}
-		}
-		return new PersonCreatorWorker();
+		};
+	}
+	public static KComponent< javax.swing.Box.Filler > createHorizontalGlue() {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, 0 ) );
+			}
+		};
+	}
+	public static KComponent< javax.swing.Box.Filler > createVerticalGlue() {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, Short.MAX_VALUE ) );
+			}
+		};
+	}
+	public static KComponent< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, Short.MAX_VALUE ) );
+			}
+		};
+	}
+	public static KComponent< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( Short.MAX_VALUE, height ) );
+			}
+		};
 	}
 
-	@Override
-	protected void handleDone( Boolean result ) {
-		if( result && this.person != null ) {
-			CreatePersonActionOperation createPersonActionOperation = new CreatePersonActionOperation( this.person );
-			edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( createPersonActionOperation, null, true );
-			this.setVisible( false );
-		}
+	public static KComponent< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( size, size, size );
+			}
+		};
 	}
-
-	@Override
-	protected boolean isProgressBarDesired() {
-		return false;
+	public static KComponent< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
+		return createRigidArea( new java.awt.Dimension( width, height ) );
 	}
 }

@@ -81,7 +81,7 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 			protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = getSelectedItem();
 				if( method != null ) {
-					this.perform( context, method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
+					this.perform( context, e, button, method.name, new org.alice.ide.name.validators.MethodNameValidator( method ) );
 					getIDE().setFocusedCode( method );
 				} else {
 					context.cancel();
@@ -93,7 +93,7 @@ public abstract class EditMethodsPane extends EditMembersPane< edu.cmu.cs.dennis
 	@Override
 	protected edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice createMember( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		org.alice.ide.declarationpanes.CreateMethodPane createMethodPane = this.createCreateMethodPane( declaringType );
-		return createMethodPane.showInJDialog( org.alice.ide.IDE.getSingleton().getJFrame() );
+		return createMethodPane.showInJDialog();
 	}
 	@Override
 	protected boolean isEditItemEnabledFor( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice e ) {

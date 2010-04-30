@@ -46,19 +46,55 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class Component extends edu.cmu.cs.dennisc.croquet.KDragControl {
+	public Component() {
+		super( new Paintable() {
+			public void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+				//Component.this.fillBounds( g2, x, y, width, height );
+			}
+			public void paint( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+			}
+		} );
+	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	protected abstract int getInsetTop();
-	protected abstract int getInsetLeft();
-	protected abstract int getInsetBottom();
-	protected abstract int getInsetRight();
-
-	protected abstract void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height );
-	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
-	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	protected int getInsetTop() {
+		return 0;
+	}
+	protected int getInsetLeft() {
+		return 0;
+	}
+	protected int getInsetBottom() {
+		return 0;
+	}
+	protected int getInsetRight() {
+		return 0;
+	}
+	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		
+	}
+	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		
+	}
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		
+	}
 	
 	protected final void fillBounds( java.awt.Graphics2D g2 ) {
 		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
 	}
+	
+	@Deprecated
+	protected void setLeftButtonPressOperation( edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	protected void setDragAndDropOperation( org.alice.ide.operations.DefaultDragAndDropOperation operation ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	protected void setPopupOperation( edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation operation ) {
+		throw new RuntimeException( "todo" );
+	}
+	
 }

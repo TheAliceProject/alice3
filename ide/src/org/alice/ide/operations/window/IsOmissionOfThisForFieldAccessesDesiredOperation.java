@@ -47,7 +47,7 @@ package org.alice.ide.operations.window;
  */
 public class IsOmissionOfThisForFieldAccessesDesiredOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	public IsOmissionOfThisForFieldAccessesDesiredOperation( Boolean initialValue ) {
-		super( org.alice.ide.IDE.PREFERENCES_GROUP, initialValue, "Is Omission Of This For Field Accesses Desired" );
+		super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "bcf1ce48-f54a-4e80-8b9e-42c2cc302b01" ), initialValue, "Is Omission Of This For Field Accesses Desired" );
 	}
 	@Override
 	protected void handleStateChange(boolean value) {

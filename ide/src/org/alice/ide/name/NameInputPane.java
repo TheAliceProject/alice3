@@ -42,12 +42,12 @@
  */
 package org.alice.ide.name;
 
-import org.alice.ide.declarationpanes.RowsInputPane;
+import org.alice.ide.RowsInputPanel;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NameInputPane<T> extends RowsInputPane< T > {
+public abstract class NameInputPane<T> extends RowsInputPanel< T > {
 	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
 
 	public void setAndSelectNameText( String text ) {
@@ -71,7 +71,7 @@ public abstract class NameInputPane<T> extends RowsInputPane< T > {
 		updateOKButton();
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv, edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel ) {
 		assert this.textField != null;
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			private void handleUpdate( javax.swing.event.DocumentEvent e ) {

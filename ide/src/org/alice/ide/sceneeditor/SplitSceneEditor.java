@@ -104,12 +104,12 @@ class Tree extends edu.cmu.cs.dennisc.zoot.ZTree {
 	}
 }
 
-class LookingGlass extends edu.cmu.cs.dennisc.javax.swing.components.JCornerSpringPane {
-	private javax.swing.JCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
+class LookingGlass extends edu.cmu.cs.dennisc.croquet.KCornerSpringPanel {
+	private edu.cmu.cs.dennisc.croquet.KCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
 	public LookingGlass() {
-		this.setBackground( java.awt.Color.RED );
+		this.setBackgroundColor( java.awt.Color.RED );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
-		this.isSceneEditorExpandedCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
+		this.isSceneEditorExpandedCheckBox = ide.createCheckBoxMenuItem( ide.getIsSceneEditorExpandedOperation() );
 		this.setSouthEastComponent( this.isSceneEditorExpandedCheckBox );
 	}
 }
@@ -118,8 +118,8 @@ class LookingGlass extends edu.cmu.cs.dennisc.javax.swing.components.JCornerSpri
 /**
  * @author Dennis Cosgrove
  */
-public class SplitSceneEditor extends javax.swing.JPanel {
-	private javax.swing.JSplitPane root = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane();
 	private Tree tree = new Tree();
 	private LookingGlass lookingGlass = new LookingGlass();
 	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() { 
@@ -133,20 +133,18 @@ public class SplitSceneEditor extends javax.swing.JPanel {
 	};
 
 	public SplitSceneEditor() {
-		this.root.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
+		this.root.setLeftComponent( new edu.cmu.cs.dennisc.croquet.KScrollPane( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.tree ) ) );
 		this.root.setRightComponent( this.lookingGlass );
-		this.setLayout( new edu.cmu.cs.dennisc.java.awt.ExpandAllToBoundsLayoutManager() );
-		this.add( this.root );
+		this.addComponent( this.root, CardinalDirection.CENTER );
 	}
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		org.alice.app.ProjectApplication.getSingleton().addProjectObserver( this.projectObserver );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		org.alice.app.ProjectApplication.getSingleton().removeProjectObserver( this.projectObserver );
-		super.removeNotify();
+		super.removed();
 	}
-	
 }

@@ -47,7 +47,7 @@ package org.alice.stageide.operations.ast;
  */
 public class EditPersonActionOperation extends AbstractFieldTileActionOperation {
 	public EditPersonActionOperation( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
-		super( field );
+		super( java.util.UUID.fromString( "ad113b0e-acb2-4e43-8196-eba6a4961dc8" ), field );
 		this.setName( "Edit..." );
 	}
 	
@@ -69,7 +69,7 @@ public class EditPersonActionOperation extends AbstractFieldTileActionOperation 
 			prevFitnessLevel = person.getFitnessLevel(); 
 
 			org.alice.stageide.personeditor.PersonEditorInputPane inputPane = new org.alice.stageide.personeditor.PersonEditorInputPane( person );
-			org.alice.apis.stage.Person result = inputPane.showInJDialog( this.getIDE().getJFrame() );
+			org.alice.apis.stage.Person result = inputPane.showInJDialog( button );
 			if( result != null ) {
 				final org.alice.apis.stage.Gender nextGender;
 				final org.alice.apis.stage.SkinTone nextSkinTone;

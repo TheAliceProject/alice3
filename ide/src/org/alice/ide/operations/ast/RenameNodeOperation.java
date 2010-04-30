@@ -55,6 +55,6 @@ public abstract class RenameNodeOperation extends AbstractRenameNodeOperation {
 	}
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-		this.perform( context, this.nameProperty, this.nodeNameValidator );
+		this.perform( context, e, button, this.nameProperty, this.nodeNameValidator );
 	}
 }

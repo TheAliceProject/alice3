@@ -72,4 +72,10 @@ public abstract class KPanel extends KComponent< javax.swing.JPanel > {
 		this.getJComponent().add( component.getJComponent(), constraints );
 		component.added();
 	}
+	public void removeComponent( KComponent<?> component ) {
+		assert component != null;
+		component.removing();
+		this.getJComponent().remove( component.getJComponent() );
+		component.removed();
+	}
 }

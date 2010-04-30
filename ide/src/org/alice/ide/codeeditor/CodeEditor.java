@@ -95,7 +95,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackgroundColor( getIDE().getCodeDeclaredInAliceColor( this.code ) );
-		this.setDoubleBuffered( true );
+		//this.setDoubleBuffered( true );
 		this.refresh();
 	}
 

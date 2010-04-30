@@ -50,7 +50,7 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 	public AbstractCreateFieldPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType ) {
 		super( new org.alice.ide.name.validators.FieldNameValidator( declaringType ) );
 		this.declaringType = declaringType;
-		this.setBackground( getIDE().getFieldColor() );
+		this.setBackgroundColor( getIDE().getFieldColor() );
 	}
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getDeclaringType() {
 		return this.declaringType;

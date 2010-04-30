@@ -96,7 +96,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return IDE.singleton;
 	}
 
-	private static final edu.cmu.cs.dennisc.croquet.Operation MENU_SEPARATOR = null;
 	private static class FileMenuOperation extends edu.cmu.cs.dennisc.croquet.MenuOperation {
 		public FileMenuOperation( edu.cmu.cs.dennisc.croquet.Operation... operations ) {
 			super( IDE_GROUP, java.util.UUID.fromString( "121c8088-7297-43d4-b7b7-61416f1d4eb0" ), "File", java.awt.event.KeyEvent.VK_F, operations );
@@ -138,22 +137,22 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private FileMenuOperation fileMenuOperation = new FileMenuOperation( 
 			this.getNewProjectOperation(), 
 			this.getOpenProjectOperation(), 
-			MENU_SEPARATOR,
+			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR,
 			new RecentProjectsMenuOperation(),
-			MENU_SEPARATOR, 
+			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR, 
 			this.getSaveProjectOperation(), 
 			this.getSaveAsProjectOperation(), 
-			MENU_SEPARATOR, 
+			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR, 
 			this.getRevertProjectOperation(), 
-			MENU_SEPARATOR, 
+			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR, 
 			new org.alice.ide.operations.file.ExportVideoUploadToYouTubeOperation(), 
-			MENU_SEPARATOR, 
+			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR, 
 			this.getExitOperation() 
 	);
 	private EditMenuOperation editMenuOperation = new EditMenuOperation( 
 			this.getUndoOperation(), 
 			this.getRedoOperation(), 
-			MENU_SEPARATOR,
+			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR,
 			new org.alice.ide.operations.edit.CutOperation(),
 			new org.alice.ide.operations.edit.CopyOperation(),
 			new org.alice.ide.operations.edit.PasteOperation()
@@ -229,9 +228,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 //
 //			java.util.List< edu.cmu.cs.dennisc.zoot.Operation > windowOperations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
 //
-//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
 //			windowOperations.add( this.isHistoryShowingOperation );
-//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
 //			windowOperations.add( this.isEmphasizingClassesOperation );
 //			windowOperations.add( this.isOmissionOfThisForFieldAccessesDesiredOperation );
 //			windowOperations.add( this.isExpressionTypeFeedbackDesiredOperation );
@@ -240,33 +239,33 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 //			//		if( edu.cmu.cs.dennisc.lang.SystemUtilities.isMac() ) {
 //			//			//pass
 //			//		} else {
-//			//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
 //			//			windowOperations.add( this.getPreferencesOperation() );
 //			//		}
 //
-//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
 //			windowOperations.add( this.isMemoryUsageShowingOperation );
-//			windowOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//			windowOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
 //			windowOperations.add( this.isSceneEditorExpandedOperation );
 	);
 	private HelpMenuOperation helpMenuOperation = new HelpMenuOperation( 
 			new org.alice.ide.operations.help.HelpOperation(),
-			MENU_SEPARATOR,
+			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR,
 //			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isPropertyTrue( "org.alice.ide.IDE.isBogusExceptionGenerationDesired" ) ) {
 //				helpOperations.add( new org.alice.ide.operations.help.ThrowBogusExceptionOperation() );
-//				helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//				helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
 //			}
 			new org.alice.ide.operations.help.ReportBugOperation(),
 			new org.alice.ide.operations.help.SuggestImprovementOperation(),
 			new org.alice.ide.operations.help.RequestNewFeatureOperation(),
-			MENU_SEPARATOR,
+			edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR,
 			new org.alice.ide.operations.help.WarningOperation( true ),
 			new org.alice.ide.operations.help.DisplaySystemPropertiesOperation(),
 			new org.alice.ide.operations.help.ReleaseNotesOperation()
 //			if( edu.cmu.cs.dennisc.java.lang.SystemUtilities.isMac() ) {
 //				//pass
 //			} else {
-//				helpOperations.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
+//				helpOperations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
 //				helpOperations.add( this.getAboutOperation() );
 //			}
 	);
@@ -1623,6 +1622,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return isFieldInScope( getFieldSelection() );
 	}
 
+	@Override
 	public boolean isDragInProgress() {
 		return this.isDragInProgress;
 	}
@@ -1762,7 +1762,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return rv;
 	}
 
-	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
 

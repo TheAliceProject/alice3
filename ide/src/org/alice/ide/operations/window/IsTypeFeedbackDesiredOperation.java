@@ -47,7 +47,7 @@ package org.alice.ide.operations.window;
  */
 public class IsTypeFeedbackDesiredOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	public IsTypeFeedbackDesiredOperation( Boolean initialValue ) {
-		super( org.alice.ide.IDE.PREFERENCES_GROUP, initialValue, "Is Type Feedback Desired" );
+		super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "e80adbfe-9e1a-408f-8067-ddbd30d0ffb9" ), initialValue, "Is Type Feedback Desired" );
 	}
 	@Override
 	protected void handleStateChange(boolean value) {

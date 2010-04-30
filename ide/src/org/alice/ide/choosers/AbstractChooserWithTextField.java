@@ -76,17 +76,17 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 		this.textField.selectAll();
 	}
 	@Override
-	public void setInputPane( final edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane ) {
-		super.setInputPane( inputPane );
+	public void setInputPanel( final edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPanel ) {
+		super.setInputPanel( inputPanel );
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {
-				inputPane.updateOKButton();
+				inputPanel.updateOKButton();
 			}
 			public void insertUpdate( javax.swing.event.DocumentEvent e ) {
-				inputPane.updateOKButton();
+				inputPanel.updateOKButton();
 			}
 			public void removeUpdate( javax.swing.event.DocumentEvent e ) {
-				inputPane.updateOKButton();
+				inputPanel.updateOKButton();
 			}
 		} );
 	}

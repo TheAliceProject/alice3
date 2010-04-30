@@ -68,7 +68,7 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 		java.util.UUID groupUUID = java.util.UUID.randomUUID();
 		edu.cmu.cs.dennisc.history.HistoryManager historyManager = edu.cmu.cs.dennisc.history.HistoryManager.getInstance( groupUUID );
 		EditMembersPane< E > editMembersPane = this.createEditMembersPane( groupUUID, this.declaringType );
-		Boolean isAccepted = editMembersPane.showInJDialog( this.getIDE().getJFrame() );
+		Boolean isAccepted = editMembersPane.showInJDialog( button );
 		if( isAccepted != null ) {
 			edu.cmu.cs.dennisc.croquet.Edit compositeEdit = historyManager.createDoIgnoringCompositeEdit( this.presentation + " " + this.declaringType.getName() );
 			if( compositeEdit != null ) {

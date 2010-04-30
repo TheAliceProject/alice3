@@ -49,7 +49,7 @@ package org.alice.ide.declarationpanes;
 public class CreateMethodParameterPane extends CreateParameterPane {
 	class UnderstandingConfirmationOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public UnderstandingConfirmationOperation( String codeText ) {
-			super( org.alice.app.ProjectApplication.IDE_GROUP, false, "I understand that I need to update the invocations to this " + codeText + "." );
+			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "21efac8d-c2dd-451f-8065-d2e284a3e244" ), false, "I understand that I need to update the invocations to this " + codeText + "." );
 		}
 		@Override
 		protected void handleStateChange(boolean value) {
@@ -122,6 +122,6 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 	}
 	@Override
 	public boolean isOKButtonValid() {
-		return super.isOKButtonValid() && ( this.checkBox == null || this.checkBox.isSelected() );
+		return super.isOKButtonValid() && ( this.checkBox == null || this.checkBox.getJComponent().isSelected() );
 	}
 }

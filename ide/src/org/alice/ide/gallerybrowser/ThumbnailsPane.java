@@ -156,7 +156,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.KLineAxi
 			}
 		} );
 		
-		this.add( new javax.swing.JScrollPane( this.list ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KScrollPane( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.list ) ) );
 	}
 
 	protected abstract String getTextFor( java.io.File file );

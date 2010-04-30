@@ -45,7 +45,7 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewInputPane<T> extends org.alice.ide.InputPanel< T > {
+public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< T > {
 //	protected static javax.swing.JLabel createLabel( String s ) {
 //		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( s );
 //		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
@@ -86,7 +86,7 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.InputPanel< T > 
 
 	private java.awt.Component rowsSpringPane;
 	private PreviewPane previewPane;
-	private java.awt.Component spacer;
+	private edu.cmu.cs.dennisc.croquet.KComponent< ? > spacer;
 
 	public PreviewInputPane() {
 		final int INSET = 16;
@@ -103,39 +103,42 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.InputPanel< T > 
 //		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 //	}
 
-	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv );
-	
-	private java.awt.Component createRowsSpringPane() {
+	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv );
+
+	@Override
+	protected final java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv, edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel ) {
 		this.previewPane = new PreviewPane();
-		this.spacer = javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) );
-		final java.awt.Component[] previewRow = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "preview:" ), this.previewPane );
-		final java.awt.Component[] spacerRow = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( this.spacer, null );
-		this.repaint();
-		javax.swing.JComponent rv = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 16, 4 ) {
-			@Override
-			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-				assert previewRow != null;
-				rv.add( previewRow );
-				rv.add( spacerRow );
-				PreviewInputPane.this.updateRows( rv );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( null, null ) );
-				return rv;
-			}
-		};
-		rv.setAlignmentX( 0.0f );
+		this.spacer = this.getIDE().createRigidArea( new java.awt.Dimension( 0, 32 ) );
+		rv.add( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
+						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),
+						this.previewPane
+				) 
+		);
+		this.updateInternalComponentRows( rv );
+		rv.add( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
+						this.spacer,
+						null
+				) 
+		);
+		panel.setAlignmentX( 0.0f );
 		return rv;
 	}
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		if( this.rowsSpringPane != null ) {
-			//pass
-		} else {
-			this.rowsSpringPane = this.createRowsSpringPane();
-			this.add( this.rowsSpringPane, java.awt.BorderLayout.WEST );
-		}
-		this.updateOKButton();
-	}
+//	private java.awt.Component createRowsSpringPane() {
+//		return rv;
+//	}
+//	@Override
+//	public void addNotify() {
+//		super.addNotify();
+//		if( this.rowsSpringPane != null ) {
+//			//pass
+//		} else {
+//			this.rowsSpringPane = this.createRowsSpringPane();
+//			this.add( this.rowsSpringPane, java.awt.BorderLayout.WEST );
+//		}
+//		this.updateOKButton();
+//	}
 
 	@Override
 	public void updateOKButton() {
@@ -143,7 +146,7 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.InputPanel< T > 
 		this.updatePreview();
 		this.updateSizeIfNecessary();
 	}
-
+	
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );

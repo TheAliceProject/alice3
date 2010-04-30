@@ -53,7 +53,7 @@ import edu.cmu.cs.dennisc.alice.ast.DeclarationProperty;
 class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	private edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty;
 	public IsArrayStateOperation( edu.cmu.cs.dennisc.property.BooleanProperty isArrayProperty ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, isArrayProperty.getValue(), "is array" );
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "ffa22de2-eb3e-46d2-8ccc-ada365f29205" ), isArrayProperty.getValue(), "is array" );
 		this.isArrayProperty = isArrayProperty;
 	}
 	@Override
@@ -115,10 +115,10 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 		this.isArrayStateOperation = new IsArrayStateOperation( isArrayProperty );
 		this.isArrayStateOperation.setEnabled( isArrayCheckBoxEnabled );
 		
-		javax.swing.JCheckBox isArrayCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( this.isArrayStateOperation );
+		edu.cmu.cs.dennisc.croquet.KCheckBox isArrayCheckBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createCheckBox( this.isArrayStateOperation );
 		isArrayCheckBox.setOpaque( false );
 		
-		this.addComponent( this.typeComboBox );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.typeComboBox ) );
 		this.addComponent( isArrayCheckBox );
 	}
 	

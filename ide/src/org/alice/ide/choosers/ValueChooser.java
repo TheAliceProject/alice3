@@ -49,7 +49,7 @@ package org.alice.ide.choosers;
  */
 public interface ValueChooser<E> {
 	public String getTitleDefault();
-	public void setInputPane( edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane );
+	public void setInputPanel( edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPane );
 	public java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv );
 //	public String[] getLabelTexts();
 //	public java.awt.Component[] getComponents();

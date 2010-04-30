@@ -86,11 +86,20 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	public void setBackgroundColor( java.awt.Color color ) {
 		this.getJComponent().setBackground( color );
 	}
+	public boolean isVisible() {
+		return this.getJComponent().isVisible();
+	}
 	public void setVisible( boolean isVisible ) {
 		this.getJComponent().setVisible( isVisible );
 	}
+	public boolean isEnabled() {
+		return this.getJComponent().isEnabled();
+	}
 	public void setEnabled( boolean isEnabled ) {
 		this.getJComponent().setEnabled( isEnabled );
+	}
+	public boolean isOpaque() {
+		return this.getJComponent().isOpaque();
 	}
 	public void setOpaque( boolean isOpaque ) {
 		this.getJComponent().setOpaque( isOpaque );

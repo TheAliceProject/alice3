@@ -118,9 +118,9 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 			super.firePropertyChanged( e );
 			AudioSourceChooser.this.startTimeSlider.setTime( 0.0 );
 			AudioSourceChooser.this.stopTimeSlider.setTime( Double.NaN );
-			edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane = AudioSourceChooser.this.getInputPane();
-			if( inputPane != null ) {
-				inputPane.updateOKButton();
+			edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPanel = AudioSourceChooser.this.getInputPanel();
+			if( inputPanel != null ) {
+				inputPanel.updateOKButton();
 			}
 		}
 	}
@@ -132,16 +132,17 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	private TimeSlider startTimeSlider = new TimeSlider();
 	private TimeSlider stopTimeSlider = new TimeSlider();
 	
-	class TestOperation extends edu.cmu.cs.dennisc.zoot.InconsequentialActionOperation {
+	class TestOperation extends org.alice.ide.operations.InconsequentialActionOperation {
 		public TestOperation() {
+			super( java.util.UUID.fromString( "6d1c60d4-bf5d-43ff-9b65-797eebf21a90" ) );
 			this.setName( "test" );
 		}
 		@Override
-		protected void performInternal( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 			org.alice.apis.moveandturn.AudioSource audioSource = getValue();
 			edu.cmu.cs.dennisc.media.MediaFactory mediaFactory = edu.cmu.cs.dennisc.media.jmf.MediaFactory.getSingleton();
 			edu.cmu.cs.dennisc.media.Player player = mediaFactory.createPlayer( audioSource.getAudioResource(), audioSource.getVolume(), audioSource.getStartTime(), audioSource.getStopTime() );
-			player.test( AudioSourceChooser.this.getInputPane() );
+			player.test( AudioSourceChooser.this.getInputPanel().getJComponent() );
 		}
 	};
 	private TestOperation testOperation = new TestOperation();
@@ -215,7 +216,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 
 		this.volumeLevelControl.addChangeListener( new javax.swing.event.ChangeListener() {
 			public void stateChanged( javax.swing.event.ChangeEvent e ) {
-				AudioSourceChooser.this.getInputPane().updateOKButton();
+				AudioSourceChooser.this.getInputPanel().updateOKButton();
 			}
 		} );
 		this.startTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
@@ -223,7 +224,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
 					stopTimeSlider.setValue( startTimeSlider.getValue() );
 				}
-				AudioSourceChooser.this.getInputPane().updateOKButton();
+				AudioSourceChooser.this.getInputPanel().updateOKButton();
 			}
 		} );
 		this.stopTimeSlider.addChangeListener( new javax.swing.event.ChangeListener() {
@@ -231,7 +232,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 				if( startTimeSlider.getValue() > stopTimeSlider.getValue() ) {
 					startTimeSlider.setValue( stopTimeSlider.getValue() );
 				}
-				AudioSourceChooser.this.getInputPane().updateOKButton();
+				AudioSourceChooser.this.getInputPanel().updateOKButton();
 			}
 		} );
 	}
@@ -259,16 +260,19 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	public edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents() {
 		return new edu.cmu.cs.dennisc.croquet.KComponent< ? >[] { 
 				this.dropDown, 
-				new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( this.volumeLevelControl, this.getIDE().createHorizontalGlue() ), 
+				new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
+						new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.volumeLevelControl ), 
+						this.getIDE().createHorizontalGlue() 
+				), 
 				this.getIDE().createVerticalStrut( 16 ), 
-				this.startTimeSlider, 
-				this.stopTimeSlider };
+				new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.startTimeSlider ), 
+				new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.stopTimeSlider ) };
 	}
 	@Override
 	public java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
 		super.updateRows( rv );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.zoot.ZManager.createButton( testOperation ), null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.BoxUtilities.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( this.getIDE().createButton( testOperation ), null ) );
 		return rv;
 	}
 		

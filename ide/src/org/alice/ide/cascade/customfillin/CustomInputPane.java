@@ -53,7 +53,7 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 	public CustomInputPane( CustomFillIn< E, F > fillIn, ValueChooser< F > chooser ) {
 		this.fillIn = fillIn;
 		this.chooser = chooser;
-		this.chooser.setInputPane( this );
+		this.chooser.setInputPanel( this );
 	}
 	
 	@Override
@@ -73,7 +73,7 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 		return getIDE().getPreviewFactory().createExpressionPane( expression );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
 		this.chooser.updateRows( rv );
 		return rv;
 	}

@@ -47,7 +47,7 @@ package org.alice.ide.operations.window;
  */
 public class IsEmphasizingClassesOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 	public IsEmphasizingClassesOperation( Boolean initialValue ) {
-		super( org.alice.ide.IDE.PREFERENCES_GROUP, initialValue, "Is Emphasizing Classes" );
+		super( org.alice.ide.IDE.PREFERENCES_GROUP, java.util.UUID.fromString( "c6d27bf1-f8c0-470d-b9ef-3c9fa7e6f4b0" ), initialValue, "Is Emphasizing Classes" );
 	}
 	@Override
 	protected void handleStateChange(boolean value) {

@@ -54,7 +54,7 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 		return "Procedure";
 	}
 	@Override
-	protected java.awt.Component createInitializerComponent() {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createInitializerComponent() {
 		return null;
 	}
 	@Override
@@ -67,7 +67,7 @@ public abstract class CreateMethodPane extends CreateDeclarationWithDeclaringTyp
 		return false;
 	}
 	@Override
-	protected java.awt.Component createPreviewSubComponent() {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createPreviewSubComponent() {
 		return new org.alice.ide.codeeditor.MethodHeaderPane( this.getActualInputValue(), null );
 	}
 	

@@ -56,7 +56,8 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 		this.expressionListProperty = expressionListProperty;
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		class FillInExpressionEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
@@ -77,7 +78,7 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 				return rv;
 			}
 		}
-		actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< FillInExpressionEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		context.pend( new edu.cmu.cs.dennisc.zoot.Resolver< FillInExpressionEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public FillInExpressionEdit createEdit() {
 				return new FillInExpressionEdit();
 			}
