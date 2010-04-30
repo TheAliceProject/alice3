@@ -94,6 +94,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 	protected Vector3 absoluteRotationAxis;
 	protected Angle originalAngleBasedOnMouse;
 	protected AffineMatrix4x4 originalLocalTransformation;
+	protected AffineMatrix4x4 originalAbsoluteTransformation;
 	protected Plane cameraFacingPlane;
 	protected RotationRingHandle rotationHandle;
 	protected AbstractCamera camera = null;
@@ -219,6 +220,7 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 		
 		this.cameraFacingPlane = new Plane( this.initialClickPoint, this.getCamera().getAbsoluteTransformation().orientation.backward);
 		this.originalLocalTransformation = new AffineMatrix4x4(manipulatedTransformable.localTransformation.getValue());
+		this.originalAbsoluteTransformation = manipulatedTransformable.getAbsoluteTransformation();
 		this.originalAngleBasedOnMouse = getRotationBasedOnMouse( startInput.getMouseLocation() );
 	}
 	
@@ -271,10 +273,12 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 					
 					Vector3 toMouse = Vector3.createSubtraction( pointInPlane, this.objectOriginInPlane );
 					double toMouseDotOriginalRight = Vector3.calculateDotProduct( toMouse, this.originalMouseRightDirection );
+//					double toMouseDotOriginalRight = Vector3.calculateDotProduct( toMouse, this.originalAbsoluteTransformation.orientation.right );
 					boolean isToTheRight = toMouseDotOriginalRight > 0.0d;
 					toMouse.normalize();
 					Vector3 toMouseDirection = new Vector3(toMouse);
 					double cosOfAngleBetween = Vector3.calculateDotProduct(this.originalMouseDirection, toMouseDirection );
+//					double cosOfAngleBetween = Vector3.calculateDotProduct(Vector3.createMultiplication(this.originalAbsoluteTransformation.orientation.backward, -1), toMouseDirection );
 					if (cosOfAngleBetween > 1.0d)
 					{
 						cosOfAngleBetween = 1.0d;
@@ -302,15 +306,16 @@ public class ObjectRotateDragManipulator extends AbstractManipulator implements 
 			Angle currentAngle = getRotationBasedOnMouse( currentInput.getMouseLocation() );
 			if (currentAngle != null && this.originalAngleBasedOnMouse != null)
 			{
-				Angle snappedAngle = SnapUtilities.doRotationSnapping(this.manipulatedTransformable , currentAngle, this.dragAdapter, this.rotationHandle, this.camera);
-				
-				boolean didSnap = snappedAngle.getAsDegrees() != currentAngle.getAsDegrees();
+				Angle angleDif = AngleUtilities.createSubtraction( currentAngle, this.originalAngleBasedOnMouse );
+				//The angleDif is the amount the object as rotated relative to the start of the manipulation
+				//By snapping on angleDif, we're snapping to snap angles relative to the orientation at the start of the manipulation
+				Angle snappedAngle = SnapUtilities.doRotationSnapping(angleDif, this.dragAdapter);
+				boolean didSnap = snappedAngle.getAsDegrees() != angleDif.getAsDegrees();
 				if (didSnap)
 				{
-					currentAngle = snappedAngle;
+					angleDif = snappedAngle;
 				}
 				
-				Angle angleDif = AngleUtilities.createSubtraction( currentAngle, this.originalAngleBasedOnMouse );
 				this.manipulatedTransformable.setLocalTransformation(this.originalLocalTransformation);
 				this.manipulatedTransformable.applyRotationAboutArbitraryAxis( this.rotationHandle.getRotationAxis(), angleDif, this.rotationHandle.getReferenceFrame() );
 				

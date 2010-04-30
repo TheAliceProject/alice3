@@ -533,7 +533,7 @@ public class SnapUtilities
 		showSnapSphere(snapSphereLocation, handleTransform.translation, rotationHandle.getRoot());
 	}
 	
-	public static Angle doRotationSnapping(Transformable t, Angle currentAngle, AbstractDragAdapter dragAdapter, RotationRingHandle rotationHandle, AbstractCamera camera)
+	public static Angle doRotationSnapping(Angle currentAngle, AbstractDragAdapter dragAdapter)
 	{
 		Angle snapAngle = new AngleInRadians(currentAngle);
 		//Try snapping to various snaps
