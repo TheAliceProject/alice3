@@ -71,7 +71,7 @@ public class KBorderPanel extends KPanel {
 		this.vgap = vgap;
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.BorderLayout( this.hgap, this.vgap );
 	}
 	public void addComponent( KComponent<?> child, CardinalDirection cardinalDirection ) {

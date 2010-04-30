@@ -79,7 +79,8 @@ public abstract class KControl extends KWidget {
 	private java.awt.event.MouseEvent mousePressedEvent = null;
 	private java.awt.event.MouseEvent leftButtonPressedEvent = null;
 
-	/*package-private*/ KControl() {
+	//todo: reduce visibility?
+	public KControl() {
 	}
 	@Override
 	protected void adding() {
@@ -130,14 +131,14 @@ public abstract class KControl extends KWidget {
 		if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteLeftUnquoteMouseButton( e ) ) {
 			this.leftButtonPressedEvent = e;
 			if( this.leftButtonPressOperation != null ) {
-				ZManager.performIfAppropriate( this.leftButtonPressOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
+				this.leftButtonPressOperation.fire();
 			}
 		} else if( edu.cmu.cs.dennisc.java.awt.event.MouseEventUtilities.isQuoteRightUnquoteMouseButton( e ) ) {
-			if( ZManager.isDragInProgress() ) {
+			if( Application.getSingleton().isDragInProgress() ) {
 				this.isWithinClickThreshold = false;
 			} else {
 				if( this.popupOperation != null ) {
-					ZManager.performIfAppropriate( this.popupOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
+					this.popupOperation.fire();
 				}
 			}
 		}
@@ -148,19 +149,19 @@ public abstract class KControl extends KWidget {
 	protected void handleMouseClicked( java.awt.event.MouseEvent e ) {
 		if( e.getClickCount() == 2 ) {
 			if( this.leftButtonDoubleClickOperation != null ) {
-				ZManager.performIfAppropriate( this.leftButtonDoubleClickOperation, e, ZManager.CANCEL_IS_WORTHWHILE );
+				this.leftButtonDoubleClickOperation.fire();
 			}
 		}
 	}
 	protected void handleMouseEntered( java.awt.event.MouseEvent e ) {
-		if( ZManager.isDragInProgress() ) {
+		if( Application.getSingleton().isDragInProgress() ) {
 			//pass
 		} else {
 			this.setActive( true );
 		}
 	}
 	protected void handleMouseExited( java.awt.event.MouseEvent e ) {
-		if( ZManager.isDragInProgress() ) {
+		if( Application.getSingleton().isDragInProgress() ) {
 			//pass
 		} else {
 			this.setActive( false );

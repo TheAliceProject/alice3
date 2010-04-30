@@ -50,9 +50,9 @@ public class CodeTitlePane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;
-		this.add( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-		this.add( new org.alice.ide.common.DeclarationNameLabel( this.code ) );
+		this.addComponent( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 8 ) );
+		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( this.code ) );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;

@@ -229,13 +229,13 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
  */
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
-	protected java.awt.Component createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	public java.awt.Component createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, java.awt.Component prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
-		java.awt.Component rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
 			rv = new ExpressionPropertyDropDownPane( prefixPane, rv, expressionProperty, desiredValueType );
 		}
@@ -248,7 +248,7 @@ public class Factory extends org.alice.ide.common.Factory {
 		abstractStatementPane.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( this.createPopupOperations( abstractStatementPane ) ) );
 		return abstractStatementPane;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.zoot.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.zoot.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
 		edu.cmu.cs.dennisc.alice.ast.StatementListProperty property = abstractStatementPane.getOwner();
 		edu.cmu.cs.dennisc.alice.ast.Statement statement = abstractStatementPane.getStatement();
 		if( statement instanceof edu.cmu.cs.dennisc.alice.ast.Comment ) {
@@ -285,8 +285,8 @@ public class Factory extends org.alice.ide.common.Factory {
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.zoot.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >(), abstractStatementPane );
+	private java.util.List< edu.cmu.cs.dennisc.croquet.Operation > createPopupOperations( org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Operation >(), abstractStatementPane );
 	}
 
 }

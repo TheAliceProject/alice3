@@ -60,9 +60,9 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		String parameterName = argument.parameter.getValue().getName();
 		//edu.cmu.cs.dennisc.print.PrintUtilities.println( parameterName );
 		if( parameterName != null && parameterName.length() > 0 ) {
-			rv.add( new edu.cmu.cs.dennisc.croquet.KLabel( parameterName + ": " ) );
+			rv.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( parameterName + ": " ) );
 		}
-		rv.add( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
+		rv.addComponent( new org.alice.ide.common.EmptyExpressionPane( (org.alice.ide.ast.EmptyExpression)argument.expression.getValue() ) );
 		return rv;
 	}
 }

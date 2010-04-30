@@ -78,7 +78,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	protected int getInsetRight() {
 		return super.getInsetRight() + 4;
 	}
-	protected java.util.List< edu.cmu.cs.dennisc.zoot.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.zoot.Operation > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Operation > rv ) {
 		edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice fieldInAlice = (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)this.getField();
 		edu.cmu.cs.dennisc.alice.ast.AbstractType fieldType = fieldInAlice.getValueType();
 		rv.add( new org.alice.ide.operations.ast.RenameFieldOperation( fieldInAlice ) );
@@ -98,8 +98,8 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		}
 		return rv;
 	}
-	private java.util.List< edu.cmu.cs.dennisc.zoot.Operation > createPopupOperations() {
-		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >() );
+	private java.util.List< edu.cmu.cs.dennisc.croquet.Operation > createPopupOperations() {
+		return this.updatePopupOperations( new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Operation >() );
 	}
 	@Override
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getExpressionType() {
@@ -155,8 +155,8 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		return getIDE().isFieldInScope( field );
 	}
 	@Override
-	public java.awt.Dimension getPreferredSize() {
-		java.awt.Dimension rv = super.getPreferredSize();
+	protected java.awt.Dimension getPreferedSize( java.awt.Dimension jPreferedSize ) {
+		java.awt.Dimension rv = new java.awt.Dimension( jPreferedSize );
 		java.awt.Graphics g = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.getGraphics();
 		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
 		rv.width += (int)( bounds.getWidth()+0.5 );

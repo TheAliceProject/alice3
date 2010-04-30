@@ -45,7 +45,7 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.zoot.AbstractBooleanStateOperation {
+public abstract class AbstractBooleanStateOperation extends edu.cmu.cs.dennisc.croquet.BooleanStateOperation {
 	public AbstractBooleanStateOperation( java.util.UUID groupUUID, Boolean initialValue, String trueText, String falseText ) {
 		super( groupUUID, initialValue, trueText, falseText );
 	}

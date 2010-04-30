@@ -45,7 +45,7 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-public class InitializerPane extends edu.cmu.cs.dennisc.javax.swing.components.JCardPane {
+public class InitializerPane extends edu.cmu.cs.dennisc.croquet.KCardPanel {
 	private static final String ITEM_KEY = "ITEM_KEY";
 	private static final String ARRAY_KEY = "ARRAY_KEY";
 	private BogusNode bogusNode;
@@ -72,8 +72,8 @@ public class InitializerPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 		} );
 		this.itemInitializerPane = new ItemInitializerPane( this.bogusNode.componentExpression );
 		this.arrayInitializerPane = new ArrayInitializerPane( this.bogusNode.arrayExpressions );
-		this.add( this.itemInitializerPane, ITEM_KEY );
-		this.add( this.arrayInitializerPane, ARRAY_KEY );
+		this.addComponent( this.itemInitializerPane, ITEM_KEY );
+		this.addComponent( this.arrayInitializerPane, ARRAY_KEY );
 		String key;
 		if( this.bogusNode.isArray.getValue() ) {
 			key = ARRAY_KEY;
@@ -114,16 +114,16 @@ public class InitializerPane extends edu.cmu.cs.dennisc.javax.swing.components.J
 			return org.alice.ide.ast.NodeUtilities.createArrayInstanceCreation( this.bogusNode.getType(), expressions );
 		}
 	}
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		if( this.itemInitializerPane.isVisible() ) {
-			return this.itemInitializerPane.getPreferredSize();
-		} else {
-			return this.arrayInitializerPane.getPreferredSize();
-		}
-	}
-	@Override
-	public java.awt.Dimension getMaximumSize() {
-		return this.getPreferredSize();
-	}
+//	@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		if( this.itemInitializerPane.isVisible() ) {
+//			return this.itemInitializerPane.getPreferredSize();
+//		} else {
+//			return this.arrayInitializerPane.getPreferredSize();
+//		}
+//	}
+//	@Override
+//	public java.awt.Dimension getMaximumSize() {
+//		return this.getPreferredSize();
+//	}
 }

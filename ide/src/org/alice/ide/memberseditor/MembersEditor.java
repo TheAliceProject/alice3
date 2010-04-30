@@ -190,8 +190,8 @@ class TabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 	private void addMembersTab( MembersTab membersTab ) {
 		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( membersTab );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		scrollPane.setBackground( membersTab.getBackground() );
-		scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
+		scrollPane.setBackgroundColor( membersTab.getBackgroundColor() );
+		scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 		this.addTab( membersTab.getTitle(), scrollPane );
 	}
 	public void handleFieldSelection( edu.cmu.cs.dennisc.alice.ast.AbstractField field ) {
@@ -233,7 +233,7 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	}
 	
 	public MembersEditor() {
-		this.addComponent( this.tabbedPane );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.tabbedPane ) );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

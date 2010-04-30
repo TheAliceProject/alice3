@@ -57,8 +57,8 @@ public class DeclareFieldOperation extends AbstractNonGalleryDeclareFieldOperati
 		return this.ownerType;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+	protected edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice createField( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		org.alice.ide.declarationpanes.CreateFieldPane createFieldPane = new org.alice.ide.declarationpanes.CreateFieldPane( ownerType );
-		return createFieldPane.showInJDialog( this.getIDE().getJFrame() );
+		return createFieldPane.showInJDialog( button );
 	}
 }

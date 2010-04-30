@@ -70,7 +70,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private static final int INSET = 8;
 
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
-	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane();
 	private SidePane sidePane = new SidePane();
 
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
@@ -108,10 +108,12 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.splitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.splitPane.setResizeWeight( 1.0 );
 		this.splitPane.setDividerLocation( 1.0 );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( this.splitPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( this.splitPane, java.awt.BorderLayout.CENTER );
 	}
-
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.BorderLayout();
+	}
 	private edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > fieldsAdapter = new edu.cmu.cs.dennisc.property.event.ListPropertyListener< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice >() {
 		public void adding( edu.cmu.cs.dennisc.property.event.AddListPropertyEvent< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice > e ) {
 		}
@@ -165,24 +167,24 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	};
 
 	@Override
-	public void addNotify() {
+	protected void adding() {
+		super.adding();
 		this.initializeIfNecessary();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
 		this.splitPane.setLeftComponent( this.getLGPanel() );
-		super.addNotify();
 		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 		org.alice.ide.IDE.getSingleton().addFieldSelectionObserver( this.fieldSelectionObserver );
 	}
 
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		this.splitPane.setLeftComponent( null );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().removeAutomaticDisplayListener( this.automaticDisplayListener );
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().decrementAutomaticDisplayCount();
 		org.alice.ide.IDE.getSingleton().removeCodeInFocusObserver( this.codeInFocusObserver );
 		org.alice.ide.IDE.getSingleton().removeFieldSelectionObserver( this.fieldSelectionObserver );
-		super.removeNotify();
+		super.removed();
 	}
 
 	private javax.swing.JPanel getLGPanel() {

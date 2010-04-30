@@ -50,7 +50,7 @@ package org.alice.ide.choosers;
 public interface ValueChooser<E> {
 	public String getTitleDefault();
 	public void setInputPane( edu.cmu.cs.dennisc.inputpane.KInputPane< ? > inputPane );
-	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv );
+	public java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv );
 //	public String[] getLabelTexts();
 //	public java.awt.Component[] getComponents();
 	public E getValue();

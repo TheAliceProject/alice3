@@ -81,7 +81,7 @@ public class KGridPanel extends KPanel {
 		return new KGridPanel( rowCount, columnCount, DEFAULT_HGAP, DEFAULT_VGAP, components );
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridLayout( this.rowCount, this.columnCount, this.hgap, this.vgap );
 	}
 }

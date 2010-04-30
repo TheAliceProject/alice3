@@ -45,32 +45,37 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class RowsInputPane< E > extends edu.cmu.cs.dennisc.inputpane.KInputPane< E > {
-	private javax.swing.JPanel panel = new javax.swing.JPanel();
-	public RowsInputPane() {
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( panel, java.awt.BorderLayout.NORTH );
-		this.add( javax.swing.Box.createGlue(), java.awt.BorderLayout.CENTER );
-
-		int inset = 8;
-		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
-	}
-	
-	@Override
-	public void addNotify() {
-		super.addNotify();
-		if( this.panel.getComponentCount()==0) {
-			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.springItUpANotch( this.panel, componentRows, this.getSpringXPad(), this.getSpringYPad() );
+public abstract class RowsInputPane< T > extends org.alice.ide.InputPanel< T > {
+	private edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel = new edu.cmu.cs.dennisc.croquet.KRowsSpringPanel() {
+		@Override
+		protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+			return null;
 		}
+	};
+	public RowsInputPane() {
+		this.addComponent( panel, java.awt.BorderLayout.NORTH );
+		this.addComponent( this.getIDE().createGlue(), java.awt.BorderLayout.CENTER );
+
+//		int inset = 8;
+//		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
 	}
-	protected int getSpringXPad() {
-		return 12;
-	}
-	protected int getSpringYPad() {
-		return 12;
-	}
-	protected java.util.List< java.awt.Component[] > createComponentRows() {
-		return new java.util.LinkedList< java.awt.Component[] >();
-	}
+	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv );
+//
+//		@Override
+//	public void addNotify() {
+//		super.addNotify();
+//		if( this.panel.getComponentCount()==0) {
+//			java.util.List< java.awt.Component[] > componentRows = this.createComponentRows();
+//			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.springItUpANotch( this.panel, componentRows, this.getSpringXPad(), this.getSpringYPad() );
+//		}
+//	}
+//	protected int getSpringXPad() {
+//		return 12;
+//	}
+//	protected int getSpringYPad() {
+//		return 12;
+//	}
+//	protected java.util.List< java.awt.Component[] > createComponentRows() {
+//		return new java.util.LinkedList< java.awt.Component[] >();
+//	}
 }

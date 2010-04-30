@@ -62,9 +62,8 @@ public class KLabel extends KComponent< javax.swing.JLabel > {
 		this.setIcon( icon );
 		this.changeFont( textAttributes );
 	}
-	public KLabel( String text, javax.swing.Icon icon, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
+	public KLabel( String text, float fontScalar, edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
 		this.setText( text );
-		this.setIcon( icon );
 		this.scaleFont( fontScalar );
 		this.changeFont( textAttributes );
 	}
@@ -84,5 +83,18 @@ public class KLabel extends KComponent< javax.swing.JLabel > {
 	}
 	public void setIcon( javax.swing.Icon icon ) {
 		this.getJComponent().setIcon( icon );
+	}
+	
+	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
+		this.getJComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
+	}
+	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
+		this.getJComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
+	}
+	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
+		this.getJComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
+	}
+	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
+		this.getJComponent().setVerticalAlignment( verticalAlignment.getInternal() );
 	}
 }

@@ -46,16 +46,16 @@ import edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice;;
 /**
 * @author Dennis Cosgrove
 */
-public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends edu.cmu.cs.dennisc.inputpane.KInputPane< Boolean > {
+public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends org.alice.ide.InputPanel< Boolean > {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
 	private javax.swing.JList list;
-	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< E > listProperty ) {
+	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< T > listProperty ) {
 		this.declaringType = declaringType;
 		this.list = new javax.swing.JList();
-		list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ContentsCachingListCellRenderer< E >() {
+		list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ContentsCachingListCellRenderer< T >() {
 			@Override
-			protected java.awt.Component createComponent(E e) {
-				return createCellRendererComponent( e  );
+			protected java.awt.Component createComponent(T value) {
+				return createCellRendererComponent( value );
 			}
 			@Override
 			public void update( java.awt.Component contents, int index, boolean isSelected, boolean cellHasFocus ) {
@@ -65,9 +65,9 @@ public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends
 			}
 		} );
 
-		final edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel< E > listModel = edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel.createInstance( listProperty );
+		final edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel< T > listModel = edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel.createInstance( listProperty );
 		list.setModel( listModel );
-		class EditableMemberListPane extends edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< E > {
+		class EditableMemberListPane extends edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< T > {
 			public EditableMemberListPane() {
 				super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, list );
 			}
@@ -76,21 +76,21 @@ public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends
 				return EditMembersPane.this.createEditOperation( groupUUID, "Edit..." );
 			}
 			@Override
-			protected void add( int index, E e ) {
-				listModel.add( index, e );
+			protected void add( int index, T item ) {
+				listModel.add( index, item );
 			}
 			@Override
-			protected void remove( int index, E e ) {
-				listModel.remove( index, e );
+			protected void remove( int index, T item ) {
+				listModel.remove( index, item );
 			}
 			@Override
-			protected void setItemsAt( int index, E e0, E e1 ) {
-				listModel.set( index, e0, e1 );
+			protected void setItemsAt( int index, T item0, T item1 ) {
+				listModel.set( index, item0, item1 );
 			}
 			@Override
 			protected boolean isRemoveItemEnabled( int index ) {
 				if( index != -1 ) {
-					E e = listModel.getElementAt( index );
+					T e = listModel.getElementAt( index );
 					if( e != null ) {
 						return isRemoveItemEnabledFor( e );
 					} else {
@@ -103,7 +103,7 @@ public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends
 			@Override
 			protected boolean isEditItemEnabled( int index ) {
 				if( index != -1 ) {
-					E e = listModel.getElementAt( index );
+					T e = listModel.getElementAt( index );
 					if( e != null ) {
 						return isEditItemEnabledFor( e );
 					} else {
@@ -114,25 +114,24 @@ public abstract class EditMembersPane< E extends MemberDeclaredInAlice > extends
 				}
 			}
 			@Override
-			protected E createItem() throws Exception {
+			protected T createItem() throws Exception {
 				return createMember( EditMembersPane.this.declaringType );
 			}
 		}
-		edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< E > editableListPane = new EditableMemberListPane();
+		edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< T > editableListPane = new EditableMemberListPane();
 		editableListPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( editableListPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( editableListPane, java.awt.BorderLayout.CENTER );
 	}
 	@Override
 	protected Boolean getActualInputValue() {
 		return Boolean.TRUE;
 	}
-	protected E getSelectedItem() {
-		return (E)this.list.getSelectedValue();
+	protected T getSelectedItem() {
+		return (T)this.list.getSelectedValue();
 	}
-	protected abstract java.awt.Component createCellRendererComponent(E e);
+	protected abstract java.awt.Component createCellRendererComponent( T item );
 	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID, String name );
-	protected abstract E createMember( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
-	protected abstract boolean isRemoveItemEnabledFor( E e );
-	protected abstract boolean isEditItemEnabledFor( E e );
+	protected abstract T createMember( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType );
+	protected abstract boolean isRemoveItemEnabledFor( T item );
+	protected abstract boolean isEditItemEnabledFor( T item );
 }

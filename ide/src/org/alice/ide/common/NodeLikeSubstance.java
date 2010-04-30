@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NodeLikeSubstance extends edu.cmu.cs.dennisc.croquet.KDragControl {
+public abstract class NodeLikeSubstance extends org.alice.ide.Component {
 	protected static final int KNURL_WIDTH = 8;
 	public NodeLikeSubstance() {
 		if( this.isKnurlDesired() ) {
@@ -55,10 +55,6 @@ public abstract class NodeLikeSubstance extends edu.cmu.cs.dennisc.croquet.KDrag
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, javax.swing.BoxLayout.LINE_AXIS );
-	}
-	
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
 	}
 
 	protected edu.cmu.cs.dennisc.java.awt.BevelState getBevelState() {

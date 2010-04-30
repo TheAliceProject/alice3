@@ -52,10 +52,10 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
 		}
 	};
-	private java.awt.Component[] components = { this.textField };
+	private edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components = { new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.textField ) };
 
 	@Override
-	public java.awt.Component[] getComponents() {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents() {
 		return this.components;
 	}
 	protected abstract E valueOf( String text );

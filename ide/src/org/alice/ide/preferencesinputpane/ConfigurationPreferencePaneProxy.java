@@ -84,8 +84,18 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		@Override
 		protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {
 			this.ensureLabelsExist();
-			rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "isDefaultFieldNameGenerationDesired:" ), this.isDefaultFieldNameGenerationDesiredLabel ) );
-			rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( "isSyntaxNoiseDesired:" ), this.isSyntaxNoiseDesiredLabel ) );
+			rv.add( 
+					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "isDefaultFieldNameGenerationDesired:" ), 
+							this.isDefaultFieldNameGenerationDesiredLabel 
+					) 
+			);
+			rv.add( 
+					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "isSyntaxNoiseDesired:" ), 
+							this.isSyntaxNoiseDesiredLabel 
+					) 
+			);
 			return rv;
 		}
 		
@@ -95,7 +105,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.isSyntaxNoiseDesiredLabel.setText( Boolean.toString( value.isSyntaxNoiseDesired() ).toUpperCase() );
 		}
 	}
-	private edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane pane;
+	private edu.cmu.cs.dennisc.croquet.KPageAxisPanel pane;
 	private ConfigurationPreview preview;
 	
 	abstract class PreferencesActionOperation extends org.alice.ide.operations.AbstractActionOperation {
@@ -141,6 +151,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 	}
 	public ConfigurationPreferencePaneProxy( edu.cmu.cs.dennisc.preference.Preference<org.alice.ide.preferences.programming.Configuration> preference ) {
 		super( preference );
+		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		org.alice.ide.preferences.programming.Configuration[] configurations = org.alice.ide.preferences.ProgrammingPreferences.getSingleton().getBuiltInPreferenceNodes();
 		ConfigurationComboBox activeConfigurationComboBox = new ConfigurationComboBox( configurations );
 		activeConfigurationComboBox.setSelectedIndex( 0 );
@@ -159,23 +170,23 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		importVariantOperation.setToolTipText( "coming soon" );
 
 		edu.cmu.cs.dennisc.croquet.KLineAxisPanel northTopPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
-				activeConfigurationComboBox, 
-				edu.cmu.cs.dennisc.zoot.ZManager.createButton( editVariantOperation ), 
-				edu.cmu.cs.dennisc.zoot.ZManager.createButton( removeVariantOperation ) );
+				new edu.cmu.cs.dennisc.croquet.KSwingAdapter( activeConfigurationComboBox ), 
+				application.createButton( editVariantOperation ), 
+				application.createButton( removeVariantOperation ) );
 		edu.cmu.cs.dennisc.croquet.KLineAxisPanel northBottomPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
-				edu.cmu.cs.dennisc.zoot.ZManager.createButton( newVariantOperation ), 
-				edu.cmu.cs.dennisc.zoot.ZManager.createButton( importVariantOperation ), 
-				javax.swing.Box.createHorizontalGlue() );
+				application.createButton( newVariantOperation ), 
+				application.createButton( importVariantOperation ), 
+				application.createHorizontalGlue() );
 
 		this.preview = new ConfigurationPreview();
 		this.preview.updateValues( (org.alice.ide.preferences.programming.Configuration)activeConfigurationComboBox.getSelectedItem() );
-		this.pane = new edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane(
+		this.pane = new edu.cmu.cs.dennisc.croquet.KPageAxisPanel(
 				new edu.cmu.cs.dennisc.croquet.KLabel( "active variant:" ),
-				javax.swing.Box.createVerticalStrut( 4 ),  
+				application.createVerticalStrut( 4 ),  
 				northTopPane, 
-				javax.swing.Box.createVerticalStrut( 4 ),  
+				application.createVerticalStrut( 4 ),  
 				northBottomPane,
-				javax.swing.Box.createVerticalStrut( 32 ),
+				application.createVerticalStrut( 32 ),
 				//edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( "preview:" ),
 				//javax.swing.Box.createVerticalStrut( 4 ),  
 				this.preview

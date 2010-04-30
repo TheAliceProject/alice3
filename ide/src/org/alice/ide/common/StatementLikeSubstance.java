@@ -47,7 +47,7 @@ package org.alice.ide.common;
  */
 public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	private Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls;
-	
+	private int axis;
 	protected static Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getClassFor( edu.cmu.cs.dennisc.alice.ast.Statement statement ) {
 		if( statement != null ) {
 			return statement.getClass();
@@ -57,7 +57,11 @@ public abstract class StatementLikeSubstance extends NodeLikeSubstance {
 	}
 	public StatementLikeSubstance( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > statementCls, int axis ) {
 		this.statementCls = statementCls;
-		this.setLayout( new javax.swing.BoxLayout( this, axis ) );
+		this.axis = axis;
+	}
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new javax.swing.BoxLayout( jPanel, this.axis );
 	}
 	
 	public Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > getStatementCls() {

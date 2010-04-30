@@ -49,7 +49,9 @@ package edu.cmu.cs.dennisc.croquet;
 public abstract class KComponent<J extends javax.swing.JComponent> {
 	private J jComponent;
 	protected abstract J createJComponent();
-	protected final J getJComponent() {
+
+	//todo: reduce visibility
+	public final J getJComponent() {
 		if( this.jComponent != null ) {
 			//pass
 		} else {
@@ -58,6 +60,10 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 		return this.jComponent;
 	}
 
+	public java.util.Locale getLocale() {
+		return this.getJComponent().getLocale();
+	}
+	
 	public java.awt.Font getFont() {
 		return this.getJComponent().getFont();
 	}
@@ -68,8 +74,14 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToDerivedFont( this.getJComponent(), textAttributes );
 	}
 	
+	public java.awt.Color getForegroundColor() {
+		return this.getJComponent().getForeground();
+	}
 	public void setForegroundColor( java.awt.Color color ) {
 		this.getJComponent().setForeground( color );
+	}
+	public java.awt.Color getBackgroundColor() {
+		return this.getJComponent().getBackground();
 	}
 	public void setBackgroundColor( java.awt.Color color ) {
 		this.getJComponent().setBackground( color );
@@ -95,7 +107,20 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	public void setIgnoreRepaint( boolean ignoreRepaint ) {
 		this.getJComponent().setIgnoreRepaint( ignoreRepaint );
 	}
-	
+
+	public float getAlignmentX() {
+		return this.getJComponent().getAlignmentX();
+	}
+	public void setAlignmentX( float alignmentX ) {
+		this.getJComponent().setAlignmentX( alignmentX );
+	}
+	public float getAlignmentY() {
+		return this.getJComponent().getAlignmentY();
+	}
+	public void setAlignmentY( float alignmentY ) {
+		this.getJComponent().setAlignmentY( alignmentY );
+	}
+
 	public int getComponentCount() {
 		return this.getJComponent().getComponentCount();
 	}
@@ -107,6 +132,11 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	protected void removing() {
 	}
 	protected void removed() {
+	}
+	
+	@Deprecated
+	protected void forgetAndRemoveAllComponents() {
+		throw new RuntimeException( "todo" );
 	}
 	
 	public int getWidth() {
@@ -122,7 +152,7 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	private void revalidate() {
 		this.getJComponent().revalidate();
 	}
-	protected void revalidateAndRepaint() {
+	public void revalidateAndRepaint() {
 		this.revalidate();
 		this.repaint();
 	}

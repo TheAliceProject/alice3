@@ -77,10 +77,10 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
 		super.removed();
 	}
-	@Override
-	public java.awt.Dimension getMinimumSize() {
-		return this.implementor.adjustMinimumSize( super.getMinimumSize() );
-	}
+//	@Override
+//	public java.awt.Dimension getMinimumSize() {
+//		return this.implementor.adjustMinimumSize( super.getMinimumSize() );
+//	}
 
 	@Override
 	public final void createStatement( final edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent e, final edu.cmu.cs.dennisc.alice.ast.BlockStatement block, final edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver ) {

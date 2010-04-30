@@ -45,9 +45,9 @@ package org.alice.ide.initializer;
 /**
  * @author Dennis Cosgrove
  */
-public class ItemInitializerPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+public class ItemInitializerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	public ItemInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty initializerProperty ) {
-		this.add( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPropertyPane( initializerProperty, null ), java.awt.BorderLayout.WEST );
+		this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPropertyPane( initializerProperty, null ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.WEST );
 	}
 }
 //public class ItemInitializerPane extends org.alice.ide.codeeditor.ExpressionPropertyDropDownPane {

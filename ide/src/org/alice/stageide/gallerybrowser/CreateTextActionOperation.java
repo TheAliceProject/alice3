@@ -45,10 +45,10 @@ package org.alice.stageide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.apis.moveandturn.Text > {
-	class FamilyList extends javax.swing.JList {
+class CreateTextPane extends org.alice.ide.declarationpanes.RowsInputPane< org.alice.apis.moveandturn.Text > {
+	class FamilyList extends edu.cmu.cs.dennisc.croquet.KList< String > {
 		public FamilyList() {
-			this.setListData( new String[] { "Serif", "SansSerif" } );
+			this.setListData( "Serif", "SansSerif" );
 			this.setSelectedIndex( 0 );
 		}
 		public org.alice.apis.moveandturn.font.FamilyAttribute getFamilyAttribute() {
@@ -70,9 +70,9 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 		}
 	}
 
-	class StyleList extends javax.swing.JList {
+	class StyleList extends edu.cmu.cs.dennisc.croquet.KList< String > {
 		public StyleList() {
-			this.setListData( new String[] { "Regular", "Bold", "Italic", "Bold Italic" } );
+			this.setListData( "Regular", "Bold", "Italic", "Bold Italic" );
 			this.setSelectedIndex( 0 );
 		}
 		public org.alice.apis.moveandturn.font.WeightAttribute getWeightAttribute() {
@@ -98,7 +98,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 		public void setStyleAttributes( org.alice.apis.moveandturn.font.WeightAttribute weight, org.alice.apis.moveandturn.font.PostureAttribute posture ) {
 			boolean isBold = (weight == org.alice.apis.moveandturn.font.WeightConstant.BOLD);
 			boolean isItalic = (posture == org.alice.apis.moveandturn.font.PostureConstant.OBLIQUE);
-			Object selectedValue;
+			String selectedValue;
 			if( isBold ) {
 				if( isItalic ) {
 					selectedValue = "Bold Italic";
@@ -131,7 +131,7 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 	public CreateTextPane() {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-		this.setBackground( org.alice.ide.IDE.getSingleton().getFieldColor() );
+		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getFieldColor() );
 		this.setOpaque( true );
 		class TextField extends edu.cmu.cs.dennisc.javax.swing.components.JSuggestiveTextField {
 			public TextField( String text, String textForBlankCondition ) {
@@ -195,16 +195,15 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 		this.familyList.addListSelectionListener( listSelectionAdapter );
 		this.styleList.addListSelectionListener( listSelectionAdapter );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 16, 4 ) {
-			@Override
-			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-				CreateTextPane.this.updateRows( rv );
-				return rv;
-			}
-		};
-
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( pane, java.awt.BorderLayout.CENTER );
+//		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 16, 4 ) {
+//			@Override
+//			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
+//				CreateTextPane.this.updateRows( rv );
+//				return rv;
+//			}
+//		};
+//
+//		this.addComponent( pane, java.awt.BorderLayout.CENTER );
 	}
 
 	class ConstrainInstanceNameToTextBooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
@@ -217,24 +216,17 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 		}
 	}
 
-	private static edu.cmu.cs.dennisc.croquet.KLabel createLabel( String text ) {
-		edu.cmu.cs.dennisc.croquet.KLabel rv = new edu.cmu.cs.dennisc.croquet.KLabel( text );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
-		rv.setVerticalAlignment( javax.swing.SwingConstants.TOP );
-		rv.setOpaque( false );
-		return rv;
-	}
-
-	protected java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "text:" ), this.textVC, null ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "instance:" ), this.instanceNameVC, this.constrainInstanceNameToTextVC ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 24 ), null, null ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "letter height:" ), this.heightTextField, edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "(meters)" ) ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( javax.swing.Box.createVerticalStrut( 4 ), null, null ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "family:" ), this.familyList, null ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "style:" ), this.styleList, null ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "sample:" ), this.sample, null ) );
-		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( null, null, null ) );
+	@Override
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "text:" ), this.textVC, null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "instance:" ), this.instanceNameVC, this.constrainInstanceNameToTextVC ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 24 ), null, null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "letter height:" ), this.heightTextField, edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( "(meters)" ) ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 4 ), null, null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "family:" ), this.familyList, null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "style:" ), this.styleList, null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingTopLabel( "sample:" ), this.sample, null ) );
+		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, null, null ) );
 
 		return rv;
 	}
@@ -275,13 +267,13 @@ class CreateTextPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.
 		rv.setLetterHeight( Double.parseDouble( this.heightTextField.getText() ) );
 		return rv;
 	}
-	public static void main( String[] args ) {
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-		CreateTextPane createTextPane = new CreateTextPane();
-		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( ide.getJFrame() );
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( text );
-		System.exit( 0 );
-	}
+//	public static void main( String[] args ) {
+//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+//		CreateTextPane createTextPane = new CreateTextPane();
+//		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( ide.getJFrame() );
+//		edu.cmu.cs.dennisc.print.PrintUtilities.println( text );
+//		System.exit( 0 );
+//	}
 }
 
 /**
@@ -293,9 +285,9 @@ class CreateTextActionOperation extends AbstractGalleryDeclareFieldOperation {
 		this.setName( "Create Text..." );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, Object > createFieldAndInstance( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		CreateTextPane createTextPane = new CreateTextPane();
-		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( getIDE().getJFrame(), "Create Text", true );
+		org.alice.apis.moveandturn.Text text = createTextPane.showInJDialog( button, "Create Text" );
 		if( text != null ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type = this.getIDE().getTypeDeclaredInAliceFor( org.alice.apis.moveandturn.Text.class );
 			edu.cmu.cs.dennisc.alice.ast.Expression initializer = org.alice.ide.ast.NodeUtilities.createInstanceCreation( type );

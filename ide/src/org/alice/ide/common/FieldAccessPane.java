@@ -58,17 +58,17 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 			isExpressionDesired = true;
 		}
 		if( isExpressionDesired ) {
-			this.add( factory.createExpressionPropertyPane( this.fieldAccess.expression, null ) );
+			this.addComponent( factory.createExpressionPropertyPane( this.fieldAccess.expression, null ) );
 //			if( getIDE().isJava() ) {
 //				//pass
 //			} else {
-				this.add( new edu.cmu.cs.dennisc.croquet.KLabel( "." ) );
+				this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "." ) );
 //			}
 		}
 		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( this.fieldAccess.field.getValue() );
 		//nodeNameLabel.setFontToScaledFont( 1.2f );
 		//nodeNameLabel.setFontToDerivedFont( zoot.font.ZTextWeight.BOLD );
-		this.add( nodeNameLabel );
+		this.addComponent( nodeNameLabel );
 		this.setBackgroundColor( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );
 	}
 	@Override

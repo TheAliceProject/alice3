@@ -45,30 +45,42 @@ package org.alice.ide.preview;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.inputpane.KInputPane< E > {
+public abstract class PreviewInputPane<T> extends org.alice.ide.InputPanel< T > {
 //	protected static javax.swing.JLabel createLabel( String s ) {
 //		javax.swing.JLabel rv = edu.cmu.cs.dennisc.croquet.CroquetUtilities.createLabel( s );
 //		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 //		return rv;
 //	}
-	class PreviewPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+	class PreviewPane extends edu.cmu.cs.dennisc.croquet.KWidget {
 		public void refresh() {
-			edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
+			this.forgetAndRemoveAllComponents();
 //			java.awt.Component component = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
 //					PreviewInputPane.this.createPreviewSubComponent(),
 //					javax.swing.Box.createHorizontalGlue()
 //			);
-			this.addComponent( PreviewInputPane.this.createPreviewSubComponent(), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.WEST );
+			this.addComponent( PreviewInputPane.this.createPreviewSubComponent(), java.awt.BorderLayout.WEST );
 			this.revalidateAndRepaint();
 		}
 		@Override
-		public boolean contains( int x, int y ) {
-			return false;
+		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+			return new java.awt.BorderLayout();
 		}
 		@Override
-		public void addNotify() {
-			super.addNotify();
+		protected boolean contains( int x, int y, boolean jContains ) {
+			return super.contains( x, y, jContains );
+		}
+		@Override
+		protected void adding() {
+			super.adding();
 			this.refresh();
+		}
+		@Override
+		protected void removed() {
+			this.forgetAndRemoveAllComponents();
+			super.removed();
+		}
+		@Override
+		protected void paintComponent( java.awt.Graphics2D g2 ) {
 		}
 	}
 
@@ -78,11 +90,7 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.inputpane.K
 
 	public PreviewInputPane() {
 		final int INSET = 16;
-		this.setLayout( new java.awt.BorderLayout() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
-	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
 	}
 	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? > createPreviewSubComponent();
 	private void updatePreview() {
@@ -90,12 +98,12 @@ public abstract class PreviewInputPane<E> extends edu.cmu.cs.dennisc.inputpane.K
 			this.previewPane.refresh();
 		}
 	}
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
-	}
+//	@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+//	}
 
-	protected abstract java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv );
+	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv );
 	
 	private java.awt.Component createRowsSpringPane() {
 		this.previewPane = new PreviewPane();

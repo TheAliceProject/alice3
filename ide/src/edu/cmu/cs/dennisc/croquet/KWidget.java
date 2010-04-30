@@ -56,12 +56,29 @@ public abstract class KWidget extends KComponent< javax.swing.JPanel > {
 				assert g instanceof java.awt.Graphics2D;
 				KWidget.this.paintComponent( (java.awt.Graphics2D)g );
 			}
+			@Override
+			public java.awt.Dimension getPreferredSize() {
+				return KWidget.this.getPreferedSize( super.getPreferredSize() );
+			}
+			@Override
+			public boolean contains( int x, int y ) {
+				return KWidget.this.contains( x, y, super.contains( x, y ) );
+			}
 		};
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 		return rv;
 		
 	}
+	@Deprecated
+	protected java.awt.Dimension getPreferedSize( java.awt.Dimension jPreferedSize ) {
+		return jPreferedSize;
+	}
+	@Deprecated
+	protected boolean contains( int x, int y, boolean jContains ) {
+		return jContains;
+	}
+	@Deprecated
 	protected abstract void paintComponent( java.awt.Graphics2D g2 );
 	
 	@Deprecated
@@ -78,22 +95,10 @@ public abstract class KWidget extends KComponent< javax.swing.JPanel > {
 		this.getJComponent().add( component.getJComponent(), constraints );
 		component.added();
 	}
-	@Deprecated
-	protected void add( KComponent<?> component ) {
-		this.addComponent( component );
-	}
-	@Deprecated
-	protected void add( KComponent<?> component, Object constraints ) {
-		this.addComponent( component, constraints );
-	}
-
-	@Deprecated
-	protected void add( java.awt.Component component ) {
-		throw new AssertionError();
-	}
-	@Deprecated
-	protected void add( java.awt.Component component, Object constraints ) {
-		throw new AssertionError();
-	}
 	
+	@Deprecated
+	protected void removeAllComponents() {
+		//todo
+		this.getJComponent().removeAll();
+	}
 }

@@ -163,15 +163,14 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 			d = d.getParentFile();
 			ancestors.add( d );
 		}
-		this.removeAll();
+		this.removeAllComponents();
 		while( ancestors.size() > 0 ) {
 			java.io.File ancestor = ancestors.pop();
-			this.add( new DirectoryControl( ancestor ) );
+			this.addComponent( new DirectoryControl( ancestor ) );
 		}
-		this.add( new DirectoryControl( nextDirectory ) );
+		this.addComponent( new DirectoryControl( nextDirectory ) );
 		this.currentDirectory = nextDirectory;
-		this.revalidate();
-		this.repaint();
+		this.revalidateAndRepaint();
 	}
 
 	private void handleSelectDirectory( java.io.File directory ) {

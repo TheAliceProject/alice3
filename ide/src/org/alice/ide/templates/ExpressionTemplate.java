@@ -77,7 +77,7 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		this.removeAllComponents();
 		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
 		this.setBackgroundColor( getIDE().getColorFor( incompleteExpression ) );
-		this.add( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
+		this.addComponent( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
 	}
 	@Override
 	protected boolean isPressed() {
@@ -85,9 +85,9 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 	}
 	
 	@Override
-	public boolean contains( int x, int y ) {
+	protected boolean contains( int x, int y, boolean jContains ) {
 		if( getIDE().isSelectedFieldInScope() ) {
-			return super.contains( x, y );
+			return super.contains( x, y, jContains );
 		} else {
 			return false;
 		}

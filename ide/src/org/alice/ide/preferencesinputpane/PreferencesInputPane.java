@@ -56,8 +56,8 @@ class TreeCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.DefaultM
 /**
  * @author Dennis Cosgrove
  */
-public class PreferencesInputPane extends edu.cmu.cs.dennisc.inputpane.KInputPane<Void> {
-	private javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT );
+public class PreferencesInputPane extends org.alice.ide.InputPanel<Void> {
+	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane();
 	private javax.swing.JTree tree = new javax.swing.JTree();
 	class TreeSelectionAdapter extends edu.cmu.cs.dennisc.javax.swing.event.DefaultMutableTreeNodeTreeSelectionAdapter<org.alice.ide.preferencesinputpane.CollectionOfPreferencesPane> {
 		@Override
@@ -105,9 +105,9 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.inputpane.KInputPan
 				}
 			}
 			@Override
-			protected void updateCenterComponent( edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
+			protected void updateCenterComponent( edu.cmu.cs.dennisc.croquet.KPageAxisPanel centerComponent, edu.cmu.cs.dennisc.preference.CollectionOfPreferences collectionOfPreferences ) {
 				super.updateCenterComponent( centerComponent, collectionOfPreferences );
-				centerComponent.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new ClearRecentProjectsOperation() ) );
+				centerComponent.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new ClearRecentProjectsOperation() ) );
 			}
 		};
 		CollectionOfPreferencesPane perspectivePreferencesPane = new CollectionOfPreferencesPane("Programming", org.alice.ide.preferences.ProgrammingPreferences.getSingleton()) {
@@ -135,12 +135,11 @@ public class PreferencesInputPane extends edu.cmu.cs.dennisc.inputpane.KInputPan
 		this.tree.setRootVisible( false );
 		this.tree.setCellRenderer( new TreeCellRenderer() );
 		this.tree.addTreeSelectionListener( new TreeSelectionAdapter() );
-		this.splitPane.setLeftComponent( new javax.swing.JScrollPane( this.tree ) );
-		this.splitPane.setRightComponent( new javax.swing.JLabel( "please select" ) );
+		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.KScrollPane( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.tree ) ) );
+		this.splitPane.setRightComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "please select" ) );
 		this.splitPane.setDividerLocation( 200 );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( this.splitPane, java.awt.BorderLayout.CENTER );
-		this.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
+		this.addComponent( this.splitPane, java.awt.BorderLayout.CENTER );
+		//this.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
 		this.tree.setSelectionRow( 1 );
 	}
 	@Override

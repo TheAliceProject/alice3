@@ -45,8 +45,20 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component extends edu.cmu.cs.dennisc.croquet.KWidget {
+public abstract class Component extends edu.cmu.cs.dennisc.croquet.KDragControl {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
+	}
+	protected abstract int getInsetTop();
+	protected abstract int getInsetLeft();
+	protected abstract int getInsetBottom();
+	protected abstract int getInsetRight();
+
+	protected abstract void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	
+	protected final void fillBounds( java.awt.Graphics2D g2 ) {
+		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
 	}
 }

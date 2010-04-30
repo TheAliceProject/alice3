@@ -55,12 +55,10 @@ class InstanceLine extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 //		b.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
 //		this.add( b );
 		
-		this.add( javax.swing.Box.createHorizontalStrut( 16 ) );
-		javax.swing.JLabel a = new edu.cmu.cs.dennisc.croquet.KLabel( "current instance: " );
-//		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
-		this.add( a );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 16 ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "current instance: " ) );
 		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane();
 //		thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );
-		this.add( thisPane );
+		this.addComponent( thisPane );
 	}
 }

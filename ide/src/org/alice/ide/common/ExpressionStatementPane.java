@@ -85,13 +85,13 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 	}
 
 	private void refresh() {
-		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		this.forgetAndRemoveAllComponents();
 		final edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement = (edu.cmu.cs.dennisc.alice.ast.ExpressionStatement)getStatement();
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionStatement.expression.getValue();
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.AssignmentExpression ) {
-			this.add( new AssignmentExpressionPane( this.getFactory(), (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
+			this.addComponent( new AssignmentExpressionPane( this.getFactory(), (edu.cmu.cs.dennisc.alice.ast.AssignmentExpression)expression ) );
 		} else {
-			this.add( this.getFactory().createComponent( expressionStatement.expression.getValue() ) );
+			this.addComponent( this.getFactory().createComponent( expressionStatement.expression.getValue() ) );
 			if( expression instanceof edu.cmu.cs.dennisc.alice.ast.MethodInvocation ) { 
 				final edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expression;
 				
@@ -107,8 +107,8 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 					edu.cmu.cs.dennisc.alice.ast.AbstractMember nextLonger = method.getNextLongerInChain();
 					if( nextLonger != null ) {
 						final edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)nextLonger;
-						this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
-						this.add( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
+						this.addComponent( this.getIDE().createHorizontalStrut( 8 ) );
+						this.addComponent( new org.alice.ide.codeeditor.MoreDropDownPane( expressionStatement ) );
 					}
 				}
 
@@ -136,9 +136,9 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.add( new edu.cmu.cs.dennisc.croquet.KLabel( ";" ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( ";" ) );
 		}
-		this.add( javax.swing.Box.createHorizontalStrut( 8 ) );
+		this.addComponent( this.getIDE().createHorizontalStrut( 8 ) );
 		this.revalidateAndRepaint();
 	}
 	private edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice getMethodDeclaredInAlice() {

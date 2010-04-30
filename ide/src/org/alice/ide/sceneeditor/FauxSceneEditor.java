@@ -47,6 +47,10 @@ package org.alice.ide.sceneeditor;
  */
 public class FauxSceneEditor extends AbstractSceneEditor {
 	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return null;
+	}
+	@Override
 	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
 		throw new RuntimeException();
 	}

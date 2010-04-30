@@ -80,15 +80,14 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.anonymousConstructor.getDeclaringType();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-			edu.cmu.cs.dennisc.javax.swing.components.JPane pane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
-			pane.setLayout( new java.awt.GridLayout( 1, 1 ) );
+			edu.cmu.cs.dennisc.croquet.KGridPanel pane = edu.cmu.cs.dennisc.croquet.KGridPanel.createGridPane( 1, 1 );
 			int inset = 4;
 			int left = 4;
 			if( getIDE().isJava() ) {
 				left += 12;
 			}
 			pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, left, inset, inset ) );
-			pane.add( new MethodPane( factory, (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method ) );
+			pane.addComponent( new MethodPane( factory, (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)method ) );
 			this.addComponent( pane );
 		}
 		if( getIDE().isJava() ) {

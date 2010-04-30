@@ -47,7 +47,7 @@ import org.alice.ide.declarationpanes.RowsInputPane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class NameInputPane<E> extends RowsInputPane< E > {
+public abstract class NameInputPane<T> extends RowsInputPane< T > {
 	private javax.swing.JTextField textField = new javax.swing.JTextField( 10 );
 
 	public void setAndSelectNameText( String text ) {
@@ -70,12 +70,8 @@ public abstract class NameInputPane<E> extends RowsInputPane< E > {
 	protected void handleNameTextChange( String nameText ) {
 		updateOKButton();
 	}
-
 	@Override
-	protected java.util.List< java.awt.Component[] > createComponentRows() {
-		java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-		javax.swing.JLabel label = new edu.cmu.cs.dennisc.croquet.KLabel();
-		label.setText( "name:" );
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
 		assert this.textField != null;
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
@@ -96,12 +92,14 @@ public abstract class NameInputPane<E> extends RowsInputPane< E > {
 				this.handleUpdate( e );
 			}
 		} );
-//		javax.swing.text.Keymap keymap = this.textField.getKeymap();
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( keymap );
-//		javax.swing.KeyStroke enterKeyStroke = javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_ENTER, 0, false );
-//		keymap.removeKeyStrokeBinding( enterKeyStroke );
-//		this.textField.setKeymap( keymap );
-		rv.add( new java.awt.Component[] { label, this.textField } );
+
+		rv.add( 
+				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
+						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ),
+						new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.textField )
+				) 
+		);
 		return rv;
-	}
+	}	
+
 }

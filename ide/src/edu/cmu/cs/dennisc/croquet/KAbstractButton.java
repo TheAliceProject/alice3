@@ -66,4 +66,16 @@ public abstract class KAbstractButton< J extends javax.swing.AbstractButton> ext
 		}
 	}
 	
+	public void setHorizontalTextPosition( HorizontalTextPosition horizontalTextPosition ) {
+		this.getJComponent().setHorizontalTextPosition( horizontalTextPosition.getInternal() );
+	}
+	public void setVerticalTextPosition( VerticalTextPosition verticalTextPosition ) {
+		this.getJComponent().setVerticalTextPosition( verticalTextPosition.getInternal() );
+	}
+	public void setHorizontalAlignment( HorizontalAlignment horizontalAlignment ) {
+		this.getJComponent().setHorizontalAlignment( horizontalAlignment.getInternal() );
+	}
+	public void setVerticalAlignment( VerticalAlignment verticalAlignment ) {
+		this.getJComponent().setVerticalAlignment( verticalAlignment.getInternal() );
+	}
 }

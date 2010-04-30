@@ -46,19 +46,19 @@ package org.alice.app.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabContentPane extends edu.cmu.cs.dennisc.javax.swing.components.JPane {
+public abstract class TabContentPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	//	protected boolean isTabEnabled() {
 	//		return this.isEnabled();
 	//	}
-	private edu.cmu.cs.dennisc.inputpane.KInputPane< java.net.URI > inputPane;
+	private edu.cmu.cs.dennisc.croquet.KInputPanel< java.net.URI > inputPanel;
 	public TabContentPane() {
-		this.setBackground( new java.awt.Color( 191, 191, 255 ) );
+		this.setBackgroundColor( new java.awt.Color( 191, 191, 255 ) );
 		this.setOpaque( true );
 		final int INSET = 8;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-	public void setInputPane( edu.cmu.cs.dennisc.inputpane.KInputPane< java.net.URI > inputPane ) {
-		this.inputPane = inputPane;
+	public void setInputPanel( edu.cmu.cs.dennisc.croquet.KInputPanel< java.net.URI > inputPanel ) {
+		this.inputPanel = inputPanel;
 	}
 	public abstract java.net.URI getSelectedURI();
 	public javax.swing.Icon getTabTitleIcon() {
@@ -66,13 +66,13 @@ public abstract class TabContentPane extends edu.cmu.cs.dennisc.javax.swing.comp
 	}
 	public abstract String getTabTitleText();
 	protected void updateOKButton() {
-		if( this.inputPane != null ) {
-			this.inputPane.updateOKButton();
+		if( this.inputPanel != null ) {
+			this.inputPanel.updateOKButton();
 		}
 	}
 	protected void fireOKButtonIfPossible() {
-		if( this.inputPane != null ) {
-			this.inputPane.fireOKButtonIfPossible();
+		if( this.inputPanel != null ) {
+			this.inputPanel.fireOKButtonIfPossible();
 		}
 	}
 }

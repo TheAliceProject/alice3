@@ -100,8 +100,7 @@ public abstract class ListPane extends TabContentPane {
 				}
 			}
 		} );
-		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		this.add( this.list );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.list ) );
 	}
 
 	protected abstract String getTextForZeroProjects();

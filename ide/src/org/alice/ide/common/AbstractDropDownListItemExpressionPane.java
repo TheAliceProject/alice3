@@ -83,7 +83,7 @@ public abstract class AbstractDropDownListItemExpressionPane extends org.alice.i
 	}
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
 	public void refresh() {
-		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		this.forgetAndRemoveAllComponents();
 		if( this.index < this.expressionListProperty.size() ) {
 			this.addComponent( org.alice.ide.IDE.getSingleton().getCodeFactory().createExpressionPane( this.expressionListProperty.get( this.index ) ) );
 		}

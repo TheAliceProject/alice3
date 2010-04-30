@@ -70,7 +70,7 @@ abstract class EditMembersOperation< E extends edu.cmu.cs.dennisc.alice.ast.Memb
 		EditMembersPane< E > editMembersPane = this.createEditMembersPane( groupUUID, this.declaringType );
 		Boolean isAccepted = editMembersPane.showInJDialog( this.getIDE().getJFrame() );
 		if( isAccepted != null ) {
-			edu.cmu.cs.dennisc.zoot.CompositeEdit compositeEdit = historyManager.createDoIgnoringCompositeEdit( this.presentation + " " + this.declaringType.getName() );
+			edu.cmu.cs.dennisc.croquet.Edit compositeEdit = historyManager.createDoIgnoringCompositeEdit( this.presentation + " " + this.declaringType.getName() );
 			if( compositeEdit != null ) {
 				context.commitAndInvokeDo( compositeEdit );
 			} else {
@@ -330,7 +330,7 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 //		} );
 //		
 //		
-		this.label.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
+		this.label.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.LEADING );
 	}
 	
 	private static final java.awt.Color TOP_COLOR = new java.awt.Color( 255, 255, 191 );

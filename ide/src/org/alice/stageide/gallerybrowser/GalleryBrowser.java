@@ -57,19 +57,17 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		CreateMyInstanceActionOperation createMyInstanceActionOperation = new CreateMyInstanceActionOperation();
 		CreateTextbookInstanceActionOperation createTextbookInstanceActionOperation = new CreateTextbookInstanceActionOperation();
 
-		edu.cmu.cs.dennisc.javax.swing.components.JPane fromFilePane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
-		fromFilePane.setLayout(new java.awt.GridLayout(2, 1, 0, 4));
-		fromFilePane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createMyInstanceActionOperation));
-		fromFilePane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createTextbookInstanceActionOperation));
+		edu.cmu.cs.dennisc.croquet.KGridPanel fromFilePane = edu.cmu.cs.dennisc.croquet.KGridPanel.createGridPane( 2, 1, 0, 4 );
+		fromFilePane.addComponent( this.getIDE().createButton(createMyInstanceActionOperation));
+		fromFilePane.addComponent(this.getIDE().createButton(createTextbookInstanceActionOperation));
 
-		edu.cmu.cs.dennisc.javax.swing.components.JPane bonusPane = new edu.cmu.cs.dennisc.javax.swing.components.JPane();
-		bonusPane.setLayout(new java.awt.GridLayout(2, 1, 0, 4));
-		bonusPane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createBillboardActionOperation));
-		bonusPane.add(edu.cmu.cs.dennisc.zoot.ZManager.createButton(createTextActionOperation));
+		edu.cmu.cs.dennisc.croquet.KGridPanel bonusPane = edu.cmu.cs.dennisc.croquet.KGridPanel.createGridPane( 2, 1, 0, 4 );
+		bonusPane.addComponent(this.getIDE().createButton(createBillboardActionOperation));
+		bonusPane.addComponent(this.getIDE().createButton(createTextActionOperation));
 
-		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
-		buttonPane.add(fromFilePane, java.awt.BorderLayout.NORTH);
-		buttonPane.add(bonusPane, java.awt.BorderLayout.SOUTH);
+		edu.cmu.cs.dennisc.croquet.KBorderPanel buttonPane = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
+		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.NORTH);
+		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.SOUTH);
 
 		// this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4,
 		// 4 ) );
@@ -78,17 +76,17 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
 		IndirectCreatePersonActionOperation indirectCreatePersonActionOperation = new IndirectCreatePersonActionOperation();
-		javax.swing.JButton createPersonButton = edu.cmu.cs.dennisc.zoot.ZManager.createButton(indirectCreatePersonActionOperation);
-		createPersonButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-		createPersonButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+		edu.cmu.cs.dennisc.croquet.KButton createPersonButton = this.getIDE().createButton(indirectCreatePersonActionOperation);
+		createPersonButton.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
+		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 
 		//todo
 		java.io.InputStream is = GalleryBrowser.class.getResourceAsStream("images/create_person.png");
 		java.awt.Image image = edu.cmu.cs.dennisc.image.ImageUtilities.read(edu.cmu.cs.dennisc.image.ImageUtilities.PNG_CODEC_NAME, is);
 		indirectCreatePersonActionOperation.setSmallIcon(new javax.swing.ImageIcon(image));
 		
-		this.add(createPersonButton, java.awt.BorderLayout.WEST);
-		this.add(buttonPane, java.awt.BorderLayout.EAST);
+		this.addComponent(createPersonButton, java.awt.BorderLayout.WEST);
+		this.addComponent(buttonPane, java.awt.BorderLayout.EAST);
 	}
 
 	@Override
@@ -104,38 +102,39 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 	@Override
 	protected void handleFileActivation(java.io.File file) {
 		assert file.isFile();
-		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate(new GalleryFileActionOperation(file), null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE);
+		//todo
+		new GalleryFileActionOperation(file).fire();
 	}
 
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight(super.getPreferredSize(), 256);
-	}
+//	@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight(super.getPreferredSize(), 256);
+//	}
 
-	public static void main(String[] args) {
-
-		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
-
-		java.io.File thumbnailRoot = new java.io.File(org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails");
-		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
-			@Override
-			protected void handleWindowOpened(java.awt.event.WindowEvent e) {
-			}
-			
-			@Override
-			protected void handleAbout( java.util.EventObject e ) {
-			}
-			@Override
-			protected void handlePreferences( java.util.EventObject e ) {
-			}
-
-			@Override
-			protected void handleQuit(java.util.EventObject e) {
-				System.exit(0);
-			}
-		};
-		frame.setSize(new java.awt.Dimension(1024, 256));
-		frame.getContentPane().add(new GalleryBrowser(thumbnailRoot, null));
-		frame.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//
+//		org.alice.ide.IDE ide = new org.alice.ide.FauxIDE();
+//
+//		java.io.File thumbnailRoot = new java.io.File(org.alice.apis.moveandturn.gallery.GalleryModel.getGalleryRootDirectory(), "thumbnails");
+//		edu.cmu.cs.dennisc.javax.swing.ApplicationFrame frame = new edu.cmu.cs.dennisc.javax.swing.ApplicationFrame() {
+//			@Override
+//			protected void handleWindowOpened(java.awt.event.WindowEvent e) {
+//			}
+//			
+//			@Override
+//			protected void handleAbout( java.util.EventObject e ) {
+//			}
+//			@Override
+//			protected void handlePreferences( java.util.EventObject e ) {
+//			}
+//
+//			@Override
+//			protected void handleQuit(java.util.EventObject e) {
+//				System.exit(0);
+//			}
+//		};
+//		frame.setSize(new java.awt.Dimension(1024, 256));
+//		frame.getContentPane().add(new GalleryBrowser(thumbnailRoot, null));
+//		frame.setVisible(true);
+//	}
 }

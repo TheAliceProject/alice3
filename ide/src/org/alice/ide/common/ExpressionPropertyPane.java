@@ -60,7 +60,7 @@ public class ExpressionPropertyPane extends AbstractPropertyPane< edu.cmu.cs.den
 
 	@Override
 	protected void refresh() {
-		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		this.forgetAndRemoveAllComponents();
 		this.addComponent( this.getFactory().createExpressionPane( getProperty().getValue() ) );
 		this.revalidateAndRepaint();
 	}

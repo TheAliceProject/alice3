@@ -46,23 +46,20 @@ package org.alice.ide.preferencesinputpane;
  * @author Dennis Cosgrove
  */
 public class BooleanPreferenceCheckBoxProxy extends PreferenceProxy<Boolean> {
-	class BooleanStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
-		public BooleanStateOperation() {
-			super( org.alice.ide.IDE.PREFERENCES_GROUP, BooleanPreferenceCheckBoxProxy.this.getPreference().getValue(), BooleanPreferenceCheckBoxProxy.this.getPreference().getKey() );
-		}
-		@Override
-		protected void handleStateChange( boolean value ) {
-		}
-	}
-	private BooleanStateOperation operation;
-	private javax.swing.JCheckBox checkBox;
+	private edu.cmu.cs.dennisc.croquet.BooleanStateOperation operation;
+	private edu.cmu.cs.dennisc.croquet.KCheckBox checkBox;
 	public BooleanPreferenceCheckBoxProxy( edu.cmu.cs.dennisc.preference.Preference<Boolean> preference ) {
 		super( preference );
-		this.operation = new BooleanStateOperation();
-		this.checkBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox(this.operation);
+		this.operation = new edu.cmu.cs.dennisc.croquet.BooleanStateOperation( 
+				org.alice.ide.IDE.PREFERENCES_GROUP, 
+				java.util.UUID.fromString( "033f4377-4b05-42d3-8e4d-167b4704be7e" ), 
+				this.getPreference().getValue(), 
+				this.getPreference().getKey() 
+		);
+		this.checkBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createCheckBox( this.operation );
 	}
 	@Override
-	public java.awt.Component getAWTComponent() {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponent() {
 		return this.checkBox;
 	}
 	@Override

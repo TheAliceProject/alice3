@@ -52,15 +52,15 @@ public abstract class PreferenceLabeledPaneProxy< E > extends PreferenceProxy< E
 		super( preference );
 	}
 
-	protected void createPane( java.awt.Component control ) {
+	protected void createPane( edu.cmu.cs.dennisc.croquet.KComponent< ? > control ) {
 		this.pane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel(
 				new edu.cmu.cs.dennisc.croquet.KLabel( this.getPreference().getKey() + ":" ),
-				javax.swing.Box.createHorizontalStrut( 8 ),
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 8 ),
 				control 
 		);
 	}
 	@Override
-	public final java.awt.Component getAWTComponent() {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponent() {
 		assert this.pane != null;
 		return this.pane;
 	}

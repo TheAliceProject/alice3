@@ -45,12 +45,11 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-public class PersonEditorInputPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< org.alice.apis.stage.Person > {
+public class PersonEditorInputPane extends org.alice.ide.InputPanel< org.alice.apis.stage.Person > {
 	private org.alice.stageide.personeditor.PersonEditor personEditor; 
 	public PersonEditorInputPane( org.alice.apis.stage.Person person ) {
 		this.personEditor = new org.alice.stageide.personeditor.PersonEditor( person );
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( this.personEditor, java.awt.BorderLayout.CENTER );
+		this.addComponent( this.personEditor, java.awt.BorderLayout.CENTER );
 	}
 	@Override
 	protected org.alice.apis.stage.Person getActualInputValue() {

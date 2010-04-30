@@ -53,7 +53,8 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 		super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "66bf123b-f047-4cba-86ea-04d3a0a1f689" ), "Edit " + field.getName() + "..." );
 		this.field = field;
 	}
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		final java.util.Set< FieldDeclaredInAlice > referencedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		final java.util.Set< FieldDeclaredInAlice > reassignedFields = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
@@ -82,9 +83,9 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 					}
 				}
 			}
-			this.perform( actionContext, field, referencedFields, reassignedFields );
+			this.perform( context, field, referencedFields, reassignedFields );
 		} else {
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }

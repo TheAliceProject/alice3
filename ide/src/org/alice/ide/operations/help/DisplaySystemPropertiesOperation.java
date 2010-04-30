@@ -93,11 +93,11 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 	@Override
 	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 		edu.cmu.cs.dennisc.javax.swing.components.JFormPane formPane = new edu.cmu.cs.dennisc.javax.swing.components.JFormPane( 8, 2 ) {
-			private java.awt.Component[][] createComponentRowsForSystemProperty( String name, String separator ) {
+			private edu.cmu.cs.dennisc.croquet.KComponent< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
 				String value = System.getProperty( name );
 				assert value != null;
 				String[] array = value.split( separator );
-				java.awt.Component[][] rv = new java.awt.Component[ array.length ][];
+				edu.cmu.cs.dennisc.croquet.KComponent< ? >[][] rv = new edu.cmu.cs.dennisc.croquet.KComponent< ? >[ array.length ][];
 				for( int i=0; i<array.length; i++ ) {
 					String prefix;
 					if( i==0 ) {
@@ -105,14 +105,14 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 					} else {
 						prefix = "";
 					}
-					rv[ i ] = edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( prefix+"[" + i + "]:" ), new edu.cmu.cs.dennisc.croquet.KLabel( array[ i ] ) );
+					rv[ i ] = edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( prefix+"[" + i + "]:" ), new edu.cmu.cs.dennisc.croquet.KLabel( array[ i ] ) );
 				}
 				return rv;
 			}
 			@Override
-			protected java.util.List<java.awt.Component[]> addComponentRows(java.util.List<java.awt.Component[]> rv) {
+			protected java.util.List<edu.cmu.cs.dennisc.croquet.KComponent< ? >[]> addComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.KComponent< ? >[]> rv) {
 				String pathSepartor = System.getProperty( "path.separator" );
-				for( java.awt.Component[] componentRow : createComponentRowsForSystemProperty( propertyName, pathSepartor ) ) {
+				for( edu.cmu.cs.dennisc.croquet.KComponent< ? >[] componentRow : createComponentRowsForSystemProperty( propertyName, pathSepartor ) ) {
 					rv.add( componentRow );
 				}
 				return rv;

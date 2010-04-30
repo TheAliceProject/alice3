@@ -77,13 +77,14 @@ public abstract class KInputPanel< T > extends KPanel {
 			this.okButton.setEnabled( isOKButtonValid() );
 		}
 	}
-//	public void fireOKButtonIfPossible() {
-//		if( this.okButton != null ) {
-//			if( this.okButton.isEnabled() ) {
-//				this.okButton.doClick();
-//			}
-//		}
-//	}
+	@Deprecated
+	public void fireOKButtonIfPossible() {
+		if( this.okButton != null ) {
+			if( this.okButton.isEnabled() ) {
+				this.okButton.doClick();
+			}
+		}
+	}
 
 	protected boolean isDisposeDesired( java.awt.event.WindowEvent e ) {
 		return true;
@@ -208,5 +209,17 @@ public abstract class KInputPanel< T > extends KPanel {
 			//todo?
 			//this.m_isOK = false;
 		}
+	}
+	
+	@Deprecated
+	public T showInJDialog( KAbstractButton< ? > button ) {
+		return this.showInJDialog( button, null );
+	}
+	@Deprecated
+	protected void addComponent( KComponent<?> component, Object constraints ) {
+		assert component != null;
+		component.adding();
+		this.getJComponent().add( component.getJComponent(), constraints );
+		component.added();
 	}
 }

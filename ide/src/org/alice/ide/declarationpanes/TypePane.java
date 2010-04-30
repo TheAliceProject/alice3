@@ -118,8 +118,8 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 		javax.swing.JCheckBox isArrayCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( this.isArrayStateOperation );
 		isArrayCheckBox.setOpaque( false );
 		
-		this.add( this.typeComboBox );
-		this.add( isArrayCheckBox );
+		this.addComponent( this.typeComboBox );
+		this.addComponent( isArrayCheckBox );
 	}
 	
 	public edu.cmu.cs.dennisc.alice.ast.AbstractType getValueType() {

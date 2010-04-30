@@ -45,7 +45,7 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AssetsPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+public abstract class AssetsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	private ThumbnailsPane thumbnailsPane;
 	private PathControl pathControl;
 
@@ -54,8 +54,8 @@ public abstract class AssetsPane extends edu.cmu.cs.dennisc.javax.swing.componen
 		this.thumbnailsPane.setFolderIcon( folderIcon );
 		this.pathControl = this.createPathControl( rootDirectory );
 		this.pathControl.setFolderIconSmall( folderIconSmall );
-		this.add( this.pathControl, java.awt.BorderLayout.NORTH );
-		this.add( this.thumbnailsPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( this.pathControl, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.NORTH );
+		this.addComponent( this.thumbnailsPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
 	}
 	protected PathControl createPathControl( java.io.File rootDirectory ) {
 		return new PathControl( rootDirectory ) {

@@ -55,6 +55,11 @@ public class GetsPane extends edu.cmu.cs.dennisc.croquet.KWidget {
 		this.setBackgroundColor( java.awt.Color.YELLOW );
 		this.setForegroundColor( java.awt.Color.GRAY );
 	}
+	//todo: remove
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.FlowLayout();
+	}
 	public GetsPane( boolean isTowardLeadingEdge ) {
 		this( isTowardLeadingEdge, 2 );
 	}
@@ -62,7 +67,7 @@ public class GetsPane extends edu.cmu.cs.dennisc.croquet.KWidget {
 		return getFont().getSize2D() * 1.4f;
 	}
 	@Override
-	public java.awt.Dimension getPreferredSize() {
+	protected java.awt.Dimension getPreferedSize( java.awt.Dimension jPreferedSize ) {
 		int height = (int)getArrowHeight();
 		int width = height * this.length + 1;
 		return new java.awt.Dimension( width, height );
@@ -104,8 +109,7 @@ public class GetsPane extends edu.cmu.cs.dennisc.croquet.KWidget {
 	}
 	
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
+	protected void paintComponent( java.awt.Graphics2D g2 ) {
 		int halfLineSize = getHeight() / 5;
 		int yTop = 0;
 		int yBottom = getHeight() - 1;
@@ -127,14 +131,13 @@ public class GetsPane extends edu.cmu.cs.dennisc.croquet.KWidget {
 				xPoints[ i ] = getWidth() - xPoints[ i ];
 			}
 		}
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.setRenderingHint( g, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.setRenderingHint( g2, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
-		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		g2.setPaint( this.getGradientPaint() );
 
-		g.fillPolygon( xPoints, yPoints, xPoints.length );
-		g.setColor( this.getForegroundColor() );
-		g.drawPolygon( xPoints, yPoints, xPoints.length );
+		g2.fillPolygon( xPoints, yPoints, xPoints.length );
+		g2.setColor( this.getForegroundColor() );
+		g2.drawPolygon( xPoints, yPoints, xPoints.length );
 	}
 //	public static void main( String[] args ) {
 //		javax.swing.JComponent.setDefaultLocale( new java.util.Locale( "ar" ) );

@@ -147,19 +147,16 @@ class FileSystemPane extends TabContentPane {
 			}
 		} );
 		
-		javax.swing.JLabel prefixLabel = new javax.swing.JLabel( "file:" );
-		javax.swing.JPanel pane = new javax.swing.JPanel();
+		edu.cmu.cs.dennisc.croquet.KBorderPanel pane = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
 		pane.setOpaque( false );
-		pane.setLayout( new java.awt.BorderLayout() );
-		pane.add( prefixLabel, java.awt.BorderLayout.WEST );
-		pane.add( this.textField, java.awt.BorderLayout.CENTER );
-		pane.add( browseButtton, java.awt.BorderLayout.EAST );
+		pane.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "file:" ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.WEST );
+		pane.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.textField ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
+		pane.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( browseButtton ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.EAST );
 
-		this.setLayout( new java.awt.BorderLayout() );
-		this.add( pane, java.awt.BorderLayout.NORTH );
+		this.addComponent( pane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.NORTH );
 	}
 	private void handleBrowse( java.awt.event.ActionEvent e ) {
-		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this, org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true );
+		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.getJComponent(), org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true );
 		if( file != null ) {
 			this.textField.setText( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
 		}
@@ -183,7 +180,7 @@ class FileSystemPane extends TabContentPane {
 /**
  * @author Dennis Cosgrove
  */
-public class OpenProjectPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< java.net.URI > {
+public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane();
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private TabContentPane templatesPane;
@@ -203,10 +200,10 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< ja
 		};
 		for( TabContentPane tabPane : tabPanes ) { 
 			if( tabPane != null ) {
-				tabPane.setInputPane( this );
-				javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( tabPane );
+				tabPane.setInputPanel( this );
+				edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( tabPane );
 				scrollPane.setOpaque( false );
-				scrollPane.setBackground( tabPane.getBackground() );
+				scrollPane.setBackgroundColor( tabPane.getBackgroundColor() );
 				scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 				//scrollPane.setHorizontalScrollBarPolicy( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
 				//scrollPane.setVerticalScrollBarPolicy( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
@@ -222,9 +219,9 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< ja
 				OpenProjectPane.this.updateOKButton();
 			}
 		} );
-		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		this.add( this.tabbedPane );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.tabbedPane ) );
 	}
+	
 	
 	private TabContentPane getSelectedTabPane() {
 		java.awt.Component selectedComponent = this.tabbedPane.getSelectedComponent();
@@ -251,11 +248,11 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< ja
 		}
 	}
 	
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		int longerSideLength = 650;
-		return new java.awt.Dimension( longerSideLength, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( longerSideLength ) );
-	}
+//	@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		int longerSideLength = 650;
+//		return new java.awt.Dimension( longerSideLength, edu.cmu.cs.dennisc.math.GoldenRatio.getShorterSideLength( longerSideLength ) );
+//	}
 	public void selectAppropriateTab( boolean isNew ) {
 		TabContentPane tabPane;
 		if( isNew ) {
@@ -275,23 +272,23 @@ public class OpenProjectPane extends edu.cmu.cs.dennisc.inputpane.KInputPane< ja
 	public boolean isOKButtonValid() {
 		return super.isOKButtonValid() && this.getActualInputValue() != null;
 	}
-	public static void main( String[] args ) {
-//		java.util.List<String> paths = new java.util.LinkedList< String >();
-//		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/b.a3p" );
-//		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/a.a3p" );
-//		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/c.a3p" );
-//		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.setAndCommitValue( paths );
-//		java.util.List<String> postPaths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
-//		edu.cmu.cs.dennisc.print.PrintUtilities.println( postPaths );
-		
-		org.alice.ide.FauxIDE ide = new org.alice.ide.FauxIDE();
-		
-		OpenProjectPane openProjectPane = new OpenProjectPane( null );
-		openProjectPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
-		java.net.URI uri = openProjectPane.showInJDialog( null );
-		if( uri != null ) {
-			edu.cmu.cs.dennisc.print.PrintUtilities.println( uri );
-		}
-		System.exit( 0 );
-	}
+//	public static void main( String[] args ) {
+////		java.util.List<String> paths = new java.util.LinkedList< String >();
+////		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/b.a3p" );
+////		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/a.a3p" );
+////		paths.add( "C:/Documents and Settings/estrian/My Documents/Alice3/MyProjects/c.a3p" );
+////		org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.setAndCommitValue( paths );
+////		java.util.List<String> postPaths = org.alice.ide.preferences.GeneralPreferences.getSingleton().recentProjectPaths.getValue();
+////		edu.cmu.cs.dennisc.print.PrintUtilities.println( postPaths );
+//		
+//		org.alice.ide.FauxIDE ide = new org.alice.ide.FauxIDE();
+//		
+//		OpenProjectPane openProjectPane = new OpenProjectPane( null );
+//		openProjectPane.setPreferredSize( new java.awt.Dimension( 640, 480 ) );
+//		java.net.URI uri = openProjectPane.showInJDialog( null );
+//		if( uri != null ) {
+//			edu.cmu.cs.dennisc.print.PrintUtilities.println( uri );
+//		}
+//		System.exit( 0 );
+//	}
 }

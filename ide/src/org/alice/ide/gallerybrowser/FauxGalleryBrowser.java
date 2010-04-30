@@ -49,10 +49,10 @@ public class FauxGalleryBrowser extends AbstractGalleryBrowser {
 	public FauxGalleryBrowser( java.io.File galleryRootDirectory ) {
 		this.initialize( new java.io.File( galleryRootDirectory, "thumbnails" ) );
 	}
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 256 );
-	}
+//	@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumHeight( super.getPreferredSize(), 256 );
+//	}
 	@Override
 	protected void handleFileActivation( java.io.File file ) {
 	}

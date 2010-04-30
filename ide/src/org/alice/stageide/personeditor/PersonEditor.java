@@ -47,7 +47,7 @@ package org.alice.stageide.personeditor;
  */
 public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Person > {
 //public class PersonEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
-	private javax.swing.JSplitPane splitPane;
+	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane splitPane;
 	private PersonViewer personViewer = PersonViewer.getSingleton();
 	private IngredientsPane ingredientsPane = new IngredientsPane() {
 		@Override
@@ -74,12 +74,15 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 			}			
 		} );
 //		this.personViewer.initializeValues( this.person );
-		this.splitPane = new javax.swing.JSplitPane( javax.swing.JSplitPane.HORIZONTAL_SPLIT, this.personViewer, this.ingredientsPane );
+		this.splitPane = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane( this.personViewer, this.ingredientsPane );
 		this.splitPane.setDividerLocation( 400 );
-		this.setLayout( new java.awt.GridLayout( 1, 1 ) );
-		this.add( this.splitPane );
+		this.addComponent( this.splitPane );
 	}
 	
+	@Override
+		protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+			return new java.awt.GridLayout( 1, 1 );
+		}
 	public org.alice.apis.stage.Person getPerson() {
 		org.alice.apis.stage.Person rv;
 		

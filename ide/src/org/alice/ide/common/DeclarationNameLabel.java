@@ -63,6 +63,10 @@ public class DeclarationNameLabel extends edu.cmu.cs.dennisc.croquet.KLabel {
 		this.updateText();
 		this.setForegroundColor( java.awt.Color.BLACK );
 	}
+	public DeclarationNameLabel( edu.cmu.cs.dennisc.alice.ast.AbstractDeclaration declaration, float fontScaleFactor ) {
+		this( declaration );
+		this.scaleFont( fontScaleFactor );
+	}
 	@Override
 	protected void adding() {
 		super.adding();

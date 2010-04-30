@@ -45,11 +45,11 @@ package org.alice.interact.operations;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractSetLocalTransformationActionOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+public abstract class AbstractSetLocalTransformationActionOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
 	private boolean isDoRequired;
 	private edu.cmu.cs.dennisc.animation.Animator animator;
-	public AbstractSetLocalTransformationActionOperation( java.util.UUID groupUUID, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
-		super( groupUUID );
+	public AbstractSetLocalTransformationActionOperation( java.util.UUID groupUUID, java.util.UUID individualId, boolean isDoRequired, edu.cmu.cs.dennisc.animation.Animator animator ) {
+		super( groupUUID, individualId );
 		this.isDoRequired = isDoRequired;
 		this.animator = animator;
 	}

@@ -52,7 +52,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.operation
 		super( groupUUID, individualId );
 		this.setName( name );
 	}
-	protected final void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext, final FieldDeclaredInAlice field, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, final FieldDeclaredInAlice field, java.util.Set< FieldDeclaredInAlice > referencedFields, java.util.Set< FieldDeclaredInAlice > reassignedFields ) {
 		if( field != null ) {
 			final edu.cmu.cs.dennisc.alice.ast.FieldModifierFinalVolatileOrNeither prevFinalVolatileOrNeither = field.finalVolatileOrNeither.getValue();
 			final edu.cmu.cs.dennisc.alice.ast.AbstractType prevValueType = field.valueType.getValue();
@@ -65,7 +65,7 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.operation
 				final edu.cmu.cs.dennisc.alice.ast.AbstractType nextValueType = tempField.valueType.getValue();
 				final String nextName = tempField.getName();
 				final edu.cmu.cs.dennisc.alice.ast.Expression nextInitializer = tempField.initializer.getValue();
-				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
 						field.finalVolatileOrNeither.setValue( nextFinalVolatileOrNeither );
@@ -88,10 +88,10 @@ public abstract class AbstractEditFieldOperation extends org.alice.ide.operation
 					}
 				} );
 			} else {
-				actionContext.cancel();
+				context.cancel();
 			}
 		} else {
-			actionContext.cancel();
+			context.cancel();
 		}
 	}
 }

@@ -296,12 +296,16 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 		protected E getResource() {
 			return this.resource;
 		}
-		protected abstract java.awt.Component createPreviewComponent();
+		protected abstract javax.swing.JComponent createPreviewComponent();
 		@Override
-		protected java.util.List< java.awt.Component[] > createComponentRows() {
-			java.util.List< java.awt.Component[] > rv = super.createComponentRows();
-			javax.swing.JLabel label = new edu.cmu.cs.dennisc.croquet.KLabel( "preview:" );
-			rv.add( new java.awt.Component[] { label, this.createPreviewComponent() } );
+		protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+			rv = super.updateComponentRows( rv );
+			rv.add( 
+					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
+							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),
+							new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.createPreviewComponent() )
+					) 
+			);
 			return rv;
 		}
 		//		@Override
@@ -315,7 +319,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 			super( imageResource );
 		}
 		@Override
-		protected java.awt.Component createPreviewComponent() {
+		protected javax.swing.JComponent createPreviewComponent() {
 			java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( this.getResource() );
 			return new edu.cmu.cs.dennisc.javax.swing.components.JImageView( bufferedImage, 256 );
 		}
@@ -326,7 +330,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 			super( audioResource );
 		}
 		@Override
-		protected java.awt.Component createPreviewComponent() {
+		protected javax.swing.JComponent createPreviewComponent() {
 			final edu.cmu.cs.dennisc.javax.swing.components.JBorderPane rv = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane() {
 				@Override
 				public java.awt.Dimension getPreferredSize() {
@@ -555,21 +559,21 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 
 		javax.swing.table.JTableHeader tableHeader = this.table.getTableHeader();
 		tableHeader.setReorderingAllowed( false );
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.table );
+		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.table ) );
 		scrollPane.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 		//this.table.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.addComponent( scrollPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
 
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		edu.cmu.cs.dennisc.croquet.KPanel pane = edu.cmu.cs.dennisc.croquet.KGridPanel.createSingleColumnGridPane(  
 				application.createButton( this.addResourceOperation ),
 				application.createButton( this.removeResourceOperation ), 
-				javax.swing.Box.createVerticalStrut( 8 ), 
+				edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 8 ), 
 				application.createButton( this.renameResourceOperation ), 
 				application.createButton( this.replaceResourceOperation ) 
 		);
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KPageAxisPanel( pane, application.createGlue() ), java.awt.BorderLayout.EAST );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KPageAxisPanel( pane, application.createGlue() ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.EAST );
 		this.handleSelection();
 	}
 
@@ -646,8 +650,8 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 		super.removed();
 	}
 
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 400 );
-	}
+//	@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 400 );
+//	}
 }

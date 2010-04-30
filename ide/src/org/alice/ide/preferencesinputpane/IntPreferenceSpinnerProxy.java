@@ -52,7 +52,7 @@ public class IntPreferenceSpinnerProxy extends PreferenceLabeledPaneProxy<Intege
 		//edu.cmu.cs.dennisc.preference.IntPreference intPreference = (edu.cmu.cs.dennisc.preference.IntPreference)preference;
 		javax.swing.SpinnerNumberModel model = new javax.swing.SpinnerNumberModel( (int)preference.getValue(), minimum, maximum, stepSize );
 		this.spinner = new javax.swing.JSpinner( model );
-		this.createPane( spinner );
+		this.createPane( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.spinner ) );
 	}
 	@Override
 	public void setAndCommitValue() {

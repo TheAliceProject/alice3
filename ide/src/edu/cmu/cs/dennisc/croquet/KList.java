@@ -51,4 +51,23 @@ public class KList<E> extends KComponent< javax.swing.JList > {
 	protected javax.swing.JList createJComponent() {
 		return new javax.swing.JList();
 	}
+	public void setListData( E... values ) {
+		this.getJComponent().setListData( values );
+	}
+	public E getSelectedValue() {
+		return (E)this.getJComponent().getSelectedValue();
+	}
+	public void setSelectedIndex( int index ) {
+		this.getJComponent().setSelectedIndex( index );
+	}
+	public void setSelectedValue( E value, boolean shouldScroll ) {
+		this.getJComponent().setSelectedValue( value, shouldScroll );
+	}
+	
+	public void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
+		this.getJComponent().addListSelectionListener( listSelectionListener );
+	}
+	public void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
+		this.getJComponent().removeListSelectionListener( listSelectionListener );
+	}
 }

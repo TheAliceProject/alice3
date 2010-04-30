@@ -55,7 +55,7 @@ public abstract class KAxisPanel extends KPanel {
 		}
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new javax.swing.BoxLayout( jPanel, this.axis );
 	}
 }

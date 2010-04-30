@@ -50,7 +50,7 @@ public class KGridBagPanel extends KPanel {
 	public KGridBagPanel() {
 	}
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridBagLayout();
 	}
 	

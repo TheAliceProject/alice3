@@ -75,11 +75,11 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane implements edu.cmu.cs.dennisc.zoot.DropReceptor {
+public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implements edu.cmu.cs.dennisc.zoot.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	private StatementListPropertyPane currentUnder;
-	private javax.swing.JScrollPane scrollPane;
+	private edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane;
 
 	private edu.cmu.cs.dennisc.croquet.Application.LocaleObserver localeObserver = new edu.cmu.cs.dennisc.croquet.Application.LocaleObserver() {
 		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
@@ -94,22 +94,22 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 		this.code = code;
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setBackground( getIDE().getCodeDeclaredInAliceColor( this.code ) );
+		this.setBackgroundColor( getIDE().getCodeDeclaredInAliceColor( this.code ) );
 		this.setDoubleBuffered( true );
 		this.refresh();
 	}
 
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		edu.cmu.cs.dennisc.croquet.Application.getSingleton().addLocaleObserver( this.localeObserver );
 		this.refresh();
 		this.repaint();
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		edu.cmu.cs.dennisc.croquet.Application.getSingleton().removeLocaleObserver( this.localeObserver );
-		super.removeNotify();
+		super.removed();
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 		return this;
 	}
 	public void refresh() {
-		edu.cmu.cs.dennisc.java.awt.ForgetUtilities.forgetAndRemoveAllComponents( this );
+		this.forgetAndRemoveAllComponents();
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
 			edu.cmu.cs.dennisc.croquet.KComponent< ? > parametersPane = createParametersPane( codeDeclaredInAlice );
@@ -197,23 +197,23 @@ public class CodeEditor extends edu.cmu.cs.dennisc.javax.swing.components.JPageA
 			//			panel.setLayout( new java.awt.GridLayout() );
 			//			panel.add( bodyPane );
 
-			this.scrollPane = new javax.swing.JScrollPane( bodyPane );
-			this.scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
+			this.scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( bodyPane );
+			this.scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			this.scrollPane.setBorder( null );
 			this.scrollPane.setOpaque( false );
-			this.scrollPane.getViewport().setOpaque( false );
+			this.scrollPane.getJComponent().getViewport().setOpaque( false );
 			//this.scrollPane.setBackground( java.awt.Color.RED );
 			this.scrollPane.setAlignmentX( javax.swing.JComponent.LEFT_ALIGNMENT );
-			this.add( header );
+			this.addComponent( header );
 			if( this.getIDE().isEmphasizingClasses() || this.getIDE().isInstanceLineDesired() == false ) {
 				//pass
 			} else {
-				header.add( new InstanceLine( this.code ) );
+				header.addComponent( new InstanceLine( this.code ) );
 			}
 			//			this.add( javax.swing.Box.createVerticalStrut( 8 ) );
-			this.add( scrollPane );
+			this.addComponent( scrollPane );
 		}
-		this.revalidate();
+		this.revalidateAndRepaint();
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();

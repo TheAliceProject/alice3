@@ -370,6 +370,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
 
 	public ArrayInitializerPane( edu.cmu.cs.dennisc.alice.ast.ExpressionListProperty arrayExpressions ) {
+		super( 8, 0 );
 		this.arrayExpressions = arrayExpressions;
 		this.arrayExpressions.addListPropertyListener( new edu.cmu.cs.dennisc.property.event.SimplifiedListPropertyAdapter< edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			@Override
@@ -386,7 +387,6 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		} );
 		ListPropertyComboBoxModel< edu.cmu.cs.dennisc.alice.ast.Expression > comboBoxModel = new ListPropertyComboBoxModel< edu.cmu.cs.dennisc.alice.ast.Expression >( this.arrayExpressions );
 		this.list = new ExpressionList( new ItemSelectionOperation( comboBoxModel ) );
-		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 		this.updateButtons();
 
 		edu.cmu.cs.dennisc.croquet.KGridBagPanel buttonPane = new edu.cmu.cs.dennisc.croquet.KGridBagPanel();
@@ -404,12 +404,13 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 		this.addComponent( buttonPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.EAST );
 
-		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( this.list ) {
-			@Override
-			public java.awt.Dimension getPreferredSize() {
-				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
-			}
-		};
+		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( this.list );
+//		{
+//			@Override
+//			public java.awt.Dimension getPreferredSize() {
+//				return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumSize( super.getPreferredSize(), 240, 180 );
+//			}
+//		};
 		scrollPane.setBorder( null );
 		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
 	}

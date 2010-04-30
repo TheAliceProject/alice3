@@ -45,7 +45,7 @@ package org.alice.ide.declarationpanes;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.PreviewInputPane< E > {
+public abstract class AbstractDeclarationPane<T> extends org.alice.ide.preview.PreviewInputPane< T > {
 	class IsReassignableStateOperation extends org.alice.ide.operations.AbstractBooleanStateOperation {
 		public IsReassignableStateOperation( boolean initialValue ) {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, initialValue, "(is constant)", "(is variable)" );
@@ -145,10 +145,10 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 		} );
 	}
 	
-	@Override
-	public java.awt.Dimension getPreferredSize() {
-		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
-	}
+//	@Override
+//	public java.awt.Dimension getPreferredSize() {
+//		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
+//	}
 
 	protected boolean isReassignable() {
 		if( this.isReassignableStateOperation != null ) {
@@ -242,7 +242,7 @@ public abstract class AbstractDeclarationPane<E> extends org.alice.ide.preview.P
 	}
 	
 	protected abstract boolean isEditableInitializerComponentDesired();
-	protected java.awt.Component createInitializerComponent() {
+	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createInitializerComponent() {
 		if( this.isEditableInitializerComponentDesired() ) {
 			this.initializerPane = new org.alice.ide.initializer.InitializerPane( bogusNode );
 		} else {

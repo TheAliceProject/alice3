@@ -94,8 +94,8 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 		super.removed();
 	}
 	
-	@Override
-	public java.awt.Dimension getMinimumSize() {
-		return this.implementor.adjustMinimumSize( super.getMinimumSize() );
-	}
+//	@Override
+//	public java.awt.Dimension getMinimumSize() {
+//		return this.implementor.adjustMinimumSize( super.getMinimumSize() );
+//	}
 }

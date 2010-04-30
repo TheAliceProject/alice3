@@ -279,6 +279,10 @@ public abstract class Application {
 				super.removed();
 				dragOperation.removeDragComponent(this);
 			}
+			@Override
+			protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+				return new java.awt.FlowLayout();
+			}
 		};
 	}
 	
@@ -460,6 +464,20 @@ public abstract class Application {
 			}
 		};
 	}
+
+	public KComponent< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
+		return new KComponent< javax.swing.Box.Filler >() {
+			@Override
+			protected javax.swing.Box.Filler createJComponent() {
+				return new javax.swing.Box.Filler( size, size, size );
+			}
+		};
+	}
+	public KComponent< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
+		return this.createRigidArea( new java.awt.Dimension( width, height ) );
+	}
+	
+	
 	
 	@Deprecated
 	public <T> T showInJDialog( edu.cmu.cs.dennisc.inputpane.KInputPane<T> inputPane, String title, boolean isModal ) {
@@ -469,5 +487,10 @@ public abstract class Application {
 	public javax.swing.JFrame getJFrame() {
 		//return ((javax.swing.JFrame)this.getFrame().getAWTFrame()).getRootPane();
 		return (javax.swing.JFrame)this.getFrame().getAWTFrame();
+	}
+	
+	@Deprecated
+	public boolean isDragInProgress() {
+		return false;
 	}
 }

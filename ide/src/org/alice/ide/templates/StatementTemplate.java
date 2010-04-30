@@ -88,9 +88,9 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		super.removed();
 	}
 	@Override
-	public boolean contains( int x, int y ) {
+	protected boolean contains( int x, int y, boolean jContains ) {
 		if( getIDE().isSelectedFieldInScope() ) {
-			return super.contains( x, y );
+			return super.contains( x, y, jContains );
 		} else {
 			return false;
 		}

@@ -256,7 +256,10 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
 					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
-						return new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( " revolutions" ) );
+						return new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
+								factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), 
+								new edu.cmu.cs.dennisc.croquet.KLabel( " revolutions" ) 
+						);
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
 						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );
 					}

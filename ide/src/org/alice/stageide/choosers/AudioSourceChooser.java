@@ -126,7 +126,7 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 	}
 	
 	private BogusNode bogusNode = new BogusNode();
-	private java.awt.Component dropDown;
+	private edu.cmu.cs.dennisc.croquet.KComponent< ? > dropDown;
 	
 	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
 	private TimeSlider startTimeSlider = new TimeSlider();
@@ -256,16 +256,16 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 				"stop marker:" };
 	}
 	@Override
-	public java.awt.Component[] getComponents() {
-		return new java.awt.Component[] { 
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents() {
+		return new edu.cmu.cs.dennisc.croquet.KComponent< ? >[] { 
 				this.dropDown, 
-				new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( this.volumeLevelControl, javax.swing.Box.createHorizontalGlue() ), 
-				javax.swing.Box.createVerticalStrut( 16 ), 
+				new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( this.volumeLevelControl, this.getIDE().createHorizontalGlue() ), 
+				this.getIDE().createVerticalStrut( 16 ), 
 				this.startTimeSlider, 
 				this.stopTimeSlider };
 	}
 	@Override
-	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
+	public java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
 		super.updateRows( rv );
 		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( javax.swing.Box.createRigidArea( new java.awt.Dimension( 0, 32 ) ), null ) );
 		rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( edu.cmu.cs.dennisc.zoot.ZManager.createButton( testOperation ), null ) );

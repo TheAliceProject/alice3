@@ -44,8 +44,8 @@ package org.alice.ide.editorstabbedpane;
 
 public class DeclarationsUIResource extends edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane implements javax.swing.plaf.UIResource {
 	public DeclarationsUIResource() {
-		this.add( new DeclarationsDropDown() );
-		this.add( new org.alice.ide.common.ThisPane() );
+		this.add( new DeclarationsDropDown().getJComponent() );
+		this.add( new org.alice.ide.common.ThisPane().getJComponent() );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 2, 2, 0 ) );
 	}
 }

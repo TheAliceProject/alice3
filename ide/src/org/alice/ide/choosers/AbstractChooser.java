@@ -70,18 +70,18 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
-	protected abstract java.awt.Component[] getComponents();
-	public java.util.List< java.awt.Component[] > updateRows( java.util.List< java.awt.Component[] > rv ) {
+	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents();
+	public java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
 		String[] labelTexts = this.getLabelTexts();
-		java.awt.Component[] components = this.getComponents();
+		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components = this.getComponents();
 		final int N = labelTexts.length;
 		for( int i=0; i<N; i++ ) {
 			rv.add( 
-					edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( 
-						edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createColumn0Label( labelTexts[ i ] ), 
-						new edu.cmu.cs.dennisc.javax.swing.components.JLineAxisPane( 
+					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
+						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( labelTexts[ i ] ), 
+						new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
 								components[ i ],
-								javax.swing.Box.createHorizontalGlue()
+								this.getIDE().createHorizontalGlue()
 						)
 					) 
 			);
