@@ -1,11 +1,23 @@
 package org.alice.interact.manipulator;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.alice.apis.moveandturn.AngleInDegrees;
 import org.alice.interact.AbstractDragAdapter;
 import org.alice.interact.GlobalDragAdapter;
 import org.alice.interact.SnapLine;
+import org.alice.interact.SnapSphere;
+import org.alice.interact.VectorUtilities;
+import org.alice.interact.handle.RotationRingHandle;
 
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.math.Angle;
+import edu.cmu.cs.dennisc.math.AngleInRadians;
 import edu.cmu.cs.dennisc.math.AxisAlignedBox;
+import edu.cmu.cs.dennisc.math.AxisRotation;
+import edu.cmu.cs.dennisc.math.ForwardAndUpGuide;
+import edu.cmu.cs.dennisc.math.OrthogonalMatrix3x3;
 import edu.cmu.cs.dennisc.math.Point3;
 import edu.cmu.cs.dennisc.math.Vector3;
 import edu.cmu.cs.dennisc.scenegraph.AbstractCamera;
@@ -24,6 +36,7 @@ public class SnapUtilities
 	public static final double SNAP_TO_GRID_DISTANCE = .1d;
 	public static final double DEFAULT_GRID_SPACING = .5d;
 	public static final double MIN_SNAP_RETURN_VALUE = .1d;
+	public static final double ANGLE_SNAP_DISTANCE_IN_RADIANS = (2 * Math.PI) / 30d;
 	
 	
 	
@@ -31,6 +44,7 @@ public class SnapUtilities
 	private static final SnapLine Y_AXIS_LINE = new SnapLine(Vector3.accessPositiveYAxis());
 	private static final SnapLine Z_AXIS_LINE = new SnapLine(Vector3.accessPositiveZAxis());
 	private static final SnapLine ARBITRARY_AXIS_LINE = new SnapLine(Vector3.accessPositiveXAxis());
+	private static final SnapSphere ANGLE_SNAP_SPHERE = new SnapSphere();
 	
 	private static final double MIN_SNAP_DELTA = .000001d;
 	
@@ -103,12 +117,29 @@ public class SnapUtilities
 		ARBITRARY_AXIS_LINE.setParent(null);
 	}
 	
-	public static void hideSnapLines()
+	public static void hideMovementSnapVisualization()
 	{
 		hideZAxis();
 		hideYAxis();
 		hideXAxis();
 		hideArbitraryAxis();
+	}
+	
+	public static void hideRotationSnapVisualization()
+	{
+		hideSnapSphere();
+	}
+	
+	public static void showSnapSphere(Point3 location, Point3 ringCenter, Composite parent)
+	{
+		ANGLE_SNAP_SPHERE.setParent(parent);
+		ANGLE_SNAP_SPHERE.setTranslationOnly(location, AsSeenBy.SCENE);
+		ANGLE_SNAP_SPHERE.setLineDirection(ringCenter, location);
+	}
+	
+	public static void hideSnapSphere()
+	{
+		ANGLE_SNAP_SPHERE.setParent(null);
 	}
 	
 	public static Visual getSGVisualForTransformable( Transformable t )
@@ -306,7 +337,9 @@ public class SnapUtilities
 		toReferenceFrame.transform(originalPosition);
 		Point3 returnSnapPosition = new Point3(originalPosition);
 		boolean didSnap = false;
-		Vector3 movementDelta = Vector3.createSubtraction( originalPosition, toSnap.getAbsoluteTransformation().translation);
+		Point3 currentObjectTranslation = toSnap.getAbsoluteTransformation().translation;
+		toReferenceFrame.transform(currentObjectTranslation);
+		Vector3 movementDelta = Vector3.createSubtraction( originalPosition, currentObjectTranslation);
 		if (movementDelta.x != 0)
 		{
 			double currentPos = originalPosition.x;
@@ -395,6 +428,120 @@ public class SnapUtilities
 		}
 		//Apply the new snap position
 		return snapPosition;
+	}
+	
+	private static List<Vector3> getSnapVectors(Vector3 guideForwardAxis, Vector3 guideUpAxis, Angle snapAmount)
+	{
+		LinkedList<Vector3> snapVectors = new LinkedList<Vector3>();
+		OrthogonalMatrix3x3 rotationMatrix = OrthogonalMatrix3x3.createFromForwardAndUpGuide(guideForwardAxis, guideUpAxis);
+		double currentAngle = 0;
+		while (currentAngle < 360d)
+		{
+			snapVectors.add(Vector3.createMultiplication(rotationMatrix.backward, -1));
+			rotationMatrix.applyRotationAboutYAxis(snapAmount);
+			currentAngle += snapAmount.getAsDegrees();
+		}
+		return snapVectors;
+	}
+	
+	private static Vector3 snapAxis(Vector3 inputAxis, Vector3 guideForwardAxis, Vector3 guideUpAxis, Angle snapDegrees)
+	{
+		List<Vector3> snapVectors = getSnapVectors(guideForwardAxis, guideUpAxis, snapDegrees);
+		for (Vector3 snapVector : snapVectors)
+		{
+			AngleInRadians angleBetween = VectorUtilities.getAngleBetweenVectors(inputAxis, snapVector);
+			if (Math.abs(angleBetween.getAsRadians()) <= ANGLE_SNAP_DISTANCE_IN_RADIANS)
+			{
+				return snapVector;
+			}
+		}
+		return inputAxis;
+	}
+	
+//	public static Vector3 snapObjectRotation(Vector3 preRotateForward, Vector3 currentForward, Vector3 rotationAxis, Angle snapAngle, ReferenceFrame referenceFrame)
+//	{
+//		AffineMatrix4x4 toReferenceFrame = referenceFrame.getInverseAbsoluteTransformation();
+//		AffineMatrix4x4 referenceFrameTransform = referenceFrame.getAbsoluteTransformation();
+//		OrthogonalMatrix3x3 currentOrientationInReferenceFrame = new OrthogonalMatrix3x3(currentOrientation);
+//		toReferenceFrame.applyOrientation(currentOrientationInReferenceFrame);
+//		boolean didSnap = false;
+//		OrthogonalMatrix3x3 originalOrientationInReferenceFrame = preRotateTransform.orientation;
+//		toReferenceFrame.applyOrientation(originalOrientationInReferenceFrame);
+//
+//		Vector3 snapRightAxis = currentOrientation.right;
+//		Vector3 snapUpAxis = currentOrientation.up;
+//		Vector3 snapBackwardAxis = currentOrientation.backward;
+//		if (!originalOrientationInReferenceFrame.right.isWithinEpsilonOf(currentOrientationInReferenceFrame.right, MIN_SNAP_DELTA))
+//		{
+//			snapRightAxis = snapAxis(currentOrientation.right, referenceFrameTransform.orientation.right, referenceFrameTransform.orientation.up, snapAngle);
+//		}
+//		if (!originalOrientationInReferenceFrame.up.isWithinEpsilonOf(currentOrientationInReferenceFrame.up, MIN_SNAP_DELTA))
+//		{
+//			snapUpAxis = snapAxis(currentOrientation.up, referenceFrameTransform.orientation.up, referenceFrameTransform.orientation.backward, snapAngle);
+//		}
+//		if (!originalOrientationInReferenceFrame.backward.isWithinEpsilonOf(currentOrientationInReferenceFrame.backward, MIN_SNAP_DELTA))
+//		{
+//			snapBackwardAxis = snapAxis(currentOrientation.backward, referenceFrameTransform.orientation.backward, referenceFrameTransform.orientation.up, snapAngle);
+//		}
+//		return new OrthogonalMatrix3x3(snapRightAxis, snapUpAxis, snapBackwardAxis);
+//	}
+	
+//	public static OrthogonalMatrix3x3 doRotationSnapping(AffineMatrix4x4 preRotateTransform, OrthogonalMatrix3x3 currentOrientation, AbstractDragAdapter dragAdapter, ReferenceFrame referenceFrame, AbstractCamera camera)
+//	{
+//		OrthogonalMatrix3x3 snapOrientation = new OrthogonalMatrix3x3(currentOrientation);
+//		
+//		//Try snapping to various snaps
+//		if (dragAdapter.getSnapState().shouldSnapToRotation())
+//		{
+//			snapOrientation = SnapUtilities.snapObjectRotation(preRotateTransform, currentOrientation, dragAdapter.getSnapState().getRotationSnapAngle(), referenceFrame);
+//		}
+//		//Visualize any snapping that happened
+////		if (camera != null)
+////		{
+////			SnapUtilities.showSnaprotation(camera, currentOrientation, snapOrientation, referenceFrame);
+////		}
+//		//Apply the new snap position
+//		return snapOrientation;
+//	}
+	
+	public static Angle snapObjectToAngle(Angle currentAngle, Angle snapAngleAmount)
+	{
+		double currentAngleInRadians = currentAngle.getAsRadians();
+		double snapAmountInRadians = snapAngleAmount.getAsRadians();
+		
+		int lowerMultiplier = (int)(currentAngleInRadians / snapAmountInRadians);
+		int upperMultiplier = ( currentAngleInRadians < 0 ) ? lowerMultiplier - 1 : lowerMultiplier + 1;
+		double lowerSnap = snapAmountInRadians * lowerMultiplier;
+		double upperSnap = snapAmountInRadians * upperMultiplier;
+		if (Math.abs(lowerSnap - currentAngleInRadians) <= ANGLE_SNAP_DISTANCE_IN_RADIANS)
+		{
+			return new AngleInRadians(lowerSnap);
+		}
+		if (Math.abs(upperSnap - currentAngleInRadians) <= ANGLE_SNAP_DISTANCE_IN_RADIANS)
+		{
+			return new AngleInRadians(upperSnap);
+		}
+		return currentAngle;
+		
+	}
+	
+	public static void showSnapRotation(RotationRingHandle rotationHandle)
+	{
+		AffineMatrix4x4 handleTransform = rotationHandle.getAbsoluteTransformation();
+		Vector3 snapDirection = Vector3.createMultiplication( handleTransform.orientation.backward, rotationHandle.getRadius() * -1);
+		Point3 snapSphereLocation = Point3.createAddition(handleTransform.translation, snapDirection);
+		showSnapSphere(snapSphereLocation, handleTransform.translation, rotationHandle.getRoot());
+	}
+	
+	public static Angle doRotationSnapping(Transformable t, Angle currentAngle, AbstractDragAdapter dragAdapter, RotationRingHandle rotationHandle, AbstractCamera camera)
+	{
+		Angle snapAngle = new AngleInRadians(currentAngle);
+		//Try snapping to various snaps
+		if (dragAdapter.getSnapState().shouldSnapToRotation())
+		{
+			snapAngle = snapObjectToAngle(currentAngle, dragAdapter.getSnapState().getRotationSnapAngle());
+		}
+		return snapAngle;
 	}
 
 }

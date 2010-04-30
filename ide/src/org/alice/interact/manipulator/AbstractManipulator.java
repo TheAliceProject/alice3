@@ -200,7 +200,7 @@ public abstract class AbstractManipulator {
 				this.dragAdapter.popHandleSet();
 			}
 		}
-		SnapUtilities.hideSnapLines();
+		SnapUtilities.hideMovementSnapVisualization();
 		triggerAllDeactivateEvents();
 	}
 	

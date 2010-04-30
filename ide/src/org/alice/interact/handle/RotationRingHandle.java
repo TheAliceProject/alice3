@@ -96,6 +96,8 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	protected Vector3 sphereDirection = new Vector3();
 	protected Vector3 handleOffset =  new Vector3();
 	
+	protected Transformable snapReference = new Transformable();
+	
 	protected HandlePosition handlePosition = HandlePosition.ORIGIN;
 	
 	protected DoubleTargetBasedAnimation radiusAnimation;
@@ -188,10 +190,17 @@ public class RotationRingHandle extends ManipulationHandle3D{
 		}
 	}
 	
+	public void initializeSnapReferenceFrame()
+	{
+		this.snapReference.setParent( this.manipulatedObject.getRoot() );
+		this.snapReference.setTransformation(this.manipulatedObject.getAbsoluteTransformation(), AsSeenBy.SCENE);
+		this.snapReference.setTranslationOnly(0, 0, 0, AsSeenBy.SCENE);
+	}
+	
 	@Override
 	public ReferenceFrame getSnapReferenceFrame()
 	{
-		return this.getReferenceFrame();
+		return this.snapReference;
 	}
 	
 	@Override
@@ -214,6 +223,11 @@ public class RotationRingHandle extends ManipulationHandle3D{
 	public Point3 getSphereLocation(ReferenceFrame referenceFrame)
 	{
 		return this.sphereTransformable.getTranslation( referenceFrame );
+	}
+	
+	public double getRadius()
+	{
+		return this.sgTorus.majorRadius.getValue();
 	}
 	
 	protected void placeSphere()

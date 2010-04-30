@@ -1,16 +1,38 @@
 package org.alice.interact;
 
+import edu.cmu.cs.dennisc.math.AngleInDegrees;
+
+import edu.cmu.cs.dennisc.math.Angle;
+
 public class SnapState 
 {
+	public static Integer[] ANGLE_SNAP_OPTIONS = {new Integer(15), new Integer(30), new Integer(45), new Integer(60), new Integer(90), new Integer(120), new Integer(180)};
+	
+	
+	
 	private boolean isSnapEnabled = true;
 	private boolean isSnapToGroundEnabled = true;
 	private boolean isSnapToGridEnabled = true;
+	private boolean isRotationSnapEnabled = true;
 	private double gridSpacing = .5d;
+	private Angle rotationSnapAngle = new AngleInDegrees(45); //In degrees
 	
 	
 	public SnapState()
 	{
 		
+	}
+	
+	public static Integer getAngleOptionForAngle(int angle)
+	{
+		for (Integer angleOption : ANGLE_SNAP_OPTIONS)
+		{
+			if (angleOption.equals(angle))
+			{
+				return angleOption;
+			}
+		}
+		return null;
 	}
 	
 	public void setShouldSnapToGroundEnabled(boolean shouldSnapToGround)
@@ -61,6 +83,36 @@ public class SnapState
 	public boolean isSnapEnabled()
 	{
 		return this.isSnapEnabled;
+	}
+	
+	public void setRotationSnapEnabled(boolean rotationSnapEnabled)
+	{
+		this.isRotationSnapEnabled = rotationSnapEnabled;
+	}
+	
+	public boolean shouldSnapToRotation()
+	{
+		return this.isSnapEnabled && this.isRotationSnapEnabled;
+	}
+	
+	public boolean isRotationSnapEnabled()
+	{
+		return this.isRotationSnapEnabled;
+	}
+	
+	public void setRotationSnapAngleInDegrees(double degrees)
+	{
+		this.rotationSnapAngle.setAsDegrees(degrees);
+	}
+	
+	public void setRotationSnapAngle(Angle snapAngle)
+	{
+		this.rotationSnapAngle = new AngleInDegrees(snapAngle);
+	}
+	
+	public Angle getRotationSnapAngle()
+	{
+		return this.rotationSnapAngle;
 	}
 	
 }
