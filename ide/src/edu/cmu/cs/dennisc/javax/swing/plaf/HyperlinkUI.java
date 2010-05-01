@@ -45,17 +45,25 @@ package edu.cmu.cs.dennisc.javax.swing.plaf;
 /**
  * @author Dennis Cosgrove
  */
-//public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
-public class HyperlinkUI extends javax.swing.plaf.ButtonUI {
+public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
 	private static HyperlinkUI hyperlinkUI = new HyperlinkUI();
 	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) { 
 		return hyperlinkUI;
 	}
 	@Override
-	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
-		g.setColor( java.awt.Color.YELLOW );
-		g.fillRect( 0, 0, c.getWidth(), c.getHeight() );
-		g.setColor( java.awt.Color.BLACK );
-		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, "http://", c.getSize() );
+	protected void paintText( java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle textRect, String text ) {
+		javax.swing.ButtonModel model = b.getModel();
+		java.awt.Color color;
+		if( model.isArmed() ) {
+			color = java.awt.Color.BLUE;
+		} else {
+			color = java.awt.Color.BLACK;
+		}
+		g.setColor( color );
+		java.awt.FontMetrics fm = g.getFontMetrics();
+		int x = textRect.x + this.getTextShiftOffset();
+		int y = textRect.y + fm.getAscent() + this.getTextShiftOffset();
+		g.drawString( text, x, y );
+		g.fillRect( x, y, textRect.width, 1 );
 	}
 }

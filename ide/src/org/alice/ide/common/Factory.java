@@ -221,7 +221,7 @@ public abstract class Factory {
 		if( indentCount > 0 || chunks.length > 1 ) {
 			edu.cmu.cs.dennisc.croquet.KLineAxisPanel rv = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel();
 			if( indentCount > 0 ) {
-				rv.addComponent( javax.swing.Box.createHorizontalStrut( indentCount * this.getPixelsPerIndent() ) );
+				rv.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( indentCount * this.getPixelsPerIndent() ) );
 			}
 			for( org.alice.ide.i18n.Chunk chunk : chunks ) {
 				edu.cmu.cs.dennisc.croquet.KComponent< ? > component = createComponent( chunk, owner );

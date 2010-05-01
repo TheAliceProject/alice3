@@ -172,7 +172,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.initializeIfNecessary();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
-		this.splitPane.setLeftComponent( this.getLGPanel() );
+		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.getLGPanel() ) );
 		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 		org.alice.ide.IDE.getSingleton().addFieldSelectionObserver( this.fieldSelectionObserver );
 	}
@@ -204,9 +204,9 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			this.mainCameraNavigatorWidget = new org.alice.interact.CameraNavigatorWidget( this.globalDragAdapter );
 			//final org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget = null;
 
-			edu.cmu.cs.dennisc.zoot.BooleanStateOperation isSceneEditorExpandedOperation = this.getIDE().getIsSceneEditorExpandedOperation();
-			final javax.swing.JCheckBox isSceneEditorExpandedCheckBox = edu.cmu.cs.dennisc.zoot.ZManager.createCheckBox( isSceneEditorExpandedOperation );
-			isSceneEditorExpandedCheckBox.setUI( new IsExpandedCheckBoxUI() );
+			edu.cmu.cs.dennisc.croquet.BooleanStateOperation isSceneEditorExpandedOperation = this.getIDE().getIsSceneEditorExpandedOperation();
+			final edu.cmu.cs.dennisc.croquet.KCheckBox isSceneEditorExpandedCheckBox = this.getIDE().createCheckBox( isSceneEditorExpandedOperation );
+			isSceneEditorExpandedCheckBox.getJComponent().setUI( new IsExpandedCheckBoxUI() );
 			final int X_PAD = 16;
 			final int Y_PAD = 10;
 			isSceneEditorExpandedCheckBox.setOpaque( false );
@@ -226,8 +226,8 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			} );
 
 			javax.swing.JPanel lgPanel = this.getLGPanel();
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox, INSET );
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.getIDE().getRunOperation() ), INSET );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouthEast( lgPanel, isSceneEditorExpandedCheckBox.getJComponent(), INSET );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthEast( lgPanel, this.getIDE().createButton( this.getIDE().getRunOperation() ).getJComponent(), INSET );
 			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addSouth( lgPanel, mainCameraNavigatorWidget, INSET );
 
 			this.globalDragAdapter.setAnimator( animator );
@@ -419,25 +419,25 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		javax.swing.SpringLayout springLayout = this.getLGSpringLayout();
 		java.awt.Container lgPanel = this.onscreenLookingGlass.getJPanel();
 		for( FieldTile fieldTile : this.fieldTiles ) {
-			springLayout.removeLayoutComponent( fieldTile );
-			this.onscreenLookingGlass.getJPanel().remove( fieldTile );
+			springLayout.removeLayoutComponent( fieldTile.getJComponent() );
+			this.onscreenLookingGlass.getJPanel().remove( fieldTile.getJComponent() );
 		}
 		this.fieldTiles.clear();
 		if( this.rootField != null ) {
 			FieldTile rootFieldTile = this.createFieldTile( this.rootField );
 			//rootFieldTile.setOpaque( true );
-			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, rootFieldTile, INSET );
+			edu.cmu.cs.dennisc.javax.swing.SpringUtilities.addNorthWest( lgPanel, rootFieldTile.getJComponent(), INSET );
 			this.fieldTiles.add( rootFieldTile );
-			java.awt.Component prev = rootFieldTile;
+			java.awt.Component prev = rootFieldTile.getJComponent();
 			if( rootField != null ) {
 				for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : rootField.valueType.getValue().getDeclaredFields() ) {
 					FieldTile fieldTile = createFieldTile( field );
 					//fieldTile.setOpaque( true );
-					this.onscreenLookingGlass.getJPanel().add( fieldTile );
+					this.onscreenLookingGlass.getJPanel().add( fieldTile.getJComponent() );
 					this.fieldTiles.add( fieldTile );
-					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile, 1, javax.swing.SpringLayout.SOUTH, prev );
-					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile, 10, javax.swing.SpringLayout.WEST, rootFieldTile );
-					prev = fieldTile;
+					springLayout.putConstraint( javax.swing.SpringLayout.NORTH, fieldTile.getJComponent(), 1, javax.swing.SpringLayout.SOUTH, prev );
+					springLayout.putConstraint( javax.swing.SpringLayout.WEST, fieldTile.getJComponent(), 10, javax.swing.SpringLayout.WEST, rootFieldTile.getJComponent() );
+					prev = fieldTile.getJComponent();
 				}
 			}
 		}

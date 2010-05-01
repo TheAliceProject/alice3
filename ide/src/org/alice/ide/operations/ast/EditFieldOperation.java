@@ -83,7 +83,7 @@ public class EditFieldOperation extends AbstractEditFieldOperation {
 					}
 				}
 			}
-			this.perform( context, field, referencedFields, reassignedFields );
+			this.perform( context, e, button, field, referencedFields, reassignedFields );
 		} else {
 			context.cancel();
 		}

@@ -57,6 +57,9 @@ public class KHyperlink extends KAbstractButton< javax.swing.JButton > {
 				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
 			}
 		};
+//		javax.swing.JButton rv = new javax.swing.JButton();
+		rv.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+		rv.setOpaque( false );
 		return rv;
 	}
 }

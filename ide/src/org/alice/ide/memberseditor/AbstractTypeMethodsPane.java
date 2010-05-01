@@ -53,7 +53,7 @@ abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
 
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+	protected Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
 		edu.cmu.cs.dennisc.croquet.KComponent< ? > component;
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)member;
@@ -71,7 +71,7 @@ abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 		} else {
 			component = null;
 		}
-		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] rv;
+		java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? > > rv;
 		if( component != null ) {
 			//line.add( javax.swing.Box.createHorizontalStrut( INDENT ) );
 			//if( member.isDeclaredInAlice() ) {
@@ -88,7 +88,7 @@ abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 					}
 				}
 			}
-			rv = new edu.cmu.cs.dennisc.croquet.KComponent< ? >[] { component };
+			rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new edu.cmu.cs.dennisc.croquet.KComponent< ? >[] { component } );
 		} else {
 			rv = null;
 		}

@@ -45,7 +45,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	private RandomPersonActionOperation randomPersonActionOperation = new RandomPersonActionOperation();
 	private LifeStageList lifeStageList = new LifeStageList();
 	private GenderList genderList = new GenderList();
@@ -55,14 +55,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 	private HairColorList hairColorList = new HairColorList();
 	private HairList hairList = new HairList();
 	private FullBodyOutfitList fullBodyOutfitList = new FullBodyOutfitList();
-	
-	@Deprecated
-	private static java.awt.Component createLabel( String text ) {
-		javax.swing.JLabel rv = new javax.swing.JLabel( text );
-		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
-		return rv;
-	}
-	
+
 	private static final java.awt.Color BACKGROUND_COLOR = new java.awt.Color( 220, 220, 255 );
 	/*package private*/ static final java.awt.Color SELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( java.awt.Color.YELLOW, 1.0, 0.3, 1.0 );
 	private static final java.awt.Color UNSELECTED_COLOR = edu.cmu.cs.dennisc.java.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
@@ -85,10 +78,10 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 		this.fullBodyOutfitList.setOpaque( false );
 
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
-		this.setBackground( BACKGROUND_COLOR );
+		this.setBackgroundColor( BACKGROUND_COLOR );
 		this.setOpaque( true );
 
-		this.lifeStageList.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
+		this.lifeStageList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
 		this.lifeStageList.setVisibleRowCount( 1 );
 		this.lifeStageList.setOpaque( false );
 
@@ -109,7 +102,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 		} );
 		
 		
-		this.genderList.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
+		this.genderList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
 		this.genderList.setVisibleRowCount( 1 );
 		this.genderList.setOpaque( false );
 
@@ -129,13 +122,13 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 			}
 		} );
 		
-		this.baseSkinToneList.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
+		this.baseSkinToneList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
 		this.baseSkinToneList.setVisibleRowCount( 1 );
 		this.baseSkinToneList.setOpaque( false );
-		this.hairColorList.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
+		this.hairColorList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
 		this.hairColorList.setVisibleRowCount( 1 );
 		this.hairColorList.setOpaque( false );
-		this.baseEyeColorList.setLayoutOrientation( javax.swing.JList.HORIZONTAL_WRAP );
+		this.baseEyeColorList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
 		this.baseEyeColorList.setVisibleRowCount( 1 );
 		this.baseEyeColorList.setOpaque( false );
 		
@@ -168,37 +161,37 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 		this.hairColorList.setCellRenderer( listCellRenderer );
 		this.baseEyeColorList.setCellRenderer( listCellRenderer );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane northPane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane();
-		northPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.randomPersonActionOperation ), java.awt.BorderLayout.NORTH );
+		edu.cmu.cs.dennisc.croquet.KBorderPanel northPane = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
+		northPane.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( this.randomPersonActionOperation ), CardinalDirection.NORTH );
 		
-		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane ubiquitousPane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 8, 8 ) {
+		edu.cmu.cs.dennisc.croquet.KRowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.KRowsSpringPanel( 8, 8 ) {
 			@Override
-			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "life stage:" ), lifeStageList ) );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "gender:" ), genderList ) );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "skin tone:" ), baseSkinToneList ) );
+			protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "life stage:", lifeStageList ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "gender:", genderList ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "skin tone:", baseSkinToneList ) );
 				return rv;
 			}
 		};
-		northPane.add( ubiquitousPane, java.awt.BorderLayout.CENTER );
+		northPane.addComponent( ubiquitousPane, CardinalDirection.CENTER );
 		
 //		final swing.BorderPane hairPane = new swing.BorderPane();
 //		hairPane.add( this.hairColorList, java.awt.BorderLayout.NORTH );
 //		hairPane.add( this.hairList, java.awt.BorderLayout.CENTER );
 		
-		edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane headPane = new edu.cmu.cs.dennisc.javax.swing.components.JRowsSpringPane( 8, 8 ) {
+		edu.cmu.cs.dennisc.croquet.KRowsSpringPanel headPane = new edu.cmu.cs.dennisc.croquet.KRowsSpringPanel( 8, 8 ) {
 			@Override
-			protected java.util.List< java.awt.Component[] > addComponentRows( java.util.List< java.awt.Component[] > rv ) {
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "hair:" ), hairColorList ) );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( null, hairList ) );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( createLabel( "eye color:" ), baseEyeColorList ) );
-				rv.add( edu.cmu.cs.dennisc.javax.swing.SpringUtilities.createRow( null, javax.swing.Box.createGlue() ) );
+			protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", hairColorList ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, hairList ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "eye color:", baseEyeColorList ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue() ) );
 				return rv;
 			}
 		};
 		
 
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.fullBodyOutfitList );
+		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( this.fullBodyOutfitList );
 		scrollPane.getVerticalScrollBar().setUnitIncrement( 66 );
 		//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
 		
@@ -206,15 +199,15 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 		scrollPane.setOpaque( false );
 		scrollPane.getViewport().setOpaque( false );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JBorderPane bodyPane = new edu.cmu.cs.dennisc.javax.swing.components.JBorderPane( 8, 8 );
-		bodyPane.add( scrollPane, java.awt.BorderLayout.CENTER );
-		bodyPane.add( this.fitnessLevelPane, java.awt.BorderLayout.SOUTH );
+		edu.cmu.cs.dennisc.croquet.KBorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.KBorderPanel( 8, 8 );
+		bodyPane.addComponent( scrollPane, CardinalDirection.CENTER );
+		bodyPane.addComponent( this.fitnessLevelPane, CardinalDirection.SOUTH );
 		
 		//java.awt.Color color = edu.cmu.cs.dennisc.awt.ColorUtilities.scaleHSB( BACKGROUND_COLOR, 1.0, 0.9, 0.8 );
 		java.awt.Color color = BACKGROUND_COLOR;
 		
-		bodyPane.setBackground( color );
-		headPane.setBackground( color );
+		bodyPane.setBackgroundColor( color );
+		headPane.setBackgroundColor( color );
 		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
 		headPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
 		
@@ -225,8 +218,8 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 		java.awt.Font font = tabbedPane.getFont();
 		this.tabbedPane.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
 
-		this.add( northPane, java.awt.BorderLayout.NORTH );
-		this.add( tabbedPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( northPane, CardinalDirection.NORTH );
+		this.addComponent( tabbedPane, CardinalDirection.CENTER );
 		
 	}
 	
@@ -235,15 +228,16 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.javax.swing.components
 	protected abstract void handleGenderSelection( int tabIndex );
 
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		tabbedPane.addChangeListener( this.tabChangeAdapter );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		tabbedPane.removeChangeListener( this.tabChangeAdapter );
-		super.removeNotify();
+		super.removed();
 	}
+
 	public void refresh() {
 		final boolean shouldScroll = true;
 		final PersonViewer personViewer = PersonViewer.getSingleton();

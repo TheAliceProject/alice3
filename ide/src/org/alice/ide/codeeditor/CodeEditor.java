@@ -385,7 +385,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 						public DropOperation() {
 							super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, java.util.UUID.fromString( "ad0e5d93-8bc2-4ad8-8dd5-37768eaa5319" ) );
 						}
-						public void perform( final edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+						@Override
+						protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 							class DropEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
 								private edu.cmu.cs.dennisc.alice.ast.Statement statement;
 								@Override

@@ -94,7 +94,7 @@ public class EditFieldsPane extends EditMembersPane< edu.cmu.cs.dennisc.alice.as
 			protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 				edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field = getSelectedItem();
 				if( field != null ) {
-					this.perform( context, field, referencedFields, reassignedFields );
+					this.perform( context, e, button, field, referencedFields, reassignedFields );
 				} else {
 					context.cancel();
 				}

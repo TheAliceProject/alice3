@@ -62,39 +62,38 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 		return null;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] rv;
+	protected Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+		java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? > > rv;
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
-			java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? > > components = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
+			rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;
 			if( getIDE().isEmphasizingClasses() ) {
 				//pass
 			} else {
 				if( field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
-					components.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
+					rv.add( new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getTemplatesFactory(), (edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field) );
 				}
 			}
-			components.add( new org.alice.ide.memberseditor.templates.GetterTemplate( field ) );
+			rv.add( new org.alice.ide.memberseditor.templates.GetterTemplate( field ) );
 			if( field.getValueType().isArray() ) {
-				components.add( new org.alice.ide.memberseditor.templates.AccessArrayAtIndexTemplate( field ) );
-				components.add( new org.alice.ide.memberseditor.templates.ArrayLengthTemplate( field ) );
+				rv.add( new org.alice.ide.memberseditor.templates.AccessArrayAtIndexTemplate( field ) );
+				rv.add( new org.alice.ide.memberseditor.templates.ArrayLengthTemplate( field ) );
 			}
 			if( field.isFinal() ) {
 				//pass
 			} else {
-				components.add( new org.alice.ide.memberseditor.templates.SetterTemplate( field ) );
+				rv.add( new org.alice.ide.memberseditor.templates.SetterTemplate( field ) );
 			}
 			
 			if( field.getValueType().isArray() ) {
-				components.add( new org.alice.ide.memberseditor.templates.SetArrayAtIndexTemplate( field ) );
+				rv.add( new org.alice.ide.memberseditor.templates.SetArrayAtIndexTemplate( field ) );
 			}
 			
 			if( getIDE().isEmphasizingClasses() ) {
 				//pass
 			} else {
-				components.add( this.getIDE().createVerticalStrut( 16 ) );
+				rv.add( this.getIDE().createVerticalStrut( 16 ) );
 			}
-			rv = edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray( components, edu.cmu.cs.dennisc.croquet.KComponent<?>.class );
 		} else {
 			rv = null;
 		}

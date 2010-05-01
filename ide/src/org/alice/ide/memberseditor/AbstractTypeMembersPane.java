@@ -106,7 +106,7 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.KPageA
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
+	protected abstract Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
 
 	protected abstract edu.cmu.cs.dennisc.croquet.KButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected abstract edu.cmu.cs.dennisc.croquet.KButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
@@ -115,7 +115,7 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.KPageA
 		edu.cmu.cs.dennisc.croquet.KPageAxisPanel page = new edu.cmu.cs.dennisc.croquet.KPageAxisPanel();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {
-				edu.cmu.cs.dennisc.croquet.KComponent< ? >[] templates = this.createTemplates( field );
+				Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > templates = this.createTemplates( field );
 				if( templates != null ) {
 					for( edu.cmu.cs.dennisc.croquet.KComponent< ? > template : templates ) {
 						page.addComponent( this.getIDE().createVerticalStrut( 1 ) );
@@ -127,7 +127,7 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.KPageA
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 			if( isInclusionDesired( method ) ) {
 				method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getShortestInChain();
-				edu.cmu.cs.dennisc.croquet.KComponent< ? >[] templates = this.createTemplates( method );
+				Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > templates = this.createTemplates( method );
 				if( templates != null ) {
 					for( edu.cmu.cs.dennisc.croquet.KComponent< ? > template : templates ) {
 						page.addComponent( this.getIDE().createVerticalStrut( 1 ) );

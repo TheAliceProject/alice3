@@ -47,6 +47,18 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class KList<E> extends KComponent< javax.swing.JList > {
+	public enum LayoutOrientation {
+		VERTICAL ( javax.swing.JList.VERTICAL ),
+		VERTICAL_WRAP( javax.swing.JList.VERTICAL_WRAP ),
+		HORIZONTAL_WRAP( javax.swing.JList.HORIZONTAL_WRAP );
+		private int internal;
+		private LayoutOrientation( int internal ) {
+			this.internal = internal;
+		}
+//		/*package-private*/ int getInternal() {
+//			return this.internal;
+//		}
+	}
 	@Override
 	protected javax.swing.JList createJComponent() {
 		return new javax.swing.JList();
@@ -54,6 +66,10 @@ public class KList<E> extends KComponent< javax.swing.JList > {
 	public void setListData( E... values ) {
 		this.getJComponent().setListData( values );
 	}
+	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.getJComponent().setCellRenderer( listCellRenderer );
+	}
+
 	public E getSelectedValue() {
 		return (E)this.getJComponent().getSelectedValue();
 	}
@@ -64,6 +80,17 @@ public class KList<E> extends KComponent< javax.swing.JList > {
 		this.getJComponent().setSelectedValue( value, shouldScroll );
 	}
 	
+	public int getVisibleRowCount() {
+		return this.getJComponent().getVisibleRowCount();
+	}
+	public void setVisibleRowCount( int visibleRowCount ) {
+		this.getJComponent().setVisibleRowCount( visibleRowCount );
+	}
+	
+	public void setLayoutOrientation( LayoutOrientation layoutOrientation ) {
+		this.getJComponent().setLayoutOrientation( layoutOrientation.internal );
+	}
+
 	public void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
 		this.getJComponent().addListSelectionListener( listSelectionListener );
 	}

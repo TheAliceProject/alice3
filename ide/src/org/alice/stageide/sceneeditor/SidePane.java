@@ -48,13 +48,13 @@ import org.alice.interact.AbstractDragAdapter;
 /**
  * @author Dennis Cosgrove
  */
-class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
+class SidePane extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel {
 	private boolean isExpanded = false;
 	private ManipulationHandleControlPanel handleControlPanel;
 
 	public SidePane() {
 		this.handleControlPanel = new ManipulationHandleControlPanel();
-		this.add( this.handleControlPanel );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.handleControlPanel ) );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 	}
 	public boolean isExpanded() {
@@ -62,9 +62,7 @@ class SidePane extends edu.cmu.cs.dennisc.javax.swing.components.JPageAxisPane {
 	}
 	public void setExpanded( boolean isExpanded ) {
 		this.isExpanded = isExpanded;
-		this.revalidate();
-		this.repaint();
-		//this.doLayout();
+		this.revalidateAndRepaint();
 	}
 	public void setDragAdapter( AbstractDragAdapter dragAdapter ) {
 		this.handleControlPanel.setDragAdapter( dragAdapter );

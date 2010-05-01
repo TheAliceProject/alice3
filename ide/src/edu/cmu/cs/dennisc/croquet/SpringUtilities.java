@@ -76,6 +76,12 @@ public class SpringUtilities {
 		}
 		return rv;
 	}
+	public static KComponent< ? >[] createLabeledRow( String labelText, KComponent< ? >... components ) {
+		KComponent< ? >[] rv = new KComponent< ? >[ components.length + 1 ];
+		rv[ 0 ] = createTrailingLabel( labelText );
+		System.arraycopy( components, 0, rv, 1, components.length );
+		return createRow( rv );
+	}
 	
 	public static KSpringPanel springItUpANotch( KSpringPanel rv, java.util.List<KComponent< ? >[]> componentRows, int xPad, int yPad ) {
 		assert componentRows != null;

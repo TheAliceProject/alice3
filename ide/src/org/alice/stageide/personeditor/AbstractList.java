@@ -45,7 +45,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractList<E> extends edu.cmu.cs.dennisc.zoot.ZList< E > {
+abstract class AbstractList<E> extends edu.cmu.cs.dennisc.croquet.KList< E > {
 	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
 		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
 			super( comboBoxModel );

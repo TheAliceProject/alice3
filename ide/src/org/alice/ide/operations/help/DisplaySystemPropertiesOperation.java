@@ -152,11 +152,11 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 				for( String propertyName : new String[] { "java.class.path", "java.library.path" } ) {				
 					rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( propertyName+":" ), 
-							edu.cmu.cs.dennisc.zoot.ZManager.createHyperlink( new PathPropertyOperation(propertyName) ) 
+							edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHyperlink( new PathPropertyOperation(propertyName) ) 
 					) );
 				}
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 8 ), null ) );
-				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.zoot.ZManager.createHyperlink( new AllSystemPropertiesOperation() ) ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHyperlink( new AllSystemPropertiesOperation() ) ) );
 				return rv;
 			}
 		};
