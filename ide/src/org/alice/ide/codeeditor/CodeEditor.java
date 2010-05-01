@@ -75,7 +75,7 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implements edu.cmu.cs.dennisc.zoot.DropReceptor {
+public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implements edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	private StatementListPropertyPane currentUnder;
@@ -297,8 +297,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		}
 		return rv;
 	}
-	public void dragUpdated( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+		edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( source, eSource, this.getAsSeenBy() );
@@ -309,7 +309,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 				if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 					//pass
 				} else {
-					java.awt.Component subject = source.getSubject();
+					edu.cmu.cs.dennisc.croquet.KComponent< ? > subject = source.getSubject();
 					if( subject instanceof org.alice.ide.common.AbstractStatementPane ) {
 						org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)subject;
 						if( source instanceof org.alice.ide.templates.StatementTemplate ) {
@@ -370,9 +370,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		this.repaint();
 
 	}
-	public void dragDropped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		final java.awt.Point viewPosition = this.scrollPane.getViewport().getViewPosition();
-		final edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+		edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
 		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
@@ -599,20 +599,20 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 			}
 		} );
 	}
-	public void dragExited( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
+	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
 		this.statementListPropertyPaneInfos = null;
 		this.currentUnder = null;
 		this.repaint();
 		if( isDropRecipient ) {
 			//pass
 		} else {
-			final edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+			edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
 			if( source != null ) {
 				source.hideDropProxyIfNecessary();
 			}
 		}
 	}
-	public void dragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 	}
 	//	@Override
 	//	public void paint( java.awt.Graphics g ) {

@@ -84,19 +84,19 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	}
 
 
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
+	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.KDragControl source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}
-	public void dragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragStarted( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 	}
-	public void dragEntered( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragEntered( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 //		zoot.ZDragComponent source = dragAndDropContext.getDragSource();
 //		source.setDropProxyLocationAndShowIfNecessary( new java.awt.Point( 0, 0 ), this.getMainComponent(), this.getBounds().height );
 	}
-	public void dragUpdated( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragUpdated( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 	}
-	public void dragDropped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		final edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+	public void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
+		edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
 		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		if( source.getSubject() instanceof org.alice.ide.common.ExpressionCreatorPane ) {
 			final org.alice.ide.common.ExpressionCreatorPane expressionCreatorPane = (org.alice.ide.common.ExpressionCreatorPane)source.getSubject();
@@ -115,15 +115,15 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 			source.hideDropProxyIfNecessary();
 		}
 	}
-	public void dragExited( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
-		edu.cmu.cs.dennisc.zoot.ZDragComponent source = dragAndDropContext.getDragSource();
+	public void dragExited( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext, boolean isDropRecipient ) {
+		edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
 		source.hideDropProxyIfNecessary();
 	}
-	public void dragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+	public void dragStopped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 	}
-	public java.awt.Component getAWTComponent() {
-		return this;
-	}
+//	public java.awt.Component getAWTComponent() {
+//		return this;
+//	}
 
 	@Override
 	protected boolean isInactiveFeedbackDesired() {

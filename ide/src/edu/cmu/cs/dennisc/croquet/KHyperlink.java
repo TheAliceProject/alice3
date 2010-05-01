@@ -46,14 +46,17 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KDropComponent extends KView {
-	//todo: convert to weak set
-	//todo: make thread safe
-	private static java.util.Set< KDropComponent > instances = edu.cmu.cs.dennisc.java.util.Collections.newHashSet();
-	/*package-protected*/ static Iterable< KDropComponent > getAllInstances() {
-		return KDropComponent.instances;
+public class KHyperlink extends KAbstractButton< javax.swing.JButton > {
+	/*package-private*/ KHyperlink() {
 	}
-	public KDropComponent() {
-		KDropComponent.instances.add( this );
+	@Override
+	protected javax.swing.JButton createJComponent() {
+		javax.swing.JButton rv = new javax.swing.JButton() {
+			@Override
+			public void updateUI() {
+				this.setUI( edu.cmu.cs.dennisc.javax.swing.plaf.HyperlinkUI.createUI( this ) );
+			}
+		};
+		return rv;
 	}
 }

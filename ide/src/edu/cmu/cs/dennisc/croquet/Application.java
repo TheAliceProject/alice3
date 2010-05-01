@@ -205,6 +205,22 @@ public abstract class Application {
 			}
 		};
 	}
+	public KHyperlink createHyperlink(final AbstractActionOperation actionOperation) {
+		this.register( actionOperation );
+		return new KHyperlink() {
+			@Override
+			protected void adding() {
+				actionOperation.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				actionOperation.removeAbstractButton(this);
+			}
+		};
+	}
 
 	public KMenuItem createMenuItem(final AbstractActionOperation actionOperation) {
 		this.register( actionOperation );
@@ -264,27 +280,27 @@ public abstract class Application {
 		};
 	}
 	
-	public KDragControl createDragComponent(final DragOperation dragOperation, KDragControl.Paintable paintable ) {
-		this.register( dragOperation );
-		// todo: return javax.swing.JMenuItem if true and false different
-		return new KDragControl( paintable ) {
-			@Override
-			protected void adding() {
-				dragOperation.addDragComponent(this);
-				super.adding();
-			}
-
-			@Override
-			protected void removed() {
-				super.removed();
-				dragOperation.removeDragComponent(this);
-			}
-			@Override
-			protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-				return new java.awt.FlowLayout();
-			}
-		};
-	}
+//	public KDragControl createDragComponent(final DragOperation dragOperation, KDragControl.Paintable paintable ) {
+//		this.register( dragOperation );
+//		// todo: return javax.swing.JMenuItem if true and false different
+//		return new KDragControl( paintable ) {
+//			@Override
+//			protected void adding() {
+//				dragOperation.addDragComponent(this);
+//				super.adding();
+//			}
+//
+//			@Override
+//			protected void removed() {
+//				super.removed();
+//				dragOperation.removeDragComponent(this);
+//			}
+//			@Override
+//			protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+//				return new java.awt.FlowLayout();
+//			}
+//		};
+//	}
 	
 	private KAbstractMenu< ? > addMenuElements( KAbstractMenu< ? > rv, MenuOperation menuOperation ) {
 		for( Operation operation : menuOperation.getOperations() ) {

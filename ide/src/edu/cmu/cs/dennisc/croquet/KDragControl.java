@@ -50,13 +50,6 @@ public abstract class KDragControl extends KControl {
 	/**
 	 * @author Dennis Cosgrove
 	 */
-	public interface Paintable {
-		public void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height );
-		public void paint( java.awt.Graphics2D g2, int x, int y, int width, int height );
-	}
-	/**
-	 * @author Dennis Cosgrove
-	 */
 	private static abstract class Proxy extends javax.swing.JPanel {
 		private static java.awt.image.BufferedImage image;
 		private static java.awt.image.BufferedImage getOffscreenImage( int width, int height ) {
@@ -95,8 +88,7 @@ public abstract class KDragControl extends KControl {
 			int y = 0;
 			int width = this.getDragComponent().getWidth();
 			int height = this.getDragComponent().getHeight();
-			Paintable paintable = this.getDragComponent().getPaintable();
-			paintable.fillBounds( g2, x, y, width, height );
+			this.getDragComponent().fillBounds( g2, x, y, width, height );
 		}
 		
 		protected abstract void paintProxy( java.awt.Graphics2D g2 );
@@ -272,14 +264,6 @@ public abstract class KDragControl extends KControl {
 		public void componentShown( java.awt.event.ComponentEvent e ) {
 		}
 	};
-	private Paintable paintable;
-	public KDragControl( Paintable paintable ) {
-		this.paintable = paintable;
-	}
-	
-	public Paintable getPaintable() {
-		return this.paintable;
-	}
 	@Override
 	protected void adding() {
 		super.adding();
@@ -300,15 +284,10 @@ public abstract class KDragControl extends KControl {
 		}
 	}
 	
-	protected KComponent< ? > getSubject() {
+	//todo: reduce visibility?
+	public KComponent< ? > getSubject() {
 		return this;
 	}
 	private void handleCancel( java.awt.event.KeyEvent e ) {
-	}
-	@Override
-	protected void paintComponent( java.awt.Graphics2D g2 ) {
-		int width = this.getWidth();
-		int height = this.getHeight();
-		this.paintable.paint( g2, 0, 0, width, height );
 	}
 }

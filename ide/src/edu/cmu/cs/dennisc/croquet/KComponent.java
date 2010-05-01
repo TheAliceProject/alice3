@@ -104,17 +104,30 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	public void setOpaque( boolean isOpaque ) {
 		this.getJComponent().setOpaque( isOpaque );
 	}
+	public boolean getIgnoreRepaint() {
+		return this.getJComponent().getIgnoreRepaint();
+	}
+	public void setIgnoreRepaint( boolean ignoreRepaint ) {
+		this.getJComponent().setIgnoreRepaint( ignoreRepaint );
+	}
+
+	public String getToolTipText() {
+		return this.getJComponent().getToolTipText();
+	}
 	public void setToolTipText( String toolTipText ) {
 		this.getJComponent().setToolTipText( toolTipText );
+	}
+	public javax.swing.border.Border getBorder() {
+		return this.getJComponent().getBorder();
 	}
 	public void setBorder( javax.swing.border.Border border ) {
 		this.getJComponent().setBorder( border );
 	}
+	public java.awt.Cursor getCursor() {
+		return this.getJComponent().getCursor();
+	}
 	public void setCursor( java.awt.Cursor cursor ) {
 		this.getJComponent().setCursor( cursor );
-	}
-	public void setIgnoreRepaint( boolean ignoreRepaint ) {
-		this.getJComponent().setIgnoreRepaint( ignoreRepaint );
 	}
 
 	public float getAlignmentX() {

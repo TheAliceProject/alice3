@@ -48,13 +48,50 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class KWidget extends KComponent< javax.swing.JPanel > {
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
+	
+	protected abstract int getInsetTop();
+	protected abstract int getInsetLeft();
+	protected abstract int getInsetBottom();
+	protected abstract int getInsetRight();
+
+	protected abstract void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	protected abstract void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+	protected abstract void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height );
+
+	protected java.awt.Paint getForegroundPaint( int x, int y, int width, int height ) {
+		return this.getForegroundColor();
+	}
+	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
+		return this.getBackgroundColor();
+	}
+	
 	@Override
 	protected final javax.swing.JPanel createJComponent() {
 		javax.swing.JPanel rv = new javax.swing.JPanel() {
 			@Override
-			protected void paintComponent( java.awt.Graphics g ) {
-				assert g instanceof java.awt.Graphics2D;
-				KWidget.this.paintComponent( (java.awt.Graphics2D)g );
+			public void paint( java.awt.Graphics g ) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				int x = 0;
+				int y = 0;
+				int width = getWidth();
+				int height = getHeight();
+
+				java.awt.Paint prevPaint;
+				prevPaint = g2.getPaint();
+				try {
+					g2.setPaint( KWidget.this.getBackgroundPaint( x, y, width, height ) );
+					KWidget.this.paintPrologue( g2, x, y, width, height );
+				} finally {
+					g2.setPaint( prevPaint );
+				}
+				super.paint( g );
+				prevPaint = g2.getPaint();
+				g2.setPaint( KWidget.this.getForegroundPaint( x, y, width, height ) );
+				try {
+					KWidget.this.paintEpilogue( g2, x, y, width, height );
+				} finally {
+					g2.setPaint( prevPaint );
+				}
 			}
 			@Override
 			public java.awt.Dimension getPreferredSize() {
@@ -68,8 +105,15 @@ public abstract class KWidget extends KComponent< javax.swing.JPanel > {
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 		return rv;
-		
 	}
+
+	
+	private void updateBorderIfNecessary() {
+		if( this.getBorder() == null ) {
+			this.setBorder( javax.swing.BorderFactory.createEmptyBorder( this.getInsetTop(), this.getInsetLeft(), this.getInsetBottom(), this.getInsetRight() ) );
+		}
+	}
+	
 	@Deprecated
 	protected java.awt.Dimension getPreferedSize( java.awt.Dimension jPreferedSize ) {
 		return jPreferedSize;
@@ -78,9 +122,6 @@ public abstract class KWidget extends KComponent< javax.swing.JPanel > {
 	protected boolean contains( int x, int y, boolean jContains ) {
 		return jContains;
 	}
-	@Deprecated
-	protected abstract void paintComponent( java.awt.Graphics2D g2 );
-	
 	@Deprecated
 	protected void addComponent( KComponent<?> component ) {
 		assert component != null;

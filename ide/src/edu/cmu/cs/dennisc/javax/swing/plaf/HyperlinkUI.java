@@ -40,60 +40,22 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+package edu.cmu.cs.dennisc.javax.swing.plaf;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component extends edu.cmu.cs.dennisc.croquet.KDragControl {
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-
-	@Override
-	protected int getInsetTop() {
-		return 0;
+//public class HyperlinkUI extends javax.swing.plaf.basic.BasicButtonUI {
+public class HyperlinkUI extends javax.swing.plaf.ButtonUI {
+	private static HyperlinkUI hyperlinkUI = new HyperlinkUI();
+	public static javax.swing.plaf.ComponentUI createUI( javax.swing.JComponent component ) { 
+		return hyperlinkUI;
 	}
 	@Override
-	protected int getInsetLeft() {
-		return 0;
+	public void paint( java.awt.Graphics g, javax.swing.JComponent c ) {
+		g.setColor( java.awt.Color.YELLOW );
+		g.fillRect( 0, 0, c.getWidth(), c.getHeight() );
+		g.setColor( java.awt.Color.BLACK );
+		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.drawCenteredText( g, "http://", c.getSize() );
 	}
-	@Override
-	protected int getInsetBottom() {
-		return 0;
-	}
-	@Override
-	protected int getInsetRight() {
-		return 0;
-	}
-	@Override
-	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		
-	}
-	@Override
-	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		
-	}
-	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		
-	}
-	
-	protected final void fillBounds( java.awt.Graphics2D g2 ) {
-		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
-	}
-	
-	@Deprecated
-	protected void setLeftButtonPressOperation( edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	protected void setDragAndDropOperation( org.alice.ide.operations.DefaultDragAndDropOperation operation ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	protected void setPopupOperation( edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation operation ) {
-		throw new RuntimeException( "todo" );
-	}
-	
 }

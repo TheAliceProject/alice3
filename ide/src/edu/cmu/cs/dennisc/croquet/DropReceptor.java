@@ -40,60 +40,23 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide;
+
+package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component extends edu.cmu.cs.dennisc.croquet.KDragControl {
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
-	}
-
-	@Override
-	protected int getInsetTop() {
-		return 0;
-	}
-	@Override
-	protected int getInsetLeft() {
-		return 0;
-	}
-	@Override
-	protected int getInsetBottom() {
-		return 0;
-	}
-	@Override
-	protected int getInsetRight() {
-		return 0;
-	}
-	@Override
-	protected void fillBounds( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		
-	}
-	@Override
-	protected void paintPrologue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		
-	}
-	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		
-	}
+public interface DropReceptor {
+	public boolean isPotentiallyAcceptingOf( KDragControl source );
+	public KComponent< ? > getComponent();
+	public void dragStarted( DragAndDropContext dragAndDropContext );
+	public void dragEntered( DragAndDropContext dragAndDropContext );
+	public void dragUpdated( DragAndDropContext dragAndDropContext );
 	
-	protected final void fillBounds( java.awt.Graphics2D g2 ) {
-		this.fillBounds( g2, 0, 0, this.getWidth(), this.getHeight() );
-	}
+	//todo: Dropped or Exited but not both?
+	public void dragDropped( DragAndDropContext dragAndDropContext );
+	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
 	
-	@Deprecated
-	protected void setLeftButtonPressOperation( edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	protected void setDragAndDropOperation( org.alice.ide.operations.DefaultDragAndDropOperation operation ) {
-		throw new RuntimeException( "todo" );
-	}
-	@Deprecated
-	protected void setPopupOperation( edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation operation ) {
-		throw new RuntimeException( "todo" );
-	}
 	
+	public void dragStopped( DragAndDropContext dragAndDropContext );
 }

@@ -93,12 +93,11 @@ public abstract class ExpressionTemplate extends org.alice.ide.common.Expression
 		}
 	}
 	@Override
-	public void paint( java.awt.Graphics g ) {
-		super.paint( g );
+	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
+		super.paintEpilogue( g2, x, y, width, height );
 		if( getIDE().isSelectedFieldInScope() ) {
 			//pass
 		} else {
-			java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
 			this.fillBounds( g2 );
 		}
