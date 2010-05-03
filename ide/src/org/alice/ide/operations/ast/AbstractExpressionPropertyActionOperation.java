@@ -56,8 +56,9 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 		return this.expressionProperty;
 	}
 
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		class ExpressionPropertyEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+	@Override
+	protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button) {
+		class ExpressionPropertyEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 
@@ -80,7 +81,7 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 				return rv;
 			}
 		}
-		actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		context.pend( new edu.cmu.cs.dennisc.zoot.Resolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public ExpressionPropertyEdit createEdit() {
 				return new ExpressionPropertyEdit();
 			}

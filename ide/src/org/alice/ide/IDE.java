@@ -676,9 +676,12 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return rv;
 	}
 
-	public void addToConcealedBin( java.awt.Component component ) {
-		this.concealedBin.add( component );
+	public void addToConcealedBin( edu.cmu.cs.dennisc.croquet.KComponent<?> component ) {
+		this.concealedBin.add( component.getJComponent() );
 		this.concealedBin.revalidate();
+	}
+	public void removeFromConcealedBin( edu.cmu.cs.dennisc.croquet.KComponent<?> component ) {
+		this.concealedBin.remove( component.getJComponent() );
 	}
 
 	public boolean isJava() {
@@ -1777,12 +1780,12 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 					public void run() {
 						org.alice.ide.common.AbstractStatementPane pane = getCodeFactory().lookup( statement );
 						if( pane != null ) {
-							pane.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( pane ) );
+							pane.scrollToVisible();
 						}
 					}
 				} );
 			}
-			return rv;
+			return rv.getJComponent();
 		} else {
 			return null;
 		}

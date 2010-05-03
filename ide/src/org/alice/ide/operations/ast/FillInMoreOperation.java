@@ -52,9 +52,9 @@ public class FillInMoreOperation extends org.alice.ide.operations.AbstractAction
 		assert expressionStatement != null;
 		this.expressionStatement = expressionStatement;
 	}
-	
-	public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
-		class MoreEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+	@Override
+	protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button) {
+		class MoreEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
 			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;
 			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation prevMethodInvocation;
@@ -78,7 +78,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.AbstractAction
 				return rv;
 			}
 		}
-		actionContext.pend( new edu.cmu.cs.dennisc.zoot.Resolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		context.pend( new edu.cmu.cs.dennisc.zoot.Resolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public MoreEdit createEdit() {
 				return new MoreEdit();
 			}

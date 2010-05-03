@@ -63,16 +63,19 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	public java.util.Locale getLocale() {
 		return this.getJComponent().getLocale();
 	}
-	
 	public java.awt.Font getFont() {
 		return this.getJComponent().getFont();
 	}
 	public void scaleFont( float scaleFactor ) {
 		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToScaledFont( this.getJComponent(), scaleFactor );
 	}
+	public void setFontSize( float fontSize ) {
+		this.getFont().deriveFont( fontSize );
+	}
 	public void changeFont( edu.cmu.cs.dennisc.java.awt.font.TextAttribute< ? >... textAttributes ) {
 		edu.cmu.cs.dennisc.java.awt.FontUtilities.setFontToDerivedFont( this.getJComponent(), textAttributes );
 	}
+	
 	
 	public java.awt.Color getForegroundColor() {
 		return this.getJComponent().getForeground();
@@ -143,6 +146,17 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 		this.getJComponent().setAlignmentY( alignmentY );
 	}
 
+	private void scrollRectToVisible( java.awt.Rectangle rect ) {
+		this.getJComponent().scrollRectToVisible( rect );
+	}
+	public void scrollToVisible() {
+		this.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( this.getJComponent() ) );
+	}
+	
+//	@Deprecated
+//	public KComponent<?> getComponent( int i ) {
+//		throw new RuntimeException( "todo" );
+//	}
 	public int getComponentCount() {
 		return this.getJComponent().getComponentCount();
 	}
@@ -180,11 +194,36 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	}
 	
 
+	@Deprecated
+	public void addMouseListener( java.awt.event.MouseListener listener ) {
+		this.getJComponent().addMouseListener( listener );
+	}
+	@Deprecated
+	public void removeMouseListener( java.awt.event.MouseListener listener ) {
+		this.getJComponent().removeMouseListener( listener );
+	}
+	@Deprecated
+	public void addMouseMotionListener( java.awt.event.MouseMotionListener listener ) {
+		this.getJComponent().addMouseMotionListener( listener );
+	}
+	@Deprecated
+	public void removeMouseMotionListener( java.awt.event.MouseMotionListener listener ) {
+		this.getJComponent().removeMouseMotionListener( listener );
+	}
+	@Deprecated
 	public void addMouseWheelListener( java.awt.event.MouseWheelListener listener ) {
 		this.getJComponent().addMouseWheelListener( listener );
 	}
+	@Deprecated
 	public void removeMouseWheelListener( java.awt.event.MouseWheelListener listener ) {
 		this.getJComponent().removeMouseWheelListener( listener );
 	}
+	
+	
+	@Deprecated 
+	public void setPreferredSize( java.awt.Dimension preferredSize ) {
+		this.getJComponent().setPreferredSize( preferredSize );
+	}
+	
 }
 

@@ -82,7 +82,7 @@ class PersonCreatorDialog extends edu.cmu.cs.dennisc.progress.ProgressDialog {
 	protected void handleDone( Boolean result ) {
 		if( result && this.person != null ) {
 			CreatePersonActionOperation createPersonActionOperation = new CreatePersonActionOperation( this.person );
-			edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( createPersonActionOperation, null, true );
+			createPersonActionOperation.fire();
 			this.setVisible( false );
 		}
 	}

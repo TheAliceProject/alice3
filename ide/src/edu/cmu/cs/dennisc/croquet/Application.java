@@ -302,8 +302,8 @@ public abstract class Application {
 //		};
 //	}
 	
-	private KAbstractMenu< ? > addMenuElements( KAbstractMenu< ? > rv, MenuOperation menuOperation ) {
-		for( Operation operation : menuOperation.getOperations() ) {
+	private KAbstractMenu< ? > addMenuElements( KAbstractMenu< ? > rv, Operation[] operations ) {
+		for( Operation operation : operations ) {
 			if( operation != null ) {
 				if( operation instanceof MenuOperation ) {
 					rv.addMenu( this.createMenu( (MenuOperation) operation ) );
@@ -345,11 +345,11 @@ public abstract class Application {
 				menuOperation.removeMenu(this);
 			}
 		};
-		this.addMenuElements( rv, menuOperation );
+		this.addMenuElements( rv, menuOperation.getOperations() );
 		return rv;
 	}
 
-	/*package-private*/ KPopupMenu createPopupMenu( final PopupMenuOperation popupMenuOperation ) {
+	/*package-private*/ KPopupMenu createPopupMenu( final AbstractPopupMenuOperation popupMenuOperation ) {
 		KPopupMenu rv = new KPopupMenu() {
 			@Override
 			protected void adding() {
@@ -363,8 +363,7 @@ public abstract class Application {
 				popupMenuOperation.removePopupMenu(this);
 			}
 		};
-		MenuOperation menuOperation = popupMenuOperation.getMenuOperation();
-		this.addMenuElements( rv, menuOperation );
+		this.addMenuElements( rv, popupMenuOperation.getOperations() );
 		return rv;
 	}
 	

@@ -51,7 +51,7 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 //		rv.setHorizontalAlignment( javax.swing.SwingConstants.TRAILING );
 //		return rv;
 //	}
-	class PreviewPane extends edu.cmu.cs.dennisc.croquet.KWidget {
+	class PreviewPane extends org.alice.ide.Component {
 		public void refresh() {
 			this.forgetAndRemoveAllComponents();
 //			java.awt.Component component = new edu.cmu.cs.dennisc.croquet.swing.LineAxisPane(
@@ -78,9 +78,6 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 		protected void removed() {
 			this.forgetAndRemoveAllComponents();
 			super.removed();
-		}
-		@Override
-		protected void paintComponent( java.awt.Graphics2D g2 ) {
 		}
 	}
 

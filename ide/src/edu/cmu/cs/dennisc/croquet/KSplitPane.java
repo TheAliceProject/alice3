@@ -87,4 +87,7 @@ public abstract class KSplitPane extends KComponent< javax.swing.JSplitPane > {
 	public void setDividerLocation( int dividerLocation ) {
 		this.getJComponent().setDividerLocation( dividerLocation );
 	}
+	public void setDividerProportionalLocation( double proportionalLocation ) {
+		this.getJComponent().setDividerLocation( proportionalLocation );
+	}
 }

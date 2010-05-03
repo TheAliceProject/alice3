@@ -63,7 +63,7 @@ public class LocalePreferenceComboBoxProxy extends PreferenceLabeledPaneProxy< j
 		super( preference );
 		javax.swing.JComboBox comboBox = edu.cmu.cs.dennisc.zoot.ZManager.createComboBox( new LocaleSelectionOperation() );
 		comboBox.setRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.LocaleDisplayNameListCellRenderer() );
-		this.createPane( comboBox );
+		this.createPane( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( comboBox ) );
 	}
 
 	@Override

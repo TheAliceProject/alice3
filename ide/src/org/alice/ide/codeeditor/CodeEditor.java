@@ -257,7 +257,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		this.repaint();
 	}
 	private java.awt.Component getAsSeenBy() {
-		return this.scrollPane.getViewport().getView();
+		return this.scrollPane.getJComponent().getViewport().getView();
 	}
 	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
 		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
@@ -336,7 +336,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 				} else {
 					java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getAsSeenBy(), eAsSeenBy, this.currentUnder );
 					Integer height = 0;
-					java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder );
+					java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder.getJComponent() );
 					int x = insets.left;
 					java.awt.Point p = new java.awt.Point( x, 0 );
 					if( this.currentUnder.isFigurativelyEmpty() ) {
@@ -371,7 +371,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 
 	}
 	public void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
-		final java.awt.Point viewPosition = this.scrollPane.getViewport().getViewPosition();
+		final java.awt.Point viewPosition = this.scrollPane.getJComponent().getViewport().getViewPosition();
 		edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
 		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;

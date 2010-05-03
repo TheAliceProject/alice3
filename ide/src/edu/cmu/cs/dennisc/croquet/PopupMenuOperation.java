@@ -45,37 +45,17 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class PopupMenuOperation extends AbstractActionOperation {
-	private MenuOperation menuOperation;
-	public PopupMenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, MenuOperation menuOperation ) {
+public class PopupMenuOperation extends AbstractPopupMenuOperation {
+	private Operation[] operations;
+	public PopupMenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, Operation... operations ) {
 		super( groupUUID, individualUUID );
-		this.menuOperation = menuOperation;
+		this.operations = operations;
 	}
-	public MenuOperation getMenuOperation() {
-		return this.menuOperation;
+	public PopupMenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, java.util.Collection< Operation > operations ) {
+		this( groupUUID, individualUUID, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(operations, Operation.class ) );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
-		Application application = Application.getSingleton();
-		KPopupMenu popupMenu = application.createPopupMenu( this );
-		
-//		javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
-//		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
-//			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
-//			}
-//			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
-//			}
-//			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
-//			}
-//		} );
-		
-		popupMenu.showBelow( button );
-	}
-
-	/*package-private*/ void addPopupMenu( KPopupMenu popupMenu ) {
-		this.addComponent( popupMenu );
-	}
-	/*package-private*/ void removePopupMenu( KPopupMenu popupMenu ) {
-		this.removeComponent( popupMenu );
+	public Operation[] getOperations() {
+		return this.operations;
 	}
 }

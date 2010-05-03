@@ -66,7 +66,7 @@ public class ProcedureInvocationTemplate extends ExpressionStatementTemplate {
 			operations.add( new org.alice.ide.operations.ast.DeleteMethodOperation( methodInAlice ) );
 			operations.add( new org.alice.ide.operations.ast.FocusCodeOperation( methodInAlice ) );
 		}
-		this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( operations ) );
+		this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "96831579-1fb6-4c15-a509-ccdcc51458a8" ), operations) );
 	}
 	@Override
 	protected void adding() {

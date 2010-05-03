@@ -63,6 +63,12 @@ public class KList<E> extends KComponent< javax.swing.JList > {
 	protected javax.swing.JList createJComponent() {
 		return new javax.swing.JList();
 	}
+	public javax.swing.ListModel getModel() {
+		return this.getJComponent().getModel();
+	}
+	public void setModel( javax.swing.ListModel model ) {
+		this.getJComponent().setModel( model );
+	}
 	public void setListData( E... values ) {
 		this.getJComponent().setListData( values );
 	}

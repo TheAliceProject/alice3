@@ -65,7 +65,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
-	public javax.swing.JToolTip createToolTip() {
+	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
 		return this.implementor.getToolTip();
 	}
 	
@@ -90,7 +90,8 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 	
 	@Override
 	protected void removed() {
-		todo
+		this.removeAllComponents();
+		this.getIDE().removeFromConcealedBin( this.implementor.getIncompleteStatementPane() );
 		super.removed();
 	}
 	

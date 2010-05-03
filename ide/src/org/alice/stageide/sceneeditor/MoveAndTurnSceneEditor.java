@@ -107,7 +107,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		//		this.splitPane.setBackground( java.awt.Color.GRAY );
 		this.splitPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		this.splitPane.setResizeWeight( 1.0 );
-		this.splitPane.setDividerLocation( 1.0 );
+		this.splitPane.setDividerProportionalLocation( 1.0 );
 		this.addComponent( this.splitPane, java.awt.BorderLayout.CENTER );
 	}
 	@Override
@@ -210,17 +210,18 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			final int X_PAD = 16;
 			final int Y_PAD = 10;
 			isSceneEditorExpandedCheckBox.setOpaque( false );
-			isSceneEditorExpandedCheckBox.setFont( this.getFont().deriveFont( 18.0f ) );
+			isSceneEditorExpandedCheckBox.setFontSize( 18.0f );
 			isSceneEditorExpandedCheckBox.setBorder( javax.swing.BorderFactory.createEmptyBorder( Y_PAD, X_PAD, Y_PAD, X_PAD ) );
 			
 			if( mainCameraNavigatorWidget != null ) {
-				mainCameraNavigatorWidget.setExpanded( isSceneEditorExpandedCheckBox.isSelected() );
+				mainCameraNavigatorWidget.setExpanded( isSceneEditorExpandedOperation.getState() );
 			}
-			isSceneEditorExpandedCheckBox.addItemListener( new java.awt.event.ItemListener() {
-				public void itemStateChanged( java.awt.event.ItemEvent e ) {
-					boolean isExpanded = e.getStateChange() == java.awt.event.ItemEvent.SELECTED;
+			isSceneEditorExpandedOperation.addValueObserver( new edu.cmu.cs.dennisc.croquet.BooleanStateOperation.ValueObserver() {
+				public void changing(boolean nextValue) {
+				}
+				public void changed(boolean nextValue) {
 					if( mainCameraNavigatorWidget != null ) {
-						mainCameraNavigatorWidget.setExpanded( isExpanded );
+						mainCameraNavigatorWidget.setExpanded( nextValue );
 					}
 				}
 			} );

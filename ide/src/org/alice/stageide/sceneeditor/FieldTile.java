@@ -49,7 +49,6 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	private String text;
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field;
 	private org.alice.ide.operations.ast.SelectFieldActionOperation selectOperation;
-	private edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation popupOperation;
 	private class NamePropertyAdapter implements edu.cmu.cs.dennisc.property.event.PropertyListener {
 		public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 		}
@@ -61,9 +60,8 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		assert field != null;
 		this.field = field;
 		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( this.field );
-		this.popupOperation = new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( this.createPopupOperations() );
 		this.setLeftButtonPressOperation( this.selectOperation );
-		this.setPopupOperation( this.popupOperation );
+		this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1b079c62-dd58-41dd-93cf-d85ab03a4d23" ), this.createPopupOperations() );
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field).name.addPropertyListener( new NamePropertyAdapter() );
 		}
@@ -175,7 +173,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 	@Override
 	protected void paintComponent( java.awt.Graphics g ) {
 		super.paintComponent( g );
-		java.awt.Insets insets = this.getBorder().getBorderInsets( this );
+		java.awt.Insets insets = this.getBorder().getBorderInsets( this.getJComponent() );
 		java.awt.geom.Rectangle2D bounds = g.getFontMetrics().getStringBounds( this.text, g );
 		g.drawString( this.text, insets.left-(int)bounds.getX(), insets.top-(int)bounds.getY() );
 	}

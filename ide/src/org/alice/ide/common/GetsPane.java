@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class GetsPane extends edu.cmu.cs.dennisc.croquet.KWidget {
+public class GetsPane extends org.alice.ide.Component {
 	private boolean isTowardLeadingEdge;
 	private int length;
 
@@ -109,7 +109,7 @@ public class GetsPane extends edu.cmu.cs.dennisc.croquet.KWidget {
 	}
 	
 	@Override
-	protected void paintComponent( java.awt.Graphics2D g2 ) {
+	protected void paintComponent( java.awt.Graphics g ) {
 		int halfLineSize = getHeight() / 5;
 		int yTop = 0;
 		int yBottom = getHeight() - 1;
@@ -131,6 +131,8 @@ public class GetsPane extends edu.cmu.cs.dennisc.croquet.KWidget {
 				xPoints[ i ] = getWidth() - xPoints[ i ];
 			}
 		}
+		
+		java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
 		edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.setRenderingHint( g2, java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON );
 
 		g2.setPaint( this.getGradientPaint() );

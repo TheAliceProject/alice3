@@ -62,7 +62,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 		}
 	}
 	private edu.cmu.cs.dennisc.zoot.ZSlider slider = new edu.cmu.cs.dennisc.zoot.ZSlider( new PortionOperation() );
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components = {this.slider};
+	private edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components = { new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.slider ) };
 	public PortionChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		this.slider.getBoundedRangeOperation().getBoundedRangeModel().setValue( 100 );

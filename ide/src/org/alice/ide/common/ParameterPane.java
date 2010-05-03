@@ -63,24 +63,24 @@ public class ParameterPane extends AccessiblePane {
 			final org.alice.ide.operations.ast.DeleteParameterOperation deleteParameterOperation = new org.alice.ide.operations.ast.DeleteParameterOperation( this.parametersProperty, this.parameter );
 			final org.alice.ide.operations.ast.ForwardShiftParameterOperation forwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.ForwardShiftParameterOperation( this.parametersProperty, this.parameter );
 			final org.alice.ide.operations.ast.BackwardShiftParameterOperation backwardShiftCodeParameterOperation = new org.alice.ide.operations.ast.BackwardShiftParameterOperation( this.parametersProperty, this.parameter );
-			this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.AbstractPopupActionOperation() {
+			this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "5b9b75d7-ce04-4f3d-8915-b825f357cef2" ) ) {
 				@Override
-				protected java.util.List< edu.cmu.cs.dennisc.zoot.Operation > getOperations() {
-					java.util.List< edu.cmu.cs.dennisc.zoot.Operation > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
-					rv.add( renameParameterOperation );
+				public edu.cmu.cs.dennisc.croquet.Operation[] getOperations() {
+					java.util.List< edu.cmu.cs.dennisc.croquet.Operation > operations = new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.Operation >();
+					operations.add( renameParameterOperation );
 					if( forwardShiftCodeParameterOperation.isIndexAppropriate() ) {
-						rv.add( forwardShiftCodeParameterOperation );
+						operations.add( forwardShiftCodeParameterOperation );
 					}
 					if( backwardShiftCodeParameterOperation.isIndexAppropriate() ) {
-						rv.add( backwardShiftCodeParameterOperation );
+						operations.add( backwardShiftCodeParameterOperation );
 					}
-					rv.add( edu.cmu.cs.dennisc.zoot.ZManager.MENU_SEPARATOR );
-					rv.add( deleteParameterOperation );
-					return rv;
+					operations.add( edu.cmu.cs.dennisc.croquet.MenuOperation.SEPARATOR );
+					operations.add( deleteParameterOperation );
+					return edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(operations, edu.cmu.cs.dennisc.croquet.Operation.class);
 				}
 			} );
 		} else {
-			this.setPopupOperation( new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( renameParameterOperation ) );
+			this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "7a9b90a1-a645-4e13-aeef-9ca631baad55" ), renameParameterOperation ) );
 		}
 	}
 	@Override

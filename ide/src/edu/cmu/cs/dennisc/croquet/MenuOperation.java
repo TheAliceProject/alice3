@@ -79,11 +79,14 @@ public class MenuOperation extends Operation {
 	private String text;
 	private int mnemonic;
 	private Operation[] operations;
-	public MenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, String text, int mnemonic, Operation... operations ) {
-		super( groupUUID, individualUUID );
+	public MenuOperation( java.util.UUID groupUUID, java.util.UUID individualId, String text, int mnemonic, Operation... operations ) {
+		super( groupUUID, individualId );
 		this.text = text;
 		this.mnemonic = mnemonic;
 		this.operations = operations;
+	}
+	public MenuOperation( java.util.UUID groupUUID, java.util.UUID individualId, String text, int mnemonic, java.util.List< Operation > operations ) {
+		this( groupUUID, individualId, text, mnemonic, edu.cmu.cs.dennisc.java.util.CollectionUtilities.createArray(operations, Operation.class) );
 	}
 
 	public Operation[] getOperations() {

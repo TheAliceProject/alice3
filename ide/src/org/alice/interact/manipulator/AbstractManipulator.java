@@ -217,7 +217,7 @@ public abstract class AbstractManipulator {
 				animator = null;
 			}
 			PredeterminedSetLocalTransformationActionOperation undoOperation = new PredeterminedSetLocalTransformationActionOperation(Project.GROUP_UUID, false, animator, this.getManipulatedTransformable(), originalTransformation, newTransformation, getUndoRedoDescription());
-			ZManager.performIfAppropriate( undoOperation, null, false );
+			undoOperation.fire();
 		}
 	}
 	

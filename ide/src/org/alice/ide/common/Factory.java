@@ -245,7 +245,7 @@ public abstract class Factory {
 			final boolean isLoop = lines[ N-1 ].isLoop();
 			edu.cmu.cs.dennisc.croquet.KPageAxisPanel pagePane = new edu.cmu.cs.dennisc.croquet.KPageAxisPanel() {
 				@Override
-				public void paintComponent( java.awt.Graphics g ) {
+				protected void paintComponent( java.awt.Graphics g ) {
 					super.paintComponent( g );
 					java.awt.Color prev = g.getColor();
 					if( isLoop ) {

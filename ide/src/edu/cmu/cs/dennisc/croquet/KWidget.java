@@ -94,6 +94,10 @@ public abstract class KWidget extends KComponent< javax.swing.JPanel > {
 				}
 			}
 			@Override
+			public javax.swing.JToolTip createToolTip() {
+				return KWidget.this.createToolTip( super.createToolTip() );
+			}
+			@Override
 			public java.awt.Dimension getPreferredSize() {
 				return KWidget.this.getPreferedSize( super.getPreferredSize() );
 			}
@@ -114,6 +118,9 @@ public abstract class KWidget extends KComponent< javax.swing.JPanel > {
 		}
 	}
 	
+	protected javax.swing.JToolTip createToolTip( javax.swing.JToolTip jToolTip ) {
+		return jToolTip;
+	}
 	@Deprecated
 	protected java.awt.Dimension getPreferedSize( java.awt.Dimension jPreferedSize ) {
 		return jPreferedSize;
@@ -141,5 +148,14 @@ public abstract class KWidget extends KComponent< javax.swing.JPanel > {
 	protected void removeAllComponents() {
 		//todo
 		this.getJComponent().removeAll();
+	}
+
+	@Deprecated
+	protected void paintComponent( java.awt.Graphics g ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public void paint( java.awt.Graphics g ) {
+		throw new RuntimeException( "todo" );
 	}
 }

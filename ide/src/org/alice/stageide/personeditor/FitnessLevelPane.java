@@ -65,12 +65,12 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 /**
  * @author Dennis Cosgrove
  */
-class FitnessLevelPane extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
+class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	private FitnessLevelSlider slider = new FitnessLevelSlider();
 	public FitnessLevelPane() {
-		this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new FitnessLevelActionOperation( slider, 0, "SOFT" ) ), java.awt.BorderLayout.WEST );
-		this.add( this.slider, java.awt.BorderLayout.CENTER );
-		this.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( new FitnessLevelActionOperation( slider, 100, "CUT" ) ), java.awt.BorderLayout.EAST );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new FitnessLevelActionOperation( slider, 0, "SOFT" ) ), CardinalDirection.WEST );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.slider ), CardinalDirection.CENTER );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new FitnessLevelActionOperation( slider, 100, "CUT" ) ), CardinalDirection.EAST );
 	}
 
 	public void setFitnessLevel( Double fitnessLevel ) {

@@ -361,7 +361,7 @@ public class PersonViewer extends org.alice.stageide.modelviewer.ModelViewer {
 		}
 	}
 
-	public static void main( String[] args ) {
-		PersonEditor.main( args );
-	}
+//	public static void main( String[] args ) {
+//		PersonEditor.main( args );
+//	}
 }

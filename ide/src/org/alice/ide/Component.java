@@ -84,16 +84,15 @@ public abstract class Component extends edu.cmu.cs.dennisc.croquet.KDragControl 
 	}
 	
 	@Deprecated
-	protected void setLeftButtonPressOperation( edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
+	public void setLeftButtonPressOperation( edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
 		throw new RuntimeException( "todo" );
 	}
 	@Deprecated
-	protected void setDragAndDropOperation( org.alice.ide.operations.DefaultDragAndDropOperation operation ) {
+	public void setDragAndDropOperation( org.alice.ide.operations.DefaultDragAndDropOperation operation ) {
 		throw new RuntimeException( "todo" );
 	}
 	@Deprecated
-	protected void setPopupOperation( edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation operation ) {
+	public void setPopupOperation( edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation ) {
 		throw new RuntimeException( "todo" );
 	}
-	
 }

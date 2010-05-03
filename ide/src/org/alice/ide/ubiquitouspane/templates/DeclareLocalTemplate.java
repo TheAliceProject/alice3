@@ -62,7 +62,7 @@ public class DeclareLocalTemplate extends org.alice.ide.templates.StatementTempl
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
-	public javax.swing.JToolTip createToolTip() {
+	protected javax.swing.JToolTip createToolTip(javax.swing.JToolTip jToolTip) {
 		return this.implementor.getToolTip();
 	}
 	

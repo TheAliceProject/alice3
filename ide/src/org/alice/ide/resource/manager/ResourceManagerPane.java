@@ -298,8 +298,8 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 		}
 		protected abstract javax.swing.JComponent createPreviewComponent();
 		@Override
-		protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
-			rv = super.updateComponentRows( rv );
+		protected java.util.List<edu.cmu.cs.dennisc.croquet.KComponent<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.KComponent<?>[]> rv, edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel) {
+			rv = super.updateComponentRows( rv, panel );
 			rv.add( 
 					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
 							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),
@@ -546,7 +546,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickUnquoteCount ) {
 			if( quoteClickUnquoteCount == 2 ) {
 				if( table.getSelectedRow() >= 0 ) {
-					edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( renameResourceOperation, e, true );
+					renameResourceOperation.fire();
 				}
 			}
 		}

@@ -192,12 +192,12 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		
 
 		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( this.fullBodyOutfitList );
-		scrollPane.getVerticalScrollBar().setUnitIncrement( 66 );
+		scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 		//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
 		
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setOpaque( false );
-		scrollPane.getViewport().setOpaque( false );
+		scrollPane.getJComponent().getViewport().setOpaque( false );
 
 		edu.cmu.cs.dennisc.croquet.KBorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.KBorderPanel( 8, 8 );
 		bodyPane.addComponent( scrollPane, CardinalDirection.CENTER );
@@ -211,15 +211,15 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		bodyPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
 		headPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8,8,8,8  ) );
 		
-		this.tabbedPane.add( "Body", bodyPane );
-		this.tabbedPane.add( "Head", headPane );
+		this.tabbedPane.add( "Body", bodyPane.getJComponent() );
+		this.tabbedPane.add( "Head", headPane.getJComponent() );
 		this.tabbedPane.setOpaque( true );
 
 		java.awt.Font font = tabbedPane.getFont();
 		this.tabbedPane.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
 
 		this.addComponent( northPane, CardinalDirection.NORTH );
-		this.addComponent( tabbedPane, CardinalDirection.CENTER );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( tabbedPane ), CardinalDirection.CENTER );
 		
 	}
 	
@@ -250,10 +250,10 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 			this.genderList.setSelectedValue( gender, shouldScroll );
 			this.fullBodyOutfitList.handleEpicChange( lifeStage, gender, hairColor );
 			this.hairList.handleEpicChange( lifeStage, gender, hairColor );
-			this.hairList.setSelectedValue( hair, shouldScroll );
+			this.hairList.setSelectedValue( (Enum)hair, shouldScroll );
 			this.hairColorList.handleEpicChange( lifeStage, gender, hairColor );
 			this.hairColorList.setSelectedValue( hairColor, shouldScroll );
-			this.fullBodyOutfitList.setSelectedValue( personViewer.getFullBodyOutfit(), shouldScroll );
+			this.fullBodyOutfitList.setSelectedValue( (Enum)personViewer.getFullBodyOutfit(), shouldScroll );
 			this.baseSkinToneList.setSelectedValue( personViewer.getBaseSkinTone(), shouldScroll );
 			this.baseEyeColorList.setSelectedValue( personViewer.getBaseEyeColor(), shouldScroll );
 			this.fitnessLevelPane.setFitnessLevel( personViewer.getFitnessLevel() );

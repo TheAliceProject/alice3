@@ -94,7 +94,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	}
 	
 	public java.awt.Rectangle getDropBounds() {
-		java.awt.Rectangle rv = javax.swing.SwingUtilities.getLocalBounds( this );
+		java.awt.Rectangle rv = javax.swing.SwingUtilities.getLocalBounds( this.getJComponent() );
 		final int DELTA = this.getFont().getSize() + 4;
 		rv.y -= DELTA;
 		rv.height += DELTA;

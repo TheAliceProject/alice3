@@ -128,7 +128,7 @@ public class ScaleDragManipulator extends LinearDragManipulator {
 				animator = null;
 			}
 			PredeterminedScaleActionOperation undoOperation = new PredeterminedScaleActionOperation( Project.GROUP_UUID, false, animator, this.getManipulatedTransformable(), accumulatedScaleVector, handleCriterion, getUndoRedoDescription() );
-			ZManager.performIfAppropriate( undoOperation, null, false );
+			undoOperation.fire();
 		}
 	}
 
