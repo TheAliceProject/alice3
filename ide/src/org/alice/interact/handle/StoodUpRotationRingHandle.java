@@ -63,6 +63,13 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 		super();
 	}
 	
+	public StoodUpRotationRingHandle( StoodUpRotationRingHandle handle )
+	{
+		this(handle.rotationAxisDirection, handle.handlePosition);
+		this.initFromHandle( handle );
+		this.handleOffset.set( handle.handleOffset );
+	}
+	
 	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection )
 	{
 		super( rotationAxisDirection );
@@ -71,6 +78,13 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 	public StoodUpRotationRingHandle( MovementDirection rotationAxisDirection, HandlePosition handlePosition )
 	{
 		super(rotationAxisDirection, handlePosition);
+	}
+	
+	@Override
+	public StoodUpRotationRingHandle clone()
+	{
+		StoodUpRotationRingHandle newHandle = new StoodUpRotationRingHandle(this);
+		return newHandle;
 	}
 	
 	@Override

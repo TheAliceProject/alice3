@@ -43,8 +43,55 @@
 
 package org.alice.apis.moveandturn;
 
+import org.alice.interact.PickHint;
+
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
+import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
+import edu.cmu.cs.dennisc.scenegraph.Visual;
+
 /**
  * @author Dennis Cosgrove
  */
-public class Marker extends Transformable {
+public class Marker extends Transformable 
+{
+	protected SingleAppearance sgFrontFacingAppearance = new SingleAppearance();
+	protected edu.cmu.cs.dennisc.scenegraph.Transformable sgVisualTransformable = new edu.cmu.cs.dennisc.scenegraph.Transformable();
+	
+	public Marker()
+	{
+		this.sgVisualTransformable.localTransformation.setValue(AffineMatrix4x4.createIdentity());
+		sgFrontFacingAppearance.diffuseColor.setValue( this.getMarkerColor() );
+		sgFrontFacingAppearance.opacity.setValue( new Float(this.getMarkerOpacity()) );
+		createVisuals();
+		this.getSGTransformable().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.MARKERS );
+		this.setVisualVisibility(true);
+	}
+	
+	protected void createVisuals()
+	{
+	}
+	
+	public void setVisualVisibility(boolean isVisible)
+	{
+		if (isVisible)
+		{
+			this.sgVisualTransformable.setParent(this.getSGTransformable());
+		}
+		else
+		{
+			this.sgVisualTransformable.setParent(null);
+		}
+	}
+	
+	protected Color4f getMarkerColor()
+	{
+		return Color4f.CYAN;
+	}
+	
+	protected float getMarkerOpacity()
+	{
+		return 1;
+	}
+	
 }

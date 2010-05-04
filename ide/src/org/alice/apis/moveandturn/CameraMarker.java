@@ -43,8 +43,16 @@
 
 package org.alice.apis.moveandturn;
 
+
 /**
  * @author Dennis Cosgrove
  */
-public class CameraMarker extends Marker {
+public class CameraMarker extends Marker 
+{
+	
+	@Override
+	protected void createVisuals()
+	{
+		super.createVisuals();
+	}
 }
