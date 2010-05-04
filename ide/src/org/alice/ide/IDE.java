@@ -360,7 +360,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 	private edu.cmu.cs.dennisc.croquet.KVerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.KVerticalSplitPane();
-	private RightPanel right = new RightPanel( this.ubiquitousPane, new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.editorsTabbedPane ) );
+	private RightPanel right = new RightPanel( this.ubiquitousPane, this.editorsTabbedPane );
 	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane( left, right );
 
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
@@ -760,7 +760,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	private ComponentStencil stencil;
 	private java.util.List< ? extends java.awt.Component > holes = null;
-	private edu.cmu.cs.dennisc.zoot.ZDragComponent potentialDragSource;
+	private edu.cmu.cs.dennisc.croquet.KDragControl potentialDragSource;
 	private java.awt.Component currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
@@ -793,7 +793,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 					java.awt.Rectangle potentialDragSourceBounds;
 					if( IDE.this.potentialDragSource != null ) {
 						potentialDragSourceBounds = IDE.this.potentialDragSource.getBounds();
-						potentialDragSourceBounds = javax.swing.SwingUtilities.convertRectangle( IDE.this.potentialDragSource.getParent(), potentialDragSourceBounds, this );
+						potentialDragSourceBounds = IDE.this.potentialDragSource.getParent().convertRectangle( potentialDragSourceBounds, this );
 					} else {
 						potentialDragSourceBounds = null;
 					}
@@ -864,7 +864,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
 
-	public void showStencilOver( edu.cmu.cs.dennisc.zoot.ZDragComponent potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void showStencilOver( edu.cmu.cs.dennisc.croquet.KDragControl potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = codeEditor.createListOfPotentialDropReceptors( type );
@@ -1101,7 +1101,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	//	protected abstract void handleWindowClosing();
 
-	public java.util.List< ? extends edu.cmu.cs.dennisc.zoot.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.KDragControl source ) {
 		assert source != null;
 		org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
 		if( codeEditor != null ) {
@@ -1109,7 +1109,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 				org.alice.ide.common.ExpressionLikeSubstance expressionLikeSubstance = (org.alice.ide.common.ExpressionLikeSubstance)source.getSubject();
 				return codeEditor.createListOfPotentialDropReceptors( expressionLikeSubstance.getExpressionType() );
 			} else {
-				java.util.List< edu.cmu.cs.dennisc.zoot.DropReceptor > rv = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.DropReceptor >();
+				java.util.List< edu.cmu.cs.dennisc.croquet.DropReceptor > rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 				rv.add( codeEditor );
 				//			for( alice.ide.ast.DropReceptor dropReceptor : this.dropReceptors ) {
 				//				if( dropReceptor.isPotentiallyAcceptingOf( source ) ) {
@@ -1120,7 +1120,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 			}
 		} else {
 			//todo: investigate
-			return new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.DropReceptor >();
+			return new java.util.LinkedList< edu.cmu.cs.dennisc.croquet.DropReceptor >();
 		}
 	}
 
@@ -1629,6 +1629,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	public boolean isDragInProgress() {
 		return this.isDragInProgress;
 	}
+	@Override
 	public void setDragInProgress( boolean isDragInProgress ) {
 		this.isDragInProgress = isDragInProgress;
 		this.currentDropReceptorComponent = null;

@@ -512,7 +512,7 @@ public abstract class Application {
 	}
 	
 	@Deprecated
-	public boolean isDragInProgress() {
-		return false;
-	}
+	public abstract boolean isDragInProgress();
+	@Deprecated
+	public abstract void setDragInProgress( boolean isDragInProgress );
 }

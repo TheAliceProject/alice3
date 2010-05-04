@@ -61,7 +61,7 @@ public class FieldTile extends org.alice.ide.common.ExpressionLikeSubstance {
 		this.field = field;
 		this.selectOperation = new org.alice.ide.operations.ast.SelectFieldActionOperation( this.field );
 		this.setLeftButtonPressOperation( this.selectOperation );
-		this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1b079c62-dd58-41dd-93cf-d85ab03a4d23" ), this.createPopupOperations() );
+		this.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "1b079c62-dd58-41dd-93cf-d85ab03a4d23" ), this.createPopupOperations() ) );
 		if( this.field instanceof edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice ) {
 			((edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice)field).name.addPropertyListener( new NamePropertyAdapter() );
 		}

@@ -47,6 +47,15 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public abstract class KComponent<J extends javax.swing.JComponent> {
+	private static java.util.Map< java.awt.Component, KComponent< ? > > map = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+	protected static KComponent< ? > lookup( java.awt.Component component ) {
+		if( component != null ) {
+			return KComponent.map.get( component );
+		} else {
+			return null;
+		}
+	}
+	
 	private J jComponent;
 	protected abstract J createJComponent();
 
@@ -152,11 +161,63 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	public void scrollToVisible() {
 		this.scrollRectToVisible( javax.swing.SwingUtilities.getLocalBounds( this.getJComponent() ) );
 	}
+
+	public int getX() {
+		return this.getJComponent().getX();
+	}
+	public int getY() {
+		return this.getJComponent().getY();
+	}
+	public java.awt.Point getLocationOnScreen() {
+		return this.getJComponent().getLocationOnScreen();
+	}
+	public java.awt.Insets getInsets() {
+		return this.getJComponent().getInsets();
+	}
+	public java.awt.Rectangle getBounds() {
+		return this.getJComponent().getBounds();
+	}
 	
-//	@Deprecated
-//	public KComponent<?> getComponent( int i ) {
-//		throw new RuntimeException( "todo" );
-//	}
+	@Deprecated
+	public java.awt.Point convertPoint( java.awt.Point pt, java.awt.Component destination ) {
+		return javax.swing.SwingUtilities.convertPoint( this.getJComponent(), pt, destination );
+	}
+	public java.awt.Point convertPoint( java.awt.Point pt, KComponent< ? > destination ) {
+		return javax.swing.SwingUtilities.convertPoint( this.getJComponent(), pt, destination.getJComponent() );
+	}
+	@Deprecated
+	public java.awt.Rectangle convertRectangle( java.awt.Rectangle rectangle, java.awt.Component destination ) {
+		return javax.swing.SwingUtilities.convertRectangle( this.getJComponent(), rectangle, destination );
+	}
+	public java.awt.Rectangle convertRectangle( java.awt.Rectangle rectangle, KComponent< ? > destination ) {
+		return javax.swing.SwingUtilities.convertRectangle( this.getJComponent(), rectangle, destination.getJComponent() );
+	}
+	@Deprecated
+	public java.awt.event.MouseEvent convertMouseEvent( java.awt.event.MouseEvent e, java.awt.Component destination ) {
+		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getJComponent(), e, destination );
+	}
+	public java.awt.event.MouseEvent convertMouseEvent( java.awt.event.MouseEvent e, KComponent< ? > destination ) {
+		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getJComponent(), e, destination.getJComponent() );
+	}
+	
+	@Deprecated
+	public KComponent< ? > getParent() {
+		return KComponent.lookup( this.getJComponent().getParent() );
+	}
+	@Deprecated
+	public KComponent<?> getComponent( int i ) {
+		return KComponent.lookup( this.getJComponent().getComponent( i ) );
+	}
+	@Deprecated
+	public KComponent<?>[] getComponents() {
+		java.awt.Component[] components = this.getJComponent().getComponents();
+		final int N = components.length;
+		KComponent< ? >[] rv = new KComponent< ? >[ N ];
+		for( int i=0; i<N; i++ ) {
+			rv[ i ] = KComponent.lookup( components[ i ] );
+		}
+		return rv;
+	}
 	public int getComponentCount() {
 		return this.getJComponent().getComponentCount();
 	}
@@ -193,7 +254,6 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 		this.repaint();
 	}
 	
-
 	@Deprecated
 	public void addMouseListener( java.awt.event.MouseListener listener ) {
 		this.getJComponent().addMouseListener( listener );

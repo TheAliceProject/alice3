@@ -46,54 +46,36 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class KScrollPane extends KComponent< javax.swing.JScrollPane > {
-	public enum KVerticalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
-		private int internal;
-		private KVerticalScrollbarPolicy( int internal ) {
-			this.internal = internal;
-		}
-	}
-	public enum KHorizontalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
-		private int internal;
-		private KHorizontalScrollbarPolicy( int internal ) {
-			this.internal = internal;
-		}
-	}
+public class KTabbedPane extends KComponent< javax.swing.JTabbedPane > {
 	@Override
-	protected javax.swing.JScrollPane createJComponent() {
-		return new javax.swing.JScrollPane();
+	protected javax.swing.JTabbedPane createJComponent() {
+		return new javax.swing.JTabbedPane();
 	}
-	public KScrollPane( KComponent<?> viewportView ) {
-		this.setViewportView( viewportView );
+	public void addTab( String title, KComponent< ? > component ) {
+		this.getJComponent().addTab( title, component.getJComponent() );
 	}
-	public KScrollPane( KComponent<?> viewportView, KVerticalScrollbarPolicy verticalScrollbarPolicy, KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		this.setViewportView( viewportView );
-		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
-		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
+	public void addTab( String title, javax.swing.Icon icon, KComponent< ? > component ) {
+		this.getJComponent().addTab( title, icon, component.getJComponent() );
 	}
-	public KScrollPane( KVerticalScrollbarPolicy verticalScrollbarPolicy, KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
-		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
+	public void setTitleAt( int index, String title ) {
+		this.getJComponent().setTitleAt( index, title );
 	}
-	public KComponent<?> getViewportView() {
-		return KComponent.lookup( this.getJComponent().getViewport().getView() );
+
+	@Deprecated
+	public int getSelectedIndex() {
+		return this.getJComponent().getSelectedIndex();
 	}
-	public void setViewportView( KComponent<?> view ) {
-		assert view != null;
-		this.getJComponent().setViewportView( view.getJComponent() );
+	@Deprecated
+	public KComponent< ? > getSelectedComponent() {
+		return KComponent.lookup( this.getJComponent().getSelectedComponent() );
 	}
-	public void setVerticalScrollbarPolicy( KVerticalScrollbarPolicy verticalScrollbarPolicy ) {
-		assert verticalScrollbarPolicy != null;
-		this.getJComponent().setVerticalScrollBarPolicy( verticalScrollbarPolicy.internal );
+	@Deprecated
+	public void setSelectedComponent( KComponent< ? > selectedComponent ) {
+		this.getJComponent().setSelectedComponent( selectedComponent.getJComponent() );
 	}
-	public void setHorizontalScrollbarPolicy( KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		assert horizontalScrollbarPolicy != null;
-		this.getJComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
+	@Deprecated
+	public int indexOfComponent( KComponent< ? > component ) {
+		return this.getJComponent().indexOfComponent( component.getJComponent() );
 	}
+	
 }

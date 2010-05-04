@@ -47,7 +47,7 @@ import org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation;
 /**
  * @author Dennis Cosgrove
  */
-public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.cmu.cs.dennisc.zoot.DropReceptor {
+public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
 	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane, edu.cmu.cs.dennisc.croquet.KComponent< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		super( prefixPane, component, null );

@@ -40,60 +40,67 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KScrollPane extends KComponent< javax.swing.JScrollPane > {
-	public enum KVerticalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
-		private int internal;
-		private KVerticalScrollbarPolicy( int internal ) {
-			this.internal = internal;
-		}
+public class CompositeEdit extends Edit {
+	private Edit[] edits;
+	private boolean isDoToBeIgnored;
+	private String presentation;
+	public CompositeEdit( Context context, Edit[] edits, boolean isDoToBeIgnored, String presentation ) {
+		super( context );
+		this.edits = edits;
+		this.isDoToBeIgnored = isDoToBeIgnored;
+		this.presentation = presentation;
 	}
-	public enum KHorizontalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
-		private int internal;
-		private KHorizontalScrollbarPolicy( int internal ) {
-			this.internal = internal;
+	public CompositeEdit( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		super( binaryDecoder );
+	}
+	
+	@Override
+	public void doOrRedo( boolean isDo ) {
+		if( isDo && this.isDoToBeIgnored ) {
+			//pass
+		} else {
+			for( Edit edit : this.edits ) {
+				edit.doOrRedo( isDo );
+			}
 		}
 	}
 	@Override
-	protected javax.swing.JScrollPane createJComponent() {
-		return new javax.swing.JScrollPane();
+	public void undo() {
+		final int N = this.edits.length;
+		for( int i=0; i<N; i++ ) {
+			this.edits[ N-1-i ].undo();
+		}
 	}
-	public KScrollPane( KComponent<?> viewportView ) {
-		this.setViewportView( viewportView );
+	@Override
+	public boolean canRedo() {
+		for( Edit edit : this.edits ) {
+			if( edit.canRedo() ) {
+				//pass
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
-	public KScrollPane( KComponent<?> viewportView, KVerticalScrollbarPolicy verticalScrollbarPolicy, KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		this.setViewportView( viewportView );
-		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
-		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
+	@Override
+	public boolean canUndo() {
+		for( Edit edit : this.edits ) {
+			if( edit.canUndo() ) {
+				//pass
+			} else {
+				return false;
+			}
+		}
+		return true;
 	}
-	public KScrollPane( KVerticalScrollbarPolicy verticalScrollbarPolicy, KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
-		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
-	}
-	public KComponent<?> getViewportView() {
-		return KComponent.lookup( this.getJComponent().getViewport().getView() );
-	}
-	public void setViewportView( KComponent<?> view ) {
-		assert view != null;
-		this.getJComponent().setViewportView( view.getJComponent() );
-	}
-	public void setVerticalScrollbarPolicy( KVerticalScrollbarPolicy verticalScrollbarPolicy ) {
-		assert verticalScrollbarPolicy != null;
-		this.getJComponent().setVerticalScrollBarPolicy( verticalScrollbarPolicy.internal );
-	}
-	public void setHorizontalScrollbarPolicy( KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		assert horizontalScrollbarPolicy != null;
-		this.getJComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
+	@Override
+	protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
+		rv.append( this.presentation );
+		return rv;
 	}
 }

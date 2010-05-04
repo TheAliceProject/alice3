@@ -50,7 +50,16 @@ public abstract class KPanel extends KComponent< javax.swing.JPanel > {
 	protected abstract java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel );
 	@Override
 	protected javax.swing.JPanel createJComponent() {
-		javax.swing.JPanel rv = new javax.swing.JPanel();
+		javax.swing.JPanel rv = new javax.swing.JPanel() {
+			@Override
+			protected void paintComponent( java.awt.Graphics g ) {
+				java.awt.Graphics2D g2 = (java.awt.Graphics2D)g;
+				boolean isSuperPaintComponentDesired = KPanel.this.paintComponent( g2 );
+				if( isSuperPaintComponentDesired ) {
+					super.paintComponent( g );
+				}
+			}
+		};
 		java.awt.LayoutManager layoutManager = this.createLayoutManager( rv );
 		rv.setLayout( layoutManager );
 		return rv;
@@ -77,5 +86,9 @@ public abstract class KPanel extends KComponent< javax.swing.JPanel > {
 		component.removing();
 		this.getJComponent().remove( component.getJComponent() );
 		component.removed();
+	}
+	
+	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
+		return true;
 	}
 }

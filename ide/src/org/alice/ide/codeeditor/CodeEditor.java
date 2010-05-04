@@ -112,18 +112,19 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		super.removed();
 	}
 
-	@Override
-	public String getName() {
-		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
-			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.code;
-			return method.getName();
-		} else if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
-			//edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.code;
-			return "constructor";
-		} else {
-			return super.getName();
-		}
-	}
+	//todo: croquet switch
+//	@Override
+//	public String getName() {
+//		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
+//			edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)this.code;
+//			return method.getName();
+//		} else if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice ) {
+//			//edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructor = (edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice)this.code;
+//			return "constructor";
+//		} else {
+//			return super.getName();
+//		}
+//	}
 
 	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		return new ParametersPane( this.getIDE().getCodeFactory(), code );
@@ -132,7 +133,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;
 	}
-	public java.awt.Component getAWTComponent() {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponent() {
 		return this;
 	}
 	public void refresh() {
@@ -241,7 +242,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 			}
 		} );
 	}
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
+	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.KDragControl source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
@@ -268,7 +269,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 				continue;
 			}
 			//edu.cmu.cs.dennisc.print.PrintUtilities.println( statementListPropertyPane );
-			java.awt.Rectangle bounds = javax.swing.SwingUtilities.convertRectangle( statementListPropertyPane, statementListPropertyPane.getDropBounds(), this.getAsSeenBy() );
+			java.awt.Rectangle bounds = statementListPropertyPane.convertRectangle( statementListPropertyPane.getDropBounds(), this.getAsSeenBy() );
 			bounds.x = 0;
 			bounds.width = this.getAsSeenBy().getWidth() - bounds.x;
 			rv[ i ] = new StatementListPropertyPaneInfo( statementListPropertyPane, bounds );
@@ -301,7 +302,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
-			java.awt.event.MouseEvent eAsSeenBy = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( source, eSource, this.getAsSeenBy() );
+			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
 			StatementListPropertyPane nextUnder = getStatementListPropertyPaneUnder( eAsSeenBy, this.statementListPropertyPaneInfos );
 			this.currentUnder = nextUnder;
 			if( this.currentUnder != null ) {
@@ -320,7 +321,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 							edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
 
 							int prevIndex = prevOwner.indexOf( statement );
-							int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
+							int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
 
 							if( prevOwner == nextOwner ) {
 								if( prevIndex == nextIndex || prevIndex == nextIndex - 1 ) {
@@ -334,7 +335,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 				if( isDropProxyAlreadyUpdated ) {
 					//pass
 				} else {
-					java.awt.event.MouseEvent eUnder = edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getAsSeenBy(), eAsSeenBy, this.currentUnder );
+					java.awt.event.MouseEvent eUnder = this.getAsSeenBy().convertMouseEvent( eAsSeenBy, this.currentUnder );
 					Integer height = 0;
 					java.awt.Insets insets = this.currentUnder.getBorder().getBorderInsets( this.currentUnder.getJComponent() );
 					int x = insets.left;
@@ -350,9 +351,9 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 								//java.awt.Component firstComponent = this.currentUnder.getComponent( 0 );
 								p.y = 0;
 							} else if( index < n ) {
-								p.y = this.currentUnder.getComponent( index ).getY();
+								p.y = this.currentUnder.getJComponent().getComponent( index ).getY();
 							} else {
-								java.awt.Component lastComponent = this.currentUnder.getComponent( n - 1 );
+								java.awt.Component lastComponent = this.currentUnder.getJComponent().getComponent( n - 1 );
 								p.y = lastComponent.getY() + lastComponent.getHeight();
 								p.y += StatementListPropertyPane.INTRASTICIAL_PAD;
 								if( this.currentUnder.getProperty() == ((edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code).getBodyProperty().getValue().statements ) {
@@ -376,7 +377,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {
-			final int index = statementListPropertyPane.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), statementListPropertyPane ) );
+			final int index = statementListPropertyPane.calculateIndex( source.convertPoint( eSource.getPoint(), statementListPropertyPane ) );
 			if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 				final org.alice.ide.templates.StatementTemplate statementTemplate = (org.alice.ide.templates.StatementTemplate)source;
 				if( this.currentUnder != null ) {
@@ -452,7 +453,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty prevOwner = abstractStatementPane.getOwner();
 					final edu.cmu.cs.dennisc.alice.ast.StatementListProperty nextOwner = this.currentUnder.getProperty();
 					final int prevIndex = prevOwner.indexOf( statement );
-					final int nextIndex = this.currentUnder.calculateIndex( javax.swing.SwingUtilities.convertPoint( source, eSource.getPoint(), this.currentUnder ) );
+					final int nextIndex = this.currentUnder.calculateIndex( source.convertPoint( eSource.getPoint(), this.currentUnder ) );
 
 					
 					abstract class CodeEdit extends org.alice.ide.ToDoEdit {
@@ -595,7 +596,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 	private void resetScrollPane( final java.awt.Point viewPosition ) {
 		javax.swing.SwingUtilities.invokeLater( new Runnable() {
 			public void run() {
-				CodeEditor.this.scrollPane.getViewport().setViewPosition( viewPosition );
+				CodeEditor.this.scrollPane.getJComponent().getViewport().setViewPosition( viewPosition );
 				CodeEditor.this.repaint();
 			}
 		} );

@@ -181,7 +181,7 @@ class FileSystemPane extends TabContentPane {
  * @author Dennis Cosgrove
  */
 public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
-	private edu.cmu.cs.dennisc.zoot.ZTabbedPane tabbedPane = new edu.cmu.cs.dennisc.zoot.ZTabbedPane();
+	private edu.cmu.cs.dennisc.croquet.KTabbedPane tabbedPane = new edu.cmu.cs.dennisc.croquet.KTabbedPane();
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private TabContentPane templatesPane;
 	private FileSystemPane fileSystemPane = new FileSystemPane();
@@ -219,12 +219,12 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 				OpenProjectPane.this.updateOKButton();
 			}
 		} );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.tabbedPane ) );
+		this.addComponent( this.tabbedPane );
 	}
 	
 	
 	private TabContentPane getSelectedTabPane() {
-		java.awt.Component selectedComponent = this.tabbedPane.getSelectedComponent();
+		java.awt.Component selectedComponent = this.tabbedPane.getJComponent().getSelectedComponent();
 		if( selectedComponent instanceof javax.swing.JScrollPane ) {
 			javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)selectedComponent;
 			scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );

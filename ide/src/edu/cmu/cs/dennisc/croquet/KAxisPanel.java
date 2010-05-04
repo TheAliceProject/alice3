@@ -54,8 +54,16 @@ public abstract class KAxisPanel extends KPanel {
 			this.addComponent( component );
 		}
 	}
+	protected int getBoxLayoutPad() {
+		return 0;
+	}
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new javax.swing.BoxLayout( jPanel, this.axis );
+		int pad = this.getBoxLayoutPad();
+		if( pad > 0 ) {
+			return new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS, pad );
+		} else {
+			return new javax.swing.BoxLayout( jPanel, this.axis );
+		}
 	}
 }

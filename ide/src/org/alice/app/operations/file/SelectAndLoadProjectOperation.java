@@ -57,7 +57,7 @@ public abstract class SelectAndLoadProjectOperation extends org.alice.app.operat
 		org.alice.app.openprojectpane.OpenProjectPane openProjectPane = application.getOpenProjectPane();
 		openProjectPane.selectAppropriateTab( this.isNew() );
 		while( true ) {
-			java.net.URI uri = application.showInJDialog( openProjectPane, "Open Project", true );
+			java.net.URI uri = openProjectPane.showInJDialog( button, "Open Project" );
 			//todo: just load default project
 			if( uri != null ) {
 				context.commitAndInvokeDo( new LoadUriEdit( context, uri ) );

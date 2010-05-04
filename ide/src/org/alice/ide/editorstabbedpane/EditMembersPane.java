@@ -120,7 +120,7 @@ public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends
 		}
 		edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< T > editableListPane = new EditableMemberListPane();
 		editableListPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		this.addComponent( editableListPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( editableListPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
 	}
 	@Override
 	protected Boolean getActualInputValue() {

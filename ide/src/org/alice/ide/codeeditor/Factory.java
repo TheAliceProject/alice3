@@ -245,7 +245,11 @@ public class Factory extends org.alice.ide.common.Factory {
 	public org.alice.ide.common.AbstractStatementPane createStatementPane( edu.cmu.cs.dennisc.alice.ast.Statement statement, edu.cmu.cs.dennisc.alice.ast.StatementListProperty statementListProperty ) {
 		org.alice.ide.common.AbstractStatementPane abstractStatementPane = super.createStatementPane( statement, statementListProperty );
 		abstractStatementPane.setDragAndDropOperation( new org.alice.ide.operations.DefaultDragAndDropOperation() );
-		abstractStatementPane.setPopupOperation( this.createPopupOperations( abstractStatementPane ) );
+		abstractStatementPane.setPopupOperation( new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
+				edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
+				java.util.UUID.fromString( "6190553d-309e-453f-b9eb-ded8aaf7ce63" ),
+				this.createPopupOperations( abstractStatementPane ) 
+		) );
 		return abstractStatementPane;
 	}
 	protected java.util.List< edu.cmu.cs.dennisc.croquet.Operation > updatePopupOperations( java.util.List< edu.cmu.cs.dennisc.croquet.Operation > rv, org.alice.ide.common.AbstractStatementPane abstractStatementPane ) {

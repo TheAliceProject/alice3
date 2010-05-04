@@ -221,7 +221,7 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
+public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
 	class EditPreviousCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public EditPreviousCodeOperation() {
 			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
@@ -249,8 +249,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 				EditorsTabbedPane.this.updateFocusedCode();
 			}
 		} );
-		java.awt.Font f = this.getFont();
-		this.setFont( f.deriveFont( f.getSize2D() * 1.25f ) );
+		this.scaleFont( 1.25f );
 	}
 	public EditPreviousCodeOperation getEditPreviousCodeOperation() {
 		if( this.editPreviousCodeOperation != null ) {
@@ -297,7 +296,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 	}
 	private void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
 		assert code != null;
-		for( java.awt.Component component : this.getComponents() ) {
+		for( edu.cmu.cs.dennisc.croquet.KComponent< ? > component : this.getComponents() ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( component );
 			if( codeEditor != null ) {
 				if( codeEditor.getCode() == code ) {
@@ -364,21 +363,22 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
 		this.updateUI();
 	}
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-		for( java.awt.Component component : this.getComponents() ) {
+		for( edu.cmu.cs.dennisc.croquet.KComponent< ? > component : this.getComponents() ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( component, org.alice.ide.codeeditor.CodeEditor.class );
 			if( codeEditor != null ) {
 				codeEditor.refresh();
 			}
 		}
 	}
+	
 	@Override
-	public void addNotify() {
-		super.addNotify();
+	protected void adding() {
+		super.adding();
 		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 	}
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		org.alice.ide.IDE.getSingleton().removeCodeInFocusObserver( this.codeInFocusObserver );
-		super.removeNotify();
+		super.removed();
 	}
 }

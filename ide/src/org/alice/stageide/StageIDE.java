@@ -201,11 +201,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public java.awt.Component getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
 		if( icon != null ) {
-			return edu.cmu.cs.dennisc.javax.swing.LabelUtilities.createLabel( icon );
+			return new edu.cmu.cs.dennisc.croquet.KLabel( icon );
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}

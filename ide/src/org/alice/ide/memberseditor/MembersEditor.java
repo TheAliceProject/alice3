@@ -180,7 +180,7 @@ class FieldsTab extends MembersTab {
 	}
 }
 
-class TabbedPane extends edu.cmu.cs.dennisc.zoot.ZTabbedPane {
+class TabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
 	private MembersTab[] membersTabs = { new ProceduresTab(), new FunctionsTab(), new FieldsTab() };
 	public TabbedPane() {
 		for( MembersTab membersTab : membersTabs ) {
@@ -233,7 +233,7 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	}
 	
 	public MembersEditor() {
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.tabbedPane ) );
+		this.addComponent( this.tabbedPane );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

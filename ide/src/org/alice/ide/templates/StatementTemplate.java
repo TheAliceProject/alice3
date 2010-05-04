@@ -50,7 +50,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 		super( cls, javax.swing.BoxLayout.LINE_AXIS );
 	}
 
-	public abstract void createStatement( edu.cmu.cs.dennisc.zoot.event.DragAndDropEvent e, edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
+	public abstract void createStatement( edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
 	private edu.cmu.cs.dennisc.zoot.DragAndDropOperation dragAndDropOperation;
 
 //	@Override

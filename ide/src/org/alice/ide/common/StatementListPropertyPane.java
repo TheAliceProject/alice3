@@ -83,16 +83,15 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	}
 	
 	@Override
-	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		int pad;
+	protected int getBoxLayoutPad() {
+		int rv;
 		if( this.getProperty().getOwner() instanceof edu.cmu.cs.dennisc.alice.ast.DoTogether ) {
-			pad = 0;
+			rv = 0;
 		} else {
-			pad = INTRASTICIAL_PAD;
+			rv = INTRASTICIAL_PAD;
 		}
-		return new edu.cmu.cs.dennisc.javax.swing.layouts.PaddedBoxLayout( jPanel, javax.swing.BoxLayout.PAGE_AXIS, pad );
-	}
-	
+		return rv;
+	}	
 	public java.awt.Rectangle getDropBounds() {
 		java.awt.Rectangle rv = javax.swing.SwingUtilities.getLocalBounds( this.getJComponent() );
 		final int DELTA = this.getFont().getSize() + 4;
@@ -126,7 +125,7 @@ public class StatementListPropertyPane extends AbstractListPropertyPane< edu.cmu
 	}
 
 	private int getCenterYOfComponentAt( int i ) {
-		java.awt.Component componentI = this.getComponent( i );
+		java.awt.Component componentI = this.getJComponent().getComponent( i );
 		return componentI.getY() + componentI.getHeight() / 2;
 	}
 	public int calculateIndex( java.awt.Point p ) {

@@ -40,60 +40,38 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class KScrollPane extends KComponent< javax.swing.JScrollPane > {
-	public enum KVerticalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
-		private int internal;
-		private KVerticalScrollbarPolicy( int internal ) {
-			this.internal = internal;
-		}
+public abstract class AbstractPopupMenuOperation extends AbstractActionOperation {
+	public AbstractPopupMenuOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
+		super( groupUUID, individualUUID );
 	}
-	public enum KHorizontalScrollbarPolicy {
-		NEVER( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER ),
-		AS_NEEDED( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED ),
-		ALWAYS( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS );
-		private int internal;
-		private KHorizontalScrollbarPolicy( int internal ) {
-			this.internal = internal;
-		}
+	public abstract Operation[] getOperations();
+ 	@Override
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
+		Application application = Application.getSingleton();
+		KPopupMenu popupMenu = application.createPopupMenu( this );
+		
+//		javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
+//		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
+//			public void popupMenuWillBecomeVisible( javax.swing.event.PopupMenuEvent e ) {
+//			}
+//			public void popupMenuWillBecomeInvisible( javax.swing.event.PopupMenuEvent e ) {
+//			}
+//			public void popupMenuCanceled( javax.swing.event.PopupMenuEvent e ) {
+//			}
+//		} );
+		
+		popupMenu.showBelow( button );
 	}
-	@Override
-	protected javax.swing.JScrollPane createJComponent() {
-		return new javax.swing.JScrollPane();
+
+	/*package-private*/ void addPopupMenu( KPopupMenu popupMenu ) {
+		this.addComponent( popupMenu );
 	}
-	public KScrollPane( KComponent<?> viewportView ) {
-		this.setViewportView( viewportView );
-	}
-	public KScrollPane( KComponent<?> viewportView, KVerticalScrollbarPolicy verticalScrollbarPolicy, KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		this.setViewportView( viewportView );
-		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
-		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
-	}
-	public KScrollPane( KVerticalScrollbarPolicy verticalScrollbarPolicy, KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		this.setVerticalScrollbarPolicy( verticalScrollbarPolicy );
-		this.setHorizontalScrollbarPolicy( horizontalScrollbarPolicy );
-	}
-	public KComponent<?> getViewportView() {
-		return KComponent.lookup( this.getJComponent().getViewport().getView() );
-	}
-	public void setViewportView( KComponent<?> view ) {
-		assert view != null;
-		this.getJComponent().setViewportView( view.getJComponent() );
-	}
-	public void setVerticalScrollbarPolicy( KVerticalScrollbarPolicy verticalScrollbarPolicy ) {
-		assert verticalScrollbarPolicy != null;
-		this.getJComponent().setVerticalScrollBarPolicy( verticalScrollbarPolicy.internal );
-	}
-	public void setHorizontalScrollbarPolicy( KHorizontalScrollbarPolicy horizontalScrollbarPolicy ) {
-		assert horizontalScrollbarPolicy != null;
-		this.getJComponent().setHorizontalScrollBarPolicy( horizontalScrollbarPolicy.internal );
+	/*package-private*/ void removePopupMenu( KPopupMenu popupMenu ) {
+		this.removeComponent( popupMenu );
 	}
 }

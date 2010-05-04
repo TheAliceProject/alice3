@@ -141,17 +141,18 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 	public void updateOKButton() {
 		super.updateOKButton();
 		this.updatePreview();
-		this.updateSizeIfNecessary();
+//todo: croquet switch
+//		this.updateSizeIfNecessary();
 	}
 	
 	@Override
-	protected void paintComponent( java.awt.Graphics g ) {
-		super.paintComponent( g );
+	protected boolean paintComponent( java.awt.Graphics2D g2 ) {
 		if( this.spacer != null ) {
 			int y = this.spacer.getY() + this.spacer.getHeight();
 			java.awt.Insets insets = this.getInsets();
-			g.setColor( java.awt.Color.GRAY );
-			g.drawLine( insets.left, y, this.getWidth()-insets.right, y );
+			g2.setColor( java.awt.Color.GRAY );
+			g2.drawLine( insets.left, y, this.getWidth()-insets.right, y );
 		}
+		return super.paintComponent( g2 );
 	}
 }

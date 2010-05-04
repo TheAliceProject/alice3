@@ -48,6 +48,8 @@ package org.alice.ide.memberseditor.templates;
 public class FieldPopupOperation extends edu.cmu.cs.dennisc.croquet.PopupMenuOperation {
 	public FieldPopupOperation( edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice methodInAlice ) {
 		super( 
+			edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
+			java.util.UUID.fromString( "525cb5c8-1490-4468-8eca-cee0affff602" ),
 			new org.alice.ide.operations.ast.RenameFieldOperation( methodInAlice ),
 			new org.alice.ide.operations.ast.DeleteFieldOperation( methodInAlice )
 		);

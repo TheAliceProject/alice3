@@ -122,17 +122,18 @@ public class TypeComponent extends DeclarationNameLabel {
 		this.isRollover = isRollover;
 		this.repaint();
 	}
-	@Override
-	public java.awt.Color getForeground() {
-		if( this.isRollover ) {
-			return java.awt.Color.BLUE.darker();
-		} else {
-			return super.getForeground();
-		}
-	}
-	@Override
-	public void paint( java.awt.Graphics g ) {
-		this.paintBorder( g );
-		this.paintComponent( g );
-	}
+//todo: croquet switch
+//	@Override
+//	public java.awt.Color getForeground() {
+//		if( this.isRollover ) {
+//			return java.awt.Color.BLUE.darker();
+//		} else {
+//			return super.getForeground();
+//		}
+//	}
+//	@Override
+//	public void paint( java.awt.Graphics g ) {
+//		this.paintBorder( g );
+//		this.paintComponent( g );
+//	}
 }

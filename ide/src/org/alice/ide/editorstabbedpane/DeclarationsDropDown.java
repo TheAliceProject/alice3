@@ -274,7 +274,7 @@ class RootOperation extends org.alice.ide.operations.InconsequentialActionOperat
 		int y = button.getHeight();
 		edu.cmu.cs.dennisc.alice.Project project = getIDE().getProject();
 		if( project != null ) {
-			new ProjectBlank( project ).showPopupMenu( component, x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.zoot.ActionOperation >() {
+			new ProjectBlank( project ).showPopupMenu( button.getJComponent(), x, y, new edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.zoot.ActionOperation >() {
 				public void handleCompletion( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation ) {
 					edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( actionOperation, null, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
 				}

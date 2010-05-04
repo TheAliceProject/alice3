@@ -245,30 +245,30 @@ public abstract class Factory {
 			final boolean isLoop = lines[ N-1 ].isLoop();
 			edu.cmu.cs.dennisc.croquet.KPageAxisPanel pagePane = new edu.cmu.cs.dennisc.croquet.KPageAxisPanel() {
 				@Override
-				protected void paintComponent( java.awt.Graphics g ) {
-					super.paintComponent( g );
-					java.awt.Color prev = g.getColor();
+				protected boolean paintComponent( java.awt.Graphics2D g2 ) {
+					java.awt.Color prev = g2.getColor();
 					if( isLoop ) {
 						int n = this.getComponentCount();
-						java.awt.Component cFirst = this.getComponent( 0 );
-						java.awt.Component cLast = this.getComponent( n-1 );
-						g.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 160 ) );
+						java.awt.Component cFirst = this.getJComponent().getComponent( 0 );
+						java.awt.Component cLast = this.getJComponent().getComponent( n-1 );
+						g2.setColor( edu.cmu.cs.dennisc.java.awt.ColorUtilities.createGray( 160 ) );
 						int xB = Factory.this.getPixelsPerIndent();
 						int xA = xB/2;
 						int yTop = cFirst.getY() + cFirst.getHeight();
 						int yBottom = cLast.getY() + cLast.getHeight()/2;
-						g.drawLine( xA, yTop, xA, yBottom );
-						g.drawLine( xA, yBottom, xB, yBottom );
+						g2.drawLine( xA, yTop, xA, yBottom );
+						g2.drawLine( xA, yBottom, xB, yBottom );
 
 						int xC = cLast.getX() + cLast.getWidth();
 						int xD = xC + Factory.this.getPixelsPerIndent();;
-						g.drawLine( xC, yBottom, xD, yBottom );
-						g.drawLine( xD, yBottom, xD, cLast.getY() );
+						g2.drawLine( xC, yBottom, xD, yBottom );
+						g2.drawLine( xD, yBottom, xD, cLast.getY() );
 						
 						final int HALF_TRIANGLE_WIDTH = 3;
-						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.fillTriangle( g, edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
+						edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.fillTriangle( g2, edu.cmu.cs.dennisc.java.awt.GraphicsUtilties.Heading.NORTH, xA-HALF_TRIANGLE_WIDTH, yTop, HALF_TRIANGLE_WIDTH+1+HALF_TRIANGLE_WIDTH, 10 );
 					}
-					g.setColor( prev );
+					g2.setColor( prev );
+					return super.paintComponent( g2 );
 				}
 			};
 			for( org.alice.ide.i18n.Line line : lines ) {
