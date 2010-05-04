@@ -44,6 +44,7 @@ package org.alice.interact.condition;
 
 import org.alice.interact.InputState;
 import org.alice.interact.PickHint;
+import org.alice.interact.PickHint.PickType;
 
 
 /**
@@ -82,7 +83,8 @@ public class PickCondition {
 		}
 		else
 		{
-			return getPickType( pickObject.getVisual() );
+			PickHint pickType = getPickType( pickObject.getVisual() );
+			return pickType;
 		}
 	}
 	
@@ -122,7 +124,36 @@ public class PickCondition {
 		}
 		else
 		{
-			result = this.pickHint.intersects( getPickType( input.getClickPickResult() ) );
+			PickHint clickedType = getPickType( input.getClickPickResult() );
+			result = this.pickHint.intersects( clickedType );
+		}
+		if (isNot)
+		{
+			result = !result;
+		}
+		return result;
+	}
+	
+	public boolean evaluateObject_debug( InputState input )
+	{
+		boolean result = false;
+		if (input.getClickHandle() != null)
+		{
+			if (input.getClickHandle().isPickable())
+			{
+				System.out.println("Handle!");
+				result = this.pickHint.intersects( input.getClickHandle().getPickHint() );
+			}
+			else
+			{
+				result = false;
+			}
+		}
+		else
+		{
+			PickHint clickedType = getPickType( input.getClickPickResult() );
+			System.out.println("Clicked on "+clickedType+", looking for "+this.pickHint);
+			result = this.pickHint.intersects( clickedType );
 		}
 		if (isNot)
 		{
@@ -162,6 +193,18 @@ public class PickCondition {
 		else
 		{
 			return this.evaluateObject( input ) && this.nextCondition.evalutateChain( input ) ;
+		}
+	}
+	
+	public boolean evalutateChain_debug(InputState input)
+	{
+		if ( this.nextCondition == null )
+		{
+			return this.evaluateObject_debug( input );
+		}
+		else
+		{
+			return this.evaluateObject_debug( input ) && this.nextCondition.evalutateChain_debug( input ) ;
 		}
 	}
 	

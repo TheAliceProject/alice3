@@ -331,6 +331,12 @@ public abstract class AbstractDragAdapter implements java.awt.event.MouseWheelLi
 				}
 				else if ( currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState ) )
 				{
+//					System.out.println("Adding "+currentManipulatorSet.getName()+" to start array");
+//					if (currentManipulatorSet.getName().equals("Mouse Translate"))
+//					{
+//						boolean started = currentManipulatorSet.justStarted( this.currentInputState, this.previousInputState );
+//						System.out.println("Tested it again and it's "+started);
+//					}
 					toStart.add( currentManipulatorSet.getManipulator() );
 				}
 				else if ( currentManipulatorSet.justEnded( this.currentInputState, this.previousInputState ) )

@@ -138,4 +138,38 @@ public class PickHint extends BitSet{
 		}
 		return getMatchingTransformable( composite.getParent() );
 	}
+	
+	@Override
+	public String toString() {
+		if (this.intersects(NOTHING))
+		{
+			return "pick:NOTHING";
+		}
+		if (this.intersects(MOVEABLE_OBJECTS))
+		{
+			return "pick:MOVEABLE_OBJECTS";
+		}
+		if (this.intersects(THREE_D_HANDLES))
+		{
+			return "pick:THREE_D_HANDLES";
+		}
+		if (this.intersects(GROUND))
+		{
+			return "pick:GROUND";
+		}
+		if (this.intersects(LIGHT))
+		{
+			return "pick:LIGHT";
+		}
+		if (this.intersects(CAMERA))
+		{
+			return "pick:CAMERA";
+		}
+		if (this.intersects(TWO_D_HANDLES))
+		{
+			return "pick:TWO_D_HANDLES";
+		}
+		return "pick:UNKNOWN";
+	}
+	
 }

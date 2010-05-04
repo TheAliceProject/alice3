@@ -70,7 +70,9 @@ public abstract class InputCondition {
 	}
 	
 	public boolean justStarted( InputState currentState, InputState previousState ) {
-		if (testState(currentState) && !testState(previousState))
+		boolean currentStateVal = testState(currentState);
+		boolean previousStateVal = testState(previousState);
+		if (currentStateVal && !previousStateVal)
 		{
 			return true;
 		}

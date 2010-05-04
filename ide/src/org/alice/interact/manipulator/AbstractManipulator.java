@@ -133,6 +133,7 @@ public abstract class AbstractManipulator {
 			HandleSet setToShow = this.getHandleSetToEnable();
 			if (setToShow != null && this.dragAdapter != null)
 			{
+//				System.out.println("Push on start:");
 				this.dragAdapter.pushHandleSet( setToShow );
 			}
 		}
@@ -197,6 +198,7 @@ public abstract class AbstractManipulator {
 			HandleSet setToShow = this.getHandleSetToEnable();
 			if (setToShow != null && this.dragAdapter != null)
 			{
+//				System.out.println("Pop on manip end:");
 				this.dragAdapter.popHandleSet();
 			}
 		}
