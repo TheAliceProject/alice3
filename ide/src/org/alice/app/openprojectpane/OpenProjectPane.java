@@ -187,7 +187,7 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 	private FileSystemPane fileSystemPane = new FileSystemPane();
 	private RecentPane recentPane = new RecentPane();
 	
-	private java.util.Map< TabContentPane, javax.swing.JScrollPane > mapTabPaneToScrollPane = new java.util.HashMap< TabContentPane, javax.swing.JScrollPane >();
+	private java.util.Map< TabContentPane, edu.cmu.cs.dennisc.croquet.KScrollPane > mapTabPaneToScrollPane = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 	public OpenProjectPane( TabContentPane templatesPane ) {
 		this.templatesPane = templatesPane;
 		TabContentPane[] tabPanes = new TabContentPane[] { 
@@ -224,11 +224,16 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 	
 	
 	private TabContentPane getSelectedTabPane() {
-		java.awt.Component selectedComponent = this.tabbedPane.getJComponent().getSelectedComponent();
-		if( selectedComponent instanceof javax.swing.JScrollPane ) {
-			javax.swing.JScrollPane scrollPane = (javax.swing.JScrollPane)selectedComponent;
-			scrollPane.getVerticalScrollBar().setUnitIncrement( 12 );
-			java.awt.Component view = scrollPane.getViewport().getView();
+		edu.cmu.cs.dennisc.croquet.KComponent< ? > selectedComponent = this.tabbedPane.getSelectedComponent();
+		if( selectedComponent instanceof edu.cmu.cs.dennisc.croquet.KScrollPane ) {
+			edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = (edu.cmu.cs.dennisc.croquet.KScrollPane)selectedComponent;
+			
+			
+			//todo?
+			scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+			
+			
+			edu.cmu.cs.dennisc.croquet.KComponent< ? > view = scrollPane.getViewportView();
 			if( view instanceof TabContentPane ) {
 				return (TabContentPane)view;
 			} else {

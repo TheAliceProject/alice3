@@ -46,14 +46,15 @@ package org.alice.ide.operations;
 /**
  * @author Dennis Cosgrove
  */
-public class DefaultDragAndDropOperation extends edu.cmu.cs.dennisc.zoot.AbstractDragAndDropOperation {
-	public DefaultDragAndDropOperation() {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP );
+@Deprecated
+public class DefaultDragAndDropOperation extends edu.cmu.cs.dennisc.croquet.DragOperation {
+	public DefaultDragAndDropOperation( java.util.UUID individualId ) {
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId );
 	}
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends edu.cmu.cs.dennisc.zoot.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.zoot.ZDragComponent dragSource ) {
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.KDragControl dragSource ) {
 		return getIDE().createListOfPotentialDropReceptors( dragSource );
 	}
 	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {

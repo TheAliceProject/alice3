@@ -84,6 +84,10 @@ public abstract class Component extends edu.cmu.cs.dennisc.croquet.KDragControl 
 	}
 	
 	@Deprecated
+	public edu.cmu.cs.dennisc.croquet.AbstractActionOperation getLeftButtonPressOperation() {
+		return null;
+	}
+	@Deprecated
 	public void setLeftButtonPressOperation( edu.cmu.cs.dennisc.croquet.AbstractActionOperation operation ) {
 		throw new RuntimeException( "todo" );
 	}

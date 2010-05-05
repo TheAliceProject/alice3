@@ -141,7 +141,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
 			edu.cmu.cs.dennisc.croquet.KComponent< ? > parametersPane = createParametersPane( codeDeclaredInAlice );
-			edu.cmu.cs.dennisc.croquet.KComponent< ? > header;
+			edu.cmu.cs.dennisc.croquet.KPanel header;
 			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
 				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane );
@@ -257,8 +257,8 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
 	}
-	private java.awt.Component getAsSeenBy() {
-		return this.scrollPane.getJComponent().getViewport().getView();
+	private edu.cmu.cs.dennisc.croquet.KComponent< ? > getAsSeenBy() {
+		return this.scrollPane.getViewportView();
 	}
 	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.zoot.ZDragComponent source ) {
 		java.util.List< StatementListPropertyPane > statementListPropertyPanes = edu.cmu.cs.dennisc.java.awt.ComponentUtilities.findAllMatches( this, StatementListPropertyPane.class );
@@ -373,7 +373,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 	}
 	public void dragDropped( edu.cmu.cs.dennisc.croquet.DragAndDropContext dragAndDropContext ) {
 		final java.awt.Point viewPosition = this.scrollPane.getJComponent().getViewport().getViewPosition();
-		edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
+		final edu.cmu.cs.dennisc.croquet.KDragControl source = dragAndDropContext.getDragSource();
 		final java.awt.event.MouseEvent eSource = dragAndDropContext.getLatestMouseEvent();
 		final StatementListPropertyPane statementListPropertyPane = CodeEditor.this.currentUnder;
 		if( statementListPropertyPane != null ) {

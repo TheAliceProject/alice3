@@ -46,7 +46,7 @@ package org.alice.ide.common;
  * @author Dennis Cosgrove
  */
 public class TypeComponent extends DeclarationNameLabel {
-	private edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation popupOperation;
+	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupOperation;
 	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 			setRollover( true );
@@ -56,7 +56,7 @@ public class TypeComponent extends DeclarationNameLabel {
 		}
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			if( TypeComponent.this.popupOperation != null ) {
-				edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( TypeComponent.this.popupOperation, e, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
+				TypeComponent.this.popupOperation.fire();
 			}
 		}
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
@@ -72,7 +72,7 @@ public class TypeComponent extends DeclarationNameLabel {
 		if( type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
 			
-			java.util.List< edu.cmu.cs.dennisc.zoot.Operation > operations = new java.util.LinkedList< edu.cmu.cs.dennisc.zoot.Operation >();
+			java.util.List< edu.cmu.cs.dennisc.croquet.Operation > operations = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			operations.add( new org.alice.ide.operations.ast.RenameTypeOperation( typeInAlice ) );
 			
 			org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
@@ -80,7 +80,7 @@ public class TypeComponent extends DeclarationNameLabel {
 				operations.add( new org.alice.ide.operations.ast.DeclareFieldOfPredeterminedTypeOperation( ide.getSceneType(), typeInAlice ) );
 			}
 			//operations.add( new org.alice.ide.operations.file.SaveAsTypeOperation( typeInAlice ) );
-			this.popupOperation = new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation( operations );
+			this.popupOperation = new edu.cmu.cs.dennisc.croquet.PopupMenuOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "9f84fe0c-ca20-45f1-8a25-c79bd8454dbd" ), operations );
 					
 //			this.popupOperation = new zoot.DefaultPopupActionOperation( 
 //					new org.alice.ide.operations.ast.RenameTypeOperation( typeInAlice ),
