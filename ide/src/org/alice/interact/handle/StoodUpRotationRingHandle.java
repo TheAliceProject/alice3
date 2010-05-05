@@ -100,6 +100,7 @@ public class StoodUpRotationRingHandle extends RotationRingHandle implements Pro
 			{
 				this.manipulatedObject.localTransformation.addPropertyListener( this );
 			}
+			positionRelativeToObject();
 		}
 	}
 	

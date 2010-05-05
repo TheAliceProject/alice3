@@ -42,79 +42,192 @@
  */
 package org.alice.apis.moveandturn;
 
+import edu.cmu.cs.dennisc.color.Color4f;
+import edu.cmu.cs.dennisc.math.Point3;
+import edu.cmu.cs.dennisc.math.Vector3;
+import edu.cmu.cs.dennisc.math.Vector3f;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder;
 import edu.cmu.cs.dennisc.scenegraph.Geometry;
+import edu.cmu.cs.dennisc.scenegraph.LineArray;
+import edu.cmu.cs.dennisc.scenegraph.QuadArray;
 import edu.cmu.cs.dennisc.scenegraph.Transformable;
+import edu.cmu.cs.dennisc.scenegraph.Vertex;
 import edu.cmu.cs.dennisc.scenegraph.Visual;
 import edu.cmu.cs.dennisc.scenegraph.Cylinder.BottomToTopAxis;
+import edu.cmu.cs.dennisc.texture.TextureCoordinate2f;
 
 /**
  * @author David Culyba
  */
 public class PerspectiveCameraMarker extends CameraMarker 
 {
+	
+	private Vertex[] sgViewLineVertices;
+	
+	@Override
+	protected Color4f getMarkerColor()
+	{
+		return Color4f.GRAY;
+	}
+	
 	@Override
 	protected void createVisuals()
 	{
 		super.createVisuals();
 		
-		Visual sgVisualCylinder = new Visual();
-		sgVisualCylinder.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
-		double topRadius = .25;
-		double bottomRadius = .25;
-		double cylinderLength = .5;
-		double radiusCone = .4;
-		double lengthCone = .45;
+		final double length = .75;
+		final double height = .4;
+		final double width = .15;
+		final double lensHoodLength = .2;
 		
-		BottomToTopAxis bottomToTopAxis = BottomToTopAxis.NEGATIVE_Z;
-		Cylinder sgCylinder = new Cylinder();
-		sgCylinder.topRadius.setValue( topRadius );
-		sgCylinder.bottomRadius.setValue( bottomRadius );
-		sgCylinder.length.setValue( cylinderLength );
-		sgCylinder.bottomToTopAxis.setValue( bottomToTopAxis );
-		sgCylinder.hasTopCap.setValue( false );
-		//todo?
-		sgCylinder.hasBottomCap.setValue( true );
+		Visual sgBoxVisual = new Visual();
+		sgBoxVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
+		edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
+		sgBox.setMinimum(new Point3( -width/2, -height/2, 0));
+		sgBox.setMaximum(new Point3( width/2, height/2, length));
+		sgBoxVisual.geometries.setValue( new Geometry[] { sgBox } );
 		
+		final double radius = length / 4;
 		
-		edu.cmu.cs.dennisc.math.Vector3 coneTranslation = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(  
-			new edu.cmu.cs.dennisc.math.Vector3( -lengthCone, -lengthCone, -lengthCone ), 
-			bottomToTopAxis.accessVector() 
-		);
+		Visual sgCylinder1Visual= new Visual();
+		sgCylinder1Visual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
+		Cylinder sgCylinder1 = new Cylinder();
+		sgCylinder1.topRadius.setValue( radius );
+		sgCylinder1.bottomRadius.setValue( radius );
+		sgCylinder1.length.setValue( width );
+		sgCylinder1.bottomToTopAxis.setValue( BottomToTopAxis.POSITIVE_X );
+		sgCylinder1.hasTopCap.setValue( true );
+		sgCylinder1.hasBottomCap.setValue( true );
+		Vector3 cylinder1Translation = new Vector3(-width/2, height/2 + radius , radius);
+		Transformable sgTransformableCylinder1 = new Transformable();
+		sgTransformableCylinder1.applyTranslation( cylinder1Translation );
+		sgCylinder1Visual.geometries.setValue( new Geometry[] { sgCylinder1 } );
+		sgCylinder1Visual.setParent(sgTransformableCylinder1);
 		
-		edu.cmu.cs.dennisc.math.Vector3 cylinderTranslation = edu.cmu.cs.dennisc.math.Vector3.createMultiplication(  
-				new edu.cmu.cs.dennisc.math.Vector3( -cylinderLength-lengthCone, -cylinderLength-lengthCone, -cylinderLength-lengthCone ), 
-				bottomToTopAxis.accessVector() 
-			);
+		Visual sgCylinder2Visual= new Visual();
+		sgCylinder2Visual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
+		Cylinder sgCylinder2 = new Cylinder();
+		sgCylinder2.topRadius.setValue( radius );
+		sgCylinder2.bottomRadius.setValue( radius );
+		sgCylinder2.length.setValue( width );
+		sgCylinder2.bottomToTopAxis.setValue( BottomToTopAxis.POSITIVE_X );
+		sgCylinder2.hasTopCap.setValue( true );
+		sgCylinder2.hasBottomCap.setValue( true );
+		Vector3 cylinder2Translation = new Vector3(-width/2, height/2 + radius , radius*3);
+		Transformable sgTransformableCylinder2 = new Transformable();
+		sgTransformableCylinder2.applyTranslation( cylinder2Translation );
+		sgCylinder2Visual.geometries.setValue( new Geometry[] { sgCylinder2 } );
+		sgCylinder2Visual.setParent(sgTransformableCylinder2);
 		
-		Transformable sgTransformableCone = new Transformable();
-		sgTransformableCone.applyTranslation( coneTranslation );
-		Transformable sgTransformableCylinder = new Transformable();
-		sgTransformableCylinder.applyTranslation( cylinderTranslation );
-		
+		Visual sgLensVisual= new Visual();
+		sgLensVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
+		QuadArray sgLensGeometry = new QuadArray();
+		Vertex[] sgLensVertices = new Vertex[32];
+		Point3 innerTopLeft = new Point3(-width/2, height/4, 0);
+		Point3 innerTopRight = new Point3(width/2, height/4, 0);
+		Point3 innerBottomLeft = new Point3(-width/2, -height/4, 0);
+		Point3 innerBottomRight = new Point3(width/2, -height/4, 0);
+		Point3 outerTopLeft = new Point3(-height/2, height/2, -lensHoodLength);
+		Point3 outerTopRight = new Point3(height/2, height/2, -lensHoodLength);
+		Point3 outerBottomLeft = new Point3(-height/2, -height/2, -lensHoodLength);
+		Point3 outerBottomRight = new Point3(height/2, -height/2, -lensHoodLength);
 
-		Visual sgVisualCone = new Visual();
-		sgVisualCone.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
-
-		Cylinder sgCone = new Cylinder();
-	    sgCone.topRadius.setValue( 0.0 );
-	    sgCone.bottomRadius.setValue( radiusCone );
-	    sgCone.length.setValue( lengthCone );
-	    sgCone.bottomToTopAxis.setValue( bottomToTopAxis );
-	    sgCone.hasTopCap.setValue( false ); //redundant
-	    sgCone.hasBottomCap.setValue( true );
-	    
-	    sgVisualCylinder.geometries.setValue( new Geometry[] { sgCylinder } );
-	    sgVisualCone.geometries.setValue( new Geometry[] { sgCone } );
-	    
-		sgVisualCone.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
-	    
-	    
-	    sgTransformableCylinder.setParent( this.sgVisualTransformable );
-	    sgTransformableCone.setParent( this.sgVisualTransformable );
-	    
-	    sgVisualCylinder.setParent( sgTransformableCylinder );
-	    sgVisualCone.setParent( sgTransformableCone );
+		Vector3 topNormal = Vector3.createCrossProduct(Vector3.createSubtraction(innerTopRight, innerTopLeft), Vector3.createSubtraction(outerTopLeft, innerTopLeft));
+		topNormal.normalize();
+		Vector3 rightNormal = Vector3.createCrossProduct(Vector3.createSubtraction(innerBottomRight, innerTopRight), Vector3.createSubtraction(outerTopRight, innerTopRight));
+		rightNormal.normalize();
+		Vector3 bottomNormal = Vector3.createCrossProduct(Vector3.createSubtraction(innerBottomLeft, innerBottomRight), Vector3.createSubtraction(outerBottomRight, innerBottomRight));
+		bottomNormal.normalize();
+		Vector3 leftNormal = Vector3.createCrossProduct(Vector3.createSubtraction(innerTopLeft, innerBottomLeft), Vector3.createSubtraction(outerBottomLeft, innerBottomLeft));
+		leftNormal.normalize();
 		
+		Vector3f topNormalf = new Vector3f((float)topNormal.x, (float)topNormal.y, (float)topNormal.z);
+		Vector3f rightNormalf = new Vector3f((float)rightNormal.x, (float)rightNormal.y, (float)rightNormal.z);
+		Vector3f bottomNormalf = new Vector3f((float)bottomNormal.x, (float)bottomNormal.y, (float)bottomNormal.z);
+		Vector3f leftNormalf = new Vector3f((float)leftNormal.x, (float)leftNormal.y, (float)leftNormal.z);
+		Vector3f negTopNormalf = Vector3f.createMultiplication(topNormalf, -1);
+		Vector3f negRightNormalf = Vector3f.createMultiplication(rightNormalf, -1);
+		Vector3f negBottomNormalf = Vector3f.createMultiplication(bottomNormalf, -1);
+		Vector3f negLeftNormalf = Vector3f.createMultiplication(leftNormalf, -1);
+		
+		Color4f diffuse = Color4f.createNaN();
+		Color4f specular = Color4f.createNaN();
+		TextureCoordinate2f uvs = edu.cmu.cs.dennisc.texture.TextureCoordinate2f.createNaN();
+		
+		sgLensVertices[0] = new Vertex(outerTopLeft, topNormalf, diffuse, specular, uvs);
+		sgLensVertices[1] = new Vertex(innerTopLeft, topNormalf, diffuse, specular, uvs);
+		sgLensVertices[2] = new Vertex(innerTopRight, topNormalf, diffuse, specular, uvs);
+		sgLensVertices[3] = new Vertex(outerTopRight, topNormalf, diffuse, specular, uvs);
+		
+		sgLensVertices[4] = new Vertex(outerTopRight, rightNormalf, diffuse, specular, uvs);
+		sgLensVertices[5] = new Vertex(innerTopRight, rightNormalf, diffuse, specular, uvs);
+		sgLensVertices[6] = new Vertex(innerBottomRight, rightNormalf, diffuse, specular, uvs);
+		sgLensVertices[7] = new Vertex(outerBottomRight, rightNormalf, diffuse, specular, uvs);
+		
+		sgLensVertices[8] = new Vertex(outerBottomRight, bottomNormalf, diffuse, specular, uvs);
+		sgLensVertices[9] = new Vertex(innerBottomRight, bottomNormalf, diffuse, specular, uvs);
+		sgLensVertices[10] = new Vertex(innerBottomLeft, bottomNormalf, diffuse, specular, uvs);
+		sgLensVertices[11] = new Vertex(outerBottomLeft, bottomNormalf, diffuse, specular, uvs);
+		
+		sgLensVertices[12] = new Vertex(outerBottomLeft, leftNormalf, diffuse, specular, uvs);
+		sgLensVertices[13] = new Vertex(innerBottomLeft, leftNormalf, diffuse, specular, uvs);
+		sgLensVertices[14] = new Vertex(innerTopLeft, leftNormalf, diffuse, specular, uvs);
+		sgLensVertices[15] = new Vertex(outerTopLeft, leftNormalf, diffuse, specular, uvs);
+		
+		//The opposite faces
+		sgLensVertices[16] = new Vertex(outerTopRight, negTopNormalf, diffuse, specular, uvs);
+		sgLensVertices[17] = new Vertex(innerTopRight, negTopNormalf, diffuse, specular, uvs);
+		sgLensVertices[18] = new Vertex(innerTopLeft, negTopNormalf, diffuse, specular, uvs);
+		sgLensVertices[19] = new Vertex(outerTopLeft, negTopNormalf, diffuse, specular, uvs);
+		
+		sgLensVertices[20] = new Vertex(outerBottomRight, negRightNormalf, diffuse, specular, uvs);
+		sgLensVertices[21] = new Vertex(innerBottomRight, negRightNormalf, diffuse, specular, uvs);
+		sgLensVertices[22] = new Vertex(innerTopRight, negRightNormalf, diffuse, specular, uvs);
+		sgLensVertices[23] = new Vertex(outerTopRight, negRightNormalf, diffuse, specular, uvs);
+		
+		sgLensVertices[24] = new Vertex(outerBottomLeft, negBottomNormalf, diffuse, specular, uvs);
+		sgLensVertices[25] = new Vertex(innerBottomLeft, negBottomNormalf, diffuse, specular, uvs);
+		sgLensVertices[26] = new Vertex(innerBottomRight, negBottomNormalf, diffuse, specular, uvs);
+		sgLensVertices[27] = new Vertex(outerBottomRight, negBottomNormalf, diffuse, specular, uvs);
+		
+		sgLensVertices[28] = new Vertex(outerTopLeft, negLeftNormalf, diffuse, specular, uvs);
+		sgLensVertices[29] = new Vertex(innerTopLeft, negLeftNormalf, diffuse, specular, uvs);
+		sgLensVertices[30] = new Vertex(innerBottomLeft, negLeftNormalf, diffuse, specular, uvs);
+		sgLensVertices[31] = new Vertex(outerBottomLeft, negLeftNormalf, diffuse, specular, uvs);
+		
+		sgLensGeometry.vertices.setValue( sgLensVertices );
+		sgLensVisual.geometries.setValue( new Geometry[] { sgLensGeometry } );
+		
+		double viewDisplacement = 3;
+		double viewLength = 3;
+		float startAlpha = .5f;
+		float endAlpha = 0f;
+		this.sgViewLineVertices = new Vertex[8];
+		this.sgViewLineVertices[0] = Vertex.createXYZRGBA(0,0,0,0,0,0,startAlpha);
+		this.sgViewLineVertices[1] = Vertex.createXYZRGBA(-viewDisplacement,viewDisplacement,-viewLength, 0,0,0,endAlpha);
+		this.sgViewLineVertices[2] = Vertex.createXYZRGBA(0,0,0,0,0,0,startAlpha);
+		this.sgViewLineVertices[3] = Vertex.createXYZRGBA(-viewDisplacement,-viewDisplacement,-viewLength, 0,0,0,endAlpha);
+		this.sgViewLineVertices[4] = Vertex.createXYZRGBA(0,0,0,0,0,0,startAlpha);
+		this.sgViewLineVertices[5] = Vertex.createXYZRGBA(viewDisplacement,viewDisplacement,-viewLength, 0,0,0,endAlpha);
+		this.sgViewLineVertices[6] = Vertex.createXYZRGBA(0,0,0,0,0,0,startAlpha);
+		this.sgViewLineVertices[7] = Vertex.createXYZRGBA(viewDisplacement,-viewDisplacement,-viewLength, 0,0,0,endAlpha);
+		
+		
+		Visual sgViewLinesVisual = new Visual();
+		sgViewLinesVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
+		LineArray sgViewLines = new LineArray();
+		sgViewLines.vertices.setValue(this.sgViewLineVertices);
+		sgViewLinesVisual.geometries.setValue(new Geometry[] { sgViewLines } );
+		
+		sgViewLinesVisual.setParent(this.sgVisualTransformable);
+	    sgLensVisual.setParent( this.sgVisualTransformable );
+		sgTransformableCylinder1.setParent( this.sgVisualTransformable );
+		sgTransformableCylinder2.setParent( this.sgVisualTransformable );
+		sgBoxVisual.setParent( this.sgVisualTransformable );
+	}
+	
+	public void setViewAngle( Angle horizontalViewAngle, Angle verticalViewAngle )
+	{
+//		this.
 	}
 }
