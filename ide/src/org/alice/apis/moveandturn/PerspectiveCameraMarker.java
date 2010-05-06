@@ -70,35 +70,39 @@ public class PerspectiveCameraMarker extends CameraMarker
 		return Color4f.GRAY;
 	}
 	
+	private static final double VIEW_LINES_DISPLACEMENT = 3;
+	private static final double VIEW_LINES_DISTANCE_FROM_CAMERA = 3;
+	private static final float START_ALPHA = .5f;
+	private static final float END_ALPHA = 0f;
+	private static final double LENGTH = .75;
+	private static final double HEIGHT = .4;
+	private static final double WIDTH = .15;
+	private static final double LENS_HOOD_LENGTH = .2;
+	
 	@Override
 	protected void createVisuals()
 	{
 		super.createVisuals();
 		
-		final double length = .75;
-		final double height = .4;
-		final double width = .15;
-		final double lensHoodLength = .2;
-		
 		Visual sgBoxVisual = new Visual();
 		sgBoxVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 		edu.cmu.cs.dennisc.scenegraph.Box sgBox = new edu.cmu.cs.dennisc.scenegraph.Box();
-		sgBox.setMinimum(new Point3( -width/2, -height/2, 0));
-		sgBox.setMaximum(new Point3( width/2, height/2, length));
+		sgBox.setMinimum(new Point3( -WIDTH/2, -HEIGHT/2, 0));
+		sgBox.setMaximum(new Point3( WIDTH/2, HEIGHT/2, LENGTH));
 		sgBoxVisual.geometries.setValue( new Geometry[] { sgBox } );
 		
-		final double radius = length / 4;
+		final double radius = LENGTH / 4;
 		
 		Visual sgCylinder1Visual= new Visual();
 		sgCylinder1Visual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 		Cylinder sgCylinder1 = new Cylinder();
 		sgCylinder1.topRadius.setValue( radius );
 		sgCylinder1.bottomRadius.setValue( radius );
-		sgCylinder1.length.setValue( width );
+		sgCylinder1.length.setValue( WIDTH );
 		sgCylinder1.bottomToTopAxis.setValue( BottomToTopAxis.POSITIVE_X );
 		sgCylinder1.hasTopCap.setValue( true );
 		sgCylinder1.hasBottomCap.setValue( true );
-		Vector3 cylinder1Translation = new Vector3(-width/2, height/2 + radius , radius);
+		Vector3 cylinder1Translation = new Vector3(-WIDTH/2, HEIGHT/2 + radius , radius);
 		Transformable sgTransformableCylinder1 = new Transformable();
 		sgTransformableCylinder1.applyTranslation( cylinder1Translation );
 		sgCylinder1Visual.geometries.setValue( new Geometry[] { sgCylinder1 } );
@@ -109,11 +113,11 @@ public class PerspectiveCameraMarker extends CameraMarker
 		Cylinder sgCylinder2 = new Cylinder();
 		sgCylinder2.topRadius.setValue( radius );
 		sgCylinder2.bottomRadius.setValue( radius );
-		sgCylinder2.length.setValue( width );
+		sgCylinder2.length.setValue( WIDTH );
 		sgCylinder2.bottomToTopAxis.setValue( BottomToTopAxis.POSITIVE_X );
 		sgCylinder2.hasTopCap.setValue( true );
 		sgCylinder2.hasBottomCap.setValue( true );
-		Vector3 cylinder2Translation = new Vector3(-width/2, height/2 + radius , radius*3);
+		Vector3 cylinder2Translation = new Vector3(-WIDTH/2, HEIGHT/2 + radius , radius*3);
 		Transformable sgTransformableCylinder2 = new Transformable();
 		sgTransformableCylinder2.applyTranslation( cylinder2Translation );
 		sgCylinder2Visual.geometries.setValue( new Geometry[] { sgCylinder2 } );
@@ -123,14 +127,14 @@ public class PerspectiveCameraMarker extends CameraMarker
 		sgLensVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
 		QuadArray sgLensGeometry = new QuadArray();
 		Vertex[] sgLensVertices = new Vertex[32];
-		Point3 innerTopLeft = new Point3(-width/2, height/4, 0);
-		Point3 innerTopRight = new Point3(width/2, height/4, 0);
-		Point3 innerBottomLeft = new Point3(-width/2, -height/4, 0);
-		Point3 innerBottomRight = new Point3(width/2, -height/4, 0);
-		Point3 outerTopLeft = new Point3(-height/2, height/2, -lensHoodLength);
-		Point3 outerTopRight = new Point3(height/2, height/2, -lensHoodLength);
-		Point3 outerBottomLeft = new Point3(-height/2, -height/2, -lensHoodLength);
-		Point3 outerBottomRight = new Point3(height/2, -height/2, -lensHoodLength);
+		Point3 innerTopLeft = new Point3(-WIDTH/2, HEIGHT/4, 0);
+		Point3 innerTopRight = new Point3(WIDTH/2, HEIGHT/4, 0);
+		Point3 innerBottomLeft = new Point3(-WIDTH/2, -HEIGHT/4, 0);
+		Point3 innerBottomRight = new Point3(WIDTH/2, -HEIGHT/4, 0);
+		Point3 outerTopLeft = new Point3(-HEIGHT/2, HEIGHT/2, -LENS_HOOD_LENGTH);
+		Point3 outerTopRight = new Point3(HEIGHT/2, HEIGHT/2, -LENS_HOOD_LENGTH);
+		Point3 outerBottomLeft = new Point3(-HEIGHT/2, -HEIGHT/2, -LENS_HOOD_LENGTH);
+		Point3 outerBottomRight = new Point3(HEIGHT/2, -HEIGHT/2, -LENS_HOOD_LENGTH);
 
 		Vector3 topNormal = Vector3.createCrossProduct(Vector3.createSubtraction(innerTopRight, innerTopLeft), Vector3.createSubtraction(outerTopLeft, innerTopLeft));
 		topNormal.normalize();
@@ -198,20 +202,18 @@ public class PerspectiveCameraMarker extends CameraMarker
 		sgLensGeometry.vertices.setValue( sgLensVertices );
 		sgLensVisual.geometries.setValue( new Geometry[] { sgLensGeometry } );
 		
-		double viewDisplacement = 3;
-		double viewLength = 3;
-		float startAlpha = .5f;
-		float endAlpha = 0f;
 		this.sgViewLineVertices = new Vertex[8];
-		this.sgViewLineVertices[0] = Vertex.createXYZRGBA(0,0,0,0,0,0,startAlpha);
-		this.sgViewLineVertices[1] = Vertex.createXYZRGBA(-viewDisplacement,viewDisplacement,-viewLength, 0,0,0,endAlpha);
-		this.sgViewLineVertices[2] = Vertex.createXYZRGBA(0,0,0,0,0,0,startAlpha);
-		this.sgViewLineVertices[3] = Vertex.createXYZRGBA(-viewDisplacement,-viewDisplacement,-viewLength, 0,0,0,endAlpha);
-		this.sgViewLineVertices[4] = Vertex.createXYZRGBA(0,0,0,0,0,0,startAlpha);
-		this.sgViewLineVertices[5] = Vertex.createXYZRGBA(viewDisplacement,viewDisplacement,-viewLength, 0,0,0,endAlpha);
-		this.sgViewLineVertices[6] = Vertex.createXYZRGBA(0,0,0,0,0,0,startAlpha);
-		this.sgViewLineVertices[7] = Vertex.createXYZRGBA(viewDisplacement,-viewDisplacement,-viewLength, 0,0,0,endAlpha);
+		this.sgViewLineVertices[0] = Vertex.createXYZRGBA(0,0,0,0,0,0,START_ALPHA);
+		this.sgViewLineVertices[1] = Vertex.createXYZRGBA(-VIEW_LINES_DISPLACEMENT,VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISTANCE_FROM_CAMERA, 0,0,0,END_ALPHA);
+		this.sgViewLineVertices[2] = Vertex.createXYZRGBA(0,0,0,0,0,0,START_ALPHA);
+		this.sgViewLineVertices[3] = Vertex.createXYZRGBA(-VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISTANCE_FROM_CAMERA, 0,0,0,END_ALPHA);
+		this.sgViewLineVertices[4] = Vertex.createXYZRGBA(0,0,0,0,0,0,START_ALPHA);
+		this.sgViewLineVertices[5] = Vertex.createXYZRGBA(VIEW_LINES_DISPLACEMENT,VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISTANCE_FROM_CAMERA, 0,0,0,END_ALPHA);
+		this.sgViewLineVertices[6] = Vertex.createXYZRGBA(0,0,0,0,0,0,START_ALPHA);
+		this.sgViewLineVertices[7] = Vertex.createXYZRGBA(VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISTANCE_FROM_CAMERA, 0,0,0,END_ALPHA);
 		
+		
+		setViewAngle(new AngleInDegrees(90), new AngleInDegrees(45));
 		
 		Visual sgViewLinesVisual = new Visual();
 		sgViewLinesVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
@@ -228,6 +230,19 @@ public class PerspectiveCameraMarker extends CameraMarker
 	
 	public void setViewAngle( Angle horizontalViewAngle, Angle verticalViewAngle )
 	{
-//		this.
+		double halfHorizontalAngle = horizontalViewAngle.getAsRadians() * .5;
+		double halfVerticalAngle = verticalViewAngle.getAsRadians() * .5;
+		
+		double xVal = Math.tan(halfHorizontalAngle) * VIEW_LINES_DISTANCE_FROM_CAMERA;
+		double yVal = Math.tan(halfVerticalAngle) * VIEW_LINES_DISTANCE_FROM_CAMERA;
+		
+		this.sgViewLineVertices[1].position.x = -xVal;
+		this.sgViewLineVertices[1].position.y = yVal;
+		this.sgViewLineVertices[3].position.x = -xVal;
+		this.sgViewLineVertices[3].position.y = -yVal;
+		this.sgViewLineVertices[5].position.x = xVal;
+		this.sgViewLineVertices[5].position.y = yVal;
+		this.sgViewLineVertices[7].position.x = xVal;
+		this.sgViewLineVertices[7].position.y = -yVal;
 	}
 }
