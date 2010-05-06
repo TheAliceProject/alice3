@@ -63,6 +63,7 @@ public class PerspectiveCameraMarker extends CameraMarker
 {
 	
 	private Vertex[] sgViewLineVertices;
+	private LineArray sgViewLines;
 	
 	@Override
 	protected Color4f getMarkerColor()
@@ -213,13 +214,13 @@ public class PerspectiveCameraMarker extends CameraMarker
 		this.sgViewLineVertices[7] = Vertex.createXYZRGBA(VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISPLACEMENT,-VIEW_LINES_DISTANCE_FROM_CAMERA, 0,0,0,END_ALPHA);
 		
 		
-		setViewAngle(new AngleInDegrees(90), new AngleInDegrees(45));
-		
 		Visual sgViewLinesVisual = new Visual();
 		sgViewLinesVisual.frontFacingAppearance.setValue( this.sgFrontFacingAppearance );
-		LineArray sgViewLines = new LineArray();
+		this.sgViewLines = new LineArray();
 		sgViewLines.vertices.setValue(this.sgViewLineVertices);
-		sgViewLinesVisual.geometries.setValue(new Geometry[] { sgViewLines } );
+		sgViewLinesVisual.geometries.setValue(new Geometry[] { this.sgViewLines } );
+		
+		setViewingAngle(new AngleInDegrees(90), new AngleInDegrees(45));
 		
 		sgViewLinesVisual.setParent(this.sgVisualTransformable);
 	    sgLensVisual.setParent( this.sgVisualTransformable );
@@ -228,7 +229,7 @@ public class PerspectiveCameraMarker extends CameraMarker
 		sgBoxVisual.setParent( this.sgVisualTransformable );
 	}
 	
-	public void setViewAngle( Angle horizontalViewAngle, Angle verticalViewAngle )
+	public void setViewingAngle( edu.cmu.cs.dennisc.math.Angle horizontalViewAngle, edu.cmu.cs.dennisc.math.Angle verticalViewAngle )
 	{
 		double halfHorizontalAngle = horizontalViewAngle.getAsRadians() * .5;
 		double halfVerticalAngle = verticalViewAngle.getAsRadians() * .5;
@@ -244,5 +245,7 @@ public class PerspectiveCameraMarker extends CameraMarker
 		this.sgViewLineVertices[5].position.y = yVal;
 		this.sgViewLineVertices[7].position.x = xVal;
 		this.sgViewLineVertices[7].position.y = -yVal;
+		
+		this.sgViewLines.vertices.setValue(this.sgViewLineVertices);
 	}
 }

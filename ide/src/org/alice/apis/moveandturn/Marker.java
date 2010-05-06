@@ -45,6 +45,8 @@ package org.alice.apis.moveandturn;
 
 import org.alice.interact.PickHint;
 
+import edu.cmu.cs.dennisc.alice.annotations.PropertyGetterTemplate;
+import edu.cmu.cs.dennisc.alice.annotations.Visibility;
 import edu.cmu.cs.dennisc.color.Color4f;
 import edu.cmu.cs.dennisc.math.AffineMatrix4x4;
 import edu.cmu.cs.dennisc.scenegraph.SingleAppearance;
@@ -65,16 +67,17 @@ public class Marker extends Transformable
 		sgFrontFacingAppearance.opacity.setValue( new Float(this.getMarkerOpacity()) );
 		createVisuals();
 		this.getSGTransformable().putBonusDataFor( PickHint.PICK_HINT_KEY, PickHint.MARKERS );
-		this.setVisualVisibility(true);
+		this.setShowing(false);
 	}
 	
-	protected void createVisuals()
-	{
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	public Boolean isShowing() {
+		return this.sgVisualTransformable.getParent() != null;
 	}
 	
-	public void setVisualVisibility(boolean isVisible)
-	{
-		if (isVisible)
+	@PropertyGetterTemplate( visibility=Visibility.PRIME_TIME )
+	public void setShowing( Boolean isShowing ) {
+		if (isShowing)
 		{
 			this.sgVisualTransformable.setParent(this.getSGTransformable());
 		}
@@ -82,6 +85,10 @@ public class Marker extends Transformable
 		{
 			this.sgVisualTransformable.setParent(null);
 		}
+	}
+	
+	protected void createVisuals()
+	{
 	}
 	
 	protected Color4f getMarkerColor()
