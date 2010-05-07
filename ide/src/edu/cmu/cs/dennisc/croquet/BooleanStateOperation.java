@@ -121,13 +121,13 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		this.updateName();
 	}
 
-	/*package-private*/ void addAbstractButton(KAbstractButton<?> abstractButton) {
+	/*package-private*/ void addAbstractButton(AbstractButton<?> abstractButton) {
 		abstractButton.setAction(this.action);
 		abstractButton.setModel(this.buttonModel);
 		this.addComponent(abstractButton);
 	}
 
-	/*package-private*/ void removeAbstractButton(KAbstractButton<?> abstractButton) {
+	/*package-private*/ void removeAbstractButton(AbstractButton<?> abstractButton) {
 		this.removeComponent(abstractButton);
 		abstractButton.setModel(null);
 		abstractButton.setAction(null);

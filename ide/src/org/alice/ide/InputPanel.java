@@ -45,7 +45,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class InputPanel< T > extends edu.cmu.cs.dennisc.croquet.KInputPanel< T > {
+public abstract class InputPanel< T > extends edu.cmu.cs.dennisc.croquet.InputPanel< T > {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

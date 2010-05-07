@@ -100,7 +100,7 @@ public abstract class ListPane extends TabContentPane {
 				}
 			}
 		} );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.list ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ) );
 	}
 
 	protected abstract String getTextForZeroProjects();

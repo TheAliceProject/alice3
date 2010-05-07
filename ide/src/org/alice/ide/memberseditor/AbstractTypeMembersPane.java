@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel {
+abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 	private static final int INDENT = 16;
 
 	private edu.cmu.cs.dennisc.alice.ast.AbstractType type;
@@ -106,18 +106,18 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.KPageA
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	protected abstract Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
+	protected abstract Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member );
 
-	protected abstract edu.cmu.cs.dennisc.croquet.KButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
-	protected abstract edu.cmu.cs.dennisc.croquet.KButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
+	protected abstract edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type );
 	protected void refresh() {
 		this.removeAllComponents();
-		edu.cmu.cs.dennisc.croquet.KPageAxisPanel page = new edu.cmu.cs.dennisc.croquet.KPageAxisPanel();
+		edu.cmu.cs.dennisc.croquet.PageAxisPanel page = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : type.getDeclaredFields() ) {
 			if( isInclusionDesired( field ) ) {
-				Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > templates = this.createTemplates( field );
+				Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > templates = this.createTemplates( field );
 				if( templates != null ) {
-					for( edu.cmu.cs.dennisc.croquet.KComponent< ? > template : templates ) {
+					for( edu.cmu.cs.dennisc.croquet.Component< ? > template : templates ) {
 						page.addComponent( this.getIDE().createVerticalStrut( 1 ) );
 						page.addComponent( template );
 					}
@@ -127,9 +127,9 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.KPageA
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
 			if( isInclusionDesired( method ) ) {
 				method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getShortestInChain();
-				Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > templates = this.createTemplates( method );
+				Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > templates = this.createTemplates( method );
 				if( templates != null ) {
-					for( edu.cmu.cs.dennisc.croquet.KComponent< ? > template : templates ) {
+					for( edu.cmu.cs.dennisc.croquet.Component< ? > template : templates ) {
 						page.addComponent( this.getIDE().createVerticalStrut( 1 ) );
 						page.addComponent( template );
 					}
@@ -138,8 +138,8 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.KPageA
 		}
 		if( getIDE().isEmphasizingClasses() == false && this.type instanceof edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ) {
 			edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice typeInAlice = (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)type;
-			edu.cmu.cs.dennisc.croquet.KButton createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
-			edu.cmu.cs.dennisc.croquet.KButton editConstructorButton = this.createEditConstructorButton( typeInAlice );
+			edu.cmu.cs.dennisc.croquet.Button createAndAddMemberButton = this.createDeclareMemberButton( typeInAlice );
+			edu.cmu.cs.dennisc.croquet.Button editConstructorButton = this.createEditConstructorButton( typeInAlice );
 			if( createAndAddMemberButton != null ) {
 				page.addComponent( createAndAddMemberButton );
 			}
@@ -149,7 +149,7 @@ abstract class AbstractTypeMembersPane extends edu.cmu.cs.dennisc.croquet.KPageA
 		}
 		int pad;
 		if( page.getComponentCount() > 0 ) {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( this.getIDE().createHorizontalStrut( INDENT ), page ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.LineAxisPanel( this.getIDE().createHorizontalStrut( INDENT ), page ) );
 			pad = 8;
 		} else {
 			pad = 2;

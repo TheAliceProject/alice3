@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class InstanceLine extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
+class InstanceLine extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	public InstanceLine( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 //		zoot.ZLabel a = zoot.ZLabel.acquire( "current instance of " );
 //		a.setFontToDerivedFont( zoot.font.ZTextPosture.OBLIQUE );
@@ -56,7 +56,7 @@ class InstanceLine extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 //		this.add( b );
 		
 		this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 16 ) );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "current instance: " ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "current instance: " ) );
 		org.alice.ide.common.ThisPane thisPane = new org.alice.ide.common.ThisPane();
 //		thisPane.setToolTipText( "the current instance of " + code.getDeclaringType().getName() + " is referred to as this"  );
 		this.addComponent( thisPane );

@@ -42,7 +42,7 @@
  */
 package org.alice.ide.common;
 
-class MethodPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+class MethodPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	public MethodPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method ) {
 //		javax.swing.Box header = javax.swing.Box.createHorizontalBox();
 //		header.add( zoot.ZLabel.acquire( "declare procedure " ) );
@@ -50,9 +50,9 @@ class MethodPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 //		header.setAlignmentX( 0.0f );
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		org.alice.ide.codeeditor.ParametersPane parametersPane = new org.alice.ide.codeeditor.ParametersPane( factory, method );
-		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.NORTH );
-		this.addComponent( application.createHorizontalStrut( 12 ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.WEST );
-		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
+		this.addComponent( new org.alice.ide.codeeditor.MethodHeaderPane( method, parametersPane ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
+		this.addComponent( application.createHorizontalStrut( 12 ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.WEST );
+		this.addComponent( new BodyPane( factory.createComponent( method.body.getValue() ) ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
 		this.setAlignmentX( 0.0f );
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
@@ -72,10 +72,10 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 	public AnonymousConstructorPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.AnonymousConstructor anonymousConstructor ) {
 		this.anonymousConstructor = anonymousConstructor;
 		if( getIDE().isJava() ) {
-			edu.cmu.cs.dennisc.croquet.KLineAxisPanel header = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
-					new edu.cmu.cs.dennisc.croquet.KLabel( "new " ),
+			edu.cmu.cs.dennisc.croquet.LineAxisPanel header = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
+					new edu.cmu.cs.dennisc.croquet.Label( "new " ),
 					new TypeComponent( anonymousConstructor.getDeclaringType().getSuperType() ),
-					new edu.cmu.cs.dennisc.croquet.KLabel( "() {" ) 
+					new edu.cmu.cs.dennisc.croquet.Label( "() {" ) 
 			);
 			header.setAlignmentX( 0.0f );
 			this.addComponent( header );
@@ -83,7 +83,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractType type = this.anonymousConstructor.getDeclaringType();
 		for( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method : type.getDeclaredMethods() ) {
-			edu.cmu.cs.dennisc.croquet.KGridPanel pane = edu.cmu.cs.dennisc.croquet.KGridPanel.createGridPane( 1, 1 );
+			edu.cmu.cs.dennisc.croquet.GridPanel pane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 1, 1 );
 			int inset = 4;
 			int left = 4;
 			if( getIDE().isJava() ) {
@@ -94,7 +94,7 @@ public class AnonymousConstructorPane extends ExpressionLikeSubstance {
 			this.addComponent( pane );
 		}
 		if( getIDE().isJava() ) {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "}" ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "}" ) );
 		}
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getColorFor( edu.cmu.cs.dennisc.alice.ast.InstanceCreation.class ) );
 	}

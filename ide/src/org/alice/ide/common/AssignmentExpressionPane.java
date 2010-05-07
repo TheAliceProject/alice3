@@ -46,7 +46,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
+public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression;
 	public AssignmentExpressionPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.AssignmentExpression assignmentExpression ) {
 		this.assignmentExpression = assignmentExpression;
@@ -54,10 +54,10 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.KLineAx
 		
 		edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType;
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
-		edu.cmu.cs.dennisc.croquet.KAxisPanel parent;
+		edu.cmu.cs.dennisc.croquet.AxisPanel parent;
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel();
+			parent = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
 			this.addComponent( parent );
 			expression = arrayAccess.array.getValue();
 		} else {
@@ -72,7 +72,7 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.KLineAx
 			desiredValueType = field.getDesiredValueType();
 			parent.addComponent( factory.createExpressionPropertyPane( fieldAccess.expression, null, desiredValueType ) );
 			if( org.alice.ide.IDE.getSingleton().isJava() ) {
-				parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " . " ) );
+				parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " . " ) );
 			}
 			parent.addComponent( nameLabel );
 		} else if( expression instanceof edu.cmu.cs.dennisc.alice.ast.VariableAccess ) {
@@ -89,16 +89,16 @@ public class AssignmentExpressionPane extends edu.cmu.cs.dennisc.croquet.KLineAx
 			parent.addComponent( new ParameterPane( null, (edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice)parameter ) );
 		} else {
 			desiredValueType = null;
-			parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "TODO" ) );
+			parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "TODO" ) );
 		}
 		if( left instanceof edu.cmu.cs.dennisc.alice.ast.ArrayAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.ArrayAccess arrayAccess = (edu.cmu.cs.dennisc.alice.ast.ArrayAccess)left;
-			parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "[ " ) );
+			parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "[ " ) );
 			parent.addComponent( factory.createExpressionPropertyPane( arrayAccess.index, null ) );
-			parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " ]" ) );
+			parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " ]" ) );
 		}
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
-			parent.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " = " ) );
+			parent.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " = " ) );
 		} else {
 			parent.addComponent( new org.alice.ide.common.GetsPane( true ) );
 		}

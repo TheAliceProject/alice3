@@ -71,7 +71,7 @@ public abstract class NameInputPane<T> extends RowsInputPanel< T > {
 		updateOKButton();
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv, edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv, edu.cmu.cs.dennisc.croquet.RowsSpringPanel panel ) {
 		assert this.textField != null;
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
@@ -96,7 +96,7 @@ public abstract class NameInputPane<T> extends RowsInputPanel< T > {
 		rv.add( 
 				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
 						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "name:" ),
-						new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.textField )
+						new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.textField )
 				) 
 		);
 		return rv;

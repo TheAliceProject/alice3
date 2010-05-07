@@ -46,9 +46,9 @@ package org.alice.ide;
  * @author Dennis Cosgrove
  */
 public abstract class RowsInputPanel< T > extends org.alice.ide.InputPanel< T > {
-	private edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel = new edu.cmu.cs.dennisc.croquet.KRowsSpringPanel() {
+	private edu.cmu.cs.dennisc.croquet.RowsSpringPanel panel = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel() {
 		@Override
-		protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+		protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 			return RowsInputPanel.this.updateComponentRows( rv, this );
 		}
 	};
@@ -59,7 +59,7 @@ public abstract class RowsInputPanel< T > extends org.alice.ide.InputPanel< T > 
 //		int inset = 8;
 //		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );
 	}
-	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv, edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel );
+	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv, edu.cmu.cs.dennisc.croquet.RowsSpringPanel panel );
 //
 //		@Override
 //	public void addNotify() {

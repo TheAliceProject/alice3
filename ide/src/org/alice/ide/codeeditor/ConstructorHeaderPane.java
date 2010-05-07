@@ -46,15 +46,15 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 class ConstructorHeaderPane extends AbstractCodeHeaderPane {
-	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, edu.cmu.cs.dennisc.croquet.KComponent< ? > parametersPane ) {
+	public ConstructorHeaderPane( edu.cmu.cs.dennisc.alice.ast.ConstructorDeclaredInAlice constructorDeclaredInAlice, edu.cmu.cs.dennisc.croquet.Component< ? > parametersPane ) {
 		super( constructorDeclaredInAlice );
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.addComponent( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "()" ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "()" ) );
 		} else {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "declare " ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "constructor", 1.5f ) );
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( " on class " ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare " ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "constructor", 1.5f ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( " on class " ) );
 			this.addComponent( new org.alice.ide.common.TypeComponent( constructorDeclaredInAlice.getDeclaringType() ) );
 			this.addComponent( parametersPane );
 		}

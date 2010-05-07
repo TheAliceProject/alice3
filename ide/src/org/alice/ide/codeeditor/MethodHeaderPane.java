@@ -46,7 +46,7 @@ package org.alice.ide.codeeditor;
  * @author Dennis Cosgrove
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
-	private edu.cmu.cs.dennisc.croquet.KLabel nameLabel;
+	private edu.cmu.cs.dennisc.croquet.Label nameLabel;
 	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupOperation;
 	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
@@ -64,7 +64,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		}
 	};
 
-	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, edu.cmu.cs.dennisc.croquet.KComponent< ? > parametersPane ) {
+	public MethodHeaderPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice, edu.cmu.cs.dennisc.croquet.Component< ? > parametersPane ) {
 		super( methodDeclaredInAlice );
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
@@ -72,7 +72,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 			this.addComponent( application.createHorizontalStrut( 8 ) );
 			//this.add( zoot.ZLabel.acquire( " {" ) );
 		} else {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 			StringBuffer sb = new StringBuffer();
 			if( methodDeclaredInAlice.isProcedure() ) {
 				sb.append( " procedure " );
@@ -80,7 +80,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 				this.addComponent( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
 				sb.append( " function " );
 			}
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( sb.toString(), edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
 		}
 		
 		

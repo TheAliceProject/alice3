@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide.templates.CascadingExpressionsStatementTemplate {
 	private UbiquitousStatementImplementor implementor;
-	private edu.cmu.cs.dennisc.croquet.KLabel label;
+	private edu.cmu.cs.dennisc.croquet.Label label;
 	public CascadingUbiquitousStatementTemplate( Class< ? extends edu.cmu.cs.dennisc.alice.ast.Statement > cls, edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement ) {
 		super( cls );
 		this.implementor = new UbiquitousStatementImplementor( incompleteStatement );
@@ -61,7 +61,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 	}
 	
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getSubject() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getSubject() {
 		return this.implementor.getIncompleteStatementPane();
 	}
 	@Override
@@ -76,7 +76,7 @@ public abstract class CascadingUbiquitousStatementTemplate extends org.alice.ide
 			//pass
 		} else {
 			//this.label = zoot.ZLabel.acquire( "<html><body>" + this.getLabelText() + "</body></html>" );
-			this.label = new edu.cmu.cs.dennisc.croquet.KLabel( this.getLabelText() );
+			this.label = new edu.cmu.cs.dennisc.croquet.Label( this.getLabelText() );
 			//this.label = zoot.ZLabel.acquire( "<html><body>\u2334</body></html>" );
 			if( edu.cmu.cs.dennisc.alice.ast.Comment.class.isAssignableFrom( this.getStatementCls() ) ) {
 				this.label.setForegroundColor( getIDE().getCommentForegroundColor() );

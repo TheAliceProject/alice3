@@ -58,7 +58,7 @@ public class DeclareMethodParameterOperation extends AbstractCodeOperation {
 		return this.method;
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		org.alice.ide.declarationpanes.CreateMethodParameterPane createMethodParameterPane = new org.alice.ide.declarationpanes.CreateMethodParameterPane( method, this.getIDE().getMethodInvocations( method ) );
 		final edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice parameter = createMethodParameterPane.showInJDialog( button );
 		if( parameter != null ) {

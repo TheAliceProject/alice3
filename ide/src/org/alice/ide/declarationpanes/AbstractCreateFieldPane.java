@@ -60,7 +60,7 @@ public abstract class AbstractCreateFieldPane extends CreateDeclarationWithDecla
 		return "Property";
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createPreviewSubComponent() {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getPreviewFactory(), this.getActualInputValue() );
 	}
 	@Override

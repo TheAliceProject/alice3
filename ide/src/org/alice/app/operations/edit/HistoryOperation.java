@@ -51,7 +51,7 @@ public abstract class HistoryOperation extends edu.cmu.cs.dennisc.croquet.Action
 	}
 	protected abstract void performInternal( edu.cmu.cs.dennisc.history.HistoryManager historyManager );
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		edu.cmu.cs.dennisc.history.HistoryManager historyManager = org.alice.app.ProjectApplication.getSingleton().getProjectHistoryManager();
 		this.performInternal(historyManager);
 		context.finish();

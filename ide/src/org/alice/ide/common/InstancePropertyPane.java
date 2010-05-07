@@ -49,7 +49,7 @@ public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.denni
 	//	public InstancePropertyPane( Factory factory ) {
 	//		super( factory, javax.swing.BoxLayout.LINE_AXIS );
 	//	}
-	private edu.cmu.cs.dennisc.croquet.KLabel label;
+	private edu.cmu.cs.dennisc.croquet.Label label;
 
 	public InstancePropertyPane( Factory factory, edu.cmu.cs.dennisc.property.InstanceProperty< ? > property ) {
 		super( factory, javax.swing.BoxLayout.LINE_AXIS, property );
@@ -60,7 +60,7 @@ public class InstancePropertyPane extends AbstractPropertyPane< edu.cmu.cs.denni
 		if( this.label != null ) {
 			//pass
 		} else {
-			this.label = new edu.cmu.cs.dennisc.croquet.KLabel();
+			this.label = new edu.cmu.cs.dennisc.croquet.Label();
 			this.addComponent( this.label );
 		}
 		this.label.setText( getProperty().getValue().toString() );

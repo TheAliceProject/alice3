@@ -45,9 +45,9 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
+public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field;
-	private edu.cmu.cs.dennisc.croquet.KLabel finalLabel = new edu.cmu.cs.dennisc.croquet.KLabel();
+	private edu.cmu.cs.dennisc.croquet.Label finalLabel = new edu.cmu.cs.dennisc.croquet.Label();
 	public FieldDeclarationPane( Factory factory, edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice field ) {
 		this.field = field;
 		this.addComponent( finalLabel );
@@ -62,7 +62,7 @@ public class FieldDeclarationPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 		//todo
 		//boolean isDropDownPotentiallyDesired = factory instanceof org.alice.ide.memberseditor.Factory;
 		
-		edu.cmu.cs.dennisc.croquet.KComponent< ? > component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
+		edu.cmu.cs.dennisc.croquet.Component< ? > component = new org.alice.ide.common.ExpressionPropertyPane( factory, field.initializer );
 //		if( factory instanceof org.alice.ide.memberseditor.Factory ) {
 //			if( org.alice.ide.IDE.getSingleton().isDropDownDesiredForFieldInitializer( field ) ) {
 //				component = new org.alice.ide.codeeditor.ExpressionPropertyDropDownPane(null, component, field.initializer, field.getDesiredValueType() );

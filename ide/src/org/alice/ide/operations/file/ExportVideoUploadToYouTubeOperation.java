@@ -54,7 +54,7 @@ public class ExportVideoUploadToYouTubeOperation extends org.alice.ide.operation
 		this.setName( "Export Video / Upload To YouTube\u2122..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
 		final int frameRate = 24;
 		
 		edu.cmu.cs.dennisc.alice.Project project = this.getIDE().getProject();

@@ -49,12 +49,12 @@ abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 	public AbstractTypeMethodsPane( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		super( type );
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
-	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
+	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
+	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method );
 
 	@Override
-	protected Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		edu.cmu.cs.dennisc.croquet.KComponent< ? > component;
+	protected Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+		edu.cmu.cs.dennisc.croquet.Component< ? > component;
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractMethod ) {
 			edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)member;
 			if( method.getNextShorterInChain() != null ) {
@@ -71,7 +71,7 @@ abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 		} else {
 			component = null;
 		}
-		java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? > > rv;
+		java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? > > rv;
 		if( component != null ) {
 			//line.add( javax.swing.Box.createHorizontalStrut( INDENT ) );
 			//if( member.isDeclaredInAlice() ) {
@@ -81,14 +81,14 @@ abstract class AbstractTypeMethodsPane extends AbstractTypeMembersPane {
 				if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractCode ) {
 					edu.cmu.cs.dennisc.alice.ast.AbstractCode code = (edu.cmu.cs.dennisc.alice.ast.AbstractCode)member;
 					if( code.isDeclaredInAlice() ) {
-						edu.cmu.cs.dennisc.croquet.KLineAxisPanel line = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel();
+						edu.cmu.cs.dennisc.croquet.LineAxisPanel line = new edu.cmu.cs.dennisc.croquet.LineAxisPanel();
 						line.addComponent( this.getIDE().createButton( new org.alice.ide.operations.ast.FocusCodeOperation( code ) ) );
 						line.addComponent( component );
 						component = line;
 					}
 				}
 			}
-			rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new edu.cmu.cs.dennisc.croquet.KComponent< ? >[] { component } );
+			rv = edu.cmu.cs.dennisc.java.util.Collections.newArrayList( new edu.cmu.cs.dennisc.croquet.Component< ? >[] { component } );
 		} else {
 			rv = null;
 		}

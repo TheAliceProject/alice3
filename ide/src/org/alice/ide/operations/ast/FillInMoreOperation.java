@@ -53,7 +53,7 @@ public class FillInMoreOperation extends org.alice.ide.operations.AbstractAction
 		this.expressionStatement = expressionStatement;
 	}
 	@Override
-	protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button) {
+	protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
 		class MoreEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.AbstractMethod nextLongerMethod;
 			private edu.cmu.cs.dennisc.alice.ast.MethodInvocation nextMethodInvocation;

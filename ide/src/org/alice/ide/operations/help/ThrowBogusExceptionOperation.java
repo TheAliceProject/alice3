@@ -51,7 +51,7 @@ public class ThrowBogusExceptionOperation extends org.alice.ide.operations.Incon
 		this.setName( "Throw Bogus Exception..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
 		new Thread() {
 			@Override
 			public void run() {

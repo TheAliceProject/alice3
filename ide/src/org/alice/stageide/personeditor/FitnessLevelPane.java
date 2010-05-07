@@ -57,7 +57,7 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 		this.setName( name );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
 		this.slider.setValue( this.value );
 	}
 }
@@ -65,11 +65,11 @@ class FitnessLevelActionOperation extends org.alice.ide.operations.Inconsequenti
 /**
  * @author Dennis Cosgrove
  */
-class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+class FitnessLevelPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private FitnessLevelSlider slider = new FitnessLevelSlider();
 	public FitnessLevelPane() {
 		this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new FitnessLevelActionOperation( slider, 0, "SOFT" ) ), CardinalDirection.WEST );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.slider ), CardinalDirection.CENTER );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.slider ), CardinalDirection.CENTER );
 		this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( new FitnessLevelActionOperation( slider, 100, "CUT" ) ), CardinalDirection.EAST );
 	}
 

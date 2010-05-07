@@ -52,10 +52,10 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 			return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 240 );
 		}
 	};
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components = { new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.textField ) };
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.textField ) };
 
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
 	protected abstract E valueOf( String text );
@@ -76,7 +76,7 @@ public abstract class AbstractChooserWithTextField<E> extends AbstractChooser<E>
 		this.textField.selectAll();
 	}
 	@Override
-	public void setInputPanel( final edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPanel ) {
+	public void setInputPanel( final edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel ) {
 		super.setInputPanel( inputPanel );
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			public void changedUpdate( javax.swing.event.DocumentEvent e ) {

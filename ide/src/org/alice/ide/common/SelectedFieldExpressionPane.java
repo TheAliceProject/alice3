@@ -62,7 +62,7 @@ public class SelectedFieldExpressionPane extends ExpressionLikeSubstance {
 	};
 	
 	private edu.cmu.cs.dennisc.alice.ast.AbstractField field = null;
-	private edu.cmu.cs.dennisc.croquet.KLabel label = new edu.cmu.cs.dennisc.croquet.KLabel();
+	private edu.cmu.cs.dennisc.croquet.Label label = new edu.cmu.cs.dennisc.croquet.Label();
 	public SelectedFieldExpressionPane( org.alice.ide.ast.SelectedFieldExpression selectedFieldExpression ) {
 		this.addComponent( this.label );
 		this.setBackgroundColor( getIDE().getColorFor( edu.cmu.cs.dennisc.alice.ast.FieldAccess.class ) );

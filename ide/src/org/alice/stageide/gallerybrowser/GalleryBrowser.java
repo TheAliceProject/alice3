@@ -57,17 +57,17 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		CreateMyInstanceActionOperation createMyInstanceActionOperation = new CreateMyInstanceActionOperation();
 		CreateTextbookInstanceActionOperation createTextbookInstanceActionOperation = new CreateTextbookInstanceActionOperation();
 
-		edu.cmu.cs.dennisc.croquet.KGridPanel fromFilePane = edu.cmu.cs.dennisc.croquet.KGridPanel.createGridPane( 2, 1, 0, 4 );
+		edu.cmu.cs.dennisc.croquet.GridPanel fromFilePane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
 		fromFilePane.addComponent( this.getIDE().createButton(createMyInstanceActionOperation));
 		fromFilePane.addComponent(this.getIDE().createButton(createTextbookInstanceActionOperation));
 
-		edu.cmu.cs.dennisc.croquet.KGridPanel bonusPane = edu.cmu.cs.dennisc.croquet.KGridPanel.createGridPane( 2, 1, 0, 4 );
+		edu.cmu.cs.dennisc.croquet.GridPanel bonusPane = edu.cmu.cs.dennisc.croquet.GridPanel.createGridPane( 2, 1, 0, 4 );
 		bonusPane.addComponent(this.getIDE().createButton(createBillboardActionOperation));
 		bonusPane.addComponent(this.getIDE().createButton(createTextActionOperation));
 
-		edu.cmu.cs.dennisc.croquet.KBorderPanel buttonPane = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
-		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.NORTH);
-		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.SOUTH);
+		edu.cmu.cs.dennisc.croquet.BorderPanel buttonPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+		buttonPane.addComponent(fromFilePane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH);
+		buttonPane.addComponent(bonusPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.SOUTH);
 
 		// this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4,
 		// 4 ) );
@@ -76,7 +76,7 @@ public class GalleryBrowser extends org.alice.ide.gallerybrowser.AbstractGallery
 		this.setBackgroundColor(new java.awt.Color(220, 220, 255));
 
 		IndirectCreatePersonActionOperation indirectCreatePersonActionOperation = new IndirectCreatePersonActionOperation();
-		edu.cmu.cs.dennisc.croquet.KButton createPersonButton = this.getIDE().createButton(indirectCreatePersonActionOperation);
+		edu.cmu.cs.dennisc.croquet.Button createPersonButton = this.getIDE().createButton(indirectCreatePersonActionOperation);
 		createPersonButton.setHorizontalTextPosition( edu.cmu.cs.dennisc.croquet.HorizontalTextPosition.CENTER );
 		createPersonButton.setVerticalTextPosition( edu.cmu.cs.dennisc.croquet.VerticalTextPosition.BOTTOM );
 

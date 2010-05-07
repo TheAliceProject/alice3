@@ -45,7 +45,7 @@ package org.alice.ide.memberseditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel {
+abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 	public MembersTab() {
 		this.setOpaque( true );
 	}
@@ -180,7 +180,7 @@ class FieldsTab extends MembersTab {
 	}
 }
 
-class TabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
+class TabbedPane extends edu.cmu.cs.dennisc.croquet.TabbedPane {
 	private MembersTab[] membersTabs = { new ProceduresTab(), new FunctionsTab(), new FieldsTab() };
 	public TabbedPane() {
 		for( MembersTab membersTab : membersTabs ) {
@@ -188,7 +188,7 @@ class TabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
 		}
 	}
 	private void addMembersTab( MembersTab membersTab ) {
-		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( membersTab );
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( membersTab );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBackgroundColor( membersTab.getBackgroundColor() );
 		scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
@@ -220,9 +220,9 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 	};
 
 	//private static java.util.Map< edu.cmu.cs.dennisc.alice.ast.AbstractType, java.awt.Component > map = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
-	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType, edu.cmu.cs.dennisc.croquet.KComponent< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-	public static edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
-		edu.cmu.cs.dennisc.croquet.KComponent< ? > rv = map.get( cls, type );
+	private static edu.cmu.cs.dennisc.map.MapToMap< Class< ? >, edu.cmu.cs.dennisc.alice.ast.AbstractType, edu.cmu.cs.dennisc.croquet.Component< ? > > map = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+	public static edu.cmu.cs.dennisc.croquet.Component< ? > getComponentFor( Class< ? > cls, edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+		edu.cmu.cs.dennisc.croquet.Component< ? > rv = map.get( cls, type );
 		if( rv != null ) {
 			//pass
 		} else {

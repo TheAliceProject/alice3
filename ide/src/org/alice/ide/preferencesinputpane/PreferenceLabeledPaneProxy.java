@@ -46,21 +46,21 @@ package org.alice.ide.preferencesinputpane;
  * @author Dennis Cosgrove
  */
 public abstract class PreferenceLabeledPaneProxy< E > extends PreferenceProxy< E > {
-	private edu.cmu.cs.dennisc.croquet.KLineAxisPanel pane;
+	private edu.cmu.cs.dennisc.croquet.LineAxisPanel pane;
 
 	public PreferenceLabeledPaneProxy( edu.cmu.cs.dennisc.preference.Preference< E > preference ) {
 		super( preference );
 	}
 
-	protected void createPane( edu.cmu.cs.dennisc.croquet.KComponent< ? > control ) {
-		this.pane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel(
-				new edu.cmu.cs.dennisc.croquet.KLabel( this.getPreference().getKey() + ":" ),
+	protected void createPane( edu.cmu.cs.dennisc.croquet.Component< ? > control ) {
+		this.pane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
+				new edu.cmu.cs.dennisc.croquet.Label( this.getPreference().getKey() + ":" ),
 				edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 8 ),
 				control 
 		);
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponent() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
 		assert this.pane != null;
 		return this.pane;
 	}

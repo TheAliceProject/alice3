@@ -46,11 +46,11 @@ package org.alice.ide.editorstabbedpane;
  * @author Dennis Cosgrove
  */
 public abstract class AbstractEditableListPane< E > extends AbstractEditableListLikeSubstancePane< E > {
-	public AbstractEditableListPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.croquet.KList< E > list ) {
+	public AbstractEditableListPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.croquet.List< E > list ) {
 		super( groupUUID, list );
 	}
-	public edu.cmu.cs.dennisc.croquet.KList< E > getList() {
-		return (edu.cmu.cs.dennisc.croquet.KList< E >)this.getListLikeSubstance();
+	public edu.cmu.cs.dennisc.croquet.List< E > getList() {
+		return (edu.cmu.cs.dennisc.croquet.List< E >)this.getListLikeSubstance();
 	}
 	@Override
 	protected int getSelectedIndex() {

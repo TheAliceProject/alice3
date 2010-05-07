@@ -47,11 +47,11 @@ package org.alice.ide.memberseditor;
  */
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		return this.createExpressionPane( expressionProperty.getValue() );
 		//		return new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty, false, null );
 	}

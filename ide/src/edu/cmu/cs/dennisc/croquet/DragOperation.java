@@ -54,10 +54,10 @@ public abstract class DragOperation extends Operation {
 	public Operation getDropOperation() {
 		return dropOperation;
 	}
-	/*package-private*/ void addDragComponent( KDragControl dragComponent ) {
+	/*package-private*/ void addDragComponent( DragControl dragComponent ) {
 		this.addComponent( dragComponent );
 	}
-	/*package-private*/ void removeDragComponent( KDragControl dragComponent ) {
+	/*package-private*/ void removeDragComponent( DragControl dragComponent ) {
 		this.removeComponent( dragComponent );
 	}
 }

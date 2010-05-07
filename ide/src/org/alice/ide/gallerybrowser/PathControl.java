@@ -45,8 +45,8 @@ package org.alice.ide.gallerybrowser;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
-	class DirectoryControl extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
+	class DirectoryControl extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		private static final int ARROW_SIZE = 10;
 		private static final int ARROW_BORDER_HALF_SIZE = 3;
 
@@ -57,7 +57,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 			}
 
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button) {
+			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
 				PathControl.this.handleSelectDirectory( DirectoryControl.this.file );
 			}
 		}
@@ -94,7 +94,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 			// public void respond( java.util.EventObject e ) {
 			// }
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button) {
+			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
 				DirectoryControl.this.handleSelectChildDirectory( context, e, button );
 			}
 		}
@@ -102,7 +102,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 		private java.io.File file;
 
 		//todo: remove. rely only on operations.
-		private edu.cmu.cs.dennisc.croquet.KButton selectChildButton;
+		private edu.cmu.cs.dennisc.croquet.Button selectChildButton;
 
 		public DirectoryControl( java.io.File file ) {
 			this.file = file;
@@ -112,7 +112,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 			this.addComponent( selectChildButton, CardinalDirection.EAST );
 		}
 
-		private void handleSelectChildDirectory(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button) {
+		private void handleSelectChildDirectory(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
 			PathControl.this.handleSelectChildDirectory( context, e, button, this.file );
 		}
 
@@ -181,7 +181,7 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 
 	protected abstract void handleSelectFile( java.io.File file );
 
-	private void handleSelectChildDirectory( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton<?> button, java.io.File directory ) {
+	private void handleSelectChildDirectory( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button, java.io.File directory ) {
 		java.io.File[] packages = ThumbnailsPane.listPackages( directory );
 		java.io.File[] classes = ThumbnailsPane.listClasses( directory );
 

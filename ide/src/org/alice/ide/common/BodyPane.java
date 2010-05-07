@@ -43,10 +43,10 @@
 package org.alice.ide.common;
 
 public class BodyPane extends org.alice.ide.common.StatementLikeSubstance {
-	public BodyPane( edu.cmu.cs.dennisc.croquet.KComponent< ? > statementListComponent ) {
+	public BodyPane( edu.cmu.cs.dennisc.croquet.Component< ? > statementListComponent ) {
 		super( edu.cmu.cs.dennisc.alice.ast.DoInOrder.class, javax.swing.BoxLayout.PAGE_AXIS );
 		this.setOpaque( false );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "do in order" ), java.awt.BorderLayout.NORTH );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "do in order" ), java.awt.BorderLayout.NORTH );
 		this.addComponent( statementListComponent, java.awt.BorderLayout.CENTER );
 		this.addComponent( this.getIDE().createHorizontalStrut( 8 ), java.awt.BorderLayout.WEST );
 	}

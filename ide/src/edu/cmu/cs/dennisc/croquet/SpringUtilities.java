@@ -49,24 +49,24 @@ public class SpringUtilities {
 	private SpringUtilities() {
 		throw new AssertionError();
 	}
-	public static KComponent< ? > createTrailingLabel(String text) {
-		KLabel rv = new KLabel( text );
+	public static Component< ? > createTrailingLabel(String text) {
+		Label rv = new Label( text );
 		rv.setHorizontalAlignment( HorizontalAlignment.TRAILING );
 		return rv;
 	}
-	public static KComponent< ? > createTrailingTopLabel(String text) {
-		KLabel rv = new KLabel( text );
+	public static Component< ? > createTrailingTopLabel(String text) {
+		Label rv = new Label( text );
 		rv.setHorizontalAlignment( HorizontalAlignment.TRAILING );
 		rv.setVerticalAlignment( VerticalAlignment.TOP );
 		return rv;
 	}
 	
-	public static KComponent< ? >[] createRow( KComponent< ? >... rv ) {
+	public static Component< ? >[] createRow( Component< ? >... rv ) {
 		for( int i=0; i<rv.length; i++ ) {
 			if( rv[ i ] != null ) {
 				//pass
 			} else {
-				KComponent< ? > box = Application.getSingleton().createRigidArea( 0, 0 );
+				Component< ? > box = Application.getSingleton().createRigidArea( 0, 0 );
 //				box.setBackground( java.awt.Color.BLUE );
 //				if( box instanceof javax.swing.JComponent ) {
 //					((javax.swing.JComponent)box).setOpaque( false );
@@ -76,23 +76,23 @@ public class SpringUtilities {
 		}
 		return rv;
 	}
-	public static KComponent< ? >[] createLabeledRow( String labelText, KComponent< ? >... components ) {
-		KComponent< ? >[] rv = new KComponent< ? >[ components.length + 1 ];
+	public static Component< ? >[] createLabeledRow( String labelText, Component< ? >... components ) {
+		Component< ? >[] rv = new Component< ? >[ components.length + 1 ];
 		rv[ 0 ] = createTrailingLabel( labelText );
 		System.arraycopy( components, 0, rv, 1, components.length );
 		return createRow( rv );
 	}
 	
-	public static KSpringPanel springItUpANotch( KSpringPanel rv, java.util.List<KComponent< ? >[]> componentRows, int xPad, int yPad ) {
+	public static SpringPanel springItUpANotch( SpringPanel rv, java.util.List<Component< ? >[]> componentRows, int xPad, int yPad ) {
 		assert componentRows != null;
 		int rowCount = componentRows.size();
 		assert rowCount > 0;
 		int columnCount = componentRows.get( 0 ).length;
-		for( KComponent< ? >[] componentRow : componentRows ) {
+		for( Component< ? >[] componentRow : componentRows ) {
 			assert componentRow.length == columnCount;
 		}
-		for( KComponent< ? >[] componentRow : componentRows ) {
-			for( KComponent< ? > component : componentRow ) {
+		for( Component< ? >[] componentRow : componentRows ) {
+			for( Component< ? > component : componentRow ) {
 				assert component != null;
 				rv.addComponent( component );
 			}
@@ -104,11 +104,11 @@ public class SpringUtilities {
 		javax.swing.Spring xPadSpring = javax.swing.Spring.constant( xPad );	
 		for( int c=0; c<columnCount; c++ ) { 
 			javax.swing.Spring widthSpring = javax.swing.Spring.constant( 0 );
-			for( KComponent< ? >[] componentRow : componentRows ) { 
+			for( Component< ? >[] componentRow : componentRows ) { 
 				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getJComponent() );
 				widthSpring = javax.swing.Spring.max( widthSpring, constraints.getWidth() );
 			}
-			for( KComponent< ? >[] componentRow : componentRows ) { 
+			for( Component< ? >[] componentRow : componentRows ) { 
 				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getJComponent() );
 				constraints.setX( xSpring );
 				constraints.setWidth( widthSpring );
@@ -121,7 +121,7 @@ public class SpringUtilities {
 		javax.swing.Spring ySpring = javax.swing.Spring.constant( 0 );
 		javax.swing.Spring yPadSpring = javax.swing.Spring.constant( yPad );	
 		for( int r=0; r<rowCount; r++ ) { 
-			KComponent< ? >[] componentRow = componentRows.get( r );
+			Component< ? >[] componentRow = componentRows.get( r );
 			javax.swing.Spring heightSpring = javax.swing.Spring.constant( 0 );
 			for( int c=0; c<columnCount; c++ ) { 
 				javax.swing.SpringLayout.Constraints constraints = layout.getConstraints( componentRow[ c ].getJComponent() );

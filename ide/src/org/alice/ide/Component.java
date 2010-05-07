@@ -45,7 +45,7 @@ package org.alice.ide;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class Component extends edu.cmu.cs.dennisc.croquet.KDragControl {
+public abstract class Component extends edu.cmu.cs.dennisc.croquet.DragControl {
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}

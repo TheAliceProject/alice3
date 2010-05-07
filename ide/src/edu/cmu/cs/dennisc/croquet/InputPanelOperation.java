@@ -51,11 +51,11 @@ public abstract class InputPanelOperation<T> extends AbstractActionOperation {
 		super( groupUUID, individualUUID );
 		this.title = title;
 	}
-	protected abstract KInputPanel< T > createInputPanel();
+	protected abstract InputPanel< T > createInputPanel();
 	protected abstract Edit createEdit( edu.cmu.cs.dennisc.croquet.Context context, T value );
 	@Override
-	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-		KInputPanel< T > inputPanel = this.createInputPanel();
+	protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		InputPanel< T > inputPanel = this.createInputPanel();
 		T value = inputPanel.showInJDialog( button, this.title );
 		if( value != null ) {
 			context.commitAndInvokeDo( this.createEdit( context, value ) );

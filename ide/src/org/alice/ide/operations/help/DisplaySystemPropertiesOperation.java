@@ -51,7 +51,7 @@ class AllSystemPropertiesOperation extends org.alice.ide.operations.Inconsequent
 		this.setName( "Show All Properties..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		java.util.Properties properties = System.getProperties();
 		java.util.Map< String, String > map = new java.util.HashMap< String, String >();
 		java.util.Enumeration< String > nameEnum = (java.util.Enumeration< String >)properties.propertyNames();
@@ -91,13 +91,13 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 		this.setName( "Show..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-		edu.cmu.cs.dennisc.croquet.KRowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.KRowsSpringPanel( 8, 2 ) {
-			private edu.cmu.cs.dennisc.croquet.KComponent< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 2 ) {
+			private edu.cmu.cs.dennisc.croquet.Component< ? >[][] createComponentRowsForSystemProperty( String name, String separator ) {
 				String value = System.getProperty( name );
 				assert value != null;
 				String[] array = value.split( separator );
-				edu.cmu.cs.dennisc.croquet.KComponent< ? >[][] rv = new edu.cmu.cs.dennisc.croquet.KComponent< ? >[ array.length ][];
+				edu.cmu.cs.dennisc.croquet.Component< ? >[][] rv = new edu.cmu.cs.dennisc.croquet.Component< ? >[ array.length ][];
 				for( int i=0; i<array.length; i++ ) {
 					String prefix;
 					if( i==0 ) {
@@ -105,14 +105,14 @@ class PathPropertyOperation extends org.alice.ide.operations.InconsequentialActi
 					} else {
 						prefix = "";
 					}
-					rv[ i ] = edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( prefix+"[" + i + "]:" ), new edu.cmu.cs.dennisc.croquet.KLabel( array[ i ] ) );
+					rv[ i ] = edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( prefix+"[" + i + "]:" ), new edu.cmu.cs.dennisc.croquet.Label( array[ i ] ) );
 				}
 				return rv;
 			}
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 				String pathSepartor = System.getProperty( "path.separator" );
-				for( edu.cmu.cs.dennisc.croquet.KComponent< ? >[] componentRow : createComponentRowsForSystemProperty( propertyName, pathSepartor ) ) {
+				for( edu.cmu.cs.dennisc.croquet.Component< ? >[] componentRow : createComponentRowsForSystemProperty( propertyName, pathSepartor ) ) {
 					rv.add( componentRow );
 				}
 				return rv;
@@ -131,18 +131,18 @@ public class DisplaySystemPropertiesOperation extends org.alice.ide.operations.I
 		this.setName( "Display System Properties..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-		edu.cmu.cs.dennisc.croquet.KRowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.KRowsSpringPanel( 8, 2 ) {
-			private edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createComponentRowForSystemProperty( String name ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPanel formPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 2 ) {
+			private edu.cmu.cs.dennisc.croquet.Component< ? >[] createComponentRowForSystemProperty( String name ) {
 				String value = System.getProperty( name );
 				assert value != null;
 				return edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( name+":" ),
-						new edu.cmu.cs.dennisc.croquet.KLabel( value ) 
+						new edu.cmu.cs.dennisc.croquet.Label( value ) 
 				);
 			}
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 				rv.add( createComponentRowForSystemProperty( "java.version" ) );
 				rv.add( createComponentRowForSystemProperty( "os.name" ) );
 				rv.add( createComponentRowForSystemProperty( "os.version" ) );

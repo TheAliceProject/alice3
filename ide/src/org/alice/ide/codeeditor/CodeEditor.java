@@ -75,11 +75,11 @@ class StatementListPropertyPaneInfo {
 /**
  * @author Dennis Cosgrove
  */
-public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implements edu.cmu.cs.dennisc.croquet.DropReceptor {
+public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel implements edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.AbstractCode code;
 	private StatementListPropertyPaneInfo[] statementListPropertyPaneInfos;
 	private StatementListPropertyPane currentUnder;
-	private edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane;
+	private edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane;
 
 	private edu.cmu.cs.dennisc.croquet.Application.LocaleObserver localeObserver = new edu.cmu.cs.dennisc.croquet.Application.LocaleObserver() {
 		public void localeChanging( java.util.Locale previousLocale, java.util.Locale nextLocale ) {
@@ -126,22 +126,22 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 //		}
 //	}
 
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createParametersPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice code ) {
 		return new ParametersPane( this.getIDE().getCodeFactory(), code );
 	}
 
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {
 		return this.code;
 	}
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponent() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
 		return this;
 	}
 	public void refresh() {
 		this.forgetAndRemoveAllComponents();
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
-			edu.cmu.cs.dennisc.croquet.KComponent< ? > parametersPane = createParametersPane( codeDeclaredInAlice );
-			edu.cmu.cs.dennisc.croquet.KPanel header;
+			edu.cmu.cs.dennisc.croquet.Component< ? > parametersPane = createParametersPane( codeDeclaredInAlice );
+			edu.cmu.cs.dennisc.croquet.Panel header;
 			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
 				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane );
@@ -198,7 +198,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 			//			panel.setLayout( new java.awt.GridLayout() );
 			//			panel.add( bodyPane );
 
-			this.scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( bodyPane );
+			this.scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( bodyPane );
 			this.scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			this.scrollPane.setBorder( null );
 			this.scrollPane.setOpaque( false );
@@ -242,7 +242,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 			}
 		} );
 	}
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.KDragControl source ) {
+	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragControl source ) {
 		if( source instanceof org.alice.ide.templates.StatementTemplate ) {
 			return getIDE().getFocusedCode() == this.code;
 		} else {
@@ -253,14 +253,14 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 	}
 
 	public void dragEntered( edu.cmu.cs.dennisc.croquet.Context context ) {
-		edu.cmu.cs.dennisc.croquet.KDragControl source = context.getDragSource();
+		edu.cmu.cs.dennisc.croquet.DragControl source = context.getDragSource();
 		this.statementListPropertyPaneInfos = createStatementListPropertyPaneInfos( source );
 		this.repaint();
 	}
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? > getAsSeenBy() {
+	private edu.cmu.cs.dennisc.croquet.Component< ? > getAsSeenBy() {
 		return this.scrollPane.getViewportView();
 	}
-	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.croquet.KDragControl source ) {
+	private StatementListPropertyPaneInfo[] createStatementListPropertyPaneInfos( edu.cmu.cs.dennisc.croquet.DragControl source ) {
 		java.util.List< StatementListPropertyPane > statementListPropertyPanes = this.findAllMatches( StatementListPropertyPane.class );
 		StatementListPropertyPaneInfo[] rv = new StatementListPropertyPaneInfo[ statementListPropertyPanes.size() ];
 		int i = 0;
@@ -299,7 +299,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		return rv;
 	}
 	public void dragUpdated( edu.cmu.cs.dennisc.croquet.Context context ) {
-		edu.cmu.cs.dennisc.croquet.KDragControl source = context.getDragSource();
+		edu.cmu.cs.dennisc.croquet.DragControl source = context.getDragSource();
 		if( source != null ) {
 			java.awt.event.MouseEvent eSource = context.getLatestMouseEvent();
 			java.awt.event.MouseEvent eAsSeenBy = source.convertMouseEvent( eSource, this.getAsSeenBy() );
@@ -310,7 +310,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 				if( edu.cmu.cs.dennisc.javax.swing.SwingUtilities.isQuoteControlUnquoteDown( eSource ) ) {
 					//pass
 				} else {
-					edu.cmu.cs.dennisc.croquet.KComponent< ? > subject = source.getSubject();
+					edu.cmu.cs.dennisc.croquet.Component< ? > subject = source.getSubject();
 					if( subject instanceof org.alice.ide.common.AbstractStatementPane ) {
 						org.alice.ide.common.AbstractStatementPane abstractStatementPane = (org.alice.ide.common.AbstractStatementPane)subject;
 						if( source instanceof org.alice.ide.templates.StatementTemplate ) {
@@ -608,7 +608,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.KPageAxisPanel implem
 		if( isDropRecipient ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.croquet.KDragControl source = context.getDragSource();
+			edu.cmu.cs.dennisc.croquet.DragControl source = context.getDragSource();
 			if( source != null ) {
 				source.hideDropProxyIfNecessary();
 			}

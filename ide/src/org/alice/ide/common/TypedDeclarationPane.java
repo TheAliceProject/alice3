@@ -45,8 +45,8 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel  {
-	public TypedDeclarationPane( edu.cmu.cs.dennisc.croquet.KComponent< ? >... components ) {
+public abstract class TypedDeclarationPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel  {
+	public TypedDeclarationPane( edu.cmu.cs.dennisc.croquet.Component< ? >... components ) {
 		super( components );
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );

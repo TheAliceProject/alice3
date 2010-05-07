@@ -95,7 +95,7 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 	}
 }
 
-class Tree extends edu.cmu.cs.dennisc.croquet.KTree {
+class Tree extends edu.cmu.cs.dennisc.croquet.Tree {
 	private TreeModel model = new TreeModel( null ); 
 	public Tree() {
 		this.setItemSelectionOperation( new org.alice.ide.operations.ast.FieldItemSelectionOperation( new javax.swing.DefaultComboBoxModel() ) );
@@ -104,8 +104,8 @@ class Tree extends edu.cmu.cs.dennisc.croquet.KTree {
 	}
 }
 
-class LookingGlass extends edu.cmu.cs.dennisc.croquet.KCornerSpringPanel {
-	private edu.cmu.cs.dennisc.croquet.KCheckBoxMenuItem isSceneEditorExpandedCheckBox; 
+class LookingGlass extends edu.cmu.cs.dennisc.croquet.CornerSpringPanel {
+	private edu.cmu.cs.dennisc.croquet.CheckBoxMenuItem isSceneEditorExpandedCheckBox; 
 	public LookingGlass() {
 		this.setBackgroundColor( java.awt.Color.RED );
 		org.alice.ide.IDE ide = org.alice.ide.IDE.getSingleton();
@@ -118,8 +118,8 @@ class LookingGlass extends edu.cmu.cs.dennisc.croquet.KCornerSpringPanel {
 /**
  * @author Dennis Cosgrove
  */
-public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
-	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane();
+public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.BorderPanel {
+	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
 	private Tree tree = new Tree();
 	private LookingGlass lookingGlass = new LookingGlass();
 	private org.alice.app.ProjectApplication.ProjectObserver projectObserver = new org.alice.app.ProjectApplication.ProjectObserver() { 
@@ -133,7 +133,7 @@ public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	};
 
 	public SplitSceneEditor() {
-		this.root.setLeftComponent( new edu.cmu.cs.dennisc.croquet.KScrollPane( this.tree ) );
+		this.root.setLeftComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( this.tree ) );
 		this.root.setRightComponent( this.lookingGlass );
 		this.addComponent( this.root, CardinalDirection.CENTER );
 	}

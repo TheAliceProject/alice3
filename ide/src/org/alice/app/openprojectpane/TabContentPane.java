@@ -46,18 +46,18 @@ package org.alice.app.openprojectpane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TabContentPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+public abstract class TabContentPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	//	protected boolean isTabEnabled() {
 	//		return this.isEnabled();
 	//	}
-	private edu.cmu.cs.dennisc.croquet.KInputPanel< java.net.URI > inputPanel;
+	private edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel;
 	public TabContentPane() {
 		this.setBackgroundColor( new java.awt.Color( 191, 191, 255 ) );
 		this.setOpaque( true );
 		final int INSET = 8;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-	public void setInputPanel( edu.cmu.cs.dennisc.croquet.KInputPanel< java.net.URI > inputPanel ) {
+	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< java.net.URI > inputPanel ) {
 		this.inputPanel = inputPanel;
 	}
 	public abstract java.net.URI getSelectedURI();

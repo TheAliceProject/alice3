@@ -64,25 +64,25 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 //		}
 //	}
 	
-	class ConfigurationPreview extends edu.cmu.cs.dennisc.croquet.KRowsSpringPanel {
-		private edu.cmu.cs.dennisc.croquet.KLabel isDefaultFieldNameGenerationDesiredLabel;
-		private edu.cmu.cs.dennisc.croquet.KLabel isSyntaxNoiseDesiredLabel;
+	class ConfigurationPreview extends edu.cmu.cs.dennisc.croquet.RowsSpringPanel {
+		private edu.cmu.cs.dennisc.croquet.Label isDefaultFieldNameGenerationDesiredLabel;
+		private edu.cmu.cs.dennisc.croquet.Label isSyntaxNoiseDesiredLabel;
 		private void ensureLabelsExist() {
 			if( this.isDefaultFieldNameGenerationDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isDefaultFieldNameGenerationDesiredLabel = new edu.cmu.cs.dennisc.croquet.KLabel();
+				this.isDefaultFieldNameGenerationDesiredLabel = new edu.cmu.cs.dennisc.croquet.Label();
 				this.isDefaultFieldNameGenerationDesiredLabel.setForegroundColor( java.awt.Color.GRAY );
 			}
 			if( this.isSyntaxNoiseDesiredLabel != null ) {
 				//pass
 			} else {
-				this.isSyntaxNoiseDesiredLabel = new edu.cmu.cs.dennisc.croquet.KLabel();
+				this.isSyntaxNoiseDesiredLabel = new edu.cmu.cs.dennisc.croquet.Label();
 				this.isSyntaxNoiseDesiredLabel.setForegroundColor( java.awt.Color.GRAY );
 			}
 		}
 		@Override
-		protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+		protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 			this.ensureLabelsExist();
 			rv.add( 
 					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
@@ -105,7 +105,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.isSyntaxNoiseDesiredLabel.setText( Boolean.toString( value.isSyntaxNoiseDesired() ).toUpperCase() );
 		}
 	}
-	private edu.cmu.cs.dennisc.croquet.KPageAxisPanel pane;
+	private edu.cmu.cs.dennisc.croquet.PageAxisPanel pane;
 	private ConfigurationPreview preview;
 	
 	abstract class PreferencesActionOperation extends org.alice.ide.operations.AbstractActionOperation {
@@ -119,7 +119,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Edit..." );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		}
 	}
 	class RemoveVariantOperation extends PreferencesActionOperation {
@@ -128,7 +128,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Remove" );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		}
 	}
 	class NewVariantOperation extends PreferencesActionOperation {
@@ -137,7 +137,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "New..." );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		}
 	}
 	class ImportVariantOperation extends PreferencesActionOperation {
@@ -146,14 +146,14 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 			this.setName( "Import..." );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		}
 	}
 	public ConfigurationPreferencePaneProxy( edu.cmu.cs.dennisc.preference.Preference<org.alice.ide.preferences.programming.Configuration> preference ) {
 		super( preference );
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		org.alice.ide.preferences.programming.Configuration[] configurations = org.alice.ide.preferences.ProgrammingPreferences.getSingleton().getBuiltInPreferenceNodes();
-		edu.cmu.cs.dennisc.croquet.KComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createComboBox( new ConfigurationSelectionOperation( configurations ) );
+		edu.cmu.cs.dennisc.croquet.ComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createComboBox( new ConfigurationSelectionOperation( configurations ) );
 		activeConfigurationComboBox.setSelectedIndex( 0 );
 		EditVariantOperation editVariantOperation = new EditVariantOperation();
 		editVariantOperation.setEnabled( false );
@@ -169,19 +169,19 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		importVariantOperation.setEnabled( false );
 		importVariantOperation.setToolTipText( "coming soon" );
 
-		edu.cmu.cs.dennisc.croquet.KLineAxisPanel northTopPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
+		edu.cmu.cs.dennisc.croquet.LineAxisPanel northTopPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 				activeConfigurationComboBox, 
 				application.createButton( editVariantOperation ), 
 				application.createButton( removeVariantOperation ) );
-		edu.cmu.cs.dennisc.croquet.KLineAxisPanel northBottomPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
+		edu.cmu.cs.dennisc.croquet.LineAxisPanel northBottomPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 				application.createButton( newVariantOperation ), 
 				application.createButton( importVariantOperation ), 
 				application.createHorizontalGlue() );
 
 		this.preview = new ConfigurationPreview();
 		this.preview.updateValues( (org.alice.ide.preferences.programming.Configuration)activeConfigurationComboBox.getSelectedItem() );
-		this.pane = new edu.cmu.cs.dennisc.croquet.KPageAxisPanel(
-				new edu.cmu.cs.dennisc.croquet.KLabel( "active variant:" ),
+		this.pane = new edu.cmu.cs.dennisc.croquet.PageAxisPanel(
+				new edu.cmu.cs.dennisc.croquet.Label( "active variant:" ),
 				application.createVerticalStrut( 4 ),  
 				northTopPane, 
 				application.createVerticalStrut( 4 ),  
@@ -194,7 +194,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		this.pane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 8, 4, 4 ) );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponent() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
 		return this.pane;
 	}
 	@Override

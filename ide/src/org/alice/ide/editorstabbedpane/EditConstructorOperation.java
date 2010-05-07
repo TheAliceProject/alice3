@@ -55,7 +55,7 @@ class EditConstructorOperation extends org.alice.ide.operations.InconsequentialA
 		this.setName( "Edit Constructor" );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
 		this.getIDE().setFocusedCode( this.constructor );
 	}
 }

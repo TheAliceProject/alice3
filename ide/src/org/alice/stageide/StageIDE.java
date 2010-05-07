@@ -201,11 +201,11 @@ public class StageIDE extends org.alice.ide.IDE {
 		}
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField field = fieldAccess.field.getValue();
 		javax.swing.Icon icon = getIconFor( field );
 		if( icon != null ) {
-			return new edu.cmu.cs.dennisc.croquet.KLabel( icon );
+			return new edu.cmu.cs.dennisc.croquet.Label( icon );
 		}
 		return super.getPrefixPaneForFieldAccessIfAppropriate( fieldAccess );
 	}
@@ -231,7 +231,7 @@ public class StageIDE extends org.alice.ide.IDE {
 		return new ThisFieldAccessNameLabel( field );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		if( expression instanceof edu.cmu.cs.dennisc.alice.ast.FieldAccess ) {
 			edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess = (edu.cmu.cs.dennisc.alice.ast.FieldAccess)expression;
 			edu.cmu.cs.dennisc.alice.ast.Expression fieldExpression = fieldAccess.expression.getValue();
@@ -256,9 +256,9 @@ public class StageIDE extends org.alice.ide.IDE {
 					edu.cmu.cs.dennisc.alice.ast.InstanceCreation instanceCreation = (edu.cmu.cs.dennisc.alice.ast.InstanceCreation)expression;
 					edu.cmu.cs.dennisc.alice.ast.AbstractConstructor constructor = instanceCreation.constructor.getValue();
 					if( constructor == REVOLUTIONS_CONSTRUCTOR ) {
-						return new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
+						return new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 								factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() ), 
-								new edu.cmu.cs.dennisc.croquet.KLabel( " revolutions" ) 
+								new edu.cmu.cs.dennisc.croquet.Label( " revolutions" ) 
 						);
 					} else if( constructor == PORTION_CONSTRUCTOR ) {
 						return factory.createExpressionPane( instanceCreation.arguments.get( 0 ).expression.getValue() );

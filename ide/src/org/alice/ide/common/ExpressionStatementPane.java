@@ -136,7 +136,7 @@ public class ExpressionStatementPane extends AbstractStatementPane {
 			}
 		}
 		if( getIDE().isJava() ) {
-			this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( ";" ) );
+			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( ";" ) );
 		}
 		this.addComponent( this.getIDE().createHorizontalStrut( 8 ) );
 		this.revalidateAndRepaint();

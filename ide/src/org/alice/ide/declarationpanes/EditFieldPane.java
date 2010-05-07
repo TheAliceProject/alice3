@@ -101,7 +101,7 @@ public class EditFieldPane extends AbstractDeclarationPane< edu.cmu.cs.dennisc.a
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createPreviewSubComponent() {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
 		return new org.alice.ide.common.FieldDeclarationPane( org.alice.ide.IDE.getSingleton().getPreviewFactory(), this.getActualInputValue() );
 	}
 	@Override

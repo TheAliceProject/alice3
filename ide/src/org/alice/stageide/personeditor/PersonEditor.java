@@ -47,7 +47,7 @@ package org.alice.stageide.personeditor;
  */
 public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Person > {
 //public class PersonEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
-	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane splitPane;
+	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane;
 	private PersonViewer personViewer = PersonViewer.getSingleton();
 	private IngredientsPane ingredientsPane = new IngredientsPane() {
 		@Override
@@ -74,7 +74,7 @@ public class PersonEditor extends org.alice.ide.Editor< org.alice.apis.stage.Per
 			}			
 		} );
 //		this.personViewer.initializeValues( this.person );
-		this.splitPane = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane( this.personViewer, this.ingredientsPane );
+		this.splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( this.personViewer, this.ingredientsPane );
 		this.splitPane.setDividerLocation( 400 );
 		this.addComponent( this.splitPane );
 	}

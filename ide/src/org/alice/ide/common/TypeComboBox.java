@@ -68,7 +68,7 @@ class TypeListCellRenderer extends edu.cmu.cs.dennisc.javax.swing.renderers.List
 /**
  * @author Dennis Cosgrove
  */
-public abstract class TypeComboBox extends edu.cmu.cs.dennisc.croquet.KComboBox< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
+public abstract class TypeComboBox extends edu.cmu.cs.dennisc.croquet.ComboBox< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 	public TypeComboBox( edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		javax.swing.ComboBoxModel model = org.alice.ide.IDE.getSingleton().getTypeComboBoxModel();
 		model.setSelectedItem( type );

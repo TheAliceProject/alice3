@@ -49,13 +49,13 @@ import org.alice.ide.operations.ast.AbstractExpressionPropertyActionOperation;
  */
 public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.cmu.cs.dennisc.croquet.DropReceptor {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty;
-	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane, edu.cmu.cs.dennisc.croquet.KComponent< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
+	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.croquet.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		super( prefixPane, component, null );
 		this.expressionProperty = expressionProperty;
 		this.setLeftButtonPressOperation( new org.alice.ide.operations.ast.FillInExpressionPropertyActionOperation( this.expressionProperty, desiredValueType ) );
 	}
 	@Deprecated
-	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane, edu.cmu.cs.dennisc.croquet.KComponent< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
+	public ExpressionPropertyDropDownPane( edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.croquet.Component< ? > component, edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty ) {
 		this( prefixPane, component, expressionProperty, null );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ExpressionProperty getExpressionProperty() {
@@ -68,11 +68,11 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 		if( this.getIDE().isExpressionTypeFeedbackDesired() ) {
 			//pass
 		} else {
-			edu.cmu.cs.dennisc.croquet.KComponent< ? > mainComponent = this.getMainComponent();
+			edu.cmu.cs.dennisc.croquet.Component< ? > mainComponent = this.getMainComponent();
 			if( mainComponent instanceof org.alice.ide.common.ExpressionPropertyPane ) {
 				org.alice.ide.common.ExpressionPropertyPane expressionPropertyPane = (org.alice.ide.common.ExpressionPropertyPane)mainComponent;
 				if( expressionPropertyPane.getComponentCount()==1 ) {
-					edu.cmu.cs.dennisc.croquet.KComponent< ? > component0 = expressionPropertyPane.getComponent( 0 );
+					edu.cmu.cs.dennisc.croquet.Component< ? > component0 = expressionPropertyPane.getComponent( 0 );
 					if( component0 instanceof org.alice.ide.common.InstancePropertyPane ) {
 						//org.alice.ide.common.InstancePropertyPane instancePropertyPane = (org.alice.ide.common.InstancePropertyPane)component0;
 						rv += 2;
@@ -84,7 +84,7 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 	}
 
 
-	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.KDragControl source ) {
+	public boolean isPotentiallyAcceptingOf( edu.cmu.cs.dennisc.croquet.DragControl source ) {
 		return source.getSubject() instanceof org.alice.ide.common.ExpressionLikeSubstance;
 	}
 	public void dragStarted( edu.cmu.cs.dennisc.croquet.Context context ) {
@@ -116,13 +116,13 @@ public class ExpressionPropertyDropDownPane extends DropDownPane implements edu.
 //		}
 	}
 	public void dragExited( edu.cmu.cs.dennisc.croquet.Context context, boolean isDropRecipient ) {
-		edu.cmu.cs.dennisc.croquet.KDragControl source = context.getDragSource();
+		edu.cmu.cs.dennisc.croquet.DragControl source = context.getDragSource();
 		source.hideDropProxyIfNecessary();
 	}
 	public void dragStopped( edu.cmu.cs.dennisc.croquet.Context context ) {
 	}
 	
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getComponent() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getComponent() {
 		return this;
 	}
 

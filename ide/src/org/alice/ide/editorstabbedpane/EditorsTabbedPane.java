@@ -233,14 +233,14 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.javax.swing.plaf.TabbedPane
 /**
  * @author Dennis Cosgrove
  */
-public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
+public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.TabbedPane {
 	class EditPreviousCodeOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public EditPreviousCodeOperation() {
 			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
 			this.setName( "previous" );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			EditorsTabbedPane.this.editPreviousCode();
 		}
 	}
@@ -249,7 +249,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
 	public EditorsTabbedPane() {
 		this.setTabCloseOperation( new org.alice.ide.operations.InconsequentialActionOperation( java.util.UUID.fromString( "d1577606-6175-468c-8967-14ce7501099e" ) ) {
 			@Override
-			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
 				EditorsTabbedPane.this.remove( EditorsTabbedPane.this.getSelectedIndex() );
 				EditorsTabbedPane.this.updateFocusedCode();
 			}
@@ -299,7 +299,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
 		this.editPreviousCodeOperation.setVisible( isVisibleAndEnabled );
 	}
 	
-	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( edu.cmu.cs.dennisc.croquet.KComponent< ? > component ) {
+	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
 		if( component instanceof org.alice.ide.codeeditor.CodeEditor ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = (org.alice.ide.codeeditor.CodeEditor)component;
 			return codeEditor;
@@ -309,7 +309,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
 	}
 	private void edit( final edu.cmu.cs.dennisc.alice.ast.AbstractCode code, boolean isOriginatedByPreviousCodeOperation ) {
 		assert code != null;
-		for( edu.cmu.cs.dennisc.croquet.KComponent< ? > component : this.getComponents() ) {
+		for( edu.cmu.cs.dennisc.croquet.Component< ? > component : this.getComponents() ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorFor( component );
 			if( codeEditor != null ) {
 				if( codeEditor.getCode() == code ) {
@@ -376,7 +376,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
 		this.updateUI();
 	}
 	public void setOmittingThisFieldAccesses( boolean isOmittingThisFieldAccesses ) {
-		for( edu.cmu.cs.dennisc.croquet.KComponent< ? > component : this.getComponents() ) {
+		for( edu.cmu.cs.dennisc.croquet.Component< ? > component : this.getComponents() ) {
 			org.alice.ide.codeeditor.CodeEditor codeEditor = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( component, org.alice.ide.codeeditor.CodeEditor.class );
 			if( codeEditor != null ) {
 				codeEditor.refresh();

@@ -57,7 +57,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 		}
 	}
 
-	private edu.cmu.cs.dennisc.croquet.KCheckBox checkBox;
+	private edu.cmu.cs.dennisc.croquet.CheckBox checkBox;
 	private java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations;
 	public CreateMethodParameterPane( edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice method, java.util.List< edu.cmu.cs.dennisc.alice.ast.MethodInvocation > methodInvocations ) {
 		super( method );
@@ -65,7 +65,7 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 		
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? >[] createWarningRow() {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? >[] createWarningRow() {
 		final int N = this.methodInvocations.size();
 		if( N > 0 ) {
 
@@ -108,13 +108,13 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 			}
 			sb.append( " invocation.</body></html>" );
 
-			edu.cmu.cs.dennisc.croquet.KPageAxisPanel pane = new edu.cmu.cs.dennisc.croquet.KPageAxisPanel();
-			pane.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( sb.toString() ) );
+			edu.cmu.cs.dennisc.croquet.PageAxisPanel pane = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
+			pane.addComponent( new edu.cmu.cs.dennisc.croquet.Label( sb.toString() ) );
 			pane.addComponent( this.getIDE().createVerticalStrut( 8 ) );
-			pane.addComponent( new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( new edu.cmu.cs.dennisc.croquet.KLabel( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
+			pane.addComponent( new edu.cmu.cs.dennisc.croquet.LineAxisPanel( new edu.cmu.cs.dennisc.croquet.Label( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
 			pane.addComponent( this.getIDE().createVerticalStrut( 8 ) );
 			pane.addComponent( this.checkBox );
-			return new edu.cmu.cs.dennisc.croquet.KComponent< ? >[] { new edu.cmu.cs.dennisc.croquet.KLabel( "WARNING:" ), pane };
+			return new edu.cmu.cs.dennisc.croquet.Component< ? >[] { new edu.cmu.cs.dennisc.croquet.Label( "WARNING:" ), pane };
 		} else {
 			this.checkBox = null;
 			return null;

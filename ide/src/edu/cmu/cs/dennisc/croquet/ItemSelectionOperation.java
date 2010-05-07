@@ -160,10 +160,10 @@ public abstract class ItemSelectionOperation<E> extends Operation {
 		}
 	}
 	
-	/*package-private*/ void addComboBox( KComboBox<E> comboBox ) {
+	/*package-private*/ void addComboBox( ComboBox<E> comboBox ) {
 		this.addComponent(comboBox);
 	}
-	/*package-private*/ void removeComboBox( KComboBox<E> comboBox ) {
+	/*package-private*/ void removeComboBox( ComboBox<E> comboBox ) {
 		this.removeComponent(comboBox);
 	}
 	

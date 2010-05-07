@@ -47,7 +47,7 @@ package org.alice.ide.ubiquitouspane.templates;
  */
 public class UbiquitousStatementImplementor { //todo: needs a better name
 	private edu.cmu.cs.dennisc.alice.ast.Statement incompleteStatement;
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? > incompleteStatementPane;
+	private edu.cmu.cs.dennisc.croquet.Component< ? > incompleteStatementPane;
 	private String labelText;
 	private javax.swing.JToolTip toolTip;
 
@@ -57,7 +57,7 @@ public class UbiquitousStatementImplementor { //todo: needs a better name
 	public edu.cmu.cs.dennisc.alice.ast.Statement getIncompleteStatement() {
 		return this.incompleteStatement;
 	}
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getIncompleteStatementPane() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getIncompleteStatementPane() {
 		if( this.incompleteStatementPane != null ) {
 			//pass
 		} else {

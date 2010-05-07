@@ -45,7 +45,7 @@ package org.alice.ide.common;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.property.InstanceProperty > extends edu.cmu.cs.dennisc.croquet.KAxisPanel {
+public abstract class AbstractPropertyPane< E extends edu.cmu.cs.dennisc.property.InstanceProperty > extends edu.cmu.cs.dennisc.croquet.AxisPanel {
 	private Factory factory;
 	private E property;
 	private edu.cmu.cs.dennisc.property.event.PropertyListener propertyAdapter = new edu.cmu.cs.dennisc.property.event.PropertyListener() {

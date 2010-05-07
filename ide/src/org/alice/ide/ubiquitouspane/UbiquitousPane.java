@@ -45,7 +45,7 @@ package org.alice.ide.ubiquitouspane;
 import org.alice.ide.common.SelectedFieldExpressionPane;
 import org.alice.ide.ubiquitouspane.templates.*;
 
-class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private ReturnStatementTemplate re = new ReturnStatementTemplate();
 	public void refresh() {
 		this.removeAllComponents();
@@ -57,7 +57,7 @@ class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	}
 }
 
-class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
+class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate > mapVariableToVariableAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate > mapVariableToVariableArrayAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.VariableDeclaredInAlice, VariableArrayAssignmentStatementTemplate >();
 	private java.util.Map< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate > mapParameterToParameterAssignmentStatementTemplate = new java.util.HashMap< edu.cmu.cs.dennisc.alice.ast.ParameterDeclaredInAlice, ParameterArrayAssignmentStatementTemplate >();
@@ -133,7 +133,7 @@ class TransientStatementsWrapper extends edu.cmu.cs.dennisc.croquet.KLineAxisPan
 /**
  * @author Dennis Cosgrove
  */
-public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
+public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private DoInOrderTemplate doInOrderTemplate = new DoInOrderTemplate();
 //	private LoopTemplate loopTemplate = new LoopTemplate();
 	private CountLoopTemplate countLoopTemplate = new CountLoopTemplate();

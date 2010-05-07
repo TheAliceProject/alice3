@@ -52,7 +52,7 @@ public class PreferencesOperation extends org.alice.ide.operations.AbstractActio
 	}
 	
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		org.alice.ide.preferencesinputpane.PreferencesInputPane preferencesInputPane = new org.alice.ide.preferencesinputpane.PreferencesInputPane();
 		preferencesInputPane.showInJDialog( button );
 //		if( this.method != null ) {

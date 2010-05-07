@@ -81,7 +81,7 @@ public abstract class Operation {
 		if( this.isVisible != isVisible ) {
 			this.isVisible = isVisible;
 			synchronized( this.components ) {
-				for( KComponent<?> component : this.components ) {
+				for( Component<?> component : this.components ) {
 					component.setVisible( this.isVisible );
 				}
 			}
@@ -95,7 +95,7 @@ public abstract class Operation {
 		if( this.isEnabled != isEnabled ) {
 			this.isEnabled = isEnabled;
 			synchronized( this.components ) {
-				for( KComponent<?> component : this.components ) {
+				for( Component<?> component : this.components ) {
 					component.setEnabled( this.isEnabled );
 				}
 			}
@@ -112,16 +112,16 @@ public abstract class Operation {
 		} else {
 			this.toolTipText = toolTipText;
 			synchronized( this.components ) {
-				for( KComponent<?> component : this.components ) {
+				for( Component<?> component : this.components ) {
 					component.setToolTipText( this.toolTipText );
 				}
 			}
 		}
 	}
 
-	private java.util.List< KComponent<?> > components = new java.util.LinkedList< KComponent<?> >();
+	private java.util.List< Component<?> > components = new java.util.LinkedList< Component<?> >();
 	
-	protected void addComponent( KComponent<?> component ) {
+	protected void addComponent( Component<?> component ) {
 		synchronized( this.components ) {
 			this.components.add( component );
 		}
@@ -129,7 +129,7 @@ public abstract class Operation {
 		component.setEnabled( this.isEnabled );
 		component.setToolTipText( this.toolTipText );
 	}
-	protected void removeComponent( KComponent<?> component ) {
+	protected void removeComponent( Component<?> component ) {
 		synchronized( this.components ) {
 			this.components.remove( component );
 		}

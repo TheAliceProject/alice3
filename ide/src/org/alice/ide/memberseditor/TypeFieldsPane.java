@@ -54,16 +54,16 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.fields };
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return this.getIDE().createButton( new org.alice.ide.operations.ast.DeclareFieldOperation( type ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return null;
 	}
 	@Override
-	protected Iterable< edu.cmu.cs.dennisc.croquet.KComponent< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
-		java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? > > rv;
+	protected Iterable< edu.cmu.cs.dennisc.croquet.Component< ? > > createTemplates( edu.cmu.cs.dennisc.alice.ast.AbstractMember member ) {
+		java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? > > rv;
 		if( member instanceof edu.cmu.cs.dennisc.alice.ast.AbstractField ) {
 			rv = edu.cmu.cs.dennisc.java.util.Collections.newLinkedList();
 			edu.cmu.cs.dennisc.alice.ast.AbstractField field = (edu.cmu.cs.dennisc.alice.ast.AbstractField)member;

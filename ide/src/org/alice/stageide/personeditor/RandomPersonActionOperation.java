@@ -58,7 +58,7 @@ class RandomPersonActionOperation extends org.alice.ide.operations.AbstractActio
 		this.setName( "Generate Random Selection" );
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		final edu.cmu.cs.dennisc.pattern.Tuple7<LifeStage, Gender, BaseSkinTone, BaseEyeColor, FullBodyOutfit, Hair, Double> prevState = PersonViewer.getSingleton().getState();
 		
 		boolean isAdult = edu.cmu.cs.dennisc.random.RandomUtilities.nextBoolean();

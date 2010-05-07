@@ -83,13 +83,13 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 
 	private java.awt.Component rowsSpringPane;
 	private PreviewPane previewPane;
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? > spacer;
+	private edu.cmu.cs.dennisc.croquet.Component< ? > spacer;
 
 	public PreviewInputPane() {
 		final int INSET = 16;
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( INSET, INSET, INSET, INSET ) );
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? > createPreviewSubComponent();
+	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent();
 	private void updatePreview() {
 		if( this.previewPane != null ) {
 			this.previewPane.refresh();
@@ -100,10 +100,10 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 //		return edu.cmu.cs.dennisc.java.awt.DimensionUtilties.constrainToMinimumWidth( super.getPreferredSize(), 320 );
 //	}
 
-	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv );
+	protected abstract java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv );
 
 	@Override
-	protected final java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv, edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel ) {
+	protected final java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv, edu.cmu.cs.dennisc.croquet.RowsSpringPanel panel ) {
 		this.previewPane = new PreviewPane();
 		this.spacer = this.getIDE().createRigidArea( new java.awt.Dimension( 0, 32 ) );
 		rv.add( 

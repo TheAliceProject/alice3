@@ -99,7 +99,7 @@ public class RunOperation extends org.alice.ide.operations.InconsequentialAction
 		this.setMnemonicKey( java.awt.event.KeyEvent.VK_R );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
 		this.getIDE().handleRun( context );
 	}
 }

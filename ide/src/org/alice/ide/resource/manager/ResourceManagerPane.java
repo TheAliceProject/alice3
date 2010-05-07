@@ -166,7 +166,7 @@ class ResourceNameTableCellRenderer extends ResourceTableCellRenderer< org.alice
 /**
  * @author Dennis Cosgrove
  */
-public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	abstract class ResourceOperation extends org.alice.ide.operations.AbstractActionOperation {
 		public ResourceOperation( java.util.UUID individualId ) {
 			super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, individualId );
@@ -176,7 +176,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 		//todo: better name
 		protected abstract org.alice.virtualmachine.Resource selectResource();
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			org.alice.virtualmachine.Resource resource = this.selectResource();
 			if( resource != null ) {
 				context.commitAndInvokeDo( this.createEdit( resource ) );
@@ -298,12 +298,12 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 		}
 		protected abstract javax.swing.JComponent createPreviewComponent();
 		@Override
-		protected java.util.List<edu.cmu.cs.dennisc.croquet.KComponent<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.KComponent<?>[]> rv, edu.cmu.cs.dennisc.croquet.KRowsSpringPanel panel) {
+		protected java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> updateComponentRows(java.util.List<edu.cmu.cs.dennisc.croquet.Component<?>[]> rv, edu.cmu.cs.dennisc.croquet.RowsSpringPanel panel) {
 			rv = super.updateComponentRows( rv, panel );
 			rv.add( 
 					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
 							edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),
-							new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.createPreviewComponent() )
+							new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.createPreviewComponent() )
 					) 
 			);
 			return rv;
@@ -358,7 +358,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 			this.setName( "Rename..." );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
 				org.alice.ide.name.RenamePane renamePane;
@@ -464,7 +464,7 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 			this.setName( "Reload Content..." );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			final org.alice.virtualmachine.Resource resource = ResourceManagerPane.this.getSelectedResource();
 			if( resource != null ) {
 				final Capsule prevCapsule;
@@ -559,21 +559,21 @@ public class ResourceManagerPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel
 
 		javax.swing.table.JTableHeader tableHeader = this.table.getTableHeader();
 		tableHeader.setReorderingAllowed( false );
-		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.table ) );
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.table ) );
 		scrollPane.setPreferredSize( new java.awt.Dimension( 320, 240 ) );
 		//this.table.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
 		scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
+		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
 
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
-		edu.cmu.cs.dennisc.croquet.KPanel pane = edu.cmu.cs.dennisc.croquet.KGridPanel.createSingleColumnGridPane(  
+		edu.cmu.cs.dennisc.croquet.Panel pane = edu.cmu.cs.dennisc.croquet.GridPanel.createSingleColumnGridPane(  
 				application.createButton( this.addResourceOperation ),
 				application.createButton( this.removeResourceOperation ), 
 				edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 8 ), 
 				application.createButton( this.renameResourceOperation ), 
 				application.createButton( this.replaceResourceOperation ) 
 		);
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KPageAxisPanel( pane, application.createGlue() ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.EAST );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.PageAxisPanel( pane, application.createGlue() ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
 		this.handleSelection();
 	}
 

@@ -51,7 +51,7 @@ public class RestartOperation extends org.alice.ide.operations.InconsequentialAc
 		this.setName( "Restart..." );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
 		this.getIDE().handleRestart( context );
 	}
 }

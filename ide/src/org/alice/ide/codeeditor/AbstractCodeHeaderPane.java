@@ -45,7 +45,7 @@ package org.alice.ide.codeeditor;
 /**
  * @author Dennis Cosgrove
  */
-class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
+class AbstractCodeHeaderPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	public AbstractCodeHeaderPane( edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclarationInAlice ) {
 		//this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 12, 4, 0, 4 ) );
 	}

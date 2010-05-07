@@ -47,17 +47,17 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class AbstractActionOperation extends Operation {
 	private class ButtonActionListener implements java.awt.event.ActionListener {
-		private KAbstractButton< ? > button;
-		public ButtonActionListener( KAbstractButton< ? > button ) {
+		private AbstractButton< ? > button;
+		public ButtonActionListener( AbstractButton< ? > button ) {
 			this.button = button;
 		}
 		public void actionPerformed( java.awt.event.ActionEvent e ) {
 			AbstractActionOperation.this.fire( e, this.button );
 		}
 	}
-	private java.util.Map< KAbstractButton< ? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< AbstractButton< ? >, ButtonActionListener > mapButtonToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	
-	private void fire( java.awt.event.ActionEvent e, KAbstractButton< ? > button  ) {
+	private void fire( java.awt.event.ActionEvent e, AbstractButton< ? > button  ) {
 		Application application = Application.getSingleton();
 		Context parentContext = application.getCurrentContext();
 		Context childContext = parentContext.createChildContext();
@@ -81,7 +81,7 @@ public abstract class AbstractActionOperation extends Operation {
 //			}
 //		} );
 	}
-	protected abstract void perform( Context context, java.awt.event.ActionEvent e, KAbstractButton< ? > button );
+	protected abstract void perform( Context context, java.awt.event.ActionEvent e, AbstractButton< ? > button );
 
 	public String getName() {
 		return String.class.cast( this.action.getValue( javax.swing.Action.NAME ) );
@@ -120,7 +120,7 @@ public abstract class AbstractActionOperation extends Operation {
 		this.action.putValue( javax.swing.Action.ACCELERATOR_KEY, acceleratorKey );
 	}
 
-	/*package-private*/ void addAbstractButton( KAbstractButton<?> abstractButton ) {
+	/*package-private*/ void addAbstractButton( AbstractButton<?> abstractButton ) {
 		abstractButton.setAction( this.action );
 //		abstractButton.setModel( this.buttonModel );
 		assert this.mapButtonToListener.containsKey( abstractButton ) == false;
@@ -129,7 +129,7 @@ public abstract class AbstractActionOperation extends Operation {
 		abstractButton.getJComponent().addActionListener( buttonActionListener );
 		this.addComponent(abstractButton);
 	}
-	/*package-private*/ void removeAbstractButton( KAbstractButton<?> abstractButton ) {
+	/*package-private*/ void removeAbstractButton( AbstractButton<?> abstractButton ) {
 		this.removeComponent(abstractButton);
 		ButtonActionListener buttonActionListener = this.mapButtonToListener.get( abstractButton );
 		assert buttonActionListener != null;

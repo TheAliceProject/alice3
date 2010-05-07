@@ -47,14 +47,14 @@ package org.alice.stageide.modelviewer;
  * @author Dennis Cosgrove
  */
 //abstract class AbstractViewer extends org.alice.apis.moveandturn.Program {
-abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	//todo: should this be heavyweight?
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
 	private org.alice.apis.moveandturn.Scene scene = new org.alice.apis.moveandturn.Scene();
 	private org.alice.apis.moveandturn.SymmetricPerspectiveCamera camera = new org.alice.apis.moveandturn.SymmetricPerspectiveCamera();
 	private org.alice.apis.moveandturn.DirectionalLight sunLight = new org.alice.apis.moveandturn.DirectionalLight();
-	private edu.cmu.cs.dennisc.croquet.KSwingAdapter adapter;
+	private edu.cmu.cs.dennisc.croquet.SwingAdapter adapter;
 
 	private edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener automaticDisplayListener = new edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayListener() {
 		public void automaticDisplayCompleted( edu.cmu.cs.dennisc.lookingglass.event.AutomaticDisplayEvent e ) {
@@ -71,7 +71,7 @@ abstract class AbstractViewer extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		this.onscreenLookingGlass.addCamera( camera.getSGCamera() );
 		
 		//todo: should this be heavyweight?
-		this.adapter = new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.onscreenLookingGlass.getJPanel() );
+		this.adapter = new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.onscreenLookingGlass.getJPanel() );
 	}
 	protected edu.cmu.cs.dennisc.lookingglass.OnscreenLookingGlass getOnscreenLookingGlass() {
 		return this.onscreenLookingGlass;

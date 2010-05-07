@@ -62,7 +62,7 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 	}
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createPreviewSubComponent() {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createPreviewSubComponent() {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression;
 		try {
 			expression = this.getActualInputValue();
@@ -73,7 +73,7 @@ public class CustomInputPane<E extends edu.cmu.cs.dennisc.alice.ast.Expression, 
 		return getIDE().getPreviewFactory().createExpressionPane( expression );
 	}
 	@Override
-	protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+	protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateInternalComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		this.chooser.updateRows( rv );
 		return rv;
 	}

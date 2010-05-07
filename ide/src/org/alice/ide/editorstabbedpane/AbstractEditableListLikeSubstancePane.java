@@ -45,14 +45,14 @@ package org.alice.ide.editorstabbedpane;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	class AddItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
 		public AddItemOperation( java.util.UUID groupUUID, String name ) {
 			super( groupUUID, java.util.UUID.fromString( "118ab33a-8c1a-4207-80d1-88edd555ca61" ) );
 			this.setName( name );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			try {
 				final E item = createItem();
 				final int index = getListSize();
@@ -84,7 +84,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 			this.setName( name );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			final int index = getSelectedIndex();
 			if( index >= 0 ) {
 				final E item = getItemAt( index );
@@ -119,7 +119,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
 		@Override
-		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			final int index = this.getIndex( getSelectedIndex() );
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				private void swapWithNext( int index ) {
@@ -196,14 +196,14 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	protected abstract void setSelectedIndex( int index );
 	
 
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? > listLikeSubstance;
+	private edu.cmu.cs.dennisc.croquet.Component< ? > listLikeSubstance;
 	private AddItemOperation addItemOperation;
 	private RemoveItemOperation removeItemOperation;
 	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation editItemOperation;
 	private MoveItemUpOperation moveItemUpOperation;
 	private MoveItemDownOperation moveItemDownOperation;
 
-	public AbstractEditableListLikeSubstancePane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.croquet.KComponent< ? > listLikeSubstance ) {
+	public AbstractEditableListLikeSubstancePane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.croquet.Component< ? > listLikeSubstance ) {
 		super( 8, 0 );
 		this.listLikeSubstance = listLikeSubstance;
 		this.addItemOperation = new AddItemOperation( groupUUID, this.getAddItemOperationName() );
@@ -213,7 +213,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		this.moveItemDownOperation = new MoveItemDownOperation( groupUUID, this.getMoveItemDownOperationName() );
 		
 
-		edu.cmu.cs.dennisc.croquet.KGridBagPanel buttonPane = new edu.cmu.cs.dennisc.croquet.KGridBagPanel();
+		edu.cmu.cs.dennisc.croquet.GridBagPanel buttonPane = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -229,12 +229,12 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 
 		this.addComponent( buttonPane, CardinalDirection.EAST );
 
-		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( this.listLikeSubstance );
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.listLikeSubstance );
 		scrollPane.setBorder( null );
 		this.addComponent( scrollPane, CardinalDirection.CENTER );
 	}
 
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getListLikeSubstance() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getListLikeSubstance() {
 		return this.listLikeSubstance;
 	}
 	

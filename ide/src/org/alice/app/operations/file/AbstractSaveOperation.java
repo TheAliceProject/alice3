@@ -57,7 +57,7 @@ public abstract class AbstractSaveOperation extends UriActionOperation {
 	protected abstract String getInitialFilename();
 	
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		org.alice.app.ProjectApplication application = this.getProjectApplication();
 		java.io.File filePrevious = application.getFile();
 		boolean isExceptionRaised;

@@ -48,7 +48,7 @@ public class ManageResourcesOperation extends org.alice.ide.operations.Inconsequ
 		this.setName( "Manage Resources..." );
 	}
 	@Override
-	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		org.alice.ide.resource.manager.ResourceManagerPane resourcesPane = new org.alice.ide.resource.manager.ResourceManagerPane();
 		this.getIDE().showMessageDialog( resourcesPane, "Project Resources", edu.cmu.cs.dennisc.croquet.MessageType.PLAIN, null );
 	}	

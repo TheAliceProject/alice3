@@ -70,7 +70,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	private static final int INSET = 8;
 
 	private edu.cmu.cs.dennisc.lookingglass.LightweightOnscreenLookingGlass onscreenLookingGlass = edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().createLightweightOnscreenLookingGlass();
-	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane();
+	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane splitPane = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane();
 	private SidePane sidePane = new SidePane();
 
 	private edu.cmu.cs.dennisc.animation.Animator animator = new edu.cmu.cs.dennisc.animation.ClockBasedAnimator();
@@ -172,7 +172,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 		this.initializeIfNecessary();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().incrementAutomaticDisplayCount();
 		edu.cmu.cs.dennisc.lookingglass.opengl.LookingGlassFactory.getSingleton().addAutomaticDisplayListener( this.automaticDisplayListener );
-		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.getLGPanel() ) );
+		this.splitPane.setLeftComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.getLGPanel() ) );
 		org.alice.ide.IDE.getSingleton().addCodeInFocusObserver( this.codeInFocusObserver );
 		org.alice.ide.IDE.getSingleton().addFieldSelectionObserver( this.fieldSelectionObserver );
 	}
@@ -205,7 +205,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 			//final org.alice.interact.CameraNavigatorWidget cameraNavigatorWidget = null;
 
 			edu.cmu.cs.dennisc.croquet.BooleanStateOperation isSceneEditorExpandedOperation = this.getIDE().getIsSceneEditorExpandedOperation();
-			final edu.cmu.cs.dennisc.croquet.KCheckBox isSceneEditorExpandedCheckBox = this.getIDE().createCheckBox( isSceneEditorExpandedOperation );
+			final edu.cmu.cs.dennisc.croquet.CheckBox isSceneEditorExpandedCheckBox = this.getIDE().createCheckBox( isSceneEditorExpandedOperation );
 			isSceneEditorExpandedCheckBox.getJComponent().setUI( new IsExpandedCheckBoxUI() );
 			final int X_PAD = 16;
 			final int Y_PAD = 10;

@@ -54,7 +54,7 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 		}
 		
 		public void perform( edu.cmu.cs.dennisc.zoot.BoundedRangeContext boundedRangeContext ) {
-			edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPanel = PortionChooser.this.getInputPanel();
+			edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel = PortionChooser.this.getInputPanel();
 			if( inputPanel != null ) {
 				inputPanel.updateOKButton();
 			}
@@ -62,13 +62,13 @@ public class PortionChooser extends org.alice.ide.choosers.AbstractChooser< org.
 		}
 	}
 	private edu.cmu.cs.dennisc.zoot.ZSlider slider = new edu.cmu.cs.dennisc.zoot.ZSlider( new PortionOperation() );
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components = { new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.slider ) };
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.slider ) };
 	public PortionChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		this.slider.getBoundedRangeOperation().getBoundedRangeModel().setValue( 100 );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
 	public org.alice.apis.moveandturn.Portion getValue() {

@@ -48,10 +48,10 @@ import edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice;;
 */
 public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends org.alice.ide.InputPanel< Boolean > {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
-	private edu.cmu.cs.dennisc.croquet.KList< T > list;
+	private edu.cmu.cs.dennisc.croquet.List< T > list;
 	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< T > listProperty ) {
 		this.declaringType = declaringType;
-		this.list = new edu.cmu.cs.dennisc.croquet.KList< T >();
+		this.list = new edu.cmu.cs.dennisc.croquet.List< T >();
 		list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ContentsCachingListCellRenderer< T >() {
 			@Override
 			protected java.awt.Component createComponent(T value) {
@@ -120,7 +120,7 @@ public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends
 		}
 		AbstractEditableListPane< T > editableListPane = new EditableMemberListPane();
 		editableListPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
-		this.addComponent( editableListPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
+		this.addComponent( editableListPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
 	}
 	@Override
 	protected Boolean getActualInputValue() {

@@ -48,7 +48,7 @@ package org.alice.ide.codeeditor;
 public class MoreDropDownPane extends DropDownPane {
 	private edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement;
 	public MoreDropDownPane( edu.cmu.cs.dennisc.alice.ast.ExpressionStatement expressionStatement ) {
-		super( null, new edu.cmu.cs.dennisc.croquet.KLabel( "more"), null );
+		super( null, new edu.cmu.cs.dennisc.croquet.Label( "more"), null );
 		this.expressionStatement = expressionStatement;
 
 		edu.cmu.cs.dennisc.alice.ast.MethodInvocation methodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();

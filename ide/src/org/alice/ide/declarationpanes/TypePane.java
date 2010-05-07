@@ -62,7 +62,7 @@ class IsArrayStateOperation extends org.alice.ide.operations.AbstractBooleanStat
 	}
 }
 
-public class TypePane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
+public class TypePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	private DeclarationProperty< AbstractType > typeProperty;
 	private org.alice.ide.common.TypeComboBox typeComboBox;
 	private IsArrayStateOperation isArrayStateOperation;
@@ -115,7 +115,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 		this.isArrayStateOperation = new IsArrayStateOperation( isArrayProperty );
 		this.isArrayStateOperation.setEnabled( isArrayCheckBoxEnabled );
 		
-		edu.cmu.cs.dennisc.croquet.KCheckBox isArrayCheckBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createCheckBox( this.isArrayStateOperation );
+		edu.cmu.cs.dennisc.croquet.CheckBox isArrayCheckBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createCheckBox( this.isArrayStateOperation );
 		isArrayCheckBox.setOpaque( false );
 		
 		this.addComponent( this.typeComboBox );

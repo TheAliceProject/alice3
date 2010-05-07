@@ -54,19 +54,19 @@ class TypeFunctionsPane extends AbstractTypeMethodsPane {
 		return new edu.cmu.cs.dennisc.property.ListProperty[] { type.methods, type.constructors };
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KButton createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.croquet.Button createDeclareMemberButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return this.getIDE().createButton( new org.alice.ide.operations.ast.DeclareFunctionOperation( type ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KButton createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
+	protected edu.cmu.cs.dennisc.croquet.Button createEditConstructorButton( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice type ) {
 		return this.getIDE().createButton( new org.alice.ide.operations.ast.FocusCodeOperation( type.getDeclaredConstructor() ) );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createFunctionTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		return new org.alice.ide.memberseditor.templates.FunctionInvocationTemplate( method );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createProcedureTemplate( edu.cmu.cs.dennisc.alice.ast.AbstractMethod method ) {
 		return null;
 	}
 }

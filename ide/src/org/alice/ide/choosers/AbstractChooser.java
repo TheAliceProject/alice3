@@ -45,9 +45,9 @@ package org.alice.ide.choosers;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.cs.dennisc.croquet.KInputPanel.Validator {
+public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.cs.dennisc.croquet.InputPanel.Validator {
 	private static final String[] LABEL_TEXTS = { "value:" };
-	private edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPanel;
+	private edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel;
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
@@ -59,10 +59,10 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 			return null;
 		}
 	}
-	public edu.cmu.cs.dennisc.croquet.KInputPanel< ? > getInputPanel() {
+	public edu.cmu.cs.dennisc.croquet.InputPanel< ? > getInputPanel() {
 		return this.inputPanel;
 	}
-	public void setInputPanel( edu.cmu.cs.dennisc.croquet.KInputPanel< ? > inputPanel ) {
+	public void setInputPanel( edu.cmu.cs.dennisc.croquet.InputPanel< ? > inputPanel ) {
 		this.inputPanel = inputPanel;
 		this.inputPanel.addValidator( this );
 	}
@@ -70,16 +70,16 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 	protected String[] getLabelTexts() {
 		return LABEL_TEXTS;
 	}
-	protected abstract edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents();
-	public java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+	protected abstract edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents();
+	public java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 		String[] labelTexts = this.getLabelTexts();
-		edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components = this.getComponents();
+		edu.cmu.cs.dennisc.croquet.Component< ? >[] components = this.getComponents();
 		final int N = labelTexts.length;
 		for( int i=0; i<N; i++ ) {
 			rv.add( 
 					edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
 						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( labelTexts[ i ] ), 
-						new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
+						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 								components[ i ],
 								this.getIDE().createHorizontalGlue()
 						)

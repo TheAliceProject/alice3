@@ -53,7 +53,7 @@ abstract class ConvertStatementWithBodyActionOperation extends org.alice.ide.ope
 		this.replacement = replacement;
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		final int index = this.property.indexOf( this.original );
 		final edu.cmu.cs.dennisc.alice.ast.BlockStatement body = this.original.body.getValue();
 		if( index >= 0 ) {
@@ -113,7 +113,7 @@ class DissolveStatementActionOperation extends org.alice.ide.operations.Abstract
 		this.abstractStatementWithBody = abstractStatementWithBody;
 	}
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		final int index = this.property.indexOf( this.abstractStatementWithBody );
 		if( index >= 0 ) {
 			final int N = this.abstractStatementWithBody.body.getValue().statements.size();
@@ -171,7 +171,7 @@ class DeleteStatementActionOperation extends org.alice.ide.operations.AbstractAc
 		this.statement = statement;
 	}
 @Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		final int index = this.property.indexOf( this.statement );
 		if( index >= 0 ) {
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
@@ -229,13 +229,13 @@ class StatementEnabledStateOperation extends org.alice.ide.operations.AbstractBo
  */
 public class Factory extends org.alice.ide.common.Factory {
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createArgumentListPropertyPane( edu.cmu.cs.dennisc.alice.ast.ArgumentListProperty argumentListProperty ) {
 		return new ArgumentListPropertyPane( this, argumentListProperty );
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > createExpressionPropertyPane( edu.cmu.cs.dennisc.alice.ast.ExpressionProperty expressionProperty, edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane, edu.cmu.cs.dennisc.alice.ast.AbstractType desiredValueType ) {
 		edu.cmu.cs.dennisc.alice.ast.Expression expression = expressionProperty.getValue();
-		edu.cmu.cs.dennisc.croquet.KComponent< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
+		edu.cmu.cs.dennisc.croquet.Component< ? > rv = new org.alice.ide.common.ExpressionPropertyPane( this, expressionProperty );
 		if( org.alice.ide.IDE.getSingleton().isDropDownDesiredFor( expression ) ) {
 			rv = new ExpressionPropertyDropDownPane( prefixPane, rv, expressionProperty, desiredValueType );
 		}

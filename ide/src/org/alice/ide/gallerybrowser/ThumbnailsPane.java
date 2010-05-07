@@ -84,7 +84,7 @@ class SingleOrDoubleClickList extends javax.swing.JList {
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
+public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	class ThumbnailSnapshotListCellRenderer extends org.alice.ide.swing.SnapshotListCellRenderer {
 		private javax.swing.Icon folderIcon;
 
@@ -156,7 +156,7 @@ public abstract class ThumbnailsPane extends edu.cmu.cs.dennisc.croquet.KLineAxi
 			}
 		} );
 		
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KScrollPane( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.list ) ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.ScrollPane( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ) ) );
 	}
 
 	protected abstract String getTextFor( java.io.File file );

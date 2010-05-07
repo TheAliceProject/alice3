@@ -74,16 +74,16 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 		return rv;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createComponent( Object instance ) {
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createComponent( Object instance ) {
 		edu.cmu.cs.dennisc.alice.ast.Argument argument = (edu.cmu.cs.dennisc.alice.ast.Argument)instance;
-		edu.cmu.cs.dennisc.croquet.KComponent< ? > prefixPane;
+		edu.cmu.cs.dennisc.croquet.Component< ? > prefixPane;
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			prefixPane = null;
 		} else {
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = argument.parameter.getValue();
 			boolean isNameDesired = this.isNameDesired( parameter );
 			if( isNameDesired ) {
-				prefixPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 4 ), new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() ), new edu.cmu.cs.dennisc.croquet.KLabel( ": " ) );
+				prefixPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 4 ), new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() ), new edu.cmu.cs.dennisc.croquet.Label( ": " ) );
 			} else {
 				prefixPane = null;
 			}

@@ -136,7 +136,7 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 	public void initialize(java.lang.String[] args) {
 		super.initialize(args);
 		edu.cmu.cs.dennisc.croquet.MenuBarOperation menuBarOperation = this.createMenuBarOperation();
-		edu.cmu.cs.dennisc.croquet.KMenuBar menuBar = this.createMenuBar( menuBarOperation );
+		edu.cmu.cs.dennisc.croquet.MenuBar menuBar = this.createMenuBar( menuBarOperation );
 		this.setMenuBar( menuBar );
 	}
 	private java.net.URI uri = null;

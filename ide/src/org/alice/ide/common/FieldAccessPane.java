@@ -62,7 +62,7 @@ public class FieldAccessPane extends org.alice.ide.common.ExpressionLikeSubstanc
 //			if( getIDE().isJava() ) {
 //				//pass
 //			} else {
-				this.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "." ) );
+				this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "." ) );
 //			}
 		}
 		org.alice.ide.common.DeclarationNameLabel nodeNameLabel = new org.alice.ide.common.DeclarationNameLabel( this.fieldAccess.field.getValue() );

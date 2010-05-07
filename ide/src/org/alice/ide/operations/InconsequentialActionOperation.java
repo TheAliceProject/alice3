@@ -50,9 +50,9 @@ public abstract class InconsequentialActionOperation extends org.alice.ide.opera
 	public InconsequentialActionOperation( java.util.UUID individualUUID ) {
 		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualUUID );
 	}
-	protected abstract void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button );
+	protected abstract void performInternal( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button );
 	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 		performInternal(context, e, button);
 		context.finish();
 	}

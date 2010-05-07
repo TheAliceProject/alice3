@@ -51,9 +51,9 @@ public abstract class AbstractPopupMenuOperation extends AbstractActionOperation
 	}
 	public abstract Operation[] getOperations();
  	@Override
-	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, KAbstractButton< ? > button ) {
+	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, AbstractButton< ? > button ) {
 		Application application = Application.getSingleton();
-		KPopupMenu popupMenu = application.createPopupMenu( this );
+		PopupMenu popupMenu = application.createPopupMenu( this );
 		
 //		javax.swing.JPopupMenu popupMenu = new javax.swing.JPopupMenu();
 //		popupMenu.addPopupMenuListener( new javax.swing.event.PopupMenuListener() {
@@ -68,10 +68,10 @@ public abstract class AbstractPopupMenuOperation extends AbstractActionOperation
 		popupMenu.showBelow( button );
 	}
 
-	/*package-private*/ void addPopupMenu( KPopupMenu popupMenu ) {
+	/*package-private*/ void addPopupMenu( PopupMenu popupMenu ) {
 		this.addComponent( popupMenu );
 	}
-	/*package-private*/ void removePopupMenu( KPopupMenu popupMenu ) {
+	/*package-private*/ void removePopupMenu( PopupMenu popupMenu ) {
 		this.removeComponent( popupMenu );
 	}
 }

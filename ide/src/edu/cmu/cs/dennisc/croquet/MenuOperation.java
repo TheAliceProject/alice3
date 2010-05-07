@@ -48,15 +48,15 @@ package edu.cmu.cs.dennisc.croquet;
 public class MenuOperation extends Operation {
 	public static final Operation SEPARATOR = null;
 	private class MenuListener implements javax.swing.event.MenuListener {
-		private KMenu menu;
-		public MenuListener( KMenu menu ) {
+		private Menu menu;
+		public MenuListener( Menu menu ) {
 			this.menu = menu;
 		}
 		public void menuSelected( javax.swing.event.MenuEvent e ) {
 			Application application = Application.getSingleton();
 			Context context;
-			KComponent< ? > parent = this.menu.getParent();
-			if( parent instanceof KMenuBar ) {
+			Component< ? > parent = this.menu.getParent();
+			if( parent instanceof MenuBar ) {
 				Context rootContext = application.getRootContext();
 				context = rootContext.createChildContext();
 			} else {
@@ -75,7 +75,7 @@ public class MenuOperation extends Operation {
 			context.addChild( new MenuCanceledEvent( context, MenuOperation.this, e, this.menu ) );
 		}
 	};
-	private java.util.Map< KMenu, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
+	private java.util.Map< Menu, MenuListener > mapMenuToListener = edu.cmu.cs.dennisc.java.util.Collections.newHashMap();
 	private String text;
 	private int mnemonic;
 	private Operation[] operations;
@@ -92,7 +92,7 @@ public class MenuOperation extends Operation {
 	public Operation[] getOperations() {
 		return this.operations;
 	}
-	/*package-private*/ void addMenu( KMenu menu ) {
+	/*package-private*/ void addMenu( Menu menu ) {
 		menu.setText( this.text );
 		menu.setMnemonic( this.mnemonic );
 		assert mapMenuToListener.containsKey( menu ) == false;
@@ -106,7 +106,7 @@ public class MenuOperation extends Operation {
 		} );
 		this.addComponent( menu );
 	}
-	/*package-private*/ void removeMenu( KMenu menu ) {
+	/*package-private*/ void removeMenu( Menu menu ) {
 		this.removeComponent( menu );
 		MenuListener menuListener = this.mapMenuToListener.get( menu );
 		assert menuListener != null;

@@ -45,7 +45,7 @@ package org.alice.stageide.personeditor;
 /**
  * @author Dennis Cosgrove
  */
-abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 	private RandomPersonActionOperation randomPersonActionOperation = new RandomPersonActionOperation();
 	private LifeStageList lifeStageList = new LifeStageList();
 	private GenderList genderList = new GenderList();
@@ -81,7 +81,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		this.setBackgroundColor( BACKGROUND_COLOR );
 		this.setOpaque( true );
 
-		this.lifeStageList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
+		this.lifeStageList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.lifeStageList.setVisibleRowCount( 1 );
 		this.lifeStageList.setOpaque( false );
 
@@ -102,7 +102,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		} );
 		
 		
-		this.genderList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
+		this.genderList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.genderList.setVisibleRowCount( 1 );
 		this.genderList.setOpaque( false );
 
@@ -122,13 +122,13 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 			}
 		} );
 		
-		this.baseSkinToneList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
+		this.baseSkinToneList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.baseSkinToneList.setVisibleRowCount( 1 );
 		this.baseSkinToneList.setOpaque( false );
-		this.hairColorList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
+		this.hairColorList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.hairColorList.setVisibleRowCount( 1 );
 		this.hairColorList.setOpaque( false );
-		this.baseEyeColorList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.KList.LayoutOrientation.HORIZONTAL_WRAP );
+		this.baseEyeColorList.setLayoutOrientation( edu.cmu.cs.dennisc.croquet.List.LayoutOrientation.HORIZONTAL_WRAP );
 		this.baseEyeColorList.setVisibleRowCount( 1 );
 		this.baseEyeColorList.setOpaque( false );
 		
@@ -161,12 +161,12 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		this.hairColorList.setCellRenderer( listCellRenderer );
 		this.baseEyeColorList.setCellRenderer( listCellRenderer );
 
-		edu.cmu.cs.dennisc.croquet.KBorderPanel northPane = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
+		edu.cmu.cs.dennisc.croquet.BorderPanel northPane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		northPane.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( this.randomPersonActionOperation ), CardinalDirection.NORTH );
 		
-		edu.cmu.cs.dennisc.croquet.KRowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.KRowsSpringPanel( 8, 8 ) {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPanel ubiquitousPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "life stage:", lifeStageList ) );
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "gender:", genderList ) );
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "skin tone:", baseSkinToneList ) );
@@ -179,9 +179,9 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 //		hairPane.add( this.hairColorList, java.awt.BorderLayout.NORTH );
 //		hairPane.add( this.hairList, java.awt.BorderLayout.CENTER );
 		
-		edu.cmu.cs.dennisc.croquet.KRowsSpringPanel headPane = new edu.cmu.cs.dennisc.croquet.KRowsSpringPanel( 8, 8 ) {
+		edu.cmu.cs.dennisc.croquet.RowsSpringPanel headPane = new edu.cmu.cs.dennisc.croquet.RowsSpringPanel( 8, 8 ) {
 			@Override
-			protected java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.KComponent< ? >[] > rv ) {
+			protected java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv ) {
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "hair:", hairColorList ) );
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( null, hairList ) );
 				rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createLabeledRow( "eye color:", baseEyeColorList ) );
@@ -191,7 +191,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		};
 		
 
-		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( this.fullBodyOutfitList );
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.fullBodyOutfitList );
 		scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 66 );
 		//scrollPane.getVerticalScrollBar().setBlockIncrement( 10 );
 		
@@ -199,7 +199,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		scrollPane.setOpaque( false );
 		scrollPane.getJComponent().getViewport().setOpaque( false );
 
-		edu.cmu.cs.dennisc.croquet.KBorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.KBorderPanel( 8, 8 );
+		edu.cmu.cs.dennisc.croquet.BorderPanel bodyPane = new edu.cmu.cs.dennisc.croquet.BorderPanel( 8, 8 );
 		bodyPane.addComponent( scrollPane, CardinalDirection.CENTER );
 		bodyPane.addComponent( this.fitnessLevelPane, CardinalDirection.SOUTH );
 		
@@ -219,7 +219,7 @@ abstract class IngredientsPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		this.tabbedPane.setFont( font.deriveFont( font.getSize2D() * 1.5f ) );
 
 		this.addComponent( northPane, CardinalDirection.NORTH );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( tabbedPane ), CardinalDirection.CENTER );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( tabbedPane ), CardinalDirection.CENTER );
 		
 	}
 	

@@ -47,13 +47,13 @@ package org.alice.stageide.choosers;
  */
 public class VolumeLevelChooser extends org.alice.ide.choosers.AbstractChooser< org.alice.apis.moveandturn.VolumeLevel > {
 	private org.alice.stageide.controls.VolumeLevelControl volumeLevelControl = new org.alice.stageide.controls.VolumeLevelControl();
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components = { new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.volumeLevelControl ) };
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components = { new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.volumeLevelControl ) };
 	public VolumeLevelChooser() {
 		edu.cmu.cs.dennisc.alice.ast.Expression previousExpression = this.getPreviousExpression();
 		//todo
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
 	public org.alice.apis.moveandturn.VolumeLevel getValue() {

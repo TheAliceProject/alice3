@@ -110,7 +110,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.setName( "Add" );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			assert ArrayInitializerPane.this.type != null;
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ExpressionUtilities.createDefaultExpression( ArrayInitializerPane.this.type.getComponentType() );
 			final int index = ArrayInitializerPane.this.arrayExpressions.size();
@@ -144,7 +144,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			this.setName( "Remove" );
 		}
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			final int index = ArrayInitializerPane.this.list.getSelectedIndex();
 			final edu.cmu.cs.dennisc.alice.ast.Expression expression = ArrayInitializerPane.this.list.getItemAt( index );
 			context.commitAndInvokeDo(new org.alice.ide.ToDoEdit( context ) {
@@ -177,7 +177,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
 		@Override
-		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button ) {
 			final int index = this.getIndex( ArrayInitializerPane.this.list.getSelectedIndex() );
 			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit( context ) {
 				@Override
@@ -277,8 +277,8 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 	//		}
 	//	}
 
-	class ExpressionList extends edu.cmu.cs.dennisc.croquet.KGridBagPanel {
-		private edu.cmu.cs.dennisc.croquet.KComponent< ? > glue = edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue();
+	class ExpressionList extends edu.cmu.cs.dennisc.croquet.GridBagPanel {
+		private edu.cmu.cs.dennisc.croquet.Component< ? > glue = edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue();
 		private javax.swing.ButtonGroup group;
 		private java.awt.GridBagConstraints gbc;
 
@@ -350,7 +350,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 			while( e.hasMoreElements() ) {
 				FauxItem fauxItem = (FauxItem)e.nextElement();
 				fauxItem.refresh();
-				this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( fauxItem ), this.gbc );
+				this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( fauxItem ), this.gbc );
 			}
 			this.gbc.weighty = 1.0;
 			this.addComponent( this.glue, this.gbc );
@@ -389,7 +389,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		this.list = new ExpressionList( new ItemSelectionOperation( comboBoxModel ) );
 		this.updateButtons();
 
-		edu.cmu.cs.dennisc.croquet.KGridBagPanel buttonPane = new edu.cmu.cs.dennisc.croquet.KGridBagPanel();
+		edu.cmu.cs.dennisc.croquet.GridBagPanel buttonPane = new edu.cmu.cs.dennisc.croquet.GridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -402,9 +402,9 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		gbc.weighty = 1.0;
 		buttonPane.addComponent( this.getIDE().createGlue(), gbc );
 
-		this.addComponent( buttonPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.EAST );
+		this.addComponent( buttonPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
 
-		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( this.list );
+		edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.list );
 //		{
 //			@Override
 //			public java.awt.Dimension getPreferredSize() {
@@ -412,7 +412,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 //			}
 //		};
 		scrollPane.setBorder( null );
-		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
+		this.addComponent( scrollPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
 	}
 
 	private void updateButtons() {

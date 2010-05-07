@@ -55,7 +55,7 @@ class CreateFieldFromBillboardPane extends org.alice.ide.declarationpanes.Create
 				java.awt.image.BufferedImage bufferedImage = edu.cmu.cs.dennisc.image.ImageFactory.getBufferedImage( imageResource );
 				if( bufferedImage != null ) {
 					edu.cmu.cs.dennisc.javax.swing.components.JImageView imageView = new edu.cmu.cs.dennisc.javax.swing.components.JImageView( bufferedImage, 240 );
-					this.addComponent( new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ), new edu.cmu.cs.dennisc.croquet.KSwingAdapter( imageView ) ), java.awt.BorderLayout.EAST );
+					this.addComponent( new edu.cmu.cs.dennisc.croquet.LineAxisPanel( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ), new edu.cmu.cs.dennisc.croquet.SwingAdapter( imageView ) ), java.awt.BorderLayout.EAST );
 				} else {
 					//todo?
 				}
@@ -73,7 +73,7 @@ class CreateBillboardActionOperation extends AbstractGalleryDeclareFieldOperatio
 		this.setName( "Create Billboard..." );
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
+	protected edu.cmu.cs.dennisc.pattern.Tuple2< edu.cmu.cs.dennisc.alice.ast.FieldDeclaredInAlice, java.lang.Object > createFieldAndInstance( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button, edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice ownerType ) {
 		org.alice.ide.resource.prompter.ImageResourcePrompter imageResourcePrompter = org.alice.ide.resource.prompter.ImageResourcePrompter.getSingleton();
 		try {
 			org.alice.virtualmachine.resources.ImageResource frontImageResource = imageResourcePrompter.promptUserForResource( this.getIDE().getJFrame() );

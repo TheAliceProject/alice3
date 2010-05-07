@@ -61,7 +61,7 @@ class EditMethodOperation extends org.alice.ide.operations.InconsequentialAction
 		this.setName( sb.toString() );
 	}
 	@Override
-	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
+	protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton< ? > button) {
 		this.getIDE().setFocusedCode( this.method );
 	}
 }

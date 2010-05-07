@@ -147,13 +147,13 @@ class FileSystemPane extends TabContentPane {
 			}
 		} );
 		
-		edu.cmu.cs.dennisc.croquet.KBorderPanel pane = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
+		edu.cmu.cs.dennisc.croquet.BorderPanel pane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		pane.setOpaque( false );
-		pane.addComponent( new edu.cmu.cs.dennisc.croquet.KLabel( "file:" ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.WEST );
-		pane.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.textField ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
-		pane.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( browseButtton ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.EAST );
+		pane.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "file:" ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.WEST );
+		pane.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.textField ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		pane.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( browseButtton ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
 
-		this.addComponent( pane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.NORTH );
+		this.addComponent( pane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
 	}
 	private void handleBrowse( java.awt.event.ActionEvent e ) {
 		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.getJComponent(), org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true );
@@ -181,13 +181,13 @@ class FileSystemPane extends TabContentPane {
  * @author Dennis Cosgrove
  */
 public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
-	private edu.cmu.cs.dennisc.croquet.KTabbedPane tabbedPane = new edu.cmu.cs.dennisc.croquet.KTabbedPane();
+	private edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane = new edu.cmu.cs.dennisc.croquet.TabbedPane();
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private TabContentPane templatesPane;
 	private FileSystemPane fileSystemPane = new FileSystemPane();
 	private RecentPane recentPane = new RecentPane();
 	
-	private java.util.Map< TabContentPane, edu.cmu.cs.dennisc.croquet.KScrollPane > mapTabPaneToScrollPane = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
+	private java.util.Map< TabContentPane, edu.cmu.cs.dennisc.croquet.ScrollPane > mapTabPaneToScrollPane = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 	public OpenProjectPane( TabContentPane templatesPane ) {
 		this.templatesPane = templatesPane;
 		TabContentPane[] tabPanes = new TabContentPane[] { 
@@ -201,7 +201,7 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 		for( TabContentPane tabPane : tabPanes ) { 
 			if( tabPane != null ) {
 				tabPane.setInputPanel( this );
-				edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( tabPane );
+				edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( tabPane );
 				scrollPane.setOpaque( false );
 				scrollPane.setBackgroundColor( tabPane.getBackgroundColor() );
 				scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
@@ -224,16 +224,16 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 	
 	
 	private TabContentPane getSelectedTabPane() {
-		edu.cmu.cs.dennisc.croquet.KComponent< ? > selectedComponent = this.tabbedPane.getSelectedComponent();
-		if( selectedComponent instanceof edu.cmu.cs.dennisc.croquet.KScrollPane ) {
-			edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = (edu.cmu.cs.dennisc.croquet.KScrollPane)selectedComponent;
+		edu.cmu.cs.dennisc.croquet.Component< ? > selectedComponent = this.tabbedPane.getSelectedComponent();
+		if( selectedComponent instanceof edu.cmu.cs.dennisc.croquet.ScrollPane ) {
+			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = (edu.cmu.cs.dennisc.croquet.ScrollPane)selectedComponent;
 			
 			
 			//todo?
 			scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
 			
 			
-			edu.cmu.cs.dennisc.croquet.KComponent< ? > view = scrollPane.getViewportView();
+			edu.cmu.cs.dennisc.croquet.Component< ? > view = scrollPane.getViewportView();
 			if( view instanceof TabContentPane ) {
 				return (TabContentPane)view;
 			} else {

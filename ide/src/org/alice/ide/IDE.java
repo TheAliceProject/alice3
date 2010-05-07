@@ -346,9 +346,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.editorstabbedpane.EditorsTabbedPane editorsTabbedPane;
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
-	private edu.cmu.cs.dennisc.croquet.KVerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.KVerticalSplitPane();
-	private edu.cmu.cs.dennisc.croquet.KBorderPanel right = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
-	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane( left, right );
+	private edu.cmu.cs.dennisc.croquet.VerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.VerticalSplitPane();
+	private edu.cmu.cs.dennisc.croquet.BorderPanel right = new edu.cmu.cs.dennisc.croquet.BorderPanel();
+	private edu.cmu.cs.dennisc.croquet.HorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.HorizontalSplitPane( left, right );
 
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
 		if( isSceneEditorExpanded ) {
@@ -482,7 +482,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	}
 
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getOverrideComponent( org.alice.ide.common.Factory factory, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
 		return null;
 	}
 
@@ -615,8 +615,8 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.editorsTabbedPane = this.createEditorsTabbedPane();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
-		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.NORTH );
-		this.right.addComponent( this.editorsTabbedPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
+		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
+		this.right.addComponent( this.editorsTabbedPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
 		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
@@ -631,11 +631,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	
 	@Override
-	protected edu.cmu.cs.dennisc.croquet.KComponent< ? > createContentPane() {
-		edu.cmu.cs.dennisc.croquet.KBorderPanel rv = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
+	protected edu.cmu.cs.dennisc.croquet.Component< ? > createContentPane() {
+		edu.cmu.cs.dennisc.croquet.BorderPanel rv = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		rv.addMouseWheelListener( new edu.cmu.cs.dennisc.javax.swing.plaf.metal.FontMouseWheelAdapter() );
-		rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
-		rv.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.concealedBin ), edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.EAST );
+		rv.addComponent( this.root, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.concealedBin ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
 		
 		this.setSceneEditorExpanded( false );
 		return rv;
@@ -666,11 +666,11 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return rv;
 	}
 
-	public void addToConcealedBin( edu.cmu.cs.dennisc.croquet.KComponent<?> component ) {
+	public void addToConcealedBin( edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		this.concealedBin.add( component.getJComponent() );
 		this.concealedBin.revalidate();
 	}
-	public void removeFromConcealedBin( edu.cmu.cs.dennisc.croquet.KComponent<?> component ) {
+	public void removeFromConcealedBin( edu.cmu.cs.dennisc.croquet.Component<?> component ) {
 		this.concealedBin.remove( component.getJComponent() );
 	}
 
@@ -749,9 +749,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	private ComponentStencil stencil;
-	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.KComponent< ? > > holes = null;
-	private edu.cmu.cs.dennisc.croquet.KDragControl potentialDragSource;
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? > currentDropReceptorComponent;
+	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.Component< ? > > holes = null;
+	private edu.cmu.cs.dennisc.croquet.DragControl potentialDragSource;
+	private edu.cmu.cs.dennisc.croquet.Component< ? > currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
 		return this.isDragInProgress;
@@ -789,7 +789,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 					}
 
 					if( isFauxStencilDesired() ) {
-						for( edu.cmu.cs.dennisc.croquet.KComponent< ? > component : IDE.this.holes ) {
+						for( edu.cmu.cs.dennisc.croquet.Component< ? > component : IDE.this.holes ) {
 							java.awt.Rectangle holeBounds = component.getBounds();
 							holeBounds = component.getParent().convertRectangle( holeBounds, this );
 							area.subtract( new java.awt.geom.Area( holeBounds ) );
@@ -803,7 +803,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 					g2.setStroke( THICK_STROKE );
 					final int BUFFER = 6;
-					for( edu.cmu.cs.dennisc.croquet.KComponent< ? > component : IDE.this.holes ) {
+					for( edu.cmu.cs.dennisc.croquet.Component< ? > component : IDE.this.holes ) {
 						java.awt.Rectangle holeBounds = component.getBounds();
 						holeBounds = component.getParent().convertRectangle( holeBounds, this );
 						holeBounds.x -= BUFFER;
@@ -854,7 +854,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	//public abstract void handleDelete( edu.cmu.cs.dennisc.alice.ast.Node node );
 
-	public void showStencilOver( edu.cmu.cs.dennisc.croquet.KDragControl potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
+	public void showStencilOver( edu.cmu.cs.dennisc.croquet.DragControl potentialDragSource, final edu.cmu.cs.dennisc.alice.ast.AbstractType type ) {
 		org.alice.ide.codeeditor.CodeEditor codeEditor = getCodeEditorInFocus();
 		if( codeEditor != null ) {
 			this.holes = codeEditor.createListOfPotentialDropReceptors( type );
@@ -1085,7 +1085,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 	//	protected abstract void handleWindowClosing();
 
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.KDragControl source ) {
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragControl source ) {
 		assert source != null;
 		org.alice.ide.codeeditor.CodeEditor codeEditor = this.getCodeEditorInFocus();
 		if( codeEditor != null ) {
@@ -1750,7 +1750,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		return rv;
 	}
 
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
+	public edu.cmu.cs.dennisc.croquet.Component< ? > getPrefixPaneForFieldAccessIfAppropriate( edu.cmu.cs.dennisc.alice.ast.FieldAccess fieldAccess ) {
 		return null;
 	}
 

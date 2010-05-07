@@ -92,11 +92,11 @@ public abstract class Application {
 		return (O)this.mapUUIDToOperation.get( id );
 	}
 
-	protected abstract KComponent<?> createContentPane();
+	protected abstract Component<?> createContentPane();
 
-	private KFrame frame = new KFrame();
+	private Frame frame = new Frame();
 	
-	public KFrame getFrame() {
+	public Frame getFrame() {
 		return this.frame;
 	}
 
@@ -156,7 +156,7 @@ public abstract class Application {
 		}
 	}
 	
-	public void setMenuBar( KMenuBar menuBar ) {
+	public void setMenuBar( MenuBar menuBar ) {
 		javax.swing.JFrame jFrame = (javax.swing.JFrame) frame.getAWTFrame();
 		javax.swing.JMenuBar jMenuBar = menuBar.getJComponent();
 		menuBar.adding();
@@ -189,9 +189,9 @@ public abstract class Application {
 		}
 	}
 
-	public KButton createButton(final AbstractActionOperation actionOperation) {
+	public Button createButton(final AbstractActionOperation actionOperation) {
 		this.register( actionOperation );
-		return new KButton() {
+		return new Button() {
 			@Override
 			protected void adding() {
 				actionOperation.addAbstractButton(this);
@@ -205,9 +205,9 @@ public abstract class Application {
 			}
 		};
 	}
-	public KHyperlink createHyperlink(final AbstractActionOperation actionOperation) {
+	public Hyperlink createHyperlink(final AbstractActionOperation actionOperation) {
 		this.register( actionOperation );
-		return new KHyperlink() {
+		return new Hyperlink() {
 			@Override
 			protected void adding() {
 				actionOperation.addAbstractButton(this);
@@ -222,9 +222,9 @@ public abstract class Application {
 		};
 	}
 
-	public KMenuItem createMenuItem(final AbstractActionOperation actionOperation) {
+	public MenuItem createMenuItem(final AbstractActionOperation actionOperation) {
 		this.register( actionOperation );
-		return new KMenuItem() {
+		return new MenuItem() {
 			@Override
 			protected void adding() {
 				actionOperation.addAbstractButton(this);
@@ -246,9 +246,9 @@ public abstract class Application {
 	// }
 
 
-	public KCheckBox createCheckBox(final BooleanStateOperation booleanStateOperation) {
+	public CheckBox createCheckBox(final BooleanStateOperation booleanStateOperation) {
 		this.register( booleanStateOperation );
-		return new KCheckBox() {
+		return new CheckBox() {
 			@Override
 			protected void adding() {
 				booleanStateOperation.addAbstractButton(this);
@@ -262,10 +262,10 @@ public abstract class Application {
 			}
 		};
 	}
-	public KCheckBoxMenuItem createCheckBoxMenuItem(final BooleanStateOperation booleanStateOperation) {
+	public CheckBoxMenuItem createCheckBoxMenuItem(final BooleanStateOperation booleanStateOperation) {
 		this.register( booleanStateOperation );
 		// todo: return javax.swing.JMenuItem if true and false different
-		return new KCheckBoxMenuItem() {
+		return new CheckBoxMenuItem() {
 			@Override
 			protected void adding() {
 				booleanStateOperation.addAbstractButton(this);
@@ -302,13 +302,13 @@ public abstract class Application {
 //		};
 //	}
 	
-	private KAbstractMenu< ? > addMenuElements( KAbstractMenu< ? > rv, Operation[] operations ) {
+	private AbstractMenu< ? > addMenuElements( AbstractMenu< ? > rv, Operation[] operations ) {
 		for( Operation operation : operations ) {
 			if( operation != null ) {
 				if( operation instanceof MenuOperation ) {
 					rv.addMenu( this.createMenu( (MenuOperation) operation ) );
 				} else {
-					KAbstractMenuItem<?> menuItem = null;
+					AbstractMenuItem<?> menuItem = null;
 					if (operation instanceof ActionOperation) {
 						ActionOperation actionOperation = (ActionOperation) operation;
 						menuItem = this.createMenuItem( actionOperation );
@@ -330,9 +330,9 @@ public abstract class Application {
 		return rv;
 	}
 
-	/*package-private*/ KMenu createMenu( final MenuOperation menuOperation ) {
+	/*package-private*/ Menu createMenu( final MenuOperation menuOperation ) {
 		this.register( menuOperation );
-		KMenu rv = new KMenu() {
+		Menu rv = new Menu() {
 			@Override
 			protected void adding() {
 				menuOperation.addMenu(this);
@@ -349,8 +349,8 @@ public abstract class Application {
 		return rv;
 	}
 
-	/*package-private*/ KPopupMenu createPopupMenu( final AbstractPopupMenuOperation popupMenuOperation ) {
-		KPopupMenu rv = new KPopupMenu() {
+	/*package-private*/ PopupMenu createPopupMenu( final AbstractPopupMenuOperation popupMenuOperation ) {
+		PopupMenu rv = new PopupMenu() {
 			@Override
 			protected void adding() {
 				popupMenuOperation.addPopupMenu(this);
@@ -367,9 +367,9 @@ public abstract class Application {
 		return rv;
 	}
 	
-	public KMenuBar createMenuBar(final MenuBarOperation menuBarOperation) {
+	public MenuBar createMenuBar(final MenuBarOperation menuBarOperation) {
 		this.register( menuBarOperation );
-		KMenuBar rv = new KMenuBar() {
+		MenuBar rv = new MenuBar() {
 			@Override
 			protected void adding() {
 				menuBarOperation.addMenuBar(this);
@@ -388,10 +388,10 @@ public abstract class Application {
 		return rv;
 	}
 
-	public <E> KComboBox< E > createComboBox(final ItemSelectionOperation< E > itemSelectionOperation) {
+	public <E> ComboBox< E > createComboBox(final ItemSelectionOperation< E > itemSelectionOperation) {
 		this.register( itemSelectionOperation );
 		// todo: return javax.swing.JMenuItem if true and false different
-		return new KComboBox< E >() {
+		return new ComboBox< E >() {
 			@Override
 			protected void adding() {
 				itemSelectionOperation.addComboBox(this);
@@ -459,8 +459,8 @@ public abstract class Application {
 	}
 
 	@Deprecated
-	public KComponent< javax.swing.Box.Filler > createGlue() {
-		return new KComponent< javax.swing.Box.Filler >() {
+	public Component< javax.swing.Box.Filler > createGlue() {
+		return new Component< javax.swing.Box.Filler >() {
 			@Override
 			protected javax.swing.Box.Filler createJComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
@@ -468,8 +468,8 @@ public abstract class Application {
 		};
 	}
 	@Deprecated
-	public KComponent< javax.swing.Box.Filler > createHorizontalGlue() {
-		return new KComponent< javax.swing.Box.Filler >() {
+	public Component< javax.swing.Box.Filler > createHorizontalGlue() {
+		return new Component< javax.swing.Box.Filler >() {
 			@Override
 			protected javax.swing.Box.Filler createJComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, 0 ) );
@@ -477,8 +477,8 @@ public abstract class Application {
 		};
 	}
 	@Deprecated
-	public KComponent< javax.swing.Box.Filler > createVerticalGlue() {
-		return new KComponent< javax.swing.Box.Filler >() {
+	public Component< javax.swing.Box.Filler > createVerticalGlue() {
+		return new Component< javax.swing.Box.Filler >() {
 			@Override
 			protected javax.swing.Box.Filler createJComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, Short.MAX_VALUE ) );
@@ -486,8 +486,8 @@ public abstract class Application {
 		};
 	}
 	@Deprecated
-	public KComponent< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
-		return new KComponent< javax.swing.Box.Filler >() {
+	public Component< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
+		return new Component< javax.swing.Box.Filler >() {
 			@Override
 			protected javax.swing.Box.Filler createJComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, Short.MAX_VALUE ) );
@@ -495,8 +495,8 @@ public abstract class Application {
 		};
 	}
 	@Deprecated
-	public KComponent< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
-		return new KComponent< javax.swing.Box.Filler >() {
+	public Component< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
+		return new Component< javax.swing.Box.Filler >() {
 			@Override
 			protected javax.swing.Box.Filler createJComponent() {
 				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( Short.MAX_VALUE, height ) );
@@ -505,8 +505,8 @@ public abstract class Application {
 	}
 
 	@Deprecated
-	public KComponent< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
-		return new KComponent< javax.swing.Box.Filler >() {
+	public Component< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
+		return new Component< javax.swing.Box.Filler >() {
 			@Override
 			protected javax.swing.Box.Filler createJComponent() {
 				return new javax.swing.Box.Filler( size, size, size );
@@ -514,7 +514,7 @@ public abstract class Application {
 		};
 	}
 	@Deprecated
-	public KComponent< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
+	public Component< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
 		return this.createRigidArea( new java.awt.Dimension( width, height ) );
 	}
 	

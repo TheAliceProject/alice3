@@ -54,7 +54,7 @@ public class DefaultDragOperation extends edu.cmu.cs.dennisc.croquet.DragOperati
 	protected org.alice.ide.IDE getIDE() {
 		return org.alice.ide.IDE.getSingleton();
 	}
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.KDragControl dragSource ) {
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.DragControl dragSource ) {
 		return getIDE().createListOfPotentialDropReceptors( dragSource );
 	}
 	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {

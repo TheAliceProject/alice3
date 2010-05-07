@@ -50,13 +50,13 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 	private org.alice.ide.declarationpanes.TypePane typePane;
 	private org.alice.ide.initializer.ArrayInitializerPane arrayInitializerPane;
 	private static final String[] LABEL_TEXTS = { "type:", "value:" };
-	private edu.cmu.cs.dennisc.croquet.KComponent< ? >[] components;
+	private edu.cmu.cs.dennisc.croquet.Component< ? >[] components;
 	
 	public ArrayChooser() {
 		bogusNode.isArray.setValue( true );
 		this.typePane = new org.alice.ide.declarationpanes.TypePane( bogusNode.componentType, bogusNode.isArray, true, false );
 		this.arrayInitializerPane = new org.alice.ide.initializer.ArrayInitializerPane( bogusNode.arrayExpressions );
-		this.components = new edu.cmu.cs.dennisc.croquet.KComponent< ? >[] { this.typePane, this.arrayInitializerPane };
+		this.components = new edu.cmu.cs.dennisc.croquet.Component< ? >[] { this.typePane, this.arrayInitializerPane };
 		bogusNode.componentType.addPropertyListener( new edu.cmu.cs.dennisc.property.event.PropertyListener() {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
@@ -106,7 +106,7 @@ public class ArrayChooser extends AbstractChooser< edu.cmu.cs.dennisc.alice.ast.
 		return LABEL_TEXTS;
 	}
 	@Override
-	public edu.cmu.cs.dennisc.croquet.KComponent< ? >[] getComponents() {
+	public edu.cmu.cs.dennisc.croquet.Component< ? >[] getComponents() {
 		return this.components;
 	}
 	public edu.cmu.cs.dennisc.alice.ast.ArrayInstanceCreation getValue() {
