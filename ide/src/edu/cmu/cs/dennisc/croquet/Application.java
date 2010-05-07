@@ -246,6 +246,22 @@ public abstract class Application {
 	// }
 
 
+	public RadioButton createRadioButton(final BooleanStateOperation booleanStateOperation) {
+		this.register( booleanStateOperation );
+		return new RadioButton() {
+			@Override
+			protected void adding() {
+				booleanStateOperation.addAbstractButton(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				booleanStateOperation.removeAbstractButton(this);
+			}
+		};
+	}
 	public CheckBox createCheckBox(final BooleanStateOperation booleanStateOperation) {
 		this.register( booleanStateOperation );
 		return new CheckBox() {

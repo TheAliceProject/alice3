@@ -152,9 +152,8 @@ public abstract class SpringPanel extends Panel {
 		this.putConstraint( component, horizontal, x, vertical, y );
 		this.internalAddComponent( component );
 	}
-	@Override
 	public void removeComponent( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {
-		super.removeComponent( component );
+		this.internalRemoveComponent( component );
 		this.springLayout.removeLayoutComponent( component.getJComponent() );
 	}
 }

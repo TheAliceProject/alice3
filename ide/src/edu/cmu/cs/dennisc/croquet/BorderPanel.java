@@ -77,4 +77,7 @@ public class BorderPanel extends Panel {
 	public void addComponent( Component<?> child, CardinalDirection cardinalDirection ) {
 		this.internalAddComponent( child, cardinalDirection.internal );
 	}
+	public void removeComponent( Component< ? > component ) {
+		this.internalRemoveComponent( component );
+	}
 }

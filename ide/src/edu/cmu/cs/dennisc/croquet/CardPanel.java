@@ -47,24 +47,45 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class CardPanel extends Panel {
-	private int hgap;
-	private int vgap;
+	private java.awt.CardLayout cardLayout;
+//	private int hgap;
+//	private int vgap;
 	public CardPanel() {
 		this( 0, 0 );
 	}
 	public CardPanel( int hgap, int vgap ) {
-		this.hgap = hgap;
-		this.vgap = vgap;
+//		this.hgap = hgap;
+//		this.vgap = vgap;
+		this.cardLayout = new java.awt.CardLayout( hgap, vgap );
 	}
 	@Override
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.CardLayout( this.hgap, this.vgap );
+		return this.cardLayout;
 	}
-	//todo: create Keys
-	public void addComponent( Component<?> child, String key ) {
-		this.internalAddComponent( child, key );
+	
+	public class Key {
+		private Component<?> child;
+		private String cardLayoutKey;
+		private Key( Component<?> child, String cardLayoutKey ) {
+			this.child = child;
+			this.cardLayoutKey = cardLayoutKey;
+		}
 	}
-	public void show( String key ) {
-		((java.awt.CardLayout)this.getJComponent().getLayout()).show( this.getJComponent(), key );
+	
+	public Key createKey( Component<?> child, String cardLayoutKey ) {
+		return new Key( child, cardLayoutKey );
+	}
+//	public Key createKey( Component<?> child, java.util.UUID id ) {
+//		return new Key( child, id.toString() );
+//	}
+	public void addComponent( Key key ) {
+		this.internalAddComponent( key.child, key.cardLayoutKey );
+	}
+	public void removeComponent( Key key ) {
+		this.internalRemoveComponent( key.child );
+	}
+	public void show( Key key ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "show", key.cardLayoutKey );
+		this.cardLayout.show( this.getJComponent(), key.cardLayoutKey );
 	}
 }

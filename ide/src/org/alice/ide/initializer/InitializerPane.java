@@ -46,8 +46,8 @@ package org.alice.ide.initializer;
  * @author Dennis Cosgrove
  */
 public class InitializerPane extends edu.cmu.cs.dennisc.croquet.CardPanel {
-	private static final String ITEM_KEY = "ITEM_KEY";
-	private static final String ARRAY_KEY = "ARRAY_KEY";
+	private Key itemKey;
+	private Key arrayKey;
 	private BogusNode bogusNode;
 	private ItemInitializerPane itemInitializerPane;
 	private ArrayInitializerPane arrayInitializerPane;
@@ -72,15 +72,13 @@ public class InitializerPane extends edu.cmu.cs.dennisc.croquet.CardPanel {
 		} );
 		this.itemInitializerPane = new ItemInitializerPane( this.bogusNode.componentExpression );
 		this.arrayInitializerPane = new ArrayInitializerPane( this.bogusNode.arrayExpressions );
-		this.addComponent( this.itemInitializerPane, ITEM_KEY );
-		this.addComponent( this.arrayInitializerPane, ARRAY_KEY );
-		String key;
-		if( this.bogusNode.isArray.getValue() ) {
-			key = ARRAY_KEY;
-		} else {
-			key = ITEM_KEY;
-		}
-		this.show( key );
+		
+		this.itemKey = this.createKey( this.itemInitializerPane, "ITEM_KEY" );
+		this.arrayKey = this.createKey( this.arrayInitializerPane, "ARRAY_KEY" );
+		this.addComponent( this.itemKey );
+		this.addComponent( this.arrayKey );
+		
+		this.handleIsArrayChange( this.bogusNode.isArray.getValue() );
 	}
 //	private java.awt.Component getCurrentCard() {
 //		if( this.itemInitializerPane.isVisible() ) {
@@ -90,11 +88,11 @@ public class InitializerPane extends edu.cmu.cs.dennisc.croquet.CardPanel {
 //		}
 //	}
 	private void handleIsArrayChange( boolean isArray ) {
-		String key;
+		Key key;
 		if( isArray ) {
-			key = ARRAY_KEY;
+			key = this.arrayKey;
 		} else {
-			key = ITEM_KEY;
+			key = this.itemKey;
 		}
 		this.show( key );
 	}

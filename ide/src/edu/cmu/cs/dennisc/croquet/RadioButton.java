@@ -46,18 +46,11 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class GridBagPanel extends Panel {
-	public GridBagPanel() {
+public class RadioButton extends AbstractButton< javax.swing.JRadioButton > {
+	/*package-private*/ RadioButton() {
 	}
 	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridBagLayout();
-	}
-	
-	public void addComponent( Component< ? > component, java.awt.GridBagConstraints gbc ) {
-		this.internalAddComponent( component, gbc );
-	}
-	public void removeComponent( Component< ? > component ) {
-		this.internalRemoveComponent( component );
+	protected javax.swing.JRadioButton createJComponent() {
+		return new javax.swing.JRadioButton();
 	}
 }

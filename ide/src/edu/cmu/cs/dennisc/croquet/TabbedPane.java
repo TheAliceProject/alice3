@@ -46,19 +46,70 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public class TabbedPane extends Component< javax.swing.JTabbedPane > {
+public class TabbedPane extends Component< javax.swing.JComponent > {
+	private BorderPanel panel;
+	private LineAxisPanel header = new LineAxisPanel();
+	private CardPanel main = new CardPanel();
+	
+	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	@Override
-	protected javax.swing.JTabbedPane createJComponent() {
-		return new javax.swing.JTabbedPane();
+	protected javax.swing.JComponent createJComponent() {
+		this.panel = new BorderPanel();
+		this.panel.addComponent( this.header, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
+		this.panel.addComponent( this.main, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
+		
+//		this.panel.setBackgroundColor( java.awt.Color.GREEN );
+//		this.header.setBackgroundColor( java.awt.Color.RED );
+//		this.main.setBackgroundColor( java.awt.Color.BLUE );
+
+		return panel.getJComponent();
 	}
+	
+	public class Key {
+		private AbstractButton<?> headerComponent;
+		private edu.cmu.cs.dennisc.croquet.CardPanel.Key mainComponentKey;
+		private Key( AbstractButton<?> headerComponent, edu.cmu.cs.dennisc.croquet.CardPanel.Key mainKey ) {
+			this.headerComponent = headerComponent;
+			this.mainComponentKey = mainKey;
+		}
+	}
+	
+	public Key createKey( AbstractButton<?> header, Component<?> mainComponent, String cardLayoutKey ) {
+		return new Key( header, this.main.createKey( mainComponent, cardLayoutKey) );
+	}
+	
+	/*package-private*/ void addTab( Key key ) {
+		//this.buttonGroup.setSelected( key.headerComponent.getJComponent().getModel(), false );
+		this.header.addComponent( key.headerComponent );
+		this.buttonGroup.add( key.headerComponent.getJComponent() );
+		this.main.addComponent( key.mainComponentKey );
+		this.revalidateAndRepaint();
+	}
+	/*package-private*/ void removeTab( Key key ) {
+		this.main.removeComponent( key.mainComponentKey );
+		this.buttonGroup.remove( key.headerComponent.getJComponent() );
+		this.header.removeComponent( key.headerComponent );
+		this.revalidateAndRepaint();
+	}
+	/*package-private*/ void selectTab( Key key ) {
+		this.main.show( key.mainComponentKey );
+	}
+	
+//	public void removeTabSelectionOperation( TabSelectionOperation tabSelectionOperation ) {
+//		this.tabSelectionOperations.remove( tabSelectionOperation );
+//	}
+	
 	public void addTab( String title, Component< ? > component ) {
-		this.getJComponent().addTab( title, component.getJComponent() );
+		//this.getJComponent().addTab( title, component.getJComponent() );
+		throw new RuntimeException( "todo" );
 	}
 	public void addTab( String title, javax.swing.Icon icon, Component< ? > component ) {
-		this.getJComponent().addTab( title, icon, component.getJComponent() );
+		//this.getJComponent().addTab( title, icon, component.getJComponent() );
+		throw new RuntimeException( "todo" );
 	}
 	public void setTitleAt( int index, String title ) {
-		this.getJComponent().setTitleAt( index, title );
+		//this.getJComponent().setTitleAt( index, title );
+		throw new RuntimeException( "todo" );
 	}
 	
 	public java.awt.Color getContentAreaColor() {
@@ -93,19 +144,23 @@ public class TabbedPane extends Component< javax.swing.JTabbedPane > {
 
 	@Deprecated
 	public int getSelectedIndex() {
-		return this.getJComponent().getSelectedIndex();
+		//return this.getJComponent().getSelectedIndex();
+		throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	public Component< ? > getSelectedComponent() {
-		return Component.lookup( this.getJComponent().getSelectedComponent() );
+		//return Component.lookup( this.getJComponent().getSelectedComponent() );
+		throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	public void setSelectedComponent( Component< ? > selectedComponent ) {
-		this.getJComponent().setSelectedComponent( selectedComponent.getJComponent() );
+		//this.getJComponent().setSelectedComponent( selectedComponent.getJComponent() );
+		throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	public int indexOfComponent( Component< ? > component ) {
-		return this.getJComponent().indexOfComponent( component.getJComponent() );
+		//return this.getJComponent().indexOfComponent( component.getJComponent() );
+		throw new RuntimeException( "todo" );
 	}
 	
 	@Deprecated

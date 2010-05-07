@@ -40,24 +40,14 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GridBagPanel extends Panel {
-	public GridBagPanel() {
-	}
-	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridBagLayout();
-	}
-	
-	public void addComponent( Component< ? > component, java.awt.GridBagConstraints gbc ) {
-		this.internalAddComponent( component, gbc );
-	}
-	public void removeComponent( Component< ? > component ) {
-		this.internalRemoveComponent( component );
-	}
+public interface TabFactory {
+	public Component<?> createComponent( TabbedPane tabbedPane );
+	public String getTitle();
+	public String getTooltipText();
+	public boolean isCloseAffordanceDesired( int index );
 }

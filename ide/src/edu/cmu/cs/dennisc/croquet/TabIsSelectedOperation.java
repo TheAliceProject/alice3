@@ -40,24 +40,51 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package edu.cmu.cs.dennisc.croquet;
 
 /**
  * @author Dennis Cosgrove
  */
-public class GridBagPanel extends Panel {
-	public GridBagPanel() {
-	}
-	@Override
-	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
-		return new java.awt.GridBagLayout();
+public final class TabIsSelectedOperation extends BooleanStateOperation {
+//	private static edu.cmu.cs.dennisc.map.MapToMap<TabbedPane, Tab, Component<?> > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
+//	private static Component<?> lookup( TabbedPane tabbedPane, Tab tab ) {
+//		Component<?> rv = mapToMap.get( tabbedPane, tab );
+//		if( rv != null ) {
+//			//pass
+//		} else {
+//			rv = tab.createComponent( tabbedPane );
+//			mapToMap.put( tabbedPane, tab, rv );
+//		}
+//		return rv;
+//	}
+//	private javax.swing.SingleSelectionModel singleSelectionModel = new javax.swing.DefaultSingleSelectionModel();
+//	private java.util.List< Tab > tabs = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+//	private TabSelectionOperation owner;
+	private  TabFactory tabFactory;
+	public TabIsSelectedOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, TabFactory tabFactory ) {
+		super( groupUUID, individualUUID, false, tabFactory.getTitle() );
+		this.tabFactory = tabFactory;
+//		this.singleSelectionModel.addChangeListener( new javax.swing.event.ChangeListener() {
+//			public void stateChanged(javax.swing.event.ChangeEvent e) {
+//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "TabSelectionOperation", e );
+//			}
+//		} );
 	}
 	
-	public void addComponent( Component< ? > component, java.awt.GridBagConstraints gbc ) {
-		this.internalAddComponent( component, gbc );
+	public TabFactory getTabFactory() {
+		return this.tabFactory;
 	}
-	public void removeComponent( Component< ? > component ) {
-		this.internalRemoveComponent( component );
-	}
+		
+
+//	public TabSelectionOperation getOwner() {
+//		return this.owner;
+//	}
+//	public void setOwner(TabSelectionOperation owner) {
+//		if( this.owner != owner ) {
+//			if( owner != null ) {
+//				assert this.owner == null;
+//			}
+//			this.owner = owner;
+//		}
+//	}
 }

@@ -60,7 +60,10 @@ public /*final*/ class BooleanStateOperation extends Operation {
 		this.valueObservers.remove( valueObserver );
 	}
 	
-	private javax.swing.ButtonModel buttonModel = new javax.swing.JToggleButton.ToggleButtonModel();
+	private javax.swing.ButtonModel createButtonModel() {
+		return new javax.swing.JToggleButton.ToggleButtonModel();
+	}
+	private javax.swing.ButtonModel buttonModel = this.createButtonModel();
 	private javax.swing.Action action = new javax.swing.AbstractAction() {
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 		}

@@ -232,4 +232,7 @@ public abstract class InputPanel< T > extends Panel {
 		this.getJComponent().add( component.getJComponent(), constraints );
 		component.added();
 	}
+	public void removeComponent( Component< ? > component ) {
+		this.internalRemoveComponent( component );
+	}
 }

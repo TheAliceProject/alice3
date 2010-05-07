@@ -69,4 +69,7 @@ public abstract class AxisPanel extends Panel {
 	public void addComponent( Component<?> component ) {
 		this.internalAddComponent( component );
 	}
+	public void removeComponent( Component< ? > component ) {
+		this.internalRemoveComponent( component );
+	}
 }
