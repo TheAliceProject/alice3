@@ -141,7 +141,7 @@ public class CodeEditor extends edu.cmu.cs.dennisc.croquet.PageAxisPanel impleme
 		if( this.code instanceof edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice ) {
 			final edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice codeDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.CodeDeclaredInAlice)this.code;
 			edu.cmu.cs.dennisc.croquet.Component< ? > parametersPane = createParametersPane( codeDeclaredInAlice );
-			edu.cmu.cs.dennisc.croquet.Panel header;
+			AbstractCodeHeaderPane header;
 			if( code instanceof edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice ) {
 				edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice methodDeclaredInAlice = (edu.cmu.cs.dennisc.alice.ast.MethodDeclaredInAlice)code;
 				header = new MethodHeaderPane( methodDeclaredInAlice, parametersPane );

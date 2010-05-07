@@ -52,7 +52,7 @@ class ReturnStatementWrapper extends edu.cmu.cs.dennisc.croquet.BorderPanel {
 		edu.cmu.cs.dennisc.alice.ast.AbstractCode code = org.alice.ide.IDE.getSingleton().getFocusedCode();
 		edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = edu.cmu.cs.dennisc.java.lang.ClassUtilities.getInstance( code, edu.cmu.cs.dennisc.alice.ast.AbstractMethod.class );
 		if( method != null && method.isFunction() ) {
-			this.addComponent( re );
+			this.addComponent( re, CardinalDirection.CENTER );
 		}
 	}
 }

@@ -219,7 +219,7 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 				OpenProjectPane.this.updateOKButton();
 			}
 		} );
-		this.addComponent( this.tabbedPane );
+		this.addComponent( this.tabbedPane, java.awt.BorderLayout.CENTER );
 	}
 	
 	

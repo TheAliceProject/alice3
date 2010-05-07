@@ -43,6 +43,8 @@
 
 package org.alice.app.openprojectpane;
 
+import edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -100,7 +102,7 @@ public abstract class ListPane extends TabContentPane {
 				}
 			}
 		} );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ) );
+		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ), CardinalDirection.CENTER );
 	}
 
 	protected abstract String getTextForZeroProjects();

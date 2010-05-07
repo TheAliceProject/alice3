@@ -66,4 +66,7 @@ public abstract class AxisPanel extends Panel {
 			return new javax.swing.BoxLayout( jPanel, this.axis );
 		}
 	}
+	public void addComponent( Component<?> component ) {
+		this.internalAddComponent( component );
+	}
 }

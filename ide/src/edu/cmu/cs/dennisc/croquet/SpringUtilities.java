@@ -94,7 +94,7 @@ public class SpringUtilities {
 		for( Component< ? >[] componentRow : componentRows ) {
 			for( Component< ? > component : componentRow ) {
 				assert component != null;
-				rv.addComponent( component );
+				rv.internalAddComponent( component );
 			}
 		}
 

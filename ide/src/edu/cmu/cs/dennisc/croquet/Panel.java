@@ -69,7 +69,7 @@ public abstract class Panel extends Component< javax.swing.JPanel > {
 		
 		this.getJComponent().removeAll();
 	}
-	public void addComponent( Component<?> component ) {
+	protected void internalAddComponent( Component<?> component ) {
 		assert component != null;
 		component.adding();
 		this.getJComponent().add( component.getJComponent() );

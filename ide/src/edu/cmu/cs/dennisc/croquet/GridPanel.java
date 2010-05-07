@@ -84,4 +84,7 @@ public class GridPanel extends Panel {
 	protected final java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
 		return new java.awt.GridLayout( this.rowCount, this.columnCount, this.hgap, this.vgap );
 	}
+	public void addComponent( Component<?> component ) {
+		this.internalAddComponent( component );
+	}
 }
