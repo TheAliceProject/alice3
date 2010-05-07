@@ -69,7 +69,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		if( org.alice.ide.IDE.getSingleton().isJava() ) {
 			this.addComponent( new org.alice.ide.common.TypeComponent( methodDeclaredInAlice.getReturnType() ) );
-			this.addComponent( application.createHorizontalStrut( 8 ) );
+			this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
 			//this.add( zoot.ZLabel.acquire( " {" ) );
 		} else {
 			this.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "declare ", edu.cmu.cs.dennisc.java.awt.font.TextPosture.OBLIQUE ) );
@@ -84,7 +84,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		}
 		
 		
-		this.addComponent( application.createHorizontalStrut( 8 ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
 		this.nameLabel = new org.alice.ide.common.DeclarationNameLabel( methodDeclaredInAlice );
 		this.nameLabel.scaleFont( 2.0f );
 
@@ -100,7 +100,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 
 		
 		this.addComponent( this.nameLabel );
-		this.addComponent( application.createHorizontalStrut( 8 ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
 		if( parametersPane != null ) {
 			this.addComponent( parametersPane );
 		}

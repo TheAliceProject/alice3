@@ -92,7 +92,7 @@ class TypeFieldsPane extends AbstractTypeMembersPane {
 			if( getIDE().isEmphasizingClasses() ) {
 				//pass
 			} else {
-				rv.add( this.getIDE().createVerticalStrut( 16 ) );
+				rv.add( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 16 ) );
 			}
 		} else {
 			rv = null;

@@ -105,7 +105,7 @@ public abstract class PreviewInputPane<T> extends org.alice.ide.RowsInputPanel< 
 	@Override
 	protected final java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > updateComponentRows( java.util.List< edu.cmu.cs.dennisc.croquet.Component< ? >[] > rv, edu.cmu.cs.dennisc.croquet.RowsSpringPanel panel ) {
 		this.previewPane = new PreviewPane();
-		this.spacer = this.getIDE().createRigidArea( new java.awt.Dimension( 0, 32 ) );
+		this.spacer = edu.cmu.cs.dennisc.croquet.BoxUtilities.createRigidArea( new java.awt.Dimension( 0, 32 ) );
 		rv.add( 
 				edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow(
 						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( "preview:" ),

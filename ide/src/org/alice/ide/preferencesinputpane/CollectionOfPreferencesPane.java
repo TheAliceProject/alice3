@@ -113,12 +113,12 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 		
 		edu.cmu.cs.dennisc.croquet.PageAxisPanel centerComponent = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
 		this.updateCenterComponent(centerComponent, collectionOfPreferences);
-		centerComponent.addComponent( application.createVerticalGlue() );
+		centerComponent.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalGlue() );
 
 		edu.cmu.cs.dennisc.croquet.LineAxisPanel buttonsPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel(
-				application.createHorizontalGlue(),
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue(),
 				application.createButton( this.restoreDefaultsActionOperation ),
-				application.createHorizontalStrut( 4 ),
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 4 ),
 				application.createButton( this.applyActionOperation )
 		);
 
@@ -154,7 +154,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.Bord
 				PreferenceProxy<?> proxy = this.createDefaultProxyFor(preference);
 				if( proxy != null ) {
 					centerComponent.addComponent( proxy.getComponent() );
-					centerComponent.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 4 ) );
+					centerComponent.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 4 ) );
 				}
 			}
 		}

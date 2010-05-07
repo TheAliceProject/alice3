@@ -54,7 +54,7 @@ public abstract class RowsInputPanel< T > extends org.alice.ide.InputPanel< T > 
 	};
 	public RowsInputPanel() {
 		this.addComponent( panel, java.awt.BorderLayout.NORTH );
-		this.addComponent( this.getIDE().createGlue(), java.awt.BorderLayout.CENTER );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue(), java.awt.BorderLayout.CENTER );
 
 //		int inset = 8;
 //		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( inset, inset, inset, inset ) );

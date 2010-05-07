@@ -110,9 +110,9 @@ public class CreateMethodParameterPane extends CreateParameterPane {
 
 			edu.cmu.cs.dennisc.croquet.PageAxisPanel pane = new edu.cmu.cs.dennisc.croquet.PageAxisPanel();
 			pane.addComponent( new edu.cmu.cs.dennisc.croquet.Label( sb.toString() ) );
-			pane.addComponent( this.getIDE().createVerticalStrut( 8 ) );
+			pane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 8 ) );
 			pane.addComponent( new edu.cmu.cs.dennisc.croquet.LineAxisPanel( new edu.cmu.cs.dennisc.croquet.Label( "Tip: look for " ), org.alice.ide.IDE.getSingleton().getPreviewFactory().createExpressionPane( new edu.cmu.cs.dennisc.alice.ast.NullLiteral() ) ) );
-			pane.addComponent( this.getIDE().createVerticalStrut( 8 ) );
+			pane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 8 ) );
 			pane.addComponent( this.checkBox );
 			return new edu.cmu.cs.dennisc.croquet.Component< ? >[] { new edu.cmu.cs.dennisc.croquet.Label( "WARNING:" ), pane };
 		} else {

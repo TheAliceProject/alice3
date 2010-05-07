@@ -458,65 +458,65 @@ public abstract class Application {
 		return edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showSaveFileDialog( this.frame.getAWTWindow(), directory, filename, extension, isSharingDesired ); 
 	}
 
-	@Deprecated
-	public Component< javax.swing.Box.Filler > createGlue() {
-		return new Component< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createJComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
-			}
-		};
-	}
-	@Deprecated
-	public Component< javax.swing.Box.Filler > createHorizontalGlue() {
-		return new Component< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createJComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, 0 ) );
-			}
-		};
-	}
-	@Deprecated
-	public Component< javax.swing.Box.Filler > createVerticalGlue() {
-		return new Component< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createJComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, Short.MAX_VALUE ) );
-			}
-		};
-	}
-	@Deprecated
-	public Component< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
-		return new Component< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createJComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, Short.MAX_VALUE ) );
-			}
-		};
-	}
-	@Deprecated
-	public Component< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
-		return new Component< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createJComponent() {
-				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( Short.MAX_VALUE, height ) );
-			}
-		};
-	}
-
-	@Deprecated
-	public Component< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
-		return new Component< javax.swing.Box.Filler >() {
-			@Override
-			protected javax.swing.Box.Filler createJComponent() {
-				return new javax.swing.Box.Filler( size, size, size );
-			}
-		};
-	}
-	@Deprecated
-	public Component< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
-		return this.createRigidArea( new java.awt.Dimension( width, height ) );
-	}
+//	@Deprecated
+//	public Component< javax.swing.Box.Filler > createGlue() {
+//		return new Component< javax.swing.Box.Filler >() {
+//			@Override
+//			protected javax.swing.Box.Filler createJComponent() {
+//				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, Short.MAX_VALUE ) );
+//			}
+//		};
+//	}
+//	@Deprecated
+//	public Component< javax.swing.Box.Filler > createHorizontalGlue() {
+//		return new Component< javax.swing.Box.Filler >() {
+//			@Override
+//			protected javax.swing.Box.Filler createJComponent() {
+//				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( Short.MAX_VALUE, 0 ) );
+//			}
+//		};
+//	}
+//	@Deprecated
+//	public Component< javax.swing.Box.Filler > createVerticalGlue() {
+//		return new Component< javax.swing.Box.Filler >() {
+//			@Override
+//			protected javax.swing.Box.Filler createJComponent() {
+//				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, 0 ), new java.awt.Dimension( 0, Short.MAX_VALUE ) );
+//			}
+//		};
+//	}
+//	@Deprecated
+//	public Component< javax.swing.Box.Filler > createHorizontalStrut( final int width ) {
+//		return new Component< javax.swing.Box.Filler >() {
+//			@Override
+//			protected javax.swing.Box.Filler createJComponent() {
+//				return new javax.swing.Box.Filler( new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, 0 ), new java.awt.Dimension( width, Short.MAX_VALUE ) );
+//			}
+//		};
+//	}
+//	@Deprecated
+//	public Component< javax.swing.Box.Filler > createVerticalStrut( final int height ) {
+//		return new Component< javax.swing.Box.Filler >() {
+//			@Override
+//			protected javax.swing.Box.Filler createJComponent() {
+//				return new javax.swing.Box.Filler( new java.awt.Dimension( 0, height ), new java.awt.Dimension( 0, height ), new java.awt.Dimension( Short.MAX_VALUE, height ) );
+//			}
+//		};
+//	}
+//
+//	@Deprecated
+//	public Component< javax.swing.Box.Filler > createRigidArea( final java.awt.Dimension size ) {
+//		return new Component< javax.swing.Box.Filler >() {
+//			@Override
+//			protected javax.swing.Box.Filler createJComponent() {
+//				return new javax.swing.Box.Filler( size, size, size );
+//			}
+//		};
+//	}
+//	@Deprecated
+//	public Component< javax.swing.Box.Filler > createRigidArea( int width, int height ) {
+//		return this.createRigidArea( new java.awt.Dimension( width, height ) );
+//	}
 	
 	
 	

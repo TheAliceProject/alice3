@@ -262,9 +262,9 @@ public class AudioSourceChooser extends org.alice.ide.choosers.AbstractChooser< 
 				this.dropDown, 
 				new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 						new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.volumeLevelControl ), 
-						this.getIDE().createHorizontalGlue() 
+						edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue() 
 				), 
-				this.getIDE().createVerticalStrut( 16 ), 
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 16 ), 
 				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.startTimeSlider ), 
 				new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.stopTimeSlider ) };
 	}

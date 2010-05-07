@@ -400,7 +400,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		gbc.insets.top = 0;
 		buttonPane.addComponent( this.getIDE().createButton( this.moveItemDownOperation ), gbc );
 		gbc.weighty = 1.0;
-		buttonPane.addComponent( this.getIDE().createGlue(), gbc );
+		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue(), gbc );
 
 		this.addComponent( buttonPane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
 

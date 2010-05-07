@@ -229,7 +229,7 @@ class CreateTextPane extends org.alice.ide.RowsInputPanel< org.alice.apis.movean
 				this.constrainInstanceNameToTextVC 
 		) );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 24 ),
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 24 ),
 				null,
 				null 
 		) );
@@ -239,7 +239,7 @@ class CreateTextPane extends org.alice.ide.RowsInputPanel< org.alice.apis.movean
 				new edu.cmu.cs.dennisc.croquet.Label( "(meters)" ) 
 		) );
 		rv.add( edu.cmu.cs.dennisc.croquet.SpringUtilities.createRow( 
-				edu.cmu.cs.dennisc.croquet.Application.getSingleton().createVerticalStrut( 4 ), 
+				edu.cmu.cs.dennisc.croquet.BoxUtilities.createVerticalStrut( 4 ), 
 				null, 
 				null 
 		) );

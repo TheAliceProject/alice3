@@ -83,7 +83,7 @@ public class ArgumentListPropertyPane extends org.alice.ide.common.AbstractArgum
 			edu.cmu.cs.dennisc.alice.ast.AbstractParameter parameter = argument.parameter.getValue();
 			boolean isNameDesired = this.isNameDesired( parameter );
 			if( isNameDesired ) {
-				prefixPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 4 ), new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() ), new edu.cmu.cs.dennisc.croquet.Label( ": " ) );
+				prefixPane = new edu.cmu.cs.dennisc.croquet.LineAxisPanel( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 4 ), new org.alice.ide.common.DeclarationNameLabel( argument.parameter.getValue() ), new edu.cmu.cs.dennisc.croquet.Label( ": " ) );
 			} else {
 				prefixPane = null;
 			}

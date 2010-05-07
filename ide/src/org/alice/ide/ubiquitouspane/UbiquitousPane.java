@@ -158,27 +158,26 @@ public class UbiquitousPane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	};
 
 	public UbiquitousPane() {
-		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		final int PAD = 6;
 		this.addComponent( this.doInOrderTemplate );
-		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( PAD ) );
 //		this.addComponent( this.loopTemplate );
 
 		this.addComponent( this.countLoopTemplate );
 		this.addComponent( this.whileLoopTemplate );
 		this.addComponent( this.forEachInArrayLoopTemplate );
-		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( PAD ) );
 		this.addComponent( this.conditionalStatementTemplate );
-		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( PAD ) );
 		this.addComponent( this.doTogetherTemplate );
 		this.addComponent( this.eachInArrayTogetherTemplate );
-		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( PAD ) );
 		this.addComponent( this.doInThreadTemplate );
-		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( PAD ) );
 		this.addComponent( this.declareLocalTemplate );
 		this.addComponent( this.transientStatementsWrapper );
 		this.addComponent( this.returnStatementWrapper );
-		this.addComponent( application.createHorizontalStrut( PAD ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( PAD ) );
 		this.addComponent( this.commentTemplate );
 	}
 	

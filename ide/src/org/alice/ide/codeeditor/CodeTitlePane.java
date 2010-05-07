@@ -51,7 +51,7 @@ public class CodeTitlePane extends edu.cmu.cs.dennisc.croquet.LineAxisPanel {
 	public CodeTitlePane( edu.cmu.cs.dennisc.alice.ast.AbstractCode code ) {
 		this.code = code;
 		this.addComponent( new org.alice.ide.common.TypeComponent( this.code.getDeclaringType() ) );
-		this.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createHorizontalStrut( 8 ) );
+		this.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalStrut( 8 ) );
 		this.addComponent( new org.alice.ide.common.DeclarationNameLabel( this.code ) );
 	}
 	public edu.cmu.cs.dennisc.alice.ast.AbstractCode getCode() {

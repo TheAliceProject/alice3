@@ -81,7 +81,7 @@ public abstract class AbstractChooser<E> implements ValueChooser< E >, edu.cmu.c
 						edu.cmu.cs.dennisc.croquet.SpringUtilities.createTrailingLabel( labelTexts[ i ] ), 
 						new edu.cmu.cs.dennisc.croquet.LineAxisPanel( 
 								components[ i ],
-								this.getIDE().createHorizontalGlue()
+								edu.cmu.cs.dennisc.croquet.BoxUtilities.createHorizontalGlue()
 						)
 					) 
 			);

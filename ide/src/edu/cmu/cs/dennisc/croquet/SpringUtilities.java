@@ -66,7 +66,7 @@ public class SpringUtilities {
 			if( rv[ i ] != null ) {
 				//pass
 			} else {
-				Component< ? > box = Application.getSingleton().createRigidArea( 0, 0 );
+				Component< ? > box = edu.cmu.cs.dennisc.croquet.BoxUtilities.createRigidArea( 0, 0 );
 //				box.setBackground( java.awt.Color.BLUE );
 //				if( box instanceof javax.swing.JComponent ) {
 //					((javax.swing.JComponent)box).setOpaque( false );
