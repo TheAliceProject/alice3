@@ -339,7 +339,10 @@ class OperationDropDown extends org.alice.ide.common.AbstractDropDownPane {
 	protected java.awt.Paint getBackgroundPaint( int x, int y, int width, int height ) {
 		return new java.awt.GradientPaint( 0, 0, TOP_COLOR, 0, height, BOTTOM_COLOR );
 	}
-
+	@Override
+	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {
+		return new java.awt.FlowLayout();
+	}
 	protected void updateLabel() {
 		this.label.setText( "class:" );
 		this.label.setIcon( this.getLeftButtonPressOperation().getSmallIcon() );

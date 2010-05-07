@@ -81,14 +81,13 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 				return rv;
 			}
 		}
-		context.pend( new edu.cmu.cs.dennisc.zoot.Resolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		context.pend( new edu.cmu.cs.dennisc.croquet.Resolver< ExpressionPropertyEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public ExpressionPropertyEdit createEdit() {
 				return new ExpressionPropertyEdit();
 			}
-			public ExpressionPropertyEdit initialize( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context,
-					edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+			public ExpressionPropertyEdit initialize(ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevExpression = AbstractExpressionPropertyActionOperation.this.expressionProperty.getValue();
-				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, taskObserver, rv.prevExpression );
+				AbstractExpressionPropertyActionOperation.this.initializeInternal( context, id, taskObserver, rv.prevExpression );
 				return rv;
 			}
 			public ExpressionPropertyEdit handleCompletion( ExpressionPropertyEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {
@@ -103,7 +102,6 @@ public abstract class AbstractExpressionPropertyActionOperation extends org.alic
 			}
 		} );
 	}
-	protected abstract void initializeInternal( edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver,
-			edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
+	protected abstract void initializeInternal( edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver, edu.cmu.cs.dennisc.alice.ast.Expression prevExpression );
 
 }

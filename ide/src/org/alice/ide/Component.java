@@ -92,7 +92,7 @@ public abstract class Component extends edu.cmu.cs.dennisc.croquet.KDragControl 
 		throw new RuntimeException( "todo" );
 	}
 	@Deprecated
-	public void setDragAndDropOperation( edu.cmu.cs.dennisc.zoot.DragAndDropOperation operation ) {
+	public void setDragOperation( edu.cmu.cs.dennisc.croquet.DragOperation operation ) {
 		throw new RuntimeException( "todo" );
 	}
 	@Deprecated

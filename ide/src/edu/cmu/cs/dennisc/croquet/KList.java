@@ -63,25 +63,36 @@ public class KList<E> extends KComponent< javax.swing.JList > {
 	protected javax.swing.JList createJComponent() {
 		return new javax.swing.JList();
 	}
+	
+	@Deprecated
 	public javax.swing.ListModel getModel() {
 		return this.getJComponent().getModel();
 	}
+	@Deprecated
 	public void setModel( javax.swing.ListModel model ) {
 		this.getJComponent().setModel( model );
 	}
+	@Deprecated
 	public void setListData( E... values ) {
 		this.getJComponent().setListData( values );
+	}
+
+	public javax.swing.ListCellRenderer getCellRenderer() {
+		return this.getJComponent().getCellRenderer();
 	}
 	public void setCellRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
 		this.getJComponent().setCellRenderer( listCellRenderer );
 	}
 
+	@Deprecated
 	public E getSelectedValue() {
 		return (E)this.getJComponent().getSelectedValue();
 	}
+	@Deprecated
 	public void setSelectedIndex( int index ) {
 		this.getJComponent().setSelectedIndex( index );
 	}
+	@Deprecated
 	public void setSelectedValue( E value, boolean shouldScroll ) {
 		this.getJComponent().setSelectedValue( value, shouldScroll );
 	}
@@ -97,10 +108,17 @@ public class KList<E> extends KComponent< javax.swing.JList > {
 		this.getJComponent().setLayoutOrientation( layoutOrientation.internal );
 	}
 
+	@Deprecated
 	public void addListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
 		this.getJComponent().addListSelectionListener( listSelectionListener );
 	}
+	@Deprecated
 	public void removeListSelectionListener( javax.swing.event.ListSelectionListener listSelectionListener ) {
 		this.getJComponent().removeListSelectionListener( listSelectionListener );
+	}
+	
+	@Deprecated
+	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
+		throw new RuntimeException( "todo" );
 	}
 }

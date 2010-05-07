@@ -103,4 +103,17 @@ public class CompositeEdit extends Edit {
 		rv.append( this.presentation );
 		return rv;
 	}
+	
+	@Override
+	protected void encodeInternal( edu.cmu.cs.dennisc.codec.BinaryEncoder binaryEncoder ) {
+		binaryEncoder.encode( this.edits );
+		binaryEncoder.encode( this.isDoToBeIgnored );
+		binaryEncoder.encode( this.presentation );
+	}
+	@Override
+	protected void decodeInternal( edu.cmu.cs.dennisc.codec.BinaryDecoder binaryDecoder ) {
+		this.edits = binaryDecoder.decodeBinaryEncodableAndDecodableArray( Edit.class );
+		this.isDoToBeIgnored = binaryDecoder.decodeBoolean();
+		this.presentation = binaryDecoder.decodeString();
+	}
 }

@@ -95,10 +95,10 @@ class TreeCellRenderer extends javax.swing.tree.DefaultTreeCellRenderer {
 	}
 }
 
-class Tree extends edu.cmu.cs.dennisc.zoot.ZTree {
+class Tree extends edu.cmu.cs.dennisc.croquet.KTree {
 	private TreeModel model = new TreeModel( null ); 
 	public Tree() {
-		super( new org.alice.ide.operations.ast.FieldItemSelectionOperation( new javax.swing.DefaultComboBoxModel() ) );
+		this.setItemSelectionOperation( new org.alice.ide.operations.ast.FieldItemSelectionOperation( new javax.swing.DefaultComboBoxModel() ) );
 		this.setModel( this.model );
 		this.setCellRenderer( new TreeCellRenderer() );
 	}
@@ -133,7 +133,7 @@ public class SplitSceneEditor extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 	};
 
 	public SplitSceneEditor() {
-		this.root.setLeftComponent( new edu.cmu.cs.dennisc.croquet.KScrollPane( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.tree ) ) );
+		this.root.setLeftComponent( new edu.cmu.cs.dennisc.croquet.KScrollPane( this.tree ) );
 		this.root.setRightComponent( this.lookingGlass );
 		this.addComponent( this.root, CardinalDirection.CENTER );
 	}

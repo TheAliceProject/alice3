@@ -49,14 +49,14 @@ package edu.cmu.cs.dennisc.croquet;
 public interface DropReceptor {
 	public boolean isPotentiallyAcceptingOf( KDragControl source );
 	public KComponent< ? > getComponent();
-	public void dragStarted( DragAndDropContext dragAndDropContext );
-	public void dragEntered( DragAndDropContext dragAndDropContext );
-	public void dragUpdated( DragAndDropContext dragAndDropContext );
+	public void dragStarted( Context context );
+	public void dragEntered( Context context );
+	public void dragUpdated( Context context );
 	
 	//todo: Dropped or Exited but not both?
-	public void dragDropped( DragAndDropContext dragAndDropContext );
-	public void dragExited( DragAndDropContext dragAndDropContext, boolean isDropRecipient );
+	public void dragDropped( Context context );
+	public void dragExited( Context context, boolean isDropRecipient );
 	
 	
-	public void dragStopped( DragAndDropContext dragAndDropContext );
+	public void dragStopped( Context context );
 }

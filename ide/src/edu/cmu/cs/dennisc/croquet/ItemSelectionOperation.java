@@ -45,14 +45,14 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ItemSelectionOperation<T> extends Operation {
+public abstract class ItemSelectionOperation<E> extends Operation {
 	private javax.swing.ButtonGroup buttonGroup = new javax.swing.ButtonGroup();
 	private javax.swing.Action[] actions;
 	private javax.swing.ButtonModel[] buttonModels;
 	private java.awt.event.ItemListener[] itemListeners;
 	private javax.swing.ComboBoxModel comboBoxModel;
 	
-	private T previousSelection;
+	private E previousSelection;
 
 	public ItemSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, javax.swing.ComboBoxModel comboBoxModel ) {
 		super( groupUUID, individualUUID );
@@ -61,16 +61,16 @@ public abstract class ItemSelectionOperation<T> extends Operation {
 		this.actions = new javax.swing.Action[ N ];
 		this.buttonModels = new javax.swing.ButtonModel[ N ];
 		this.itemListeners = new java.awt.event.ItemListener[ N ];
-		this.previousSelection = (T)comboBoxModel.getSelectedItem();
+		this.previousSelection = (E)comboBoxModel.getSelectedItem();
 		for( int i=0; i<N; i++ ) {
 			class Action extends javax.swing.AbstractAction {
-				public Action( int i, T item ) {
+				public Action( int i, E item ) {
 					this.putValue( NAME, getNameFor( i, item ) );
 				}
 				public void actionPerformed( java.awt.event.ActionEvent e ) {
 				}
 			}
-			T item = (T)this.comboBoxModel.getElementAt( i );
+			E item = (E)this.comboBoxModel.getElementAt( i );
 			this.actions[ i ] = new Action( i, item ); 
 			this.buttonModels[ i ] = new javax.swing.JToggleButton.ToggleButtonModel();
 			this.buttonModels[ i ].setGroup( buttonGroup );
@@ -82,7 +82,7 @@ public abstract class ItemSelectionOperation<T> extends Operation {
 					Application application = Application.getSingleton();
 					Context parentContext = application.getCurrentContext();
 					Context childContext = parentContext.createChildContext();
-					childContext.addChild( new ItemSelectionEvent< T >( childContext, ItemSelectionOperation.this, e ) );
+					childContext.addChild( new ItemSelectionEvent< E >( childContext, ItemSelectionOperation.this, e ) );
 					ItemSelectionOperation.this.perform( childContext, e );
 				}
 			};
@@ -90,7 +90,7 @@ public abstract class ItemSelectionOperation<T> extends Operation {
 		}
 	}
 
-	protected abstract ItemSelectionEdit< T > createItemSelectionEdit( Context context, java.awt.event.ItemEvent e, T previousSelection, T nextSelection );
+	protected abstract ItemSelectionEdit< E > createItemSelectionEdit( Context context, java.awt.event.ItemEvent e, E previousSelection, E nextSelection );
 //	public final void performSelectionChange(ItemSelectionContext<T> context) {
 //		context.commitAndInvokeDo( new ItemSelectionEdit< T >( this, context.getPreviousSelection(), context.getNextSelection() ) {
 //			@Override
@@ -114,12 +114,12 @@ public abstract class ItemSelectionOperation<T> extends Operation {
 //	}
 
 	/*package-private*/ final void perform( Context context, java.awt.event.ItemEvent e ) {
-		T nextSelection = (T)this.comboBoxModel.getSelectedItem();
+		E nextSelection = (E)this.comboBoxModel.getSelectedItem();
 		context.commitAndInvokeDo( this.createItemSelectionEdit( context, e, this.previousSelection, nextSelection ) );
 		this.previousSelection = nextSelection;
 	}
 
-	protected String getNameFor( int index, T item ) {
+	protected String getNameFor( int index, E item ) {
 		if( item != null ) {
 			return item.toString();
 		} else {
@@ -149,7 +149,7 @@ public abstract class ItemSelectionOperation<T> extends Operation {
 			}
 		}
 	}
-	/*package-private*/ void setValue(T value) {
+	/*package-private*/ void setValue(E value) {
 		int N = this.buttonModels.length;
 		for( int i=0; i<N; i++ ) {
 			this.buttonModels[ i ].removeItemListener( this.itemListeners[ i ] );
@@ -159,4 +159,12 @@ public abstract class ItemSelectionOperation<T> extends Operation {
 			this.buttonModels[ i ].addItemListener( this.itemListeners[ i ] );
 		}
 	}
+	
+	/*package-private*/ void addComboBox( KComboBox<E> comboBox ) {
+		this.addComponent(comboBox);
+	}
+	/*package-private*/ void removeComboBox( KComboBox<E> comboBox ) {
+		this.removeComponent(comboBox);
+	}
+	
 }

@@ -66,9 +66,9 @@ public class HistoryManager {
 		}
 		return rv;
 	}
-	private static void handleOperationPerformed( edu.cmu.cs.dennisc.croquet.Operation operation, edu.cmu.cs.dennisc.croquet.Edit edit ) {
+	private static void handleOperationPerformed( edu.cmu.cs.dennisc.croquet.Edit edit ) {
 		if( edit != null ) {
-			HistoryManager historyManager = HistoryManager.getInstance( operation.getGroupUUID() );
+			HistoryManager historyManager = HistoryManager.getInstance( edit.getGroupId() );
 			historyManager.push( edit );
 		} else {
 			//todo?
@@ -90,7 +90,7 @@ public class HistoryManager {
 		return this.stack;
 	}
 	private void push( edu.cmu.cs.dennisc.croquet.Edit edit ) {
-		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroupUUID(), this.uuid ) ) {
+		if( edu.cmu.cs.dennisc.equivalence.EquivalenceUtilities.areEquivalent( edit.getGroupId(), this.uuid ) ) {
 			edu.cmu.cs.dennisc.history.event.HistoryPushEvent historyPushEvent = new edu.cmu.cs.dennisc.history.event.HistoryPushEvent( this, edit );
 			this.fireOperationPushing( historyPushEvent );
 			this.stack.setSize( this.insertionIndex );
@@ -247,17 +247,18 @@ public class HistoryManager {
 		}
 	}
 	public edu.cmu.cs.dennisc.croquet.Edit createDoIgnoringCompositeEdit( String presentation ) {
-		synchronized( this.stack ) {
-			final int N = this.insertionIndex;
-			if( N > 0 ) {
-				edu.cmu.cs.dennisc.croquet.Edit[] edits = new edu.cmu.cs.dennisc.croquet.Edit[ N ];
-				for( int i=0; i<N; i++ ) {
-					edits[ i ] = this.stack.get( i );
-				}
-				return new edu.cmu.cs.dennisc.croquet.CompositeEdit( edits, true, presentation );
-			} else {
-				return null;
-			}
-		}
+//		synchronized( this.stack ) {
+//			final int N = this.insertionIndex;
+//			if( N > 0 ) {
+//				edu.cmu.cs.dennisc.croquet.Edit[] edits = new edu.cmu.cs.dennisc.croquet.Edit[ N ];
+//				for( int i=0; i<N; i++ ) {
+//					edits[ i ] = this.stack.get( i );
+//				}
+//				return new edu.cmu.cs.dennisc.croquet.CompositeEdit( edits, true, presentation );
+//			} else {
+//				return null;
+//			}
+//		}
+		throw new RuntimeException( "todo" );
 	}
 }

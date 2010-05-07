@@ -388,6 +388,25 @@ public abstract class Application {
 		return rv;
 	}
 
+	public <E> KComboBox< E > createComboBox(final ItemSelectionOperation< E > itemSelectionOperation) {
+		this.register( itemSelectionOperation );
+		// todo: return javax.swing.JMenuItem if true and false different
+		return new KComboBox< E >() {
+			@Override
+			protected void adding() {
+				itemSelectionOperation.addComboBox(this);
+				super.adding();
+			}
+
+			@Override
+			protected void removed() {
+				super.removed();
+				itemSelectionOperation.removeComboBox(this);
+			}
+		};
+	}
+	
+
 	public void showMessageDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {
 		javax.swing.JOptionPane.showMessageDialog( this.frame.getAWTWindow(), message, title, messageType.internal, icon );
 	}

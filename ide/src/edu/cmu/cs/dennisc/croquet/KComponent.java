@@ -43,6 +43,8 @@
 
 package edu.cmu.cs.dennisc.croquet;
 
+import org.alice.ide.codeeditor.ExpressionPropertyDropDownPane;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -178,6 +180,13 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 		return this.getJComponent().getBounds();
 	}
 	
+	public <T extends KComponent<?>> java.util.List< T > findAllMatches( Class<T> cls, edu.cmu.cs.dennisc.pattern.Criterion< T > criterion ) {
+		throw new RuntimeException( "todo" );
+	}
+	public <T extends KComponent<?>> java.util.List< T > findAllMatches( Class<T> cls ) {
+		return this.findAllMatches( cls, null );
+	}
+	
 	@Deprecated
 	public java.awt.Point convertPoint( java.awt.Point pt, java.awt.Component destination ) {
 		return javax.swing.SwingUtilities.convertPoint( this.getJComponent(), pt, destination );
@@ -198,6 +207,10 @@ public abstract class KComponent<J extends javax.swing.JComponent> {
 	}
 	public java.awt.event.MouseEvent convertMouseEvent( java.awt.event.MouseEvent e, KComponent< ? > destination ) {
 		return edu.cmu.cs.dennisc.javax.swing.SwingUtilities.convertMouseEvent( this.getJComponent(), e, destination.getJComponent() );
+	}
+	
+	public boolean isAncestorOf( KComponent< ? > other ) {
+		return this.getJComponent().isAncestorOf( other.getJComponent() );
 	}
 	
 	@Deprecated

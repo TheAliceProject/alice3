@@ -46,9 +46,9 @@ package org.alice.stageide.personeditor;
  * @author Dennis Cosgrove
  */
 abstract class AbstractList<E> extends edu.cmu.cs.dennisc.croquet.KList< E > {
-	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
+	private class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<E> {
 		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-			super( comboBoxModel );
+			super( java.util.UUID.fromString( "a10c07e8-bd0a-45e2-87aa-a3715fefb847" ), comboBoxModel );
 		}
 		@Override
 		protected void handleSelectionChange(E value) {

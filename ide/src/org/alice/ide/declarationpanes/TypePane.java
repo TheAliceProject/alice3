@@ -108,7 +108,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 			public void propertyChanging( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
 			}
 			public void propertyChanged( edu.cmu.cs.dennisc.property.event.PropertyEvent e ) {
-				typeComboBox.setSelectedItem( e.getValue() );
+				typeComboBox.setSelectedItem( (AbstractType)e.getValue() );
 			}
 		} );
 		
@@ -118,7 +118,7 @@ public class TypePane extends edu.cmu.cs.dennisc.croquet.KLineAxisPanel {
 		edu.cmu.cs.dennisc.croquet.KCheckBox isArrayCheckBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createCheckBox( this.isArrayStateOperation );
 		isArrayCheckBox.setOpaque( false );
 		
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.KSwingAdapter( this.typeComboBox ) );
+		this.addComponent( this.typeComboBox );
 		this.addComponent( isArrayCheckBox );
 	}
 	

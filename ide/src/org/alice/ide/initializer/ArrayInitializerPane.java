@@ -241,7 +241,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 
 	class ItemSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > {
 		public ItemSelectionOperation( javax.swing.ComboBoxModel comboBoxModel ) {
-			super( comboBoxModel );
+			super( java.util.UUID.fromString( "cd4c10ba-3c46-4344-b0df-39a3926e8c9d" ), comboBoxModel );
 		}
 		@Override
 		protected void handleSelectionChange(edu.cmu.cs.dennisc.alice.ast.Expression value) {
@@ -282,7 +282,7 @@ public class ArrayInitializerPane extends AbstractInitializerPane {
 		private javax.swing.ButtonGroup group;
 		private java.awt.GridBagConstraints gbc;
 
-		public ExpressionList( edu.cmu.cs.dennisc.zoot.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > itemSelectionOperation ) {
+		public ExpressionList( edu.cmu.cs.dennisc.croquet.ItemSelectionOperation< edu.cmu.cs.dennisc.alice.ast.Expression > itemSelectionOperation ) {
 			//			super( itemSelectionOperation );
 			this.group = new javax.swing.ButtonGroup();
 			this.gbc = new java.awt.GridBagConstraints();

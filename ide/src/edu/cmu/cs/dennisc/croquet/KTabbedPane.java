@@ -60,6 +60,36 @@ public class KTabbedPane extends KComponent< javax.swing.JTabbedPane > {
 	public void setTitleAt( int index, String title ) {
 		this.getJComponent().setTitleAt( index, title );
 	}
+	
+	public java.awt.Color getContentAreaColor() {
+		return java.awt.Color.MAGENTA;
+	}
+	
+	@Deprecated
+	public void closeTab( int index, java.awt.event.MouseEvent e ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public void remove( int index ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public void removeAll() {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public void updateUI() {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	protected edu.cmu.cs.dennisc.javax.swing.plaf.TabbedPaneUI createTabbedPaneUI() {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public boolean isCloseButtonDesiredAt( int index ) {
+		throw new RuntimeException( "todo" );
+	}
+	
 
 	@Deprecated
 	public int getSelectedIndex() {
@@ -78,4 +108,12 @@ public class KTabbedPane extends KComponent< javax.swing.JTabbedPane > {
 		return this.getJComponent().indexOfComponent( component.getJComponent() );
 	}
 	
+	@Deprecated
+	public void addChangeListener( javax.swing.event.ChangeListener listener ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public void setTabCloseOperation( AbstractActionOperation operation ) {
+		throw new RuntimeException( "todo" );
+	}
 }

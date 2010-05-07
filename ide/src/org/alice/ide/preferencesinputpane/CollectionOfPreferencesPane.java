@@ -79,8 +79,7 @@ public class CollectionOfPreferencesPane extends edu.cmu.cs.dennisc.croquet.KBor
 			case javax.swing.JOptionPane.YES_OPTION:
 			case javax.swing.JOptionPane.NO_OPTION:
 				this.isAll = result == javax.swing.JOptionPane.NO_OPTION;
-				edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo RestoreDefaultsActionOperation" );
-				context.commit();
+				context.todo();
 				break;
 			default:
 				context.cancel();

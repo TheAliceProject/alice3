@@ -218,6 +218,6 @@ public abstract class PathControl extends edu.cmu.cs.dennisc.croquet.KLineAxisPa
 			operations.add( new SelectFileActionOperation( file ) );
 		}
 		javax.swing.JPopupMenu popupMenu = edu.cmu.cs.dennisc.zoot.ZManager.createPopupMenu( operations );
-		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, invoker, 0, invoker.getHeight() );
+		edu.cmu.cs.dennisc.javax.swing.PopupMenuUtilities.showModal( popupMenu, button.getJComponent(), 0, button.getHeight() );
 	}
 }

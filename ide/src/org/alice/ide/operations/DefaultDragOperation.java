@@ -40,66 +40,33 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.templates;
+package org.alice.ide.operations;
+
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class ExpressionTemplate extends org.alice.ide.common.ExpressionCreatorPane {
-	public ExpressionTemplate() {
-		this.setDragOperation( new org.alice.ide.operations.DefaultDragOperation() );
-//		
-//		//todo
-//		this.setPopupOperation( new org.alice.ide.operations.InconsequentialActionOperation( java.util.UUID.fromString( "20e0121d-2166-4479-af43-d45e6ae425e6" ) ) {
-//			@Override
-//			protected void performInternal(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button) {
-//				context.cancel();
-//			}
-//		} );
+@Deprecated
+public class DefaultDragOperation extends edu.cmu.cs.dennisc.croquet.DragOperation {
+	public DefaultDragOperation() {
+		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, null, null );
 	}
-//	@Override
-//	protected boolean isFauxDragDesired() {
-//		return true;
-//	}
-	
-	protected abstract edu.cmu.cs.dennisc.alice.ast.Expression createIncompleteExpression();
-	@Override
-	protected void adding() {
-		super.adding();
-		this.refresh();
+	protected org.alice.ide.IDE getIDE() {
+		return org.alice.ide.IDE.getSingleton();
 	}
-	@Override
-	protected void removed() {
-		this.removeAllComponents();
-		super.removed();
+	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.KDragControl dragSource ) {
+		return getIDE().createListOfPotentialDropReceptors( dragSource );
 	}
-	protected void refresh() {
-		this.removeAllComponents();
-		edu.cmu.cs.dennisc.alice.ast.Expression incompleteExpression = this.createIncompleteExpression();
-		this.setBackgroundColor( getIDE().getColorFor( incompleteExpression ) );
-		this.addComponent( getIDE().getTemplatesFactory().createComponent( incompleteExpression ) );
+	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragStarted( dragAndDropContext );
 	}
-	@Override
-	protected boolean isPressed() {
-		return false;
+	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
 	}
-	
-	@Override
-	protected boolean contains( int x, int y, boolean jContains ) {
-		if( getIDE().isSelectedFieldInScope() ) {
-			return super.contains( x, y, jContains );
-		} else {
-			return false;
-		}
+	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
 	}
-	@Override
-	protected void paintEpilogue( java.awt.Graphics2D g2, int x, int y, int width, int height ) {
-		super.paintEpilogue( g2, x, y, width, height );
-		if( getIDE().isSelectedFieldInScope() ) {
-			//pass
-		} else {
-			g2.setPaint( edu.cmu.cs.dennisc.zoot.PaintUtilities.getDisabledTexturePaint() );
-			this.fillBounds( g2 );
-		}
+	public void handleDragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
+		getIDE().handleDragStopped( dragAndDropContext );
 	}
 }

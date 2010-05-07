@@ -78,17 +78,17 @@ public class FillInMoreOperation extends org.alice.ide.operations.AbstractAction
 				return rv;
 			}
 		}
-		context.pend( new edu.cmu.cs.dennisc.zoot.Resolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		context.pend( new edu.cmu.cs.dennisc.croquet.Resolver< MoreEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public MoreEdit createEdit() {
 				return new MoreEdit();
 			}
-			public MoreEdit initialize( MoreEdit rv, edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+			public MoreEdit initialize(MoreEdit rv, edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevMethodInvocation = (edu.cmu.cs.dennisc.alice.ast.MethodInvocation)expressionStatement.expression.getValue();
 				edu.cmu.cs.dennisc.alice.ast.AbstractMethod method = rv.prevMethodInvocation.method.getValue();
 				rv.nextLongerMethod = (edu.cmu.cs.dennisc.alice.ast.AbstractMethod)method.getNextLongerInChain();
 				java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractParameter > parameters = rv.nextLongerMethod.getParameters();
 				edu.cmu.cs.dennisc.alice.ast.AbstractParameter lastParameter = parameters.get( parameters.size()-1 );
-				getIDE().promptUserForMore( lastParameter, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
+				getIDE().promptUserForMore( lastParameter, context.getMouseEvent(), taskObserver );
 
 				return rv;
 			}

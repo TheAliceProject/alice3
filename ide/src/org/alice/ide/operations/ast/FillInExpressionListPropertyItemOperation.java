@@ -58,7 +58,7 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 	protected abstract edu.cmu.cs.dennisc.alice.ast.AbstractType getFillInType();
 	@Override
 	protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
-		class FillInExpressionEdit extends edu.cmu.cs.dennisc.zoot.AbstractEdit {
+		class FillInExpressionEdit extends org.alice.ide.ToDoEdit {
 			private edu.cmu.cs.dennisc.alice.ast.Expression prevExpression;
 			private edu.cmu.cs.dennisc.alice.ast.Expression nextExpression;
 			@Override
@@ -78,14 +78,14 @@ public abstract class FillInExpressionListPropertyItemOperation extends org.alic
 				return rv;
 			}
 		}
-		context.pend( new edu.cmu.cs.dennisc.zoot.Resolver< FillInExpressionEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
+		context.pend( new edu.cmu.cs.dennisc.croquet.Resolver< FillInExpressionEdit, edu.cmu.cs.dennisc.alice.ast.Expression >() {
 			public FillInExpressionEdit createEdit() {
 				return new FillInExpressionEdit();
 			}
-			public FillInExpressionEdit initialize( FillInExpressionEdit rv, edu.cmu.cs.dennisc.zoot.Context< ? extends edu.cmu.cs.dennisc.zoot.Operation > context, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Expression > taskObserver ) {
+			public FillInExpressionEdit initialize(FillInExpressionEdit rv, edu.cmu.cs.dennisc.croquet.Context context, java.util.UUID id, edu.cmu.cs.dennisc.task.TaskObserver<edu.cmu.cs.dennisc.alice.ast.Expression> taskObserver) {
 				rv.prevExpression = expressionListProperty.get( index );
 				edu.cmu.cs.dennisc.alice.ast.AbstractType type = getFillInType();
-				getIDE().promptUserForExpression( type, rv.prevExpression, (java.awt.event.MouseEvent)context.getEvent(), taskObserver );
+				getIDE().promptUserForExpression( type, rv.prevExpression, context.getMouseEvent(), taskObserver );
 				return rv;
 			}
 			public FillInExpressionEdit handleCompletion( FillInExpressionEdit rv, edu.cmu.cs.dennisc.alice.ast.Expression expression ) {

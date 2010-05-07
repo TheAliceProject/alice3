@@ -84,7 +84,8 @@ class Cycle< E > {
 	}
 }
 
-class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
+class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.javax.swing.plaf.TabbedPaneUI {
+	private EditorsTabbedPane editorsTabbedPane;
 	private DeclarationsUIResource declarationsUIResource;
 	private BackUIResource backUIResource;
 	private java.awt.event.ComponentListener componentAdapter = new java.awt.event.ComponentListener() {
@@ -99,12 +100,23 @@ class EditorsTabbedPaneUI extends edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI {
 		}
 	};
 	public EditorsTabbedPaneUI( EditorsTabbedPane editorsTabbedPane ) {
-		super( editorsTabbedPane );
+		super( editorsTabbedPane.getContentAreaColor() );
+		this.editorsTabbedPane = editorsTabbedPane;
 		if( org.alice.ide.IDE.getSingleton().isEmphasizingClasses() ) {
 			this.declarationsUIResource = new DeclarationsUIResource();
 		}
 		this.backUIResource = new BackUIResource( editorsTabbedPane );
 	}
+
+	@Override
+	protected boolean isCloseButtonDesiredAt( int index ) {
+		return this.editorsTabbedPane.isCloseButtonDesiredAt( index );
+	}
+	@Override
+	protected void closeTab( int index, java.awt.event.MouseEvent e ) {
+		this.editorsTabbedPane.closeTab( index, e );
+	}
+
 	@Override
 	protected void installComponents() {
 		super.installComponents();
@@ -227,7 +239,8 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
 			super( org.alice.app.ProjectApplication.IDE_GROUP, java.util.UUID.fromString( "71ff1171-9e5e-443f-a7aa-cb4012f05fec" ) );
 			this.setName( "previous" );
 		}
-		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 			EditorsTabbedPane.this.editPreviousCode();
 		}
 	}
@@ -260,7 +273,7 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.KTabbedPane {
 		return this.editPreviousCodeOperation;
 	}
 	@Override
-	protected edu.cmu.cs.dennisc.zoot.plaf.TabbedPaneUI createTabbedPaneUI() {
+	protected edu.cmu.cs.dennisc.javax.swing.plaf.TabbedPaneUI createTabbedPaneUI() {
 		return new EditorsTabbedPaneUI( this );
 	}
 	

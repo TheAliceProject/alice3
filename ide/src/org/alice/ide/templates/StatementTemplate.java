@@ -51,7 +51,7 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	}
 
 	public abstract void createStatement( edu.cmu.cs.dennisc.alice.ast.BlockStatement block, edu.cmu.cs.dennisc.task.TaskObserver< edu.cmu.cs.dennisc.alice.ast.Statement > taskObserver );
-	private edu.cmu.cs.dennisc.zoot.DragAndDropOperation dragAndDropOperation;
+	private edu.cmu.cs.dennisc.croquet.DragOperation dragOperation;
 
 //	@Override
 //	protected boolean isFauxDragDesired() {
@@ -69,18 +69,18 @@ public abstract class StatementTemplate extends org.alice.ide.common.StatementLi
 	//			}
 	//		};
 	//	}
-	protected edu.cmu.cs.dennisc.zoot.DragAndDropOperation createDragAndDropOperation() {
-		return new org.alice.ide.operations.DefaultDragAndDropOperation();
+	protected edu.cmu.cs.dennisc.croquet.DragOperation createDragOperation() {
+		return new org.alice.ide.operations.DefaultDragOperation();
 	}
 	@Override
 	protected void adding() {
 		super.adding();
-		if( this.dragAndDropOperation != null ) {
+		if( this.dragOperation != null ) {
 			//pass
 		} else {
-			this.dragAndDropOperation = this.createDragAndDropOperation();
+			this.dragOperation = this.createDragOperation();
 		}
-		this.setDragAndDropOperation( this.dragAndDropOperation );
+		this.setDragOperation( this.dragOperation );
 	}
 	@Override
 	protected void removed() {

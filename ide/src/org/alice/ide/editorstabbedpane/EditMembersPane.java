@@ -48,10 +48,10 @@ import edu.cmu.cs.dennisc.alice.ast.MemberDeclaredInAlice;;
 */
 public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends org.alice.ide.InputPanel< Boolean > {
 	private edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType;
-	private javax.swing.JList list;
+	private edu.cmu.cs.dennisc.croquet.KList< T > list;
 	public EditMembersPane( edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice declaringType, edu.cmu.cs.dennisc.property.ListProperty< T > listProperty ) {
 		this.declaringType = declaringType;
-		this.list = new javax.swing.JList();
+		this.list = new edu.cmu.cs.dennisc.croquet.KList< T >();
 		list.setCellRenderer( new edu.cmu.cs.dennisc.javax.swing.renderers.ContentsCachingListCellRenderer< T >() {
 			@Override
 			protected java.awt.Component createComponent(T value) {
@@ -67,12 +67,12 @@ public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends
 
 		final edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel< T > listModel = edu.cmu.cs.dennisc.javax.swing.models.ListPropertyListModel.createInstance( listProperty );
 		list.setModel( listModel );
-		class EditableMemberListPane extends edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< T > {
+		class EditableMemberListPane extends AbstractEditableListPane< T > {
 			public EditableMemberListPane() {
 				super( edu.cmu.cs.dennisc.alice.Project.GROUP_UUID, list );
 			}
 			@Override
-			protected edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID ) {
+			protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID ) {
 				return EditMembersPane.this.createEditOperation( groupUUID, "Edit..." );
 			}
 			@Override
@@ -118,7 +118,7 @@ public abstract class EditMembersPane< T extends MemberDeclaredInAlice > extends
 				return createMember( EditMembersPane.this.declaringType );
 			}
 		}
-		edu.cmu.cs.dennisc.zoot.list.AbstractEditableListPane< T > editableListPane = new EditableMemberListPane();
+		AbstractEditableListPane< T > editableListPane = new EditableMemberListPane();
 		editableListPane.setBorder( javax.swing.BorderFactory.createEmptyBorder( 8, 8, 8, 8 ) );
 		this.addComponent( editableListPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
 	}

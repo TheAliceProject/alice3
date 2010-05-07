@@ -339,19 +339,6 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private int rootDividerLocation = 320;
 	private int leftDividerLocation = 240;
 
-	private class RightPanel extends edu.cmu.cs.dennisc.croquet.KGridBagPanel {
-		public RightPanel( edu.cmu.cs.dennisc.croquet.KComponent< ? > ubiquitousPane, edu.cmu.cs.dennisc.croquet.KComponent< ? > editorsTabbedPane ) {
-			java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
-			gbc.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
-			gbc.fill = java.awt.GridBagConstraints.BOTH;
-			gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-			gbc.weightx = 1.0;
-			this.addComponent( ubiquitousPane, gbc );
-			gbc.weighty = 1.0;
-			this.addComponent( editorsTabbedPane, gbc );
-		}
-	}
-	
 	private edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin concealedBin = new edu.cmu.cs.dennisc.javax.swing.components.JConcealedBin();
 	private org.alice.ide.sceneeditor.AbstractSceneEditor sceneEditor;
 	private org.alice.ide.gallerybrowser.AbstractGalleryBrowser galleryBrowser;
@@ -360,7 +347,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	private org.alice.ide.ubiquitouspane.UbiquitousPane ubiquitousPane;
 
 	private edu.cmu.cs.dennisc.croquet.KVerticalSplitPane left = new edu.cmu.cs.dennisc.croquet.KVerticalSplitPane();
-	private RightPanel right = new RightPanel( this.ubiquitousPane, this.editorsTabbedPane );
+	private edu.cmu.cs.dennisc.croquet.KBorderPanel right = new edu.cmu.cs.dennisc.croquet.KBorderPanel();
 	private edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane root = new edu.cmu.cs.dennisc.croquet.KHorizontalSplitPane( left, right );
 
 	public void setSceneEditorExpanded( boolean isSceneEditorExpanded ) {
@@ -628,6 +615,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.editorsTabbedPane = this.createEditorsTabbedPane();
 		this.ubiquitousPane = this.createUbiquitousPane();
 
+		this.right.addComponent( this.ubiquitousPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.NORTH );
+		this.right.addComponent( this.editorsTabbedPane, edu.cmu.cs.dennisc.croquet.KBorderPanel.CardinalDirection.CENTER );
+		
 		//edu.cmu.cs.dennisc.swing.InputPane.setDefaultOwnerFrame( this );
 		this.vmForRuntimeProgram = createVirtualMachineForRuntimeProgram();
 		this.vmForSceneEditor = createVirtualMachineForSceneEditor();
@@ -759,9 +749,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	private ComponentStencil stencil;
-	private java.util.List< ? extends java.awt.Component > holes = null;
+	private java.util.List< ? extends edu.cmu.cs.dennisc.croquet.KComponent< ? > > holes = null;
 	private edu.cmu.cs.dennisc.croquet.KDragControl potentialDragSource;
-	private java.awt.Component currentDropReceptorComponent;
+	private edu.cmu.cs.dennisc.croquet.KComponent< ? > currentDropReceptorComponent;
 
 	protected boolean isFauxStencilDesired() {
 		return this.isDragInProgress;
@@ -799,9 +789,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 					}
 
 					if( isFauxStencilDesired() ) {
-						for( java.awt.Component component : IDE.this.holes ) {
+						for( edu.cmu.cs.dennisc.croquet.KComponent< ? > component : IDE.this.holes ) {
 							java.awt.Rectangle holeBounds = component.getBounds();
-							holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent(), holeBounds, this );
+							holeBounds = component.getParent().convertRectangle( holeBounds, this );
 							area.subtract( new java.awt.geom.Area( holeBounds ) );
 						}
 
@@ -813,9 +803,9 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 					g2.setStroke( THICK_STROKE );
 					final int BUFFER = 6;
-					for( java.awt.Component component : IDE.this.holes ) {
+					for( edu.cmu.cs.dennisc.croquet.KComponent< ? > component : IDE.this.holes ) {
 						java.awt.Rectangle holeBounds = component.getBounds();
-						holeBounds = javax.swing.SwingUtilities.convertRectangle( component.getParent(), holeBounds, this );
+						holeBounds = component.getParent().convertRectangle( holeBounds, this );
 						holeBounds.x -= BUFFER;
 						holeBounds.y -= BUFFER;
 						holeBounds.width += 2 * BUFFER;
@@ -940,10 +930,10 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		this.disableRendering( reasonToDisableSomeAmountOfRendering );
 	}
 	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
-		if( this.stencil != null && this.holes != null ) {
-			this.stencil.repaint();
-		}
+//		this.currentDropReceptorComponent = dragAndDropContext.getCurrentDropReceptor().getAWTComponent();
+//		if( this.stencil != null && this.holes != null ) {
+//			this.stencil.repaint();
+//		}
 	}
 	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
 		this.currentDropReceptorComponent = null;
@@ -1056,13 +1046,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 	}
 
 	protected abstract void promptForLicenseAgreements();
-
-	public void performIfAppropriate( edu.cmu.cs.dennisc.zoot.ActionOperation actionOperation, java.util.EventObject e, boolean isCancelWorthwhile ) {
-		edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( actionOperation, e, isCancelWorthwhile );
-	}
-
 	private java.awt.Window splashScreen;
-
 	public java.awt.Window getSplashScreen() {
 		return this.splashScreen;
 	}

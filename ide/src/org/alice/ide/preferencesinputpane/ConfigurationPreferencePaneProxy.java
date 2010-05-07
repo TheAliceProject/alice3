@@ -48,7 +48,7 @@ package org.alice.ide.preferencesinputpane;
 public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.ide.preferences.programming.Configuration> {
 	class ConfigurationSelectionOperation extends org.alice.ide.operations.AbstractItemSelectionOperation<org.alice.ide.preferences.programming.Configuration> {
 		public ConfigurationSelectionOperation( org.alice.ide.preferences.programming.Configuration... panes ) {
-			super( new javax.swing.DefaultComboBoxModel( panes ) );
+			super( java.util.UUID.fromString( "68071aa4-895c-4d30-8b8a-5bbcc5262586" ), new javax.swing.DefaultComboBoxModel( panes ) );
 		}
 		
 		@Override
@@ -57,12 +57,12 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		}
 	}
 
-	class ConfigurationComboBox extends edu.cmu.cs.dennisc.zoot.ZComboBox {
-		public ConfigurationComboBox( org.alice.ide.preferences.programming.Configuration[] configurations ) {
-			super( new ConfigurationSelectionOperation( configurations ) );
-			//this.setCellRenderer( new PerspectiveListCellRenderer() );
-		}
-	}
+//	class ConfigurationComboBox extends edu.cmu.cs.dennisc.croquet.KComboBox {
+//		public ConfigurationComboBox( org.alice.ide.preferences.programming.Configuration[] configurations ) {
+//			super( new ConfigurationSelectionOperation( configurations ) );
+//			//this.setCellRenderer( new PerspectiveListCellRenderer() );
+//		}
+//	}
 	
 	class ConfigurationPreview extends edu.cmu.cs.dennisc.croquet.KRowsSpringPanel {
 		private edu.cmu.cs.dennisc.croquet.KLabel isDefaultFieldNameGenerationDesiredLabel;
@@ -153,7 +153,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		super( preference );
 		edu.cmu.cs.dennisc.croquet.Application application = edu.cmu.cs.dennisc.croquet.Application.getSingleton();
 		org.alice.ide.preferences.programming.Configuration[] configurations = org.alice.ide.preferences.ProgrammingPreferences.getSingleton().getBuiltInPreferenceNodes();
-		ConfigurationComboBox activeConfigurationComboBox = new ConfigurationComboBox( configurations );
+		edu.cmu.cs.dennisc.croquet.KComboBox<org.alice.ide.preferences.programming.Configuration> activeConfigurationComboBox = edu.cmu.cs.dennisc.croquet.Application.getSingleton().createComboBox( new ConfigurationSelectionOperation( configurations ) );
 		activeConfigurationComboBox.setSelectedIndex( 0 );
 		EditVariantOperation editVariantOperation = new EditVariantOperation();
 		editVariantOperation.setEnabled( false );
@@ -170,7 +170,7 @@ public class ConfigurationPreferencePaneProxy extends PreferenceProxy<org.alice.
 		importVariantOperation.setToolTipText( "coming soon" );
 
 		edu.cmu.cs.dennisc.croquet.KLineAxisPanel northTopPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 
-				new edu.cmu.cs.dennisc.croquet.KSwingAdapter( activeConfigurationComboBox ), 
+				activeConfigurationComboBox, 
 				application.createButton( editVariantOperation ), 
 				application.createButton( removeVariantOperation ) );
 		edu.cmu.cs.dennisc.croquet.KLineAxisPanel northBottomPane = new edu.cmu.cs.dennisc.croquet.KLineAxisPanel( 

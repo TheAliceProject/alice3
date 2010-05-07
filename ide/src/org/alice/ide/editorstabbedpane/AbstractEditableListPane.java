@@ -40,33 +40,49 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.alice.ide.operations;
-
+package org.alice.ide.editorstabbedpane;
 
 /**
  * @author Dennis Cosgrove
  */
-@Deprecated
-public class DefaultDragAndDropOperation extends edu.cmu.cs.dennisc.croquet.DragOperation {
-	public DefaultDragAndDropOperation( java.util.UUID individualId ) {
-		super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, individualId );
+public abstract class AbstractEditableListPane< E > extends AbstractEditableListLikeSubstancePane< E > {
+	public AbstractEditableListPane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.croquet.KList< E > list ) {
+		super( groupUUID, list );
 	}
-	protected org.alice.ide.IDE getIDE() {
-		return org.alice.ide.IDE.getSingleton();
+	public edu.cmu.cs.dennisc.croquet.KList< E > getList() {
+		return (edu.cmu.cs.dennisc.croquet.KList< E >)this.getListLikeSubstance();
 	}
-	public java.util.List< ? extends edu.cmu.cs.dennisc.croquet.DropReceptor > createListOfPotentialDropReceptors( edu.cmu.cs.dennisc.croquet.KDragControl dragSource ) {
-		return getIDE().createListOfPotentialDropReceptors( dragSource );
+	@Override
+	protected int getSelectedIndex() {
+		return this.getList().getJComponent().getSelectionModel().getMinSelectionIndex();
 	}
-	public void handleDragStarted( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStarted( dragAndDropContext );
+	@Override
+	protected void setSelectedIndex( int index ) {
+		this.getList().getJComponent().getSelectionModel().setSelectionInterval( index, index );
 	}
-	public void handleDragEnteredDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragEnteredDropReceptor( dragAndDropContext );
+	@Override
+	protected E getItemAt( int index ) {
+		return (E)this.getList().getModel().getElementAt( index );
 	}
-	public void handleDragExitedDropReceptor( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragExitedDropReceptor( dragAndDropContext );
+	@Override
+	protected int getListSize() {
+		return this.getList().getModel().getSize();
 	}
-	public void handleDragStopped( edu.cmu.cs.dennisc.zoot.DragAndDropContext dragAndDropContext ) {
-		getIDE().handleDragStopped( dragAndDropContext );
+	
+	private javax.swing.event.ListSelectionListener listSelectionListener = new javax.swing.event.ListSelectionListener() {
+		public void valueChanged( javax.swing.event.ListSelectionEvent e ) {
+			updateOperationsEnabledStates();
+		}
+	};
+	
+	@Override
+	protected void adding() {
+		super.adding();
+		this.getList().getJComponent().getSelectionModel().addListSelectionListener( this.listSelectionListener );
+	}
+	@Override
+	protected void removed() {
+		this.getList().getJComponent().getSelectionModel().removeListSelectionListener( this.listSelectionListener );
+		super.removed();
 	}
 }

@@ -366,7 +366,15 @@ public class Context extends HistoryTreeNode {
 	public void cancel() {
 		this.addChild( new CancelEvent( this ) );
 	}
-
+	
+	@Deprecated
+	public void pend( Resolver< ?, ? > resolver ) {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public void todo() {
+		throw new RuntimeException( "todo" );
+	}
 //	/*package-private*/void handleItemStateChanged( BooleanStateOperation booleanStateOperation, java.awt.event.ItemEvent e ) {
 //		this.addChild( new BooleanStateEvent( this, booleanStateOperation, e ) );
 //		booleanStateOperation.perform( this, e );
@@ -503,4 +511,165 @@ public class Context extends HistoryTreeNode {
 	////		assert isGoodToReturn( rv );
 	////		return rv;
 	////	}
+
+//	class DefaultDragAndDropContext extends AbstractContext< DragAndDropOperation > implements DragAndDropContext {
+//		private DropReceptorInfo[] potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+//		private DropReceptor currentDropReceptor;
+//		private java.awt.event.MouseEvent latestMouseEvent;
+//
+//		public DefaultDragAndDropContext( DragAndDropOperation operation, java.awt.event.MouseEvent originalMouseEvent, java.awt.event.MouseEvent latestMouseEvent, java.util.List< ? extends DropReceptor > potentialDropReceptors ) {
+//			super( operation, originalMouseEvent, ZManager.CANCEL_IS_WORTHWHILE );
+//			this.setLatestMouseEvent( latestMouseEvent );
+//			this.potentialDropReceptorInfos = new DropReceptorInfo[ potentialDropReceptors.size() ];
+//			int i = 0;
+//			for( DropReceptor dropReceptor : potentialDropReceptors ) {
+//				KComponent< ? > dropComponent = dropReceptor.getComponent();
+//				java.awt.Rectangle bounds = dropComponent.getBounds();
+//				bounds = dropComponent.getParent().convertRectangle( bounds, this.getDragSource() );
+//				this.potentialDropReceptorInfos[ i ] = new DropReceptorInfo( dropReceptor, bounds );
+//				i++;
+//			}
+//			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+//				//todo: pass original mouse pressed event?
+//				dropReceptorInfo.getDropReceptor().dragStarted( this );
+//			}
+//		}
+//
+//		public java.awt.event.MouseEvent getOriginalMouseEvent() {
+//			return (java.awt.event.MouseEvent)this.getEvent();
+//		}
+//		public java.awt.event.MouseEvent getLatestMouseEvent() {
+//			return this.latestMouseEvent;
+//		}
+//		public void setLatestMouseEvent( java.awt.event.MouseEvent latestMouseEvent ) {
+//			this.latestMouseEvent = latestMouseEvent;
+//		}
+//
+//		public KDragControl getDragSource() {
+//			java.util.EventObject e = getEvent();
+//			if( e != null ) {
+//				return (KDragControl)e.getSource();
+//			} else {
+//				return null;
+//			}
+//		}
+//		public DropReceptor getCurrentDropReceptor() {
+//			return this.currentDropReceptor;
+//		}
+//		public void setCurrentDropReceptor( DropReceptor currentDropReceptor ) {
+//			this.currentDropReceptor = currentDropReceptor;
+//		}
+//		private DropReceptor getDropReceptorUnder( int x, int y ) {
+//			DropReceptor rv = null;
+//			int prevHeight = Integer.MAX_VALUE;
+//			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+//				assert dropReceptorInfo != null;
+//				if( dropReceptorInfo.contains( x, y ) ) {
+//					java.awt.Rectangle bounds = dropReceptorInfo.getBounds();
+//					assert bounds != null;
+//					int nextHeight = bounds.height;
+//					if( nextHeight < prevHeight ) {
+//						rv = dropReceptorInfo.getDropReceptor();
+//						prevHeight = nextHeight;
+//					}
+//				}
+//			}
+//			return rv;
+//		}
+//		private DropReceptor getDropReceptorUnder( java.awt.Rectangle bounds ) {
+//			DropReceptor rv = null;
+//			int prevHeight = Integer.MAX_VALUE;
+//			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+//				if( dropReceptorInfo.intersects( bounds ) ) {
+//					int nextHeight = dropReceptorInfo.getBounds().height;
+//					if( nextHeight < prevHeight ) {
+//						rv = dropReceptorInfo.getDropReceptor();
+//						prevHeight = nextHeight;
+//					}
+//				}
+//			}
+//			return rv;
+//		}
+//		protected DropReceptor getDropReceptorUnder( java.awt.event.MouseEvent e ) {
+//			DropReceptor rv = getDropReceptorUnder( e.getX(), e.getY() );
+//			if( rv != null ) {
+//				//pass
+//			} else {
+//				if( KDragControl.this.dragProxy != null ) {
+//					java.awt.Rectangle dragBounds = KDragControl.this.dragProxy.getBounds();
+//					dragBounds = javax.swing.SwingUtilities.convertRectangle( KDragControl.this.dragProxy.getParent(), dragBounds, this.getDragSource().getJComponent() );
+//					int x = dragBounds.x;
+//					int y = dragBounds.y + dragBounds.height / 2;
+//					rv = getDropReceptorUnder( x, y );
+//					if( rv != null ) {
+//						//pass
+//					} else {
+//						rv = getDropReceptorUnder( dragBounds );
+//					}
+//				}
+//			}
+//			return rv;
+//		}
+//		public void handleMouseDragged( java.awt.event.MouseEvent e ) {
+//			this.setLatestMouseEvent( e );
+//			DropReceptor nextDropReceptor = getDropReceptorUnder( e );
+//			if( this.currentDropReceptor != nextDropReceptor ) {
+//				if( this.currentDropReceptor != null ) {
+//					KDragControl.this.dragAndDropOperation.handleDragExitedDropReceptor( this );
+//					this.currentDropReceptor.dragExited( this, false );
+//				}
+//				this.currentDropReceptor = nextDropReceptor;
+//				if( this.currentDropReceptor != null ) {
+//					this.currentDropReceptor.dragEntered( this );
+//					KDragControl.this.dragAndDropOperation.handleDragEnteredDropReceptor( this );
+//				}
+//			}
+//			if( KDragControl.this.dragProxy != null ) {
+//				KDragControl.this.dragProxy.setOverDropAcceptor( this.currentDropReceptor != null );
+//			}
+//			if( this.currentDropReceptor != null ) {
+//				this.currentDropReceptor.dragUpdated( this );
+//			}
+//		}
+//		public void handleMouseReleased( java.awt.event.MouseEvent e ) {
+//			this.setLatestMouseEvent( e );
+//			if( this.currentDropReceptor != null ) {
+//				this.currentDropReceptor.dragDropped( this );
+//				this.currentDropReceptor.dragExited( this, true );
+//			}
+//			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+//				dropReceptorInfo.getDropReceptor().dragStopped( this );
+//			}
+//			KDragControl.this.dragAndDropOperation.handleDragStopped( this );
+//			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+//		}
+//		public void handleCancel( java.util.EventObject e ) {
+//			if( this.currentDropReceptor != null ) {
+//				this.currentDropReceptor.dragExited( this, false );
+//			}
+//			for( DropReceptorInfo dropReceptorInfo : this.potentialDropReceptorInfos ) {
+//				dropReceptorInfo.getDropReceptor().dragStopped( this );
+//			}
+//			KDragControl.this.dragAndDropOperation.handleDragStopped( this );
+//			this.potentialDropReceptorInfos = new DropReceptorInfo[ 0 ];
+//			KDragControl.this.hideDropProxyIfNecessary();
+//		}
+//	}
+	public java.awt.event.MouseEvent getOriginalMouseEvent() {
+		throw new RuntimeException( "todo" );
+	}
+	public java.awt.event.MouseEvent getLatestMouseEvent() {
+		throw new RuntimeException( "todo" );
+	}
+	
+	public KDragControl getDragSource() {
+		throw new RuntimeException( "todo" );
+	}
+	public DropReceptor getCurrentDropReceptor() {
+		throw new RuntimeException( "todo" );
+	}
+	@Deprecated
+	public java.awt.event.MouseEvent getMouseEvent() {
+		throw new RuntimeException( "todo" );
+	}
 }

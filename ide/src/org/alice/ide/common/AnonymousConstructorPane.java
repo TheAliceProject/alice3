@@ -57,7 +57,10 @@ class MethodPane extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
 		this.setOpaque( true );
 		this.setBorder( javax.swing.BorderFactory.createEmptyBorder( 4, 4, 4, 4 ) );
 		this.setBackgroundColor( org.alice.ide.IDE.getSingleton().getProcedureColor() );
-		this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK | java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
+		
+		
+		throw new RuntimeException( "todo: enableEvents" );
+		//this.enableEvents( java.awt.AWTEvent.MOUSE_EVENT_MASK | java.awt.AWTEvent.MOUSE_MOTION_EVENT_MASK );
 	}
 }
 

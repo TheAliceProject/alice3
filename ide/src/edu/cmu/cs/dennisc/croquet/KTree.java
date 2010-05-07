@@ -47,9 +47,9 @@ package edu.cmu.cs.dennisc.croquet;
  * @author Dennis Cosgrove
  */
 public class KTree<E> extends KComponent< javax.swing.JTree > {
-	public KTree( javax.swing.tree.TreeModel treeModel ) {
-		this.getJComponent().setModel( treeModel );
-	}
+//	public KTree( javax.swing.tree.TreeModel treeModel ) {
+//		this.getJComponent().setModel( treeModel );
+//	}
 	@Override
 	protected javax.swing.JTree createJComponent() {
 		return new javax.swing.JTree();
@@ -64,5 +64,25 @@ public class KTree<E> extends KComponent< javax.swing.JTree > {
 		for( int i=0; i<this.getJComponent().getRowCount(); i++ ) {
 			this.getJComponent().collapseRow( i );
 		}
+	}
+
+	@Deprecated
+	public javax.swing.tree.TreeModel getModel() {
+		return this.getJComponent().getModel();
+	}
+	@Deprecated
+	public void setModel( javax.swing.tree.TreeModel model ) {
+		this.getJComponent().setModel( model );
+	}
+
+	public javax.swing.tree.TreeCellRenderer getCellRenderer() {
+		return this.getJComponent().getCellRenderer();
+	}
+	public void setCellRenderer( javax.swing.tree.TreeCellRenderer listCellRenderer ) {
+		this.getJComponent().setCellRenderer( listCellRenderer );
+	}
+	@Deprecated
+	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
+		throw new RuntimeException( "todo" );
 	}
 }

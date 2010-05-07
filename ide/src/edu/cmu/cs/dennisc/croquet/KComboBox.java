@@ -46,10 +46,38 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public interface DragAndDropContext {
-	public java.awt.event.MouseEvent getOriginalMouseEvent();
-	public java.awt.event.MouseEvent getLatestMouseEvent();
-	
-	public KDragControl getDragSource();
-	public DropReceptor getCurrentDropReceptor();
+public class KComboBox< E > extends KComponent< javax.swing.JComboBox > {
+	@Override
+	protected javax.swing.JComboBox createJComponent() {
+		return new javax.swing.JComboBox();
+	}
+	public javax.swing.ListCellRenderer getRenderer() {
+		return this.getJComponent().getRenderer();
+	}
+	public void setRenderer( javax.swing.ListCellRenderer listCellRenderer ) {
+		this.getJComponent().setRenderer( listCellRenderer );
+	}
+	public int getMaximumRowCount() {
+		return this.getJComponent().getMaximumRowCount();
+	}
+	public void setMaximumRowCount( int maximumRowCount ) {
+		this.getJComponent().setMaximumRowCount( maximumRowCount );
+	}
+
+	@Deprecated
+	public void setSelectedIndex( int index ) {
+		this.getJComponent().setSelectedIndex( index );
+	}
+	@Deprecated
+	public E getSelectedItem() {
+		return (E)this.getJComponent().getSelectedItem();
+	}
+	@Deprecated
+	public void setSelectedItem( E item ) {
+		this.getJComponent().setSelectedItem( item );
+	}
+	@Deprecated
+	public void setItemSelectionOperation( ItemSelectionOperation< E > operation ) {
+		throw new RuntimeException( "todo" );
+	}
 }

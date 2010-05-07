@@ -40,66 +40,67 @@
  * THE USE OF OR OTHER DEALINGS WITH THE SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package edu.cmu.cs.dennisc.zoot.list;
+package org.alice.ide.editorstabbedpane;
 
 /**
  * @author Dennis Cosgrove
  */
-public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.javax.swing.components.JBorderPane {
-	class AddItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.cs.dennisc.croquet.KBorderPanel {
+	class AddItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
 		public AddItemOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID );
+			super( groupUUID, java.util.UUID.fromString( "118ab33a-8c1a-4207-80d1-88edd555ca61" ) );
 			this.setName( name );
 		}
-		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 			try {
-				final E e = createItem();
+				final E item = createItem();
 				final int index = getListSize();
-				actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
-						add( index, e );
+						add( index, item );
 					}
 					@Override
 					public void undo() {
-						remove( index, e );
+						remove( index, item );
 					}
 					@Override
 					protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
 						rv.append( "add: " );
-						rv.append( e );
+						rv.append( item );
 						return rv;
 					}
 				});
-			//todo
-			} catch( Exception e ) {
-				actionContext.cancel();
+			} catch( Exception exception ) {
+				context.todo();
 			}
 		}
 	}
 
-	class RemoveItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
+	class RemoveItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
 		public RemoveItemOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID );
+			super( groupUUID, java.util.UUID.fromString( "230c56bc-6735-486c-a6f7-0451ee3714e7" ) );
 			this.setName( name );
 		}
-		public void perform( edu.cmu.cs.dennisc.zoot.ActionContext actionContext ) {
+		@Override
+		protected void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 			final int index = getSelectedIndex();
 			if( index >= 0 ) {
-				final E e = getItemAt( index );
-				actionContext.commitAndInvokeDo(new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+				final E item = getItemAt( index );
+				context.commitAndInvokeDo(new org.alice.ide.ToDoEdit() {
 					@Override
 					public void doOrRedo( boolean isDo ) {
-						remove( index, e );
+						remove( index, item );
 					}
 					@Override
 					public void undo() {
-						add( index, e );
+						add( index, item );
 					}
 					@Override
 					protected StringBuffer updatePresentation( StringBuffer rv, java.util.Locale locale ) {
 						rv.append( "remove: " );
-						rv.append( e );
+						rv.append( item );
 						return rv;
 					}
 				});
@@ -109,17 +110,18 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		}
 	}
 
-	abstract class AbstractMoveItemOperation extends edu.cmu.cs.dennisc.zoot.AbstractActionOperation {
-		public AbstractMoveItemOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID );
+	abstract class AbstractMoveItemOperation extends edu.cmu.cs.dennisc.croquet.AbstractActionOperation {
+		public AbstractMoveItemOperation( java.util.UUID groupId, java.util.UUID individualId, String name ) {
+			super( groupId, individualId );
 			this.setName( name );
 		}
 		protected abstract int getIndex( int selectedIndex );
 		protected abstract int getRedoSelectionIndexDelta();
 		protected abstract int getUndoSelectionIndexDelta();
-		public final void perform(edu.cmu.cs.dennisc.zoot.ActionContext actionContext) {
+		@Override
+		protected final void perform( edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.KAbstractButton< ? > button ) {
 			final int index = this.getIndex( getSelectedIndex() );
-			actionContext.commitAndInvokeDo( new edu.cmu.cs.dennisc.zoot.AbstractEdit() {
+			context.commitAndInvokeDo( new org.alice.ide.ToDoEdit() {
 				private void swapWithNext( int index ) {
 					if( index >= 0 ) {
 						E e0 = getItemAt( index );
@@ -149,7 +151,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 
 	class MoveItemUpOperation extends AbstractMoveItemOperation {
 		public MoveItemUpOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID, name );
+			super( groupUUID, java.util.UUID.fromString( "d0174767-da0b-42ed-9174-1c3a1e6ed09d" ), name );
 		}
 		@Override
 		protected int getIndex(int selectedIndex) {
@@ -167,7 +169,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 
 	class MoveItemDownOperation extends AbstractMoveItemOperation {
 		public MoveItemDownOperation( java.util.UUID groupUUID, String name ) {
-			super( groupUUID, name );
+			super( groupUUID, java.util.UUID.fromString( "2443e57e-f8ff-4a80-8fcb-9d8bf72f13d7" ), name );
 		}
 		@Override
 		protected int getIndex(int selectedIndex) {
@@ -183,7 +185,7 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		}
 	}
 
-	protected abstract edu.cmu.cs.dennisc.zoot.ActionOperation createEditOperation( java.util.UUID groupUUID );
+	protected abstract edu.cmu.cs.dennisc.croquet.AbstractActionOperation createEditOperation( java.util.UUID groupUUID );
 	protected abstract E createItem() throws Exception;
 	protected abstract void add( int index, E e );
 	protected abstract void remove( int index, E e );
@@ -194,14 +196,15 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 	protected abstract void setSelectedIndex( int index );
 	
 
-	private java.awt.Component listLikeSubstance;
+	private edu.cmu.cs.dennisc.croquet.KComponent< ? > listLikeSubstance;
 	private AddItemOperation addItemOperation;
 	private RemoveItemOperation removeItemOperation;
-	private edu.cmu.cs.dennisc.zoot.ActionOperation editItemOperation;
+	private edu.cmu.cs.dennisc.croquet.AbstractActionOperation editItemOperation;
 	private MoveItemUpOperation moveItemUpOperation;
 	private MoveItemDownOperation moveItemDownOperation;
 
-	public AbstractEditableListLikeSubstancePane( java.util.UUID groupUUID, java.awt.Component listLikeSubstance ) {
+	public AbstractEditableListLikeSubstancePane( java.util.UUID groupUUID, edu.cmu.cs.dennisc.croquet.KComponent< ? > listLikeSubstance ) {
+		super( 8, 0 );
 		this.listLikeSubstance = listLikeSubstance;
 		this.addItemOperation = new AddItemOperation( groupUUID, this.getAddItemOperationName() );
 		this.editItemOperation = this.createEditOperation( groupUUID );
@@ -209,30 +212,29 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		this.moveItemUpOperation = new MoveItemUpOperation( groupUUID, this.getMoveItemUpOperationName() );
 		this.moveItemDownOperation = new MoveItemDownOperation( groupUUID, this.getMoveItemDownOperationName() );
 		
-		this.setLayout( new java.awt.BorderLayout( 8, 0 ) );
 
-		edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane buttonPane = new edu.cmu.cs.dennisc.javax.swing.components.JGridBagPane();
+		edu.cmu.cs.dennisc.croquet.KGridBagPanel buttonPane = new edu.cmu.cs.dennisc.croquet.KGridBagPanel();
 		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
-		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.addItemOperation ), gbc );
-		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.editItemOperation ), gbc );
-		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.removeItemOperation ), gbc );
+		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( this.addItemOperation ), gbc );
+		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( this.editItemOperation ), gbc );
+		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( this.removeItemOperation ), gbc );
 		gbc.insets.top = 8;
-		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemUpOperation ), gbc );
+		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( this.moveItemUpOperation ), gbc );
 		gbc.insets.top = 0;
-		buttonPane.add( edu.cmu.cs.dennisc.zoot.ZManager.createButton( this.moveItemDownOperation ), gbc );
+		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.Application.getSingleton().createButton( this.moveItemDownOperation ), gbc );
 		gbc.weighty = 1.0;
-		buttonPane.add( javax.swing.Box.createGlue(), gbc );
+		buttonPane.addComponent( edu.cmu.cs.dennisc.croquet.BoxUtilities.createGlue(), gbc );
 
-		this.add( buttonPane, java.awt.BorderLayout.EAST );
+		this.addComponent( buttonPane, CardinalDirection.EAST );
 
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane( this.listLikeSubstance );
+		edu.cmu.cs.dennisc.croquet.KScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.KScrollPane( this.listLikeSubstance );
 		scrollPane.setBorder( null );
-		this.add( scrollPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( scrollPane, CardinalDirection.CENTER );
 	}
 
-	public java.awt.Component getListLikeSubstance() {
+	public edu.cmu.cs.dennisc.croquet.KComponent< ? > getListLikeSubstance() {
 		return this.listLikeSubstance;
 	}
 	
@@ -240,22 +242,24 @@ public abstract class AbstractEditableListLikeSubstancePane<E> extends edu.cmu.c
 		@Override
 		protected void mouseQuoteClickedUnquote( java.awt.event.MouseEvent e, int quoteClickCountUnquote ) {
 			if( quoteClickCountUnquote == 2 ) {
-				edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( editItemOperation, e, true );
+				editItemOperation.fire();
 			}
 		}
 	};
+	
 	@Override
-	public void addNotify() {
+	protected void adding() {
+		super.adding();
 		this.updateOperationsEnabledStates();
 		this.listLikeSubstance.addMouseListener( this.lenientMouseClickAdapter );
 		this.listLikeSubstance.addMouseMotionListener( this.lenientMouseClickAdapter );
-		super.addNotify();
 	}
+	
 	@Override
-	public void removeNotify() {
+	protected void removed() {
 		this.listLikeSubstance.removeMouseMotionListener( this.lenientMouseClickAdapter );
 		this.listLikeSubstance.removeMouseListener( this.lenientMouseClickAdapter );
-		super.removeNotify();
+		super.removed();
 	}
 	
 	protected String getAddItemOperationName() {

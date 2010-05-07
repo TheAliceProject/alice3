@@ -47,7 +47,7 @@ package org.alice.ide.codeeditor;
  */
 public class MethodHeaderPane extends AbstractCodeHeaderPane {
 	private edu.cmu.cs.dennisc.croquet.KLabel nameLabel;
-	private edu.cmu.cs.dennisc.zoot.ActionOperation popupOperation;
+	private edu.cmu.cs.dennisc.croquet.PopupMenuOperation popupOperation;
 	private java.awt.event.MouseListener mouseAdapter = new java.awt.event.MouseListener() {
 		public void mouseEntered( java.awt.event.MouseEvent e ) {
 		}
@@ -55,7 +55,7 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		}
 		public void mousePressed( java.awt.event.MouseEvent e ) {
 			if( javax.swing.SwingUtilities.isRightMouseButton( e ) ) {
-				edu.cmu.cs.dennisc.zoot.ZManager.performIfAppropriate( MethodHeaderPane.this.popupOperation, e, edu.cmu.cs.dennisc.zoot.ZManager.CANCEL_IS_WORTHWHILE );
+				MethodHeaderPane.this.popupOperation.fire();
 			}
 		}
 		public void mouseReleased( java.awt.event.MouseEvent e ) {
@@ -91,8 +91,10 @@ public class MethodHeaderPane extends AbstractCodeHeaderPane {
 		if( methodDeclaredInAlice.isSignatureLocked.getValue() ) {
 			//pass
 		} else {
-			this.popupOperation = new edu.cmu.cs.dennisc.zoot.DefaultPopupActionOperation(
-				new org.alice.ide.operations.ast.RenameMethodOperation( methodDeclaredInAlice ) 
+			this.popupOperation = new edu.cmu.cs.dennisc.croquet.PopupMenuOperation(
+					edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,
+					java.util.UUID.fromString( "e5c3fed5-6498-421e-9208-0484725adcef" ),
+					new org.alice.ide.operations.ast.RenameMethodOperation( methodDeclaredInAlice ) 
 			);
 		}
 
