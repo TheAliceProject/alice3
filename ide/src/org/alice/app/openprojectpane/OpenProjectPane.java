@@ -44,10 +44,14 @@
 package org.alice.app.openprojectpane;
 
 abstract class ComingSoonTabPane extends TabContentPane {
-	public ComingSoonTabPane( java.util.UUID individualId ) {
-		super( individualId );
-		setEnabled( false );
-		setToolTipText( "coming soon" );
+	public ComingSoonTabPane( java.util.UUID individualId, String title ) {
+		super( individualId, title );
+		this.setEnabled( false );
+		this.setToolTipText( "coming soon" );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.BorderPanel updateSingletonView(edu.cmu.cs.dennisc.croquet.BorderPanel rv) {
+		return rv;
 	}
 	@Override
 	public java.net.URI getSelectedURI() {
@@ -57,17 +61,13 @@ abstract class ComingSoonTabPane extends TabContentPane {
 
 class TutorialPane extends ComingSoonTabPane {
 	public TutorialPane() {
-		super( java.util.UUID.fromString( "f4ff59f1-cf15-4301-a17a-2d80a4ea6fa4" ) );
-	}
-	@Override
-	public String getTabTitleText() {
-		return "Tutorial";
+		super( java.util.UUID.fromString( "f4ff59f1-cf15-4301-a17a-2d80a4ea6fa4" ), "Tutorial" );
 	}
 }
 
 class MyProjectsPane extends DirectoryListPane {
 	public MyProjectsPane() {
-		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ) );
+		super( java.util.UUID.fromString( "c7fb9c47-f215-47dc-941e-872842ce397e" ), "My Projects" );
 	}
 	@Override
 	public java.io.File getDirectory() {
@@ -78,15 +78,11 @@ class MyProjectsPane extends DirectoryListPane {
 			return org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory();
 		}
 	}
-	@Override
-	public String getTabTitleText() {
-		return "My Projects";
-	}
 }
 
 abstract class ApplicationRootDirectoryListPane extends DirectoryListPane {
-	public ApplicationRootDirectoryListPane( java.util.UUID individualId ) {
-		super( individualId );
+	public ApplicationRootDirectoryListPane( java.util.UUID individualId, String title ) {
+		super( individualId, title );
 	}
 	protected abstract String getSubPath();
 	@Override
@@ -113,36 +109,31 @@ abstract class ApplicationRootDirectoryListPane extends DirectoryListPane {
 
 class ExamplesPane extends ApplicationRootDirectoryListPane {
 	public ExamplesPane() {
-		super( java.util.UUID.fromString( "a8d38b0a-049e-4818-9b81-7c3b7b65a739" ) );
+		super( java.util.UUID.fromString( "a8d38b0a-049e-4818-9b81-7c3b7b65a739" ), "Examples" );
 	}
 	@Override
 	public String getSubPath() {
 		return "projects/examples";
 	}
-	@Override
-	public String getTabTitleText() {
-		return "Examples";
-	}
 }
 
 class TextbookPane extends ApplicationRootDirectoryListPane {
 	public TextbookPane() {
-		super( java.util.UUID.fromString( "033afcdf-29b9-4fbf-b9f5-fb5c496a7860" ) );
+		super( java.util.UUID.fromString( "033afcdf-29b9-4fbf-b9f5-fb5c496a7860" ), "Textbook" );
 	}
 	@Override
 	public String getSubPath() {
 		return "projects/textbook";
-	}
-	@Override
-	public String getTabTitleText() {
-		return "Textbook";
 	}
 }
 
 class FileSystemPane extends TabContentPane {
 	private javax.swing.JTextField textField = new javax.swing.JTextField();
 	public FileSystemPane() {
-		super( java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ) );
+		super( java.util.UUID.fromString( "b1698424-1f0e-4499-852a-da627fa9e789" ), "File System" );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.BorderPanel updateSingletonView(edu.cmu.cs.dennisc.croquet.BorderPanel rv) {
 		this.textField.getDocument().addDocumentListener( new javax.swing.event.DocumentListener() {
 			private void handleUpdate( javax.swing.event.DocumentEvent e ) {
 				FileSystemPane.this.updateOKButton();
@@ -157,26 +148,31 @@ class FileSystemPane extends TabContentPane {
 				this.handleUpdate( e );
 			}
 		} );
-		javax.swing.JButton browseButtton = new javax.swing.JButton( "browse..." );
-		browseButtton.addActionListener( new java.awt.event.ActionListener() {
-			public void actionPerformed( java.awt.event.ActionEvent e ) {
-				FileSystemPane.this.handleBrowse( e );
-			}
-		} );
 		
+		class BrowseOperation extends edu.cmu.cs.dennisc.croquet.ActionOperation {
+			public BrowseOperation() {
+				super( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "67936a64-be55-44d5-9441-4cc3cce5cc75" ) );
+				this.setName( "browse..." );
+			}
+			@Override
+			protected void perform(edu.cmu.cs.dennisc.croquet.Context context, java.awt.event.ActionEvent e, edu.cmu.cs.dennisc.croquet.AbstractButton<?> button) {
+				java.io.File file = edu.cmu.cs.dennisc.croquet.Application.getSingleton().showOpenFileDialog( org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true );
+				if( file != null ) {
+					FileSystemPane.this.textField.setText( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
+				}
+				context.finish();
+			}
+		}
+		
+		BrowseOperation browseOperation = new BrowseOperation();
 		edu.cmu.cs.dennisc.croquet.BorderPanel pane = new edu.cmu.cs.dennisc.croquet.BorderPanel();
 		pane.setOpaque( false );
 		pane.addComponent( new edu.cmu.cs.dennisc.croquet.Label( "file:" ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.WEST );
 		pane.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.textField ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.CENTER );
-		pane.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( browseButtton ), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
+		pane.addComponent( browseOperation.createButton(), edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.EAST );
 
-		this.addComponent( pane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
-	}
-	private void handleBrowse( java.awt.event.ActionEvent e ) {
-		java.io.File file = edu.cmu.cs.dennisc.java.awt.FileDialogUtilities.showOpenFileDialog( this.getJComponent(), org.alice.app.ProjectApplication.getSingleton().getMyProjectsDirectory(), null, edu.cmu.cs.dennisc.alice.project.ProjectUtilities.PROJECT_EXTENSION, true );
-		if( file != null ) {
-			this.textField.setText( edu.cmu.cs.dennisc.java.io.FileUtilities.getCanonicalPathIfPossible( file ) );
-		}
+		rv.addComponent( pane, edu.cmu.cs.dennisc.croquet.BorderPanel.CardinalDirection.NORTH );
+		return rv;
 	}
 	@Override
 	public java.net.URI getSelectedURI() {
@@ -188,10 +184,6 @@ class FileSystemPane extends TabContentPane {
 			return null;
 		}
 	}
-	@Override
-	public String getTabTitleText() {
-		return "File System";
-	}
 }
 
 /**
@@ -199,13 +191,10 @@ class FileSystemPane extends TabContentPane {
  */
 public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, java.util.UUID.fromString( "12e1d59b-2893-4144-b995-08090680a318" ));
-	private edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane;
 	private MyProjectsPane myProjectsPane = new MyProjectsPane();
 	private TabContentPane templatesPane;
 	private FileSystemPane fileSystemPane = new FileSystemPane();
 	private RecentPane recentPane = new RecentPane();
-	
-	private java.util.Map< TabContentPane, edu.cmu.cs.dennisc.croquet.ScrollPane > mapTabPaneToScrollPane = edu.cmu.cs.dennisc.java.util.Collections.newWeakHashMap();
 	public OpenProjectPane( TabContentPane templatesPane ) {
 		this.templatesPane = templatesPane;
 		TabContentPane[] tabPanes = new TabContentPane[] { 
@@ -219,57 +208,40 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 		for( TabContentPane tabPane : tabPanes ) { 
 			if( tabPane != null ) {
 				tabPane.setInputPanel( this );
-				
-				//todo: add scrollpane
-				
-				edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( tabPane );
-				scrollPane.setOpaque( false );
-				scrollPane.setBackgroundColor( tabPane.getBackgroundColor() );
-				scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-				//scrollPane.setHorizontalScrollBarPolicy( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
-				//scrollPane.setVerticalScrollBarPolicy( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
-				
-				this.mapTabPaneToScrollPane.put( tabPane, scrollPane );
-				
-				this.tabSelectionOperation.addTabIsSelectedOperation( tabPane.getTabIsSelectedOperation() );
+				this.tabSelectionOperation.addTabIsSelectedOperation( tabPane );
 				//this.tabbedPane.addTab( tabPane.getTabTitleText(), tabPane.getTabTitleIcon(), scrollPane );
 			}
 		}
-		this.tabbedPane = this.tabSelectionOperation.createTabbedPane();
 //		this.tabbedPane.addVetoableChangeListener( new java.beans.VetoableChangeListener() {
 //			public void vetoableChange( java.beans.PropertyChangeEvent evt ) throws java.beans.PropertyVetoException {
-		this.tabbedPane.addChangeListener( new javax.swing.event.ChangeListener() {
-			public void stateChanged( javax.swing.event.ChangeEvent e ) {
+		this.tabSelectionOperation.addSelectionObserver( new edu.cmu.cs.dennisc.croquet.TabSelectionOperation.SelectionObserver() {
+			public void selecting(edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation prev, edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation next) {
+			}
+			public void selected(edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation prev, edu.cmu.cs.dennisc.croquet.TabIsSelectedOperation next) {
 				OpenProjectPane.this.updateOKButton();
 			}
 		} );
-		this.addComponent( this.tabbedPane, java.awt.BorderLayout.CENTER );
+		this.addComponent( this.tabSelectionOperation.getSingletonTabbedPane(), java.awt.BorderLayout.CENTER );
 	}
 	
 	
-	private TabContentPane getSelectedTabPane() {
-		edu.cmu.cs.dennisc.croquet.Component< ? > selectedComponent = this.tabbedPane.getSelectedComponent();
-		if( selectedComponent instanceof edu.cmu.cs.dennisc.croquet.ScrollPane ) {
-			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = (edu.cmu.cs.dennisc.croquet.ScrollPane)selectedComponent;
-			
-			
-			//todo?
-			scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-			
-			
-			edu.cmu.cs.dennisc.croquet.Component< ? > view = scrollPane.getViewportView();
-			if( view instanceof TabContentPane ) {
-				return (TabContentPane)view;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
+//	private TabContentPane getSelectedTabPane() {
+//		edu.cmu.cs.dennisc.croquet.Component< ? > selectedComponent = this.tabbedPane.getSelectedComponent();
+//		if( selectedComponent instanceof edu.cmu.cs.dennisc.croquet.ScrollPane ) {
+//			edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = (edu.cmu.cs.dennisc.croquet.ScrollPane)selectedComponent;
+//			edu.cmu.cs.dennisc.croquet.Component< ? > view = scrollPane.getViewportView();
+//			if( view instanceof TabContentPane ) {
+//				return (TabContentPane)view;
+//			} else {
+//				return null;
+//			}
+//		} else {
+//			return null;
+//		}
+//	}
 	@Override
 	protected java.net.URI getActualInputValue() {
-		TabContentPane tabPane = this.getSelectedTabPane();
+		TabContentPane tabPane = (TabContentPane)this.tabSelectionOperation.getCurrentSelection();
 		if( tabPane != null ) {
 			return tabPane.getSelectedURI();
 		} else {
@@ -289,9 +261,7 @@ public class OpenProjectPane extends org.alice.ide.InputPanel< java.net.URI > {
 		} else {
 			tabPane = this.myProjectsPane; //todo: recentPane?
 		}
-		if( tabPane != null ) {
-			this.tabbedPane.setSelectedComponent( this.mapTabPaneToScrollPane.get( tabPane ) );
-		}
+		this.tabSelectionOperation.setCurrentSelection( tabPane );
 	}
 	public void refresh() {
 		this.myProjectsPane.refresh();

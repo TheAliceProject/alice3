@@ -73,8 +73,11 @@ public abstract class ListPane extends TabContentPane {
 		}
 	};
 	
-	public ListPane( java.util.UUID individualId ) {
-		super( individualId );
+	public ListPane( java.util.UUID individualId, String title ) {
+		super( individualId, title );
+	}
+	@Override
+	protected edu.cmu.cs.dennisc.croquet.BorderPanel updateSingletonView(edu.cmu.cs.dennisc.croquet.BorderPanel rv) {
 		this.refresh();
 		this.list.setOpaque( false );
 		this.list.setCellRenderer( new ProjectSnapshotListCellRenderer() );
@@ -103,7 +106,8 @@ public abstract class ListPane extends TabContentPane {
 				}
 			}
 		} );
-		this.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ), CardinalDirection.CENTER );
+		rv.addComponent( new edu.cmu.cs.dennisc.croquet.SwingAdapter( this.list ), CardinalDirection.CENTER );
+		return rv;
 	}
 
 	protected abstract String getTextForZeroProjects();

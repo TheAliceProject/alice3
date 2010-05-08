@@ -295,8 +295,8 @@ public class EditorsTabbedPane extends edu.cmu.cs.dennisc.croquet.TabbedPane {
 	}
 	private void updateBackOperationsEnabled() {
 		boolean isVisibleAndEnabled = this.editedCodes.size() > 1;
-		this.editPreviousCodeOperation.setEnabled( isVisibleAndEnabled );
-		this.editPreviousCodeOperation.setVisible( isVisibleAndEnabled );
+		this.getEditPreviousCodeOperation().setEnabled( isVisibleAndEnabled );
+		this.getEditPreviousCodeOperation().setVisible( isVisibleAndEnabled );
 	}
 	
 	private static org.alice.ide.codeeditor.CodeEditor getCodeEditorFor( edu.cmu.cs.dennisc.croquet.Component< ? > component ) {

@@ -85,7 +85,6 @@ public class CardPanel extends Panel {
 		this.internalRemoveComponent( key.child );
 	}
 	public void show( Key key ) {
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "show", key.cardLayoutKey );
 		this.cardLayout.show( this.getJComponent(), key.cardLayoutKey );
 	}
 }

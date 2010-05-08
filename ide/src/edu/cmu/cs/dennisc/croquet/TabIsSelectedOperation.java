@@ -45,51 +45,45 @@ package edu.cmu.cs.dennisc.croquet;
 /**
  * @author Dennis Cosgrove
  */
-public final class TabIsSelectedOperation extends BooleanStateOperation {
-//	private static edu.cmu.cs.dennisc.map.MapToMap<TabbedPane, Tab, Component<?> > mapToMap = edu.cmu.cs.dennisc.map.MapToMap.newInstance();
-//	private static Component<?> lookup( TabbedPane tabbedPane, Tab tab ) {
-//		Component<?> rv = mapToMap.get( tabbedPane, tab );
-//		if( rv != null ) {
-//			//pass
-//		} else {
-//			rv = tab.createComponent( tabbedPane );
-//			mapToMap.put( tabbedPane, tab, rv );
-//		}
-//		return rv;
-//	}
-//	private javax.swing.SingleSelectionModel singleSelectionModel = new javax.swing.DefaultSingleSelectionModel();
-//	private java.util.List< Tab > tabs = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
-//	private TabSelectionOperation owner;
-	private  TabFactory tabFactory;
-	public TabIsSelectedOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, TabFactory tabFactory ) {
-		super( groupUUID, individualUUID, initialState, tabFactory.getTitle() );
-		this.tabFactory = tabFactory;
-//		this.singleSelectionModel.addChangeListener( new javax.swing.event.ChangeListener() {
-//			public void stateChanged(javax.swing.event.ChangeEvent e) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "TabSelectionOperation", e );
-//			}
-//		} );
+public abstract class TabIsSelectedOperation extends BooleanStateOperation {
+	public TabIsSelectedOperation( java.util.UUID groupUUID, java.util.UUID individualUUID, boolean initialState, String title ) {
+		super( groupUUID, individualUUID, initialState, title );
 	}
 	
-	public TabFactory getTabFactory() {
-		return this.tabFactory;
-	}
-		
+	//todo: add scrollpane
+	
+	private edu.cmu.cs.dennisc.croquet.ScrollPane singletonScrollPane;
 
-//	public TabSelectionOperation getOwner() {
-//		return this.owner;
-//	}
-//	public void setOwner(TabSelectionOperation owner) {
-//		if( this.owner != owner ) {
-//			if( owner != null ) {
-//				assert this.owner == null;
-//			}
-//			this.owner = owner;
-//		}
-//	}
+	public ScrollPane getSingletonScrollPane() {
+		if( this.singletonScrollPane != null ) {
+			//pass
+		} else {
+			this.singletonScrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( this.getSingletonView() );
+			//this.singletonScrollPane.setOpaque( false );
+			this.singletonScrollPane.setBackgroundColor( this.getSingletonView().getBackgroundColor() );
+			this.singletonScrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+			//scrollPane.setHorizontalScrollBarPolicy( javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+			//scrollPane.setVerticalScrollBarPolicy( javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED );
+			this.singletonScrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+		}
+		return this.singletonScrollPane;
+	}
+	
+	private Component<?> singletonView;
+	public Component<?> getSingletonView() {
+		if( this.singletonView != null ) {
+			//pass
+		} else {
+			this.singletonView = this.createSingletonView();
+		}
+		return this.singletonView;
+	}
+	protected abstract Component<?> createSingletonView();
+	protected abstract boolean isCloseAffordanceDesired();
+
 	/*package-private*/ TabTitle createTabTitle() {
 		Application.getSingleton().register( this );
-		return new TabTitle( this.getTabFactory().isCloseAffordanceDesired() ) {
+		return new TabTitle( this.isCloseAffordanceDesired() ) {
 			@Override
 			protected void adding() {
 				TabIsSelectedOperation.this.addAbstractButton(this);

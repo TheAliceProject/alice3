@@ -1507,7 +1507,7 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 
 	@Deprecated
 	protected edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice getProgramType() {
-		edu.cmu.cs.dennisc.alice.Project project = getProject();
+		edu.cmu.cs.dennisc.alice.Project project = this.getProject();
 		if( project != null ) {
 			return (edu.cmu.cs.dennisc.alice.ast.TypeDeclaredInAlice)project.getProgramType();
 		} else {
@@ -1886,9 +1886,31 @@ public abstract class IDE extends org.alice.app.ProjectApplication {
 		}
 		return this.nameClsPairsForRelationalFillIns;
 	}
-	
-	@Deprecated
-	public void loadProjectFrom( java.io.File file ) {
-		this.loadProjectFrom( file.toURI() );
+	@Override
+	public void loadProjectFrom(java.net.URI uri) {
+		super.loadProjectFrom( uri );
+		//todo: find a better solution to concurrent modification exception
+		javax.swing.SwingUtilities.invokeLater( new Runnable() {
+			public void run() {
+				edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getSceneField();
+				if( sceneField != null ) {
+					edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
+					IDE.this.setFocusedCode( runMethod );
+					java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
+					final int N = fields.size();
+					int i = N - 1;
+					while( i >= 0 ) {
+						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fields.get( i );
+						if( field.getValueType().isArray() ) {
+							//pass
+						} else {
+							IDE.this.setFieldSelection( field );
+							break;
+						}
+						i--;
+					}
+				}
+			}
+		} );
 	}
 }

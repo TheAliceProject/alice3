@@ -83,11 +83,7 @@ public class TemplatesTabContentPane extends org.alice.app.openprojectpane.ListP
 	}
 
 	public TemplatesTabContentPane() {
-		super( java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ) );
-	}
-	@Override
-	public String getTabTitleText() {
-		return "Templates";
+		super( java.util.UUID.fromString( "e658dbd1-c58b-42ec-9338-49f186aecc71" ), "Templates" );
 	}
 	@Override
 	protected String getTextForZeroProjects() {

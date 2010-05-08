@@ -77,25 +77,21 @@ abstract class MembersTab extends edu.cmu.cs.dennisc.croquet.PageAxisPanel {
 					edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP, 
 					this.individualId, 
 					false, 
-					new edu.cmu.cs.dennisc.croquet.TabFactory() {
-						public edu.cmu.cs.dennisc.croquet.Component<?> createComponent(edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane) {
-							edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( MembersTab.this );
-							scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
-							scrollPane.setBackgroundColor( MembersTab.this.getBackgroundColor() );
-							scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
-							return scrollPane;
-						}
-						public String getTitle() {
-							return MembersTab.this.getTitle();
-						}
-						public String getTooltipText() {
-							return null;
-						}
-						public boolean isCloseAffordanceDesired() {
-							return false;
-						}
-					}
-			);
+					this.getTitle() ) {
+				@Override
+				protected edu.cmu.cs.dennisc.croquet.Component<?> createSingletonView() {
+//					edu.cmu.cs.dennisc.croquet.ScrollPane scrollPane = new edu.cmu.cs.dennisc.croquet.ScrollPane( MembersTab.this );
+//					scrollPane.setBorder( javax.swing.BorderFactory.createEmptyBorder() );
+//					scrollPane.setBackgroundColor( MembersTab.this.getBackgroundColor() );
+//					scrollPane.getJComponent().getVerticalScrollBar().setUnitIncrement( 12 );
+//					return scrollPane;
+					return MembersTab.this;
+				}
+				@Override
+				protected boolean isCloseAffordanceDesired() {
+					return false;
+				}
+			};
 		}
 		return this.tabIsSelectedOperation;
 	}
@@ -228,7 +224,6 @@ class FieldsTab extends MembersTab {
 public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alice.ast.AbstractType > {
 	private MembersTab[] membersTabs = { new ProceduresTab(), new FunctionsTab(), new FieldsTab() };
 	private edu.cmu.cs.dennisc.croquet.TabSelectionOperation tabSelectionOperation = new edu.cmu.cs.dennisc.croquet.TabSelectionOperation( edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP,  java.util.UUID.fromString( "d8348dfa-35df-441d-b233-0e1bd9ffd68f" ) );
-	private edu.cmu.cs.dennisc.croquet.TabbedPane tabbedPane;
 	private org.alice.ide.IDE.FieldSelectionObserver fieldSelectionObserver = new org.alice.ide.IDE.FieldSelectionObserver() {
 		public void fieldSelectionChanging( edu.cmu.cs.dennisc.alice.ast.AbstractField previousField, edu.cmu.cs.dennisc.alice.ast.AbstractField nextField ) {
 		}
@@ -265,8 +260,7 @@ public class MembersEditor extends org.alice.ide.Editor< edu.cmu.cs.dennisc.alic
 		for( MembersTab membersTab : membersTabs ) {
 			this.tabSelectionOperation.addTabIsSelectedOperation( membersTab.getTabIsSelectedOperation() );
 		}
-		this.tabbedPane = this.tabSelectionOperation.createTabbedPane();
-		this.addComponent( this.tabbedPane );
+		this.addComponent( this.tabSelectionOperation.getSingletonTabbedPane() );
 	}
 	@Override
 	protected java.awt.LayoutManager createLayoutManager( javax.swing.JPanel jPanel ) {

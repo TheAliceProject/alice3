@@ -82,10 +82,10 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		return this.saveAsProjectOperation;
 	}
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getRevertProjectOperation() {
-		return this.saveAsProjectOperation;
+		return this.revertProjectOperation;
 	}
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getExitOperation() {
-		return this.revertProjectOperation;
+		return this.exitOperation;
 	}
 	
 	protected edu.cmu.cs.dennisc.croquet.AbstractActionOperation getUndoOperation() {
@@ -308,35 +308,12 @@ public abstract class ProjectApplication extends edu.cmu.cs.dennisc.croquet.Appl
 		this.updateHistoryLengthAtLastFileOperation();
 		this.restoreProjectProperties();
 		setUri( uri );
-
-		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: focus run method and select field" );
-		
-//		//todo: find a better solution to concurrent modification exception
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//			public void run() {
-//				edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = getSceneField();
-//				if( sceneField != null ) {
-//					edu.cmu.cs.dennisc.alice.ast.AbstractMethod runMethod = sceneField.getValueType().getDeclaredMethod( "run" );
-//					IDE.this.setFocusedCode( runMethod );
-//					java.util.ArrayList< ? extends edu.cmu.cs.dennisc.alice.ast.AbstractField > fields = sceneField.getValueType().getDeclaredFields();
-//					final int N = fields.size();
-//					int i = N - 1;
-//					while( i >= 0 ) {
-//						edu.cmu.cs.dennisc.alice.ast.AbstractField field = fields.get( i );
-//						if( field.getValueType().isArray() ) {
-//							//pass
-//						} else {
-//							IDE.this.setFieldSelection( field );
-//							break;
-//						}
-//						i--;
-//					}
-//				}
-//			}
-//		} );
+	}
+	public final void loadProjectFrom( java.io.File file ) {
+		loadProjectFrom( file.toURI() );
 	}
 	public final void loadProjectFrom( String path ) {
-		loadProjectFrom( new java.io.File( path ).toURI() );
+		loadProjectFrom( new java.io.File( path ) );
 	}
 	public void createProjectFromBootstrap() {
 		throw new RuntimeException( "todo" );

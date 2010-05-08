@@ -106,6 +106,7 @@ public abstract class Application {
 		jFrame.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
 		jFrame.addWindowListener(new java.awt.event.WindowListener() {
 			public void windowOpened(java.awt.event.WindowEvent e) {
+				Application.this.handleWindowOpened(e);
 			}
 			public void windowClosing(java.awt.event.WindowEvent e) {
 				Application.this.handleQuit(e);
@@ -221,13 +222,13 @@ public abstract class Application {
 		javax.swing.JOptionPane.showMessageDialog( this.frame.getAWTWindow(), message, title, messageType.internal, icon );
 	}
 	public void showMessageDialog( Object message, String title, MessageType messageType ) {
-		showYesNoCancelConfirmDialog( message, title, messageType, null );
+		showMessageDialog( message, title, messageType, null );
 	}
 	public void showMessageDialog( Object message, String title ) {
-		showYesNoCancelConfirmDialog( message, title, MessageType.QUESTION );
+		showMessageDialog( message, title, MessageType.QUESTION );
 	}
 	public void showMessageDialog( Object message ) {
-		showYesNoCancelConfirmDialog( message, null );
+		showMessageDialog( message, null );
 	}
 
 	public YesNoCancelOption showYesNoCancelConfirmDialog( Object message, String title, MessageType messageType, javax.swing.Icon icon ) {

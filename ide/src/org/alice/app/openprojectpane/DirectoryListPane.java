@@ -47,8 +47,8 @@ package org.alice.app.openprojectpane;
  * @author Dennis Cosgrove
  */
 abstract class DirectoryListPane extends ListPane {
-	public DirectoryListPane( java.util.UUID individualId ) {
-		super( individualId );
+	public DirectoryListPane( java.util.UUID individualId, String title ) {
+		super( individualId, title );
 	}
 	@Override
 	protected String getTextForZeroProjects() {

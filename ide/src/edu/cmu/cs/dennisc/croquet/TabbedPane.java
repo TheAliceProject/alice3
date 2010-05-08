@@ -221,18 +221,21 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 
 	@Deprecated
 	public void addTab( String title, Component< ? > component ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addTab" );
 		//this.getJComponent().addTab( title, component.getJComponent() );
-		throw new RuntimeException( "todo" );
+		//throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	public void addTab( String title, javax.swing.Icon icon, Component< ? > component ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addTab" );
 		//this.getJComponent().addTab( title, icon, component.getJComponent() );
-		throw new RuntimeException( "todo" );
+		//throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	public void setTitleAt( int index, String title ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setTitleAt" );
 		//this.getJComponent().setTitleAt( index, title );
-		throw new RuntimeException( "todo" );
+		//throw new RuntimeException( "todo" );
 	}
 	
 	@Deprecated

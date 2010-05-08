@@ -57,7 +57,13 @@ public class TabSelectionOperation extends Operation {
 		}
 		return rv;
 	}
+	public interface SelectionObserver {
+		public void selecting( TabIsSelectedOperation prev, TabIsSelectedOperation next );
+		public void selected( TabIsSelectedOperation prev, TabIsSelectedOperation next );
+	}
+	private java.util.List< SelectionObserver > selectionObservers = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
 	private java.util.List< TabIsSelectedOperation > tabIsSelectedOperations = edu.cmu.cs.dennisc.java.util.concurrent.Collections.newCopyOnWriteArrayList();
+
 	private class TabIsSelectedObserver implements BooleanStateOperation.ValueObserver {
 		private TabbedPane tabbedPane;
 		private edu.cmu.cs.dennisc.croquet.TabbedPane.Key key;
@@ -74,14 +80,9 @@ public class TabSelectionOperation extends Operation {
 			}
 		}
 	};
+	
 	public TabSelectionOperation( java.util.UUID groupUUID, java.util.UUID individualUUID ) {
 		super( groupUUID, individualUUID );
-//		private javax.swing.SingleSelectionModel singleSelectionModel = new javax.swing.DefaultSingleSelectionModel();
-//		this.singleSelectionModel.addChangeListener( new javax.swing.event.ChangeListener() {
-//			public void stateChanged(javax.swing.event.ChangeEvent e) {
-//				edu.cmu.cs.dennisc.print.PrintUtilities.println( "TabSelectionOperation", e );
-//			}
-//		} );
 	}
 	public void addTabIsSelectedOperation( TabIsSelectedOperation tabIsSelectedOperation ) {
 		this.tabIsSelectedOperations.add( tabIsSelectedOperation );
@@ -90,20 +91,39 @@ public class TabSelectionOperation extends Operation {
 		this.tabIsSelectedOperations.remove( tabIsSelectedOperation );
 	}
 	
-	public TabbedPane createTabbedPane() {
-		TabbedPane rv = new TabbedPane();
-		for( TabIsSelectedOperation tabIsSelectedOperation : this.tabIsSelectedOperations ) {
-			TabFactory tabFactory = tabIsSelectedOperation.getTabFactory();
-			Component<?> mainComponent = tabFactory.createComponent( rv );
-			AbstractButton<?> header = tabIsSelectedOperation.createTabTitle();
-			header.setBackgroundColor( mainComponent.getBackgroundColor() );
-			TabbedPane.Key key = rv.createKey(header, mainComponent, tabIsSelectedOperation.getIndividualUUID().toString() );
-			rv.addTab( key );
-			if( tabIsSelectedOperation.getState() ) {
-				rv.selectTab( key );
+	private TabIsSelectedOperation currentSelection;
+	public TabIsSelectedOperation getCurrentSelection() {
+		return this.currentSelection;
+	}
+	public void setCurrentSelection( TabIsSelectedOperation tabIsSelectedOperation ) {
+		this.currentSelection = tabIsSelectedOperation;
+	}
+	
+	public void addSelectionObserver( SelectionObserver selectionObserver ) { 
+		this.selectionObservers.add( selectionObserver );
+	}
+	public void removeSelectionObserver( SelectionObserver selectionObserver ) { 
+		this.selectionObservers.remove( selectionObserver );
+	}
+
+	private TabbedPane singletonTabbedPane;
+	public TabbedPane getSingletonTabbedPane() {
+		if( this.singletonTabbedPane != null ) {
+			//pass
+		} else {
+			this.singletonTabbedPane = new TabbedPane();
+			for( TabIsSelectedOperation tabIsSelectedOperation : this.tabIsSelectedOperations ) {
+				Component<?> mainComponent = tabIsSelectedOperation.getSingletonView();
+				AbstractButton<?> header = tabIsSelectedOperation.createTabTitle();
+				header.setBackgroundColor( mainComponent.getBackgroundColor() );
+				TabbedPane.Key key = this.singletonTabbedPane.createKey(header, mainComponent, tabIsSelectedOperation.getIndividualUUID().toString() );
+				this.singletonTabbedPane.addTab( key );
+				if( tabIsSelectedOperation.getState() ) {
+					this.singletonTabbedPane.selectTab( key );
+				}
+				tabIsSelectedOperation.addValueObserver( new TabIsSelectedObserver(this.singletonTabbedPane, key) );
 			}
-			tabIsSelectedOperation.addValueObserver( new TabIsSelectedObserver(rv, key) );
 		}
-		return rv;
+		return this.singletonTabbedPane;
 	}
 }
