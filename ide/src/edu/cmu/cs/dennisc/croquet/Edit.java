@@ -60,7 +60,9 @@ public abstract class Edit implements edu.cmu.cs.dennisc.codec.BinaryEncodableAn
 		return this.contextId;
 	}
 	public java.util.UUID getGroupId() {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getGroupId" );
+		return edu.cmu.cs.dennisc.zoot.ZManager.UNKNOWN_GROUP;
+//		throw new RuntimeException( "todo" );
 	}
 	public abstract boolean canRedo();
 	public abstract boolean canUndo();

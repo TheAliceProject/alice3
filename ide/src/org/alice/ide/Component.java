@@ -93,10 +93,12 @@ public abstract class Component extends edu.cmu.cs.dennisc.croquet.DragControl {
 	}
 	@Deprecated
 	public void setDragOperation( edu.cmu.cs.dennisc.croquet.DragOperation operation ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setDragOperation" );
+		//throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	public void setPopupOperation( edu.cmu.cs.dennisc.croquet.AbstractPopupMenuOperation popupMenuOperation ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setPopupOperation" );
+		//throw new RuntimeException( "todo" );
 	}
 }

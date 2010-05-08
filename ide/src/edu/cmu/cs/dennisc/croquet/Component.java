@@ -246,7 +246,8 @@ public abstract class Component<J extends javax.swing.JComponent> {
 	
 	@Deprecated
 	protected void forgetAndRemoveAllComponents() {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: forgetAndRemoveAllComponents" );
+		//throw new RuntimeException( "todo" );
 	}
 	
 	public int getWidth() {

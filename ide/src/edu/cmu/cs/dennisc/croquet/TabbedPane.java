@@ -219,19 +219,23 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 		this.main.show( key.mainComponentKey );
 	}
 
+	@Deprecated
 	public void addTab( String title, Component< ? > component ) {
 		//this.getJComponent().addTab( title, component.getJComponent() );
 		throw new RuntimeException( "todo" );
 	}
+	@Deprecated
 	public void addTab( String title, javax.swing.Icon icon, Component< ? > component ) {
 		//this.getJComponent().addTab( title, icon, component.getJComponent() );
 		throw new RuntimeException( "todo" );
 	}
+	@Deprecated
 	public void setTitleAt( int index, String title ) {
 		//this.getJComponent().setTitleAt( index, title );
 		throw new RuntimeException( "todo" );
 	}
 	
+	@Deprecated
 	public java.awt.Color getContentAreaColor() {
 		return java.awt.Color.MAGENTA;
 	}
@@ -269,13 +273,15 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 	}
 	@Deprecated
 	public Component< ? > getSelectedComponent() {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: getSelectedComponent" );
 		//return Component.lookup( this.getJComponent().getSelectedComponent() );
-		throw new RuntimeException( "todo" );
+		return null;
 	}
 	@Deprecated
 	public void setSelectedComponent( Component< ? > selectedComponent ) {
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setSelectedComponent" );
 		//this.getJComponent().setSelectedComponent( selectedComponent.getJComponent() );
-		throw new RuntimeException( "todo" );
+		//throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	public int indexOfComponent( Component< ? > component ) {
@@ -285,10 +291,12 @@ public class TabbedPane extends Component< javax.swing.JComponent > {
 	
 	@Deprecated
 	public void addChangeListener( javax.swing.event.ChangeListener listener ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: addChangeListener" );
+		//throw new RuntimeException( "todo" );
 	}
 	@Deprecated
 	public void setTabCloseOperation( AbstractActionOperation operation ) {
-		throw new RuntimeException( "todo" );
+		edu.cmu.cs.dennisc.print.PrintUtilities.println( "todo: setTabCloseOperation" );
+		//throw new RuntimeException( "todo" );
 	}
 }

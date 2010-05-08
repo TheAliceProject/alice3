@@ -572,7 +572,7 @@ public class MoveAndTurnSceneEditor extends org.alice.ide.sceneeditor.AbstractIn
 	public void generateCodeForSetUp( edu.cmu.cs.dennisc.alice.ast.StatementListProperty bodyStatementsProperty ) {
 		edu.cmu.cs.dennisc.alice.ast.AbstractField sceneField = this.getSceneField();
 		this.fillInAutomaticSetUpMethod( bodyStatementsProperty, true, sceneField );
-		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneType.getDeclaredFields() ) {
+		for( edu.cmu.cs.dennisc.alice.ast.AbstractField field : sceneField.getValueType().getDeclaredFields() ) {
 			this.fillInAutomaticSetUpMethod( bodyStatementsProperty, false, field );
 		}
 	}

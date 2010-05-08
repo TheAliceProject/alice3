@@ -48,10 +48,10 @@ package edu.cmu.cs.dennisc.croquet;
  */
 public abstract class SplitPane extends Component< javax.swing.JSplitPane > {
 	protected SplitPane( int orientation ) {
-		this.getJComponent().setOrientation( orientation );
+		this( orientation, null, null );
 	}
 	protected SplitPane( int orientation, Component<?> topOrLeftComponent, Component<?> bottomOrRightComponent ) {
-		this( orientation );
+		this.getJComponent().setOrientation( orientation );
 		this.setTopOrLeftComponent( topOrLeftComponent );
 		this.setBottomOrRightComponent( bottomOrRightComponent );
 	}
@@ -61,12 +61,10 @@ public abstract class SplitPane extends Component< javax.swing.JSplitPane > {
 	}
 	
 	protected void setTopOrLeftComponent( Component<?> component ) {
-		assert component != null;
-		this.getJComponent().setTopComponent( component.getJComponent() );
+		this.getJComponent().setTopComponent( component != null ? component.getJComponent() : null );
 	}
 	protected void setBottomOrRightComponent( Component<?> component ) {
-		assert component != null;
-		this.getJComponent().setBottomComponent( component.getJComponent() );
+		this.getJComponent().setBottomComponent( component != null ? component.getJComponent() : null );
 	}
 	
 	public double getResizeWeight() {
